@@ -55,38 +55,66 @@
           ]
         },
         "attrs": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "minLength": 1
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "link",
+                    "file"
+                  ]
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "collection": {
+                  "type": "string"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "occurrenceKey": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "collection"
+              ],
+              "additionalProperties": false
             },
-            "type": {
-              "enum": [
-                "link",
-                "file"
-              ]
-            },
-            "collection": {
-              "type": "string"
-            },
-            "height": {
-              "type": "number"
-            },
-            "width": {
-              "type": "number"
-            },
-            "occurrenceKey": {
-              "type": "string",
-              "minLength": 1
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "external"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "height": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "url"
+              ],
+              "additionalProperties": false
             }
-          },
-          "required": [
-            "id",
-            "type",
-            "collection"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
@@ -743,6 +771,7 @@
             },
             "layout": {
               "enum": [
+                "wide",
                 "full-width",
                 "default"
               ]
@@ -895,7 +924,7 @@
               "properties": {
                 "url": {
                   "type": "string",
-                  "pattern": "^https://|^data:image/"
+                  "pattern": "^https?://|^data:image/"
                 }
               },
               "required": [
@@ -1763,6 +1792,9 @@
             "$ref": "#/definitions/taskList_node"
           },
           {
+            "$ref": "#/definitions/extension_node"
+          },
+          {
             "$ref": "#/definitions/codeBlock_node"
           }
         ]
@@ -1843,7 +1875,14 @@
             "marks": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/code_mark"
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/code_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/link_mark"
+                  }
+                ]
               }
             }
           },

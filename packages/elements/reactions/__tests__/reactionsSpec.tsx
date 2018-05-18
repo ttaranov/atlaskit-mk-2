@@ -1,6 +1,5 @@
-import * as chai from 'chai';
 import * as React from 'react';
-import * as sinon from 'sinon';
+import Tooltip from '@atlaskit/tooltip';
 
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../src';
@@ -9,13 +8,11 @@ import Reaction from '../src/internal/reaction';
 import ReactionPicker from '../src/reaction-picker';
 import { reactionsProvider } from '../src/mock-reactions-provider';
 import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
-import { ObjectReactionKey } from '../src/reactions-resource';
+import { ObjectReactionKey, ReactionStatus } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 
 const { getEmojiResourcePromise } = emoji.testData;
-
-const { expect } = chai;
 
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
@@ -37,24 +34,26 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactionSummaries = (reactionsProvider as any).cachedReactions[
       reactionsProvider.objectReactionKey(containerAri, demoAri)
     ];
-    return [...reactionSummaries].sort(sortByRelevance);
+    return [...reactionSummaries.reactions].sort(sortByRelevance);
   };
 
   beforeAll(() => {
     // Override "subscribe" so that it resolves instantly.
     const subscribe = reactionsProvider.subscribe;
-    sinon
-      .stub(reactionsProvider, 'subscribe')
-      .callsFake((objectReactionKey: ObjectReactionKey, handler: Function) => {
-        subscribe.call(reactionsProvider, objectReactionKey, handler);
-        reactionsProvider.notifyUpdated(
-          containerAri,
-          demoAri,
-          (reactionsProvider as any).cachedReactions[
-            reactionsProvider.objectReactionKeyToString(objectReactionKey)
-          ],
-        );
-      });
+    jest
+      .spyOn(reactionsProvider, 'subscribe')
+      .mockImplementation(
+        (objectReactionKey: ObjectReactionKey, handler: Function) => {
+          subscribe.call(reactionsProvider, objectReactionKey, handler);
+          reactionsProvider.notifyUpdated(
+            containerAri,
+            demoAri,
+            (reactionsProvider as any).cachedReactions[
+              reactionsProvider.objectReactionKeyToString(objectReactionKey)
+            ],
+          );
+        },
+      );
   });
 
   afterAll(() => {
@@ -62,27 +61,27 @@ describe('@atlaskit/reactions/reactions', () => {
   });
 
   it('should trigger "onReactionClick" when Reaction is clicked', () => {
-    const onReactionClick = sinon.spy();
+    const onReactionClick = jest.fn();
     const reactions = mount(renderReactions(onReactionClick));
 
     reactions
       .find(Reaction)
       .first()
       .simulate('mouseup', { button: 0 });
-    expect(onReactionClick.called).to.equal(true);
+    expect(onReactionClick).toHaveBeenCalled();
   });
 
   it('should render reactions based on response from reactions service', () => {
     const reactions = mount(renderReactions());
     const sortedReactions = getSortedReactions();
 
-    expect(reactions.length).to.equal(1);
+    expect(reactions.length).toEqual(1);
     const reactionElements = reactions.find(Reaction);
-    expect(reactionElements.length).to.equal(sortedReactions.length);
+    expect(reactionElements.length).toEqual(sortedReactions.length);
 
     // NOTE: Type definitions for enzyme is wrong. forEach takes a second parameter (index).
     (reactionElements as any).forEach((reaction, index) => {
-      expect(reaction.props().reaction).to.deep.equal(sortedReactions[index]);
+      expect(reaction.props().reaction).toEqual(sortedReactions[index]);
     });
   });
 
@@ -91,14 +90,14 @@ describe('@atlaskit/reactions/reactions', () => {
     const sortedReactions = getSortedReactions();
 
     const reactionElements = reactions.find(Reaction);
-    expect(reactionElements.length).to.equal(sortedReactions.length);
+    expect(reactionElements.length).toEqual(sortedReactions.length);
 
     return reactionsProvider
       .addReaction(containerAri, demoAri, smileyId.id!)
       .then(state => {
         reactionsProvider.notifyUpdated(containerAri, demoAri, state);
         reactions.update();
-        expect(reactions.find(Reaction).length).to.equal(
+        expect(reactions.find(Reaction).length).toEqual(
           sortedReactions.length + 1,
         );
       });
@@ -117,7 +116,7 @@ describe('@atlaskit/reactions/reactions', () => {
             .find(Reaction)
             .last()
             .prop('reaction').emojiId,
-        ).to.equal(flagBlackId.id);
+        ).toEqual(flagBlackId.id);
       });
   });
 
@@ -132,14 +131,14 @@ describe('@atlaskit/reactions/reactions', () => {
         const thumbsupReaction = reactions.find(Reaction).at(1);
 
         const thumbsDownReaction = reactions.find(Reaction).at(2);
-        expect(thumbsupReaction.prop('reaction').emojiId).to.equal(
+        expect(thumbsupReaction.prop('reaction').emojiId).toEqual(
           thumbsupId.id!,
         );
-        expect(thumbsupReaction.prop('reaction').count).to.equal(9);
-        expect(thumbsDownReaction.prop('reaction').emojiId).to.equal(
+        expect(thumbsupReaction.prop('reaction').count).toEqual(9);
+        expect(thumbsDownReaction.prop('reaction').emojiId).toEqual(
           thumbsdownId.id!,
         );
-        expect(thumbsDownReaction.prop('reaction').count).to.equal(6);
+        expect(thumbsDownReaction.prop('reaction').count).toEqual(6);
       });
   });
 
@@ -150,7 +149,7 @@ describe('@atlaskit/reactions/reactions', () => {
       reactionElements
         .map(reaction => reaction.prop('flashOnMount'))
         .reduce((a, b) => a || b),
-    ).to.be.false;
+    ).toBeFalsy();
   });
 
   it('should flash new reaction on mount', () => {
@@ -167,7 +166,7 @@ describe('@atlaskit/reactions/reactions', () => {
           reactionElements
             .map(reaction => reaction.prop('flashOnMount'))
             .reduce((a, b) => a && b),
-        ).to.be.true;
+        ).toBeTruthy();
       });
   });
 
@@ -187,11 +186,40 @@ describe('@atlaskit/reactions/reactions', () => {
           )
           .instance() as Reaction;
 
-        const reactionFlash = sinon.spy(reactedReaction, 'flash');
+        const reactionFlash = jest.spyOn(reactedReaction, 'flash');
 
         reactions.find(ReactionPicker).prop('onSelection')(thumbsupId.id!);
 
-        expect(reactionFlash.calledOnce).to.be.true;
+        expect(reactionFlash).toHaveBeenCalledTimes(1);
       });
+  });
+
+  it('should show loading tooltip and disable picker', () => {
+    const reactions = mount(renderReactions());
+
+    reactionsProvider.notifyUpdated(containerAri, demoAri, {
+      status: ReactionStatus.loading,
+    });
+
+    reactions.update();
+
+    expect(reactions.find(Tooltip).prop('content')).toEqual('Loading...');
+    expect(reactions.find(ReactionPicker).prop('disabled')).toBeTruthy();
+  });
+
+  it('should show loading tooltip and disable picker', () => {
+    const reactions = mount(renderReactions());
+
+    reactionsProvider.notifyUpdated(containerAri, demoAri, {
+      status: ReactionStatus.error,
+      message: 'Something is wrong',
+    });
+
+    reactions.update();
+
+    expect(reactions.find(Tooltip).prop('content')).toEqual(
+      'Sorry... something went wrong',
+    );
+    expect(reactions.find(ReactionPicker).prop('disabled')).toBeTruthy();
   });
 });

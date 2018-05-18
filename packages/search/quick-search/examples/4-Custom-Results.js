@@ -1,17 +1,39 @@
 // @flow
 import React, { Component } from 'react';
 import AudioCircleIcon from '@atlaskit/icon/glyph/audio-circle';
-import { ResultBase, ResultItemGroup } from '../src';
+import { ObjectResult, ResultBase, ResultItemGroup } from '../src';
+import { randomJiraIconUrl } from './utils/mockData';
 
 const defaultProps = {
   resultId: 'result_id',
 };
 
+/*eslint-disable */
+// too many violations in this component
+class AlertLinkComponent extends Component<*> {
+  handleClick = () => {
+    const { href } = this.props;
+    alert(`href: ${href}`);
+  };
+
+  render() {
+    const { className, children } = this.props;
+
+    return (
+      <span onClick={this.handleClick} className={className}>
+        {children}
+      </span>
+    );
+  }
+}
+/*eslint-enable */
+
+// eslint-disable-next-line
 export default class extends Component<*> {
   render() {
     return (
       <div>
-        <h3>Miscellaneous</h3>
+        <h3>Custom result types</h3>
         <p>
           If the preset result types do not support the shape required,
           ResultBase can be used directly or composed to help create QuickSearch
@@ -38,6 +60,23 @@ export default class extends Component<*> {
             }
             text="Cronenberg result"
             subText="Anything goes!"
+          />
+        </ResultItemGroup>
+
+        <h3>Custom linkComponent</h3>
+        <p>
+          You can provide a custom linkComponent instead of the default a tag,
+          for example when you want to integrate with react-router.
+        </p>
+        <ResultItemGroup title="Link component that will alert">
+          <ObjectResult
+            {...defaultProps}
+            name="Click me!"
+            avatarUrl={randomJiraIconUrl()}
+            objectKey="AK-007"
+            href="jira.com"
+            containerName="Search'n'Smarts"
+            linkComponent={AlertLinkComponent}
           />
         </ResultItemGroup>
       </div>

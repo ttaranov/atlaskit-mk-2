@@ -100,8 +100,12 @@ type Props = ReactSelectProps & {
 
 function baseStyles(validationState) {
   return {
-    control: (css, { isFocused }) => {
-      let borderColor = isFocused ? colors.B100 : colors.N20;
+    control: (css, { isFocused, isDisabled }) => {
+      let borderColor = isFocused ? colors.B100 : colors.N10;
+      let backgroundColor = isFocused ? colors.N0 : colors.N10;
+      if (isDisabled) {
+        backgroundColor = colors.N20;
+      }
       if (validationState === 'error') borderColor = colors.R400;
       if (validationState === 'success') borderColor = colors.G400;
 
@@ -114,11 +118,12 @@ function baseStyles(validationState) {
 
       return {
         ...css,
-        backgroundColor: isFocused ? colors.N0 : colors.N10,
+        backgroundColor,
         borderColor,
         borderStyle: 'solid',
         borderWidth: lgBorder ? 2 : 1,
         boxShadow: 'none',
+        minHeight: '32px',
         padding: lgBorder ? 0 : 1,
         transition: `background-color ${transitionDuration} ease-in-out,
         border-color ${transitionDuration} ease-in-out`,
@@ -129,27 +134,36 @@ function baseStyles(validationState) {
         },
       };
     },
-    indicator: (css, { isFocused }) => ({
-      ...css,
-      color: isFocused ? colors.N200 : colors.N80,
-      paddingBottom: 6,
-      paddingTop: 6,
+    dropdownIndicator: (css, { isDisabled }) => {
+      let color = colors.N500;
+      if (isDisabled) {
+        color = colors.N70;
+      }
+      return {
+        ...css,
+        color,
+        paddingBottom: 6,
+        paddingTop: 6,
 
-      ':hover': {
-        color: colors.N200,
-      },
-    }),
+        ':hover': {
+          color: colors.N200,
+        },
+      };
+    },
     option: (css, { isFocused, isSelected }) => {
       const color = isSelected ? colors.N0 : null;
 
       let backgroundColor;
-      if (isSelected) backgroundColor = colors.B200;
+      if (isSelected) backgroundColor = colors.N200;
       else if (isFocused) backgroundColor = colors.N20;
 
       return { ...css, backgroundColor, color };
     },
-    placeholder: css => ({ ...css, color: colors.N100 }),
-    singleValue: css => ({ ...css, color: colors.N900 }),
+    placeholder: css => ({ ...css, color: colors.N70 }),
+    singleValue: (css, { isDisabled }) => ({
+      ...css,
+      color: isDisabled ? colors.N70 : colors.N900,
+    }),
   };
 }
 

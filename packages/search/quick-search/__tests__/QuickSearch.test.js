@@ -384,4 +384,16 @@ describe('<QuickSearch />', () => {
       ).toHaveLength(0);
     });
   });
+
+  it('should pass through the linkComponent prop', () => {
+    const MyLinkComponent = () => <div />;
+    wrapper.setProps({ linkComponent: MyLinkComponent });
+    wrapper.update();
+    expect(
+      wrapper
+        .find(ResultItem)
+        .first()
+        .prop('linkComponent'),
+    ).toBe(MyLinkComponent);
+  });
 });

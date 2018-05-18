@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { MediaItemType } from '@atlaskit/media-core';
 import { MediaViewer } from '../../src/components/media-viewer';
 import { MediaViewer as MediaViewerNextGen } from '../../src/newgen/media-viewer';
 import { Stubs } from '../_stubs';
+
+declare var global: any;
 
 describe('<MediaViewer />', () => {
   const token = 'some-token';
@@ -47,23 +49,57 @@ describe('<MediaViewer />', () => {
     it('should show the next gen viewer', () => {
       const featureFlags = { nextGen: true };
       const context = Stubs.context(contextConfig);
-      const el = shallow(
+      const el = mount(
         <MediaViewer
           context={context as any}
           selectedItem={selectedItem}
-          dataSource={collectionDataSource}
+          dataSource={listDataSource}
           collectionName={collectionName}
           MediaViewer={Stubs.mediaViewerConstructor() as any}
           basePath={basePath}
           featureFlags={featureFlags}
         />,
       );
-
       expect(el.find(MediaViewerNextGen)).toHaveLength(1);
+    });
 
-      // This is a temporary expectation that is only valid
-      // as long as we do not implement any viewer.
-      expect(context.getMediaItemProvider).not.toHaveBeenCalled();
+    it('should pass the correct collectionName property to the next gen viewer', () => {
+      const featureFlags = { nextGen: true };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={collectionDataSource}
+          collectionName={'another-collection-name'}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+          featureFlags={featureFlags}
+        />,
+      );
+      expect(el.find(MediaViewerNextGen).props().collectionName).toEqual(
+        collectionDataSource.collectionName,
+      );
+    });
+
+    it('should show the next gen viewer when dev flag is enabled', () => {
+      let originalLocalStorage = global.window.localStorage;
+      global.window.localStorage = {
+        getItem: key => key === 'MediaViewerNextGenEnabled',
+      };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={listDataSource}
+          collectionName={collectionName}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+        />,
+      );
+      expect(el.find(MediaViewerNextGen)).toHaveLength(1);
+      global.window.localStorage = originalLocalStorage;
     });
   });
 

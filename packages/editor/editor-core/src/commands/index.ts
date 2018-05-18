@@ -1,4 +1,9 @@
-import { Fragment, Slice, Node as PMNode } from 'prosemirror-model';
+import {
+  Fragment,
+  Slice,
+  Node as PMNode,
+  ResolvedPos,
+} from 'prosemirror-model';
 import {
   EditorState,
   NodeSelection,
@@ -22,7 +27,7 @@ import {
 
 import { hyperlinkPluginKey } from '../plugins/hyperlink';
 
-export function toggleBlockType(view: EditorView, name: string): boolean {
+export function setBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
   switch (name) {
     case blockTypes.NORMAL_TEXT.name:
@@ -32,32 +37,32 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
       break;
     case blockTypes.HEADING_1.name:
       if (nodes.heading) {
-        return toggleHeading(1)(view.state, view.dispatch);
+        return setHeading(1)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_2.name:
       if (nodes.heading) {
-        return toggleHeading(2)(view.state, view.dispatch);
+        return setHeading(2)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_3.name:
       if (nodes.heading) {
-        return toggleHeading(3)(view.state, view.dispatch);
+        return setHeading(3)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_4.name:
       if (nodes.heading) {
-        return toggleHeading(4)(view.state, view.dispatch);
+        return setHeading(4)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_5.name:
       if (nodes.heading) {
-        return toggleHeading(5)(view.state, view.dispatch);
+        return setHeading(5)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_6.name:
       if (nodes.heading) {
-        return toggleHeading(6)(view.state, view.dispatch);
+        return setHeading(6)(view.state, view.dispatch);
       }
       break;
   }
@@ -72,20 +77,12 @@ export function setNormalText(): Command {
   };
 }
 
-export function toggleHeading(level: number): Command {
+export function setHeading(level: number): Command {
   return function(state, dispatch) {
     const { tr, selection: { $from, $to }, schema } = state;
-    const currentBlock = $from.parent;
-    if (
-      currentBlock.type !== schema.nodes.heading ||
-      currentBlock.attrs['level'] !== level
-    ) {
-      dispatch(
-        tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
-      );
-    } else {
-      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
-    }
+    dispatch(
+      tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
+    );
     return true;
   };
 }
@@ -362,22 +359,88 @@ export function indentList(): Command {
 export function outdentList(): Command {
   return function(state, dispatch) {
     const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
+    const { $from, $to } = state.selection;
     if ($from.node(-1).type === listItem) {
-      return baseListCommand.liftListItem(listItem)(state, dispatch);
+      // if we're backspacing at the start of a list item, unindent it
+      // take the the range of nodes we might be lifting
+      let range = $from.blockRange(
+        $to,
+        node => node.childCount > 0 && node.firstChild!.type === listItem,
+      );
+
+      if (!range) {
+        return false;
+      }
+
+      let tr;
+      if (
+        baseListCommand.liftListItem(listItem)(state, liftTr => (tr = liftTr))
+      ) {
+        /* we now need to handle the case that we lifted a sublist out,
+          * and any listItems at the current level get shifted out to
+          * their own new list; e.g.:
+          *
+          * unorderedList
+          *  listItem(A)
+          *  listItem
+          *    unorderedList
+          *      listItem(B)
+          *  listItem(C)
+          *
+          * becomes, after unindenting the first, top level listItem, A:
+          *
+          * content of A
+          * unorderedList
+          *  listItem(B)
+          * unorderedList
+          *  listItem(C)
+          *
+          * so, we try to merge these two lists if they're of the same type, to give:
+          *
+          * content of A
+          * unorderedList
+          *  listItem(B)
+          *  listItem(C)
+          */
+
+        const $start: ResolvedPos = state.doc.resolve(range.start);
+        const $end: ResolvedPos = state.doc.resolve(range.end);
+        const $join = tr.doc.resolve(tr.mapping.map(range.end - 1));
+
+        if (
+          $join.nodeBefore &&
+          $join.nodeAfter &&
+          $join.nodeBefore.type === $join.nodeAfter.type
+        ) {
+          if (
+            $end.nodeAfter &&
+            $end.nodeAfter.type === listItem &&
+            $end.parent.type === $start.parent.type
+          ) {
+            tr.join($join.pos);
+          }
+        }
+
+        dispatch(tr.scrollIntoView());
+        return true;
+      }
     }
     return false;
   };
 }
+
+export function shouldAppendParagraphAfterBlockNode(state) {
+  return (
+    (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) || isTableCell(state)
+  );
+}
+
 export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   return function(state, dispatch) {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
 
-    if (
-      (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) ||
-      isTableCell(state)
-    ) {
+    if (shouldAppendParagraphAfterBlockNode(state)) {
       nodes.push(paragraph.create());
     }
 
@@ -493,14 +556,33 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
   );
 }
 
+export const removeEmptyHeadingAtStartOfDocument: Command = (
+  state,
+  dispatch,
+) => {
+  const { $cursor } = state.selection as TextSelection;
+  if (
+    $cursor &&
+    !$cursor.nodeBefore &&
+    !$cursor.nodeAfter &&
+    $cursor.pos === 1
+  ) {
+    if ($cursor.parent.type === state.schema.nodes.heading) {
+      return setNormalText()(state, dispatch);
+    }
+  }
+  return false;
+};
+
 export function createParagraphAtEnd(): Command {
   return function(state, dispatch) {
     const { doc, tr, schema: { nodes } } = state;
-    const lastPos = doc.resolve(doc.content.size - 1);
-    const lastNode = lastPos.node(1);
     if (
-      lastNode &&
-      !(lastNode.type === nodes.paragraph && lastNode.content.size === 0)
+      doc.lastChild &&
+      !(
+        doc.lastChild.type === nodes.paragraph &&
+        doc.lastChild.content.size === 0
+      )
     ) {
       tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
     }

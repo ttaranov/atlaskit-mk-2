@@ -32,8 +32,8 @@ export default () => (
     breadcrumbs={breadcrumbs}
     actions={actionsContent}
     bottomBar={barContent}
-    truncateTitle
   >
-    Title describing the content
+    Title describing what the content should be and the context with which it
+    applies to
   </PageHeader>
 );

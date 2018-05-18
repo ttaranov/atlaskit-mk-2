@@ -1,5 +1,75 @@
 # @atlaskit/conversation
 
+## 7.5.1
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/renderer@16.2.6
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/reactions@12.0.5
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/comment@3.1.6
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/reactions@12.0.5
+  - @atlaskit/renderer@16.2.6
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/comment@3.1.6
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/renderer@16.2.6
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/reactions@12.0.5
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/comment@3.1.6
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/renderer@16.2.6
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/reactions@12.0.5
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/comment@3.1.6
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/renderer@16.2.6
+  - @atlaskit/reactions@12.0.5
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/comment@3.1.6
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/single-select@4.0.3
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/renderer@16.2.6
+  - @atlaskit/reactions@12.0.5
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/comment@3.1.6
+  - @atlaskit/editor-common@9.3.9
+
+## 7.5.0
+- [minor] Add option to allow feedback and help buttons [ca8bdc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca8bdc3)
+
+## 7.4.0
+- [minor] Add ability to disable scroll-to behavior and permalinks [94792ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/94792ca)
+
+## 7.3.0
+
+## 7.2.1
+
+## 7.2.0
+- [minor] Support for main conversations. Fixes margin-right on editor component. Added scroll-behavior. [58a90ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/58a90ba)
+
+## 7.1.16
+
+## 7.1.15
+
 ## 7.1.14
 - [patch] Avatar should display tooltip on hover and be clickable if profile url is provided [272893c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272893c)
 

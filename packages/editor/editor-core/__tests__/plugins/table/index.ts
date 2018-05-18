@@ -50,8 +50,12 @@ import {
 import tablesPlugin from '../../../src/plugins/table';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';
-import { insertMediaAsMediaSingle } from '../../../src/plugins/media/pm-plugins/media-single';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 import listPlugin from '../../../src/plugins/lists';
+import { defaultSchema } from '@atlaskit/editor-common';
+
+import TableView from '../../../src/plugins/table/nodeviews/table';
+import * as sinon from 'sinon';
 
 describe('table plugin', () => {
   const event = createEvent('event');
@@ -79,6 +83,61 @@ describe('table plugin', () => {
   let trackEvent;
   beforeEach(() => {
     trackEvent = jest.fn();
+  });
+
+  describe('TableView', () => {
+    // previous regression involved PM trying to render child DOM elements,
+    // but the NodeView had an undefined contentDOM after the React render finishes
+    // (since render is not synchronous)
+    it('always provides a content DOM', () => {
+      jest.useFakeTimers();
+
+      const originalHandleRef = (TableView.prototype as any)._handleRef;
+      const handleRefInnerMock = jest.fn(originalHandleRef);
+
+      // in the tests, handleRef gets called immediately (due to event loop ordering)
+      // however, the ref callback function can be called async from React after
+      // calling render, which can often occur in the browser
+      //
+      // to simulate this, we add a callback to force it to run out-of-order
+      const handleRefMock = sinon
+        // @ts-ignore
+        .stub(TableView.prototype, '_handleRef')
+        .callsFake(ref => {
+          setTimeout(ref => handleRefInnerMock.call(this, ref), 0);
+        });
+
+      // create the NodeView
+      const node = table()(tr(tdCursor, tdEmpty, tdEmpty))(defaultSchema);
+      const { editorView } = editor(doc(p()));
+      const tableView = new TableView({
+        node,
+        allowColumnResizing: false,
+        view: editorView,
+        getPos: () => {
+          return undefined;
+        },
+      });
+
+      // we expect to have a contentDOM after instanciating the NodeView so that
+      // ProseMirror will render the node's children into the element
+      expect(tableView.contentDOM).toBeDefined();
+
+      // we shouldn't have called the mock yet, since it's behind the setTimeout
+      expect(handleRefInnerMock).not.toBeCalled();
+
+      // run the timers through
+      jest.runAllTimers();
+
+      // the timer should have expired now
+      expect(handleRefInnerMock).toBeCalled();
+
+      // ensure we still have a contentDOM
+      expect(tableView.contentDOM).toBeDefined();
+
+      // reset the mock
+      handleRefMock.reset();
+    });
   });
 
   describe('editorFocued', () => {
@@ -199,6 +258,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.column.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(10);
           editorView.destroy();
         });
       });
@@ -220,6 +280,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.column.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(16);
           editorView.destroy();
         });
       });
@@ -241,6 +302,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.column.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(22);
           editorView.destroy();
         });
       });
@@ -273,6 +335,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.row.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(10);
           editorView.destroy();
         });
       });
@@ -301,6 +364,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.row.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(20);
           editorView.destroy();
         });
       });
@@ -331,6 +395,7 @@ describe('table plugin', () => {
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.table.row.button',
           );
+          expect(editorView.state.selection.$from.pos).toEqual(30);
           editorView.destroy();
         });
       });

@@ -1,5 +1,31 @@
 # @atlaskit/tooltip
 
+## 9.2.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/layer-manager@3.0.4
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
+## 9.2.0
+- [minor] add delay prop to tooltip. still defaults to 300ms. [66c6264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66c6264)
+- [none] Updated dependencies [66c6264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66c6264)
+
+## 9.1.6
+
+## 9.1.5
+- [patch] Fix long words in tooltip content overflowing the tooltip, they will now wrap. [b2967ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2967ef)
+
+## 9.1.4
+- [patch] Fix tooltips sometimes not hiding when rapidly switching between them [760f6a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760f6a0)
+
+## 9.1.3
+- [patch] Fix react warnings caused when unmounting a tooltip when it is queued for show/hide [6d9cc52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9cc52)
+
+## 9.1.2
+- [patch] Fix tooltip scroll listeners not being removed properly and an edgecase viewport autoflip issue [0a3ccc9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a3ccc9)
+
 ## 9.1.1
 - [patch] Fix viewport edge collision detection for non-mouse positions in some cases and improve detection to include scrollbars [e66bce5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66bce5)
 

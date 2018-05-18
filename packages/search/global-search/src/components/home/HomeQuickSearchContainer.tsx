@@ -5,18 +5,20 @@ import GlobalQuickSearch from '../GlobalQuickSearch';
 import { RecentSearchClient } from '../../api/RecentSearchClient';
 import {
   CrossProductSearchClient,
-  CrossProductResults,
+  Scope,
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './HomeSearchResults';
 import settlePromises from '../../util/settle-promises';
+import { LinkComponent } from '../GlobalQuickSearchWrapper';
 
 export interface Props {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  linkComponent?: LinkComponent;
 }
 
 export interface State {
@@ -81,16 +83,17 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     return results;
   }
 
-  async searchCrossProduct(query: string): Promise<CrossProductResults> {
+  async searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
+      [Scope.ConfluencePageBlog, Scope.JiraIssue],
     );
 
     if (this.state.query === query) {
       this.setState({
-        jiraResults: results.jira,
-        confluenceResults: results.confluence,
+        jiraResults: results.get(Scope.JiraIssue) || [],
+        confluenceResults: results.get(Scope.ConfluencePageBlog) || [],
       });
     }
 
@@ -186,6 +189,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
   };
 
   render() {
+    const { linkComponent } = this.props;
     const {
       query,
       isLoading,
@@ -203,6 +207,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         onSearch={this.handleSearch}
         isLoading={isLoading}
         query={query}
+        linkComponent={linkComponent}
       >
         {renderSearchResults({
           query,

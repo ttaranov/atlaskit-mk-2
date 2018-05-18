@@ -1,5 +1,51 @@
 # @atlaskit/reactions
 
+## 12.0.5
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/layer@3.1.1
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/util-data-test@9.1.3
+
+## 12.0.4
+- [patch] FS-1890 Remove sinon dependency from reactions [b6ee84e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b6ee84e)
+- [patch] FS-1890 Migrate Reactions to Jest [8e0e31e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e0e31e)
+
+## 12.0.3
+
+## 12.0.2
+
+## 12.0.1
+
+## 12.0.0
+- [major] FS-1023 Error handling for reactions [2202edc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2202edc)
+- [minor] FS-1023 - Handle error and show tooltip in case of error [f9f1040](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9f1040)
+
 ## 11.0.9
 - [patch] FS-1645 update reaction animations [c01d36d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c01d36d)
 

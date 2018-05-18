@@ -44,22 +44,7 @@ export function finalizeUpload(
         tenant,
       };
 
-      if (tenant.uploadParams.autoFinalize === false) {
-        return store.dispatch(
-          sendUploadEvent({
-            event: {
-              name: 'upload-finalize-ready',
-              data: {
-                file,
-                finalize: () => copyFile(copyFileParams),
-              },
-            },
-            uploadId,
-          }),
-        );
-      } else {
-        return copyFile(copyFileParams);
-      }
+      return copyFile(copyFileParams);
     });
 }
 
@@ -88,33 +73,27 @@ function copyFile({
   return fetcher
     .copyFile(apiUrl, sourceFile, destination)
     .then(destinationFile => {
-      const { fetchMetadata } = tenant.uploadParams;
-
-      if (fetchMetadata) {
-        store.dispatch(
-          sendUploadEvent({
-            event: {
-              name: 'upload-processing',
-              data: {
-                file: {
-                  ...file,
-                  publicId: destinationFile.id,
-                },
+      store.dispatch(
+        sendUploadEvent({
+          event: {
+            name: 'upload-processing',
+            data: {
+              file: {
+                ...file,
+                publicId: destinationFile.id,
               },
             },
-            uploadId,
-          }),
-        );
+          },
+          uploadId,
+        }),
+      );
 
-        return fetcher.pollFile(
-          apiUrl,
-          tenant.auth,
-          destinationFile.id,
-          tenant.uploadParams.collection,
-        );
-      } else {
-        return Promise.resolve({ id: destinationFile.id });
-      }
+      return fetcher.pollFile(
+        apiUrl,
+        tenant.auth,
+        destinationFile.id,
+        tenant.uploadParams.collection,
+      );
     })
     .then(processedDestinationFile => {
       return store.dispatch(

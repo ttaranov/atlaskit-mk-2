@@ -1,5 +1,59 @@
 # @atlaskit/datetime-picker
 
+## 4.0.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/select@3.0.2
+  - @atlaskit/modal-dialog@4.0.5
+  - @atlaskit/field-base@9.0.3
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/calendar@5.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/field-range@3.0.2
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/layer@3.1.1
+
+## 4.0.2
+- [patch] Fix create option being displayed when timeIsEditable is false [7e99ba3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e99ba3)
+
+## 4.0.1
+- [patch] Updated dependencies [92ae24e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92ae24e)
+  - @atlaskit/select@3.0.1
+
+## 4.0.0
+- [major] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+  - @atlaskit/select@3.0.0
+
+## 3.1.1
+- [patch] Updated dependencies [7468739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7468739)
+  - @atlaskit/select@2.0.2
+
+## 3.1.0
+- [minor] Add dateFormat prop to customise the display format of dates [3daced9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3daced9)
+
+## 3.0.6
+
+## 3.0.5
+- [patch] Fixed subtle appearance on focus [2b1e018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b1e018)
+
+## 3.0.4
+- [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
+
+## 3.0.3
+- [patch] Added appearance prop to enable subtle (no icon) appearance   [c10fd5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c10fd5d)
+
+## 3.0.2
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
+## 3.0.1
+- [patch] Added isInvalid prop to DateTimePicker DatePicker & TimePicker [101c306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/101c306)
+
+## 3.0.0
+
+## 2.0.6
+- [patch] Added timeIsEditable prop to enable user created times [4695e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4695e5d)
+
 ## 2.0.5
 
 ## 2.0.4

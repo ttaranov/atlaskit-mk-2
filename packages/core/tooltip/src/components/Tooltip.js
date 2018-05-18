@@ -25,6 +25,8 @@ type Props = {
   content: Node,
   /** Extend `TooltipPrimitive` to create you own tooptip and pass it as component */
   component: ComponentType<{ innerRef: HTMLElement => void }>,
+  /** Time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300. */
+  delay: number,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
   /** Where the tooltip should appear relative to the mouse. Only used when the `position` prop is set to 'mouse' */
@@ -51,8 +53,9 @@ type State = {
   coordinates: CoordinatesType | null,
 };
 
-// global tooltip marshall
-const marshall = new TooltipMarshal();
+// global tooltip marshal
+// export for testing purposes
+export const marshal = new TooltipMarshal();
 
 function getInitialState(props): State {
   return {
@@ -73,8 +76,9 @@ class Tooltip extends Component<Props, State> {
   mouseCoordinates: CoordinatesType | null = null;
   static defaultProps = {
     component: StyledTooltip,
-    position: 'bottom',
+    delay: 300,
     mousePosition: 'bottom',
+    position: 'bottom',
     tag: 'div',
   };
 
@@ -93,6 +97,10 @@ class Tooltip extends Component<Props, State> {
     if (truncate !== this.props.truncate) {
       this.setState({ coordinates: null });
     }
+  }
+
+  componentWillUnmount() {
+    marshal.unmount(this);
   }
 
   handleWrapperRef = (ref: HTMLElement | null) => {
@@ -157,6 +165,7 @@ class Tooltip extends Component<Props, State> {
       coordinates,
       truncate,
     };
+
     return <Transition {...transitionProps}>{content}</Transition>;
   }
 
@@ -181,7 +190,7 @@ class Tooltip extends Component<Props, State> {
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
-    marshall.show(this);
+    marshal.show(this);
 
     if (onMouseOver) onMouseOver(event);
   };
@@ -191,7 +200,7 @@ class Tooltip extends Component<Props, State> {
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
-    marshall.hide(this);
+    marshal.hide(this);
 
     if (onMouseOut) onMouseOut(event);
   };
@@ -231,6 +240,8 @@ class Tooltip extends Component<Props, State> {
     );
   }
 }
+
+export { Tooltip as TooltipBase };
 
 export type TooltipType = Tooltip;
 

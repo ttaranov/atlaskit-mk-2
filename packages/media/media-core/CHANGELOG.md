@@ -1,5 +1,14 @@
 # @atlaskit/media-core
 
+## 18.0.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/media-store@2.1.1
+  - @atlaskit/button@7.2.5
+  - @atlaskit/docs@3.0.4
+
+## 18.0.2
+- [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
+
 ## 18.0.1
 
 ## 18.0.0

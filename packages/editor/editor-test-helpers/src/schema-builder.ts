@@ -1,4 +1,5 @@
 import {
+  ExternalMediaAttributes,
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
@@ -335,16 +336,19 @@ export const inlineExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.inlineExtension, attrs);
 export const extension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.extension, attrs);
 export const bodiedExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
 export const date = (attrs: { timestamp: string | number }) =>
   nodeFactory(sampleSchema.nodes.date, attrs)();
@@ -352,12 +356,16 @@ export const mediaSingle = (
   attrs: MediaSingleAttributes = { layout: 'center' },
 ) => nodeFactory(sampleSchema.nodes.mediaSingle, attrs);
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
-export const media = (attrs: MediaAttributes) =>
+export const media = (attrs: MediaAttributes | ExternalMediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
 export const applicationCard = (attrs: ApplicationCardAttributes) =>
   nodeFactory(sampleSchema.nodes.applicationCard, attrs);
 export const placeholder = (attrs: { text: string }) =>
   nodeFactory(sampleSchema.nodes.placeholder, attrs)();
+export const layoutSection = (
+  attrs: { layoutType: string } = { layoutType: 'two-equal' },
+) => nodeFactory(sampleSchema.nodes.layoutSection, attrs);
+export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
 
 //
 // Marks

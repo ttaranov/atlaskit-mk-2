@@ -94,15 +94,35 @@ describe(name, () => {
     });
 
     describe('#focus', () => {
-      it('should set focus to an editor', () => {
-        expect(editorActions.focus()).to.equal(true);
-        expect(editorView.hasFocus()).to.equal(true);
+      describe('when focus has already been set', () => {
+        beforeEach(() => {
+          editorActions.focus();
+        });
+
+        it('should not set focus', () => {
+          expect(editorActions.focus()).to.equal(false);
+          expect(editorView.hasFocus()).to.equal(true);
+        });
+
+        it('should not scroll editor focus into view', () => {
+          const dispatchSpy = sinon.spy(editorView, 'dispatch');
+          editorActions.focus();
+          expect(dispatchSpy.called).to.equal(false);
+        });
       });
 
-      it('should not set focus if it has been already set', () => {
-        editorActions.focus();
-        expect(editorActions.focus()).to.equal(false);
-        expect(editorView.hasFocus()).to.equal(true);
+      describe('when focus has not been set', () => {
+        it('should set focus', () => {
+          expect(editorActions.focus()).to.equal(true);
+          expect(editorView.hasFocus()).to.equal(true);
+        });
+
+        it('should scroll editor focus into view', () => {
+          const dispatchSpy = sinon.spy(editorView, 'dispatch');
+          editorActions.focus();
+          const [tr] = dispatchSpy.firstCall.args;
+          expect(tr.scrolledIntoView).to.equal(true);
+        });
       });
     });
 
@@ -269,7 +289,7 @@ describe(name, () => {
             stateManager.updateState(testTempFileId, {
               status: 'ready',
               id: testTempFileId,
-              publicId: testPubFileId,
+              publicId: testTempFileId,
             });
           }, 0);
 
@@ -279,7 +299,7 @@ describe(name, () => {
           expect(value.content).to.be.of.length(2);
           expect(value.content[0].type).to.be.eq('mediaGroup');
           expect(value.content[0].content[0].type).to.be.eq('media');
-          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testTempFileId);
         });
 
         it('should resolve after processing status', async () => {
@@ -301,7 +321,7 @@ describe(name, () => {
             stateManager.updateState(testTempFileId, {
               status: 'processing',
               id: testTempFileId,
-              publicId: testPubFileId,
+              publicId: testTempFileId,
             });
           }, 0);
 
@@ -311,7 +331,7 @@ describe(name, () => {
           expect(value.content).to.be.of.length(2);
           expect(value.content[0].type).to.be.eq('mediaGroup');
           expect(value.content[0].content[0].type).to.be.eq('media');
-          expect(value.content[0].content[0].attrs.id).to.be.eq(testPubFileId);
+          expect(value.content[0].content[0].attrs.id).to.be.eq(testTempFileId);
         });
       });
 

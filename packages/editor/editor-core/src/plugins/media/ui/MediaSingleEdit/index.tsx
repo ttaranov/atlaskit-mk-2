@@ -24,6 +24,7 @@ export interface State {
   target?: HTMLElement;
   layout?: MediaSingleLayout;
   allowBreakout: boolean;
+  allowLayout: boolean;
 }
 
 const icons = {
@@ -50,7 +51,7 @@ const icons = {
 };
 
 export default class MediaSingleEdit extends React.Component<Props, State> {
-  state: State = { layout: 'center', allowBreakout: true };
+  state: State = { layout: 'center', allowBreakout: true, allowLayout: true };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -61,7 +62,12 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   render() {
-    const { target, layout: selectedLayout, allowBreakout } = this.state;
+    const {
+      target,
+      layout: selectedLayout,
+      allowBreakout,
+      allowLayout,
+    } = this.state;
     if (
       target &&
       !closestElement(target, 'li') &&
@@ -80,6 +86,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
               /** Adding extra span tag here to get rid of unnecessary styling */
               <span key={index}>
                 <ToolbarButton
+                  disabled={!allowLayout}
                   selected={layout === selectedLayout}
                   onClick={this.handleChangeLayout.bind(this, layout)}
                   iconBefore={<Icon label={`Change layout to ${label}`} />}
@@ -113,12 +120,13 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
     const { element: target, layout } = pluginState;
-    const mediaNode = pluginState.selectedMediaNode();
+    const node = pluginState.selectedMediaNode();
     const allowBreakout = !!(
-      mediaNode &&
-      mediaNode.attrs &&
-      mediaNode.attrs.width > akEditorFullPageMaxWidth
+      node &&
+      node.attrs &&
+      node.attrs.width > akEditorFullPageMaxWidth
     );
-    this.setState({ target, layout, allowBreakout });
+    const allowLayout = !!pluginState.isLayoutSupported();
+    this.setState({ target, layout, allowBreakout, allowLayout });
   };
 }

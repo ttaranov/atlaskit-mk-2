@@ -47,6 +47,8 @@ export default createSchema({
     'bodiedExtension',
     'date',
     'placeholder',
+    'layoutSection',
+    'layoutColumn',
   ],
   marks: [
     'em',

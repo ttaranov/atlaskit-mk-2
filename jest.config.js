@@ -3,6 +3,7 @@
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
+const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE;
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -31,7 +32,6 @@ const config = {
     // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
     '/__tests__\\/integration/',
   ],
-  cacheDirectory: 'node_modules/.jest-cache',
   modulePathIgnorePatterns: ['./node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
@@ -71,7 +71,23 @@ if (INTEGRATION_TESTS) {
   config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
   );
-  config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
+  // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
+  if (CHANGED_PACKAGES) {
+    const changedPackages = JSON.parse(CHANGED_PACKAGES);
+    const changedPackagesTestGlobs = changedPackages.map(
+      pkgPath =>
+        `${__dirname}/${pkgPath}/**/__tests__/integration/**/*.(js|tsx|ts)`,
+    );
+    config.testMatch = changedPackagesTestGlobs;
+  } else {
+    config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
+  }
+}
+
+if (OVERRIDE_TEST_IGNORE) {
+  config.testPathIgnorePatterns.push(
+    `/${OVERRIDE_TEST_IGNORE}.+\\/__tests__\\/`,
+  );
 }
 
 /**

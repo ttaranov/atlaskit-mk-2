@@ -351,4 +351,21 @@ describe('Card', () => {
     expect(context.getLocalPreview).toHaveBeenCalledWith('some-random-id');
     expect(card.find(MediaCard).prop('preview')).toEqual('local-preview-src');
   });
+
+  it('should pass "disableOverlay" to MediaCard', () => {
+    const context = fakeContext();
+    const card = shallow(
+      <Card
+        context={context}
+        identifier={fileIdentifier}
+        isLazy={false}
+        resizeMode="full-fit"
+        disableOverlay={true}
+      />,
+      { disableLifecycleMethods: true },
+    );
+
+    const mediaCard = card.find(MediaCard);
+    expect(mediaCard.props().disableOverlay).toBe(true);
+  });
 });

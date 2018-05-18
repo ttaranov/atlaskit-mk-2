@@ -9,7 +9,7 @@ import {
 import { ResultType, Result } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
-import EmptyState from '../src/components/EmptyState';
+import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
 
 enum Group {
@@ -180,7 +180,7 @@ describe('HomeSearchResults', () => {
     expect(wrapper.find(SearchError).exists()).toBe(true);
   });
 
-  it('should render empty state when there are no results and a query is entered', () => {
+  it('should render no results state when there are no results and a query is entered', () => {
     const props: Partial<Props> = {
       query: 'foo',
       recentResults: [],
@@ -190,7 +190,7 @@ describe('HomeSearchResults', () => {
     };
 
     const wrapper = render(props);
-    expect(wrapper.find(EmptyState).exists()).toBe(true);
+    expect(wrapper.find(NoResults).exists()).toBe(true);
 
     // assert advanced search links are there
     ['search_jira', 'search_confluence', 'search_people'].forEach(resultId => {

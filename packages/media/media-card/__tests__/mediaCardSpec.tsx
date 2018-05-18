@@ -13,7 +13,7 @@ import {
   MediaCardProps,
   MediaCardState,
 } from '../src/root/mediaCard';
-import { CardOverlay } from '../src/utils/cardImageView/cardOverlay';
+import { CardOverlay } from '../src/files/cardImageView/cardOverlay';
 
 const createNoopProvider = () => ({
   observable: () =>
@@ -47,6 +47,19 @@ describe('MediaCard', () => {
       element.setState({ status });
 
       expect(element.props().status).toBe(status);
+    });
+
+    it('should pass "disableOverlay" to CardView', () => {
+      const card = shallow(
+        <MediaCard
+          appearance="image"
+          provider={createNoopProvider()}
+          disableOverlay={true}
+        />,
+        { disableLifecycleMethods: true },
+      );
+
+      expect(card.props().disableOverlay).toBe(true);
     });
 
     it('should render metadata=object when we have metadata', () => {

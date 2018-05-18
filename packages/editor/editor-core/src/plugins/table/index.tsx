@@ -81,14 +81,16 @@ const tablesPlugin: EditorPlugin = {
             tableElement={tablesState.tableElement}
             tableActive={tablesState.tableActive}
             cellSelection={tablesState.cellSelection}
-            remove={tablesState.remove}
+            removeTable={tablesState.removeTable}
             tableLayout={tablesState.tableLayout}
             updateLayout={tablesState.setTableLayout}
+            isLayoutSupported={tablesState.isLayoutSupported}
             allowMergeCells={tablesState.allowMergeCells}
             allowNumberColumn={tablesState.allowNumberColumn}
             allowBackgroundColor={tablesState.allowBackgroundColor}
             allowHeaderRow={tablesState.allowHeaderRow}
             allowHeaderColumn={tablesState.allowHeaderColumn}
+            stickToolbarToBottom={tablesState.stickToolbarToBottom}
             permittedLayouts={tablesState.permittedLayouts}
           />
         )}

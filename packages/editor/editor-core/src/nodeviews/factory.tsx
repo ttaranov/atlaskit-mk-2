@@ -14,6 +14,10 @@ export interface ReactNodeViewComponents {
   [key: string]: ComponentClass<any> | StatelessComponent<any>;
 }
 
+const createTemporaryContainer = (node: PMNode) => {
+  return document.createElement(node.type.isBlock ? 'div' : 'span');
+};
+
 class NodeViewElem implements NodeView {
   private nodeTypeName: string;
   private domRef: HTMLElement | undefined;
@@ -29,7 +33,6 @@ class NodeViewElem implements NodeView {
     getPos: getPosHandler,
     providerFactory: ProviderFactory,
     reactNodeViewComponents: ReactNodeViewComponents,
-    isBlockNodeView: boolean,
   ) {
     this.nodeTypeName = node.type.name;
     this.view = view;
@@ -37,12 +40,22 @@ class NodeViewElem implements NodeView {
     this.providerFactory = providerFactory;
     this.reactNodeViewComponents = reactNodeViewComponents;
 
-    const elementType = isBlockNodeView ? 'div' : 'span';
-    this.domRef = document.createElement(elementType);
+    this.domRef = createTemporaryContainer(node);
     this.eventDispatcher = new EventDispatcher();
 
     this.setDomAttrs(node);
     this.renderReactComponent(node);
+    /**
+     * Create temporary containers for children since we are not using contentDOM
+     * Without this PM will throw, @see ED-4235
+     */
+    if (node.content.size) {
+      const fragment = document.createDocumentFragment();
+      node.content.forEach(child => {
+        fragment.appendChild(createTemporaryContainer(child));
+      });
+      this.domRef.appendChild(fragment);
+    }
   }
 
   get dom() {
@@ -106,7 +119,6 @@ class NodeViewElem implements NodeView {
 export default function nodeViewFactory(
   providerFactory: ProviderFactory,
   reactNodeViewComponents: ReactNodeViewComponents,
-  isBlockNodeView = false,
 ) {
   return (node: PMNode, view: EditorView, getPos: () => number): NodeView => {
     return new NodeViewElem(
@@ -115,7 +127,6 @@ export default function nodeViewFactory(
       getPos,
       providerFactory,
       reactNodeViewComponents,
-      isBlockNodeView,
     );
   };
 }

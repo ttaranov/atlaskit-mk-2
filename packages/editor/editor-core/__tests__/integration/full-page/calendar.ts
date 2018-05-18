@@ -5,9 +5,10 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
 
+// https://product-fabric.atlassian.net/browse/ED-4531
 BrowserTestCase(
   'user should be able to open calendar',
-  { skip: ['edge', 'ie'] },
+  { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const insertMenu = '[aria-label="Open or close insert block dropdown"]';
     const dateMenu = 'span=Date';

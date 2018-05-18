@@ -52,12 +52,21 @@ pipelines:
             caches:
               - node
         - step:
-            name: Testing
+            name: Unit Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - yarn test:changed
+              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
+              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
+            caches:
+              - node
+        - step:
+            name: Browser Testing
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
               - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
             caches:
               - node
         - step:
@@ -89,6 +98,8 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
+            # This is a sanity check to make sure the website renders on all browsers without error
+            - yarn test:webdriver:browserstack website
           caches:
             - node
 
@@ -98,7 +109,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - yarn test:build:webdriver:browserstack
+            - yarn test:webdriver:browserstack
           caches:
             - node
 
@@ -114,8 +125,18 @@ pipelines:
             - yarn typecheck
             - yarn test
             - yarn test:browser:browserstack
+            - yarn test:webdriver:browserstack
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
+
+    run-bundle-analysis:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn build:bundle-analysis
+          caches:
+            - node 
 
 
     landkid:
@@ -143,47 +164,46 @@ pipelines:
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
                 - yarn typecheck
-
-      - parallel:
+          # Rest of the steps are jest tests. We no longer use the $BITBUCKET_PARALLEL_STEP_COUNT and $BITBUCKET_PARALLEL_STEP
+          # variables as they mean the jest steps need to be in their own parallel block, so we just hardcode them here
           - step:
               name: Running Jest 1 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="0" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 2 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="1" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 3 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="2" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
           - step:
               name: Running Jest 4 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="$BITBUCKET_PARALLEL_STEP_COUNT" STEP_IDX="$BITBUCKET_PARALLEL_STEP" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
 
     # This build should only be run on the master branch, once per day.
-    # It manually clears the cache and runs a very quick install and test to seed the jest and node_modules
+    # It manually clears the cache and runs a very quick install node_modules
     # We split into two steps so that one can clear the cache so that the second one starts with no cache
     # (Which causes it to upload when it's finished).
-    # It's important for this to run fast and whilst nothing else is running, as any other build could
-    # seed the cache if they finished in time.
     reseed-pipelines-cache:
       - step:
           name: Clearing old cache
           script:
+            - ([[ "$BITBUCKET_BRANCH" == "master" ]]) || (echo "This build should only be run on master" && exit 1)
             - cd build/ci-scripts
             - yarn install --pure-lockfile
             - node clear.pipelines.node.cache.js
@@ -192,6 +212,8 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - yarn test
+            # we re-clear the cache here in case any other builds have managed to start and finish in between us starting
+            # (our build will only upload a cache if there is none when the build finishes)
+            - node build/ci-scripts/clear.pipelines.node.cache.js
           caches:
             - node

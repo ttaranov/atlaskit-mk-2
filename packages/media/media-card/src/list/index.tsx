@@ -261,10 +261,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       });
 
     const cards = collection
-      ? collection.items.map((mediaItem: MediaCollectionItem) => {
-          if (!mediaItem.details) {
-            return null;
-          }
+      ? collection.items.filter(item => item.type === 'file').map(mediaItem => {
           const key = this.getItemKey(mediaItem);
           const cardListItem = (
             <CSSTransition

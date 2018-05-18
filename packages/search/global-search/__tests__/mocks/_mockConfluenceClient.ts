@@ -1,7 +1,7 @@
 import { ConfluenceClient } from '../../src/api/ConfluenceClient';
 
 export const noResultsConfluenceClient: ConfluenceClient = {
-  getRecentPages() {
+  getRecentItems() {
     return Promise.resolve([]);
   },
   getRecentSpaces() {

@@ -37,12 +37,19 @@ import {
   widthPlugin,
   typeAheadPlugin,
   quickInsertPlugin,
+  gapCursorPlugin,
+  inlineActionPlugin,
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
-export function getDefaultPluginsList(): EditorPlugin[] {
+export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
+  const textFormattingOptions = props.textFormatting
+    ? props.textFormatting
+    : typeof props.allowTextFormatting === 'object'
+      ? props.allowTextFormatting
+      : {};
   return [
     pastePlugin,
     basePlugin,
@@ -50,7 +57,7 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
     hyperlinkPlugin,
-    textFormattingPlugin,
+    textFormattingPlugin(textFormattingOptions),
     widthPlugin,
     typeAheadPlugin,
   ];
@@ -60,10 +67,14 @@ export function getDefaultPluginsList(): EditorPlugin[] {
  * Maps EditorProps to EditorPlugins
  */
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
-  const plugins = getDefaultPluginsList();
+  const plugins = getDefaultPluginsList(props);
 
   if (props.UNSAFE_allowQuickInsert) {
     plugins.push(quickInsertPlugin);
+  }
+
+  if (props.allowInlineAction) {
+    plugins.push(inlineActionPlugin);
   }
 
   if (props.allowTextColor) {
@@ -112,6 +123,15 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.legacyImageUploadProvider) {
     plugins.push(imageUploadPlugin);
+
+    if (!props.media && !props.mediaProvider) {
+      plugins.push(
+        mediaPlugin({
+          allowMediaSingle: { disableLayout: true },
+          allowMediaGroup: false,
+        }),
+      );
+    }
   }
 
   if (props.collabEdit || props.collabEditProvider) {
@@ -160,6 +180,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.UNSAFE_allowLayouts) {
     plugins.push(layoutPlugin);
+  }
+
+  if (props.allowGapCursor) {
+    plugins.push(gapCursorPlugin);
   }
 
   // UI only plugins

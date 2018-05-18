@@ -1,11 +1,17 @@
-
 import * as React from 'react';
 import { Component } from 'react';
 import { Identifier } from './domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
-import { ArrowsWrapper, ArrowWrapper } from './styled';
+import {
+  ArrowsWrapper,
+  RightWrapper,
+  LeftWrapper,
+  Arrow,
+  hideControlsClassName,
+} from './styled';
+import { getSelectedIndex } from './util';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -18,37 +24,62 @@ export interface NavigationProps {
 export default class Navigation extends Component<NavigationProps, any> {
   private navigate(direction: NavigationDirection) {
     return () => {
-      const {onChange, items} = this.props;
-      const {selectedIndex} = this;
-      const newItem = direction === 'next' ? items[selectedIndex + 1] : items[selectedIndex - 1];
-      onChange(newItem);
+      const { onChange, items } = this.props;
+      const { selectedIndex } = this;
+      const newItem =
+        direction === 'next'
+          ? items[selectedIndex + 1]
+          : items[selectedIndex - 1];
+
+      if (newItem) {
+        onChange(newItem);
+      }
     };
   }
+
   get selectedIndex() {
-    const {items, selectedItem} = this.props;
-    return items.findIndex(item => item.id === selectedItem.id);
+    const { items, selectedItem } = this.props;
+    return getSelectedIndex(items, selectedItem);
   }
+
   render() {
     const { items } = this.props;
-    const {selectedIndex} = this;
+    const { selectedIndex } = this;
+
+    if (selectedIndex === -1) {
+      return null;
+    }
+
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
     return (
-      <ArrowsWrapper>
+      <ArrowsWrapper className={hideControlsClassName}>
+        <LeftWrapper>
+          {isLeftVisible ? (
+            <Arrow>
+              <ArrowLeftCircleIcon
+                onClick={this.navigate('prev')}
+                primaryColor={colors.N800}
+                size="xlarge"
+                label="Previous"
+              />
+            </Arrow>
+          ) : null}
+        </LeftWrapper>
 
-        {isLeftVisible ? (
-          <ArrowWrapper style={{ textAlign: 'left' }} onClick={this.navigate('prev')}>
-            <ArrowLeftCircleIcon primaryColor={colors.N800} size='xlarge' label='Previous'/>
-          </ArrowWrapper>
-        ) : null}
-
-        {isRightVisible ? (
-          <ArrowWrapper style={{ textAlign: 'right' }} onClick={this.navigate('next')}>
-            <ArrowRightCircleIcon primaryColor={colors.N800} size='xlarge' label='Next'/>
-          </ArrowWrapper>
-        ) : null}
-
+        <RightWrapper>
+          {isRightVisible ? (
+            <Arrow>
+              <ArrowRightCircleIcon
+                onClick={this.navigate('next')}
+                primaryColor={colors.N800}
+                size="xlarge"
+                label="Next"
+              />
+            </Arrow>
+          ) : null}
+        </RightWrapper>
       </ArrowsWrapper>
     );
   }

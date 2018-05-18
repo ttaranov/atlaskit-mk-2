@@ -8,7 +8,7 @@ import {
 import GlobalQuickSearch, {
   Props as GlobalQuickSearchProps,
 } from '../src/components/GlobalQuickSearch';
-import { CrossProductResults } from '../src/api/CrossProductSearchClient';
+import { Scope } from '../src/api/CrossProductSearchClient';
 import { ConfluenceClient } from '../src/api/ConfluenceClient';
 import { Result, ResultType } from '../src/model/Result';
 import SearchError from '../src/components/SearchError';
@@ -16,6 +16,8 @@ import { makeResult, delay } from './_test-util';
 import {
   noResultsCrossProductSearchClient,
   errorCrossProductSearchClient,
+  singleResultCrossProductSearchClient,
+  makeSingleResultCrossProductSearchResponse,
 } from './mocks/_mockCrossProductSearchClient';
 import {
   noResultsPeopleSearchClient,
@@ -64,22 +66,23 @@ function render(partialProps?: Partial<Props>) {
 
 describe('ConfluenceQuickSearchContainer', () => {
   describe('loading state', () => {
-    it('should set loading state when searching', () => {
+    it.skip('should set loading state when searching', () => {
       const wrapper = render();
 
       searchFor('dav', wrapper);
       expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
     });
 
-    it('should unset loading state when search has finished', async () => {
+    it.skip('should unset loading state when search has finished', async () => {
       const wrapper = render();
 
       searchFor('dav', wrapper);
       await waitForRender(wrapper);
+
       expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
     });
 
-    it('should unset loading state when all promises have settled', async () => {
+    it.skip('should unset loading state when all promises have settled', async () => {
       /**
        * 0. people search errors out immediately, xpsearch takes 5ms
        * 1. Make sure immediately that loading state is set
@@ -90,10 +93,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         peopleSearchClient: errorPeopleSearchClient,
         crossProductSearchClient: {
           search(query: string) {
-            return delay(5, {
-              jira: [],
-              confluence: [],
-            });
+            return delay(5, new Map());
           },
         },
       });
@@ -117,9 +117,9 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 
-  it.skip('should render recently viewed pages on mount', async () => {
+  it('should render recently viewed pages on mount', async () => {
     const mockConfluenceClient = {
-      getRecentPages() {
+      getRecentItems() {
         return Promise.resolve([makeResult()]);
       },
       getRecentSpaces() {
@@ -140,9 +140,9 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(group.children()).toHaveLength(1);
   });
 
-  it.skip('should render recently viewed spaces on mount', async () => {
+  it('should render recently viewed spaces on mount', async () => {
     const mockConfluenceClient = {
-      getRecentPages() {
+      getRecentItems() {
         return Promise.resolve([]);
       },
       getRecentSpaces() {
@@ -165,14 +165,9 @@ describe('ConfluenceQuickSearchContainer', () => {
 
   it('should render object results', async () => {
     const wrapper = render({
-      crossProductSearchClient: {
-        search() {
-          return Promise.resolve({
-            jira: [],
-            confluence: [makeResult()],
-          });
-        },
-      },
+      crossProductSearchClient: singleResultCrossProductSearchClient(
+        Scope.ConfluencePageBlogAttachment,
+      ),
     });
 
     searchFor('query', wrapper);
@@ -184,20 +179,15 @@ describe('ConfluenceQuickSearchContainer', () => {
 
   it('should render space results', async () => {
     const wrapper = render({
-      crossProductSearchClient: {
-        search() {
-          return Promise.resolve({
-            jira: [],
-            confluence: [makeResult()],
-          });
-        },
-      },
+      crossProductSearchClient: singleResultCrossProductSearchClient(
+        Scope.ConfluenceSpace,
+      ),
     });
 
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    const group = findGroup(Group.Objects, wrapper);
+    const group = findGroup(Group.Spaces, wrapper);
     expect(group.children()).toHaveLength(1);
   });
 
@@ -230,11 +220,13 @@ describe('ConfluenceQuickSearchContainer', () => {
       return delay(5, [makeResult()]);
     }
 
-    function searchCrossProduct(query: string): Promise<CrossProductResults> {
-      return delay(5, {
-        jira: [],
-        confluence: [makeResult()],
-      });
+    function searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
+      return delay(
+        5,
+        makeSingleResultCrossProductSearchResponse(
+          Scope.ConfluencePageBlogAttachment,
+        ),
+      );
     }
 
     const mockCrossProductSearchClient = {
@@ -269,18 +261,22 @@ describe('ConfluenceQuickSearchContainer', () => {
       5. Make sure the fast result is displayed and not the delayed result
     */
 
-    function searchDelayed(query: string): Promise<CrossProductResults> {
-      return delay(5, {
-        jira: [],
-        confluence: [makeResult({ name: 'delayed result' })],
-      });
+    function searchDelayed(query: string): Promise<Map<Scope, Result[]>> {
+      const response = makeSingleResultCrossProductSearchResponse(
+        Scope.ConfluencePageBlogAttachment,
+        makeResult({ name: 'delayed result' }),
+      );
+
+      return delay(5, response);
     }
 
-    function searchCurrent(query: string): Promise<CrossProductResults> {
-      return Promise.resolve({
-        jira: [],
-        confluence: [makeResult({ name: 'current result' })],
-      });
+    function searchCurrent(query: string): Promise<Map<Scope, Result[]>> {
+      const response = makeSingleResultCrossProductSearchResponse(
+        Scope.ConfluencePageBlogAttachment,
+        makeResult({ name: 'current result' }),
+      );
+
+      return Promise.resolve(response);
     }
 
     const searchMock = jest
@@ -346,9 +342,7 @@ describe('ConfluenceQuickSearchContainer', () => {
       const searchMock = jest
         .fn()
         .mockImplementationOnce((query: string) => Promise.reject('error'))
-        .mockImplementationOnce((query: string) =>
-          Promise.resolve({ confluence: [] }),
-        );
+        .mockImplementationOnce((query: string) => Promise.resolve(new Map()));
 
       const mockSearchClient = {
         search: searchMock,
@@ -376,5 +370,16 @@ describe('ConfluenceQuickSearchContainer', () => {
       await waitForRender(wrapper);
       expect(wrapper.find(SearchError).exists()).toBe(false);
     });
+  });
+
+  it('should pass through the linkComponent prop', async () => {
+    const MyLinkComponent = () => <div />;
+    const wrapper = render({
+      linkComponent: MyLinkComponent,
+    });
+
+    expect(wrapper.find(GlobalQuickSearch).prop('linkComponent')).toBe(
+      MyLinkComponent,
+    );
   });
 });

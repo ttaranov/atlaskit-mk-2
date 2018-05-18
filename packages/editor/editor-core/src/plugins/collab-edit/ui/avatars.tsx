@@ -2,8 +2,8 @@ import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import InviteTeamIcon from '@atlaskit/icon/glyph/invite-team';
+import { akGridSizeUnitless, akColorN20 } from '@atlaskit/util-shared-styles';
+import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -28,6 +28,13 @@ const AvatarContainer = styled.div`
     width: 32px;
     padding: 2px;
   }
+`;
+
+const InviteTeamWrapper = styled.div`
+  background: ${akColorN20};
+  border-radius: 50%;
+  min-width: ${akGridSizeUnitless * 4}px;
+  margin-left: -${akGridSizeUnitless / 2}px;
 `;
 
 const itemAppear = keyframes`
@@ -129,13 +136,15 @@ export default class Avatars extends React.Component<Props, any> {
           avatar={Item}
         />
         {this.props.inviteToEditHandler && (
-          <ToolbarButton
-            onClick={this.props.inviteToEditHandler}
-            selected={this.props.isInviteToEditButtonSelected}
-            title="Invite to edit"
-            titlePosition="bottom"
-            iconBefore={<InviteTeamIcon label="Invite to edit" />}
-          />
+          <InviteTeamWrapper>
+            <ToolbarButton
+              onClick={this.props.inviteToEditHandler}
+              selected={this.props.isInviteToEditButtonSelected}
+              title="Invite to edit"
+              titlePosition="bottom"
+              iconBefore={<InviteTeamIcon label="Invite to edit" />}
+            />
+          </InviteTeamWrapper>
         )}
       </AvatarContainer>
     );
