@@ -96,10 +96,6 @@ export const ContentWrapper = styled.div`
   .${hideControlsClassName} {
     ${handleControlsVisibility};
   }
-
-  ${ZoomWrapper} {
-    ${handleControlsVisibility};
-  }
 `;
 
 ContentWrapper.displayName = 'Content';
