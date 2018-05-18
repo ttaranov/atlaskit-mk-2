@@ -23,12 +23,6 @@ import {
   thEmpty,
 } from '@atlaskit/editor-test-helpers';
 
-import {
-  hoverColumns,
-  insertColumn,
-  resetHoverSelection,
-} from '../../../../src/plugins/table/actions';
-
 import AkButton from '@atlaskit/button';
 
 import { tablesPlugin } from '../../../../src/plugins';
@@ -77,9 +71,6 @@ describe('ColumnControls', () => {
         const floatingControls = mount(
           <ColumnControls
             isTableHovered={false}
-            insertColumn={insertColumn}
-            hoverColumns={hoverColumns}
-            resetHoverSelection={resetHoverSelection}
             tableElement={pluginState.tableElement!}
             editorView={editorView}
             remove={pluginState.remove}
@@ -110,9 +101,6 @@ describe('ColumnControls', () => {
         const floatingControls = mount(
           <ColumnControls
             isTableHovered={false}
-            insertColumn={insertColumn}
-            hoverColumns={hoverColumns}
-            resetHoverSelection={resetHoverSelection}
             tableElement={pluginState.tableElement!}
             editorView={editorView}
             remove={pluginState.remove}
@@ -168,9 +156,6 @@ describe('ColumnControls', () => {
         const floatingControls = mount(
           <ColumnControls
             isTableHovered={false}
-            insertColumn={insertColumn}
-            hoverColumns={hoverColumns}
-            resetHoverSelection={resetHoverSelection}
             tableElement={pluginState.tableElement!}
             editorView={editorView}
             remove={pluginState.remove}
@@ -210,9 +195,6 @@ describe('ColumnControls', () => {
       const floatingControls = mount(
         <ColumnControls
           isTableHovered={false}
-          insertColumn={insertColumn}
-          hoverColumns={hoverColumns}
-          resetHoverSelection={resetHoverSelection}
           tableElement={pluginState.tableElement!}
           editorView={editorView}
           remove={pluginState.remove}
@@ -224,46 +206,6 @@ describe('ColumnControls', () => {
       expect(floatingControls.find(DeleteColumnButton).length).toBe(0);
       floatingControls.unmount();
     });
-  });
-
-  it('calls hoverColumns when button hovered', () => {
-    const { plugin, editorView, pluginState } = editor(
-      doc(
-        table()(
-          tr(thEmpty, td({})(p()), thEmpty),
-          tr(tdCursor, tdEmpty, tdEmpty),
-          tr(tdEmpty, tdEmpty, tdEmpty),
-        ),
-      ),
-    );
-
-    const hoverColumnsMock = jest.fn(hoverColumns);
-
-    const floatingControls = mount(
-      <ColumnControls
-        isTableHovered={false}
-        insertColumn={insertColumn}
-        hoverColumns={hoverColumnsMock}
-        resetHoverSelection={resetHoverSelection}
-        tableElement={pluginState.tableElement!}
-        editorView={editorView}
-        remove={pluginState.remove}
-      />,
-    );
-
-    plugin.props.handleDOMEvents!.focus(editorView, event);
-
-    editorView.dispatch(selectColumns([0, 1])(editorView.state.tr));
-
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
-
-    floatingControls.find(DeleteColumnButton).simulate('mouseenter');
-
-    // expect to want to apply the hover decoration on the columns, with danger
-    expect(hoverColumnsMock).toBeCalledWith([0, 1], true);
-
-    floatingControls.unmount();
   });
 
   it('applies the danger class to the column buttons', () => {
@@ -280,9 +222,6 @@ describe('ColumnControls', () => {
     const floatingControls = mount(
       <ColumnControls
         isTableHovered={false}
-        insertColumn={insertColumn}
-        hoverColumns={hoverColumns}
-        resetHoverSelection={resetHoverSelection}
         tableElement={pluginState.tableElement!}
         editorView={editorView}
         remove={pluginState.remove}
@@ -324,9 +263,6 @@ describe('ColumnControls', () => {
     const floatingControls = mount(
       <ColumnControls
         isTableHovered={false}
-        insertColumn={insertColumn}
-        hoverColumns={hoverColumns}
-        resetHoverSelection={resetHoverSelection}
         tableElement={pluginState.tableElement!}
         editorView={editorView}
         remove={removeMock}
@@ -367,9 +303,6 @@ describe('ColumnControls', () => {
     const floatingControls = mount(
       <ColumnControls
         isTableHovered={false}
-        insertColumn={insertColumn}
-        hoverColumns={hoverColumns}
-        resetHoverSelection={resetHoverSelection}
         tableElement={pluginState.tableElement!}
         editorView={editorView}
         remove={pluginState.remove}
@@ -403,9 +336,6 @@ describe('ColumnControls', () => {
       const floatingControls = mount(
         <ColumnControls
           isTableHovered={false}
-          insertColumn={insertColumn}
-          hoverColumns={hoverColumns}
-          resetHoverSelection={resetHoverSelection}
           tableElement={pluginState.tableElement!}
           editorView={editorView}
           remove={pluginState.remove}
@@ -440,9 +370,6 @@ describe('ColumnControls', () => {
       const floatingControls = mount(
         <ColumnControls
           isTableHovered={false}
-          insertColumn={insertColumn}
-          hoverColumns={hoverColumns}
-          resetHoverSelection={resetHoverSelection}
           tableElement={pluginState.tableElement!}
           editorView={editorView}
           remove={pluginState.remove}
@@ -477,9 +404,6 @@ describe('ColumnControls', () => {
       const floatingControls = mount(
         <ColumnControls
           isTableHovered={false}
-          insertColumn={insertColumn}
-          hoverColumns={hoverColumns}
-          resetHoverSelection={resetHoverSelection}
           tableElement={pluginState.tableElement!}
           editorView={editorView}
           remove={pluginState.remove}

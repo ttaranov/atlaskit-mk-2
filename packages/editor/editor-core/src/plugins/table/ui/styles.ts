@@ -1,4 +1,4 @@
-import { browser } from '@atlaskit/editor-common';
+import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import {
   akColorN40A,
   akColorB100,
@@ -13,7 +13,6 @@ import {
 import {
   tableSharedStyle,
   tableMarginTop,
-  tableMarginBottom,
   akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
@@ -28,7 +27,7 @@ export const tableCellDeleteColor = akColorR50;
 export const tableBorderDeleteColor = akColorR300;
 export const tableToolbarDeleteColor = akColorR75;
 
-export const tableToolbarSize = 12;
+export const tableToolbarSize = akEditorTableToolbarSize;
 export const tableBorderRadiusSize = 3;
 export const tableInsertColumnButtonSize = 20;
 export const tableDeleteColumnButtonSize = 16;
@@ -73,19 +72,20 @@ export const tableStyles = `
     .table-column-controls-wrapper {
       left: 0;
     }
+    
     .table-row-controls-wrapper {
-      left: -${tableToolbarSize - 1}px;
+      left: -${tableToolbarSize - 2}px;
     }
     .table-container {
       position: relative;
       margin: 0 auto;
       box-sizing: border-box;
     }
-    .table-container table[data-number-column='true'] td:first-child {
-      background-color: ${tableFloatingControlsColor};
-      width: ${akEditorTableNumberColumnWidth}px;
-      text-align: center;
+
+    .table-container[data-number-column='true'] {
+      padding-left: ${akEditorTableNumberColumnWidth + 1}px;
     }
+
     .table-container[data-layout='full-width'],
     .table-container[data-layout='wide'] {
       margin-left: 50%;
@@ -94,6 +94,8 @@ export const tableStyles = `
     .table-wrapper {
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
+      z-index: 0;
+
       /* fixes gap cursor height */
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
@@ -110,12 +112,16 @@ export const tableStyles = `
       pointer-events: none;
       display: none;
       position: absolute;
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
-      bottom: ${tableMarginBottom}px;
       width: 0;
+
+      top: ${tableMarginTop}px;
     }
     .with-controls .table-shadow {
+      top: ${tableMarginTop - tableToolbarSize + 1}px;
+    }
+    .table-shadow {
       display: ${isIE11 ? 'none' : 'block'};
+      z-index: 20;
     }
     .table-shadow.-left {
       left: 0;
@@ -145,7 +151,7 @@ export const tableStyles = `
       width: 2px;
       height: calc(100% + 2px);
       pointer-events: none;
-      z-index: 20;
+      z-index: 1;
     }
     .with-controls .column-resize-handle {
       top: -${tableToolbarSize}px;
