@@ -52,15 +52,20 @@ describe('Object Result', () => {
     ).toBe(null);
   });
 
-  it('should render the `containerName` prop', () => {
-    resultWrapper.setProps({ containerName: 'takeaway' });
+  it('should render the `containerName` prop if no objectKey provided', () => {
+    resultWrapper.setProps({ containerName: 'Burger Sling' });
     expect(resultWrapper.text()).toEqual(
-      expect.stringContaining('in takeaway'),
+      expect.stringContaining('Burger Sling'),
     );
   });
 
-  it('should render the `objectKey` prop', () => {
-    resultWrapper.setProps({ objectKey: 'KFC-11' });
-    expect(resultWrapper.text()).toEqual(expect.stringContaining('KFC-11'));
+  it('should render the `objectKey` and `containerName` prop together', () => {
+    resultWrapper.setProps({
+      objectKey: 'KFC-11',
+      containerName: 'Burger Sling',
+    });
+    expect(resultWrapper.text()).toEqual(
+      expect.stringContaining('KFC-11 · Burger Sling'),
+    );
   });
 });
