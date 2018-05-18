@@ -7,7 +7,6 @@ import {
   RowContainer,
   RowControlsButtonWrap,
   HeaderButton,
-  DeleteRowButtonSize,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
 import { Command } from '../../../../../types';
@@ -48,7 +47,7 @@ export default class RowControls extends Component<Props, any> {
         }}
         onMouseLeave={() => this.hoverRows(selectedRowIdxs)}
         style={{
-          top: offsetHeight + selectionHeight / 2 - DeleteRowButtonSize / 2 - 1,
+          top: offsetHeight + selectionHeight / 2 + 2,
         }}
       />
     );

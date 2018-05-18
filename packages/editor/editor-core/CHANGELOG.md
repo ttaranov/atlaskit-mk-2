@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 71.3.34
+- [patch] ED-4087: fix table interaction in IE11 [8c5f6f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c5f6f9)
+- [none] Updated dependencies [8c5f6f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c5f6f9)
+
+## 71.3.33
+- [patch] ED-4498: enable gap cursor for comment editor, fixed and refactored table styles [26fd3ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/26fd3ac)
+- [none] Updated dependencies [26fd3ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/26fd3ac)
+
+## 71.3.32
+- [patch] ED-4591: fix paragraph alignment in comment editor [c420ef0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c420ef0)
+- [none] Updated dependencies [c420ef0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c420ef0)
+
+## 71.3.31
+
+- [patch] ED-4629: fix replacing inline extensions [ed1eb59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed1eb59)
+- [none] Updated dependencies [62bacf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62bacf6)
+  - @atlaskit/theme@3.2.1
+- [none] Updated dependencies [ed1eb59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed1eb59)
+
 ## 71.3.30
 - [patch] ED-4567 add help dialog tip and undo/redo shortcuts to help dialog [a82ead4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a82ead4)
 - [patch] Updated dependencies [a82ead4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a82ead4)

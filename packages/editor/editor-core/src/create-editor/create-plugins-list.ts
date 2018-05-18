@@ -113,6 +113,15 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.legacyImageUploadProvider) {
     plugins.push(imageUploadPlugin);
+
+    if (!props.media && !props.mediaProvider) {
+      plugins.push(
+        mediaPlugin({
+          allowMediaSingle: { disableLayout: true },
+          allowMediaGroup: false,
+        }),
+      );
+    }
   }
 
   if (props.collabEdit || props.collabEditProvider) {

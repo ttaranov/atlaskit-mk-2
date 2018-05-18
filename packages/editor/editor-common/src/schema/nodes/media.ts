@@ -98,6 +98,20 @@ export const media: NodeSpec = {
         return attrs;
       },
     },
+    // Don't match data URI
+    {
+      tag: 'img[src^="data:image"]',
+      ignore: true,
+    },
+    {
+      tag: 'img',
+      getAttrs: (dom: HTMLElement) => {
+        return {
+          type: 'external',
+          url: dom.getAttribute('src') || '',
+        } as ExternalMediaAttributes;
+      },
+    },
   ],
   toDOM(node: PMNode) {
     const attrs = {
