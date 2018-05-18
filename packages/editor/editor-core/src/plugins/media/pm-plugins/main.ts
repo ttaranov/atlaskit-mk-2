@@ -809,7 +809,10 @@ export class MediaPluginState {
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection);
+      return (
+        !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection) &&
+        !hasParentNodeOfType(schema.nodes.layoutSection)(selection)
+      );
     }
     return false;
   }
