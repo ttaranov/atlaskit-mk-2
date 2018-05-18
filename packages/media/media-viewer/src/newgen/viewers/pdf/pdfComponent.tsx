@@ -1,8 +1,33 @@
 import * as React from 'react';
-import { PDFWrapper } from '../../styled';
 import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
+import { PDFWrapper } from '../../styled';
+
+injectGlobal`
+  .pdfViewer {
+    .page {
+      margin: 1px auto -8px auto;
+      border: 9px solid transparent;
+      position: relative;
+
+      .canwasWrapper {
+        overflow: hidden;
+      }
+
+      .textLayer, .annotationLayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        line-height: 1.0;
+      }
+    }
+  }
+`;
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
 
