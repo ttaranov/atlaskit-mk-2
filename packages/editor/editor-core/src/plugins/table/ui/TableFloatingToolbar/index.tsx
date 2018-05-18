@@ -12,6 +12,7 @@ import {
 } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
@@ -69,6 +70,10 @@ const tableLayouts: TableLayoutInfo = {
   default: {
     icon: CenterIcon,
     label: 'inline',
+  },
+  wide: {
+    icon: WideIcon,
+    label: 'wide',
   },
   'full-width': {
     icon: FullWidthIcon,
