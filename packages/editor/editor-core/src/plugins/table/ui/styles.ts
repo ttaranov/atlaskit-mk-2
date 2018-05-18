@@ -81,7 +81,8 @@ export const tableStyles = `
       width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
     }
-    .table-container[data-layout='full-width'] {
+    .table-container[data-layout='full-width'],
+    .table-container[data-layout='wide'] {
       margin-left: 50%;
       transform: translateX(-50%);
     }
@@ -100,10 +101,6 @@ export const tableStyles = `
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.table-resizing {
-    .with-controls .table-container[data-layout='full-width'] {
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
     .table-shadow {
       pointer-events: none;
       display: none;

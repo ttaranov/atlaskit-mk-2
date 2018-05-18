@@ -771,6 +771,7 @@
             },
             "layout": {
               "enum": [
+                "wide",
                 "full-width",
                 "default"
               ]

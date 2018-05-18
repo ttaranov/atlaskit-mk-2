@@ -3,12 +3,15 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, TableHTMLAttributes } from 'react';
-import { akEditorTableBorder } from '../../styles';
+import { akEditorTableBorder, akEditorWideLayoutWidth } from '../../styles';
 import { tableBackgroundColorNames } from '../../';
+import { TableLayout } from '../../schema';
 
 export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
+
+const CONTROLLER_PADDING = 66;
 
 const tableSharedStyle = `
   {
@@ -62,6 +65,20 @@ const tableSharedStyle = `
 const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
   ${tableSharedStyle};
 `;
+
+export const calcTableWidth = (
+  layout: TableLayout,
+  containerWidth: number,
+): string => {
+  switch (layout) {
+    case 'full-width':
+      return `${containerWidth - CONTROLLER_PADDING}px`;
+    case 'wide':
+      return `${akEditorWideLayoutWidth}px`;
+    default:
+      return 'inherit';
+  }
+};
 
 export { tableSharedStyle };
 export default StyledTable;
