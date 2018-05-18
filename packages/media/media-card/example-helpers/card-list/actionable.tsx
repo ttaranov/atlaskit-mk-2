@@ -5,6 +5,7 @@ import { Context } from '@atlaskit/media-core';
 import { CardList, CardListEvent } from '../../src';
 
 import { cardsActions } from '..';
+import { CardListWrapper } from './styled';
 
 const cardClickHandler = (result: CardListEvent) => {
   result.event.preventDefault();
@@ -21,21 +22,25 @@ export const renderActionableLists = (
         {
           title: 'Actions',
           content: (
-            <CardList
-              context={context}
-              collectionName={collectionName}
-              actions={cardsActions}
-            />
+            <CardListWrapper>
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                actions={cardsActions}
+              />
+            </CardListWrapper>
           ),
         },
         {
           title: 'onCardClick',
           content: (
-            <CardList
-              context={context}
-              collectionName={collectionName}
-              onCardClick={cardClickHandler}
-            />
+            <CardListWrapper>
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                onCardClick={cardClickHandler}
+              />
+            </CardListWrapper>
           ),
         },
       ]}

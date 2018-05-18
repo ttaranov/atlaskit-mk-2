@@ -19,19 +19,15 @@ export default () => (
   <div>
     <h2>Custom widths</h2>
     {renderVariousWidths(context, fileCollectionName)}
-
     <h2>Empty state</h2>
     {renderEmptyStates(context, emptyCollectionName)}
-
     <h2>Error state</h2>
     {renderErrorStates()}
-
-    <h2>Infinite Scroll</h2>
-    {renderInfiniteScroll(context, defaultCollectionName)}
-
     <h2>Lazy Loading</h2>
-
+    TBC
     <h2>Actions</h2>
     {renderActionableLists(context, fileCollectionName)}
+    <h2>Infinite Scroll</h2>
+    {renderInfiniteScroll(context, defaultCollectionName)}
   </div>
 );

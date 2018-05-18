@@ -5,6 +5,7 @@ import { Context } from '@atlaskit/media-core';
 import { CardList } from '../../src';
 
 import { cardsActions } from '..';
+import { CardListWrapper } from './styled';
 
 export const renderInfiniteScroll = (
   context: Context,
@@ -16,22 +17,15 @@ export const renderInfiniteScroll = (
         {
           title: 'Infinite scoll',
           content: (
-            <div
-              style={{
-                display: 'inline-block',
-                width: '300px',
-                background: 'white',
-                border: '2px solid',
-              }}
-            >
+            <CardListWrapper width={450}>
               <CardList
                 context={context}
                 collectionName={collectionName}
                 actions={cardsActions}
-                pageSize={20}
+                pageSize={4}
                 height={500}
               />
-            </div>
+            </CardListWrapper>
           ),
         },
       ]}
