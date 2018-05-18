@@ -64,7 +64,11 @@ export class NavAPI extends Container<NavAPIState> {
   /**
    * Adds reducer from source to the view with viewKey
    */
-  addReducer = (viewKey: ViewKey, reducer: Reducer, source: string) => {
+  addReducer = (
+    viewKey: ViewKey,
+    reducer: Reducer,
+    source?: string = 'unknown',
+  ) => {
     const reducerList = [
       ...(this.reducers[viewKey] || []),
       { source, fn: reducer },
