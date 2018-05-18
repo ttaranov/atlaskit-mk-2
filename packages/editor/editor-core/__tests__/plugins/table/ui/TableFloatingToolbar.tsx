@@ -82,23 +82,23 @@ describe('TableFloatingToolbar', () => {
       floatingToolbar.unmount();
     });
 
-    it('should call remove() on click', () => {
+    it('should call removeTable() on click', () => {
       const { editorView } = editor(
         doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      const remove = jest.fn();
+      const removeTable = jest.fn();
       const floatingToolbar = shallow(
         <TableFloatingToolbar
           tableElement={document.createElement('table')}
           editorView={editorView}
-          remove={remove}
           tableActive={true}
+          removeTable={removeTable}
         />,
       );
 
-      const button = floatingToolbar.find(ToolbarButton).last();
+      const button = floatingToolbar.find('[title="Remove table"]').first();
       button.simulate('click');
-      expect(remove as any).toHaveBeenCalledTimes(1);
+      expect(removeTable as any).toHaveBeenCalledTimes(1);
       floatingToolbar.unmount();
     });
   });

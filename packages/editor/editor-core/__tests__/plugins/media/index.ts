@@ -1317,6 +1317,7 @@ describe('Media plugin', () => {
               collection: testCollectionName,
             })(),
           ),
+          p(),
         ),
       );
       editorView.destroy();

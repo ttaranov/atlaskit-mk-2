@@ -1,5 +1,10 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.0.0
+- [major] Migrate wikimarkup transformer [b8cab45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8cab45)
+
+## 0.0.16
+
 ## 0.0.15
 - [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
 

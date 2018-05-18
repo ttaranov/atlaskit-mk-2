@@ -17,3 +17,18 @@ it('should render the confluence container with context confluence', () => {
 
   expect(wrapper.find(ConfluenceQuickSearchContainer).exists()).toBe(true);
 });
+
+it('should pass through the linkComponent prop', () => {
+  const MyLinkComponent = () => <div />;
+  const wrapper = mount(
+    <GlobalQuickSearch
+      cloudId="123"
+      context="confluence"
+      linkComponent={MyLinkComponent}
+    />,
+  );
+
+  expect(
+    wrapper.find(ConfluenceQuickSearchContainer).prop('linkComponent'),
+  ).toBe(MyLinkComponent);
+});

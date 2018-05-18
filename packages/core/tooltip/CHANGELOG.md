@@ -1,5 +1,11 @@
 # @atlaskit/tooltip
 
+## 9.2.0
+- [minor] add delay prop to tooltip. still defaults to 300ms. [66c6264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66c6264)
+- [none] Updated dependencies [66c6264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66c6264)
+
+## 9.1.6
+
 ## 9.1.5
 - [patch] Fix long words in tooltip content overflowing the tooltip, they will now wrap. [b2967ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b2967ef)
 

@@ -25,6 +25,8 @@ type Props = {
   content: Node,
   /** Extend `TooltipPrimitive` to create you own tooptip and pass it as component */
   component: ComponentType<{ innerRef: HTMLElement => void }>,
+  /** Time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300. */
+  delay: number,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
   /** Where the tooltip should appear relative to the mouse. Only used when the `position` prop is set to 'mouse' */
@@ -74,8 +76,9 @@ class Tooltip extends Component<Props, State> {
   mouseCoordinates: CoordinatesType | null = null;
   static defaultProps = {
     component: StyledTooltip,
-    position: 'bottom',
+    delay: 300,
     mousePosition: 'bottom',
+    position: 'bottom',
     tag: 'div',
   };
 

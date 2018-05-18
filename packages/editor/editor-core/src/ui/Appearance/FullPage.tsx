@@ -10,8 +10,9 @@ import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
+import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 
-const GUTTER_PADDING = 26;
+const GUTTER_PADDING = 32;
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
@@ -32,6 +33,7 @@ const ScrollContainer = styled(ContentStyles)`
 ScrollContainer.displayName = 'ScrollContainer';
 
 const ContentArea = styled.div`
+  line-height: 24px;
   height: 100%;
   width: 100%;
   max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
@@ -63,11 +65,7 @@ const ContentArea = styled.div`
       clear: none;
     }
   }
-  & .ProseMirror .table-container table {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-  }
+  ${tableFullPageEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
 

@@ -1,5 +1,6 @@
 import { defaultSchema, Transformer } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { encode } from './encoder';
 import AbstractTree from './parser/abstract-tree';
 
 export class WikiMarkupTransformer implements Transformer<string> {
@@ -10,8 +11,7 @@ export class WikiMarkupTransformer implements Transformer<string> {
   }
 
   encode(node: PMNode): string {
-    return 'bq. some texts here';
-    // throw new Error('Not implemented yet');
+    return encode(node);
   }
 
   parse(wikiMarkup: string): PMNode {

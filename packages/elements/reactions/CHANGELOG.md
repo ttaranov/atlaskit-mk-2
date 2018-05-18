@@ -1,5 +1,11 @@
 # @atlaskit/reactions
 
+## 12.0.4
+- [patch] FS-1890 Remove sinon dependency from reactions [b6ee84e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b6ee84e)
+- [patch] FS-1890 Migrate Reactions to Jest [8e0e31e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e0e31e)
+
+## 12.0.3
+
 ## 12.0.2
 
 ## 12.0.1

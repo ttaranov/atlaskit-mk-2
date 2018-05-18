@@ -60,6 +60,7 @@ export default class ResultBase extends PureComponent<Props> {
       onMouseLeave,
       subText,
       text,
+      linkComponent,
     } = this.props;
 
     return (
@@ -76,6 +77,7 @@ export default class ResultBase extends PureComponent<Props> {
         subText={subText}
         text={text}
         textAfter={elemAfter}
+        linkComponent={linkComponent}
       />
     );
   }

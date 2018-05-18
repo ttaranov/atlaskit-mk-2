@@ -9,17 +9,12 @@ import {
 } from './styles';
 
 export interface ButtonProps {
-  style?: object;
   onClick: () => void;
   lineMarkerHeight?: number;
 }
 
-const InsertColumnButton = ({
-  style,
-  onClick,
-  lineMarkerHeight,
-}: ButtonProps) => (
-  <InsertColumnButtonWrap style={style}>
+const InsertColumnButton = ({ onClick, lineMarkerHeight }: ButtonProps) => (
+  <InsertColumnButtonWrap>
     <InsertColumnButtonInner>
       <AkButton
         onClick={onClick}

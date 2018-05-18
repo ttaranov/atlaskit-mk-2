@@ -1,5 +1,10 @@
 # @atlaskit/tag
 
+## 4.1.0
+- [minor] Add linkComponent to allow passing of custom link components [d2d2678](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2d2678)
+
+## 4.0.2
+
 ## 4.0.1
 - [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
 

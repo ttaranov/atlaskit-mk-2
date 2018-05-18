@@ -1,5 +1,52 @@
 # @atlaskit/media-viewer
 
+## 13.8.0
+- [minor] show cover for audio files [f830d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f830d51)
+
+## 13.7.1
+- [patch] Remove component interpolation to be able to integrate with an older version of SC [401db67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/401db67)
+
+## 13.7.0
+- [minor] Add basic zooming to MV [6bd0af4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bd0af4)
+
+## 13.6.1
+- [patch] Use SC style() instead of extend [cc35663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35663)
+
+## 13.6.0
+- [minor] add download button to MediaViewer [ed4ad47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed4ad47)
+
+## 13.5.2
+- [patch] Fix media-ui dependency version [60f61c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60f61c5)
+
+## 13.5.1
+- [patch] Add media type metadata to audio in MVNG [8dec6fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dec6fb)
+
+## 13.5.0
+- [minor] Add header metadata to MVNG [8aa7812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8aa7812)
+
+## 13.4.0
+- [minor] MediaViewer: toggle UI controls on mouse move [36ec198](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36ec198)
+
+## 13.3.2
+- [patch] Always show MediaViewer close button [9ddeec0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ddeec0)
+
+## 13.3.1
+- [patch] use proper collectionName property in MVNG [7815256](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7815256)
+
+## 13.3.0
+- [minor] Add collection support to Media Viewer NGwq [6baa5d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6baa5d0)
+
+## 13.2.3
+
+## 13.2.2
+- [patch] Bump z-index of MVNG [7d1f8fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d1f8fb)
+
+## 13.2.1
+- [patch] Fix issues with "selectedItem" not being part of the list. [f542262](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f542262)
+
+## 13.2.0
+- [minor] General fixes and improvements on MVNG (internal) [117cfc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/117cfc6)
+
 ## 13.1.3
 - [patch] update Media Viewer UI to reflect latest designs [fd284c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd284c9)
 

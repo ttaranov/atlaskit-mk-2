@@ -11,6 +11,7 @@ export interface Match {
   text: string;
   url: string;
   length?: number;
+  input?: string;
 }
 
 const linkify = LinkifyIt();
@@ -41,14 +42,16 @@ export function getLinkMatch(str: string): Match | LinkifyMatch | null {
  * Extending it directly from class Regex was introducing some issues, thus that has been avoided.
  */
 export class LinkMatcher {
-  exec(str): Match[] | null {
-    if (str[str.length - 1] === ' ') {
-      const strSplit: string = str.slice(0, str.length - 1).split(' ');
-      const match: Match[] = linkify.match(strSplit[strSplit.length - 1]);
-      if (match && match.length > 0) {
-        const lastMatch: Match = match[match.length - 1];
-        lastMatch.length = lastMatch.lastIndex - lastMatch.index + 1;
-        return [lastMatch];
+  exec(str: string): Match[] | null {
+    if (str.endsWith(' ')) {
+      const chunks = str.slice(0, str.length - 1).split(' ');
+      const lastChunk = chunks[chunks.length - 1];
+      const links: Match[] = linkify.match(lastChunk);
+      if (links && links.length > 0) {
+        const lastLink: Match = links[links.length - 1];
+        lastLink.input = lastChunk;
+        lastLink.length = lastLink.lastIndex - lastLink.index + 1;
+        return [lastLink];
       }
     }
     return null;

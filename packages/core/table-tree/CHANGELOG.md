@@ -1,5 +1,11 @@
 # @atlaskit/table-tree
 
+## 1.1.3
+- [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+  - @atlaskit/select@3.0.0
+
+## 1.1.2
+
 ## 1.1.1
 
 ## 1.1.0

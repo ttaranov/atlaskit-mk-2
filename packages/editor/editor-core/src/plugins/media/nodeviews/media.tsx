@@ -21,6 +21,9 @@ export interface MediaNodeProps extends ReactNodeProps {
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   progress?: number;
+  onExternalImageLoaded?: (
+    dimensions: { width: number; height: number },
+  ) => void;
 }
 
 const getId = (props: MediaNodeProps) => props.node.attrs.__key;
@@ -67,14 +70,16 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       cardDimensions,
       isMediaSingle,
       progress = 0,
+      onExternalImageLoaded,
     } = this.props;
-    const { id, type, collection, __key, width } = node.attrs;
+    const { id, type, collection, url, __key, width } = node.attrs;
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
     if (
       !width &&
       this.pluginState.editorAppearance !== 'message' &&
-      isMediaSingle
+      isMediaSingle &&
+      type !== 'external'
     ) {
       return (
         <ProgressLoader
@@ -98,6 +103,9 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
         cardDimensions={cardDimensions}
         onDelete={deleteEventHandler}
         selected={selected}
+        url={url}
+        onExternalImageLoaded={onExternalImageLoaded}
+        disableOverlay={isMediaSingle}
       />
     );
   }

@@ -29,6 +29,10 @@ describe('nodeviews/mediaSingle', () => {
     type: 'file',
     collection: 'collection',
   })();
+  const externalMediaNode = media({
+    type: 'external',
+    url: 'http://image.jpg',
+  })();
 
   beforeEach(() => {
     pluginState = {} as MediaPluginState;
@@ -77,6 +81,24 @@ describe('nodeviews/mediaSingle', () => {
     wrapper.setProps({ node: updatedMediaSingleNode });
 
     expect(updateLayoutSpy).toHaveBeenCalledWith('center');
+  });
+
+  it('sets "onExternalImageLoaded" for external images', () => {
+    const view = {} as EditorView;
+    const mediaSingleNode = mediaSingle()(externalMediaNode);
+
+    const wrapper = shallow(
+      <MediaSingle
+        view={view}
+        node={mediaSingleNode(defaultSchema)}
+        width={680}
+      >
+        <Media node={externalMediaNode(defaultSchema)} />
+      </MediaSingle>,
+    );
+
+    const child = wrapper.childAt(0);
+    expect(child && child.props().onExternalImageLoaded).toBeDefined();
   });
 
   afterEach(() => {

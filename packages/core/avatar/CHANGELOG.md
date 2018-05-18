@@ -1,5 +1,7 @@
 # @atlaskit/avatar
 
+## 10.0.5
+
 ## 10.0.4
 - [patch] Fix clipping of dropdown items in avatar group for certain browsers [7b82fa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b82fa6)
 

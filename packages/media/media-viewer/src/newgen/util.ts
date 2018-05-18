@@ -1,5 +1,10 @@
-import { Context, isClientBasedAuth } from '@atlaskit/media-core';
+import {
+  Context,
+  isClientBasedAuth,
+  MediaCollectionItem,
+} from '@atlaskit/media-core';
 import { stringify } from 'query-string';
+import { Identifier } from './domain';
 
 export async function constructAuthTokenUrl(
   url: string,
@@ -50,3 +55,22 @@ function buildIssuerBasedUrl(
 function buildUrl(host: string, url: string, query: Object) {
   return `${host}${url}?${stringify(query)}`;
 }
+
+export const toIdentifier = (item: MediaCollectionItem): Identifier => {
+  return {
+    id: item.details.id,
+    type: item.type,
+    occurrenceKey: item.details.occurrenceKey,
+  };
+};
+
+export const getSelectedIndex = (
+  items: Identifier[],
+  selectedItem: Identifier,
+) => {
+  return items.findIndex(
+    item =>
+      item.id === selectedItem.id &&
+      item.occurrenceKey === selectedItem.occurrenceKey,
+  );
+};

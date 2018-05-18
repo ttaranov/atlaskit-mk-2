@@ -315,7 +315,7 @@ export const getValidNode = (
           details &&
           details.some(meta => {
             const { badge, lozenge, users } = meta;
-            if (badge && !badge.value) {
+            if (badge && typeof badge.value !== 'number') {
               return true;
             }
             if (lozenge && !lozenge.text) {
@@ -400,13 +400,26 @@ export const getValidNode = (
         let mediaId = '';
         let mediaType = '';
         let mediaCollection = [];
+        let mediaUrl = '';
         if (attrs) {
-          const { id, collection, type } = attrs;
+          const { id, collection, type, url } = attrs;
           mediaId = id;
           mediaType = type;
           mediaCollection = collection;
+          mediaUrl = url;
         }
-        if (mediaId && mediaType) {
+
+        if (mediaType === 'external' && !!mediaUrl) {
+          return {
+            type,
+            attrs: {
+              type: mediaType,
+              url: mediaUrl,
+              width: attrs.width,
+              height: attrs.height,
+            },
+          };
+        } else if (mediaId && mediaType) {
           const mediaAttrs: any = {
             type: mediaType,
             id: mediaId,
@@ -569,7 +582,7 @@ export const getValidNode = (
         break;
       }
       case 'panel': {
-        const types = ['info', 'note', 'tip', 'warning'];
+        const types = ['info', 'note', 'tip', 'success', 'warning', 'error'];
         if (attrs && content) {
           const { panelType } = attrs;
           if (types.indexOf(panelType) > -1) {
@@ -685,6 +698,13 @@ export const getValidNode = (
             attrs,
           };
         }
+        break;
+      }
+      case 'placeholder': {
+        if (attrs && typeof attrs.text !== 'undefined') {
+          return { type, attrs };
+        }
+
         break;
       }
     }

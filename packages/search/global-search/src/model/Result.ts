@@ -20,5 +20,6 @@ export enum ResultType {
 export enum ResultContentType {
   Page = 'page',
   Blogpost = 'blogpost',
+  Attachment = 'attachment',
   Space = 'space',
 }

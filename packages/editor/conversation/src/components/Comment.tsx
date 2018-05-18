@@ -55,6 +55,8 @@ export interface SharedProps {
 
   isHighlighted?: boolean;
   placeholder?: string;
+  disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface Props extends SharedProps {
@@ -240,7 +242,14 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private getContent() {
-    const { comment, dataProviders, user, renderEditor } = this.props;
+    const {
+      comment,
+      dataProviders,
+      user,
+      renderEditor,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
+    } = this.props;
     const { isEditing } = this.state;
 
     if (comment.deleted) {
@@ -258,6 +267,8 @@ export default class Comment extends React.Component<Props, State> {
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
+          disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }
@@ -286,6 +297,7 @@ export default class Comment extends React.Component<Props, State> {
       onCancel,
       renderEditor,
       containerId,
+      disableScrollTo,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -310,6 +322,7 @@ export default class Comment extends React.Component<Props, State> {
         renderComment={props => <Comment {...props} />}
         renderEditor={renderEditor}
         containerId={containerId}
+        disableScrollTo={disableScrollTo}
       />
     ));
   }
@@ -320,7 +333,13 @@ export default class Comment extends React.Component<Props, State> {
       return null;
     }
 
-    const { dataProviders, user, renderEditor } = this.props;
+    const {
+      dataProviders,
+      user,
+      renderEditor,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
+    } = this.props;
 
     return (
       <Editor
@@ -330,6 +349,8 @@ export default class Comment extends React.Component<Props, State> {
         dataProviders={dataProviders}
         user={user}
         renderEditor={renderEditor}
+        disableScrollTo={disableScrollTo}
+        allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
       />
     );
   }
@@ -393,15 +414,15 @@ export default class Comment extends React.Component<Props, State> {
   }
 
   private handleTimeClick = () => {
-    const { comment, onHighlightComment } = this.props;
+    const { comment, onHighlightComment, disableScrollTo } = this.props;
 
-    if (comment && onHighlightComment) {
+    if (!disableScrollTo && comment && onHighlightComment) {
       onHighlightComment(comment.commentId);
     }
   };
 
   render() {
-    const { comment, onUserClick, isHighlighted } = this.props;
+    const { comment, onUserClick, isHighlighted, disableScrollTo } = this.props;
     const { createdBy, state: commentState, error } = comment;
     const errorProps: {
       actions?: any[];
@@ -431,7 +452,9 @@ export default class Comment extends React.Component<Props, State> {
 
     const comments = this.renderComments();
     const editor = this.renderEditor();
-    const commentId = `comment-${comment.commentId}`;
+    const commentId = disableScrollTo
+      ? undefined
+      : `comment-${comment.commentId}`;
 
     return (
       <AkComment
@@ -459,7 +482,10 @@ export default class Comment extends React.Component<Props, State> {
           />
         }
         time={
-          <CommentTime onClick={this.handleTimeClick} href={`#${commentId}`}>
+          <CommentTime
+            onClick={this.handleTimeClick}
+            href={disableScrollTo ? undefined : `#${commentId}`}
+          >
             {distanceInWordsToNow(new Date(comment.createdAt), {
               addSuffix: true,
             })}

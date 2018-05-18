@@ -166,7 +166,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   it('should render object results', async () => {
     const wrapper = render({
       crossProductSearchClient: singleResultCrossProductSearchClient(
-        Scope.ConfluencePageBlog,
+        Scope.ConfluencePageBlogAttachment,
       ),
     });
 
@@ -223,7 +223,9 @@ describe('ConfluenceQuickSearchContainer', () => {
     function searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
       return delay(
         5,
-        makeSingleResultCrossProductSearchResponse(Scope.ConfluencePageBlog),
+        makeSingleResultCrossProductSearchResponse(
+          Scope.ConfluencePageBlogAttachment,
+        ),
       );
     }
 
@@ -261,7 +263,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
     function searchDelayed(query: string): Promise<Map<Scope, Result[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
-        Scope.ConfluencePageBlog,
+        Scope.ConfluencePageBlogAttachment,
         makeResult({ name: 'delayed result' }),
       );
 
@@ -270,7 +272,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
     function searchCurrent(query: string): Promise<Map<Scope, Result[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
-        Scope.ConfluencePageBlog,
+        Scope.ConfluencePageBlogAttachment,
         makeResult({ name: 'current result' }),
       );
 
@@ -368,5 +370,16 @@ describe('ConfluenceQuickSearchContainer', () => {
       await waitForRender(wrapper);
       expect(wrapper.find(SearchError).exists()).toBe(false);
     });
+  });
+
+  it('should pass through the linkComponent prop', async () => {
+    const MyLinkComponent = () => <div />;
+    const wrapper = render({
+      linkComponent: MyLinkComponent,
+    });
+
+    expect(wrapper.find(GlobalQuickSearch).prop('linkComponent')).toBe(
+      MyLinkComponent,
+    );
   });
 });

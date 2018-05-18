@@ -14,6 +14,7 @@ import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main';
+import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 
 const pulseBackground = keyframes`
   50% {
@@ -70,6 +71,8 @@ const CommentEditor: any = styled.div`
 `;
 CommentEditor.displayName = 'CommentEditor';
 
+const TableControlsPadding = 16;
+
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
   position: relative;
@@ -77,6 +80,8 @@ const MainToolbar = styled.div`
   padding: ${akGridSize} ${akGridSize} 0;
   display: flex;
   height: auto;
+
+  padding-left: ${TableControlsPadding}px;
 
   & > div > *:first-child {
     margin-left: 0;
@@ -88,7 +93,9 @@ MainToolbar.displayName = 'MainToolbar';
 const MainToolbarCustomComponentsSlot = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   flex-grow: 1;
+  padding-right: ${TableControlsPadding}px;
   > div {
     display: flex;
     flex-shrink: 0;
@@ -101,17 +108,17 @@ const ContentArea = styled(ContentStyles)`
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  line-height: 24px;
 
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
   /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
-    padding: 12px 20px;
+    padding: 0 12px;
   }
 
-  .ProseMirror .table-container table {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  padding: ${TableControlsPadding}px;
+
+  ${tableCommentEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
 

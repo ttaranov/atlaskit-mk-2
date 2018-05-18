@@ -1,5 +1,11 @@
 # @atlaskit/single-select
 
+## 4.0.2
+- [patch] Export types for Single select [dd51dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd51dad)
+- [none] Updated dependencies [dd51dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd51dad)
+
+## 4.0.1
+
 ## 4.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

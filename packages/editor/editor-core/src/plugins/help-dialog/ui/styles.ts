@@ -7,6 +7,7 @@ import {
   akColorN0,
   akColorN20,
   akColorN30,
+  akColorN300,
 } from '@atlaskit/util-shared-styles';
 
 export const Container: ComponentClass = styled.div`
@@ -33,6 +34,18 @@ export const Header: any = styled.div`
     props.showKeyline ? `0 2px 0 ${akColorN30}` : 'none'};
   color: ${akColorN400};
   background-color: ${akColorN0};
+  border-radius: ${akBorderRadius};
+`;
+
+export const Footer: any = styled.div`
+  z-index: 1;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${akColorN300};
+  padding: 24px;
+  text-align: right;
+  box-shadow: ${(props: any) =>
+    props.showKeyline ? `0 -2px 0 ${akColorN30}` : 'none'};
 `;
 
 export const ContentWrapper: ComponentClass = styled.div`

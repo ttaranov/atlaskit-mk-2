@@ -1,5 +1,7 @@
 # @atlaskit/calendar
 
+## 5.0.2
+
 ## 5.0.1
 - [patch] Better styles for disabled dates [866c497](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866c497)
 
