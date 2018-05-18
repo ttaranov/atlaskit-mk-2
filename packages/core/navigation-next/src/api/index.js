@@ -152,7 +152,7 @@ export class NavAPI extends Container<NavAPIState> {
     this.logger.debugConditional(
       reducers.length > 0,
       `Diff after reducers: %O`,
-      data,
+      diff(viewData, data),
     );
     this.logger.debugGroupEnd(`Setting active view`);
 
