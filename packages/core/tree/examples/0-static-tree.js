@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { AkNavigationItem } from '@atlaskit/navigation/src/index';
+import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tree from '../src/';
@@ -10,6 +10,10 @@ import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
 import type { Item } from '../src/types';
 
 const LEFT_PADDING = 35;
+
+const Container = styled.div`
+  display: flex;
+`;
 
 const Dot = styled.span`
   display: flex;
@@ -32,19 +36,22 @@ export default class StaticTree extends Component<void> {
     return <Dot>&bull;</Dot>;
   }
 
+  renderItem = ({ item, level }) => (
+    <div key={item.id} style={{ paddingLeft: level * LEFT_PADDING }}>
+      <AkNavigationItem
+        text={item.data ? item.data.title : ''}
+        icon={StaticTree.getIcon(item)}
+      />
+    </div>
+  );
+
   render() {
     return (
-      <Tree
-        tree={treeWithTwoBranches}
-        renderItem={({ item, level }) => (
-          <div style={{ paddingLeft: level * LEFT_PADDING }}>
-            <AkNavigationItem
-              text={item.data ? item.data.title : ''}
-              icon={StaticTree.getIcon(item)}
-            />
-          </div>
-        )}
-      />
+      <Container>
+        <Navigation>
+          <Tree tree={treeWithTwoBranches} renderItem={this.renderItem} />
+        </Navigation>
+      </Container>
     );
   }
 }
