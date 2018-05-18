@@ -124,7 +124,10 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     }
 
     const { allowMediaSingle } = options;
-    const { disableLayout } = allowMediaSingle as MediaSingleOptions;
+    let disableLayout: boolean | undefined;
+    if (typeof allowMediaSingle === 'object') {
+      disableLayout = allowMediaSingle.disableLayout;
+    }
 
     if (
       (typeof allowMediaSingle === 'boolean' && allowMediaSingle === false) ||
