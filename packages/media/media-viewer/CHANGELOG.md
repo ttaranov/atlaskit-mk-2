@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.8.2
+- [patch] Fix new case of SC component interpolation [accec74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/accec74)
+
 ## 13.8.1
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0
