@@ -14,10 +14,7 @@ import {
   ADNode,
 } from '../../src/utils/validator';
 import { isSafeUrl } from '../../src/utils/url';
-import {
-  defaultSchema as schema,
-  defaultSchema,
-} from '../../src/schema/default-schema';
+import { defaultSchema as schema } from '../../src/schema/default-schema';
 import { createSchema } from '../../src/schema/create-schema';
 
 describe('Renderer - Validator', () => {
@@ -2013,30 +2010,28 @@ describe('Renderer - Validator', () => {
         ],
       };
 
-      expect(getValidDocument(original, defaultSchema, 'stage0')).to.deep.equal(
-        {
-          type: 'doc',
-          content: [
-            {
-              type: 'paragraph',
-              content: [
-                {
-                  type: 'text',
-                  text: 'Hello World',
-                  marks: [
-                    {
-                      type: 'confluenceInlineComment',
-                      attrs: {
-                        reference: 'ref',
-                      },
+      expect(getValidDocument(original, schema, 'stage0')).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
                     },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      );
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
     });
   });
 });
