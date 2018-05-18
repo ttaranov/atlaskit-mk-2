@@ -1,5 +1,17 @@
 # @atlaskit/media-viewer
 
+## 13.8.0
+- [minor] show cover for audio files [f830d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f830d51)
+
+## 13.7.1
+- [patch] Remove component interpolation to be able to integrate with an older version of SC [401db67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/401db67)
+
+## 13.7.0
+- [minor] Add basic zooming to MV [6bd0af4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bd0af4)
+
+## 13.6.1
+- [patch] Use SC style() instead of extend [cc35663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35663)
+
 ## 13.6.0
 - [minor] add download button to MediaViewer [ed4ad47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed4ad47)
 

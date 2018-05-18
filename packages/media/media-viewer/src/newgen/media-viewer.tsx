@@ -19,9 +19,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     const { onClose } = this.props;
     return (
       <Blanket>
-        <Content onClick={this.onClickContentClose} onClose={onClose}>
-          {this.renderContent()}
-        </Content>
+        <Content onClose={onClose}>{this.renderContent()}</Content>
       </Blanket>
     );
   }
@@ -56,11 +54,4 @@ export class MediaViewer extends React.Component<Props, {}> {
       return <ErrorMessage>No media found</ErrorMessage>;
     }
   }
-
-  private onClickContentClose = e => {
-    const { onClose } = this.props;
-    if (e.target === e.currentTarget && onClose) {
-      onClose();
-    }
-  };
 }
