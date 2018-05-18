@@ -5,6 +5,7 @@ import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { PDFWrapper } from '../../styled';
 
+/* tslint:disable:no-unused-expression */
 injectGlobal`
   .pdfViewer {
     .page {
@@ -12,7 +13,7 @@ injectGlobal`
       border: 9px solid transparent;
       position: relative;
 
-      .canwasWrapper {
+      .canvasWrapper {
         overflow: hidden;
       }
 
@@ -23,11 +24,12 @@ injectGlobal`
         right: 0;
         bottom: 0;
         overflow: hidden;
-        line-height: 1.0;
+        line-height: 1;
       }
     }
   }
 `;
+/* tslint:enable:no-unused-expression */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
 
