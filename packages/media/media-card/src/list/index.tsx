@@ -33,9 +33,7 @@ export interface CardListProps {
   onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
 
-  /**
-   * Infinite scrolling is only enabled when height has also been specified.
-   */
+  // Infinite scrolling is only enabled when height has also been specified!
   useInfiniteScroll?: boolean;
   shouldLazyLoadCards?: boolean;
   errorComponent?: JSX.Element;

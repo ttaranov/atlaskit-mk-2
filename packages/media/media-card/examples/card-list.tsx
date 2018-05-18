@@ -1,140 +1,37 @@
 import * as React from 'react';
+
 import {
-  StoryList,
   createStorybookContext,
   defaultCollectionName,
+  fileCollectionName,
   emptyCollectionName,
 } from '@atlaskit/media-test-helpers';
 
-import {
-  cardsActions,
-  wrongCollection,
-  wrongContext,
-} from '../example-helpers';
-
-import { CardList } from '../src';
+import { renderVariousWidths } from '../example-helpers/card-list/various-widths';
+import { renderEmptyStates } from '../example-helpers/card-list/empty-states';
+import { renderErrorStates } from '../example-helpers/card-list/error-states';
+import { renderInfiniteScroll } from '../example-helpers/card-list/infinite-scroll';
+import { renderActionableLists } from '../example-helpers/card-list/actionable';
 
 const context = createStorybookContext();
-
-const renderVariousWidths = () => {
-  return (
-    <StoryList>
-      {[
-        {
-          title: 'Small parent width',
-          content: (
-            <div
-              style={{ border: '1px solid', width: '50px', overflow: 'hidden' }}
-            >
-              <CardList
-                context={context}
-                collectionName={defaultCollectionName}
-              />
-            </div>
-          ),
-        },
-        {
-          title: 'No parent width',
-          content: (
-            <div style={{ border: '1px solid', overflow: 'hidden' }}>
-              <CardList
-                context={context}
-                collectionName={defaultCollectionName}
-              />
-            </div>
-          ),
-        },
-        {
-          title: 'Large parent width',
-          content: (
-            <div
-              style={{
-                border: '1px solid',
-                width: '400px',
-                overflow: 'hidden',
-              }}
-            >
-              <CardList
-                context={context}
-                collectionName={defaultCollectionName}
-              />
-            </div>
-          ),
-        },
-      ]}
-    </StoryList>
-  );
-};
-
-const renderEmptyStates = () => {
-  const customEmptyComponent = <div>No items (this is a custom component)</div>;
-
-  return (
-    <StoryList>
-      {[
-        {
-          title: 'Default empty state',
-          content: (
-            <CardList context={context} collectionName={emptyCollectionName} />
-          ),
-        },
-        {
-          title: 'Custom empty state',
-          content: (
-            <CardList
-              context={context}
-              emptyComponent={customEmptyComponent}
-              collectionName={emptyCollectionName}
-            />
-          ),
-        },
-      ]}
-    </StoryList>
-  );
-};
-
-const renderErrorState = () => {
-  const style = { color: 'red', fontSize: '30px' };
-  const customErrorComponent = <div style={style}>Something went wrong :\</div>;
-
-  return (
-    <StoryList>
-      {[
-        {
-          title: 'Default error state',
-          content: (
-            <CardList
-              context={wrongContext}
-              collectionName={wrongCollection}
-              actions={cardsActions}
-            />
-          ),
-        },
-        {
-          title: 'Custom error state',
-          content: (
-            <CardList
-              context={wrongContext}
-              errorComponent={customErrorComponent}
-              collectionName={wrongCollection}
-              actions={cardsActions}
-            />
-          ),
-        },
-      ]}
-    </StoryList>
-  );
-};
 
 export default () => (
   <div>
     <h2>Custom widths</h2>
-    {renderVariousWidths()}
+    {renderVariousWidths(context, fileCollectionName)}
 
     <h2>Empty state</h2>
-    {renderEmptyStates()}
+    {renderEmptyStates(context, emptyCollectionName)}
 
     <h2>Error state</h2>
-    {renderErrorState()}
+    {renderErrorStates()}
+
+    <h2>Infinite Scroll</h2>
+    {renderInfiniteScroll(context, defaultCollectionName)}
+
+    <h2>Lazy Loading</h2>
+
+    <h2>Actions</h2>
+    {renderActionableLists(context, fileCollectionName)}
   </div>
 );
