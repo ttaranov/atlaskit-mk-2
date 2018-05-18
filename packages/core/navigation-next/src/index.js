@@ -22,10 +22,12 @@ export { default as SectionTitle } from './components/SectionTitle';
 export { NavigationProvider, NavigationSubscriber } from './state';
 
 /** Theme */
-export { dark, light, settings, modeGenerator, GlobalTheme } from './theme';
+export { dark, light, settings, modeGenerator } from './theme';
 
 /** Types */
 export { GlobalItemProps } from './components/GlobalItem';
+export { NavigationStateInterface } from './state';
+export { GlobalTheme } from './theme';
 
 /** Nav API */
 export { NavAPISubscriber } from './api';
