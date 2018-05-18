@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.0.2
+- [patch] Fix a issue where last table row is duplicated in Wiki parser [2fd3446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2fd3446)
+
 ## 1.0.1
 
 
