@@ -73,14 +73,11 @@ export default abstract class AbstractReactionsResource
   ): ReactionSummary | undefined {
     const reactionState = this.cachedReactions[key];
     const index = this.findReactionIndex(key, emojiId);
-    if (
-      index !== -1 &&
+    return index !== -1 &&
       reactionState &&
       reactionState.status === ReactionStatus.ready
-    ) {
-      return reactionState.reactions[index];
-    }
-    return undefined;
+      ? reactionState.reactions[index]
+      : undefined;
   }
 
   private findReactionIndex(key: string, emojiId: string): number {
@@ -273,8 +270,8 @@ export default abstract class AbstractReactionsResource
     }
 
     const reactionState = this.cachedReactions[key];
-    const reactionIndex = this.findReactionIndex(key, emojiId);
     if (reactionState.status === ReactionStatus.ready) {
+      const reactionIndex = this.findReactionIndex(key, emojiId);
       if (reactionIndex !== -1) {
         reactionState.reactions = updateReadonlyArray(
           reactionState.reactions,
