@@ -38,7 +38,7 @@ export type Props = {
   zIndex?: number,
   /** Lock scrolling behind the layer */
   lockScroll?: boolean,
-  /** Force the layer to always be positioned fixed to the viewport. This will cause scroll to be locked regardless of the lockScroll prop. */
+  /** Force the layer to always be positioned fixed to the viewport. */
   isAlwaysFixed?: boolean,
 };
 
@@ -181,6 +181,8 @@ export default class Layer extends Component<Props, State> {
     if (isAlwaysFixed && this.targetRef) {
       const actualTarget = this.targetRef.firstChild;
       this.setState({ fixedOffset: actualTarget.getBoundingClientRect().top });
+    } else if (!isAlwaysFixed && this.state.fixedOffset !== null) {
+      this.setState({ fixedOffset: null });
     }
   }
 

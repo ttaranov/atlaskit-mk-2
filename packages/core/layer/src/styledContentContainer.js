@@ -9,6 +9,6 @@ export default styled.div`
     fixedOffset &&
     css`
       position: fixed;
-      top: ${fixedOffset};
+      top: ${fixedOffset}px;
     `};
 `;
