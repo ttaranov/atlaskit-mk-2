@@ -17,6 +17,15 @@ import {
 
 const overlayZindex = 999;
 
+export const colors = {
+  image: akColorY200,
+  audio: akColorP200,
+  video: '#ff7143',
+  doc: akColorB300,
+  unknown: '#3dc7dc',
+  blanketColor: '#1b2638',
+};
+
 export const hideControlsClassName = 'mvng-hide-controls';
 
 export const Blanket = styled.div`
@@ -25,7 +34,7 @@ export const Blanket = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #1b2638;
+  background-color: ${colors.blanketColor};
   z-index: ${overlayZindex};
 `;
 
@@ -173,14 +182,6 @@ export const MetadataIconWrapper = styled.div`
   padding-right: 12px;
 `;
 
-export const colors = {
-  image: akColorY200,
-  audio: akColorP200,
-  video: '#ff7143',
-  doc: akColorB300,
-  unknown: '#3dc7dc',
-};
-
 export interface IconWrapperProps {
   type: MediaType;
 }
@@ -224,7 +225,6 @@ export const AudioCover = styled.img`
 `;
 
 export const DefaultCoverWrapper = styled.div`
-  background-color: ${colors.audio};
   width: 100%;
   height: 100%;
   display: flex;
