@@ -27,18 +27,29 @@ export const TimebarWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   color: white;
+  margin: 0 20px;
 `;
 
 export const VolumeWrapper = styled.div`
   margin-right: 10px;
+  display: flex;
+  width: 35px;
+  overflow: hidden;
+  transition: width 0.3s;
+
+  &:hover {
+    width: 168px;
+  }
 `;
 
 export const TimeWrapper = styled.div`
-  padding: 0 20px;
+  margin: 0 20px 10px 20px;
 `;
 
 export const CurrentTime = styled.div`
-  width: 100px;
+  width: 90px;
+  color: #a4b4cb;
+  user-select: none;
 `;
 
 export const TimeLine = styled.div`
@@ -81,4 +92,42 @@ export const LeftControls = styled.div``;
 export const RightControls = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const ControlsWrapper = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+`;
+
+export const VolumeToggleWrapper = styled.div`
+  position: relative;
+`;
+
+export interface MuttedIndicatorProps {
+  isMutted: boolean;
+}
+
+export const MuttedIndicator = styled.div`
+  width: 29px;
+  height: 2px;
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  background: white;
+  transform: rotate(32deg) translateY(10px);
+  opacity: 0;
+  pointer-events: none;
+
+  ${(props: MuttedIndicatorProps) =>
+    props.isMutted
+      ? `
+    opacity: 1;
+  `
+      : ''};
+`;
+
+export const VolumeRange = styled.input`
+  margin-left: 20px;
 `;

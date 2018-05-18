@@ -9,6 +9,7 @@ import {
   defaultCollectionName,
   unknownFileId,
   audioNoCoverFileId,
+  videoHorizontalFileId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
@@ -29,6 +30,12 @@ const docItem: MediaViewerItem = {
 const videoItem: MediaViewerItem = {
   type: 'file',
   id: videoFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const videoHorizontalFileItem: MediaViewerItem = {
+  type: 'file',
+  id: videoHorizontalFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
@@ -63,8 +70,15 @@ export default class Example extends React.Component<{}, State> {
         <Button onClick={() => this.setState({ selectedItem: imageItem })}>
           Image item
         </Button>
+        <Button
+          onClick={() =>
+            this.setState({ selectedItem: videoHorizontalFileItem })
+          }
+        >
+          Video horizontal
+        </Button>
         <Button onClick={() => this.setState({ selectedItem: videoItem })}>
-          Video item
+          Video vertical
         </Button>
         <Button onClick={() => this.setState({ selectedItem: audioItem })}>
           Audio item

@@ -59,6 +59,7 @@ export class VideoViewer extends React.Component<Props, State> {
 
 function getVideoArtifactUrl(fileItem: FileItem) {
   const artifact = 'video_640.mp4';
+
   return (
     fileItem.details &&
     fileItem.details.artifacts &&

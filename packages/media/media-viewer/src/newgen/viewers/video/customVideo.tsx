@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import FieldRange from '@atlaskit/field-range';
 import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
 import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
@@ -17,6 +16,10 @@ import {
   TimeWrapper,
   LeftControls,
   RightControls,
+  ControlsWrapper,
+  VolumeToggleWrapper,
+  MuttedIndicator,
+  VolumeRange,
 } from './styled';
 
 export interface CustomVideoState {}
@@ -25,6 +28,16 @@ export interface CustomVideoProps {
   src: string;
 }
 
+const formatDuration = (duration: number) => {
+  const seconds = parseInt(`${duration}`, 10);
+  const hours = Math.floor(seconds / 3600);
+  const prettyMinutes = Math.floor((seconds - hours * 3600) / 60);
+  const prettySeconds = seconds - hours * 3600 - prettyMinutes * 60;
+  const secondsPad = prettySeconds < 10 ? '0' : '';
+
+  return `${prettyMinutes}:${secondsPad}${prettySeconds}`;
+};
+
 export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
   state: CustomVideoState = {};
 
@@ -32,7 +45,8 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
     navigate(value);
   };
 
-  onVolumeChange = (setVolume: Function) => (value: number) => {
+  onVolumeChange = (setVolume: Function) => (e: any) => {
+    const value = e.target.value;
     setVolume(value);
   };
 
@@ -41,7 +55,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
 
     return (
       <AppWrapper>
-        <Video src={src} autoPlay={true}>
+        <Video src={src} autoPlay={false}>
           {(video, videoState, actions) => {
             const button =
               videoState.status === 'playing' ? (
@@ -61,40 +75,49 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
                 onClick={actions.requestFullscreen}
               />
             );
+            const isMutted = videoState.volume === 0;
 
             return (
               <VideoWrapper>
                 {video}
-                <TimeWrapper>
-                  <TimeRange
-                    currentTime={videoState.currentTime}
-                    bufferedTime={0}
-                    // min={0}
-                    duration={videoState.duration}
-                    // step={2}
-                    onChange={this.onTimeChange(actions.navigate)}
-                  />
-                </TimeWrapper>
-                <TimebarWrapper>
-                  <LeftControls>{button}</LeftControls>
-                  <RightControls>
-                    <CurrentTime>
-                      {Math.round(videoState.currentTime)} /{' '}
-                      {Math.round(videoState.duration)}
-                    </CurrentTime>
-                    <VolumeWrapper>
-                      <HipchatOutgoingSoundIcon label="volume" />
-                      {/* <FieldRange
-                        value={videoState.volume}
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        onChange={this.onVolumeChange(actions.setVolume)}
-                      /> */}
-                    </VolumeWrapper>
-                    {fullScreenButton}
-                  </RightControls>
-                </TimebarWrapper>
+                <ControlsWrapper>
+                  <TimeWrapper>
+                    <TimeRange
+                      currentTime={videoState.currentTime}
+                      bufferedTime={videoState.buffered}
+                      duration={videoState.duration}
+                      onChange={this.onTimeChange(actions.navigate)}
+                    />
+                  </TimeWrapper>
+                  <TimebarWrapper>
+                    <LeftControls>{button}</LeftControls>
+                    <RightControls>
+                      <CurrentTime>
+                        {formatDuration(videoState.currentTime)} /{' '}
+                        {formatDuration(videoState.duration)}
+                      </CurrentTime>
+                      <VolumeWrapper>
+                        <VolumeToggleWrapper>
+                          <MuttedIndicator isMutted={isMutted} />
+                          <Button
+                            onClick={actions.toggleMute}
+                            iconBefore={
+                              <HipchatOutgoingSoundIcon label="volume" />
+                            }
+                          />
+                        </VolumeToggleWrapper>
+                        <VolumeRange
+                          type="range"
+                          step="0.01"
+                          value={videoState.volume}
+                          max={1}
+                          onChange={this.onVolumeChange(actions.setVolume)}
+                        />
+                      </VolumeWrapper>
+                      {fullScreenButton}
+                    </RightControls>
+                  </TimebarWrapper>
+                </ControlsWrapper>
               </VideoWrapper>
             );
           }}
