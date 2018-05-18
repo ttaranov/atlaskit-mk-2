@@ -134,6 +134,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
+            - yarn build
             - yarn build:bundle-analysis
           caches:
             - node 
