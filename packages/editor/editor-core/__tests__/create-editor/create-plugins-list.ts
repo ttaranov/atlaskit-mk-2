@@ -2,6 +2,7 @@ jest.mock('../../src/plugins', () => ({
   mediaPlugin: jest.fn(),
   insertBlockPlugin: jest.fn(),
   placeholderTextPlugin: jest.fn(),
+  textFormattingPlugin: jest.fn(),
 }));
 
 import {
