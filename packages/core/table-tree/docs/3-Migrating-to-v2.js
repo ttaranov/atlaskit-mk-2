@@ -3,7 +3,7 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
-In the v2 release the table-tree component does not maintain a state anymore, a helper class \`CreateTableTreeDataHelper\`
+In the v2 release the table-tree component does not maintain a state anymore, a helper class \`TableTreeDataHelper\`
 to help you process data in case of async loading.
 
 ---
@@ -87,20 +87,20 @@ ${code`
 `}
 
 *To overcome this performance bottle neck we recommend creating a cache with unique identifier in the item and path to the item, so that
-we can travel the item tree quickly to update, to do this we provide a helper class \`CreateTableTreeDataHelper\`*
+we can travel the item tree quickly to update, to do this we provide a helper class \`TableTreeDataHelper\`*
 
 ### Recommendation
 
-\`CreateTableTreeDataHelper\` is exported from table tree package, to use it we need to instantiate it with the unique identifier.
+\`TableTreeDataHelper\` is exported from table tree package, to use it we need to instantiate it with the unique identifier.
 
 ${code`
-const createTableTreeDataHelperInstance = new CreateTableTreeDataHelper('keyId');
+const tableTreeDataHelper = new TableTreeDataHelper('keyId');
 `}
 
 Then to build cache and get items to be used in component just do:
 
 ${code`
-createTableTreeDataHelperInstance.updateItems(<_items_to_add>, <_current_items_>, <_parent_item_for_item_to_be_added_>);
+tableTreeDataHelper.updateItems(<_items_to_add>, <_current_items_>, <_parent_item_for_item_to_be_added_>);
 `}
 
 *In case of root items ( 1st level object) only one parameter items is enough*
@@ -136,5 +136,5 @@ itemsById: {
 }
 `}
 
-**CreateTableTreeDataHelper** creates the cache and updates the object for you, hence taking the worry away in case of async loading.
+**TableTreeDataHelper** creates the cache and updates the object for you, hence taking the worry away in case of async loading.
 `;
