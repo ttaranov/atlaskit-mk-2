@@ -48,7 +48,7 @@ const renderSearchPeopleItem = (query: string) =>
   });
 
 const renderNoResults = (query: string) => [
-  <NoResults />,
+  <NoResults key="no-results" />,
   <ResultItemGroup title="" key="advanced-search">
     {renderSearchConfluenceItem(query)}
     {renderSearchPeopleItem(query)}

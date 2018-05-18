@@ -1,6 +1,6 @@
 import {
   Result,
-  ComponentType,
+  ResultType,
   ResultContentType,
   AnalyticsType,
 } from '../model/Result';
@@ -84,13 +84,13 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
 function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
   return {
     resultId: recentPage.id,
-    componentType: ComponentType.Object,
+    resultType: ResultType.Object,
     name: recentPage.title,
     href: `${baseUrl}${recentPage.url}`,
     avatarUrl: '',
     containerName: recentPage.space,
     contentType: recentPage.contentType,
-    analyticsType: AnalyticsType.ResultConfluence,
+    analyticsType: AnalyticsType.RecentConfluence,
   };
 }
 
@@ -100,10 +100,10 @@ function recentSpaceToResult(
 ): Result {
   return {
     resultId: recentSpace.id,
-    componentType: ComponentType.Container,
+    resultType: ResultType.Container,
     name: recentSpace.name,
     href: `${baseUrl}/spaces/${recentSpace.key}/overview`,
     avatarUrl: recentSpace.icon,
-    analyticsType: AnalyticsType.ResultConfluence,
+    analyticsType: AnalyticsType.RecentConfluence,
   };
 }

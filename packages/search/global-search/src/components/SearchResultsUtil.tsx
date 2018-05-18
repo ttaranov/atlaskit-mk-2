@@ -8,7 +8,7 @@ import {
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import {
   Result,
-  ComponentType,
+  ResultType,
   ResultContentType,
   AnalyticsType,
 } from '../model/Result';
@@ -26,20 +26,20 @@ interface QuickSearchResult extends ComponentClass {
   contentType?: ResultContentType;
 }
 
-function getResultComponent(componentType: ComponentType): ComponentClass {
-  switch (componentType) {
-    case ComponentType.Object: {
+function getResultComponent(resultType: ResultType): ComponentClass {
+  switch (resultType) {
+    case ResultType.Object: {
       return ObjectResult;
     }
-    case ComponentType.Person: {
+    case ResultType.Person: {
       return PersonResult;
     }
-    case ComponentType.Container: {
+    case ResultType.Container: {
       return ContainerResult;
     }
     default: {
       // Make the TS compiler verify that all enums have been matched
-      const _nonExhaustiveMatch: never = componentType;
+      const _nonExhaustiveMatch: never = resultType;
       throw new Error(
         `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
       );
@@ -49,8 +49,7 @@ function getResultComponent(componentType: ComponentType): ComponentClass {
 
 export function renderResults(results: Result[]) {
   return results.map(result => {
-    const type = result.analyticsType || result.componentType;
-    const Result = getResultComponent(result.componentType) as ComponentClass<
+    const Result = getResultComponent(result.resultType) as ComponentClass<
       QuickSearchResult
     >;
 
@@ -58,7 +57,7 @@ export function renderResults(results: Result[]) {
       <Result
         key={result.resultId}
         resultId={result.resultId}
-        type={type}
+        type={result.analyticsType}
         name={result.name}
         containerName={result.containerName}
         href={result.href}

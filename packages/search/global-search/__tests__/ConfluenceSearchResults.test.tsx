@@ -84,7 +84,9 @@ describe('ConfluenceSearchResults', () => {
   it('should render spaces when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      spaceResults: [makeResult({ type: ResultType.Container, name: 'name' })],
+      spaceResults: [
+        makeResult({ resultType: ResultType.Container, name: 'name' }),
+      ],
     };
 
     const wrapper = render(props);
@@ -97,7 +99,9 @@ describe('ConfluenceSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makeResult({ type: ResultType.Person, name: 'name' })],
+      peopleResults: [
+        makeResult({ resultType: ResultType.Person, name: 'name' }),
+      ],
     };
 
     const wrapper = render(props);

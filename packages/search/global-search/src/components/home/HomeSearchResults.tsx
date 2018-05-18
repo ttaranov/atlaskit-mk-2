@@ -62,7 +62,7 @@ const renderPeople = (results: Result[], query: string) => (
 );
 
 const renderNoResults = (query: string) => [
-  <NoResults />,
+  <NoResults key="no-results" />,
   <ResultItemGroup title="" key="advanced-search">
     {searchJiraItem(query)}
     {renderSearchConfluenceItem(query)}

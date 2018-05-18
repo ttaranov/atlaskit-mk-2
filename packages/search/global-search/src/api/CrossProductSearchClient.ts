@@ -1,6 +1,6 @@
 import {
   Result,
-  ComponentType,
+  ResultType,
   ResultContentType,
   AnalyticsType,
 } from '../model/Result';
@@ -180,7 +180,7 @@ function mapConfluenceItemToResultObject(
   searchSessionId: string,
 ): Result {
   const result: Result = {
-    componentType: ComponentType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.url,
     avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
@@ -198,7 +198,7 @@ function mapConfluenceItemToResultObject(
 
 function mapJiraItemToResult(item: JiraItem): Result {
   return {
-    componentType: ComponentType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
@@ -211,7 +211,7 @@ function mapJiraItemToResult(item: JiraItem): Result {
 
 function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
   return {
-    componentType: ComponentType.Container,
+    resultType: ResultType.Container,
     resultId: 'search-' + spaceItem.container.displayUrl,
     avatarUrl: '', // depends on XPSRCH-747
     name: spaceItem.container.title,

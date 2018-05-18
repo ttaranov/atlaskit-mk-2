@@ -1,4 +1,4 @@
-import { Result, ComponentType, AnalyticsType } from '../model/Result';
+import { Result, ResultType, AnalyticsType } from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -118,7 +118,7 @@ function recentItemToResult(recentItem: RecentItem): Result {
   const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
 
   return {
-    componentType: ComponentType.Object,
+    resultType: ResultType.Object,
     resultId: 'recent-' + recentItem.objectId,
     avatarUrl: recentItem.iconUrl,
     name: name,
