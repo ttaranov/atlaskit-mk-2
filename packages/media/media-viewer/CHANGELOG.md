@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.8.4
+- [patch] Adjust default audio cover [2f37539](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f37539)
+
 ## 13.8.3
 - [patch] Add zooming to document viewer [f76e5d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76e5d3)
 
