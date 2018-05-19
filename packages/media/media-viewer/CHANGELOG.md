@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 13.8.3
+- [patch] Add zooming to document viewer [f76e5d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76e5d3)
+
 ## 13.8.2
 - [patch] Fix new case of SC component interpolation [accec74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/accec74)
 
