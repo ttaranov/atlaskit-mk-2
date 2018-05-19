@@ -114,7 +114,14 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   height: 100%;
 `;
 
-export const PDFWrapper = styled.div``;
+export const PDFWrapper = styled.div`
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`;
 
 const ArrowWrapper = styled.div`
   flex: 1;
