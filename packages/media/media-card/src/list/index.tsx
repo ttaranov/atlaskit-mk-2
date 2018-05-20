@@ -18,7 +18,7 @@ import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
 import { CollectionAction } from '../actions';
-import { InfiniteScroll } from './infiniteScroll';
+import { InfiniteScroll } from './infinite-scroll';
 import { CardListItemWrapper, Spinner } from './styled';
 
 export interface CardListProps {

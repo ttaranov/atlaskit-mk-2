@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Component, UIEvent } from 'react';
 import * as debounce from 'lodash.debounce';
+import { Wrapper } from './styled';
 
 export type ThresholdReachedEventHandler = () => void;
 
 export interface InfiniteScrollProps {
-  readonly height?: number;
-
   readonly width?: string;
+  readonly height?: number;
   readonly delay?: number;
   readonly threshold?: number;
 
@@ -37,27 +37,25 @@ export class InfiniteScroll extends Component<
 
   private scrollHeight: number = 0;
 
+  componentDidMount() {}
+
   render(): JSX.Element {
+    const { width, height } = this.props;
     return (
-      <div
-        style={{
-          width: this.props.width,
-          height: this.props.height,
-          overflowX: 'hidden',
-          overflowY: 'auto',
-          overflowStyle: 'scrollbar',
-          display: 'inline-block',
-        }}
+      <Wrapper
+        width={width || '100%'}
+        height={height}
         onScroll={this.checkThreshold}
       >
         {this.props.children}
-      </div>
+      </Wrapper>
     );
   }
 
   private checkThreshold = (event: UIEvent<HTMLDivElement>) => {
+    const { threshold = 100 } = this.props;
+
     const target = event.currentTarget;
-    const threshold = this.props.threshold || 0;
     const position = target.scrollTop + target.offsetHeight;
     const thresholdModifier = 0.1;
     const adjustedThreshold = Math.min(
@@ -76,8 +74,9 @@ export class InfiniteScroll extends Component<
   };
 
   private emitOnThresholdReached(): void {
-    if (this.props.onThresholdReached) {
-      this.props.onThresholdReached();
+    const { onThresholdReached } = this.props;
+    if (onThresholdReached) {
+      onThresholdReached();
     }
   }
 }
