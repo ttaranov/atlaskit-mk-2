@@ -50,6 +50,7 @@ const extensionPlugin: EditorPlugin = {
             element={extensionState.element}
             onEdit={() => editExtension(macroState.macroProvider)(editorView)}
             onRemove={() => removeExtension(editorView.state, dispatch)}
+            stickToolbarToBottom={extensionState.stickToolbarToBottom}
           />
         )}
       />

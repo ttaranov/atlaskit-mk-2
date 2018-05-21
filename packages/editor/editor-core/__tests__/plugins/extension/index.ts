@@ -157,4 +157,14 @@ describe('extension', () => {
       });
     });
   });
+
+  describe('show extention options', () => {
+    it('should show options when the cursor is inside the extension', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
+      );
+      const pluginState = pluginKey.getState(editorView.state);
+      expect(pluginState.element).not.toEqual(null);
+    });
+  });
 });
