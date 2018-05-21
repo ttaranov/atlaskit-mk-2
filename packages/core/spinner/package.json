@@ -35,7 +35,7 @@
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "sinon": "^2.2.0"
   }
 }

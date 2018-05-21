@@ -34,7 +34,7 @@
     "@atlaskit/field-base": "^9.0.3",
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/toggle": "^3.0.2",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

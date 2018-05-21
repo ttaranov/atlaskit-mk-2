@@ -4924,9 +4924,9 @@ envinfo@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-4.4.2.tgz#472c49f3a8b9bca73962641ce7cb692bf623cd1c"
 
-"enzyme-adapter-react-16@https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.6.tgz":
-  version "1.1.6"
-  resolved "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.6.tgz#e4760b4f935434dd3e3127e83cade81b757927ac"
+"enzyme-adapter-react-16@https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz":
+  version "1.1.7"
+  resolved "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz#80a6f15a9e9691567af7dabded26969e2d390807"
   dependencies:
     enzyme-adapter-utils "https://registry.npmjs.org/@pgleeson/enzyme-adapter-utils/-/enzyme-adapter-utils-1.3.2.tgz"
     lodash "^4.17.4"
@@ -4950,9 +4950,9 @@ enzyme-to-json@^3.3.0:
   dependencies:
     lodash "^4.17.4"
 
-"enzyme@https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz":
-  version "3.3.6"
-  resolved "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz#b0cd3bc3412f8ea33509fd7f054ec65568d3282a"
+"enzyme@https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz":
+  version "3.3.7"
+  resolved "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz#9c6119283fb4b6ab54dc80ac95c0a1f8326cc82c"
   dependencies:
     cheerio "^1.0.0-rc.2"
     function.prototype.name "^1.0.3"

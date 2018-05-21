@@ -33,7 +33,7 @@
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/lozenge": "^4.0.1",
     "@atlaskit/tooltip": "^9.2.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "polished": "1.5.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
