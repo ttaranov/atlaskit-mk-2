@@ -15,14 +15,28 @@ export const renderInfiniteScroll = (
     <StoryList>
       {[
         {
-          title: 'Infinite scoll',
+          title: 'With page size of 4',
           content: (
-            <CardListWrapper width={450}>
+            <CardListWrapper width={400}>
               <CardList
                 context={context}
                 collectionName={collectionName}
                 actions={cardsActions}
                 pageSize={4}
+                height={500}
+              />
+            </CardListWrapper>
+          ),
+        },
+        {
+          title: 'With page size of 50',
+          content: (
+            <CardListWrapper width={400}>
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                actions={cardsActions}
+                pageSize={50}
                 height={500}
               />
             </CardListWrapper>
