@@ -5,15 +5,6 @@ import React from 'react';
 
 import Lozenge from '../src';
 
-const APPEARANCE_ENUM = [
-  'default',
-  'success',
-  'removed',
-  'inprogress',
-  'new',
-  'moved',
-];
-
 describe('Lozenge', () => {
   describe('isBold property', () => {
     it('should not be the default', () => {
@@ -30,12 +21,10 @@ describe('Lozenge', () => {
       expect(mount(<Lozenge />).prop('appearance')).toBe('default');
     });
 
-    APPEARANCE_ENUM.forEach(value => {
-      it(`should change when set to an approved value: ${value}`, () => {
-        expect(mount(<Lozenge appearance={value} />).prop('appearance')).toBe(
-          value,
-        );
-      });
+    it('should change when set to an approved value: success', () => {
+      expect(mount(<Lozenge appearance="success" />).prop('appearance')).toBe(
+        'success',
+      );
     });
 
     it('should render correctly with text truncated', () => {
