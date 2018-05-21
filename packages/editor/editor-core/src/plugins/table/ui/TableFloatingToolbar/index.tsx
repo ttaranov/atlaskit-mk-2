@@ -20,15 +20,14 @@ import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
+import { dropShadow } from '../../../../ui/styles';
 
 // `Popup` doesn't work with -ve `offset` if it goes outside of the container hence the -ve margin
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-top: -8px;
   background-color: white;
   border-radius: 3px;
-  box-shadow: rgba(9, 30, 66, 0.31) 0 0 1px,
-    rgba(9, 30, 66, 0.25) 0 4px 8px -2px;
-  padding: 4px 8px;
+  ${dropShadow} padding: 4px 8px;
   display: flex;
 
   & > div:last-child button {
