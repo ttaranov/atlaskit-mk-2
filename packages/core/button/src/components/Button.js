@@ -44,7 +44,7 @@ const createStyledComponent = () => {
     // problem with styled-components flow definitions
     // $FlowFixMe
     CustomComponentProxy,
-  )`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
+  )`{${getButtonStyles}}`;
   component.displayName = 'StyledCustomComponent';
   return component;
 };
