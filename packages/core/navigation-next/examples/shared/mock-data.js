@@ -95,6 +95,12 @@ const rootHome = {
       ],
       type: 'Nested',
     },
+    {
+      key: 'shortcuts-plugin',
+      name: 'shortcuts-plugin',
+      text: 'Shortcuts plugin',
+      type: 'PluginPoint',
+    },
   ],
 };
 

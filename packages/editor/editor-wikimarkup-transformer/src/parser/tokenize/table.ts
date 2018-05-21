@@ -35,13 +35,13 @@ export function table(input: string, schema: Schema): Token {
 
     if (lineBuffer.length > 0) {
       builder.add(parseToTableCell(lineBuffer.join('\n'), schema));
+      lineBuffer = [];
     }
 
     if (isNextLineEmpty(input.substring(index))) {
       break;
     }
 
-    lineBuffer = [];
     lineBuffer.push(line);
     index += line.length;
     // Finding the length of the line break
