@@ -208,7 +208,6 @@ describe('<QuickSearch />', () => {
         .find('input')
         .simulate('keydown', { key: 'ArrowDown' });
 
-      wrapper.update();
       expect(
         wrapper
           .find(ResultItem)
@@ -225,7 +224,6 @@ describe('<QuickSearch />', () => {
         .simulate('keydown', { key: 'ArrowDown' })
         .simulate('keydown', { key: 'ArrowDown' });
 
-      wrapper.update();
       expect(
         wrapper
           .find(ResultItem)
@@ -239,7 +237,6 @@ describe('<QuickSearch />', () => {
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowUp' });
-      wrapper.update();
       expect(
         wrapper
           .find(ResultItem)
@@ -254,7 +251,6 @@ describe('<QuickSearch />', () => {
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
       searchInput.simulate('keydown', { key: 'ArrowDown' });
-      wrapper.update();
       expect(
         wrapper
           .find(ResultItem)

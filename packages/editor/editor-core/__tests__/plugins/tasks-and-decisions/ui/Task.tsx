@@ -88,7 +88,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
     task.unmount();
   });
 
-  it('should not change state of task if no taskDecisionProvider', () => {
+  it.skip('should not change state of task if no taskDecisionProvider', () => {
     providerFactory.setProvider(
       'contextIdentifierProvider',
       contextIdentifierProvider,
@@ -103,7 +103,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
     task.unmount();
   });
 
-  it('should not change state of task if no contextIdentifierProvider', () => {
+  it.skip('should not change state of task if no contextIdentifierProvider', () => {
     providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
     const task = mount(
       <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,

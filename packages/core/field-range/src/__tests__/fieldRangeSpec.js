@@ -13,7 +13,6 @@ const simulateValueChange = (range, value) => {
   if (inputElement) {
     inputElement.value = `${value}`;
     inputElement.dispatchEvent(new Event('input', { detail: { value } }));
-    range.update();
   }
 };
 
