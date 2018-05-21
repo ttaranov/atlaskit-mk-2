@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-listeners",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fabric analytics listeners to be used by the products",
   "config": {
     "access": "public"
@@ -14,7 +14,7 @@
     "dist",
     "src"
   ],
-  "dependencies": {    
+  "dependencies": {
     "@atlaskit/analytics-next": "^2.0.0",
     "@atlaskit/analytics-gas-types": "^2.0.0",
     "tslib": "^1.8.0"
@@ -23,7 +23,9 @@
     "react": "^16.3.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": ["Eduardo S"],
+  "maintainers": [
+    "Eduardo S"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
