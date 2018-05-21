@@ -1,3 +1,5 @@
+// @ts-ignore
+
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { PureComponent, SyntheticEvent } from 'react';
@@ -40,6 +42,18 @@ import {
 import { getEmojiVariation } from '../../api/EmojiRepository';
 import { FireAnalyticsEvent } from '@atlaskit/analytics';
 
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+
+import {
+  ELEMENTS_CHANNEL,
+  EventType,
+  GasPayload,
+} from '@atlaskit/analytics-gas-types';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+
 const FREQUENTLY_USED_MAX = 16;
 
 export interface PickerRefHandler {
@@ -52,6 +66,7 @@ export interface Props {
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  createAnalyticsEvent?: any;
 }
 
 export interface State {
@@ -77,7 +92,44 @@ export interface State {
   showUploadButton: boolean;
 }
 
-export default class EmojiPickerComponent extends PureComponent<Props, State> {
+const emojiPayload = (
+  actionSubject: string,
+  action: string,
+  data: object = {},
+  actionSubjectId?: string,
+  eventType: EventType = 'ui',
+): GasPayload => {
+  return {
+    action,
+    actionSubject,
+    actionSubjectId,
+    eventType,
+    attributes: {
+      packageName,
+      packageVersion,
+      componentName: 'emoji',
+      ...data,
+    },
+    source: 'unknown',
+  };
+};
+
+const EmojiPickerFooterWithAnalytics = withAnalyticsEvents({
+  onFileChosen: (createEvent, props) =>
+    createEvent(
+      emojiPayload('uploadFile', 'selected', {}, 'emojiUploadFilePicker'),
+    ).fire(ELEMENTS_CHANNEL),
+  onOpenUpload: (createEvent, props) =>
+    createEvent(emojiPayload('addEmojiButton', 'selected')).fire(
+      ELEMENTS_CHANNEL,
+    ),
+  onUploadCancelled: (createEvent, props) =>
+    createEvent(emojiPayload('cancelEmojiButton', 'selected')).fire(
+      ELEMENTS_CHANNEL,
+    ),
+})(EmojiPickerFooter);
+
+export class EmojiPickerComponentInternal extends PureComponent<Props, State> {
   static childContextTypes = {
     emoji: PropTypes.object,
   };
@@ -121,6 +173,9 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   componentWillMount() {
     this.openTime = Date.now();
     this.fireAnalytics('open');
+    this.fireAnalyticsNext(
+      emojiPayload('editorToolbarButton', 'selected', {}, 'emojiButton'),
+    );
   }
 
   componentDidMount() {
@@ -144,6 +199,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const { emojiProvider } = this.props;
     emojiProvider.unsubscribe(this.onProviderChange);
     this.fireAnalytics('close');
+    this.fireAnalyticsNext(emojiPayload('emojiPicker', 'closed'));
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -216,6 +272,14 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           selectedEmoji,
         } as State);
         this.fireAnalytics('category.select', { categoryName: categoryId });
+        this.fireAnalyticsNext(
+          emojiPayload(
+            'emojiCategory',
+            'selected',
+            { categoryName: categoryId },
+            'emojiPicker',
+          ),
+        );
       }
     });
   };
@@ -242,6 +306,12 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     if (firePrivateAnalyticsEvent) {
       firePrivateAnalyticsEvent(`${analyticsEmojiPrefix}.${eventName}`, data);
     }
+  };
+
+  private fireAnalyticsNext = (payload: GasPayload) => {
+    const { createAnalyticsEvent } = this.props;
+
+    createAnalyticsEvent!(payload).fire(ELEMENTS_CHANNEL);
   };
 
   private calculateElapsedTime = () => {
@@ -436,6 +506,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploadErrorMessage: undefined, // clear previous errors
     });
     this.fireAnalytics('upload.start');
+    this.fireAnalyticsNext(
+      emojiPayload('uploadEmojiButton', 'selected', {}, undefined, 'ui'),
+    );
+
     if (supportsUploadFeature(emojiProvider)) {
       emojiProvider
         .uploadCustomEmoji(upload)
@@ -450,6 +524,19 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           this.fireAnalytics('upload.successful', {
             duration: this.calculateElapsedTime(),
           });
+
+          // TODO: Operational event type?
+          this.fireAnalyticsNext(
+            emojiPayload(
+              'customEmoji',
+              'created',
+              {
+                duration: this.calculateElapsedTime(),
+              },
+              undefined,
+              'operational',
+            ),
+          );
         })
         .catch(err => {
           this.setState({
@@ -458,6 +545,9 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           // tslint:disable-next-line
           console.error('Unable to upload emoji', err);
           this.fireAnalytics('upload.failed');
+          this.fireAnalyticsNext(
+            emojiPayload('customEmoji', 'failed', {}, undefined, 'track'),
+          );
         });
     }
   };
@@ -521,12 +611,27 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const { query } = this.state;
     if (onSelection) {
       onSelection(emojiId, emoji, event);
+
       this.fireAnalytics('item.select', {
         duration: this.calculateElapsedTime(),
         emojiId: emojiId.id || '',
         type: (emoji && emoji.type) || '',
         queryLength: (query && query.length) || 0,
       });
+
+      this.fireAnalyticsNext(
+        emojiPayload(
+          'emoji',
+          'selected',
+          {
+            duration: this.calculateElapsedTime(),
+            emojiId: emojiId.id || '',
+            type: (emoji && emoji.type) || '',
+            queryLength: (query && query.length) || 0,
+          },
+          'emojiPicker',
+        ),
+      );
     }
   };
 
@@ -579,7 +684,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           loading={loading}
           ref="emojiPickerList"
         />
-        <EmojiPickerFooter
+        <EmojiPickerFooterWithAnalytics
           initialUploadName={query}
           selectedEmoji={selectedEmoji}
           selectedTone={selectedTone}
@@ -602,3 +707,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     return picker;
   }
 }
+
+// tslint:disable-next-line:variable-name
+const EmojiPickerComponent = withAnalyticsEvents({})(
+  EmojiPickerComponentInternal,
+);
+type EmojiPickerComponent = EmojiPickerComponentInternal;
+
+export default EmojiPickerComponent;

@@ -1,3 +1,5 @@
+// @ts-ignore
+
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -10,11 +12,32 @@ import EmojiButton from './EmojiButton';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 import { analyticsEmojiPrefix } from '../../constants';
 
-export interface Props {
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import {
+  ELEMENTS_CHANNEL,
+  EventType,
+  GasPayload,
+} from '@atlaskit/analytics-gas-types';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+
+export type OwnProps = {
   emoji: EmojiDescriptionWithVariations;
   onToneSelected: OnToneSelected;
+};
+
+export type OldAnalytics = {
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
-}
+};
+
+export type NewAnalytics = {
+  createAnalyticsEvent: any;
+};
+
+export type Props = OwnProps & OldAnalytics & NewAnalytics;
 
 const extractAllTones = (
   emoji: EmojiDescriptionWithVariations,
@@ -25,8 +48,25 @@ const extractAllTones = (
   return [emoji];
 };
 
+const emojiPayload = (actionSubject: string, action: string): GasPayload => {
+  return {
+    action,
+    actionSubject,
+    eventType: EventType.UI,
+    attributes: {
+      packageName,
+      packageVersion,
+      componentName: 'emoji',
+    },
+  };
+};
+
+const EmojiButtonWithAnalytics = withAnalyticsEvents({
+  onSelected: createEvent => createEvent(emojiPayload('selected', 'skinTone')),
+})(EmojiButton);
+
 export class ToneSelectorInternal extends PureComponent<Props, {}> {
-  private onToneSelectedHandler = (skinTone: number) => {
+  private onToneSelectedHandler = (skinTone: number, analyticsEvent: any) => {
     const { onToneSelected, firePrivateAnalyticsEvent } = this.props;
     onToneSelected(skinTone);
 
@@ -35,6 +75,15 @@ export class ToneSelectorInternal extends PureComponent<Props, {}> {
         skinTone,
       });
     }
+    analyticsEvent &&
+      analyticsEvent
+        .update({
+          attributes: {
+            ...analyticsEvent.payload.attributes,
+            skinTone,
+          },
+        })
+        .fire(ELEMENTS_CHANNEL);
   };
 
   render() {
@@ -44,10 +93,12 @@ export class ToneSelectorInternal extends PureComponent<Props, {}> {
     return (
       <div>
         {toneEmojis.map((tone, i) => (
-          <EmojiButton
+          <EmojiButtonWithAnalytics
             key={`${tone.id}`}
             // tslint:disable-next-line:jsx-no-lambda
-            onSelected={() => this.onToneSelectedHandler(i)}
+            onSelected={analyticsEvent =>
+              this.onToneSelectedHandler(i, analyticsEvent)
+            }
             emoji={tone}
             selectOnHover={true}
           />
@@ -58,11 +109,10 @@ export class ToneSelectorInternal extends PureComponent<Props, {}> {
 }
 
 // tslint:disable-next-line:variable-name
-const ToneSelector = withAnalytics<typeof ToneSelectorInternal>(
-  ToneSelectorInternal,
-  {},
-  {},
-);
+const ToneSelector: React.ComponentClass<OwnProps> = withAnalytics<
+  typeof ToneSelectorInternal
+>(ToneSelectorInternal, {}, {}) as React.ComponentClass<OwnProps>;
+
 type ToneSelector = ToneSelectorInternal;
 
 export default ToneSelector;
