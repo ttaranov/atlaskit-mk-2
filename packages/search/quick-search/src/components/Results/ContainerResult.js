@@ -34,6 +34,7 @@ export default class ContainerResult extends PureComponent<Props> {
       <Avatar
         src={this.props.avatarUrl}
         appearance="square"
+        size="small"
         status={this.props.isPrivate ? 'locked' : null}
       />
     );
