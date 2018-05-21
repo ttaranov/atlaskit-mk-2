@@ -78,8 +78,5 @@
     "react-circle": "^1.0.1",
     "rxjs": "^5.1.0",
     "sinon": "^2.2.0"
-  },
-  "devDependencies,peerDependencies": {
-    "react": "^16.3.0"
   }
 }
