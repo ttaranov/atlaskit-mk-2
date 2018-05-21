@@ -80,6 +80,11 @@ describe('CrossProductSearchClient', () => {
                   title: 'containerTitle',
                   displayUrl: '/displayUrl',
                 },
+                space: {
+                  icon: {
+                    path: '/spaceIconPath',
+                  },
+                },
               } as ConfluenceItem,
             ],
           },
@@ -94,9 +99,7 @@ describe('CrossProductSearchClient', () => {
       const item = result.get(Scope.ConfluenceSpace)[0];
       expect(item.type).toEqual('container');
       expect(item.resultId).toEqual('search-/displayUrl');
-      expect(item.avatarUrl).toEqual(
-        '', // TODO XPSRCH-747
-      );
+      expect(item.avatarUrl).toEqual('baseUrl/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
       expect(item.href).toEqual('baseUrl/displayUrl');
     });

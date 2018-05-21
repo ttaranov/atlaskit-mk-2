@@ -42,6 +42,11 @@ export interface ConfluenceItem {
     title: string; // this is unhighlighted
     displayUrl: string;
   };
+  space?: {
+    icon: {
+      path: string;
+    };
+  };
 }
 
 export type SearchItem = ConfluenceItem | JiraItem;
@@ -206,7 +211,7 @@ function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
   return {
     type: ResultType.Container,
     resultId: 'search-' + spaceItem.container.displayUrl,
-    avatarUrl: '', // depends on XPSRCH-747
+    avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
   };
