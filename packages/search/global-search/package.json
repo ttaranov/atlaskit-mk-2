@@ -45,7 +45,7 @@
     "@atlaskit/page": "^6.0.3",
     "@atlaskit/quick-search": "^1.6.0",
     "@types/faker": "^4.1.2",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz",
     "faker": "^4.1.0",
     "fetch-mock": "^5.12.1",
     "react-dom": "^16.3.0",

@@ -35,7 +35,7 @@
     "@atlaskit/field-radio-group": "^2.0.3",
     "@atlaskit/spinner": "^5.0.2",
     "@atlaskit/theme": "^3.2.2",
-    "enzyme": "^3.3.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz"
   },
   "keywords": [
     "atlaskit",

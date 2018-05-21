@@ -41,7 +41,7 @@
     "@atlaskit/avatar": "^10.0.6",
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/docs": "^3.0.4",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz",
     "react-test-renderer": "^16.3.0"
   }
 }

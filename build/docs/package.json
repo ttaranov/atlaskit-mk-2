@@ -32,7 +32,7 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.6.tgz",
     "jest-in-case": "^1.0.2",
     "react-dom": "^16.3.0",
     "react-test-renderer": "^16.3.0"
