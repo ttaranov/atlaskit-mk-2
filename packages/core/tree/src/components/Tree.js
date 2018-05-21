@@ -25,7 +25,6 @@ export default class Tree extends Component<Props> {
         item: item.item,
         depth: item.path.length - 1,
         isDragging: false,
-        isHovered: false,
       });
     });
   }

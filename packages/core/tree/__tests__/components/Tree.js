@@ -17,19 +17,16 @@ describe('@atlaskit/tree - Tree', () => {
         item: treeWithThreeLeaves.children[0],
         depth: 0,
         isDragging: false,
-        isHovered: false,
       });
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.children[1],
         depth: 0,
         isDragging: false,
-        isHovered: false,
       });
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.children[2],
         depth: 0,
         isDragging: false,
-        isHovered: false,
       });
     });
   });

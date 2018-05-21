@@ -1,11 +1,11 @@
 // @flow
+import * as React from 'react';
 import type { Item, TargetPosition, TreeData } from '../types';
 
 export type RenderItemParams = {|
   item: Item,
   depth: number,
   isDragging: boolean,
-  isHovered: boolean,
 |};
 
 export type Props = {|
@@ -14,5 +14,5 @@ export type Props = {|
   onCollapse: (item: Item) => void,
   onDragStart: (item: Item) => void,
   onDragEnd: (item: Item, targetItem: Item, position: TargetPosition) => void,
-  renderItem: RenderItemParams => any,
+  renderItem: RenderItemParams => React.Node,
 |};
