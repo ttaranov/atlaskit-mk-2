@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { getAssetUrl } from '../util/getAssetUrl';
 
-export const borderIcon =
-  'https://dt-static.us-west-2.prod.public.atl-paas.net/media-picker/images/border-icon.png';
-export const filesIcon =
-  'https://dt-static.us-west-2.prod.public.atl-paas.net/media-picker/images/files-icon.png';
+export const borderIcon = getAssetUrl('border-icon.png');
+export const filesIcon = getAssetUrl('files-icon.png');
 
 const style = `
 .cls-1{fill:url(#linear-gradient);}

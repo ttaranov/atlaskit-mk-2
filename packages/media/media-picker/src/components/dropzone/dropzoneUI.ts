@@ -1,6 +1,6 @@
 import { parseHTML } from '../../util/parseHTML';
 import { wrapperStyles } from './styled';
-// TODO: Use webpack image loader to include the images
+import { getAssetUrl } from '../../util/getAssetUrl';
 // TODO [MSW-385]: Remove template string and use React
 
 export default parseHTML(
@@ -12,9 +12,15 @@ export default parseHTML(
                 <span class="mp-title">Drop your files here</span>
                 <span class="mp-description">We'll share them instantly</span>
             </div>
-            <img class="mp-fileIcon mp-iconAtlassianDoc" src="https://dt-static.us-west-2.prod.public.atl-paas.net/media-picker/images/pie-chart-icon.png"/>
-            <img class="mp-fileIcon mp-iconOtherDoc" src="https://dt-static.us-west-2.prod.public.atl-paas.net/media-picker/images/line-graph-icon.png" />
-            <img class="mp-fileIcon mp-iconPageSpreadsheet" src="https://dt-static.us-west-2.prod.public.atl-paas.net/media-picker/images/flow-chart-icon.png" />
+            <img class="mp-fileIcon mp-iconAtlassianDoc" src="${getAssetUrl(
+              'pie-chart-icon.png',
+            )}"/>
+            <img class="mp-fileIcon mp-iconOtherDoc" src="${getAssetUrl(
+              'line-graph-icon.png',
+            )}" />
+            <img class="mp-fileIcon mp-iconPageSpreadsheet" src="${getAssetUrl(
+              'flow-chart-icon.png',
+            )}" />
         </div>
     </div>
   </div>`,
