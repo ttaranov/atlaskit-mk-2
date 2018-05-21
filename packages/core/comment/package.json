@@ -29,7 +29,7 @@
     "@atlaskit/avatar": "^10.0.5",
     "@atlaskit/docs": "^3.0.3",
     "@atlaskit/editor-core": "^71.1.8",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.3.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.4.tgz"
   },
   "keywords": [
     "atlaskit",

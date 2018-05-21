@@ -55,7 +55,7 @@
     "@atlaskit/quick-search": "^1.4.1",
     "@atlaskit/single-select": "^4.0.1",
     "@atlaskit/toggle": "^3.0.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.3.tgz",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.4.tgz",
     "enzyme-adapter-react-16": "^1.1.1",
     "raf-stub": "^2.0.1",
     "react-beautiful-dnd": "^4.0.1",
