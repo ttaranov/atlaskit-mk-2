@@ -24,7 +24,7 @@ export interface CardListProps {
   collectionName: string;
 
   height?: number;
-  pageSize?: number;
+  minPageSize?: number;
 
   onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
@@ -122,7 +122,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private subscribe(nextProps: CardListProps) {
     const { collectionName, context } = nextProps;
-    const pageSize = this.props.pageSize || CardList.defaultPageSize;
+    const pageSize = this.props.minPageSize || CardList.defaultPageSize;
     const provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,
@@ -139,13 +139,13 @@ export class CardList extends Component<CardListProps, CardListState> {
     return (
       nextProps.collectionName !== this.props.collectionName ||
       nextProps.context !== this.props.context ||
-      nextProps.pageSize !== this.props.pageSize
+      nextProps.minPageSize !== this.props.minPageSize
     );
   }
 
   private updateState(nextProps: CardListProps): void {
     const { collectionName, context } = nextProps;
-    const pageSize = this.props.pageSize || CardList.defaultPageSize;
+    const pageSize = this.props.minPageSize || CardList.defaultPageSize;
     const provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,

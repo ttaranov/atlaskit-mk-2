@@ -22,7 +22,7 @@ export const renderInfiniteScroll = (
                 context={context}
                 collectionName={collectionName}
                 actions={cardsActions}
-                pageSize={4}
+                minPageSize={4}
                 height={500}
               />
             </CardListWrapper>
@@ -36,7 +36,7 @@ export const renderInfiniteScroll = (
                 context={context}
                 collectionName={collectionName}
                 actions={cardsActions}
-                pageSize={50}
+                minPageSize={50}
                 height={500}
               />
             </CardListWrapper>

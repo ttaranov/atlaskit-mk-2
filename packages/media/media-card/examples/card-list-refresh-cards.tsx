@@ -36,7 +36,7 @@ const RefreshDemo = (): JSX.Element => {
       <div style={{ width: '25%' }}>
         <CardList
           context={context}
-          pageSize={10}
+          minPageSize={10}
           collectionName={defaultCollectionName}
         />
       </div>

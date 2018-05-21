@@ -30,7 +30,7 @@ export default () => (
         context={context}
         collectionName={onlyAnimatedGifsCollectionName}
         actions={cardsActions}
-        pageSize={20}
+        minPageSize={20}
         height={500}
       />
     </div>

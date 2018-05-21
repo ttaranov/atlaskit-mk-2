@@ -80,7 +80,7 @@ export default md`
     context={context}
     collectionName="some-collection-name"
     height={500}
-    pageSize={50}
+    minPageSize={50}
   />;
   ~~~
 `;
