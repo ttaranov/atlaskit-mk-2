@@ -2,6 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
+import { tableBorderDeleteColor, tableToolbarDeleteColor } from '../../styles';
 import { LineMarkerDefault } from '../styles';
 import {
   tableInsertColumnButtonSize,
@@ -47,6 +48,10 @@ export const CornerButton: ComponentClass<
   }
   &:focus {
     outline: none;
+  }
+  &.danger {
+    border: 1px solid ${tableBorderDeleteColor};
+    background: ${tableToolbarDeleteColor};
   }
 `;
 

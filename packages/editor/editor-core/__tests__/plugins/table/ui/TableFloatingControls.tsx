@@ -5,6 +5,12 @@ import {
   TableState,
   stateKey,
 } from '../../../../src/plugins/table/pm-plugins/main';
+import { pluginKey as hoverStateKey } from '../../../../src/plugins/table//pm-plugins/hover-selection-plugin';
+
+import {
+  hoverTable,
+  clearHoverTable,
+} from '../../../../src/plugins/table/actions';
 import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatingControls';
 import CornerControls from '../../../../src/plugins/table/ui/TableFloatingControls/CornerControls';
 import RowControls from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls';
@@ -72,6 +78,31 @@ describe('TableFloatingControls', () => {
         decoration.type.attrs.class.indexOf('with-controls'),
       ).toBeGreaterThan(-1);
       plugin.props.handleDOMEvents!.blur(editorView, event);
+      expect(pluginState.set).toEqual(DecorationSet.empty);
+    });
+  });
+
+  describe('when delete icon is hovered', () => {
+    it('should add a node decoration to table nodeView with class="danger"', () => {
+      const { pluginState, editorView } = editor(
+        doc(
+          p('text'),
+          table()(
+            tr(tdCursor, tdEmpty),
+            tr(tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      hoverTable(true)(editorView.state, editorView.dispatch);
+      const {
+        decorationSet,
+      }: { decorationSet: DecorationSet } = hoverStateKey.getState(
+        editorView.state,
+      );
+      const decoration = decorationSet.find()[0] as any;
+      expect(decoration.type.attrs.class.indexOf('danger')).toBeGreaterThan(-1);
+      clearHoverTable(editorView.state, editorView.dispatch);
       expect(pluginState.set).toEqual(DecorationSet.empty);
     });
   });
