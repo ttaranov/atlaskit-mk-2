@@ -2,6 +2,7 @@
 import 'jest-styled-components';
 import snakeCase from 'snake-case';
 import { toMatchSnapshot } from 'jest-snapshot';
+import { isMountWrapper } from '@pgleeson/enzyme-mount-wrapper';
 
 let consoleError;
 let consoleWarn;
@@ -144,6 +145,13 @@ const removeIdsFromDoc = transformDoc(node => {
     };
   }
   return node;
+});
+
+expect.addSnapshotSerializer({
+  test: isMountWrapper,
+  print: (wrapper, serializer) => {
+    return serializer(wrapper.json());
+  },
 });
 
 /* eslint-disable no-undef */
