@@ -1,8 +1,8 @@
-import { doc, p, emoji } from '@atlaskit/editor-test-helpers';
-import { checkParseEncodeRoundTrips } from '../_test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
-import { EMOJIS } from '../../src/parser/emoji';
-import { EmojiMapItem } from '../../src/interfaces';
+import { doc, emoji, hardBreak, p } from '@atlaskit/editor-test-helpers';
+import { EmojiMapItem } from '../../src/parser/tokenize/emoji';
+import { EMOJIS } from '../../src/parser/tokenize/emoji';
+import { checkParseEncodeRoundTrips } from '../_test-helpers';
 
 // Nodes
 
@@ -46,14 +46,23 @@ describe('WikiMarkup Transformer', () => {
       defaultSchema,
       WIKI_NOTATION,
       doc(
-        p('some smiley faces here:'),
-        p(emoji(findEmojiConfig(':-)'))()),
-        p(emoji(findEmojiConfig(':-('))()),
-        p(emoji(findEmojiConfig(':)'))()),
-        p(emoji(findEmojiConfig(';-)'))()),
-        p(emoji(findEmojiConfig(':D'))()),
-        p(emoji(findEmojiConfig(':P'))()),
-        p(emoji(findEmojiConfig(':p'))()),
+        p(
+          'some smiley faces here:',
+          hardBreak(),
+          emoji(findEmojiConfig(':-)'))(),
+          hardBreak(),
+          emoji(findEmojiConfig(':-('))(),
+          hardBreak(),
+          emoji(findEmojiConfig(':)'))(),
+          hardBreak(),
+          emoji(findEmojiConfig(';-)'))(),
+          hardBreak(),
+          emoji(findEmojiConfig(':D'))(),
+          hardBreak(),
+          emoji(findEmojiConfig(':P'))(),
+          hardBreak(),
+          emoji(findEmojiConfig(':p'))(),
+        ),
       ),
     );
   });

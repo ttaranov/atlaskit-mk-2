@@ -1,18 +1,18 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
-  An internal base component for implementing dropdown and select components. 
+  An internal base component for implementing dropdown and select components.
 
-  ~~~js
-  import DropList, {
-    DroplistGroup,
-    Item
-  } from '@atlaskit/droplist';
-  ~~~
+${code`
+import DropList, {
+  DroplistGroup,
+  Item
+} from '@atlaskit/droplist';
+`}
 
   This is a base component on which such components as @atlaskit/dropdown-menu,
   @atlaskit/single-select, @atlaskit/multi-select are built. It contains only styles and

@@ -7,10 +7,11 @@ import {
   SearchItem,
   ConfluenceItem,
   JiraItem,
-  ConfluenceSpace,
 } from '../src/api/CrossProductSearchClient';
 import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
 import { ResultContentType } from '../src/model/Result';
+
+const DUMMY_BASE_URL = 'http://localhost';
 
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);
@@ -87,30 +88,55 @@ export function makeCrossProductSearchData(
   n = 100,
 ): (term: string) => CrossProductSearchResponse {
   const confData: ConfluenceItem[] = [];
-  const confSpaceData: ConfluenceSpace[] = [];
+  const confSpaceData: ConfluenceItem[] = [];
+  const confDataWithAttachments: ConfluenceItem[] = [];
   const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
     confData.push({
       title: faker.company.catchPhrase(),
       container: {
         title: faker.company.companyName(),
+        displayUrl: url,
       },
       iconCssClass: randomIconCssClass(),
-      url: faker.internet.url(),
-      baseUrl: '',
-      contentType: 'page',
+      url: url,
+      baseUrl: DUMMY_BASE_URL,
     });
+  }
+
+  for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
+    const isAttachment = faker.random.boolean() && faker.random.boolean();
+
+    const newAttachment: ConfluenceItem = {
+      title: faker.company.catchPhrase(),
+      container: {
+        title: faker.company.companyName(),
+        displayUrl: url,
+      },
+      iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
+      url: url,
+      baseUrl: DUMMY_BASE_URL,
+    };
+
+    if (isAttachment) {
+      newAttachment.content = {
+        id: faker.random.alphaNumeric(3),
+        type: 'attachment' as ResultContentType,
+      };
+    }
+
+    confDataWithAttachments.push(newAttachment);
   }
 
   for (let i = 0; i < n; i++) {
     const title = faker.company.companyName();
     confSpaceData.push({
       title: title,
-      entityType: 'space',
-      lastModified: '',
-      baseUrl: faker.internet.url(),
-      url: '?abc',
+      baseUrl: DUMMY_BASE_URL,
+      url: faker.internet.url(),
       content: null,
       iconCssClass: null,
       container: {
@@ -150,11 +176,19 @@ export function makeCrossProductSearchData(
       result => result.container.title.toLowerCase().indexOf(term) > -1,
     );
 
+    const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
     return {
       scopes: [
         {
           id: Scope.ConfluencePageBlog,
           results: filteredConfResults,
+        },
+        {
+          id: Scope.ConfluencePageBlogAttachment,
+          results: filteredConfResultsWithAttachments,
         },
         {
           id: Scope.JiraIssue,

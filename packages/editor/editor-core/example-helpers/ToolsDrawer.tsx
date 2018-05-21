@@ -111,14 +111,20 @@ export interface State {
   mediaMockEnabled: boolean;
 }
 
-export default class ToolsDrawer extends React.Component<any, State> {
-  constructor(props) {
+export interface Props {
+  imageUploadProvider?: ProviderState;
+}
+
+export type ProviderState = 'resolved' | 'ppending' | 'rejected' | 'undefined';
+
+export default class ToolsDrawer extends React.Component<Props & any, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       reloadEditor: false,
       editorEnabled: true,
-      imageUploadProvider: 'undefined',
+      imageUploadProvider: props.imageUploadProvider || 'undefined',
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',

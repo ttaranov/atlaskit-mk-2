@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   Text Field provides a form input.
 
-  ~~~js
-  import FieldText { FieldTextStateless } from '@atlaskit/field-text';
-  ~~~
+${code`
+import FieldText { FieldTextStateless } from '@atlaskit/field-text';
+`}
 
   Text Field exports both a stateful default component, and a stateless component.
   The stateful component manages the value of the input for you and passes all
@@ -39,7 +39,7 @@ export default md`
     />
   )}
 
-  
+
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/FieldText')}

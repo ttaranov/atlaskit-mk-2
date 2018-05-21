@@ -49,6 +49,12 @@ export interface NavigationStateInterface {
 
   openSearchDrawer: () => void;
   closeSearchDrawer: () => void;
+
+  openNotificationDrawer: () => void;
+  closeNotificationDrawer: () => void;
+
+  openPeopleDrawer: () => void;
+  closePeopleDrawer: () => void;
 }
 
 /**
@@ -58,6 +64,7 @@ export type NavigationProviderProps = {
   children: Element<*>,
   cache: NavigationStateCache | false,
   initialState?: InitialNavigationStateShape,
+  debug?: boolean,
 };
 
 /**

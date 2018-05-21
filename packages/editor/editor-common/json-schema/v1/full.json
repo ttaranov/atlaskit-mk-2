@@ -771,6 +771,7 @@
             },
             "layout": {
               "enum": [
+                "wide",
                 "full-width",
                 "default"
               ]
@@ -923,7 +924,7 @@
               "properties": {
                 "url": {
                   "type": "string",
-                  "pattern": "^https://|^data:image/"
+                  "pattern": "^https?://|^data:image/"
                 }
               },
               "required": [
@@ -1791,6 +1792,9 @@
             "$ref": "#/definitions/taskList_node"
           },
           {
+            "$ref": "#/definitions/extension_node"
+          },
+          {
             "$ref": "#/definitions/codeBlock_node"
           }
         ]
@@ -1871,7 +1875,14 @@
             "marks": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/code_mark"
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/code_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/link_mark"
+                  }
+                ]
               }
             }
           },

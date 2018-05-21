@@ -27,7 +27,7 @@ import {
 
 import { hyperlinkPluginKey } from '../plugins/hyperlink';
 
-export function toggleBlockType(view: EditorView, name: string): boolean {
+export function setBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
   switch (name) {
     case blockTypes.NORMAL_TEXT.name:
@@ -37,32 +37,32 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
       break;
     case blockTypes.HEADING_1.name:
       if (nodes.heading) {
-        return toggleHeading(1)(view.state, view.dispatch);
+        return setHeading(1)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_2.name:
       if (nodes.heading) {
-        return toggleHeading(2)(view.state, view.dispatch);
+        return setHeading(2)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_3.name:
       if (nodes.heading) {
-        return toggleHeading(3)(view.state, view.dispatch);
+        return setHeading(3)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_4.name:
       if (nodes.heading) {
-        return toggleHeading(4)(view.state, view.dispatch);
+        return setHeading(4)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_5.name:
       if (nodes.heading) {
-        return toggleHeading(5)(view.state, view.dispatch);
+        return setHeading(5)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_6.name:
       if (nodes.heading) {
-        return toggleHeading(6)(view.state, view.dispatch);
+        return setHeading(6)(view.state, view.dispatch);
       }
       break;
   }
@@ -77,20 +77,12 @@ export function setNormalText(): Command {
   };
 }
 
-export function toggleHeading(level: number): Command {
+export function setHeading(level: number): Command {
   return function(state, dispatch) {
     const { tr, selection: { $from, $to }, schema } = state;
-    const currentBlock = $from.parent;
-    if (
-      currentBlock.type !== schema.nodes.heading ||
-      currentBlock.attrs['level'] !== level
-    ) {
-      dispatch(
-        tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
-      );
-    } else {
-      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
-    }
+    dispatch(
+      tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
+    );
     return true;
   };
 }
@@ -394,17 +386,17 @@ export function outdentList(): Command {
           *    unorderedList
           *      listItem(B)
           *  listItem(C)
-          * 
+          *
           * becomes, after unindenting the first, top level listItem, A:
-          * 
+          *
           * content of A
           * unorderedList
           *  listItem(B)
           * unorderedList
           *  listItem(C)
-          * 
+          *
           * so, we try to merge these two lists if they're of the same type, to give:
-          * 
+          *
           * content of A
           * unorderedList
           *  listItem(B)
@@ -563,6 +555,24 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
     topLevelNode.nodeSize === 2
   );
 }
+
+export const removeEmptyHeadingAtStartOfDocument: Command = (
+  state,
+  dispatch,
+) => {
+  const { $cursor } = state.selection as TextSelection;
+  if (
+    $cursor &&
+    !$cursor.nodeBefore &&
+    !$cursor.nodeAfter &&
+    $cursor.pos === 1
+  ) {
+    if ($cursor.parent.type === state.schema.nodes.heading) {
+      return setNormalText()(state, dispatch);
+    }
+  }
+  return false;
+};
 
 export function createParagraphAtEnd(): Command {
   return function(state, dispatch) {

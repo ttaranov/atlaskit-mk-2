@@ -1,38 +1,7 @@
 // @flow
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import SizeDetector from '../src';
-
-const startSize = 100;
-const endSize = startSize * 2;
-
-const growAndShrink = keyframes`
-  0% {
-    width: ${startSize}px;
-    height: ${startSize}px;
-  }
-
-  50% {
-    width: ${endSize}px;
-    height: ${endSize}px;
-  }
-
-  100% {
-    width: ${startSize}px;
-    height: ${startSize}px;
-  }
-`;
-
-const ResizingBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  color: #333;
-  animation: ${growAndShrink} 3s ease-in-out infinite;
-  width: ${startSize}px;
-  height: ${startSize}px;
-`;
 
 const ResultBox = styled.div`
   align-items: center;
@@ -42,6 +11,10 @@ const ResultBox = styled.div`
   height: 100%;
   justify-content: center;
   white-space: nowrap;
+`;
+
+const ColourBox = styled(ResultBox)`
+  background-color: ${p => (p.width >= 300 ? 'rebeccapurple' : 'red')};
 `;
 
 type SizeMetrics = {
@@ -62,10 +35,6 @@ export default function Example() {
       <div style={{ height: 100 }}>
         <SizeDetector>{displayResults}</SizeDetector>
       </div>
-      <p>The height should be 100px and no scroll triggered.</p>
-      <div style={{ height: 100 }}>
-        <SizeDetector>{displayResults}</SizeDetector>
-      </div>
       <p>
         The inner size should be 200px high, scrolling inside a 100px container
       </p>
@@ -74,14 +43,10 @@ export default function Example() {
           <SizeDetector>{displayResults}</SizeDetector>
         </div>
       </div>
-      <p>
-        The box on the left is the only thing causing resize. The purple box
-        should update in response.
-      </p>
-      <div style={{ display: 'flex' }}>
-        <ResizingBox>I am resizing</ResizingBox>
-        <SizeDetector containerStyle={{ height: 'auto' }}>
-          {displayResults}
+      <p>Changing colour based on width</p>
+      <div style={{ height: 100 }}>
+        <SizeDetector>
+          {({ width }) => <ColourBox width={width} />}
         </SizeDetector>
       </div>
     </div>

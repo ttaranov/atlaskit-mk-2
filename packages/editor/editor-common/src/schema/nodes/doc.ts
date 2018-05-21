@@ -101,6 +101,7 @@ export type ExtensionContent = Array<
   | DecisionList
   | TaskList
   | Table
+  | Extension
 >;
 
 /**
@@ -136,7 +137,7 @@ export type InlineLinkText = Text & MarksObject<Link>;
 /**
  * @name code_inline_node
  */
-export type InlineCode = Text & MarksObject<Code>;
+export type InlineCode = Text & MarksObject<Code | Link>;
 
 /**
  * @name atomic_inline_node

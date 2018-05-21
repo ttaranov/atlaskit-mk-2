@@ -1,5 +1,11 @@
 # @atlaskit/notification-indicator
 
+## 3.0.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/badge@7.1.2
+  - @atlaskit/notification-log-client@2.0.4
+  - @atlaskit/docs@3.0.4
+
 ## 3.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

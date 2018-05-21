@@ -1,7 +1,7 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { TableCellContent } from './doc';
 import {
-  akColorN30,
+  akColorN20,
   akColorB50,
   akColorT50,
   akColorP50,
@@ -9,6 +9,13 @@ import {
   akColorG50,
   akColorY50,
   akColorN0,
+  akColorB75,
+  akColorG75,
+  akColorR75,
+  akColorN40,
+  akColorP75,
+  akColorT75,
+  akColorY75,
 } from '@atlaskit/util-shared-styles';
 import { hexToRgba } from '../../utils';
 import {
@@ -69,12 +76,25 @@ const setCellAttrs = (node: PmNode) => {
 };
 
 export const tableBackgroundColorPalette = new Map<string, string>();
+
+/** New borders for colors in the color picker */
+export const tableBackgroundBorderColors = {
+  blue: akColorB75,
+  teal: akColorT75,
+  red: akColorR75,
+  grey: akColorN40,
+  purple: akColorP75,
+  green: akColorG75,
+  yellow: akColorY75,
+  white: akColorN40,
+};
+
 export const tableBackgroundColorNames = new Map<string, string>();
 [
   [akColorB50, 'Blue'],
   [akColorT50, 'Teal'],
   [akColorR50, 'Red'],
-  [akColorN30, 'Grey'],
+  [akColorN20, 'Grey'],
   [akColorP50, 'Purple'],
   [akColorG50, 'Green'],
   [akColorY50, 'Yellow'],
@@ -113,7 +133,7 @@ export function calcTableColumnWidths(node: PmNode): number[] {
   return tableColumnWidths;
 }
 
-export type Layout = 'default' | 'full-width';
+export type Layout = 'default' | 'full-width' | 'wide';
 
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;

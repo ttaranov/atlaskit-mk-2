@@ -1,6 +1,10 @@
 // @flow
 
-import { CreatableSelect, components, mergeStyles } from '@atlaskit/select';
+import Select, {
+  CreatableSelect,
+  components,
+  mergeStyles,
+} from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
@@ -212,12 +216,15 @@ export default class TimePicker extends Component<Props, State> {
       this.props.appearance === 'subtle'
         ? this.getSubtleControlStyles(selectStyles)
         : {};
+    const SelectComponent = this.props.timeIsEditable
+      ? CreatableSelect
+      : Select;
 
     return (
       <div {...innerProps} ref={this.getContainerRef}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <CreatableSelect
+        <SelectComponent
           autoFocus={autoFocus}
           components={{
             ClearIndicator,

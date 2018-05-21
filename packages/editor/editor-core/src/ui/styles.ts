@@ -10,12 +10,6 @@ export const ButtonGroup: ComponentClass<
   display: inline-flex;
   align-items: center;
 
-  & > div:not(:first-child),
-  & > span:not(:first-child) {
-    margin-left: ${({ width }: { width: 'small' | 'large' }) =>
-      width !== 'large' ? 4 : 0}px;
-  }
-
   & > div {
     display: flex;
   }
@@ -29,9 +23,11 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin: 0 8px;
 `;
 
-export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & { isSmall?: boolean }
+> = styled.span`
   display: flex;
-  align-items: center;
+  align-items: stretch;
 
   > div,
   > span {
@@ -41,6 +37,10 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   > div > div {
     display: flex;
   }
+  /* see ED-4591 */
+  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 5 : 4)}px;
+  min-width: ${({ isSmall }: { isSmall?: boolean }) =>
+    isSmall ? '40px' : 'auto'};
 `;
 
 export const ExpandIconWrapper: ComponentClass<

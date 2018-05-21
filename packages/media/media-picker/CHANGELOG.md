@@ -1,5 +1,28 @@
 # @atlaskit/media-picker
 
+## 6.0.6
+- [patch] change media picker image src to static assets served on dt-static [a5a740b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5a740b)
+
+## 6.0.5
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-editor@7.0.2
+  - @atlaskit/media-card@27.1.4
+  - @atlaskit/toggle@3.0.2
+  - @atlaskit/modal-dialog@4.0.5
+  - @atlaskit/flag@7.0.3
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/analytics-next@2.1.1
+  - @atlaskit/dropdown-menu@4.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/docs@3.0.4
+
+## 6.0.4
+- [patch] Media Picker Popup modal dialog now has a fixed size unwanted wrapping behaviour of cards in the Upload view and jumping of the dialog when switching to the GIPHY view. [814e505](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/814e505)
+
 ## 6.0.3
 
 ## 6.0.2
