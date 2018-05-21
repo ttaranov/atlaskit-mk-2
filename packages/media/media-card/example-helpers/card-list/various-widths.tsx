@@ -17,7 +17,11 @@ export const renderVariousWidths = (
           title: 'Small parent width',
           content: (
             <CardListWrapper width={50}>
-              <CardList context={context} collectionName={collectionName} />
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                minPageSize={10}
+              />
             </CardListWrapper>
           ),
         },
@@ -25,7 +29,11 @@ export const renderVariousWidths = (
           title: 'No parent width',
           content: (
             <CardListWrapper>
-              <CardList context={context} collectionName={collectionName} />
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                minPageSize={10}
+              />
             </CardListWrapper>
           ),
         },
@@ -33,7 +41,11 @@ export const renderVariousWidths = (
           title: 'Large parent width',
           content: (
             <CardListWrapper width={400}>
-              <CardList context={context} collectionName={collectionName} />
+              <CardList
+                context={context}
+                collectionName={collectionName}
+                minPageSize={10}
+              />
             </CardListWrapper>
           ),
         },

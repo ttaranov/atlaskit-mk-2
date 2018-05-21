@@ -30,20 +30,6 @@ describe('CardList', () => {
     },
   };
   const collection = { items: [oldItem] };
-  const linkItem1 = {
-    type: 'link',
-    details: {
-      id: 'abcd',
-      type: 'link',
-    },
-  };
-  const linkItem2 = {
-    type: 'link',
-    details: {
-      id: '1234',
-      type: 'link',
-    },
-  };
   const fileItem = {
     type: 'file',
     details: {
@@ -51,8 +37,7 @@ describe('CardList', () => {
       type: 'file',
     },
   };
-  const expectedMediaItems = [linkItem1, fileItem];
-  const linksOnlyItems = [linkItem1, linkItem2];
+  const expectedMediaItems = [fileItem];
   const contextWithInclusiveStartKey = fakeContext({
     getMediaCollectionProvider: {
       observable() {
@@ -82,9 +67,7 @@ describe('CardList', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName} />);
 
-    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(
-      expectedMediaItems.length,
-    );
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(2);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(
       expectedMediaItems.length,
     );
@@ -93,12 +76,6 @@ describe('CardList', () => {
       expectedMediaItems[0].type,
       collectionName,
       expectedMediaItems[0],
-    );
-    expect(context.getMediaItemProvider).toBeCalledWith(
-      expectedMediaItems[1].details.id,
-      expectedMediaItems[1].type,
-      collectionName,
-      expectedMediaItems[1],
     );
   });
 
@@ -381,18 +358,6 @@ describe('CardList', () => {
         collection,
       });
       expect(list.find(LazyContent)).toHaveLength(0);
-    });
-
-    it('should not render link items', () => {
-      const collection = { items: linksOnlyItems };
-      const context = contextWithInclusiveStartKey;
-      const cardList = mount(
-        <CardList context={context} collectionName={collectionName} />,
-      );
-
-      cardList.setState({ loading: false, error: undefined, collection });
-      cardList.update();
-      expect(cardList.find(MediaCard)).toHaveLength(0);
     });
   });
 

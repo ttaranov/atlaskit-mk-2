@@ -3,7 +3,6 @@ import * as React from 'react';
 import {
   createStorybookContext,
   defaultCollectionName,
-  fileCollectionName,
   emptyCollectionName,
 } from '@atlaskit/media-test-helpers';
 
@@ -18,13 +17,13 @@ const context = createStorybookContext();
 export default () => (
   <div>
     <h2>Custom widths</h2>
-    {renderVariousWidths(context, fileCollectionName)}
+    {renderVariousWidths(context, defaultCollectionName)}
     <h2>Empty state</h2>
     {renderEmptyStates(context, emptyCollectionName)}
     <h2>Error state</h2>
     {renderErrorStates()}
     <h2>Actions</h2>
-    {renderActionableLists(context, fileCollectionName)}
+    {renderActionableLists(context, defaultCollectionName)}
     <h2>Infinite Scroll</h2>
     {renderInfiniteScroll(context, defaultCollectionName)}
   </div>

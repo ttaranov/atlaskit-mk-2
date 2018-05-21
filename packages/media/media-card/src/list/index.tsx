@@ -55,7 +55,7 @@ const EmptyComponent = <div>No items</div>;
 const ErrorComponent = <div>ERROR</div>;
 
 export class CardList extends Component<CardListProps, CardListState> {
-  static defaultPageSize = 10;
+  static defaultPageSize = 50;
 
   static defaultProps = {
     pageSize: CardList.defaultPageSize,
@@ -242,7 +242,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       });
 
     const cards = collection
-      ? collection.items.filter(item => item.type === 'file').map(mediaItem => {
+      ? collection.items.map(mediaItem => {
           const key = this.getItemKey(mediaItem);
           const cardListItem = (
             <CSSTransition

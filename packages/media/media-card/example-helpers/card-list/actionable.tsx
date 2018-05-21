@@ -27,6 +27,7 @@ export const renderActionableLists = (
                 context={context}
                 collectionName={collectionName}
                 actions={cardsActions}
+                minPageSize={10}
               />
             </CardListWrapper>
           ),
@@ -39,6 +40,7 @@ export const renderActionableLists = (
                 context={context}
                 collectionName={collectionName}
                 onCardClick={cardClickHandler}
+                minPageSize={10}
               />
             </CardListWrapper>
           ),
