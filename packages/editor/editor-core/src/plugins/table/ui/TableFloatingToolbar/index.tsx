@@ -12,6 +12,7 @@ import {
 } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
@@ -56,6 +57,7 @@ export interface Props {
   removeTable?: () => void;
   permittedLayouts?: PermittedLayoutsDescriptor;
   updateLayout?: (layoutName: TableLayout) => void;
+  isLayoutSupported?: () => boolean;
 }
 
 export interface State {
@@ -68,6 +70,10 @@ const tableLayouts: TableLayoutInfo = {
   default: {
     icon: CenterIcon,
     label: 'inline',
+  },
+  wide: {
+    icon: WideIcon,
+    label: 'wide',
   },
   'full-width': {
     icon: FullWidthIcon,
@@ -95,6 +101,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       allowHeaderRow,
       allowHeaderColumn,
       stickToolbarToBottom,
+      isLayoutSupported,
     } = this.props;
 
     if (!tableElement || !tableActive) {
@@ -110,6 +117,9 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       }
     }
 
+    const shouldDisableLayout = isLayoutSupported
+      ? !isLayoutSupported()
+      : false;
     const layoutButtons = Array.from(new Set(availableLayouts)).map(
       layoutName => {
         const label = `Change layout to ${tableLayouts[layoutName].label}`;
@@ -121,6 +131,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
         return (
           <ToolbarButton
             spacing="compact"
+            disabled={shouldDisableLayout}
             selected={tableLayout === layoutName}
             onClick={this.props.updateLayout ? onClick : undefined}
             title={label}

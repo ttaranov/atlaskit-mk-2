@@ -115,7 +115,11 @@ class Example extends React.PureComponent<{}, State> {
       <Container>
         <textarea id="source" onChange={this.handleChange} />
         <div id="output">
-          <ReactRenderer document={doc} dataProviders={providerFactory} />
+          <ReactRenderer
+            document={doc}
+            dataProviders={providerFactory}
+            schema={defaultSchema}
+          />
         </div>
         <pre id="output">{JSON.stringify(doc, null, 2)}</pre>
       </Container>

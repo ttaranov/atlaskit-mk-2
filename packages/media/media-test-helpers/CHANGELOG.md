@@ -1,5 +1,10 @@
 # @atlaskit/media-test-helpers
 
+## 12.0.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/media-core@18.0.3
+
 ## 12.0.3
 
 ## 12.0.2

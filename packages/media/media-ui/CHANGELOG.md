@@ -1,5 +1,11 @@
 # @atlaskit/media-ui
 
+## 2.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/button@7.2.5
+  - @atlaskit/docs@3.0.4
+
 ## 2.1.0
 - [minor] Move toHumanReadableMediaSize to media-ui [b36c763](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b36c763)
 

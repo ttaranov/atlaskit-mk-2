@@ -25,13 +25,19 @@ export default class ContainerResult extends PureComponent<Props> {
     type: CONTAINER_RESULT_TYPE,
   };
 
-  getAvatar = () => (
-    <Avatar
-      src={this.props.avatarUrl}
-      appearance="square"
-      status={this.props.isPrivate ? 'locked' : null}
-    />
-  );
+  getAvatar = () => {
+    if (this.props.avatar) {
+      return this.props.avatar;
+    }
+
+    return (
+      <Avatar
+        src={this.props.avatarUrl}
+        appearance="square"
+        status={this.props.isPrivate ? 'locked' : null}
+      />
+    );
+  };
 
   render() {
     const { name, ...resultBaseProps } = this.props;

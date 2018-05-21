@@ -1,15 +1,14 @@
 // @flow
-import React, { PureComponent, type Element, type ChildrenArray } from 'react';
+import React, { Component, type Element, type ChildrenArray } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
 import toItemId from '../utils/toItemId';
-import { type RowData } from '../types';
+import type { RowData, LoadableItems } from '../types';
 
 type Props = {
   /** Whether this row has any child rows. */
   hasChildren: boolean,
-
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
 
@@ -39,19 +38,23 @@ type Props = {
 
   /** Passed implicitly. The data that this row represents. */
   data?: RowData,
+
+  /** Array of object of the children of expended parent item */
+  items?: LoadableItems,
 };
 
-export default class Row extends PureComponent<Props> {
-  componentWillUpdate(nextProps: Props) {
+export default class Row extends Component<Props> {
+  componentDidUpdate(prevProps: Props) {
     const isExpandChanged =
-      Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded);
-    if (!isExpandChanged || !nextProps.data) {
+      Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);
+    if (!isExpandChanged || !this.props.data) {
       return;
     }
-    if (nextProps.isExpanded && this.props.onExpand) {
-      this.props.onExpand(nextProps.data);
-    } else if (!nextProps.isExpanded && this.props.onCollapse) {
-      this.props.onCollapse(nextProps.data);
+
+    if (this.props.isExpanded && this.props.onExpand) {
+      this.props.onExpand(this.props.data);
+    } else if (!this.props.isExpanded && this.props.onCollapse) {
+      this.props.onCollapse(this.props.data);
     }
   }
 

@@ -10,6 +10,7 @@ export {
   tableMarginTop,
   tableMarginBottom,
   tableMarginSides,
+  calcTableWidth,
 } from './StyledTable';
 
 export { default as withOuterListeners } from './with-outer-listeners';
