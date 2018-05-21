@@ -90,6 +90,7 @@
   },
   "devDependencies": {
     "@atlaskit/eslint-config-base": "^2.0.7",
+    "@pgleeson/enzyme-mount-wrapper": "^0.0.2",
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^3.1.6",
     "@types/faker": "^4.1.2",
@@ -126,7 +127,7 @@
     "css-loader": "^0.28.0",
     "custom-event-polyfill": "^0.3.0",
     "enhanced-resolve": "3.4.1",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.4.tgz",
     "enzyme-adapter-react-16": "^1.1.1",
     "es6-promise": "^4.0.5",
     "eslint": "^4.8.0",
