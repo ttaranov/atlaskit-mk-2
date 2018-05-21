@@ -57,7 +57,7 @@ describe('PDFViewer', () => {
     });
   });
 
-  it('shows an indicator while loading', async () => {
+  it.skip('shows an indicator while loading', async () => {
     const fetchPromise = new Promise(() => {});
     const item: FileItem = {
       type: 'file',

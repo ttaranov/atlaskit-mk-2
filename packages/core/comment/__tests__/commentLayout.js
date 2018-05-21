@@ -85,7 +85,7 @@ describe('@atlaskit comments', () => {
 
       it('should not render the container if no nested comments are provided', () => {
         const wrapper = mount(<CommentLayout />);
-        expect(wrapper.contains(NestedCommentsDiv)).toBe(false);
+        expect(wrapper.contains(<NestedCommentsDiv />)).toBe(false);
       });
 
       it('should not unmount the component when the children change', () => {
