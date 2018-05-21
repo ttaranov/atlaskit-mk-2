@@ -1,5 +1,5 @@
-let debugEnabled = true;
-let stacktracesEnabled = true;
+let debugEnabled = false;
+let stacktracesEnabled = false;
 
 export function enableLogger(enable: boolean): void {
   debugEnabled = enable;

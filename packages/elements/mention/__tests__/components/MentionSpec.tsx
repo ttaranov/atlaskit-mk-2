@@ -2,9 +2,13 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import Tooltip from '@atlaskit/tooltip';
 import { AnalyticsListener } from '@atlaskit/analytics';
+import { AnalyticsListener as AnalyticsListenerNext } from '@atlaskit/analytics-next';
 import { MentionStyle } from '../../src/components/Mention/styles';
 import { MentionType } from '../../src/types';
-import Mention from '../../src/components/Mention';
+import Mention, {
+  ELEMENTS_CHANNEL,
+  ANALYTICS_HOVER_DELAY,
+} from '../../src/components/Mention';
 import ResourcedMention from '../..//src/components/Mention/ResourcedMention';
 import {
   mockMentionData as mentionData,
@@ -12,6 +16,14 @@ import {
 } from '../_test-helpers';
 
 describe('<Mention />', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   describe('Mention', () => {
     it('should render based on mention data', () => {
       const mention = mount(<Mention {...mentionData} />);
@@ -72,21 +84,48 @@ describe('<Mention />', () => {
         mentionData.id,
         mentionData.text,
         expect.anything(),
+        undefined,
       );
     });
 
     it('should dispatch lozenge.select analytics onClick-event', () => {
       const analyticsSpy = jest.fn();
+      const analyticsNextHandlerSpy = jest.fn();
       const mention = mount(
-        <AnalyticsListener onEvent={analyticsSpy} matchPrivate={true}>
-          <Mention {...mentionData} accessLevel={'CONTAINER'} />
-        </AnalyticsListener>,
+        <AnalyticsListenerNext
+          onEvent={analyticsNextHandlerSpy}
+          channel={ELEMENTS_CHANNEL}
+        >
+          <AnalyticsListener onEvent={analyticsSpy} matchPrivate={true}>
+            <Mention {...mentionData} accessLevel={'CONTAINER'} />
+          </AnalyticsListener>
+        </AnalyticsListenerNext>,
       );
       mention.find(MentionStyle).simulate('click');
       expect(analyticsSpy).toBeCalled();
       expect(analyticsSpy).toHaveBeenCalledWith(
         'atlassian.fabric.mention.lozenge.select',
         { accessLevel: 'CONTAINER', isSpecial: false },
+      );
+
+      expect(analyticsNextHandlerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: {
+            action: 'selected',
+            actionSubject: 'lozenge',
+            attributes: {
+              packageName: '@atlaskit/mention',
+              packageVersion: expect.any(String),
+              componentName: 'mention',
+              accessLevel: 'CONTAINER',
+              isSpecial: false,
+            },
+            source: 'unknown',
+            tags: [ELEMENTS_CHANNEL],
+            eventType: 'ui',
+          },
+        }),
+        ELEMENTS_CHANNEL,
       );
     });
 
@@ -116,12 +155,21 @@ describe('<Mention />', () => {
 
     it('should dispatch lozenge.hover analytics onMouseLeave-event', () => {
       const analyticsSpy = jest.fn();
+      const analyticsNextHandlerSpy = jest.fn();
       const mention = mount(
-        <AnalyticsListener onEvent={analyticsSpy} matchPrivate={true}>
-          <Mention {...mentionData} accessLevel={'CONTAINER'} />
-        </AnalyticsListener>,
+        <AnalyticsListenerNext
+          onEvent={analyticsNextHandlerSpy}
+          channel={ELEMENTS_CHANNEL}
+        >
+          <AnalyticsListener onEvent={analyticsSpy} matchPrivate={true}>
+            <Mention {...mentionData} accessLevel={'CONTAINER'} />
+          </AnalyticsListener>
+        </AnalyticsListenerNext>,
       );
+      mention.find(MentionStyle).simulate('mouseenter');
+      jest.runTimersToTime(ANALYTICS_HOVER_DELAY);
       mention.find(MentionStyle).simulate('mouseleave');
+
       expect(analyticsSpy).toBeCalled();
       // note:  Mention.startTime (private attribute) is zero initially so firing mouseleave event here is enough to get over 1000ms
       //        Refer to onMouseLeave() code
@@ -129,6 +177,50 @@ describe('<Mention />', () => {
         'atlassian.fabric.mention.lozenge.hover',
         { accessLevel: 'CONTAINER', isSpecial: false },
       );
+
+      expect(analyticsNextHandlerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: {
+            action: 'hovered',
+            actionSubject: 'lozenge',
+            attributes: {
+              packageName: '@atlaskit/mention',
+              packageVersion: expect.any(String),
+              componentName: 'mention',
+              accessLevel: 'CONTAINER',
+              isSpecial: false,
+            },
+            source: 'unknown',
+            tags: [ELEMENTS_CHANNEL],
+            eventType: 'ui',
+          },
+        }),
+        ELEMENTS_CHANNEL,
+      );
+    });
+
+    it('should not dispatch lozenge.hover analytics onMouseLeave-event if delay is bellow the threshold', () => {
+      const analyticsSpy = jest.fn();
+      const analyticsNextHandlerSpy = jest.fn();
+      const mention = mount(
+        <AnalyticsListenerNext
+          onEvent={analyticsNextHandlerSpy}
+          channel={ELEMENTS_CHANNEL}
+        >
+          <AnalyticsListener onEvent={analyticsSpy} matchPrivate={true}>
+            <Mention {...mentionData} accessLevel={'CONTAINER'} />
+          </AnalyticsListener>
+        </AnalyticsListenerNext>,
+      );
+      mention.find(MentionStyle).simulate('mouseenter');
+      jest.runTimersToTime(ANALYTICS_HOVER_DELAY / 5);
+      mention.find(MentionStyle).simulate('mouseleave');
+
+      // to make sure the clearTimeout removed the scheduled task
+      jest.runTimersToTime(ANALYTICS_HOVER_DELAY);
+
+      expect(analyticsSpy).not.toBeCalled();
+      expect(analyticsNextHandlerSpy).not.toBeCalled();
     });
 
     it('should render a stateless mention component with correct data attributes', () => {
@@ -210,6 +302,7 @@ describe('<Mention />', () => {
         mentionData.id,
         mentionData.text,
         expect.anything(),
+        undefined,
       );
     });
 
