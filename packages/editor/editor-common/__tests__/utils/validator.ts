@@ -452,6 +452,20 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.context.icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {
+              text: 'test',
+            },
+          },
+        };
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
+
       it('should return "text" if attrs.context.icon.label is missing', () => {
         const applicationCard = {
           type: 'applicationCard',
