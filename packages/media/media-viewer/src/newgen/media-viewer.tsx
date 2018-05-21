@@ -5,6 +5,7 @@ import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
 import { Blanket, ErrorMessage } from './styled';
+import { Shortcut } from './shortcut';
 
 export type Props = {
   onClose?: () => void;
@@ -19,6 +20,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     const { onClose } = this.props;
     return (
       <Blanket>
+        <Shortcut keyCode="Escape" handler={() => onClose && onClose()} />
         <Content onClose={onClose}>{this.renderContent()}</Content>
       </Blanket>
     );
