@@ -57,6 +57,10 @@ describe('Object Result', () => {
     expect(resultWrapper.text()).toEqual(
       expect.stringContaining('Burger Sling'),
     );
+
+    expect(resultWrapper.text()).not.toEqual(
+      expect.stringContaining('· Burger Sling'),
+    );
   });
 
   it('should render the `objectKey` and `containerName` prop together', () => {
