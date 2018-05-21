@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import AtlaskitAnalyticsListeners from '@atlaskit/analytics-listeners';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -26,6 +27,8 @@ import {
   SectionSeparator,
   SectionTitle,
 } from '../src';
+
+import mockAnalyticsWebClient from './shared/mock-analytics-client';
 
 /**
  * Data
@@ -165,13 +168,15 @@ const ProductContainer = () => (
 );
 
 export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={GlobalNavigation}
-      productRootNavigation={ProductRoot}
-      productContainerNavigation={ProductContainer}
-    >
-      <div style={{ padding: 30 }}>Page content</div>
-    </LayoutManager>
-  </NavigationProvider>
+  <AtlaskitAnalyticsListeners client={mockAnalyticsWebClient}>
+    <NavigationProvider>
+      <LayoutManager
+        globalNavigation={GlobalNavigation}
+        productRootNavigation={ProductRoot}
+        productContainerNavigation={ProductContainer}
+      >
+        <div style={{ padding: 30 }}>Page content</div>
+      </LayoutManager>
+    </NavigationProvider>
+  </AtlaskitAnalyticsListeners>
 );

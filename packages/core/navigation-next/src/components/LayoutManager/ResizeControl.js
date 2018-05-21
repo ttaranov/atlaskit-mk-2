@@ -5,8 +5,16 @@ import raf from 'raf-schd';
 import { colors } from '@atlaskit/theme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right-circle';
+import {
+  type UIAnalyticsEvent,
+  withAnalyticsEvents,
+} from '@atlaskit/analytics-next';
 
-import { GLOBAL_NAV_WIDTH, PRODUCT_NAV_WIDTH } from '../../common/constants';
+import {
+  GLOBAL_NAV_WIDTH,
+  PRODUCT_NAV_WIDTH,
+  ANALYTICS_CHANNEL,
+} from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
 
@@ -110,6 +118,8 @@ type Props = {
   children: State => any,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   navigation: Object,
+  //eslint-disable-next-line react/no-unused-prop-types
+  createAnalyticsEvent: (payload: {}) => UIAnalyticsEvent,
 };
 type State = {
   delta: number,
@@ -122,7 +132,7 @@ type State = {
   width: number,
 };
 
-export default class ResizeControl extends PureComponent<Props, State> {
+class ResizeControl extends PureComponent<Props, State> {
   invalidDragAttempted = false;
   lastWidth: number;
   wrapper: HTMLElement;
@@ -153,11 +163,27 @@ export default class ResizeControl extends PureComponent<Props, State> {
     this.hide();
   };
   toggleProductNav = () => {
-    if (this.props.navigation.state.productNavIsCollapsed) {
+    const isCollapsed = this.props.navigation.state.productNavIsCollapsed;
+    if (isCollapsed) {
       this.expandProductNav();
     } else {
       this.collapseProductNav();
     }
+  };
+
+  handleChevronClick = () => {
+    const isCollapsed = this.props.navigation.state.productNavIsCollapsed;
+    this.props
+      .createAnalyticsEvent({
+        action: 'clicked',
+        actionSubject: 'button',
+        actionSubjectId: isCollapsed
+          ? 'navChevronExpand'
+          : 'navChevronCollapse',
+        eventType: 'ui',
+      })
+      .fire(ANALYTICS_CHANNEL);
+    this.toggleProductNav();
   };
 
   handleResizeStart = (event: MouseEvent) => {
@@ -225,7 +251,7 @@ export default class ResizeControl extends PureComponent<Props, State> {
     // apply updated styles to the applicable DOM nodes
     applyMutations(mutationRefs, width);
 
-    // NOTE: hijack the maual resize and force collapse, cancels mouse events
+    // NOTE: hijack the manual resize and force collapse, cancels mouse events
     if (event.screenX < window.screenX) {
       this.setState({ width: 0 });
       this.handleResizeEnd();
@@ -245,6 +271,16 @@ export default class ResizeControl extends PureComponent<Props, State> {
     // check if the intention was just a click, and toggle
     if (!isDragging && !this.invalidDragAttempted) {
       publishWidth = Math.max(PRODUCT_NAV_WIDTH, width);
+      this.props
+        .createAnalyticsEvent({
+          action: 'clicked',
+          actionSubject: 'resizer',
+          attributes: {
+            expanded: navigation.state.productNavIsCollapsed,
+          },
+          eventType: 'ui',
+        })
+        .fire(ANALYTICS_CHANNEL);
       this.toggleProductNav();
     }
 
@@ -253,9 +289,31 @@ export default class ResizeControl extends PureComponent<Props, State> {
       publishWidth = PRODUCT_NAV_WIDTH;
 
       if (didDragOpen && delta > expandThreshold) {
+        this.props
+          .createAnalyticsEvent({
+            action: 'dragged',
+            actionSubject: 'resizer',
+            attributes: {
+              expanded: true,
+            },
+            eventType: 'ui',
+          })
+          .fire(ANALYTICS_CHANNEL);
         shouldCollapse = false;
         this.hide();
       } else {
+        if (!didDragOpen) {
+          this.props
+            .createAnalyticsEvent({
+              action: 'dragged',
+              actionSubject: 'resizer',
+              attributes: {
+                expanded: false,
+              },
+              eventType: 'ui',
+            })
+            .fire(ANALYTICS_CHANNEL);
+        }
         shouldCollapse = true;
         this.hide();
       }
@@ -308,7 +366,10 @@ export default class ResizeControl extends PureComponent<Props, State> {
               <Shadow isBold={mouseIsDown} />
               <Inner show={shouldBeVisible}>
                 <Handle onMouseDown={this.handleResizeStart} />
-                <Button onClick={this.toggleProductNav} show={shouldBeVisible}>
+                <Button
+                  onClick={this.handleChevronClick}
+                  show={shouldBeVisible}
+                >
                   <ButtonIcon />
                 </Button>
               </Inner>
@@ -323,3 +384,5 @@ export default class ResizeControl extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsEvents()(ResizeControl);
