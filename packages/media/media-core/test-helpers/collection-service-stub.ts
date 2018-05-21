@@ -14,6 +14,7 @@ export class CollectionServiceStub {
     collectionName: string,
     items: number,
     pageSize: number,
+    itemType: 'both' | 'file' | 'link' = 'both',
     sortDirection: SortDirection = 'desc',
     details: DetailsType = 'full',
   ): CollectionService {
@@ -21,6 +22,7 @@ export class CollectionServiceStub {
       collectionName,
       items,
       pageSize,
+      itemType,
       sortDirection,
       details,
     );
@@ -30,6 +32,7 @@ export class CollectionServiceStub {
     collectionName: string,
     items: number,
     pageSize: number,
+    itemType: 'both' | 'file' | 'link',
     sortDirection: SortDirection,
     details: DetailsType,
   ): CollectionService {
@@ -46,6 +49,7 @@ export class CollectionServiceStub {
         .withArgs(
           collectionName,
           pageSize,
+          itemType,
           nextInclusiveStartKey(index),
           sortDirection,
           details,

@@ -23,17 +23,20 @@ describe('RemoteMediaCollectionProvider', () => {
   const itemsPerPageCount = 10;
   const totalItemCount = pageCount * itemsPerPageCount;
   const sortDirection = 'desc';
+  const itemType = 'file';
 
   it('should load the first page on construction', done => {
     const collectionService = CollectionServiceStub.from(
       defaultCollectionName,
       totalItemCount,
       itemsPerPageCount,
+      itemType,
     );
     const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
       collectionService,
       defaultCollectionName,
       itemsPerPageCount,
+      itemType,
       sortDirection,
     );
 
@@ -55,11 +58,13 @@ describe('RemoteMediaCollectionProvider', () => {
       defaultCollectionName,
       totalItemCount,
       itemsPerPageCount,
+      itemType,
     );
     const collectionProvider = RemoteMediaCollectionProviderFactory.fromCollectionService(
       collectionService,
       defaultCollectionName,
       itemsPerPageCount,
+      itemType,
       sortDirection,
     );
 
@@ -119,6 +124,7 @@ describe('RemoteMediaCollectionProvider', () => {
         { getCollectionItems },
         defaultCollectionName,
         itemsPerPageCount,
+        itemType,
         sortDirection,
       );
 
@@ -175,6 +181,7 @@ describe('RemoteMediaCollectionProvider', () => {
         { getCollectionItems },
         defaultCollectionName,
         itemsPerPageCount,
+        itemType,
         sortDirection,
       );
 
@@ -228,6 +235,7 @@ describe('RemoteMediaCollectionProvider', () => {
         { getCollectionItems },
         defaultCollectionName,
         itemsPerPageCount,
+        itemType,
         sortDirection,
       );
 
@@ -301,6 +309,7 @@ describe('RemoteMediaCollectionProvider', () => {
         { getCollectionItems },
         defaultCollectionName,
         itemsPerPageCount,
+        itemType,
         sortDirection,
       );
 
@@ -396,6 +405,7 @@ describe('RemoteMediaCollectionProvider', () => {
         { getCollectionItems },
         defaultCollectionName,
         itemsPerPageCount,
+        itemType,
         sortDirection,
       );
 
@@ -443,6 +453,7 @@ describe('RemoteMediaCollectionProvider', () => {
         collectionService,
         defaultCollectionName,
         10,
+        'both',
         'desc',
       );
 
@@ -471,6 +482,7 @@ describe('RemoteMediaCollectionProvider', () => {
         collectionService,
         defaultCollectionName,
         10,
+        'both',
         'desc',
       );
 

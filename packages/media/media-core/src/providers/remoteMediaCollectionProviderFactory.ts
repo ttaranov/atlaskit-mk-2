@@ -13,12 +13,14 @@ export class RemoteMediaCollectionProviderFactory {
     collectionService: CollectionService,
     collectionName: string,
     pageSize: number,
+    itemType: 'both' | 'file' | 'link',
     sortDirection: SortDirection = 'desc',
   ): RemoteMediaCollectionProvider {
     return new RemoteMediaCollectionProvider(
       collectionService,
       collectionName,
       pageSize,
+      itemType,
       sortDirection,
     );
   }
@@ -27,12 +29,14 @@ export class RemoteMediaCollectionProviderFactory {
     config: MediaApiConfig,
     collectionName: string,
     pageSize: number,
+    itemType: 'both' | 'file' | 'link',
     sortDirection: SortDirection = 'desc',
   ): RemoteMediaCollectionProvider {
     return RemoteMediaCollectionProviderFactory.fromCollectionService(
       new MediaCollectionService(config),
       collectionName,
       pageSize,
+      itemType,
       sortDirection,
     );
   }
@@ -42,6 +46,7 @@ export class RemoteMediaCollectionProviderFactory {
     config: MediaApiConfig,
     collectionName: string,
     pageSize: number,
+    itemType: 'file' | 'link' | 'both',
     sortDirection: SortDirection = 'desc',
   ): RemoteMediaCollectionProvider {
     const poolId = [collectionName, pageSize, sortDirection].join('-');
@@ -51,6 +56,7 @@ export class RemoteMediaCollectionProviderFactory {
         collectionService,
         collectionName,
         pageSize,
+        itemType,
         sortDirection,
       );
     };

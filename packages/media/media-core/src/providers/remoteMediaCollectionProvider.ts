@@ -27,6 +27,7 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
     private readonly collectionService: CollectionService,
     private readonly collectionName: string,
     private readonly pageSize: number,
+    private readonly itemType: 'both' | 'file' | 'link',
     private readonly sortDirection: SortDirection,
   ) {
     this.connectableObservable.connect();
@@ -48,6 +49,7 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
       .getCollectionItems(
         this.collectionName,
         this.pageSize,
+        this.itemType,
         this.nextInclusiveStartKey,
         this.sortDirection,
         'full',
@@ -86,6 +88,7 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
         .getCollectionItems(
           this.collectionName,
           this.pageSize,
+          this.itemType,
           nextInclusiveStartKey,
           this.sortDirection,
           'full',

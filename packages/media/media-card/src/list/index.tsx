@@ -126,6 +126,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     const provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,
+      'file',
     );
 
     const subscription = provider.observable().subscribe({
@@ -149,6 +150,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     const provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,
+      'file',
     );
 
     this.unsubscribe();

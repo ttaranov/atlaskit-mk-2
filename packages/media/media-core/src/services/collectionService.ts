@@ -46,6 +46,7 @@ export interface CollectionService {
   getCollectionItems(
     collectionName: string,
     limit: number,
+    itemType: 'both' | 'file' | 'link',
     inclusiveStartKey?: string,
     sortDirection?: SortDirection,
     details?: DetailsType,
@@ -89,6 +90,7 @@ export class MediaCollectionService implements CollectionService {
   getCollectionItems(
     collectionName: string,
     limit: number = DEFAULT_COLLECTION_PAGE_SIZE,
+    itemType: 'both' | 'file' | 'link',
     inclusiveStartKey?: string,
     sortDirection?: SortDirection,
     details?: DetailsType,
@@ -106,6 +108,7 @@ export class MediaCollectionService implements CollectionService {
         inclusiveStartKey,
         sortDirection,
         details,
+        itemType: itemType !== 'both' ? itemType : undefined,
       },
     }).response.then(response => {
       return {

@@ -33,6 +33,7 @@ export interface Context {
   getMediaCollectionProvider(
     collectionName: string,
     pageSize: number,
+    itemType?: 'file' | 'link' | 'both',
   ): MediaCollectionProvider;
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
@@ -120,12 +121,14 @@ class ContextImpl implements Context {
   getMediaCollectionProvider(
     collectionName: string,
     pageSize: number = DEFAULT_COLLECTION_PAGE_SIZE,
+    itemType: 'file' | 'link' | 'both' = 'both',
   ): MediaCollectionProvider {
     return RemoteMediaCollectionProviderFactory.fromPool(
       this.collectionPool,
       this.apiConfig,
       collectionName,
       pageSize,
+      itemType,
     );
   }
 

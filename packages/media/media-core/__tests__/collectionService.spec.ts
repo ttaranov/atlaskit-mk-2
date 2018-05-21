@@ -50,7 +50,7 @@ describe('MediaCollectionService', () => {
       config,
     );
     const response = collectionService
-      .getCollectionItems(collectionName)
+      .getCollectionItems(collectionName, 10, 'both')
       .then(() => {
         const request = requests[0];
         expect(request.url).toBe(
@@ -68,6 +68,7 @@ describe('MediaCollectionService', () => {
     const inclusiveStartKey = '128';
     const sortDirection = 'desc';
     const details = 'full';
+    const itemType = 'file';
     const collectionService: MediaCollectionService = new MediaCollectionService(
       config,
     );
@@ -75,6 +76,7 @@ describe('MediaCollectionService', () => {
       .getCollectionItems(
         collectionName,
         limit,
+        itemType,
         inclusiveStartKey,
         sortDirection,
         details,
@@ -84,7 +86,7 @@ describe('MediaCollectionService', () => {
 
         expect(request.url).toBe(
           `${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${limit}&` +
-            `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}&${authParams}`,
+            `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}&itemType=${itemType}&${authParams}`,
         );
       });
 
@@ -98,7 +100,7 @@ describe('MediaCollectionService', () => {
       config,
     );
     const response = collectionService
-      .getCollectionItems(collectionName)
+      .getCollectionItems(collectionName, 10, 'both')
       .then(response => {
         expect(response).toEqual({
           items: [

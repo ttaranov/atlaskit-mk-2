@@ -276,6 +276,27 @@ describe('CardList', () => {
     );
   });
 
+  it('should pass itemType as "file" to context#getMediaCollectionProvider', () => {
+    const collectionProviderStub = {
+      observable: () => Observable.create(() => () => {}),
+    };
+    const context = fakeContext({
+      getMediaCollectionProvider: collectionProviderStub,
+    });
+
+    shallow<CardListProps, CardListState>(
+      <CardList context={context} collectionName={collectionName} />,
+      { disableLifecycleMethods: false },
+    );
+
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(2);
+
+    const calls = (context.getMediaCollectionProvider as jest.Mock<any>).mock
+      .calls;
+    expect(calls[0][2]).toEqual('file');
+    expect(calls[1][2]).toEqual('file');
+  });
+
   describe('.render()', () => {
     it('should render the loading view when the list is loading', () => {
       const context = fakeContext();
