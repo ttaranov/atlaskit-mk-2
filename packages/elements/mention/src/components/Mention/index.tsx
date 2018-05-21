@@ -9,10 +9,18 @@ import {
 } from '../../types';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
+import { EventType, GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
 const ANALYTICS_HOVER_DELAY = 1000;
+const ELEMENTS_CHANNEL = 'fabric-elements';
 
-export interface Props {
+export type OwnProps = {
   id: string;
   text: string;
   isHighlighted?: boolean;
@@ -20,10 +28,41 @@ export interface Props {
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;
+};
 
+export type OldAnalytics = {
   fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
-}
+};
+
+export type NewAnalytics = {
+  createAnalyticsEvent: any;
+};
+
+export type Props = OwnProps & OldAnalytics & NewAnalytics;
+
+const mentionPayload = (
+  actionSubject: string,
+  action: string,
+  props,
+): GasPayload => {
+  const { accessLevel, text } = props;
+
+  return {
+    action,
+    actionSubject,
+    eventType: EventType.UI,
+    attributes: {
+      packageName,
+      packageVersion,
+      componentName: 'mention',
+      accessLevel,
+      isSpecial: isSpecialMentionText(text),
+    },
+    tags: [ELEMENTS_CHANNEL],
+    source: 'unknown',
+  };
+};
 
 export class MentionInternal extends React.PureComponent<Props, {}> {
   private startTime: number = 0;
@@ -44,7 +83,10 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     }
   };
 
-  private handleOnMouseLeave = (e: React.MouseEvent<HTMLSpanElement>) => {
+  private handleOnMouseLeave = (
+    e: React.MouseEvent<HTMLSpanElement>,
+    analyticsEvent?: any,
+  ) => {
     const { id, text, onMouseLeave } = this.props;
     if (onMouseLeave) {
       onMouseLeave(id, text, e);
@@ -53,6 +95,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
 
     if (duration > ANALYTICS_HOVER_DELAY) {
       this.fireAnalytics('lozenge.hover');
+      analyticsEvent && analyticsEvent.fire(ELEMENTS_CHANNEL);
     }
     this.startTime = 0;
   };
@@ -125,4 +168,17 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
 const Mention = withAnalytics<typeof MentionInternal>(MentionInternal, {}, {});
 type Mention = MentionInternal;
 
-export default Mention;
+const MentionWithAnalytics: React.ComponentClass<
+  OwnProps
+> = withAnalyticsEvents({
+  onClick: (createEvent, props) =>
+    createEvent(mentionPayload('lozenge', 'selected', props)).fire(
+      ELEMENTS_CHANNEL,
+    ),
+  onMouseLeave: (createEvent, props) =>
+    createEvent(mentionPayload('lozenge', 'hovered', props)).fire(
+      ELEMENTS_CHANNEL,
+    ),
+})(Mention) as React.ComponentClass<OwnProps>;
+
+export default MentionWithAnalytics;
