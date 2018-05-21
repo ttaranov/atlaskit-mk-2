@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 0.0.7
+- [patch] Exports types for global-navigation to consume [7c99742](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c99742)
+
 ## 0.0.6
 - [patch] Add debug prop to NavigationProvider that enables Nav API debug logging [018d77d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/018d77d)
 
