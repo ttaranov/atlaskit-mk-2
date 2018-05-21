@@ -14,7 +14,7 @@ import {
 
 import { CardList, CardListProps, CardListState } from '../../src/list';
 import { MediaCard } from '../../src/root/mediaCard';
-import { InfiniteScroll } from '../../src/list/infiniteScroll';
+import { InfiniteScroll } from '../../src/list/infinite-scroll';
 import { LazyContent } from '../../src/utils/lazyContent';
 import { TransitionGroup } from 'react-transition-group';
 
@@ -77,6 +77,7 @@ describe('CardList', () => {
       },
     },
   });
+
   it('should create a MediaItemProvider for each MediaItem in the collection', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName} />);
@@ -99,29 +100,6 @@ describe('CardList', () => {
       collectionName,
       expectedMediaItems[1],
     );
-  });
-
-  it('should pass a provider to MediaCard', () => {
-    const collection = { items: expectedMediaItems };
-    const context = contextWithInclusiveStartKey;
-    const cardList = mount(
-      <CardList
-        context={context}
-        collectionName={collectionName}
-        shouldLazyLoadCards={false}
-      />,
-    );
-
-    cardList.setState({ loading: false, error: undefined, collection });
-    // re-render now that we've subscribed (relying on the stubbed provider being synchronous)
-    expect(cardList.find(MediaCard)).toHaveLength(1);
-    cardList
-      .find(MediaCard)
-      .forEach(mediaCard =>
-        expect((mediaCard.prop('provider').observable() as any).value).toBe(
-          expectedMediaItemProvider,
-        ),
-      );
   });
 
   it('should be loading=true when mounted', () => {
@@ -347,11 +325,7 @@ describe('CardList', () => {
     it('should render wrapped in an <InfiniteScroll> when useInfiniteScroll=true', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
-        <CardList
-          context={context}
-          collectionName={collectionName}
-          useInfiniteScroll={true}
-        />,
+        <CardList context={context} collectionName={collectionName} />,
         { disableLifecycleMethods: true },
       ) as any;
       list.setState({
@@ -362,32 +336,10 @@ describe('CardList', () => {
       expect(list.is(InfiniteScroll)).toBe(true);
     });
 
-    it('should not render wrapped in an <InfiniteScroll> when useInfiniteScroll=false', () => {
-      const context = fakeContext();
-      const list = shallow<CardListProps, CardListState>(
-        <CardList
-          context={context}
-          collectionName={collectionName}
-          useInfiniteScroll={false}
-        />,
-        { disableLifecycleMethods: true },
-      ) as any;
-      list.setState({
-        loading: false,
-        error: undefined,
-        collection: { items: [] },
-      });
-      expect(list.is(InfiniteScroll)).toBe(false);
-    });
-
     it('should render wrapped in an <LazilyRender> by default', () => {
       const context = contextWithDefaultCollection;
       const list = mount(
-        <CardList
-          useInfiniteScroll={false}
-          context={context}
-          collectionName={collectionName}
-        />,
+        <CardList context={context} collectionName={collectionName} />,
       ) as any;
 
       list.setState({ loading: false, error: undefined, collection });
@@ -395,30 +347,10 @@ describe('CardList', () => {
       expect(list.find(LazilyRender)).toHaveLength(1);
     });
 
-    it('should not render wrapped in an <LazyLoad> when shouldLazyLoadCards=false', () => {
-      const context = contextWithDefaultCollection;
-      const list = mount(
-        <CardList
-          useInfiniteScroll={false}
-          context={context}
-          collectionName={collectionName}
-          shouldLazyLoadCards={false}
-        />,
-      ) as any;
-
-      list.setState({ loading: false, error: undefined, collection });
-
-      expect(list.find(LazilyRender)).toHaveLength(0);
-    });
-
     it('should not wrap existing items into LazyContent', () => {
       const context = contextWithDefaultCollection;
       const list = mount(
-        <CardList
-          useInfiniteScroll={false}
-          context={context}
-          collectionName={collectionName}
-        />,
+        <CardList context={context} collectionName={collectionName} />,
       ) as any;
 
       list.setState({
@@ -434,11 +366,7 @@ describe('CardList', () => {
       const collection = { items: linksOnlyItems };
       const context = contextWithInclusiveStartKey;
       const cardList = mount(
-        <CardList
-          context={context}
-          collectionName={collectionName}
-          shouldLazyLoadCards={false}
-        />,
+        <CardList context={context} collectionName={collectionName} />,
       );
 
       cardList.setState({ loading: false, error: undefined, collection });

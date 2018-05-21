@@ -1,4 +1,3 @@
-/* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
@@ -13,9 +12,8 @@ import {
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import { defaultSmallCardDimensions } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
-import { CardDimensions, CardListEvent, CardEvent } from '..';
+import { CardListEvent, CardEvent } from '..';
 import { Provider, MediaCard, CardView } from '../root';
 import { CollectionAction } from '../actions';
 import { InfiniteScroll } from './infinite-scroll';
@@ -28,14 +26,10 @@ export interface CardListProps {
   height?: number;
   pageSize?: number;
 
-  cardDimensions?: CardDimensions;
-
   onCardClick?: (result: CardListEvent) => void;
   actions?: Array<CollectionAction>;
 
   // Infinite scrolling is only enabled when height has also been specified!
-  useInfiniteScroll?: boolean;
-  shouldLazyLoadCards?: boolean;
   errorComponent?: JSX.Element;
   loadingComponent?: JSX.Element;
   emptyComponent?: JSX.Element;
@@ -66,8 +60,6 @@ export class CardList extends Component<CardListProps, CardListState> {
   static defaultProps = {
     pageSize: CardList.defaultPageSize,
     actions: [],
-    useInfiniteScroll: true,
-    shouldLazyLoadCards: true,
     errorComponent: ErrorComponent,
     loadingComponent: LoadingComponent,
     emptyComponent: EmptyComponent,
@@ -216,30 +208,24 @@ export class CardList extends Component<CardListProps, CardListState> {
       return loadingComponent;
     }
 
-    if (this.useInfiniteScroll) {
-      return (
-        <InfiniteScroll
-          height={height}
-          onThresholdReached={this.handleInfiniteScrollThresholdReached}
-        >
-          {this.renderList()}
-        </InfiniteScroll>
-      );
-    }
-    return this.renderList();
+    return (
+      <InfiniteScroll
+        height={height}
+        onThresholdReached={this.handleInfiniteScrollThresholdReached}
+      >
+        {this.renderList()}
+      </InfiniteScroll>
+    );
   }
 
   private renderList(): JSX.Element {
     const { collection, shouldAnimate } = this.state;
     const {
-      cardWidth,
-      dimensions,
       providersByMediaItemId,
       dataURIService,
       handleCardClick,
       placeholder,
     } = this;
-    const { shouldLazyLoadCards } = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
@@ -267,13 +253,12 @@ export class CardList extends Component<CardListProps, CardListState> {
             >
               <CardListItemWrapper
                 shouldAnimate={shouldAnimate}
-                cardWidth={cardWidth}
+                cardWidth="100%"
               >
                 <MediaCard
                   provider={providersByMediaItemId[mediaItem.details.id]}
                   dataURIService={dataURIService}
                   appearance="small"
-                  dimensions={dimensions}
                   onClick={handleCardClick.bind(this, mediaItem)}
                   actions={cardActions(mediaItem)}
                 />
@@ -281,13 +266,12 @@ export class CardList extends Component<CardListProps, CardListState> {
             </CSSTransition>
           );
           // We don't want to wrap new items into LazyContent aka lazy load new items
-          const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
-          return useLazyContent ? (
+          return shouldAnimate ? (
+            cardListItem
+          ) : (
             <LazyContent key={key} placeholder={placeholder}>
               {cardListItem}
             </LazyContent>
-          ) : (
-            cardListItem
           );
         })
       : null;
@@ -322,57 +306,14 @@ export class CardList extends Component<CardListProps, CardListState> {
     onCardClick(cardListEvent);
   }
 
-  /*
-    We only want to apply default width (hardcoded value) for normal cards,
-    in case of small cards we want them to grow up and use the whole parent width
-   */
-  private get cardWidth(): string | number | undefined {
-    const { cardDimensions } = this.props;
-
-    if (cardDimensions) {
-      return cardDimensions.width;
-    }
-
-    return '100%';
-  }
-
-  private get cardHeight(): string | number | undefined {
-    const { cardDimensions } = this.props;
-
-    if (cardDimensions && cardDimensions.height) {
-      return cardDimensions.height;
-    }
-
-    return defaultSmallCardDimensions.height;
-  }
-
-  private get useInfiniteScroll(): boolean {
-    return this.props.useInfiniteScroll
-      ? true
-      : !this.isNullOrUndefined(this.props.height);
-  }
-
-  private isNullOrUndefined(value: any): boolean {
-    return value === null || value === undefined;
-  }
-
   private getItemKey(item: MediaCollectionItem): string {
     return `${item.details.id}-${item.details.occurrenceKey}`;
   }
 
-  private get dimensions(): CardDimensions {
-    const { cardWidth, cardHeight } = this;
-    return {
-      width: cardWidth,
-      height: cardHeight,
-    };
-  }
-
   private get placeholder(): JSX.Element {
-    const { cardWidth, dimensions } = this;
     return (
-      <CardListItemWrapper cardWidth={cardWidth}>
-        <CardView dimensions={dimensions} status="loading" appearance="small" />
+      <CardListItemWrapper cardWidth="100%">
+        <CardView status="loading" appearance="small" />
       </CardListItemWrapper>
     );
   }

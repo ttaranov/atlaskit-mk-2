@@ -23,8 +23,6 @@ export default () => (
     {renderEmptyStates(context, emptyCollectionName)}
     <h2>Error state</h2>
     {renderErrorStates()}
-    <h2>Lazy Loading</h2>
-    TBC
     <h2>Actions</h2>
     {renderActionableLists(context, fileCollectionName)}
     <h2>Infinite Scroll</h2>

@@ -256,7 +256,7 @@ describe('CardView', () => {
       <CardView status="complete" dataURI="a" metadata={file} />,
     );
 
-    expect(card.find('MediaImage').prop('crop')).toBe(true);
+    expect(card.find('MediaImage').prop('shouldCrop')).toBe(true);
   });
 
   it('should render not render a cropped image if we specify a different resizeMode', () => {
@@ -269,7 +269,7 @@ describe('CardView', () => {
       />,
     );
 
-    expect(card.find('MediaImage').prop('crop')).toBe(false);
+    expect(card.find('MediaImage').prop('shouldCrop')).toBe(false);
   });
 
   describe('Dimensions', () => {
