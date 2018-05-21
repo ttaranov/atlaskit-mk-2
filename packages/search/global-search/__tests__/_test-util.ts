@@ -5,7 +5,7 @@ export function makeResult(partial?: Partial<Result>): Result {
     resultId: '' + Math.random(),
     name: 'name',
     resultType: ResultType.Object,
-    analyticsType: 'analyticsType' as AnalyticsType,
+    analyticsType: AnalyticsType.ResultJira,
     avatarUrl: 'avatarUrl',
     href: 'href',
     ...partial,
