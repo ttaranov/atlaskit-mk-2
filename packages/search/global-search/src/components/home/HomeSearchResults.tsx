@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
+import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
+import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import NoResults from '../NoResults';
@@ -24,6 +26,20 @@ const renderRecent = (results: Result[]) => {
   );
 };
 
+export const renderSearchPeopleItem = (query: string) =>
+  searchPeopleItem({
+    query: query,
+    icon: <PeopleIcon size="large" label="Search people" />,
+    text: 'Search for more people',
+  });
+
+const renderSearchConfluenceItem = (query: string) =>
+  searchConfluenceItem({
+    query: query,
+    icon: <ConfluenceIcon size="large" label="Search confluence" />,
+    text: 'Search for more Confluence pages and blogs',
+  });
+
 const renderJira = (results: Result[], query: string) => (
   <ResultItemGroup title="Jira issues" key="jira">
     {renderResults(results)}
@@ -34,14 +50,14 @@ const renderJira = (results: Result[], query: string) => (
 const renderConfluence = (results: Result[], query: string) => (
   <ResultItemGroup title="Confluence pages and blogs" key="confluence">
     {renderResults(results)}
-    {searchConfluenceItem(query)}
+    {renderSearchConfluenceItem(query)}
   </ResultItemGroup>
 );
 
 const renderPeople = (results: Result[], query: string) => (
   <ResultItemGroup title="People" key="people">
     {renderResults(results)}
-    {searchPeopleItem()}
+    {renderSearchPeopleItem(query)}
   </ResultItemGroup>
 );
 
@@ -49,8 +65,8 @@ const renderNoResults = (query: string) => (
   <>
     <NoResults />
     {searchJiraItem(query)}
-    {searchConfluenceItem(query)}
-    {searchPeopleItem()}
+    {renderSearchConfluenceItem(query)}
+    {renderSearchPeopleItem(query)}
   </>
 );
 

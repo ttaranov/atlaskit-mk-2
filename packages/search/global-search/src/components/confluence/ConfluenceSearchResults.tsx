@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import NoResults from '../NoResults';
@@ -11,34 +12,46 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderObjectsGroup = (
-  title: string,
-  results: Result[],
-  query: string,
-) => (
-  <ResultItemGroup title={title} key="objects">
-    {renderResults(results)}
-  </ResultItemGroup>
-);
+const renderObjectsGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="objects">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
-const renderSpacesGroup = (title: string, results: Result[], query: string) => (
-  <ResultItemGroup title={title} key="spaces">
-    {renderResults(results)}
-  </ResultItemGroup>
-);
+const renderSpacesGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="spaces">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
 const renderPeopleGroup = (title: string, results: Result[], query: string) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
-    {searchPeopleItem()}
+    {renderSearchPeopleItem(query)}
   </ResultItemGroup>
 );
+
+export const renderSearchConfluenceItem = (query: string) =>
+  searchConfluenceItem({
+    query: query,
+    icon: <SearchIcon size="medium" label="Advanced search" />,
+    text: 'Advanced search for more filter options',
+  });
+
+const renderSearchPeopleItem = (query: string) =>
+  searchPeopleItem({
+    query: query,
+    icon: <SearchIcon size="medium" label="Search People" />,
+    text: 'People directory',
+  });
 
 const renderNoResults = (query: string) => (
   <>
     <NoResults />
-    {searchConfluenceItem(query)}
-    {searchPeopleItem()}
+    {renderSearchConfluenceItem(query)}
+    {renderSearchPeopleItem(query)}
   </>
 );
 
@@ -60,9 +73,7 @@ export default function searchResults(props: Props) {
     isError,
     isLoading,
     retrySearch,
-    // @ts-ignore unused
     recentlyViewedPages,
-    // @ts-ignore unused
     recentlyViewedSpaces,
     objectResults,
     spaceResults,

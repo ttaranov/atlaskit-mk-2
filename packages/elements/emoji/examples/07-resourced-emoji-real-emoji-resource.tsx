@@ -91,6 +91,7 @@ class ResourcedFilteredEmojiList extends PureComponent<
             emojiProvider={emojiProvider}
             emojiId={toEmojiId(emoji)}
             fitToHeight={fitToHeight}
+            showTooltip={true}
           />
         ))}
       </p>

@@ -104,6 +104,8 @@ export interface ContainerProps {
   onCancel?: () => void;
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
+  disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 class ConversationContainer extends React.Component<ContainerProps, any> {

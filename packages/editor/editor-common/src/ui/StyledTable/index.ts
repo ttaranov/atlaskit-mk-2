@@ -3,20 +3,27 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, TableHTMLAttributes } from 'react';
-import {
-  akEditorTableCellSelected,
-  akEditorTableBorder,
-  akEditorTableBorderSelected,
-  akEditorTableFloatingControls,
-} from '../../styles';
+import { akEditorTableBorder, akEditorWideLayoutWidth } from '../../styles';
+import { tableBackgroundColorNames } from '../../';
+import { TableLayout } from '../../schema';
 
-const tableStyle = `
+export const tableMarginTop = 32;
+export const tableMarginBottom = 20;
+export const tableMarginSides = 8;
+
+const CONTROLLER_PADDING = 66;
+
+const tableSharedStyle = `
   {
     border-collapse: collapse;
-    margin: 20px 8px;
+    margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
+
+    &[data-autosize="true"] {
+      table-layout: auto;
+    }
 
     & {
       * {
@@ -32,12 +39,12 @@ const tableStyle = `
       }
       th, td {
         min-width: 3em;
-        height: 2.5em;
+        height: 3em;
         vertical-align: top;
         border: 1px solid ${akEditorTableBorder};
         border-right-width: 0;
         border-bottom-width: 0;
-        padding: 6px 10px;
+        padding: 10px;
         /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
         background-clip: padding-box;
 
@@ -46,28 +53,9 @@ const tableStyle = `
         }
       }
       th {
-        background-color: ${akEditorTableFloatingControls};
+        background-color: ${tableBackgroundColorNames.get('grey')};
         font-weight: bold;
         text-align: left;
-      }
-      .selectedCell, .hoveredCell {
-        position: relative;
-        border-color: ${akEditorTableBorderSelected};
-        border-width: 1px;
-      }
-      /* Give selected cells a blue overlay */
-      .selectedCell:after {
-        z-index: 2;
-        position: absolute;
-        content: "";
-        left: 0; right: 0; top: 0; bottom: 0;
-        background: ${akEditorTableCellSelected};
-        opacity: 0.3;
-        pointer-events: none;
-      }
-      .table-decoration {
-        position: relative;
-        left: -1px;
       }
     }
   }
@@ -75,8 +63,22 @@ const tableStyle = `
 
 // tslint:disable-next-line:variable-name
 const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
-  ${tableStyle};
+  ${tableSharedStyle};
 `;
 
-export { tableStyle };
+export const calcTableWidth = (
+  layout: TableLayout,
+  containerWidth: number,
+): string => {
+  switch (layout) {
+    case 'full-width':
+      return `${containerWidth - CONTROLLER_PADDING}px`;
+    case 'wide':
+      return `${akEditorWideLayoutWidth}px`;
+    default:
+      return 'inherit';
+  }
+};
+
+export { tableSharedStyle };
 export default StyledTable;

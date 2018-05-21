@@ -3,7 +3,7 @@ import {
   media,
   camelCaseToKebabCase,
   defaultAttrs,
-  Attributes,
+  MediaAttributes,
   toJSON,
 } from '../../../src/schema/nodes/media';
 import { fromHTML, toDOM, schema } from '../../../test-helpers';
@@ -11,11 +11,12 @@ import { fromHTML, toDOM, schema } from '../../../test-helpers';
 // Note: We can't use dom.dataset in jest until it's upgraded to use latest version
 //       of jsdom. In the meantime we can use this helper-method.
 const getDataSet = dom => {
-  const dataSet = {} as Attributes & {
+  const dataSet = {} as MediaAttributes & {
     fileName: string;
     fileSize: string;
     fileMimeType: string;
     displayType: string;
+    url: string;
   };
   Object.keys({
     ...defaultAttrs,
@@ -23,6 +24,7 @@ const getDataSet = dom => {
     fileSize: '',
     fileMimeType: '',
     displayType: '',
+    url: '',
   }).forEach(k => {
     const key = camelCaseToKebabCase(k).replace(/^__/, '');
     const value = dom.getAttribute(`data-${key}`);
@@ -222,6 +224,53 @@ describe(`${name}/schema media node`, () => {
         type: 'file',
         width: 0,
       },
+    });
+  });
+
+  describe('external images', () => {
+    it('should parse html for external images', () => {
+      const doc = fromHTML(
+        `
+      <div
+        data-node-type="media"
+        data-type="external"
+        data-url="http://image.jpg"
+      />
+      `,
+        schema,
+      );
+      const mediaGroup = doc.firstChild!;
+      const mediaNode = mediaGroup.firstChild!;
+
+      expect(mediaNode.type.spec).toEqual(media);
+      expect(mediaNode.attrs.type).toEqual('external');
+      expect(mediaNode.attrs.url).toEqual('http://image.jpg');
+    });
+
+    it('should encode to html', () => {
+      const mediaNode = schema.nodes.media.create({
+        type: 'external',
+        url: 'http://image.jpg',
+      });
+
+      const domNode = toDOM(mediaNode, schema).firstChild as HTMLElement;
+      const { type, url } = getDataSet(domNode);
+      expect(type).toEqual('external');
+      expect(url).toEqual('http://image.jpg');
+    });
+
+    it('should strip optional attrs during JSON serialization', () => {
+      const mediaNode = schema.nodes.media.create({
+        type: 'external',
+        url: 'http://image.jpg',
+      });
+
+      expect(toJSON(mediaNode)).toEqual({
+        attrs: {
+          type: 'external',
+          url: 'http://image.jpg',
+        },
+      });
     });
   });
 });

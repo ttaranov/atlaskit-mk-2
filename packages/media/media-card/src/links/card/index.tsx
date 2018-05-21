@@ -6,7 +6,6 @@ import { SharedCardProps, CardStatus, CardAppearance } from '../..';
 import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
-import { LinkCardImageView } from '../cardImageView';
 import { URLEmbedCard } from '../embed/urlEmbedCard';
 import { HTMLEmbedCard } from '../embed/htmlEmbedCard';
 import { A } from './styled';
@@ -28,9 +27,6 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     switch (appearance) {
       case 'small':
         return this.renderSmallCard();
-
-      case 'image':
-        return this.renderLinkCardImage();
 
       case 'horizontal':
         return this.renderGenericLink(appearance);
@@ -179,29 +175,6 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         type="link"
         mediaType="image"
         onRetry={onRetry}
-      />,
-    );
-  }
-
-  private renderLinkCardImage(): JSX.Element {
-    const { url, title, site } = this.urlPreview;
-    const { status, dimensions, actions, appearance, resizeMode } = this.props;
-    const { errorMessage } = this;
-
-    return this.renderInLink(
-      url,
-      <LinkCardImageView
-        error={errorMessage}
-        linkUrl={url}
-        title={title}
-        site={site}
-        thumbnailUrl={this.thumbnailUrl}
-        appearance={appearance}
-        dimensions={dimensions}
-        status={status}
-        actions={actions}
-        iconUrl={this.iconUrl}
-        resizeMode={resizeMode}
       />,
     );
   }

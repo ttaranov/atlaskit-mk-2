@@ -43,9 +43,9 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     const key = getComponentFromKeymap(keymaps.toggleBold);
     const shortcut = mount(<div>{key}</div>);
     if (browser.mac) {
-      expect(shortcut.text()).to.equal('⌘ + b');
+      expect(shortcut.text()).to.equal('⌘ + B');
     } else {
-      expect(shortcut.text()).to.equal('ctrl + b');
+      expect(shortcut.text()).to.equal('Ctrl + B');
     }
     shortcut.unmount();
   });
@@ -80,7 +80,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       const autoformat = formatting.filter(f => f.name === 'Quote')[0]
         .autoFormatting;
       const label = mount(<div>{autoformat!()}</div>);
-      expect(label.text()).to.equal('> + space');
+      expect(label.text()).to.equal('> space');
       label.unmount();
     });
   });

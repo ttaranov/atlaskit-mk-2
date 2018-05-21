@@ -8,7 +8,7 @@ import { Conversation } from '../src';
 
 const provider = new ConversationResource({
   url: 'http://mockservice/',
-  user: MOCK_USERS[4],
+  user: MOCK_USERS[3],
 });
 
 export default function Example() {

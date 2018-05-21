@@ -46,6 +46,7 @@ export default class Conversation extends React.PureComponent<Props> {
       renderEditor,
       containerId,
       placeholder,
+      disableScrollTo,
     } = this.props;
 
     if (!conversation) {
@@ -73,6 +74,7 @@ export default class Conversation extends React.PureComponent<Props> {
         renderEditor={renderEditor}
         containerId={containerId}
         placeholder={placeholder}
+        disableScrollTo={disableScrollTo}
       />
     ));
   }
@@ -87,6 +89,8 @@ export default class Conversation extends React.PureComponent<Props> {
       conversation,
       renderEditor,
       placeholder,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -102,6 +106,8 @@ export default class Conversation extends React.PureComponent<Props> {
           user={user}
           renderEditor={renderEditor}
           placeholder={placeholder}
+          disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }

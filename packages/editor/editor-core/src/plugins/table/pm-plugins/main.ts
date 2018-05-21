@@ -19,7 +19,7 @@ import {
   findParentDomRefOfType,
   findParentNodeOfType,
   selectRow,
-  emptySelectedCells,
+  hasParentNodeOfType,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
@@ -106,6 +106,13 @@ export class TableState {
     this.permittedLayouts = pluginConfig.permittedLayouts || [];
   }
 
+  removeTable = (): void => {
+    const { state, dispatch } = this.view;
+    deleteTable(state, dispatch);
+    this.focusEditor();
+    analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
+  };
+
   remove = (): void => {
     const { state, dispatch } = this.view;
     const cellSelection = getCellSelection(state);
@@ -164,13 +171,6 @@ export class TableState {
         tableNode,
       );
       this.moveCursorTo(nextPos);
-    } else {
-      // replace selected cells with empty cells
-      dispatch(emptySelectedCells(state.schema)(state.tr));
-      this.moveCursorInsideTableTo(this.view.state.selection.from);
-      analyticsService.trackEvent(
-        'atlassian.editor.format.table.delete_content.button',
-      );
     }
   };
 
@@ -270,6 +270,14 @@ export class TableState {
     return true;
   };
 
+  isLayoutSupported = () => {
+    const { selection, schema } = this.view.state;
+    return (
+      !hasParentNodeOfType(schema.nodes.layoutSection)(selection) &&
+      !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection)
+    );
+  };
+
   // we keep track of selection changes because
   // 1) we want to mark toolbar buttons as active when the whole row/col is selected
   // 2) we want to drop selection if editor looses focus
@@ -357,13 +365,14 @@ export const createPlugin = (
       decorations: (state: EditorState) => stateKey.getState(state).set,
 
       nodeViews: {
-        table: (node: PmNode, view: EditorView) => {
+        table: (node: PmNode, view: EditorView, getPos: () => number) => {
           const { allowColumnResizing } = stateKey.getState(view.state);
           return new TableNode({
             node,
             view,
             allowColumnResizing,
             eventDispatcher,
+            getPos,
           });
         },
       },

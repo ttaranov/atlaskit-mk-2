@@ -1,5 +1,44 @@
 # @atlaskit/media-image
 
+## 27.1.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/smart-card@3.0.2
+  - @atlaskit/media-ui@2.1.1
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/toggle@3.0.2
+  - @atlaskit/field-radio-group@2.0.3
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/analytics-next@2.1.1
+  - @atlaskit/dropdown-menu@4.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/field-range@3.0.2
+  - @atlaskit/badge@7.1.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/lozenge@4.0.1
+
+## 27.1.3
+- [patch] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+- [patch] Updated dependencies [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+  - @atlaskit/smart-card@3.0.0
+
+## 27.1.2
+- [patch] Move toHumanReadableMediaSize to media-ui [b36c763](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b36c763)
+- [patch] Updated dependencies [b36c763](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b36c763)
+  - @atlaskit/media-ui@2.1.0
+
+## 27.1.1
+
+## 27.1.0
+- [minor] Added "disableOverlay" prop to Card and CardView public API [533d085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533d085)
+
+## 27.0.4
+- [patch] hide link items from CardList (Sidebard) [dd2c7e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2c7e7)
+
 ## 27.0.3
 - [patch] Turn side effects to true due to rxjs operators imports [668f01c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/668f01c)
 - [patch] Turn side effects to true due to rxjs operators imports [5eddd49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5eddd49)

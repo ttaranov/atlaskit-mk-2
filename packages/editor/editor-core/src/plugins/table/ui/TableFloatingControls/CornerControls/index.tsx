@@ -43,14 +43,13 @@ export default class CornerControls extends Component<Props, any> {
         {!checkIfHeaderColumnEnabled(state) &&
           !checkIfNumberColumnEnabled(state) && (
             <InsertColumnButton
-              style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
               onClick={this.insertColumn}
               lineMarkerHeight={tableHeight + toolbarSize}
             />
           )}
         {!checkIfHeaderRowEnabled(state) && (
           <InsertRowButton
-            style={{ bottom: -toolbarSize, left: -toolbarSize - 8 }}
+            style={{ top: 2 }}
             onClick={this.insertRow}
             lineMarkerWidth={lineMarkerWidth}
             onMouseOver={this.props.updateScroll}

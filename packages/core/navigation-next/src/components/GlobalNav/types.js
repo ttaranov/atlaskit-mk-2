@@ -9,7 +9,7 @@ type ItemDataShape = GlobalItemProps & { key?: string };
 
 export type GlobalNavProps = {
   children: Node,
-  primaryActions: Array<ItemDataShape>,
-  secondaryActions: Array<ItemDataShape>,
+  primaryItems: Array<ItemDataShape>,
+  secondaryItems: Array<ItemDataShape>,
   theme: GlobalTheme,
 };

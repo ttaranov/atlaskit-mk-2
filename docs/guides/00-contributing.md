@@ -1,23 +1,27 @@
 # Contributing
 
+Related reading:
+
+* [Contribution checklist](./contribution-checklist)
+* [Component design](./component-design)
+* [Directory structure](./directory-structure)
+* [Adding new icons](./adding-new-icons)
+* [Releasing packages](./releasing-packages)
+* [Versioning](./versioning)
+
 ## Code of Conduct
 
 This project is bound by a [Code of Conduct](https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CODE_OF_CONDUCT.md).
 
 ## Introduction
 
-Although Atlaskit is responsible for the main development of their components, contributions from outside of our team account for a major part of our development. There are two types of contributions that we are capable of accepting:
-
-1. Open source
-2. Inter-team
-
-We haven't had any major open source contributions yet, but we'll describe the process we want to follow here as it underpins the inter-team model.
+Although it's our job to look after all the components in our repo, we rely heavily on contributions outside of our team to make Atlaskit great. At its core, our contrubution model is very much like contributing to any open source library, but because we get several contributions from within Atlassian from other teams, we have the ability to build on that model to help make inter-team contributions more efficient.
 
 ## Open source contribution model
 
 We want to keep this model very simple. At it's core, we make the assumptions that developers looking to contribute will look at the `README.md` and thus, be directed to the `CONTRIBUTING.md`. Even so, both of those files are widely known as convention in an open source project and developers will be able to direct themselves there.
 
-The process is very simple and consists of:
+The process consists of:
 
 1. Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
 2. Submit a PR resolving the raised issue.

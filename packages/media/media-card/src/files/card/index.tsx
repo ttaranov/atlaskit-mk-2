@@ -15,6 +15,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly progress?: number;
   readonly onRetry?: () => void;
   readonly resizeMode?: ImageResizeMode;
+  readonly disableOverlay?: boolean;
 }
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -37,6 +38,7 @@ export class FileCard extends Component<FileCardProps, {}> {
       progress,
       resizeMode,
       onRetry,
+      disableOverlay,
     } = this.props;
     const defaultDetails: FileDetails = {
       id: '',
@@ -64,6 +66,8 @@ export class FileCard extends Component<FileCardProps, {}> {
         />
       );
     } else {
+      const fileSize = toHumanReadableMediaSize(size || 0);
+
       return (
         <FileCardImageView
           error={errorMessage}
@@ -73,12 +77,13 @@ export class FileCard extends Component<FileCardProps, {}> {
           dataURI={dataURI}
           mediaName={name}
           mediaType={mediaType}
-          mediaSize={size}
+          fileSize={fileSize}
           status={status}
           progress={progress}
           resizeMode={resizeMode}
           onRetry={onRetry}
           actions={this._getActions()}
+          disableOverlay={disableOverlay}
         />
       );
     }

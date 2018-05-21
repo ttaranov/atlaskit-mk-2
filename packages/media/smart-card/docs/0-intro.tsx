@@ -17,9 +17,9 @@ export default md`
   ## Usage
   ${(
     <Example
-      Component={require('../examples/0-simple').default}
-      title="A simple example"
-      source={require('!!raw-loader!../examples/0-simple')}
+      Component={require('../examples/0-block').default}
+      title="An editable example"
+      source={require('!!raw-loader!../examples/0-block')}
     />
   )}
 
@@ -49,22 +49,28 @@ export default md`
 
   The smart card client to be injected into the smart card components.
 
-  ### Card
+  ### Components
 
-  The smart card is responsible for rendering the metadata retrieved about the URL and is also responsible user interaction.
+  #### BlockCard
 
-  #### Properties
+  A connected component responsible for retrieving and rendering the metadata for a block smart card.
 
-  ##### .client?: Client
+  ##### Properties
 
-  A smart card client manually passed to the smart card component.
+  ###### .client?: Client
 
-  ##### .url: string
+  A smart card client that can be manually passed to the component.
+
+  ###### .url: string
 
   The URL to retrieve and render metadata for.
 
-  ### CardView
+  #### BlockCardView
 
-  The smart card view is responsible for rendering the metadata passed
+  A view component that renders a block smart card.
+
+  #### InlineCardView
+
+  A view component that renders an inline smart card.
 
 `;

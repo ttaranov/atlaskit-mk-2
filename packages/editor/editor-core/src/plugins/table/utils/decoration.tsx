@@ -8,10 +8,16 @@ import { stateKey as tablePluginKey } from '../pm-plugins/main';
 export const createHoverDecorationSet = (
   cells: { pos: number; node: PmNode }[],
   state: EditorState,
+  danger?: boolean,
 ): DecorationSet => {
   const deco = cells.map(cell => {
-    return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {
-      class: 'hoveredCell',
+    const classes = ['hoveredCell'];
+    if (danger) {
+      classes.push('danger');
+    }
+
+    return Decoration.node(cell.pos - 1, cell.pos + cell.node.nodeSize - 1, {
+      class: classes.join(' '),
     });
   });
 

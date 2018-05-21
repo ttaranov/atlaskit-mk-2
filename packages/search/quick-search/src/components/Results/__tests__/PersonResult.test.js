@@ -4,6 +4,8 @@ import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import PersonResult from '../PersonResult';
 
+const DUMMY_AVATAR = <Avatar key="test-avatar" />;
+
 describe('Person Result', () => {
   let personResultWrapper;
   beforeEach(() => {
@@ -19,6 +21,23 @@ describe('Person Result', () => {
 
   it('should render an avatar if `avatarUrl` is not provided', () => {
     expect(personResultWrapper.find(Avatar)).toHaveLength(1);
+  });
+
+  it('should render an avatar if `avatar` is provided as a component', () => {
+    personResultWrapper.setProps({ avatar: DUMMY_AVATAR });
+    const avatar = personResultWrapper.find(Avatar);
+    expect(avatar).toHaveLength(1);
+    expect(avatar.key()).toEqual('test-avatar');
+  });
+
+  it('should render avatar component if both avatar props are set', () => {
+    personResultWrapper.setProps({
+      avatar: DUMMY_AVATAR,
+      avatarUrl: 'not null',
+    });
+    const avatar = personResultWrapper.find(Avatar);
+    expect(avatar).toHaveLength(1);
+    expect(avatar.key()).toEqual('test-avatar');
   });
 
   it('should render `name` prop', () => {

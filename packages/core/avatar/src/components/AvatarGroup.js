@@ -2,10 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
-import DropdownMenu, {
-  DropdownItem,
-  DropdownItemGroup,
-} from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import MoreIndicator from '../components/MoreIndicator';
@@ -17,6 +14,7 @@ import type {
   SizeType,
 } from '../types';
 import itemTheme from '../theme/itemTheme';
+import AvatarGroupItem from './AvatarGroupItem';
 
 const GROUP_COMPONENT = {
   grid: Grid,
@@ -42,9 +40,8 @@ type Props = {
   borderColor?: string,
   /** Array of avatar data passed to each `avatar` component */
   data: Array<AvatarPropTypes>,
-
   /** Handle the click event on the avatar item */
-  onAvatarClick: AvatarClickType,
+  onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
   onMoreClick?: FunctionType,
@@ -58,7 +55,6 @@ export default class AvatarGroup extends Component<Props> {
     avatar: Avatar,
     maxCount: 0,
     size: 'medium',
-    onAvatarClick: () => {},
   };
 
   renderMoreDropdown(max: number, total: number) {
@@ -96,25 +92,12 @@ export default class AvatarGroup extends Component<Props> {
     const items = data
       .slice(max)
       .map((avatar: AvatarPropTypes, index: number) => (
-        <DropdownItem
-          elemBefore={
-            <Avatar
-              {...avatar}
-              borderColor="transparent"
-              enableTooltip={false}
-              size="small"
-            />
-          }
-          href={avatar.href}
+        <AvatarGroupItem
+          isInteractive
+          avatar={avatar}
           key={index}
-          onClick={(event: KeyboardEvent | MouseEvent) => {
-            onAvatarClick({ event, item: avatar });
-          }}
-          rel={avatar.target ? 'noopener noreferrer' : null}
-          target={avatar.target}
-        >
-          {avatar.name}
-        </DropdownItem>
+          onAvatarClick={onAvatarClick}
+        />
       ));
 
     return (

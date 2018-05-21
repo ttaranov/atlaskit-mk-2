@@ -1,8 +1,8 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
-import { Client } from '../src/client';
-import { Protocol } from '../src/types';
+import { Client, MAX_RETRY, RETRY_STEP_IN_MILLISECONDS } from '../src/client';
+import { EventType, Protocol } from '../src/types';
 
 const baseUrl = 'https://bogus/pubsub';
 
@@ -185,6 +185,85 @@ describe('Client', () => {
       });
 
       handler('eventName', {});
+    });
+  });
+
+  describe('#onAccessDenied', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should call subscribe', done => {
+      client
+        .join(['ari:cloud:platform::site/666', 'ari:cloud:platform::site/667'])
+        .then(() => {
+          const handler = protocol.on.mock.calls[1][1];
+          protocol.subscribe.mockReset();
+
+          handler(EventType.ACCESS_DENIED, {}).then(() => {
+            expect(protocol.subscribe).toHaveBeenCalledTimes(1);
+            done();
+          });
+
+          jest.runTimersToTime(1100);
+        });
+
+      jest.runTimersToTime(100);
+    });
+
+    it('should use exponential retry', done => {
+      client
+        .join(['ari:cloud:platform::site/666', 'ari:cloud:platform::site/667'])
+        .then(() => {
+          const handler = protocol.on.mock.calls[1][1];
+          protocol.subscribe.mockReset();
+
+          handler(EventType.ACCESS_DENIED, {}).then(() => {
+            expect(protocol.subscribe).toHaveBeenCalledTimes(1);
+
+            handler(EventType.ACCESS_DENIED, {}).then(() => {
+              expect(protocol.subscribe).toHaveBeenCalledTimes(2);
+              done();
+            });
+
+            jest.runTimersToTime(RETRY_STEP_IN_MILLISECONDS ** 2);
+          });
+
+          jest.runTimersToTime(1000);
+        });
+
+      jest.runTimersToTime(100);
+    });
+
+    it('should not retry indefinitely', done => {
+      client
+        .join(['ari:cloud:platform::site/666', 'ari:cloud:platform::site/667'])
+        .then(() => {
+          const handler = protocol.on.mock.calls[1][1];
+          protocol.subscribe.mockReset();
+
+          function callAccessDeniedHandler(iteration) {
+            if (iteration > MAX_RETRY) {
+              expect(protocol.subscribe).toHaveBeenCalledTimes(MAX_RETRY);
+              done();
+            }
+
+            handler(EventType.ACCESS_DENIED, {}).then(() => {
+              expect(protocol.subscribe).toHaveBeenCalledTimes(iteration);
+              callAccessDeniedHandler(++iteration);
+            });
+
+            jest.runTimersToTime(RETRY_STEP_IN_MILLISECONDS ** iteration);
+          }
+
+          callAccessDeniedHandler(1);
+        });
+
+      jest.runTimersToTime(100);
     });
   });
 });

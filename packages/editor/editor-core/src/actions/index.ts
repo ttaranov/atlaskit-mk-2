@@ -88,6 +88,7 @@ export default class EditorActions {
     }
 
     this.editorView.focus();
+    this.editorView.dispatch(this.editorView.state.tr.scrollIntoView());
     return true;
   }
 

@@ -10,6 +10,13 @@ import memoizeOne from 'memoize-one';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
+export type LinkComponent = React.ComponentType<{
+  className: string;
+  children: React.ReactNode;
+  href?: string;
+  target?: string;
+}>;
+
 export interface Props {
   /**
    * The cloudId of the site the component is embedded in.
@@ -35,6 +42,18 @@ export interface Props {
    * For development purposes only: Overrides the URL to the directory service.
    */
   directoryServiceUrl?: string;
+
+  /**
+   * The URL for Confluence. Must include the context path.
+   */
+  confluenceUrl?: string;
+
+  /**
+   * React component to be used for rendering links. It receives a className prop that needs to be applied for
+   * proper styling, a children prop that needs to be rendered, and optional href/target props that should be
+   * respected.
+   */
+  linkComponent?: LinkComponent;
 }
 
 /**
@@ -50,6 +69,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       activityServiceUrl,
       searchAggregatorServiceUrl,
       directoryServiceUrl,
+      confluenceUrl,
     } = this.props;
 
     if (activityServiceUrl) {
@@ -59,8 +79,13 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     if (searchAggregatorServiceUrl) {
       config.searchAggregatorServiceUrl = searchAggregatorServiceUrl;
     }
+
     if (directoryServiceUrl) {
       config.directoryServiceUrl = directoryServiceUrl;
+    }
+
+    if (confluenceUrl) {
+      config.confluenceUrl = confluenceUrl;
     }
 
     return config;
@@ -85,7 +110,10 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       this.props.cloudId,
       this.makeConfig(),
     );
+    const { linkComponent } = this.props;
 
-    return <ContainerComponent {...searchClients} />;
+    return (
+      <ContainerComponent {...searchClients} linkComponent={linkComponent} />
+    );
   }
 }

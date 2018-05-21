@@ -14,19 +14,13 @@ import {
   UploadProcessingEventPayload,
   UploadErrorEventPayload,
   UploadEndEventPayload,
-  MediaFile,
   UploadParams,
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
 
 import { ErrorReportingHandler, isImage } from '../../utils';
 import { appendTimestamp } from './utils/media-common';
-import {
-  MediaStateManager,
-  MediaState,
-  MediaStateStatus,
-  CustomMediaPicker,
-} from './types';
+import { MediaStateManager, MediaState, CustomMediaPicker } from './types';
 
 export type PickerType = keyof MediaPickerComponents | 'customMediaPicker';
 export type ExtendedComponentConfigs = ComponentConfigs & {
@@ -214,23 +208,6 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  private newState = (
-    file: MediaFile,
-    status: MediaStateStatus,
-    publicId?: string,
-  ): MediaState => {
-    const tempId = this.generateTempId(file.id);
-
-    return {
-      id: tempId,
-      status: status,
-      publicId,
-      fileName: file.name,
-      fileSize: file.size,
-      fileMimeType: file.type,
-    };
-  };
-
   private generateTempId(id: string) {
     return `temporary:${id}`;
   }
@@ -239,7 +216,7 @@ export default class PickerFacade {
     const { files } = event;
 
     const states = files.map(file => {
-      const state = this.newState(file, 'uploading');
+      const state = this.stateManager.newState(file, 'uploading');
       this.stateManager.updateState(state.id, state);
       return state;
     });
@@ -255,7 +232,7 @@ export default class PickerFacade {
     const currentState = this.stateManager.getState(tempId);
     const currentStatus = (currentState && currentState.status) || 'unknown';
 
-    const state = this.newState(
+    const state = this.stateManager.newState(
       file,
       currentStatus === 'unknown' || currentStatus === 'preview'
         ? 'uploading'
@@ -268,7 +245,7 @@ export default class PickerFacade {
   private handleUploadProcessing = (event: UploadProcessingEventPayload) => {
     const { file } = event;
 
-    const state = this.newState(file, 'processing', file.publicId);
+    const state = this.stateManager.newState(file, 'processing', file.publicId);
     this.stateManager.updateState(state.id, state);
   };
 
@@ -279,7 +256,6 @@ export default class PickerFacade {
           error.name}`,
       );
       this.errorReporter.captureException(err);
-
       return;
     }
 
@@ -294,8 +270,9 @@ export default class PickerFacade {
   private handleUploadEnd = (event: UploadEndEventPayload) => {
     const { file } = event;
 
-    const state = this.newState(file, 'ready', file.publicId);
+    const state = this.stateManager.newState(file, 'ready', file.publicId);
     state.progress = 1;
+    state.ready = true;
     this.stateManager.updateState(state.id, state);
   };
 
@@ -304,8 +281,10 @@ export default class PickerFacade {
   ) => {
     const { file, preview } = event;
 
-    const state = this.newState(file, 'preview');
+    const state = this.stateManager.newState(file, 'preview');
     state.thumbnail = preview;
+    state.preview = true;
+
     // Add timestamp to image file names on paste @see ED-3584
     if (this.pickerType === 'clipboard' && isImage(file.type)) {
       state.fileName = appendTimestamp(file.name, file.creationDate);

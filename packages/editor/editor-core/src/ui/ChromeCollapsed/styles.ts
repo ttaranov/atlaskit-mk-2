@@ -31,7 +31,7 @@ export const Input: ComponentClass<
 
     &:hover {
       border-color: ${akColorN50};
-      cursor: pointer;
+      cursor: text;
     }
   }
 `;

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "4.0.1",
+  "version": "4.0.4",
   "config": {
     "access": "public"
   },
@@ -13,12 +13,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/theme": "^3.0.0",
+    "@atlaskit/theme": "^3.2.2",
     "react-syntax-highlighter": "^6.0.2",
     "styled-components": "1.4.6 - 3"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.0",
+    "@atlaskit/docs": "^3.0.4",
     "enzyme": "^3.3.0"
   },
   "peerDependencies": {

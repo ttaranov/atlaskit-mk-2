@@ -1,5 +1,50 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.8
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-core@71.4.0
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-common@9.3.9
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/docs@3.0.4
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-common@9.3.9
+
+## 4.0.7
+- [patch] Adding a safe check for macro params [193c7fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/193c7fa)
+
+## 4.0.6
+- [patch] ED-4336 support loading dynamic/"auto" tables from confluence to fixed-width tables [0c2f72a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c2f72a)
+
 ## 4.0.5
 
 ## 4.0.4

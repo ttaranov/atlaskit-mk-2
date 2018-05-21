@@ -6,7 +6,7 @@ import searchResults, {
 import {
   ResultItemGroup,
   PersonResult,
-  SpaceResult,
+  ContainerResult,
   ResultBase,
 } from '@atlaskit/quick-search';
 import { ResultType, Result } from '../src/model/Result';
@@ -53,7 +53,7 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Objects, wrapper);
 
-    // TODO asssert
+    expect(group.children()).toHaveLength(1);
   });
 
   it('should render recently viewed spaces when no query is entered', () => {
@@ -63,12 +63,12 @@ describe('ConfluenceSearchResults', () => {
     };
 
     const wrapper = render(props);
-    const group = findGroup(Group.Objects, wrapper);
+    const group = findGroup(Group.Spaces, wrapper);
 
-    // TODO asssert
+    expect(group.children()).toHaveLength(1);
   });
 
-  it.skip('should render objects when there are results', () => {
+  it('should render objects when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
       objectResults: [makeResult({ name: 'name' })],
@@ -77,24 +77,24 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Objects, wrapper);
 
-    expect(group.prop('title')).toEqual('Pages, blogs, attachments');
+    expect(group.prop('title')).toEqual('Pages, blogs and attachments');
     expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
-  it.skip('should render spaces when there are results', () => {
+  it('should render spaces when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      spaceResults: [makeResult({ name: 'name' })],
+      spaceResults: [makeResult({ type: ResultType.Container, name: 'name' })],
     };
 
     const wrapper = render(props);
-    const group = findGroup(Group.Objects, wrapper);
+    const group = findGroup(Group.Spaces, wrapper);
 
     expect(group.prop('title')).toEqual('Spaces');
-    expect(group.find(SpaceResult).prop('name')).toEqual('name');
+    expect(group.find(ContainerResult).prop('name')).toEqual('name');
   });
 
-  it.skip('should render people results when there are results', () => {
+  it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
       peopleResults: [makeResult({ type: ResultType.Person, name: 'name' })],
@@ -126,5 +126,25 @@ describe('ConfluenceSearchResults', () => {
 
     const wrapper = render(props);
     expect(wrapper.find(NoResults).exists()).toBe(true);
+  });
+
+  it('should render a link to confluence and people search when there are no results', () => {
+    const props: Partial<Props> = {
+      query: 'foo',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+    };
+
+    const wrapper = render(props);
+
+    ['search_confluence', 'search_people'].forEach(resultId => {
+      expect(
+        wrapper
+          .find(ResultBase)
+          .findWhere(wrapper => wrapper.prop('resultId') === resultId)
+          .exists(),
+      ).toBe(true);
+    });
   });
 });

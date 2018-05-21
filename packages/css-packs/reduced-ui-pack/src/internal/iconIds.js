@@ -93,6 +93,7 @@ const iconIds = [
   'editor/code',
   'editor/date',
   'editor/decision',
+  'editor/divider',
   'editor/done',
   'editor/edit',
   'editor/emoji',
@@ -206,7 +207,7 @@ const iconIds = [
   'jira/minor',
   'jira/test-session',
   'jira/trivial',
-
+  'label',
   'lightbulb-filled',
   'lightbulb',
   'link-filled',

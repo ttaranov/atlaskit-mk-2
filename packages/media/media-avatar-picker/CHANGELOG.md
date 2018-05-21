@@ -1,5 +1,16 @@
 # @atlaskit/media-avatar-picker
 
+## 7.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-ui@2.1.1
+  - @atlaskit/modal-dialog@4.0.5
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/button@7.2.5
+  - @atlaskit/field-range@3.0.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/docs@3.0.4
+
 ## 7.1.0
 - [minor] Allow to customize default avatar list text [d2a7642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2a7642)
 

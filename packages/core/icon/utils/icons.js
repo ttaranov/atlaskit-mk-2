@@ -100,6 +100,7 @@ import EditorCloseIcon from '../glyph/editor/close';
 import EditorCodeIcon from '../glyph/editor/code';
 import EditorDateIcon from '../glyph/editor/date';
 import EditorDecisionIcon from '../glyph/editor/decision';
+import EditorDividerIcon from '../glyph/editor/divider';
 import EditorDoneIcon from '../glyph/editor/done';
 import EditorEditIcon from '../glyph/editor/edit';
 import EditorEmojiIcon from '../glyph/editor/emoji';
@@ -159,6 +160,7 @@ import EmojiKeyboardIcon from '../glyph/emoji/keyboard';
 import EmojiNatureIcon from '../glyph/emoji/nature';
 import EmojiObjectsIcon from '../glyph/emoji/objects';
 import EmojiPeopleIcon from '../glyph/emoji/people';
+import EmojiProductivityIcon from '../glyph/emoji/productivity';
 import EmojiSymbolsIcon from '../glyph/emoji/symbols';
 import EmojiTravelIcon from '../glyph/emoji/travel';
 import ErrorIcon from '../glyph/error';
@@ -211,6 +213,7 @@ import JiraMediumIcon from '../glyph/jira/medium';
 import JiraMinorIcon from '../glyph/jira/minor';
 import JiraTestSessionIcon from '../glyph/jira/test-session';
 import JiraTrivialIcon from '../glyph/jira/trivial';
+import LabelIcon from '../glyph/label';
 import LightbulbFilledIcon from '../glyph/lightbulb-filled';
 import LightbulbIcon from '../glyph/lightbulb';
 import LinkFilledIcon from '../glyph/link-filled';
@@ -965,6 +968,12 @@ export default {
     componentName: 'EditorDecisionIcon',
     package: '@atlaskit/icon/glyph/editor/decision',
   },
+  'editor/divider': {
+    keywords: ['editor/divider', 'editordivider'],
+    component: EditorDividerIcon,
+    componentName: 'EditorDividerIcon',
+    package: '@atlaskit/icon/glyph/editor/divider',
+  },
   'editor/done': {
     keywords: ['editor/done', 'editordone', 'check', 'tick'],
     component: EditorDoneIcon,
@@ -1319,6 +1328,12 @@ export default {
     componentName: 'EmojiPeopleIcon',
     package: '@atlaskit/icon/glyph/emoji/people',
   },
+  'emoji/productivity': {
+    keywords: ['emoji/productivity', 'emojiproductivity'],
+    component: EmojiProductivityIcon,
+    componentName: 'EmojiProductivityIcon',
+    package: '@atlaskit/icon/glyph/emoji/productivity',
+  },
   'emoji/symbols': {
     keywords: ['emoji/symbols', 'emojisymbols', 'heart', 'love'],
     component: EmojiSymbolsIcon,
@@ -1630,6 +1645,12 @@ export default {
     component: JiraTrivialIcon,
     componentName: 'JiraTrivialIcon',
     package: '@atlaskit/icon/glyph/jira/trivial',
+  },
+  label: {
+    keywords: ['label'],
+    component: LabelIcon,
+    componentName: 'LabelIcon',
+    package: '@atlaskit/icon/glyph/label',
   },
   'lightbulb-filled': {
     keywords: ['lightbulb-filled', 'lightbulbfilled', 'idea', 'hint'],

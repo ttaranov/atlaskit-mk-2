@@ -1,9 +1,14 @@
 // @flow
 
-import { CreatableSelect, components, mergeStyles } from '@atlaskit/select';
+import Select, {
+  CreatableSelect,
+  components,
+  mergeStyles,
+} from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+import { colors } from '@atlaskit/theme';
 
 import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
@@ -15,6 +20,10 @@ type Option = {
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Defines the appearance which can be default or subtle - no borders, background or icon.
+   *  Appearance values will be ignored if styles are parsed via the selectProps.
+   */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
@@ -47,11 +56,16 @@ type Props = {
   timeIsEditable?: boolean,
   /** The ISO time that should be used as the input value. */
   value?: string,
+  /** Indicates current value is invalid & changes border color. */
+  isInvalid?: boolean,
+  /** Hides icon for dropdown indicator. */
+  hideIcon?: boolean,
 };
 
 type State = {
   isOpen: boolean,
   value: string,
+  isFocused: boolean,
 };
 
 function dateFromTime(time: string): Date {
@@ -75,6 +89,7 @@ export default class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
@@ -88,11 +103,14 @@ export default class TimePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     timeIsEditable: false,
+    isInvalid: false,
+    hideIcon: false,
   };
 
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
+    isFocused: false,
   };
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -148,20 +166,42 @@ export default class TimePicker extends Component<Props, State> {
     }
   };
 
+  onBlur = () => {
+    this.setState({ isFocused: false });
+    this.props.onBlur();
+  };
+
+  onFocus = () => {
+    this.setState({ isFocused: true });
+    this.props.onFocus();
+  };
+
+  getSubtleControlStyles = (selectStyles: any) => {
+    if (selectStyles.control) return {};
+    return {
+      border: `2px solid ${
+        this.getState().isFocused ? `${colors.B100}` : `transparent`
+      }`,
+      backgroundColor: 'transparent',
+      padding: '1px',
+    };
+  };
+
   render() {
     const {
       autoFocus,
-      icon,
       id,
       innerProps,
       isDisabled,
       name,
-      onBlur,
-      onFocus,
       selectProps,
     } = this.props;
     const { value, isOpen } = this.getState();
-
+    const validationState = this.props.isInvalid ? 'error' : 'default';
+    const icon =
+      this.props.appearance === 'subtle' || this.props.hideIcon
+        ? null
+        : this.props.icon;
     const FixedLayerMenu = props => {
       return (
         <FixedLayer
@@ -172,12 +212,19 @@ export default class TimePicker extends Component<Props, State> {
     };
 
     const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
+    const controlStyles =
+      this.props.appearance === 'subtle'
+        ? this.getSubtleControlStyles(selectStyles)
+        : {};
+    const SelectComponent = this.props.timeIsEditable
+      ? CreatableSelect
+      : Select;
 
     return (
       <div {...innerProps} ref={this.getContainerRef}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <CreatableSelect
+        <SelectComponent
           autoFocus={autoFocus}
           components={{
             ClearIndicator,
@@ -188,15 +235,19 @@ export default class TimePicker extends Component<Props, State> {
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
           menuPlacement="auto"
-          onBlur={onBlur}
+          onBlur={this.onBlur}
           onCreateOption={this.onCreateOption}
           onChange={this.onChange}
           options={this.getOptions()}
-          onFocus={onFocus}
+          onFocus={this.onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
           placeholder="e.g. 9:00am"
           styles={mergeStyles(selectStyles, {
+            control: base => ({
+              ...base,
+              ...controlStyles,
+            }),
             menu: base => ({
               ...base,
               ...menuStyles,
@@ -216,6 +267,7 @@ export default class TimePicker extends Component<Props, State> {
             }
           }
           {...otherSelectProps}
+          validationState={validationState}
         />
       </div>
     );
