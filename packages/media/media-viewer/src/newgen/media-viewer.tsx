@@ -17,14 +17,20 @@ export type Props = {
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
-    const { onClose } = this.props;
     return (
       <Blanket>
-        <Shortcut keyCode="Escape" handler={() => onClose && onClose()} />
-        <Content onClose={onClose}>{this.renderContent()}</Content>
+        <Shortcut keyCode="Escape" handler={this.onClose} />
+        <Content onClose={this.onClose}>{this.renderContent()}</Content>
       </Blanket>
     );
   }
+
+  private onClose = () => {
+    const { onClose } = this.props;
+    if (onClose) {
+      onClose();
+    }
+  };
 
   private renderContent() {
     const {
