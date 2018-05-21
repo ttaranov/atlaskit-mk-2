@@ -60,4 +60,27 @@ export default md`
 
   <Card context={context} identifier={fileId} />;
   ~~~
+
+  **CardList**
+
+  * Displays a vertical list of files in the "small" card appearance
+  * Supports infinite scroll internally ONLY when a "height" prop is passed in with a (string | number) value
+
+  ~~~typescript
+  import { CardList } from '@atlaskit/media-card';
+  import { ContextFactory } from '@atlaskit/media-core';
+
+  const context = ContextFactory.create({
+    clientId,
+    serviceHost,
+    tokenProvider,
+  });
+
+  <CardList
+    context={context}
+    collectionName="some-collection-name"
+    height={500}
+    pageSize={50}
+  />;
+  ~~~
 `;
