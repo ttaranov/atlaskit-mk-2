@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 16.3.0
+- [minor] Adds support for adfStage [4b303ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b303ce)
+- [none] Updated dependencies [4b303ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b303ce)
+
 ## 16.2.6
 
 
