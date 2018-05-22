@@ -11,6 +11,7 @@ import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
 import { ObjectReactionKey, ReactionStatus } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { find } from '../../../editor/editor-core/src/plugins/quick-insert/search';
 
 const { getEmojiResourcePromise } = emoji.testData;
 
@@ -221,5 +222,14 @@ describe('@atlaskit/reactions/reactions', () => {
       'Sorry... something went wrong',
     );
     expect(reactions.find(ReactionPicker).prop('disabled')).toBeTruthy();
+  });
+
+  it('should render picker after reactions', () => {
+    const reactions = mount(renderReactions());
+    const container = reactions
+      .find('div')
+      .first()
+      .children();
+    expect(container.last().find(ReactionPicker)).toHaveLength(1);
   });
 });
