@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { CardFrame, IconImage } from '@atlaskit/media-ui';
+import { LoadingView } from '../src/block/LoadingView';
 import { UnauthorisedView } from '../src/block/UnauthorisedView';
 import { DetailView } from '../src/block/DetailView';
 import { ErrorView } from '../src/block/ErrorView';
+
+const CARD_WIDTH_MAX = 400;
 
 const log = (name: string) => () => console.log(name);
 
@@ -12,7 +15,7 @@ const ExampleFrame = ({ children }) => (
       <IconImage src="https://aem.dropbox.com/cms/content/dam/dropbox/www/en-us/branding/app-dropbox-windows@2x.png" />
     }
     text="Dropbox"
-    maxWidth={400}
+    maxWidth={CARD_WIDTH_MAX}
   >
     {children}
   </CardFrame>
@@ -20,6 +23,9 @@ const ExampleFrame = ({ children }) => (
 
 export default () => (
   <>
+    <h4>Loading</h4>
+    <LoadingView maxWidth={CARD_WIDTH_MAX} />
+
     <h4>Unauthorised</h4>
     <ExampleFrame>
       <UnauthorisedView service="Dropbox" onAuthenticate={log('Connect')} />
