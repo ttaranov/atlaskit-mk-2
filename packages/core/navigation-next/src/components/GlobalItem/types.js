@@ -1,6 +1,7 @@
 // @flow
 
 import type { ComponentType, Node } from 'react';
+import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 import type { StyleReducer, GlobalTheme } from '../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
@@ -30,7 +31,10 @@ export type GlobalItemProps = {
   href?: string,
   icon: ComponentType<GlobalItemIconProps>,
   label: string,
-  onClick?: (SyntheticEvent<MouseEvent>) => void,
+  onClick?: (
+    SyntheticEvent<MouseEvent>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void,
   size: Size,
   styles?: StyleReducer<GlobalItemPresentationProps>,
   /** Note: target will only be used if href is also set */

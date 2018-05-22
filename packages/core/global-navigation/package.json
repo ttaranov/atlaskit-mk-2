@@ -29,8 +29,9 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "react-lorem-component": "^0.12.2",
+    "@atlaskit/analytics-listeners": "^1.0.1",
+    "@atlaskit/dropdown-menu": "^4.0.0",
     "@atlaskit/onboarding": "^3.1.1",
-    "@atlaskit/dropdown-menu": "^4.0.0"
+    "react-lorem-component": "^0.12.2"
   }
 }

@@ -8,9 +8,14 @@ import QuestionIcon from '@atlaskit/icon/glyph/question';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
-import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
+import {
+  NavigationSubscriber,
+  GlobalNav,
+  type GlobalItemProps,
+} from '@atlaskit/navigation-next';
 
 import Drawer from '../Drawer';
+import { ANALYTICS_CHANNEL } from '../../../../navigation-next/src/common/constants';
 import type {
   GlobalNavigationProps,
   WrappedGlobalNavigationProps,
@@ -50,6 +55,23 @@ const getProductPrimaryItemComponent = navigation => ({
     </button>
   );
 
+const wrapWithAnalytics = ({ onClick, analyticsKey, ...props }: any) => {
+  const patchedOnClick = (event, analyticsEvent) => {
+    if (analyticsEvent) {
+      analyticsEvent
+        .update({
+          actionSubjectId: analyticsKey,
+        })
+        .fire(ANALYTICS_CHANNEL);
+    }
+    if (onClick) {
+      onClick(event, analyticsEvent);
+    }
+  };
+
+  return { ...props, onClick: patchedOnClick };
+};
+
 class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   static defaultProps = {
     primaryActions: [],
@@ -66,6 +88,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltPrimaryItems.push({
         ...rest,
         component: component || getProductPrimaryItemComponent(navigation),
+        analyticsKey: 'product',
       });
     }
 
@@ -75,6 +98,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
         label: 'Search',
         onClick: navigation.openSearchDrawer,
         tooltip: 'Search',
+        analyticsKey: 'search',
       };
       inbuiltPrimaryItems.push({ ...defaultSearch, ...search });
     }
@@ -85,11 +109,14 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
         label: 'Create',
         onClick: navigation.openCreateDrawer,
         tooltip: 'Create',
+        analyticsKey: 'create',
       };
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
     }
 
-    return [...inbuiltPrimaryItems, ...primaryActions];
+    const primaryItems = inbuiltPrimaryItems.map(wrapWithAnalytics);
+
+    return [...primaryItems, ...primaryActions];
   };
 
   constructSecondaryItems = () => {
@@ -196,8 +223,8 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
     return (
       <Fragment>
         <GlobalNav
-          primaryActions={primaryActions}
-          secondaryActions={secondaryActions}
+          primaryItems={primaryActions}
+          secondaryItems={secondaryActions}
         />
         {this.renderDrawer('create')}
         {this.renderDrawer('search', { width: 'wide' })}
