@@ -2,7 +2,6 @@
 
 ## 2.0.0
 - [major] updated the api to capture scenarios where data can be updated on the fly [c1720e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1720e8)
-
 - updated the `items` prop in TableTree component to accept Array of table data instead of function
 - updated the `items` prop in Rows component to accept Array of table data instead of function
 - added an `items` prop in Row component to accept children data Array for particular parent
