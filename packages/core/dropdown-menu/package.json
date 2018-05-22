@@ -25,12 +25,12 @@
     "@atlaskit/theme": "^3.2.2",
     "array-find": "^1.0.0",
     "prop-types": "^15.5.10",
-    "styled-components": "1.4.6 - 3",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
     "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react-dom": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^10.0.6",

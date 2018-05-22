@@ -20,12 +20,12 @@
     "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
     "react-transition-group": "^2.2.1",
-    "styled-components": "1.4.6 - 3",
     "tabbable": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react-dom": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/analytics-next": "^2.1.1",

@@ -395,7 +395,7 @@
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
     "string-raw": "^1.0.1",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "stylelint": "^8.4.0",
     "stylelint-config-prettier": "^2.0.0",
     "stylelint-config-standard": "^18.1.0",

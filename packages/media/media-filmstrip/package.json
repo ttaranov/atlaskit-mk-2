@@ -23,11 +23,11 @@
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "debounce": "^1.0.0",
-    "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/checkbox": "^2.0.2",
