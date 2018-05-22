@@ -37,7 +37,6 @@ export interface MediaOptions {
   allowMediaGroup?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
-  useNewUploadService?: boolean;
 }
 
 export interface MediaSingleOptions {
@@ -114,7 +113,6 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               customDropzoneContainer:
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
-              useNewUploadService: options && options.useNewUploadService,
             },
             dispatch,
             props.appearance,

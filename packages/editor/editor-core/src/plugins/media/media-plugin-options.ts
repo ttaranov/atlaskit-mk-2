@@ -18,5 +18,4 @@ export type MediaPluginOptions = {
   waitForMediaUpload?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
-  useNewUploadService?: boolean;
 };
