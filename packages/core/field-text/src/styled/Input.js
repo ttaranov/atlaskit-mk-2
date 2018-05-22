@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { colors, fontSize } from '@atlaskit/theme';
 
 const getPlaceholderStyle = style => css`
   &::-webkit-input-placeholder {
@@ -34,7 +34,8 @@ const InputElement = styled.input`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-size: 14px;
+  font-family: inherit;
+  font-size: ${fontSize}px;
   outline: none;
   width: 100%;
 
