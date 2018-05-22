@@ -35,7 +35,6 @@ export class NewUploadServiceImpl implements UploadService {
   private uploadParams: UploadParams;
 
   private readonly emitter: EventEmitter2;
-  private dropzoneElement?: HTMLElement;
   private cancellableFilesUploads: { [key: string]: CancellableFileUpload };
 
   constructor(private readonly context: Context, uploadParams?: UploadParams) {
@@ -58,34 +57,6 @@ export class NewUploadServiceImpl implements UploadService {
       ...uploadParams,
     };
   }
-
-  addDropzone(element: HTMLElement): void {
-    if (this.dropzoneElement) {
-      throw new Error(
-        'Dropzone element was already assigned. call removeDropzone() first.',
-      );
-    }
-    this.dropzoneElement = element;
-    this.dropzoneElement.addEventListener('drop', this.onFileDropped);
-  }
-
-  removeDropzone() {
-    if (!this.dropzoneElement) {
-      return;
-    }
-    this.dropzoneElement.removeEventListener('drop', this.onFileDropped);
-    delete this.dropzoneElement;
-  }
-
-  // Dropzone listener
-  private readonly onFileDropped = (dragEvent: DragEvent) => {
-    dragEvent.preventDefault();
-    dragEvent.stopPropagation();
-    this.emit('file-dropped', dragEvent);
-
-    const filesArray = Array.prototype.slice.call(dragEvent.dataTransfer.files);
-    this.addFiles(filesArray);
-  };
 
   addFiles(files: File[]): void {
     if (files.length === 0) {
