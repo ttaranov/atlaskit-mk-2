@@ -140,4 +140,42 @@ describe('Navigation', () => {
     expect(el.find(ArrowRightCircleIcon)).toHaveLength(0);
     expect(el.find(ArrowLeftCircleIcon)).toHaveLength(0);
   });
+
+  describe('Shortcuts', () => {
+    it('should call onChange callback when left ARROW key is pressed', () => {
+      const onChange = jest.fn();
+      mount(
+        <Navigation
+          onChange={onChange}
+          items={items}
+          selectedItem={identifier2}
+        />,
+      );
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        cancelable: true,
+        key: 'ArrowLeft',
+      });
+      document.dispatchEvent(e);
+      expect(onChange).toBeCalledWith(identifier);
+    });
+
+    it('should call onChange callback when right ARROW key is pressed', () => {
+      const onChange = jest.fn();
+      mount(
+        <Navigation
+          onChange={onChange}
+          items={items}
+          selectedItem={identifier}
+        />,
+      );
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        cancelable: true,
+        key: 'ArrowRight',
+      });
+      document.dispatchEvent(e);
+      expect(onChange).toBeCalledWith(identifier2);
+    });
+  });
 });
