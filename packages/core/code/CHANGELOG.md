@@ -1,5 +1,14 @@
 # @atlaskit/code
 
+## 4.0.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
+## 4.0.3
+- [patch] Align font sizes for inline code, mentions and dates [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
+- [none] Updated dependencies [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
+
 ## 4.0.2
 
 ## 4.0.1

@@ -771,6 +771,7 @@
             },
             "layout": {
               "enum": [
+                "wide",
                 "full-width",
                 "default"
               ]
@@ -923,7 +924,7 @@
               "properties": {
                 "url": {
                   "type": "string",
-                  "pattern": "^https://|^data:image/"
+                  "pattern": "^https?://|^data:image/"
                 }
               },
               "required": [
@@ -1789,6 +1790,9 @@
           },
           {
             "$ref": "#/definitions/taskList_node"
+          },
+          {
+            "$ref": "#/definitions/extension_node"
           },
           {
             "$ref": "#/definitions/codeBlock_node"

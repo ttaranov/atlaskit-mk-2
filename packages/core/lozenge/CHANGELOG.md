@@ -1,5 +1,17 @@
 # @atlaskit/lozenge
 
+## 4.1.0
+- [patch] Update appearance enum test [b42eaa5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b42eaa5)
+- [patch] Update test [c668ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c668ac9)
+- [minor] Update Lozenge to accept colors pairing [4638c7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638c7a)
+- [none] Updated dependencies [b42eaa5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b42eaa5)
+- [none] Updated dependencies [c668ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c668ac9)
+- [none] Updated dependencies [4638c7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638c7a)
+
+## 4.0.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
 ## 4.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

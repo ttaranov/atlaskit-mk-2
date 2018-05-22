@@ -1,28 +1,50 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  This package exports the \`TableTree\` component.
-  
-  The component displays a table of expandable, nested rows that form a tree-like hierarchy.
-  Child rows can be loaded asynchronously, on expansion.
-  
-  Simplest use of the API requires only calling the \`TableTree\` component. More powerful API
-  is also exposed, based on multiple subcomponents and the render prop pattern.
-  
-  ${(
-    <Example
-      Component={require('../examples/render-prop-async').default}
-      source={require('!!raw-loader!../examples/render-prop-async')}
-      title="Basic Usage: Table of Contents"
-      language="javascript"
-    />
-  )}
-  
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/TableTree')}
-    />
-  )}
+The component displays a table of expandable, nested rows that form a tree-like hierarchy.
+Child rows can be loaded asynchronously, on expansion.
+
+## Basic Usage
+
+Import the default exported Component and provide the data in \`items\` prop.
+
+${(
+  <Example
+    Component={require('../examples/single-component').default}
+    source={require('!!raw-loader!../examples/single-component')}
+    title="Basic Usage: With Static Data"
+    language="jsx"
+  />
+)}
+
+### Expected data structure for \`items\` props
+
+${code`
+[
+  {
+    id: //Item 1 id,
+    content: {
+
+    },
+    hasChildren:
+    children: [
+      // Item 1 children
+      {
+        // Child 1
+      }
+    ]
+  },
+  {
+    // Item 2
+  }
+]
+`}
+
+${(
+  <Props
+    props={require('!!extract-react-types-loader!../src/components/TableTree')}
+  />
+)}
 `;

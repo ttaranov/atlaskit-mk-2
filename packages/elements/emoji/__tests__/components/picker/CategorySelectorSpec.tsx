@@ -6,9 +6,9 @@ import { defaultCategories } from '../../../src/constants';
 import * as styles from '../../../src/components/picker/styles';
 import CategorySelector, {
   Props,
-  CategoryDescriptionMap,
   sortCategories,
 } from '../../../src/components/picker/CategorySelector';
+import { CategoryDescriptionMap } from '../../../src/components/picker/categories';
 
 const setupComponent = (props?: Props): ReactWrapper<any, any> =>
   mount(<CategorySelector {...props} />);

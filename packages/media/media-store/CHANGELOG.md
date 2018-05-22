@@ -1,5 +1,9 @@
 # @atlaskit/media-store
 
+## 2.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/media-test-helpers@12.0.4
+
 ## 2.1.0
 - [minor] Use id upfront in Uploader [f13d79e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f13d79e)
 

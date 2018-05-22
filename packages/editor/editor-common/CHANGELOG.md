@@ -1,5 +1,62 @@
 # @atlaskit/editor-common
 
+## 9.4.0
+- [minor] Add stage0 support to validator [1b5cc7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cc7f)
+- [none] Updated dependencies [1b5cc7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cc7f)
+
+## 9.3.10
+- [patch] ED-4643: added support for "wide" layout for tables [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+- [none] Updated dependencies [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+
+## 9.3.9
+- [patch] Support external media in bitbucket transformer and image uploader [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+- [patch] ED-4656: enable extension inside bodiedExtension [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-json-transformer@3.0.6
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-card@27.1.4
+  - @atlaskit/media-core@18.0.3
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-test-helpers@3.1.8
+
+## 9.3.8
+- [patch] ED-4569 Fix ADF schema issue for application card link pattern [fb831b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb831b1)
+- [none] Updated dependencies [fb831b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb831b1)
+
+## 9.3.7
+- [patch] Adding borders for colors in color picker [dc842ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc842ac)
+- [none] Updated dependencies [dc842ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc842ac)
+
 ## 9.3.6
 - [patch] Disable overlay for mediaSingle [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)
 - [none] Updated dependencies [147bc84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/147bc84)

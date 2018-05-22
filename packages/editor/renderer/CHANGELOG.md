@@ -1,5 +1,72 @@
 # @atlaskit/renderer
 
+## 16.3.0
+- [minor] Adds support for adfStage [4b303ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b303ce)
+- [none] Updated dependencies [4b303ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b303ce)
+
+## 16.2.6
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/editor-json-transformer@3.0.6
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-filmstrip@8.0.6
+  - @atlaskit/media-card@27.1.4
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/code@4.0.4
+  - @atlaskit/docs@3.0.4
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-common@9.3.9
+
+## 16.2.5
+- [patch] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+- [patch] Updated dependencies [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
+  - @atlaskit/media-card@27.1.3
+
 ## 16.2.4
 - [patch] Adding nested ul support [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)
 - [none] Updated dependencies [ce87690](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce87690)

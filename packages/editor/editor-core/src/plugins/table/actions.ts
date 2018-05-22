@@ -79,7 +79,7 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
   return false;
 };
 
-export const hoverTable: Command = (
+export const hoverTable = (danger?: boolean): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
@@ -88,8 +88,27 @@ export const hoverTable: Command = (
     const cells = getCellsInTable(state.selection)!;
     dispatch(
       state.tr.setMeta(hoverSelectionPluginKey, {
-        decorationSet: createHoverDecorationSet(cells, state),
+        decorationSet: createHoverDecorationSet(cells, state, danger),
         isTableHovered: true,
+        isTableInDanger: danger,
+      }),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const clearHoverTable: Command = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+  if (table) {
+    dispatch(
+      state.tr.setMeta(hoverSelectionPluginKey, {
+        decorationSet: DecorationSet.empty,
+        isTableHovered: false,
+        isTableInDanger: false,
       }),
     );
     return true;

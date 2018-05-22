@@ -10,6 +10,7 @@ import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
+import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 
 const GUTTER_PADDING = 32;
 
@@ -64,11 +65,7 @@ const ContentArea = styled.div`
       clear: none;
     }
   }
-  & .ProseMirror .table-container table {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-  }
+  ${tableFullPageEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
 

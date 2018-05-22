@@ -90,6 +90,7 @@ export default class Conversation extends React.PureComponent<Props> {
       renderEditor,
       placeholder,
       disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -106,6 +107,7 @@ export default class Conversation extends React.PureComponent<Props> {
           renderEditor={renderEditor}
           placeholder={placeholder}
           disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }

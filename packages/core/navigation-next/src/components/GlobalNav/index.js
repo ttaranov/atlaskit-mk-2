@@ -6,8 +6,8 @@
  */
 
 import React from 'react';
-
 import GlobalItem from '../GlobalItem';
+
 import { light, withTheme } from '../../theme';
 import {
   FirstPrimaryItemWrapper,
@@ -18,8 +18,8 @@ import type { GlobalNavProps } from './types';
 
 const GlobalNav = ({
   children, // drawers
-  primaryActions,
-  secondaryActions,
+  primaryItems,
+  secondaryItems,
   theme,
 }: GlobalNavProps) => {
   const wrapperStyles = theme.mode.globalNav();
@@ -27,7 +27,7 @@ const GlobalNav = ({
   return (
     <div css={wrapperStyles}>
       <PrimaryItemsList>
-        {primaryActions.map((props, index) => {
+        {primaryItems.map((props, index) => {
           // Render the first item with a margin beneath it and a large icon
           if (!index) {
             const { icon: Icon, ...rest } = props;
@@ -52,7 +52,7 @@ const GlobalNav = ({
       </PrimaryItemsList>
 
       <SecondaryItemsList>
-        {secondaryActions.map(props => (
+        {secondaryItems.map(props => (
           <GlobalItem {...props} key={props.label} size="small" />
         ))}
       </SecondaryItemsList>

@@ -39,7 +39,7 @@ export default class extends React.Component<{}, { cloudId: string }> {
             <GlobalQuickSearch
               cloudId={this.state.cloudId}
               {...config}
-              context="home"
+              context="confluence"
             />
           }
         />

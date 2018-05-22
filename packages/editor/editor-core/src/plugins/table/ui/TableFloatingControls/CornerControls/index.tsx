@@ -19,15 +19,21 @@ export interface Props {
   tableElement: HTMLElement;
   insertColumn: (column: number) => Command;
   insertRow: (row: number) => Command;
-  hoverTable: Command;
+  hoverTable: (danger?: boolean) => Command;
   resetHoverSelection: Command;
   scroll: number;
   updateScroll: () => void;
+  isTableInDanger?: boolean;
 }
 
 export default class CornerControls extends Component<Props, any> {
   render() {
-    const { tableElement, editorView: { state }, scroll } = this.props;
+    const {
+      tableElement,
+      editorView: { state },
+      scroll,
+      isTableInDanger,
+    } = this.props;
     const tableHeight = tableElement.offsetHeight;
     const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
 
@@ -39,18 +45,18 @@ export default class CornerControls extends Component<Props, any> {
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
           onMouseOut={this.resetHoverSelection}
+          className={isTableInDanger ? 'danger' : ''}
         />
         {!checkIfHeaderColumnEnabled(state) &&
           !checkIfNumberColumnEnabled(state) && (
             <InsertColumnButton
-              style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
               onClick={this.insertColumn}
               lineMarkerHeight={tableHeight + toolbarSize}
             />
           )}
         {!checkIfHeaderRowEnabled(state) && (
           <InsertRowButton
-            style={{ bottom: -toolbarSize, left: -toolbarSize - 8 }}
+            style={{ top: 2 }}
             onClick={this.insertRow}
             lineMarkerWidth={lineMarkerWidth}
             onMouseOver={this.props.updateScroll}
@@ -67,7 +73,7 @@ export default class CornerControls extends Component<Props, any> {
 
   private hoverTable = () => {
     const { state, dispatch } = this.props.editorView;
-    this.props.hoverTable(state, dispatch);
+    this.props.hoverTable()(state, dispatch);
   };
 
   private resetHoverSelection = () => {

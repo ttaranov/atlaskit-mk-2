@@ -145,4 +145,18 @@ export default class NavigationState extends Container<NavigationStateShape>
   closeSearchDrawer = () => {
     this.closeActiveDrawer();
   };
+
+  openNotificationDrawer = () => {
+    this.openDrawer('notification');
+  };
+  closeNotificationDrawer = () => {
+    this.closeActiveDrawer();
+  };
+
+  openPeopleDrawer = () => {
+    this.openDrawer('people');
+  };
+  closePeopleDrawer = () => {
+    this.closeActiveDrawer();
+  };
 }
