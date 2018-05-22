@@ -1,22 +1,21 @@
 // @flow
 
 import React, { Component } from 'react';
+import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 
 import {
   GlobalNav,
   LayoutManager,
   NavAPISubscriber,
   NavigationProvider,
+  NavRenderer,
 } from '../src';
 
-import * as components from './shared/components';
 import {
   globalNavPrimaryItems,
   globalNavSecondaryItems,
   rootViews,
 } from './shared/mock-data';
-
-const { ViewRenderer } = components;
 
 /**
  * Render components
@@ -28,11 +27,23 @@ const GlobalNavigation = () => (
   />
 );
 
+const JiraWordmark = () => (
+  <div css={{ padding: '16px 0' }}>
+    <JiraWordmarkLogo />
+  </div>
+);
+
 const ProductRoot = () => (
   <NavAPISubscriber>
     {api => {
       const { activeView, data } = api.state;
-      return activeView && data ? <ViewRenderer view={data.view} /> : 'LOADING';
+      return activeView && data ? (
+        <div css={{ padding: '16px 0' }}>
+          <NavRenderer customComponents={{ JiraWordmark }} items={data.view} />
+        </div>
+      ) : (
+        'LOADING'
+      );
     }}
   </NavAPISubscriber>
 );
@@ -47,6 +58,7 @@ class Example extends Component<*> {
 
     navAPI.setView(rootViews[0].id);
   }
+
   render() {
     return (
       <LayoutManager

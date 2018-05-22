@@ -10,6 +10,7 @@ import type { View } from '../../src/api/types';
 export type ItemProps = {
   after?: ComponentType<*>,
   before?: ComponentType<*>,
+  href?: string,
   icon?: string,
   goTo?: string,
 };
@@ -20,4 +21,11 @@ export type GoToItemProps = {
   goTo: string,
 };
 
-export type ViewRendererProps = { view: View };
+export type TitleProps = {
+  text: string,
+};
+
+export type ItemsRendererProps = {
+  customComponents?: { [string]: ComponentType<any> },
+  items: View,
+};

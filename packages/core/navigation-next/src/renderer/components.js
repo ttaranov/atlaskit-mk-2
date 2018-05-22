@@ -2,8 +2,6 @@
 
 import React from 'react';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
-
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
@@ -20,8 +18,13 @@ import {
   Section,
   SectionSeparator,
   SectionTitle,
-} from '../../src';
-import type { GoToItemProps, ItemProps, ViewRendererProps } from './types';
+} from '../';
+import type {
+  GoToItemProps,
+  ItemProps,
+  ItemsRendererProps,
+  TitleProps,
+} from './types';
 
 const iconMap = {
   ArrowRightIcon,
@@ -39,11 +42,7 @@ const iconMap = {
  */
 
 // GoToItem
-export const GoToItem = ({
-  after: afterProp,
-  goTo,
-  ...rest
-}: GoToItemProps) => {
+const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
     after = ({ isHover }: *) =>
@@ -59,7 +58,7 @@ export const GoToItem = ({
 };
 
 // Item
-export const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
+const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
   let before = beforeProp;
   if (!before && icon && iconMap[icon]) {
     before = iconMap[icon];
@@ -75,7 +74,7 @@ const backItemPrimitiveStyles = styles => ({
   itemBase: { ...styles.itemBase, cursor: 'default' },
 });
 
-export const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
+const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
   <div css={{ display: 'flex', marginBottom: '8px' }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
@@ -96,55 +95,96 @@ export const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
   </div>
 );
 
-// JiraWordmark
-export const JiraWordmark = () => (
-  <div css={{ padding: '16px 0' }}>
-    <JiraWordmarkLogo />
-  </div>
-);
-
 // Separator
-export const Separator = SectionSeparator;
+const Separator = SectionSeparator;
 
 // Title
-export const Title = SectionTitle;
+const Title = ({ text, ...props }: TitleProps) => (
+  <SectionTitle {...props}>{text}</SectionTitle>
+);
+
+const Debug = props => (
+  <pre
+    css={{
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      fontSize: '10px',
+      padding: '4px',
+    }}
+  >
+    {JSON.stringify(props, null, 2)}
+  </pre>
+);
 
 /**
  * GROUPS
  */
 
-const renderItems = items =>
-  items.map(({ type, ...props }) => {
-    const RenderComponent = components[type];
-    return RenderComponent ? <RenderComponent {...props} /> : null;
-  });
-
 // Group
-export const Group = ({ items }: *) => (
-  <div css={{ padding: '0 16px' }}>{renderItems(items)}</div>
+const Group = ({ items, customComponents }: *) => (
+  <div css={{ padding: '0 16px' }}>
+    <ItemsRenderer items={items} customComponents={customComponents} />
+  </div>
 );
 
 // Nested
-export const Nested = ({ id, items, parentId }: *) => (
+const Nested = ({ customComponents, id, items, parentId }: *) => (
   <Section id={id} parentId={parentId}>
-    {({ css }) => <div css={css}>{renderItems(items)}</div>}
+    {({ css }) => (
+      <div css={css}>
+        <ItemsRenderer items={items} customComponents={customComponents} />
+      </div>
+    )}
   </Section>
 );
 
-const components = {
+const itemComponents = {
+  Debug,
   GoToItem,
   Item,
   BackItem,
-  JiraWordmark,
   Separator,
   Title,
+};
+
+const groupComponents = {
   Group,
   Nested,
 };
 
+const components = { ...itemComponents, ...groupComponents };
+
 /**
  * RENDERER
  */
-export const ViewRenderer = ({ view }: ViewRendererProps) => (
-  <div css={{ padding: '16px 0' }}>{renderItems(view)}</div>
-);
+export const ItemsRenderer = ({
+  customComponents = {},
+  items,
+}: ItemsRendererProps) => {
+  return items.map(({ type, ...props }) => {
+    if (groupComponents[type]) {
+      const G = groupComponents[type];
+      return (
+        <G key={props.id} {...props} customComponents={customComponents} />
+      );
+    }
+
+    if (itemComponents[type]) {
+      const I = itemComponents[type];
+      return <I key={props.id} {...props} />;
+    }
+
+    if (customComponents[type]) {
+      const C = customComponents[type];
+      return (
+        <C
+          key={props.id}
+          {...props}
+          components={components}
+          customComponents={customComponents}
+        />
+      );
+    }
+
+    return <Debug key={props.id} type={type} {...props} />;
+  });
+};

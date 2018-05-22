@@ -26,3 +26,6 @@ export { dark, light, settings, modeGenerator } from './theme';
 
 /** Nav API */
 export { NavAPISubscriber } from './api';
+
+/** Nav Renderer */
+export { default as NavRenderer } from './renderer';
