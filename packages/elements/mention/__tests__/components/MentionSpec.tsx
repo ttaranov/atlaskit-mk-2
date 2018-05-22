@@ -5,15 +5,30 @@ import { AnalyticsListener } from '@atlaskit/analytics';
 import { AnalyticsListener as AnalyticsListenerNext } from '@atlaskit/analytics-next';
 import { MentionStyle } from '../../src/components/Mention/styles';
 import { MentionType } from '../../src/types';
-import Mention, {
-  ELEMENTS_CHANNEL,
-  ANALYTICS_HOVER_DELAY,
-} from '../../src/components/Mention';
-import ResourcedMention from '../..//src/components/Mention/ResourcedMention';
+import Mention, { ANALYTICS_HOVER_DELAY } from '../../src/components/Mention';
+import { ELEMENTS_CHANNEL } from '../../src/constants';
+import ResourcedMention from '../../src/components/Mention/ResourcedMention';
 import {
   mockMentionData as mentionData,
   mockMentionProvider as mentionProvider,
 } from '../_test-helpers';
+
+const createPayload = (actionSubject, action) => ({
+  payload: {
+    action,
+    actionSubject,
+    attributes: {
+      packageName: '@atlaskit/mention',
+      packageVersion: expect.any(String),
+      componentName: 'mention',
+      accessLevel: 'CONTAINER',
+      isSpecial: false,
+    },
+    source: 'unknown',
+    tags: [ELEMENTS_CHANNEL],
+    eventType: 'ui',
+  },
+});
 
 describe('<Mention />', () => {
   beforeEach(() => {
@@ -109,22 +124,7 @@ describe('<Mention />', () => {
       );
 
       expect(analyticsNextHandlerSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          payload: {
-            action: 'selected',
-            actionSubject: 'lozenge',
-            attributes: {
-              packageName: '@atlaskit/mention',
-              packageVersion: expect.any(String),
-              componentName: 'mention',
-              accessLevel: 'CONTAINER',
-              isSpecial: false,
-            },
-            source: 'unknown',
-            tags: [ELEMENTS_CHANNEL],
-            eventType: 'ui',
-          },
-        }),
+        expect.objectContaining(createPayload('mention', 'selected')),
         ELEMENTS_CHANNEL,
       );
     });
@@ -153,7 +153,7 @@ describe('<Mention />', () => {
       );
     });
 
-    it('should dispatch lozenge.hover analytics onMouseLeave-event', () => {
+    it('should dispatch lozenge.hover analytics event if hover delay is greater than the threshold', () => {
       const analyticsSpy = jest.fn();
       const analyticsNextHandlerSpy = jest.fn();
       const mention = mount(
@@ -168,38 +168,20 @@ describe('<Mention />', () => {
       );
       mention.find(MentionStyle).simulate('mouseenter');
       jest.runTimersToTime(ANALYTICS_HOVER_DELAY);
-      mention.find(MentionStyle).simulate('mouseleave');
 
       expect(analyticsSpy).toBeCalled();
-      // note:  Mention.startTime (private attribute) is zero initially so firing mouseleave event here is enough to get over 1000ms
-      //        Refer to onMouseLeave() code
       expect(analyticsSpy).toHaveBeenCalledWith(
         'atlassian.fabric.mention.lozenge.hover',
         { accessLevel: 'CONTAINER', isSpecial: false },
       );
 
       expect(analyticsNextHandlerSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          payload: {
-            action: 'hovered',
-            actionSubject: 'lozenge',
-            attributes: {
-              packageName: '@atlaskit/mention',
-              packageVersion: expect.any(String),
-              componentName: 'mention',
-              accessLevel: 'CONTAINER',
-              isSpecial: false,
-            },
-            source: 'unknown',
-            tags: [ELEMENTS_CHANNEL],
-            eventType: 'ui',
-          },
-        }),
+        expect.objectContaining(createPayload('mention', 'hovered')),
         ELEMENTS_CHANNEL,
       );
     });
 
-    it('should not dispatch lozenge.hover analytics onMouseLeave-event if delay is bellow the threshold', () => {
+    it('should not dispatch lozenge.hover analytics event for a hover delay bellow the threshold', () => {
       const analyticsSpy = jest.fn();
       const analyticsNextHandlerSpy = jest.fn();
       const mention = mount(

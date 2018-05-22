@@ -5,6 +5,7 @@ import { AnalyticsListener as AnalyticsListenerNext } from '@atlaskit/analytics-
 import debug from '../src/util/logger';
 import { onMentionEvent } from '../example-helpers/index';
 import { mockMentionData as mentionData } from '../__tests__/_test-helpers';
+import { ELEMENTS_CHANNEL } from '../src/constants';
 
 const padding = { padding: '10px' };
 
@@ -43,7 +44,7 @@ export default function Example() {
       <div style={padding}>
         <AnalyticsListenerNext
           onEvent={listenerHandlerNext}
-          channel="fabric-elements"
+          channel={ELEMENTS_CHANNEL}
         >
           <AnalyticsListener onEvent={listenerHandler} matchPrivate={true}>
             <Mention

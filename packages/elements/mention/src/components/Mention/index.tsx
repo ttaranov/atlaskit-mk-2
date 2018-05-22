@@ -15,10 +15,10 @@ import {
   version as packageVersion,
 } from '../../../package.json';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { ELEMENTS_CHANNEL } from '../../constants';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
 export const ANALYTICS_HOVER_DELAY = 1000;
-export const ELEMENTS_CHANNEL = 'fabric-elements';
 
 export type OwnProps = {
   id: string;
@@ -41,25 +41,21 @@ export type Props = OwnProps & OldAnalytics;
 const mentionPayload = (
   actionSubject: string,
   action: string,
-  props,
-): GasPayload => {
-  const { accessLevel, text } = props;
-
-  return {
-    action,
-    actionSubject,
-    eventType: 'ui',
-    attributes: {
-      packageName,
-      packageVersion,
-      componentName: 'mention',
-      accessLevel,
-      isSpecial: isSpecialMentionText(text),
-    },
-    tags: [ELEMENTS_CHANNEL],
-    source: 'unknown',
-  };
-};
+  { accessLevel, text }: Props,
+): GasPayload => ({
+  action,
+  actionSubject,
+  eventType: 'ui',
+  attributes: {
+    packageName,
+    packageVersion,
+    componentName: 'mention',
+    accessLevel,
+    isSpecial: isSpecialMentionText(text),
+  },
+  tags: [ELEMENTS_CHANNEL],
+  source: 'unknown',
+});
 
 const fireAnalytics = (eventName: string, props: Props) => {
   const { accessLevel, text, firePrivateAnalyticsEvent } = props;
@@ -169,7 +165,7 @@ const MentionWithAnalytics: React.ComponentClass<
   OwnProps
 > = withAnalyticsEvents({
   onClick: (createEvent, props: Props) => {
-    createEvent(mentionPayload('lozenge', 'selected', props)).fire(
+    createEvent(mentionPayload('mention', 'selected', props)).fire(
       ELEMENTS_CHANNEL,
     );
 
@@ -178,7 +174,7 @@ const MentionWithAnalytics: React.ComponentClass<
   },
 
   onHover: (createEvent, props) => {
-    createEvent(mentionPayload('lozenge', 'hovered', props)).fire(
+    createEvent(mentionPayload('mention', 'hovered', props)).fire(
       ELEMENTS_CHANNEL,
     );
 
