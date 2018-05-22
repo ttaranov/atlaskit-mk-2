@@ -26,6 +26,7 @@ const atlaskitTeam = [
   'pete_gleeson',
   'mgardiner_atlas',
   'padmaia',
+  'isriharsha',
 ];
 const editorTeam = [
   'imsysoev',
