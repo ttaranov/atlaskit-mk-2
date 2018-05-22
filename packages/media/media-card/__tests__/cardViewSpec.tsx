@@ -566,6 +566,7 @@ describe('CardView', () => {
 
   it('should fire "shown" analytics event when initially rendered with complete status', () => {
     const analyticsEventHandler = jest.fn();
+
     mount(
       <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
         <CardView status="complete" metadata={link} />
@@ -583,10 +584,10 @@ describe('CardView', () => {
     // This means we end up with almost the same event loop execution, which means 0 for time difference
     expect(
       actualFiredEvent.payload && actualFiredEvent.payload.loadTime,
-    ).toEqual(0);
+    ).toBeLessThanOrEqual(5);
   });
 
-  it('should fire "shown" analytics event when status has changed', () => {
+  it('should fire "shown" analytics event when status has changed', done => {
     const analyticsEventHandler = jest.fn();
     const card = mount(
       <CardViewWithAnalytics
@@ -597,17 +598,22 @@ describe('CardView', () => {
       />,
     );
     expect(analyticsEventHandler).toHaveBeenCalledTimes(0);
-    card.setProps({ status: 'complete' });
+    // Just in these tests are running on quantum computer and all these operations are performed
+    // in less then 1 ms
+    setTimeout(() => {
+      card.setProps({ status: 'complete' });
 
-    expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
-    const actualFiredEvent: Partial<UIAnalyticsEventInterface> =
-      analyticsEventHandler.mock.calls[0][0];
-    expect(actualFiredEvent.payload && actualFiredEvent.payload.action).toEqual(
-      'shown',
-    );
-    expect(
-      actualFiredEvent.payload && actualFiredEvent.payload.loadTime,
-    ).toBeGreaterThan(0);
+      expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
+      const actualFiredEvent: Partial<UIAnalyticsEventInterface> =
+        analyticsEventHandler.mock.calls[0][0];
+      expect(
+        actualFiredEvent.payload && actualFiredEvent.payload.action,
+      ).toEqual('shown');
+      expect(
+        actualFiredEvent.payload && actualFiredEvent.payload.loadTime,
+      ).toBeGreaterThan(0);
+      done();
+    }, 2);
   });
 
   it('should fire "shown" analytics event only once when props are changing', () => {
