@@ -1,5 +1,10 @@
 # @atlaskit/input
 
+## 2.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/field-base@9.0.3
+  - @atlaskit/theme@3.2.2
+
 ## 2.0.1
 
 ## 2.0.0

@@ -137,6 +137,14 @@ const Nested = ({ customComponents, id, items, parentId }: *) => (
   </Section>
 );
 
+// PluginPoint
+const PluginPoint = ({ customComponents, items }: *) =>
+  items ? (
+    <div css={{ padding: '0 16px' }}>
+      <ItemsRenderer items={items} customComponents={customComponents} />
+    </div>
+  ) : null;
+
 const itemComponents = {
   Debug,
   GoToItem,
@@ -149,6 +157,7 @@ const itemComponents = {
 const groupComponents = {
   Group,
   Nested,
+  PluginPoint,
 };
 
 const components = { ...itemComponents, ...groupComponents };

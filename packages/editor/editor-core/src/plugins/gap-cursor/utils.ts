@@ -1,6 +1,7 @@
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { findPositionOfNodeBefore, findDomRefAtPos } from 'prosemirror-utils';
+import { tableMarginTop, tableMarginBottom } from '@atlaskit/editor-common';
 
 import { GapCursorSelection, Side } from './selection';
 
@@ -124,8 +125,8 @@ export const fixCursorAlignment = (view: EditorView) => {
 
   // table nodeView margin fix
   if (targetNode.type === schema.nodes.table) {
-    height -= 48;
-    marginTop = 28;
+    height -= tableMarginTop + tableMarginBottom;
+    marginTop = tableMarginTop;
   }
 
   // breakout mode

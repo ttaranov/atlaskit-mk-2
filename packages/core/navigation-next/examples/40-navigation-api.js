@@ -1,7 +1,9 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
+import { Label } from '@atlaskit/field-base';
+import Toggle from '@atlaskit/toggle';
 
 import {
   GlobalNav,
@@ -16,6 +18,7 @@ import {
   globalNavSecondaryItems,
   rootViews,
 } from './shared/mock-data';
+import ShortcutsPlugin from './shared/shortcuts-plugin';
 
 /**
  * Render components
@@ -60,6 +63,7 @@ class Example extends Component<*> {
   }
 
   render() {
+    const { onDebugToggle } = this.props;
     return (
       <LayoutManager
         globalNavigation={GlobalNavigation}
@@ -67,13 +71,36 @@ class Example extends Component<*> {
         productContainerNavigation={null}
       >
         <div style={{ padding: 30 }}>Page content</div>
+        <Label label="Toggle debug logger" />
+        <Toggle isDefaultChecked onChange={onDebugToggle} />
       </LayoutManager>
     );
   }
 }
 
-export default () => (
-  <NavigationProvider>
-    <NavAPISubscriber>{api => <Example navAPI={api} />}</NavAPISubscriber>
-  </NavigationProvider>
-);
+// eslint-disable-next-line react/no-multi-comp
+export default class extends Component<*, *> {
+  state = {
+    debugEnabled: true,
+  };
+
+  toggleDebug = () => {
+    this.setState({
+      debugEnabled: !this.state.debugEnabled,
+    });
+  };
+
+  render() {
+    const { debugEnabled } = this.state;
+    return (
+      <NavigationProvider debug={debugEnabled}>
+        <Fragment>
+          <NavAPISubscriber>
+            {api => <Example navAPI={api} onDebugToggle={this.toggleDebug} />}
+          </NavAPISubscriber>
+          <ShortcutsPlugin />
+        </Fragment>
+      </NavigationProvider>
+    );
+  }
+}

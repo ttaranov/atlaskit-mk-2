@@ -2,22 +2,21 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
-import {
-  akEditorTableToolbarSize,
-  akEditorTableBorder,
-  akEditorTableBorderRadius,
-  akEditorTableBorderSelected,
-  akEditorTableToolbarSelected,
-} from '../../../../../styles';
+import { tableBorderDeleteColor, tableToolbarDeleteColor } from '../../styles';
 import { LineMarkerDefault } from '../styles';
-import { akEditorTableToolbar } from '@atlaskit/editor-common';
+import {
+  tableInsertColumnButtonSize,
+  tableToolbarSize,
+  tableBorderColor,
+  tableBorderRadiusSize,
+  tableBorderSelectedColor,
+  tableToolbarSelectedColor,
+  tableToolbarColor,
+} from '../../styles';
 
 export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  position: absolute;
-  top: -${akEditorTableToolbarSize}px;
-  left: -${akEditorTableToolbarSize}px;
-  width: ${akEditorTableToolbarSize}px;
-  height: ${akEditorTableToolbarSize}px;
+  width: ${tableToolbarSize}px;
+  height: ${tableToolbarSize}px;
 
   display: none;
 
@@ -30,26 +29,29 @@ export const CornerButton: ComponentClass<
   ButtonHTMLAttributes<{}>
 > = styled.button`
   position: absolute;
-  right: -1px;
-  bottom: -1px;
-  width: ${akEditorTableToolbarSize}px;
-  height: ${akEditorTableToolbarSize}px;
-  border: 1px solid ${akEditorTableBorder};
+  top: 0;
+  width: ${tableToolbarSize}px;
+  height: ${tableToolbarSize}px;
+  border: 1px solid ${tableBorderColor};
   border-radius: 0;
-  border-top-left-radius: ${akEditorTableBorderRadius};
-  background: ${akEditorTableToolbar};
+  border-top-left-radius: ${tableBorderRadiusSize}px;
+  background: ${tableToolbarColor};
   cursor: pointer;
   padding: 0;
 
   &:hover,
   .active > &,
   .tableHovered & {
-    border-color: ${akEditorTableBorderSelected};
-    background: ${akEditorTableToolbarSelected};
+    border-color: ${tableBorderSelectedColor};
+    background: ${tableToolbarSelectedColor};
     z-index: 1;
   }
   &:focus {
     outline: none;
+  }
+  &.danger {
+    border: 1px solid ${tableBorderDeleteColor};
+    background: ${tableToolbarDeleteColor};
   }
 `;
 
@@ -58,7 +60,7 @@ export const ColumnLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   width: 2px;
   left: 8px;
-  top: 20px;
+  top: ${tableInsertColumnButtonSize}px;
 `;
 
 export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
@@ -66,5 +68,5 @@ export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   height: 2px;
   top: 8px;
-  left: 20px;
+  left: ${tableInsertColumnButtonSize}px;
 `;

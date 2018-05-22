@@ -2,11 +2,18 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { Stubs } from '../_stubs';
 import { Subject } from 'rxjs';
-import { MediaItem, MediaItemType } from '@atlaskit/media-core';
-import Header from '../../src/newgen/header';
+import {
+  MediaItem,
+  MediaItemType,
+  MediaType,
+  Context,
+  FileItem,
+} from '@atlaskit/media-core';
+import Header, { createDownloadUrl } from '../../src/newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 
-function createContext(subject: Subject<MediaItem>) {
+function createContext(subject: Subject<MediaItem>): Context {
   const token = 'some-token';
   const clientId = 'some-client-id';
   const serviceHost = 'some-service-host';
@@ -126,14 +133,38 @@ describe('<Header />', () => {
     });
 
     describe('File metadata', () => {
-      it('should render media type text and file size', () => {
+      const testMediaTypeText = (
+        mediaType: MediaType,
+        expectedText: string,
+      ) => {
+        const item: MediaItem = {
+          type: 'file',
+          details: {
+            id: 'some-id',
+            processingStatus: 'succeeded',
+            mediaType: mediaType,
+            name: 'my item',
+            size: 12222222,
+          },
+        };
+
         const subject = new Subject<MediaItem>();
         const el = mount(
           <Header context={createContext(subject)} identifier={identifier} />,
         );
-        subject.next(imageItem);
+        subject.next(item);
         el.update();
-        expect(el.find(MetadataSubText).text()).toEqual('image · 11.7 MB');
+        expect(el.find(MetadataSubText).text()).toEqual(
+          `${expectedText} · 11.7 MB`,
+        );
+      };
+
+      it('should render media type text and file size for each media type', () => {
+        testMediaTypeText('image', 'image');
+        testMediaTypeText('audio', 'audio');
+        testMediaTypeText('video', 'video');
+        testMediaTypeText('unknown', 'unknown');
+        testMediaTypeText('doc', 'document');
       });
 
       it('should no render file size if not available', () => {
@@ -192,6 +223,62 @@ describe('<Header />', () => {
       );
       subject.next(linkItem);
       expect(el.text()).toEqual('');
+    });
+  });
+
+  describe('Download button', () => {
+    it('should show the download button', () => {
+      const subject = new Subject<MediaItem>();
+      const el = mount(
+        <Header context={createContext(subject)} identifier={identifier} />,
+      );
+      subject.next(imageItem);
+      el.update();
+      expect(el.find(DownloadIcon)).toHaveLength(1);
+    });
+
+    it('should NOT show the download button when there is an error', () => {
+      const subject = new Subject<MediaItem>();
+      const el = mount(
+        <Header context={createContext(subject)} identifier={identifier} />,
+      );
+      subject.error(new Error('error'));
+      el.update();
+      expect(el.find(DownloadIcon)).toHaveLength(0);
+    });
+
+    it('should use a fresh token for the download link', () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext(subject);
+      const el = mount(<Header context={context} identifier={identifier} />);
+      subject.next(imageItem);
+      el.update();
+      el.find(DownloadIcon).simulate('click');
+      expect(context.config.authProvider).toHaveBeenCalled();
+    });
+
+    it('should generate a valid download link', async () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext(subject);
+      const item: FileItem = {
+        type: 'file',
+        details: {
+          id: '123',
+        },
+      };
+      const url = await createDownloadUrl(item, context);
+      const urlWithCollection = await createDownloadUrl(
+        item,
+        context,
+        'some-collection',
+      );
+
+      expect(url).toEqual(
+        'some-service-host/file/123/binary?client=some-client-id&token=some-token&dl=true',
+      );
+      expect(urlWithCollection).toEqual(
+        'some-service-host/file/123/binary?client=some-client-id&collection=some-collection&token=some-token&dl=true',
+      );
     });
   });
 });

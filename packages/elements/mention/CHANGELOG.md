@@ -1,5 +1,36 @@
 # @atlaskit/mention
 
+## 11.1.4
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/util-data-test@9.1.3
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/util-data-test@9.1.3
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/util-data-test@9.1.3
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/util-data-test@9.1.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/util-service-support@2.0.7
+  - @atlaskit/lozenge@4.0.1
+  - @atlaskit/analytics@3.0.1
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/util-data-test@9.1.3
+
+## 11.1.3
+- [patch] ED-2551 use default cursor on mention if no onClick is provided [e9cc83c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9cc83c)
+- [patch] Updated dependencies [e9cc83c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9cc83c)
+
 ## 11.1.2
 - [patch] Align font sizes for inline code, mentions and dates [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
 - [none] Updated dependencies [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)

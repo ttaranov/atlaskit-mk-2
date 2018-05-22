@@ -56,7 +56,8 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - yarn test:changed
+              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
+              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
             caches:
               - node
         - step:
@@ -127,6 +128,16 @@ pipelines:
             - yarn test:webdriver:browserstack
             - (cd website && yarn deploy-staging:no-minimize)
     # We deliberately don't use the cache here as well
+
+    run-bundle-analysis:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn build
+            - yarn build:bundle-analysis
+          caches:
+            - node 
 
 
     landkid:

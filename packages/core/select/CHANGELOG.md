@@ -1,5 +1,17 @@
 # @atlaskit/select
 
+## 3.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/modal-dialog@4.0.5
+  - @atlaskit/checkbox@2.0.2
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
+## 3.0.1
+- [patch] Fix imports for creaetable, async and async creatable selects [92ae24e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92ae24e)
+
 ## 3.0.0
 - [major] Update to react-select@beta.4, removed developer preview warning. Stable release [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
 - BREAKING: Removed `maxValueHeight` prop and functionality, this is a breaking change that affects multi -value components predominantly. The control will now expand to accommodate contained values, as opposed to constraining to a maxValueHeight with a scrollable area.

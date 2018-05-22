@@ -12,6 +12,9 @@ import TextColor from './textColor';
 import Underline from './underline';
 import Action from './action';
 
+// Stage0
+import ConfluenceInlineComment from './confluence-inline-comment';
+
 export const markToReact = {
   code: Code,
   em: Em,
@@ -22,6 +25,9 @@ export const markToReact = {
   textColor: TextColor,
   underline: Underline,
   action: Action,
+
+  // Stage0
+  confluenceInlineComment: ConfluenceInlineComment,
 };
 
 export const toReact = (mark: Mark): ComponentClass<any> => {

@@ -6,15 +6,27 @@ import styled, { StyledComponentClass } from 'styled-components';
 import { MediaType } from '@atlaskit/media-core';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, VideoHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
+import { HTMLAttributes, VideoHTMLAttributes, AudioHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 import {
   akColorY200,
   akColorP200,
   akColorB300,
   akColorN400,
+  akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 
 const overlayZindex = 999;
+
+export const colors = {
+  image: akColorY200,
+  audio: akColorP200,
+  video: '#ff7143',
+  doc: akColorB300,
+  unknown: '#3dc7dc',
+  blanketColor: '#1b2638',
+};
+
+export const hideControlsClassName = 'mvng-hide-controls';
 
 export const Blanket = styled.div`
   position: fixed;
@@ -22,7 +34,7 @@ export const Blanket = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #1b2638;
+  background-color: ${colors.blanketColor};
   z-index: ${overlayZindex};
 `;
 
@@ -61,9 +73,20 @@ export const ArrowsWrapper = styled.div`
 
 export const CloseButtonWrapper = styled.div`
   position: absolute;
-  top: 20px;
+  top: 24px;
   right: 20px;
   z-index: ${overlayZindex + 2};
+`;
+
+export const ZoomWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  button {
+    margin-right: 10px;
+  }
 `;
 
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
@@ -79,15 +102,7 @@ export const ContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${HeaderWrapper} {
-    ${handleControlsVisibility};
-  }
-
-  ${ArrowsWrapper} {
-    ${handleControlsVisibility};
-  }
-
-  ${CloseButtonWrapper} {
+  .${hideControlsClassName} {
     ${handleControlsVisibility};
   }
 `;
@@ -99,7 +114,8 @@ export const ErrorMessage = styled.div`
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
-  max-width: 100%;
+  transition: transform 0.2s;
+  transform-origin: center;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
@@ -107,7 +123,14 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   height: 100%;
 `;
 
-export const PDFWrapper = styled.div``;
+export const PDFWrapper = styled.div`
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`;
 
 const ArrowWrapper = styled.div`
   flex: 1;
@@ -118,11 +141,11 @@ export const Arrow = styled.span`
   cursor: pointer;
 `;
 
-export const LeftWrapper = ArrowWrapper.extend`
+export const LeftWrapper = styled(ArrowWrapper)`
   text-align: left;
 `;
 
-export const RightWrapper = ArrowWrapper.extend`
+export const RightWrapper = styled(ArrowWrapper)`
   text-align: right;
 `;
 
@@ -135,6 +158,14 @@ export const LeftHeader = styled.div`
   flex: 0.8;
 `;
 
+export const ImageWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 export const MetadataWrapper = styled.div`
   display: flex;
 `;
@@ -154,14 +185,6 @@ export const MetadataIconWrapper = styled.div`
   padding-right: 12px;
 `;
 
-const colors = {
-  image: akColorY200,
-  audio: akColorP200,
-  video: '#ff7143',
-  doc: akColorB300,
-  unknown: '#3dc7dc',
-};
-
 export interface IconWrapperProps {
   type: MediaType;
 }
@@ -171,4 +194,47 @@ export const IconWrapper: ComponentClass<
 > = styled.div`
   display: inline-flex;
   color: ${({ type }: IconWrapperProps) => colors[type] || colors.unknown};
+`;
+
+export const RightHeader = styled.div`
+  flex: 0.2;
+  text-align: right;
+  margin-right: 50px;
+`;
+
+export const AudioPlayer = styled.div`
+  border-radius: ${akBorderRadius};
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+export const Audio = styled.audio`
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`;
+
+export const AudioCover = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const DefaultCoverWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > * {
+    transform: scale(2);
+  }
 `;

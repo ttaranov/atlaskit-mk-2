@@ -11,3 +11,6 @@ export { styleReducerNoOp } from './utils';
 
 // withTheme
 export { default as withTheme } from './withTheme';
+
+// Types
+export { GlobalTheme } from './types';

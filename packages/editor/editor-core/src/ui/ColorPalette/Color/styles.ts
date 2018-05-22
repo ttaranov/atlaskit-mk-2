@@ -16,6 +16,7 @@ export const Button: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
   border-radius: 4px;
   border: 1px solid ${akColorN0};
   cursor: pointer;
+  display: block;
 `;
 
 export const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`

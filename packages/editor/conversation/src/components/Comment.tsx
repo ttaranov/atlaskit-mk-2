@@ -56,6 +56,7 @@ export interface SharedProps {
   isHighlighted?: boolean;
   placeholder?: string;
   disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface Props extends SharedProps {
@@ -247,6 +248,7 @@ export default class Comment extends React.Component<Props, State> {
       user,
       renderEditor,
       disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     const { isEditing } = this.state;
 
@@ -266,6 +268,7 @@ export default class Comment extends React.Component<Props, State> {
           user={user}
           renderEditor={renderEditor}
           disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }
@@ -330,7 +333,13 @@ export default class Comment extends React.Component<Props, State> {
       return null;
     }
 
-    const { dataProviders, user, renderEditor, disableScrollTo } = this.props;
+    const {
+      dataProviders,
+      user,
+      renderEditor,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
+    } = this.props;
 
     return (
       <Editor
@@ -341,6 +350,7 @@ export default class Comment extends React.Component<Props, State> {
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
+        allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
       />
     );
   }

@@ -105,8 +105,8 @@ export class MediaPluginState {
 
     const { nodes } = state.schema;
     assert(
-      nodes.media && nodes.mediaGroup,
-      'Editor: unable to init media plugin - media or mediaGroup node absent in schema',
+      nodes.media && (nodes.mediaGroup || nodes.mediaSingle),
+      'Editor: unable to init media plugin - media or mediaGroup/mediaSingle node absent in schema',
     );
 
     this.stateManager = new DefaultMediaStateManager();
@@ -809,7 +809,10 @@ export class MediaPluginState {
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection);
+      return (
+        !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection) &&
+        !hasParentNodeOfType(schema.nodes.layoutSection)(selection)
+      );
     }
     return false;
   }
