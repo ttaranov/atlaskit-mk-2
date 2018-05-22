@@ -94,11 +94,13 @@ type ReactSelectProps = {
 };
 
 type Props = ReactSelectProps & {
+  /* The state  */
+  spacing: 'compact' | 'default',
   /* The state of validation if used in a form */
   validationState?: ValidationState,
 };
 
-function baseStyles(validationState) {
+function baseStyles(validationState, isCompact) {
   return {
     control: (css, { isFocused, isDisabled }) => {
       let borderColor = isFocused ? colors.B100 : colors.N10;
@@ -134,6 +136,21 @@ function baseStyles(validationState) {
         },
       };
     },
+    valueContainer: css => ({
+      ...css,
+      paddingBottom: isCompact ? 0 : 2,
+      paddingTop: isCompact ? 0 : 2,
+    }),
+    clearIndicator: css => ({
+      ...css,
+      paddingBottom: isCompact ? 0 : 6,
+      paddingTop: isCompact ? 0 : 6,
+    }),
+    loadingIndicator: css => ({
+      ...css,
+      paddingBottom: isCompact ? 0 : 6,
+      paddingTop: isCompact ? 0 : 6,
+    }),
     dropdownIndicator: (css, { isDisabled }) => {
       let color = colors.N500;
       if (isDisabled) {
@@ -142,8 +159,8 @@ function baseStyles(validationState) {
       return {
         ...css,
         color,
-        paddingBottom: 6,
-        paddingTop: 6,
+        paddingBottom: isCompact ? 0 : 6,
+        paddingTop: isCompact ? 0 : 6,
 
         ':hover': {
           color: colors.N200,
@@ -199,7 +216,15 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
     };
     render() {
       // $FlowFixMe: `validationState` is passed in from a parent validation component
-      const { styles, validationState, ...props } = this.props; // eslint-disable-line
+      const {
+        styles,
+        validationState,
+        spacing,
+        isMulti,
+        ...props
+      } = this.props; // eslint-disable-line
+      const isCompact = !isMulti && spacing === 'compact';
+      console.log(isCompact);
 
       // props must be spread first to stop `components` being overridden
       return (
@@ -207,7 +232,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
           ref={this.onSelectRef}
           {...props}
           components={this.components}
-          styles={mergeStyles(baseStyles(validationState), styles)}
+          styles={mergeStyles(baseStyles(validationState, isCompact), styles)}
         />
       );
     }
