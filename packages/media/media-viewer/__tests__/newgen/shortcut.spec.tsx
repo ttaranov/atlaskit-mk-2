@@ -3,6 +3,12 @@ import { mount } from 'enzyme';
 import { Shortcut } from '../../src/newgen/shortcut';
 
 describe('Shortcut', () => {
+  const originalEventListener = document.addEventListener;
+
+  beforeEach(() => {
+    document.addEventListener = originalEventListener;
+  });
+
   it('should register key event listener on mount', done => {
     document.addEventListener = name => {
       expect(name).toEqual('keydown');
@@ -33,5 +39,20 @@ describe('Shortcut', () => {
     );
 
     el.unmount();
+  });
+
+  it('should execute handler', done => {
+    mount(
+      <div>
+        <Shortcut keyCode="Escape" handler={done} />
+      </div>,
+    );
+
+    const e = new KeyboardEvent('keydown', {
+      bubbles: true,
+      cancelable: true,
+      key: 'Escape',
+    });
+    document.dispatchEvent(e);
   });
 });
