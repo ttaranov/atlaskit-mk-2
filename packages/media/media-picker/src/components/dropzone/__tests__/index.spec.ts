@@ -220,7 +220,7 @@ describe('Dropzone', () => {
       await dropzone.activate();
 
       dropzone.on('drag-leave', () => {
-        new Error('drag-leave should not be emitted');
+        throw new Error('drag-leave should not be emitted');
       });
 
       container.dispatchEvent(createDragLeaveEvent());
