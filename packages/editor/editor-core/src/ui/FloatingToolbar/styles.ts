@@ -5,7 +5,7 @@ import { HTMLAttributes, ClassAttributes, ReactNode, ComponentClass } from 'reac
 import { akColorN10, akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export const Container: ComponentClass<
-  HTMLAttributes<{}> & { height?: number }
+  HTMLAttributes<{}> & { height?: number; innerRef?: (instance: any) => void }
 > = styled.div`
   border-radius: ${akBorderRadius};
 
