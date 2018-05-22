@@ -1,43 +1,59 @@
 // @flow
-import { colors } from '@atlaskit/theme';
+import { colors, themed } from '@atlaskit/theme';
 
 import type { Theme } from './themeBuilder';
 
-export const defaultColors: Theme = {
-  lineNumberColor: colors.N90,
-  lineNumberBgColor: colors.N30,
-  backgroundColor: colors.N20,
-  textColor: colors.N800,
-  substringColor: colors.N400,
-  keywordColor: colors.B500,
-  attributeColor: colors.T500,
-  selectorTagColor: colors.B500,
-  docTagColor: colors.Y300,
-  nameColor: colors.B500,
-  builtInColor: colors.B500,
-  literalColor: colors.B500,
-  bulletColor: colors.B500,
-  codeColor: colors.B500,
-  additionColor: colors.B500,
-  regexpColor: colors.T300,
-  symbolColor: colors.T300,
-  variableColor: colors.T300,
-  templateVariableColor: colors.T300,
-  linkColor: colors.P300,
-  selectorAttributeColor: colors.T300,
-  selectorPseudoColor: colors.T300,
-  typeColor: colors.T500,
-  stringColor: colors.G400,
-  selectorIdColor: colors.T500,
-  selectorClassColor: colors.T500,
-  quoteColor: colors.T500,
-  templateTagColor: colors.T500,
-  deletionColor: colors.T500,
-  titleColor: colors.P300,
-  sectionColor: colors.P300,
-  commentColor: colors.N400,
-  metaKeywordColor: colors.G400,
-  metaColor: colors.N400,
-  functionColor: colors.N800,
-  numberColor: colors.B500,
-};
+export function defaultColors(theme): Theme {
+  return {
+    lineNumberColor: themed({ light: colors.N90, dark: colors.DN90 })({
+      theme,
+    }),
+    lineNumberBgColor: themed({ light: colors.N30, dark: colors.DN20 })({
+      theme,
+    }),
+    backgroundColor: colors.codeBlock({ theme }),
+    textColor: themed({ light: colors.N800, dark: colors.DN800 })({ theme }),
+    substringColor: themed({ light: colors.N400, dark: colors.DN400 })({
+      theme,
+    }),
+    keywordColor: colors.blue({ theme }),
+    attributeColor: colors.teal({ theme }),
+    selectorTagColor: colors.blue({ theme }),
+    docTagColor: colors.yellow({ theme }),
+    nameColor: colors.blue({ theme }),
+    builtInColor: colors.blue({ theme }),
+    literalColor: colors.blue({ theme }),
+    bulletColor: colors.blue({ theme }),
+    codeColor: colors.blue({ theme }),
+    additionColor: colors.blue({ theme }),
+    regexpColor: colors.teal({ theme }),
+    symbolColor: colors.teal({ theme }),
+    variableColor: colors.teal({ theme }),
+    templateVariableColor: colors.teal({ theme }),
+    linkColor: colors.purple({ theme }),
+    selectorAttributeColor: colors.teal({ theme }),
+    selectorPseudoColor: colors.teal({ theme }),
+    typeColor: themed({ light: colors.T500, dark: colors.T300 })({ theme }),
+    stringColor: colors.green({ theme }),
+    selectorIdColor: themed({ light: colors.T500, dark: colors.T300 })({
+      theme,
+    }),
+    selectorClassColor: themed({ light: colors.T500, dark: colors.T300 })({
+      theme,
+    }),
+    quoteColor: themed({ light: colors.T500, dark: colors.T300 })({ theme }),
+    templateTagColor: themed({ light: colors.T500, dark: colors.T300 })({
+      theme,
+    }),
+    deletionColor: themed({ light: colors.T500, dark: colors.T300 })({ theme }),
+    titleColor: colors.purple({ theme }),
+    sectionColor: colors.purple({ theme }),
+    commentColor: themed({ light: colors.N400, dark: colors.DN400 })({ theme }),
+    metaKeywordColor: colors.green({ theme }),
+    metaColor: themed({ light: colors.N400, dark: colors.DN400 })({ theme }),
+    functionColor: themed({ light: colors.N800, dark: colors.DN800 })({
+      theme,
+    }),
+    numberColor: colors.blue({ theme }),
+  };
+}

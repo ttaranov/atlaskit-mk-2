@@ -206,8 +206,8 @@ const inlineCodeStyle = (theme: Theme) => ({
   },
 });
 
-export function applyTheme(theme: Theme = {}) {
-  const newTheme = { ...defaultColors, ...theme };
+export function applyTheme(theme = {}) {
+  const newTheme = { ...defaultColors(theme), ...theme };
   return {
     lineNumberContainerStyle: lineNumberContainerStyle(newTheme),
     codeBlockStyle: codeBlockStyle(newTheme),

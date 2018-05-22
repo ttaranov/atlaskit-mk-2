@@ -1,4 +1,6 @@
 // @flow
+import { registerLanguage } from 'react-syntax-highlighter/light';
+
 export const SUPPORTED_LANGUAGES = [
   {
     name: 'PHP',
@@ -48,17 +50,12 @@ export const SUPPORTED_LANGUAGES = [
   {
     name: 'C',
     alias: ['c'],
-    value: '',
+    value: 'cpp',
   },
   {
     name: 'Swift',
     alias: ['swift'],
     value: 'swift',
-  },
-  {
-    name: 'TeX',
-    alias: ['tex', 'latex'],
-    value: 'tex',
   },
   {
     name: 'Shell',
@@ -76,44 +73,9 @@ export const SUPPORTED_LANGUAGES = [
     value: 'go',
   },
   {
-    name: 'ActionScript',
-    alias: ['actionscript', 'actionscript3', 'as'],
-    value: 'actionscript',
-  },
-  {
-    name: 'AppleScript',
-    alias: ['applescript'],
-    value: 'applescript',
-  },
-  {
-    name: 'ColdFusion',
-    alias: ['coldfusion'],
-    value: 'xml',
-  },
-  {
     name: 'Diff',
     alias: ['diff'],
     value: 'diff',
-  },
-  {
-    name: 'JavaFX',
-    alias: ['javafx', 'jfx'],
-    value: 'java',
-  },
-  {
-    name: 'VisualBasic',
-    alias: ['visualbasic', 'vb'],
-    value: 'vbscript',
-  },
-  {
-    name: 'PlainText',
-    alias: ['plaintext', 'text'],
-    value: 'text',
-  },
-  {
-    name: 'VbNet',
-    alias: ['vbnet', 'vb.net'],
-    value: 'vbnet',
   },
   {
     name: 'MATLAB',
@@ -143,11 +105,6 @@ export const SUPPORTED_LANGUAGES = [
     value: 'sql',
   },
   {
-    name: 'R',
-    alias: ['r'],
-    value: 'r',
-  },
-  {
     name: 'Perl',
     alias: ['perl', 'pl'],
     value: 'perl',
@@ -156,11 +113,6 @@ export const SUPPORTED_LANGUAGES = [
     name: 'Lua',
     alias: ['lua'],
     value: 'lua',
-  },
-  {
-    name: 'Delphi',
-    alias: ['delphi', 'pas', 'pascal', 'objectpascal'],
-    value: 'delphi',
   },
   {
     name: 'XML',
@@ -193,16 +145,6 @@ export const SUPPORTED_LANGUAGES = [
     value: 'puppet',
   },
   {
-    name: 'Arduino',
-    alias: ['arduino'],
-    value: 'arduino',
-  },
-  {
-    name: 'Fortran',
-    alias: ['fortran'],
-    value: 'fortran',
-  },
-  {
     name: 'Erlang',
     alias: ['erlang', 'erl'],
     value: 'erlang',
@@ -223,29 +165,14 @@ export const SUPPORTED_LANGUAGES = [
     value: 'elixir',
   },
   {
-    name: 'Verilog',
-    alias: ['verilog', 'v'],
-    value: 'verilog',
-  },
-  {
     name: 'Rust',
     alias: ['rust'],
     value: 'rust',
   },
   {
-    name: 'VHDL',
-    alias: ['vhdl'],
-    value: 'vhdl',
-  },
-  {
     name: 'Sass',
     alias: ['sass'],
     value: 'less',
-  },
-  {
-    name: 'OCaml',
-    alias: ['ocaml'],
-    value: 'ocaml',
   },
   {
     name: 'Dart',
@@ -258,29 +185,9 @@ export const SUPPORTED_LANGUAGES = [
     value: 'css',
   },
   {
-    name: 'reStructuredText',
-    alias: ['restructuredtext', 'rst', 'rest'],
-    value: 'rest',
-  },
-  {
-    name: 'ObjectPascal',
-    alias: ['objectpascal'],
-    value: 'delphi',
-  },
-  {
     name: 'Kotlin',
     alias: ['kotlin'],
     value: 'kotlin',
-  },
-  {
-    name: 'D',
-    alias: ['d'],
-    value: 'd',
-  },
-  {
-    name: 'Octave',
-    alias: ['octave'],
-    value: 'matlab',
   },
   {
     name: 'QML',
@@ -288,96 +195,23 @@ export const SUPPORTED_LANGUAGES = [
     value: 'qml',
   },
   {
-    name: 'Prolog',
-    alias: ['prolog'],
-    value: 'prolog',
-  },
-  {
-    name: 'FoxPro',
-    alias: ['foxpro', 'vfp', 'clipper', 'xbase'],
-    value: 'vbscript',
-  },
-  {
-    name: 'Scheme',
-    alias: ['scheme', 'scm'],
-    value: 'scheme',
-  },
-  {
-    name: 'CUDA',
-    alias: ['cuda', 'cu'],
-    value: 'cpp',
-  },
-  {
-    name: 'Julia',
-    alias: ['julia', 'jl'],
-    value: 'julia',
-  },
-  {
-    name: 'Racket',
-    alias: ['racket', 'rkt'],
-    value: 'lisp',
-  },
-  {
-    name: 'Ada',
-    alias: ['ada', 'ada95', 'ada2005'],
-    value: 'ada',
-  },
-  {
-    name: 'Tcl',
-    alias: ['tcl'],
-    value: 'tcl',
-  },
-  {
     name: 'Markdown',
     alias: ['mkdown', 'md', 'markdown'],
     value: 'markdown',
-  },
-  {
-    name: 'Mathematica',
-    alias: ['mathematica', 'mma', 'nb'],
-    value: 'mathematica',
-  },
-  {
-    name: 'Autoit',
-    alias: ['autoit'],
-    value: 'autoit',
   },
   {
     name: 'StandardML',
     alias: ['standardmL', 'sml'],
     value: 'sml',
   },
-  {
-    name: 'Objective-J',
-    alias: ['objective-j', 'objectivej', 'obj-j', 'objj'],
-    value: 'objectivec',
-  },
-  {
-    name: 'Smalltalk',
-    alias: ['smalltalk', 'squeak', 'st'],
-    value: 'smalltalk',
-  },
-  {
-    name: 'Vala',
-    alias: ['vala', 'vapi'],
-    value: 'vala',
-  },
-  {
-    name: 'ABAP',
-    alias: ['abap'],
-    value: 'sql',
-  },
-  {
-    name: 'LiveScript',
-    alias: ['livescript', 'live-script'],
-    value: 'livescript',
-  },
-  {
-    name: 'XQuery',
-    alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'],
-    value: 'xquery',
-  },
 ];
+
+// import and register only those language definitions that we care about
+new Set(SUPPORTED_LANGUAGES.map(lang => lang.value)).forEach(lang => {
+  const langDef = require(`react-syntax-highlighter/languages/hljs/${lang}`)
+    .default;
+  registerLanguage(lang, langDef);
+});
 
 export const languageList: string[] = SUPPORTED_LANGUAGES.reduce(
   (acc: string[], val: any) => {
@@ -387,8 +221,11 @@ export const languageList: string[] = SUPPORTED_LANGUAGES.reduce(
 );
 
 export function normalizeLanguage(language?: string): string {
+  if (name === 'PlainText' || ['plaintext', 'text'].includes(language)) {
+    return 'text';
+  }
   const match = SUPPORTED_LANGUAGES.filter(val => {
-    return val.name === language || val.alias.indexOf(language) !== -1;
+    return val.name === language || val.alias.includes(language);
   }).shift();
   return match ? match.value : ''; // default to empty string to enable language auto-detect
 }
