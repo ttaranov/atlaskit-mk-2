@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 12.0.6
+- [patch] FS-1921 Don't refresh reactions when getting detailed response if requests [1764815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764815)
+
 ## 12.0.5
 
 
