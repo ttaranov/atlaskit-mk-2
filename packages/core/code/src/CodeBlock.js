@@ -1,19 +1,22 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter/light';
-import { normalizeLanguage } from './supportedLanguages';
 import { withTheme } from 'styled-components';
-import { Theme, applyTheme } from './themes/themeBuilder';
+import {
+  normalizeLanguage,
+  type ADFSupportedLanguages,
+} from './supportedLanguages';
+import { type Theme, type ThemeProps, applyTheme } from './themes/themeBuilder';
 
 type CodeBlockProps = {
   /** The code to be formatted */
   text: string,
   /** The language in which the code is written */
-  language?: string,
+  language?: ADFSupportedLanguages | string,
   /** Indicates whether or not to show line numbers */
   showLineNumbers?: boolean,
   /** A custom theme to be applied, implements the Theme interface */
-  theme?: Theme | any,
+  theme?: Theme | ThemeProps,
 };
 
 class CodeBlock extends PureComponent<CodeBlockProps, {}> {
@@ -41,14 +44,13 @@ class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   };
 
   render() {
-    const { language } = this.props;
     const {
       lineNumberContainerStyle,
       codeBlockStyle,
       codeContainerStyle,
     } = applyTheme(this.props.theme);
     const props = {
-      language: normalizeLanguage(language),
+      language: normalizeLanguage(this.props.language),
       style: codeBlockStyle,
       showLineNumbers: this.props.showLineNumbers,
       PreTag: 'span',

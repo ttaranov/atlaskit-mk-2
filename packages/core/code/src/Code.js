@@ -1,17 +1,20 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter/light';
-import { normalizeLanguage } from './supportedLanguages';
-import { type Theme, applyTheme } from './themes/themeBuilder';
 import { withTheme } from 'styled-components';
+import {
+  normalizeLanguage,
+  type ADFSupportedLanguages,
+} from './supportedLanguages';
+import { type Theme, type ThemeProps, applyTheme } from './themes/themeBuilder';
 
 type CodeProps = {
   /** The code to be formatted */
   text: string,
   /** The language in which the code is written */
-  language?: string,
+  language?: ADFSupportedLanguages | string,
   /** A custom theme to be applied, implements the Theme interface */
-  theme?: Theme | any,
+  theme?: Theme | ThemeProps,
 };
 
 class Code extends PureComponent<CodeProps, {}> {
@@ -21,10 +24,9 @@ class Code extends PureComponent<CodeProps, {}> {
   };
 
   render() {
-    const { language } = this.props;
     const { inlineCodeStyle } = applyTheme(this.props.theme);
     const props = {
-      language: normalizeLanguage(language),
+      language: normalizeLanguage(this.props.language),
       PreTag: 'span',
       style: inlineCodeStyle,
       showLineNumbers: false,
