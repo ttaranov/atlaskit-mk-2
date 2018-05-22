@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import AtlaskitAnalyticsListeners from '@atlaskit/analytics-listeners';
 import { Label } from '@atlaskit/field-base';
 import Toggle from '@atlaskit/toggle';
 
@@ -20,6 +21,7 @@ import {
   globalNavSecondaryItems,
   rootViews,
 } from './shared/mock-data';
+import mockAnalyticsWebClient from './shared/mock-analytics-client';
 
 const { ViewRenderer } = components;
 
@@ -83,14 +85,16 @@ export default class extends Component<*, *> {
   render() {
     const { debugEnabled } = this.state;
     return (
-      <NavigationProvider debug={debugEnabled}>
-        <Fragment>
-          <NavAPISubscriber>
-            {api => <Example navAPI={api} onDebugToggle={this.toggleDebug} />}
-          </NavAPISubscriber>
-          <ShortcutsPlugin />
-        </Fragment>
-      </NavigationProvider>
+      <AtlaskitAnalyticsListeners client={mockAnalyticsWebClient}>
+        <NavigationProvider debug={debugEnabled}>
+          <Fragment>
+            <NavAPISubscriber>
+              {api => <Example navAPI={api} onDebugToggle={this.toggleDebug} />}
+            </NavAPISubscriber>
+            <ShortcutsPlugin />
+          </Fragment>
+        </NavigationProvider>
+      </AtlaskitAnalyticsListeners>
     );
   }
 }

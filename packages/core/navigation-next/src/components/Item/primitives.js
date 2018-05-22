@@ -2,8 +2,13 @@
 
 import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 
 import { light, styleReducerNoOp, withTheme } from '../../theme';
+import { ANALYTICS_CHANNEL } from '../../common/constants';
 import type { ItemPrimitiveProps, ItemRenderComponentProps } from './types';
 
 const getItemBase = (
@@ -97,6 +102,18 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   }
 }
 
+const createAndFire = createAndFireEvent(ANALYTICS_CHANNEL);
+
+// export default withTheme({ mode: light, context: 'container' })(NavigationItemPrimitive);
+
 export default withTheme({ mode: light, context: 'container' })(
-  NavigationItemPrimitive,
+  withAnalyticsEvents({
+    onClick: createEvent =>
+      console.log('hello') ||
+      createAndFire({
+        action: 'click',
+        actionSubject: 'item',
+        eventType: 'ui',
+      })(createEvent),
+  })(NavigationItemPrimitive),
 );
