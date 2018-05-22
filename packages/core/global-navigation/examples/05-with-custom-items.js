@@ -35,6 +35,7 @@ const Global = () => (
         label: 'Ngrok Link',
         tooltip: 'Ngrok Link',
         icon: BitbucketBranchesIcon,
+        position: 3,
         size: 'small',
       },
     ]}

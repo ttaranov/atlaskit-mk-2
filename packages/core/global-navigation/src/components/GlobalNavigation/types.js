@@ -12,7 +12,10 @@ import type {
 
 export type DrawerContentProps = { closeDrawer: () => void };
 
-type ItemDataShape = GlobalItemProps & { key?: string };
+type ItemDataShape = GlobalItemProps & {
+  key?: string,
+  position: number,
+};
 
 export type InitialNavigationStateShape = {
   activeDrawer?: string | null,
@@ -45,6 +48,14 @@ type GlobalNavigationItemOptions = {
   component?: ComponentType<*>,
 };
 
+export type UserConfig = {
+  key: string,
+  custom?: {
+    product?: string,
+    cloudId?: string,
+  },
+};
+
 export type GlobalNavigationProps = {
   primaryActions?: Array<ItemDataShape>,
   secondaryActions?: Array<ItemDataShape>,
@@ -56,6 +67,7 @@ export type GlobalNavigationProps = {
   appSwitcher?: GlobalNavigationItemOptions,
   help?: GlobalNavigationItemOptions,
   profile?: GlobalNavigationItemOptions,
+  userConfig?: UserConfig,
 };
 
 export type WrappedGlobalNavigationProps = {

@@ -55,6 +55,9 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   static defaultProps = {
     primaryActions: [],
     secondaryActions: [],
+    userConfig: {
+      key: 'unknown@example.com',
+    },
   };
 
   constructPrimaryItems = ldConfig => {
@@ -241,16 +244,11 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   };
 
   render() {
-    const user = {
-      firstName: 'Bob',
-      lastName: 'Loblaw',
-      key: 'bob@example.com',
-      custom: {
-        groups: 'beta_testers',
-      },
-    };
     return (
-      <LaunchDarkly clientId="5b021c6807a72221591bc73b" user={user}>
+      <LaunchDarkly
+        clientId="5b021c6807a72221591bc73b"
+        user={this.props.userConfig}
+      >
         <Fragment>
           <FeatureFlag
             flagKey="global-navigation-config"
