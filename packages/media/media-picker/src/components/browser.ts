@@ -45,6 +45,7 @@ export class Browser extends LocalUploadComponent {
     // IE11 hack - click will not execute if input has no parent
     // WebDriver hack - click will not execute if input isn't in the document
     document.body.appendChild(this.browseElement);
+
     this.addEvents();
 
     this.analyticsContext.trackEvent(new MPBrowserLoaded());

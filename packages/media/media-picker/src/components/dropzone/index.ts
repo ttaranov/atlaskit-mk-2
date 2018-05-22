@@ -149,6 +149,10 @@ export class Dropzone extends LocalUploadComponent<
   private createInstance(): void {
     this.instance = this.getDropzoneUI();
     this.container.appendChild(this.instance);
+
+    if (!this.config.useNewUploadService) {
+      this.uploadService.on('file-dropped', this.onDrop);
+    }
   }
 
   private getDropzoneUI(): HTMLElement {

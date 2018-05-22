@@ -35,7 +35,6 @@ describe('Browser', () => {
     browser = new Browser(new MockContext(), context, browseConfig);
     const inputsAfter = document.querySelectorAll('input[type=file]');
     expect(inputsAfter.length).toBeGreaterThan(inputsBefore.length);
-    expect(browser['uploadService'].addBrowse).toHaveBeenCalled();
   });
 
   it('should remove the input from the body', () => {
@@ -44,6 +43,5 @@ describe('Browser', () => {
     browser.teardown();
     const inputsAfter = document.querySelectorAll('input[type=file]');
     expect(inputsAfter.length).toBeLessThan(inputsBefore.length);
-    expect(browser['uploadService'].removeBrowse).toHaveBeenCalled();
   });
 });
