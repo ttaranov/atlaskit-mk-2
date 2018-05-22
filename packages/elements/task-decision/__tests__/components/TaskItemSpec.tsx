@@ -31,6 +31,15 @@ describe('<TaskItem/>', () => {
     expect(contentRef!.textContent).toEqual('Hello world');
   });
 
+  it('should disable input if disabled', () => {
+    const component = mount(
+      <TaskItem taskId="task-1" disabled={true}>
+        Hello <b>world</b>
+      </TaskItem>,
+    );
+    expect(component.find('input').prop('disabled')).toEqual(true);
+  });
+
   describe('clicking', () => {
     it('should call onChange when checkbox is clicked', () => {
       const spy = sinon.spy();

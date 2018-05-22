@@ -183,6 +183,14 @@ export class ItemStateManager {
       this.debouncedTaskToggle.delete(stringKey);
     }
 
+    // Update cache optimistically
+    this.cachedItems.set(stringKey, {
+      ...objectKey,
+      lastUpdateDate: new Date(),
+      type: 'TASK',
+      state: state,
+    });
+
     // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
     this.notifyUpdated(objectKey, state);
 
@@ -217,7 +225,15 @@ export class ItemStateManager {
             })
             .catch(() => {
               // Undo optimistic change
-              this.notifyUpdated(objectKey, toggleTaskState(state));
+              const previousState = toggleTaskState(state);
+              this.cachedItems.set(stringKey, {
+                ...objectKey,
+                lastUpdateDate: new Date(),
+                type: 'TASK',
+                state: previousState,
+              });
+
+              this.notifyUpdated(objectKey, previousState);
               reject();
             });
         }, 500),

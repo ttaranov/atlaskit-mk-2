@@ -21,6 +21,7 @@ export interface Props {
   lastUpdater?: User;
   fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  disabled?: boolean;
 }
 
 let taskCount = 0;
@@ -87,6 +88,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
       children,
       participants,
       showPlaceholder,
+      disabled,
     } = this.props;
 
     const icon = (
@@ -97,6 +99,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
           type="checkbox"
           onChange={this.handleOnChange}
           checked={!!isDone}
+          disabled={!!disabled}
         />
         <label htmlFor={this.checkBoxId} />
       </CheckBoxWrapper>
