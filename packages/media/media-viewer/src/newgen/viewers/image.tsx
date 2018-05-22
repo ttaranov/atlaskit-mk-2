@@ -12,6 +12,7 @@ export const REQUEST_CANCELLED = 'request_cancelled';
 export type ImageViewerProps = {
   context: Context;
   item: FileItem;
+  collectionName?: string;
 };
 
 export type ImageViewerState = {
@@ -92,7 +93,7 @@ export class ImageViewer extends React.Component<
   private async init(fileItem: FileItem, context: Context) {
     this.setState(initialState, async () => {
       try {
-        const service = context.getBlobService();
+        const service = context.getBlobService(this.props.collectionName);
         const { response, cancel } = service.fetchImageBlobCancelable(
           fileItem,
           {

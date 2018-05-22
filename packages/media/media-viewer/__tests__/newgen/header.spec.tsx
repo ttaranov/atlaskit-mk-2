@@ -101,7 +101,7 @@ describe('<Header />', () => {
   });
 
   describe('Metadata', () => {
-    describe('File name', () => {
+    describe('File collectionName', () => {
       it('shows the title when loaded', () => {
         const subject = new Subject<MediaItem>();
         const el = mount(
@@ -112,7 +112,7 @@ describe('<Header />', () => {
         expect(el.find(MetadataFileName).text()).toEqual('my image');
       });
 
-      it('shows unknown if file name not provided on metadata', () => {
+      it('shows unknown if file collectionName not provided on metadata', () => {
         const noNameItem: MediaItem = {
           type: 'file',
           details: {

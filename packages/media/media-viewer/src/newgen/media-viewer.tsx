@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { Identifier } from './domain';
+import { Identifier, ItemSource } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
-import { Blanket, ErrorMessage } from './styled';
+import { Blanket } from './styled';
 import { Shortcut } from './shortcut';
 
 export type Props = {
   onClose?: () => void;
   selectedItem?: Identifier;
-  collectionName?: string;
-  items?: Identifier[];
   context: Context;
+  itemSource: ItemSource;
 };
 
 export class MediaViewer extends React.Component<Props, {}> {
@@ -27,33 +26,25 @@ export class MediaViewer extends React.Component<Props, {}> {
   }
 
   private renderContent() {
-    const {
-      items,
-      collectionName,
-      selectedItem,
-      context,
-      onClose,
-    } = this.props;
-    if (collectionName) {
+    const { selectedItem, context, onClose, itemSource } = this.props;
+    if (itemSource.kind === 'COLLECTION') {
       return (
         <Collection
           selectedItem={selectedItem}
-          collectionName={collectionName}
+          collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
         />
       );
-    } else if (items) {
+    } else if (itemSource.kind === 'ARRAY') {
       return (
         <List
-          selectedItem={selectedItem || items[0]}
-          items={items}
+          selectedItem={selectedItem || itemSource.items[0]}
+          items={itemSource.items}
           context={context}
           onClose={onClose}
         />
       );
-    } else {
-      return <ErrorMessage>No media found</ErrorMessage>;
     }
   }
 }

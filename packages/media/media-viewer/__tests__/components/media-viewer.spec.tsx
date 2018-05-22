@@ -77,9 +77,9 @@ describe('<MediaViewer />', () => {
           featureFlags={featureFlags}
         />,
       );
-      expect(el.find(MediaViewerNextGen).props().collectionName).toEqual(
-        collectionDataSource.collectionName,
-      );
+      expect(
+        (el.find(MediaViewerNextGen).props() as any).itemSource.collectionName,
+      ).toEqual(collectionDataSource.collectionName);
     });
 
     it('should show the next gen viewer when dev flag is enabled', () => {
