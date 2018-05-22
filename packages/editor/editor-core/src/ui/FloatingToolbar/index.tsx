@@ -12,6 +12,7 @@ export type Coordinates = {
 
 export interface Props {
   className?: string;
+  innerRef?: (node: HTMLElement) => void;
   target?: HTMLElement;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
@@ -31,6 +32,7 @@ export {
 export default class FloatingToolbar extends PureComponent<Props, any> {
   render() {
     const {
+      innerRef,
       children,
       target,
       offset,
@@ -58,7 +60,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
         fitHeight={fitHeight}
         onPositionCalculated={onPositionCalculated}
       >
-        <Container height={fitHeight} className={className}>
+        <Container height={fitHeight} className={className} innerRef={innerRef}>
           {children}
         </Container>
       </Popup>
