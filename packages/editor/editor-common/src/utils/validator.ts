@@ -277,7 +277,7 @@ export const getValidNode = (
         if (context && !isValidString(context.text)) {
           break;
         }
-        if (context && !isValidIcon(context.icon)) {
+        if (context && (context.icon && !isValidIcon(context.icon))) {
           break;
         }
 
