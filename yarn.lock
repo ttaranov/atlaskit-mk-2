@@ -3286,12 +3286,12 @@ chrome-trace-event@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-0.1.3.tgz#d395af2d31c87b90a716c831fe326f69768ec084"
 
-chunkinator@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-2.0.2.tgz#faba96a0d415dc9fd8852f0c04200bc2272a7276"
+chunkinator@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-2.0.4.tgz#e5da1ebc1ecace9aa80388c4a4dc49d979b06374"
   dependencies:
     rxjs "^5.5.6"
-    rxjs-async-map soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943
+    rxjs-async-map "^0.1.2"
     tslib "^1.8.0"
 
 ci-info@^1.0.0:
@@ -12966,9 +12966,9 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-rxjs-async-map@soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943:
-  version "0.1.1"
-  resolved "https://codeload.github.com/soswow/rxjs-async-map/tar.gz/1112bd1c1e2a6b608308758df4fdc8f59efbf943"
+rxjs-async-map@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/rxjs-async-map/-/rxjs-async-map-0.1.2.tgz#ff0db82adf5f15a84cc079c23665e0caa88d32dd"
   dependencies:
     rxjs "^5.5.6"
 
