@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
 import { AkCodeBlock } from '../src';
+import { AtlasKitThemeProvider } from '@atlaskit/theme';
 
-const exampleCodeBlock = `  // React Component
+const exampleCodeBlock = `
   class HelloMessage extends React.Component {
     render() {
       return (
@@ -20,5 +21,9 @@ const exampleCodeBlock = `  // React Component
 `;
 
 export default function Component() {
-  return <AkCodeBlock language="java" text={exampleCodeBlock} />;
+  return (
+    <AtlasKitThemeProvider mode="dark">
+      <AkCodeBlock language="java" text={exampleCodeBlock} />
+    </AtlasKitThemeProvider>
+  );
 }

@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import SyntaxHighlighter from 'react-syntax-highlighter/light';
 import { normalizeLanguage } from './supportedLanguages';
-import { type Theme, applyTheme } from './themes/themeBuilder';
+import { withTheme } from 'styled-components';
+import { Theme, applyTheme } from './themes/themeBuilder';
 
 type CodeBlockProps = {
   /** The code to be formatted */
@@ -12,10 +13,10 @@ type CodeBlockProps = {
   /** Indicates whether or not to show line numbers */
   showLineNumbers?: boolean,
   /** A custom theme to be applied, implements the Theme interface */
-  theme?: Theme,
+  theme?: Theme | any,
 };
 
-export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
+class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
 
   static defaultProps = {
@@ -63,3 +64,5 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
     );
   }
 }
+
+export default withTheme(CodeBlock);
