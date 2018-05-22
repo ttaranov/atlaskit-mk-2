@@ -1,4 +1,9 @@
-import { Result, ResultType, ResultContentType } from '../model/Result';
+import {
+  Result,
+  ResultType,
+  ResultContentType,
+  AnalyticsType,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -180,12 +185,13 @@ function mapConfluenceItemToResultObject(
   searchSessionId: string,
 ): Result {
   const result: Result = {
-    type: ResultType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.url,
     avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 
   if (item.content && item.content.type) {
@@ -197,22 +203,24 @@ function mapConfluenceItemToResultObject(
 
 function mapJiraItemToResult(item: JiraItem): Result {
   return {
-    type: ResultType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
     objectKey: item.key,
+    analyticsType: AnalyticsType.ResultJira,
   };
 }
 
 function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
   return {
-    type: ResultType.Container,
+    resultType: ResultType.Container,
     resultId: 'search-' + spaceItem.container.displayUrl,
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }
