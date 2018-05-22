@@ -592,7 +592,6 @@ export class MediaPluginState {
           featureFlags && featureFlags.useNewUploadService
         ),
         uploadParams,
-        useNewUploadService: !!this.options.useNewUploadService,
       };
 
       if (this.options.customMediaPicker) {
