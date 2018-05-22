@@ -36,7 +36,6 @@ export class NewUploadServiceImpl implements UploadService {
 
   private readonly emitter: EventEmitter2;
   private dropzoneElement?: HTMLElement;
-  private browserElement?: HTMLInputElement;
   private cancellableFilesUploads: { [key: string]: CancellableFileUpload };
 
   constructor(private readonly context: Context, uploadParams?: UploadParams) {
@@ -60,18 +59,6 @@ export class NewUploadServiceImpl implements UploadService {
     };
   }
 
-  // TODO addBrowse addDropzone removeDropzone removeBrowse are deprecated and going to be moved out
-  // of this class as part of MSW-691
-  addBrowse(element: HTMLInputElement): void {
-    if (this.browserElement) {
-      throw new Error(
-        'Browse element was already assigned. call removeBrowse() first.',
-      );
-    }
-    this.browserElement = element;
-    this.browserElement.addEventListener('change', this.onFilePicked);
-  }
-
   addDropzone(element: HTMLElement): void {
     if (this.dropzoneElement) {
       throw new Error(
@@ -89,22 +76,6 @@ export class NewUploadServiceImpl implements UploadService {
     this.dropzoneElement.removeEventListener('drop', this.onFileDropped);
     delete this.dropzoneElement;
   }
-
-  removeBrowse(): void {
-    if (!this.browserElement) {
-      return;
-    }
-    this.browserElement.removeEventListener('change', this.onFilePicked);
-    delete this.browserElement;
-  }
-
-  // Browse listener
-  private readonly onFilePicked = () => {
-    if (this.browserElement) {
-      const filesArray = Array.prototype.slice.call(this.browserElement.files);
-      this.addFiles(filesArray);
-    }
-  };
 
   // Dropzone listener
   private readonly onFileDropped = (dragEvent: DragEvent) => {
