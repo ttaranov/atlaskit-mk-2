@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 71.4.7
+- [patch] ED-2400: only show fullpage toolbar border on scroll [a01cad0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01cad0)
+- [patch] Updated dependencies [a01cad0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01cad0)
+
 ## 71.4.6
 - [patch] ED-4647, table should be highlighted in red when hovering over delete icon. [7814224](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7814224)
 - [patch] Updated dependencies [7814224](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7814224)
