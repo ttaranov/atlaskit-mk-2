@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 2.0.1
+- [patch] Remove line break from changelog to allow it to display properly on the website [9e30bb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e30bb1)
+
 ## 2.0.0
 - [major] updated the api to capture scenarios where data can be updated on the fly [c1720e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1720e8)
 - updated the `items` prop in TableTree component to accept Array of table data instead of function
