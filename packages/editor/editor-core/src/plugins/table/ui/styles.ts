@@ -63,7 +63,7 @@ export const tableStyles = `
     .table-column-controls-wrapper,
     .table-row-controls-wrapper {
       position: absolute;
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
+      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize + 1}px;
     }
     .table-column-controls-wrapper {
       left: 0;
@@ -90,7 +90,7 @@ export const tableStyles = `
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
       /* fixes gap cursor height */
-      overflow: auto;
+      overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
     }
     .table-decoration {
