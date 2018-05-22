@@ -366,7 +366,8 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       expect(reaction.reacted).toEqual(true);
     });
 
-    it('should not override multiple optimistic add', done => {
+    // Skip for now. This is flaky. See issue FS-1993
+    it.skip('should not override multiple optimistic add', done => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
 
       let callCount = 0;
