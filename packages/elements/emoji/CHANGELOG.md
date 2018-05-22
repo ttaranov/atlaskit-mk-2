@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 35.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-picker@7.0.1
+  - @atlaskit/media-core@18.1.1
+
 ## 35.0.0
 
 

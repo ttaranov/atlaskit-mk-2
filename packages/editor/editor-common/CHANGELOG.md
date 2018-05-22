@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 10.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/emoji@35.0.1
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-card@28.0.1
+
 ## 10.0.0
 
 - [patch] ED-4570, application card without icon should render properly. [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
