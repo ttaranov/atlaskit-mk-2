@@ -22,11 +22,11 @@
     "@atlaskit/dropdown-menu": "^4.0.3",
     "@atlaskit/item": "^6.0.3",
     "@atlaskit/theme": "^3.2.2",
-    "@atlaskit/tooltip": "^9.2.1",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/tooltip": "^9.2.1"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/button": "^7.2.5",

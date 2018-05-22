@@ -23,7 +23,8 @@
     "ui"
   ],
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "dependencies": {
     "@atlaskit/button": "^7.2.5",
@@ -31,8 +32,7 @@
     "@atlaskit/dropdown-menu": "^4.0.3",
     "@atlaskit/field-text-area": "^2.0.4",
     "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/theme": "^3.2.2",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/theme": "^3.2.2"
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",

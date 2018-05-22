@@ -28,12 +28,12 @@
     "@atlaskit/task-decision": "^6.0.9",
     "@atlaskit/theme": "^3.2.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "prosemirror-model": "^1.2.0",
-    "styled-components": "1.4.6 - 3"
+    "prosemirror-model": "^1.2.0"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^18.1.0",
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
