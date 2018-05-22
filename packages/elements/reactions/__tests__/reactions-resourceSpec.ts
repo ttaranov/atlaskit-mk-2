@@ -11,7 +11,6 @@ import {
   smileyId,
   thumbsupId,
 } from './_test-data';
-import { isThisHour } from 'date-fns';
 
 const baseUrl = 'https://reactions';
 const ari = 'ari:cloud:owner:demo-cloud-id:item/1';
