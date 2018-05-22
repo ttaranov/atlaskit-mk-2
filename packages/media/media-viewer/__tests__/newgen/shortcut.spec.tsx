@@ -5,7 +5,7 @@ import { Shortcut } from '../../src/newgen/shortcut';
 describe('Shortcut', () => {
   const originalEventListener = document.addEventListener;
 
-  beforeEach(() => {
+  afterEach(() => {
     document.addEventListener = originalEventListener;
   });
 
