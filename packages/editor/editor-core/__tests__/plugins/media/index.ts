@@ -496,6 +496,61 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
+  it('should swap temporary id with public id', async () => {
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+
+    const tempFileId = `temporary:${randomId()}`;
+
+    // wait until mediaProvider has been set
+    const provider = await mediaProvider;
+    // wait until mediaProvider's uploadContext has been set
+    await provider.uploadContext;
+
+    const publicId = 'public-id';
+
+    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
+
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        p(),
+        mediaGroup(
+          media({
+            id: tempFileId,
+            __key: tempFileId,
+            type: 'file',
+            collection: testCollectionName,
+          })(),
+        ),
+        p(),
+      ),
+    );
+
+    stateManager.updateState(tempFileId, {
+      id: tempFileId,
+      status: 'processing',
+      publicId,
+    });
+
+    await sleep(0);
+
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        p(),
+        mediaGroup(
+          media({
+            id: publicId,
+            __key: tempFileId,
+            type: 'file',
+            collection: testCollectionName,
+          })(),
+        ),
+        p(),
+      ),
+    );
+    editorView.destroy();
+    pluginState.destroy();
+  });
+
   it('should remove failed uploads from the document', async () => {
     const handler = jest.fn();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
