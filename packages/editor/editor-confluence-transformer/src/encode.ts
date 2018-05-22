@@ -272,7 +272,13 @@ export default function encode(node: PMNode, schema: Schema) {
           case 'mentionQuery':
             break;
           case 'link':
-            elem = elem.appendChild(encodeLink(node));
+            const mark = getNodeMarkOfType(node, schema.marks.link);
+            if (mark && mark.attrs.__confluenceMetadata !== null) {
+              // need to use fab:adf to maintain confluenceMetadata
+              return encodeAsADF(node);
+            } else {
+              elem = elem.appendChild(encodeLink(node));
+            }
             break;
           case 'confluenceInlineComment':
             // Because this function encodes marks into dom nodes inwards, multiple inline comment
@@ -522,7 +528,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeAsADF(node: PMNode): Element {
     const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
-    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node)));
+    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node.toJSON())));
     return nsNode;
   }
 }

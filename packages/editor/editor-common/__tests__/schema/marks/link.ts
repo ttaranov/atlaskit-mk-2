@@ -1,6 +1,7 @@
 import { name } from '../../../package.json';
 import { createSchema } from '../../../src';
 import { toHTML, fromHTML, textWithMarks } from '../../../test-helpers';
+import { Node } from 'prosemirror-model';
 
 const href = 'http://atlassian.com';
 const href2 = 'http://atlassian.com/test';
@@ -77,6 +78,33 @@ describe(`${name}/schema link mark`, () => {
     const node = schema.text(content, [schema.marks.link.create({ href })]);
     const html: string = toHTML(node, schema);
     expect(html).toContain(`${sampleLink}`);
+  });
+
+  describe('confluence metadata', () => {
+    it('creates a PM node with attributes from ADF', () => {
+      const doc = {
+        type: 'text',
+        text: 'Foo',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: 'http://example.com',
+              __confluenceMetadata: {
+                linkType: 'value',
+              },
+            },
+          },
+        ],
+      };
+
+      const text = Node.fromJSON(makeSchema(), doc);
+      expect(text.marks[0].attrs).toHaveProperty('__confluenceMetadata');
+      expect(text.marks[0].attrs.__confluenceMetadata).toHaveProperty(
+        'linkType',
+        'value',
+      );
+    });
   });
 });
 

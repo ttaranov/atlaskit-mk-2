@@ -13,6 +13,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "irc://atlassian.com/confluence",
               },
               "type": "link",
@@ -42,6 +43,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "http://localhost:8080",
               },
               "type": "link",
@@ -75,6 +77,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "https://www.atlassian.com",
               },
               "type": "link",
@@ -108,6 +111,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "mailto:legendaryservice@atlassian.com",
               },
               "type": "link",
@@ -141,6 +145,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "http://www.atlassian.com",
               },
               "type": "link",
@@ -170,6 +175,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "https://www.atlassian.com",
               },
               "type": "link",
@@ -203,6 +209,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "https://www.atlassian.com",
               },
               "type": "link",
@@ -266,6 +273,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "https://www.atlassian.com",
               },
               "type": "link",
