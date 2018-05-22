@@ -705,7 +705,7 @@ export class MediaPluginState {
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
-        if (state.publicId && this.nodeHasNoPublicId(state)) {
+        if (state.publicId) {
           this.replaceTemporaryNode(state);
         }
         break;
