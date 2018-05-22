@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { App } from '../app';
+import ConnectedApp, { App, AppDispatchProps } from '../app';
 import UploadView from '../views/upload/upload';
 import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
@@ -30,7 +30,7 @@ describe('App', () => {
         onUploadProcessing: jest.fn(),
         onUploadEnd: jest.fn(),
         onUploadError: jest.fn(),
-      },
+      } as AppDispatchProps,
       context,
       store: mockStore(),
       userAuthProvider,

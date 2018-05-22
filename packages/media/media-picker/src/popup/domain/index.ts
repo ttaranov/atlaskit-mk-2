@@ -1,7 +1,6 @@
-import { Auth, AuthProvider, MediaType, Context } from '@atlaskit/media-core';
+import { Auth, AuthProvider, Context } from '@atlaskit/media-core';
 
 import { UploadParams } from '../../domain/config';
-import { MediaArtifact } from '../../service/mediaApi';
 import { LocalUploads } from './local-upload';
 
 export { AuthHeaders } from './auth';
@@ -41,6 +40,7 @@ export interface State {
   readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
+  readonly useNewUploadService?: boolean;
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;
@@ -170,16 +170,6 @@ export type Path = Array<FolderReference>;
 export interface FileReference {
   readonly id: string;
   readonly name: string;
-}
-
-export interface File {
-  readonly id: string;
-  readonly mediaType: MediaType;
-  readonly mimeType: string;
-  readonly name: string;
-  readonly processingStatus: string;
-  readonly size: number;
-  readonly artifacts: { [artifactName: string]: MediaArtifact };
 }
 
 export interface CollectionItem {
