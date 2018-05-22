@@ -97,9 +97,15 @@ const getLeadingString = (
   match[REGEX_LEADING_CAPTURE_INDEX] +
   (withParenthesis ? match[REGEX_EMOJI_LEADING_PARENTHESES] : '');
 
+const getLeadingStringWithoutParentheses = (match: string[]): string =>
+  getLeadingString(match, false);
+
 const getAscii = (match: string[], withParentheses: boolean = false) =>
   (withParentheses ? match[REGEX_EMOJI_LEADING_PARENTHESES] : '') +
   match[REGEX_EMOJI_ASCII_CAPTURE_INDEX].trim();
+
+const getAsciiWithParentheses = (matchParts: string[]): string =>
+  getAscii(matchParts, true);
 
 const getTrailingString = (match: string[]): string =>
   match[REGEX_TRAILING_CAPTURE_INDEX] || '';
@@ -144,12 +150,12 @@ class AsciiEmojiMatcher {
 
   match(matchParts: string[]): AsciiEmojiMatch | undefined {
     return (
-      this.getEmoji(
-        getLeadingString(matchParts, false),
-        getAscii(matchParts, true),
+      this.getAsciiEmojiMatch(
+        getLeadingStringWithoutParentheses(matchParts),
+        getAsciiWithParentheses(matchParts),
         getTrailingString(matchParts),
       ) ||
-      this.getEmoji(
+      this.getAsciiEmojiMatch(
         getLeadingString(matchParts),
         getAscii(matchParts),
         getTrailingString(matchParts),
@@ -157,7 +163,7 @@ class AsciiEmojiMatcher {
     );
   }
 
-  private getEmoji(
+  private getAsciiEmojiMatch(
     leading: string,
     ascii: string,
     trailing: string,
