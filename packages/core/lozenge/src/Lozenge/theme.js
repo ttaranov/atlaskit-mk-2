@@ -35,7 +35,7 @@ export const boldBackgroundColor = themed('appearance', {
 export const boldTextColor = themed('appearance', {
   default: { light: colors.N0, dark: colors.N0 },
   inprogress: { light: colors.N0, dark: colors.N0 },
-  moved: { light: colors.N600, dark: colors.N600 },
+  moved: { light: colors.N800, dark: colors.N800 },
   new: { light: colors.N0, dark: colors.N0 },
   removed: { light: colors.N0, dark: colors.N0 },
   success: { light: colors.N0, dark: colors.N0 },
