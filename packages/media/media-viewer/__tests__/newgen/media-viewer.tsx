@@ -57,6 +57,17 @@ describe('<MediaViewer />', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
+  it('should close Media Viewer on ESC shortcut', () => {
+    const { onClose } = createFixture([identifier], identifier);
+    const e = new KeyboardEvent('keydown', {
+      bubbles: true,
+      cancelable: true,
+      key: 'Escape',
+    });
+    document.dispatchEvent(e);
+    expect(onClose).toHaveBeenCalled();
+  });
+
   it('should not close Media Viewer when clicking on the Header', () => {
     const { el, onClose } = createFixture([identifier], identifier);
     el.find(Header).simulate('click');
