@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 34.2.1
+- [patch] FS-1976 sort emojis based on order property [70de5fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70de5fc)
+- [none] Updated dependencies [70de5fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70de5fc)
+
 ## 34.2.0
 
 
