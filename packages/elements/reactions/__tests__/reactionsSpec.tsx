@@ -11,7 +11,6 @@ import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
 import { ObjectReactionKey, ReactionStatus } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
-import { find } from '../../../editor/editor-core/src/plugins/quick-insert/search';
 
 const { getEmojiResourcePromise } = emoji.testData;
 
