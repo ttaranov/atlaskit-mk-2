@@ -122,8 +122,12 @@ class CategoryTracker {
   }
 }
 
-const byOrder = (emojiGroupA: EmojiGroup, emojiGroupB: EmojiGroup) =>
-  emojiGroupA.order - emojiGroupB.order;
+type Orderable = {
+  order?: number;
+};
+
+const byOrder = (orderableA: Orderable, orderableB: Orderable) =>
+  (orderableA.order || 0) - (orderableB.order || 0);
 
 export default class EmojiPickerVirtualList extends PureComponent<
   Props,
@@ -353,6 +357,12 @@ export default class EmojiPickerVirtualList extends PureComponent<
 
     this.allEmojiGroups = Object.keys(categoryMap)
       .map(key => categoryMap[key])
+      .map(category => {
+        if (category.category !== 'FREQUENT') {
+          category.emojis.sort(byOrder);
+        }
+        return category;
+      })
       .sort(byOrder);
   };
 
