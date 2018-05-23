@@ -39,7 +39,7 @@
     "@atlaskit/media-picker": "^6.0.4",
     "@atlaskit/mention": "^11.1.2",
     "@atlaskit/modal-dialog": "^4.0.4",
-    "@atlaskit/single-select": "^4.0.1",
+    "@atlaskit/select": "^3.0.1",
     "@atlaskit/size-detector": "^3.0.0",
     "@atlaskit/spinner": "^5.0.1",
     "@atlaskit/task-decision": "^6.0.4",

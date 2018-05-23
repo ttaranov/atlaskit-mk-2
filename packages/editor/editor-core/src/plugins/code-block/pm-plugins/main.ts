@@ -76,7 +76,9 @@ export const plugin = (dispatch: Dispatch) =>
             state = { isEditorFocused: pluginState.isEditorFocused };
           }
         }
-        dispatch(stateKey, state);
+        if (state !== pluginState) {
+          dispatch(stateKey, state);
+        }
         return state;
       },
     },
@@ -87,6 +89,7 @@ export const plugin = (dispatch: Dispatch) =>
       },
       handleDOMEvents: {
         click: (view, event) => {
+          debugger;
           const pluginState: CodeBlockState = stateKey.getState(view.state);
           if (!pluginState.isEditorFocused) {
             const focusType = view.hasFocus() ? 'FOCUS' : 'BLUR';
@@ -95,6 +98,7 @@ export const plugin = (dispatch: Dispatch) =>
           return false;
         },
         focus: (view, event) => {
+          debugger;
           const pluginState: CodeBlockState = stateKey.getState(view.state);
           if (!pluginState.isEditorFocused) {
             view.dispatch(view.state.tr.setMeta(stateKey, 'FOCUS'));
@@ -102,6 +106,7 @@ export const plugin = (dispatch: Dispatch) =>
           return false;
         },
         blur: (view, event: FocusEvent) => {
+          debugger;
           const pluginState: CodeBlockState = stateKey.getState(view.state);
           if (pluginState.isEditorFocused) {
             view.dispatch(view.state.tr.setMeta(stateKey, 'BLUR'));
