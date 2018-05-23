@@ -1,5 +1,37 @@
 # @atlaskit/editor-common
 
+## 10.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/emoji@35.0.1
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-card@28.0.1
+
+## 10.0.0
+
+- [patch] ED-4570, application card without icon should render properly. [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+
 ## 9.4.0
 - [minor] Add stage0 support to validator [1b5cc7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cc7f)
 - [none] Updated dependencies [1b5cc7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cc7f)

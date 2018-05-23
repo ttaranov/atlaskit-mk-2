@@ -1,5 +1,29 @@
 # @atlaskit/media-picker
 
+## 7.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-store@3.0.1
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-test-helpers@13.0.1
+  - @atlaskit/media-editor@8.0.1
+  - @atlaskit/media-card@28.0.1
+
+## 7.0.0
+- [major] media-picker: <All but popup picker>.emitUploadEnd second argument shape has changed from MediaFileData to FileDetails; `upload-end` event payload body shape changed from MediaFileData to FileDetails; All the media pickers config now have new property `useNewUploadService: boolean` (false by default); popup media-picker .cancel can't be called with no argument, though types does allow for it; `File` is removed; --- media-store: MediaStore.createFile now has a required argument of type MediaStoreCreateFileParams; MediaStore.copyFileWithToken new method; uploadFile method result type has changed from just a promise to a UploadFileResult type; --- media-test-helpers: mediaPickerAuthProvider argument has changed from a component instance to just a boolean authEnvironment; [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+- [major] SUMMARY GOES HERE [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-store@3.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/media-editor@8.0.0
+  - @atlaskit/media-card@28.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-store@3.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/media-editor@8.0.0
+  - @atlaskit/media-card@28.0.0
+
 ## 6.0.6
 - [patch] change media picker image src to static assets served on dt-static [a5a740b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5a740b)
 

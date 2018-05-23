@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 11.1.5
+- [patch] revert ED-2551 wrong cursor on special mentions [1cf64a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cf64a6)
+- [none] Updated dependencies [1cf64a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cf64a6)
+
 ## 11.1.4
 
 

@@ -586,7 +586,11 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
+      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
+        useNewUploadService: !!(
+          featureFlags && featureFlags.useNewUploadService
+        ),
         uploadParams,
       };
 
@@ -705,13 +709,15 @@ export class MediaPluginState {
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
+        if (state.publicId) {
+          this.replaceTemporaryNode(state);
+        }
         break;
 
       case 'ready':
         if (state.publicId && this.nodeHasNoPublicId(state)) {
           this.replaceTemporaryNode(state);
         }
-
         if (state.preview) {
           this.stateManager.off(state.id, this.handleMediaState);
         }

@@ -5,7 +5,6 @@ import {
 import {
   MediaPicker,
   BinaryConfig,
-  MediaFileData,
   BinaryUploader,
 } from '@atlaskit/media-picker';
 
@@ -35,7 +34,7 @@ import {
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
-import { Context, ContextFactory } from '@atlaskit/media-core';
+import { Context, ContextFactory, FileDetails } from '@atlaskit/media-core';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
@@ -227,7 +226,7 @@ export default class SiteEmojiResource {
 
   private postToEmojiService = (
     upload: EmojiUpload,
-    mediaApiData: MediaFileData,
+    mediaApiData: FileDetails,
   ): Promise<EmojiDescription> => {
     const { shortName, name } = upload;
     const { width, height } = upload;

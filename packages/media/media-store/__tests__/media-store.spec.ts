@@ -27,7 +27,6 @@ describe('MediaStore', () => {
     beforeEach(() => {
       authProvider = jest.fn();
       authProvider.mockReturnValue(Promise.resolve(auth));
-
       mediaStore = new MediaStore({
         serviceHost,
         authProvider,
@@ -371,19 +370,23 @@ describe('MediaStore', () => {
           status: 201,
         });
 
-        return mediaStore.createFile().then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/file`);
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'POST',
-            headers: {
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/json',
-            },
-            body: undefined,
+        return mediaStore
+          .createFile({ collection: 'some-collection' })
+          .then(response => {
+            expect(response).toEqual({ data });
+            expect(fetchMock.lastUrl()).toEqual(
+              `${serviceHost}/file?collection=some-collection`,
+            );
+            expect(fetchMock.lastOptions()).toEqual({
+              method: 'POST',
+              headers: {
+                'X-Client-Id': clientId,
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+              },
+              body: undefined,
+            });
           });
-        });
       });
     });
   });

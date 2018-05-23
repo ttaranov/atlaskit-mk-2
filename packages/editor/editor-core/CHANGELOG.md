@@ -1,5 +1,84 @@
 # @atlaskit/editor-core
 
+## 72.0.4
+- [patch] FS-1904 add support for emoji with ascii starting with ( [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+- [none] Updated dependencies [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+  - @atlaskit/util-data-test@9.1.5
+  - @atlaskit/emoji@35.0.2
+
+## 72.0.3
+- [patch] Addding the file swap in processing state [ed40161](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed40161)
+- [none] Updated dependencies [ed40161](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed40161)
+
+## 72.0.2
+- [patch] ED-4652, fixing issue with input of multiple * in editor. [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
+- [patch] Updated dependencies [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
+
+## 72.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-picker@7.0.1
+  - @atlaskit/emoji@35.0.1
+  - @atlaskit/editor-common@10.0.1
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-test-helpers@13.0.1
+  - @atlaskit/media-card@28.0.1
+
+## 72.0.0
+- [patch] ED-4087: fix table controls in IE11 [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+
+- [major] media-picker: <All but popup picker>.emitUploadEnd second argument shape has changed from MediaFileData to FileDetails; `upload-end` event payload body shape changed from MediaFileData to FileDetails; All the media pickers config now have new property `useNewUploadService: boolean` (false by default); popup media-picker .cancel can't be called with no argument, though types does allow for it; `File` is removed; --- media-store: MediaStore.createFile now has a required argument of type MediaStoreCreateFileParams; MediaStore.copyFileWithToken new method; uploadFile method result type has changed from just a promise to a UploadFileResult type; --- media-test-helpers: mediaPickerAuthProvider argument has changed from a component instance to just a boolean authEnvironment; [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/media-picker@7.0.0
+  - @atlaskit/media-filmstrip@8.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/media-picker@7.0.0
+  - @atlaskit/media-filmstrip@8.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+
 ## 71.4.7
 - [patch] ED-2400: only show fullpage toolbar border on scroll [a01cad0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01cad0)
 - [patch] Updated dependencies [a01cad0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01cad0)

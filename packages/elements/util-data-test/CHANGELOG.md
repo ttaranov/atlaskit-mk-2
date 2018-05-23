@@ -1,5 +1,28 @@
 # @atlaskit/util-data-test
 
+## 9.1.5
+- [patch] FS-1904 add support for emoji with ascii starting with ( [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+- [none] Updated dependencies [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+  - @atlaskit/emoji@35.0.2
+
+## 9.1.4
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/emoji@35.0.0
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/emoji@35.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/task-decision@6.0.6
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/task-decision@6.0.6
+
 ## 9.1.3
 
 

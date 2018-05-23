@@ -316,7 +316,7 @@ describe('Card', () => {
         fetchImageDataUri: fetchImageDataUriSpy,
       },
     });
-    mount(
+    const card = mount(
       <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
         <Card
           context={context}
@@ -326,6 +326,8 @@ describe('Card', () => {
         />
       </AnalyticsListener>,
     );
+
+    card.simulate('click');
 
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
     const actualFiredEvent: UIAnalyticsEventInterface =
