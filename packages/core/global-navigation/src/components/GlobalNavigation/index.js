@@ -2,16 +2,11 @@
 
 import React, { Component, Fragment } from 'react';
 import { LaunchDarkly, FeatureFlag } from 'react-launch-darkly';
-import SearchIcon from '@atlaskit/icon/glyph/search';
-import CreateIcon from '@atlaskit/icon/glyph/add';
-import Avatar from '@atlaskit/avatar';
-import QuestionIcon from '@atlaskit/icon/glyph/question';
-import MenuIcon from '@atlaskit/icon/glyph/menu';
-import NotificationIcon from '@atlaskit/icon/glyph/notification';
-import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
 
 import Drawer from '../Drawer';
+import blankLDConfig from '../../config/blank-ld-config';
+import defaultConfig from '../../config/default-config';
 import type {
   GlobalNavigationProps,
   WrappedGlobalNavigationProps,
@@ -62,43 +57,30 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
 
   constructPrimaryItems = ldConfig => {
     const { create, product, search, primaryActions, navigation } = this.props;
+    const { create: ldCreate, product: ldProduct, search: ldSearch } = ldConfig;
     const {
-      create: ldCreate = { position: null },
-      product: ldProduct = { position: null },
-      search: ldSearch = { position: null },
-    } = ldConfig;
+      create: defaultCreate,
+      product: defaultProduct,
+      search: defaultSearch,
+    } = defaultConfig(navigation);
 
     const inbuiltPrimaryItems = [];
 
-    if (product) {
+    if (!defaultProduct.isDisabled) {
       const { component, ...rest } = product;
       inbuiltPrimaryItems.push({
         ...rest,
-        position: 0,
+        ...defaultProduct,
         component: component || getProductPrimaryItemComponent(navigation),
         ...ldProduct,
       });
     }
 
-    if (search) {
-      const defaultSearch = {
-        icon: SearchIcon,
-        label: 'Search',
-        onClick: navigation.openSearchDrawer,
-        position: 1,
-        tooltip: 'Search',
-      };
+    if (!defaultSearch.isDisabled) {
       inbuiltPrimaryItems.push({ ...defaultSearch, ...search, ...ldSearch });
     }
 
-    if (create) {
-      const defaultCreate = {
-        icon: CreateIcon,
-        label: 'Create',
-        onClick: navigation.openCreateDrawer,
-        position: 2,
-        tooltip: 'Create',
-      };
+    if (!defaultCreate.isDisabled) {
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create, ...ldCreate });
     }
 
@@ -117,48 +99,36 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
     } = this.props;
 
     const {
-      help: ldHelp = { position: null },
-      profile: ldProfile = { position: null },
-      appSwitcher: ldAppSwitcher = { position: null },
-      notification: ldNotification = { position: null },
-      people: ldPeople = { position: null },
+      help: ldHelp,
+      profile: ldProfile,
+      appSwitcher: ldAppSwitcher,
+      notification: ldNotification,
+      people: ldPeople,
     } = ldConfig;
+
+    const {
+      help: defaultHelp,
+      profile: defaultProfile,
+      appSwitcher: defaultAppSwitcher,
+      notification: defaultNotification,
+      people: defaultPeople,
+    } = defaultConfig(navigation);
 
     const inbuiltSecondaryItems = [];
 
-    if (notification) {
-      const defaultNotifications = {
-        icon: NotificationIcon,
-        label: 'Notifications',
-        onClick: navigation.openNotificationDrawer,
-        tooltip: 'Notifications',
-        position: 3,
-      };
+    if (!defaultNotification.isDisabled) {
       inbuiltSecondaryItems.push({
-        ...defaultNotifications,
+        ...defaultNotification,
         ...notification,
         ...ldNotification,
       });
     }
 
-    if (people) {
-      const defaultPeople = {
-        icon: PeopleIcon,
-        label: 'People directory',
-        onClick: navigation.openPeopleDrawer,
-        tooltip: 'People directory',
-        position: 4,
-      };
+    if (!defaultPeople.isDisabled) {
       inbuiltSecondaryItems.push({ ...defaultPeople, ...people, ...ldPeople });
     }
 
-    if (appSwitcher) {
-      const defaultAppSwitcher = {
-        icon: MenuIcon,
-        label: 'App Switcher',
-        tooltip: 'App Switcher',
-        position: 5,
-      };
+    if (!defaultAppSwitcher.isDisabled) {
       inbuiltSecondaryItems.push({
         ...defaultAppSwitcher,
         ...appSwitcher,
@@ -166,39 +136,31 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       });
     }
 
-    if (help) {
-      const defaultHelp = {
-        icon: QuestionIcon,
-        label: 'Help',
-        tooltip: 'Help',
-        position: 6,
-      };
+    if (!defaultHelp.isDisabled) {
       inbuiltSecondaryItems.push({ ...defaultHelp, ...help, ...ldHelp });
     }
 
-    if (profile) {
-      const defaultUser = {
-        icon: () => (
-          <Avatar
-            borderColor="transparent"
-            isActive={false}
-            isHover={false}
-            size="small"
-          />
-        ),
-        label: 'Your profile and Settings',
-        tooltip: 'Your profile and Settings',
-        position: 7,
-      };
-      inbuiltSecondaryItems.push({ ...defaultUser, ...profile, ...ldProfile });
+    if (!defaultProfile.isDisabled) {
+      inbuiltSecondaryItems.push({
+        ...defaultProfile,
+        ...profile,
+        ...ldProfile,
+      });
     }
 
     return [...secondaryActions, ...inbuiltSecondaryItems];
   };
 
-  constructGlobalNav = ldConfig => {
-    const primaryActions = this.constructPrimaryItems(JSON.parse(ldConfig));
-    const secondaryActions = this.constructSecondaryItems(JSON.parse(ldConfig));
+  constructGlobalNav = config => {
+    let ldConfig;
+    try {
+      ldConfig = JSON.parse(config);
+    } catch (e) {
+      ldConfig = blankLDConfig;
+      console.warn('LD config is malformed. Please check.');
+    }
+    const primaryActions = this.constructPrimaryItems(ldConfig);
+    const secondaryActions = this.constructSecondaryItems(ldConfig);
 
     primaryActions.sort(
       (action1, action2) => action1.position - action2.position,
@@ -244,6 +206,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   };
 
   render() {
+    console.log(this.props.userConfig);
     return (
       <LaunchDarkly
         clientId="5b021c6807a72221591bc73b"

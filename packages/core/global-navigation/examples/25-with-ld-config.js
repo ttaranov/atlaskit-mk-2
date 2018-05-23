@@ -11,7 +11,10 @@ import GlobalNavigation from '../src/components/GlobalNavigation';
 type State = {
   userConfig: UserConfig,
 };
-class GlobalNavigationWtihLDConfig extends Component<Object, State> {
+export default class GlobalNavigationWtihLDConfig extends Component<
+  Object,
+  State,
+> {
   userConfigs = [
     {
       key: 'bob@example.com',
@@ -36,34 +39,45 @@ class GlobalNavigationWtihLDConfig extends Component<Object, State> {
     userConfig: this.userConfigs[0],
   };
 
+  switchUser = (user: number) => {
+    this.setState({
+      userConfig: this.userConfigs[user],
+    });
+  };
+
   render() {
     return (
-      <GlobalNavigation
-        product={{
-          label: 'Jira',
-          icon: EmojiAtlassianIcon,
-        }}
-        search={{}}
-        create={{}}
-        people={{}}
-        notification={{}}
-        appSwitcher={{}}
-        help={{}}
-        profile={{}}
-        userConfig={this.state.userConfig}
-      />
+      <NavigationProvider>
+        <LayoutManager
+          globalNavigation={() => <Global userConfig={this.state.userConfig} />}
+          productRootNavigation={() => null}
+          productContainerNavigation={() => null}
+        >
+          <button onClick={() => this.switchUser(0)}>Jira User</button>
+          <button onClick={() => this.switchUser(1)}>Confluence User</button>
+          <button onClick={() => this.switchUser(2)}>Alice</button>
+        </LayoutManager>
+      </NavigationProvider>
     );
   }
 }
 
-export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={GlobalNavigationWtihLDConfig}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
-    >
-      Page content
-    </LayoutManager>
-  </NavigationProvider>
-);
+const Global = props => {
+  console.log(props.userConfig);
+  return (
+    <GlobalNavigation
+      product={{
+        label: 'Jira',
+        icon: EmojiAtlassianIcon,
+      }}
+      search={{}}
+      create={{}}
+      people={{}}
+      notification={{}}
+      appSwitcher={{}}
+      help={{}}
+      profile={{}}
+      userConfig={props.userConfig}
+    />
+  );
+};
