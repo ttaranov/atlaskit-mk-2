@@ -5,7 +5,7 @@ import { ActivityItem } from '@atlaskit/activity';
 import {
   akColorN100,
   akColorN800,
-  akColorN30,
+  akColorN20,
 } from '@atlaskit/util-shared-styles';
 
 interface ContainerProps {
@@ -16,8 +16,8 @@ const Container: ComponentClass<
   HTMLAttributes<{}> & ContainerProps
 > = styled.li`
   background-color: ${(props: ContainerProps) =>
-    props.selected ? akColorN30 : 'transparent'};
-  padding: 5px;
+    props.selected ? akColorN20 : 'transparent'};
+  padding: 5px 8px;
   cursor: pointer;
   display: flex;
 `;
