@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface Props {
-  keyCode: string;
+  keyCode: number;
   handler: () => void;
 }
 
@@ -18,9 +18,9 @@ export class Shortcut extends React.Component<Props, {}> {
     return null;
   }
 
-  private keyHandler = e => {
+  private keyHandler = (e: KeyboardEvent) => {
     const { keyCode, handler } = this.props;
-    if (e.key === keyCode) {
+    if (e.keyCode === keyCode) {
       handler();
     }
   };

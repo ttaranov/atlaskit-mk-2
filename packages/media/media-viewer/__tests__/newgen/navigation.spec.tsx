@@ -154,7 +154,7 @@ describe('Navigation', () => {
       const e = new KeyboardEvent('keydown', {
         bubbles: true,
         cancelable: true,
-        key: 'ArrowLeft',
+        code: '37',
       });
       document.dispatchEvent(e);
       expect(onChange).toBeCalledWith(identifier);
@@ -172,7 +172,7 @@ describe('Navigation', () => {
       const e = new KeyboardEvent('keydown', {
         bubbles: true,
         cancelable: true,
-        key: 'ArrowRight',
+        code: '39',
       });
       document.dispatchEvent(e);
       expect(onChange).toBeCalledWith(identifier2);

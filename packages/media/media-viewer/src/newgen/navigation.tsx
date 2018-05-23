@@ -62,7 +62,7 @@ export default class Navigation extends Component<NavigationProps, any> {
         <LeftWrapper>
           {isLeftVisible ? (
             <Arrow>
-              <Shortcut keyCode="ArrowLeft" handler={prev} />
+              <Shortcut keyCode={37} handler={prev} />
               <ArrowLeftCircleIcon
                 onClick={prev}
                 primaryColor={colors.N800}
@@ -76,7 +76,7 @@ export default class Navigation extends Component<NavigationProps, any> {
         <RightWrapper>
           {isRightVisible ? (
             <Arrow>
-              <Shortcut keyCode="ArrowRight" handler={next} />
+              <Shortcut keyCode={39} handler={next} />
               <ArrowRightCircleIcon
                 onClick={next}
                 primaryColor={colors.N800}

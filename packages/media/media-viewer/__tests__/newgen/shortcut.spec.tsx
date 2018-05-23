@@ -17,7 +17,7 @@ describe('Shortcut', () => {
 
     const el = mount(
       <div>
-        <Shortcut keyCode="Escape" handler={() => {}} />
+        <Shortcut keyCode={37} handler={() => {}} />
       </div>,
     );
 
@@ -27,7 +27,7 @@ describe('Shortcut', () => {
   it('should execute handler', done => {
     mount(
       <div>
-        <Shortcut keyCode="Escape" handler={done} />
+        <Shortcut keyCode={37} handler={done} />
       </div>,
     );
 

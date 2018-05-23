@@ -20,7 +20,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     const { onClose } = this.props;
     return (
       <Blanket>
-        {onClose && <Shortcut keyCode="Escape" handler={onClose} />}
+        {onClose && <Shortcut keyCode={27} handler={onClose} />}
         <Content onClose={onClose}>{this.renderContent()}</Content>
       </Blanket>
     );
