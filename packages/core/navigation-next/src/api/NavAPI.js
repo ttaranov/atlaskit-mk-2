@@ -86,6 +86,23 @@ export default class NavAPI extends Container<NavAPIState> {
     }
   };
 
+  removeReducer = (viewKey: ViewKey, reducer: Reducer) => {
+    const viewReducerList = this.reducers[viewKey];
+    if (!viewReducerList) {
+      return;
+    }
+
+    const reducerList = viewReducerList.filter(({ fn }) => fn !== reducer);
+    this.reducers = { ...this.reducers, [viewKey]: reducerList };
+
+    // If we're removing a reducer from the active view we'll want to re-set it
+    // so that the data gets re-evaluated.
+    const { activeView } = this.state;
+    if (activeView && viewKey === activeView) {
+      this.setView(activeView);
+    }
+  };
+
   addView = (viewKey: ViewKey, viewGetter: ViewResolver) => {
     const { activeView, nextView } = this.state;
 
@@ -166,5 +183,20 @@ export default class NavAPI extends Container<NavAPIState> {
       isLoading: false,
       nextView: null,
     });
+  };
+
+  /**
+   * Will re-resolve the active view and re-reduce its data. Accepts an optional
+   * viewKey to only re-resolve if the given key matches the active view.
+   */
+  updateActiveView = (maybeViewKey?: string) => {
+    const { activeView, data } = this.state;
+    const viewKey = maybeViewKey || activeView;
+
+    if (!viewKey || !data || viewKey !== activeView) {
+      return;
+    }
+
+    this.setView(viewKey);
   };
 }
