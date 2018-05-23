@@ -3,12 +3,8 @@
 import React, { Component } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import { colors, themed } from '@atlaskit/theme';
 import { withTheme, ThemeProvider } from 'styled-components';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
-
-const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
-const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
 type Props = {|
   /** Sets whether the checkbox is checked or unchecked. */
@@ -106,60 +102,24 @@ class CheckboxStateless extends Component<Props, State> {
     }
   };
 
-  // The secondary color represents the tick
-  getSecondaryColor = (): string => {
-    const { isChecked, isDisabled, ...rest } = this.props;
-    const { isActive } = this.state;
-
-    let color = themed({ light: colors.N0, dark: colors.DN10 });
-
-    if (isDisabled && isChecked) {
-      color = themed({ light: colors.N70, dark: colors.DN90 });
-    } else if (isActive && isChecked && !isDisabled) {
-      color = themed({ light: colors.B400, dark: colors.DN10 });
-    } else if (!isChecked) {
-      color = transparent;
-    }
-    // $FlowFixMe TEMPORARY
-    return color(rest);
-  };
-  // The secondary color represents the box color
-  getPrimaryColor = (): string => {
-    const { isChecked, isDisabled, ...rest } = this.props;
-    const { isHovered, isActive } = this.state;
-    let color = backgroundColor;
-    if (isDisabled) {
-      color = themed({ light: colors.N20A, dark: colors.DN10 });
-    } else if (isActive) {
-      color = themed({ light: colors.B75, dark: colors.B200 });
-    } else if (isHovered && isChecked) {
-      color = themed({ light: colors.B300, dark: colors.B75 });
-    } else if (isHovered) {
-      color = themed({ light: colors.N50A, dark: colors.DN30 });
-    } else if (isChecked) {
-      color = colors.blue;
-    }
-    // $FlowFixMe TEMPORARY
-    return color(rest);
-  };
-
   renderCheckboxIcon() {
     const { isIndeterminate } = this.props;
 
-    const primaryColor = this.getPrimaryColor();
-    const secondaryColor = this.getSecondaryColor();
-
     return isIndeterminate ? (
       <CheckboxIndeterminateIcon
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        label="checkboxIndeterminateIcon"
+        primaryColor="inherit"
+        secondaryColor="inherit"
+        isHovered={this.state.isHovered}
+        isActive={this.state.isActive}
+        label=""
       />
     ) : (
       <CheckboxIcon
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        label="checkboxIcon"
+        primaryColor="inherit"
+        secondaryColor="inherit"
+        isHovered={this.state.isHovered}
+        isActive={this.state.isActive}
+        label=""
       />
     );
   }

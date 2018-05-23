@@ -11,9 +11,9 @@ export default class StatelessExample extends Component<void, State> {
   state = {
     value: '',
     items: [
-      { name: 'color', value: 'red', label: 'Red' },
-      { name: 'color', value: 'blue', label: 'Blue' },
-      { name: 'color', value: 'yellow', label: 'Yellow' },
+      { name: 'color2', value: 'red', label: 'Red' },
+      { name: 'color2', value: 'blue', label: 'Blue' },
+      { name: 'color2', value: 'yellow', label: 'Yellow' },
     ],
   };
 

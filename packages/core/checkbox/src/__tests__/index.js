@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 
@@ -26,55 +25,7 @@ describe(name, () => {
 
     it('should be unchecked by default', () => {
       const cb = mountStatelessCheckbox({ isChecked: false });
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N40A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
-    });
-    it('should have correct checked styles', () => {
-      const cb = mountStatelessCheckbox({ isChecked: true });
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
-    });
-    it('should be correctly styled disabled', () => {
-      const cb = mountStatelessCheckbox({ isChecked: false, isDisabled: true });
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
-    });
-    it('should be correctly styled when hovered', () => {
-      const cb = mountStatelessCheckbox({ isChecked: false });
-      cb.simulate('mouseenter');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N50A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
-    });
-    it('should be correctly styled when hovered and checked', () => {
-      const cb = mountStatelessCheckbox({ isChecked: true });
-      cb.simulate('mouseenter');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B300);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
-    });
-    it('should be base state if mouseenter then mouseleave', () => {
-      const cb = mountStatelessCheckbox({ isChecked: true });
-      cb.simulate('mouseenter');
-      cb.simulate('mouseleave');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
-    });
-    it('should be active if mousedown and checked', () => {
-      const cb = mountStatelessCheckbox({ isChecked: true });
-      cb.simulate('mousedown');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B75);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.B400);
-    });
-    it('should be active if mousedown and unchecked', () => {
-      const cb = mountStatelessCheckbox({ isChecked: false });
-      cb.simulate('mousedown');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B75);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
-    });
-    it('should not be active if mousedown and disabled', () => {
-      const cb = mountStatelessCheckbox({ isChecked: false, isDisabled: true });
-      cb.simulate('mousedown');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
+      expect(cb.find('input[checked]').length === 1).toBe(true);
     });
     it('should call onchange on change', () => {
       const myMock = jest.fn();
