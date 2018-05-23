@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 12.0.8
+- [patch] FS-1975 place picker after reactions [4a6e1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a6e1c5)
+
 ## 12.0.7
 
 
