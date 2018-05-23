@@ -8,7 +8,7 @@ import type {
   NavAPIOptions,
   NavAPIState,
   Reducer,
-  ViewData,
+  View,
   ViewKey,
   ViewResolver,
 } from './types';
@@ -133,9 +133,10 @@ export default class NavAPI extends Container<NavAPIState> {
     this.setState({ isLoading: true, nextView: viewKey });
   };
 
-  setViewData = (viewKey: ViewKey, viewData: ViewData) => {
+  setViewData = (viewKey: ViewKey, viewData: View) => {
     this.logger.debugGroup(`Setting active view`);
     this.logger.debug(`Active view: '${viewKey}'`);
+
     // Pass the data through any reducers.
     const reducers = this.reducers[viewKey] || [];
 

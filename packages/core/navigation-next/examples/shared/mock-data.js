@@ -58,90 +58,79 @@ export const globalNavSecondaryItems = [
 ];
 
 /** Product root views */
-const rootHome = {
-  id: 'root-home',
-  parentId: null,
-  view: [
-    {
-      id: 'root-home-header',
-      isRootLevel: true,
-      items: [{ type: 'JiraWordmark', id: 'jira-wordmark' }],
-      type: 'Group',
-    },
-    {
-      id: 'root-home-menu',
-      isRootLevel: true,
-      items: [
-        {
-          type: 'Item',
-          key: 'dashboards',
-          text: 'Dashboards',
-          icon: 'DashboardIcon',
-        },
-        {
-          type: 'Item',
-          key: 'projects',
-          text: 'Projects',
-          icon: 'FolderIcon',
-        },
-        {
-          icon: 'IssuesIcon',
-          goTo: 'root-issues',
-          key: 'issues',
-          text: 'Issues',
-          type: 'GoToItem',
-        },
-      ],
-      nestedGroupKey: 'menu',
-      parentId: null,
-      type: 'Nested',
-    },
-    {
-      key: 'shortcuts-plugin',
-      name: 'shortcuts-plugin',
-      text: 'Shortcuts plugin',
-      type: 'PluginPoint',
-    },
-  ],
-};
+const rootIndex = [
+  {
+    id: 'root/index:header',
+    isRootLevel: true,
+    items: [{ type: 'JiraWordmark', id: 'jira-wordmark' }],
+    type: 'Group',
+  },
+  {
+    id: 'root/index:menu',
+    isRootLevel: true,
+    items: [
+      {
+        type: 'Item',
+        id: 'dashboards',
+        text: 'Dashboards',
+        icon: 'DashboardIcon',
+      },
+      {
+        type: 'Item',
+        id: 'projects',
+        text: 'Projects',
+        icon: 'FolderIcon',
+      },
+      {
+        icon: 'IssuesIcon',
+        goTo: 'root/issues',
+        id: 'issues',
+        text: 'Issues',
+        type: 'GoToItem',
+      },
+    ],
+    nestedGroupKey: 'menu',
+    parentId: null,
+    type: 'Nested',
+  },
+];
 
-const rootIssues = {
-  id: 'root-issues',
-  parentId: 'root-home',
-  view: [
-    {
-      id: 'root-issues-header',
-      isRootLevel: true,
-      items: [
-        { type: 'JiraWordmark', id: 'jira-wordmark' },
-        { type: 'BackItem', goTo: 'root-home', key: 'back' },
-      ],
-      type: 'Group',
-    },
-    {
-      id: 'root-issues-menu',
-      isRootLevel: true,
-      items: [
-        { type: 'Item', key: 'search-issues', text: 'Search issues' },
-        { type: 'Separator', key: 'separator-1' },
-        { type: 'Item', key: 'my-open-issues', text: 'My open issues' },
-        { type: 'Item', key: 'reported-by-me', text: 'Reported by me' },
-        { type: 'Item', key: 'all-issues', text: 'All issues' },
-        { type: 'Item', key: 'open-issues', text: 'Open issues' },
-        { type: 'Item', key: 'done-issues', text: 'Done issues' },
-        { type: 'Item', key: 'viewed-recently', text: 'Viewed recently' },
-        { type: 'Item', key: 'created-recently', text: 'Created recently' },
-        { type: 'Item', key: 'resolved-recently', text: 'Resolved recently' },
-        { type: 'Item', key: 'updated-recently', text: 'Updated recently' },
-      ],
-      nestedGroupKey: 'menu',
-      parentId: 'root-home-menu',
-      type: 'Nested',
-    },
-  ],
-};
+const rootIssues = [
+  {
+    id: 'root-issues-header',
+    isRootLevel: true,
+    items: [
+      { type: 'JiraWordmark', id: 'jira-wordmark' },
+      { type: 'BackItem', goTo: 'root/index', id: 'back' },
+    ],
+    type: 'Group',
+  },
+  {
+    id: 'root-issues-menu',
+    isRootLevel: true,
+    items: [
+      { type: 'Item', id: 'search-issues', text: 'Search issues' },
+      { type: 'Separator', id: 'separator-1' },
+      { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
+      { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
+      { type: 'Item', id: 'all-issues', text: 'All issues' },
+      { type: 'Item', id: 'open-issues', text: 'Open issues' },
+      { type: 'Item', id: 'done-issues', text: 'Done issues' },
+      { type: 'Item', id: 'viewed-recently', text: 'Viewed recently' },
+      { type: 'Item', id: 'created-recently', text: 'Created recently' },
+      { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
+      { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
+    ],
+    nestedGroupKey: 'menu',
+    parentId: 'root/index:menu',
+    type: 'Nested',
+  },
+];
 
-export const rootViews = [rootHome, rootIssues];
+export const rootViews = {
+  'root/index': rootIndex,
+  'root/issues': rootIssues,
+};
 
 /** Product container views */
 const containerIssues = {

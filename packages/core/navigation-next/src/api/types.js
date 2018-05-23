@@ -38,15 +38,13 @@ export type ViewKey = string;
 
 export type View = ViewItem[];
 
-export type ViewData = { id: ViewKey, parentId: ?ViewKey, view: View };
+export type ViewResolver = () => View;
 
-export type ViewResolver = () => ViewData;
-
-export type Reducer = (ViewData, ViewKey) => ViewData;
+export type Reducer = (View, ViewKey) => View;
 
 export type NavAPIState = {|
   activeView: ViewKey | null,
-  data: ViewData | null,
+  data: View | null,
   isLoading: boolean,
   nextView: ViewKey | null,
 |};
