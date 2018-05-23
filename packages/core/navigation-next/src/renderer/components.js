@@ -191,7 +191,10 @@ export const ItemsRenderer = ({
   items,
 }: ItemsRendererProps) =>
   items.map(({ type, ...props }) => {
-    const key = props.nestedGroupKey || props.id;
+    const key =
+      typeof props.nestedGroupKey === 'string'
+        ? props.nestedGroupKey
+        : props.id;
 
     if (groupComponents[type]) {
       const G = groupComponents[type];

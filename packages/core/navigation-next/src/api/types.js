@@ -25,9 +25,9 @@ export type ItemArgs = {
 };
 
 export type GroupArgs = {
-  id?: string,
+  id: string,
   items: View[],
-  key?: string,
+  nestedGroupKey?: string,
   parentId?: string,
   type: string,
 };
