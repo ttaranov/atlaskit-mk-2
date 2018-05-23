@@ -85,6 +85,31 @@ type AsciiEmojiMatch = {
   trailingString: string;
 };
 
+const REGEX_LEADING_CAPTURE_INDEX = 1;
+const REGEX_EMOJI_LEADING_PARENTHESES = 2;
+const REGEX_EMOJI_ASCII_CAPTURE_INDEX = 3;
+const REGEX_TRAILING_CAPTURE_INDEX = 4;
+
+const getLeadingString = (
+  match: string[],
+  withParenthesis: boolean = true,
+): string =>
+  match[REGEX_LEADING_CAPTURE_INDEX] +
+  (withParenthesis ? match[REGEX_EMOJI_LEADING_PARENTHESES] : '');
+
+const getLeadingStringWithoutParentheses = (match: string[]): string =>
+  getLeadingString(match, false);
+
+const getAscii = (match: string[], withParentheses: boolean = false) =>
+  (withParentheses ? match[REGEX_EMOJI_LEADING_PARENTHESES] : '') +
+  match[REGEX_EMOJI_ASCII_CAPTURE_INDEX].trim();
+
+const getAsciiWithParentheses = (matchParts: string[]): string =>
+  getAscii(matchParts, true);
+
+const getTrailingString = (match: string[]): string =>
+  match[REGEX_TRAILING_CAPTURE_INDEX] || '';
+
 class AsciiEmojiMatcher {
   /**
    * This regex matches 2 scenarios:
@@ -93,35 +118,29 @@ class AsciiEmojiMatcher {
    *
    * Explanation (${leafNodeReplacementCharacter} is replaced with character \ufffc)
    *
-   *   1st Capturing Group ((?:^|[\s\ufffc])(?:\(*?))
-   *     Non-capturing group (?:^|[\s\ufffc])
-   *       1st Alternative ^
-   *         ^ asserts position at start of the string
-   *       2nd Alternative [\s\ufffc]
-   *         matches a single character present in [\s\ufffc]
-   *     Non-capturing group (?:\(*?)
-   *       matches the character ( literally between zero and unlimited times, as few times as possible, expanding as needed (lazy)
-   *   2nd Capturing Group (\(y\)|[^:\s\ufffc\(]\S{1,3}|:\S{1,3}( ))
-   *     1st Alternative \(y\)
-   *       matches the string (y) literally (case sensitive)
-   *     2nd Alternative [^:\s\ufffc\(]\S{1,3}
-   *       matches a single character not present in [^:\s\ufffc\(] between 1 and 3 times, as many times as possible, giving back as needed (greedy)
-   *     3rd Alternative :\S{1,3}( )
-   *       : matches the character : literally
-   *       \S{1,3} matches any non-whitespace character between 1 and 3 times, as many times as possible, giving back as needed (greedy)
-   *       3rd Capturing Group ( )
-   *         matches the character [space] literally
-   *   $ asserts position at the end of the string
+   *  1st Capturing Group ((?:^|[\s\ufffc])(?:\(*?))
+   *    Non-capturing group (?:^|[\s\ufffc])
+   *      1st Alternative ^
+   *        ^ asserts position at start of the string
+   *      2nd Alternative [\s\ufffc]
+   *        matches a single character present in [\s\ufffc]
+   *    Non-capturing group (?:\(*?)
+   *      matches the character ( literally between zero and unlimited times, as few times as possible, expanding as needed (lazy)
+   *  2nd Capturing Group (\(?)
+   *    matches a single ( if present
+   *  3rd Capturing Group ([^:\s\ufffc\(]\S{1,3}|:\S{1,3}( ))
+   *    1st Alternative [^:\s\ufffc\(]\S{1,3}
+   *      matches a single character not present in [^:\s\ufffc\(] between 1 and 3 times, as many times as possible, giving back as needed (greedy)
+   *    2nd Alternative :\S{1,3}( )
+   *      : matches the character : literally
+   *      \S{1,3} matches any non-whitespace character between 1 and 3 times, as many times as possible, giving back as needed (greedy)
+   *  4th Capturing Group ( )
    *
-   * See https://regex101.com/r/HRS9O2/2
+   * See https://regex101.com/r/HRS9O2/4
    */
   static REGEX = new RegExp(
-    `((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(y\\)|[^:\\s${leafNodeReplacementCharacter}\\(]\\S{1,3}|:\\S{1,3}( ))$`,
+    `((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(?)([^:\\s${leafNodeReplacementCharacter}\\(]\\S{1,3}|:\\S{1,3}( ))$`,
   );
-
-  private static REGEX_LEADING_CAPTURE_INDEX = 1;
-  private static REGEX_EMOJI_ASCII_CAPTURE_INDEX = 2;
-  private static REGEX_TRAILING_CAPTURE_INDEX = 3;
 
   private asciiToEmojiMap: Map<string, EmojiDescription>;
 
@@ -130,30 +149,33 @@ class AsciiEmojiMatcher {
   }
 
   match(matchParts: string[]): AsciiEmojiMatch | undefined {
-    let emoji = this.getEmoji(matchParts);
-    if (emoji) {
-      return {
-        emoji: emoji,
-        leadingString: AsciiEmojiMatcher.getLeadingString(matchParts),
-        trailingString: AsciiEmojiMatcher.getTrailingString(matchParts),
-      };
-    }
+    return (
+      this.getAsciiEmojiMatch(
+        getLeadingStringWithoutParentheses(matchParts),
+        getAsciiWithParentheses(matchParts),
+        getTrailingString(matchParts),
+      ) ||
+      this.getAsciiEmojiMatch(
+        getLeadingString(matchParts),
+        getAscii(matchParts),
+        getTrailingString(matchParts),
+      )
+    );
   }
 
-  private getEmoji(match: string[]): EmojiDescription | undefined {
-    let ascii = match[AsciiEmojiMatcher.REGEX_EMOJI_ASCII_CAPTURE_INDEX].trim();
-    if (ascii) {
-      return this.asciiToEmojiMap.get(ascii);
-    }
-    return undefined;
-  }
-
-  private static getLeadingString(match: string[]): string {
-    return match[AsciiEmojiMatcher.REGEX_LEADING_CAPTURE_INDEX];
-  }
-
-  private static getTrailingString(match: string[]): string {
-    return match[AsciiEmojiMatcher.REGEX_TRAILING_CAPTURE_INDEX] || '';
+  private getAsciiEmojiMatch(
+    leading: string,
+    ascii: string,
+    trailing: string,
+  ): AsciiEmojiMatch | undefined {
+    const emoji = this.asciiToEmojiMap.get(ascii);
+    return emoji
+      ? {
+          emoji,
+          leadingString: leading,
+          trailingString: trailing,
+        }
+      : undefined;
   }
 }
 

@@ -1,0 +1,5 @@
+{
+  "extends": "../../../.babelrc",
+  "plugins": [["emotion", { "hoist": true }]]
+}
+

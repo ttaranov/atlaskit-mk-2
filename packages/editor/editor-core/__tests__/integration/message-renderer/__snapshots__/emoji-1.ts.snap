@@ -48,9 +48,9 @@ Object {
         },
         Object {
           "attrs": Object {
-            "id": "atlassian-lol",
-            "shortName": ":lol:",
-            "text": ":lol:",
+            "id": "atlassian-light_bulb_on",
+            "shortName": ":light_bulb_on:",
+            "text": ":light_bulb_on:",
           },
           "type": "emoji",
         },

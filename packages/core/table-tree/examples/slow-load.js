@@ -1,31 +1,40 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
-import { type RowData as RowDataType } from '../src/types';
 import staticData from './data-freeform-nodes.json';
 
-function getItemsData(parent: ?{ children: Array<RowDataType> } = staticData) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve((parent && parent.children) || []);
-    }, 3000);
-  });
-}
+export default class SlowLoad extends Component<
+  {},
+  { tableData: ?Array<Object> },
+> {
+  state = {
+    tableData: null,
+  };
 
-export default () => (
-  <TableTree>
-    <Headers>
-      <Header width={200}>Title</Header>
-      <Header width={100}>Numbering</Header>
-    </Headers>
-    <Rows
-      items={getItemsData}
-      render={({ id, title, numbering, children }) => (
-        <Row itemId={id} hasChildren={children.length > 0}>
-          <Cell>{title}</Cell>
-          <Cell>{numbering}</Cell>
-        </Row>
-      )}
-    />
-  </TableTree>
-);
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        tableData: staticData.children,
+      });
+    }, 3000);
+  }
+  render() {
+    return (
+      <TableTree>
+        <Headers>
+          <Header width={200}>Title</Header>
+          <Header width={100}>Numbering</Header>
+        </Headers>
+        <Rows
+          items={this.state.tableData}
+          render={({ id, title, numbering, children }) => (
+            <Row itemId={id} items={children} hasChildren={children.length > 0}>
+              <Cell>{title}</Cell>
+              <Cell>{numbering}</Cell>
+            </Row>
+          )}
+        />
+      </TableTree>
+    );
+  }
+}

@@ -34,6 +34,7 @@ export {
 export interface MediaOptions {
   provider?: Promise<MediaProvider>;
   allowMediaSingle?: boolean | MediaSingleOptions;
+  allowMediaGroup?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
 }
@@ -48,10 +49,20 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
       { name: 'mediaGroup', node: mediaGroup, rank: 1700 },
       { name: 'mediaSingle', node: mediaSingle, rank: 1750 },
       { name: 'media', node: media, rank: 1800 },
-    ].filter(
-      node =>
-        node.name !== 'mediaSingle' || (options && options.allowMediaSingle),
-    );
+    ].filter(node => {
+      const { allowMediaGroup = true, allowMediaSingle = false } =
+        options || {};
+
+      if (node.name === 'mediaGroup') {
+        return allowMediaGroup;
+      }
+
+      if (node.name === 'mediaSingle') {
+        return allowMediaSingle;
+      }
+
+      return true;
+    });
   },
 
   pmPlugins() {
@@ -124,7 +135,10 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     }
 
     const { allowMediaSingle } = options;
-    const { disableLayout } = allowMediaSingle as MediaSingleOptions;
+    let disableLayout: boolean | undefined;
+    if (typeof allowMediaSingle === 'object') {
+      disableLayout = allowMediaSingle.disableLayout;
+    }
 
     if (
       (typeof allowMediaSingle === 'boolean' && allowMediaSingle === false) ||

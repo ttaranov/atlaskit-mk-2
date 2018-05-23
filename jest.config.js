@@ -36,8 +36,8 @@ const config = {
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
   transform: {
-    '^.+\\.tsx?$': 'ts-jest/preprocessor',
     '^.+\\.js$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest/preprocessor',
   },
   globals: {
     'ts-jest': {

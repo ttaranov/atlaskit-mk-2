@@ -1,7 +1,9 @@
 // @flow
+import { Appearance } from '@atlaskit/theme';
 import React, { PureComponent, type Node } from 'react';
 import Container from './styledContainer';
 import Content from './styledContent';
+import { boldStyles, defaultStyles } from './theme';
 
 export type Appearances =
   | 'default'
@@ -9,18 +11,14 @@ export type Appearances =
   | 'removed'
   | 'inprogress'
   | 'new'
-  | 'moved';
-
-export const APPEARANCE_ENUM = {
-  values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
-  defaultValue: 'default',
-};
+  | 'moved'
+  | {};
 
 type Props = {
   /** Determines whether to apply the bold style or not. */
   isBold?: boolean,
   /** The appearance type. */
-  appearance?: Appearances,
+  appearance: Appearances,
   /** Elements to be rendered inside the lozenge. This should ideally be just
    a word or two. */
   children?: Node,
@@ -29,23 +27,23 @@ type Props = {
 export default class Lozenge extends PureComponent<Props> {
   static defaultProps = {
     isBold: false,
-    appearance: APPEARANCE_ENUM.defaultValue,
+    appearance: 'default',
   };
 
-  // returns the assigned appearance if valid, falling back to the default otherwise
-  validAppearance() {
-    const { appearance } = this.props;
-    const { values, defaultValue } = APPEARANCE_ENUM;
-    return values.indexOf(appearance) !== -1 ? appearance : defaultValue;
-  }
-
   render() {
-    const { isBold, children } = this.props;
+    const { appearance, isBold, children } = this.props;
 
     return (
-      <Container appearance={this.validAppearance()} isBold={isBold}>
-        <Content>{children}</Content>
-      </Container>
+      <Appearance
+        props={appearance}
+        theme={isBold ? boldStyles : defaultStyles}
+      >
+        {styleProps => (
+          <Container {...styleProps} isBold={isBold}>
+            <Content>{children}</Content>
+          </Container>
+        )}
+      </Appearance>
     );
   }
 }

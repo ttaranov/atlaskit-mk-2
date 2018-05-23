@@ -1,14 +1,12 @@
 import { AuthProvider, Context } from '@atlaskit/media-core';
 
-import { LocalUploadComponent } from './localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPClipboardLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
-import { UploadParams } from '..';
 import { whenDomReady } from '../util/documentReady';
 
-export interface ClipboardConfig {
-  uploadParams: UploadParams;
-  userAuthProvider?: AuthProvider;
+export interface ClipboardConfig extends LocalUploadConfig {
+  readonly userAuthProvider?: AuthProvider;
 }
 
 export interface ClipboardConstructor {
@@ -45,10 +43,7 @@ export class Clipboard extends LocalUploadComponent {
       Browser behaviour for getting files from the clipboard is very inconsistent and buggy.
       @see https://extranet.atlassian.com/display/FIL/RFC+099%3A+Clipboard+browser+inconsistency
     */
-    const files = event.clipboardData.files;
-    for (let i = 0; i < files.length; ++i) {
-      const file = files[i];
-      this.uploadService.addFile(file);
-    }
+    const filesArray = Array.from(event.clipboardData.files);
+    this.uploadService.addFiles(filesArray);
   };
 }

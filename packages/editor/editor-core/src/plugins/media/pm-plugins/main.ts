@@ -105,8 +105,8 @@ export class MediaPluginState {
 
     const { nodes } = state.schema;
     assert(
-      nodes.media && nodes.mediaGroup,
-      'Editor: unable to init media plugin - media or mediaGroup node absent in schema',
+      nodes.media && (nodes.mediaGroup || nodes.mediaSingle),
+      'Editor: unable to init media plugin - media or mediaGroup/mediaSingle node absent in schema',
     );
 
     this.stateManager = new DefaultMediaStateManager();
@@ -586,7 +586,11 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
+      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
+        useNewUploadService: !!(
+          featureFlags && featureFlags.useNewUploadService
+        ),
         uploadParams,
       };
 
@@ -705,13 +709,15 @@ export class MediaPluginState {
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
+        if (state.publicId) {
+          this.replaceTemporaryNode(state);
+        }
         break;
 
       case 'ready':
         if (state.publicId && this.nodeHasNoPublicId(state)) {
           this.replaceTemporaryNode(state);
         }
-
         if (state.preview) {
           this.stateManager.off(state.id, this.handleMediaState);
         }
@@ -809,7 +815,10 @@ export class MediaPluginState {
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection);
+      return (
+        !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection) &&
+        !hasParentNodeOfType(schema.nodes.layoutSection)(selection)
+      );
     }
     return false;
   }

@@ -24,6 +24,20 @@ export const findIndex = (
   return index;
 };
 
+export const updateReadonlyArray = <T>(
+  array: Array<T>,
+  index: number,
+  updater: (T) => T,
+): Array<T> => {
+  return array.map((value, i) => {
+    if (i === index) {
+      return updater(value);
+    }
+
+    return value;
+  });
+};
+
 export const unique = (array: any[], predicate: (item: any) => string) => {
   const seen = {};
   return array.filter(

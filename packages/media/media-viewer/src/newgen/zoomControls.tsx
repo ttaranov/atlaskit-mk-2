@@ -3,7 +3,7 @@ import { Component } from 'react';
 import Button from '@atlaskit/button';
 import ZoomOutIcon from '@atlaskit/icon/glyph/media-services/zoom-out';
 import ZoomInIcon from '@atlaskit/icon/glyph/media-services/zoom-in';
-import { ZoomWrapper } from './styled';
+import { ZoomWrapper, hideControlsClassName } from './styled';
 
 export type ZoomDirection = 'out' | 'in';
 
@@ -24,11 +24,11 @@ export const getZoomLevel = (
   direction: ZoomDirection,
   step: number = zoomingStep,
 ): number => {
-  const increase = step! * currentZoomLevel;
-  const newZoomLevel = direction === 'out' ? -increase! : increase;
+  const increase = step * currentZoomLevel;
+  const newZoomLevel = direction === 'out' ? -increase : increase;
   const zoomLevel = Math.min(
     Math.max(
-      Math.round((currentZoomLevel + newZoomLevel!) * 100) / 100,
+      Math.round((currentZoomLevel + newZoomLevel) * 100) / 100,
       minZoomLevel,
     ),
     maxZoomLevel,
@@ -69,7 +69,7 @@ export class ZoomControls extends Component<
     const { canZoomOut, canZoomIn } = this;
 
     return (
-      <ZoomWrapper>
+      <ZoomWrapper className={hideControlsClassName}>
         <Button
           isDisabled={!canZoomOut}
           onClick={this.zoom('out')}

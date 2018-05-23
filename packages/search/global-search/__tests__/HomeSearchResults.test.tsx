@@ -109,7 +109,9 @@ describe('HomeSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makeResult({ type: ResultType.Person, name: 'name' })],
+      peopleResults: [
+        makeResult({ resultType: ResultType.Person, name: 'name' }),
+      ],
     };
 
     const wrapper = render(props);
@@ -150,7 +152,7 @@ describe('HomeSearchResults', () => {
   it('should render a people result item to search people', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makeResult({ type: ResultType.Person })],
+      peopleResults: [makeResult({ resultType: ResultType.Person })],
     };
 
     const wrapper = render(props);

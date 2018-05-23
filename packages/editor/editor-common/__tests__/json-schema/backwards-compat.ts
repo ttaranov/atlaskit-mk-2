@@ -27,7 +27,10 @@ function fetchLatestJSONSchema() {
 expect.extend({
   toBeBackwardsCompatibleWith(received: any, argument: any) {
     try {
-      validateSchemaCompatibility(argument, received, { allowNewOneOf: true });
+      validateSchemaCompatibility(argument, received, {
+        allowNewOneOf: true,
+        allowNewEnumValue: true,
+      });
 
       return {
         pass: true,

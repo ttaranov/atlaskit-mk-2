@@ -1,5 +1,9 @@
 # @atlaskit/size-detector
 
+## 3.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
 ## 3.1.0
 - [minor] Add onResize prop callback [18c0bf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18c0bf0)
 

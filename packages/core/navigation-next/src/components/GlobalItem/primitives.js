@@ -97,7 +97,7 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
     );
 
     return tooltip ? (
-      <Tooltip content={tooltip} position="right">
+      <Tooltip content={tooltip} position="right" hideTooltipOnClick>
         {item}
       </Tooltip>
     ) : (

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import { HTMLAttributes, ComponentClass } from 'react';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import styled, { css, Styles, StyledComponentClass } from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 export const ButtonGroup: ComponentClass<
@@ -61,4 +61,10 @@ export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   height: 24px;
   align-items: center;
   padding: ${(props: any) => (props.width ? 0 : '0 8px')};
+`;
+
+// Taken from the style of inline dialog components
+export const dropShadow = css`
+  box-shadow: 0 0 1px rgba(9, 30, 66, 0.31),
+    0 4px 8px -2px rgba(9, 30, 66, 0.25);
 `;

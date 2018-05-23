@@ -16,7 +16,7 @@ describe('#test data', () => {
   });
 
   it('expected atlassian emojis', () => {
-    expect(atlassianEmojis.length, '10 Atlassian Emoji').to.equal(10);
+    expect(atlassianEmojis.length, '12 Atlassian Emoji').to.equal(12);
   });
 
   it('expected grin emoji', () => {

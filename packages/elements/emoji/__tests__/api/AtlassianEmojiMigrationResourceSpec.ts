@@ -113,7 +113,7 @@ describe('AtlassianEmojiMigrationResource', () => {
       const resource = new AtlassianEmojiMigrationResource(config);
       const atlassianServiceEmojis = resource.findInCategory('ATLASSIAN');
       return atlassianServiceEmojis.then(emojis =>
-        expect(emojis.length).to.equal(5),
+        expect(emojis.length).to.equal(7),
       );
     });
   });

@@ -1,3 +1,4 @@
+// TODO these classes are deprecated and will be removed as part of MSW-691
 import { handleError } from '../util/handleError';
 
 export interface MediaProgress {

@@ -43,6 +43,10 @@ export interface MediaStateManager {
   destroy(): void;
 }
 
+export interface FeatureFlags {
+  useNewUploadService?: boolean;
+}
+
 export interface MediaProvider {
   uploadParams?: UploadParams;
 
@@ -68,6 +72,11 @@ export interface MediaProvider {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context>;
+
+  /**
+   * (optional) For any additional feature to be enabled
+   */
+  featureFlags?: FeatureFlags;
 }
 
 export type Listener = (data: any) => void;

@@ -43,16 +43,18 @@ export function getVerticalPlacement(
   }
 
   const boundariesClientRect = boundariesElement.getBoundingClientRect();
-  const { height: boundriesHeight } = boundariesClientRect;
-  const boundriesTop = isBody(boundariesElement) ? 0 : boundariesClientRect.top;
+  const { height: boundariesHeight } = boundariesClientRect;
+  const boundariesTop = isBody(boundariesElement)
+    ? 0
+    : boundariesClientRect.top;
 
   const {
     top: targetTop,
     height: targetHeight,
   } = target.getBoundingClientRect();
-  const spaceAbove = targetTop - (boundriesTop - boundariesElement.scrollTop);
+  const spaceAbove = targetTop - (boundariesTop - boundariesElement.scrollTop);
   const spaceBelow =
-    boundriesTop + boundriesHeight - (targetTop + targetHeight);
+    boundariesTop + boundariesHeight - (targetTop + targetHeight);
 
   if (spaceBelow >= fitHeight || spaceBelow >= spaceAbove) {
     return 'bottom';
@@ -87,11 +89,11 @@ export function getHorizontalPlacement(
     width: targetWidth,
   } = target.getBoundingClientRect();
   const {
-    left: boundriesLeft,
-    width: boundriesWidth,
+    left: boundariesLeft,
+    width: boundariesWidth,
   } = boundariesElement.getBoundingClientRect();
-  const spaceLeft = targetLeft - boundriesLeft + targetWidth;
-  const spaceRight = boundriesLeft + boundriesWidth - targetLeft;
+  const spaceLeft = targetLeft - boundariesLeft + targetWidth;
+  const spaceRight = boundariesLeft + boundariesWidth - targetLeft;
 
   if (spaceRight >= fitWidth || spaceRight >= spaceLeft) {
     return 'left';
@@ -155,6 +157,7 @@ export function calculatePosition({
     left: targetLeft,
     right: targetRight,
     height: targetHeight,
+    width: targetWidth,
   } = target.getBoundingClientRect();
 
   if (verticalPlacement === 'top') {
@@ -205,11 +208,11 @@ export function calculatePosition({
   } else if (horizontalPlacement === 'center') {
     const parentWidth = target.parentElement!.clientWidth;
     const parentLeft = target.parentElement!.getBoundingClientRect().left;
-    const targetWidth = target.clientWidth;
+    const newTargetWidth = target.clientWidth || targetWidth;
     position.left = Math.ceil(
       parentLeft -
         popupOffsetParentLeft +
-        (targetWidth > parentWidth ? parentWidth : targetWidth) / 2 -
+        (newTargetWidth > parentWidth ? parentWidth : newTargetWidth) / 2 -
         popup.clientWidth / 2 +
         offset[0],
     );
