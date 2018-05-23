@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.0.3
+- [patch] Addding the file swap in processing state [ed40161](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed40161)
+- [none] Updated dependencies [ed40161](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed40161)
+
 ## 72.0.2
 - [patch] ED-4652, fixing issue with input of multiple * in editor. [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
 - [patch] Updated dependencies [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
