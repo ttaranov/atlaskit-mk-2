@@ -91,16 +91,16 @@ const rootHome = {
           text: 'Issues',
           type: 'GoToItem',
         },
-        {
-          key: 'shortcuts-plugin',
-          name: 'shortcuts-plugin',
-          text: 'Shortcuts plugin',
-          type: 'PluginPoint',
-        },
       ],
       nestedGroupKey: 'menu',
       parentId: null,
       type: 'Nested',
+    },
+    {
+      key: 'shortcuts-plugin',
+      name: 'shortcuts-plugin',
+      text: 'Shortcuts plugin',
+      type: 'PluginPoint',
     },
   ],
 };
