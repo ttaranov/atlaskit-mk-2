@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 7.0.2
+- [patch] remove browse + dropzone logic from UploadService [02a72e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02a72e8)
+
 ## 7.0.1
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-store@3.0.1
