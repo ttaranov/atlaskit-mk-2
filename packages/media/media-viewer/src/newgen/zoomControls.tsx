@@ -71,12 +71,12 @@ export class ZoomControls extends Component<
     return (
       <ZoomWrapper className={hideControlsClassName}>
         <Button
-          isDisabled={canZoomOut}
+          isDisabled={!canZoomOut}
           onClick={this.zoom('out')}
           iconBefore={<ZoomOutIcon primaryColor="white" label="zoom out" />}
         />
         <Button
-          isDisabled={canZoomIn}
+          isDisabled={!canZoomIn}
           onClick={this.zoom('in')}
           iconBefore={<ZoomInIcon primaryColor="white" label="zoom in" />}
         />
