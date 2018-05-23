@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import AtlaskitAnalyticsListeners from '@atlaskit/analytics-listeners';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
@@ -18,6 +19,7 @@ import { colors } from '@atlaskit/theme';
 import Lorem from 'react-lorem-component';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
+import mockAnalyticsWebClient from './shared/mock-analytics-client';
 
 const Global = () => (
   // TODO: DRY the props
@@ -215,18 +217,20 @@ export default class GlobalNavigationWtihSpotLight extends Component<
 
   render() {
     return (
-      <SpotlightManager>
-        <NavigationProvider>
-          <LayoutManager
-            globalNavigation={Global}
-            productRootNavigation={() => null}
-            productContainerNavigation={() => null}
-          >
-            <button onClick={this.start}>Start Onboarding</button>
-            {this.renderActiveSpotLight()}
-          </LayoutManager>
-        </NavigationProvider>
-      </SpotlightManager>
+      <AtlaskitAnalyticsListeners client={mockAnalyticsWebClient}>
+        <SpotlightManager>
+          <NavigationProvider>
+            <LayoutManager
+              globalNavigation={Global}
+              productRootNavigation={() => null}
+              productContainerNavigation={() => null}
+            >
+              <button onClick={this.start}>Start Onboarding</button>
+              {this.renderActiveSpotLight()}
+            </LayoutManager>
+          </NavigationProvider>
+        </SpotlightManager>
+      </AtlaskitAnalyticsListeners>
     );
   }
 }

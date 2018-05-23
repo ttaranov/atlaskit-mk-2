@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import AtlaskitAnalyticsListeners from '@atlaskit/analytics-listeners';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import Dropdown, {
@@ -12,6 +13,7 @@ import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Avatar from '@atlaskit/avatar';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
+import mockAnalyticsWebClient from './shared/mock-analytics-client';
 
 const generateDropDown = Trigger => ({ className }: { className: string }) => (
   <Dropdown
@@ -64,13 +66,15 @@ const Global = () => (
 );
 
 export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={Global}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
-    >
-      Page content
-    </LayoutManager>
-  </NavigationProvider>
+  <AtlaskitAnalyticsListeners client={mockAnalyticsWebClient}>
+    <NavigationProvider>
+      <LayoutManager
+        globalNavigation={Global}
+        productRootNavigation={() => null}
+        productContainerNavigation={() => null}
+      >
+        Page content
+      </LayoutManager>
+    </NavigationProvider>
+  </AtlaskitAnalyticsListeners>
 );

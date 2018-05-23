@@ -1,12 +1,14 @@
 // @flow
 
 import React from 'react';
+import AtlaskitAnalyticsListeners from '@atlaskit/analytics-listeners';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import BitbucketBranchesIcon from '@atlaskit/icon/glyph/bitbucket/branches';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
+import mockAnalyticsWebClient from './shared/mock-analytics-client';
 
 const Global = () => (
   <GlobalNavigation
@@ -41,13 +43,15 @@ const Global = () => (
 );
 
 export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={Global}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
-    >
-      Page content
-    </LayoutManager>
-  </NavigationProvider>
+  <AtlaskitAnalyticsListeners client={mockAnalyticsWebClient}>
+    <NavigationProvider>
+      <LayoutManager
+        globalNavigation={Global}
+        productRootNavigation={() => null}
+        productContainerNavigation={() => null}
+      >
+        Page content
+      </LayoutManager>
+    </NavigationProvider>
+  </AtlaskitAnalyticsListeners>
 );

@@ -1,11 +1,13 @@
 // @flow
 
 import React from 'react';
+import AtlaskitAnalyticsListeners from '@atlaskit/analytics-listeners';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src';
 import type { DrawerContentProps } from '../src/components/GlobalNavigation/types';
+import mockAnalyticsWebClient from './shared/mock-analytics-client';
 
 const generateDrawer = drawerContent => ({
   closeDrawer,
@@ -54,13 +56,15 @@ const Global = () => (
 );
 
 export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={Global}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
-    >
-      Page content
-    </LayoutManager>
-  </NavigationProvider>
+  <AtlaskitAnalyticsListeners client={mockAnalyticsWebClient}>
+    <NavigationProvider>
+      <LayoutManager
+        globalNavigation={Global}
+        productRootNavigation={() => null}
+        productContainerNavigation={() => null}
+      >
+        Page content
+      </LayoutManager>
+    </NavigationProvider>
+  </AtlaskitAnalyticsListeners>
 );
