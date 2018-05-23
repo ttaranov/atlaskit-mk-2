@@ -4,7 +4,10 @@ import styled, { css } from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes } from 'react';
 import { MediaSingleLayout } from '../../schema';
-import { akEditorFullPageMaxWidth } from '../../styles';
+import {
+  akEditorFullPageMaxWidth,
+  akEditorWideLayoutWidth,
+} from '../../styles';
 
 function float(layout: MediaSingleLayout): string {
   switch (layout) {
@@ -32,7 +35,7 @@ function calcWidth(
         ? 'calc(50% - 12px)'
         : `${width}px`;
     case 'wide':
-      return `${Math.min(960, width)}px`;
+      return `${Math.min(akEditorWideLayoutWidth, width)}px`;
     case 'full-width':
       return `${Math.min(width, containerWidth) - gapCursorSpace}px`;
     default:

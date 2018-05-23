@@ -1,3 +1,8 @@
+export interface ClientAltBasedAuth {
+  readonly id: string;
+  readonly token: string;
+}
+
 export interface ClientBasedAuth {
   readonly clientId: string;
   readonly token: string;

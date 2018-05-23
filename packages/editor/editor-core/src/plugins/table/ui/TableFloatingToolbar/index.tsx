@@ -12,6 +12,7 @@ import {
 } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
@@ -19,6 +20,8 @@ import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
+
+import { hoverTable, clearHoverTable } from '../../actions';
 
 // `Popup` doesn't work with -ve `offset` if it goes outside of the container hence the -ve margin
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -70,6 +73,10 @@ const tableLayouts: TableLayoutInfo = {
     icon: CenterIcon,
     label: 'inline',
   },
+  wide: {
+    icon: WideIcon,
+    label: 'wide',
+  },
   'full-width': {
     icon: FullWidthIcon,
     label: 'full width',
@@ -79,6 +86,22 @@ const tableLayouts: TableLayoutInfo = {
 export default class TableFloatingToolbar extends Component<Props, State> {
   state: State = {
     isOpen: false,
+  };
+
+  setTableinDanger = () => {
+    const { state, dispatch } = this.props.editorView;
+    hoverTable(true)(state, dispatch);
+  };
+
+  resetTableinDanger = () => {
+    const { state, dispatch } = this.props.editorView;
+    clearHoverTable(state, dispatch);
+  };
+
+  removeTable = () => {
+    const { editorView: { state, dispatch }, removeTable } = this.props;
+    clearHoverTable(state, dispatch);
+    removeTable!();
   };
 
   render() {
@@ -183,12 +206,17 @@ export default class TableFloatingToolbar extends Component<Props, State> {
           {layoutButtons.length ? (
             <Separator style={{ height: 'auto' }} />
           ) : null}
-          <ToolbarButtonDanger
-            spacing="compact"
-            onClick={this.props.removeTable}
-            title="Remove table"
-            iconBefore={<RemoveIcon label="Remove table" />}
-          />
+          <div
+            onMouseEnter={this.setTableinDanger}
+            onMouseLeave={this.resetTableinDanger}
+          >
+            <ToolbarButtonDanger
+              spacing="compact"
+              onClick={this.removeTable}
+              title="Remove table"
+              iconBefore={<RemoveIcon label="Remove table" />}
+            />
+          </div>
         </Toolbar>
       </Popup>
     );

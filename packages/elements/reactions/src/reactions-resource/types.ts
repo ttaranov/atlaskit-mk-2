@@ -30,6 +30,7 @@ export interface ReactionSummary {
   count: number;
   reacted: boolean;
   users?: User[];
+  optimisticallyUpdated?: boolean;
 }
 
 export interface User {
@@ -67,7 +68,11 @@ export type SubscriptionHandler = (state: ReactionsState) => void;
 export interface ReactionsProvider {
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions>;
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary>;
-  toggleReaction(containerAri: string, ari: string, emojiId: string);
+  toggleReaction(
+    containerAri: string,
+    ari: string,
+    emojiId: string,
+  ): Promise<ReactionsState>;
   addReaction(
     containerAri: string,
     ari: string,

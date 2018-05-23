@@ -1,5 +1,47 @@
 # @atlaskit/renderer
 
+## 17.0.0
+
+- [patch] ED-4570, application card without icon should render properly. [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/media-filmstrip@8.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/media-filmstrip@8.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+
+## 16.3.0
+- [minor] Adds support for adfStage [4b303ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b303ce)
+- [none] Updated dependencies [4b303ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b303ce)
+
 ## 16.2.6
 
 

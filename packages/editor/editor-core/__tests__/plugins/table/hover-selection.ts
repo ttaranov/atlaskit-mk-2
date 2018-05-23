@@ -204,7 +204,7 @@ describe('table hover selection plugin', () => {
           ),
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        hoverTable(editorView.state, editorView.dispatch);
+        hoverTable()(editorView.state, editorView.dispatch);
 
         // selection should span all 6 cells
         expect(

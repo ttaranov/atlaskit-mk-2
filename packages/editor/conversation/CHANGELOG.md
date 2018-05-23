@@ -1,5 +1,43 @@
 # @atlaskit/conversation
 
+## 7.5.3
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/reactions@12.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/comment@3.1.8
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/reactions@12.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/comment@3.1.8
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/reactions@12.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/comment@3.1.8
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/reactions@12.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/comment@3.1.8
+
+## 7.5.2
+- [patch] Updated dependencies [1764815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764815)
+  - @atlaskit/reactions@12.0.6
+
 ## 7.5.1
 
 

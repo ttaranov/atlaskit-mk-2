@@ -87,26 +87,6 @@ describe('AbstractReactionsResource', () => {
     });
   });
 
-  // Skip for now. This is failing dua a bug. See issue FS-1921
-  it.skip('should not refresh interacted reactions', () => {
-    jest.spyOn(resource, 'getReactions').mockImplementation(args => {
-      return Promise.resolve({
-        'ari-1': [],
-      });
-    });
-
-    const handler1 = jest.fn();
-    resource.subscribe(
-      {
-        containerAri: 'container-1',
-        ari: 'ari-1',
-      },
-      handler1,
-    );
-
-    resource.toggleReaction('container-1', 'ari-1', 'emoji-1');
-  });
-
   it('should handle error', () => {
     jest
       .spyOn(resource, 'getReactions')

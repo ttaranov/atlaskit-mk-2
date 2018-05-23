@@ -63,7 +63,7 @@ export const tableStyles = `
     .table-column-controls-wrapper,
     .table-row-controls-wrapper {
       position: absolute;
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
+      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize + 1}px;
     }
     .table-column-controls-wrapper {
       left: 0;
@@ -81,7 +81,8 @@ export const tableStyles = `
       width: ${akEditorTableNumberColumnWidth}px;
       text-align: center;
     }
-    .table-container[data-layout='full-width'] {
+    .table-container[data-layout='full-width'],
+    .table-container[data-layout='wide'] {
       margin-left: 50%;
       transform: translateX(-50%);
     }
@@ -89,7 +90,7 @@ export const tableStyles = `
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
       /* fixes gap cursor height */
-      overflow: auto;
+      overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
     }
     .table-decoration {
@@ -100,10 +101,6 @@ export const tableStyles = `
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.table-resizing {
-    .with-controls .table-container[data-layout='full-width'] {
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
     .table-shadow {
       pointer-events: none;
       display: none;
@@ -162,6 +159,13 @@ export const tableStyles = `
 
 export const tableFullPageEditorStyles = `
   .ProseMirror .table-container table {
+    .selectedCell.danger, .hoveredCell.danger {
+      border: 1px solid ${tableBorderDeleteColor};
+      background: ${tableCellDeleteColor};
+    }
+    .selectedCell.danger:after {
+      background: ${tableCellDeleteColor};
+    }
     margin-left: 0;
     margin-right: 0;
     width: 100%;

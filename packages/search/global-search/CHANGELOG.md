@@ -1,5 +1,9 @@
 # @atlaskit/global-search
 
+## 3.2.0
+- [minor] Updated dependencies [65392e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65392e5)
+  - @atlaskit/quick-search@1.6.0
+
 ## 3.1.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

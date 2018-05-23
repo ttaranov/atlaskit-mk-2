@@ -1,5 +1,100 @@
 # @atlaskit/editor-core
 
+## 72.0.2
+- [patch] ED-4652, fixing issue with input of multiple * in editor. [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
+- [patch] Updated dependencies [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
+
+## 72.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-picker@7.0.1
+  - @atlaskit/emoji@35.0.1
+  - @atlaskit/editor-common@10.0.1
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-test-helpers@13.0.1
+  - @atlaskit/media-card@28.0.1
+
+## 72.0.0
+- [patch] ED-4087: fix table controls in IE11 [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+
+- [major] media-picker: <All but popup picker>.emitUploadEnd second argument shape has changed from MediaFileData to FileDetails; `upload-end` event payload body shape changed from MediaFileData to FileDetails; All the media pickers config now have new property `useNewUploadService: boolean` (false by default); popup media-picker .cancel can't be called with no argument, though types does allow for it; `File` is removed; --- media-store: MediaStore.createFile now has a required argument of type MediaStoreCreateFileParams; MediaStore.copyFileWithToken new method; uploadFile method result type has changed from just a promise to a UploadFileResult type; --- media-test-helpers: mediaPickerAuthProvider argument has changed from a component instance to just a boolean authEnvironment; [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/media-picker@7.0.0
+  - @atlaskit/media-filmstrip@8.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-bitbucket-transformer@3.1.1
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-markdown-transformer@0.2.22
+  - @atlaskit/media-picker@7.0.0
+  - @atlaskit/media-filmstrip@8.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/renderer@17.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+
+## 71.4.7
+- [patch] ED-2400: only show fullpage toolbar border on scroll [a01cad0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01cad0)
+- [patch] Updated dependencies [a01cad0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01cad0)
+
+## 71.4.6
+- [patch] ED-4647, table should be highlighted in red when hovering over delete icon. [7814224](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7814224)
+- [patch] Updated dependencies [7814224](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7814224)
+
+## 71.4.5
+- [patch] ED-4520, Date lozenge should save UTC timestamp value. [ee98470](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee98470)
+- [patch] Updated dependencies [ee98470](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee98470)
+
+## 71.4.4
+- [patch] SPS-1155: enable action mark with allowInlineAction flag [db6e13a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db6e13a)
+- [none] Updated dependencies [db6e13a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db6e13a)
+
+## 71.4.3
+- [patch] ED-4643: added support for "wide" layout for tables [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+- [none] Updated dependencies [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+  - @atlaskit/editor-common@9.3.10
+
+## 71.4.2
+- [patch] Allow disabling smart-autocompletion (capitalising of Atlassian products, em-dash insert, smart-quotes) via prop `textFormatting={{ disableSmartAutoCompletion: true }}` [cee7a4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cee7a4a)
+- [none] Updated dependencies [cee7a4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cee7a4a)
+  - @atlaskit/editor-test-helpers@3.1.9
+
 ## 71.4.1
 - [patch] Fix broken custom dropzone example [c49c76b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c49c76b)
 - [none] Updated dependencies [c49c76b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c49c76b)

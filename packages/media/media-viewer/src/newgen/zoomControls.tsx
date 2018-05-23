@@ -3,7 +3,7 @@ import { Component } from 'react';
 import Button from '@atlaskit/button';
 import ZoomOutIcon from '@atlaskit/icon/glyph/media-services/zoom-out';
 import ZoomInIcon from '@atlaskit/icon/glyph/media-services/zoom-in';
-import { ZoomWrapper } from './styled';
+import { ZoomWrapper, hideControlsClassName } from './styled';
 
 export type ZoomDirection = 'out' | 'in';
 
@@ -69,7 +69,7 @@ export class ZoomControls extends Component<
     const { canZoomOut, canZoomIn } = this;
 
     return (
-      <ZoomWrapper>
+      <ZoomWrapper className={hideControlsClassName}>
         <Button
           isDisabled={!canZoomOut}
           onClick={this.zoom('out')}

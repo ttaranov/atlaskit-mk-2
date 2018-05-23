@@ -1,6 +1,10 @@
 import { EmojiId } from '@atlaskit/emoji';
 
-import { equalEmojiId, findIndex } from './internal/helpers';
+import {
+  equalEmojiId,
+  findIndex,
+  updateReadonlyArray,
+} from './internal/helpers';
 import {
   default as AbstractReactionsProvider,
   ObjectReactionKey,
@@ -66,11 +70,12 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
             this.objectReactionKey(key.containerAri, key.ari)
           ]
         ) {
-          this.cachedReactions[
-            this.objectReactionKey(key.containerAri, key.ari)
-          ] = {
-            status: ReactionStatus.ready,
-            reactions: [],
+          this.cachedReactions = {
+            ...this.cachedReactions,
+            [this.objectReactionKey(key.containerAri, key.ari)]: {
+              status: ReactionStatus.ready,
+              reactions: [],
+            },
           };
         }
       });
@@ -80,7 +85,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         const objectReactions = this.cachedReactions[cacheKey];
         if (objectReactions.status === ReactionStatus.ready) {
           const ari = cacheKey.split('|')[1];
-          results[ari] = objectReactions.reactions;
+          results[ari] = objectReactions.reactions as ReactionSummary[];
         }
       });
 
@@ -121,25 +126,34 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     return new Promise<ReactionSummary>((resolve, reject) => {
       this.getDetailedReaction(reaction).then(reactionDetails => {
         if (!this.cachedReactions[ari]) {
-          this.cachedReactions[ari] = {
-            status: ReactionStatus.ready,
-            reactions: [],
+          this.cachedReactions = {
+            ...this.cachedReactions,
+            [ari]: {
+              status: ReactionStatus.ready,
+              reactions: [],
+            },
           };
         }
 
         const key = this.objectReactionKey(containerAri, ari);
         const reactionsState = this.cachedReactions[key];
         if (reactionsState.status === ReactionStatus.ready) {
-          const index = findIndex(
+          const reactionIndex = findIndex(
             reactionsState.reactions,
             r => r.emojiId === emojiId,
           );
 
           setTimeout(() => {
-            if (index !== -1) {
-              reactionsState.reactions[index] = reactionDetails;
+            if (reactionIndex !== -1) {
+              reactionsState.reactions = updateReadonlyArray(
+                reactionsState.reactions,
+                reactionIndex,
+                _ => reactionDetails,
+              );
             } else {
-              reactionsState.reactions.push(reactionDetails);
+              reactionsState.reactions = reactionsState.reactions.concat(
+                reactionDetails,
+              );
             }
             this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
             resolve(reactionDetails);
@@ -167,7 +181,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
           reaction.reacted = true;
           reaction.count++;
         } else {
-          reactionsState.reactions.push({
+          reactionsState.reactions = reactionsState.reactions.concat({
             ari: ari,
             containerAri: containerAri,
             emojiId: emojiId,
@@ -199,7 +213,9 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
         reaction.count--;
 
         if (reaction.count < 1) {
-          reactionsState.reactions.splice(index, 1);
+          reactionsState.reactions = reactionsState.reactions.filter(
+            (value, i) => index === i,
+          );
         }
       }
 

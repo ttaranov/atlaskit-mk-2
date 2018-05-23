@@ -1,25 +1,23 @@
 {
     "compilerOptions": {
-      "skipLibCheck": true,
       "allowJs": false,
+      "alwaysStrict": true,
       "declaration": true,
       "experimentalDecorators": true,
       "importHelpers": true,
       "jsx": "react",
       "moduleResolution": "node",
-      "sourceMap": true,
-
-      "strict": true,
-      "noImplicitAny": true,
-      "strictNullChecks": true,
-      "strictFunctionTypes": true,
-      "noImplicitThis": true,
-      "alwaysStrict": true,
-
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": true,
       "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "sourceMap": true,
+      "strictNullChecks": true,
+      "skipLibCheck": true,
+      "noImplicitReturns": true,
+      "noUnusedParameters": true,
+      "strict": true,
+      "strictFunctionTypes": true,
 
       "target": "es5",
       "lib": [

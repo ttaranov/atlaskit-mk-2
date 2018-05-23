@@ -1,13 +1,11 @@
-import { LocalUploadComponent } from './localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPBrowserLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
 import { Context } from '@atlaskit/media-core';
-import { UploadParams } from '..';
 
-export interface BrowserConfig {
-  uploadParams: UploadParams;
-  multiple?: boolean;
-  fileExtensions?: Array<string>;
+export interface BrowserConfig extends LocalUploadConfig {
+  readonly multiple?: boolean;
+  readonly fileExtensions?: Array<string>;
 }
 
 export interface BrowserConstructor {
@@ -19,7 +17,7 @@ export interface BrowserConstructor {
 }
 
 export class Browser extends LocalUploadComponent {
-  private browseElem: HTMLElement;
+  private readonly browseElement: HTMLInputElement;
 
   constructor(
     analyticsContext: MediaPickerContext,
@@ -28,16 +26,16 @@ export class Browser extends LocalUploadComponent {
   ) {
     super(analyticsContext, context, browserConfig);
 
-    this.browseElem = document.createElement('INPUT');
-    this.browseElem.setAttribute('type', 'file');
-    this.browseElem.style.display = 'none';
+    this.browseElement = document.createElement('input');
+    this.browseElement.setAttribute('type', 'file');
+    this.browseElement.style.display = 'none';
 
     if (browserConfig.multiple) {
-      this.browseElem.setAttribute('multiple', '');
+      this.browseElement.setAttribute('multiple', '');
     }
 
     if (browserConfig.fileExtensions) {
-      this.browseElem.setAttribute(
+      this.browseElement.setAttribute(
         'accept',
         browserConfig.fileExtensions.join(','),
       );
@@ -45,20 +43,21 @@ export class Browser extends LocalUploadComponent {
 
     // IE11 hack - click will not execute if input has no parent
     // WebDriver hack - click will not execute if input isn't in the document
-    document.body.appendChild(this.browseElem);
+    document.body.appendChild(this.browseElement);
 
-    this.uploadService.addBrowse(this.browseElem);
+    this.uploadService.addBrowse(this.browseElement);
     this.analyticsContext.trackEvent(new MPBrowserLoaded());
   }
 
   public browse(): void {
-    this.browseElem.click();
+    this.browseElement.click();
   }
 
   public teardown(): void {
-    const parentNode = this.browseElem.parentNode;
+    this.uploadService.removeBrowse();
+    const parentNode = this.browseElement.parentNode;
     if (parentNode) {
-      parentNode.removeChild(this.browseElem);
+      parentNode.removeChild(this.browseElement);
     }
   }
 }

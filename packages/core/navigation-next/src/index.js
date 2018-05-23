@@ -24,5 +24,10 @@ export { NavigationProvider, NavigationSubscriber } from './state';
 /** Theme */
 export { dark, light, settings, modeGenerator } from './theme';
 
+/** Types */
+export { GlobalItemProps } from './components/GlobalItem';
+export { NavigationStateInterface } from './state';
+export { GlobalTheme } from './theme';
+
 /** Nav API */
-export { NavAPISubscriber } from './api';
+export { NavAPISubscriber, NavAPI } from './api';

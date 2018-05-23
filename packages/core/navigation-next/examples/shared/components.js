@@ -131,6 +131,10 @@ export const Nested = ({ id, items, parentId }: *) => (
   </Section>
 );
 
+// PluginPoint
+export const PluginPoint = ({ items }: *) =>
+  items ? <div css={{ padding: '0 16px' }}>{renderItems(items)}</div> : null;
+
 const components = {
   GoToItem,
   Item,
@@ -140,6 +144,7 @@ const components = {
   Title,
   Group,
   Nested,
+  PluginPoint,
 };
 
 /**

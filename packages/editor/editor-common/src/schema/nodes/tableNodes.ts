@@ -133,7 +133,7 @@ export function calcTableColumnWidths(node: PmNode): number[] {
   return tableColumnWidths;
 }
 
-export type Layout = 'default' | 'full-width';
+export type Layout = 'default' | 'full-width' | 'wide';
 
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;

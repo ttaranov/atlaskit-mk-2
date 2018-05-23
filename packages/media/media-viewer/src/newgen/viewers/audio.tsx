@@ -26,12 +26,7 @@ export type State = {
 
 const defaultCover = (
   <DefaultCoverWrapper>
-    <AudioIcon
-      label="cover"
-      size="xlarge"
-      primaryColor="#c3bbec"
-      secondaryColor={colors.audio}
-    />
+    <AudioIcon label="cover" size="xlarge" primaryColor={colors.blanketColor} />
   </DefaultCoverWrapper>
 );
 

@@ -1,5 +1,12 @@
 # @atlaskit/quick-search
 
+## 1.6.0
+- [minor] UI Polish [65392e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65392e5)
+- [none] Updated dependencies [65392e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65392e5)
+
+## 1.5.0
+- [minor] Add Avatar prop to quick search result types [aefb12d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aefb12d)
+
 ## 1.4.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

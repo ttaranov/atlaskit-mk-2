@@ -411,10 +411,6 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/orderedmap/-/orderedmap-1.0.0.tgz#807455a192bba52cbbb4517044bc82bdbfa8c596"
 
-"@types/p-queue@^2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@types/p-queue/-/p-queue-2.3.1.tgz#2fb251e46e884e31c4bd1bf58f0e188972353ff4"
-
 "@types/prop-types@^15.5.1":
   version "15.5.2"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.2.tgz#3c6b8dceb2906cc87fe4358e809f9d20c8d59be1"
@@ -3290,12 +3286,12 @@ chrome-trace-event@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-0.1.3.tgz#d395af2d31c87b90a716c831fe326f69768ec084"
 
-chunkinator@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-1.0.1.tgz#d9cc57f4e48fb3412f82abc5b26977df94b89173"
+chunkinator@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/chunkinator/-/chunkinator-2.0.4.tgz#e5da1ebc1ecace9aa80388c4a4dc49d979b06374"
   dependencies:
     rxjs "^5.5.6"
-    rxjs-async-map soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943
+    rxjs-async-map "^0.1.2"
     tslib "^1.8.0"
 
 ci-info@^1.0.0:
@@ -4379,6 +4375,10 @@ deep-extend@~0.4.0:
 deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
+
+deep-object-diff@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/deep-object-diff/-/deep-object-diff-1.1.0.tgz#d6fabf476c2ed1751fc94d5ca693d2ed8c18bc5a"
 
 deepcopy@0.6.3:
   version "0.6.3"
@@ -8295,9 +8295,9 @@ json-parse-better-errors@^1.0.0, json-parse-better-errors@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.1.tgz#50183cd1b2d25275de069e9e71b467ac9eab973a"
 
-json-schema-diff-validator@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/json-schema-diff-validator/-/json-schema-diff-validator-0.0.5.tgz#d9fe8394558482d355b07bbf54efcfd766c49126"
+json-schema-diff-validator@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/json-schema-diff-validator/-/json-schema-diff-validator-0.1.1.tgz#325b49712223a0704bd8c8285e671fdd1ec42004"
   dependencies:
     fast-json-patch "^2.0.5"
 
@@ -9032,6 +9032,10 @@ lodash.reject@^4.4.0:
 lodash.sample@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/lodash.sample/-/lodash.sample-4.2.1.tgz#5e4291b0c753fa1abeb0aab8fb29df1b66f07f6d"
+
+lodash.set@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
 
 lodash.some@^4.4.0:
   version "4.6.0"
@@ -11945,6 +11949,10 @@ react-beautiful-dnd@^4.0.1:
     redux-thunk "^2.2.0"
     reselect "^3.0.1"
 
+react-circle@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-circle/-/react-circle-1.0.1.tgz#ad3301b687af1d5ede6796cd73734b70f86a616a"
+
 react-codesandboxer@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-codesandboxer/-/react-codesandboxer-2.1.0.tgz#6c4e1635199593ab113e8fec3088a94088cfea28"
@@ -12330,15 +12338,15 @@ readable-stream@1.1.x, readable-stream@^1.1.8:
     string_decoder "~0.10.x"
 
 readable-stream@2:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.5.tgz#b4f85003a938cbb6ecbce2a124fb1012bd1a838d"
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.3"
     isarray "~1.0.0"
     process-nextick-args "~2.0.0"
     safe-buffer "~5.1.1"
-    string_decoder "~1.0.3"
+    string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
 readdirp@^2.0.0:
@@ -12958,9 +12966,9 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-rxjs-async-map@soswow/rxjs-async-map#1112bd1c1e2a6b608308758df4fdc8f59efbf943:
-  version "0.1.1"
-  resolved "https://codeload.github.com/soswow/rxjs-async-map/tar.gz/1112bd1c1e2a6b608308758df4fdc8f59efbf943"
+rxjs-async-map@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/rxjs-async-map/-/rxjs-async-map-0.1.2.tgz#ff0db82adf5f15a84cc079c23665e0caa88d32dd"
   dependencies:
     rxjs "^5.5.6"
 
@@ -12970,7 +12978,7 @@ rxjs@^5.0.0-beta.11:
   dependencies:
     symbol-observable "^1.0.1"
 
-rxjs@^5.1.0, rxjs@^5.5.6:
+rxjs@^5.1.0:
   version "5.5.6"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.6.tgz#e31fb96d6fd2ff1fd84bcea8ae9c02d007179c02"
   dependencies:
@@ -12979,6 +12987,12 @@ rxjs@^5.1.0, rxjs@^5.5.6:
 rxjs@^5.4.2, rxjs@^5.5.2:
   version "5.5.10"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.10.tgz#fde02d7a614f6c8683d0d1957827f492e09db045"
+  dependencies:
+    symbol-observable "1.0.1"
+
+rxjs@^5.5.6:
+  version "5.5.8"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.8.tgz#b2b0809a57614ad6254c03d7446dea0d83ca3791"
   dependencies:
     symbol-observable "1.0.1"
 
@@ -13816,6 +13830,12 @@ string_decoder@^0.10.25, string_decoder@~0.10.x:
 string_decoder@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
+  dependencies:
+    safe-buffer "~5.1.0"
+
+string_decoder@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   dependencies:
     safe-buffer "~5.1.0"
 

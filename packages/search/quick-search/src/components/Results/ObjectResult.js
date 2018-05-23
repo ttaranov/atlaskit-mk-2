@@ -25,13 +25,20 @@ export default class ObjectResult extends PureComponent<Props> {
     type: OBJECT_RESULT_TYPE,
   };
 
-  getAvatar = () => (
-    <Avatar
-      src={this.props.avatarUrl}
-      appearance="square"
-      status={this.props.isPrivate ? 'locked' : null}
-    />
-  );
+  getAvatar = () => {
+    if (this.props.avatar) {
+      return this.props.avatar;
+    }
+
+    return (
+      <Avatar
+        src={this.props.avatarUrl}
+        appearance="square"
+        size="small"
+        status={this.props.isPrivate ? 'locked' : null}
+      />
+    );
+  };
 
   render() {
     const { containerName, objectKey, name, ...resultBaseProps } = this.props;

@@ -4,6 +4,8 @@ import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import ContainerResult from '../ContainerResult';
 
+const DUMMY_AVATAR = <Avatar key="test-avatar" />;
+
 describe('Container Result', () => {
   let resultWrapper;
   beforeEach(() => {
@@ -19,6 +21,20 @@ describe('Container Result', () => {
 
   it('should render an avatar if `avatarUrl` is not provided', () => {
     expect(resultWrapper.find(Avatar)).toHaveLength(1);
+  });
+
+  it('should render an avatar if `avatar` is provided as a component', () => {
+    resultWrapper.setProps({ avatar: DUMMY_AVATAR });
+    const avatar = resultWrapper.find(Avatar);
+    expect(avatar).toHaveLength(1);
+    expect(avatar.key()).toEqual('test-avatar');
+  });
+
+  it('should render avatar component if both avatar props are set', () => {
+    resultWrapper.setProps({ avatar: DUMMY_AVATAR, avatarUrl: 'not null' });
+    const avatar = resultWrapper.find(Avatar);
+    expect(avatar).toHaveLength(1);
+    expect(avatar.key()).toEqual('test-avatar');
   });
 
   it('should render `name` prop', () => {

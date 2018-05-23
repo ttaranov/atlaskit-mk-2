@@ -1,7 +1,13 @@
+import { UploadFileCallbacks } from '../../media-store';
+
+jest.mock('@atlaskit/media-store');
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { MediaItem, MediaItemProvider } from '../src';
+import { MediaItem, MediaItemProvider, UploadableFile } from '../src';
 import { ContextFactory } from '../src/context/context';
+
+import { uploadFile } from '@atlaskit/media-store';
 
 const authProvider = () =>
   Promise.resolve({
@@ -16,7 +22,13 @@ const createFakeContext = () => {
   });
 };
 
+const uploadFileMock: jest.Mock<any> = uploadFile as any;
+
 describe('Context', () => {
+  beforeEach(() => {
+    uploadFileMock.mockReset();
+  });
+
   describe('.getMediaItemProvider()', () => {
     it('should return different mediaItemProviders for different fileIds', () => {
       const fileId = 'some-id';
@@ -196,6 +208,39 @@ describe('Context', () => {
       expect(context.getLocalPreview('123')).toEqual('some-preview');
       context.removeLocalPreview('123');
       expect(context.getLocalPreview('123')).toBeUndefined();
+    });
+  });
+
+  describe('.uploadFile()', () => {
+    it('should call media-store uploadFile with given callbacks', () => {
+      const context = createFakeContext();
+      const file: UploadableFile = {} as any;
+      const callbacks: UploadFileCallbacks = {} as any;
+      uploadFileMock.mockReturnValue({ expectedResult: true });
+      const actualResult = context.uploadFile(file, callbacks);
+      expect(actualResult).toEqual({ expectedResult: true });
+      expect(uploadFile).toHaveBeenCalled();
+      expect(uploadFileMock.mock.calls[0][0]).toBe(file);
+      expect(uploadFileMock.mock.calls[0][1]).toEqual({
+        serviceHost: 'service-host',
+        authProvider,
+      });
+      expect(uploadFileMock.mock.calls[0][2]).toBe(callbacks);
+    });
+
+    it('should call media-store uploadFile with no callbacks provided', () => {
+      const context = createFakeContext();
+      const file: UploadableFile = {} as any;
+      uploadFileMock.mockReturnValue({ expectedResult: true });
+      const actualResult = context.uploadFile(file);
+      expect(actualResult).toEqual({ expectedResult: true });
+      expect(uploadFile).toHaveBeenCalled();
+      expect(uploadFileMock.mock.calls[0][0]).toBe(file);
+      expect(uploadFileMock.mock.calls[0][1]).toEqual({
+        serviceHost: 'service-host',
+        authProvider,
+      });
+      expect(uploadFileMock.mock.calls[0][2]).toBeUndefined();
     });
   });
 });

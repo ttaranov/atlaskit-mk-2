@@ -1,7 +1,7 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
-import { TableLayout, browser } from '@atlaskit/editor-common';
+import { browser } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { stateKey } from '../pm-plugins/main';
@@ -18,12 +18,11 @@ import {
 import { pluginKey as widthPluginKey } from '../../width';
 
 import WithPluginState from '../../../ui/WithPluginState';
+import { calcTableWidth } from '@atlaskit/editor-common';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
-// TODO: Should be 62 after ED-4280 is fixed
-const CONTROLLER_PADDING = 63;
 
 import { Props } from './table';
 
@@ -68,15 +67,6 @@ class TableComponent extends React.Component<ComponentProps> {
     this.handleScrollDebounced.cancel();
   }
 
-  calcWidth(layout: TableLayout, containerWidth: number): string {
-    switch (layout) {
-      case 'full-width':
-        return `${containerWidth - CONTROLLER_PADDING}px`;
-      default:
-        return 'inherit';
-    }
-  }
-
   render() {
     const { eventDispatcher, view, node, allowColumnResizing } = this.props;
     const columnShadows = allowColumnResizing
@@ -99,7 +89,10 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const { isTableHovered } = hoverSelectionPluginKey.getState(view.state);
+    const {
+      isTableHovered,
+      isTableInDanger,
+    } = hoverSelectionPluginKey.getState(view.state);
 
     return (
       <WithPluginState
@@ -113,7 +106,7 @@ class TableComponent extends React.Component<ComponentProps> {
           return (
             <div
               style={{
-                width: this.calcWidth(node.attrs.layout, containerWidth),
+                width: calcTableWidth(node.attrs.layout, containerWidth),
               }}
               className="table-container"
               data-layout={node.attrs.layout}
@@ -129,6 +122,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   insertColumn={insertColumn}
                   insertRow={insertRow}
                   remove={pluginState.remove}
+                  isTableInDanger={isTableInDanger}
                 />
               </div>
               <div
@@ -146,6 +140,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     remove={pluginState.remove}
                     hoverColumns={hoverColumns!}
                     resetHoverSelection={resetHoverSelection!}
+                    isTableInDanger={isTableInDanger}
                   />
                 </div>
                 <table

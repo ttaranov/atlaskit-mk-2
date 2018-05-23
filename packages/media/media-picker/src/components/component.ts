@@ -1,3 +1,4 @@
+import { FileDetails } from '@atlaskit/media-core';
 import { MediaPickerContext } from '../domain/context';
 
 import { MediaFile, PublicMediaFile } from '../domain/file';
@@ -9,7 +10,6 @@ import {
   MPFileProcessingStarted,
   MPFileUploadEnded,
 } from '../outer/analytics/events';
-import { MediaFileData } from '../service/mediaApi';
 
 import { GenericEventEmitter } from '../util/eventEmitter';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
@@ -19,7 +19,7 @@ export interface UploadEventEmitter {
   emitUploadProgress(file: MediaFile, progress: MediaProgress): void;
   emitUploadPreviewUpdate(file: MediaFile, preview: Preview): void;
   emitUploadProcessing(file: PublicMediaFile): void;
-  emitUploadEnd(file: PublicMediaFile, mediaApiData: MediaFileData): void;
+  emitUploadEnd(file: PublicMediaFile, fileDetails: FileDetails): void;
   emitUploadError(file: MediaFile, error: MediaError): void;
 }
 
@@ -55,8 +55,8 @@ export class UploadComponent<
     this.analyticsContext.trackEvent(new MPFileProcessingStarted());
   }
 
-  emitUploadEnd(file: PublicMediaFile, mediaApiData: MediaFileData): void {
-    this.emit('upload-end', { file, public: mediaApiData });
+  emitUploadEnd(file: PublicMediaFile, fileDetails: FileDetails): void {
+    this.emit('upload-end', { file, public: fileDetails });
     this.analyticsContext.trackEvent(new MPFileUploadEnded());
   }
 
