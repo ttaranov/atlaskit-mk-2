@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 14.1.0
+- [minor] dont hide controls if user is hovering them [f9c7a29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c7a29)
+
 ## 14.0.2
 - [patch] remove TS casting from MediaViewer [df4da61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df4da61)
 
