@@ -70,7 +70,7 @@ describe('Zooming', () => {
             .find(ZoomLevel)
             .dive()
             .text(),
-        ).toEqual('129 %');
+        ).toEqual('123 %');
       });
     });
   });
