@@ -16,13 +16,15 @@ export interface Props {
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;
   children?: React.ReactNode;
+  width: number;
 }
 
 export default class Extension extends Component<Props, any> {
   calcWidth = (layout, containerWidth: number) => {
+    const { width } = this.props;
     switch (layout) {
       case 'full-width':
-        return `1500px`;
+        return `${width}px`;
       default:
         return '680px';
     }

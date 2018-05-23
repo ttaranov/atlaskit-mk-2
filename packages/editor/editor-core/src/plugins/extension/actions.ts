@@ -35,21 +35,22 @@ export const updateExtensionLayout = layout => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ) => {
-  console.log('changing layout to ..', layout);
-  // let tr = state.tr.setMeta(pluginKey, {
-  //   ...pluginKey.getState(state),
-  //   layout: layout
-  //  });
-  const { selection: { from }, schema, tr } = state;
-  let selectedExtNode = findParentNodeOfType([
-    schema.nodes.extension,
-    schema.nodes.inlineExtension,
-    schema.nodes.bodiedExtension,
-  ])(state.selection);
+  const { selection, selection: { anchor }, schema, tr } = state;
+  let { pos } = findParentNodeOfType(
+    [
+      schema.nodes.extension,
+      schema.nodes.inlineExtension,
+      schema.nodes.bodiedExtension,
+    ],
+  )(state.selection) || { pos: 0 };
+
+  if (selection instanceof NodeSelection) {
+    pos = anchor;
+  }
   const node = getExtensionNode(state);
   console.log('niode us ', node);
   dispatch(
-    tr.setNodeMarkup(selectedExtNode!.pos - 1, undefined, {
+    tr.setNodeMarkup(Math.max(0, pos - 1), undefined, {
       layout,
     }),
   );

@@ -5,6 +5,8 @@ import { Node as PmNode } from 'prosemirror-model';
 import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { ContentNodeView } from '../../../nodeviews';
 import Extension from '../ui/Extension';
+import WithPluginState from '../../../ui/WithPluginState';
+import { pluginKey as widthPluginKey } from '../../width';
 
 export interface Props {
   node: PmNode;
@@ -66,12 +68,24 @@ class ExtensionNode extends ContentNodeView implements NodeView {
 
   private renderReactComponent(node: PmNode) {
     ReactDOM.render(
-      <Extension
+      <WithPluginState
         editorView={this.view}
-        node={node}
-        providerFactory={this.providerFactory}
-        handleContentDOMRef={this.handleRef}
-        extensionHandlers={this.extensionHandlers}
+        plugins={{
+          width: widthPluginKey,
+        }}
+        render={({ width }) => {
+          console.log('new ext width is ', width);
+          return (
+            <Extension
+              editorView={this.view}
+              node={node}
+              width={width}
+              providerFactory={this.providerFactory}
+              handleContentDOMRef={this.handleRef}
+              extensionHandlers={this.extensionHandlers}
+            />
+          );
+        }}
       />,
       this.domRef,
     );
