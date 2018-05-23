@@ -8,14 +8,9 @@ import QuestionIcon from '@atlaskit/icon/glyph/question';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
-import {
-  NavigationSubscriber,
-  GlobalNav,
-  type GlobalItemProps,
-} from '@atlaskit/navigation-next';
+import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
 
 import Drawer from '../Drawer';
-import { ANALYTICS_CHANNEL } from '../../../../navigation-next/src/common/constants';
 import type {
   GlobalNavigationProps,
   WrappedGlobalNavigationProps,
@@ -54,23 +49,6 @@ const getProductPrimaryItemComponent = navigation => ({
       {children}
     </button>
   );
-
-const wrapWithAnalytics = ({ onClick, analyticsKey, ...props }: any) => {
-  const patchedOnClick = (event, analyticsEvent) => {
-    if (analyticsEvent) {
-      analyticsEvent
-        .update({
-          actionSubjectId: analyticsKey,
-        })
-        .fire(ANALYTICS_CHANNEL);
-    }
-    if (onClick) {
-      onClick(event, analyticsEvent);
-    }
-  };
-
-  return { ...props, onClick: patchedOnClick };
-};
 
 class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   static defaultProps = {
@@ -114,9 +92,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
     }
 
-    const primaryItems = inbuiltPrimaryItems.map(wrapWithAnalytics);
-
-    return [...primaryItems, ...primaryActions];
+    return [...inbuiltPrimaryItems, ...primaryActions];
   };
 
   constructSecondaryItems = () => {

@@ -2,8 +2,10 @@ import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import { GasPayload } from '@atlaskit/analytics-gas-types';
-import { sendEvent } from './analytics-web-client-wrapper';
-import { AnalyticsWebClient } from './types';
+import { sendEvent } from '../analytics-web-client-wrapper';
+import { AnalyticsWebClient } from '../types';
+
+import processEvent from './process-event';
 
 const ATLASKIT_CHANNEL = 'atlaskit';
 
@@ -22,7 +24,10 @@ export type Props = {
 
 export default class FabricElementsListener extends React.Component<Props> {
   listenerHandler: ListenerFunction = event => {
-    sendEvent(this.props.client)(event.payload);
+    const payload = processEvent(event);
+
+    // @ts-ignore
+    sendEvent(this.props.client)(payload);
   };
 
   render() {

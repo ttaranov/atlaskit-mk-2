@@ -104,15 +104,14 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
 
 const createAndFire = createAndFireEvent(ANALYTICS_CHANNEL);
 
-// export default withTheme({ mode: light, context: 'container' })(NavigationItemPrimitive);
-
 export default withTheme({ mode: light, context: 'container' })(
   withAnalyticsEvents({
-    onClick: createEvent =>
-      console.log('hello') ||
+    onClick: (createEvent, props) =>
       createAndFire({
-        action: 'click',
+        action: 'clicked',
         actionSubject: 'item',
+        actionSubjectId:
+          typeof props.text === 'string' ? props.text : undefined,
         eventType: 'ui',
       })(createEvent),
   })(NavigationItemPrimitive),

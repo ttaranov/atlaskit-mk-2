@@ -2,6 +2,7 @@
 
 import React, { PureComponent, Fragment } from 'react';
 import interpolate, { clamp } from 'interpolate-range';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 import { PRODUCT_NAV_WIDTH } from '../../common/constants';
 import {
@@ -45,18 +46,22 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
 
     return (
       <Fragment>
-        <RootNav>
-          <Root />
-        </RootNav>
+        <AnalyticsContext data={{ source: 'productRootNavigation' }}>
+          <RootNav>
+            <Root />
+          </RootNav>
+        </AnalyticsContext>
         {Container && (
-          <ContainerNav isHinting={isHinting} isPeeking={isPeeking}>
-            <Container />
-            <ContainerOverlay
-              isVisible={overlayIsVisible}
-              onClick={onOverlayClick}
-              style={overlayStyle}
-            />
-          </ContainerNav>
+          <AnalyticsContext data={{ source: 'productContainerNavigation' }}>
+            <ContainerNav isHinting={isHinting} isPeeking={isPeeking}>
+              <Container />
+              <ContainerOverlay
+                isVisible={overlayIsVisible}
+                onClick={onOverlayClick}
+                style={overlayStyle}
+              />
+            </ContainerNav>
+          </AnalyticsContext>
         )}
         <InnerShadow isVisible={isPeeking} />
       </Fragment>

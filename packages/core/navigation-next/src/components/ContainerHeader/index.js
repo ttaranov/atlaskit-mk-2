@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { gridSize } from '@atlaskit/theme';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 import Item from '../Item';
 import { styleReducerNoOp } from '../../theme';
@@ -42,6 +43,10 @@ export default class ContainerHeader extends PureComponent<
     const patchedStyles = (defaultStyles, state) =>
       styleReducer(modifyStyles(defaultStyles), state);
 
-    return <Item {...props} styles={patchedStyles} spacing="default" />;
+    return (
+      <AnalyticsContext data={{ actionSubjectOverride: 'containerHeader' }}>
+        <Item {...props} styles={patchedStyles} spacing="default" />
+      </AnalyticsContext>
+    );
   }
 }

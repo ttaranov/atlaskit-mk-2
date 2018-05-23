@@ -1,11 +1,15 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 
 import InteractionStateManager from '../InteractionStateManager';
 import { styleReducerNoOp } from '../../theme';
 import GlobalItemPrimitive from './primitives';
+import { ANALYTICS_CHANNEL } from '../../common/constants';
 import type { GlobalItemProps } from './types';
 
 class GlobalItem extends PureComponent<GlobalItemProps> {
@@ -21,12 +25,16 @@ class GlobalItem extends PureComponent<GlobalItemProps> {
   }
 }
 
+const createAndFire = createAndFireEvent(ANALYTICS_CHANNEL);
+
 export default withAnalyticsEvents({
-  onClick: {
-    action: 'clicked',
-    actionSubject: 'globalItem',
-    eventType: 'ui',
-  },
+  onClick: (createEvent, props) =>
+    createAndFire({
+      action: 'clicked',
+      actionSubject: 'globalItem',
+      actionSubjectId: props.label,
+      eventType: 'ui',
+    })(createEvent),
 })(GlobalItem);
 
 export type { GlobalItemProps } from './types';

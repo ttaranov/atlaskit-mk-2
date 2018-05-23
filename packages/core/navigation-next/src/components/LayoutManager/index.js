@@ -3,6 +3,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment, type ElementRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 import { NavigationSubscriber } from '../../state';
 import { Shadow } from '../../common/primitives';
@@ -45,6 +46,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
     const { isPeeking, productNavIsCollapsed } = navigation.state;
     const displayShadow =
       productNavIsCollapsed && !isPeeking && !activeTransition;
+
     return (
       <ThemeProvider
         theme={theme => ({
@@ -59,7 +61,9 @@ class LayoutManager extends Component<LayoutManagerProps> {
           {displayShadow ? (
             <Shadow isOverDarkBg style={{ marginLeft: GLOBAL_NAV_WIDTH }} />
           ) : null}
-          <GlobalNavigation />
+          <AnalyticsContext data={{ source: 'globalNavigation' }}>
+            <GlobalNavigation />
+          </AnalyticsContext>
         </Fragment>
       </ThemeProvider>
     );
@@ -164,18 +168,26 @@ class LayoutManager extends Component<LayoutManagerProps> {
       productNavWidth,
     } = navigation.state;
 
+    const contextData = {
+      attributes: {
+        navExpanded: !productNavIsCollapsed,
+      },
+    };
+
     return (
       <Fragment>
         <LayoutContainer>
-          <ResizeTransition
-            from={[0]}
-            in={!productNavIsCollapsed}
-            properties={['width']}
-            to={[productNavWidth]}
-            userIsDragging={isResizing}
-          >
-            {this.navRenderFn}
-          </ResizeTransition>
+          <AnalyticsContext data={contextData}>
+            <ResizeTransition
+              from={[0]}
+              in={!productNavIsCollapsed}
+              properties={['width']}
+              to={[productNavWidth]}
+              userIsDragging={isResizing}
+            >
+              {this.navRenderFn}
+            </ResizeTransition>
+          </AnalyticsContext>
           <ResizeTransition
             from={[0]}
             in={!productNavIsCollapsed}

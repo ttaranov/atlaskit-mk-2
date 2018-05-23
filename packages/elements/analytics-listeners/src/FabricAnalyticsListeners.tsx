@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { AnalyticsWebClient } from './types';
 import FabricElementsListener from './FabricElementsListener';
-import AtlaskitListener from './AtlaskitListener';
+import AtlaskitListener from './atlaskit/AtlaskitListener';
 
 export type Props = {
   /** Children! */

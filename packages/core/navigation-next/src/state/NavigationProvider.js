@@ -2,6 +2,12 @@
 
 import React, { PureComponent } from 'react';
 import { Provider } from 'unstated';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { NavAPI } from '../api';
 import NavigationState from './NavigationState';
 import type { NavigationProviderProps, NavigationStateShape } from './types';
@@ -47,7 +53,17 @@ export default class NavigationProvider extends PureComponent<
   render() {
     const { children } = this.props;
     const { navState, navAPI } = this;
+    const contextData = {
+      componentName: 'navigationNext',
+      packageName,
+      packageVersion,
+      source: 'navigationNext',
+    };
 
-    return <Provider inject={[navState, navAPI]}>{children}</Provider>;
+    return (
+      <Provider inject={[navState, navAPI]}>
+        <AnalyticsContext data={contextData}>{children}</AnalyticsContext>
+      </Provider>
+    );
   }
 }
