@@ -10,6 +10,7 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   Item as BaseItem,
@@ -21,8 +22,10 @@ import {
 } from '../';
 import type {
   GoToItemProps,
+  GroupProps,
   ItemProps,
   ItemsRendererProps,
+  NestedProps,
   TitleProps,
 } from './types';
 
@@ -36,6 +39,8 @@ const iconMap = {
   IssuesIcon,
   ShipIcon,
 };
+
+const gridSize = gridSizeFn();
 
 /**
  * ITEMS
@@ -108,7 +113,8 @@ const Debug = props => (
     css={{
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       fontSize: '10px',
-      padding: '4px',
+      overflowX: 'auto',
+      padding: `${gridSize / 2}px`,
     }}
   >
     {JSON.stringify(props, null, 2)}
@@ -119,18 +125,42 @@ const Debug = props => (
  * GROUPS
  */
 
+const rootLevelGroupStyles = {
+  paddingLeft: `${gridSize * 2}px`,
+  paddingRight: `${gridSize * 2}px`,
+};
+
 // Group
-const Group = ({ items, customComponents }: *) => (
-  <div css={{ padding: '0 16px' }}>
-    <ItemsRenderer items={items} customComponents={customComponents} />
-  </div>
-);
+const Group = ({
+  customComponents,
+  hasSeparator,
+  isRootLevel,
+  items,
+}: GroupProps) =>
+  items.length ? (
+    <div css={isRootLevel ? rootLevelGroupStyles : null}>
+      <ItemsRenderer items={items} customComponents={customComponents} />
+      {hasSeparator && <Separator />}
+    </div>
+  ) : null;
 
 // Nested
-const Nested = ({ customComponents, id, items, parentId }: *) => (
-  <Section id={id} parentId={parentId}>
+const Nested = ({
+  customComponents,
+  id,
+  isRootLevel,
+  items,
+  nestedGroupKey,
+  parentId,
+}: NestedProps) => (
+  <Section id={id} key={nestedGroupKey} parentId={parentId}>
     {({ css }) => (
-      <div css={css}>
+      <div
+        css={{
+          ...css,
+          ...(isRootLevel ? rootLevelGroupStyles : null),
+        }}
+      >
         <ItemsRenderer items={items} customComponents={customComponents} />
       </div>
     )}
@@ -138,9 +168,10 @@ const Nested = ({ customComponents, id, items, parentId }: *) => (
 );
 
 // PluginPoint
-const PluginPoint = ({ customComponents, items }: *) =>
+/** @todo: We might not need this now (use Group instead). */
+const PluginPoint = ({ customComponents, items }: GroupProps) =>
   items ? (
-    <div css={{ padding: '0 16px' }}>
+    <div css={rootLevelGroupStyles}>
       <ItemsRenderer items={items} customComponents={customComponents} />
     </div>
   ) : null;
@@ -168,32 +199,33 @@ const components = { ...itemComponents, ...groupComponents };
 export const ItemsRenderer = ({
   customComponents = {},
   items,
-}: ItemsRendererProps) => {
-  return items.map(({ type, ...props }) => {
+}: ItemsRendererProps) =>
+  items.map(({ type, ...props }) => {
+    const key = props.nestedGroupKey || props.id;
+
     if (groupComponents[type]) {
       const G = groupComponents[type];
-      return (
-        <G key={props.id} {...props} customComponents={customComponents} />
-      );
+      return <G key={key} {...props} customComponents={customComponents} />;
     }
 
     if (itemComponents[type]) {
       const I = itemComponents[type];
-      return <I key={props.id} {...props} />;
+      return <I key={key} {...props} />;
     }
 
     if (customComponents[type]) {
       const C = customComponents[type];
       return (
         <C
-          key={props.id}
+          key={key}
           {...props}
+          // We pass our in-built components through to custom components so
+          // they can wrap/render them if they want to.
           components={components}
           customComponents={customComponents}
         />
       );
     }
 
-    return <Debug key={props.id} type={type} {...props} />;
+    return <Debug key={key} type={type} {...props} />;
   });
-};

@@ -25,7 +25,25 @@ export type TitleProps = {
   text: string,
 };
 
+type CustomComponents = { [string]: ComponentType<any> };
+
+type SharedGroupTypeProps = {
+  customComponents?: CustomComponents,
+  id: string,
+  isRootLevel?: boolean,
+  items: View,
+};
+
+export type GroupProps = SharedGroupTypeProps & {
+  hasSeparator: boolean,
+};
+
+export type NestedProps = SharedGroupTypeProps & {
+  nestedGroupKey: string,
+  parentId: string | null,
+};
+
 export type ItemsRendererProps = {
-  customComponents?: { [string]: ComponentType<any> },
+  customComponents?: CustomComponents,
   items: View,
 };
