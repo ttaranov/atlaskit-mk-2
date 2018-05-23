@@ -1,5 +1,9 @@
 # @atlaskit/website
 
+## 1.5.22
+- [patch] Updated dependencies [481c086](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/481c086)
+  - extract-react-types-loader@0.1.3
+
 ## 1.5.21
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-core@18.1.1
