@@ -2,6 +2,12 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { Shortcut } from '../../src/newgen/shortcut';
 
+export class KeyboardEventWithKeyCode extends KeyboardEvent {
+  constructor(type: string, options: any) {
+    super(type, options);
+  }
+}
+
 describe('Shortcut', () => {
   const originalEventListener = document.addEventListener;
 
@@ -31,10 +37,10 @@ describe('Shortcut', () => {
       </div>,
     );
 
-    const e = new KeyboardEvent('keydown', {
+    const e = new KeyboardEventWithKeyCode('keydown', {
       bubbles: true,
       cancelable: true,
-      key: 'Escape',
+      keyCode: 37,
     });
     document.dispatchEvent(e);
   });

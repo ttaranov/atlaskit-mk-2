@@ -4,6 +4,7 @@ import Navigation from '../../src/newgen/navigation';
 import { Identifier } from '../../src/newgen/domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
+import { KeyboardEventWithKeyCode } from './shortcut.spec';
 
 describe('Navigation', () => {
   const identifier: Identifier = {
@@ -151,10 +152,10 @@ describe('Navigation', () => {
           selectedItem={identifier2}
         />,
       );
-      const e = new KeyboardEvent('keydown', {
+      const e = new KeyboardEventWithKeyCode('keydown', {
         bubbles: true,
         cancelable: true,
-        code: '37',
+        keyCode: 37,
       });
       document.dispatchEvent(e);
       expect(onChange).toBeCalledWith(identifier);
@@ -169,10 +170,10 @@ describe('Navigation', () => {
           selectedItem={identifier}
         />,
       );
-      const e = new KeyboardEvent('keydown', {
+      const e = new KeyboardEventWithKeyCode('keydown', {
         bubbles: true,
         cancelable: true,
-        code: '39',
+        keyCode: 39,
       });
       document.dispatchEvent(e);
       expect(onChange).toBeCalledWith(identifier2);
