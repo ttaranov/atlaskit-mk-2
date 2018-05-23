@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { AsyncSelect as Select } from '../src';
+import Select from '../src';
 
 const SingleExample = () => (
   <Select

@@ -192,7 +192,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       super(props);
       this.cacheComponents(props.components);
     }
-    static defaultProps = { validationState: 'default' };
+    static defaultProps = { validationState: 'default', spacing: 'default' };
     componentWillReceiveProps(nextProps: Props) {
       if (nextProps.components !== this.props.components) {
         this.cacheComponents(nextProps.components);
