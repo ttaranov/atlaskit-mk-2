@@ -55,7 +55,7 @@ export class Content extends Component<ContentProps, ContentState> {
     window.clearTimeout(this.checkActivityTimeout);
   };
 
-  private hideControls = (e?: EventTarget) => () => {
+  private hideControls = (e?: HTMLElement) => () => {
     if (e) {
       const parent = findParent(
         e,
@@ -70,11 +70,11 @@ export class Content extends Component<ContentProps, ContentState> {
     }
   };
 
-  private checkMouseMovement = (e?: SyntheticEvent<HTMLDivElement>) => {
+  private checkMouseMovement = (e?: SyntheticEvent<HTMLElement>) => {
     this.clearTimeout();
     this.setState({ showControls: true });
     this.checkActivityTimeout = window.setTimeout(
-      this.hideControls(e && e.target),
+      this.hideControls(e && (e.target as HTMLElement)),
       mouseMovementDelay,
     );
   };
