@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 0.0.4
+- [patch] Bumping dep on navigation-next [548787e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/548787e)
+
 ## 0.0.3
 - [patch] Rename props to be in sync with navigation-next package [1fde1da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1fde1da)
 
