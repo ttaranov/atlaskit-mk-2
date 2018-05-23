@@ -1,6 +1,6 @@
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
-import Select from '@atlaskit/single-select';
+import Select from '@atlaskit/select';
 import { TrashToolbarButton } from '../../../../src/plugins/code-block/ui/LanguagePicker/styles';
 import LanguagePickerWithOutsideListeners, {
   LanguagePicker,
@@ -61,19 +61,19 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('should show active language by default in select', () => {
       languagePicker.setProps({ activeLanguage: 'javascript' });
-      const defaultSelected = languagePicker
-        .find(Select)
-        .prop('defaultSelected');
-      expect(defaultSelected).toEqual({
-        content: 'JavaScript',
+      const defaultValue = languagePicker.find(Select).prop('defaultValue');
+      expect(defaultValue).toEqual({
+        label: 'JavaScript',
         value: 'javascript',
       });
     });
 
     it('should call setLanguage when dropdown item selected', () => {
       expect(setLanguageStub).toHaveBeenCalledTimes(0);
-      (languagePicker.find(Select).instance() as any).selectItem({
-        content: 'Javascript',
+      (languagePicker
+        .find(Select)
+        .instance() as any).select.select.selectOption({
+        label: 'Javascript',
         value: 'javascript',
       });
       expect(setLanguageStub).toHaveBeenCalledTimes(1);

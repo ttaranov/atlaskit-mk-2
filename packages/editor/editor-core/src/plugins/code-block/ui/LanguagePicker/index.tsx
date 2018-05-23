@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Select from '@atlaskit/single-select';
+import Select from '@atlaskit/select';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Separator from '../../../../ui/Separator';
 import { TrashToolbarButton, FloatingToolbar } from './styles';
@@ -10,11 +10,9 @@ import {
 } from '@atlaskit/editor-common';
 
 const LANGUAGE_LIST_ITEMS = createLanguageList(DEFAULT_LANGUAGES).map(lang => ({
-  content: lang.name,
+  label: lang.name,
   value: getLanguageIdentifier(lang),
 }));
-
-const AK_LANGUAGE_LIST_ITEMS = [{ items: LANGUAGE_LIST_ITEMS }];
 
 export interface Props {
   activeCodeBlockDOM: HTMLElement;
@@ -28,8 +26,8 @@ export interface Props {
 }
 
 export class LanguagePicker extends React.Component<Props> {
-  handleLanguageSelected = ({ item }) => {
-    this.props.setLanguage(item.value);
+  handleLanguageSelected = ({ value }) => {
+    this.props.setLanguage(value);
   };
 
   handleCodeBlockDelete = () => {
@@ -55,9 +53,8 @@ export class LanguagePicker extends React.Component<Props> {
       activeLanguage,
     } = this.props;
 
-    const defaultLanguage = LANGUAGE_LIST_ITEMS.find(
-      lang => lang.value === activeLanguage,
-    );
+    const defaultLanguage =
+      LANGUAGE_LIST_ITEMS.find(lang => lang.value === activeLanguage) || null;
 
     return (
       <FloatingToolbar
@@ -67,13 +64,14 @@ export class LanguagePicker extends React.Component<Props> {
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
       >
-        <Select
-          hasAutocomplete={true}
-          items={AK_LANGUAGE_LIST_ITEMS}
-          defaultSelected={defaultLanguage}
-          onSelected={this.handleLanguageSelected}
-          placeholder="Select language"
-        />
+        <div style={{ width: '200px' }}>
+          <Select
+            options={LANGUAGE_LIST_ITEMS}
+            value={defaultLanguage}
+            onChange={this.handleLanguageSelected}
+            placeholder="Select language"
+          />
+        </div>
         <Separator />
         <TrashToolbarButton
           onClick={this.handleCodeBlockDelete}
@@ -85,7 +83,7 @@ export class LanguagePicker extends React.Component<Props> {
   }
 }
 
-export default class LanguagePickerWithOutsideListeners extends React.Component<
+export default class LanguagePickerWithOutsideListeners extends React.PureComponent<
   Props & { isEditorFocused: boolean },
   { isToolbarFocused: boolean }
 > {
@@ -110,14 +108,6 @@ export default class LanguagePickerWithOutsideListeners extends React.Component<
       this.setState({ isToolbarFocused: wasToolbarClicked });
     }
   };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const didShowPicker =
-      this.props.isEditorFocused || this.state.isToolbarFocused;
-    const shouldShowPicker =
-      nextProps.isEditorFocused || nextState.isToolbarFocused;
-    return didShowPicker !== shouldShowPicker;
-  }
 
   render() {
     const { isEditorFocused, ...rest } = this.props;

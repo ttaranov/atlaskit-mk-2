@@ -76,7 +76,9 @@ export const plugin = (dispatch: Dispatch) =>
             state = { isEditorFocused: pluginState.isEditorFocused };
           }
         }
-        dispatch(stateKey, state);
+        if (state !== pluginState) {
+          dispatch(stateKey, state);
+        }
         return state;
       },
     },
