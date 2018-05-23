@@ -16,15 +16,17 @@ export default class Tree extends Component<Props> {
   };
 
   render() {
-    const { tree, renderItem } = this.props;
+    const { tree, renderItem, onExpand, onCollapse } = this.props;
 
     const items: FlattenedTree = flattenTree(tree);
 
-    return items.map((item: FlattenedItem) => {
+    return items.map((flatItem: FlattenedItem) => {
       return renderItem({
-        item: item.item,
-        depth: item.path.length - 1,
+        item: flatItem.item,
+        depth: flatItem.path.length - 1,
         isDragging: false,
+        onExpand: item => onExpand(item, flatItem.path),
+        onCollapse: item => onCollapse(item, flatItem.path),
       });
     });
   }

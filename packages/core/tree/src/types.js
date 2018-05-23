@@ -1,26 +1,26 @@
 //@flow
 
-export type TreeData = Item;
+export type TreeData = TreeItem;
 
 export type ItemId = any;
 
-export type ItemData = any;
+export type TreeItemData = any;
 
-export type Item = {|
+export type TreeItem = {|
   id: ItemId,
-  children: Array<Item>,
+  children: Array<TreeItem>,
   hasChildren?: boolean,
   isExpanded?: boolean,
   isChildrenLoading?: boolean,
-  data?: ItemData,
+  data?: TreeItemData,
 |};
 
 export type FlattenedTree = Array<FlattenedItem>;
 
-export type Path = Array<ItemId>;
+export type Path = Array<number>;
 
 export type FlattenedItem = {|
-  item: Item,
+  item: TreeItem,
   path: Path,
 |};
 

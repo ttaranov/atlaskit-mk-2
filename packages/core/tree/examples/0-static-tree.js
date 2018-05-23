@@ -7,7 +7,7 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tree from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { Item } from '../src/types';
+import type { TreeItem } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 
 const LEFT_PADDING = 35;
@@ -26,7 +26,7 @@ const Dot = styled.span`
 `;
 
 export default class StaticTree extends Component<void> {
-  static getIcon(item: Item) {
+  static getIcon(item: TreeItem) {
     if (item.children && item.children.length > 0) {
       return item.isExpanded ? (
         <ChevronDownIcon label="" size="medium" />
