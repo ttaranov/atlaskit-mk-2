@@ -29,10 +29,6 @@ export const MAX_FILE_SIZE_FOR_PREVIEW = 10e6; // 10 MB
 
 export interface UploadService {
   setUploadParams(uploadParams?: UploadParams);
-  addBrowse(element: HTMLInputElement);
-  addDropzone(element: HTMLElement);
-  removeDropzone();
-  removeBrowse();
   addFiles(files: File[]);
   cancel(id?: string);
   on<E extends keyof UploadServiceEventPayloadTypes>(
