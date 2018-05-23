@@ -65,8 +65,8 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
     } = defaultConfig(navigation);
 
     const inbuiltPrimaryItems = [];
-
-    if (!defaultProduct.isDisabled) {
+    // flow complains if && product is not added to the condition
+    if (!ldProduct.isDisabled && product) {
       const { component, ...rest } = product;
       inbuiltPrimaryItems.push({
         ...rest,
@@ -76,11 +76,11 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       });
     }
 
-    if (!defaultSearch.isDisabled) {
+    if (!ldSearch.isDisabled) {
       inbuiltPrimaryItems.push({ ...defaultSearch, ...search, ...ldSearch });
     }
 
-    if (!defaultCreate.isDisabled) {
+    if (!ldCreate.isDisabled) {
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create, ...ldCreate });
     }
 
@@ -116,7 +116,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
 
     const inbuiltSecondaryItems = [];
 
-    if (!defaultNotification.isDisabled) {
+    if (!ldNotification.isDisabled) {
       inbuiltSecondaryItems.push({
         ...defaultNotification,
         ...notification,
@@ -124,11 +124,11 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       });
     }
 
-    if (!defaultPeople.isDisabled) {
+    if (!ldPeople.isDisabled) {
       inbuiltSecondaryItems.push({ ...defaultPeople, ...people, ...ldPeople });
     }
 
-    if (!defaultAppSwitcher.isDisabled) {
+    if (!ldAppSwitcher.isDisabled) {
       inbuiltSecondaryItems.push({
         ...defaultAppSwitcher,
         ...appSwitcher,
@@ -136,11 +136,11 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       });
     }
 
-    if (!defaultHelp.isDisabled) {
+    if (!ldHelp.isDisabled) {
       inbuiltSecondaryItems.push({ ...defaultHelp, ...help, ...ldHelp });
     }
 
-    if (!defaultProfile.isDisabled) {
+    if (!ldProfile.isDisabled) {
       inbuiltSecondaryItems.push({
         ...defaultProfile,
         ...profile,
@@ -206,7 +206,6 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   };
 
   render() {
-    console.log(this.props.userConfig);
     return (
       <LaunchDarkly
         clientId="5b021c6807a72221591bc73b"

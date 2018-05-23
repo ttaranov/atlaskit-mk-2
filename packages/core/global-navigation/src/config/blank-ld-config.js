@@ -1,5 +1,6 @@
 // @flow
 
+// This is the fallback config is ld config is malformed
 const blankLDCongfig = {
   product: {
     position: null,
