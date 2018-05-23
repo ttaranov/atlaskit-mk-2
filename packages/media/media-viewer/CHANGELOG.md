@@ -1,5 +1,51 @@
 # @atlaskit/media-viewer
 
+## 14.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-test-helpers@13.0.1
+
+## 14.0.0
+
+
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+
+## 13.8.4
+- [patch] Adjust default audio cover [2f37539](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f37539)
+
+## 13.8.3
+- [patch] Add zooming to document viewer [f76e5d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76e5d3)
+
+## 13.8.2
+- [patch] Fix new case of SC component interpolation [accec74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/accec74)
+
+## 13.8.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/docs@3.0.4
+
+## 13.8.0
+- [minor] show cover for audio files [f830d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f830d51)
+
+## 13.7.1
+- [patch] Remove component interpolation to be able to integrate with an older version of SC [401db67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/401db67)
+
+## 13.7.0
+- [minor] Add basic zooming to MV [6bd0af4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bd0af4)
+
+## 13.6.1
+- [patch] Use SC style() instead of extend [cc35663](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35663)
+
 ## 13.6.0
 - [minor] add download button to MediaViewer [ed4ad47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed4ad47)
 

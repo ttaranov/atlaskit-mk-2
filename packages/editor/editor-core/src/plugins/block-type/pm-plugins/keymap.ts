@@ -59,6 +59,12 @@ export default function keymapPlugin(schema: Schema): Plugin {
     list,
   );
 
+  keymaps.bindKeymapWithCommand(
+    keymaps.backspace.common!,
+    commands.removeEmptyHeadingAtStartOfDocument,
+    list,
+  );
+
   [
     blockTypes.NORMAL_TEXT,
     blockTypes.HEADING_1,

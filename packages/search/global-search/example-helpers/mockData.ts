@@ -46,6 +46,10 @@ function randomIssueKey() {
   return pickRandom(keys) + '-' + faker.random.number(1000);
 }
 
+function randomSpaceIconUrl() {
+  return `https://placeimg.com/64/64/arch?bustCache=${Math.random()}`;
+}
+
 function randomIconCssClass() {
   const classes = [
     'aui-iconfont-page-default',
@@ -135,13 +139,18 @@ export function makeCrossProductSearchData(
     const title = faker.company.companyName();
     confSpaceData.push({
       title: title,
-      baseUrl: DUMMY_BASE_URL,
+      baseUrl: '',
       url: faker.internet.url(),
       content: null,
       iconCssClass: null,
       container: {
         title: title,
         displayUrl: faker.internet.url(),
+      },
+      space: {
+        icon: {
+          path: randomSpaceIconUrl(),
+        },
       },
     });
   }
@@ -257,7 +266,7 @@ export function makeConfluenceRecentSpacesData(n: number = 15) {
     spaces.push({
       id: faker.random.uuid(),
       key: faker.hacker.abbreviation(),
-      icon: faker.image.avatar(),
+      icon: randomSpaceIconUrl(),
       name: faker.company.companyName(),
     });
   }

@@ -10,7 +10,7 @@ const getPasteFiles = (clipboardData: DataTransfer) => {
   }
 
   const items = Array.prototype.reduce.call(
-    clipboardData.items || [],
+    clipboardData.items || clipboardData.files,
     (filesArr: File[], item: DataTransferItem) => {
       if (item.kind === 'file') {
         filesArr.push(item.getAsFile() as File);
@@ -21,10 +21,7 @@ const getPasteFiles = (clipboardData: DataTransfer) => {
     [],
   );
 
-  return [
-    ...items,
-    ...Array.prototype.slice.call(clipboardData.files || [], 0),
-  ];
+  return [...items];
 };
 
 export class Converter {

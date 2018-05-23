@@ -1,20 +1,24 @@
 import { Context } from '@atlaskit/media-core';
 import {
-  FilePreviewUpdateEventPayload,
-  FileConvertedEventPayload,
-  FileConvertingEventPayload,
-  FilesAddedEventPayload,
-  FileUploadErrorEventPayload,
-  FileUploadingEventPayload,
   UploadService,
-} from '../service/uploadService';
+  UploadServiceFactory,
+} from '../service/uploadServiceFactory';
+import {
+  UploadEndEventPayload,
+  UploadErrorEventPayload,
+  UploadEventPayloadMap,
+  UploadPreviewUpdateEventPayload,
+  UploadProcessingEventPayload,
+  UploadsStartEventPayload,
+  UploadStatusUpdateEventPayload,
+} from '../domain/uploadEvent';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
 import { UploadParams } from '../domain/config';
-import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
+  useNewUploadService?: boolean;
 }
 
 export class LocalUploadComponent<
@@ -22,6 +26,7 @@ export class LocalUploadComponent<
 > extends UploadComponent<M> {
   protected readonly uploadService: UploadService;
   readonly context: Context;
+  config: LocalUploadConfig;
 
   constructor(
     analyticsContext: MediaPickerContext,
@@ -30,14 +35,13 @@ export class LocalUploadComponent<
   ) {
     super(analyticsContext);
 
-    const { userAuthProvider, authProvider, serviceHost } = context.config;
     this.context = context;
-    this.uploadService = new UploadService(
-      serviceHost,
-      authProvider,
+    this.uploadService = UploadServiceFactory.create(
+      this.context,
       config.uploadParams || { collection: '' },
-      userAuthProvider,
+      config.useNewUploadService,
     );
+    this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);
     this.uploadService.on('file-uploading', this.onFileUploading);
@@ -54,39 +58,33 @@ export class LocalUploadComponent<
     this.uploadService.setUploadParams(uploadParams);
   }
 
-  private onFilesAdded = ({ files }: FilesAddedEventPayload): void => {
+  private onFilesAdded = ({ files }: UploadsStartEventPayload): void => {
     this.emitUploadsStart(files);
   };
 
   private onFilePreviewUpdate = ({
     file,
     preview,
-  }: FilePreviewUpdateEventPayload): void => {
+  }: UploadPreviewUpdateEventPayload): void => {
     this.emitUploadPreviewUpdate(file, preview);
   };
 
   private onFileUploading = ({
     file,
     progress,
-  }: FileUploadingEventPayload): void => {
-    this.emitUploadProgress(file, progress.toJSON());
+  }: UploadStatusUpdateEventPayload): void => {
+    this.emitUploadProgress(file, progress);
   };
 
-  private onFileConverting = ({ file }: FileConvertingEventPayload): void => {
+  private onFileConverting = ({ file }: UploadProcessingEventPayload): void => {
     this.emitUploadProcessing(file);
   };
 
-  private onFileConverted = ({
-    file,
-    metadata,
-  }: FileConvertedEventPayload): void => {
-    this.emitUploadEnd(file, metadata);
+  private onFileConverted = (payload: UploadEndEventPayload): void => {
+    this.emitUploadEnd(payload.file, payload.public);
   };
 
-  private onUploadError = ({
-    file,
-    error,
-  }: FileUploadErrorEventPayload): void => {
+  private onUploadError = ({ file, error }: UploadErrorEventPayload): void => {
     this.emitUploadError(file, error);
   };
 }

@@ -1,11 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import Avatar from '@atlaskit/avatar';
 import { getContainerAvatarUrl } from './utils/mockData';
 import { ContainerResult, ResultItemGroup } from '../src';
 
 const defaultProps = {
   resultId: 'result_id',
 };
+
+const dummyAvatarComponent = (
+  <Avatar src={getContainerAvatarUrl(4)} appearance="square" />
+);
 
 export default class extends Component<*> {
   render() {
@@ -34,6 +39,12 @@ export default class extends Component<*> {
             {...defaultProps}
             key="3"
             name="Minimum detail container"
+          />
+          <ContainerResult
+            {...defaultProps}
+            avatar={dummyAvatarComponent}
+            key="4"
+            name="With avatar component"
           />
         </ResultItemGroup>
       </div>

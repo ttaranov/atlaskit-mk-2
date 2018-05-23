@@ -1,5 +1,80 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.0.8
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/editor-core@72.0.0
+
+## 3.0.7
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-core@71.4.0
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/editor-json-transformer@3.0.6
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/docs@3.0.4
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-common@9.3.9
+
 ## 3.0.6
 - [patch] ED-4459, JIRA transformer should return unicode for emoji node. [107bf1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107bf1e)
 

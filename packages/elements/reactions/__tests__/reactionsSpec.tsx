@@ -222,4 +222,13 @@ describe('@atlaskit/reactions/reactions', () => {
     );
     expect(reactions.find(ReactionPicker).prop('disabled')).toBeTruthy();
   });
+
+  it('should render picker after reactions', () => {
+    const reactions = mount(renderReactions());
+    const container = reactions
+      .find('div')
+      .first()
+      .children();
+    expect(container.last().find(ReactionPicker)).toHaveLength(1);
+  });
 });

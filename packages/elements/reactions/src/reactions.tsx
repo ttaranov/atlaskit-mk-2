@@ -19,11 +19,7 @@ export interface OnEmoji {
 
 const reactionStyle = style({
   display: 'inline-block',
-  margin: '4px 4px 0 4px',
-});
-
-const reactionsGroupStyle = style({
-  marginTop: '-4px', // Cancel 4px marginTop when not wrapped on reactionStyle
+  margin: '0 4px',
 });
 
 const reactionsStyle = style({
@@ -32,12 +28,7 @@ const reactionsStyle = style({
   background: 'white',
   alignItems: 'center',
   borderRadius: '15px',
-  $nest: {
-    '&> div': {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-  },
+  $nest: { '& > :first-child': { marginLeft: 0 } },
 });
 
 export interface Props {
@@ -169,6 +160,7 @@ export default class Reactions extends Component<Props, State> {
     return (
       <Tooltip content={this.getTooltip()}>
         <ReactionPicker
+          className={reactionStyle}
           emojiProvider={emojiProvider}
           onSelection={this.handleReactionPickerSelection}
           miniMode={true}
@@ -196,20 +188,13 @@ export default class Reactions extends Component<Props, State> {
     );
   };
 
-  private renderReactions = () => {
-    const { reactions } = this.state;
-    return (
-      <div className={reactionsGroupStyle}>
-        {reactions.map(this.renderReaction)}
-      </div>
-    );
-  };
+  private renderReactions = () => this.state.reactions.map(this.renderReaction);
 
   render() {
     return (
       <div className={reactionsStyle}>
-        {this.renderPicker()}
         {this.renderReactions()}
+        {this.renderPicker()}
       </div>
     );
   }

@@ -44,6 +44,7 @@ export const ToolbarButton: StyledComponentClass<
   ButtonHTMLAttributes<{}>
 > = styled(UiToolbarButton)`
   width: 24px;
+  padding: 0;
   margin: 0 2px;
 `;
 

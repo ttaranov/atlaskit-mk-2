@@ -2,14 +2,23 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Select from '@atlaskit/select';
-import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
+import TableTree, {
+  Headers,
+  Header,
+  Rows,
+  Row,
+  Cell,
+  TableTreeDataHelper,
+} from '../src';
+
+const tableTreeDataHelper = new TableTreeDataHelper({ key: 'id' });
 
 function getItemsData(parent, count) {
   return generateChildItems(parent || { numberingPath: '' }, count);
 }
 
 function generateChildItems(parent, count) {
-  const items = new Array(count);
+  const items = [];
   for (let i = 0; i < count; i++) {
     const number = i + 1;
     const numbering = `${parent.numberingPath}${number}`;
@@ -17,6 +26,7 @@ function generateChildItems(parent, count) {
       numbering,
       title: `Item ${numbering}`,
       numberingPath: `${numbering}.`,
+      id: `${parent.numberingPath}${number}`,
     });
   }
   return items;
@@ -34,66 +44,73 @@ const PerformanceTweakContainer = styled.div`
 `;
 
 type State = {
+  items: Array<Object>,
   childCount: number,
   totalCount: number,
+  rootItems?: Array<Object>,
   selectedChildCountOption: Object,
 };
 
 const childCountPerItem = 100;
+const childCountOptions = [
+  {
+    label: 10,
+    value: 10,
+  },
+  {
+    label: 20,
+    value: 20,
+  },
+  {
+    label: 50,
+    value: 50,
+  },
+  {
+    label: 100,
+    value: 100,
+  },
+  {
+    label: 200,
+    value: 200,
+  },
+  {
+    label: 500,
+    value: 500,
+  },
+  {
+    label: 1000,
+    value: 1000,
+  },
+];
 
 export default class extends PureComponent<{}, State> {
-  childCountOptions = [
-    {
-      label: 10,
-      value: 10,
-    },
-    {
-      label: 20,
-      value: 20,
-    },
-    {
-      label: 50,
-      value: 50,
-    },
-    {
-      label: 100,
-      value: 100,
-    },
-    {
-      label: 200,
-      value: 200,
-    },
-    {
-      label: 500,
-      value: 500,
-    },
-    {
-      label: 1000,
-      value: 1000,
-    },
-  ];
-
   state: State = {
     childCount: childCountPerItem,
     totalCount: childCountPerItem,
-    selectedChildCountOption: this.childCountOptions[3],
+    selectedChildCountOption: childCountOptions[3],
+    items: tableTreeDataHelper.updateItems(getItemsData(undefined, 100)),
   };
 
-  getItems = (parent: ?Object) =>
-    getItemsData(parent, this.state.selectedChildCountOption.value);
-
-  handleExpand = () => {
+  handleExpand = (parentItem: Object) => {
     this.setState({
+      items: tableTreeDataHelper.updateItems(
+        getItemsData(parentItem, 100),
+        this.state.items,
+        parentItem,
+      ),
       totalCount:
         this.state.totalCount + this.state.selectedChildCountOption.value,
     });
   };
 
   handleItemsCountChange = (option: Object) => {
-    this.setState({ selectedChildCountOption: option });
+    this.setState({
+      selectedChildCountOption: option,
+    });
   };
 
   render() {
+    const { items } = this.state;
     return (
       <div style={{ position: 'relative' }}>
         <TableTree>
@@ -103,9 +120,14 @@ export default class extends PureComponent<{}, State> {
             <Header width={100}>Stuff</Header>
           </Headers>
           <Rows
-            items={this.getItems}
-            render={({ title, numbering }) => (
-              <Row itemId={numbering} hasChildren onExpand={this.handleExpand}>
+            items={items}
+            render={({ title, numbering, children }) => (
+              <Row
+                itemId={numbering}
+                hasChildren
+                onExpand={this.handleExpand}
+                items={children}
+              >
                 <Cell singleLine>{title}</Cell>
                 <Cell singleLine>{numbering}</Cell>
                 <Cell singleLine>
@@ -123,7 +145,7 @@ export default class extends PureComponent<{}, State> {
               <Select
                 hasAutocomplete={false}
                 shouldFocus={false}
-                options={this.childCountOptions}
+                options={childCountOptions}
                 onChange={this.handleItemsCountChange}
                 value={this.state.selectedChildCountOption}
                 placeholder="choose"
