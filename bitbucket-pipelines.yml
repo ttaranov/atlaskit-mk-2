@@ -27,6 +27,10 @@ pipelines:
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
+    lbatch/better-build-notifications:
+      - step:
+          script:
+            - echo "Here"
 
   default:
     - parallel:
@@ -66,7 +70,7 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
             caches:
               - node
         - step:
@@ -137,7 +141,7 @@ pipelines:
             - yarn build
             - yarn build:bundle-analysis
           caches:
-            - node 
+            - node
 
 
     landkid:
