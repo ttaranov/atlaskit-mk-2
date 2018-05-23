@@ -65,7 +65,7 @@ export const mutateTree = (
 
 export const getItem = (tree: TreeData, path: Path): TreeItem => {
   let cursor: TreeItem = tree;
-  for (let i of path) {
+  for (const i of path) {
     cursor = cursor.children[i];
   }
   return cursor;

@@ -91,11 +91,11 @@ export default class LazyTree extends Component<void, State> {
       tree: mutateTree(tree, path, { isChildrenLoading: true }),
     });
     setTimeout(() => {
-      const { tree }: State = this.state;
-      const currentItem: TreeItem = getItem(tree, path);
+      const freshTree = this.state.tree;
+      const currentItem: TreeItem = getItem(freshTree, path);
       if (currentItem.isChildrenLoading) {
         this.setState({
-          tree: mutateTree(tree, path, {
+          tree: mutateTree(freshTree, path, {
             isExpanded: true,
             isChildrenLoading: false,
           }),
