@@ -54,7 +54,6 @@ export const updateExtensionLayout = layout => (
       layout,
     }),
   );
-  // dispatch(tr);
 
   return true;
 };

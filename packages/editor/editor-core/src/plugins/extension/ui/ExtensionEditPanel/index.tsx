@@ -12,14 +12,14 @@ export interface Props {
   onRemove: () => void;
   stickToolbarToBottom?: boolean;
   onLayoutChange: (mode) => void;
+  layout: string;
 }
 
 export default (props: Props) => {
-  const { element, stickToolbarToBottom } = props;
+  const { element, stickToolbarToBottom, layout } = props;
   if (!element) {
     return null;
   }
-
   return (
     <Popup
       target={element}
@@ -36,10 +36,12 @@ export default (props: Props) => {
         <ToolbarButton
           onClick={props.onLayoutChange.bind(this, 'default')}
           iconBefore={<CenterIcon label="Normal mode" />}
+          selected={layout === 'default'}
         />
         <ToolbarButton
           onClick={props.onLayoutChange.bind(this, 'full-width')}
           iconBefore={<FullWidthIcon label="Full width" />}
+          selected={layout === 'full-width'}
         />
         <Separator />
         <ToolbarButton

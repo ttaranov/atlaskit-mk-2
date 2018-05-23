@@ -49,17 +49,21 @@ const extensionPlugin: EditorPlugin = {
         render={({
           macroState = {} as MacroState,
           extensionState = {} as ExtensionState,
-        }) => (
-          <ExtensionEditPanel
-            element={extensionState.element}
-            onEdit={() => editExtension(macroState.macroProvider)(editorView)}
-            onRemove={() => removeExtension(editorView.state, dispatch)}
-            stickToolbarToBottom={extensionState.stickToolbarToBottom}
-            onLayoutChange={mode =>
-              updateExtensionLayout(mode)(editorView.state, dispatch)
-            }
-          />
-        )}
+        }) => {
+          console.log('layout in re rednr ', extensionState.layout);
+          return (
+            <ExtensionEditPanel
+              element={extensionState.element}
+              onEdit={() => editExtension(macroState.macroProvider)(editorView)}
+              onRemove={() => removeExtension(editorView.state, dispatch)}
+              stickToolbarToBottom={extensionState.stickToolbarToBottom}
+              layout={extensionState.layout}
+              onLayoutChange={mode =>
+                updateExtensionLayout(mode)(editorView.state, dispatch)
+              }
+            />
+          );
+        }}
       />
     );
   },

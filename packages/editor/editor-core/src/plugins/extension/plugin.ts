@@ -101,6 +101,7 @@ export default (
             dispatch(pluginKey, {
               element: newElement,
               stickToolbarToBottom,
+              layout: selectedExtNode.node.attrs.layout,
             });
           } else if (!selectedExtNode && element !== null) {
             /** case 2: selection has no extension, but element is alive and kicking */
