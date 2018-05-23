@@ -4,17 +4,17 @@ type ViewItem = { items?: ?View };
 type View = ViewItem[];
 type ItemReducer = ViewItem => ViewItem;
 
-const replaceViewItem = (itemId: string, itemReducer: ItemReducer) => (
+const replaceItem = (itemId: string, itemReducer: ItemReducer) => (
   view: View,
 ) => {
-  const replaceItem = replaceViewItem(itemId, itemReducer);
+  const replace = replaceItem(itemId, itemReducer);
   return view.map(viewItem => {
     if (viewItem.id === itemId) {
       return itemReducer(viewItem);
     }
 
     if (viewItem.items && viewItem.items.length) {
-      return { ...viewItem, items: replaceItem(viewItem.items) };
+      return { ...viewItem, items: replace(viewItem.items) };
     }
 
     return viewItem;
@@ -22,13 +22,13 @@ const replaceViewItem = (itemId: string, itemReducer: ItemReducer) => (
 };
 
 const appendToGroup = (groupId: string, appended: View) =>
-  replaceViewItem(groupId, group => ({
+  replaceItem(groupId, group => ({
     ...group,
     items: [...(group.items || []), ...appended],
   }));
 
 const prependToGroup = (groupId: string, prepended: View) =>
-  replaceViewItem(groupId, group => ({
+  replaceItem(groupId, group => ({
     ...group,
     items: [...prepended, ...(group.items || [])],
   }));

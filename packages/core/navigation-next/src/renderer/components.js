@@ -167,15 +167,6 @@ const Nested = ({
   </Section>
 );
 
-// PluginPoint
-/** @todo: We might not need this now (use Group instead). */
-const PluginPoint = ({ customComponents, items }: GroupProps) =>
-  items ? (
-    <div css={rootLevelGroupStyles}>
-      <ItemsRenderer items={items} customComponents={customComponents} />
-    </div>
-  ) : null;
-
 const itemComponents = {
   Debug,
   GoToItem,
@@ -188,7 +179,6 @@ const itemComponents = {
 const groupComponents = {
   Group,
   Nested,
-  PluginPoint,
 };
 
 const components = { ...itemComponents, ...groupComponents };
