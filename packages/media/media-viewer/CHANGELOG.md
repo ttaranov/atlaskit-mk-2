@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 14.0.2
+- [patch] remove TS casting from MediaViewer [df4da61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df4da61)
+
 ## 14.0.1
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-core@18.1.1
