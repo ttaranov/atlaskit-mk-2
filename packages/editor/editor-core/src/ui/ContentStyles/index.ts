@@ -96,6 +96,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     border-radius: ${akBorderRadius};
     font-size: 14px;
     line-height: 20px;
+    margin: 12px 0 0 0;
     counter-reset: line;
     display: flex;
 
