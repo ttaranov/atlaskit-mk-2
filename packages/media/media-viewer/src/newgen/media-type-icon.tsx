@@ -20,17 +20,20 @@ export interface FileIconProps {
   type?: MediaType;
 }
 
+const defaultType = 'unknown';
+
 export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
   static defaultProps: FileIconProps = {
-    type: 'unknown',
+    type: defaultType,
   };
 
   render() {
     const { type } = this.props;
-    const Icon = icons[type!];
+    const typeWithDefault = type || defaultType;
+    const Icon = icons[typeWithDefault];
 
     return (
-      <IconWrapper type={type!}>
+      <IconWrapper type={typeWithDefault}>
         <Icon label="media-type" size="large" />
       </IconWrapper>
     );

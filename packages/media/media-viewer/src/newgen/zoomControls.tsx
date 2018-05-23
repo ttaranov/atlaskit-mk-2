@@ -24,11 +24,11 @@ export const getZoomLevel = (
   direction: ZoomDirection,
   step: number = zoomingStep,
 ): number => {
-  const increase = step! * currentZoomLevel;
-  const newZoomLevel = direction === 'out' ? -increase! : increase;
+  const increase = step * currentZoomLevel;
+  const newZoomLevel = direction === 'out' ? -increase : increase;
   const zoomLevel = Math.min(
     Math.max(
-      Math.round((currentZoomLevel + newZoomLevel!) * 100) / 100,
+      Math.round((currentZoomLevel + newZoomLevel) * 100) / 100,
       minZoomLevel,
     ),
     maxZoomLevel,
