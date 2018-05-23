@@ -17,7 +17,7 @@ export interface ContentState {
 }
 
 const mouseMovementDelay = 2000;
-const findParent = (
+export const findParent = (
   element: HTMLElement,
   className: string,
   maxParentElement: HTMLElement = document.body,
