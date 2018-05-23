@@ -259,6 +259,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       transform: translateX(-50%);
     }
 
+    [data-layout='full-width'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+
     .media-single.is-loading {
       min-height: 20px;
     }

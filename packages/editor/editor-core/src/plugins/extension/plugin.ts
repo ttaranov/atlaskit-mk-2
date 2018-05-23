@@ -19,9 +19,7 @@ export default (
 ) =>
   new Plugin({
     state: {
-      init: () => ({
-        element: null,
-      }),
+      init: () => ({ element: null, layout: 'default' }),
 
       apply(tr, state: ExtensionState, prevState, nextState) {
         const meta = tr.getMeta(pluginKey);

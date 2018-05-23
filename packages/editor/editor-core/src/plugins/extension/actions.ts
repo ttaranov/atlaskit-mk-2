@@ -5,6 +5,7 @@ import {
   TextSelection,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { findParentNodeOfType, findDomRefAtPos } from 'prosemirror-utils';
 import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
@@ -27,6 +28,33 @@ export const setExtensionElement = (element: HTMLElement | null) => (
     );
   }
   dispatch(tr);
+  return true;
+};
+
+export const updateExtensionLayout = layout => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
+  console.log('changing layout to ..', layout);
+  // let tr = state.tr.setMeta(pluginKey, {
+  //   ...pluginKey.getState(state),
+  //   layout: layout
+  //  });
+  const { selection: { from }, schema, tr } = state;
+  let selectedExtNode = findParentNodeOfType([
+    schema.nodes.extension,
+    schema.nodes.inlineExtension,
+    schema.nodes.bodiedExtension,
+  ])(state.selection);
+  const node = getExtensionNode(state);
+  console.log('niode us ', node);
+  dispatch(
+    tr.setNodeMarkup(selectedExtNode!.pos - 1, undefined, {
+      layout,
+    }),
+  );
+  // dispatch(tr);
+
   return true;
 };
 
