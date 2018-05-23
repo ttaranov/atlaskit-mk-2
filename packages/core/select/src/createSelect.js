@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, type ComponentType, type ElementRef } from 'react';
 import { mergeStyles } from 'react-select';
-import { colors } from '@atlaskit/theme';
+import { colors, gridSize } from '@atlaskit/theme';
 
 import * as animatedComponents from 'react-select/lib/animated';
 import * as defaultComponents from './components';
@@ -94,7 +94,7 @@ type ReactSelectProps = {
 };
 
 type Props = ReactSelectProps & {
-  /* The state  */
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing: 'compact' | 'default',
   /* The state of validation if used in a form */
   validationState?: ValidationState,
@@ -125,7 +125,7 @@ function baseStyles(validationState, isCompact) {
         borderStyle: 'solid',
         borderWidth: lgBorder ? 2 : 1,
         boxShadow: 'none',
-        minHeight: '32px',
+        minHeight: isCompact ? gridSize() * 4 : gridSize() * 5,
         padding: lgBorder ? 0 : 1,
         transition: `background-color ${transitionDuration} ease-in-out,
         border-color ${transitionDuration} ease-in-out`,
@@ -224,12 +224,12 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
         ...props
       } = this.props; // eslint-disable-line
       const isCompact = !isMulti && spacing === 'compact';
-      console.log(isCompact);
 
       // props must be spread first to stop `components` being overridden
       return (
         <WrappedComponent
           ref={this.onSelectRef}
+          isMulti={isMulti}
           {...props}
           components={this.components}
           styles={mergeStyles(baseStyles(validationState, isCompact), styles)}
