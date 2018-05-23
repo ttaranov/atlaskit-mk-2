@@ -20,6 +20,8 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/analytics-next": "^2.1.1",
+    "@atlaskit/analytics-gas-types": "^2.0.0",
     "@atlaskit/analytics": "^3.0.1",
     "@atlaskit/avatar": "^10.0.6",
     "@atlaskit/icon": "^11.3.0",
