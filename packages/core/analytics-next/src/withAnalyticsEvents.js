@@ -31,10 +31,6 @@ type EventMap<ProvidedProps> = {
       ) => UIAnalyticsEvent | void),
 };
 
-type State = {
-  patchedProps: any,
-};
-
 export default function withAnalyticsEvents<
   Props: {},
   InnerComponent: ComponentType<Props>,
@@ -43,7 +39,7 @@ export default function withAnalyticsEvents<
   createEventMap: EventMap<ExternalProps> = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
   return WrappedComponent =>
-    class WithAnalyticsEvents extends Component<ExternalProps, State> {
+    class WithAnalyticsEvents extends Component<ExternalProps> {
       static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
         WrappedComponent.name})`;
 
@@ -52,29 +48,39 @@ export default function withAnalyticsEvents<
         getAtlaskitAnalyticsContext: PropTypes.func,
       };
 
+      // Store references to the original and patched event props so we can determine when to update
+      // the patched props
+      originalEventProps: {} = {};
+      patchedEventProps: {} = {};
+
       constructor(props) {
         super(props);
-        this.state = {
-          patchedProps: this.mapCreateEventsToProps(
-            Object.keys(createEventMap),
-            props,
-          ),
-        };
+        Object.keys(createEventMap).forEach(p => {
+          this.originalEventProps[p] = props[p];
+        });
+        this.patchedEventProps = this.mapCreateEventsToProps(
+          Object.keys(createEventMap),
+          props,
+        );
       }
 
-      componentWillReceiveProps(nextProps) {
+      // Update patched event props only if the original props have changed
+      updatePatchedEventProps = props => {
         const changedPropCallbacks = Object.keys(createEventMap).filter(
-          p => this.props[p] !== nextProps[p],
+          p => this.originalEventProps[p] !== props[p],
         );
         if (changedPropCallbacks.length > 0) {
-          this.setState({
-            patchedProps: {
-              ...this.state.patchedProps,
-              ...this.mapCreateEventsToProps(changedPropCallbacks, nextProps),
-            },
+          this.patchedEventProps = {
+            ...this.patchedEventProps,
+            ...this.mapCreateEventsToProps(changedPropCallbacks, props),
+          };
+          changedPropCallbacks.forEach(p => {
+            this.originalEventProps[p] = props[p];
           });
         }
-      }
+
+        return this.patchedEventProps;
+      };
 
       createAnalyticsEvent = (
         payload: AnalyticsEventPayload,
@@ -118,7 +124,8 @@ export default function withAnalyticsEvents<
         }, {});
 
       render() {
-        const props = { ...this.props, ...this.state.patchedProps };
+        const patchedEventProps = this.updatePatchedEventProps(this.props);
+        const props = { ...this.props, ...patchedEventProps };
         return (
           <WrappedComponent
             {...props}

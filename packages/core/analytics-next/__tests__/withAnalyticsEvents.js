@@ -248,12 +248,22 @@ describe('create event map', () => {
     expect(wrapper.text()).toBe('0');
     expect(instance.renderCount).toBe(1);
 
+    // Re-rendering the component with the same prop callback should not change its patched ref value
     wrapper.setProps({ onClick });
     expect(wrapper.text()).toBe('0');
     expect(instance.renderCount).toBe(2);
 
-    wrapper.setProps({ onClick: () => {} });
+    const newOnClick = () => {};
+
+    // Setting a new prop callback value should update the patched ref value though
+    wrapper.setProps({ onClick: newOnClick });
     expect(wrapper.text()).toBe('1');
     expect(instance.renderCount).toBe(3);
+
+    // Make sure setting the same new prop callback does not change the ref value again
+    // (This would occur if the implementation only kept the original prop callback value to check against)
+    wrapper.setProps({ onClick: newOnClick });
+    expect(wrapper.text()).toBe('1');
+    expect(instance.renderCount).toBe(4);
   });
 });
