@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 0.0.3
+- [patch] Rename props to be in sync with navigation-next package [1fde1da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1fde1da)
+
 ## 0.0.2
 
 - [patch] Add global-navigation package [41a4d1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41a4d1c)

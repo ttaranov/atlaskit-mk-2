@@ -1,5 +1,9 @@
 # @atlaskit/conversation
 
+## 7.5.2
+- [patch] Updated dependencies [1764815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764815)
+  - @atlaskit/reactions@12.0.6
+
 ## 7.5.1
 
 

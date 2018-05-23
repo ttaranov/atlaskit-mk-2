@@ -193,14 +193,14 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   };
 
   render() {
-    const primaryActions = this.constructPrimaryItems();
-    const secondaryActions = this.constructSecondaryItems();
+    const primaryItems = this.constructPrimaryItems();
+    const secondaryItems = this.constructSecondaryItems();
 
     return (
       <Fragment>
         <GlobalNav
-          primaryItems={primaryActions}
-          secondaryItems={secondaryActions}
+          primaryItems={primaryItems}
+          secondaryItems={secondaryItems}
         />
         {this.renderDrawer('create')}
         {this.renderDrawer('search', { width: 'wide' })}
