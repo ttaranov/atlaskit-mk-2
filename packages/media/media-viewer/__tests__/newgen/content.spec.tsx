@@ -34,6 +34,18 @@ describe('<Content />', () => {
     expect(component.state('showControls')).toBeFalsy();
   });
 
+  it('should keep controls visible when user is hovering them', () => {
+    const { component } = setup();
+    const target = document.createElement('div');
+
+    target.classList.add('mvng-hide-controls');
+    component.find(ContentWrapper).simulate('mouseMove', {
+      target,
+    });
+    jest.runOnlyPendingTimers();
+    expect(component.state('showControls')).toBeTruthy();
+  });
+
   it('should pass controls visibility down to <ContentWrapper />', () => {
     const { component } = setup();
 
