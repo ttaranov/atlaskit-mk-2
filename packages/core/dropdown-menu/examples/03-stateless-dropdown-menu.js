@@ -12,17 +12,12 @@ type State = {
   isDropdownOpen: boolean,
 };
 
-const Container = styled.div`
-  height: 2000px;
-  padding-top: 1000px;
-`;
-
 export default class StatelessMenuExample extends Component<{}, State> {
   state = { isDropdownOpen: false };
 
   render() {
     return (
-      <Container>
+      <div style={{ height: '2000px', paddingTop: '1000px' }}>
         <DropdownMenuStateless
           isOpen={this.state.isDropdownOpen}
           onOpenChange={attrs => {
@@ -37,7 +32,7 @@ export default class StatelessMenuExample extends Component<{}, State> {
             <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
           </DropdownItemGroupRadio>
         </DropdownMenuStateless>
-      </Container>
+      </div>
     );
   }
 }
