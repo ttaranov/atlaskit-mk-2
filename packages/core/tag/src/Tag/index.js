@@ -99,6 +99,8 @@ export default class Tag extends Component<Props, State> {
 
   render() {
     const { isFocused, isRemoved, isRemoving, markedForRemoval } = this.state;
+
+    // Should we pass color?
     const {
       appearance,
       elemBefore,
