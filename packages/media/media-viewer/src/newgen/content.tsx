@@ -10,6 +10,7 @@ import {
 
 export interface ContentProps {
   onClose?: () => void;
+  onShowControlsCallback?: (callback: () => void) => void;
 }
 
 export interface ContentState {
@@ -80,7 +81,13 @@ export class Content extends Component<ContentProps, ContentState> {
   };
 
   componentDidMount() {
+    const { onShowControlsCallback } = this.props;
+
     this.checkMouseMovement();
+
+    if (onShowControlsCallback) {
+      onShowControlsCallback(this.checkMouseMovement);
+    }
   }
 
   componentWillUnmount() {

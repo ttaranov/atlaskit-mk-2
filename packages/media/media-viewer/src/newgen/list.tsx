@@ -11,6 +11,7 @@ import Header from './header';
 export type Props = {
   onClose?: () => void;
   onNavigationChange?: (selectedItem: Identifier) => void;
+  showControlsCallback: () => void;
   selectedItem: Identifier;
   items: Identifier[];
   context: Context;
@@ -60,10 +61,12 @@ export class List extends React.Component<Props, State> {
   }
 
   onNavigationChange = (selectedItem: Identifier) => {
-    const { onNavigationChange } = this.props;
+    const { onNavigationChange, showControlsCallback } = this.props;
     if (onNavigationChange) {
       onNavigationChange(selectedItem);
     }
+
+    showControlsCallback();
     this.setState({ selectedItem });
   };
 }
