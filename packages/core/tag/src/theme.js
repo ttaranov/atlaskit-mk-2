@@ -25,7 +25,7 @@ type Properties = {|
 |};
 
 const textColors = themed(
-  'appearance',
+  'color',
   ({
     standard: { light: colors.N700, dark: colors.DN600 },
     green: { light: colors.N800, dark: colors.N800 },
@@ -46,7 +46,7 @@ const textColors = themed(
 );
 
 const backgroundColors = themed(
-  'appearance',
+  'color',
   ({
     standard: { light: colors.N20, dark: colors.DN100A },
     green: { light: colors.G200, dark: colors.G200 },
@@ -70,7 +70,7 @@ export const textColor = textColors;
 export const backgroundColor = backgroundColors;
 
 export const textColorHover = themed(
-  'appearance',
+  'color',
   ({
     standard: { light: colors.N700, dark: colors.B75 },
     green: { light: colors.B400, dark: colors.B100 },
@@ -91,7 +91,7 @@ export const textColorHover = themed(
 );
 
 export const backgroundColorHover = themed(
-  'appearance',
+  'color',
   ({
     standard: { light: colors.N30, dark: colors.DN60 },
     green: { light: colors.G100, dark: colors.DN60 },

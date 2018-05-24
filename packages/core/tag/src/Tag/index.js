@@ -1,4 +1,5 @@
 // @flow
+import { Appearance } from '@atlaskit/theme';
 import React, { Component, type Node, type ComponentType } from 'react';
 
 import Chrome from '../Chrome';
@@ -9,31 +10,29 @@ import Before from './styledBefore';
 import Container from './styledContainer';
 import * as theme from '../theme';
 
-import type { AppearanceType, TagColor } from '../types';
-
-const colorList = [
-  'standard',
-  'green',
-  'blue',
-  'red',
-  'purple',
-  'grey',
-  'teal',
-  'yellow',
-  'greenLight',
-  'blueLight',
-  'redLight',
-  'purpleLight',
-  'greyLight',
-  'tealLight',
-  'yellowLight',
-];
+import type { AppearanceType } from '../types';
 
 type Props = {
   /** Set whether tags should be rounded. */
   appearance: AppearanceType,
   /** The color theme to apply, setting both background and text color. */
-  color?: TagColor,
+  color:
+    | 'standard'
+    | 'green'
+    | 'blue'
+    | 'red'
+    | 'purple'
+    | 'grey'
+    | 'teal'
+    | 'yellow'
+    | 'greenLight'
+    | 'blueLight'
+    | 'redLight'
+    | 'purpleLight'
+    | 'greyLight'
+    | 'tealLight'
+    | 'yellowLight'
+    | {},
   /** Component to be rendered before the Tag. */
   elemBefore?: Node,
   /** Text to be displayed in the tag. */
@@ -110,10 +109,9 @@ export default class Tag extends Component<Props, State> {
       linkComponent,
     } = this.props;
 
-    const safeColor = colorList.includes(color) ? color : 'standard';
-
     const isRemovable = Boolean(removeButtonText);
     const isRounded = appearance === 'rounded';
+    // How to pass styled to styleProps
     const styled = {
       isFocused,
       isRemovable,
@@ -121,32 +119,38 @@ export default class Tag extends Component<Props, State> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      color: safeColor,
+      // color: safeColor,
     };
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
       <Appearance props={appearance} theme={theme}>
-        <Container {...styled} onAnimationEnd={onAnimationEnd}>
-          <Chrome
-            {...styled}
-            isLink={!!href}
-            onFocusChange={this.handleFocusChange}
-          >
-            {elemBefore ? <Before>{elemBefore}</Before> : null}
-            <Content linkComponent={linkComponent} {...styled} href={href}>
-              {text}
-            </Content>
-            {isRemovable ? (
-              <RemoveButton
-                {...styled}
-                onHoverChange={this.handleHoverChange}
-                onRemoveAction={this.handleRemoveRequest}
-                removeText={removeButtonText}
-              />
-            ) : null}
-          </Chrome>
-        </Container>
+        {styleProps => (
+          <Container {...styleProps} onAnimationEnd={onAnimationEnd}>
+            <Chrome
+              {...styleProps}
+              isLink={!!href}
+              onFocusChange={this.handleFocusChange}
+            >
+              {elemBefore ? <Before>{elemBefore}</Before> : null}
+              <Content
+                linkComponent={linkComponent}
+                {...styleProps}
+                href={href}
+              >
+                {text}
+              </Content>
+              {isRemovable ? (
+                <RemoveButton
+                  {...styleProps}
+                  onHoverChange={this.handleHoverChange}
+                  onRemoveAction={this.handleRemoveRequest}
+                  removeText={removeButtonText}
+                />
+              ) : null}
+            </Chrome>
+          </Container>
+        )}
       </Appearance>
     );
   }

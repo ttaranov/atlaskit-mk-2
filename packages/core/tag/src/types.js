@@ -14,6 +14,7 @@ export type TagColor =
   | 'purpleLight'
   | 'greyLight'
   | 'tealLight'
-  | 'yellowLight';
+  | 'yellowLight'
+  | {};
 
-export type AppearanceType = 'default' | 'rounded' | {};
+export type AppearanceType = 'default' | 'rounded';
