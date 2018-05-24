@@ -10,7 +10,15 @@ Adding or updating a new icon:
 * Add / update the icon under `packages/core/icon/utils/raw_svgs`
 * Run `yarn update` from within the `packages/core/icon` directory
 
-For detailed information, please refer to `packages/core/icon/README.md`.
+New Icons should be added to `/packages/core/icon/utils/raw_svgs`.
+
+**NOTE:** The `reduced-ui-pack` package should contain all the icons we include
+in this package. Make sure to rebuild the `reduced-ui-pack` sprite as outlined in
+the README.md file included within that package.
+
+If your icon is used only in a specific context or product, place it in
+  `/icon/src/icons/subfolder` and it will be namespaced appropriately.
+
 
 ## Generating an svg
 
