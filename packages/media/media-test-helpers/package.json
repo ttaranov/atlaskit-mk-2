@@ -41,6 +41,6 @@
     "@atlaskit/media-core": "^18.1.1",
     "@atlaskit/media-store": "^2.1.0",
     "@types/faker": "^4.1.2",
-    "kakapo": "^3.0.2"
+    "kakapo": "^3.2.1"
   }
 }

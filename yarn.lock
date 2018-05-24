@@ -8399,9 +8399,9 @@ junk@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/junk/-/junk-2.1.0.tgz#f431b4b7f072dc500a5f10ce7f4ec71930e70134"
 
-kakapo@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.0.2.tgz#5e814cf31ae601cc7b84076910d8951d160d25f6"
+kakapo@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.2.1.tgz#0101f0f18337d48fc5f05a36633879626c063078"
   dependencies:
     faker "^3.1.0"
     lodash "^4.2.0"
