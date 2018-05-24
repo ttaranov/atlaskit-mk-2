@@ -71,8 +71,14 @@ export default (
             selectedExtNode &&
             (findDomRefAtPos(selectedExtNode.pos, domAtPos) as HTMLElement);
 
-          /** If a node is selected, get position of that instead */
-          if (state.selection instanceof NodeSelection) {
+          /** If a node is selected, get position of that instead
+           * The check will be refactored once we have isNodeOfTypeSelected from PM-utils
+           */
+          if (
+            state.selection instanceof NodeSelection &&
+            (state.selection.node.type === state.schema.nodes.bodiedExtension ||
+              state.selection.node.type === state.schema.nodes.extension)
+          ) {
             selectedExtNode = {
               node: state.selection.node,
               pos: state.selection.$head.pos,
