@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 10.1.0
+- [minor] Adds in adf traversor [450db2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/450db2e)
+- [minor] Updated dependencies [450db2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/450db2e)
+
 ## 10.0.3
 
 
