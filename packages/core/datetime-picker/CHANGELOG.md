@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 4.0.4
+- [patch] Fixes for parsing & formatting of values [0c843bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c843bc)
+
 ## 4.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0
