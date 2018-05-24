@@ -66,9 +66,7 @@ export default (event: EventNextType): GasPayload | null => {
     last(getPackageInfo(event)) || ({} as any);
   const packageHierarchy = packages.map(
     p =>
-      p.packageVersion != null
-        ? `${p.packageName}@${p.packageVersion}`
-        : p.packageName,
+      p.packageVersion ? `${p.packageName}@${p.packageVersion}` : p.packageName,
   );
 
   const {
@@ -103,6 +101,7 @@ export default (event: EventNextType): GasPayload | null => {
       eventType === OPERATIONAL_EVENT_TYPE ||
       eventType === SCREEN_EVENT_TYPE
     ) {
+      // tslint:disable-next-line no-console
       console.error(
         'Track, screen and operational events are currently not supported for atlaskit events',
       );

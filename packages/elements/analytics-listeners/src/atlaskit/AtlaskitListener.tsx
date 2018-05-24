@@ -12,7 +12,7 @@ export default class AtlaskitListener extends React.Component<ListenerProps> {
   listenerHandler: ListenerFunction = event => {
     const payload = processEvent(event);
 
-    if (payload !== null) {
+    if (payload) {
       sendEvent(this.props.client)(payload);
     }
   };

@@ -36,7 +36,7 @@ export const getPackageInfo = event =>
       packageName: contextItem.packageName,
       packageVersion: contextItem.packageVersion,
     }))
-    .filter(p => p.packageName != null);
+    .filter(p => p.packageName);
 
 export const getPackageVersion = event =>
   extractFromEventContext('packageVersion', event);

@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.0",
+    "enzyme": "^3.3.0",
     "jest-in-case": "^1.0.2"
   },
   "atlaskit": {
