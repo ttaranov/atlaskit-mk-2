@@ -1,3 +1,4 @@
+// tslint:disable-next-line no-implicit-dependencies
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { UI_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
