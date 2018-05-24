@@ -1,3 +1,6 @@
+import * as util from '../../../../src/newgen/util';
+const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
+
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
@@ -5,6 +8,7 @@ import { FileItem } from '@atlaskit/media-core';
 import { Stubs } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
 import { PDFViewer } from '../../../../src/newgen/viewers/pdf/index';
+import { constructAuthTokenUrl } from '../../../../src/newgen/util';
 
 function createContext() {
   const subject = new Subject<FileItem>();
@@ -23,15 +27,21 @@ function createContext() {
   ) as any;
 }
 
-function createFixture(fetchPromise, item) {
+function createFixture(fetchPromise, item, collectionName?) {
   const context = createContext();
   const onClose = jest.fn(() => fetchPromise);
-  const el = mount(<PDFViewer item={item} context={context} />);
+  const el = mount(
+    <PDFViewer item={item} context={context} collectionName={collectionName} />,
+  );
   el.instance()['fetch'] = jest.fn();
   return { context, el, onClose };
 }
 
 describe('PDFViewer', () => {
+  afterEach(() => {
+    constructAuthTokenUrlSpy.mockClear();
+  });
+
   it('assigns a document object when successful', async () => {
     const fetchPromise = Promise.resolve();
     const item: FileItem = {
@@ -99,5 +109,26 @@ describe('PDFViewer', () => {
         err: new Error('no pdf artifacts found for this file'),
       },
     });
+  });
+
+  it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
+    const collectionName = 'some-collection';
+    const fetchPromise = Promise.resolve();
+    const item: FileItem = {
+      type: 'file',
+      details: {
+        id: 'some-id',
+        processingStatus: 'succeeded',
+        mediaType: 'doc',
+        artifacts: {
+          'document.pdf': {
+            url: '/pdf',
+          },
+        },
+      },
+    };
+    const { el } = createFixture(fetchPromise, item, collectionName);
+    await el.instance()['init']();
+    expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 });
