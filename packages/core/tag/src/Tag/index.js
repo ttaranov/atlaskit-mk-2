@@ -7,6 +7,7 @@ import RemoveButton from '../RemoveButton';
 
 import Before from './styledBefore';
 import Container from './styledContainer';
+import * as theme from '../theme';
 
 import type { AppearanceType, TagColor } from '../types';
 
@@ -30,7 +31,7 @@ const colorList = [
 
 type Props = {
   /** Set whether tags should be rounded. */
-  appearance?: AppearanceType,
+  appearance: AppearanceType,
   /** The color theme to apply, setting both background and text color. */
   color?: TagColor,
   /** Component to be rendered before the Tag. */
@@ -125,26 +126,28 @@ export default class Tag extends Component<Props, State> {
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
-      <Container {...styled} onAnimationEnd={onAnimationEnd}>
-        <Chrome
-          {...styled}
-          isLink={!!href}
-          onFocusChange={this.handleFocusChange}
-        >
-          {elemBefore ? <Before>{elemBefore}</Before> : null}
-          <Content linkComponent={linkComponent} {...styled} href={href}>
-            {text}
-          </Content>
-          {isRemovable ? (
-            <RemoveButton
-              {...styled}
-              onHoverChange={this.handleHoverChange}
-              onRemoveAction={this.handleRemoveRequest}
-              removeText={removeButtonText}
-            />
-          ) : null}
-        </Chrome>
-      </Container>
+      <Appearance props={appearance} theme={theme}>
+        <Container {...styled} onAnimationEnd={onAnimationEnd}>
+          <Chrome
+            {...styled}
+            isLink={!!href}
+            onFocusChange={this.handleFocusChange}
+          >
+            {elemBefore ? <Before>{elemBefore}</Before> : null}
+            <Content linkComponent={linkComponent} {...styled} href={href}>
+              {text}
+            </Content>
+            {isRemovable ? (
+              <RemoveButton
+                {...styled}
+                onHoverChange={this.handleHoverChange}
+                onRemoveAction={this.handleRemoveRequest}
+                removeText={removeButtonText}
+              />
+            ) : null}
+          </Chrome>
+        </Container>
+      </Appearance>
     );
   }
 }
