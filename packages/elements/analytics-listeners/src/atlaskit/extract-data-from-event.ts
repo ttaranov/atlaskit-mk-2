@@ -1,5 +1,5 @@
 /**
- * Copied from analytics-web-react
+ * Largely taken from analytics-web-react
  */
 import * as merge from 'lodash.merge';
 

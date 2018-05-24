@@ -1,5 +1,5 @@
 /**
- * Copied largely from analytics-web-react
+ * Inspired by analytics-web-react
  */
 declare namespace last {
 
@@ -16,6 +16,7 @@ import {
   SCREEN_EVENT_TYPE,
   TRACK_EVENT_TYPE,
   OPERATIONAL_EVENT_TYPE,
+  GasPayload,
 } from '@atlaskit/analytics-gas-types';
 
 import {
@@ -25,6 +26,7 @@ import {
   getPackageInfo,
   getComponents,
 } from './extract-data-from-event';
+import { EventNextType } from '../types';
 
 /**
  * This util exists to convert the Atlaskit event format into the analytics platform format.
@@ -43,17 +45,17 @@ import {
  *
  * Analytics platform event format:
  *  event {
- *      type: <"TRACK"|"SCREEN"|"UI"|"OPERATIONAL">
+ *      type: @atlaskit/analytics-gas-types.EventType
  *      payload {
  *          ...mandatoryAttributesBasedOnEventType
  *          attributes: {
- *              ...arbirtaryAttributes
+ *              ...arbitraryAttributes
  *          }
  *      }
  *  }
  */
 
-export default event => {
+export default (event: EventNextType): GasPayload | null => {
   const sources = getSources(event);
   const source = last(sources);
   const extraAttributes = getExtraAttributes(event);
@@ -72,7 +74,6 @@ export default event => {
   const {
     eventType,
     action,
-    actionSubject,
     actionSubjectId,
     attributes: payloadAttributes,
   } = event.payload;
@@ -108,11 +109,5 @@ export default event => {
     }
   }
 
-  return {
-    source,
-    action,
-    actionSubject,
-    attributes,
-    eventType: undefined,
-  };
+  return null;
 };
