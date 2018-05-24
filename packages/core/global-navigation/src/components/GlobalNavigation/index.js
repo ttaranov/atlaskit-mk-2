@@ -12,40 +12,6 @@ import type {
   WrappedGlobalNavigationProps,
 } from './types';
 
-// By default we will render a button which toggles the peek behaviour. The
-// consumer can opt out of this by passing their own handler or `false` to the
-// onClick prop, or by passing a href (which will render an <a>).
-// They also opt out of the peek behaviour if they pass in a component to
-// the primary item (where getProductPrimaryItemComponent is called)
-const getProductPrimaryItemComponent = navigation => ({
-  className,
-  children,
-  href,
-  onClick,
-  target,
-}: *) =>
-  href ? (
-    <a
-      className={className}
-      href={href}
-      onClick={onClick || null}
-      target={target}
-    >
-      {children}
-    </a>
-  ) : (
-    <button
-      className={className}
-      onClick={
-        typeof onClick !== 'undefined' ? onClick || null : navigation.togglePeek
-      }
-      onMouseEnter={navigation.hint}
-      onMouseLeave={navigation.unHint}
-    >
-      {children}
-    </button>
-  );
-
 class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   static defaultProps = {
     primaryActions: [],
@@ -71,8 +37,8 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       inbuiltPrimaryItems.push({
         ...rest,
         ...defaultProduct,
-        component: component || getProductPrimaryItemComponent(navigation),
         ...ldProduct,
+        component,
       });
     }
 
