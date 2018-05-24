@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 14.3.1
+- [patch] MSW-720 : pass collectionName to all the places for correct auth [f7fa512](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7fa512)
+
 ## 14.3.0
 - [minor] Add zoom level for image and document viewer [856dfae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/856dfae)
 
