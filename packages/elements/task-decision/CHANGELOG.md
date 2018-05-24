@@ -1,5 +1,10 @@
 # @atlaskit/task-decision
 
+## 6.0.7
+- [patch] FS-1911 Fix Action stays unchecked for some time if it is checked off while editing message [758b342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/758b342)
+- [patch] Updated dependencies [758b342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/758b342)
+  - @atlaskit/renderer@17.0.2
+
 ## 6.0.6
 
 
