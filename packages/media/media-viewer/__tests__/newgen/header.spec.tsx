@@ -1,3 +1,6 @@
+import * as util from '../../src/newgen/util';
+const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
+
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Stubs } from '../_stubs';
@@ -69,6 +72,10 @@ const linkItem: MediaItem = {
 };
 
 describe('<Header />', () => {
+  afterEach(() => {
+    constructAuthTokenUrlSpy.mockClear();
+  });
+
   it('shows an empty header while loading', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
@@ -224,6 +231,35 @@ describe('<Header />', () => {
       subject.next(linkItem);
       expect(el.text()).toEqual('');
     });
+  });
+
+  it('MSW-720: passes the collectionName to the provider', () => {
+    const collectionName = 'some-collection';
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    const identifierWithCollection = { ...identifier, collectionName };
+    const el = mount(
+      <Header context={context} identifier={identifierWithCollection} />,
+    );
+    subject.next(imageItem);
+    el.update();
+    expect((context.getMediaItemProvider as any).mock.calls[0][2]).toEqual(
+      collectionName,
+    );
+  });
+
+  it('MSW-720: passes the collectionName to constructAuthTokenUrl', () => {
+    const collectionName = 'some-collection';
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    const identifierWithCollection = { ...identifier, collectionName };
+    const el = mount(
+      <Header context={context} identifier={identifierWithCollection} />,
+    );
+    subject.next(imageItem);
+    el.update();
+    el.find(DownloadIcon).simulate('click');
+    expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 
   describe('Download button', () => {
