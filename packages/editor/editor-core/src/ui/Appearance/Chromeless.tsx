@@ -6,6 +6,7 @@ import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { scrollbarStyles } from '../styles';
 
 const pulseBackground = keyframes`
   50% {
@@ -40,8 +41,7 @@ const ChromelessEditor: any = styled.div`
       ? 'max-height: ' + props.maxHeight + 'px;'
       : ''} overflow-x: hidden;
   overflow-y: auto;
-
-  max-width: inherit;
+  ${scrollbarStyles} max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
   animation: ${(props: any) =>
