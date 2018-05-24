@@ -29,7 +29,10 @@ export default class Extension extends Component<Props, any> {
     const hasChildren = !!children;
 
     return (
-      <Wrapper onClick={onClick} className={hasBody ? '' : 'with-overlay'}>
+      <Wrapper
+        onClick={onClick}
+        className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
+      >
         <Overlay className="extension-overlay" />
         <Header
           contentEditable={false}

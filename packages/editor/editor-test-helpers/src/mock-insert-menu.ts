@@ -63,6 +63,7 @@ export const customInsertMenuItems = [
     tooltipDescription: 'Bodied macro (Using extension handlers)',
     tooltipPosition: 'right',
     elemBefore: '-',
+    className: 'bodied-macro',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
         type: 'bodiedExtension',
