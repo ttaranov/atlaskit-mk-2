@@ -1,5 +1,6 @@
 // @flow
 import React, { Component, type Node, type ElementRef } from 'react';
+import styled from 'styled-components';
 
 import Popper from '../../popper/index-min';
 import ScrollBlock from './internal/ScrollBlock';
@@ -61,6 +62,37 @@ type State = {
   fixedOffset: ?number,
 };
 
+const FakeContainer = styled.div`
+  ${({ fixedOffset, targetRef }) => {
+    console.log('fixedOffset', fixedOffset);
+    console.log('targetRef', targetRef);
+    if (fixedOffset && targetRef) {
+      const actualTarget = targetRef.firstChild;
+      const rect = actualTarget.getBoundingClientRect();
+      return `
+        position: fixed;
+        top: ${fixedOffset}px;
+        height: ${rect.height}px;
+        width: ${rect.width}px;
+      `;
+    }
+    return '';
+  }};
+`;
+
+// const FakeChild = styled.div`
+//   ${({ targetRef }) => {
+//     if (targetRef) {
+//       const actualTarget = targetRef.firstChild;
+//       const rect = actualTarget.getBoundingClientRect();
+
+//     }
+//     return '';
+//   }
+
+//   }
+// `;
+
 export default class Layer extends Component<Props, State> {
   popper: {
     destroy: Function,
@@ -68,6 +100,7 @@ export default class Layer extends Component<Props, State> {
 
   targetRef: ?ElementRef<any>;
   contentRef: ?ElementRef<any>;
+  fakeRef: ?ElementRef<any>;
 
   // TODO: get the value of zIndex from theme, not using it now as it is not
   // working with extract-react-types
@@ -237,7 +270,7 @@ export default class Layer extends Component<Props, State> {
   };
 
   applyPopper(props: Props) {
-    if (!this.targetRef || !this.contentRef) {
+    if (!this.fakeRef || !this.contentRef) {
       return;
     }
 
@@ -254,7 +287,7 @@ export default class Layer extends Component<Props, State> {
 
     // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
-    const actualTarget = this.targetRef.firstChild;
+    const actualTarget = this.fakeRef;
     const popperOpts: Object = {
       placement: positionPropToPopperPosition(props.position),
       onCreate: this.extractStyles,
@@ -313,8 +346,16 @@ export default class Layer extends Component<Props, State> {
         >
           {this.props.children}
         </div>
+        <FakeContainer targetRef={this.targetRef} fixedOffset={fixedOffset}>
+          <div
+            style={{ height: '100%', width: '100%' }}
+            ref={ref => {
+              this.fakeRef = ref;
+            }}
+          />
+        </FakeContainer>
         {lockScroll && <ScrollBlock />}
-        <ContentContainer maxHeight={maxHeight} fixedOffset={fixedOffset}>
+        <ContentContainer maxHeight={maxHeight}>
           <div
             ref={ref => {
               this.contentRef = ref;
