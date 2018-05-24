@@ -39,10 +39,8 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
-    id: string;
     type: ResultContentType;
   };
-  iconCssClass: string;
   container: {
     title: string; // this is unhighlighted
     displayUrl: string;
@@ -140,15 +138,6 @@ export default class CrossProductSearchClientImpl
   }
 }
 
-// TODO need real icons
-export function getConfluenceAvatarUrl(iconCssClass: string): string {
-  if (iconCssClass.indexOf('blogpost') > -1) {
-    return 'https://home.useast.atlassian.io/confluence-blogpost-icon.svg';
-  } else {
-    return 'https://home.useast.atlassian.io/confluence-page-icon.svg';
-  }
-}
-
 export function removeHighlightTags(text: string): string {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
@@ -187,7 +176,6 @@ function mapConfluenceItemToResultObject(
   const result: Result = {
     resultType: ResultType.Object,
     resultId: 'search-' + item.url,
-    avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,

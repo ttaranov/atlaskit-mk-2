@@ -91,7 +91,7 @@ export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
 export const searchJiraItem = (query: string) => (
   <ResultBase
     href={`/issues/?jql=${encodeURIComponent(`text ~ "${query}"`)}`}
-    icon={<JiraIcon size="large" label="Search Jira" />}
+    icon={<JiraIcon size="medium" label="Search Jira" />}
     key="search_jira"
     resultId="search_jira"
     text="Search for more Jira issues"
