@@ -77,7 +77,8 @@ export default (
           if (
             state.selection instanceof NodeSelection &&
             (state.selection.node.type === state.schema.nodes.bodiedExtension ||
-              state.selection.node.type === state.schema.nodes.extension)
+              state.selection.node.type === state.schema.nodes.extension ||
+              state.selection.node.type === state.schema.nodes.inlineExtension)
           ) {
             selectedExtNode = {
               node: state.selection.node,
