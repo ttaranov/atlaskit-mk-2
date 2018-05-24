@@ -19,7 +19,7 @@
     "@atlaskit/theme": "^3.1.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
-    "ldclient-js": "^1.7.3",
+    "ldclient-js": "^1.7.4",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
     "react-dom": "^16.3.0",
