@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.3
+- [patch] Fixing up the paste of images  [3ab13a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ab13a5)
+- [none] Updated dependencies [3ab13a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ab13a5)
+
 ## 72.1.2
 - [patch] FS-1206 remove AtlassianEmojiMigrationResource [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
 - [none] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
