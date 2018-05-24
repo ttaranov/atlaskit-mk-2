@@ -139,7 +139,7 @@ export function transformHtml(
        * Lift image node if parent isn't the root-element
        */
       if (parentNode !== el) {
-        const isValidPath = validatePath(parentNode);
+        const isValidPath = validateImageNodeParent(parentNode);
         if (!isValidPath) {
           liftImageNode(parentNode, img);
         }
@@ -163,7 +163,7 @@ export function transformHtml(
     },
   );
 
-  function validatePath(node: Node) {
+  function validateImageNodeParent(node: Node) {
     const ALLOWED_PARENTS = [
       'LI',
       'UL',
@@ -188,14 +188,14 @@ export function transformHtml(
       return false;
     }
 
-    return validatePath(node.parentNode);
+    return validateImageNodeParent(node.parentNode);
   }
 
   function liftImageNode(node: Node, img: HTMLImageElement) {
     let foundParent = false;
     let parent = node;
     while (!foundParent) {
-      foundParent = validatePath(parent.parentNode!);
+      foundParent = validateImageNodeParent(parent.parentNode!);
       if (!foundParent) {
         parent = parent.parentNode!;
       }
