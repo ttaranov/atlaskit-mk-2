@@ -15,7 +15,7 @@ import { Spinner } from './loading';
 export type Props = {
   onClose?: () => void;
   selectedItem?: Identifier;
-  showControlsCallback: () => void;
+  showControlsCallback?: () => void;
   collectionName: string;
   context: Context;
 };

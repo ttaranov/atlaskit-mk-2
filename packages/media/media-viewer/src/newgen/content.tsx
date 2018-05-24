@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, SyntheticEvent } from 'react';
+import { Component, SyntheticEvent, ReactElement } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
 import {
@@ -11,6 +11,7 @@ import {
 export interface ContentProps {
   onClose?: () => void;
   onShowControlsCallback?: (callback: () => void) => void;
+  children: ReactElement<{}>;
 }
 
 export interface ContentState {
@@ -115,7 +116,10 @@ export class Content extends Component<ContentProps, ContentState> {
 
   render() {
     const { showControls } = this.state;
-    const { onClose, children } = this.props;
+    const { onClose } = this.props;
+    const children = React.cloneElement(this.props.children, {
+      showControlsCallback: this.checkMouseMovement,
+    });
 
     return (
       <ContentWrapper

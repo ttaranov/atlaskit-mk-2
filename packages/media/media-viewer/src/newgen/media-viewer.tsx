@@ -28,22 +28,12 @@ export class MediaViewer extends React.Component<Props, MediaViewerState> {
     return (
       <Blanket>
         {onClose && <Shortcut keyCode={27} handler={onClose} />}
-        <Content
-          onShowControlsCallback={this.saveChowControlsCallback}
-          onClose={onClose}
-        >
-          {this.renderContent()}
-        </Content>
+        <Content onClose={onClose}>{this.renderContent()}</Content>
       </Blanket>
     );
   }
 
-  private saveChowControlsCallback = showControlsCallback => {
-    this.setState({ showControlsCallback });
-  };
-
   private renderContent() {
-    const { showControlsCallback } = this.state;
     const { selectedItem, context, onClose, itemSource } = this.props;
     if (itemSource.kind === 'COLLECTION') {
       return (
@@ -52,7 +42,6 @@ export class MediaViewer extends React.Component<Props, MediaViewerState> {
           collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
-          showControlsCallback={showControlsCallback}
         />
       );
     } else if (itemSource.kind === 'ARRAY') {
@@ -62,9 +51,10 @@ export class MediaViewer extends React.Component<Props, MediaViewerState> {
           items={itemSource.items}
           context={context}
           onClose={onClose}
-          showControlsCallback={showControlsCallback}
         />
       );
+    } else {
+      return null as never;
     }
   }
 }
