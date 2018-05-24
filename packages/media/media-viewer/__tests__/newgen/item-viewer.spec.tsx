@@ -31,6 +31,7 @@ const identifier = {
   id: 'some-id',
   occurrenceKey: 'some-custom-occurrence-key',
   type: 'file' as MediaItemType,
+  collectionName: 'some-collection',
 };
 
 const imageItem: MediaItem = {
@@ -124,6 +125,10 @@ describe('<ItemViewer />', () => {
     subject.next(imageItem);
     el.update();
     expect(el.find(ImageViewer)).toHaveLength(1);
+    // MSW:720 - passes the collectionName along
+    expect(el.find(ImageViewer).prop('collectionName')).toEqual(
+      identifier.collectionName,
+    );
   });
 
   it('should error if processing Status failed', () => {
@@ -144,6 +149,10 @@ describe('<ItemViewer />', () => {
     subject.next(videoItem);
     el.update();
     expect(el.find(VideoViewer)).toHaveLength(1);
+    // MSW:720 - passes the collectionName along
+    expect(el.find(VideoViewer).prop('collectionName')).toEqual(
+      identifier.collectionName,
+    );
   });
 
   it('should show the audio viewer if media type is video', () => {
@@ -154,6 +163,10 @@ describe('<ItemViewer />', () => {
     subject.next(audioItem);
     el.update();
     expect(el.find(AudioViewer)).toHaveLength(1);
+    // MSW:720 - passes the collectionName along
+    expect(el.find(AudioViewer).prop('collectionName')).toEqual(
+      identifier.collectionName,
+    );
   });
 
   it('should show the document viewer if media type is document', () => {
@@ -164,6 +177,10 @@ describe('<ItemViewer />', () => {
     subject.next(docItem);
     el.update();
     expect(el.find(PDFViewer)).toHaveLength(1);
+    // MSW:720 - passes the collectionName along
+    expect(el.find(PDFViewer).prop('collectionName')).toEqual(
+      identifier.collectionName,
+    );
   });
 
   it('should error if file is unsupported', () => {
@@ -184,6 +201,20 @@ describe('<ItemViewer />', () => {
     subject.next(linkItem);
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
+  it('MSW-720: passes the collectionName to the provider', () => {
+    const subject = new Subject<MediaItem>();
+    const context = createContext(subject);
+    const el = mount(<ItemViewer context={context} identifier={identifier} />);
+    subject.next(linkItem);
+    el.update();
+
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith(
+      identifier.id,
+      identifier.type,
+      identifier.collectionName,
+    );
   });
 
   describe('Subscription', () => {
