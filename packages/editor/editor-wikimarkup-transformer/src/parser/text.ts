@@ -1,4 +1,3 @@
-import { defaultSchema } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { createTextNode } from './nodes/text';
 import { parseToken, TokenType } from './tokenize';
@@ -14,7 +13,7 @@ const processState = {
 
 export function parseString(
   input: string,
-  schema: Schema = defaultSchema,
+  schema: Schema,
   ignoreTokens: TokenType[] = [],
 ): PMNode[] {
   let index = 0;
