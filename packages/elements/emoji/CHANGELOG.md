@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 35.0.3
+- [patch] FS-1206 remove AtlassianEmojiMigrationResource [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+- [none] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+
 ## 35.0.2
 - [patch] FS-1904 add support for emoji with ascii starting with ( [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
 - [none] Updated dependencies [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)

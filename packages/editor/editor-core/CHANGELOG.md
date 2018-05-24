@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 72.1.2
+- [patch] FS-1206 remove AtlassianEmojiMigrationResource [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+- [none] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+  - @atlaskit/emoji@35.0.3
+  - @atlaskit/renderer@17.0.3
+
 ## 72.1.1
 - [patch] ED-4696, fixing adding multiple task items from toolbar button. [9b54e67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b54e67)
 - [patch] Updated dependencies [9b54e67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b54e67)

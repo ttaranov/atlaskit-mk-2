@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 17.0.3
+- [patch] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+
 ## 17.0.2
 - [patch] Updated dependencies [758b342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/758b342)
   - @atlaskit/task-decision@6.0.7
