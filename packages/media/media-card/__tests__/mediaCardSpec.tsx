@@ -155,18 +155,13 @@ describe('MediaCard', () => {
     it('should call onLoadingStateChange() with type "loading" when the component has mounted', () => {
       const onLoadingChange = jest.fn();
 
-      const element = shallow(
+      shallow(
         <MediaCard
           provider={createNoopProvider()}
           onLoadingChange={onLoadingChange}
         />,
         { disableLifecycleMethods: true },
       );
-      const instance = element.instance();
-
-      if (instance.componentDidMount) {
-        instance.componentDidMount();
-      }
 
       expect(onLoadingChange).toHaveBeenCalledTimes(1);
       expect(onLoadingChange).toHaveBeenCalledWith({
@@ -179,6 +174,7 @@ describe('MediaCard', () => {
       const fileDetailsPayload: FileDetails = {
         id: 'cryptic-id',
         name: 'Some file name',
+        processingStatus: 'pending',
       };
 
       const provider = {

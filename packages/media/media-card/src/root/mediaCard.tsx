@@ -13,7 +13,12 @@ import {
   MediaItemDetails,
 } from '@atlaskit/media-core';
 
-import { SharedCardProps, CardEventProps, CardStatus } from '..';
+import {
+  SharedCardProps,
+  CardEventProps,
+  OnLoadingChangeState,
+  CardStatus,
+} from '..';
 import { Provider } from './card';
 import { CardView } from './cardView';
 import { withDataURI } from './withDataURI';
@@ -46,6 +51,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     this.state = {
       status: props.preview ? 'complete' : 'loading',
     };
+    this.onLoadingChange(this.stateToCardProcessingStatus());
   }
 
   componentDidMount(): void {
@@ -83,15 +89,35 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     });
   };
 
+  private stateToCardProcessingStatus(): OnLoadingChangeState {
+    const { status, error, metadata } = this.state;
+    return {
+      type: status,
+      payload: error || metadata,
+    };
+  }
+
+  private onLoadingChange(loadingChange: OnLoadingChangeState) {
+    const {
+      onLoadingChange = () => {
+        /* do nothing */
+      },
+    } = this.props;
+    onLoadingChange(loadingChange);
+  }
+
   private updateState(props: MediaCardProps): void {
     this.unsubscribe();
-    const { preview } = props;
+    const { preview } = this.props;
     const status = preview ? 'complete' : 'loading';
 
     this.setState({ status }, this.subscribe.bind(this, props));
   }
 
   private subscribe = (props: MediaCardProps) => {
+    const onLoadingChangeCallback = () =>
+      this.onLoadingChange(this.stateToCardProcessingStatus());
+
     this.subscription = this.observable(props).subscribe({
       next: (metadata: MediaItemDetails) => {
         if (
@@ -99,14 +125,20 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
           metadata.processingStatus === 'pending'
         ) {
           // If it's a file with pending status
-          this.setState({ error: undefined, metadata, status: 'processing' });
+          this.setState(
+            { error: undefined, metadata, status: 'processing' },
+            onLoadingChangeCallback,
+          );
         } else {
-          // In all other cases (link or completed file) we call complete immidietly
-          this.setState({ error: undefined, metadata, status: 'complete' });
+          // In all other cases (link or completed file) we call complete immediately
+          this.setState(
+            { error: undefined, metadata, status: 'complete' },
+            onLoadingChangeCallback,
+          );
         }
       },
       error: error => {
-        this.setState({ error, status: 'error' });
+        this.setState({ error, status: 'error' }, onLoadingChangeCallback);
       },
     });
   };
