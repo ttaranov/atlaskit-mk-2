@@ -28,6 +28,8 @@ import {
 } from './extract-data-from-event';
 import { EventNextType } from '../types';
 
+const ATLASKIT_TAG = 'atlaskit';
+
 /**
  * This util exists to convert the Atlaskit event format into the analytics platform format.
  *
@@ -82,6 +84,9 @@ export default (event: EventNextType): GasPayload | null => {
     ...{ packageName, packageVersion },
     ...merge(extraAttributes, payloadAttributes),
   };
+  // Ensure atlaskit tag is not duplicated by using Set
+  const tags: Set<string> = new Set(event.payload.tags || []);
+  tags.add(ATLASKIT_TAG);
 
   if (event.payload) {
     if (eventType === UI_EVENT_TYPE) {
@@ -92,7 +97,7 @@ export default (event: EventNextType): GasPayload | null => {
         action,
         actionSubjectId: actionSubjectId,
         attributes,
-        tags: ['atlaskit'],
+        tags: Array.from(tags),
       };
     }
 

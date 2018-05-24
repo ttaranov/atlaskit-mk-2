@@ -316,6 +316,31 @@ describe('AtlaskitListener', () => {
           tags: ['atlaskit'],
         },
       },
+      {
+        name: 'tags',
+        eventPayload: {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          actionSubjectId: 'someComponentId',
+          tags: ['somethingInteresting'],
+          eventType: UI_EVENT_TYPE,
+        },
+        context: [{ component: 'navigationNext', source: 'navigation' }],
+        clientPayload: {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          actionSubjectId: 'someComponentId',
+          attributes: {
+            sourceHierarchy: 'navigation',
+            packageHierarchy: undefined,
+            componentHierarchy: 'navigationNext',
+            packageName: undefined,
+            packageVersion: undefined,
+          },
+          source: 'navigation',
+          tags: ['somethingInteresting', 'atlaskit'],
+        },
+      },
     ],
   );
 });
