@@ -6,6 +6,7 @@ import {
   getZoomLevel,
   ZoomControlsProps,
 } from '../../src/newgen/zoomControls';
+import { ZoomLevel } from '../../src/newgen/styled';
 
 describe('Zooming', () => {
   describe('<ZoomControls />', () => {
@@ -49,6 +50,28 @@ describe('Zooming', () => {
         .last()
         .simulate('click');
       expect(onChange).lastCalledWith(5);
+    });
+
+    describe('zoom level indicator', () => {
+      it('shows 100% zoom level', () => {
+        const { component } = setup({ zoomLevel: 1 });
+        expect(
+          component
+            .find(ZoomLevel)
+            .dive()
+            .text(),
+        ).toEqual('100 %');
+      });
+
+      it('shows zoom level without decimals', () => {
+        const { component } = setup({ zoomLevel: 1.229 });
+        expect(
+          component
+            .find(ZoomLevel)
+            .dive()
+            .text(),
+        ).toEqual('123 %');
+      });
     });
   });
 
