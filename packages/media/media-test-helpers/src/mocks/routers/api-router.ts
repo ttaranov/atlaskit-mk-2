@@ -76,42 +76,67 @@ export function createApiRouter(): Router<DatabaseSchema> {
     };
   });
 
-  router.head('/chunk/:chunkId', () => {
-    return {};
+  router.head('/chunk/:chunkId', ({ params }, database) => {
+    const { chunkId } = params;
+    if (database.findOne('chunk', { id: chunkId })) {
+      return new Response(200, undefined, {});
+    } else {
+      return new Response(404, undefined, {});
+    }
   });
 
-  router.put('/chunk/:chunkId', () => {
+  router.put('/chunk/:chunkId', ({ params, body }, database) => {
+    const { chunkId } = params;
+
+    database.push('chunk', {
+      id: chunkId,
+      blob: body,
+    });
+
+    return new Response(201, undefined, {});
+  });
+
+  router.post('/upload', ({ query }, database) => {
+    const { createUpTo = '1' } = query;
+
+    const records = database.create('upload', Number.parseInt(createUpTo));
+    const data = records.map(record => record.data);
+
     return {
-      data: {},
+      data,
     };
   });
 
-  router.post('/upload', () => {
-    return {
-      data: [
-        {
-          id: 'some-upload-id',
-          created: Date.now(),
-          expires: Date.now() + 100000,
-        },
-      ],
-    };
+  router.put('/upload/:uploadId/chunks', ({ params, body }, database) => {
+    const { uploadId } = params;
+    const { chunks /*, offset*/ } = JSON.parse(body);
+
+    const record = database.findOne('upload', { id: uploadId });
+
+    database.update('upload', record.id, {
+      chunks: [...record.data.chunks, ...chunks],
+    });
+
+    return new Response(200, undefined, {});
   });
 
-  router.put('/upload/:uploadId/chunks', () => {
-    return {};
-  });
+  router.post('/file/upload', ({ query, body }, database) => {
+    const { collection } = query;
+    const { name, mimeType /*, uploadId*/ } = JSON.parse(body);
 
-  router.post('/file/upload', () => {
+    const record = database.push(
+      'collectionItem',
+      createCollectionItem({
+        name,
+        mimeType,
+        collectionName: collection,
+      }),
+    );
+
     return {
       data: {
-        mediaType: 'unknown',
-        mimeType: 'image/jpeg',
-        name: 'omar-albeik-589641-unsplash.jpg',
-        size: 3572885,
-        processingStatus: 'pending',
-        artifacts: {},
-        id: '9dc5b6f1-6f7d-45a3-93fe-11d0ef8546e5',
+        ...record.data.details,
+        id: record.data.id,
       },
     };
   });

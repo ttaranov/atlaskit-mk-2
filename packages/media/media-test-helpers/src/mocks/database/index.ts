@@ -1,11 +1,13 @@
 import { ClientBasedAuth } from '@atlaskit/media-core';
-import { MediaStore } from '@atlaskit/media-store';
+import { MediaStore, MediaCollection } from '@atlaskit/media-store';
 import { Database } from 'kakapo';
 import Faker = require('faker');
 
 import { mapDataUriToBlob } from '../../utils';
-import { Collection, createCollection } from './collection';
+import { createCollection } from './collection';
 import { CollectionItem, createCollectionItem } from './collection-item';
+import { createUpload, Upload } from './upload';
+import { Chunk } from './chunk';
 
 export * from './collection';
 export * from './collection-item';
@@ -26,8 +28,10 @@ export const userAuthProvider = () => Promise.resolve(userAuth);
 export const tenantAuthProvider = () => Promise.resolve(tenantAuth);
 
 export type DatabaseSchema = {
-  collection: Collection;
+  collection: MediaCollection;
   collectionItem: CollectionItem;
+  upload: Upload;
+  chunk: Chunk;
 };
 
 export function createDatabase(): Database<DatabaseSchema> {
@@ -35,6 +39,8 @@ export function createDatabase(): Database<DatabaseSchema> {
 
   database.register('collectionItem', createCollectionItem);
   database.register('collection', createCollection);
+  database.register('upload', createUpload);
+  database.register('chunk');
 
   return database;
 }
