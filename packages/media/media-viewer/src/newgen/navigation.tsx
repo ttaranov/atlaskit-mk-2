@@ -13,6 +13,7 @@ import {
 } from './styled';
 import { getSelectedIndex } from './util';
 import { Shortcut } from './shortcut';
+import { triggerMovementCheck } from './content';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -23,25 +24,28 @@ export interface NavigationProps {
 }
 
 export default class Navigation extends Component<NavigationProps, any> {
-  private navigate(direction: NavigationDirection) {
-    return () => {
-      const { onChange, items } = this.props;
-      const { selectedIndex } = this;
-      const newItem =
-        direction === 'next'
-          ? items[selectedIndex + 1]
-          : items[selectedIndex - 1];
+  private navigate = (direction: NavigationDirection) => () => {
+    const { onChange, items } = this.props;
+    const { selectedIndex } = this;
+    const newItem =
+      direction === 'next'
+        ? items[selectedIndex + 1]
+        : items[selectedIndex - 1];
 
-      if (newItem) {
-        onChange(newItem);
-      }
-    };
-  }
+    if (newItem) {
+      onChange(newItem);
+    }
+
+    triggerMovementCheck(this);
+  };
 
   get selectedIndex() {
     const { items, selectedItem } = this.props;
     return getSelectedIndex(items, selectedItem);
   }
+
+  private prev = this.navigate('prev');
+  private next = this.navigate('next');
 
   render() {
     const { items } = this.props;
@@ -54,17 +58,14 @@ export default class Navigation extends Component<NavigationProps, any> {
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
-    const prev = this.navigate('prev');
-    const next = this.navigate('next');
-
     return (
       <ArrowsWrapper className={hideControlsClassName}>
         <LeftWrapper>
           {isLeftVisible ? (
             <Arrow>
-              <Shortcut keyCode={37} handler={prev} />
+              <Shortcut keyCode={37} handler={this.prev} />
               <ArrowLeftCircleIcon
-                onClick={prev}
+                onClick={this.prev}
                 primaryColor={colors.N800}
                 size="xlarge"
                 label="Previous"
@@ -76,9 +77,9 @@ export default class Navigation extends Component<NavigationProps, any> {
         <RightWrapper>
           {isRightVisible ? (
             <Arrow>
-              <Shortcut keyCode={39} handler={next} />
+              <Shortcut keyCode={39} handler={this.next} />
               <ArrowRightCircleIcon
-                onClick={next}
+                onClick={this.next}
                 primaryColor={colors.N800}
                 size="xlarge"
                 label="Next"

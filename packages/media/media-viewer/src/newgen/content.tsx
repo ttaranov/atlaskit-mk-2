@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Component, SyntheticEvent } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
@@ -17,6 +18,15 @@ export interface ContentState {
 }
 
 const mouseMovementDelay = 2000;
+
+export const triggerMovementCheck = component => {
+  const node = ReactDOM.findDOMNode(component);
+
+  if (node && node.click) {
+    node.click();
+  }
+};
+
 export const findParent = (
   element: HTMLElement,
   className: string,
