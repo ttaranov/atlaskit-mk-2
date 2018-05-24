@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.0
+- [minor] The code block UI component has been updated to the latest design. It now has line numbers and corrected padding. 🎉 [6945723](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6945723)
+- [none] Updated dependencies [6945723](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6945723)
+
 ## 72.0.7
 - [patch] Updated dependencies [758b342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/758b342)
   - @atlaskit/task-decision@6.0.7
