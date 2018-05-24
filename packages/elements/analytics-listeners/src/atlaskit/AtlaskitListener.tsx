@@ -22,7 +22,7 @@ export type Props = {
   client: AnalyticsWebClient;
 };
 
-export default class FabricElementsListener extends React.Component<Props> {
+export default class AtlaskitListener extends React.Component<Props> {
   listenerHandler: ListenerFunction = event => {
     const payload = processEvent(event);
 

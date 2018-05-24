@@ -34,7 +34,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.0"
+    "@atlaskit/docs": "^3.0.0",
+    "jest-in-case": "^1.0.2"
   },
   "atlaskit": {
     "internal": true

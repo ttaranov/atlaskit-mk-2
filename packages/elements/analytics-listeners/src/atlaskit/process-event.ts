@@ -1,8 +1,16 @@
 /**
  * Copied largely from analytics-web-react
  */
-// @ts-ignore
+declare namespace last {
+
+}
+declare namespace merge {
+
+}
+
 import * as last from 'lodash.last';
+import * as merge from 'lodash.merge';
+
 import {
   UI_EVENT_TYPE,
   SCREEN_EVENT_TYPE,
@@ -15,6 +23,7 @@ import {
   getActionSubject,
   getExtraAttributes,
   getPackageInfo,
+  getComponents,
 } from './extract-data-from-event';
 
 /**
@@ -48,21 +57,31 @@ export default event => {
   const sources = getSources(event);
   const source = last(sources);
   const extraAttributes = getExtraAttributes(event);
-  const { packageName, packageVersion } = last(getPackageInfo(event)) as any;
+  const components = getComponents(event);
+
+  const packages = getPackageInfo(event);
+  const { packageName, packageVersion } =
+    last(getPackageInfo(event)) || ({} as any);
+  const packageHierarchy = packages.map(
+    p =>
+      p.packageVersion != null
+        ? `${p.packageName}@${p.packageVersion}`
+        : p.packageName,
+  );
 
   const {
     eventType,
-    name,
     action,
     actionSubject,
     actionSubjectId,
-    ...payloadToSend
+    attributes: payloadAttributes,
   } = event.payload;
   const attributes = {
-    namespaces: sources.join('.'),
+    sourceHierarchy: sources.join('.') || undefined,
+    componentHierarchy: components.join('.') || undefined,
+    packageHierarchy: packageHierarchy.join(',') || undefined,
     ...{ packageName, packageVersion },
-    ...extraAttributes,
-    ...payloadToSend,
+    ...merge(extraAttributes, payloadAttributes),
   };
 
   if (event.payload) {
@@ -74,6 +93,7 @@ export default event => {
         action,
         actionSubjectId: actionSubjectId,
         attributes,
+        tags: ['atlaskit'],
       };
     }
 

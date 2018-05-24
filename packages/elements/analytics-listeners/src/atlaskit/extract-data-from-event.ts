@@ -11,10 +11,18 @@ const extractFromEventContext = (propertyName: string, event) =>
 export const getActionSubject = event => {
   const overrides = extractFromEventContext('actionSubjectOverride', event);
 
-  return overrides.length > 0 ? overrides[0] : event.payload.actionSubject;
+  const closestContext =
+    event.context.length > 0 ? event.context[event.context.length - 1] : {};
+
+  const actionSubject = event.payload.actionSubject || closestContext.component;
+
+  return overrides.length > 0 ? overrides[0] : actionSubject;
 };
 
 export const getSources = event => extractFromEventContext('source', event);
+
+export const getComponents = event =>
+  extractFromEventContext('component', event);
 
 export const getExtraAttributes = event =>
   extractFromEventContext('attributes', event).reduce(
@@ -28,7 +36,7 @@ export const getPackageInfo = event =>
       packageName: contextItem.packageName,
       packageVersion: contextItem.packageVersion,
     }))
-    .filter(p => p.packageName != null || p.packageVersion != null);
+    .filter(p => p.packageName != null);
 
 export const getPackageVersion = event =>
   extractFromEventContext('packageVersion', event);
