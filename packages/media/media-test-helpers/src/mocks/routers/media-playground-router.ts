@@ -1,4 +1,5 @@
 import { Router } from 'kakapo';
+import { userAuthProvider } from '../database';
 
 export function createMediaPlaygroundRouter(): Router {
   const router = new Router({
@@ -6,7 +7,10 @@ export function createMediaPlaygroundRouter(): Router {
     requestDelay: 10,
   });
 
-  router.get('/media-playground/api/token/user/impersonation', () => {});
+  router.get(
+    '/media-playground/api/token/user/impersonation',
+    userAuthProvider,
+  );
 
   return router;
 }

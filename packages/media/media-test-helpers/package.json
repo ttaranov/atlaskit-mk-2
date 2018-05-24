@@ -39,6 +39,8 @@
   "devDependencies": {
     "@atlaskit/field-text": "^5.0.3",
     "@atlaskit/media-core": "^18.1.1",
-    "kakapo": "^1.0.4"
+    "@atlaskit/media-store": "^2.1.0",
+    "@types/faker": "^4.1.2",
+    "kakapo": "^3.0.2"
   }
 }

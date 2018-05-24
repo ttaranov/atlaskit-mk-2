@@ -1,26 +1,24 @@
-import { Router, Server } from 'kakapo';
+import { Server } from 'kakapo';
+
+import { createApiRouter, createMediaPlaygroundRouter } from './routers';
+import {
+  createDatabase,
+  generateUserData,
+  generateTenantData,
+} from './database';
 
 export class MediaMock {
   private server = new Server();
 
+  constructor() {}
+
   enable() {
-    const router = new Router({
-      host: 'https://dt-api.dev.atl-paas.net',
-      requestDelay: 10,
-    });
+    this.server.use(createDatabase());
+    this.server.use(createMediaPlaygroundRouter());
+    this.server.use(createApiRouter());
 
-    router.get('/collection/:collectionName/items', () => {
-      return {
-        data: {
-          nextInclusiveStartKey: 121,
-          contents: [],
-        },
-      };
-    });
-
-    //dt-api.dev.atl-paas.net/collection/recents/items?sortDirection=desc&limit=30
-
-    this.server.use(router);
+    generateUserData();
+    generateTenantData();
   }
 }
 

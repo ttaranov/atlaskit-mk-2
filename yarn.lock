@@ -8399,12 +8399,12 @@ junk@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/junk/-/junk-2.1.0.tgz#f431b4b7f072dc500a5f10ce7f4ec71930e70134"
 
-kakapo@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-1.0.4.tgz#ba3494704f4a8d93c964a49e88f73afa33d98c85"
+kakapo@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.0.2.tgz#5e814cf31ae601cc7b84076910d8951d160d25f6"
   dependencies:
     faker "^3.1.0"
-    lodash "4.10.0"
+    lodash "^4.2.0"
     parse-url "1.3.0"
     path-match "1.2.4"
     path-to-regexp "^1.2.1"
@@ -9090,10 +9090,6 @@ lodash.uniq@^4.5.0:
 lodash.values@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
-
-lodash@4.10.0:
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.10.0.tgz#3d8f3ac7a5a904fdb01e2cfe1401879bf9652c6a"
 
 lodash@^3.10.1, lodash@^3.3.1, lodash@^3.8.0:
   version "3.10.1"
