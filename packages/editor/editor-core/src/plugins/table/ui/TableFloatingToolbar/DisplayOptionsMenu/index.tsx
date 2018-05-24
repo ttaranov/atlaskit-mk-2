@@ -1,19 +1,25 @@
 import * as React from 'react';
 import { Component } from 'react';
+
+import { EditorView } from 'prosemirror-view';
+import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
+import { akColorB400 } from '@atlaskit/util-shared-styles';
+
+import DropdownMenu from '../../../../../ui/DropdownMenu';
+import { analyticsService as analytics } from '../../../../../analytics';
+import {
+  TriggerWrapper,
+  ExpandIconWrapper,
+  Spacer,
+  ToolbarButtonWide,
+} from '../styles';
 import {
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
 } from '../../../actions';
-import { EditorView } from 'prosemirror-view';
-import TableIcon from '@atlaskit/icon/glyph/table';
-import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
-import { akColorB400 } from '@atlaskit/util-shared-styles';
-import ToolbarButton from '../../../../../ui/ToolbarButton';
-import DropdownMenu from '../../../../../ui/DropdownMenu';
-import { analyticsService as analytics } from '../../../../../analytics';
-import { TriggerWrapper, ExpandIconWrapper, Spacer } from '../styles';
 import {
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
@@ -51,13 +57,14 @@ export default class DisplayOptionsMenu extends Component<Props, State> {
         fitHeight={188}
         fitWidth={180}
       >
-        <ToolbarButton
+        <ToolbarButtonWide
+          spacing="compact"
           selected={isOpen}
           title="Toggle display options menu"
           onClick={this.toggleOpen}
           iconBefore={
             <TriggerWrapper>
-              <TableIcon label="Toggle display options menu" />
+              <TableDisplayOptionsIcon label="Toggle display options menu" />
               <ExpandIconWrapper>
                 <ExpandIcon label="expand-dropdown-menu" />
               </ExpandIconWrapper>

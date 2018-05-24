@@ -74,6 +74,7 @@ export type TableCellContent = Array<
   | Heading
   | CodeBlock
   | MediaGroup
+  | MediaSingle
   | ApplicationCard
   | DecisionList
   | TaskList
@@ -100,6 +101,7 @@ export type ExtensionContent = Array<
   | DecisionList
   | TaskList
   | Table
+  | Extension
 >;
 
 /**
@@ -163,5 +165,5 @@ export interface Doc {
 }
 
 export const doc: NodeSpec = {
-  content: 'block+',
+  content: '(block|layoutSection)+',
 };

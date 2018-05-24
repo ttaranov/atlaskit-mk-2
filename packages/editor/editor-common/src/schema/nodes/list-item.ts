@@ -2,10 +2,11 @@ import { NodeSpec } from 'prosemirror-model';
 import { Definition as Paragraph } from './paragraph';
 import { Definition as OrderedList } from './ordered-list';
 import { Definition as BulletList } from './bullet-list';
+import { Definition as MediaSingle } from './media-single';
 
 export interface ListItemArray
-  extends Array<Paragraph | OrderedList | BulletList> {
-  0: Paragraph;
+  extends Array<Paragraph | OrderedList | BulletList | MediaSingle> {
+  0: Paragraph | MediaSingle;
 }
 
 /**
@@ -20,7 +21,8 @@ export interface Definition {
 }
 
 export const listItem: NodeSpec = {
-  content: 'paragraph (paragraph | bulletList | orderedList)*',
+  content:
+    '(paragraph | mediaSingle) (paragraph | bulletList | orderedList | mediaSingle)*',
   defining: true,
   parseDOM: [{ tag: 'li' }],
   toDOM() {

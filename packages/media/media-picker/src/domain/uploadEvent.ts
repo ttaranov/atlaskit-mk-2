@@ -1,8 +1,7 @@
-import { MediaFileData } from '../service/mediaApi';
+import { FileDetails } from '@atlaskit/media-core';
 import { MediaProgress } from './progress';
 import { MediaError } from './error';
 import { Preview } from './preview';
-import { FileFinalize } from '../service/uploadService';
 import { MediaFile, PublicMediaFile } from './file';
 
 export type UploadsStartEventPayload = {
@@ -25,17 +24,12 @@ export type UploadProcessingEventPayload = {
 
 export type UploadEndEventPayload = {
   readonly file: PublicMediaFile;
-  readonly public: MediaFileData;
+  readonly public: FileDetails;
 };
 
 export type UploadErrorEventPayload = {
   readonly file: MediaFile;
   readonly error: MediaError;
-};
-
-export type UploadFinalizeReadyEventPayload = {
-  readonly file: MediaFile;
-  readonly finalize: FileFinalize;
 };
 
 export type UploadEventPayloadMap = {
@@ -45,7 +39,6 @@ export type UploadEventPayloadMap = {
   readonly 'upload-processing': UploadProcessingEventPayload;
   readonly 'upload-end': UploadEndEventPayload;
   readonly 'upload-error': UploadErrorEventPayload;
-  readonly 'upload-finalize-ready': UploadFinalizeReadyEventPayload;
 };
 
 export type UploadEventMap = {
@@ -64,4 +57,3 @@ export type UploadStatusUpdateEvent = UploadEventMap['upload-status-update'];
 export type UploadProcessingEvent = UploadEventMap['upload-processing'];
 export type UploadEndEvent = UploadEventMap['upload-end'];
 export type UploadErrorEvent = UploadEventMap['upload-error'];
-export type UploadFinalizeReadyEvent = UploadEventMap['upload-finalize-ready'];

@@ -4,7 +4,7 @@ import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { Config } from '../src/api/configureSearchClients';
 
-const config: Config = {
+const config: Partial<Config> = {
   activityServiceUrl: 'https://api-private.stg.atlassian.com/activity',
   searchAggregatorServiceUrl:
     'https://api-private.stg.atlassian.com/xpsearch-aggregator',
@@ -36,7 +36,11 @@ export default class extends React.Component<{}, { cloudId: string }> {
         />
         <BasicNavigation
           searchDrawerContent={
-            <GlobalQuickSearch cloudId={this.state.cloudId} {...config} />
+            <GlobalQuickSearch
+              cloudId={this.state.cloudId}
+              {...config}
+              context="confluence"
+            />
           }
         />
       </div>

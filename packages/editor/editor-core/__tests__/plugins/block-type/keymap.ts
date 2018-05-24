@@ -16,13 +16,8 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import codeBlockPlugin from '../../../src/plugins/code-block';
 import { analyticsService } from '../../../src/analytics';
 import { setNodeSelection } from '../../../src/utils';
-import mentionsPlugin from '../../../src/plugins/mentions';
-import listPlugin from '../../../src/plugins/lists';
-import tablesPlugin from '../../../src/plugins/table';
-import rulePlugin from '../../../src/plugins/rule';
 
 describe('codeBlock - keymaps', () => {
   let trackEvent;
@@ -31,14 +26,13 @@ describe('codeBlock - keymaps', () => {
       doc,
       editorProps: {
         analyticsHandler: trackEvent,
+        allowCodeBlocks: true,
+        allowMentions: true,
+        mentionProvider: new Promise(() => {}),
+        allowLists: true,
+        allowTables: true,
+        allowRule: true,
       },
-      editorPlugins: [
-        codeBlockPlugin,
-        mentionsPlugin,
-        listPlugin,
-        tablesPlugin,
-        rulePlugin,
-      ],
     });
 
   beforeEach(() => {
@@ -160,13 +154,13 @@ describe('codeBlock - keymaps', () => {
               describe('when cursor is in the first cell of the table', () => {
                 it('creates a new paragraph above the table', () => {
                   const { editorView } = editor(
-                    doc(table(tr(tdCursor, tdEmpty, tdEmpty))),
+                    doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
                   );
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).toEqualDocument(
-                    doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty))),
+                    doc(p(''), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
                   );
                   editorView.destroy();
                 });
@@ -369,13 +363,13 @@ describe('codeBlock - keymaps', () => {
             describe('when cursor is in the last cell of the table', () => {
               it('creates a new paragraph below the table', () => {
                 const { editorView } = editor(
-                  doc(table(tr(tdEmpty, tdEmpty, tdCursor))),
+                  doc(table()(tr(tdEmpty, tdEmpty, tdCursor))),
                 );
 
                 sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).toEqualDocument(
-                  doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p('')),
+                  doc(table()(tr(tdEmpty, tdEmpty, tdEmpty)), p('')),
                 );
                 editorView.destroy();
               });
@@ -488,6 +482,22 @@ describe('codeBlock - keymaps', () => {
           });
         });
       });
+    });
+  });
+
+  describe('when hits backspace', () => {
+    it('should convert empty heading to paragraph', () => {
+      const { editorView } = editor(doc(h1('{<>}')));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).toEqualDocument(doc(p('')));
+      editorView.destroy();
+    });
+
+    it('should not convert heading with text to paragraph', () => {
+      const { editorView } = editor(doc(h1('{<>}Content')));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).toEqualDocument(doc(h1('{<>}Content')));
+      editorView.destroy();
     });
   });
 });

@@ -68,12 +68,17 @@ export const pmNodeFactory: object = {
     }),
   image: () => img({ src: 'src/testsource.png' }),
   date: () => date({ timestamp: '121220121212' }),
-  table,
+  table: content => table()(content),
   tableCell: td({ colspan: 1, rowspan: 1 }),
   tableHeader: th({ colspan: 1, rowspan: 1 }),
   tableRow: tr,
   mediaSingle: mediaSingle({ layout: 'center' }),
   mediaGroup,
+  media,
+  extension: content =>
+    extension({ extensionKey: '123', extensionType: 'blockExtension' })(
+      content,
+    ),
   bodiedExtension: content =>
     bodiedExtension({ extensionKey: '123', extensionType: 'bodiedExtension' })(
       content,
@@ -81,6 +86,7 @@ export const pmNodeFactory: object = {
 };
 
 export const pmNodeBuilder: object = {
+  doc: doc(p('')),
   text: createText('fake text'),
   paragraph: p('fake paragraph'),
   blockquote: blockquote(p('fake blockquote')),
@@ -104,8 +110,8 @@ export const pmNodeBuilder: object = {
   mention: mention({ id: 'fakeMentionId' })(),
   image: img({ src: 'src/fakeimagesource.png' }),
   date: date({ timestamp: '121220121212' }),
-  table: table(
-    tr(th({ colspan: 1, rowspan: 1 })(p('fake teable header'))),
+  table: table()(
+    tr(th({ colspan: 1, rowspan: 1 })(p('fake table header'))),
     tr(td({ colspan: 1, rowspan: 1 })(p('fake table row'))),
   ),
   tableCell: td({ colspan: 1, rowspan: 1 })(p('fake table cell')),

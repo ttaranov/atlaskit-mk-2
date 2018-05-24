@@ -1,5 +1,110 @@
 # @atlaskit/emoji
 
+## 35.0.2
+- [patch] FS-1904 add support for emoji with ascii starting with ( [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+- [none] Updated dependencies [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+  - @atlaskit/util-data-test@9.1.5
+
+## 35.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-picker@7.0.1
+  - @atlaskit/media-core@18.1.1
+
+## 35.0.0
+
+
+- [major] media-picker: <All but popup picker>.emitUploadEnd second argument shape has changed from MediaFileData to FileDetails; `upload-end` event payload body shape changed from MediaFileData to FileDetails; All the media pickers config now have new property `useNewUploadService: boolean` (false by default); popup media-picker .cancel can't be called with no argument, though types does allow for it; `File` is removed; --- media-store: MediaStore.createFile now has a required argument of type MediaStoreCreateFileParams; MediaStore.copyFileWithToken new method; uploadFile method result type has changed from just a promise to a UploadFileResult type; --- media-test-helpers: mediaPickerAuthProvider argument has changed from a component instance to just a boolean authEnvironment; [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/util-data-test@9.1.4
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/util-data-test@9.1.4
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/media-picker@7.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/media-picker@7.0.0
+
+## 34.2.1
+- [patch] FS-1976 sort emojis based on order property [70de5fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70de5fc)
+- [none] Updated dependencies [70de5fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70de5fc)
+
+## 34.2.0
+
+
+
+
+- [patch] FS-1580 add new atlassian emoji [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+- [minor] FS-1580 add new Atlassian emoji [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/util-data-test@9.1.3
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/util-data-test@9.1.3
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/util-data-test@9.1.3
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/util-data-test@9.1.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-picker@6.0.5
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/field-base@9.0.3
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/util-service-support@2.0.7
+  - @atlaskit/layer@3.1.1
+  - @atlaskit/analytics@3.0.1
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/util-data-test@9.1.3
+
+## 34.1.11
+
+## 34.1.10
+
+## 34.1.9
+- [patch] FS-1860 Fix site emoji stuck in a bad state [bf8622c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf8622c)
+
+## 34.1.8
+
+## 34.1.7
+
+## 34.1.6
+- [patch] Expose the EmojiResourceConfig interface [3015b9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3015b9d)
+
+## 34.1.5
+
+## 34.1.4
+
+## 34.1.3
+
+## 34.1.2
+
+## 34.1.1
+- [patch] Fixed flex issue in IE11 [137d8bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/137d8bd)
+- [patch] Improve custom emoji upload failure and waiting experience [1ab5945](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ab5945)
+
+## 34.1.0
+- [minor] FS-1660 emoji upload preview uses new design [52a8dd9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52a8dd9)
+
+## 34.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 33.0.3
+
+## 33.0.2
+- [patch] FS-1853 custom category button scrolls to Your Uploads if present [f42e14e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f42e14e)
+
+## 33.0.1
+- [patch] code clean up [6c1c0a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c1c0a0)
+- [patch] custom emoji pre-upload file validation for invalid image and files over 1Mb [86244f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86244f5)
+
 ## 33.0.0
 
 - [major] FS-1658 deleteSiteEmoji and getCurrentUser are required for EmojiProvider implementation [ecec57f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecec57f)

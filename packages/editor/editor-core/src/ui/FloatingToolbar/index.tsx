@@ -11,12 +11,14 @@ export type Coordinates = {
 };
 
 export interface Props {
+  className?: string;
   target?: HTMLElement;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   offset?: number[];
   fitWidth?: number;
   fitHeight?: number;
+  alignX?: 'left' | 'center' | 'right';
   onPositionCalculated?: (position: Coordinates) => any;
 }
 
@@ -37,6 +39,8 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       onPositionCalculated,
       popupsMountPoint,
       popupsBoundariesElement,
+      className,
+      alignX = 'center',
     } = this.props;
 
     if (!target) {
@@ -45,6 +49,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
 
     return (
       <Popup
+        alignX={alignX}
         target={target}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
@@ -53,7 +58,9 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
         fitHeight={fitHeight}
         onPositionCalculated={onPositionCalculated}
       >
-        <Container height={fitHeight}>{children}</Container>
+        <Container height={fitHeight} className={className}>
+          {children}
+        </Container>
       </Popup>
     );
   }

@@ -6,10 +6,13 @@ import {
   Schema,
   Slice /*MediaAttributes */,
 } from 'prosemirror-model';
-import { Attributes as MediaAttributes } from '../src/schema/nodes/media';
+import { MediaAttributes } from '../src/schema/nodes/media';
 import matches from './matches';
 import sampleSchema from './schema';
-import { CellAttributes } from '../src/schema/nodes/tableNodes';
+import {
+  TableAttributes,
+  CellAttributes,
+} from '../src/schema/nodes/tableNodes';
 
 /**
  * Represents a ProseMirror "position" in a document.
@@ -290,7 +293,8 @@ export const media = (attrs: MediaAttributes) =>
   sampleSchema.nodes.media.create(attrs);
 export const textColor = (attrs: { color: string }) =>
   markFactory(sampleSchema.marks.textColor, attrs);
-export const table = nodeFactory(sampleSchema.nodes.table, {});
+export const table = (attrs?: TableAttributes) =>
+  nodeFactory(sampleSchema.nodes.table, attrs);
 export const tr = nodeFactory(sampleSchema.nodes.tableRow, {});
 export const td = (attrs: CellAttributes) =>
   nodeFactory(sampleSchema.nodes.tableCell, attrs);

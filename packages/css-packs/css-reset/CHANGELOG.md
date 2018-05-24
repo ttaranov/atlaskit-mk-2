@@ -1,5 +1,15 @@
 # @atlaskit/css-reset
 
+## 2.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
+## 2.0.1
+- [patch] Remove negative spacing [ac73181](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac73181)
+
+## 2.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 1.2.3
 - [patch] Fixed main styles in IE11 [5aa8105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5aa8105)
 

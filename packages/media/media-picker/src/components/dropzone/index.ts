@@ -1,14 +1,14 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, Context } from '@atlaskit/media-core';
 
-import { LocalUploadComponent } from '../localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from '../localUpload';
 import { MPDropzoneLoaded } from '../../outer/analytics/events';
 import { MediaPickerContext } from '../../domain/context';
-import { ModuleConfig } from '../../domain/config';
 import { whenDomReady } from '../../util/documentReady';
 import dropzoneUI from './dropzoneUI';
-import { UploadEventPayloadMap } from '../../domain/uploadEvent';
+import { UploadEventPayloadMap } from '../..';
+import { OldUploadServiceImpl } from '../../service/uploadService';
 
-export interface DropzoneConfig {
+export interface DropzoneConfig extends LocalUploadConfig {
   userAuthProvider?: AuthProvider;
   container?: HTMLElement;
   headless?: boolean;
@@ -16,8 +16,8 @@ export interface DropzoneConfig {
 
 export interface DropzoneConstructor {
   new (
-    context: MediaPickerContext,
-    config: ModuleConfig,
+    analyticsContext: MediaPickerContext,
+    context: Context,
     dropzoneConfig: DropzoneConfig,
   ): Dropzone;
 }
@@ -43,17 +43,17 @@ export class Dropzone extends LocalUploadComponent<
   private uiActive: boolean;
 
   constructor(
-    context: MediaPickerContext,
-    config: ModuleConfig,
-    { userAuthProvider, container, headless }: DropzoneConfig = {},
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: DropzoneConfig = { uploadParams: {} },
   ) {
-    super(context, config, userAuthProvider);
-
+    super(analyticsContext, context, config);
+    const { container, headless } = config;
     this.container = container || document.body;
     this.headless = headless || false;
     this.uiActive = false;
 
-    this.context.trackEvent(new MPDropzoneLoaded());
+    this.analyticsContext.trackEvent(new MPDropzoneLoaded());
   }
 
   public activate(): Promise<void> {
@@ -68,14 +68,39 @@ export class Dropzone extends LocalUploadComponent<
         this.deactivate(); // in case we call activate twice in a row
         this.container.addEventListener('dragover', this.onDragOver, false);
         this.container.addEventListener('dragleave', this.onDragLeave, false);
-        this.uploadService.addDropzone(this.container);
+        this.addDropzone();
       });
   }
+
+  private addDropzone() {
+    if (this.config.useNewUploadService) {
+      this.container.addEventListener('drop', this.onFileDropped);
+    } else {
+      (this.uploadService as OldUploadServiceImpl).addDropzone(this.container);
+    }
+  }
+
+  private readonly onFileDropped = (dragEvent: DragEvent) => {
+    dragEvent.preventDefault();
+    dragEvent.stopPropagation();
+    this.onDrop(dragEvent);
+
+    const filesArray = [].slice.call(dragEvent.dataTransfer.files);
+    this.uploadService.addFiles(filesArray);
+  };
 
   public deactivate(): void {
     this.container.removeEventListener('dragover', this.onDragOver, false);
     this.container.removeEventListener('dragleave', this.onDragLeave, false);
-    this.uploadService.removeDropzone();
+    this.removeDropzone();
+  }
+
+  private removeDropzone() {
+    if (this.config.useNewUploadService) {
+      this.container.removeEventListener('drop', this.onFileDropped);
+    } else {
+      (this.uploadService as OldUploadServiceImpl).removeDropzone();
+    }
   }
 
   private onDragOver = (e: DragEvent): void => {
@@ -122,11 +147,12 @@ export class Dropzone extends LocalUploadComponent<
   };
 
   private createInstance(): void {
-    const element = this.getDropzoneUI();
-
-    this.instance = element;
+    this.instance = this.getDropzoneUI();
     this.container.appendChild(this.instance);
-    this.uploadService.on('file-dropped', this.onDrop);
+
+    if (!this.config.useNewUploadService) {
+      this.uploadService.on('file-dropped', this.onDrop);
+    }
   }
 
   private getDropzoneUI(): HTMLElement {

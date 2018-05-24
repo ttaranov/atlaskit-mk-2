@@ -136,6 +136,8 @@ module.exports = {
   'editor/undo': [],
   'editor/unlink': [],
   'editor/warning': ['alert', 'error'],
+  'editor/background-color': ['fill'],
+  'editor/table-display-options': ['display-options', 'display'],
   emoji: ['emoticon', 'smiley'],
   'emoji/activity': ['tennis', 'ball'],
   'emoji/atlassian': [],

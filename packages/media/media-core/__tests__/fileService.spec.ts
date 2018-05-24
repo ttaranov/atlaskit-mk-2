@@ -3,7 +3,7 @@ import { LRUCache } from 'lru-fast';
 
 import { MediaFileService } from '../src/services/fileService';
 import { FileDetails, FileItem } from '../src/item';
-import { AuthProvider } from '../src/auth';
+import { AuthProvider } from '@atlaskit/media-store';
 
 const serviceHost = 'some-host';
 const token = 'some-token';

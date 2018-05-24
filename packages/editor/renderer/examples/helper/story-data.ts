@@ -939,6 +939,32 @@ System.out.println("There are " + count + " values >= 5");`,
     {
       type: 'panel',
       attrs: {
+        panelType: 'success',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a success panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'panel',
+      attrs: {
         panelType: 'warning',
       },
       content: [
@@ -948,6 +974,32 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'text',
               text: 'This is a warning panel with ',
+            },
+            {
+              type: 'text',
+              text: 'bold text',
+              marks: [
+                {
+                  type: 'strong',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'panel',
+      attrs: {
+        panelType: 'error',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This is a error panel with ',
             },
             {
               type: 'text',
@@ -1407,9 +1459,8 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'tableHeader',
               attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
+                colspan: 2,
+                colwidth: [233, 100],
               },
               content: [
                 {
@@ -1421,23 +1472,7 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'tableHeader',
               attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
-              content: [
-                {
-                  type: 'paragraph',
-                  content: [],
-                },
-              ],
-            },
-            {
-              type: 'tableHeader',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
+                background: '#DEEBFF',
               },
               content: [
                 {
@@ -1467,11 +1502,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1481,11 +1511,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1500,11 +1525,6 @@ System.out.println("There are " + count + " values >= 5");`,
           content: [
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1514,11 +1534,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',
@@ -1528,11 +1543,6 @@ System.out.println("There are " + count + " values >= 5");`,
             },
             {
               type: 'tableCell',
-              attrs: {
-                colspan: 1,
-                rowspan: 1,
-                background: null,
-              },
               content: [
                 {
                   type: 'paragraph',

@@ -15,27 +15,25 @@ import {
   PopupHeader,
   PopupContainer,
   DropzoneContentWrapper,
-  DropzonePreviewsWrapper,
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
-import { renderPreviewImage } from '../example-helpers';
+import { UploadPreviews } from '../example-helpers/upload-previews';
+import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: any[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
   inflightUploads: string[];
+  dropzone?: Dropzone;
 }
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
-  dropzone: Dropzone;
   dropzoneContainer: HTMLDivElement;
 
   state: DropzoneWrapperState = {
     isConnectedToUsersCollection: true,
-    previewsData: [],
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],
@@ -65,102 +63,60 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
-    const config = {
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
-      apiUrl: userAuthProviderBaseURL,
-    };
-    const dropzone = MediaPicker('dropzone', config, {
-      container: this.dropzoneContainer,
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider
         : undefined,
     });
-
-    this.dropzone = dropzone;
-
-    dropzone.on('uploads-start', data => {
-      console.log('uploads-start');
-      const newInflightUploads = data.files.map(file => file.id);
-
-      this.setState({
-        inflightUploads: [...this.state.inflightUploads, ...newInflightUploads],
-      });
-    });
-
-    dropzone.on('upload-preview-update', data => {
-      this.setState({ previewsData: [...this.state.previewsData, data] });
-    });
-
-    dropzone.on('upload-status-update', data => {
-      console.log('upload progress update');
-      console.log(data);
-    });
-
-    dropzone.on('upload-processing', data => {
-      console.log('file processing');
-      const processingFileId = data.file.id;
-      const inflightUploads = this.state.inflightUploads.filter(
-        fileId => fileId !== processingFileId,
-      );
-
-      this.setState({ inflightUploads });
-    });
-
-    dropzone.on('upload-end', data => {
-      console.log('upload finished');
-      console.log(data);
-    });
-
-    dropzone.on('drag-enter', data => {
-      console.log('drag-enter', data.length, data);
-    });
-
-    dropzone.on('drag-leave', () => {
-      console.log('drag-leave');
-    });
-
-    dropzone.on('drop', () => {
-      console.log('drop');
+    if (this.state.dropzone) {
+      this.state.dropzone.deactivate();
+    }
+    const dropzone = MediaPicker('dropzone', context, {
+      container: this.dropzoneContainer,
+      uploadParams: {
+        collection: '',
+      },
+      useNewUploadService: true,
     });
 
     dropzone.activate();
+
+    this.setState({
+      dropzone,
+    });
   }
 
-  saveDropzoneContainer = element => {
+  saveDropzoneContainer = (element: HTMLDivElement) => {
     this.dropzoneContainer = element;
 
     this.createDropzone();
     this.fetchLastItems();
   };
 
-  renderPreviews = () => {
-    const { previewsData } = this.state;
-
-    return previewsData.map(renderPreviewImage);
-  };
-
   onConnectionChange = () => {
     const isConnectedToUsersCollection = !this.state
       .isConnectedToUsersCollection;
     this.setState({ isConnectedToUsersCollection }, () => {
-      this.dropzone.deactivate();
       this.createDropzone();
     });
   };
 
   onActiveChange = () => {
-    const { dropzone } = this;
-    const isActive = !this.state.isActive;
-    this.setState({ isActive }, () => {
-      isActive ? dropzone.activate() : dropzone.deactivate();
+    const { dropzone, isActive } = this.state;
+    this.setState({ isActive: !isActive }, () => {
+      if (dropzone) {
+        if (isActive) {
+          dropzone.activate();
+        } else {
+          dropzone.deactivate();
+        }
+      }
     });
   };
 
   onCancel = () => {
-    const { inflightUploads } = this.state;
-
-    inflightUploads.forEach(uploadId => this.dropzone.cancel(uploadId));
-
     this.setState({ inflightUploads: [] });
   };
 
@@ -189,6 +145,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       isConnectedToUsersCollection,
       isActive,
       inflightUploads,
+      dropzone,
     } = this.state;
     const isCancelButtonDisabled = inflightUploads.length === 0;
 
@@ -219,13 +176,10 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
             innerRef={this.saveDropzoneContainer}
           />
           <DropzoneItemsInfo>
+            {dropzone ? <UploadPreviews picker={dropzone} /> : null}
             <h1>User collection items</h1>
             {this.renderLastItems()}
           </DropzoneItemsInfo>
-          <DropzonePreviewsWrapper>
-            <h1>Upload previews</h1>
-            {this.renderPreviews()}
-          </DropzonePreviewsWrapper>
         </DropzoneContentWrapper>
       </PopupContainer>
     );

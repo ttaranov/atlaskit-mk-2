@@ -19,15 +19,19 @@ type Props = {
   onExpand: Event => mixed,
   /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
   children?: Node,
+  /** If max items is exceeded, the number of items to show before the ellipsis */
+  itemsBeforeCollapse: number,
+  /** If max items is exceeded, the number of items to show after the ellipsis */
+  itemsAfterCollapse: number,
 };
 
 export default class BreadcrumbsStateless extends Component<Props, {}> {
-  props: Props; // eslint-disable-line react/sort-comp
-
   static defaultProps = {
     isExpanded: false,
     children: null,
     maxItems: defaultMaxItems,
+    itemsBeforeCollapse: 1,
+    itemsAfterCollapse: 1,
   };
 
   renderAllItems(): Array<Element<*>> {
@@ -39,16 +43,29 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     );
   }
 
-  renderFirstAndLast() {
-    const itemsToRender = this.renderAllItems();
+  renderItemsBeforeAndAfter() {
+    const { itemsBeforeCollapse, itemsAfterCollapse } = this.props;
+    const allItems = this.renderAllItems();
+    // This defends against someone passing weird data, to ensure that if all
+    // items would be shown anyway, we just show all items without the EllipsisItem
+    if (itemsBeforeCollapse + itemsAfterCollapse >= allItems.length) {
+      return allItems;
+    }
+
+    const beforeItems = allItems.slice(0, itemsBeforeCollapse);
+    const afterItems = allItems.slice(
+      allItems.length - itemsAfterCollapse,
+      allItems.length,
+    );
+
     return [
-      itemsToRender[0],
+      ...beforeItems,
       <EllipsisItem
-        hasSeparator
+        hasSeparator={itemsAfterCollapse > 0}
         key="ellipsis"
         onClick={this.props.onExpand}
       />,
-      itemsToRender[itemsToRender.length - 1],
+      ...afterItems,
     ];
   }
 
@@ -59,7 +76,7 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
       <Container>
         {isExpanded || (maxItems && toArray(children).length <= maxItems)
           ? this.renderAllItems()
-          : this.renderFirstAndLast()}
+          : this.renderItemsBeforeAndAfter()}
       </Container>
     );
   }

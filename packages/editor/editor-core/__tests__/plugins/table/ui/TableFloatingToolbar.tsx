@@ -4,6 +4,7 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {
   TableState,
   stateKey,
+  PermittedLayoutsDescriptor,
 } from '../../../../src/plugins/table/pm-plugins/main';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../../../src/plugins/table/ui/TableFloatingToolbar';
@@ -20,6 +21,9 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import tablesPlugin from '../../../../src/plugins/table';
 
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+
 describe('TableFloatingToolbar', () => {
   let trackEvent;
   const editor = (doc: any) =>
@@ -32,6 +36,20 @@ describe('TableFloatingToolbar', () => {
       pluginKey: stateKey,
     });
 
+  const editorFullPage = (doc: any) =>
+    createEditor<TableState>({
+      doc,
+      editorPlugins: [tablesPlugin],
+      editorProps: {
+        appearance: 'full-page',
+        allowTables: {
+          permittedLayouts: 'all',
+        },
+        analyticsHandler: trackEvent,
+      },
+      pluginKey: stateKey,
+    });
+
   beforeEach(() => {
     trackEvent = jest.fn();
   });
@@ -39,7 +57,7 @@ describe('TableFloatingToolbar', () => {
   describe('when tableElement is undefined', () => {
     it('should not render toolbar', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdEmpty, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = shallow(
         <TableFloatingToolbar editorView={editorView} tableActive={true} />,
@@ -51,7 +69,7 @@ describe('TableFloatingToolbar', () => {
   describe('TrashIcon', () => {
     it('should be rendered in the toolbar', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = mount(
         <TableFloatingToolbar
@@ -64,23 +82,141 @@ describe('TableFloatingToolbar', () => {
       floatingToolbar.unmount();
     });
 
-    it('should call remove() on click', () => {
+    it('should call removeTable() on click', () => {
       const { editorView } = editor(
-        doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))),
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
-      const remove = jest.fn();
+      const removeTable = jest.fn();
       const floatingToolbar = shallow(
         <TableFloatingToolbar
           tableElement={document.createElement('table')}
           editorView={editorView}
-          remove={remove}
+          tableActive={true}
+          removeTable={removeTable}
+        />,
+      );
+
+      const button = floatingToolbar.find('[title="Remove table"]').first();
+      button.simulate('click');
+      expect(removeTable as any).toHaveBeenCalledTimes(1);
+      floatingToolbar.unmount();
+    });
+  });
+
+  describe('layout options', () => {
+    const possibleIcons = [FullWidthIcon, CenterIcon];
+
+    const layoutOptions = [
+      { desc: 'all', icons: [FullWidthIcon, CenterIcon] },
+      { desc: ['default', 'full-width'], icons: [FullWidthIcon, CenterIcon] },
+      { desc: ['default'], icons: [CenterIcon] },
+      { desc: ['full-width'], icons: [FullWidthIcon] },
+    ];
+
+    layoutOptions.forEach(({ desc, icons }) => {
+      it(`should display correct buttons when ${desc} are permitted layouts`, () => {
+        const { editorView } = editorFullPage(
+          doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
+        );
+
+        const floatingToolbar = mount(
+          <TableFloatingToolbar
+            tableElement={document.createElement('table')}
+            editorView={editorView}
+            tableActive={true}
+            permittedLayouts={desc as PermittedLayoutsDescriptor}
+          />,
+        );
+
+        // ensure correct icons visible
+        icons.forEach(icon => {
+          expect(floatingToolbar.find(icon).length).toBe(1);
+        });
+
+        // ensure other icons are not visible
+        possibleIcons.forEach(possibleIcon => {
+          if (icons.indexOf(possibleIcon) === -1) {
+            expect(floatingToolbar.find(possibleIcon).length).toBe(0);
+          }
+        });
+
+        floatingToolbar.unmount();
+      });
+
+      it('should disable buttons when inside an unsupported layout', () => {
+        const { editorView } = editorFullPage(
+          doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
+        );
+
+        const floatingToolbar = mount(
+          <TableFloatingToolbar
+            tableElement={document.createElement('table')}
+            editorView={editorView}
+            tableActive={true}
+            permittedLayouts={desc as PermittedLayoutsDescriptor}
+            isLayoutSupported={() => false}
+          />,
+        );
+
+        icons.forEach(icon => {
+          expect(
+            floatingToolbar
+              .find(icon)
+              .closest(ToolbarButton)
+              .prop('disabled'),
+          ).toBe(true);
+        });
+      });
+    });
+
+    it('should not display buttons with no layouts', () => {
+      const { editorView } = editor(
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+
+      const floatingToolbar = mount(
+        <TableFloatingToolbar
+          tableElement={document.createElement('table')}
+          editorView={editorView}
           tableActive={true}
         />,
       );
 
-      const button = floatingToolbar.find(ToolbarButton).last();
-      button.simulate('click');
-      expect(remove as any).toHaveBeenCalledTimes(1);
+      possibleIcons.forEach(possibleIcon => {
+        expect(floatingToolbar.find(possibleIcon).length).toBe(0);
+      });
+
+      floatingToolbar.unmount();
+    });
+
+    it('selects the correct layout button based on the tableLayout prop', () => {
+      const { editorView, pluginState } = editor(
+        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+
+      const floatingToolbar = mount(
+        <TableFloatingToolbar
+          tableElement={pluginState.tableElement}
+          editorView={editorView}
+          tableActive={true}
+          permittedLayouts={['default', 'full-width']}
+          tableLayout="default"
+        />,
+      );
+
+      const centerButton = floatingToolbar
+        .find(CenterIcon)
+        .closest(ToolbarButton);
+      expect(centerButton.length).toBe(1);
+
+      const fullWidthButton = floatingToolbar
+        .find(FullWidthIcon)
+        .closest(ToolbarButton);
+      expect(fullWidthButton.length).toBe(1);
+
+      expect(centerButton.props().selected).toBe(true);
+      expect(fullWidthButton.props().selected).toBe(false);
+
       floatingToolbar.unmount();
     });
   });

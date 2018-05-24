@@ -11,6 +11,7 @@ import {
 
 BrowserTestCase(
   'Emoji: should be able to see emoji if typed the name in full',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -50,8 +51,10 @@ BrowserTestCase(
   },
 );
 
+// IE now keying in CAPs on browserstack
 BrowserTestCase(
   'user should not be able to see emoji inside inline code',
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -66,7 +69,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should close emoji picker on Escape',
-  { skip: ['safari'] },
+  { skip: ['safari', 'ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -88,6 +91,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should be able to click on the emoji button and select emoji',
+  { skip: ['ie'] },
   async client => {
     const emojiButton = '[aria-label="Insert emoji (:)"]';
     const sweatSmile = '[aria-label=":sweat_smile:"]';
@@ -115,7 +119,7 @@ BrowserTestCase(
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');
     await insertEmoji(browser, 'a');
-    await insertEmoji(browser, 'lol');
+    await insertEmoji(browser, 'light_bulb_on');
     await browser.waitForSelector(emojiItem('a'));
     await browser.type(editable, ['ArrowLeft', 'ArrowLeft']);
     await browser.type(editable, ' that ');

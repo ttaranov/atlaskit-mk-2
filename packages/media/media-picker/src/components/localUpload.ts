@@ -1,41 +1,50 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import {
-  FilePreviewUpdateEventPayload,
-  FileConvertedEventPayload,
-  FileConvertingEventPayload,
-  FileFinalizeReadyEventPayload,
-  FilesAddedEventPayload,
-  FileUploadErrorEventPayload,
-  FileUploadingEventPayload,
   UploadService,
-} from '../service/uploadService';
+  UploadServiceFactory,
+} from '../service/uploadServiceFactory';
+import {
+  UploadEndEventPayload,
+  UploadErrorEventPayload,
+  UploadEventPayloadMap,
+  UploadPreviewUpdateEventPayload,
+  UploadProcessingEventPayload,
+  UploadsStartEventPayload,
+  UploadStatusUpdateEventPayload,
+} from '../domain/uploadEvent';
 import { UploadComponent } from './component';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig, UploadParams } from '../domain/config';
-import { UploadEventPayloadMap } from '../domain/uploadEvent';
+import { UploadParams } from '../domain/config';
+
+export interface LocalUploadConfig {
+  uploadParams: UploadParams;
+  useNewUploadService?: boolean;
+}
 
 export class LocalUploadComponent<
   M extends UploadEventPayloadMap = UploadEventPayloadMap
 > extends UploadComponent<M> {
   protected readonly uploadService: UploadService;
+  readonly context: Context;
+  config: LocalUploadConfig;
 
   constructor(
-    context: MediaPickerContext,
-    { apiUrl, authProvider, uploadParams }: ModuleConfig,
-    userAuthProvider?: AuthProvider,
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: LocalUploadConfig,
   ) {
-    super(context);
+    super(analyticsContext);
 
-    this.uploadService = new UploadService(
-      apiUrl,
-      authProvider,
-      uploadParams || { collection: '' },
-      userAuthProvider,
+    this.context = context;
+    this.uploadService = UploadServiceFactory.create(
+      this.context,
+      config.uploadParams || { collection: '' },
+      config.useNewUploadService,
     );
+    this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);
     this.uploadService.on('file-uploading', this.onFileUploading);
-    this.uploadService.on('file-finalize-ready', this.onFileFinalizeReady);
     this.uploadService.on('file-converting', this.onFileConverting);
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
@@ -49,46 +58,33 @@ export class LocalUploadComponent<
     this.uploadService.setUploadParams(uploadParams);
   }
 
-  private onFilesAdded = ({ files }: FilesAddedEventPayload): void => {
+  private onFilesAdded = ({ files }: UploadsStartEventPayload): void => {
     this.emitUploadsStart(files);
   };
 
   private onFilePreviewUpdate = ({
     file,
     preview,
-  }: FilePreviewUpdateEventPayload): void => {
+  }: UploadPreviewUpdateEventPayload): void => {
     this.emitUploadPreviewUpdate(file, preview);
   };
 
   private onFileUploading = ({
     file,
     progress,
-  }: FileUploadingEventPayload): void => {
-    this.emitUploadProgress(file, progress.toJSON());
+  }: UploadStatusUpdateEventPayload): void => {
+    this.emitUploadProgress(file, progress);
   };
 
-  private onFileFinalizeReady = ({
-    file,
-    finalize,
-  }: FileFinalizeReadyEventPayload): void => {
-    this.emitUploadFinalizeReady(file, finalize);
-  };
-
-  private onFileConverting = ({ file }: FileConvertingEventPayload): void => {
+  private onFileConverting = ({ file }: UploadProcessingEventPayload): void => {
     this.emitUploadProcessing(file);
   };
 
-  private onFileConverted = ({
-    file,
-    metadata,
-  }: FileConvertedEventPayload): void => {
-    this.emitUploadEnd(file, metadata);
+  private onFileConverted = (payload: UploadEndEventPayload): void => {
+    this.emitUploadEnd(payload.file, payload.public);
   };
 
-  private onUploadError = ({
-    file,
-    error,
-  }: FileUploadErrorEventPayload): void => {
+  private onUploadError = ({ file, error }: UploadErrorEventPayload): void => {
     this.emitUploadError(file, error);
   };
 }

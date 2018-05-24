@@ -11,6 +11,7 @@ import {
   CardSurroundings,
   ProviderFactory,
   ExtensionHandlers,
+  defaultSchema,
 } from '@atlaskit/editor-common';
 import {
   storyMediaProviderFactory,
@@ -166,6 +167,7 @@ export interface DemoRendererProps {
   withProviders?: boolean;
   withExtension?: boolean;
   serializer: 'react' | 'text' | 'email';
+  document?: object;
 }
 
 export interface DemoRendererState {
@@ -177,17 +179,23 @@ export default class RendererDemo extends PureComponent<
   DemoRendererProps,
   DemoRendererState
 > {
-  textSerializer = new TextSerializer();
+  textSerializer = new TextSerializer(defaultSchema);
   emailSerializer = new EmailSerializer();
   emailRef?: HTMLIFrameElement;
-
-  state: DemoRendererState = {
-    input: JSON.stringify(document, null, 2),
-  };
 
   refs: {
     input: HTMLTextAreaElement;
   };
+
+  constructor(props: DemoRendererProps) {
+    super(props);
+
+    const doc = !!this.props.document ? this.props.document : document;
+
+    this.state = {
+      input: JSON.stringify(doc, null, 2),
+    };
+  }
 
   private handlePortalRef = (portal: HTMLElement | null) => {
     this.setState({ portal: portal || undefined });
@@ -196,7 +204,7 @@ export default class RendererDemo extends PureComponent<
   private onEmailRef = (ref: HTMLIFrameElement | null) => {
     this.emailRef = ref || undefined;
 
-    if (ref) {
+    if (ref && ref.contentDocument) {
       // reset padding/margin for empty iframe with about:src URL
       ref.contentDocument.body.style.padding = '0';
       ref.contentDocument.body.style.margin = '0';

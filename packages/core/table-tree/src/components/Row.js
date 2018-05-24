@@ -1,15 +1,14 @@
 // @flow
-import React, { PureComponent, type Element, type ChildrenArray } from 'react';
+import React, { Component, type Element, type ChildrenArray } from 'react';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
 import toItemId from '../utils/toItemId';
-import { type RowData } from '../types';
+import type { RowData, LoadableItems } from '../types';
 
 type Props = {
   /** Whether this row has any child rows. */
   hasChildren: boolean,
-
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
 
@@ -19,11 +18,14 @@ type Props = {
   /** Called whenever this row's node is expanded to show its child rows. */
   onExpand?: RowData => void,
 
-  /** Called whenever this row's node is expanded to show its child rows. */
-  onExpand?: Function,
-
   /** Called whenever this row's node is collapsed to hide its child rows. */
   onCollapse?: RowData => void,
+
+  /** Accessibility. Label used for the Expand button (chevron). */
+  expandLabel?: string,
+
+  /** Accessibility. Label used for the Collapse button (chevron). */
+  collapseLabel?: string,
 
   /** Passed implicitly. Whether the children of this row should currently be visible. */
   isExpanded?: boolean,
@@ -36,24 +38,29 @@ type Props = {
 
   /** Passed implicitly. The data that this row represents. */
   data?: RowData,
+
+  /** Array of object of the children of expended parent item */
+  items?: LoadableItems,
 };
 
-export default class Row extends PureComponent<Props> {
-  componentWillUpdate(nextProps: Props) {
+export default class Row extends Component<Props> {
+  componentDidUpdate(prevProps: Props) {
     const isExpandChanged =
-      Boolean(nextProps.isExpanded) !== Boolean(this.props.isExpanded);
-    if (!isExpandChanged || !nextProps.data) {
+      Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);
+    if (!isExpandChanged || !this.props.data) {
       return;
     }
-    if (nextProps.isExpanded && this.props.onExpand) {
-      this.props.onExpand(nextProps.data);
-    } else if (!nextProps.isExpanded && this.props.onCollapse) {
-      this.props.onCollapse(nextProps.data);
+
+    if (this.props.isExpanded && this.props.onExpand) {
+      this.props.onExpand(this.props.data);
+    } else if (!this.props.isExpanded && this.props.onCollapse) {
+      this.props.onCollapse(this.props.data);
     }
   }
 
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
-    const { hasChildren, depth, isExpanded = false } = this.props;
+    const props = this.props;
+    const { hasChildren, depth, isExpanded = false } = props;
     const isFirstCell = cellIndex === 0;
     const indentLevel = isFirstCell ? depth : 0;
     let cellContent = cell.props.children || [];
@@ -61,9 +68,11 @@ export default class Row extends PureComponent<Props> {
       cellContent = [
         <Chevron
           key="chevron"
+          expandLabel={props.expandLabel}
+          collapseLabel={props.collapseLabel}
           isExpanded={isExpanded}
-          onExpandToggle={this.props.onExpandToggle}
-          ariaControls={toItemId(this.props.itemId)}
+          onExpandToggle={props.onExpandToggle}
+          ariaControls={toItemId(props.itemId)}
         />,
       ].concat(cellContent);
     }

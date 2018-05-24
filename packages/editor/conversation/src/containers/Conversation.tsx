@@ -11,6 +11,7 @@ import {
   revertComment,
   updateUser,
   createConversation,
+  HIGHLIGHT_COMMENT,
 } from '../internal/actions';
 import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
@@ -69,6 +70,10 @@ const mapDispatchToProps = (
     dispatch(revertComment(conversationId, commentId, provider));
   },
 
+  onHighlightComment(commentId: string) {
+    dispatch({ type: HIGHLIGHT_COMMENT, payload: { commentId } });
+  },
+
   onUpdateUser(user: User) {
     dispatch(updateUser(user, provider));
   },
@@ -98,6 +103,9 @@ export interface ContainerProps {
   isExpanded?: boolean;
   onCancel?: () => void;
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
+  placeholder?: string;
+  disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 class ConversationContainer extends React.Component<ContainerProps, any> {

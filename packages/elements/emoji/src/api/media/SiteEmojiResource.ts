@@ -2,7 +2,11 @@ import {
   ServiceConfig,
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
-import { MediaPicker } from '@atlaskit/media-picker';
+import {
+  MediaPicker,
+  BinaryConfig,
+  BinaryUploader,
+} from '@atlaskit/media-picker';
 
 import {
   EmojiDescription,
@@ -21,12 +25,6 @@ import {
   convertImageToMediaRepresentation,
   isLoadedMediaEmoji,
 } from '../../type-helpers';
-import {
-  MediaApiData,
-  MediaUploadEnd,
-  MediaUploadError,
-  MediaUploadStatusUpdate,
-} from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
 import {
   denormaliseEmojiServiceResponse,
@@ -36,6 +34,7 @@ import {
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
+import { Context, ContextFactory, FileDetails } from '@atlaskit/media-core';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
@@ -105,20 +104,22 @@ export default class SiteEmojiResource {
       debug('upload token load time', tokenLoadTime);
       return new Promise<EmojiDescription>((resolve, reject) => {
         const { url, clientId, collectionName } = uploadToken;
-        const mpConfig = {
-          apiUrl: url,
+        const context = ContextFactory.create({
+          serviceHost: url,
           authProvider: () =>
             Promise.resolve({
               clientId,
               token: uploadToken.jwt,
             }),
+        });
+        const mpConfig = {
           uploadParams: {
             collection: collectionName,
           },
         };
 
-        const mpBinary = this.createMediaPicker('binary', mpConfig);
-        mpBinary.on('upload-end', (result: MediaUploadEnd) => {
+        const mpBinary = this.createMediaPicker(context, mpConfig);
+        mpBinary.on('upload-end', result => {
           const totalUploadTime = Date.now() - startTime;
           const mediaUploadTime = totalUploadTime - tokenLoadTime;
           debug(
@@ -134,21 +135,18 @@ export default class SiteEmojiResource {
               reject(httpError.reason || httpError);
             });
         });
-        mpBinary.on('upload-error', (errorResult: MediaUploadError) => {
+        mpBinary.on('upload-error', errorResult => {
           reject(errorResult.error);
         });
-        mpBinary.on(
-          'upload-status-update',
-          (statusUpdate: MediaUploadStatusUpdate) => {
-            debug('upload progress', statusUpdate.progress);
-            if (progressCallback) {
-              progressCallback({
-                percent:
-                  statusUpdate.progress.portion * mediaProportionOfProgress,
-              });
-            }
-          },
-        );
+        mpBinary.on('upload-status-update', statusUpdate => {
+          debug('upload progress', statusUpdate.progress);
+          if (progressCallback) {
+            progressCallback({
+              percent:
+                statusUpdate.progress.portion * mediaProportionOfProgress,
+            });
+          }
+        });
         mpBinary.upload(upload.dataURL, upload.filename);
       });
     });
@@ -219,13 +217,16 @@ export default class SiteEmojiResource {
   /**
    * Intended to be overridden for unit testing.
    */
-  protected createMediaPicker(type, mpConfig) {
-    return MediaPicker(type, mpConfig);
+  protected createMediaPicker(
+    context: Context,
+    config: BinaryConfig,
+  ): BinaryUploader {
+    return MediaPicker('binary', context, config);
   }
 
   private postToEmojiService = (
     upload: EmojiUpload,
-    mediaApiData: MediaApiData,
+    mediaApiData: FileDetails,
   ): Promise<EmojiDescription> => {
     const { shortName, name } = upload;
     const { width, height } = upload;

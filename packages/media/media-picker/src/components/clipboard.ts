@@ -1,38 +1,37 @@
-import { AuthProvider } from '@atlaskit/media-core';
+import { AuthProvider, Context } from '@atlaskit/media-core';
 
-import { LocalUploadComponent } from './localUpload';
+import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPClipboardLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
-import { ModuleConfig } from '../domain/config';
-import * as domready from 'domready';
+import { whenDomReady } from '../util/documentReady';
 
-export interface ClipboardConfig {
-  userAuthProvider?: AuthProvider;
+export interface ClipboardConfig extends LocalUploadConfig {
+  readonly userAuthProvider?: AuthProvider;
 }
 
 export interface ClipboardConstructor {
   new (
-    context: MediaPickerContext,
-    config: ModuleConfig,
+    analyticsContext: MediaPickerContext,
+    context: Context,
     clipboardConfig: ClipboardConfig,
   ): Clipboard;
 }
 
 export class Clipboard extends LocalUploadComponent {
   constructor(
-    context: MediaPickerContext,
-    config: ModuleConfig,
-    { userAuthProvider }: ClipboardConfig = {},
+    analyticsContext: MediaPickerContext,
+    context: Context,
+    config: ClipboardConfig = { uploadParams: {} },
   ) {
-    super(context, config, userAuthProvider);
-    this.context.trackEvent(new MPClipboardLoaded());
+    super(analyticsContext, context, config);
+    this.analyticsContext.trackEvent(new MPClipboardLoaded());
   }
 
-  public activate(): void {
-    domready(() => {
-      this.deactivate();
-      document.addEventListener('paste', this.pasteHandler, false);
-    });
+  public async activate(): Promise<void> {
+    await whenDomReady;
+
+    this.deactivate();
+    document.addEventListener('paste', this.pasteHandler, false);
   }
 
   public deactivate(): void {
@@ -44,10 +43,7 @@ export class Clipboard extends LocalUploadComponent {
       Browser behaviour for getting files from the clipboard is very inconsistent and buggy.
       @see https://extranet.atlassian.com/display/FIL/RFC+099%3A+Clipboard+browser+inconsistency
     */
-    const files = event.clipboardData.files;
-    for (let i = 0; i < files.length; ++i) {
-      const file = files[i];
-      this.uploadService.addFile(file);
-    }
+    const filesArray = Array.from(event.clipboardData.files);
+    this.uploadService.addFiles(filesArray);
   };
 }

@@ -17,6 +17,11 @@ import { hasSelector } from '../../_emoji-selectors';
 import { EmojiDescription } from '../../../src/types';
 import EmojiDeletePreview from '../../../src/components/common/EmojiDeletePreview';
 import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../src/components/common/EmojiUploadPreview';
+import {
+  CategoryDescriptionMap,
+  CategoryId,
+} from '../../../src/components/picker/categories';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -59,11 +64,14 @@ export const findEmoji = list => list.find(Emoji);
  */
 export const emojisVisible = (picker, list) => hasSelector(picker, Emoji, list);
 
-const nodeIsCategory = (category: string, n) =>
+const nodeIsCategory = (category: CategoryId, n) =>
   n.is(EmojiPickerCategoryHeading) &&
-  n.prop('title').toLocaleLowerCase() === category.toLocaleLowerCase();
+  n
+    .prop('id')
+    .toLocaleLowerCase()
+    .startsWith(`category_${category.toLocaleLowerCase()}`);
 
-export const findCategoryHeading = (category: string, component) =>
+export const findCategoryHeading = (category: CategoryId, component) =>
   component
     .find(EmojiPickerCategoryHeading)
     .filterWhere(n => nodeIsCategory(category, n));
@@ -78,7 +86,7 @@ const findAllVirtualRows = component =>
     // ignore spinner
   );
 
-export const emojiRowsVisibleInCategory = (category: string, component) => {
+export const emojiRowsVisibleInCategory = (category: CategoryId, component) => {
   component.update();
   const rows = findAllVirtualRows(component);
   let foundStart = false;
@@ -104,20 +112,21 @@ export const emojiRowsVisibleInCategory = (category: string, component) => {
   });
 };
 
-const getCategoryButton = (category: string, picker) => {
+const getCategoryButton = (category: CategoryId, picker) => {
   const categorySelector = picker.find(CategorySelector);
   return categorySelector.findWhere(
     n =>
       n.name() === 'button' &&
-      n.prop('title').toLocaleLowerCase() === category.toLocaleLowerCase(),
+      n.prop('title').toLocaleLowerCase() ===
+        CategoryDescriptionMap[category]!.name.toLocaleLowerCase(),
   );
 };
 
-export const categoryVisible = (category: string, component) =>
+export const categoryVisible = (category: CategoryId, component) =>
   findCategoryHeading(category, component).length > 0;
 
 export const showCategory = (
-  category: string,
+  category: CategoryId,
   component,
   categoryTitle?: string,
 ): Promise<any> => {
@@ -130,22 +139,19 @@ export const showCategory = (
     return waitUntil(
       () =>
         component.update() &&
-        categoryVisible(
-          categoryTitle || category,
-          component.find(EmojiPickerList),
-        ),
+        categoryVisible(category, component.find(EmojiPickerList)),
     );
   });
 };
 
 export const findEmojiInCategory = (
   emojis,
-  categoryId: string,
+  categoryId: CategoryId,
 ): EmojiDescription | undefined => {
-  categoryId = categoryId.toLocaleUpperCase();
+  const upperCategoryId = categoryId.toLocaleUpperCase();
   for (let i = 0; i < emojis.length; i++) {
     const emoji = emojis.at(i).prop('emoji');
-    if (emoji.category === categoryId) {
+    if (emoji.category === upperCategoryId) {
       return emoji;
     }
   }
@@ -203,7 +209,7 @@ export const findCancelLink = component =>
     .at(1);
 
 export const findUploadPreview = component =>
-  component.update() && component.find(`.${commonStyles.uploadPreview}`);
+  component.update() && component.find(EmojiUploadPreview);
 
 export const findEmojiWithId = (component, id) =>
   component.update() &&
@@ -214,12 +220,6 @@ export const findEmojiWithId = (component, id) =>
 
 export const emojiWithIdVisible = (component, id) =>
   findEmojiWithId(component, id).length > 0;
-
-export const findUploadError = component =>
-  component.update() && component.find(`.${commonStyles.uploadError}`);
-
-export const uploadErrorVisible = component =>
-  findUploadError(component).length > 0;
 
 export const finishDelete = component =>
   component.update() && component.find(EmojiDeletePreview).length === 0;

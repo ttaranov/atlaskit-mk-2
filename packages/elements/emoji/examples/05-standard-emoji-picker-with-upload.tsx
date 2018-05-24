@@ -62,7 +62,10 @@ export default class EmojiPickerWithUpload extends React.Component<
             }}
           />
         </Layer>
-        <p style={{ width: '400px' }}>{lorem}</p>
+        <p style={{ width: '400px' }}>
+          {lorem}
+          {lorem}
+        </p>
 
         <button onClick={() => this.enableSiteEmoji(true)}>
           EmojiProvider with Site emoji

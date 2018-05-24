@@ -3,10 +3,17 @@ import {
   createEditor,
   p as paragraph,
   bodiedExtension,
+  inlineExtension,
   macroProvider,
+  MockMacroProvider,
   sendKeyToPm,
+  inlineExtensionData,
+  bodiedExtensionData,
+  sleep,
+  h5,
+  underline,
 } from '@atlaskit/editor-test-helpers';
-
+import { NodeSelection } from 'prosemirror-state';
 import {
   setExtensionElement,
   editExtension,
@@ -25,11 +32,7 @@ describe('extension', () => {
     });
   };
 
-  const extensionAttrs = {
-    bodyType: 'rich',
-    extensionType: 'com.atlassian.confluence.macro',
-    extensionKey: 'expand',
-  };
+  const extensionAttrs = bodiedExtensionData[1].attrs;
 
   describe('when cursor is at the beginning of the content', () => {
     it('should create a paragraph above extension node on Enter', () => {
@@ -85,6 +88,53 @@ describe('extension', () => {
         );
         const provider = await macroProviderPromise;
         expect(editExtension(provider)(editorView)).toBe(true);
+      });
+      it('should replace selected bodiedExtension node with a new bodiedExtension node', async () => {
+        const { editorView } = editor(
+          doc(bodiedExtension(extensionAttrs)(paragraph('{<>}'))),
+        );
+        const provider = await macroProviderPromise;
+        editExtension(provider)(editorView);
+        await sleep(0);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            bodiedExtension(bodiedExtensionData[0].attrs)(
+              h5('Heading'),
+              paragraph(underline('Foo')),
+            ),
+          ),
+        );
+      });
+      it('should replace selected inlineExtension node with a new inlineExtension node', async () => {
+        const { editorView } = editor(
+          doc(
+            paragraph(
+              'one',
+              inlineExtension(inlineExtensionData[0].attrs)(),
+              'two',
+            ),
+          ),
+        );
+        editorView.dispatch(
+          editorView.state.tr.setSelection(
+            NodeSelection.create(editorView.state.doc, 4),
+          ),
+        );
+        const macroProviderPromise = Promise.resolve(
+          new MockMacroProvider(inlineExtensionData[1]),
+        );
+        const provider = await macroProviderPromise;
+        editExtension(provider)(editorView);
+        await sleep(0);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              'one',
+              inlineExtension(inlineExtensionData[1].attrs)(),
+              'two',
+            ),
+          ),
+        );
       });
     });
 

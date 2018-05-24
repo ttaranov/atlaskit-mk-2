@@ -24,11 +24,9 @@ const createPlugin = (schema, providerFactory) => {
     key: pluginKey,
     props: {
       nodeViews: {
-        confluenceUnsupportedBlock: nodeViewFactory(
-          providerFactory,
-          { confluenceUnsupportedBlock: ReactUnsupportedBlockNode },
-          true,
-        ),
+        confluenceUnsupportedBlock: nodeViewFactory(providerFactory, {
+          confluenceUnsupportedBlock: ReactUnsupportedBlockNode,
+        }),
         confluenceUnsupportedInline: nodeViewFactory(providerFactory, {
           confluenceUnsupportedInline: ReactUnsupportedInlineNode,
         }),

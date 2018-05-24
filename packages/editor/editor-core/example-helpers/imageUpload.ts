@@ -8,8 +8,9 @@ const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
 const imageUploadHandler = (e: any, fn: any) => {
   // ED-3294: we cannot insert base64 images so we just simulate inserting an image
-  const uploadDefaultImage = () =>
+  const uploadDefaultImage = ({ src }) =>
     fn({ src: 'https://design.atlassian.com/images/brand/logo-21.png' });
+
   if (e && e.type === 'paste') {
     pasteHandler(converter, e, uploadDefaultImage);
   } else if (e && e.type === 'drop') {

@@ -1,15 +1,15 @@
 import * as React from 'react';
+import { tableEditing, columnResizing } from 'prosemirror-tables';
 import {
   table,
   tableCell,
   tableHeader,
   tableRow,
 } from '@atlaskit/editor-common';
-import { tableEditing, columnResizing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import TableFloatingToolbar from './ui/TableFloatingToolbar';
-import { plugin, PluginConfig, stateKey } from './pm-plugins/main';
+import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableNumberColumnPlugin from './pm-plugins/number-column-plugin';
@@ -32,8 +32,12 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({ props: { allowTables } }) => {
-          return plugin(pluginConfig(allowTables));
+        plugin: ({ props: { allowTables }, eventDispatcher, dispatch }) => {
+          return createPlugin(
+            dispatch,
+            eventDispatcher,
+            pluginConfig(allowTables),
+          );
         },
       },
       {
@@ -77,12 +81,17 @@ const tablesPlugin: EditorPlugin = {
             tableElement={tablesState.tableElement}
             tableActive={tablesState.tableActive}
             cellSelection={tablesState.cellSelection}
-            remove={tablesState.remove}
+            removeTable={tablesState.removeTable}
+            tableLayout={tablesState.tableLayout}
+            updateLayout={tablesState.setTableLayout}
+            isLayoutSupported={tablesState.isLayoutSupported}
             allowMergeCells={tablesState.allowMergeCells}
             allowNumberColumn={tablesState.allowNumberColumn}
             allowBackgroundColor={tablesState.allowBackgroundColor}
             allowHeaderRow={tablesState.allowHeaderRow}
             allowHeaderColumn={tablesState.allowHeaderColumn}
+            stickToolbarToBottom={tablesState.stickToolbarToBottom}
+            permittedLayouts={tablesState.permittedLayouts}
           />
         )}
       />

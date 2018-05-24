@@ -5,4 +5,11 @@ export default class DummyBridge implements NativeBridge {
   dismissMentions() {}
   updateTextFormat(markStates: string) {}
   updateText(content: string) {}
+  getServiceHost(): string {
+    return '';
+  }
+  getCollection(): string {
+    return '';
+  }
+  submitPromise(name: string, uuid: string, args: string) {}
 }

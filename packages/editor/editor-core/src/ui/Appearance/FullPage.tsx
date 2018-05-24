@@ -10,21 +10,24 @@ import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
+import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
+import { akEditorToolbarKeylineHeight } from '../../styles';
+import rafSchedule from 'raf-schd';
+
+const GUTTER_PADDING = 32;
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-bottom: 55px;
+  box-sizing: border-box;
 `;
 FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
   overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -32,15 +35,16 @@ const ScrollContainer = styled(ContentStyles)`
 ScrollContainer.displayName = 'ScrollContainer';
 
 const ContentArea = styled.div`
+  line-height: 24px;
   height: 100%;
   width: 100%;
-  max-width: ${akEditorFullPageMaxWidth}px;
+  max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
   padding-top: 50px;
   margin: 0 auto;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-bottom: 55px;
 
   & .ProseMirror {
     flex-grow: 1;
@@ -51,9 +55,9 @@ const ContentArea = styled.div`
     & > * {
       clear: both;
     }
-    & > p,
-    & > ul,
-    & > ol,
+    > p,
+    > ul,
+    > ol,
     > h1,
     > h2,
     > h3,
@@ -63,20 +67,28 @@ const ContentArea = styled.div`
       clear: none;
     }
   }
-  & .ProseMirror .table-container table {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-  }
+  ${tableFullPageEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
 
-const MainToolbar = styled.div`
+interface MainToolbarProps {
+  showKeyline: boolean;
+}
+
+const MainToolbar: React.ComponentClass<
+  React.HTMLAttributes<{}> & MainToolbarProps
+> = styled.div`
   position: relative;
   align-items: center;
-  border-bottom: 1px solid ${akColorN30};
+  box-shadow: ${(props: MainToolbarProps) =>
+    props.showKeyline
+      ? `0 ${akEditorToolbarKeylineHeight}px 0 0 ${akColorN30}`
+      : 'none'};
+  transition: box-shadow 200ms;
+  z-index: 1;
   display: flex;
   height: 80px;
+  flex-shrink: 0;
 `;
 MainToolbar.displayName = 'MainToolbar';
 
@@ -101,11 +113,67 @@ export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   any
 > {
+  state = { showKeyline: false };
+
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
+  private scrollContainer: HTMLElement | undefined;
+  private scheduledKeylineUpdate: number | undefined;
 
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
     event.stopPropagation();
+
+  scrollContainerRef = ref => {
+    const previousScrollContainer = this.scrollContainer;
+
+    // remove existing handler
+    if (previousScrollContainer) {
+      previousScrollContainer.removeEventListener(
+        'scroll',
+        this.scheduleUpdateToolbarKeyline,
+      );
+    }
+
+    this.scrollContainer = ref;
+
+    if (typeof this.scrollContainer !== 'undefined') {
+      this.scrollContainer.addEventListener(
+        'scroll',
+        this.scheduleUpdateToolbarKeyline,
+        false,
+      );
+      this.updateToolbarKeyline();
+    }
+  };
+
+  updateToolbarKeyline = () => {
+    if (!this.scrollContainer) {
+      return false;
+    }
+
+    const { scrollTop } = this.scrollContainer;
+    this.setState({ showKeyline: scrollTop > akEditorToolbarKeylineHeight });
+
+    return false;
+  };
+
+  private scheduleUpdateToolbarKeyline = () => {
+    this.scheduledKeylineUpdate = rafSchedule(() =>
+      this.updateToolbarKeyline(),
+    );
+  };
+
+  componentDidMount() {
+    window.addEventListener('resize', this.scheduleUpdateToolbarKeyline, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.scheduleUpdateToolbarKeyline);
+
+    if (typeof this.scheduledKeylineUpdate !== 'undefined') {
+      cancelAnimationFrame(this.scheduledKeylineUpdate);
+    }
+  }
 
   render() {
     const {
@@ -122,11 +190,14 @@ export default class Editor extends React.Component<
       popupsBoundariesElement,
       popupsScrollableElement,
       disabled,
+      collabEdit,
     } = this.props;
+
+    const { showKeyline } = this.state;
 
     return (
       <FullPageEditorWrapper>
-        <MainToolbar>
+        <MainToolbar showKeyline={showKeyline}>
           <Toolbar
             editorView={editorView!}
             editorActions={editorActions}
@@ -143,14 +214,21 @@ export default class Editor extends React.Component<
             <Avatars
               editorView={editorView}
               eventDispatcher={eventDispatcher}
+              inviteToEditHandler={collabEdit && collabEdit.inviteToEditHandler}
+              isInviteToEditButtonSelected={
+                collabEdit && collabEdit.isInviteToEditButtonSelected
+              }
             />
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ScrollContainer>
+        <ScrollContainer innerRef={this.scrollContainerRef}>
           <ClickAreaBlock editorView={editorView}>
             <ContentArea>
-              <div className="content-area">
+              <div
+                style={{ padding: `0 ${GUTTER_PADDING}px` }}
+                className="content-area"
+              >
                 {customContentComponents}
                 {
                   <PluginSlot

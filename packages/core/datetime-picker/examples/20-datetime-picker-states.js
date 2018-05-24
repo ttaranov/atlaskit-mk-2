@@ -8,10 +8,19 @@ export default () => {
   return (
     <div>
       <Label label="Stock" />
-      <DateTimePicker />
+      <DateTimePicker onChange={console.log} />
 
       <Label label="Disabled input" />
-      <DateTimePicker isDisabled />
+      <DateTimePicker isDisabled onChange={console.log} />
+
+      <Label label="Custom date format" />
+      <DateTimePicker
+        onChange={console.log}
+        dateFormat="DD/MMM/YY"
+        datePickerSelectProps={{
+          placeholder: 'e.g. 31/Dec/18',
+        }}
+      />
     </div>
   );
 };

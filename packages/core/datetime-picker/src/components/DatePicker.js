@@ -2,7 +2,7 @@
 
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import Select from '@atlaskit/select';
+import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
@@ -10,10 +10,15 @@ import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
 
 import { ClearIndicator, DropdownIndicator } from '../internal';
+import FixedLayer from '../internal/FixedLayer';
 import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
+  /** Defines the appearance which can be default or subtle - no borders, background or icon.
+   * Appearance values will be ignored if styles are parsed via the selectProps.
+   */
+  appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `isOpen`. */
@@ -40,10 +45,17 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
-  /** Props to apply to the select. */
+  /** Props to apply to the select. This can be used to set options such as placeholder text.
+   *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
   /** The ISO time that should be used as the input value. */
   value?: string,
+  /** Indicates current value is invalid & changes border color */
+  isInvalid?: boolean,
+  /** Hides icon for dropdown indicator. */
+  hideIcon?: boolean,
+  /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
+  dateFormat: string,
 };
 
 type State = {
@@ -89,10 +101,9 @@ const StyledMenu = styled.div`
   background-color: ${colors.N0};
   border: 1px solid ${colors.N40};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px ${colors.N30};
-  margin-top: 7px;
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
+  margin: 7px 0;
   overflow: hidden;
-  position: absolute;
   text-align: center;
   z-index: ${layers.dialog};
 `;
@@ -100,9 +111,11 @@ const StyledMenu = styled.div`
 export default class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
+  containerRef: ?HTMLElement;
   input: Element | null;
 
   static defaultProps = {
+    appearance: 'default',
     autoFocus: false,
     disabled: [],
     icon: CalendarIcon,
@@ -116,6 +129,9 @@ export default class DatePicker extends Component<Props, State> {
     id: '',
     defaultIsOpen: false,
     defaultValue: '',
+    isInvalid: false,
+    hideIcon: false,
+    dateFormat: 'YYYY/MM/DD',
   };
 
   state = {
@@ -207,34 +223,68 @@ export default class DatePicker extends Component<Props, State> {
     ensureValueIsDisplayed();
   };
 
+  getContainerRef = (ref: ?HTMLElement) => {
+    const oldRef = this.containerRef;
+    this.containerRef = ref;
+    // Cause a re-render if we're getting the container ref for the first time
+    // as the layered menu requires it for dimension calculation
+    if (oldRef == null && ref != null) {
+      this.forceUpdate();
+    }
+  };
+
+  getSubtleControlStyles = () => {
+    return {
+      border: `2px solid ${
+        this.getState().isOpen ? `${colors.B100}` : `transparent`
+      }`,
+      backgroundColor: 'transparent',
+      padding: '1px',
+    };
+  };
+
   render() {
     const {
       autoFocus,
       disabled,
-      icon,
       id,
       innerProps,
       isDisabled,
       name,
       selectProps,
+      dateFormat,
     } = this.props;
     const { isOpen, value, view } = this.getState();
-    const isOpenAndNotDisabled = isOpen && !isDisabled;
-    const Menu = () =>
-      isOpenAndNotDisabled ? (
-        <StyledMenu>
-          <Calendar
-            {...isoToObj(value)}
-            {...isoToObj(view)}
-            disabled={disabled}
-            onChange={this.onCalendarChange}
-            onSelect={this.onCalendarSelect}
-            // $FlowFixMe
-            ref={this.refCalendar}
-            selected={[value]}
-          />
-        </StyledMenu>
-      ) : null;
+    const validationState = this.props.isInvalid ? 'error' : 'default';
+    const icon =
+      this.props.appearance === 'subtle' || this.props.hideIcon
+        ? null
+        : this.props.icon;
+    const Menu = ({ innerProps: menuInnerProps }) => (
+      <StyledMenu>
+        <Calendar
+          {...isoToObj(value)}
+          {...isoToObj(view)}
+          disabled={disabled}
+          onChange={this.onCalendarChange}
+          onSelect={this.onCalendarSelect}
+          // $FlowFixMe
+          ref={this.refCalendar}
+          selected={[value]}
+          innerProps={menuInnerProps}
+        />
+      </StyledMenu>
+    );
+
+    const FixedLayeredMenu = props => (
+      <FixedLayer
+        containerRef={this.containerRef}
+        content={<Menu {...props} />}
+      />
+    );
+    const { styles: selectStyles = {} } = selectProps;
+    const controlStyles =
+      this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
 
     return (
       <div
@@ -243,6 +293,7 @@ export default class DatePicker extends Component<Props, State> {
         onClick={this.onInputClick}
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
+        ref={this.getContainerRef}
       >
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
@@ -250,22 +301,29 @@ export default class DatePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isOpenAndNotDisabled}
+          menuIsOpen={isOpen && !isDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
           components={{
             ClearIndicator,
             DropdownIndicator: () => <DropdownIndicator icon={icon} />,
-            Menu,
+            Menu: FixedLayeredMenu,
           }}
+          styles={mergeStyles(selectStyles, {
+            control: base => ({
+              ...base,
+              ...controlStyles,
+            }),
+          })}
           placeholder="e.g. 2018/12/31"
           value={
             value && {
-              label: format(parse(value), 'YYYY/MM/DD'),
+              label: format(parse(value), dateFormat),
               value,
             }
           }
           {...selectProps}
+          validationState={validationState}
         />
       </div>
     );

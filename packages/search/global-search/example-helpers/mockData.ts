@@ -8,6 +8,10 @@ import {
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
+import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
+import { ResultContentType } from '../src/model/Result';
+
+const DUMMY_BASE_URL = 'http://localhost';
 
 function pickRandom(array: Array<any>) {
   const index = faker.random.number(array.length - 1);
@@ -40,6 +44,10 @@ function randomProvider() {
 function randomIssueKey() {
   const keys = ['ETH', 'XRP', 'ADA', 'TRON', 'DOGE'];
   return pickRandom(keys) + '-' + faker.random.number(1000);
+}
+
+function randomSpaceIconUrl() {
+  return `https://placeimg.com/64/64/arch?bustCache=${Math.random()}`;
 }
 
 function randomIconCssClass() {
@@ -84,17 +92,66 @@ export function makeCrossProductSearchData(
   n = 100,
 ): (term: string) => CrossProductSearchResponse {
   const confData: ConfluenceItem[] = [];
+  const confSpaceData: ConfluenceItem[] = [];
+  const confDataWithAttachments: ConfluenceItem[] = [];
   const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
     confData.push({
       title: faker.company.catchPhrase(),
       container: {
         title: faker.company.companyName(),
+        displayUrl: url,
       },
       iconCssClass: randomIconCssClass(),
-      url: faker.internet.url(),
+      url: url,
+      baseUrl: DUMMY_BASE_URL,
+    });
+  }
+
+  for (let i = 0; i < n; i++) {
+    const url = faker.internet.url();
+    const isAttachment = faker.random.boolean() && faker.random.boolean();
+
+    const newAttachment: ConfluenceItem = {
+      title: faker.company.catchPhrase(),
+      container: {
+        title: faker.company.companyName(),
+        displayUrl: url,
+      },
+      iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
+      url: url,
+      baseUrl: DUMMY_BASE_URL,
+    };
+
+    if (isAttachment) {
+      newAttachment.content = {
+        id: faker.random.alphaNumeric(3),
+        type: 'attachment' as ResultContentType,
+      };
+    }
+
+    confDataWithAttachments.push(newAttachment);
+  }
+
+  for (let i = 0; i < n; i++) {
+    const title = faker.company.companyName();
+    confSpaceData.push({
+      title: title,
       baseUrl: '',
+      url: faker.internet.url(),
+      content: null,
+      iconCssClass: null,
+      container: {
+        title: title,
+        displayUrl: faker.internet.url(),
+      },
+      space: {
+        icon: {
+          path: randomSpaceIconUrl(),
+        },
+      },
     });
   }
 
@@ -124,6 +181,14 @@ export function makeCrossProductSearchData(
       result => result.fields.summary.toLowerCase().indexOf(term) > -1,
     );
 
+    const filteredSpaceResults = confSpaceData.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
+      result => result.container.title.toLowerCase().indexOf(term) > -1,
+    );
+
     return {
       scopes: [
         {
@@ -131,8 +196,16 @@ export function makeCrossProductSearchData(
           results: filteredConfResults,
         },
         {
+          id: Scope.ConfluencePageBlogAttachment,
+          results: filteredConfResultsWithAttachments,
+        },
+        {
           id: Scope.JiraIssue,
           results: filteredJiraResults,
+        },
+        {
+          id: Scope.ConfluenceSpace,
+          results: filteredSpaceResults,
         },
       ],
     };
@@ -164,4 +237,39 @@ export function makePeopleSearchData(
       },
     };
   };
+}
+
+export function makeConfluenceRecentPagesData(n: number = 300) {
+  const items: RecentPage[] = [];
+
+  for (let i = 0; i < n; i++) {
+    items.push({
+      available: true,
+      contentType: ResultContentType.Page,
+      id: faker.random.uuid(),
+      lastSeen: faker.date.past(1).getTime(),
+      space: faker.company.companyName(),
+      spaceKey: faker.hacker.abbreviation(),
+      title: faker.company.catchPhrase(),
+      type: 'page',
+      url: faker.internet.url(),
+    });
+  }
+
+  return items;
+}
+
+export function makeConfluenceRecentSpacesData(n: number = 15) {
+  const spaces: RecentSpace[] = [];
+
+  for (let i = 0; i < n; i++) {
+    spaces.push({
+      id: faker.random.uuid(),
+      key: faker.hacker.abbreviation(),
+      icon: randomSpaceIconUrl(),
+      name: faker.company.companyName(),
+    });
+  }
+
+  return spaces;
 }

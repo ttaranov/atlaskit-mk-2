@@ -2,13 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { splitCell, mergeCells } from 'prosemirror-tables';
 import { EditorView } from 'prosemirror-view';
+
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
-import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import ToolbarButton from '../../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
 import { analyticsService as analytics } from '../../../../../analytics';
-import { TriggerWrapper, ExpandIconWrapper } from '../styles';
 import { checkIfNumberColumnCellsSelected } from '../../../utils';
+import { ToolbarButton } from '../styles';
 
 export interface Props {
   editorView: EditorView;
@@ -44,17 +43,11 @@ export default class AdvanceMenu extends Component<Props, State> {
         fitWidth={136}
       >
         <ToolbarButton
+          spacing="compact"
           selected={isOpen}
           title="Toggle advance menu"
           onClick={this.toggleOpen}
-          iconBefore={
-            <TriggerWrapper>
-              <EditorMoreIcon label="Toggle advance menu" />
-              <ExpandIconWrapper>
-                <ExpandIcon label="expand-dropdown-menu" />
-              </ExpandIconWrapper>
-            </TriggerWrapper>
-          }
+          iconBefore={<EditorMoreIcon label="Toggle advance menu" />}
         />
       </DropdownMenu>
     );

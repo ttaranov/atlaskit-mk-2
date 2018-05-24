@@ -26,6 +26,8 @@ import {
 } from '@atlaskit/editor-json-transformer';
 import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
 import { stateKey as tableStateKey } from '../plugins/table/pm-plugins/main';
+import { hasParentNodeOfType } from 'prosemirror-utils';
+import { GapCursorSelection, Side } from '../plugins/gap-cursor/selection';
 
 export * from './document';
 export * from './action';
@@ -149,6 +151,9 @@ export function atTheBeginningOfDoc(state: EditorState): boolean {
 export function atTheEndOfBlock(state: EditorState): boolean {
   const { selection } = state;
   const { $to } = selection;
+  if (selection instanceof GapCursorSelection) {
+    return false;
+  }
   if (selection instanceof NodeSelection && selection.node.isBlock) {
     return true;
   }
@@ -158,6 +163,9 @@ export function atTheEndOfBlock(state: EditorState): boolean {
 export function atTheBeginningOfBlock(state: EditorState): boolean {
   const { selection } = state;
   const { $from } = selection;
+  if (selection instanceof GapCursorSelection) {
+    return false;
+  }
   if (selection instanceof NodeSelection && selection.node.isBlock) {
     return true;
   }
@@ -262,6 +270,11 @@ export function canJoinDown(
 
 export const setNodeSelection = (view: EditorView, pos: number) => {
   const { state, dispatch } = view;
+
+  if (!isFinite(pos)) {
+    return;
+  }
+
   const tr = state.tr.setSelection(NodeSelection.create(state.doc, pos));
   dispatch(tr);
 };
@@ -276,6 +289,17 @@ export function setTextSelection(
     TextSelection.create(state.doc, anchor, head),
   );
   view.dispatch(tr);
+}
+
+export function setGapCursorSelection(
+  view: EditorView,
+  pos: number,
+  side: Side,
+) {
+  const { state } = view;
+  view.dispatch(
+    state.tr.setSelection(new GapCursorSelection(state.doc.resolve(pos), side)),
+  );
 }
 
 /**
@@ -694,4 +718,12 @@ export const isElementInTableCell = (
 export const isLastItemMediaGroup = (node: Node): boolean => {
   const { content } = node;
   return !!content.lastChild && content.lastChild.type.name === 'mediaGroup';
+};
+
+export const isInListItem = (state: EditorState): boolean => {
+  return hasParentNodeOfType(state.schema.nodes.listItem)(state.selection);
+};
+
+export const hasOpenEnd = (slice: Slice): boolean => {
+  return slice.openStart > 0 || slice.openEnd > 0;
 };

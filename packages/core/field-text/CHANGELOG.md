@@ -1,5 +1,25 @@
 # @atlaskit/field-text
 
+## 5.1.0
+- [minor] Text fields and textareas now inherit their font-family correctly. [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)
+- [none] Updated dependencies [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)
+
+## 5.0.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/field-base@9.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
+## 5.0.2
+
+## 5.0.1
+- [patch] Form developer preview [d8b2b03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8b2b03)
+- [patch] Form package developer preview release [9b28847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b28847)
+
+## 5.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 4.3.0
 - [minor] Update to React.ReactNode [cabf41c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cabf41c)
 - [minor] Update to React.ReactNode [dc2ccc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc2ccc2)

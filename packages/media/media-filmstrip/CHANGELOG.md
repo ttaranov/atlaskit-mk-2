@@ -1,5 +1,45 @@
 # @atlaskit/media-filmstrip
 
+## 8.0.7
+
+
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/media-card@28.0.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/media-card@28.0.0
+
+## 8.0.6
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-card@27.1.4
+  - @atlaskit/field-radio-group@2.0.3
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/checkbox@2.0.2
+  - @atlaskit/field-range@3.0.2
+  - @atlaskit/docs@3.0.4
+
+## 8.0.5
+- [patch] Fix issue with Filmstrip cutting Cards [c5b18db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5b18db)
+
+## 8.0.4
+
+## 8.0.3
+
+## 8.0.2
+
+## 8.0.1
+
+## 8.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 7.1.0
+- [minor] add MutationObserver to FilmstripView to catch dom mutations [625ee2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/625ee2b)
+
 ## 7.0.8
 
 ## 7.0.7

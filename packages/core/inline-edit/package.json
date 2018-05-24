@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "4.6.5",
+  "version": "5.0.2",
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,30 +18,25 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^6.6.2",
-    "@atlaskit/field-base": "^8.2.1",
-    "@atlaskit/icon": "^10.12.1",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/field-base": "^9.0.3",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/theme": "^3.2.2",
     "classnames": "^2.2.5",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0",
-    "react-dom": "15.6.0 - 16.2.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^9.2.1",
-    "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/field-radio-group": "^1.9.2",
-    "@atlaskit/field-text": "^4.2.1",
-    "@atlaskit/inline-dialog": "5.3.2",
-    "@atlaskit/input": "^1.7.1",
-    "@atlaskit/mention": "^10.0.1",
-    "@atlaskit/modal-dialog": "^3.5.1",
-    "@atlaskit/multi-select": "^8.1.2",
-    "@atlaskit/single-select": "^3.3.2",
-    "@atlaskit/tag": "^3.2.1",
-    "@atlaskit/tag-group": "^3.6.1",
+    "@atlaskit/docs": "^3.0.4",
+    "@atlaskit/field-radio-group": "^2.0.3",
+    "@atlaskit/field-text": "^5.0.3",
+    "@atlaskit/input": "^2.0.2",
+    "@atlaskit/multi-select": "^9.0.2",
+    "@atlaskit/tag": "^4.1.1",
+    "@atlaskit/tag-group": "^4.0.1",
     "enzyme": "^3.3.0"
   },
   "keywords": [

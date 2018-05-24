@@ -10,6 +10,7 @@ import {
 const clipboardInput = '#input';
 const copyAsHTMLButton = '#copy-as-html';
 
+// broken on firefox - https://product-fabric.atlassian.net/browse/ED-4337
 editors.forEach(editor => {
   BrowserTestCase(
     `Link: paste link and add text, paste link into list for ${
@@ -27,10 +28,10 @@ editors.forEach(editor => {
       );
       await sample.click(copyAsHTMLButton);
       await sample.goto(editor.path);
+      await sample.waitForSelector(editor.placeholder);
       await sample.click(editor.placeholder);
       await sample.waitForSelector(editable);
       await sample.paste(editable);
-      await sample.keys('ArrowRight');
       await sample.type(editable, '.');
       await sample.type(editable, 'Return');
 

@@ -1,6 +1,6 @@
 import { mapImageToEmoji } from '../src/emojiHelper';
-import { doc, p } from '@atlaskit/editor-test-helpers';
-import { checkParse } from './_test-helpers';
+import { doc, p, emoji } from '@atlaskit/editor-test-helpers';
+import { checkParse, checkEncode } from './_test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
 
 describe('emojiHelper', () => {
@@ -82,4 +82,27 @@ describe('JIRATransformer', () => {
       doc(p('')),
     );
   });
+});
+
+describe('JIRATransformer:encoder', () => {
+  const schemaWithEmoji = createJIRASchema({ allowEmojis: true });
+
+  checkEncode(
+    'should retun unicode for emoji',
+    schemaWithEmoji,
+    doc(p(emoji({ shortName: 'smile', text: '🙂' })())),
+    '<p>🙂</p>',
+  );
+  checkEncode(
+    'should not break if emoji has no text',
+    schemaWithEmoji,
+    doc(p(emoji({ shortName: 'smile' })())),
+    '',
+  );
+  checkEncode(
+    'should return text string if unicode is not supported',
+    schemaWithEmoji,
+    doc(p(emoji({ shortName: 'bitbucket', text: ':bitbucket:' })())),
+    '<p>:bitbucket:</p>',
+  );
 });

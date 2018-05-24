@@ -1,6 +1,16 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
+
+import {
+  uploadFile,
+  UploadableFile,
+  UploadFileCallbacks,
+  ContextConfig,
+  MediaApiConfig,
+  UploadFileResult,
+} from '@atlaskit/media-store';
+
 import {
   MediaItemProvider,
   MediaCollectionProvider,
@@ -16,7 +26,6 @@ import { BlobService, MediaBlobService } from '../services/blobService';
 import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
-import { ContextConfig, MediaApiConfig } from '../auth';
 import { FileItem } from '../item';
 
 const DEFAULT_CACHE_SIZE = 200;
@@ -53,6 +62,11 @@ export interface Context {
   ): Promise<string>;
 
   refreshCollection(collectionName: string, pageSize: number): void;
+
+  uploadFile(
+    file: UploadableFile,
+    callbacks?: UploadFileCallbacks,
+  ): UploadFileResult;
 
   readonly config: ContextConfig;
 }
@@ -171,6 +185,13 @@ class ContextImpl implements Context {
   ): Promise<string> {
     const linkService = new MediaLinkService(this.apiConfig);
     return linkService.addLinkItem(url, collectionName, metadata);
+  }
+
+  uploadFile(
+    file: UploadableFile,
+    callbacks?: UploadFileCallbacks,
+  ): UploadFileResult {
+    return uploadFile(file, this.apiConfig, callbacks);
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {

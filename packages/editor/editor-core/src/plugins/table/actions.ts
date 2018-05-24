@@ -1,21 +1,25 @@
 import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
-import { CellSelection, TableMap, selectionCell } from 'prosemirror-tables';
-import { Slice } from 'prosemirror-model';
+import { TableMap, selectionCell } from 'prosemirror-tables';
+import {
+  findTable,
+  getCellsInColumn,
+  getCellsInRow,
+  getCellsInTable,
+  addColumnAt,
+  addRowAt,
+} from 'prosemirror-utils';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
 import { stateKey as tablePluginKey } from './pm-plugins/main';
 import {
   createHoverDecorationSet,
-  getColumnPos,
-  getRowPos,
-  getTablePos,
-  tableStartPos,
   getCellSelection,
-  getTableNode,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
 } from './utils';
 import { Command } from '../../types';
+import { analyticsService } from '../../analytics';
+import { Node } from 'prosemirror-model';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
@@ -30,110 +34,83 @@ export const resetHoverSelection: Command = (
   return true;
 };
 
-export const hoverColumn = (column: number): Command => (
+export const hoverColumns = (columns: number[], danger?: boolean): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const { tableNode } = tablePluginKey.getState(state);
-  const { from, to } = getColumnPos(column, tableNode);
-  dispatch(
-    state.tr.setMeta(hoverSelectionPluginKey, {
-      decorationSet: createHoverDecorationSet(from, to, tableNode, state),
-    }),
-  );
-  return true;
-};
+  const table = findTable(state.selection);
+  if (table) {
+    const cells = columns.reduce(
+      (acc: { pos: number; node: Node }[], colIdx) => {
+        const colCells = getCellsInColumn(colIdx)(state.selection);
+        return colCells ? acc.concat(colCells) : acc;
+      },
+      [],
+    );
 
-export const hoverRow = (row: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const { tableNode } = tablePluginKey.getState(state);
-  const { from, to } = getRowPos(row, tableNode);
-  dispatch(
-    state.tr.setMeta(hoverSelectionPluginKey, {
-      decorationSet: createHoverDecorationSet(from, to, tableNode, state),
-    }),
-  );
-  return true;
-};
-
-export const hoverTable: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const { tableNode } = tablePluginKey.getState(state);
-  const { from, to } = getTablePos(tableNode);
-  dispatch(
-    state.tr.setMeta(hoverSelectionPluginKey, {
-      decorationSet: createHoverDecorationSet(from, to, tableNode, state),
-      isTableHovered: true,
-    }),
-  );
-  return true;
-};
-
-export const createCellSelection = (from: number, to: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  // here "from" and "to" params are table-relative positions, therefore we add table offset
-  const offset = tableStartPos(state);
-  const $anchor = state.doc.resolve(from + offset);
-  const $head = state.doc.resolve(to + offset);
-  dispatch(state.tr.setSelection(new (CellSelection as any)($anchor, $head)));
-  return true;
-};
-
-export const selectColumn = (column: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const { tableNode } = tablePluginKey.getState(state);
-  const { from, to } = getColumnPos(column, tableNode);
-  return createCellSelection(from, to)(state, dispatch);
-};
-
-export const selectRow = (row: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const { tableNode } = tablePluginKey.getState(state);
-  const { from, to } = getRowPos(row, tableNode);
-  return createCellSelection(from, to)(state, dispatch);
-};
-
-export const selectTable: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const { tableNode } = tablePluginKey.getState(state);
-  const { from, to } = getTablePos(tableNode);
-  return createCellSelection(from, to)(state, dispatch);
-};
-
-export const emptySelectedCells: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const cellSelection = getCellSelection(state);
-  if (!cellSelection) {
-    return false;
+    dispatch(
+      state.tr.setMeta(hoverSelectionPluginKey, {
+        decorationSet: createHoverDecorationSet(cells, state, danger),
+      }),
+    );
+    return true;
   }
-  const { tr, schema } = state;
-  const emptyCell = schema.nodes.tableCell.createAndFill()!.content;
-  cellSelection.forEachCell((cell, pos) => {
-    if (!cell.content.eq(emptyCell)) {
-      const slice = new Slice(emptyCell, 0, 0);
-      tr.replace(
-        tr.mapping.map(pos + 1),
-        tr.mapping.map(pos + cell.nodeSize - 1),
-        slice,
-      );
-    }
-  });
-  if (tr.docChanged) {
-    dispatch(tr);
+  return false;
+};
+
+export const hoverRows = (rows: number[], danger?: boolean): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+  if (table) {
+    const cells = rows.reduce((acc: { pos: number; node: Node }[], rowIdx) => {
+      const rowCells = getCellsInRow(rowIdx)(state.selection);
+      return rowCells ? acc.concat(rowCells) : acc;
+    }, []);
+
+    dispatch(
+      state.tr.setMeta(hoverSelectionPluginKey, {
+        decorationSet: createHoverDecorationSet(cells, state, danger),
+      }),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const hoverTable = (danger?: boolean): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+  if (table) {
+    const cells = getCellsInTable(state.selection)!;
+    dispatch(
+      state.tr.setMeta(hoverSelectionPluginKey, {
+        decorationSet: createHoverDecorationSet(cells, state, danger),
+        isTableHovered: true,
+        isTableInDanger: danger,
+      }),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const clearHoverTable: Command = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+  if (table) {
+    dispatch(
+      state.tr.setMeta(hoverSelectionPluginKey, {
+        decorationSet: DecorationSet.empty,
+        isTableHovered: false,
+        isTableInDanger: false,
+      }),
+    );
     return true;
   }
   return false;
@@ -151,17 +128,19 @@ export const toggleHeaderRow: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const tableNode = getTableNode(state);
+  const table = findTable(state.selection);
+  if (!table) {
+    return false;
+  }
   const { tr } = state;
-  const map = TableMap.get(tableNode!);
+  const map = TableMap.get(table.node);
   const { tableHeader, tableCell } = state.schema.nodes;
-  const { isNumberColumnEnabled } = tableNode!.attrs;
+  const { isNumberColumnEnabled } = table.node.attrs;
   const isHeaderRowEnabled = checkIfHeaderRowEnabled(state);
   const isHeaderColumnEnabled = checkIfHeaderColumnEnabled(state);
   const type = isHeaderRowEnabled ? tableCell : tableHeader;
-  const start = tableStartPos(state);
 
-  for (let column = 0; column < tableNode!.child(0).childCount; column++) {
+  for (let column = 0; column < table.node.child(0).childCount; column++) {
     // skip header column
     if (
       isHeaderColumnEnabled &&
@@ -170,8 +149,8 @@ export const toggleHeaderRow: Command = (
     ) {
       continue;
     }
-    const from = tr.mapping.map(start + map.map[column]);
-    const cell = tableNode!.child(0).child(column);
+    const from = tr.mapping.map(table.pos + map.map[column]);
+    const cell = table.node.child(0).child(column);
     // empty first cell of the number column when converting to header row (remove "1")
     if (!isHeaderRowEnabled && isNumberColumnEnabled && column === 0) {
       tr.replaceWith(
@@ -191,20 +170,22 @@ export const toggleHeaderColumn: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const tableNode = getTableNode(state);
+  const table = findTable(state.selection);
+  if (!table) {
+    return false;
+  }
   const { tr } = state;
-  const start = tableStartPos(state);
-  const map = TableMap.get(tableNode!);
+  const map = TableMap.get(table.node);
   const { tableHeader, tableCell } = state.schema.nodes;
   const type = checkIfHeaderColumnEnabled(state) ? tableCell : tableHeader;
 
   // skip header row
   const startIndex = checkIfHeaderRowEnabled(state) ? 1 : 0;
-  for (let row = startIndex; row < tableNode!.childCount; row++) {
-    const column = tableNode!.attrs.isNumberColumnEnabled ? 1 : 0;
-    const cell = tableNode!.child(row).child(column);
+  for (let row = startIndex; row < table.node.childCount; row++) {
+    const column = table.node.attrs.isNumberColumnEnabled ? 1 : 0;
+    const cell = table.node.child(row).child(column);
     tr.setNodeMarkup(
-      start + map.map[column + row * map.width],
+      table.pos + map.map[column + row * map.width],
       type,
       cell.attrs,
     );
@@ -220,7 +201,7 @@ export const toggleNumberColumn: Command = (
   const { tr } = state;
   const { tableNode } = tablePluginKey.getState(state);
   const map = TableMap.get(tableNode);
-  const start = tableStartPos(state);
+  const { pos: start } = findTable(state.selection)!;
 
   if (tableNode.attrs.isNumberColumnEnabled) {
     // delete existing number column
@@ -297,4 +278,30 @@ export const setCellAttr = (name: string, value: any): Command => (
     }
   }
   return false;
+};
+
+export const insertColumn = (column: number): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const tr = addColumnAt(column)(state.tr);
+  const table = findTable(tr.selection)!;
+  // move the cursor to the newly created column
+  const pos = TableMap.get(table.node).positionAt(0, column, table.node);
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  analyticsService.trackEvent('atlassian.editor.format.table.column.button');
+  return true;
+};
+
+export const insertRow = (row: number): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const tr = addRowAt(row)(state.tr);
+  const table = findTable(tr.selection)!;
+  // move the cursor to the newly created row
+  const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  analyticsService.trackEvent('atlassian.editor.format.table.row.button');
+  return true;
 };

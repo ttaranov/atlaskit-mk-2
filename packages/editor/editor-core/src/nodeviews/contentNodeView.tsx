@@ -11,10 +11,10 @@ export interface Props {
 export default class ContentNodeView {
   contentDOM: HTMLElement | undefined;
 
-  constructor(node: PMNode, view: EditorView) {
+  constructor(node: PMNode, view: EditorView, elementType: string = 'div') {
     if (view.dom.parentNode) {
       this.contentDOM = view.dom.parentNode.appendChild(
-        document.createElement('div'),
+        document.createElement(elementType),
       );
       // @see ED-3790
       // something gets messed up during mutation processing inside of a nodeView if DOM structure has nested plain "div"s,
@@ -23,12 +23,14 @@ export default class ContentNodeView {
     }
   }
 
-  handleRef = (node: HTMLElement | undefined) => {
+  handleRef = (node: HTMLElement | undefined) => this._handleRef(node);
+
+  private _handleRef(node: HTMLElement | undefined) {
     const { contentDOM } = this;
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);
     }
-  };
+  }
 
   destroy() {
     this.contentDOM = undefined;

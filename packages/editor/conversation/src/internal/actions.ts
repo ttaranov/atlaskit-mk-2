@@ -16,6 +16,7 @@ export const UPDATE_COMMENT_REQUEST = 'updateCommentRequest';
 export const UPDATE_COMMENT_SUCCESS = 'updateCommentSuccess';
 export const UPDATE_COMMENT_ERROR = 'updateCommentError';
 
+export const HIGHLIGHT_COMMENT = 'highlightComment';
 export const REVERT_COMMENT = 'revertComment';
 
 export const UPDATE_USER_SUCCESS = 'updateUserSuccess';

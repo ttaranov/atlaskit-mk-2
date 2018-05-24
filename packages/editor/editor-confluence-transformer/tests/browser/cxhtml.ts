@@ -55,7 +55,6 @@ import {
   decisionList,
   decisionItem,
   hardBreak,
-  tableWithAttrs,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -633,7 +632,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header column',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><td><p>1</p></td><td><p>2</p></td></tr><tr><th><p>two</p></th><td><p>3</p></td><td><p>4</p></td></tr></tbody></table>',
         doc(
-          table(
+          table({ __autoSize: true })(
             tr(th({})(p('one')), td({})(p('1')), td({})(p('2'))),
             tr(th({})(p('two')), td({})(p('3')), td({})(p('4'))),
           ),
@@ -644,7 +643,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header row',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table>',
         doc(
-          table(
+          table({ __autoSize: true })(
             tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
             tr(td({})(p('1')), td({})(p('2')), td({})(p('3'))),
           ),
@@ -655,7 +654,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with header row and header column',
         '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><th><p>four</p></th><td><p>1</p></td><td><p>2</p></td></tr></tbody></table>',
         doc(
-          table(
+          table({ __autoSize: true })(
             tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
             tr(th({})(p('four')), td({})(p('1')), td({})(p('2'))),
           ),
@@ -667,7 +666,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with fixed table and rowspan but missing col2',
         `<table class="wrapped"><colgroup><col style="width: ${col1}px;" /><col /></colgroup><tbody><tr><th>1</th><th>2</th></tr><tr><td>a</td><td>fdfdfddfdffdfdfdfdfdf</td></tr><tr><td>c</td><td rowspan="2">dkjlkjlklkjlkj</td></tr><tr><td colspan="1"></td></tr></tbody></table>`,
         doc(
-          table(
+          table()(
             tr(th({ colwidth: [col1] })(p('1')), th()(p('2'))),
             tr(
               td({ colwidth: [col1] })(p('a')),
@@ -687,7 +686,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         'with fixed table and rowspan',
         `<table class="fixed-table wrapped"><colgroup><col style="width: ${col1}px;" /><col style="width: ${col2}px;" /></colgroup><tbody><tr><th>1</th><th>2</th></tr><tr><td>a</td><td>fdfdfddfdffdfdfdfdfdf</td></tr><tr><td>c</td><td rowspan="2">dkjlkjlklkjlkj</td></tr><tr><td colspan="1"></td></tr></tbody></table>`,
         doc(
-          table(
+          table()(
             tr(
               th({ colwidth: [col1] })(p('1')),
               th({ colwidth: [col2] })(p('2')),
@@ -739,7 +738,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           table1ColumnPct[2]
         }%;" /></colgroup><tbody><tr><th>1</th><th>2</th><th>3</th></tr><tr><td colspan="2"><br />asd</td><td>asd</td></tr><tr><td>d</td><td colspan="2">asd</td></tr></tbody></table>`,
         doc(
-          table(
+          table()(
             tr(
               th({ colwidth: [table1ColumnPx[0]] })(p('1')),
               th({ colwidth: [table1ColumnPx[1]] })(p('2')),
@@ -781,7 +780,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           table2ColumnPct[2]
         }%;" /></colgroup><tbody><tr><th class="numberingColumn"><br /></th><th>one</th><th>two</th><th>three</th></tr><tr><td class="numberingColumn">1</td><td>14</td><td>2</td><td>3</td></tr><tr><td class="numberingColumn">2</td><td><br /></td><td class="highlight-green" data-highlight-colour="green">5</td><td class="highlight-green" data-highlight-colour="green"><p>6</p></td></tr><tr><td class="numberingColumn" colspan="1">3</td><td colspan="1"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td></tr><tr><th class="numberingColumn">123</th><th colspan="1">qwe</th><th colspan="1"><br /></th><th colspan="1"><p><br /></p></th></tr><tr><td class="numberingColumn" colspan="1">4</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn" colspan="1">5</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">6</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">7</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr></tbody></table>`,
         doc(
-          tableWithAttrs({ isNumberColumnEnabled: true })(
+          table({ isNumberColumnEnabled: true })(
             tr(
               th({ colwidth: [40] })(p(hardBreak())),
               th({ colwidth: [table2ColumnPx[0]] })(p('one')),
@@ -1243,7 +1242,9 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       const actual = parse(
         '<table class="confluenceTable"><tbody><tr><td><div class="content-wrapper"><p>hello</p></div></td></tr></tbody></table>',
       );
-      expect(actual).to.deep.equal(doc(table(tr(td({})(p('hello'))))));
+      expect(actual).to.deep.equal(
+        doc(table({ __autoSize: true })(tr(td({})(p('hello'))))),
+      );
     });
   });
 

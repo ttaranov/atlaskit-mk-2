@@ -24,6 +24,7 @@ import {
   strikeRegex,
   codeRegex,
 } from '../../../src/plugins/text-formatting/pm-plugins/input-rule';
+import { EditorView } from 'prosemirror-view';
 
 const autoFormatPatterns = [
   {
@@ -91,6 +92,15 @@ describe('text-formatting input rules', () => {
     });
   };
 
+  function typeText(view: EditorView, text: string) {
+    const { $from, $to } = view.state.selection;
+    if (
+      !view.someProp('handleTextInput', f => f(view, $from.pos, $to.pos, text))
+    ) {
+      view.dispatch(view.state.tr.insertText(text, $from.pos, $to.pos));
+    }
+  }
+
   const autoformatCombinations = (
     strings,
     editorContent,
@@ -112,19 +122,24 @@ describe('text-formatting input rules', () => {
   };
 
   describe('atlassian product rule', () => {
-    autoformats('atlassian', p('Atlassian'), 'product');
+    autoformats('atlassian ', p('Atlassian '), 'product');
     notautoformats('something-atlassian');
+    notautoformats('atlassian');
+    notautoformats('atlassian.com');
 
-    autoformats('jira and JIRA', p('Jira and Jira'), 'product');
+    autoformats('jira and JIRA ', p('Jira and Jira '), 'product');
     notautoformats('.jira');
+    notautoformats('jira.atlassian.com');
 
-    autoformats('bitbucket', p('Bitbucket'), 'product');
+    autoformats('bitbucket ', p('Bitbucket '), 'product');
     notautoformats('.bitbucket');
+    notautoformats('bitbucket.atlassian.com');
 
-    autoformats('hipchat and HipChat', p('Hipchat and Hipchat'), 'product');
+    autoformats('hipchat and HipChat ', p('Hipchat and Hipchat '), 'product');
     notautoformats('.hipchat');
+    notautoformats('hipchat.atlassian.com');
 
-    autoformats('trello', p('Trello'), 'product');
+    autoformats('trello ', p('Trello '), 'product');
     notautoformats('.trello');
 
     autoformats('  \t    atlassian   ', p('  \t    Atlassian   '), 'product');
@@ -154,12 +169,35 @@ describe('text-formatting input rules', () => {
       'quote',
     );
 
+    describe('supports composed autoformatting for quotation', () => {
+      trackEvent = jest.fn();
+      const { editorView } = editor(doc(p('{<>}')));
+      typeText(editorView, 'it');
+      expect(editorView.state.doc).toEqualDocument(doc(p('it{<>}')));
+
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(doc(p('it’s{<>}')));
+
+      expect(trackEvent).toHaveBeenCalledWith(
+        `atlassian.editor.format.quote.autoformatting`,
+      );
+    });
+
     // test spacing
     autoformats(
       '  \t   "hello" \'world\'   ',
       p('  \t   “hello” ‘world’   '),
       'quote',
     );
+
+    describe('cursor movement', () => {
+      const { editorView } = editor(doc(p('hel{<}lo{>}o')));
+      typeText(editorView, '"');
+      expect(editorView.state.doc).toEqualDocument(doc(p('hel”{<>}o')));
+
+      const { empty } = editorView.state.selection;
+      expect(empty).toBe(true);
+    });
   });
 
   describe('arrow rule', () => {
@@ -189,6 +227,15 @@ describe('text-formatting input rules', () => {
       ' \t   →  \t  →  ',
       'arrow',
     );
+
+    describe('cursor movement', () => {
+      const { editorView } = editor(doc(p('hel{<}lo{>}o')));
+      typeText(editorView, ' -> ');
+      expect(editorView.state.doc).toEqualDocument(doc(p('hel → {<>}o')));
+
+      const { empty } = editorView.state.selection;
+      expect(empty).toBe(true);
+    });
   });
 
   describe('typography rule', () => {
@@ -215,6 +262,15 @@ describe('text-formatting input rules', () => {
       '\t –   \t text',
       'typography',
     );
+
+    describe('cursor movement', () => {
+      const { editorView } = editor(doc(p('hel{<}lo{>}o')));
+      typeText(editorView, '...');
+      expect(editorView.state.doc).toEqualDocument(doc(p('hel…{<>}o')));
+
+      const { empty } = editorView.state.selection;
+      expect(empty).toBe(true);
+    });
   });
 
   describe('strong rule', () => {
@@ -496,6 +552,30 @@ describe('text-formatting input rules', () => {
       autoFormatPatterns.forEach(pattern => {
         notautoformats(`abc${pattern.string}`);
       });
+    });
+
+    describe('single space character', () => {
+      notautoformats('__ __');
+      notautoformats('** **');
+      notautoformats('_ _');
+      notautoformats('* *');
+      notautoformats('~~ ~~');
+    });
+
+    describe('single character same as autoformatting character', () => {
+      notautoformats('_____');
+      notautoformats('*****');
+      notautoformats('___');
+      notautoformats('***');
+      notautoformats('~~~~~');
+    });
+
+    describe('multiple characters same as autoformatting character', () => {
+      notautoformats('_______');
+      notautoformats('*******');
+      notautoformats('_____');
+      notautoformats('*****');
+      notautoformats('~~~~~~~');
     });
 
     describe('space after formatting character', () => {

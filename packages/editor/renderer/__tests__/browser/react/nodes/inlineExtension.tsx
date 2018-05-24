@@ -146,4 +146,31 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
     ).to.equal('inlineExtension');
     extension.unmount();
   });
+
+  it('extension handler should receive type = inlineExtension', () => {
+    const extensionHandler = jest.fn();
+    const extensionHandlers: ExtensionHandlers = {
+      'com.atlassian.fabric': extensionHandler,
+    };
+
+    const extension = mount(
+      <InlineExtension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="react"
+      />,
+    );
+
+    expect(extensionHandler.mock.calls[0][0]).to.eql({
+      type: 'inlineExtension',
+      extensionType: 'com.atlassian.fabric',
+      extensionKey: 'react',
+      parameters: undefined,
+      content: undefined,
+    });
+
+    extension.unmount();
+  });
 });

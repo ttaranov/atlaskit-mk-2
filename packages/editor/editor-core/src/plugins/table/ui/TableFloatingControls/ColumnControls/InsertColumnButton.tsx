@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import AkButton from '@atlaskit/button';
 import {
@@ -10,29 +9,23 @@ import {
 } from './styles';
 
 export interface ButtonProps {
-  index: number;
-  style?: object;
-  insertColumn: (column: number) => void;
+  onClick: () => void;
   lineMarkerHeight?: number;
 }
 
-export default class InsertColumnButton extends Component<ButtonProps, any> {
-  handleInsert = () => this.props.insertColumn(this.props.index);
+const InsertColumnButton = ({ onClick, lineMarkerHeight }: ButtonProps) => (
+  <InsertColumnButtonWrap>
+    <InsertColumnButtonInner>
+      <AkButton
+        onClick={onClick}
+        iconBefore={<AddIcon label="Add column" />}
+        appearance="primary"
+        spacing="none"
+      />
+    </InsertColumnButtonInner>
+    <ColumnLineMarker style={{ height: lineMarkerHeight }} />
+    <InsertColumnMarker />
+  </InsertColumnButtonWrap>
+);
 
-  render() {
-    return (
-      <InsertColumnButtonWrap style={this.props.style}>
-        <InsertColumnButtonInner>
-          <AkButton
-            onClick={this.handleInsert}
-            iconBefore={<AddIcon label="Add column" />}
-            appearance="primary"
-            spacing="none"
-          />
-        </InsertColumnButtonInner>
-        <ColumnLineMarker style={{ height: this.props.lineMarkerHeight }} />
-        <InsertColumnMarker />
-      </InsertColumnButtonWrap>
-    );
-  }
-}
+export default InsertColumnButton;

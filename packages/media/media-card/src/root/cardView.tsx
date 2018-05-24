@@ -52,6 +52,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   // FileCardProps
   readonly dataURI?: string;
   readonly progress?: number;
+  readonly disableOverlay?: boolean;
 }
 
 export interface CardViewState {
@@ -71,29 +72,13 @@ export class CardViewBase extends React.Component<
   CardViewBaseProps,
   CardViewState
 > {
-  private componentHasMountedAtTime: number;
-  private hasBeenShown: boolean;
-
-  constructor(props) {
+  constructor(props: CardViewBaseProps) {
     super(props);
     this.state = {};
-    this.componentHasMountedAtTime = 0;
   }
 
   componentDidMount() {
-    this.componentHasMountedAtTime = Date.now();
     this.saveElementWidth();
-    this.fireShowedAnalyticsEvent(this.props);
-  }
-
-  private fireShowedAnalyticsEvent({ status }: CardViewBaseProps) {
-    if (!this.hasBeenShown && (status === 'error' || status === 'complete')) {
-      const loadTime = Date.now() - this.componentHasMountedAtTime;
-      this.props
-        .createAnalyticsEvent({ action: 'shown', loadTime })
-        .fire('media');
-      this.hasBeenShown = true;
-    }
   }
 
   componentWillReceiveProps(nextProps: CardViewBaseProps) {
@@ -107,8 +92,6 @@ export class CardViewBase extends React.Component<
     if (nextSelectable && cs !== ns) {
       this.fireOnSelectChangeToConsumer(ns);
     }
-
-    this.fireShowedAnalyticsEvent(nextProps);
   }
 
   private fireOnSelectChangeToConsumer = (newSelectedState: boolean): void => {
@@ -241,6 +224,7 @@ export class CardViewBase extends React.Component<
       actions,
       selectable,
       selected,
+      disableOverlay,
     } = this.props;
 
     return (
@@ -256,6 +240,7 @@ export class CardViewBase extends React.Component<
         actions={actions}
         selectable={selectable}
         selected={selected}
+        disableOverlay={disableOverlay}
       />
     );
   };

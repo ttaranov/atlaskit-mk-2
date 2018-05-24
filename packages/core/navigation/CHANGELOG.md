@@ -1,5 +1,53 @@
 # @atlaskit/navigation
 
+## 31.0.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/quick-search@1.4.2
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/toggle@3.0.2
+  - @atlaskit/page@6.0.3
+  - @atlaskit/single-select@4.0.3
+  - @atlaskit/item@6.0.3
+  - @atlaskit/logo@7.0.1
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/dropdown-menu@4.0.3
+  - @atlaskit/checkbox@2.0.2
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/blanket@5.0.2
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/size-detector@3.1.1
+  - @atlaskit/polyfills@2.0.1
+  - @atlaskit/analytics@3.0.1
+
+## 31.0.3
+
+## 31.0.2
+- [patch] Fix navigation item content and description (subtext) clipping in certain browsers [0f1252b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f1252b)
+
+## 31.0.1
+- [patch] Remove unused dependencies [3cfb3fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3cfb3fe)
+
+## 31.0.0
+- [major] Remove quick-search component from navigation. See docs for how to upgrade. [5447ec2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5447ec2)
+
+## 30.0.3
+- [patch] exporting the skeleton header from navigation [7697346](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7697346)
+
+## 30.0.2
+- [patch] removes app-switcher dev dependency [fad3bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad3bbe)
+
+## 30.0.1
+- [patch] Upgrade react-scrolllock dependency [99b852c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99b852c)
+
+## 30.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
+## 29.3.1
+- [patch] Update typing and examples [efdbf46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efdbf46)
+
 ## 29.3.0
 - [minor] Add `target` prop to ResultBase component [d4a3bed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a3bed)
 

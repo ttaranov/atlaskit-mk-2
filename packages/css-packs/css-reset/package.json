@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/css-reset",
-  "version": "1.2.3",
+  "version": "2.0.2",
   "description": "ak-css-reset webcomponent",
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
@@ -21,10 +21,10 @@
     "@atlaskit/util-shared-styles": "^2.10.3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^2.4.3",
+    "@atlaskit/docs": "^3.0.4",
     "less": "^2.7.1"
   },
   "keywords": [

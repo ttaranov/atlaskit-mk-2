@@ -27,6 +27,7 @@ import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
+import Placeholder from './placeholder';
 import Rule from './rule';
 import TaskItem from './taskItem';
 import TaskList from './taskList';
@@ -61,6 +62,7 @@ export const nodeToReact = {
   orderedList: OrderedList,
   panel: Panel,
   paragraph: Paragraph,
+  placeholder: Placeholder,
   rule: Rule,
   taskItem: TaskItem,
   taskList: TaskList,
@@ -241,6 +243,7 @@ export {
   OrderedList,
   Panel,
   Paragraph,
+  Placeholder,
   Rule,
   TaskItem,
   TaskList,

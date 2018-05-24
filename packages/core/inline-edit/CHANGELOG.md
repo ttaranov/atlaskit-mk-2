@@ -1,5 +1,24 @@
 # @atlaskit/inline-edit
 
+## 5.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/tag@4.1.1
+  - @atlaskit/tag-group@4.0.1
+  - @atlaskit/multi-select@9.0.2
+  - @atlaskit/field-radio-group@2.0.3
+  - @atlaskit/field-base@9.0.3
+  - @atlaskit/input@2.0.2
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
+## 5.0.1
+
+## 5.0.0
+- [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
+
 ## 4.6.5
 
 ## 4.6.4

@@ -26,6 +26,10 @@ export interface Props extends SharedProps {
 }
 
 export default class Conversation extends React.PureComponent<Props> {
+  static defaultProps = {
+    placeholder: 'What do you want to say?',
+  };
+
   private renderComments() {
     const {
       comments,
@@ -34,12 +38,15 @@ export default class Conversation extends React.PureComponent<Props> {
       onUpdateComment,
       onDeleteComment,
       onRevertComment,
+      onHighlightComment,
       onUserClick,
       onCancel,
       user,
       dataProviders,
       renderEditor,
       containerId,
+      placeholder,
+      disableScrollTo,
     } = this.props;
 
     if (!conversation) {
@@ -58,6 +65,7 @@ export default class Conversation extends React.PureComponent<Props> {
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
         onRevertComment={onRevertComment}
+        onHighlightComment={onHighlightComment}
         onRetry={this.onRetry(comment.document)}
         onCancel={onCancel}
         onUserClick={onUserClick}
@@ -65,6 +73,8 @@ export default class Conversation extends React.PureComponent<Props> {
         renderComment={props => <Comment {...props} />}
         renderEditor={renderEditor}
         containerId={containerId}
+        placeholder={placeholder}
+        disableScrollTo={disableScrollTo}
       />
     ));
   }
@@ -78,6 +88,9 @@ export default class Conversation extends React.PureComponent<Props> {
       user,
       conversation,
       renderEditor,
+      placeholder,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -92,6 +105,9 @@ export default class Conversation extends React.PureComponent<Props> {
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
+          placeholder={placeholder}
+          disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }

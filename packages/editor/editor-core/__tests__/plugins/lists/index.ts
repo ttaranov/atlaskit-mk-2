@@ -10,19 +10,32 @@ import {
   li,
   p,
   panel,
+  media,
+  mediaSingle,
+  randomId,
+  br,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 import listPlugin from '../../../src/plugins/lists';
 import panelPlugin from '../../../src/plugins/panel';
+import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
+import mediaPlugin from '../../../src/plugins/media';
 
 describe('lists', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [listPlugin, panelPlugin],
+      editorPlugins: [
+        listPlugin,
+        panelPlugin,
+        mediaPlugin({ allowMediaSingle: true }),
+      ],
       editorProps: { analyticsHandler: trackEvent },
       pluginKey: listPluginKey,
     });
+
+  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+  const temporaryFileId = `temporary:${randomId()}`;
 
   describe('keymap', () => {
     let trackEvent;
@@ -49,6 +62,297 @@ describe('lists', () => {
         sendKeyToPm(editorView, 'Tab');
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.editor.format.list.indent.keyboard',
+        );
+      });
+    });
+
+    describe('when hit Backspace', () => {
+      const backspaceCheck = (beforeDoc, afterDoc) => {
+        const { editorView } = editor(beforeDoc);
+        sendKeyToPm(editorView, 'Backspace');
+
+        const expectedDoc = afterDoc(editorView.state.schema);
+        expect(editorView.state.doc.toJSON()).toEqual(expectedDoc.toJSON());
+
+        const { state } = editorView;
+        if (expectedDoc.refs['<']) {
+          expect(state.selection.from).toEqual(expectedDoc.refs['<']);
+          expect(state.selection.to).toEqual(expectedDoc.refs['>']);
+        } else {
+          expect(state.selection.from).toEqual(expectedDoc.refs['<>']);
+          expect(state.selection.empty).toBe(true);
+        }
+      };
+
+      it('should outdent a first level list item to paragraph', () => {
+        backspaceCheck(
+          doc(ol(li(p('text')), li(p('{<>}')))),
+          doc(ol(li(p('text'))), p('{<>}')),
+        );
+      });
+
+      it('should outdent a first level list item to paragraph, with content', () => {
+        backspaceCheck(
+          doc(ol(li(p('text')), li(p('{<>}second text')))),
+          doc(ol(li(p('text'))), p('{<>}second text')),
+        );
+      });
+
+      it('should outdent a second level list item to first level', () => {
+        backspaceCheck(
+          doc(ol(li(p('text'), ol(li(p('{<>}')))))),
+          doc(ol(li(p('text')), li(p('{<>}')))),
+        );
+      });
+
+      it('should outdent a second level list item to first level, with content', () => {
+        backspaceCheck(
+          doc(ol(li(p('text'), ol(li(p('{<>}subtext')))))),
+          doc(ol(li(p('text')), li(p('{<>}subtext')))),
+        );
+      });
+
+      it('should move paragraph content back to previous (nested) list item', () => {
+        backspaceCheck(
+          doc(ol(li(p('text'), ol(li(p('text'))))), p('{<>}after')),
+          doc(ol(li(p('text'), ol(li(p('text{<>}after')))))),
+        );
+      });
+
+      it('keeps nodes same level as backspaced list item together in same list', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('{<>}A'), ol(li(p('B')))), li(p('C'))),
+
+            p('after'),
+          ),
+          doc(
+            p('{<>}A'),
+            ol(li(p('B')), li(p('C'))),
+
+            p('after'),
+          ),
+        );
+      });
+
+      it('merges two single-level lists when the middle paragraph is backspaced', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('A')), li(p('B'))),
+
+            p('{<>}middle'),
+
+            ol(li(p('C')), li(p('D'))),
+          ),
+          doc(ol(li(p('A')), li(p('B{<>}middle')), li(p('C')), li(p('D')))),
+        );
+      });
+
+      it('merges two double-level lists when the middle paragraph is backspaced', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('A'), ol(li(p('B')))), li(p('C'))),
+
+            p('{<>}middle'),
+
+            ol(li(p('D'), ol(li(p('E')))), li(p('F'))),
+          ),
+          doc(
+            ol(
+              li(p('A'), ol(li(p('B')))),
+              li(p('C{<>}middle')),
+              li(p('D'), ol(li(p('E')))),
+              li(p('F')),
+            ),
+          ),
+        );
+      });
+
+      it('moves directly to previous list item if it was empty', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('nice')), li(p('')), li(p('{<>}text'))),
+
+            p('after'),
+          ),
+          doc(
+            ol(li(p('nice')), li(p('{<>}text'))),
+
+            p('after'),
+          ),
+        );
+      });
+
+      it('moves directly to previous list item if it was empty, but with two paragraphs', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('nice')), li(p('')), li(p('{<>}text'), p('double'))),
+
+            p('after'),
+          ),
+          doc(
+            ol(li(p('nice')), li(p('{<>}text'), p('double'))),
+
+            p('after'),
+          ),
+        );
+      });
+
+      it('backspaces paragraphs within a list item rather than the item itself', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('')), li(p('nice'), p('{<>}two'))),
+
+            p('after'),
+          ),
+          doc(
+            ol(li(p('')), li(p('nice{<>}two'))),
+
+            p('after'),
+          ),
+        );
+      });
+
+      it('backspaces line breaks correctly within list items, with content after', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('')), li(p('nice'), p('two', br(), '{<>}three'))),
+
+            p('after'),
+          ),
+          doc(
+            ol(li(p('')), li(p('nice'), p('two{<>}three'))),
+
+            p('after'),
+          ),
+        );
+      });
+
+      it('backspaces line breaks correctly within list items, with content before', () => {
+        backspaceCheck(
+          doc(
+            ol(li(p('')), li(p('nice'), p('two', br(), br(), '{<>}'))),
+
+            p('after'),
+          ),
+          doc(
+            ol(li(p('')), li(p('nice'), p('two', br(), '{<>}'))),
+
+            p('after'),
+          ),
+        );
+      });
+
+      it('moves text from after list to below mediaSingle in list item', () => {
+        backspaceCheck(
+          doc(
+            ol(
+              li(p('')),
+              li(
+                p('nice'),
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                p(''),
+              ),
+            ),
+
+            p('{<>}after'),
+          ),
+          doc(
+            ol(
+              li(p('')),
+              li(
+                p('nice'),
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                p('{<>}after'),
+              ),
+            ),
+          ),
+        );
+      });
+
+      it('selects mediaSingle in list if inside the empty paragraph after', () => {
+        backspaceCheck(
+          doc(
+            ol(
+              li(p('')),
+              li(
+                p('nice'),
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                p('{<>}'),
+              ),
+            ),
+
+            p('after'),
+          ),
+          doc(
+            ol(
+              li(p('')),
+              li(
+                p('nice'),
+                '{<}',
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                '{>}',
+              ),
+            ),
+            p('after'),
+          ),
+        );
+      });
+
+      it('backspaces mediaSingle in list if selected', () => {
+        backspaceCheck(
+          doc(
+            ol(
+              li(p('')),
+              li(
+                p('nice{<}'),
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                '{>}',
+              ),
+            ),
+            p('after'),
+          ),
+          doc(ol(li(p('')), li(p('nice'))), p('{<>}after')),
         );
       });
     });
@@ -669,6 +973,27 @@ describe('lists', () => {
         );
       });
 
+      it('should lift nested and same level list items correctly', () => {
+        const { editorView } = editor(
+          doc(
+            ol(li(p('some{<>}text'), ol(li(p('B')))), li(p('C'))),
+
+            p('after'),
+          ),
+        );
+
+        sendKeyToPm(editorView, 'Shift-Tab');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            p('some{<>}text'),
+            ol(li(p('B')), li(p('C'))),
+
+            p('after'),
+          ),
+        );
+      });
+
       it('should lift the list item when Enter key press is done on empty list-item', () => {
         const { editorView } = editor(
           doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
@@ -869,6 +1194,68 @@ describe('lists', () => {
               li(p('text')),
             ),
           ),
+        );
+      });
+    });
+
+    describe('when adding media inside list', () => {
+      it('should add media as media single', () => {
+        const { editorView } = editor(
+          doc(ul(li(p('Three')), li(p('Four{<>}')))),
+        );
+
+        insertMediaAsMediaSingle(
+          editorView,
+          media({
+            id: temporaryFileId,
+            __key: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+            __fileMimeType: 'image/png',
+          })()(editorView.state.schema),
+        );
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            ul(
+              li(p('Three')),
+              li(
+                p('Four'),
+                mediaSingle({ layout: 'center' })(
+                  media({
+                    id: temporaryFileId,
+                    __key: temporaryFileId,
+                    type: 'file',
+                    collection: testCollectionName,
+                    __fileMimeType: 'image/png',
+                  })(),
+                ),
+                p(),
+              ),
+            ),
+          ),
+        );
+        editorView.destroy();
+      });
+
+      it('should not add non images inside lists', () => {
+        const { editorView } = editor(
+          doc(ul(li(p('Three')), li(p('Four{<>}')))),
+        );
+
+        insertMediaAsMediaSingle(
+          editorView,
+          media({
+            id: temporaryFileId,
+            __key: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+            __fileMimeType: 'pdf',
+          })()(editorView.state.schema),
+        );
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ul(li(p('Three')), li(p('Four{<>}')))),
         );
       });
     });

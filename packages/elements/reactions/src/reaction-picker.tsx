@@ -1,8 +1,5 @@
-import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
-import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import Layer from '@atlaskit/layer';
-import Tooltip from '@atlaskit/tooltip';
 import { borderRadius, colors } from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -15,7 +12,6 @@ import { analyticsService } from './analytics';
 
 const akBorderRadius = borderRadius();
 const akColorN0 = colors.N0;
-const akColorN30A = colors.N30A;
 const akColorN50A = colors.N50A;
 const akColorN60A = colors.N60A;
 
@@ -26,7 +22,7 @@ export interface Props {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
-  text?: string;
+  disabled?: boolean;
 }
 
 export interface State {
@@ -36,7 +32,6 @@ export interface State {
 
 const pickerStyle = style({
   verticalAlign: 'middle',
-  width: '24px',
   $nest: {
     '&.miniMode': {
       display: 'inline-block',
@@ -47,35 +42,6 @@ const pickerStyle = style({
 
 const contentStyle = style({
   display: 'flex',
-});
-
-const moreEmojiContainerStyle = style({
-  display: 'flex',
-});
-
-const separatorStyle = style({
-  backgroundColor: akColorN30A,
-  margin: '8px 8px 8px 4px',
-  width: '1px',
-  height: '60%',
-  display: 'inline-block',
-});
-
-const moreButtonStyle = style({
-  outline: 'none',
-  backgroundColor: 'transparent',
-  border: 0,
-  borderRadius: akBorderRadius,
-  cursor: 'pointer',
-  margin: '4px 4px 4px 0',
-  padding: '4px',
-  width: '38px',
-  verticalAlign: 'top',
-  $nest: {
-    '&:hover': {
-      backgroundColor: akColorN30A,
-    },
-  },
 });
 
 const popupStyle = style({
@@ -91,8 +57,9 @@ const popupStyle = style({
 });
 
 export default class ReactionPicker extends PureComponent<Props, State> {
-  // @ts-ignore: unused variable, TODO: delete?
-  private trigger?: Trigger | Button;
+  static defaultProps = {
+    disabled: false,
+  };
 
   constructor(props) {
     super(props);
@@ -149,20 +116,9 @@ export default class ReactionPicker extends PureComponent<Props, State> {
         <Selector
           emojiProvider={emojiProvider}
           onSelection={this.onEmojiSelected}
+          showMore={allowAllEmojis!}
+          onMoreClick={this.showFullPicker}
         />
-        {!allowAllEmojis ? null : (
-          <div className={moreEmojiContainerStyle}>
-            <div className={separatorStyle} />
-            <Tooltip content="More emoji">
-              <button
-                className={moreButtonStyle}
-                onMouseDown={this.showFullPicker}
-              >
-                <EditorMoreIcon label="More" />
-              </button>
-            </Tooltip>
-          </div>
-        )}
       </div>
     );
   }
@@ -211,21 +167,7 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private renderTrigger(content) {
-    const { text, miniMode } = this.props;
-
-    if (text) {
-      return (
-        <Button
-          appearance="subtle-link"
-          spacing="none"
-          type="button"
-          onClick={this.onTriggerClick}
-          ref={this.handleTriggerRef}
-        >
-          {text}
-        </Button>
-      );
-    }
+    const { miniMode } = this.props;
 
     return (
       <Layer
@@ -237,15 +179,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
         <Trigger
           onClick={this.onTriggerClick}
           miniMode={miniMode}
-          ref={this.handleTriggerRef}
+          disabled={this.props.disabled}
         />
       </Layer>
     );
   }
-
-  private handleTriggerRef = ref => {
-    this.trigger = ref;
-  };
 
   render() {
     const { isOpen } = this.state;

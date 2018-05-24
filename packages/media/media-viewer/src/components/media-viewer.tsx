@@ -5,7 +5,6 @@ import { MediaCollectionViewer } from './media-collection-viewer';
 import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
-
 export interface MediaViewerItem {
   id: string;
   occurrenceKey: string;
@@ -45,17 +44,34 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       selectedItem,
       collectionName,
     } = this.props;
-    if (featureFlags && featureFlags.nextGen) {
-      return (
-        <MediaViewerNextGen
-          context={context}
-          data={{
-            ...selectedItem,
-            collectionName,
-          }}
-          onClose={onClose}
-        />
-      );
+
+    const devOverride =
+      window.localStorage &&
+      window.localStorage.getItem('MediaViewerNextGenEnabled');
+    if (devOverride || (featureFlags && featureFlags.nextGen)) {
+      if (this.props.dataSource.collectionName) {
+        return (
+          <MediaViewerNextGen
+            context={context}
+            selectedItem={selectedItem}
+            collectionName={this.props.dataSource.collectionName}
+            onClose={onClose}
+          />
+        );
+      } else if (this.props.dataSource.list) {
+        const items = this.props.dataSource.list.map(i => ({
+          ...i,
+          collectionName,
+        }));
+        return (
+          <MediaViewerNextGen
+            context={context}
+            selectedItem={selectedItem}
+            items={items}
+            onClose={onClose}
+          />
+        );
+      }
     }
 
     if (this.props.dataSource.list) {

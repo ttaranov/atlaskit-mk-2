@@ -1,15 +1,14 @@
 // @flow
-import React, { PureComponent, type Node } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Prism from 'prismjs';
-import ToggleIcon from '@atlaskit/icon/glyph/code';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 
 // NOTE: stop prism.js classes from being obfuscated
 // $FlowFixMe
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
-import { replaceImports } from 'react-codesandboxer';
+import { replaceImports } from 'codesandboxer';
 
 const Code = styled.pre`
   border-radius: 3px;
@@ -29,6 +28,7 @@ const Code = styled.pre`
 type Props = {
   content: string,
   grammar: 'jsx',
+  name: string,
 };
 
 export default function CodeBlock(props: Props) {

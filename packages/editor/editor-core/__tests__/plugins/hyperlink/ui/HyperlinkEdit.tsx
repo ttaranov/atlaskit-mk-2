@@ -5,7 +5,6 @@ import { HyperlinkState } from '../../../../src/plugins/hyperlink/pm-plugins/mai
 import { hyperlinkPluginKey } from '../../../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../../../src/plugins/hyperlink/ui/HyperlinkEdit';
 import PanelTextInput from '../../../../src/ui/PanelTextInput';
-import ToolbarButton from '../../../../src/ui/ToolbarButton';
 import {
   createEvent,
   doc,
@@ -273,7 +272,31 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     updateLinkStub.mockRestore();
   });
 
-  it('should add placeholder cursor when input HyperlinkEdit is focused', () => {
+  it('should not update title or href on esc if there is no change', () => {
+    const { editorView, pluginState } = editor(
+      doc(
+        paragraph(
+          'before',
+          link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'),
+          'after',
+        ),
+      ),
+    );
+    const hyperlinkEdit = mount(
+      <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
+    );
+    hyperlinkEdit.setState({ editorFocused: true });
+    const input = hyperlinkEdit.find(PanelTextInput);
+    const updateLinkStub = jest.spyOn(pluginState, 'updateLink');
+    const updateLinkTextStub = jest.spyOn(pluginState, 'updateLinkText');
+    input.prop('onCancel')!();
+    expect(updateLinkStub).not.toHaveBeenCalled();
+    expect(updateLinkTextStub).not.toHaveBeenCalled();
+    updateLinkTextStub.mockRestore();
+    updateLinkStub.mockRestore();
+  });
+
+  it('should not add placeholder cursor when already inside a link', () => {
     const { editorView, pluginState } = editor(
       doc(
         paragraph(
@@ -291,7 +314,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     input.simulate('mouseDown');
     expect(
       editorView.state.selection instanceof FakeTextCursorSelection,
-    ).toEqual(true);
+    ).toEqual(false);
   });
 
   it('unlinkify button should remove the linking', () => {
@@ -309,10 +332,11 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     );
     hyperlinkEdit.setState({ editorFocused: true });
     hyperlinkEdit
-      .find(ToolbarButton)
+      .find('button')
       .filterWhere(n => n.html().indexOf('Unlink') >= 0)
       .childAt(0)
       .simulate('click');
+
     expect(editorView.state.doc).toEqualDocument(
       doc(paragraph('beforewww.atlassian.comafter')),
     );

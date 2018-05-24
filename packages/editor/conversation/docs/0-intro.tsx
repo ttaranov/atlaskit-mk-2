@@ -83,7 +83,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'class',
-                name: 'ResourceProvider',
+                name: { kind: 'id', name: 'ResourceProvider' },
               },
             },
             leadingComments: [
@@ -146,7 +146,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'class',
-                name: 'ProviderFactory',
+                name: { kind: 'id', name: 'ProviderFactory' },
               },
             },
             leadingComments: [
@@ -199,6 +199,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'function',
+                parameters: [],
                 returnType: {
                   kind: 'void',
                 },
@@ -264,6 +265,48 @@ const props = {
               },
             ],
           },
+          {
+            key: {
+              kind: 'id',
+              name: 'placeholder',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'string',
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally set the placeholder text for the editor. Defaults to "What do you want to say?"',
+              },
+            ],
+          },
+          {
+            key: {
+              kind: 'id',
+              name: 'allowFeedbackAndHelpButtons',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'boolean',
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally allow the feedback and help buttons in the editor. The feedback button requires jQuery to be loaded on the page.',
+              },
+            ],
+          },
         ],
       },
     },
@@ -294,7 +337,7 @@ export default md`
   )}
 
   Omitting the \`id\`-prop means that a new conversation will be created. Of course, in most cases you'll want to render existing conversations on a page as well. The provider let's you fetch all conversations for a container by calling \`.getConversations()\`.
-  
+
   ${(
     <Example
       Component={require('../examples/1-Existing-Conversation').default}

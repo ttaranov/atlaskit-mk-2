@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
-import { AuthProvider, Context, ContextFactory } from '@atlaskit/media-core';
+import { Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
@@ -27,7 +27,7 @@ import MainEditorView from './views/editor/mainEditorView';
 import { RECENTS_COLLECTION } from '../config';
 
 /* actions */
-import { startApp } from '../actions/startApp';
+import { startApp, StartAppActionPayload } from '../actions/startApp';
 import { hidePopup } from '../actions/hidePopup';
 import { fileUploadsStart } from '../actions/fileUploadsStart';
 import { fileUploadPreviewUpdate } from '../actions/fileUploadPreviewUpdate';
@@ -48,14 +48,14 @@ import {
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 
 export interface AppStateProps {
-  readonly apiUrl: string;
   readonly selectedServiceName: ServiceName;
-  readonly userAuthProvider: AuthProvider;
   readonly isVisible: boolean;
+  readonly useNewUploadService?: boolean;
+  readonly context: Context;
 }
 
 export interface AppDispatchProps {
-  readonly onStartApp: (onCancelUpload: (uploadId: string) => void) => void;
+  readonly onStartApp: (payload: StartAppActionPayload) => void;
   readonly onClose: () => void;
   readonly onUploadsStart: (payload: UploadsStartEventPayload) => void;
   readonly onUploadPreviewUpdate: (
@@ -88,8 +88,6 @@ export class App extends Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     const {
-      apiUrl,
-      userAuthProvider,
       onStartApp,
       onUploadsStart,
       onUploadPreviewUpdate,
@@ -97,21 +95,35 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
+      context,
     } = props;
 
+    const { userAuthProvider } = context.config;
+
+    if (!userAuthProvider) {
+      throw new Error('userAuthProvider must be provided in the context');
+    }
     this.state = {
       isDropzoneActive: false,
     };
 
-    const mpConfig = {
-      apiUrl,
-      authProvider: userAuthProvider,
+    const defaultConfig = {
       uploadParams: {
         collection: RECENTS_COLLECTION,
       },
     };
 
-    this.mpBrowser = MediaPicker('browser', mpConfig, { multiple: true });
+    // We can't just use the given context since the Cards in the recents view needs a different authProvider
+    this.mpContext = ContextFactory.create({
+      serviceHost: context.config.serviceHost,
+      authProvider: userAuthProvider,
+    });
+
+    this.mpBrowser = MediaPicker('browser', this.mpContext, {
+      ...defaultConfig,
+      multiple: true,
+      useNewUploadService: this.props.useNewUploadService,
+    });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBrowser.on('upload-status-update', onUploadStatusUpdate);
@@ -119,7 +131,11 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', mpConfig, { headless: true });
+    this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
+      ...defaultConfig,
+      headless: true,
+      useNewUploadService: this.props.useNewUploadService,
+    });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
     this.mpDropzone.on('uploads-start', onUploadsStart);
@@ -129,7 +145,10 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', mpConfig);
+    this.mpBinary = MediaPicker('binary', this.mpContext, {
+      ...defaultConfig,
+      useNewUploadService: this.props.useNewUploadService,
+    });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
     this.mpBinary.on('upload-status-update', onUploadStatusUpdate);
@@ -137,14 +156,12 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary.on('upload-end', onUploadEnd);
     this.mpBinary.on('upload-error', onUploadError);
 
-    this.mpContext = ContextFactory.create({
-      serviceHost: apiUrl,
-      authProvider: userAuthProvider,
-    });
-
-    onStartApp(uploadId => {
-      this.mpBrowser.cancel(uploadId);
-      this.mpDropzone.cancel(uploadId);
+    onStartApp({
+      onCancelUpload: uploadId => {
+        this.mpBrowser.cancel(uploadId);
+        this.mpDropzone.cancel(uploadId);
+        this.mpBinary.cancel(uploadId);
+      },
     });
   }
 
@@ -215,60 +232,31 @@ export class App extends Component<AppProps, AppState> {
 }
 
 const mapStateToProps = ({
-  apiUrl,
-  userAuthProvider,
   view,
+  context,
+  useNewUploadService,
 }: State): AppStateProps => ({
-  apiUrl,
-  userAuthProvider,
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
+  useNewUploadService,
+  context,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
-  onStartApp: onCancelUpload => dispatch(startApp({ onCancelUpload })),
-  onUploadsStart: ({ files }) =>
-    dispatch(
-      fileUploadsStart({
-        files,
-      }),
-    ),
+  onStartApp: (payload: StartAppActionPayload) => dispatch(startApp(payload)),
+  onUploadsStart: (payload: UploadsStartEventPayload) =>
+    dispatch(fileUploadsStart(payload)),
   onClose: () => dispatch(hidePopup()),
-  onUploadPreviewUpdate: ({ file, preview }) => {
-    dispatch(
-      fileUploadPreviewUpdate({
-        file,
-        preview,
-      }),
-    );
-  },
-  onUploadStatusUpdate: ({ file, progress }) =>
-    dispatch(
-      fileUploadProgress({
-        file,
-        progress,
-      }),
-    ),
-  onUploadProcessing: ({ file }) =>
-    dispatch(
-      fileUploadProcessingStart({
-        file,
-      }),
-    ),
-  onUploadEnd: ({ file, public: publicFileDetails }) =>
-    dispatch(
-      fileUploadEnd({
-        file,
-        public: publicFileDetails,
-      }),
-    ),
-  onUploadError: ({ file, error }) =>
-    dispatch(
-      fileUploadError({
-        file,
-        error,
-      }),
-    ),
+  onUploadPreviewUpdate: (payload: UploadPreviewUpdateEventPayload) =>
+    dispatch(fileUploadPreviewUpdate(payload)),
+  onUploadStatusUpdate: (payload: UploadStatusUpdateEventPayload) =>
+    dispatch(fileUploadProgress(payload)),
+  onUploadProcessing: (payload: UploadProcessingEventPayload) =>
+    dispatch(fileUploadProcessingStart(payload)),
+  onUploadEnd: (payload: UploadEndEventPayload) =>
+    dispatch(fileUploadEnd(payload)),
+  onUploadError: (payload: UploadErrorEventPayload) =>
+    dispatch(fileUploadError(payload)),
 });
 
 export default connect<AppStateProps, AppDispatchProps, AppOwnProps>(

@@ -1,8 +1,9 @@
-/* @flow */
+// @flow
 
 import React, { Component } from 'react';
+import { toClass } from 'recompose';
 import styled from 'styled-components';
-import { Link, Switch, Route, matchPath } from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import Navigation, {
   AkContainerTitle,
   presetThemes,
@@ -12,21 +13,14 @@ import Tooltip from '@atlaskit/tooltip';
 
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import PackagesIcon from '@atlaskit/icon/glyph/component';
 import DocumentationIcon from '@atlaskit/icon/glyph/overview';
 import PatternsIcon from '@atlaskit/icon/glyph/issues';
 
-import {
-  RouterNavigationItem,
-  ExternalNavigationItem,
-} from './utils/linkComponents';
-import atlasKitLogo from '../../assets/atlaskit-logo.png';
 import Groups from './Groups';
 import GroupDrawer from './GroupDrawer';
 import SearchDrawer from './SearchDrawer';
 import { externalPackages as packages, docs, patterns } from '../../site';
-import type { Directory } from '../../types';
 
 import atlaskitLogo from '../../assets/atlaskit-logo-inverted.png';
 import atlaskitLogoMonochrome from '../../assets/atlaskit-logo-monochrome.png';
@@ -149,10 +143,12 @@ export default class Nav extends Component<{}, State> {
                       icon={<HeaderIcon {...header} />}
                       text={header.label}
                       href={`/${headerKey}`}
-                      linkComponent={({ href, children, className }) => (
-                        <Link to={href} className={className}>
-                          {children}
-                        </Link>
+                      linkComponent={toClass(
+                        ({ href, children, className }) => (
+                          <Link to={href} className={className}>
+                            {children}
+                          </Link>
+                        ),
                       )}
                     />
                   )

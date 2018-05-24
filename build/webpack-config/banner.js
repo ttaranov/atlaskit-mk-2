@@ -48,6 +48,9 @@ function devServerBanner(
           )}`,
       ),
     );
+    // We'll push this message on again in case there were lots of lines printed above, we still want
+    // to see this
+    msg.push(chalk.bold(`> Open ${chalk.yellow(serverUrl)}`), '');
   }
 
   msg.push('');

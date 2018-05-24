@@ -11,7 +11,7 @@ describe('JIRATransformer', () => {
       schema,
       `<table class="confluenceTable"><tbody><tr><th class="confluenceTh"><p>one</p></th><td class="confluenceTd"><p>1</p></td><td class="confluenceTd"><p>2</p></td></tr><tr><th class="confluenceTh"><p>two</p></th><td class="confluenceTd"><p>3</p></td><td class="confluenceTd"><p>4</p></td></tr></tbody></table>`,
       doc(
-        table(
+        table()(
           tr(th({})(p('one')), td({})(p('1')), td({})(p('2'))),
           tr(th({})(p('two')), td({})(p('3')), td({})(p('4'))),
         ),
@@ -23,7 +23,7 @@ describe('JIRATransformer', () => {
       schema,
       `<table class="confluenceTable"><tbody><tr><th class="confluenceTh"><p>one</p></th><th class="confluenceTh"><p>two</p></th><th class="confluenceTh"><p>three</p></th></tr><tr><td class="confluenceTd"><p>1</p></td><td class="confluenceTd"><p>2</p></td><td class="confluenceTd"><p>3</p></td></tr></tbody></table>`,
       doc(
-        table(
+        table()(
           tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
           tr(td({})(p('1')), td({})(p('2')), td({})(p('3'))),
         ),
@@ -35,7 +35,7 @@ describe('JIRATransformer', () => {
       schema,
       `<table class="confluenceTable"><tbody><tr><th class="confluenceTh"><p>one</p></th><th class="confluenceTh"><p>two</p></th><th class="confluenceTh"><p>three</p></th></tr><tr><th class="confluenceTh"><p>four</p></th><td class="confluenceTd"><p>1</p></td><td class="confluenceTd"><p>2</p></td></tr></tbody></table>`,
       doc(
-        table(
+        table()(
           tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
           tr(th({})(p('four')), td({})(p('1')), td({})(p('2'))),
         ),

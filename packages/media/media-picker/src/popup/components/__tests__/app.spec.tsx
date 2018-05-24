@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { App } from '../app';
+import ConnectedApp, { App, AppDispatchProps } from '../app';
 import UploadView from '../views/upload/upload';
 import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
 import { fileUploadsStart } from '../../actions/fileUploadsStart';
+import { ContextFactory } from '@atlaskit/media-core';
 
 describe('App', () => {
   const apiUrl = 'some-api-url';
@@ -13,29 +14,37 @@ describe('App', () => {
   const token = 'some-token';
   const userAuthProvider = () => Promise.resolve({ clientId, token });
 
-  const setup = () => ({
-    handlers: {
-      onStartApp: jest.fn(),
-      onClose: jest.fn(),
-      onUploadsStart: jest.fn(),
-      onUploadPreviewUpdate: jest.fn(),
-      onUploadStatusUpdate: jest.fn(),
-      onUploadProcessing: jest.fn(),
-      onUploadEnd: jest.fn(),
-      onUploadError: jest.fn(),
-    },
-    store: mockStore(),
-  });
+  const setup = () => {
+    const context = ContextFactory.create({
+      serviceHost: apiUrl,
+      authProvider: userAuthProvider,
+      userAuthProvider,
+    });
+    return {
+      handlers: {
+        onStartApp: jest.fn(),
+        onClose: jest.fn(),
+        onUploadsStart: jest.fn(),
+        onUploadPreviewUpdate: jest.fn(),
+        onUploadStatusUpdate: jest.fn(),
+        onUploadProcessing: jest.fn(),
+        onUploadEnd: jest.fn(),
+        onUploadError: jest.fn(),
+      } as AppDispatchProps,
+      context,
+      store: mockStore(),
+      userAuthProvider,
+    };
+  };
 
   it('should render UploadView given selectedServiceName is "upload"', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const app = shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="upload"
-        userAuthProvider={userAuthProvider}
         isVisible={true}
+        context={context}
         {...handlers}
       />,
     );
@@ -44,13 +53,12 @@ describe('App', () => {
   });
 
   it('should render Browser given selectedServiceName is "google"', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const app = shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />,
@@ -60,13 +68,12 @@ describe('App', () => {
   });
 
   it('should call onStartApp', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     shallow(
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="upload"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />,
@@ -76,13 +83,12 @@ describe('App', () => {
   });
 
   it('should activate dropzone when visible', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={false}
         {...handlers}
       />
@@ -96,13 +102,12 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when not visible', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />
@@ -116,13 +121,12 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when unmounted', () => {
-    const { handlers, store } = setup();
+    const { handlers, store, context } = setup();
     const element = (
       <App
         store={store}
-        apiUrl={apiUrl}
         selectedServiceName="google"
-        userAuthProvider={userAuthProvider}
+        context={context}
         isVisible={true}
         {...handlers}
       />
@@ -133,6 +137,26 @@ describe('App', () => {
     wrapper.unmount();
 
     expect(spy).toBeCalled();
+  });
+
+  it('should pass new context to the local MediaPicker components', () => {
+    const { handlers, store, context, userAuthProvider } = setup();
+    const component = shallow(
+      <App
+        store={store}
+        selectedServiceName="upload"
+        context={context}
+        isVisible={true}
+        {...handlers}
+      />,
+    );
+    const instance = component.instance();
+    const mpContext = instance['mpContext'];
+
+    expect(mpContext.config.authProvider).toEqual(userAuthProvider);
+    expect(instance['mpBrowser'].context).toEqual(mpContext);
+    expect(instance['mpDropzone'].context).toEqual(mpContext);
+    expect(instance['mpBinary'].context).toEqual(mpContext);
   });
 });
 

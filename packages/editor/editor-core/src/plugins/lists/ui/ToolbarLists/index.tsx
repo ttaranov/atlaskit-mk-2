@@ -175,7 +175,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleCreateAction}
               disabled={disabled}
-              title="Create action ([])"
+              title="Create action []"
               iconBefore={<TaskIcon label="Create action" />}
             />
           )}

@@ -4,7 +4,7 @@ import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
 import * as commands from '../../../commands';
 import { trackAndInvoke } from '../../../analytics';
-import { enterKeyCommand } from '../commands';
+import { backspaceKeyCommand, enterKeyCommand } from '../commands';
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   const list = {};
@@ -42,6 +42,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     list,
   );
   keymaps.bindKeymapWithCommand(keymaps.enter.common!!, enterKeyCommand, list);
+  keymaps.bindKeymapWithCommand(
+    keymaps.backspace.common!!,
+    backspaceKeyCommand,
+    list,
+  );
 
   return keymap(list);
 }

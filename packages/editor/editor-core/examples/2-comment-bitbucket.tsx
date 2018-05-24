@@ -53,7 +53,7 @@ export type State = {
 export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
     hasJquery: false,
-    isExpanded: false,
+    isExpanded: true,
   };
 
   componentDidMount() {
@@ -85,6 +85,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
             )}
           />
           <ToolsDrawer
+            imageUploadProvider="resolved"
             renderEditor={({
               mentionProvider,
               emojiProvider,

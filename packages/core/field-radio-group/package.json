@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/field-radio-group",
-  "version": "1.9.2",
+  "version": "2.0.3",
   "description": "A radio group React component used for selecting discrete values in a form",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink":  "https://atlassian.design/guidelines/product/components/radios",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/radios",
   "files": [
     "dist"
   ],
@@ -18,18 +18,17 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/field-base": "^8.2.1",
-    "@atlaskit/icon": "^10.12.1",
-    "@atlaskit/theme": "^2.4.1",
+    "@atlaskit/field-base": "^9.0.3",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/theme": "^3.2.2",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "15.6.0 - 16.2.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^6.6.2",
-    "@atlaskit/docs": "^2.5.2",
-    "@atlaskit/logo": "^6.2.1",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/docs": "^3.0.4",
     "enzyme": "^3.3.0"
   },
   "keywords": [

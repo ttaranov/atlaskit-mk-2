@@ -1,8 +1,8 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
 import { Component } from 'react';
+import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
-import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import {
@@ -14,6 +14,7 @@ import {
   createStorybookContext,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
+import Toggle from '@atlaskit/toggle';
 import { MediaPicker, Popup, MediaProgress } from '../src';
 import {
   PopupContainer,
@@ -26,165 +27,210 @@ import {
   CardsWrapper,
   CardItemWrapper,
 } from '../example-helpers/styled';
-import { AuthEnvironment } from '../example-helpers';
-import { ModuleConfig } from '../src/domain/config';
+import {
+  UploadEndEventPayload,
+  UploadErrorEventPayload,
+  UploadPreviewUpdateEventPayload,
+  UploadProcessingEventPayload,
+  UploadsStartEventPayload,
+  UploadStatusUpdateEventPayload,
+} from '../src/domain/uploadEvent';
+import { PopupUploadEventPayloadMap } from '../src/components/popup';
+import { AuthEnvironment } from '../example-helpers/types';
 
 const context = createStorybookContext();
 
-export type InflightUpload = { [key: string]: {} };
 export type PublicFile = {
   publicId: string;
   preview?: string;
 };
+export interface Event<K extends keyof PopupUploadEventPayloadMap> {
+  readonly eventName: K;
+  readonly data: PopupUploadEventPayloadMap[K];
+}
+export type Events = Event<keyof PopupUploadEventPayloadMap>[];
 export interface PopupWrapperState {
-  isAutoFinalizeActive: boolean;
-  isFetchMetadataActive: boolean;
   collectionName: string;
   closedTimes: number;
-  events: any[];
+  events: Events;
   authEnvironment: AuthEnvironment;
   inflightUploads: { [key: string]: MediaProgress };
-  hasTorndown: boolean;
   publicFiles: { [key: string]: PublicFile };
+  isUploadingFilesVisible: boolean;
+  useNewUploadService: boolean;
+  popup?: Popup;
 }
 
 class PopupWrapper extends Component<{}, PopupWrapperState> {
-  popup: Popup;
-
   state: PopupWrapperState = {
-    isAutoFinalizeActive: true,
-    isFetchMetadataActive: true,
     collectionName: defaultMediaPickerCollectionName,
     closedTimes: 0,
     events: [],
     authEnvironment: 'client',
     inflightUploads: {},
-    hasTorndown: false,
     publicFiles: {},
+    isUploadingFilesVisible: true,
+    useNewUploadService: true,
   };
 
   componentDidMount() {
-    const config: ModuleConfig = {
-      authProvider: mediaPickerAuthProvider(this),
-      apiUrl: userAuthProviderBaseURL,
-      uploadParams: {
-        collection: defaultMediaPickerCollectionName,
-      },
-    };
-
-    this.popup = MediaPicker('popup', config, {
-      container: document.body,
-      userAuthProvider,
-    });
-
-    this.popup.onAny(this.onPopupEvent);
+    this.createPopup();
   }
 
   componentWillUnmount() {
-    this.popup.removeAllListeners();
+    const { popup } = this.state;
+    if (popup) {
+      popup.removeAllListeners();
+    }
   }
 
-  onPopupEvent = (eventName, data) => {
-    if (eventName === 'upload-error') {
-      if (data.error.name === 'user_token_fetch_fail') {
-        const authStg = confirm(
-          'It looks like you are not authorized in Staging. Press OK to authorize',
-        );
-        authStg
-          ? window.open('https://id.stg.internal.atlassian.com', '_blank')
-          : this.popup.hide();
-      } else {
-        console.error(JSON.stringify(data));
-      }
-      return;
+  private createPopup(
+    useNewUploadService: boolean = this.state.useNewUploadService,
+  ) {
+    const { popup } = this.state;
+    if (popup) {
+      popup.removeAllListeners();
+      popup.teardown();
     }
 
-    if (eventName === 'closed') {
-      this.setState({ closedTimes: this.state.closedTimes + 1 });
-      return;
-    }
+    const context = ContextFactory.create({
+      serviceHost: userAuthProviderBaseURL,
+      authProvider: mediaPickerAuthProvider(this.state.authEnvironment),
+      userAuthProvider,
+    });
 
-    if (eventName === 'uploads-start') {
-      const newInflightUploads = data.files.reduce(
-        (prev, { id }) => ({ ...prev, [id]: {} }),
-        {},
-      );
+    const newPopup = MediaPicker('popup', context, {
+      container: document.body,
+      uploadParams: {
+        collection: defaultMediaPickerCollectionName,
+      },
+      useNewUploadService,
+    });
 
-      this.setState({
-        inflightUploads: {
-          ...this.state.inflightUploads,
-          ...newInflightUploads,
-        },
-      });
-    }
-
-    if (eventName === 'upload-status-update') {
-      const { inflightUploads } = this.state;
-      const id = data.file.id;
-      inflightUploads[id] = data.progress;
-      this.setState({ inflightUploads });
-    }
-
-    if (eventName === 'upload-preview-update') {
-      const id = data.file.id;
-      const preview = data.preview && data.preview.src;
-
-      if (preview) {
-        const newPublicFile = { [id]: { preview } };
-
-        this.setState({
-          publicFiles: { ...this.state.publicFiles, ...newPublicFile },
-        });
-      }
-    }
-
-    if (eventName === 'upload-processing') {
-      const { publicFiles } = this.state;
-      const publicFile = publicFiles[data.file.id];
-
-      if (publicFile) {
-        const publicId = data.file.publicId;
-        publicFile.publicId = publicId;
-        if (publicFile.preview) {
-          context.setLocalPreview(publicId, publicFile.preview);
-        }
-
-        this.setState({
-          publicFiles,
-        });
-      }
-    }
+    newPopup.on('uploads-start', this.onUploadsStart);
+    newPopup.on('upload-preview-update', this.onUploadPreviewUpdate);
+    newPopup.on('upload-status-update', this.onUploadStatusUpdate);
+    newPopup.on('upload-processing', this.onUploadProcessing);
+    newPopup.on('upload-end', this.onUploadEnd);
+    newPopup.on('upload-error', this.onUploadError);
+    newPopup.on('closed', this.onClosed);
 
     this.setState({
-      events: [...this.state.events, { eventName, data }],
+      popup: newPopup,
+      useNewUploadService,
+    });
+  }
+
+  onUploadError = (data: UploadErrorEventPayload) => {
+    if (data.error.name === 'user_token_fetch_fail') {
+      const authStg = confirm(
+        'It looks like you are not authorized in Staging. Press OK to authorize',
+      );
+      authStg
+        ? window.open('https://id.stg.internal.atlassian.com', '_blank')
+        : this.state.popup!.hide();
+    } else {
+      console.error(JSON.stringify(data));
+    }
+  };
+
+  onClosed = () => {
+    this.setState({
+      closedTimes: this.state.closedTimes + 1,
+      events: [...this.state.events, { eventName: 'closed', data: undefined }],
+    });
+  };
+
+  onUploadsStart = (data: UploadsStartEventPayload) => {
+    const newInflightUploads = data.files.reduce(
+      (prev, { id }) => ({ ...prev, [id]: {} }),
+      {},
+    );
+
+    this.setState({
+      inflightUploads: {
+        ...this.state.inflightUploads,
+        ...newInflightUploads,
+      },
+      events: [...this.state.events, { eventName: 'uploads-start', data }],
+    });
+  };
+
+  onUploadStatusUpdate = (data: UploadStatusUpdateEventPayload) => {
+    const { inflightUploads } = this.state;
+    const id = data.file.id;
+    inflightUploads[id] = data.progress;
+    this.setState({
+      inflightUploads,
+      events: [
+        ...this.state.events,
+        { eventName: 'upload-status-update', data },
+      ],
+    });
+  };
+
+  onUploadPreviewUpdate = (data: UploadPreviewUpdateEventPayload) => {
+    const id = data.file.id;
+    const preview = data.preview && data.preview.src;
+
+    if (preview) {
+      const newPublicFile = {
+        [id]: {
+          publicId: id,
+          preview,
+        },
+      };
+
+      this.setState({
+        publicFiles: { ...this.state.publicFiles, ...newPublicFile },
+        events: [
+          ...this.state.events,
+          { eventName: 'upload-preview-update', data },
+        ],
+      });
+    }
+  };
+
+  onUploadProcessing = (data: UploadProcessingEventPayload) => {
+    const { publicFiles } = this.state;
+    const publicFile = publicFiles[data.file.id];
+
+    if (publicFile) {
+      const publicId = data.file.publicId;
+      publicFile.publicId = publicId;
+      if (publicFile.preview) {
+        context.setLocalPreview(publicId, publicFile.preview);
+      }
+
+      this.setState({
+        publicFiles,
+        events: [
+          ...this.state.events,
+          { eventName: 'upload-processing', data },
+        ],
+      });
+    }
+  };
+
+  onUploadEnd = (data: UploadEndEventPayload) => {
+    this.setState({
+      events: [...this.state.events, { eventName: 'upload-end', data }],
     });
   };
 
   onShow = () => {
-    const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
-      collectionName: collection,
-    } = this.state;
+    const { collectionName: collection, popup } = this.state;
 
-    this.popup.setUploadParams({
-      collection,
-      autoFinalize: isAutoFinalizeActive,
-      fetchMetadata: isFetchMetadataActive,
-    });
+    if (popup) {
+      popup.setUploadParams({
+        collection,
+      });
 
-    // Populate cache in userAuthProvider.
-    userAuthProvider();
-    // Synchronously with next command tenantAuthProvider will be requested.
-    this.popup.show().catch(console.error);
-  };
-
-  onAutoFinalizeChange = () => {
-    this.setState({ isAutoFinalizeActive: !this.state.isAutoFinalizeActive });
-  };
-
-  onFetchMetadataChange = () => {
-    this.setState({ isFetchMetadataActive: !this.state.isFetchMetadataActive });
+      // Populate cache in userAuthProvider.
+      userAuthProvider();
+      // Synchronously with next command tenantAuthProvider will be requested.
+      popup.show().catch(console.error);
+    }
   };
 
   onCollectionChange = e => {
@@ -196,7 +242,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   onAuthTypeChange = e => {
     const { innerText: authEnvironment } = e.target;
 
-    this.setState({ authEnvironment });
+    this.setState({ authEnvironment }, this.createPopup);
   };
 
   renderSerializedEvent(eventName, data, key) {
@@ -210,9 +256,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
   }
 
-  renderEvents(events) {
-    return events.map(({ eventName, data }, key) => {
+  renderEvents(events: Events) {
+    return events.map(({ eventName, data: payload }, key) => {
       if (eventName === 'uploads-start') {
+        const data = payload as UploadsStartEventPayload;
         return (
           <div key={key}>
             <div>
@@ -224,6 +271,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       }
 
       if (eventName === 'upload-preview-update') {
+        const data = payload as UploadPreviewUpdateEventPayload;
         if (!data.preview) {
           return;
         }
@@ -239,49 +287,46 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           <div key={key}>
             {this.renderSerializedEvent(eventName, newData, key)}
             <div>
-              <PreviewImage src={imageUrl} id={data.file.id} />
+              <PreviewImage src={imageUrl} id={data.file.id} fadedOut={false} />
             </div>
           </div>
         );
       }
 
-      if (eventName === 'upload-finalize-ready') {
-        const id = data.file.id;
-
-        return (
-          <div key={key}>
-            {this.renderSerializedEvent(eventName, data, key)}
-            <div>
-              <Button onClick={() => data.finalize()}>
-                Finalize #{id} (create file on tenant)
-              </Button>
-            </div>
-          </div>
-        );
-      }
-
-      return this.renderSerializedEvent(eventName, data, key);
+      return this.renderSerializedEvent(eventName, payload, key);
     });
   }
 
   onTeardown = () => {
-    this.setState({ hasTorndown: true }, () => {
-      this.popup.teardown();
+    const { popup } = this.state;
+    if (popup) {
+      popup.teardown();
+      this.setState({ popup: undefined });
+    }
+  };
+
+  onUploadingFilesToggle = () => {
+    this.setState({
+      isUploadingFilesVisible: !this.state.isUploadingFilesVisible,
     });
   };
 
   onCancelUpload = () => {
-    const { inflightUploads } = this.state;
-
-    Object.keys(inflightUploads).forEach(uploadId =>
-      this.popup.cancel(uploadId),
-    );
+    const { inflightUploads, popup } = this.state;
+    if (!popup) {
+      return;
+    }
+    Object.keys(inflightUploads).forEach(uploadId => popup.cancel(uploadId));
 
     this.setState({ inflightUploads: {} });
   };
 
   onEvent = event => {
     console.log(event);
+  };
+
+  onuseNewUploadServiceChange = () => {
+    this.createPopup(!this.state.useNewUploadService);
   };
 
   renderUploadingFiles = () => {
@@ -320,9 +365,8 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     const cards = publicIds.map((id, key) => (
-      <CardItemWrapper>
+      <CardItemWrapper key={key}>
         <Card
-          key={key}
           context={context}
           isLazy={false}
           identifier={{
@@ -343,15 +387,16 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   render() {
     const {
-      isAutoFinalizeActive,
-      isFetchMetadataActive,
       closedTimes,
       events,
       authEnvironment,
       collectionName,
       inflightUploads,
-      hasTorndown,
+      isUploadingFilesVisible,
+      useNewUploadService,
+      popup,
     } = this.state;
+    const hasTorndown = !popup;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
     return (
@@ -379,6 +424,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             >
               Teardown
             </Button>
+            <Button
+              onClick={this.onUploadingFilesToggle}
+              isDisabled={hasTorndown}
+            >
+              Toggle Uploading files
+            </Button>
             <DropdownMenu trigger={collectionName} triggerType="button">
               <DropdownItem onClick={this.onCollectionChange}>
                 {defaultMediaPickerCollectionName}
@@ -393,22 +444,21 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
               </DropdownItem>
               <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
             </DropdownMenu>
-            autoFinalize
+            Use new upload service
             <Toggle
-              isDefaultChecked={isAutoFinalizeActive}
-              onChange={this.onAutoFinalizeChange}
-            />
-            fetchMetadata
-            <Toggle
-              isDefaultChecked={isFetchMetadataActive}
-              onChange={this.onFetchMetadataChange}
+              isDefaultChecked={useNewUploadService}
+              onChange={this.onuseNewUploadServiceChange}
             />
             Closed times: {closedTimes}
           </PopupHeader>
-          <FilesInfoWrapper>
-            {this.renderUploadingFiles()}
-            {this.renderCards()}
-          </FilesInfoWrapper>
+          {isUploadingFilesVisible ? (
+            <FilesInfoWrapper>
+              {this.renderUploadingFiles()}
+              {this.renderCards()}
+            </FilesInfoWrapper>
+          ) : (
+            undefined
+          )}
           <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
         </PopupContainer>
       </AnalyticsListener>

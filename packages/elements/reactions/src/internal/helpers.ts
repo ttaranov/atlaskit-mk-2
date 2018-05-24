@@ -24,6 +24,20 @@ export const findIndex = (
   return index;
 };
 
+export const updateReadonlyArray = <T>(
+  array: Array<T>,
+  index: number,
+  updater: (T) => T,
+): Array<T> => {
+  return array.map((value, i) => {
+    if (i === index) {
+      return updater(value);
+    }
+
+    return value;
+  });
+};
+
 export const unique = (array: any[], predicate: (item: any) => string) => {
   const seen = {};
   return array.filter(
@@ -50,7 +64,15 @@ export const compareEmojiId = (l: string, r: string): number => {
   return l.localeCompare(r);
 };
 
-export const sortReactions = (a: ReactionSummary, b: ReactionSummary) => {
+export type ReactionSummarySortFunction = (
+  a: ReactionSummary,
+  b: ReactionSummary,
+) => number;
+
+export const sortByRelevance: ReactionSummarySortFunction = (
+  a: ReactionSummary,
+  b: ReactionSummary,
+) => {
   if (a.count > b.count) {
     return -1;
   } else if (a.count < b.count) {
@@ -58,6 +80,23 @@ export const sortReactions = (a: ReactionSummary, b: ReactionSummary) => {
   } else {
     return compareEmojiId(a.emojiId, b.emojiId);
   }
+};
+
+export const sortByPreviousPosition = (
+  reactions: ReactionSummary[],
+): ReactionSummarySortFunction => {
+  const indexes: { [emojiId: string]: number } = reactions.reduce(
+    (map, reaction, index) => {
+      map[reaction.emojiId] = index;
+      return map;
+    },
+    {},
+  );
+
+  const getPosition = ({ emojiId }: ReactionSummary) =>
+    indexes[emojiId] === undefined ? reactions.length : indexes[emojiId];
+
+  return (a, b) => getPosition(a) - getPosition(b);
 };
 
 export const isPromise = (p): p is Promise<any> =>
