@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 72.1.4
+- [patch] Fixing the toolbar for extensions [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
+- [none] Updated dependencies [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
+  - @atlaskit/editor-test-helpers@4.0.1
+
 ## 72.1.3
 - [patch] Fixing up the paste of images  [3ab13a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ab13a5)
 - [none] Updated dependencies [3ab13a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ab13a5)
