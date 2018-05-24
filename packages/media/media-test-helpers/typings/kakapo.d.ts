@@ -50,7 +50,7 @@ declare module 'kakapo' {
     [collectionName: string]: Object;
   };
 
-  export type RecordId = string;
+  export type RecordId = number;
 
   export type Record<T extends Object> = {
     readonly id: RecordId;
@@ -69,6 +69,11 @@ declare module 'kakapo' {
       collectionName: K,
       size: number = 1,
     ): Record<M[K]>[];
+
+    delete<K extends keyof M>(
+      collectionName: K,
+      id: RecordId,
+    ): Record<M[K]> | null;
 
     find<K extends keyof M>(
       collectionName: K,
@@ -92,5 +97,11 @@ declare module 'kakapo' {
     ): void;
 
     reset(): void;
+
+    update<K extends keyof M>(
+      collectionName: K,
+      id: RecordId,
+      data: Partial<M[K]>,
+    ): Record<M[K]>;
   }
 }
