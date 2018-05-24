@@ -24,11 +24,11 @@ export default class DefaultMediaStateManager extends EventDispatcher
     };
   }
 
-  updateState(tempId: string, newState: MediaState) {
+  updateState(tempId: string, newState: Partial<MediaState>) {
     const state = {
       ...(this.state.get(tempId) || {}),
       ...newState,
-    };
+    } as MediaState;
 
     this.state.set(tempId, state);
     this.emit(tempId, state);

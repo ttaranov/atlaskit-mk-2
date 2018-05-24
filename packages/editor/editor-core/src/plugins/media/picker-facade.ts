@@ -232,21 +232,22 @@ export default class PickerFacade {
     const currentState = this.stateManager.getState(tempId);
     const currentStatus = (currentState && currentState.status) || 'unknown';
 
-    const state = this.stateManager.newState(
-      file,
-      currentStatus === 'unknown' || currentStatus === 'preview'
-        ? 'uploading'
-        : currentStatus,
-    );
-    state.progress = progress && progress.portion;
-    this.stateManager.updateState(state.id, state);
+    this.stateManager.updateState(tempId, {
+      status:
+        currentStatus === 'unknown' || currentStatus === 'preview'
+          ? 'uploading'
+          : currentStatus,
+      progress: progress && progress.portion,
+    });
   };
 
   private handleUploadProcessing = (event: UploadProcessingEventPayload) => {
     const { file } = event;
-
-    const state = this.stateManager.newState(file, 'processing', file.publicId);
-    this.stateManager.updateState(state.id, state);
+    const tempId = this.generateTempId(file.id);
+    this.stateManager.updateState(tempId, {
+      status: 'processing',
+      publicId: file.publicId,
+    });
   };
 
   private handleUploadError = ({ error }: UploadErrorEventPayload) => {
@@ -270,26 +271,32 @@ export default class PickerFacade {
   private handleUploadEnd = (event: UploadEndEventPayload) => {
     const { file } = event;
 
-    const state = this.stateManager.newState(file, 'ready', file.publicId);
-    state.progress = 1;
-    state.ready = true;
-    this.stateManager.updateState(state.id, state);
+    const tempId = this.generateTempId(file.id);
+    this.stateManager.updateState(tempId, {
+      progress: 1,
+      ready: true,
+      status: 'ready',
+      publicId: file.publicId,
+    });
   };
 
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
   ) => {
     const { file, preview } = event;
+    const tempId = this.generateTempId(file.id);
 
-    const state = this.stateManager.newState(file, 'preview');
-    state.thumbnail = preview;
-    state.preview = true;
+    const updatedState = {
+      status: 'preview',
+      thumbnail: preview,
+      preview: true,
+    } as Partial<MediaState>;
 
     // Add timestamp to image file names on paste @see ED-3584
     if (this.pickerType === 'clipboard' && isImage(file.type)) {
-      state.fileName = appendTimestamp(file.name, file.creationDate);
+      updatedState.fileName = appendTimestamp(file.name, file.creationDate);
     }
-    this.stateManager.updateState(state.id, state);
+    this.stateManager.updateState(tempId, updatedState);
   };
 
   private handleDragEnter = () => {
