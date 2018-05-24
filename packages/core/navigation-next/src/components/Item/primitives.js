@@ -69,6 +69,7 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
       subText,
       text,
       theme,
+      ...rest
     } = this.props;
 
     const { mode, context } = theme;
@@ -77,7 +78,7 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
     const styles = styleReducer(defaultStyles, presentationProps);
 
     return (
-      <ItemBase className={css({ '&&': styles.itemBase })}>
+      <ItemBase className={css({ '&&': styles.itemBase })} {...rest}>
         {!!Before && (
           <div css={styles.beforeWrapper}>
             <Before {...presentationProps} />

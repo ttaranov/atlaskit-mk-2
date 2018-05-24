@@ -15,7 +15,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import { JiraWordmark } from '@atlaskit/logo';
 
 import {
-  ContainerHeader,
+  ContainerSwitcher,
   GlobalNav,
   Item,
   ItemAvatar,
@@ -107,18 +107,119 @@ const productRootNavSections = [
   },
 ];
 
+const avatarSrc = name =>
+  `https://api.adorable.io/avatars/64/${name}@adorable.png`;
+
+const recentProjects = [
+  {
+    key: 'superfun',
+    before: st8 => (
+      <ItemAvatar
+        borderColor="transparent"
+        itemState={st8}
+        appearance="square"
+        src={avatarSrc('superfun')}
+      />
+    ),
+    text: 'Superfun',
+    subText: 'Software project',
+  },
+  {
+    key: 'strawberry-service',
+    before: st8 => (
+      <ItemAvatar
+        borderColor="transparent"
+        itemState={st8}
+        appearance="square"
+        src={avatarSrc('strawberry-service')}
+      />
+    ),
+    text: 'Strawberry Service',
+    subText: 'Service desk project',
+  },
+];
+const otherProjects = [
+  {
+    key: 'vanilla-business',
+    before: st8 => (
+      <ItemAvatar
+        borderColor="transparent"
+        itemState={st8}
+        appearance="square"
+        src={avatarSrc('vanilla-business')}
+      />
+    ),
+    text: 'Vanilla business',
+    subText: 'Business project',
+  },
+  {
+    key: 'nucleus',
+    before: st8 => (
+      <ItemAvatar
+        borderColor="transparent"
+        itemState={st8}
+        appearance="square"
+        src={avatarSrc('nucleus')}
+      />
+    ),
+    text: 'Nucleus',
+    subText: 'Sofware project',
+  },
+  {
+    key: 'atom',
+    before: st8 => (
+      <ItemAvatar
+        borderColor="transparent"
+        itemState={st8}
+        appearance="square"
+        src={avatarSrc('atom')}
+      />
+    ),
+    text: 'Atom',
+    subText: 'Sofware project',
+  },
+  {
+    key: 'cell',
+    before: st8 => (
+      <ItemAvatar
+        borderColor="transparent"
+        itemState={st8}
+        appearance="square"
+        src={avatarSrc('cell')}
+      />
+    ),
+    text: 'Cell',
+    subText: 'Business project',
+  },
+];
+const projectGroups = [
+  {
+    label: 'Recent Projects',
+    options: recentProjects,
+  },
+  {
+    label: 'Other Projects',
+    options: otherProjects,
+  },
+];
 const productContainerNavSections = [
   {
     key: 'header',
     items: [
       {
-        type: ContainerHeader,
-        key: 'project-switcher',
-        before: itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
+        type: ContainerSwitcher,
+        key: 'superfun',
+        before: st8 => (
+          <ItemAvatar
+            borderColor="transparent"
+            itemState={st8}
+            appearance="square"
+            src={avatarSrc('superfun')}
+          />
         ),
-        text: 'My software project',
+        text: 'Superfun',
         subText: 'Software project',
+        items: projectGroups,
       },
     ],
   },

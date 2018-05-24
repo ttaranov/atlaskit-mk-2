@@ -2,6 +2,7 @@
 
 /** Components */
 export { default as ContainerHeader } from './components/ContainerHeader';
+export { default as ContainerSwitcher } from './components/ContainerSwitcher';
 export { default as GlobalItem } from './components/GlobalItem';
 export {
   default as GlobalItemPrimitive,
