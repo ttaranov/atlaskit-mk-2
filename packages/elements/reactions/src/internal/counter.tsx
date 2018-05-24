@@ -66,8 +66,8 @@ export default class Counter extends React.PureComponent<Props, State> {
     className: undefined,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       previous: undefined,
     };

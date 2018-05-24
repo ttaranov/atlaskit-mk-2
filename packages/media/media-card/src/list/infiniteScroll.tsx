@@ -45,7 +45,7 @@ export class InfiniteScroll extends Component<
           height: this.props.height,
           overflowX: 'hidden',
           overflowY: 'auto',
-          overflowStyle: 'scrollbar',
+          msOverflowStyle: 'scrollbar',
           display: 'inline-block',
         }}
         onScroll={this.checkThreshold}
