@@ -109,7 +109,7 @@ describe('BitbucketTransformer: parser', () => {
               mediaSingle()(
                 media({ url: 'http://path/to/image.jpg', type: 'external' })(),
               ),
-              p('World'),
+              p(' World'),
             ),
           ),
         ),
@@ -128,6 +128,44 @@ describe('BitbucketTransformer: parser', () => {
             media({ url: 'http://path/to/image.jpg', type: 'external' })(),
           ),
           p('World'),
+        ),
+      );
+    });
+
+    it('should split blockquotes with images', () => {
+      const parsed = parse(`
+        <blockquote>
+          <p>Hello</p>
+          <p><img src="http://path/to/image.jpg"></p>
+          <p>World</p>
+        </blockquote>
+      `);
+
+      const parsed2 = parse(`
+        <blockquote>
+          <p>Hello</p>
+          <p>Look <img src="http://path/to/image.jpg"> Here</p>
+          <p>World</p>
+        </blockquote>
+      `);
+
+      expect(parsed).toEqualDocument(
+        doc(
+          blockquote(p('Hello')),
+          mediaSingle()(
+            media({ url: 'http://path/to/image.jpg', type: 'external' })(),
+          ),
+          blockquote(p('World')),
+        ),
+      );
+
+      expect(parsed2).toEqualDocument(
+        doc(
+          blockquote(p('Hello'), p('Look')),
+          mediaSingle()(
+            media({ url: 'http://path/to/image.jpg', type: 'external' })(),
+          ),
+          blockquote(p('Here'), p('World')),
         ),
       );
     });
