@@ -64,7 +64,7 @@ export default (
               typeof selectedExtNode.node.attrs.parameters
                 .stickToolbarToBottom === 'undefined'
                 ? true
-                : false;
+                : selectedExtNode.node.attrs.parameters.stickToolbarToBottom;
           }
 
           let selectedExtDomNode =
