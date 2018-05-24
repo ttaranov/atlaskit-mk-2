@@ -284,21 +284,19 @@ export default class PickerFacade {
     event: UploadPreviewUpdateEventPayload,
   ) => {
     const { file, preview } = event;
-    let pastedFileName = {};
     const tempId = this.generateTempId(file.id);
 
-    // Add timestamp to image file names on paste @see ED-3584
-    if (this.pickerType === 'clipboard' && isImage(file.type)) {
-      pastedFileName = {
-        fileName: appendTimestamp(file.name, file.creationDate),
-      };
-    }
-    this.stateManager.updateState(tempId, {
+    const updatedState = {
       status: 'preview',
       thumbnail: preview,
       preview: true,
-      ...pastedFileName,
-    });
+    } as Partial<MediaState>;
+
+    // Add timestamp to image file names on paste @see ED-3584
+    if (this.pickerType === 'clipboard' && isImage(file.type)) {
+      updatedState.fileName = appendTimestamp(file.name, file.creationDate);
+    }
+    this.stateManager.updateState(tempId, updatedState);
   };
 
   private handleDragEnter = () => {
