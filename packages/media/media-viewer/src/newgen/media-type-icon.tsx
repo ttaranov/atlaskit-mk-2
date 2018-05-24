@@ -1,4 +1,4 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-collectionName */
 import * as React from 'react';
 import ImageIcon from '@atlaskit/icon/glyph/media-services/image';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';

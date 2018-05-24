@@ -47,7 +47,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   render() {
-    const { selectedItem, context, onClose } = this.props;
+    const { selectedItem, context, onClose, collectionName } = this.props;
     const { items } = this.state;
     switch (items.status) {
       case 'PENDING':
@@ -55,11 +55,16 @@ export class Collection extends React.Component<Props, State> {
       case 'FAILED':
         return <ErrorMessage>Error loading collection</ErrorMessage>;
       case 'SUCCESSFUL':
-        const identifiers = items.data.map(toIdentifier);
+        const identifiers = items.data.map(x =>
+          toIdentifier(x, collectionName),
+        );
+        const item = selectedItem
+          ? { ...selectedItem, collectionName }
+          : identifiers[0];
         return (
           <List
             items={identifiers}
-            selectedItem={selectedItem ? selectedItem : identifiers[0]}
+            selectedItem={item}
             context={context}
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}

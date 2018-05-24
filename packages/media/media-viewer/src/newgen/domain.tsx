@@ -7,6 +7,10 @@ export type Identifier = {
   collectionName?: string;
 };
 
+export type ItemSource =
+  | { kind: 'COLLECTION'; collectionName: string }
+  | { kind: 'ARRAY'; items: Identifier[] };
+
 export type Outcome<Data, Err> =
   | {
       status: 'PENDING';

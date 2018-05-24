@@ -13,6 +13,7 @@ import { ErrorMessage } from '../../src/newgen/styled';
 import { Identifier } from '../../src/newgen/domain';
 import Spinner from '@atlaskit/spinner';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
+import { List } from '../../src/newgen/list';
 
 function createContext(subject, provider?: MediaCollectionProvider): Context {
   const token = 'some-token';
@@ -29,6 +30,8 @@ function createContext(subject, provider?: MediaCollectionProvider): Context {
   ) as any;
 }
 
+const collectionName = 'my-collection';
+
 const identifier = {
   id: 'some-id',
   occurrenceKey: 'some-custom-occurrence-key',
@@ -42,7 +45,7 @@ const identifier2 = {
 };
 
 const mediaCollection: MediaCollection = {
-  id: 'my-collection',
+  id: collectionName,
   items: [
     {
       type: 'file',
@@ -70,7 +73,7 @@ function createFixture(
   const el = mount(
     <Collection
       selectedItem={identifier}
-      collectionName="my-collection"
+      collectionName={collectionName}
       context={context}
       onClose={onClose}
     />,
@@ -133,6 +136,19 @@ describe('<Collection />', () => {
 
     el.setProps({ collectionName: 'other-collection' });
     expect(el.state().items.status).toEqual('PENDING');
+  });
+
+  it('MSW-720: adds the collectionName to all identifiers passed to the List component', () => {
+    const subject = new Subject<MediaCollection | Error>();
+    const context = createContext(subject);
+    const el = createFixture(context, subject, identifier);
+    subject.next(mediaCollection);
+    el.update();
+    const listProps = el.find(List).props();
+    expect(listProps.selectedItem.collectionName).toEqual(collectionName);
+    listProps.items.forEach(item => {
+      expect(item.collectionName).toEqual(collectionName);
+    });
   });
 
   describe('Next page', () => {
