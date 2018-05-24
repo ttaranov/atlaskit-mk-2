@@ -56,7 +56,7 @@ describe('<ResourcedTaskItem/>', () => {
     expect(contentRef!.textContent).toEqual('Hello world');
   });
 
-  it('should call onChange prop in change handling', () => {
+  it('should not call onChange prop in change handling if no provider', () => {
     const spy = jest.fn();
     component = mount(
       <ResourcedTaskItem
@@ -70,7 +70,27 @@ describe('<ResourcedTaskItem/>', () => {
     );
     const input = component.find('input');
     input.simulate('change');
-    expect(spy.mock.calls.length).toEqual(1);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should call onChange prop in change handling if provider', () => {
+    const spy = jest.fn();
+    component = mount(
+      <ResourcedTaskItem
+        taskId="task-id"
+        objectAri="objectAri"
+        containerAri="containerAri"
+        onChange={spy}
+        taskDecisionProvider={Promise.resolve(provider)}
+      >
+        Hello <b>world</b>
+      </ResourcedTaskItem>,
+    );
+    const input = component.find('input');
+    input.simulate('change');
+    return waitUntil(() => provider.toggleTask.mock.calls.length).then(() => {
+      expect(spy).toHaveBeenCalled();
+    });
   });
 
   it('should still toggle isDone of TaskItem onChange without objectAri or containerAri', () => {
@@ -82,6 +102,15 @@ describe('<ResourcedTaskItem/>', () => {
     const input = component.find('input');
     input.simulate('change');
     expect(component.find(TaskItem).prop('isDone')).toEqual(true);
+  });
+
+  it('should disable taskItem if no provider', () => {
+    component = mount(
+      <ResourcedTaskItem taskId="task-1" isDone={false}>
+        Hello World
+      </ResourcedTaskItem>,
+    );
+    expect(component.find(TaskItem).prop('disabled')).toEqual(true);
   });
 
   it('should subscribe to updates', () => {
