@@ -54,9 +54,12 @@ export function withDataURI<TOwnProps>(
     WithDataURIImplProps,
     WithDataURIState
   > implements WithDataURI<TOwnProps> {
-    state: WithDataURIState = {};
+    constructor(props: WithDataURIImplProps) {
+      super(props);
+      this.state = {};
+    }
 
-    componentWillMount(): void {
+    componentDidMount() {
       this.updateDataURI(this.props);
     }
 

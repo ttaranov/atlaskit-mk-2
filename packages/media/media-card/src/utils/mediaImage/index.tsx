@@ -45,6 +45,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       parentWidth: Infinity,
       parentHeight: Infinity,
     };
+    // TODO Test that this will work at all
+    this.init();
   }
 
   private img;
@@ -52,7 +54,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   // TODO FIL-4060 we need to check whether the dataURI changes in componentWillReceiveProps()
   // and if it does recalculate the image height and width
 
-  componentWillMount() {
+  private init() {
     this.img = new Image();
 
     this.img.src = this.props.dataURI;

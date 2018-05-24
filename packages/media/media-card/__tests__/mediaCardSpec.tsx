@@ -26,7 +26,7 @@ describe('MediaCard', () => {
   const waitUntilCardIsLoaded = (
     card: ShallowWrapper<MediaCardProps, MediaCardState>,
   ) => {
-    return waitUntil(() => !!card.instance().state.metadata, 50);
+    return waitUntil(() => !!card.state().metadata, 50);
   };
 
   describe('.render()', () => {

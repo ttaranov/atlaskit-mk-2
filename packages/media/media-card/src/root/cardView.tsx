@@ -153,7 +153,6 @@ export class CardViewBase extends React.Component<
   }
 
   render() {
-    // console.count(`id=${this.tmpIdHack} render cardView`);
     const { onClick, onMouseEnter } = this;
     const { dimensions, appearance, mediaItemType } = this.props;
     const wrapperDimensions = dimensions

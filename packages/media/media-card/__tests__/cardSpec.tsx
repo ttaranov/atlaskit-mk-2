@@ -283,6 +283,7 @@ describe('Card', () => {
 
     expect(mediaCard.prop('resizeMode')).toBe('crop');
     expect(card.find('CardView').prop('resizeMode')).toBe('crop');
+    expect(fetchImageDataUriSpy).toHaveBeenCalled();
     expect(fetchImageDataUriSpy.mock.calls[0][1].mode).toBe('crop');
   });
 
@@ -305,6 +306,7 @@ describe('Card', () => {
 
     expect(mediaCard.prop('resizeMode')).toBe('full-fit');
     expect(card.find('CardView').prop('resizeMode')).toBe('full-fit');
+    expect(fetchImageDataUriSpy).toHaveBeenCalled();
     expect(fetchImageDataUriSpy.mock.calls[0][1].mode).toBe('full-fit');
   });
 

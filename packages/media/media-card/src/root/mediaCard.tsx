@@ -41,12 +41,15 @@ export interface MediaCardState {
 export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   subscription?: Subscription;
 
-  state: MediaCardState = {
-    status: this.props.preview ? 'complete' : 'loading',
-  };
+  constructor(props: MediaCardProps) {
+    super(props);
+    this.state = {
+      status: props.preview ? 'complete' : 'loading',
+    };
+  }
 
-  componentWillMount(): void {
-    this.updateState(this.props);
+  componentDidMount(): void {
+    this.subscribe(this.props);
   }
 
   componentWillReceiveProps(nextProps: MediaCardProps): void {
@@ -82,29 +85,31 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
 
   private updateState(props: MediaCardProps): void {
     this.unsubscribe();
-    const { preview } = this.props;
+    const { preview } = props;
     const status = preview ? 'complete' : 'loading';
 
-    this.setState({ status }, () => {
-      this.subscription = this.observable(props).subscribe({
-        next: (metadata: MediaItemDetails) => {
-          if (
-            !isLinkDetails(metadata) &&
-            metadata.processingStatus === 'pending'
-          ) {
-            // If it's a file with pending status
-            this.setState({ error: undefined, metadata, status: 'processing' });
-          } else {
-            // In all other cases (link or completed file) we call complete immidietly
-            this.setState({ error: undefined, metadata, status: 'complete' });
-          }
-        },
-        error: error => {
-          this.setState({ error, status: 'error' });
-        },
-      });
-    });
+    this.setState({ status }, this.subscribe.bind(this, props));
   }
+
+  private subscribe = (props: MediaCardProps) => {
+    this.subscription = this.observable(props).subscribe({
+      next: (metadata: MediaItemDetails) => {
+        if (
+          !isLinkDetails(metadata) &&
+          metadata.processingStatus === 'pending'
+        ) {
+          // If it's a file with pending status
+          this.setState({ error: undefined, metadata, status: 'processing' });
+        } else {
+          // In all other cases (link or completed file) we call complete immidietly
+          this.setState({ error: undefined, metadata, status: 'complete' });
+        }
+      },
+      error: error => {
+        this.setState({ error, status: 'error' });
+      },
+    });
+  };
 
   private unsubscribe(): void {
     if (this.subscription) {

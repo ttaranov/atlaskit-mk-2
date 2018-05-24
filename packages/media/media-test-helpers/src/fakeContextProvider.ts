@@ -16,21 +16,21 @@ export const fakeContext = (
 ): Context => {
   const returns = (value: any) => jest.fn().mockReturnValue(value);
   const getMediaItemProvider = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(Observable.of()),
   });
 
   const getMediaCollectionProvider = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(Observable.of()),
   });
   const getDataUriService = returns({
     fetchOriginalDataUri: returns(Promise.resolve('fake-original-data-uri')),
     fetchImageDataUri: returns(Promise.resolve('fake-image-data-uri')),
   });
   const addLinkItem = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(Observable.of()),
   });
   const getUrlPreviewProvider = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(Observable.of()),
   });
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();

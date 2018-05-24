@@ -208,9 +208,12 @@ describe('WithDataURI', () => {
       const instance = element.instance() as WithDataURI<DemoComponentProps>;
       instance.updateDataURI({ dataURIService, metadata, appearance: 'small' });
 
-      expect(
-        dataURIService.fetchImageDataUri.mock.calls[0][1].allowAnimated,
-      ).toEqual(false);
+      expect(dataURIService.fetchImageDataUri).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          allowAnimated: false,
+        }),
+      );
     });
 
     it('should call fetchImageDataUri with allowAnimated true', () => {
