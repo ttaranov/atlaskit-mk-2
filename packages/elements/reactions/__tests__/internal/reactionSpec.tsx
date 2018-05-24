@@ -8,6 +8,7 @@ import Reaction, { ReactionOnClick } from '../../src/internal/reaction';
 import FlashAnimation from '../../src/internal/flash-animation';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
+import ReactionTooltip from '../../src/internal/reaction-tooltip';
 
 const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();
@@ -54,7 +55,10 @@ describe('@atlaskit/reactions/reaction', () => {
     const onClickSpy = jest.fn();
     const reaction = mount(renderReaction(false, 1, onClickSpy));
 
-    reaction.simulate('mouseup', { button: 0 });
+    reaction
+      .find('button')
+      .first()
+      .simulate('mouseup', { button: 0 });
     expect(onClickSpy).toHaveBeenCalled();
   });
 
@@ -98,5 +102,12 @@ describe('@atlaskit/reactions/reaction', () => {
     (reaction.instance() as Reaction).componentDidMount();
 
     expect(flashSpy.mock.calls).toHaveLength(1);
+  });
+
+  it('should render ReactionTooltip', () => {
+    const reaction = mount(renderReaction(false, 1, () => {}));
+
+    const tooltip = reaction.find(ReactionTooltip);
+    expect(tooltip.prop('reaction')).toEqual(buildReaction(1, false));
   });
 });
