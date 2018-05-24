@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 14.3.0
+- [minor] Add zoom level for image and document viewer [856dfae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/856dfae)
+
 ## 14.2.0
 - [minor] Add keyboard shortcuts to MediaViewer NG [52c56c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52c56c1)
 
