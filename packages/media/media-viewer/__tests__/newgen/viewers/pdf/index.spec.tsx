@@ -8,7 +8,6 @@ import { FileItem } from '@atlaskit/media-core';
 import { Stubs } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
 import { PDFViewer } from '../../../../src/newgen/viewers/pdf/index';
-import { constructAuthTokenUrl } from '../../../../src/newgen/util';
 
 function createContext() {
   const subject = new Subject<FileItem>();
