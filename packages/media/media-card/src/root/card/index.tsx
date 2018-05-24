@@ -50,7 +50,7 @@ export interface CardProps extends SharedCardProps, CardEventProps {
 }
 
 export class Card extends Component<CardProps, {}> {
-  static defaultProps = {
+  static defaultProps: Partial<CardProps> = {
     appearance: 'auto',
     resizeMode: 'crop',
     isLazy: true,
