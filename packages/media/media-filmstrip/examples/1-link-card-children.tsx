@@ -23,8 +23,8 @@ export class Story extends Component<{}, StoryState> {
     offset: 0,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.mediaContext = createStorybookContext();
     this.cardDimensions = { width: 363 }; // dimensions used in the renderer

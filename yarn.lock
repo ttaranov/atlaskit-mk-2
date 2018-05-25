@@ -510,9 +510,15 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.0.5":
-  version "16.0.11"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.11.tgz#ab505dc60bd1dcd6113577d71d1c96e58b6bd9f0"
+"@types/react@*", "@types/react@^16.3.0":
+  version "16.3.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.13.tgz#47d466462b774556c1174ea0eda22c0578643362"
+  dependencies:
+    "csstype" "^2.2.0"
+
+csstype@^2.2.0:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.2.tgz#4534308476ceede8fbe148b9b99f9baf1c80fa06"
 
 "@types/redux@^3.6.0":
   version "3.6.0"
