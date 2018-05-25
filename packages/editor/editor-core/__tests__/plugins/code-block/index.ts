@@ -235,8 +235,11 @@ describe('code-block', () => {
             doc(p('paragraph'), code_block()('{<>}codeBlock')),
           );
 
-          const codeBlockDOM = editorView.domAtPos(sel).node;
-          expect(pluginState.element).toBe(codeBlockDOM);
+          // -1 to move from the start of the node, to before the node
+          const codeBlockDOM = editorView.domAtPos(sel - 1);
+          expect(pluginState.element).toBe(
+            codeBlockDOM.node.childNodes[codeBlockDOM.offset],
+          );
         });
       });
 
@@ -247,9 +250,11 @@ describe('code-block', () => {
           );
 
           const codeBlockDOM = editorView.domAtPos(
-            editorView.state.doc.resolve(sel).start(),
-          ).node;
-          expect(pluginState.element).toBe(codeBlockDOM);
+            editorView.state.doc.resolve(sel).before(),
+          );
+          expect(pluginState.element).toBe(
+            codeBlockDOM.node.childNodes[codeBlockDOM.offset],
+          );
         });
       });
     });

@@ -110,9 +110,12 @@ export class CodeBlockState {
 
   private activeCodeBlockElement(domAtPos: DomAtPos): HTMLElement | undefined {
     const { selection, schema: { nodes: { codeBlock } } } = this.state;
-    return findParentDomRefOfType(codeBlock, domAtPos)(
+    const codeDOM = findParentDomRefOfType(codeBlock, domAtPos)(
       selection,
     ) as HTMLElement;
+    return codeDOM
+      ? codeDOM.parentElement!.parentElement!.parentElement!
+      : undefined;
   }
 
   private activeCodeBlockNode(): Node | undefined {
