@@ -30,7 +30,13 @@ export default new Plugin({
       },
       Tab: (state: EditorState, dispatch) => {
         if (isCursorInsideCodeBlock(state)) {
-          dispatch(state.tr.insertText('  '));
+          const { text: textAtStartOfLine } = getStartOfCurrentLine(state);
+          const { indentToken } = getLineInfo(textAtStartOfLine);
+          const indentToAdd = indentToken.token.repeat(
+            indentToken.size - textAtStartOfLine.length % indentToken.size ||
+              indentToken.size,
+          );
+          dispatch(state.tr.insertText(indentToAdd));
           return true;
         }
         return false;
@@ -40,8 +46,12 @@ export default new Plugin({
           const { text, start } = getLinesFromSelection(state);
           const { tr } = state;
           forEachLine(text, (line, offset) => {
-            const { indentToken } = getLineInfo(line);
-            tr.insertText(indentToken, tr.mapping.map(start + offset));
+            const { indentText, indentToken } = getLineInfo(line);
+            const indentToAdd = indentToken.token.repeat(
+              indentToken.size - indentText.length % indentToken.size ||
+                indentToken.size,
+            );
+            tr.insertText(indentToAdd, tr.mapping.map(start + offset));
           });
           dispatch(tr);
           return true;
@@ -53,16 +63,13 @@ export default new Plugin({
           const { text, start } = getLinesFromSelection(state);
           const { tr } = state;
           forEachLine(text, (line, offset) => {
-            const { indentToken, indentText } = getLineInfo(line);
+            const { indentText, indentToken } = getLineInfo(line);
             if (indentText) {
+              const unindentLength =
+                indentText.length % indentToken.size || indentToken.size;
               tr.delete(
                 tr.mapping.map(start + offset),
-                tr.mapping.map(
-                  start +
-                    offset +
-                    (indentText.length % indentToken.length ||
-                      indentToken.length),
-                ),
+                tr.mapping.map(start + offset + unindentLength),
               );
             }
           });
