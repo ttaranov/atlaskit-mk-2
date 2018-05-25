@@ -25,7 +25,6 @@ const createPayload = (actionSubject, action) => ({
       isSpecial: false,
     },
     source: 'unknown',
-    tags: [ELEMENTS_CHANNEL],
     eventType: 'ui',
   },
 });
