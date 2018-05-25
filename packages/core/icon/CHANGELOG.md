@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 11.3.2
+- [patch] Update readme to be in line with other atlaskit readmes [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)
+- [none] Updated dependencies [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)
+
 ## 11.3.1
 - [patch] Fix unit tests [22337bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22337bd)
 - [patch] Update for label with white background [a0d7ed7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0d7ed7)
