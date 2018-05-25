@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 14.4.1
+- [patch] Centering navigation arrows vertically in MVNG [d506235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d506235)
+
 ## 14.4.0
 - [patch] Fix pageSize in MediaViewer NG [4eac436](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac436)
 - [minor] show controls when navigation happen in MediaViewer [3917aa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3917aa6)
