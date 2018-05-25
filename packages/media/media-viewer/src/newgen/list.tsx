@@ -65,8 +65,10 @@ export class List extends React.Component<Props, State> {
     if (onNavigationChange) {
       onNavigationChange(selectedItem);
     }
+    if (showControls) {
+      showControls();
+    }
 
-    showControls && showControls();
     this.setState({ selectedItem });
   };
 }
