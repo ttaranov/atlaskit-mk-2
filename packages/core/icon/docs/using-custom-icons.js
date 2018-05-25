@@ -15,7 +15,7 @@ export default md`
   individual icons to stop application bloat, and import just the component itself
   using the following:
 
-  ${code`import Icon from '@atlaskit/icon/dist/esm/components/Icon'`}
+  ${code`import Icon from '@atlaskit/icon/dist/cjs/components/Icon'`}
 
   This icon has the same props as all icons. See the bottom of this page for those.
 
