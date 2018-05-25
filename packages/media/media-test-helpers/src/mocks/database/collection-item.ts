@@ -1,4 +1,4 @@
-import Faker = require('faker');
+import * as Faker from 'faker';
 import { MediaCollectionItem } from '@atlaskit/media-store';
 
 import { mapDataUriToBlob } from '../../utils';

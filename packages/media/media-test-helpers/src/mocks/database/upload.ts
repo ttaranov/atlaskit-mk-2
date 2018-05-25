@@ -1,4 +1,4 @@
-import Faker = require('faker');
+import * as Faker from 'faker';
 import { MediaUpload } from '@atlaskit/media-store';
 import { ChunkId } from './chunk';
 

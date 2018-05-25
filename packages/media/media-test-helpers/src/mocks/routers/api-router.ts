@@ -1,5 +1,5 @@
 import { Router, Response } from 'kakapo';
-import Faker = require('faker');
+import * as Faker from 'faker';
 
 import { mapDataUriToBlob } from '../../utils';
 import {

@@ -1,7 +1,7 @@
 import { ClientBasedAuth } from '@atlaskit/media-core';
 import { MediaStore, MediaCollection } from '@atlaskit/media-store';
 import { Database } from 'kakapo';
-import Faker = require('faker');
+import * as Faker from 'faker';
 
 import { mapDataUriToBlob } from '../../utils';
 import { createCollection } from './collection';

@@ -1,4 +1,4 @@
-import Faker = require('faker');
+import * as Faker from 'faker';
 import { MediaCollection } from '@atlaskit/media-store';
 
 export function createCollection(name?: string): MediaCollection {
