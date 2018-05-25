@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-listeners",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Fabric analytics listeners to be used by the products",
   "config": {
     "access": "public"
@@ -15,7 +15,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics-gas-types": "^2.0.0",
+    "@atlaskit/analytics-gas-types": "^2.1.0",
     "@atlaskit/analytics-next": "^2.0.0",
     "lodash.last": "^3.0.0",
     "lodash.merge": "^4.6.1",
