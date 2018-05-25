@@ -53,7 +53,6 @@ const mentionPayload = (
     accessLevel,
     isSpecial: isSpecialMentionText(text),
   },
-  tags: [ELEMENTS_CHANNEL],
   source: 'unknown',
 });
 
