@@ -1,9 +1,7 @@
 /**
  * Inspired by analytics-web-react
  */
-declare namespace last {
 
-}
 declare namespace merge {
 
 }
@@ -98,7 +96,7 @@ export default (event: EventNextType): GasPayload | null => {
         actionSubjectId: actionSubjectId,
         attributes,
         tags: Array.from(tags),
-      };
+      } as any;
     }
 
     if (
