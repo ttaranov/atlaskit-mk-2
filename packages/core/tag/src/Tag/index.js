@@ -121,12 +121,12 @@ export default class Tag extends Component<Props, State> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      // color: safeColor,
+      color,
     };
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
-      <Appearance props={appearance} theme={theme}>
+      <Appearance props={color} state={styled} theme={theme}>
         {styleProps => (
           <Container {...styleProps} onAnimationEnd={onAnimationEnd}>
             <Chrome
