@@ -1,16 +1,6 @@
-export { MediaStore } from './media-store';
-export { MediaFile } from './models/media';
-export {
-  Auth,
-  ClientBasedAuth,
-  isClientBasedAuth,
-  AsapBasedAuth,
-  isAsapBasedAuth,
-  AuthContext,
-  AuthProvider,
-  MediaApiConfig,
-  ContextConfig,
-} from './models/auth';
+export * from './media-store';
+export * from './models/media';
+export * from './models/auth';
 export {
   uploadFile,
   UploadableFile,
