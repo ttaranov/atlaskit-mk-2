@@ -18,7 +18,6 @@ const basePlugin: EditorPlugin = {
             ...baseKeymap,
             'Mod-[': () => true,
             'Mod-]': () => true,
-            Tab: () => true,
           }),
       },
     ];
