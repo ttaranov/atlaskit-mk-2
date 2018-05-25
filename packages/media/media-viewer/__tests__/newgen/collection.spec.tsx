@@ -69,6 +69,7 @@ function createFixture(
   subject: Subject<MediaCollection | Error>,
   identifier: Identifier,
   onClose?: () => {},
+  pageSize?: number,
 ) {
   const el = mount(
     <Collection
@@ -76,6 +77,7 @@ function createFixture(
       collectionName={collectionName}
       context={context}
       onClose={onClose}
+      pageSize={pageSize || 999}
     />,
   );
   return el;
@@ -93,6 +95,20 @@ describe('<Collection />', () => {
     const context = createContext(subject);
     createFixture(context, subject, identifier);
     expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledWith(
+      'my-collection',
+      999,
+    );
+  });
+
+  it('should fetch collection items with custom pageSize', () => {
+    const subject = new Subject<MediaCollection>();
+    const context = createContext(subject);
+    createFixture(context, subject, identifier, undefined, 333);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledWith(
+      'my-collection',
+      333,
+    );
   });
 
   it('should show an error if items failed to be fetched', () => {
