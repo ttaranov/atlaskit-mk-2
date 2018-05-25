@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, SyntheticEvent, ReactElement } from 'react';
+import { Component, SyntheticEvent, ReactElement, ReactNode } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
 import {
@@ -10,8 +10,7 @@ import {
 
 export interface ContentProps {
   onClose?: () => void;
-  onShowControlsCallback?: (callback: () => void) => void;
-  children: ReactElement<{}>;
+  children: ReactNode;
 }
 
 export interface ContentState {
@@ -82,13 +81,7 @@ export class Content extends Component<ContentProps, ContentState> {
   };
 
   componentDidMount() {
-    const { onShowControlsCallback } = this.props;
-
     this.checkMouseMovement();
-
-    if (onShowControlsCallback) {
-      onShowControlsCallback(this.checkMouseMovement);
-    }
   }
 
   componentWillUnmount() {
@@ -117,9 +110,13 @@ export class Content extends Component<ContentProps, ContentState> {
   render() {
     const { showControls } = this.state;
     const { onClose } = this.props;
-    const children = React.cloneElement(this.props.children, {
-      showControlsCallback: this.checkMouseMovement,
-    });
+    // We extend the children with the ability of showing the controls
+    const children = React.cloneElement(
+      this.props.children as ReactElement<any>,
+      {
+        showControls: this.checkMouseMovement,
+      },
+    );
 
     return (
       <ContentWrapper

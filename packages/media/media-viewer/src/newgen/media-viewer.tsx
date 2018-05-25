@@ -14,15 +14,7 @@ export type Props = {
   itemSource: ItemSource;
 };
 
-export interface MediaViewerState {
-  showControlsCallback: () => void;
-}
-
-export class MediaViewer extends React.Component<Props, MediaViewerState> {
-  state: MediaViewerState = {
-    showControlsCallback() {},
-  };
-
+export class MediaViewer extends React.Component<Props, {}> {
   render() {
     const { onClose } = this.props;
     return (

@@ -15,7 +15,7 @@ import { Spinner } from './loading';
 export type Props = {
   onClose?: () => void;
   selectedItem?: Identifier;
-  showControlsCallback?: () => void;
+  showControls?: () => void;
   collectionName: string;
   context: Context;
 };
@@ -53,7 +53,7 @@ export class Collection extends React.Component<Props, State> {
       context,
       onClose,
       collectionName,
-      showControlsCallback,
+      showControls,
     } = this.props;
     const { items } = this.state;
     switch (items.status) {
@@ -75,7 +75,7 @@ export class Collection extends React.Component<Props, State> {
             context={context}
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}
-            showControlsCallback={showControlsCallback}
+            showControls={showControls}
           />
         );
     }
