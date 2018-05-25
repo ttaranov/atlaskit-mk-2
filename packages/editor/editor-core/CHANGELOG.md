@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.5
+- [patch] Fix toolbar alignment being incorrectly offset due to the change in the Code Block UI [ED-4637] [6db7a9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6db7a9f)
+- [none] Updated dependencies [6db7a9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6db7a9f)
+
 ## 72.1.4
 - [patch] Fixing the toolbar for extensions [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
 - [none] Updated dependencies [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
