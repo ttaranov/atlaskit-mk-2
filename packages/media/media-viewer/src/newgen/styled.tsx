@@ -66,7 +66,8 @@ ListWrapper.displayName = 'ListWrapper';
 export const ArrowsWrapper = styled.div`
   display: flex;
   position: absolute;
-  top: 40%;
+  top: 50%;
+  transform: translateY(-50%);
   left: 0;
   width: 100%;
 `;
