@@ -11,6 +11,7 @@ export interface Props {
   height: number;
   containerWidth?: number;
   isLoading?: boolean;
+  className?: string;
 }
 
 export default function MediaSingle({
@@ -20,6 +21,7 @@ export default function MediaSingle({
   height,
   containerWidth = width,
   isLoading = false,
+  className,
 }: Props) {
   return (
     <Wrapper
@@ -27,7 +29,10 @@ export default function MediaSingle({
       width={width}
       height={height}
       containerWidth={containerWidth}
-      className={classnames('media-single', { 'is-loading': isLoading })}
+      className={classnames('media-single', layout, className, {
+        'is-loading': isLoading,
+        'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',
+      })}
     >
       {React.Children.only(children)}
     </Wrapper>
