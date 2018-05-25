@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 17.0.6
+- [patch] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
+  - @atlaskit/editor-common@10.1.3
+
 ## 17.0.5
 - [patch] ED-4447 Fix image breakout rendering [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
 - [none] Updated dependencies [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
