@@ -46,16 +46,21 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       selectedItem,
       collectionName,
       dataSource,
+      pageSize,
     } = this.props;
+
+    const defaultPageSize = 30;
 
     const devOverride =
       window.localStorage &&
       window.localStorage.getItem('MediaViewerNextGenEnabled');
+
     if (devOverride || (featureFlags && featureFlags.nextGen)) {
       if (dataSource.collectionName) {
         const itemSource: ItemSource = {
           kind: 'COLLECTION',
           collectionName: dataSource.collectionName,
+          pageSize: pageSize || defaultPageSize,
         };
         const identifier = {
           ...selectedItem,
@@ -112,7 +117,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           context={context}
           selectedItem={selectedItem}
           collectionName={dataSource.collectionName}
-          pageSize={this.props.pageSize}
+          pageSize={pageSize}
           MediaViewer={this.props.MediaViewer}
           mediaViewerConfiguration={this.props.mediaViewerConfiguration}
           basePath={this.props.basePath}

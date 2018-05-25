@@ -8,7 +8,7 @@ export type Identifier = {
 };
 
 export type ItemSource =
-  | { kind: 'COLLECTION'; collectionName: string }
+  | { kind: 'COLLECTION'; collectionName: string; pageSize: number }
   | { kind: 'ARRAY'; items: Identifier[] };
 
 export type Outcome<Data, Err> =
