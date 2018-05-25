@@ -4,7 +4,7 @@ import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import ViewModel from './ViewModel';
 import { CardFrame, CardPreview, LinkIcon } from '@atlaskit/media-ui';
-import { DetailView } from '../DetailView';
+import { ResolvedView } from '../expanded/ResolvedView';
 import AlertView from './AlertView';
 import ActionsView, { Action } from './ActionsView';
 import Transition from './Transition';
@@ -182,7 +182,7 @@ export class CardView extends React.Component<CardViewProps, CardViewState> {
       >
         {this.renderAlert()}
         {preview ? <CardPreview url={preview} /> : null}
-        <DetailView
+        <ResolvedView
           title={title}
           description={description}
           icon={icon}

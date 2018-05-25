@@ -1,26 +1,19 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
-import { ErrorCard } from '@atlaskit/media-ui';
 import { Client } from '../Client';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
 import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
-
-export const LoadingView = () => null;
-
-export const LoadedView = CardView;
-
-export const ErroredView = () => (
-  <ErrorCard
-    hasPreview={false}
-    minWidth={minWidth()}
-    maxWidth={maxWidth({ hasPreview: false })}
-  />
-);
+import { Frame as CollapsedFrame } from './collapsed/Frame';
+import { LoadingView as CollapsedLoadingView } from './collapsed/LoadingView';
+import { UnauthorisedView as CollapsedUnauthorisedView } from './collapsed/UnauthorisedView';
+import { ForbiddenView as CollapsedForbiddenView } from './collapsed/ForbiddenView';
+import { ErroredView as CollapsedErrorView } from './collapsed/ErroredView';
 
 export interface CardProps {
   client?: Client;
   url: string;
+  onClick?: () => void;
 }
 
 export interface CardContext {
@@ -28,29 +21,61 @@ export interface CardContext {
 }
 
 export interface CardState {
-  status: 'loading' | 'loaded' | 'errored';
-  data?: CardViewProps;
+  state:
+    | 'loading'
+    | 'resolved'
+    | 'unauthorised'
+    | 'forbidden'
+    | 'not-found'
+    | 'errored';
+  props?: CardViewProps;
 }
 
-function getLoadingState(): Pick<CardState, 'status' | 'data'> {
+function getLoadingState(): Pick<CardState, 'state' | 'props'> {
   return {
-    status: 'loading',
-    data: undefined,
+    state: 'loading',
+    props: undefined,
   };
 }
 
-function getLoadedState(
-  data: CardViewProps,
-): Pick<CardState, 'status' | 'data'> {
+function getResolvedState(
+  props: CardViewProps,
+): Pick<CardState, 'state' | 'props'> {
   return {
-    status: 'loaded',
-    data,
+    state: 'resolved',
+    props,
   };
 }
 
-function getErroredState(): Pick<CardState, 'status'> {
+function getUnauthorisedState(
+  props: CardViewProps,
+): Pick<CardState, 'state' | 'props'> {
   return {
-    status: 'errored',
+    state: 'unauthorised',
+    props: props,
+  };
+}
+
+function getForbiddenState(
+  props: CardViewProps,
+): Pick<CardState, 'state' | 'props'> {
+  return {
+    state: 'forbidden',
+    props: props,
+  };
+}
+
+function getNotFoundState(): Pick<CardState, 'state' | 'props'> {
+  return {
+    state: 'not-found',
+    props: undefined,
+  };
+}
+
+function getFailedState(): Pick<CardState, 'state' | 'props'> {
+  return {
+    state: 'errored',
+    props: undefined,
   };
 }
 
@@ -77,7 +102,7 @@ export class Card extends React.Component<CardProps, CardState> {
     return prevProps.url !== nextProps.url;
   }
 
-  async loadData() {
+  async fetchProps() {
     let client;
     try {
       client = this.getClient();
@@ -85,22 +110,72 @@ export class Card extends React.Component<CardProps, CardState> {
       // report the error for consumers to fix
       // tslint:disable-next-line:no-console
       console.error(error.message);
-      this.setState(getErroredState());
+      this.setState(getFailedState());
       return;
     }
 
     try {
       const { url } = this.props;
       const json = await client.get(url);
-      this.setState(getLoadedState(extractPropsFromJSONLD(json.data)));
+
+      if (json === undefined) {
+        this.setState(getNotFoundState());
+        return;
+      }
+
+      const props = extractPropsFromJSONLD(json.data || {});
+
+      switch (json.meta.access) {
+        case 'forbidden':
+          this.setState(getForbiddenState(props));
+          break;
+
+        case 'unauthorised':
+          this.setState(getUnauthorisedState(props));
+          break;
+
+        default:
+          this.setState(getResolvedState(props));
+      }
     } catch (error) {
       // swallow the error and show a generic error message
-      this.setState(getErroredState());
+      this.setState(getFailedState());
     }
   }
 
-  handleRender = () => {
-    this.loadData();
+  get collapsedIcon() {
+    const { props } = this.state;
+    return (
+      (props && props.icon && props.icon.url) ||
+      (props && props.context && props.context.icon)
+    );
+  }
+
+  // we don't fetch the props on mount, but when the card is scrolled into view
+  handleLazilyRender = () => {
+    this.fetchProps();
+  };
+
+  handleFrameClick = () => {
+    const { url, onClick } = this.props;
+    if (onClick) {
+      onClick();
+    } else {
+      window.open(url);
+    }
+  };
+
+  handleAuthorise = () => {
+    window.open('http://example.com/');
+    setTimeout(() => {
+      this.setState(getLoadingState());
+      this.fetchProps();
+    }, 3000);
+  };
+
+  handleErrorRetry = () => {
+    this.setState(getLoadingState());
+    this.fetchProps();
   };
 
   componentWillReceiveProps(nextProps: CardProps) {
@@ -111,41 +186,96 @@ export class Card extends React.Component<CardProps, CardState> {
 
   componentDidUpdate(prevProps: CardProps) {
     if (this.shouldFetch(prevProps, this.props)) {
-      this.loadData();
+      this.fetchProps();
     }
   }
 
-  renderLoadedState() {
-    const { data } = this.state;
-    if (data) {
-      return <LoadedView {...data} />;
-    } else {
-      return <ErroredView />;
+  renderInTheCollapsedFrame(children: React.ReactNode) {
+    return (
+      <CollapsedFrame
+        minWidth={minWidth()}
+        maxWidth={maxWidth({ hasPreview: false })}
+        onClick={this.handleFrameClick}
+      >
+        {children}
+      </CollapsedFrame>
+    );
+  }
+
+  renderLoadingState() {
+    return this.renderInTheCollapsedFrame(<CollapsedLoadingView />);
+  }
+
+  renderUnauthorisedState() {
+    // TODO: extract the service name
+    return this.renderInTheCollapsedFrame(
+      <CollapsedUnauthorisedView
+        icon={this.collapsedIcon}
+        service="Google Drive"
+        onAuthorise={this.handleAuthorise}
+      />,
+    );
+  }
+
+  renderForbiddenState() {
+    return this.renderInTheCollapsedFrame(
+      <CollapsedForbiddenView
+        icon={this.collapsedIcon}
+        onAuthorise={this.handleAuthorise}
+      />,
+    );
+  }
+
+  renderNotFoundState() {
+    return this.renderInTheCollapsedFrame(
+      <CollapsedErrorView message="We couldn't find this link" />,
+    );
+  }
+
+  renderErroredState() {
+    return this.renderInTheCollapsedFrame(
+      <CollapsedErrorView
+        message="We couldn't load this link"
+        onRetry={this.handleErrorRetry}
+      />,
+    );
+  }
+
+  renderResolvedState() {
+    const { props } = this.state;
+    return <CardView {...props} />;
+  }
+
+  renderContent() {
+    const { state } = this.state;
+    switch (state) {
+      case 'loading':
+        return this.renderLoadingState();
+
+      case 'resolved':
+        return this.renderResolvedState();
+
+      case 'unauthorised':
+        return this.renderUnauthorisedState();
+
+      case 'forbidden':
+        return this.renderForbiddenState();
+
+      case 'not-found':
+        return this.renderNotFoundState();
+
+      case 'errored':
+        return this.renderErroredState();
     }
   }
 
   render() {
-    const { status } = this.state;
-
-    let content;
-    switch (status) {
-      case 'loading':
-        content = <LoadingView />;
-        break;
-      case 'loaded':
-        content = this.renderLoadedState();
-        break;
-      case 'errored':
-        content = <ErroredView />;
-        break;
-    }
-
     return (
       <LazyRender
         offset={100}
-        placeholder={<LoadingView />}
-        content={content}
-        onRender={this.handleRender}
+        placeholder={this.renderLoadingState()}
+        content={this.renderContent()}
+        onRender={this.handleLazilyRender}
       />
     );
   }

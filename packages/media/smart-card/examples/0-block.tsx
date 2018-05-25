@@ -2,6 +2,7 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
 import { Provider, BlockCard } from '../src';
+import '../src/mocks';
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -10,7 +11,7 @@ const params =
 const param = params ? params.get('url') : null;
 const defaultURL = param
   ? param
-  : 'https://trello.com/c/CbrzZIQ2/45-1878-piedmont-ave-former-bank-now-inkaholiks-pringle-and-smith';
+  : 'https://drive.google.com/open?id=0B1I77F_P5VV2c3RhcnRlcl9maWxlX2Rhc2hlclYw';
 
 export interface ExampleProps {}
 
@@ -41,6 +42,12 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 value={url}
                 onChange={this.handleUrlChange}
               />
+              <br />
+              <small>
+                Try entering <code>public-happy</code>,{' '}
+                <code>private-happy</code>, <code>private-forbidden</code>,{' '}
+                <code>not-found</code> or <code>error</code> as the URL
+              </small>
             </GridColumn>
           </Grid>
           <Grid>
