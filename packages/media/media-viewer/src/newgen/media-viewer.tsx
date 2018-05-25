@@ -30,6 +30,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     if (itemSource.kind === 'COLLECTION') {
       return (
         <Collection
+          pageSize={itemSource.pageSize}
           selectedItem={selectedItem}
           collectionName={itemSource.collectionName}
           context={context}

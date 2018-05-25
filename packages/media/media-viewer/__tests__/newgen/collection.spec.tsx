@@ -76,6 +76,7 @@ function createFixture(
       collectionName={collectionName}
       context={context}
       onClose={onClose}
+      pageSize={999}
     />,
   );
   return el;
@@ -93,6 +94,10 @@ describe('<Collection />', () => {
     const context = createContext(subject);
     createFixture(context, subject, identifier);
     expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledWith(
+      'my-collection',
+      999,
+    );
   });
 
   it('should show an error if items failed to be fetched', () => {

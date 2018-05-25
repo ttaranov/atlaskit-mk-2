@@ -18,6 +18,7 @@ export type Props = {
   showControls?: () => void;
   collectionName: string;
   context: Context;
+  pageSize: number;
 };
 
 export type State = {
@@ -83,8 +84,11 @@ export class Collection extends React.Component<Props, State> {
 
   private init(props: Props) {
     this.setState(initialState);
-    const { collectionName, context, selectedItem } = props;
-    this.provider = context.getMediaCollectionProvider(collectionName, 30);
+    const { collectionName, context, selectedItem, pageSize } = props;
+    this.provider = context.getMediaCollectionProvider(
+      collectionName,
+      pageSize,
+    );
     this.subscription = this.provider.observable().subscribe({
       next: collection => {
         if (isError(collection)) {
