@@ -13,6 +13,7 @@ import WidthDetector from '../WidthDetector';
 import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
+import { scrollbarStyles } from '../styles';
 
 const GUTTER_PADDING = 32;
 
@@ -27,10 +28,12 @@ FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
+  ${scrollbarStyles};
 `;
 ScrollContainer.displayName = 'ScrollContainer';
 
