@@ -5,15 +5,15 @@ import { md, code, Props, Example } from '@atlaskit/docs';
 export default md`
   ### Custom Icons
 
-  If you need to render an icon, there is no appropriate icon within icons currently,
-  and adding your icon does not make sense, you can provide your own icon. We
-  assume here that the svg's contents will be exported from a \`.js\` file, or
-  be written in a react context, so we need to sanitize our svgs for that use-case.
+  If you need to render an icon that is not in our current set, and adding it
+  does not make sense, you can render a custom icon instead. We assume here that
+  the SVG's contents will be exported from a \`.js\` file, or
+  be written in a React context, so we need to sanitize our SVGs for that use-case.
 
   First you will need to import the Icon component itself. The default export
-  of the package is this component, however to keep with the technique used with
-  individual icons to stop application bloat, you can reach to the component itself
-  as follows:
+  of the package is this component, however you can use the same technique used with
+  individual icons to stop application bloat, and import just the component itself
+  using the following:
 
   ${code`import Icon from '@atlaskit/icon/dist/esm/components/Icon'`}
 
@@ -99,9 +99,13 @@ export default md`
   attributes with a namespace (e.g. xmlns:link, ns:foo, ...), while the second
   replaces hex colors with 'currentColor' or 'inherit', depending on the color value.
 
+  If you only need to do this once, you may want to make the final changes by hand.
+  If you predict doing this multiple times, it may be worth copying our plugins
+  or writing your own.
+
   Using this SVGO configuration should get you most of the way there, however
-  you will need to make sure you remove any attributes not supported in react. In
-  particular, attributes such as \`xmlns:link\` will cause react parsing to fail.
+  you will need to make sure you remove any attributes not supported in React. In
+  particular, attributes such as \`xmlns:link\` will cause React parsing to fail.
 
   ${(
     <Props
