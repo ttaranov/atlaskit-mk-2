@@ -9,6 +9,7 @@ const getAppearanceProps = (props, state) => {
     isSelected,
     spacing,
     shouldFitContainer,
+    makeItRainbow,
   } = props;
 
   const { isActive, isFocus, isHover } = state;
@@ -21,6 +22,7 @@ const getAppearanceProps = (props, state) => {
     isFocus,
     isHover,
     isSelected,
+    makeItRainbow,
     spacing,
     fit: shouldFitContainer,
   };
@@ -70,7 +72,6 @@ const getButtonElementProps = props => {
 
 const getButtonProps = (component: ButtonType) => {
   const { props, state } = component;
-
   const defaultProps = {
     id: props.id,
     ...getAppearanceProps(props, state),

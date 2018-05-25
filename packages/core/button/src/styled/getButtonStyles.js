@@ -1,6 +1,12 @@
 // @flow
 import { css } from 'styled-components';
-import { borderRadius, fontSize, gridSize, math } from '@atlaskit/theme';
+import {
+  borderRadius,
+  fontSize,
+  gridSize,
+  math,
+  colors,
+} from '@atlaskit/theme';
 import themeDefinitions from './themeDefinitions';
 import { themeNamespace } from '../theme';
 
@@ -143,6 +149,35 @@ export default function getButtonStyles(props: Object) {
 
   /* Note use of !important to override the ThemeReset on anchor tag styles */
 
+  const makeItRainbow = css`
+    background: repeating-linear-gradient(
+      -45deg,
+      ${colors.R300} 0%,
+      ${colors.Y300} 7.14%,
+      ${colors.G300} 14.28%,
+      ${colors.B300} 21.42%,
+      ${colors.P300} 28.56%,
+      ${colors.B300} 35.7%,
+      ${colors.Y300} 42.84%,
+      ${colors.R300} 50%
+    );
+    animation-duration: 0.5s;
+    animation-name: slide;
+    animation-iteration-count: infinite;
+    animation-direction: linear;
+    animation-timing-function: linear;
+    background-size: 10vw 10vw;
+
+    @keyframes slide {
+      0% {
+        background-position-x: 0%;
+      }
+      100% {
+        background-position-x: 10vw;
+      }
+    }
+  `;
+
   return css`
     align-items: baseline;
     background: ${background};
@@ -172,5 +207,6 @@ export default function getButtonStyles(props: Object) {
       margin: 0;
       padding: 0;
     }
+    ${props.makeItRainbow ? makeItRainbow : ''};
   `;
 }

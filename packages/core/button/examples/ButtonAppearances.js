@@ -29,10 +29,10 @@ function capitalize(str) {
 }
 
 export default class ButtonAppearance extends Component<*, *> {
-  state = { showLoadingState: false };
+  state = { showLoadingState: false, makeItRainbow: false };
 
   render() {
-    const { showLoadingState } = this.state;
+    const { showLoadingState, makeItRainbow } = this.state;
 
     return (
       <Fragment>
@@ -44,16 +44,38 @@ export default class ButtonAppearance extends Component<*, *> {
           }
           name="show-loading"
         />
+        <Checkbox
+          value="makeItRainbow"
+          label="#makeItRainbow"
+          onChange={({ isChecked }) =>
+            this.setState({ makeItRainbow: isChecked })
+          }
+          name="make-it-rainbow"
+        />
         <Table>
           {appearances.map(a => (
             <Row key={a}>
-              <Btn isLoading={showLoadingState} appearance={a}>
+              <Btn
+                isLoading={showLoadingState}
+                appearance={a}
+                makeItRainbow={makeItRainbow}
+              >
                 {capitalize(a)}
               </Btn>
-              <Btn isLoading={showLoadingState} appearance={a} isDisabled>
+              <Btn
+                isLoading={showLoadingState}
+                appearance={a}
+                makeItRainbow={makeItRainbow}
+                isDisabled
+              >
                 Disabled
               </Btn>
-              <Btn isLoading={showLoadingState} appearance={a} isSelected>
+              <Btn
+                isLoading={showLoadingState}
+                appearance={a}
+                makeItRainbow={makeItRainbow}
+                isSelected
+              >
                 Selected
               </Btn>
             </Row>
