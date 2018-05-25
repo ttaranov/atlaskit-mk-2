@@ -23,7 +23,7 @@ describe('Users', () => {
         ]}
       />,
     );
-    expect(element.find(AvatarGroup).prop('data')).toEqual(
+    expect(element.find(AvatarGroup).prop('props')).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'John Smith',
