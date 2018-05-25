@@ -53,21 +53,5 @@ export class Client {
         }),
       );
     });
-
-    // const res = await fetch(`${this.baseUrl}/resolve`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Cache-Control': 'no-cache',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     resourceUrl: encodeURI(url)
-    //   }),
-    // });
-    // const json = await res.json();
-    // if (!json.response.body) {
-    //   throw new Error('Invalid response.');
-    // }
-    // return json.response.body;
   }
 }
