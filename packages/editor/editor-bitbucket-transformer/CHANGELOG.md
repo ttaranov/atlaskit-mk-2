@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 3.1.2
+- [patch] Fix image parsing [5fc825b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5fc825b)
+- [none] Updated dependencies [5fc825b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5fc825b)
+
 ## 3.1.1
 
 
