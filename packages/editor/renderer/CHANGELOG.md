@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 17.0.4
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+  - @atlaskit/util-data-test@9.1.7
+  - @atlaskit/editor-common@10.1.1
+
 ## 17.0.3
 - [patch] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
 

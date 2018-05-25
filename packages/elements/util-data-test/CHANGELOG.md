@@ -1,5 +1,9 @@
 # @atlaskit/util-data-test
 
+## 9.1.7
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+
 ## 9.1.6
 
 
