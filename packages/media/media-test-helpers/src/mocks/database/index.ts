@@ -8,11 +8,10 @@ import { createCollection } from './collection';
 import { CollectionItem, createCollectionItem } from './collection-item';
 import { createUpload, Upload } from './upload';
 import { Chunk } from './chunk';
+import { defaultServiceHost } from '../..';
 
 export * from './collection';
 export * from './collection-item';
-
-export const serviceHost = 'https://dt-api.dev.atl-paas.net';
 
 export const tenantAuth: ClientBasedAuth = {
   clientId: Faker.random.uuid(),
@@ -47,7 +46,7 @@ export function createDatabase(): Database<DatabaseSchema> {
 
 export function generateUserData(): void {
   const mediaStore = new MediaStore({
-    serviceHost,
+    serviceHost: defaultServiceHost,
     authProvider: userAuthProvider,
   });
 
@@ -69,7 +68,7 @@ export function generateUserData(): void {
 
 export function generateTenantData(): void {
   const mediaStore = new MediaStore({
-    serviceHost,
+    serviceHost: defaultServiceHost,
     authProvider: tenantAuthProvider,
   });
 

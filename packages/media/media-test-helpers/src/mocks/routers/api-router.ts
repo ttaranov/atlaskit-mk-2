@@ -7,10 +7,11 @@ import {
   createCollection,
   createCollectionItem,
 } from '../database';
+import { defaultServiceHost } from '../..';
 
 export function createApiRouter(): Router<DatabaseSchema> {
   const router = new Router<DatabaseSchema>({
-    host: 'https://dt-api.dev.atl-paas.net',
+    host: defaultServiceHost,
     requestDelay: 10,
   });
 
