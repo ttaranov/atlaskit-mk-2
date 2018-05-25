@@ -45,6 +45,8 @@ export class MediaViewer extends React.Component<Props, {}> {
           onClose={onClose}
         />
       );
+    } else {
+      return null as never;
     }
   }
 }
