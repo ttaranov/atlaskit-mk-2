@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 72.1.6
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+  - @atlaskit/media-test-helpers@13.0.2
+  - @atlaskit/task-decision@6.0.8
+  - @atlaskit/mention@12.0.1
+  - @atlaskit/media-picker@7.0.3
+  - @atlaskit/media-filmstrip@8.0.8
+  - @atlaskit/media-card@28.0.4
+
 ## 72.1.5
 - [patch] Fix toolbar alignment being incorrectly offset due to the change in the Code Block UI [ED-4637] [6db7a9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6db7a9f)
 - [none] Updated dependencies [6db7a9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6db7a9f)

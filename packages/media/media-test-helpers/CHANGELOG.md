@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 13.0.2
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+
 ## 13.0.1
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-core@18.1.1
