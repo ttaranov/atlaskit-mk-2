@@ -1,5 +1,9 @@
 # @atlaskit/media-viewer
 
+## 14.4.0
+- [patch] Fix pageSize in MediaViewer NG [4eac436](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac436)
+- [minor] show controls when navigation happen in MediaViewer [3917aa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3917aa6)
+
 ## 14.3.1
 - [patch] MSW-720 : pass collectionName to all the places for correct auth [f7fa512](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7fa512)
 
