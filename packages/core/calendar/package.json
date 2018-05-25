@@ -11,7 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Trey S"
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "atlaskit": {
     "name": "Calendar",

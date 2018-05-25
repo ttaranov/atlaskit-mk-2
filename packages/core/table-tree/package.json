@@ -11,8 +11,10 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Bartosz S",
-    "Trey S"
+    "Raja B",
+    "Ben C",
+    "Ajay M",
+    "Bartosz S"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {

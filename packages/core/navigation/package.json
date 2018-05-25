@@ -11,7 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Jed W",
+    "Jared C",
+    "Joss M"
   ],
   "atlaskit": {
     "name": "Navigation",

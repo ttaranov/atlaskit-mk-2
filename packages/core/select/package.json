@@ -12,10 +12,11 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Trey S",
-    "Jed W",
+    "Sean C",
+    "Charles L",
+    "Mike G",
     "Joss M",
-    "Charles L"
+    "Jed W"
   ],
   "atlaskit": {
     "name": "Select",

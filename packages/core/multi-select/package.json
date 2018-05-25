@@ -12,7 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "atlaskit": {
     "name": "Lozenge",
