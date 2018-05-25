@@ -35,7 +35,7 @@ export interface DetailViewProps {
 
 export interface DetailViewState {}
 
-export class DetailView extends React.Component<
+export class ResolvedView extends React.Component<
   DetailViewProps,
   DetailViewState
 > {

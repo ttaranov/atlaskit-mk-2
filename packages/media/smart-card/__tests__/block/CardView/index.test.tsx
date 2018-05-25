@@ -4,8 +4,8 @@ import Spinner from '@atlaskit/spinner';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import { CardFrame, CardPreview, LinkIcon } from '@atlaskit/media-ui';
 import ActionsView from '../../../src/block/CardView/ActionsView';
-import { DetailView } from '../../../src/block/DetailView';
-import AlertView from '../../../src/block//CardView/AlertView';
+import { ResolvedView } from '../../../src/block/ResolvedView';
+import AlertView from '../../../src/block/CardView/AlertView';
 import { CardView } from '../../../src/block/CardView/index';
 
 const pendingAction = {
@@ -84,12 +84,12 @@ describe('CardView', () => {
 
   it('it should not render a thumbnail when there is a preview', () => {
     const element = shallow(<CardView preview={preview} />);
-    expect(element.find(DetailView).prop('thumbnail')).toBeUndefined();
+    expect(element.find(ResolvedView).prop('thumbnail')).toBeUndefined();
   });
 
   it('it should not render a thumbnail when there is no preview', () => {
     const element = shallow(<CardView />);
-    expect(element.find(DetailView).prop('thumbnail')).toBeUndefined();
+    expect(element.find(ResolvedView).prop('thumbnail')).toBeUndefined();
   });
 
   it('should have a minWidth of 240 when there is a preview', () => {

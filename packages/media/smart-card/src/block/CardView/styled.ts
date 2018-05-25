@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import { maxAvatarCount } from '../DetailView/Users';
+import { maxAvatarCount } from '../expanded/ResolvedView/Users';
 
 export const ActionsStateWrapper: ComponentClass<
   HTMLAttributes<{}>
