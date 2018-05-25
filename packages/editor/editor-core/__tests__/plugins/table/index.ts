@@ -65,7 +65,7 @@ describe('table plugin', () => {
       editorPlugins: [
         listPlugin,
         tablesPlugin,
-        codeBlockPlugin,
+        codeBlockPlugin(),
         mediaPlugin({ allowMediaSingle: true }),
       ],
       editorProps: {

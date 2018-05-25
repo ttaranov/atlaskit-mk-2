@@ -8,7 +8,10 @@ import {
 
 describe('IDE UX plugin', () => {
   const editor = doc =>
-    createEditor({ doc, editorProps: { allowCodeBlocks: true } });
+    createEditor({
+      doc,
+      editorProps: { allowCodeBlocks: { enableKeybindingsForIDE: true } },
+    });
   describe('Select-All', () => {
     describe('when cursor inside code-block', () => {
       it('should select all text inside code-block when Cmd+A pressed', () => {

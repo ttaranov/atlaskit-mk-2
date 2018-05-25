@@ -17,7 +17,7 @@ describe('code-block', () => {
   const editor = (doc: any) => {
     const editor = createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin, tablesPlugin],
+      editorPlugins: [codeBlockPlugin(), tablesPlugin],
     });
     const pluginState = codeBlockPluginKey.getState(editor.editorView.state);
     const plugin = editor.editorView.state.plugins.find(

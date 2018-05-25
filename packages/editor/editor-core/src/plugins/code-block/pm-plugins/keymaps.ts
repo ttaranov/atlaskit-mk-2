@@ -1,6 +1,6 @@
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
-import { Plugin, EditorState, TextSelection } from 'prosemirror-state';
+import { Plugin, EditorState } from 'prosemirror-state';
 import { getCursor } from '../../../utils';
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
