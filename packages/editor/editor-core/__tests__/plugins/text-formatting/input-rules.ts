@@ -50,7 +50,7 @@ describe('text-formatting input rules', () => {
   const editor = (doc: any, disableCode = false) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin, mentionsPlugin],
+      editorPlugins: [codeBlockPlugin(), mentionsPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
         textFormatting: { disableCode },

@@ -20,7 +20,7 @@ describe('ToolbarTextColor', () => {
   const editor = (doc: any, analyticsHandler = () => {}) =>
     createEditor<TextColorState>({
       doc,
-      editorPlugins: [textColorPlugin, codeBlockPlugin],
+      editorPlugins: [textColorPlugin, codeBlockPlugin()],
       editorProps: { analyticsHandler },
       pluginKey: stateKey,
     });

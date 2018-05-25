@@ -14,7 +14,10 @@ import {
 
 describe('IDE UX - Line Handling', () => {
   const getState = doc =>
-    createEditor({ doc, editorProps: { allowCodeBlocks: true } });
+    createEditor({
+      doc,
+      editorProps: { allowCodeBlocks: { enableKeybindingsForIDE: true } },
+    });
 
   describe('#getStartOfCurrentLine', () => {
     it('should return empty string when the cursor is at the start of the code block', () => {
