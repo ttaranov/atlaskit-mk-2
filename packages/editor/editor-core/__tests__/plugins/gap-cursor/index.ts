@@ -57,7 +57,7 @@ describe('gap-cursor', () => {
         extensionPlugin,
         tablesPlugin,
         tasksAndDecisionsPlugin,
-        codeBlockPlugin,
+        codeBlockPlugin(),
         listsPlugin,
         rulePlugin,
         panelPlugin,

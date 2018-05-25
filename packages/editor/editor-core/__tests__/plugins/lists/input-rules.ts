@@ -18,7 +18,7 @@ describe('inputrules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [listPlugin, codeBlockPlugin],
+      editorPlugins: [listPlugin, codeBlockPlugin()],
       editorProps: { analyticsHandler: trackEvent },
     });
   beforeEach(() => {
