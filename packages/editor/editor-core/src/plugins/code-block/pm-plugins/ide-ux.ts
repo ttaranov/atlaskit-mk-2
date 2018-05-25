@@ -38,6 +38,8 @@ export default new Plugin({
           );
           dispatch(state.tr.insertText(indentToAdd));
           return true;
+        } else if (isSelectionEntirelyInsideCodeBlock(state)) {
+          return true;
         }
         return false;
       },
