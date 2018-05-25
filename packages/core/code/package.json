@@ -26,12 +26,10 @@
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
-    {
-      "name": "Clifton H"
-    },
-    {
-      "name": "Oscar W"
-    }
+    "Raja B",
+    "Ben C",
+    "Ajay M",
+    "Oscar W"
   ],
   "atlaskit": {
     "name": "Code"
