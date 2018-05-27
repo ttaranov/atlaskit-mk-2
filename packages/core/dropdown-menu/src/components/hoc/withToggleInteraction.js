@@ -30,7 +30,7 @@ type Props = {
 const withToggleInteraction = (
   WrappedComponent: ComponentType<any>,
   SelectionIcon: ComponentType<any>,
-  ariaRole: Behaviors,
+  getAriaRole: () => Behaviors,
 ) => {
   class WithToggleInteraction extends Component<Props> {
     static defaultProps = {
@@ -99,6 +99,7 @@ const withToggleInteraction = (
       const { children, ...otherProps } = this.props;
       const isSelected = this.isSelectedInDropdown();
       const iconColors = this.getIconColors(isSelected);
+      const ariaRole = getAriaRole();
 
       return (
         <WrappedComponent
