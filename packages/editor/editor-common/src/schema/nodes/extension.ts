@@ -1,4 +1,5 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
+export type Layout = 'default' | 'wide' | 'full-width';
 
 /**
  * @name extension_node
@@ -16,6 +17,7 @@ export interface Definition {
     extensionType: string;
     parameters?: object;
     text?: string;
+    layout: Layout;
   };
 }
 
@@ -29,6 +31,7 @@ export const extension: NodeSpec = {
     extensionKey: { default: '' },
     parameters: { default: null },
     text: { default: null },
+    layout: { default: 'default' },
   },
   parseDOM: [
     {
@@ -38,6 +41,7 @@ export const extension: NodeSpec = {
         extensionKey: dom.getAttribute('data-extension-key'),
         text: dom.getAttribute('data-text'),
         parameters: JSON.parse(dom.getAttribute('data-parameters') || '{}'),
+        layout: dom.getAttribute('data-layout') || 'default',
       }),
     },
   ],
@@ -48,6 +52,7 @@ export const extension: NodeSpec = {
       'data-extension-key': node.attrs.extensionKey,
       'data-text': node.attrs.text,
       'data-parameters': JSON.stringify(node.attrs.parameters),
+      'data-layout': node.attrs.layout,
     };
     return ['div', attrs];
   },

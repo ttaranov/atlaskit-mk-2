@@ -16,6 +16,7 @@ export interface Props {
   providerFactory?: ProviderFactory;
   handleContentDOMRef: (node: HTMLElement) => void;
   extensionHandlers: ExtensionHandlers;
+  width: number;
 }
 
 export default class Extension extends Component<Props, any> {
@@ -40,6 +41,7 @@ export default class Extension extends Component<Props, any> {
       editorView,
       handleContentDOMRef,
       extensionHandlers,
+      width,
     } = this.props;
     const { macroProvider } = providers;
 
@@ -47,6 +49,7 @@ export default class Extension extends Component<Props, any> {
       <ExtensionComponent
         editorView={editorView}
         node={node}
+        width={width}
         macroProvider={macroProvider}
         setExtensionElement={setExtensionElement}
         handleContentDOMRef={handleContentDOMRef}

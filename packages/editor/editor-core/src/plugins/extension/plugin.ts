@@ -4,7 +4,11 @@ import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { PortalProviderAPI } from '../../ui/PortalProvider';
 import ExtensionNodeView from './nodeviews/extension';
-import { findParentNodeOfType, findDomRefAtPos } from 'prosemirror-utils';
+import {
+  findParentNodeOfType,
+  findDomRefAtPos,
+  findSelectedNodeOfType,
+} from 'prosemirror-utils';
 import { closestElement } from '../../utils';
 
 export const pluginKey = new PluginKey('extensionPlugin');
@@ -21,9 +25,7 @@ export default (
 ) =>
   new Plugin({
     state: {
-      init: () => ({
-        element: null,
-      }),
+      init: () => ({ element: null, layout: 'default' }),
 
       apply(tr, state: ExtensionState, prevState, nextState) {
         const meta = tr.getMeta(pluginKey);
@@ -42,13 +44,9 @@ export default (
     view: () => {
       return {
         update: (view: EditorView) => {
-          const { state } = view;
+          const { state, state: { schema } } = view;
           const { element } = pluginKey.getState(state);
-          const {
-            extension,
-            inlineExtension,
-            bodiedExtension,
-          } = state.schema.nodes;
+          const { extension, inlineExtension, bodiedExtension } = schema.nodes;
 
           /** Check whether selection has an extension */
           let selectedExtNode = findParentNodeOfType([
@@ -97,6 +95,18 @@ export default (
             return;
           }
 
+          let showLayoutOptions = !!(
+            selectedExtNode &&
+            (selectedExtNode.node.type === schema.nodes.bodiedExtension ||
+              selectedExtNode.node.type === schema.nodes.extension)
+          );
+
+          if (
+            findSelectedNodeOfType(extension)(state.selection) &&
+            findParentNodeOfType(schema.nodes.bodiedExtension)(state.selection)
+          ) {
+            showLayoutOptions = false;
+          }
           const newElement =
             closestElement(selectedExtDomNode!, '.extension-container') ||
             selectedExtDomNode;
@@ -109,9 +119,12 @@ export default (
             }
 
             /** We still want to re-render the toolbar for any size-adjustments */
+
             dispatch(pluginKey, {
               element: newElement,
               stickToolbarToBottom,
+              layout: selectedExtNode.node.attrs.layout,
+              showLayoutOptions,
             });
           } else if (!selectedExtNode && element !== null) {
             /** case 2: selection has no extension, but element is alive and kicking */

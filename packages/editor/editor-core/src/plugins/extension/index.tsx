@@ -7,7 +7,11 @@ import {
 import { EditorPlugin } from '../../types';
 import { MacroState, pluginKey as macroPluginKey } from '../macro';
 import createPlugin, { pluginKey, ExtensionState } from './plugin';
-import { editExtension, removeExtension } from './actions';
+import {
+  editExtension,
+  removeExtension,
+  updateExtensionLayout,
+} from './actions';
 import ExtensionEditPanel from './ui/ExtensionEditPanel';
 import WithPluginState from '../../ui/WithPluginState';
 
@@ -58,6 +62,11 @@ const extensionPlugin: EditorPlugin = {
             onEdit={() => editExtension(macroState.macroProvider)(editorView)}
             onRemove={() => removeExtension(editorView.state, dispatch)}
             stickToolbarToBottom={extensionState.stickToolbarToBottom}
+            showLayoutOptions={extensionState.showLayoutOptions}
+            layout={extensionState.layout}
+            onLayoutChange={mode =>
+              updateExtensionLayout(mode)(editorView.state, dispatch)
+            }
           />
         )}
       />

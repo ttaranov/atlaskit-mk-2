@@ -350,6 +350,7 @@ export const bodiedExtension = (attrs: {
   extensionType: string;
   parameters?: object;
   text?: string;
+  layout: string;
 }) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
 export const date = (attrs: { timestamp: string | number }) =>
   nodeFactory(sampleSchema.nodes.date, attrs)();

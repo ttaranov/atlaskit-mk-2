@@ -18,6 +18,7 @@ export interface Props {
   ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   extensionHandlers: ExtensionHandlers;
+  width: number;
 }
 
 export interface State {
@@ -57,7 +58,7 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef } = this.props;
+    const { node, handleContentDOMRef, width } = this.props;
     const extensionHandlerResult = this.tryExtensionHandler();
 
     switch (node.type.name) {
@@ -70,6 +71,7 @@ export default class ExtensionComponent extends Component<Props, State> {
             onClick={this.selectExtension}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
+            width={width}
           >
             {extensionHandlerResult}
           </Extension>
