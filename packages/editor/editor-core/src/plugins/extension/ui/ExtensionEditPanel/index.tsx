@@ -12,9 +12,9 @@ export interface Props {
   onEdit: () => void;
   onRemove: () => void;
   stickToolbarToBottom?: boolean;
-  onLayoutChange: (mode) => void;
-  layout: string;
-  showLayoutOptions: boolean;
+  onLayoutChange?: (mode) => void;
+  layout?: string;
+  showLayoutOptions?: boolean;
 }
 
 const extensionIcons = [
@@ -58,7 +58,7 @@ export default (props: Props) => {
             const { icon: Icon, key, label } = toolbarLayoutOption;
             return (
               <ToolbarButton
-                onClick={props.onLayoutChange.bind(this, key)}
+                onClick={props.onLayoutChange!.bind(this, key)}
                 iconBefore={<Icon label={label} />}
                 selected={layout === key}
                 key={key}

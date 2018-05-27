@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Node as PmNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { MacroProvider } from '../../../../macro';
 import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
@@ -19,15 +20,14 @@ export interface Props {
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;
   children?: React.ReactNode;
-  width: number;
+  view: EditorView;
 }
 
 export default class Extension extends Component<Props, any> {
   calcWidth = (layout, containerWidth: number) => {
-    const { width } = this.props;
     switch (layout) {
       case 'full-width':
-        return `${width}px`;
+        return `${containerWidth}px`;
       case 'wide':
         return `${akEditorWideLayoutWidth}px`;
       default:
@@ -42,6 +42,7 @@ export default class Extension extends Component<Props, any> {
       handleContentDOMRef,
       onSelectExtension,
       children,
+      view,
     } = this.props;
 
     const hasBody = node.type.name === 'bodiedExtension';
@@ -49,21 +50,20 @@ export default class Extension extends Component<Props, any> {
 
     return (
       <WithPluginState
+        editorView={view}
         plugins={{
-          containerWidth: widthPluginKey,
+          width: widthPluginKey,
         }}
-        render={({ containerWidth }) => {
+        render={({ width }) => {
           return (
             <Wrapper
               data-layout={node.attrs.layout}
               onClick={onClick}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
-                width: this.calcWidth(node.attrs.layout, containerWidth),
+                width: this.calcWidth(node.attrs.layout, width),
                 maxWidth:
-                  containerWidth <= akEditorFullPageMaxWidth
-                    ? '100%'
-                    : `${containerWidth}px`,
+                  width <= akEditorFullPageMaxWidth ? '100%' : `${width}px`,
               }}
             >
               <Overlay className="extension-overlay" />
