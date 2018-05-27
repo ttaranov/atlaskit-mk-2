@@ -66,7 +66,7 @@ export default class Extension extends Component<Props, any> {
                     : `${containerWidth}px`,
               }}
             >
-              <Overlay className="extension-overlay" />\
+              <Overlay className="extension-overlay" />
               <Header
                 contentEditable={false}
                 onClick={onSelectExtension}

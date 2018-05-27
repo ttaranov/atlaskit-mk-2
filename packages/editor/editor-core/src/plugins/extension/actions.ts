@@ -35,22 +35,31 @@ export const updateExtensionLayout = layout => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ) => {
-  const { selection, selection: { anchor }, schema, tr } = state;
-  let { pos, node: extNode } = findParentNodeOfType(
-    [
-      schema.nodes.extension,
-      schema.nodes.inlineExtension,
-      schema.nodes.bodiedExtension,
-    ],
-  )(state.selection) || { pos: 0, node: { attrs: {} } };
+  const { selection, selection: { $from }, schema, tr } = state;
+  const parentExtNode = findParentNodeOfType([
+    schema.nodes.extension,
+    schema.nodes.inlineExtension,
+    schema.nodes.bodiedExtension,
+  ])(state.selection);
 
+  let extPosition, extNode;
+
+  if (!parentExtNode && !(selection instanceof NodeSelection)) {
+    return;
+  }
+
+  /** set the position and node to update markup */
   if (selection instanceof NodeSelection) {
-    pos = anchor;
+    extPosition = $from.pos + 1;
+    extNode = selection.node;
+  } else {
+    extPosition = parentExtNode!.pos;
+    extNode = parentExtNode!.node;
   }
 
   /** Intentionally setting `undefined` here to preserve the type of node */
   dispatch(
-    tr.setNodeMarkup(Math.max(0, pos - 1), undefined, {
+    tr.setNodeMarkup(Math.max(0, extPosition - 1), undefined, {
       ...extNode!.attrs,
       layout,
     }),

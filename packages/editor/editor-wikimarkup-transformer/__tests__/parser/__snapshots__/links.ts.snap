@@ -340,6 +340,7 @@ Object {
       "attrs": Object {
         "extensionKey": "anchor",
         "extensionType": "com.atlassian.jira.macro",
+        "layout": "default",
         "parameters": Object {
           "rawAttrs": "anchorname",
         },

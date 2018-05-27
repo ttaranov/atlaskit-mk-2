@@ -17,7 +17,7 @@ export interface Definition {
     extensionType: string;
     parameters?: object;
     text?: string;
-    layout: Layout;
+    layout?: Layout;
   };
   content: ExtensionContent;
 }

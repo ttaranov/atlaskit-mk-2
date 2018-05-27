@@ -77,13 +77,16 @@ export const pmNodeFactory: object = {
   mediaGroup,
   media,
   extension: content =>
-    extension({ extensionKey: '123', extensionType: 'blockExtension' })(
-      content,
-    ),
+    extension({
+      extensionKey: '123',
+      extensionType: 'blockExtension',
+      layout: 'default',
+    })(content),
   bodiedExtension: content =>
-    bodiedExtension({ extensionKey: '123', extensionType: 'bodiedExtension' })(
-      content,
-    ),
+    bodiedExtension({ 
+      extensionKey: '123', 
+      extensionType: 'bodiedExtension',
+      layout: 'default', })(content),
   inlineCard: () =>
     inlineCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
 };
