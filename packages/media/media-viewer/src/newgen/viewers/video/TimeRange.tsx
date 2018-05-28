@@ -21,6 +21,8 @@ export interface TimeRangeState {
 }
 
 export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
+  wrapperElement: HTMLElement;
+  thumbElement: HTMLElement;
   state: TimeRangeState = {
     isDragging: false,
   };
@@ -41,12 +43,13 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
       return;
     }
     e.stopPropagation();
-
+    // TODO: how to not read wrapper dimensions on every move?
+    // subscribe to window.resize should cover all the cases since we are
+    // using position: absolute
+    const wrapperWidth = this.wrapperElement.getBoundingClientRect().width;
     const { currentTime, onChange, duration } = this.props;
     const { movementX } = e;
-    const thumbCorrection = 18;
-    const movementPercentage =
-      Math.abs(movementX) * 100 / duration / thumbCorrection;
+    const movementPercentage = Math.abs(movementX) * duration / wrapperWidth;
     const newTime =
       currentTime + (movementX > 0 ? movementPercentage : -movementPercentage);
     const newTimeWithBoundaries = Math.min(Math.max(newTime, 0), duration);
@@ -56,6 +59,7 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
 
   onMouseUp = (e: MouseEvent) => {
     e.stopPropagation();
+
     this.setState({
       isDragging: false,
     });
@@ -68,13 +72,31 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
   };
 
   onNavigate = e => {
+    // We don't want to navigate if the event was starting with a drag
+    if (e.target === this.thumbElement) {
+      return;
+    }
+
     const { duration, onChange } = this.props;
     const event = e.nativeEvent;
-    const x = event.x;
-    const width = e.currentTarget.getBoundingClientRect().width;
+    const thumbCorrection = 8;
+    const x = event.x - thumbCorrection;
+    const width = this.wrapperElement.getBoundingClientRect().width;
     const currentTime = x * duration / width;
 
     onChange(currentTime);
+  };
+
+  private saveWrapperElement = el => {
+    if (el) {
+      this.wrapperElement = el;
+    }
+  };
+
+  private saveThumbElement = el => {
+    if (el) {
+      this.thumbElement = el;
+    }
   };
 
   render() {
@@ -84,10 +106,13 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     const bufferedTimePercentage = bufferedTime * 100 / duration;
 
     return (
-      <TimeLine onClick={this.onNavigate}>
+      <TimeLine innerRef={this.saveWrapperElement} onClick={this.onNavigate}>
         <BufferedTime style={{ width: `${bufferedTimePercentage}%` }} />
         <CurrentTimeLine style={{ width: `${currentPosition}%` }}>
-          <Thumb onMouseDown={this.onThumbMouseDown}>
+          <Thumb
+            innerRef={this.saveThumbElement}
+            onMouseDown={this.onThumbMouseDown}
+          >
             <CurrentTimeTooltip
               isDragging={isDragging}
               className="current-time-tooltip"
