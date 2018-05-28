@@ -9,7 +9,11 @@ import { LoadingView as CollapsedLoadingView } from './collapsed/LoadingView';
 import { UnauthorisedView as CollapsedUnauthorisedView } from './collapsed/UnauthorisedView';
 import { ForbiddenView as CollapsedForbiddenView } from './collapsed/ForbiddenView';
 import { ErroredView as CollapsedErrorView } from './collapsed/ErroredView';
-import { ObjectStateStream } from '../Client/ObjectStateStream';
+import {
+  ObjectStateProvider,
+  ObjectState,
+} from '../Client/ObjectStateProvider';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface CardProps {
   client?: Client;
@@ -36,7 +40,8 @@ export class Card extends React.Component<CardProps, CardState> {
     smartCardClient: PropTypes.object,
   };
 
-  private stream?: ObjectStateStream;
+  private provider?: ObjectStateProvider;
+  private subscription?: Subscription;
 
   context: CardContext;
 
@@ -58,6 +63,14 @@ export class Card extends React.Component<CardProps, CardState> {
     return prevProps.url !== nextProps.url;
   }
 
+  unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.provider = undefined;
+      this.subscription = undefined;
+    }
+  }
+
   subscribe() {
     let client;
     try {
@@ -71,24 +84,21 @@ export class Card extends React.Component<CardProps, CardState> {
     }
 
     const { url } = this.props;
-
-    // close any previous streams
-    if (this.stream) {
-      this.stream.close();
-    }
-
-    // open a new stream
-    this.stream = client.get(url, ({ status, data }) => {
+    const provider = client.get(url);
+    const subscription = provider.observable().subscribe(({ status, data }) =>
       this.setState({
         status,
         props: data ? extractPropsFromJSONLD(data) : undefined,
-      });
-    });
+      }),
+    );
+
+    this.provider = provider;
+    this.subscription = subscription;
   }
 
   refresh() {
-    if (this.stream) {
-      this.stream.refresh();
+    if (this.provider) {
+      this.provider.refresh();
     }
   }
 
@@ -134,8 +144,13 @@ export class Card extends React.Component<CardProps, CardState> {
 
   componentDidUpdate(prevProps: CardProps) {
     if (this.shouldFetch(prevProps, this.props)) {
+      this.unsubscribe();
       this.subscribe();
     }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   renderInTheCollapsedFrame(children: React.ReactNode) {
@@ -196,6 +211,7 @@ export class Card extends React.Component<CardProps, CardState> {
 
   renderContent() {
     const { status } = this.state;
+    console.log(status);
     switch (status) {
       case 'resolving':
         return this.renderResolvingState();

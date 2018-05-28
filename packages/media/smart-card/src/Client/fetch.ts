@@ -1,33 +1,35 @@
-import CancelablePromise from '@jameslnewell/cancelable-promise';
+import { Observable } from 'rxjs/Observable';
 
 export function fetch<T>(
   method: string,
   url: string,
   data?: any,
-): CancelablePromise<T | undefined> {
-  return new CancelablePromise<T | undefined>((resolve, reject) => {
+): Observable<T | undefined> {
+  return Observable.create(observer => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.setRequestHeader('Cache-Control', 'no-cache');
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.addEventListener('error', () => reject());
+    xhr.addEventListener('error', () => observer.error());
     xhr.addEventListener('load', () => {
       switch (xhr.status) {
         case 200:
           try {
             const json = JSON.parse(xhr.responseText);
-            resolve(json as T);
+            observer.next(json as T);
+            observer.complete();
           } catch (error) {
-            reject(error);
+            observer.error(error);
           }
           break;
 
         case 404:
-          resolve(undefined);
+          observer.next(undefined);
+          observer.complete();
           break;
 
         default:
-          reject(
+          observer.error(
             new Error(
               '@atlaskit/smart-card: Recieved an unsupported response.',
             ),
