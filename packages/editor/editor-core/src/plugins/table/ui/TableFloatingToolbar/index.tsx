@@ -7,6 +7,7 @@ import { EditorView } from 'prosemirror-view';
 import {
   Popup,
   TableLayout,
+  TableViewMode,
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
 } from '@atlaskit/editor-common';
@@ -14,6 +15,8 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+// import TableIcon from '@atlaskit/icon/glyph/editor/table';
+// import TimelineIcon from '@atlaskit/icon/glyph/editor/timeline';
 
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
 import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
@@ -48,6 +51,7 @@ export interface Props {
   tableElement?: HTMLElement;
   tableActive?: boolean;
   tableLayout?: TableLayout;
+  viewMode?: TableViewMode;
   cellSelection?: CellSelection;
   allowMergeCells?: boolean;
   allowNumberColumn?: boolean;
@@ -58,6 +62,7 @@ export interface Props {
   removeTable?: () => void;
   permittedLayouts?: PermittedLayoutsDescriptor;
   updateLayout?: (layoutName: TableLayout) => void;
+  updateViewMode?: (viewMode: TableViewMode) => void;
   isLayoutSupported?: () => boolean;
 }
 
@@ -79,6 +84,23 @@ const tableLayouts: TableLayoutInfo = {
   'full-width': {
     icon: FullWidthIcon,
     label: 'full width',
+  },
+};
+
+type TableViewInfo = { [K in TableViewMode]: any };
+
+const tableViews: TableViewInfo = {
+  table: {
+    icon: undefined,
+    label: 'table',
+  },
+  timeline: {
+    icon: undefined,
+    label: 'timeline',
+  },
+  donut: {
+    icon: undefined,
+    label: 'donut chart',
   },
 };
 
@@ -119,6 +141,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       allowHeaderColumn,
       stickToolbarToBottom,
       isLayoutSupported,
+      viewMode,
     } = this.props;
 
     if (!tableElement || !tableActive) {
@@ -153,11 +176,32 @@ export default class TableFloatingToolbar extends Component<Props, State> {
             onClick={this.props.updateLayout ? onClick : undefined}
             title={label}
             key={layoutName}
-            iconBefore={<Icon label={label} />}
+            iconBefore={Icon ? <Icon label={label} /> : undefined}
           />
         );
       },
     );
+
+    const viewButtons = Object.keys(tableViews).map(viewName => {
+      const { label, icon: Icon } = tableViews[viewName];
+
+      const onClick = () => {
+        this.props.updateViewMode!(viewName as TableViewMode);
+      };
+
+      return (
+        <ToolbarButton
+          spacing="compact"
+          title={`View as ${label}`}
+          selected={viewMode === viewName}
+          onClick={this.props.updateViewMode ? onClick : undefined}
+          key={viewName}
+          iconBefore={
+            typeof Icon !== 'undefined' ? <Icon label={label} /> : undefined
+          }
+        />
+      );
+    });
 
     return (
       <Popup
@@ -205,6 +249,10 @@ export default class TableFloatingToolbar extends Component<Props, State> {
           {layoutButtons.length ? (
             <Separator style={{ height: 'auto' }} />
           ) : null}
+
+          {viewButtons}
+          <Separator style={{ height: 'auto' }} />
+
           <div
             onMouseEnter={this.setTableinDanger}
             onMouseLeave={this.resetTableinDanger}

@@ -46,7 +46,7 @@ import {
   canInsertTable,
 } from '../utils';
 
-import { TableLayout } from '@atlaskit/editor-common';
+import { TableLayout, TableViewMode } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../../../event-dispatcher';
 
 export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
@@ -84,6 +84,7 @@ export class TableState {
   allowHeaderColumn: boolean = false;
   stickToolbarToBottom: boolean = false;
   permittedLayouts: PermittedLayoutsDescriptor;
+  viewMode?: TableViewMode;
 
   private isHeaderRowRequired: boolean = false;
 
@@ -219,6 +220,13 @@ export class TableState {
         this.tableLayout = tableLayout;
         controlsDirty = true;
       }
+
+      const viewMode = tableNode.node.attrs.viewMode;
+      if (viewMode !== this.viewMode) {
+        this.viewMode = viewMode;
+        console.log('view mode is now', viewMode);
+        controlsDirty = true;
+      }
     }
 
     if (controlsDirty) {
@@ -268,6 +276,22 @@ export class TableState {
     this.tableLayout = layout;
 
     return true;
+  };
+
+  updateViewMode = newViewMode => {
+    const tableNode = findTable(this.view.state.selection);
+    if (!tableNode) {
+      return false;
+    }
+
+    this.view.dispatch(
+      this.view.state.tr.setNodeMarkup(tableNode.pos - 1, undefined, {
+        ...tableNode.node.attrs,
+        viewMode: newViewMode,
+      }),
+    );
+
+    this.viewMode = newViewMode;
   };
 
   isLayoutSupported = () => {

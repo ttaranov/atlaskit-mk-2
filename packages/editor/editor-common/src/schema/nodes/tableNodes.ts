@@ -135,10 +135,13 @@ export function calcTableColumnWidths(node: PmNode): number[] {
 
 export type Layout = 'default' | 'full-width' | 'wide';
 
+export type ViewMode = 'table' | 'timeline' | 'donut';
+
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
   layout?: Layout;
   __autoSize?: boolean;
+  viewMode?: ViewMode;
 }
 
 /**
@@ -202,6 +205,7 @@ export const table: any = {
     isNumberColumnEnabled: { default: false },
     layout: { default: 'default' },
     __autoSize: { default: false },
+    viewMode: { default: 'table' },
   },
   tableRole: 'table',
   isolating: true,
@@ -214,6 +218,7 @@ export const table: any = {
           dom.getAttribute('data-number-column') === 'true' ? true : false,
         layout: dom.getAttribute('data-layout') || 'default',
         __autoSize: dom.getAttribute('data-autosize') === 'true' ? true : false,
+        viewMode: dom.getAttribute('data-viewmode') || 'table',
       }),
     },
   ],
@@ -222,6 +227,7 @@ export const table: any = {
       'data-number-column': node.attrs.isNumberColumnEnabled,
       'data-layout': node.attrs.layout,
       'data-autosize': node.attrs.__autoSize,
+      'data-viewmode': node.attrs.viewMode,
     };
     return ['table', attrs, ['tbody', 0]];
   },

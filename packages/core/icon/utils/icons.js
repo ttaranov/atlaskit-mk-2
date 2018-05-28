@@ -142,6 +142,7 @@ import EditorTableIcon from '../glyph/editor/table';
 import EditorTaskIcon from '../glyph/editor/task';
 import EditorTextColorIcon from '../glyph/editor/text-color';
 import EditorTextStyleIcon from '../glyph/editor/text-style';
+import EditorTimelineIcon from '../glyph/editor/timeline';
 import EditorUnderlineIcon from '../glyph/editor/underline';
 import EditorUndoIcon from '../glyph/editor/undo';
 import EditorUnlinkIcon from '../glyph/editor/unlink';
@@ -1219,6 +1220,12 @@ export default {
     component: EditorTextStyleIcon,
     componentName: 'EditorTextStyleIcon',
     package: '@atlaskit/icon/glyph/editor/text-style',
+  },
+  'editor/timeline': {
+    keywords: ['editor/timeline', 'editortimeline'],
+    component: EditorTimelineIcon,
+    componentName: 'EditorTimelineIcon',
+    package: '@atlaskit/icon/glyph/editor/timeline',
   },
   'editor/underline': {
     keywords: ['editor/underline', 'editorunderline', 'font', 'text'],

@@ -52,6 +52,7 @@ export {
   tableBackgroundColorNames,
   CellAttributes,
   Layout as TableLayout,
+  ViewMode as TableViewMode,
   calcTableColumnWidths,
 } from './tableNodes';
 export {
