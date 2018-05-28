@@ -24,6 +24,9 @@ const COLORS = [
   akColorN300,
 ];
 
+const CANVAS_SIZE = 250;
+const LINE_WIDTH = 35;
+
 export interface Props {
   data: Array<PieChartEntry>;
   colors?: Array<string>;
@@ -36,17 +39,33 @@ export default class PieChart extends React.Component<Props, any> {
 
   static defaultProps = {
     colors: COLORS,
-    size: 250,
-    lineWidth: 35,
+    size: CANVAS_SIZE,
+    lineWidth: LINE_WIDTH,
   };
 
-  draw(canvas) {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      return null;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
+      this.draw();
     }
-    // https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
-    ctx.scale(2, 2);
+  }
+
+  render() {
+    return (
+      <canvas
+        ref={this.handleRef}
+        height={this.props.size}
+        width={this.props.size}
+      />
+    );
+  }
+
+  private draw = () => {
+    const canvas = this.canvas!;
+    const ctx = canvas.getContext('2d')!;
+
+    // clear
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     const center = this.props.size! / 4;
     const lineWidth = this.props.lineWidth!;
     const colors = this.props.colors!;
@@ -73,21 +92,15 @@ export default class PieChart extends React.Component<Props, any> {
       ctx.stroke();
       startAngle = endAngle;
     });
-  }
-
-  render() {
-    return (
-      <canvas
-        ref={this.handleRef}
-        height={this.props.size}
-        width={this.props.size}
-      />
-    );
-  }
+  };
 
   private handleRef = ref => {
     if (ref) {
-      this.draw(ref);
+      this.canvas = ref;
+      const ctx = ref.getContext('2d')!;
+      // improves quality, taken from here: https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
+      ctx.scale(2, 2);
+      this.draw();
     }
   };
 }
