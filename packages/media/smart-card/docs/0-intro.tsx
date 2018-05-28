@@ -12,8 +12,6 @@ export default md`
   yarn add @atlaskit/smart-card
   ~~~
 
-  **Note:** The [fetch](https://www.npmjs.com/package/whatwg-fetch) polyfill is required on IE11.
-
   ## Usage
   ${(
     <Example
@@ -35,9 +33,9 @@ export default md`
 
   Creates a new smart card client.
 
-  ##### .get(url: string): Info
+  ##### .get(url: string, callback: (state: ObjectState) => void): ObjectStateStream
 
-  Get the metadata for a URL.
+  Retrieve the object data for a URL.
 
   ### Provider
 
