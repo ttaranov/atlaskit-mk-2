@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.0.5
+- [patch] Fix transformer throwing error when given an empty string to parse [bda0aac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bda0aac)
+
 ## 1.0.4
 - [patch] Fix issue where providing a custom schema would crash the transformer [c5f7851](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5f7851)
 
