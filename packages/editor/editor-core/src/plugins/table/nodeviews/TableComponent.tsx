@@ -27,6 +27,7 @@ const DEFAULT_CELL_MIN_WIDTH = 25;
 
 import { Props } from './table';
 import { GraphTransformer, PieTransformer } from './graphs';
+import { PieChartData } from './graphs/transformer';
 
 export interface ComponentProps extends Props {
   contentDOM: (element: HTMLElement | undefined) => void;
@@ -100,9 +101,17 @@ class TableComponent extends React.Component<ComponentProps> {
       isTableInDanger,
     } = hoverSelectionPluginKey.getState(view.state);
 
-    let graphTransformer: GraphTransformer | null = null;
+    let graphTransformer: GraphTransformer | undefined;
+    let chartData;
+
     if (this.state.chartType === 'pie') {
-      graphTransformer = new PieTransformer(this.props.node);
+      graphTransformer = new PieTransformer(
+        this.props.view.state,
+        this.props.node,
+      );
+      chartData = graphTransformer.toChart();
+
+      console.log('chart data', chartData);
     }
 
     return (
@@ -175,8 +184,8 @@ class TableComponent extends React.Component<ComponentProps> {
                 </div>
                 {columnShadows}
               </div>
-              {graphTransformer ? (
-                <PieChart data={graphTransformer.toChart()} />
+              {chartData ? (
+                <PieChart data={(chartData as PieChartData).entries} />
               ) : null}
             </div>
           );
