@@ -30,6 +30,7 @@ import {
   GraphTransformer,
   NumberTransformer,
   TimelineTransformer,
+  NumberChartDataset,
 } from '../graphs';
 
 export interface ComponentProps extends Props {
@@ -196,7 +197,7 @@ class TableComponent extends React.Component<ComponentProps> {
               </div>
               {chartData && node.attrs.viewMode === 'donut' ? (
                 <PieChart
-                  data={(chartData as PieChartData).entries}
+                  data={(chartData as NumberChartDataset).entries}
                   legentAlignment="left"
                 />
               ) : null}

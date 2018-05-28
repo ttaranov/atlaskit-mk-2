@@ -50,8 +50,6 @@ class TimelineTransformer implements GraphTransformer {
       }
     });
 
-    console.log('entries', entries);
-
     return {
       entries,
     };

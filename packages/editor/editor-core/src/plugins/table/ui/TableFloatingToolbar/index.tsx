@@ -15,8 +15,9 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
-// import TableIcon from '@atlaskit/icon/glyph/editor/table';
-// import TimelineIcon from '@atlaskit/icon/glyph/editor/timeline';
+import ChartTableIcon from '@atlaskit/icon/glyph/editor/chart-table';
+import TimelineIcon from '@atlaskit/icon/glyph/editor/timeline';
+import ChartDonutIcon from '@atlaskit/icon/glyph/editor/chart-donut';
 
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
 import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
@@ -91,15 +92,15 @@ type TableViewInfo = { [K in TableViewMode]: any };
 
 const tableViews: TableViewInfo = {
   table: {
-    icon: undefined,
+    icon: ChartTableIcon,
     label: 'table',
   },
   timeline: {
-    icon: undefined,
+    icon: TimelineIcon,
     label: 'timeline',
   },
   donut: {
-    icon: undefined,
+    icon: ChartDonutIcon,
     label: 'donut chart',
   },
 };

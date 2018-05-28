@@ -96,6 +96,8 @@ import EditorAttachmentIcon from '../glyph/editor/attachment';
 import EditorBackgroundColorIcon from '../glyph/editor/background-color';
 import EditorBoldIcon from '../glyph/editor/bold';
 import EditorBulletListIcon from '../glyph/editor/bullet-list';
+import EditorChartDonutIcon from '../glyph/editor/chart-donut';
+import EditorChartTableIcon from '../glyph/editor/chart-table';
 import EditorCloseIcon from '../glyph/editor/close';
 import EditorCodeIcon from '../glyph/editor/code';
 import EditorDateIcon from '../glyph/editor/date';
@@ -944,6 +946,18 @@ export default {
     component: EditorBulletListIcon,
     componentName: 'EditorBulletListIcon',
     package: '@atlaskit/icon/glyph/editor/bullet-list',
+  },
+  'editor/chart-donut': {
+    keywords: ['editor/chart-donut', 'editorchartdonut'],
+    component: EditorChartDonutIcon,
+    componentName: 'EditorChartDonutIcon',
+    package: '@atlaskit/icon/glyph/editor/chart-donut',
+  },
+  'editor/chart-table': {
+    keywords: ['editor/chart-table', 'editorcharttable'],
+    component: EditorChartTableIcon,
+    componentName: 'EditorChartTableIcon',
+    package: '@atlaskit/icon/glyph/editor/chart-table',
   },
   'editor/close': {
     keywords: ['editor/close', 'editorclose', 'x', 'cancel', 'cross'],
