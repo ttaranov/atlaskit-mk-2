@@ -22,6 +22,8 @@ import {
   VolumeRange,
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
+import { hideControlsClassName } from '../../styled';
+import { Shortcut } from '../../shortcut';
 
 export interface CustomVideoState {}
 
@@ -47,18 +49,19 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
       <AppWrapper>
         <Video src={src} autoPlay={false}>
           {(video, videoState, actions) => {
-            const button =
-              videoState.status === 'playing' ? (
-                <Button
-                  iconBefore={<VidPauseIcon label="play" />}
-                  onClick={actions.pause}
-                />
-              ) : (
-                <Button
-                  iconBefore={<VidPlayIcon label="pause" />}
-                  onClick={actions.play}
-                />
-              );
+            const isPlaying = videoState.status === 'playing';
+            const toggleButtonIcon = isPlaying ? (
+              <VidPauseIcon label="play" />
+            ) : (
+              <VidPlayIcon label="pause" />
+            );
+            const toggleButtonAction = isPlaying ? actions.pause : actions.play;
+            const button = (
+              <Button
+                iconBefore={toggleButtonIcon}
+                onClick={toggleButtonAction}
+              />
+            );
             const fullScreenButton = (
               <Button
                 iconBefore={<EditorMediaFullWidthIcon label="fullscreen" />}
@@ -70,7 +73,8 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             return (
               <VideoWrapper>
                 {video}
-                <ControlsWrapper>
+                <Shortcut keyCode={32} handler={toggleButtonAction} />
+                <ControlsWrapper className={hideControlsClassName}>
                   <TimeWrapper>
                     <TimeRange
                       currentTime={videoState.currentTime}
