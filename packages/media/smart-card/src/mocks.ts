@@ -118,6 +118,6 @@ mock.post(`${resolveUrl}`, (req, res) => {
         res.status(404);
         resolve(res);
       }
-    }, 1500);
+    }, 900);
   });
 });
