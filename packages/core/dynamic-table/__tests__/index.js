@@ -417,6 +417,40 @@ describe(name, () => {
       ).toBe('Trump');
     });
 
+    it('should pass i18n info down correctly', () => {
+      const wrapper = mount(
+        <DynamicTable
+          rowsPerPage={2}
+          defaultPage={2}
+          head={head}
+          rows={rows}
+          paginationi18n={{ prev: 'Before', next: 'after' }}
+        />,
+      );
+
+      expect(wrapper.find(Pagination).prop('i18n')).toMatchObject({
+        prev: 'Before',
+        next: 'after',
+      });
+    });
+
+    it('should pass i18n info down correctly to stateless component', () => {
+      const wrapper = mount(
+        <DynamicTableStateless
+          rowsPerPage={2}
+          defaultPage={2}
+          head={head}
+          rows={rows}
+          paginationi18n={{ prev: 'Before', next: 'after' }}
+        />,
+      );
+
+      expect(wrapper.find(Pagination).prop('i18n')).toMatchObject({
+        prev: 'Before',
+        next: 'after',
+      });
+    });
+
     it('should sort data', () => {
       const wrapper = mount(<DynamicTable head={head} rows={rows} />);
       wrapper
