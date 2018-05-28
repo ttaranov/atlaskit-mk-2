@@ -15,7 +15,6 @@ export const A: ComponentClass<LinkHTMLAttributes<{}>> = styled.a`
   outline: none;
 
   &:hover {
-    text-decoration: none;
     background-color: ${akColorN20};
     text-decoration: underline;
   }
