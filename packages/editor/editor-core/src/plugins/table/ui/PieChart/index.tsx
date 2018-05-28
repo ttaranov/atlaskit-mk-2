@@ -24,8 +24,10 @@ const COLORS = [
   akColorN300,
 ];
 
+const STROKE_WIDTH = 5;
+
 // improves quality, taken from here: https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
-const SCALE = 10;
+const SCALE = 5;
 
 export interface Props {
   data: Array<NumberChartEntry>;
@@ -94,7 +96,6 @@ export default class PieChart extends React.Component<Props, any> {
     const lineWidth = this.props.lineWidth! / SCALE;
     const colors = this.props.colors!;
     const radius = center - lineWidth / 2;
-    ctx.lineWidth = lineWidth;
 
     const dataTotal = this.props.data.reduce(
       (r, dataPoint) => r + dataPoint.values[0],
@@ -102,7 +103,7 @@ export default class PieChart extends React.Component<Props, any> {
     );
     let startAngle = degsToRadians(-90);
     let colorIndex = 0;
-    this.props.data.forEach((dataPoint, i) => {
+    this.props.data.forEach((dataPoint, index) => {
       const section = dataPoint.values[0] / dataTotal * 360;
       const endAngle = startAngle + degsToRadians(section);
       const color = colors[colorIndex];
@@ -110,10 +111,27 @@ export default class PieChart extends React.Component<Props, any> {
       if (colorIndex >= colors.length) {
         colorIndex = 0;
       }
-      ctx.strokeStyle = color;
+      // pie section
       ctx.beginPath();
+      ctx.lineWidth = lineWidth;
+      ctx.strokeStyle = color;
       ctx.arc(center, center, radius, startAngle, endAngle);
       ctx.stroke();
+
+      // white stroke
+      ctx.beginPath();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth =
+        (index === this.props.data.length - 1
+          ? STROKE_WIDTH / 2
+          : STROKE_WIDTH) / SCALE;
+      ctx.moveTo(center, center);
+      ctx.lineTo(
+        center + radius * 2 * Math.cos(endAngle),
+        center + radius * 2 * Math.sin(endAngle),
+      );
+      ctx.stroke();
+
       startAngle = endAngle;
     });
   };
