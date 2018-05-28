@@ -1,3 +1,4 @@
+// TODO this test goes away as part of MSW-691
 import * as sinon from 'sinon';
 
 import { MediaApi } from '../mediaApi';

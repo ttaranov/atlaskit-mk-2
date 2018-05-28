@@ -89,7 +89,10 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const { isTableHovered } = hoverSelectionPluginKey.getState(view.state);
+    const {
+      isTableHovered,
+      isTableInDanger,
+    } = hoverSelectionPluginKey.getState(view.state);
 
     return (
       <WithPluginState
@@ -119,6 +122,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   insertColumn={insertColumn}
                   insertRow={insertRow}
                   remove={pluginState.remove}
+                  isTableInDanger={isTableInDanger}
                 />
               </div>
               <div
@@ -136,6 +140,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     remove={pluginState.remove}
                     hoverColumns={hoverColumns!}
                     resetHoverSelection={resetHoverSelection!}
+                    isTableInDanger={isTableInDanger}
                   />
                 </div>
                 <table

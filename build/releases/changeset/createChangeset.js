@@ -97,10 +97,24 @@ async function createChangeset(
     new inquirer.Separator(),
   ];
 
-  const packagesToRelease = await cli.askCheckbox(
+  let packagesToRelease = await cli.askCheckbox(
     'Which packages would you like to include?',
     inquirerList,
   );
+
+  if (packagesToRelease.length === 0) {
+    do {
+      console.error(
+        chalk.red('You must select at least one package to release'),
+      );
+      console.error(chalk.red('(You most likely hit enter instead of space!)'));
+
+      packagesToRelease = await cli.askCheckbox(
+        'Which packages would you like to include?',
+        inquirerList,
+      );
+    } while (packagesToRelease.length === 0);
+  }
   /** Get released packages and bumptypes */
 
   for (const pkg of packagesToRelease) {

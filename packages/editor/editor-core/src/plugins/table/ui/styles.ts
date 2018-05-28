@@ -16,6 +16,7 @@ import {
   tableMarginBottom,
   akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
+import { scrollbarStyles } from '../../../ui/styles';
 
 export const tableToolbarColor = akColorN20;
 export const tableBorderColor = akColorN50;
@@ -63,7 +64,7 @@ export const tableStyles = `
     .table-column-controls-wrapper,
     .table-row-controls-wrapper {
       position: absolute;
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
+      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize + 1}px;
     }
     .table-column-controls-wrapper {
       left: 0;
@@ -90,7 +91,7 @@ export const tableStyles = `
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
       /* fixes gap cursor height */
-      overflow: auto;
+      overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
     }
     .table-decoration {
@@ -129,6 +130,7 @@ export const tableStyles = `
     }
     .table-wrapper {
       overflow-x: ${isIE11 ? 'none' : 'auto'};
+      ${!isIE11 ? scrollbarStyles : ''}
     }
     .column-resize-handle {
       background-color: ${tableBorderSelectedColor};
@@ -159,6 +161,13 @@ export const tableStyles = `
 
 export const tableFullPageEditorStyles = `
   .ProseMirror .table-container table {
+    .selectedCell.danger, .hoveredCell.danger {
+      border: 1px solid ${tableBorderDeleteColor};
+      background: ${tableCellDeleteColor};
+    }
+    .selectedCell.danger:after {
+      background: ${tableCellDeleteColor};
+    }
     margin-left: 0;
     margin-right: 0;
     width: 100%;
@@ -169,5 +178,7 @@ export const tableCommentEditorStyles = `
   .ProseMirror .table-container table {
     margin-left: 0;
     margin-right: 0;
+
+    ${scrollbarStyles};
   }
 `;

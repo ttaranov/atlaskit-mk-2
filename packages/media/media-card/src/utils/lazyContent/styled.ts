@@ -1,15 +1,13 @@
+// @ts-ignore: unused variable
+// prettier-ignore
 import LazilyRender, { LazilyRenderProps } from 'react-lazily-render';
-import styled from 'styled-components';
-import { HTMLAttributes, ComponentClass } from 'react';
+// @ts-ignore: unused variable
+// prettier-ignore
+import styled, { StyledComponentClass } from 'styled-components';
 import { size } from '@atlaskit/media-ui';
-
-// necessary because `styled(Component)` uses the props 😭
-export type LazilyRenderProps = LazilyRenderProps;
 
 // We need to override the element provided by the library
 // in order to make it get the parent dimensions.
-export const Wrapper: ComponentClass<
-  HTMLAttributes<{}> & LazilyRenderProps
-> = styled(LazilyRender)`
+export const Wrapper = styled(LazilyRender)`
   ${size()};
 `;

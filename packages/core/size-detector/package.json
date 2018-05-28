@@ -11,7 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "atlaskit": {
     "name": "Size Detector",

@@ -11,6 +11,9 @@ import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
 import WidthDetector from '../WidthDetector';
 import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
+import { akEditorToolbarKeylineHeight } from '../../styles';
+import rafSchedule from 'raf-schd';
+import { scrollbarStyles } from '../styles';
 
 const GUTTER_PADDING = 32;
 
@@ -25,10 +28,12 @@ FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
+  ${scrollbarStyles};
 `;
 ScrollContainer.displayName = 'ScrollContainer';
 
@@ -69,10 +74,21 @@ const ContentArea = styled.div`
 `;
 ContentArea.displayName = 'ContentArea';
 
-const MainToolbar = styled.div`
+interface MainToolbarProps {
+  showKeyline: boolean;
+}
+
+const MainToolbar: React.ComponentClass<
+  React.HTMLAttributes<{}> & MainToolbarProps
+> = styled.div`
   position: relative;
   align-items: center;
-  border-bottom: 1px solid ${akColorN30};
+  box-shadow: ${(props: MainToolbarProps) =>
+    props.showKeyline
+      ? `0 ${akEditorToolbarKeylineHeight}px 0 0 ${akColorN30}`
+      : 'none'};
+  transition: box-shadow 200ms;
+  z-index: 1;
   display: flex;
   height: 80px;
   flex-shrink: 0;
@@ -100,11 +116,67 @@ export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   any
 > {
+  state = { showKeyline: false };
+
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
+  private scrollContainer: HTMLElement | undefined;
+  private scheduledKeylineUpdate: number | undefined;
 
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
     event.stopPropagation();
+
+  scrollContainerRef = ref => {
+    const previousScrollContainer = this.scrollContainer;
+
+    // remove existing handler
+    if (previousScrollContainer) {
+      previousScrollContainer.removeEventListener(
+        'scroll',
+        this.scheduleUpdateToolbarKeyline,
+      );
+    }
+
+    this.scrollContainer = ref;
+
+    if (typeof this.scrollContainer !== 'undefined') {
+      this.scrollContainer.addEventListener(
+        'scroll',
+        this.scheduleUpdateToolbarKeyline,
+        false,
+      );
+      this.updateToolbarKeyline();
+    }
+  };
+
+  updateToolbarKeyline = () => {
+    if (!this.scrollContainer) {
+      return false;
+    }
+
+    const { scrollTop } = this.scrollContainer;
+    this.setState({ showKeyline: scrollTop > akEditorToolbarKeylineHeight });
+
+    return false;
+  };
+
+  private scheduleUpdateToolbarKeyline = () => {
+    this.scheduledKeylineUpdate = rafSchedule(() =>
+      this.updateToolbarKeyline(),
+    );
+  };
+
+  componentDidMount() {
+    window.addEventListener('resize', this.scheduleUpdateToolbarKeyline, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.scheduleUpdateToolbarKeyline);
+
+    if (typeof this.scheduledKeylineUpdate !== 'undefined') {
+      cancelAnimationFrame(this.scheduledKeylineUpdate);
+    }
+  }
 
   render() {
     const {
@@ -124,9 +196,11 @@ export default class Editor extends React.Component<
       collabEdit,
     } = this.props;
 
+    const { showKeyline } = this.state;
+
     return (
       <FullPageEditorWrapper>
-        <MainToolbar>
+        <MainToolbar showKeyline={showKeyline}>
           <Toolbar
             editorView={editorView!}
             editorActions={editorActions}
@@ -151,7 +225,7 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ScrollContainer>
+        <ScrollContainer innerRef={this.scrollContainerRef}>
           <ClickAreaBlock editorView={editorView}>
             <ContentArea>
               <div

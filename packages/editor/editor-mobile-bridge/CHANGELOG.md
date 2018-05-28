@@ -1,5 +1,44 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.1.6
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+  - @atlaskit/editor-core@72.1.8
+
+## 0.1.5
+
+
+
+- [none] Updated dependencies [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/editor-core@72.0.6
+- [patch] Updated dependencies [db1bafa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db1bafa)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/editor-core@72.0.6
+- [none] Updated dependencies [f150242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f150242)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/editor-core@72.0.6
+
+## 0.1.4
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/editor-core@72.0.0
+
 ## 0.1.3
 
 

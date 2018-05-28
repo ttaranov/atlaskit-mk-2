@@ -51,6 +51,20 @@ describe('date plugin', () => {
         const pluginState = pluginKey.getState(view.state);
         expect(pluginState.element).toEqual(null);
       });
+
+      it('should insert UTC timestamp', () => {
+        const { editorView: view } = editor(doc(paragraph('hello{<>}')));
+        insertDate({ year: 2018, month: 5, day: 1 })(view.state, view.dispatch);
+        expect(view.state.selection.$from.nodeBefore!.type).toEqual(
+          view.state.schema.nodes.date,
+        );
+        expect(view.state.selection.$from.nodeBefore!.attrs.timestamp).toEqual(
+          Date.UTC(2018, 4, 1),
+        );
+        expect(
+          view.state.selection.$from.nodeBefore!.attrs.timestamp,
+        ).not.toEqual(new Date(2018, 5, 1));
+      });
     });
 
     describe('openDatePicker', () => {

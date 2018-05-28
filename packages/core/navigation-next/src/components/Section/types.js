@@ -8,7 +8,7 @@ export type RenderProvided = {
 
 export type SectionProps = {
   id?: string,
-  parentId?: string,
+  parentId?: string | null,
   children: RenderProvided => Node,
 };
 

@@ -23,8 +23,8 @@ interface State {
 class PubSubEventComponent extends Component<{}, State> {
   private client: Client;
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.client = new Client(clientConfig.serviceConfig);
     this.state = {
       channelInput: 'ari:cloud:platform::site/666',

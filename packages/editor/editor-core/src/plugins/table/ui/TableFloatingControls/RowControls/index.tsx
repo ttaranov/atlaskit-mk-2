@@ -23,6 +23,7 @@ export interface Props {
   resetHoverSelection: Command;
   scroll: number;
   updateScroll: () => void;
+  isTableInDanger?: boolean;
 }
 
 export default class RowControls extends Component<Props, any> {
@@ -79,6 +80,7 @@ export default class RowControls extends Component<Props, any> {
       editorView: { state },
       isTableHovered,
       scroll,
+      isTableInDanger,
     } = this.props;
     if (!tableElement) {
       return null;
@@ -103,7 +105,7 @@ export default class RowControls extends Component<Props, any> {
 
       const classNames =
         isTableHovered || isRowSelected(i)(state.selection) ? ['active'] : [''];
-      if (this.state.dangerRows.indexOf(i) !== -1) {
+      if (this.state.dangerRows.indexOf(i) !== -1 || isTableInDanger) {
         classNames.push('danger');
       }
       nodes.push(

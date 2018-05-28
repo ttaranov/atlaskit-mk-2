@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,7 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -28,7 +30,7 @@
   "devDependencies": {
     "@atlaskit/avatar": "^10.0.6",
     "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/editor-core": "^71.4.0",
+    "@atlaskit/editor-core": "^72.0.0",
     "enzyme": "^3.3.0"
   },
   "keywords": [

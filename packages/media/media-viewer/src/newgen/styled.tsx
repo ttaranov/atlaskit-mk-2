@@ -17,6 +17,15 @@ import {
 
 const overlayZindex = 999;
 
+export const colors = {
+  image: akColorY200,
+  audio: akColorP200,
+  video: '#ff7143',
+  doc: akColorB300,
+  unknown: '#3dc7dc',
+  blanketColor: '#1b2638',
+};
+
 export const hideControlsClassName = 'mvng-hide-controls';
 
 export const Blanket = styled.div`
@@ -25,7 +34,7 @@ export const Blanket = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #1b2638;
+  background-color: ${colors.blanketColor};
   z-index: ${overlayZindex};
 `;
 
@@ -57,7 +66,8 @@ ListWrapper.displayName = 'ListWrapper';
 export const ArrowsWrapper = styled.div`
   display: flex;
   position: absolute;
-  top: 40%;
+  top: 50%;
+  transform: translateY(-50%);
   left: 0;
   width: 100%;
 `;
@@ -70,14 +80,23 @@ export const CloseButtonWrapper = styled.div`
 `;
 
 export const ZoomWrapper = styled.div`
+  width: 100%;
   position: absolute;
   bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+`;
 
+export const ZoomControlsWrapper = styled.div`
   button {
     margin-right: 10px;
   }
+`;
+
+export const ZoomLevel = styled.span`
+  position: absolute;
+  right: 24px;
+  top: 0;
+  color: #b8c7e0;
 `;
 
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
@@ -94,10 +113,6 @@ export const ContentWrapper = styled.div`
   justify-content: center;
 
   .${hideControlsClassName} {
-    ${handleControlsVisibility};
-  }
-
-  ${ZoomWrapper} {
     ${handleControlsVisibility};
   }
 `;
@@ -118,7 +133,14 @@ export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   height: 100%;
 `;
 
-export const PDFWrapper = styled.div``;
+export const PDFWrapper = styled.div`
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`;
 
 const ArrowWrapper = styled.div`
   flex: 1;
@@ -173,14 +195,6 @@ export const MetadataIconWrapper = styled.div`
   padding-right: 12px;
 `;
 
-export const colors = {
-  image: akColorY200,
-  audio: akColorP200,
-  video: '#ff7143',
-  doc: akColorB300,
-  unknown: '#3dc7dc',
-};
-
 export interface IconWrapperProps {
   type: MediaType;
 }
@@ -224,7 +238,6 @@ export const AudioCover = styled.img`
 `;
 
 export const DefaultCoverWrapper = styled.div`
-  background-color: ${colors.audio};
   width: 100%;
   height: 100%;
   display: flex;

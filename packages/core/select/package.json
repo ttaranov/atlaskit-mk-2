@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,10 +12,11 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Trey S",
-    "Jed W",
+    "Sean C",
+    "Charles L",
+    "Mike G",
     "Joss M",
-    "Charles L"
+    "Jed W"
   ],
   "atlaskit": {
     "name": "Select",
@@ -25,7 +26,7 @@
   "dependencies": {
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/theme": "^3.2.2",
-    "react-select": "^2.0.0-beta.4",
+    "react-select": "^2.0.0-beta.6",
     "react-transition-group": "^2.2.1",
     "styled-components": "1.4.6 - 3"
   },

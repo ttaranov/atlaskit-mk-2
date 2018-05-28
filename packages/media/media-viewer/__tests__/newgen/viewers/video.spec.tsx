@@ -1,3 +1,6 @@
+import * as util from '../../../src/newgen/util';
+const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
+
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Stubs } from '../../_stubs';
@@ -39,9 +42,15 @@ function createContext(authPromise) {
   ) as any;
 }
 
-function createFixture(authPromise) {
+function createFixture(authPromise, collectionName?) {
   const context = createContext(authPromise);
-  const el = mount(<VideoViewer context={context} item={videoItem} />);
+  const el = mount(
+    <VideoViewer
+      context={context}
+      item={videoItem}
+      collectionName={collectionName}
+    />,
+  );
   return { context, el };
 }
 
@@ -56,6 +65,10 @@ async function awaitError(response, expectedMessage) {
 }
 
 describe('Video viewer', () => {
+  afterEach(() => {
+    constructAuthTokenUrlSpy.mockClear();
+  });
+
   it('assigns a src for videos when successful', async () => {
     const authPromise = Promise.resolve({ token, clientId });
     const { el } = createFixture(authPromise);
@@ -79,5 +92,14 @@ describe('Video viewer', () => {
     await awaitError(authPromise, 'test error');
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
+  it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
+    const collectionName = 'some-collection';
+    const authPromise = Promise.resolve({ token, clientId });
+    const { el } = createFixture(authPromise, collectionName);
+    await el.instance()['init']();
+    el.update();
+    expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 });

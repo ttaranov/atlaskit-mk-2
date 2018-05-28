@@ -41,22 +41,27 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context } = this.props;
+    const { context, identifier } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
         const itemUnwrapped = item.data;
+        const viewerProps = {
+          context,
+          item: itemUnwrapped,
+          collectionName: identifier.collectionName,
+        };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
-            return <ImageViewer context={context} item={itemUnwrapped} />;
+            return <ImageViewer {...viewerProps} />;
           case 'audio':
-            return <AudioViewer context={context} item={itemUnwrapped} />;
+            return <AudioViewer {...viewerProps} />;
           case 'video':
-            return <VideoViewer context={context} item={itemUnwrapped} />;
+            return <VideoViewer {...viewerProps} />;
           case 'doc':
-            return <PDFViewer context={context} item={itemUnwrapped} />;
+            return <PDFViewer {...viewerProps} />;
           default:
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }

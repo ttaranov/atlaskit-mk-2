@@ -4,7 +4,7 @@ import { colors, gridSize } from '@atlaskit/theme';
 
 export const ResultItemGroupHeader = styled.div`
   display: flex;
-  margin-left: -${gridSize()}px;
+  margin-left: -${gridSize() * 1.5}px;
   margin-top: ${gridSize() * 1.5}px;
 `;
 
@@ -28,6 +28,7 @@ export const ResultItemCaption = styled.span`
 `;
 
 export const ResultItemIcon = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;

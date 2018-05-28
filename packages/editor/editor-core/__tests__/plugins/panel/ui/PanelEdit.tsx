@@ -6,7 +6,6 @@ import {
   stateKey,
 } from '../../../../src/plugins/panel/pm-plugins/main';
 import PanelEdit from '../../../../src/plugins/panel/ui/PanelEdit';
-import ToolbarButton from '../../../../src/ui/ToolbarButton';
 
 import {
   doc,
@@ -50,11 +49,11 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
 
   it('should have 6 buttons in it', () => {
     const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
-    const panelEditOptions = shallow(
+    const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
     panelEditOptions.setState({ toolbarVisible: true });
-    expect(panelEditOptions.find(ToolbarButton).length).toEqual(6);
+    expect(panelEditOptions.find('button').length).toEqual(6);
   });
 
   it('should set toolbarVisible to true when panel is clicked', () => {

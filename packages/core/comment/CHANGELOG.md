@@ -1,5 +1,19 @@
 # @atlaskit/comment
 
+## 3.1.8
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/editor-core@72.0.0
+
 ## 3.1.7
 - [patch] Remove button for Edited and replace it by a span [ad3cd34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad3cd34)
 

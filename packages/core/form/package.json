@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/form",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Form package provides layout & validation for form fields",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -11,9 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike Gardiner"
-    }
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
@@ -35,8 +35,8 @@
     "@atlaskit/droplist": "^5.0.3",
     "@atlaskit/field-radio-group": "^2.0.3",
     "@atlaskit/field-range": "^3.0.2",
-    "@atlaskit/field-text": "^5.0.3",
-    "@atlaskit/field-text-area": "2.0.4",
+    "@atlaskit/field-text": "^5.1.0",
+    "@atlaskit/field-text-area": "^2.1.0",
     "@atlaskit/inline-edit": "^5.0.2",
     "@atlaskit/modal-dialog": "^4.0.5",
     "@atlaskit/multi-select": "^9.0.2",

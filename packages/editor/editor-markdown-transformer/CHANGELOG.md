@@ -1,5 +1,23 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.22
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/editor-common@10.0.0
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+
 ## 0.2.21
 
 

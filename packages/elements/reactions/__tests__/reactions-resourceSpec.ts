@@ -30,10 +30,45 @@ const detailedReaction = {
   ],
 };
 
+const smileyDetailedReaction = {
+  ari: ari,
+  containerAri: containerAri,
+  emojiId: smileyId.id!,
+  count: 0,
+  reacted: true,
+  users: [],
+};
+
+const laughingDetailedReaction = {
+  ari: ari,
+  containerAri: containerAri,
+  emojiId: laughingId.id!,
+  count: 2,
+  reacted: true,
+  users: [
+    {
+      id: 'oscar',
+      displayName: 'Oscar Wallhult',
+    },
+    {
+      id: 'julien',
+      displayName: 'Julien H.',
+    },
+  ],
+};
+
 const reaction = {
   ari: ari,
   containerAri: containerAri,
   emojiId: grinningId.id!,
+  count: 1,
+  reacted: true,
+};
+
+const smilingReaction = {
+  ari: ari,
+  containerAri: containerAri,
+  emojiId: smileyId.id!,
   count: 1,
   reacted: true,
 };
@@ -276,6 +311,14 @@ describe('@atlaskit/reactions/reactions-provider', () => {
   });
 
   describe('toggleReaction', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     it('should optimistically add reaction if not in cache or if user have not reacted and call service', () => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
       populateCache(reactionsProvider);
@@ -321,6 +364,161 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       ].reactions.filter(r => equalEmojiId(r.emojiId, thumbsupId.id!))[0];
       expect(reaction.count).toEqual(6);
       expect(reaction.reacted).toEqual(true);
+    });
+
+    // Skip for now. This is flaky. See issue FS-1993
+    it.skip('should not override multiple optimistic add', done => {
+      const reactionsProvider = new ReactionsResource({ baseUrl });
+
+      let callCount = 0;
+      fetchMock.mock({
+        options: {
+          method: 'POST',
+        },
+        matcher: 'end:reactions',
+        response: () => {
+          if (callCount++ == 0) {
+            return new Promise(resolve => {
+              setTimeout(
+                () =>
+                  resolve({
+                    ari: ari,
+                    containerAri: containerAri,
+                    reactions: [
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: grinningId.id!,
+                        count: 1,
+                        reacted: true,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: laughingId.id!,
+                        count: 2,
+                        reacted: true,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: thumbsupId.id!,
+                        count: 6,
+                        reacted: true,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: grinId.id!,
+                        count: 100,
+                        reacted: false,
+                      },
+                    ],
+                  }),
+                100,
+              );
+            });
+          } else {
+            return new Promise(resolve => {
+              setTimeout(
+                () =>
+                  resolve({
+                    ari: ari,
+                    containerAri: containerAri,
+                    reactions: [
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: grinningId.id!,
+                        count: 1,
+                        reacted: true,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: laughingId.id!,
+                        count: 2,
+                        reacted: true,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: thumbsupId.id!,
+                        count: 6,
+                        reacted: true,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: grinId.id!,
+                        count: 100,
+                        reacted: false,
+                      },
+                      {
+                        ari: ari,
+                        containerAri: containerAri,
+                        emojiId: smileyId.id,
+                        count: 1,
+                        reacted: true,
+                      },
+                    ],
+                  }),
+                200,
+              );
+            });
+          }
+        },
+      });
+
+      populateCache(reactionsProvider);
+
+      const handler = jest.fn();
+      reactionsProvider.subscribe(
+        {
+          containerAri: containerAri,
+          ari: ari,
+        },
+        handler,
+      );
+
+      function getReactionsForEmojiAtNthCall(emojiId, call) {
+        return handler.mock.calls[call][0].reactions.find(
+          value => value.emojiId === emojiId.id,
+        );
+      }
+
+      const toggleGrinning = reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        thumbsupId.id!,
+      );
+
+      expect(getReactionsForEmojiAtNthCall(thumbsupId, 1).count).toEqual(6);
+
+      const toggleSmiley = reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        smileyId.id!,
+      );
+
+      expect(getReactionsForEmojiAtNthCall(thumbsupId, 2).count).toEqual(6);
+      expect(getReactionsForEmojiAtNthCall(smileyId, 2).count).toEqual(1);
+
+      toggleGrinning.then(() => {
+        expect(getReactionsForEmojiAtNthCall(thumbsupId, 3).count).toEqual(6);
+        expect(getReactionsForEmojiAtNthCall(smileyId, 3).count).toEqual(1);
+
+        toggleSmiley.then(() => {
+          expect(getReactionsForEmojiAtNthCall(thumbsupId, 4).count).toEqual(6);
+          expect(getReactionsForEmojiAtNthCall(smileyId, 4).count).toEqual(1);
+
+          done();
+        });
+
+        jest.runTimersToTime(150);
+      });
+
+      jest.runTimersToTime(150);
     });
 
     it('should optimistically decrease counter on reaction if user have already reacted', () => {
@@ -395,6 +593,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         matcher: `end:reactions?reactionId=${encodeURIComponent(reactionId)}`,
         response: fetchDetailedReaction(),
       });
+
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
     });
 
     it('should fetch reaction details for reaction', () => {
@@ -432,6 +636,224 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       expect(spy).not.toHaveBeenCalled();
       expect(secondCall).toEqual(firstCall);
       spy.mockRestore();
+    });
+
+    it('should not override optimistic add', done => {
+      const smileyReactionId = `${containerAri}|${ari}|${smileyId!.id}`;
+
+      fetchMock.mock({
+        options: {
+          method: 'GET',
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(
+          smileyReactionId,
+        )}`,
+        response: new Promise(resolve => {
+          setTimeout(() => resolve(smileyDetailedReaction), 100);
+        }),
+      });
+
+      fetchMock.mock({
+        options: {
+          method: 'POST',
+        },
+        matcher: 'end:reactions',
+        response: new Promise(resolve => {
+          setTimeout(() => resolve(fetchAddReaction()), 100);
+        }),
+      });
+
+      populateCache(reactionsProvider);
+
+      const handler = jest.fn();
+      reactionsProvider.subscribe(
+        {
+          containerAri: containerAri,
+          ari: ari,
+        },
+        handler,
+      );
+
+      function getReactionsForEmojiAtNthCall(emojiId, call) {
+        return handler.mock.calls[call][0].reactions.find(
+          value => value.emojiId === emojiId.id,
+        );
+      }
+
+      const fetchReactionDetails = reactionsProvider.fetchReactionDetails(
+        smilingReaction,
+      );
+
+      const toggleSmiley = reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        smileyId.id!,
+      );
+
+      expect(getReactionsForEmojiAtNthCall(smileyId, 1).count).toEqual(1);
+
+      fetchReactionDetails.then(() => {
+        expect(handler.mock.calls.length).toEqual(2);
+
+        jest.runTimersToTime(150);
+
+        toggleSmiley.then(() => {
+          expect(getReactionsForEmojiAtNthCall(smileyId, 2).count).toEqual(1);
+          done();
+        });
+      });
+
+      jest.runTimersToTime(150);
+    });
+
+    it('should not override optimistic delete (last reaction)', done => {
+      fetchMock.mock({
+        options: {
+          method: 'GET',
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(reactionId)}`,
+        response: new Promise(resolve => {
+          setTimeout(() => resolve(fetchDetailedReaction()), 100);
+        }),
+      });
+
+      fetchMock.mock({
+        options: {
+          method: 'DELETE',
+        },
+        matcher: `begin:${baseUrl}/reactions?ari=${ari}`,
+        response: new Promise(resolve => {
+          setTimeout(() => resolve(fetchDeleteReaction()), 100);
+        }),
+      });
+
+      populateCache(reactionsProvider);
+
+      const handler = jest.fn();
+      reactionsProvider.subscribe(
+        {
+          containerAri: containerAri,
+          ari: ari,
+        },
+        handler,
+      );
+
+      function getReactionsForEmojiAtNthCall(emojiId, call) {
+        return handler.mock.calls[call][0].reactions.find(
+          value => value.emojiId === emojiId.id,
+        );
+      }
+
+      const fetchReactionDetails = reactionsProvider.fetchReactionDetails(
+        reaction,
+      );
+
+      const toggleGrinning = reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        grinningId.id!,
+      );
+
+      expect(getReactionsForEmojiAtNthCall(grinningId, 1)).toBeUndefined();
+
+      fetchReactionDetails.then(() => {
+        expect(handler.mock.calls.length).toEqual(2);
+
+        jest.runTimersToTime(150);
+
+        toggleGrinning.then(() => {
+          expect(getReactionsForEmojiAtNthCall(grinningId, 2)).toBeUndefined();
+          done();
+        });
+      });
+
+      jest.runTimersToTime(150);
+    });
+
+    it('should not override optimistic delete (decreased count)', done => {
+      const laughingReactionId = `${containerAri}|${ari}|${laughingId!.id}`;
+      fetchMock.mock({
+        options: {
+          method: 'GET',
+        },
+        matcher: `end:reactions?reactionId=${encodeURIComponent(
+          laughingReactionId,
+        )}`,
+        response: new Promise(resolve => {
+          setTimeout(() => resolve(laughingDetailedReaction), 100);
+        }),
+      });
+
+      fetchMock.mock({
+        options: {
+          method: 'DELETE',
+        },
+        matcher: `begin:${baseUrl}/reactions?ari=${ari}`,
+        response: new Promise(resolve => {
+          setTimeout(
+            () =>
+              resolve({
+                ari: ari,
+                containerAri: containerAri,
+                reactions: fetchGetReactions()[ari].map(value => {
+                  if (value.emojiId === laughingId.id) {
+                    return {
+                      ...value,
+                      reacted: false,
+                      count: value.count - 1,
+                    };
+                  }
+
+                  return value;
+                }),
+              }),
+            100,
+          );
+        }),
+      });
+
+      populateCache(reactionsProvider);
+
+      const handler = jest.fn();
+      reactionsProvider.subscribe(
+        {
+          containerAri: containerAri,
+          ari: ari,
+        },
+        handler,
+      );
+
+      function getReactionsForEmojiAtNthCall(emojiId, call) {
+        return handler.mock.calls[call][0].reactions.find(
+          value => value.emojiId === emojiId.id,
+        );
+      }
+
+      const fetchReactionDetails = reactionsProvider.fetchReactionDetails(
+        reaction,
+      );
+
+      const deleteLaughing = reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        laughingId.id!,
+      );
+
+      expect(getReactionsForEmojiAtNthCall(laughingId, 1).count).toEqual(1);
+
+      fetchReactionDetails.then(() => {
+        expect(handler.mock.calls.length).toEqual(3);
+        expect(getReactionsForEmojiAtNthCall(laughingId, 2).count).toEqual(1);
+
+        jest.runTimersToTime(150);
+
+        deleteLaughing.then(() => {
+          expect(getReactionsForEmojiAtNthCall(laughingId, 3).count).toEqual(1);
+          done();
+        });
+      });
+
+      jest.runTimersToTime(150);
     });
   });
 });

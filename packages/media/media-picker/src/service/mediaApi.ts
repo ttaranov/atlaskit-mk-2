@@ -1,12 +1,15 @@
-import * as uuid from 'uuid';
+// TODO Kill this file and it's friends as part of MSW-691
+// Do not use this class for anything. Use media-store instead
 
+import * as uuid from 'uuid';
+import { FileDetails } from '@atlaskit/media-core';
 import {
   MediaClient,
   MediaClientRequest,
   addAuthToQueryParameters,
 } from './mediaClient';
 import { retryTask } from '../util/promises';
-import { SourceFile } from '../popup/domain/source-file';
+import { SourceFile } from '../popup/domain';
 
 export interface MediaArtifact {
   processingStatus: string;
@@ -95,7 +98,7 @@ export class MediaApi {
     mediaClient: MediaClient,
     fileId: string,
     collection?: string,
-  ): Promise<MediaFileData> {
+  ): Promise<FileDetails> {
     const numRetries = 10;
     const delay = 1000;
     const delayMultiplier = 2;

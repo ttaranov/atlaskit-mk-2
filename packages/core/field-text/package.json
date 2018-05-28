@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "5.0.3",
+  "version": "5.1.0",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -14,12 +14,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    },
-    {
-      "name": "Jared Crowe"
-    }
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {

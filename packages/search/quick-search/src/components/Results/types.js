@@ -52,8 +52,10 @@ export type ResultType = CommonResultProps & {
 };
 
 export type ContainerResultType = CommonResultProps & {
-  /** Src URL of the image to be used as the result's icon */
+  /** Src URL of the image to be used as the result's icon, overriden by avatar prop */
   avatarUrl?: string,
+  /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
+  avatar?: Node,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** Set whether to display a lock on the result's icon */
@@ -67,6 +69,8 @@ export type ContainerResultType = CommonResultProps & {
 export type ObjectResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon */
   avatarUrl?: string,
+  /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
+  avatar?: Node,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** Name of the container to which the object belongs. Displayed alongside the name */
@@ -82,6 +86,8 @@ export type ObjectResultType = CommonResultProps & {
 export type PersonResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon */
   avatarUrl?: string,
+  /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
+  avatar?: Node,
   /** React element to appear to the left of the text. */
   icon?: Node,
   /** A user's custom handle. Appears to the right of their `name`. It has a lower

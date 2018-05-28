@@ -36,6 +36,7 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
+  font-family: inherit;
   font-size: ${fontSize}px;
   line-height: ${20 / fontSize()};
   outline: none;

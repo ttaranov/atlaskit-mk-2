@@ -36,11 +36,15 @@ export interface MediaState {
 
 export interface MediaStateManager {
   getState(tempId: string): MediaState | undefined;
-  updateState(tempId: string, newState: MediaState): void;
+  updateState(tempId: string, newState: Partial<MediaState>): void;
   newState(file: MediaFile, status: string, publicId?: string): MediaState;
   on(tempId: string, cb: (state: MediaState) => void);
   off(tempId: string, cb: (state: MediaState) => void): void;
   destroy(): void;
+}
+
+export interface FeatureFlags {
+  useNewUploadService?: boolean;
 }
 
 export interface MediaProvider {
@@ -68,6 +72,11 @@ export interface MediaProvider {
    * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<Context>;
+
+  /**
+   * (optional) For any additional feature to be enabled
+   */
+  featureFlags?: FeatureFlags;
 }
 
 export type Listener = (data: any) => void;

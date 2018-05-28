@@ -53,10 +53,7 @@ export { MacroProvider, MacroAttributes, ExtensionType } from './plugins/macro';
 
 export { CollabEditProvider } from './plugins/collab-edit';
 
-export {
-  EmojiProvider,
-  AtlassianEmojiMigrationResource as EmojiResource,
-} from '@atlaskit/emoji';
+export { EmojiProvider, EmojiResource } from '@atlaskit/emoji';
 
 export {
   DefaultMediaStateManager,

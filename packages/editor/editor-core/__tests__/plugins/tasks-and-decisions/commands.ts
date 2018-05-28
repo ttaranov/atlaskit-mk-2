@@ -150,5 +150,52 @@ describe('tasks and decisions - commands', () => {
         );
       });
     });
+
+    describe('when cursor is inside empty task item', () => {
+      it('should not create another task item', () => {
+        const { editorView } = editor(
+          doc(
+            taskList({ localId: 'local-highlight' })(
+              taskItem({ localId: 'local-highlight', state: 'TODO' })('{<>}'),
+            ),
+          ),
+        );
+        changeToTaskDecision(editorView, 'taskList');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-highlight' })(
+              taskItem({ localId: 'local-highlight', state: 'TODO' })(),
+            ),
+          ),
+        );
+      });
+    });
+
+    describe('when cursor is inside non-empty task item', () => {
+      it('should add a task item to task list', () => {
+        const { editorView } = editor(
+          doc(
+            taskList({ localId: 'local-highlight' })(
+              taskItem({ localId: 'local-highlight', state: 'TODO' })(
+                'Hello World{<>}',
+              ),
+            ),
+          ),
+        );
+        changeToTaskDecision(editorView, 'taskList');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-highlight' })(
+              taskItem({ localId: 'local-highlight', state: 'TODO' })(
+                'Hello World',
+              ),
+              taskItem({ localId: 'local-highlight', state: 'TODO' })(''),
+            ),
+          ),
+        );
+      });
+    });
   });
 });

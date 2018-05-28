@@ -1,5 +1,24 @@
 # @atlaskit/dropdown-menu
 
+## 4.0.5
+
+
+- [patch] Updated dependencies [0838cb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0838cb0)
+  - @atlaskit/lozenge@4.1.1
+- [patch] Updated dependencies [979aff5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/979aff5)
+  - @atlaskit/lozenge@4.1.1
+
+## 4.0.4
+
+
+
+- [patch] Updated dependencies [b42eaa5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b42eaa5)
+  - @atlaskit/lozenge@4.1.0
+- [patch] Updated dependencies [c668ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c668ac9)
+  - @atlaskit/lozenge@4.1.0
+- [patch] Updated dependencies [4638c7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638c7a)
+  - @atlaskit/lozenge@4.1.0
+
 ## 4.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

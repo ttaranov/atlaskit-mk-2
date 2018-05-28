@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
@@ -12,9 +12,13 @@ import {
   siteEmojiWtf,
   emojis as allEmojis,
   onRowsRenderedArgs,
+  atlassianEmojis,
 } from '../../_test-data';
 import { EmojiDescription } from '../../../src/types';
-import { CachingEmoji } from '../../../src/components/common/CachingEmoji';
+import {
+  CachingEmoji,
+  CachingEmojiProps,
+} from '../../../src/components/common/CachingEmoji';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 const emojis = [imageEmoji];
@@ -59,6 +63,65 @@ describe('<EmojiPickerList />', () => {
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
       expect(categoryHeadings.get(0).props.id).to.match(/^category_FREQUENT/);
       expect(categoryHeadings.get(1).props.id).to.match(/^category_PEOPLE/);
+    });
+
+    it('should order emoji inside category', () => {
+      const outOfOrderEmojis = [
+        {
+          ...atlassianEmojis[0],
+          order: 10,
+        },
+        {
+          ...atlassianEmojis[1],
+          order: 0,
+        },
+      ];
+      const wrapper = mount(<EmojiPickerList emojis={outOfOrderEmojis} />);
+
+      const cachingEmojis: ReactWrapper<
+        CachingEmojiProps,
+        never
+      > = wrapper.find(CachingEmoji);
+
+      expect(cachingEmojis).to.have.lengthOf(2);
+      expect(cachingEmojis.at(0).prop('emoji').id).to.be.equal(
+        atlassianEmojis[1].id,
+      );
+      expect(cachingEmojis.at(1).prop('emoji').id).to.be.equal(
+        atlassianEmojis[0].id,
+      );
+    });
+
+    it('should not order frequent category emojis', () => {
+      const frequentCategoryEmojis = [
+        {
+          ...atlassianEmojis[0],
+          category: 'FREQUENT',
+          order: 10,
+        },
+        {
+          ...atlassianEmojis[1],
+          category: 'FREQUENT',
+          order: 0,
+        },
+      ];
+
+      const wrapper = mount(
+        <EmojiPickerList emojis={frequentCategoryEmojis} />,
+      );
+
+      const cachingEmojis: ReactWrapper<
+        CachingEmojiProps,
+        never
+      > = wrapper.find(CachingEmoji);
+
+      expect(cachingEmojis).to.have.lengthOf(2);
+      expect(cachingEmojis.at(0).prop('emoji').id).to.be.equal(
+        atlassianEmojis[0].id,
+      );
+      expect(cachingEmojis.at(1).prop('emoji').id).to.be.equal(
+        atlassianEmojis[1].id,
+      );
     });
   });
 

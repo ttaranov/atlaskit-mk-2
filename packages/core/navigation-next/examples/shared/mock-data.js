@@ -63,15 +63,14 @@ const rootHome = {
   parentId: null,
   view: [
     {
-      key: 'header',
       id: 'root-home-header',
-      parentId: null,
-      items: [{ type: 'JiraWordmark', key: 'jira-wordmark' }],
+      isRootLevel: true,
+      items: [{ type: 'JiraWordmark', id: 'jira-wordmark' }],
       type: 'Group',
     },
     {
-      key: 'menu',
       id: 'root-home-menu',
+      isRootLevel: true,
       items: [
         {
           type: 'Item',
@@ -93,6 +92,8 @@ const rootHome = {
           type: 'GoToItem',
         },
       ],
+      nestedGroupKey: 'menu',
+      parentId: null,
       type: 'Nested',
     },
     {
@@ -109,23 +110,17 @@ const rootIssues = {
   parentId: 'root-home',
   view: [
     {
-      key: 'header',
       id: 'root-issues-header',
-      parentId: null,
-      items: [{ type: 'JiraWordmark', key: 'jira-wordmark' }],
+      isRootLevel: true,
+      items: [
+        { type: 'JiraWordmark', id: 'jira-wordmark' },
+        { type: 'BackItem', goTo: 'root-home', key: 'back' },
+      ],
       type: 'Group',
     },
     {
-      key: 'back-section',
-      id: 'root-issues-back-section',
-      parentId: null,
-      items: [{ type: 'BackItem', goTo: 'root-home', key: 'back' }],
-      type: 'Group',
-    },
-    {
-      key: 'menu',
       id: 'root-issues-menu',
-      parentId: 'root-home-menu',
+      isRootLevel: true,
       items: [
         { type: 'Item', key: 'search-issues', text: 'Search issues' },
         { type: 'Separator', key: 'separator-1' },
@@ -139,6 +134,8 @@ const rootIssues = {
         { type: 'Item', key: 'resolved-recently', text: 'Resolved recently' },
         { type: 'Item', key: 'updated-recently', text: 'Updated recently' },
       ],
+      nestedGroupKey: 'menu',
+      parentId: 'root-home-menu',
       type: 'Nested',
     },
   ],

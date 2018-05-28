@@ -4,6 +4,7 @@ import PeopleSearchClient, {
 } from '../src/api/PeopleSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
+import { ResultType, AnalyticsType } from '../src/model/Result';
 
 function apiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const response = Array.isArray(state)
@@ -18,7 +19,7 @@ function apiWillReturn(state: SearchResult[] | GraphqlResponse) {
 }
 
 describe('PeopleSearchClient', () => {
-  let searchClient;
+  let searchClient: PeopleSearchClient;
 
   beforeEach(() => {
     searchClient = new PeopleSearchClient('localhost', '123');
@@ -51,12 +52,13 @@ describe('PeopleSearchClient', () => {
       expect(items).toHaveLength(1);
 
       const item = items[0];
-      expect(item.type).toEqual('person');
+      expect(item.resultType).toEqual(ResultType.Person);
       expect(item.resultId).toEqual('people-123');
       expect(item.avatarUrl).toEqual('avatarUrl');
       expect(item.name).toEqual('fullName');
       expect(item.href).toEqual('/home/people/123');
       expect(item.containerName).toBeUndefined();
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
     });
 
     it('should throw when data.AccountCentricUserSearch is not defined', async () => {

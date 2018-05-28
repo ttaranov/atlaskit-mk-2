@@ -1,5 +1,51 @@
 # @atlaskit/media-viewer
 
+## 14.4.1
+- [patch] Centering navigation arrows vertically in MVNG [d506235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d506235)
+
+## 14.4.0
+- [patch] Fix pageSize in MediaViewer NG [4eac436](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac436)
+- [minor] show controls when navigation happen in MediaViewer [3917aa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3917aa6)
+
+## 14.3.1
+- [patch] MSW-720 : pass collectionName to all the places for correct auth [f7fa512](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7fa512)
+
+## 14.3.0
+- [minor] Add zoom level for image and document viewer [856dfae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/856dfae)
+
+## 14.2.0
+- [minor] Add keyboard shortcuts to MediaViewer NG [52c56c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52c56c1)
+
+## 14.1.0
+- [minor] dont hide controls if user is hovering them [f9c7a29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c7a29)
+
+## 14.0.2
+- [patch] remove TS casting from MediaViewer [df4da61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df4da61)
+
+## 14.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-test-helpers@13.0.1
+
+## 14.0.0
+
+
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+
+## 13.8.4
+- [patch] Adjust default audio cover [2f37539](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f37539)
+
+## 13.8.3
+- [patch] Add zooming to document viewer [f76e5d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76e5d3)
+
+## 13.8.2
+- [patch] Fix new case of SC component interpolation [accec74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/accec74)
+
 ## 13.8.1
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

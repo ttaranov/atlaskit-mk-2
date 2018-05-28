@@ -452,6 +452,20 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.context.icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {
+              text: 'test',
+            },
+          },
+        };
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
+
       it('should return "text" if attrs.context.icon.label is missing', () => {
         const applicationCard = {
           type: 'applicationCard',
@@ -1664,6 +1678,20 @@ describe('Renderer - Validator', () => {
           type: 'link',
           attrs: {
             href: 'https://www.atlassian.com',
+          },
+        });
+      });
+
+      it('should allow relative links', () => {
+        expect(
+          getValidMark({
+            type: 'link',
+            attrs: { href: '/this/is/a/relative/link' },
+          }),
+        ).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: '/this/is/a/relative/link',
           },
         });
       });

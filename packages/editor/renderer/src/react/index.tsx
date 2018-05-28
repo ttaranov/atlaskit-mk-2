@@ -12,6 +12,7 @@ import {
   TextWrapper,
   isEmojiDoc,
   toReact,
+  BreakoutProvider,
 } from './nodes';
 
 import { toReact as markToReact } from './marks';
@@ -25,6 +26,8 @@ import {
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
 import { bigEmojiHeight } from '../utils';
+
+export { BreakoutProvider };
 
 export interface RendererContext {
   objectAri?: string;

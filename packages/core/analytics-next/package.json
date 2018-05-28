@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-next",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "The 🆕 Atlaskit component analytics framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -14,8 +14,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Jared C",
-    "Michael B"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "atlaskit": {
     "name": "Analytics next",

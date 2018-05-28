@@ -105,6 +105,7 @@ export const getValidContent = (
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+const RELATIVE_LINK = /^\//;
 
 const flattenUnknownBlockTree = (
   node: ADNode,
@@ -277,7 +278,7 @@ export const getValidNode = (
         if (context && !isValidString(context.text)) {
           break;
         }
-        if (context && !isValidIcon(context.icon)) {
+        if (context && (context.icon && !isValidIcon(context.icon))) {
           break;
         }
 
@@ -760,7 +761,11 @@ export const getValidMark = (
           const { href, url, __confluenceMetadata } = attrs;
           let linkHref = href || url;
 
-          if (linkHref && linkHref.indexOf(':') === -1) {
+          if (
+            linkHref &&
+            linkHref.indexOf(':') === -1 &&
+            !RELATIVE_LINK.test(linkHref)
+          ) {
             linkHref = `http://${linkHref}`;
           }
 

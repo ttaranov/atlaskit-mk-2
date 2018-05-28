@@ -17,7 +17,10 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
 function runTests() {
   return new Promise((resolve, reject) => {
-    const cmd = `INTEGRATION_TESTS=true jest`;
+    let cmd = `INTEGRATION_TESTS=true jest`;
+    if (process.env.TEST_ENV === 'browserstack') {
+      cmd = `${cmd} --maxWorkers=3`;
+    }
 
     const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',
@@ -25,6 +28,11 @@ function runTests() {
     });
 
     tests.on('error', reject);
+
+    // reject tests if theres a cmd + c
+    tests.on('SIGINT', () => {
+      console.log('received SIGINT', process.exit());
+    });
 
     tests.on('close', (code, signal) => {
       setTimeout(resolve, JEST_WAIT_FOR_INPUT_TIMEOUT, { code, signal });

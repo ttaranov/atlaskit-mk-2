@@ -18,7 +18,7 @@ import Icon from '@atlaskit/icon';
 ${code`
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 `}
-  
+
   You can explore all of our icons in the example below.
 
   ${(
