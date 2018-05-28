@@ -15,9 +15,9 @@ export default md`
   ## Usage
   ${(
     <Example
-      Component={require('../examples/0-block').default}
+      Component={require('../examples/0-intro').default}
       title="An editable example"
-      source={require('!!raw-loader!../examples/0-block')}
+      source={require('!!raw-loader!../examples/0-intro')}
     />
   )}
 
