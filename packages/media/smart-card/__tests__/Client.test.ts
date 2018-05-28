@@ -33,7 +33,7 @@ function createFetchWithFailedParse() {
 describe('Client', () => {
   it('should use the baseUrl', async () => {
     global.fetch = createFetchWithResponse();
-    const client = new Client({ baseUrl: 'https://foo-bar.com/' });
+    const client = new Client({ serviceUrl: 'https://foo-bar.com/' });
     await client.get('https://www.atlassian.com/');
     expect(global.fetch).toBeCalledWith(
       expect.stringMatching(/^https:\/\/foo-bar.com\//),
