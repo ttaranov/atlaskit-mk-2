@@ -25,6 +25,7 @@ const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
 
 import { Props } from './table';
+import { GraphTransformer } from './graphs';
 
 export interface ComponentProps extends Props {
   contentDOM: (element: HTMLElement | undefined) => void;
@@ -93,6 +94,8 @@ class TableComponent extends React.Component<ComponentProps> {
       isTableHovered,
       isTableInDanger,
     } = hoverSelectionPluginKey.getState(view.state);
+
+    const graphTransformer = new GraphTransformer(this.props.node);
 
     return (
       <WithPluginState
