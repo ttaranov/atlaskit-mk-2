@@ -1,9 +1,9 @@
 import { Node } from 'prosemirror-model';
-import { containsHeaderRow, containsHeaderColumn } from '../utils';
+import { containsHeaderRow } from '../utils';
 import { EditorState } from 'prosemirror-state';
 import { GraphTransformer, TimelineDataset, TimelineEntry } from './types';
 
-class TimelineTransformer implements GraphTransformer {
+export default class TimelineTransformer implements GraphTransformer {
   private node: Node;
   private state: EditorState;
 
@@ -59,5 +59,3 @@ class TimelineTransformer implements GraphTransformer {
     return this.node;
   }
 }
-
-export { TimelineTransformer };

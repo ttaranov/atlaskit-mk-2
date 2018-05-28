@@ -7,7 +7,7 @@ import {
   NumberChartEntry,
 } from './types';
 
-class NumberTransformer implements GraphTransformer {
+export default class NumberTransformer implements GraphTransformer {
   private node: Node;
   private state: EditorState;
 
@@ -61,5 +61,3 @@ class NumberTransformer implements GraphTransformer {
     return this.node;
   }
 }
-
-export { NumberTransformer };

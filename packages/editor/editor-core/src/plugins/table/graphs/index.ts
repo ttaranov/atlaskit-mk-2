@@ -1,3 +1,3 @@
 export * from './types';
-export { NumberTransformer } from './number';
-export { TimelineTransformer } from './timeline';
+export { default as NumberTransformer } from './NumberTransformer';
+export { default as TimelineTransformer } from './TimelineTransformer';

@@ -20,6 +20,7 @@ import { pluginKey as widthPluginKey } from '../../width';
 import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import PieChart from '../ui/Charts/PieChart';
+import TimelineChart from '../ui/Charts/TimelineChart';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
@@ -30,7 +31,6 @@ import {
   GraphTransformer,
   NumberTransformer,
   TimelineTransformer,
-  NumberChartDataset,
 } from '../graphs';
 
 export interface ComponentProps extends Props {
@@ -195,15 +195,14 @@ class TableComponent extends React.Component<ComponentProps> {
                 </div>
                 {columnShadows}
               </div>
-              {chartData && node.attrs.viewMode === 'donut' ? (
-                <PieChart
-                  data={(chartData as NumberChartDataset).entries}
-                  legentAlignment="left"
-                />
-              ) : null}
-              {chartData && node.attrs.viewMode === 'timeline' ? (
-                <p>hello</p>
-              ) : null}
+              {chartData &&
+                node.attrs.viewMode === 'donut' && (
+                  <PieChart data={chartData.entries} legentAlignment="left" />
+                )}
+              {chartData &&
+                node.attrs.viewMode === 'timeline' && (
+                  <TimelineChart data={chartData} />
+                )}
             </div>
           );
         }}
