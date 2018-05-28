@@ -19,6 +19,7 @@ import { pluginKey as widthPluginKey } from '../../width';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
+import PieChart from '../ui/PieChart';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
@@ -107,64 +108,67 @@ class TableComponent extends React.Component<ComponentProps> {
         editorView={view}
         render={({ containerWidth, pluginState }) => {
           return (
-            <div
-              style={{
-                width: calcTableWidth(node.attrs.layout, containerWidth),
-              }}
-              className="table-container"
-              data-layout={node.attrs.layout}
-            >
-              <div className="table-row-controls-wrapper">
-                <TableFloatingControls
-                  editorView={view}
-                  tableElement={pluginState.tableElement}
-                  isTableHovered={isTableHovered}
-                  hoverTable={hoverTable}
-                  hoverRows={hoverRows}
-                  resetHoverSelection={resetHoverSelection}
-                  insertColumn={insertColumn}
-                  insertRow={insertRow}
-                  remove={pluginState.remove}
-                  isTableInDanger={isTableInDanger}
-                />
-              </div>
+            <div>
               <div
-                className="table-wrapper"
-                ref={elem => {
-                  this.wrapper = elem;
+                style={{
+                  width: calcTableWidth(node.attrs.layout, containerWidth),
                 }}
+                className="table-container"
+                data-layout={node.attrs.layout}
               >
-                <div className="table-column-controls-wrapper">
-                  <ColumnControls
+                <div className="table-row-controls-wrapper">
+                  <TableFloatingControls
                     editorView={view}
                     tableElement={pluginState.tableElement}
                     isTableHovered={isTableHovered}
+                    hoverTable={hoverTable}
+                    hoverRows={hoverRows}
+                    resetHoverSelection={resetHoverSelection}
                     insertColumn={insertColumn}
+                    insertRow={insertRow}
                     remove={pluginState.remove}
-                    hoverColumns={hoverColumns!}
-                    resetHoverSelection={resetHoverSelection!}
                     isTableInDanger={isTableInDanger}
                   />
                 </div>
-                <table
+                <div
+                  className="table-wrapper"
                   ref={elem => {
-                    this.table = elem;
-                    this.props.contentDOM(elem ? elem : undefined);
+                    this.wrapper = elem;
                   }}
-                  data-number-column={node.attrs.isNumberColumnEnabled}
-                  data-layout={node.attrs.layout}
-                  data-autosize={node.attrs.__autoSize}
                 >
-                  {allowColumnResizing ? (
-                    <colgroup
-                      ref={elem => {
-                        this.colgroup = elem;
-                      }}
+                  <div className="table-column-controls-wrapper">
+                    <ColumnControls
+                      editorView={view}
+                      tableElement={pluginState.tableElement}
+                      isTableHovered={isTableHovered}
+                      insertColumn={insertColumn}
+                      remove={pluginState.remove}
+                      hoverColumns={hoverColumns!}
+                      resetHoverSelection={resetHoverSelection!}
+                      isTableInDanger={isTableInDanger}
                     />
-                  ) : null}
-                </table>
+                  </div>
+                  <table
+                    ref={elem => {
+                      this.table = elem;
+                      this.props.contentDOM(elem ? elem : undefined);
+                    }}
+                    data-number-column={node.attrs.isNumberColumnEnabled}
+                    data-layout={node.attrs.layout}
+                    data-autosize={node.attrs.__autoSize}
+                  >
+                    {allowColumnResizing ? (
+                      <colgroup
+                        ref={elem => {
+                          this.colgroup = elem;
+                        }}
+                      />
+                    ) : null}
+                  </table>
+                </div>
+                {columnShadows}
               </div>
-              {columnShadows}
+              <PieChart data={[12, 42, 200, 67]} />
             </div>
           );
         }}
