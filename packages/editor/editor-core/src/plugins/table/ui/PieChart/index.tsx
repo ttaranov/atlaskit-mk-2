@@ -24,7 +24,7 @@ const COLORS = [
 ];
 
 export interface Props {
-  data: Array<number>;
+  data: Array<object>;
   colors?: Array<string>;
   size?: number;
   lineWidth?: number;
@@ -75,6 +75,7 @@ export default class PieChart extends React.Component<Props, any> {
   }
 
   render() {
+    console.log('data was', this.props.data);
     return (
       <canvas
         ref={this.handleRef}

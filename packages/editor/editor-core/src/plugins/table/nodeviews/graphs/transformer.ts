@@ -1,15 +1,24 @@
 import { Node } from 'prosemirror-model';
 
-class GraphTransformer {
+interface GraphTransformer {
+  toChart: () => object[];
+  fromChart: (chartData: object[]) => Node;
+}
+
+class PieTransformer implements GraphTransformer {
   private node: Node;
 
   constructor(node) {
     this.node = node;
   }
 
-  toChart(chartType) {
-    return {};
+  toChart() {
+    return [12, 23, 23, 23];
+  }
+
+  fromChart(obj) {
+    return this.node;
   }
 }
 
-export { GraphTransformer };
+export { PieTransformer, GraphTransformer };

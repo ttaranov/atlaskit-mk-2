@@ -26,7 +26,7 @@ const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
 
 import { Props } from './table';
-import { GraphTransformer } from './graphs';
+import { GraphTransformer, PieTransformer } from './graphs';
 
 export interface ComponentProps extends Props {
   contentDOM: (element: HTMLElement | undefined) => void;
@@ -39,6 +39,10 @@ class TableComponent extends React.Component<ComponentProps> {
 
   private leftShadow: HTMLDivElement | null;
   private rightShadow: HTMLDivElement | null;
+
+  state = {
+    chartType: 'pie',
+  };
 
   constructor(props) {
     super(props);
@@ -96,7 +100,10 @@ class TableComponent extends React.Component<ComponentProps> {
       isTableInDanger,
     } = hoverSelectionPluginKey.getState(view.state);
 
-    const graphTransformer = new GraphTransformer(this.props.node);
+    let graphTransformer: GraphTransformer | null = null;
+    if (this.state.chartType === 'pie') {
+      graphTransformer = new PieTransformer(this.props.node);
+    }
 
     return (
       <WithPluginState
@@ -168,7 +175,9 @@ class TableComponent extends React.Component<ComponentProps> {
                 </div>
                 {columnShadows}
               </div>
-              <PieChart data={[12, 42, 200, 67]} />
+              {graphTransformer ? (
+                <PieChart data={graphTransformer.toChart()} />
+              ) : null}
             </div>
           );
         }}

@@ -1,1 +1,1 @@
-export { GraphTransformer } from './transformer';
+export { GraphTransformer, PieTransformer } from './transformer';
