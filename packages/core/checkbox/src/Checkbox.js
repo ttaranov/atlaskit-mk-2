@@ -3,14 +3,6 @@
 import React, { Component } from 'react';
 import CheckboxStateless from './CheckboxStateless';
 
-type Common = {|
-  /** The name of the submitted field in a checkbox. */
-  name: string,
-  /** The value to be used in the checkbox input. This is the value that will
-   be returned on form submission. */
-  value: number | string,
-|};
-
 type Props = {|
   /** Sets whether the checkbox begins checked. */
   initiallyChecked?: boolean,
@@ -29,9 +21,14 @@ type Props = {|
   onChange?: ({
     event: SyntheticEvent<any>,
     isChecked: boolean,
-    ...Common,
+    name: string,
+    value: number | string,
   }) => mixed,
-|} & Common;
+  /** The name of the submitted field in a checkbox. */
+  name: string,
+  /** The value to be used in the checkbox input. This is the value that will be returned on form submission. */
+  value: number | string,
+|};
 
 type State = {
   isChecked: boolean,
