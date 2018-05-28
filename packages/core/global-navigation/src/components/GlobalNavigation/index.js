@@ -1,54 +1,14 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import SearchIcon from '@atlaskit/icon/glyph/search';
-import CreateIcon from '@atlaskit/icon/glyph/add';
-import Avatar from '@atlaskit/avatar';
-import QuestionIcon from '@atlaskit/icon/glyph/question';
-import MenuIcon from '@atlaskit/icon/glyph/menu';
-import NotificationIcon from '@atlaskit/icon/glyph/notification';
-import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
 
+import defaultConfig from '../../config/default-config';
 import Drawer from '../Drawer';
 import type {
   GlobalNavigationProps,
   WrappedGlobalNavigationProps,
 } from './types';
-
-// By default we will render a button which toggles the peek behaviour. The
-// consumer can opt out of this by passing their own handler or `false` to the
-// onClick prop, or by passing a href (which will render an <a>).
-// They also opt out of the peek behaviour if they pass in a component to
-// the primary item (where getProductPrimaryItemComponent is called)
-const getProductPrimaryItemComponent = navigation => ({
-  className,
-  children,
-  href,
-  onClick,
-  target,
-}: *) =>
-  href ? (
-    <a
-      className={className}
-      href={href}
-      onClick={onClick || null}
-      target={target}
-    >
-      {children}
-    </a>
-  ) : (
-    <button
-      className={className}
-      onClick={
-        typeof onClick !== 'undefined' ? onClick || null : navigation.togglePeek
-      }
-      onMouseEnter={navigation.hint}
-      onMouseLeave={navigation.unHint}
-    >
-      {children}
-    </button>
-  );
 
 class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   static defaultProps = {
@@ -58,6 +18,11 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
 
   constructPrimaryItems = () => {
     const { create, product, search, primaryActions, navigation } = this.props;
+    const {
+      product: defaultProduct,
+      create: defaultCreate,
+      search: defaultSearch,
+    } = defaultConfig(navigation);
 
     const inbuiltPrimaryItems = [];
 
@@ -65,27 +30,16 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       const { component, ...rest } = product;
       inbuiltPrimaryItems.push({
         ...rest,
-        component: component || getProductPrimaryItemComponent(navigation),
+        ...defaultProduct,
+        component,
       });
     }
 
     if (search) {
-      const defaultSearch = {
-        icon: SearchIcon,
-        label: 'Search',
-        onClick: navigation.openSearchDrawer,
-        tooltip: 'Search',
-      };
       inbuiltPrimaryItems.push({ ...defaultSearch, ...search });
     }
 
     if (create) {
-      const defaultCreate = {
-        icon: CreateIcon,
-        label: 'Create',
-        onClick: navigation.openCreateDrawer,
-        tooltip: 'Create',
-      };
       inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
     }
 
@@ -102,60 +56,33 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
       notification,
       people,
     } = this.props;
+    const {
+      help: defaultHelp,
+      profile: defaultProfile,
+      appSwitcher: defaultAppSwitcher,
+      notification: defaultNotification,
+      people: defaultPeople,
+    } = defaultConfig(navigation);
     const inbuiltSecondaryItems = [];
 
     if (notification) {
-      const defaultNotifications = {
-        icon: NotificationIcon,
-        label: 'Notifications',
-        onClick: navigation.openNotificationDrawer,
-        tooltip: 'Notifications',
-      };
-      inbuiltSecondaryItems.push({ ...defaultNotifications, ...notification });
+      inbuiltSecondaryItems.push({ ...defaultNotification, ...notification });
     }
 
     if (people) {
-      const defaultPeople = {
-        icon: PeopleIcon,
-        label: 'People directory',
-        onClick: navigation.openPeopleDrawer,
-        tooltip: 'People directory',
-      };
       inbuiltSecondaryItems.push({ ...defaultPeople, ...people });
     }
 
     if (appSwitcher) {
-      const defaultAppSwitcher = {
-        icon: MenuIcon,
-        label: 'App Switcher',
-        tooltip: 'App Switcher',
-      };
       inbuiltSecondaryItems.push({ ...defaultAppSwitcher, ...appSwitcher });
     }
 
     if (help) {
-      const defaultHelp = {
-        icon: QuestionIcon,
-        label: 'Help',
-        tooltip: 'Help',
-      };
       inbuiltSecondaryItems.push({ ...defaultHelp, ...help });
     }
 
     if (profile) {
-      const defaultUser = {
-        icon: () => (
-          <Avatar
-            borderColor="transparent"
-            isActive={false}
-            isHover={false}
-            size="small"
-          />
-        ),
-        label: 'Your profile and Settings',
-        tooltip: 'Your profile and Settings',
-      };
-      inbuiltSecondaryItems.push({ ...defaultUser, ...profile });
+      inbuiltSecondaryItems.push({ ...defaultProfile, ...profile });
     }
 
     return [...secondaryActions, ...inbuiltSecondaryItems];
