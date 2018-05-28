@@ -1,19 +1,21 @@
 import * as React from 'react';
-import { TimelineDataset } from '../../graphs';
+import { TimelineDataset } from '../../../graphs';
+import { upscaleCanvas, COLORS } from '../utils';
 
 export interface Props {
   data: TimelineDataset;
-  // colors?: Array<string>;
-  width?: number;
+  colors?: Array<string>;
   height?: number;
+  width?: number;
 }
 
 export default class TimelineChart extends React.Component<Props, any> {
   canvas?: HTMLCanvasElement;
 
   static defaultProps = {
-    width: 500,
+    colors: COLORS,
     height: 250,
+    width: 500,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -45,7 +47,7 @@ export default class TimelineChart extends React.Component<Props, any> {
   private handleRef = ref => {
     if (ref) {
       this.canvas = ref;
-      const ctx = ref.getContext('2d')!;
+      upscaleCanvas(ref, this.props.width!, this.props.height!);
       this.drawTimeline();
     }
   };

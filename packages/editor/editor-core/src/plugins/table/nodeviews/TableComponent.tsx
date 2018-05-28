@@ -19,7 +19,7 @@ import { pluginKey as widthPluginKey } from '../../width';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
-import PieChart from '../ui/PieChart';
+import PieChart from '../ui/Charts/PieChart';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;

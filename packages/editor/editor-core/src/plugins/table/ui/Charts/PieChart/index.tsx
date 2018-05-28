@@ -1,41 +1,7 @@
 import * as React from 'react';
-import {
-  akColorB300,
-  akColorR300,
-  akColorY300,
-  akColorG300,
-  akColorP300,
-  akColorT300,
-  akColorN300,
-} from '@atlaskit/util-shared-styles';
-import { NumberChartEntry } from '../../graphs';
 
-const degreesToRadians = (degs: number) => {
-  return degs / 360 * (2 * Math.PI);
-};
-
-const COLORS = [
-  akColorP300,
-  akColorG300,
-  akColorR300,
-  akColorY300,
-  akColorB300,
-  akColorT300,
-  akColorN300,
-];
-
-const getPixelRatio = () => {
-  const ctx = document.createElement('canvas').getContext('2d') as any;
-  const devicePixelRatio = window.devicePixelRatio || 1;
-  const backingStoreRatio =
-    ctx.webkitBackingStorePixelRatio ||
-    ctx.mozBackingStorePixelRatio ||
-    ctx.msBackingStorePixelRatio ||
-    ctx.oBackingStorePixelRatio ||
-    ctx.backingStorePixelRatio ||
-    1;
-  return devicePixelRatio / backingStoreRatio;
-};
+import { COLORS, degreesToRadians, upscaleCanvas } from '../utils';
+import { NumberChartEntry } from '../../../graphs';
 
 export interface Props {
   data: Array<NumberChartEntry>;
@@ -46,16 +12,8 @@ export interface Props {
   size?: number;
 }
 
-export interface State {
-  pixelRatio: number;
-}
-
-export default class PieChart extends React.Component<Props, State> {
+export default class PieChart extends React.Component<Props, any> {
   canvas?: HTMLCanvasElement;
-
-  state: State = {
-    pixelRatio: getPixelRatio(),
-  };
 
   static defaultProps = {
     colors: COLORS,
@@ -152,20 +110,8 @@ export default class PieChart extends React.Component<Props, State> {
 
   private handleRef = ref => {
     if (ref) {
+      upscaleCanvas(ref, this.props.size!, this.props.size!);
       this.canvas = ref;
-      const { pixelRatio } = this.state;
-
-      // upscale the canvas
-      // @see https://www.html5rocks.com/en/tutorials/canvas/hidpi/
-      if (pixelRatio !== 1) {
-        const ctx = ref.getContext('2d')!;
-        const size = this.props.size!;
-        ref.width = size * pixelRatio;
-        ref.height = size * pixelRatio;
-        ref.style.width = size + 'px';
-        ref.style.height = size + 'px';
-        ctx.scale(pixelRatio, pixelRatio);
-      }
       this.drawCanvas();
     }
   };
