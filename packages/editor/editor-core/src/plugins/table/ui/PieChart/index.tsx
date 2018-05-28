@@ -9,7 +9,6 @@ import {
   akColorN300,
 } from '@atlaskit/util-shared-styles';
 import { PieChartEntry } from '../../nodeviews/graphs/transformer';
-import backgroundColor from '@atlaskit/icon/glyph/editor/background-color';
 
 export const degsToRadians = (degs: number) => {
   return degs / 360 * (2 * Math.PI);
@@ -25,6 +24,9 @@ const COLORS = [
   akColorN300,
 ];
 
+// improves quality, taken from here: https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
+const SCALE = 10;
+
 export interface Props {
   data: Array<PieChartEntry>;
   colors?: Array<string>;
@@ -39,7 +41,7 @@ export default class PieChart extends React.Component<Props, any> {
   static defaultProps = {
     colors: COLORS,
     size: 250,
-    lineWidth: 35,
+    lineWidth: 60,
     legentAlignment: 'left',
   };
 
@@ -88,8 +90,8 @@ export default class PieChart extends React.Component<Props, any> {
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const center = this.props.size! / 4;
-    const lineWidth = this.props.lineWidth!;
+    const center = this.props.size! / (2 * SCALE);
+    const lineWidth = this.props.lineWidth! / SCALE;
     const colors = this.props.colors!;
     const radius = center - lineWidth / 2;
     ctx.lineWidth = lineWidth;
@@ -120,8 +122,7 @@ export default class PieChart extends React.Component<Props, any> {
     if (ref) {
       this.canvas = ref;
       const ctx = ref.getContext('2d')!;
-      // improves quality, taken from here: https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
-      ctx.scale(2, 2);
+      ctx.scale(SCALE, SCALE);
       this.drawPie();
     }
   };

@@ -177,6 +177,8 @@ export const tableStyles = `
 
         li {
           margin-bottom: 16px;
+          display: flex;
+          align-items: center;
         }
         li:last-child {
           margin-bottom: 0;
@@ -189,7 +191,6 @@ export const tableStyles = `
           width: 16px;
         }
         .ProseMirror-piechart_title {
-          font-size: 120%;
           margin-left: 8px;
         }
       }
