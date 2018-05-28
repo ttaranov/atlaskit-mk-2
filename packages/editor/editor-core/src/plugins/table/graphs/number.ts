@@ -1,36 +1,26 @@
 import { Node } from 'prosemirror-model';
-import { containsHeaderRow, containsHeaderColumn } from '../../utils';
+import { containsHeaderRow, containsHeaderColumn } from '../utils';
 import { EditorState } from 'prosemirror-state';
+import {
+  GraphTransformer,
+  NumberChartDataset,
+  NumberChartEntry,
+} from './types';
 
-interface GraphTransformer {
-  toChart: () => object;
-  fromChart: (chartData: object[]) => Node;
-}
-
-type PieChartEntry = {
-  title: string;
-  value: number;
-};
-
-type PieChartData = {
-  legend: string[];
-  entries: PieChartEntry[];
-};
-
-class PieTransformer implements GraphTransformer {
+class NumberTransformer implements GraphTransformer {
   private node: Node;
   private state: EditorState;
 
-  private dataColumnIdx = 1;
+  private dataSourceColumns = [1];
 
   constructor(state, node) {
     this.state = state;
     this.node = node;
   }
 
-  toChart(): PieChartData {
+  toChart(): NumberChartDataset {
     const legend: string[] = [];
-    const entries: PieChartEntry[] = [];
+    const entries: NumberChartEntry[] = [];
 
     const haveHeaderRow = containsHeaderRow(this.state, this.node);
     const haveHeaderColumn = containsHeaderColumn(this.state, this.node);
@@ -54,7 +44,9 @@ class PieTransformer implements GraphTransformer {
 
         entries.push({
           title,
-          value: Number(row.child(this.dataColumnIdx).textContent),
+          values: this.dataSourceColumns.map(dataColumnIdx =>
+            Number(row.child(dataColumnIdx).textContent),
+          ),
         });
       }
     });
@@ -70,4 +62,4 @@ class PieTransformer implements GraphTransformer {
   }
 }
 
-export { PieTransformer, GraphTransformer, PieChartData, PieChartEntry };
+export { NumberTransformer };

@@ -8,7 +8,7 @@ import {
   akColorT300,
   akColorN300,
 } from '@atlaskit/util-shared-styles';
-import { PieChartEntry } from '../../nodeviews/graphs/transformer';
+import { NumberChartEntry } from '../../graphs/number';
 
 export const degsToRadians = (degs: number) => {
   return degs / 360 * (2 * Math.PI);
@@ -28,7 +28,7 @@ const COLORS = [
 const SCALE = 10;
 
 export interface Props {
-  data: Array<PieChartEntry>;
+  data: Array<NumberChartEntry>;
   colors?: Array<string>;
   size?: number;
   lineWidth?: number;
@@ -97,13 +97,13 @@ export default class PieChart extends React.Component<Props, any> {
     ctx.lineWidth = lineWidth;
 
     const dataTotal = this.props.data.reduce(
-      (r, dataPoint) => r + dataPoint.value,
+      (r, dataPoint) => r + dataPoint.values[0],
       0,
     );
     let startAngle = degsToRadians(-90);
     let colorIndex = 0;
     this.props.data.forEach((dataPoint, i) => {
-      const section = dataPoint.value / dataTotal * 360;
+      const section = dataPoint.values[0] / dataTotal * 360;
       const endAngle = startAngle + degsToRadians(section);
       const color = colors[colorIndex];
       colorIndex++;

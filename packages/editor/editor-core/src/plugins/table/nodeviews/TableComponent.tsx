@@ -26,8 +26,11 @@ const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
 
 import { Props } from './table';
-import { GraphTransformer, PieTransformer } from './graphs';
-import { PieChartData } from './graphs/transformer';
+import {
+  GraphTransformer,
+  NumberTransformer,
+  TimelineTransformer,
+} from '../graphs';
 
 export interface ComponentProps extends Props {
   contentDOM: (element: HTMLElement | undefined) => void;
@@ -104,11 +107,19 @@ class TableComponent extends React.Component<ComponentProps> {
     let graphTransformer: GraphTransformer | undefined;
     let chartData;
 
-    if (this.state.chartType === 'pie') {
-      graphTransformer = new PieTransformer(
+    if (node.attrs.viewMode === 'donut') {
+      graphTransformer = new NumberTransformer(
         this.props.view.state,
         this.props.node,
       );
+    } else if (node.attrs.viewMode === 'timeline') {
+      graphTransformer = new TimelineTransformer(
+        this.props.view.state,
+        this.props.node,
+      );
+    }
+
+    if (graphTransformer) {
       chartData = graphTransformer.toChart();
     }
 
@@ -183,11 +194,14 @@ class TableComponent extends React.Component<ComponentProps> {
                 </div>
                 {columnShadows}
               </div>
-              {chartData ? (
+              {chartData && node.attrs.viewMode === 'donut' ? (
                 <PieChart
                   data={(chartData as PieChartData).entries}
                   legentAlignment="left"
                 />
+              ) : null}
+              {chartData && node.attrs.viewMode === 'timeline' ? (
+                <p>hello</p>
               ) : null}
             </div>
           );

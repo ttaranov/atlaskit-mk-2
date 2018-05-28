@@ -7,6 +7,7 @@ export const DefaultDocument: any = {
       attrs: {
         isNumberColumnEnabled: false,
         layout: 'default',
+        viewMode: 'donut',
       },
       content: [
         {
@@ -478,6 +479,7 @@ export const DefaultDocument: any = {
       attrs: {
         isNumberColumnEnabled: false,
         layout: 'default',
+        viewMode: 'timeline',
       },
       content: [
         {
