@@ -187,11 +187,11 @@ export const tableStyles = `
         .ProseMirror-piechart_bullet {
           border-radius: 3px;
           display: inline-block;
-          height: 16px;
-          width: 16px;
+          height: 12px;
+          width: 12px;
         }
         .ProseMirror-piechart_title {
-          margin-left: 8px;
+          margin-left: 10px;
         }
       }
     }

@@ -10,46 +10,64 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { NumberChartEntry } from '../../graphs';
 
-export const degsToRadians = (degs: number) => {
+const degreesToRadians = (degs: number) => {
   return degs / 360 * (2 * Math.PI);
 };
 
 const COLORS = [
-  akColorB300,
+  akColorP300,
+  akColorG300,
   akColorR300,
   akColorY300,
-  akColorG300,
-  akColorP300,
+  akColorB300,
   akColorT300,
   akColorN300,
 ];
 
-const STROKE_WIDTH = 5;
-
-// improves quality, taken from here: https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
-const SCALE = 5;
+const getPixelRatio = () => {
+  const ctx = document.createElement('canvas').getContext('2d') as any;
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const backingStoreRatio =
+    ctx.webkitBackingStorePixelRatio ||
+    ctx.mozBackingStorePixelRatio ||
+    ctx.msBackingStorePixelRatio ||
+    ctx.oBackingStorePixelRatio ||
+    ctx.backingStorePixelRatio ||
+    1;
+  return devicePixelRatio / backingStoreRatio;
+};
 
 export interface Props {
   data: Array<NumberChartEntry>;
+  dividerWidth?: number;
   colors?: Array<string>;
-  size?: number;
   lineWidth?: number;
   legentAlignment?: 'left' | 'right';
+  size?: number;
 }
 
-export default class PieChart extends React.Component<Props, any> {
+export interface State {
+  pixelRatio: number;
+}
+
+export default class PieChart extends React.Component<Props, State> {
   canvas?: HTMLCanvasElement;
+
+  state: State = {
+    pixelRatio: getPixelRatio(),
+  };
 
   static defaultProps = {
     colors: COLORS,
-    size: 250,
-    lineWidth: 60,
+    dividerWidth: 3,
+    lineWidth: 50,
     legentAlignment: 'left',
+    size: 250,
   };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      this.drawPie();
+      this.drawCanvas();
     }
   }
 
@@ -76,72 +94,79 @@ export default class PieChart extends React.Component<Props, any> {
             })}
           </ul>
         )}
-        <canvas
-          ref={this.handleRef}
-          height={this.props.size}
-          width={this.props.size}
-        />
+        <canvas ref={this.handleRef} />
       </div>
     );
   }
 
-  private drawPie = () => {
+  private drawCanvas = () => {
     const canvas = this.canvas!;
     const ctx = canvas.getContext('2d')!;
 
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const center = this.props.size! / (2 * SCALE);
-    const lineWidth = this.props.lineWidth! / SCALE;
+    const center = this.props.size! / 2;
+    const lineWidth = this.props.lineWidth!;
+    const dividerWidth = this.props.dividerWidth!;
     const colors = this.props.colors!;
     const radius = center - lineWidth / 2;
+    const { data } = this.props;
 
-    const dataTotal = this.props.data.reduce(
+    const totalValue = data.reduce(
       (r, dataPoint) => r + dataPoint.values[0],
       0,
     );
-    let startAngle = degsToRadians(-90);
-    let colorIndex = 0;
-    this.props.data.forEach((dataPoint, index) => {
-      const section = dataPoint.values[0] / dataTotal * 360;
-      const endAngle = startAngle + degsToRadians(section);
-      const color = colors[colorIndex];
-      colorIndex++;
-      if (colorIndex >= colors.length) {
-        colorIndex = 0;
-      }
-      // pie section
+    let angleFrom = degreesToRadians(-90);
+    let colorIdx = 0;
+    data.forEach((item, index) => {
+      const itemValue = item.values[0];
+      const section = itemValue / totalValue * 360;
+      const angleTo = angleFrom + degreesToRadians(section);
+
+      // section
       ctx.beginPath();
       ctx.lineWidth = lineWidth;
-      ctx.strokeStyle = color;
-      ctx.arc(center, center, radius, startAngle, endAngle);
+      ctx.strokeStyle = colors[colorIdx];
+      ctx.arc(center, center, radius, angleFrom, angleTo);
       ctx.stroke();
 
-      // white stroke
+      // divider
       ctx.beginPath();
+      ctx.lineWidth = dividerWidth * (index === data.length - 1 ? 1 : 2);
       ctx.strokeStyle = 'white';
-      ctx.lineWidth =
-        (index === this.props.data.length - 1
-          ? STROKE_WIDTH / 2
-          : STROKE_WIDTH) / SCALE;
       ctx.moveTo(center, center);
       ctx.lineTo(
-        center + radius * 2 * Math.cos(endAngle),
-        center + radius * 2 * Math.sin(endAngle),
+        center + radius * 2 * Math.cos(angleTo),
+        center + radius * 2 * Math.sin(angleTo),
       );
       ctx.stroke();
 
-      startAngle = endAngle;
+      angleFrom = angleTo;
+      colorIdx++;
+      if (colorIdx === colors.length) {
+        colorIdx = 0;
+      }
     });
   };
 
   private handleRef = ref => {
     if (ref) {
       this.canvas = ref;
-      const ctx = ref.getContext('2d')!;
-      ctx.scale(SCALE, SCALE);
-      this.drawPie();
+      const { pixelRatio } = this.state;
+
+      // upscale the canvas
+      // @see https://www.html5rocks.com/en/tutorials/canvas/hidpi/
+      if (pixelRatio !== 1) {
+        const ctx = ref.getContext('2d')!;
+        const size = this.props.size!;
+        ref.width = size * pixelRatio;
+        ref.height = size * pixelRatio;
+        ref.style.width = size + 'px';
+        ref.style.height = size + 'px';
+        ctx.scale(pixelRatio, pixelRatio);
+      }
+      this.drawCanvas();
     }
   };
 }
