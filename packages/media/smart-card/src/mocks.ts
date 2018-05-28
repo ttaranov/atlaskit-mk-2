@@ -8,7 +8,8 @@ const context = '';
 const serviceAuth = {
   key: 'default',
   displayName: 'Google Drive',
-  url: 'https://www.google.com/',
+  url:
+    'https://id.stg.internal.atlassian.com/outboundAuth/start?containerId=e3e9e187-1d64-4812-a522-e4069a46fab8&serviceKey=default&redirectUrl=http%3A%2F%2Flocalhost%3A8081%2Fapps%2Foutbound-auth%2Ffinish',
 };
 
 const generator = {
@@ -117,6 +118,6 @@ mock.post(`${resolveUrl}`, (req, res) => {
         res.status(404);
         resolve(res);
       }
-    }, 900);
+    }, 1500);
   });
 });

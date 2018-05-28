@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
-import { Client } from '../Client';
+import CancelablePromise from '@jameslnewell/cancelable-promise';
+import { Client, ObjectInfo } from '../Client';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
 import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
 import { Frame as CollapsedFrame } from './collapsed/Frame';
@@ -84,6 +85,8 @@ export class Card extends React.Component<CardProps, CardState> {
     smartCardClient: PropTypes.object,
   };
 
+  private fetching?: CancelablePromise<ObjectInfo | undefined>;
+
   context: CardContext;
 
   state: CardState = getLoadingState();
@@ -116,7 +119,17 @@ export class Card extends React.Component<CardProps, CardState> {
 
     try {
       const { url } = this.props;
-      const json = await client.get(url);
+
+      // cancel any previous requests
+      if (this.fetching) {
+        this.fetching.cancel();
+      }
+
+      // start a new request
+      this.fetching = client.get(url);
+
+      // wait for the new request
+      const json = await this.fetching;
 
       if (json === undefined) {
         this.setState(getNotFoundState());
@@ -138,6 +151,7 @@ export class Card extends React.Component<CardProps, CardState> {
           this.setState(getResolvedState(props));
       }
     } catch (error) {
+      console.log('failure', error);
       // swallow the error and show a generic error message
       this.setState(getFailedState());
     }

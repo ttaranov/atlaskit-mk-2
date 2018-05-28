@@ -1,9 +1,14 @@
+import CancelablePromise from '@jameslnewell/cancelable-promise';
+
 // TODO: introduce some form of caching???
-// TODO: introduce the ability to cancel requests
 
 export interface ObjectInfo {
   meta: {
     visibility: 'public' | 'restricted' | 'other';
+    access: 'granted' | 'unauthorised' | 'forbidden';
+  };
+  data?: {
+    [name: string]: any;
   };
 }
 
@@ -21,8 +26,8 @@ export class Client {
     this.baseUrl = baseUrl;
   }
 
-  async get(url: string): Promise<ObjectInfo | undefined> {
-    return new Promise<ObjectInfo | undefined>((resolve, reject) => {
+  get(url: string): CancelablePromise<ObjectInfo | undefined> {
+    return new CancelablePromise<ObjectInfo | undefined>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('post', `${this.baseUrl}/resolve`);
       xhr.setRequestHeader('Cache-Control', 'no-cache');
@@ -52,6 +57,7 @@ export class Client {
           resourceUrl: encodeURI(url),
         }),
       );
+      return () => xhr.abort();
     });
   }
 }
