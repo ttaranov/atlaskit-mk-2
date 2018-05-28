@@ -1,33 +1,37 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
-import { DummyComponentWithAnalytics } from '../example-helpers';
-import debug, { enableLogger } from '../example-helpers/logger';
+import {
+  DummyComponentWithAnalytics,
+  DummyAtlaskitComponentWithAnalytics,
+} from '../examples/helpers';
 
 const myOnClickHandler = () => {
-  debug('DIV clicked ! Yay!');
+  console.log('Button clicked ! Yay!');
 };
 
 const analyticsWebClientMock = {
   sendUIEvent: event => {
-    debug('sendUIEvent: ', event);
+    console.log('sendUIEvent: ', event);
   },
   sendOperationalEvent: event => {
-    debug('sendOperationalEvent: ', event);
+    console.log('sendOperationalEvent: ', event);
   },
   sendTrackEvent: (event: any) => {
-    debug('sendTrackEvent: ', event);
+    console.log('sendTrackEvent: ', event);
   },
   sendScreenEvent: (event: any) => {
-    debug('sendScreenEvent: ', event);
+    console.log('sendScreenEvent: ', event);
   },
 };
 
 export default function Example() {
-  enableLogger(true);
   return (
     <FabricAnalyticsListeners client={analyticsWebClientMock}>
-      <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+      <div>
+        <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+        <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
+      </div>
     </FabricAnalyticsListeners>
   );
 }
