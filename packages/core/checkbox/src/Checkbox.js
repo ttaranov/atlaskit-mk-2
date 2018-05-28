@@ -3,6 +3,14 @@
 import React, { Component } from 'react';
 import CheckboxStateless from './CheckboxStateless';
 
+type Common = {|
+  /** The name of the submitted field in a checkbox. */
+  name: string,
+  /** The value to be used in the checkbox input. This is the value that will
+   be returned on form submission. */
+  value: number | string,
+|};
+
 type Props = {|
   /** Sets whether the checkbox begins checked. */
   initiallyChecked?: boolean,
@@ -13,18 +21,17 @@ type Props = {|
   /** The label to be displayed to the right of the checkbox. The label is part
    of the clickable element to select the checkbox. */
   label: string,
-  /** The name of the submitted field in a checkbox. */
-  name: string,
   /** Marks the field as invalid. Changes style of unchecked component. */
   isInvalid?: boolean,
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
   new state of the checkbox. */
-  onChange?: ({ event: SyntheticEvent<any>, isChecked: boolean }) => mixed,
-  /** The value to be used in the checkbox input. This is the value that will
-   be returned on form submission. */
-  value: number | string,
-|};
+  onChange?: ({
+    event: SyntheticEvent<any>,
+    isChecked: boolean,
+    ...Common,
+  }) => mixed,
+|} & Common;
 
 type State = {
   isChecked: boolean,
