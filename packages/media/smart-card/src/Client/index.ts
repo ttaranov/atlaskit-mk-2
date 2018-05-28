@@ -1,5 +1,4 @@
-import { ObjectState } from './ObjectState';
-import { ObjectStateStream } from './ObjectStateStream';
+import { ObjectStateProvider } from './ObjectStateProvider';
 
 export interface ClientOptions {
   serviceUrl?: string;
@@ -15,11 +14,10 @@ export class Client {
     this.serviceUrl = serviceUrl;
   }
 
-  get(url: string, callback: (state: ObjectState) => void): ObjectStateStream {
-    return new ObjectStateStream({
+  get(url: string): ObjectStateProvider {
+    return new ObjectStateProvider({
       serviceUrl: this.serviceUrl,
       objectUrl: url,
-      callback,
     });
   }
 }
