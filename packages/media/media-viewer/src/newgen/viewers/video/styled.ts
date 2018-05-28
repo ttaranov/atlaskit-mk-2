@@ -67,6 +67,8 @@ export const CurrentTimeLine = styled.div`
   height: inherit;
   position: absolute;
   top: 0;
+  min-width: 17px;
+  max-width: 100%;
 `;
 
 export const Thumb = styled.div`
@@ -79,6 +81,10 @@ export const Thumb = styled.div`
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+
+  &:hover .current-time-tooltip {
+    opacity: 1;
+  }
 `;
 
 export const BufferedTime = styled.div`
@@ -96,9 +102,10 @@ export const RightControls = styled.div`
 
 export const ControlsWrapper = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   left: 0;
   width: 100%;
+  padding: 10px 0px 20px 0;
 `;
 
 export const VolumeToggleWrapper = styled.div`
@@ -130,4 +137,24 @@ export const MuttedIndicator = styled.div`
 
 export const VolumeRange = styled.input`
   margin-left: 20px;
+`;
+
+export interface CurrentTimeTooltipProps {
+  isDragging: boolean;
+}
+
+export const CurrentTimeTooltip = styled.div`
+  position: absolute;
+  user-select: none;
+  top: -28px;
+  background-color: #182c4c;
+  color: #eff1f3;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: ${(props: CurrentTimeTooltipProps) =>
+    props.isDragging ? '1' : '0'};
+  transition: opacity 0.3s;
 `;

@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { TimeLine, CurrentTimeLine, Thumb, BufferedTime } from './styled';
+import {
+  TimeLine,
+  CurrentTimeLine,
+  Thumb,
+  BufferedTime,
+  CurrentTimeTooltip,
+} from './styled';
+import { formatDuration } from '../../utils/formatDuration';
 
 export interface TimeRangeProps {
   currentTime: number;
@@ -33,19 +40,22 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     if (!isDragging) {
       return;
     }
+    e.stopPropagation();
 
     const { currentTime, onChange, duration } = this.props;
     const { movementX } = e;
     const thumbCorrection = 18;
     const movementPercentage =
       Math.abs(movementX) * 100 / duration / thumbCorrection;
+    const newTime =
+      currentTime + (movementX > 0 ? movementPercentage : -movementPercentage);
+    const newTimeWithBoundaries = Math.min(Math.max(newTime, 0), duration);
 
-    onChange(
-      currentTime + (movementX > 0 ? movementPercentage : -movementPercentage),
-    );
+    onChange(newTimeWithBoundaries);
   };
 
-  onMouseUp = () => {
+  onMouseUp = (e: MouseEvent) => {
+    e.stopPropagation();
     this.setState({
       isDragging: false,
     });
@@ -68,6 +78,7 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
   };
 
   render() {
+    const { isDragging } = this.state;
     const { currentTime, duration, bufferedTime } = this.props;
     const currentPosition = currentTime * 100 / duration;
     const bufferedTimePercentage = bufferedTime * 100 / duration;
@@ -76,7 +87,14 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
       <TimeLine onClick={this.onNavigate}>
         <BufferedTime style={{ width: `${bufferedTimePercentage}%` }} />
         <CurrentTimeLine style={{ width: `${currentPosition}%` }}>
-          <Thumb onMouseDown={this.onThumbMouseDown} />
+          <Thumb onMouseDown={this.onThumbMouseDown}>
+            <CurrentTimeTooltip
+              isDragging={isDragging}
+              className="current-time-tooltip"
+            >
+              {formatDuration(currentTime)}
+            </CurrentTimeTooltip>
+          </Thumb>
         </CurrentTimeLine>
       </TimeLine>
     );
