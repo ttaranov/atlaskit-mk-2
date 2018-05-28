@@ -110,8 +110,6 @@ class TableComponent extends React.Component<ComponentProps> {
         this.props.node,
       );
       chartData = graphTransformer.toChart();
-
-      console.log('chart data', chartData);
     }
 
     return (
