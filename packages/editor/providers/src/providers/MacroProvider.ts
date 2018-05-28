@@ -16,7 +16,7 @@ export interface MacroAttributes {
   content?: any; // only bodiedExtension has content
 }
 
-export interface MacroProvider {
+export default interface MacroProvider {
   config: {};
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
@@ -24,4 +24,4 @@ export interface MacroProvider {
   openMacroBrowser(macroNode?: PmNode): Promise<MacroAttributes>;
 
   autoConvert(link: String): MacroAttributes | null;
-}
+};

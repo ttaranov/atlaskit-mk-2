@@ -1,5 +1,17 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadParams, MediaFile } from '@atlaskit/media-picker';
+export { Context } from '@atlaskit/media-core';
+
+export interface UploadParams {
+  collection?: string;
+}
+
+export interface MediaFile {
+  readonly id: string;
+  readonly name: string;
+  readonly size: number;
+  readonly creationDate: number;
+  readonly type: string;
+}
 
 export type MediaStateStatus =
   | 'unknown'
@@ -56,3 +68,35 @@ export interface CustomMediaPicker {
   destroy(): void;
   setUploadParams(uploadParams: UploadParams);
 }
+
+export default interface MediaProvider {
+  uploadParams?: UploadParams;
+
+  /**
+   * A manager notifying subscribers on changes in Media states
+   */
+  stateManager?: MediaStateManager;
+
+  /**
+   * Used for displaying Media Cards and downloading files.
+   * This is context config is required.
+   */
+  viewContext: Promise<Context>;
+
+  /**
+   * (optional) Used for creating new uploads and finalizing files.
+   * NOTE: We currently don't accept Context instance, because we need config properties
+   *       to initialize
+   */
+  uploadContext?: Promise<Context>;
+
+  /**
+   * (optional) Used for creation of new Media links.
+   */
+  linkCreateContext?: Promise<Context>;
+
+  /**
+   * (optional) For any additional feature to be enabled
+   */
+  featureFlags?: FeatureFlags;
+};

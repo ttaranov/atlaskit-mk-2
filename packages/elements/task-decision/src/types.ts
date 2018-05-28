@@ -184,30 +184,6 @@ export interface TaskDecisionResourceConfig extends ServiceConfig {
   pubSubClient?: PubSubClient;
 }
 
-export interface TaskDecisionProvider {
-  getDecisions(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<DecisionResponse>;
-  getTasks(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<TaskResponse>;
-  getItems(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<ItemResponse>;
-
-  unsubscribeRecentUpdates(id: RecentUpdatesId);
-  notifyRecentUpdates(updateContext: RecentUpdateContext);
-
-  // Tasks
-  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
-  subscribe(objectKey: ObjectKey, handler: Handler): void;
-  unsubscribe(objectKey: ObjectKey, handler: Handler): void;
-  getCurrentUser?(): User | undefined;
-}
-
 /**
  * Same as RendererContext in editor-core (don't want an direct dep though)
  */
