@@ -42,7 +42,8 @@ export const updateExtensionLayout = layout => (
     schema.nodes.bodiedExtension,
   ])(state.selection);
 
-  let extPosition, extNode;
+  let extPosition;
+  let extNode;
 
   if (!parentExtNode && !(selection instanceof NodeSelection)) {
     return;
@@ -50,16 +51,16 @@ export const updateExtensionLayout = layout => (
 
   /** set the position and node to update markup */
   if (selection instanceof NodeSelection) {
-    extPosition = $from.pos + 1;
+    extPosition = $from.pos;
     extNode = selection.node;
   } else {
-    extPosition = parentExtNode!.pos;
+    extPosition = parentExtNode!.pos - 1;
     extNode = parentExtNode!.node;
   }
 
   /** Intentionally setting `undefined` here to preserve the type of node */
   dispatch(
-    tr.setNodeMarkup(Math.max(0, extPosition - 1), undefined, {
+    tr.setNodeMarkup(Math.max(0, extPosition), undefined, {
       ...extNode!.attrs,
       layout,
     }),
