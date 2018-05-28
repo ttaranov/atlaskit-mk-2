@@ -1,4 +1,3 @@
-// TODO: Add tests
 export const formatDuration = (duration: number) => {
   const seconds = parseInt(`${duration}`, 10);
   const hours = Math.floor(seconds / 3600);
