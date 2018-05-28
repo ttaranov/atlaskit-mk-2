@@ -8,7 +8,7 @@ import {
   akColorT300,
   akColorN300,
 } from '@atlaskit/util-shared-styles';
-import { NumberChartEntry } from '../../graphs/number';
+import { NumberChartEntry } from '../../graphs';
 
 export const degsToRadians = (degs: number) => {
   return degs / 360 * (2 * Math.PI);
