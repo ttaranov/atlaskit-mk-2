@@ -17,6 +17,7 @@ export const A: ComponentClass<LinkHTMLAttributes<{}>> = styled.a`
   &:hover {
     text-decoration: none;
     background-color: ${akColorN20};
+    text-decoration: underline;
   }
 `;
 
@@ -29,13 +30,6 @@ export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   height: 16px;
   margin-right: 2px;
   vertical-align: text-bottom;
-`;
-
-export const Text: ComponentClass<HTMLAttributes<{}>> = styled.span`
-  /* Hack required to avoid typescript complaining */
-  ${A as any}:hover & {
-    text-decoration: underline;
-  }
 `;
 
 export const LozengeWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
