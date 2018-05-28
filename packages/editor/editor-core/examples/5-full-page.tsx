@@ -20,6 +20,8 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { DevTools } from '../example-helpers/DevTools';
 
+import { DefaultDocument } from './timeline-document';
+
 export const TitleInput: any = styled.input`
   border: none;
   outline: none;
@@ -145,6 +147,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             allowDate={true}
             UNSAFE_allowLayouts={true}
             allowGapCursor={true}
+            defaultValue={DefaultDocument}
             allowTemplatePlaceholders={{ allowInserting: true }}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
