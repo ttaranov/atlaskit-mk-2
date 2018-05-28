@@ -3,15 +3,28 @@ import React from 'react';
 import { Link, MemoryRouter } from 'react-router-dom';
 import Button from '../src';
 
-class RouterLink extends React.PureComponent {
+type Props = {
+  children: Node,
+  className: string,
+  href: Link,
+  onMouseEnter: Event,
+  onMouseLeave: Event,
+};
+class RouterLink extends React.PureComponent<Props, {}> {
   render() {
-    const { href, children, onMouseDown, onClick, className } = this.props;
+    const {
+      children,
+      className,
+      href,
+      onMouseEnter,
+      onMouseLeave,
+    } = this.props;
 
     return (
       <Link
         className={className}
-        onMouseDown={onMouseDown}
-        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         to={href}
       >
         {children}

@@ -44,7 +44,7 @@ const createStyledComponent = () => {
     // problem with styled-components flow definitions
     // $FlowFixMe
     CustomComponentProxy,
-  )`{${getButtonStyles}}`;
+  )`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
   component.displayName = 'StyledCustomComponent';
   return component;
 };
@@ -88,7 +88,9 @@ class Button extends Component<ButtonProps, State> {
 
   customComponent = null;
 
-  onMouseEnter = () => this.setState({ isHover: true });
+  onMouseEnter = () => {
+    this.setState({ isHover: true });
+  };
 
   onMouseLeave = () => this.setState({ isHover: false, isActive: false });
 
@@ -162,7 +164,6 @@ class Button extends Component<ButtonProps, State> {
       (iconBefore && !iconAfter && !children) ||
       (iconAfter && !iconBefore && !children)
     );
-
     return (
       <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
