@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 35.0.4
+- [patch] FS-1954 fix emoji remove button truncation [5ed86f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ed86f9)
+- [none] Updated dependencies [5ed86f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ed86f9)
+
 ## 35.0.3
 - [patch] FS-1206 remove AtlassianEmojiMigrationResource [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
 - [none] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
