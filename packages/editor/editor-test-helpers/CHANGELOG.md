@@ -1,5 +1,10 @@
 # @atlaskit/editor-test-helpers
 
+## 4.0.1
+- [patch] Fixing the toolbar for extensions [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
+- [none] Updated dependencies [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
+  - @atlaskit/editor-core@72.1.4
+
 ## 4.0.0
 
 

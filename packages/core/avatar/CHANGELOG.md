@@ -1,5 +1,9 @@
 # @atlaskit/avatar
 
+## 10.0.7
+- [patch] Fix text color for items with href in AvatarGroup [2cbb9ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cbb9ff)
+- [none] Updated dependencies [2cbb9ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cbb9ff)
+
 ## 10.0.6
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

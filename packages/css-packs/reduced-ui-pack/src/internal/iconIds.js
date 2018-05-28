@@ -154,6 +154,7 @@ const iconIds = [
   'emoji/nature',
   'emoji/objects',
   'emoji/people',
+  'emoji/productivity',
   'emoji/symbols',
   'emoji/travel',
   'error',

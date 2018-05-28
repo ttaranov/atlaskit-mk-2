@@ -63,7 +63,7 @@ describe('insert media', () => {
           {
             type: 'media',
             attrs: {
-              id: 'temporary:116ba70f-9e28-41a1-ac81-6cdaef0665a0',
+              id: 'e94c3f67-5ac3-42b2-bf6a-ce35bb787894',
               collection: 'FabricSampleCollection',
               type: 'file',
             },

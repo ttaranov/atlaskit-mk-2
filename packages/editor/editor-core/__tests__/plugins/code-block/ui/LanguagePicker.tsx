@@ -12,9 +12,11 @@ import {
   CodeBlockState,
   stateKey as codeBlockPluginKey,
 } from '../../../../src/plugins/code-block/pm-plugins/main';
-import { TrashToolbarButton } from '../../../../src/plugins/code-block/ui/LanguagePicker/styles';
+import {
+  FloatingToolbar,
+  TrashToolbarButton,
+} from '../../../../src/plugins/code-block/ui/LanguagePicker/styles';
 import LanguagePicker from '../../../../src/plugins/code-block/ui/LanguagePicker';
-import FloatingToolbar from '../../../../src/ui/FloatingToolbar';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {

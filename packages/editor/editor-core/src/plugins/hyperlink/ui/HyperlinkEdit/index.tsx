@@ -1,21 +1,21 @@
-import OpenIcon from '@atlaskit/icon/glyph/editor/open';
-import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
-import { ActivityProvider } from '@atlaskit/activity';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EditorView } from 'prosemirror-view';
-import {
-  addFakeTextCursor,
-  removeFakeTextCursor,
-} from '../../../fake-text-cursor/cursor';
+import { ResolvedPos, MarkType } from 'prosemirror-model';
+import styled from 'styled-components';
+
+import { ActivityProvider } from '@atlaskit/activity';
+import OpenIcon from '@atlaskit/icon/glyph/editor/open';
+import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
+
+import { removeFakeTextCursor } from '../../../fake-text-cursor/cursor';
 import PanelTextInput from '../../../../ui/PanelTextInput';
-import ToolbarButton from '../../../../ui/ToolbarButton';
-import FloatingToolbar from '../../../../ui/FloatingToolbar';
-import Separator from '../../../../ui/Separator';
+import UiToolbarButton from '../../../../ui/ToolbarButton';
+import UiFloatingToolbar from '../../../../ui/FloatingToolbar';
+import UiSeparator from '../../../../ui/Separator';
 import { HyperlinkState } from '../../pm-plugins/main';
 import { normalizeUrl } from '../../utils';
 import RecentSearch from '../RecentSearch';
-import { ResolvedPos, MarkType } from 'prosemirror-model';
 
 const TEXT_NODE = 3;
 
@@ -50,11 +50,45 @@ export interface State {
   showToolbarPanel?: boolean;
 }
 
-const floatingStyleOverride = {
-  minHeight: '40px',
-  height: 'initial',
-  'margin-top': '6px',
-};
+// `line-height: 1` to fix extra 1px height from toolbar wrapper
+const FloatingToolbar = styled(UiFloatingToolbar)`
+  max-height: 350px;
+  min-height: 32px;
+  height: initial;
+  & > div {
+    line-height: 1;
+  }
+  & > div > button:last-child {
+    margin-right: 0;
+  }
+  .normal& input {
+    min-width: 244px;
+    margin-right: 2px;
+  }
+  .recent-search& {
+    padding: 8px 0 0;
+    input {
+      padding: 0 8px 8px;
+    }
+  }
+`;
+
+// `a&` because `Button` uses it and it produces a more specific selector `a.xyz`
+const ToolbarButton = styled(UiToolbarButton)`
+  width: 24px;
+  padding: 0;
+  margin: 0 2px;
+  a& {
+    width: 24px;
+    margin: 0 2px;
+  }
+`;
+
+// Need fixed height because parent has height inherit and `height: 100%` doesn't work because of that
+const Separator = styled(UiSeparator)`
+  margin: 2px 6px;
+  height: 20px;
+`;
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
   state: State = {
@@ -77,10 +111,6 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.setState({
       inputActive: true,
     });
-    if (this.state.editorFocused) {
-      const { editorView } = this.props;
-      addFakeTextCursor(editorView.state, editorView.dispatch);
-    }
   };
 
   resetInputActive = () => {
@@ -116,6 +146,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       }
     }
     if (!node) {
+      // Current position is fake cursor so we will look for the DOM right after our selection
+      // Since putting cursor at the end of the link doesn't show the popup so it's safe
       node = editorView.domAtPos(state.selection.$from.pos).node;
     }
     const activeElement = node as HTMLElement;
@@ -129,10 +161,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
    * because we need to show it next to cursor even without clear target for popup.
    */
   private adjustPosition = position => {
-    const { inputActive } = this.state;
     const { pluginState } = this.props;
 
-    if (!pluginState.active || inputActive) {
+    if (!pluginState.active) {
       const editorRoot = this.getOffsetParent();
 
       if (!editorRoot) {
@@ -191,29 +222,34 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
       return (
         <FloatingToolbar
+          alignX="left"
           target={popupTarget}
-          offset={[0, 3]}
-          fitHeight={renderRecentSearch ? 284 : 40}
+          offset={[0, 12]}
+          fitHeight={renderRecentSearch ? 350 : 32}
           onPositionCalculated={this.adjustPosition}
           popupsBoundariesElement={popupsBoundariesElement}
           popupsMountPoint={popupsMountPoint}
-          stylesOverride={floatingStyleOverride}
+          className={renderRecentSearch ? 'recent-search' : 'normal'}
         >
+          {this.renderInput()}
+          {(showOpenButton || showUnlinkButton) && <Separator />}
           {showOpenButton && (
             <ToolbarButton
+              spacing="compact"
               href={href}
               target="_blank"
+              title="Open link"
               iconBefore={<OpenIcon label="Open link" />}
             />
           )}
           {showUnlinkButton && (
             <ToolbarButton
+              spacing="compact"
               onClick={this.handleUnlink}
+              title="Unlink"
               iconBefore={<UnlinkIcon label="Unlink" />}
             />
           )}
-          {showUnlinkButton && <Separator />}
-          {this.renderInput()}
         </FloatingToolbar>
       );
     } else {

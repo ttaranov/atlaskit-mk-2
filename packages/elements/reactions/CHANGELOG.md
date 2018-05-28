@@ -1,5 +1,12 @@
 # @atlaskit/reactions
 
+## 12.0.10
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+
+## 12.0.9
+- [patch] FS-1959 use @atlaskit/tooltip for reactions tooltip [ec12b0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec12b0e)
+
 ## 12.0.8
 - [patch] FS-1975 place picker after reactions [4a6e1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a6e1c5)
 

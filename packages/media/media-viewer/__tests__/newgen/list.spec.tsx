@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
-import { List } from '../../src/newgen/list';
+import { List, Props } from '../../src/newgen/list';
 import { ErrorMessage } from '../../src/newgen/styled';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 
@@ -23,12 +23,24 @@ function createContext(subject) {
   ) as any;
 }
 
-function createFixture(items, identifier) {
+function createFixture(props: Partial<Props>) {
+  const items = [];
+  const selectedItem = {
+    id: '',
+    occurrenceKey: '',
+    type: 'file' as MediaItemType,
+  };
   const subject = new Subject<MediaItem>();
   const context = createContext(subject);
   const el = mount(
-    <List selectedItem={identifier} items={items} context={context} />,
+    <List
+      items={items}
+      selectedItem={selectedItem}
+      context={context}
+      {...props}
+    />,
   );
+
   return el;
 }
 
@@ -45,7 +57,10 @@ describe('<List />', () => {
       occurrenceKey: 'some-custom-occurrence-key',
       type: 'file' as MediaItemType,
     };
-    const el = createFixture([identifier, identifier2], identifier);
+    const el = createFixture({
+      items: [identifier, identifier2],
+      selectedItem: identifier,
+    });
     expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
     el.find(ArrowRightCircleIcon).simulate('click');
     expect(el.state().selectedItem).toMatchObject({ id: 'some-id-2' });
@@ -64,7 +79,20 @@ describe('<List />', () => {
       occurrenceKey: 'some-custom-occurrence-key',
       type: 'file' as MediaItemType,
     };
-    const el = createFixture(list, selectedItem);
+    const el = createFixture({ items: list, selectedItem });
     expect(el.find(ErrorMessage)).toHaveLength(1);
+  });
+
+  it('should show controls when navigation occurs', () => {
+    const showControls = jest.fn();
+    const el = createFixture({
+      items: [identifier, identifier, identifier],
+      selectedItem: identifier,
+      showControls,
+    });
+
+    el.find(ArrowRightCircleIcon).simulate('click');
+    el.find(ArrowRightCircleIcon).simulate('click');
+    expect(showControls).toHaveBeenCalledTimes(2);
   });
 });

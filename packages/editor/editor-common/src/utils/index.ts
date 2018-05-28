@@ -12,3 +12,4 @@ export {
 } from './error-reporter';
 export * from './date';
 export * from './imageLoader';
+export { default as ADFTraversor } from './traversor';

@@ -112,7 +112,35 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
           id: 'jerome',
           displayName: 'Jerome Touffe-Blin',
         },
-      ].slice(0, Math.floor(Math.random() * 3) + 1);
+        {
+          id: 'esoares',
+          displayName: 'Eduardo Soares',
+        },
+        {
+          id: 'lpereira',
+          displayName: 'Luiz Pereira',
+        },
+        {
+          id: 'pcurren',
+          displayName: 'Paul Curren',
+        },
+        {
+          id: 'ttjandra',
+          displayName: 'Tara Tjandra',
+        },
+        {
+          id: 'severington',
+          displayName: 'Ste Everington',
+        },
+        {
+          id: 'sguillope',
+          displayName: 'Sylvain Guillope',
+        },
+        {
+          id: 'alunnon',
+          displayName: 'Alex Lunnon',
+        },
+      ].slice(Math.floor(Math.random() * 4), Math.floor(Math.random() * 9) + 4);
 
       resolve({
         ...reaction,
@@ -214,7 +242,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
 
         if (reaction.count < 1) {
           reactionsState.reactions = reactionsState.reactions.filter(
-            (value, i) => index === i,
+            (value, i) => index !== i,
           );
         }
       }

@@ -32,6 +32,15 @@ export function escapeMarkdown(str: string, startOfLine?: boolean): string {
   return strToEscape;
 }
 
+const SPECIAL_CHARACTERS = /\u200c|↵/g;
+function removeSpecialCharacters(node: Node) {
+  if (node.nodeType === 3 && node.textContent) {
+    node.textContent = node.textContent.replace(SPECIAL_CHARACTERS, '');
+  }
+
+  Array.from(node.childNodes).forEach(child => removeSpecialCharacters(child));
+}
+
 /**
  * This function gets markup rendered by Bitbucket server and transforms it into markup that
  * can be consumed by Prosemirror HTML parser, conforming to our schema.
@@ -45,10 +54,7 @@ export function transformHtml(
 
   // Remove zero-width-non-joiner
   arrayFrom(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
-    const zwnj = /\u200c/g;
-    if (p.textContent && zwnj.test(p.textContent)) {
-      p.textContent = p.textContent.replace(zwnj, '');
-    }
+    removeSpecialCharacters(p);
   });
 
   // Convert mention containers, i.e.:
@@ -123,6 +129,25 @@ export function transformHtml(
   // Parse images
   arrayFrom(el.querySelectorAll('img:not(.emoji)')).forEach(
     (img: HTMLImageElement) => {
+      const { parentNode } = img;
+
+      if (!parentNode) {
+        return;
+      }
+
+      /**
+       * Lift image node if parent isn't the root-element
+       */
+      if (parentNode !== el) {
+        const isValidPath = validateImageNodeParent(parentNode);
+        if (!isValidPath) {
+          liftImageNode(parentNode, img);
+        }
+      }
+
+      /**
+       * Replace image with media node
+       */
       const mediaSingle = document.createElement('div');
       mediaSingle.setAttribute('data-node-type', 'mediaSingle');
 
@@ -133,107 +158,85 @@ export function transformHtml(
 
       mediaSingle.appendChild(media);
 
-      const { parentNode } = img;
-
-      if (!parentNode) {
-        return;
-      }
-
-      /**
-       * Replace the image node with mediaSingle if parent is the root-element
-       */
-      if (parentNode === el) {
-        parentNode.insertBefore(mediaSingle, img);
-      } else {
-        const { childNodes } = parentNode;
-
-        /**
-         * Insert mediaSingle before the parent node if the image node is it's only child, then
-         * remove the parent node.
-         */
-        if (childNodes.length === 1) {
-          parentNode.parentNode!.insertBefore(mediaSingle, parentNode);
-          parentNode.parentNode!.removeChild(parentNode);
-        } else {
-          /**
-           * If the image node is inline with other content we need to split the node. For example:
-           * Input:
-           *   <p>Hello <img src="image.jpg" /> World</p>
-           * Output:
-           *   <p>Hello</p>
-           *   <div data-node-type="mediaSingle">
-           *     <div data-node-type="media" data-type="external" data-url="image.jpg"></div>
-           *   </div>
-           *   <p>World</p>
-           *
-           * There's a special case for lists where we do allow mediaSingle as content. Example:
-           * Input:
-           *   <ul>
-           *     <li>Hello <img src="image.jpg" /> World<li>
-           *   </ul>
-           * Output:
-           *   <ul>
-           *     <li>
-           *       <p>Hello</p>
-           *       <div data-node-type="mediaSingle">
-           *         <div data-node-type="media" data-type="external" data-url="image.jpg"></div>
-           *       </div>
-           *       <p>World</p>
-           *     </li>
-           *   </ul>
-           */
-
-          let parent = parentNode;
-
-          if (parentNode.nodeName === 'LI') {
-            parent = document.createElement('p');
-            while (parentNode.firstChild) {
-              parent.appendChild(parentNode.firstChild);
-            }
-            parentNode.appendChild(parent);
-          }
-
-          const before: Node[] = [];
-          const after: Node[] = [];
-          let foundImg = false;
-
-          Array.from(parent.childNodes).forEach(child => {
-            if (child === img) {
-              foundImg = true;
-              parent.removeChild(child);
-            } else {
-              if (foundImg) {
-                after.push(child);
-              } else {
-                before.push(child);
-              }
-            }
-          });
-
-          if (before.length) {
-            const beforeNode = parent.cloneNode();
-            before.forEach(child => beforeNode.appendChild(child));
-
-            parent.parentNode!.insertBefore(beforeNode, parent);
-          }
-
-          parent.parentNode!.insertBefore(mediaSingle, parent);
-
-          if (after.length) {
-            const afterNode = parent.cloneNode();
-            after.forEach(child => afterNode.appendChild(child));
-            parent.parentNode!.insertBefore(afterNode, parent);
-          }
-
-          parent.parentNode!.removeChild(parent);
-        }
-      }
-
-      try {
-        parentNode.removeChild(img);
-      } catch (err) {}
+      img.parentNode!.insertBefore(mediaSingle, img);
+      img.parentNode!.removeChild(img);
     },
   );
+
+  function validateImageNodeParent(node: Node) {
+    const ALLOWED_PARENTS = [
+      'LI',
+      'UL',
+      'OL',
+      'TD',
+      'TH',
+      'TR',
+      'TBODY',
+      'THEAD',
+      'TABLE',
+    ];
+
+    if (node === el) {
+      return true;
+    }
+
+    if (ALLOWED_PARENTS.indexOf(node.nodeName) === -1) {
+      return false;
+    }
+
+    if (!node.parentNode) {
+      return false;
+    }
+
+    return validateImageNodeParent(node.parentNode);
+  }
+
+  function liftImageNode(node: Node, img: HTMLImageElement) {
+    let foundParent = false;
+    let parent = node;
+    while (!foundParent) {
+      foundParent = validateImageNodeParent(parent.parentNode!);
+      if (!foundParent) {
+        parent = parent.parentNode!;
+      }
+    }
+
+    const cloned = parent.cloneNode();
+    const target = parent !== el ? parent.parentNode! : el;
+
+    while (img.nextSibling) {
+      cloned.appendChild(img.nextSibling);
+    }
+
+    if (node !== parent) {
+      while (node.nextSibling) {
+        cloned.appendChild(node.nextSibling);
+      }
+    }
+
+    if (parent.nextSibling) {
+      target.insertBefore(cloned, parent.nextSibling);
+      target.insertBefore(img, cloned);
+    } else {
+      target.appendChild(img);
+      target.appendChild(cloned);
+    }
+
+    /**
+     * If the splitting operation results in
+     * the old parent being empty, remove it
+     */
+    if (node.childNodes.length === 0) {
+      node.parentNode!.removeChild(node);
+    }
+
+    /**
+     * Remove cloned element if it's empty.
+     */
+    if (cloned.childNodes.length === 0) {
+      cloned.parentNode!.removeChild(cloned);
+    }
+  }
 
   return el;
 }

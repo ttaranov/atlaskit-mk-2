@@ -1,5 +1,27 @@
 # @atlaskit/media-viewer
 
+## 14.4.1
+- [patch] Centering navigation arrows vertically in MVNG [d506235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d506235)
+
+## 14.4.0
+- [patch] Fix pageSize in MediaViewer NG [4eac436](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac436)
+- [minor] show controls when navigation happen in MediaViewer [3917aa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3917aa6)
+
+## 14.3.1
+- [patch] MSW-720 : pass collectionName to all the places for correct auth [f7fa512](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7fa512)
+
+## 14.3.0
+- [minor] Add zoom level for image and document viewer [856dfae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/856dfae)
+
+## 14.2.0
+- [minor] Add keyboard shortcuts to MediaViewer NG [52c56c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52c56c1)
+
+## 14.1.0
+- [minor] dont hide controls if user is hovering them [f9c7a29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c7a29)
+
+## 14.0.2
+- [patch] remove TS casting from MediaViewer [df4da61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df4da61)
+
 ## 14.0.1
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-core@18.1.1

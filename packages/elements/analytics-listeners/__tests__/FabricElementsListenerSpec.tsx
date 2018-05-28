@@ -1,7 +1,14 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import FabricElementsListener from '../src/FabricElementsListener';
-import { DummyComponentWithAnalytics } from '../example-helpers';
+import FabricElementsListener, {
+  ELEMENTS_CHANNEL,
+  ELEMENTS_TAG,
+} from '../src/FabricElementsListener';
+import {
+  DummyComponentWithAnalytics,
+  TaggedDummyComponentWithAnalytics,
+  Props,
+} from '../example-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../src/types';
 
@@ -17,27 +24,44 @@ describe('<FabricElementsListener />', () => {
     };
   });
 
-  it('should listen and fire an UI event with analyticsWebClient', () => {
+  const fireAndVerifySentEvent = (
+    Component: React.StatelessComponent<Props>,
+    expectedEvent: any,
+  ) => {
     const compOnClick = jest.fn();
     const component = mount(
       <FabricElementsListener client={analyticsWebClientMock}>
-        <DummyComponentWithAnalytics onClick={compOnClick} />
+        <Component onClick={compOnClick} />
       </FabricElementsListener>,
     );
 
     const analyticsListener = component.find(AnalyticsListener);
     expect(analyticsListener.props()).toHaveProperty(
       'channel',
-      'fabric-elements',
+      ELEMENTS_CHANNEL,
     );
 
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith({
+    expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
+  };
+
+  it('should listen and fire an UI event with analyticsWebClient', () => {
+    fireAndVerifySentEvent(DummyComponentWithAnalytics, {
       action: 'someAction',
       actionSubject: 'someComponent',
       source: 'unknown',
+      tags: [ELEMENTS_TAG],
+    });
+  });
+
+  it('should listen and fire an UI event with analyticsWebClient without duplicating the tag', () => {
+    fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      source: 'unknown',
+      tags: [ELEMENTS_TAG, 'foo'],
     });
   });
 });

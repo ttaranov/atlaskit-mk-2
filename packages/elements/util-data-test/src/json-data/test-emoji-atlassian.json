@@ -149,6 +149,43 @@
       },
       "searchable": true,
       "shortName": ":boom:"
+    },
+    {
+      "id": "atlassian-minus",
+      "name": "Minus",
+      "fallback": ":minus:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -999,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/minus_64.png",
+        "height": 64,
+        "width": 64
+      },
+      "ascii": [
+        "(-)"
+      ],
+      "searchable": true,
+      "shortName": ":minus:"
+    },
+    {
+      "id": "atlassian-yellow_star",
+      "name": "Yellow Star",
+      "fallback": ":yellow_star:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -998,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/yellow_star_64.png",
+        "height": 64,
+        "width": 64
+      },
+      "ascii": [
+        "(*)",
+        "(*y)"
+      ],
+      "searchable": true,
+      "shortName": ":yellow_star:"
     }
   ],
   "meta": {

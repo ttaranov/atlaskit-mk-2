@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, SyntheticEvent, ReactElement, ReactNode } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
 import {
@@ -10,6 +10,7 @@ import {
 
 export interface ContentProps {
   onClose?: () => void;
+  children: ReactNode;
 }
 
 export interface ContentState {
@@ -17,9 +18,36 @@ export interface ContentState {
 }
 
 const mouseMovementDelay = 2000;
+export const findParent = (
+  element: HTMLElement,
+  className: string,
+  maxParentElement: HTMLElement = document.body,
+): HTMLElement | undefined => {
+  if (element.classList.contains(className)) {
+    return element;
+  }
+
+  let currentElement = element;
+
+  while (currentElement.parentElement !== maxParentElement) {
+    if (currentElement.parentElement) {
+      currentElement = currentElement.parentElement;
+
+      if (currentElement.classList.contains(className)) {
+        return currentElement;
+      }
+    } else {
+      return undefined;
+    }
+  }
+
+  return undefined;
+};
 
 export class Content extends Component<ContentProps, ContentState> {
   private checkActivityTimeout: number;
+  private contentWrapperElement: HTMLElement;
+
   state: ContentState = {
     showControls: true,
   };
@@ -28,13 +56,26 @@ export class Content extends Component<ContentProps, ContentState> {
     window.clearTimeout(this.checkActivityTimeout);
   };
 
-  private hideControls = () => this.setState({ showControls: false });
+  private hideControls = (e?: HTMLElement) => () => {
+    if (e) {
+      const parent = findParent(
+        e,
+        hideControlsClassName,
+        this.contentWrapperElement,
+      );
+      if (!parent) {
+        this.setState({ showControls: false });
+      }
+    } else {
+      this.setState({ showControls: false });
+    }
+  };
 
-  private checkMouseMovement = () => {
+  private checkMouseMovement = (e?: SyntheticEvent<HTMLElement>) => {
     this.clearTimeout();
     this.setState({ showControls: true });
     this.checkActivityTimeout = window.setTimeout(
-      this.hideControls,
+      this.hideControls(e && (e.target as HTMLElement)),
       mouseMovementDelay,
     );
   };
@@ -62,12 +103,24 @@ export class Content extends Component<ContentProps, ContentState> {
     }
   };
 
+  private saveContentWrapperRef = el => {
+    this.contentWrapperElement = el;
+  };
+
   render() {
     const { showControls } = this.state;
-    const { onClose, children } = this.props;
+    const { onClose } = this.props;
+    // We extend the children with the ability of showing the controls
+    const children = React.cloneElement(
+      this.props.children as ReactElement<any>,
+      {
+        showControls: this.checkMouseMovement,
+      },
+    );
 
     return (
       <ContentWrapper
+        innerRef={this.saveContentWrapperRef}
         showControls={showControls}
         onMouseMove={this.checkMouseMovement}
         onClick={this.onClick}

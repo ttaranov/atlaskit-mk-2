@@ -23,7 +23,7 @@ export const Container = styled.div`
 export const Content = styled.div`
   position: relative;
   display: flex;
-  flex: 1;
+  flex: 0 1 100%;
   flex-direction: column;
 `;
 
@@ -40,7 +40,7 @@ const transitionDistance = {
 
 export const ExampleComponentWrapper = styled.div`
   padding-right: ${p => (p.codeIsVisible ? `${codePaneWidth}px` : 0)};
-  flex: 1;
+  height: 100%;
   transition: padding ${transitionDuration}ms;
 `;
 export const ComponentContainer = styled.div`

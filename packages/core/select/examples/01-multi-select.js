@@ -7,8 +7,10 @@ import { cities } from './common/data';
 const MultiExample = () => (
   <Select
     className="react-select"
+    classNamePrefix="select"
     options={cities}
     isMulti
+    isSearchable={false}
     placeholder="Choose a City"
   />
 );

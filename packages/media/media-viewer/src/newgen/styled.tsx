@@ -66,7 +66,8 @@ ListWrapper.displayName = 'ListWrapper';
 export const ArrowsWrapper = styled.div`
   display: flex;
   position: absolute;
-  top: 40%;
+  top: 50%;
+  transform: translateY(-50%);
   left: 0;
   width: 100%;
 `;
@@ -79,14 +80,23 @@ export const CloseButtonWrapper = styled.div`
 `;
 
 export const ZoomWrapper = styled.div`
+  width: 100%;
   position: absolute;
   bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+`;
 
+export const ZoomControlsWrapper = styled.div`
   button {
     margin-right: 10px;
   }
+`;
+
+export const ZoomLevel = styled.span`
+  position: absolute;
+  right: 24px;
+  top: 0;
+  color: #b8c7e0;
 `;
 
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `

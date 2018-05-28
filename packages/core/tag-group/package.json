@@ -12,7 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Luke B"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "atlaskit": {
     "name": "Tag group",

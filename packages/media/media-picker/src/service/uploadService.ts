@@ -160,10 +160,6 @@ export class OldUploadServiceImpl implements UploadService {
     this.dropzoneElement = undefined;
   }
 
-  removeBrowse(): void {
-    // resumablejs doesn't have this implementation
-  }
-
   addFiles(files: File[]): void {
     files.forEach(file => this.resumable.addFile(file));
   }

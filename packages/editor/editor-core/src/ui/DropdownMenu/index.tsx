@@ -85,6 +85,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
           elemBefore={item.elemBefore}
           isDisabled={item.isDisabled}
           onClick={() => onItemActivated && onItemActivated({ item })}
+          className={item.className}
         >
           <ItemContentWrapper hasElemBefore={!!item.elemBefore}>
             {item.content}

@@ -122,6 +122,14 @@ export const codeBlock: NodeSpec = {
   defining: true,
   parseDOM: [
     {
+      tag: 'pre > code',
+      preserveWhitespace: 'full',
+      getAttrs: (dom: HTMLElement) => {
+        const language = dom.getAttribute('data-language')!;
+        return { language };
+      },
+    },
+    {
       tag: 'pre',
       preserveWhitespace: 'full',
       getAttrs: (dom: HTMLElement) => {
@@ -165,8 +173,7 @@ export const codeBlock: NodeSpec = {
     const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
     return [
       'pre',
-      { 'data-language': node.attrs.language, class: className },
-      0,
+      ['code', { 'data-language': node.attrs.language, class: className }, 0],
     ];
   },
 };

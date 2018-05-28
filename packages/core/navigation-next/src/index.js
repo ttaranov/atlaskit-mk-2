@@ -31,3 +31,6 @@ export { GlobalTheme } from './theme';
 
 /** Nav API */
 export { NavAPISubscriber, NavAPI } from './api';
+
+/** Nav Renderer */
+export { default as NavRenderer } from './renderer';

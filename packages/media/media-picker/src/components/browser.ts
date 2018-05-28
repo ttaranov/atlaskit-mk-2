@@ -2,6 +2,7 @@ import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPBrowserLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
 import { Context } from '@atlaskit/media-core';
+import { OldUploadServiceImpl } from '../service/uploadService';
 
 export interface BrowserConfig extends LocalUploadConfig {
   readonly multiple?: boolean;
@@ -45,16 +46,38 @@ export class Browser extends LocalUploadComponent {
     // WebDriver hack - click will not execute if input isn't in the document
     document.body.appendChild(this.browseElement);
 
-    this.uploadService.addBrowse(this.browseElement);
+    this.addEvents();
+
     this.analyticsContext.trackEvent(new MPBrowserLoaded());
   }
+
+  private addEvents() {
+    if (this.config.useNewUploadService) {
+      this.browseElement.addEventListener('change', this.onFilePicked);
+    } else {
+      (this.uploadService as OldUploadServiceImpl).addBrowse(
+        this.browseElement,
+      );
+    }
+  }
+
+  private removeEvents() {
+    if (this.config.useNewUploadService) {
+      this.browseElement.removeEventListener('change', this.onFilePicked);
+    }
+  }
+
+  private onFilePicked = () => {
+    const filesArray = [].slice.call(this.browseElement.files);
+    this.uploadService.addFiles(filesArray);
+  };
 
   public browse(): void {
     this.browseElement.click();
   }
 
   public teardown(): void {
-    this.uploadService.removeBrowse();
+    this.removeEvents();
     const parentNode = this.browseElement.parentNode;
     if (parentNode) {
       parentNode.removeChild(this.browseElement);

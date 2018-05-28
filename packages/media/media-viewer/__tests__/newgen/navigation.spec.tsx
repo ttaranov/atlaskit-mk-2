@@ -4,6 +4,7 @@ import Navigation from '../../src/newgen/navigation';
 import { Identifier } from '../../src/newgen/domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
+import { KeyboardEventWithKeyCode } from './shortcut.spec';
 
 describe('Navigation', () => {
   const identifier: Identifier = {
@@ -139,5 +140,43 @@ describe('Navigation', () => {
     );
     expect(el.find(ArrowRightCircleIcon)).toHaveLength(0);
     expect(el.find(ArrowLeftCircleIcon)).toHaveLength(0);
+  });
+
+  describe('Shortcuts', () => {
+    it('should call onChange callback when left ARROW key is pressed', () => {
+      const onChange = jest.fn();
+      mount(
+        <Navigation
+          onChange={onChange}
+          items={items}
+          selectedItem={identifier2}
+        />,
+      );
+      const e = new KeyboardEventWithKeyCode('keydown', {
+        bubbles: true,
+        cancelable: true,
+        keyCode: 37,
+      });
+      document.dispatchEvent(e);
+      expect(onChange).toBeCalledWith(identifier);
+    });
+
+    it('should call onChange callback when right ARROW key is pressed', () => {
+      const onChange = jest.fn();
+      mount(
+        <Navigation
+          onChange={onChange}
+          items={items}
+          selectedItem={identifier}
+        />,
+      );
+      const e = new KeyboardEventWithKeyCode('keydown', {
+        bubbles: true,
+        cancelable: true,
+        keyCode: 39,
+      });
+      document.dispatchEvent(e);
+      expect(onChange).toBeCalledWith(identifier2);
+    });
   });
 });

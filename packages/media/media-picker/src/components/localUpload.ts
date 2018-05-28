@@ -26,6 +26,7 @@ export class LocalUploadComponent<
 > extends UploadComponent<M> {
   protected readonly uploadService: UploadService;
   readonly context: Context;
+  config: LocalUploadConfig;
 
   constructor(
     analyticsContext: MediaPickerContext,
@@ -40,6 +41,7 @@ export class LocalUploadComponent<
       config.uploadParams || { collection: '' },
       config.useNewUploadService,
     );
+    this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);
     this.uploadService.on('file-preview-update', this.onFilePreviewUpdate);
     this.uploadService.on('file-uploading', this.onFileUploading);

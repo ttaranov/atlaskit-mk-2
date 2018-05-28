@@ -219,8 +219,9 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
       node => node.contains(target) && node.tagName !== 'INPUT',
     );
 
+    const args = { ...attrs, inputNode: this.inputNode };
     if (!isInsideTagGroup) {
-      this.props.onOpenChange(attrs);
+      this.props.onOpenChange(args);
     }
 
     // $FlowFixMe querySelector method not found in Text Element property

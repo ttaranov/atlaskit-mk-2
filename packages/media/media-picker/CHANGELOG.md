@@ -1,5 +1,20 @@
 # @atlaskit/media-picker
 
+## 7.0.4
+- [patch] add media mocks [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
+- [none] Updated dependencies [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
+  - @atlaskit/media-test-helpers@13.1.0
+  - @atlaskit/media-store@3.1.0
+
+## 7.0.3
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+  - @atlaskit/media-test-helpers@13.0.2
+  - @atlaskit/media-card@28.0.4
+
+## 7.0.2
+- [patch] remove browse + dropzone logic from UploadService [02a72e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02a72e8)
+
 ## 7.0.1
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-store@3.0.1

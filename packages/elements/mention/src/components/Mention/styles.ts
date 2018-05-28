@@ -41,7 +41,7 @@ export const MentionStyle: ComponentClass<
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;
   color: ${mentionStyle[props.mentionType].text};
-  cursor: ${props => (props.onClick ? 'pointer' : 'default')};
+  cursor: pointer;
   padding: 0 4px 2px 3px;
   white-space: nowrap;
   line-height: 16px;

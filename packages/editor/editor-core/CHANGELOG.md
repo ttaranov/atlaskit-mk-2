@@ -1,5 +1,93 @@
 # @atlaskit/editor-core
 
+## 72.1.8
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+  - @atlaskit/util-data-test@9.1.7
+  - @atlaskit/renderer@17.0.4
+  - @atlaskit/editor-common@10.1.1
+
+## 72.1.7
+- [patch] ED-3180 unify scroll styles with Atlaskit style [49b2c12](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b2c12)
+- [none] Updated dependencies [49b2c12](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b2c12)
+
+## 72.1.6
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+  - @atlaskit/media-test-helpers@13.0.2
+  - @atlaskit/task-decision@6.0.8
+  - @atlaskit/mention@12.0.1
+  - @atlaskit/media-picker@7.0.3
+  - @atlaskit/media-filmstrip@8.0.8
+  - @atlaskit/media-card@28.0.4
+
+## 72.1.5
+- [patch] Fix toolbar alignment being incorrectly offset due to the change in the Code Block UI [ED-4637] [6db7a9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6db7a9f)
+- [none] Updated dependencies [6db7a9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6db7a9f)
+
+## 72.1.4
+- [patch] Fixing the toolbar for extensions [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
+- [none] Updated dependencies [ef9ccca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef9ccca)
+  - @atlaskit/editor-test-helpers@4.0.1
+
+## 72.1.3
+- [patch] Fixing up the paste of images  [3ab13a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ab13a5)
+- [none] Updated dependencies [3ab13a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ab13a5)
+
+## 72.1.2
+- [patch] FS-1206 remove AtlassianEmojiMigrationResource [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+- [none] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
+  - @atlaskit/emoji@35.0.3
+  - @atlaskit/renderer@17.0.3
+
+## 72.1.1
+- [patch] ED-4696, fixing adding multiple task items from toolbar button. [9b54e67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b54e67)
+- [patch] Updated dependencies [9b54e67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b54e67)
+
+## 72.1.0
+- [minor] The code block UI component has been updated to the latest design. It now has line numbers and corrected padding. 🎉 [6945723](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6945723)
+- [none] Updated dependencies [6945723](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6945723)
+
+## 72.0.7
+- [patch] Updated dependencies [758b342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/758b342)
+  - @atlaskit/task-decision@6.0.7
+  - @atlaskit/renderer@17.0.2
+
+## 72.0.6
+
+
+
+- [none] Updated dependencies [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/util-data-test@9.1.6
+  - @atlaskit/renderer@17.0.1
+  - @atlaskit/editor-common@10.0.3
+- [patch] Updated dependencies [db1bafa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db1bafa)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/util-data-test@9.1.6
+  - @atlaskit/renderer@17.0.1
+  - @atlaskit/editor-common@10.0.3
+- [none] Updated dependencies [f150242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f150242)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/util-data-test@9.1.6
+  - @atlaskit/renderer@17.0.1
+  - @atlaskit/editor-common@10.0.3
+
+## 72.0.5
+- [patch] ED-4221 Fix toolbar style inconsistencies [f3fb6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3fb6b8)
+- [none] Updated dependencies [f3fb6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3fb6b8)
+  - @atlaskit/editor-common@10.0.2
+
+## 72.0.4
+- [patch] FS-1904 add support for emoji with ascii starting with ( [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+- [none] Updated dependencies [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+  - @atlaskit/util-data-test@9.1.5
+  - @atlaskit/emoji@35.0.2
+
+## 72.0.3
+- [patch] Addding the file swap in processing state [ed40161](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed40161)
+- [none] Updated dependencies [ed40161](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed40161)
+
 ## 72.0.2
 - [patch] ED-4652, fixing issue with input of multiple * in editor. [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)
 - [patch] Updated dependencies [b026738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026738)

@@ -11,12 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    },
-    {
-      "name": "Luke B"
-    }
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {

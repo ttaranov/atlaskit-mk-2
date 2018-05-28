@@ -15,7 +15,7 @@ export default class AbstractTree {
    * Convert reduced macros tree into prosemirror model tree
    */
   getProseMirrorModel(): PMNode {
-    const content = parseString(this.wikiMarkup);
+    const content = parseString(this.wikiMarkup, this.schema);
 
     return this.schema.nodes.doc.createChecked(
       {},

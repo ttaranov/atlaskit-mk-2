@@ -1,5 +1,19 @@
 # @atlaskit/icon
 
+## 11.3.2
+- [patch] Update readme to be in line with other atlaskit readmes [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)
+- [none] Updated dependencies [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)
+
+## 11.3.1
+- [patch] Fix unit tests [22337bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22337bd)
+- [patch] Update for label with white background [a0d7ed7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0d7ed7)
+- [patch] Fix whitebackground for label [b8eb930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8eb930)
+- [patch] Fix white background for label [229a63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/229a63c)
+- [none] Updated dependencies [22337bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22337bd)
+- [none] Updated dependencies [a0d7ed7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0d7ed7)
+- [none] Updated dependencies [b8eb930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8eb930)
+- [none] Updated dependencies [229a63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/229a63c)
+
 ## 11.3.0
 - [minor] FS-1580 add new atlassian emoji [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)

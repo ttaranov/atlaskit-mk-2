@@ -46,9 +46,9 @@ function calcWidth(
 function calcMargin(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
-      return '12px auto 24px 24px';
+      return '12px auto 12px 24px';
     case 'wrap-left':
-      return '12px 24px 24px auto';
+      return '12px 24px 12px auto';
     default:
       return '24px auto';
   }
@@ -61,17 +61,11 @@ export interface WrapperProps {
 }
 
 const MediaSingleDimensionHelper = ({
-  layout,
   width,
   height,
-  containerWidth,
+  layout,
 }: WrapperProps) => css`
   margin: ${calcMargin(layout)};
-  float: ${float(layout)};
-  max-width: ${containerWidth < akEditorFullPageMaxWidth
-    ? '100%'
-    : `${containerWidth}px`};
-  width: ${calcWidth(layout, width, containerWidth)};
   &::after {
     content: '';
     display: block;
@@ -81,7 +75,14 @@ const MediaSingleDimensionHelper = ({
 
 const Wrapper: React.ComponentClass<
   HTMLAttributes<{}> & WrapperProps
-> = styled.div`
+> = styled.div.attrs<{}>({
+  style: ({ layout, width, containerWidth }) => ({
+    width: calcWidth(layout, width, containerWidth),
+    maxWidth:
+      containerWidth < akEditorFullPageMaxWidth ? '100%' : containerWidth,
+    float: float(layout),
+  }),
+})`
   ${MediaSingleDimensionHelper};
   position: relative;
   & > div {

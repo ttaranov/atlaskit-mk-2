@@ -1,3 +1,6 @@
+import * as util from '../../../src/newgen/util';
+const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
+
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Stubs } from '../../_stubs';
@@ -42,9 +45,15 @@ function createContext(authPromise) {
   ) as any;
 }
 
-function createFixture(authPromise) {
+function createFixture(authPromise, collectionName?) {
   const context = createContext(authPromise);
-  const el = mount(<AudioViewer context={context} item={audioItem} />);
+  const el = mount(
+    <AudioViewer
+      context={context}
+      item={audioItem}
+      collectionName={collectionName}
+    />,
+  );
   return { context, el };
 }
 
@@ -59,6 +68,10 @@ async function awaitError(response, expectedMessage) {
 }
 
 describe('Audio viewer', () => {
+  afterEach(() => {
+    constructAuthTokenUrlSpy.mockClear();
+  });
+
   it('assigns a src for audio files when successful', async () => {
     const authPromise = Promise.resolve({ token, clientId });
     const { el } = createFixture(authPromise);
@@ -119,6 +132,22 @@ describe('Audio viewer', () => {
       expect(el.find(AudioCover).prop('src')).toEqual(
         'some-service-host/file/some-id/image?client=some-client-id&token=some-token',
       );
+    });
+
+    it('MSW-720: pass the collectionName to calls to constructAuthTokenUrl', async () => {
+      const collectionName = 'collectionName';
+      const authPromise = Promise.resolve({ token, clientId });
+      const { el } = createFixture(authPromise, collectionName);
+      const instance = el.instance();
+      const promiseSrc = Promise.resolve('cover-src');
+
+      instance['loadCover'] = () => promiseSrc;
+      await instance['init']();
+      await promiseSrc;
+      el.update();
+
+      expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
+      expect(constructAuthTokenUrlSpy.mock.calls[1][2]).toEqual(collectionName);
     });
   });
 });
