@@ -64,9 +64,9 @@ type DropdownMenuBaseProps = {
   onItemActivated: OnItemActivatedArgs => void,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position: string,
-  /** Determines if the dropdown menu should be positioned relative to the viewport. Extra layout
-   management will be required to control scroll behaviour when this property is enabled. */
-  isMenuFixed?: boolean,
+  /** Determines if the dropdown menu should be positioned fixed. Useful for breaking out of overflow scroll/hidden containers, however, extra layout
+   management will be required to control scroll behaviour when this property is enabled as the menu will not update position with the target on scroll. */
+  isMenuFixed: boolean,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
    */

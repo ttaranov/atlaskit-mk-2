@@ -37,9 +37,8 @@ type Props = {
   onOpenChange?: any => mixed,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position?: string,
-  /** Value passed to the Layer component to determine if the list will be positioned
-   * relative to the viewport. */
-  isMenuFixed?: boolean,
+  /** Value passed to the Layer component to determine if the list will be fixed positioned. Useful for breaking out of overflow scroll/hidden containers. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
+  isMenuFixed: boolean,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
    */

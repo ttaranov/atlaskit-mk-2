@@ -39,8 +39,8 @@ export type Props = {
   zIndex?: number,
   /** Lock scrolling behind the layer */
   lockScroll?: boolean,
-  /** Force the layer to always be positioned fixed to the viewport. */
-  isAlwaysFixed?: boolean,
+  /** Force the layer to always be positioned fixed to the viewport. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
+  isAlwaysFixed: boolean,
 };
 
 type State = {
@@ -62,10 +62,11 @@ type State = {
   fixedOffset: ?number,
 };
 
-const FakeContainer = styled.div`
+// We create a dummy target when making the menu fixed so that we can force popper.js to use fixed positioning
+// without affecting child layout of the actual target since children of fixed position elements can't use percentage
+// heights/widths.
+const FixedTarget = styled.div`
   ${({ fixedOffset, targetRef }) => {
-    console.log('fixedOffset', fixedOffset);
-    console.log('targetRef', targetRef);
     if (fixedOffset && targetRef) {
       const actualTarget = targetRef.firstChild;
       const rect = actualTarget.getBoundingClientRect();
@@ -74,24 +75,12 @@ const FakeContainer = styled.div`
         top: ${fixedOffset}px;
         height: ${rect.height}px;
         width: ${rect.width}px;
+        z-index: -1;
       `;
     }
-    return '';
+    return 'display: none;';
   }};
 `;
-
-// const FakeChild = styled.div`
-//   ${({ targetRef }) => {
-//     if (targetRef) {
-//       const actualTarget = targetRef.firstChild;
-//       const rect = actualTarget.getBoundingClientRect();
-
-//     }
-//     return '';
-//   }
-
-//   }
-// `;
 
 export default class Layer extends Component<Props, State> {
   popper: {
@@ -100,7 +89,7 @@ export default class Layer extends Component<Props, State> {
 
   targetRef: ?ElementRef<any>;
   contentRef: ?ElementRef<any>;
-  fakeRef: ?ElementRef<any>;
+  fixedRef: ?ElementRef<any>;
 
   // TODO: get the value of zIndex from theme, not using it now as it is not
   // working with extract-react-types
@@ -270,7 +259,7 @@ export default class Layer extends Component<Props, State> {
   };
 
   applyPopper(props: Props) {
-    if (!this.fakeRef || !this.contentRef) {
+    if (!this.fixedRef || !this.targetRef || !this.contentRef) {
       return;
     }
 
@@ -287,7 +276,9 @@ export default class Layer extends Component<Props, State> {
 
     // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
-    const actualTarget = this.fakeRef;
+    const actualTarget = props.isAlwaysFixed
+      ? this.fixedRef
+      : this.targetRef.firstChild;
     const popperOpts: Object = {
       placement: positionPropToPopperPosition(props.position),
       onCreate: this.extractStyles,
@@ -346,14 +337,14 @@ export default class Layer extends Component<Props, State> {
         >
           {this.props.children}
         </div>
-        <FakeContainer targetRef={this.targetRef} fixedOffset={fixedOffset}>
+        <FixedTarget targetRef={this.targetRef} fixedOffset={fixedOffset}>
           <div
             style={{ height: '100%', width: '100%' }}
             ref={ref => {
-              this.fakeRef = ref;
+              this.fixedRef = ref;
             }}
           />
-        </FakeContainer>
+        </FixedTarget>
         {lockScroll && <ScrollBlock />}
         <ContentContainer maxHeight={maxHeight}>
           <div

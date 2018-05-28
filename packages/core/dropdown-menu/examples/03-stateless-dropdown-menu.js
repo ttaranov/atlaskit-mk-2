@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import {
   DropdownMenuStateless,
   DropdownItemGroupRadio,
@@ -17,7 +16,7 @@ export default class StatelessMenuExample extends Component<{}, State> {
 
   render() {
     return (
-      <div style={{ height: '2000px', paddingTop: '1000px' }}>
+      <div>
         <DropdownMenuStateless
           isOpen={this.state.isDropdownOpen}
           onOpenChange={attrs => {
