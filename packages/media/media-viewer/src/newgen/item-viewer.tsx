@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { ErrorMessage } from './styled';
-import { Outcome, Identifier } from './domain';
+import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
@@ -13,6 +13,7 @@ import * as deepEqual from 'deep-equal';
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
+  readonly featureFlags?: MediaViewerFeatureFlags;
 };
 
 export type State = {
@@ -41,7 +42,7 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context, identifier } = this.props;
+    const { context, identifier, featureFlags } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
@@ -59,7 +60,7 @@ export class ItemViewer extends React.Component<Props, State> {
           case 'audio':
             return <AudioViewer {...viewerProps} />;
           case 'video':
-            return <VideoViewer {...viewerProps} />;
+            return <VideoViewer featureFlags={featureFlags} {...viewerProps} />;
           case 'doc':
             return <PDFViewer {...viewerProps} />;
           default:

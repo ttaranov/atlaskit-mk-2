@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
 import { constructAuthTokenUrl } from '../../util';
-import { Outcome } from '../../domain';
+import { Outcome, MediaViewerFeatureFlags } from '../../domain';
 import { Spinner } from '../../loading';
-import { ErrorMessage } from '../../styled';
+import { ErrorMessage, Video } from '../../styled';
 import { CustomVideo } from './customVideo';
+import { getFeatureFlag } from '../../utils/getFeatureFlag';
 
 export type Props = {
   item: FileItem;
   context: Context;
   collectionName?: string;
+  readonly featureFlags?: MediaViewerFeatureFlags;
 };
 
 export type State = {
@@ -25,12 +27,21 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
+    const { featureFlags } = this.props;
+    const useCustomVideoPlayer = getFeatureFlag(
+      'customVideoPlayer',
+      featureFlags,
+    );
+
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return <CustomVideo src={src.data} />;
-      // return <Video controls src={src.data} />;
+        if (useCustomVideoPlayer) {
+          return <CustomVideo src={src.data} />;
+        } else {
+          return <Video controls src={src.data} />;
+        }
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
