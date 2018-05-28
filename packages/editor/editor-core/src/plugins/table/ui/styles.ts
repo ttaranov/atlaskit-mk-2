@@ -157,6 +157,44 @@ export const tableStyles = `
       position: relative;
     }
   }
+
+  /* =============== TABLE PIE CHART ================== */
+  .ProseMirror {
+    .ProseMirror-piechart {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      max-width: 680px;
+
+      &.-legent-right {
+        flex-direction: row-reverse;
+      }
+
+      .ProseMirror-piechart_legend {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin-bottom: 16px;
+        }
+        li:last-child {
+          margin-bottom: 0;
+        }
+
+        .ProseMirror-piechart_bullet {
+          border-radius: 3px;
+          display: inline-block;
+          height: 16px;
+          width: 16px;
+        }
+        .ProseMirror-piechart_title {
+          font-size: 120%;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
 `;
 
 export const tableFullPageEditorStyles = `

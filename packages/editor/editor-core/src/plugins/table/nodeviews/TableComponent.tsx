@@ -183,7 +183,10 @@ class TableComponent extends React.Component<ComponentProps> {
                 {columnShadows}
               </div>
               {chartData ? (
-                <PieChart data={(chartData as PieChartData).entries} />
+                <PieChart
+                  data={(chartData as PieChartData).entries}
+                  legentAlignment="left"
+                />
               ) : null}
             </div>
           );

@@ -9,6 +9,7 @@ import {
   akColorN300,
 } from '@atlaskit/util-shared-styles';
 import { PieChartEntry } from '../../nodeviews/graphs/transformer';
+import backgroundColor from '@atlaskit/icon/glyph/editor/background-color';
 
 export const degsToRadians = (degs: number) => {
   return degs / 360 * (2 * Math.PI);
@@ -24,14 +25,12 @@ const COLORS = [
   akColorN300,
 ];
 
-const CANVAS_SIZE = 250;
-const LINE_WIDTH = 35;
-
 export interface Props {
   data: Array<PieChartEntry>;
   colors?: Array<string>;
   size?: number;
   lineWidth?: number;
+  legentAlignment?: 'left' | 'right';
 }
 
 export default class PieChart extends React.Component<Props, any> {
@@ -39,27 +38,50 @@ export default class PieChart extends React.Component<Props, any> {
 
   static defaultProps = {
     colors: COLORS,
-    size: CANVAS_SIZE,
-    lineWidth: LINE_WIDTH,
+    size: 250,
+    lineWidth: 35,
+    legentAlignment: 'left',
   };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      this.draw();
+      this.drawPie();
     }
   }
 
   render() {
+    const { legentAlignment, colors, data } = this.props;
+
     return (
-      <canvas
-        ref={this.handleRef}
-        height={this.props.size}
-        width={this.props.size}
-      />
+      <div className={`ProseMirror-piechart -legent-${legentAlignment}`}>
+        {this.canvas && (
+          <ul className="ProseMirror-piechart_legend">
+            {data.map((item, index) => {
+              const color = colors![index];
+              return (
+                <li>
+                  <span
+                    className="ProseMirror-piechart_bullet"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="ProseMirror-piechart_title">
+                    {item.title}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <canvas
+          ref={this.handleRef}
+          height={this.props.size}
+          width={this.props.size}
+        />
+      </div>
     );
   }
 
-  private draw = () => {
+  private drawPie = () => {
     const canvas = this.canvas!;
     const ctx = canvas.getContext('2d')!;
 
@@ -100,7 +122,7 @@ export default class PieChart extends React.Component<Props, any> {
       const ctx = ref.getContext('2d')!;
       // improves quality, taken from here: https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
       ctx.scale(2, 2);
-      this.draw();
+      this.drawPie();
     }
   };
 }
