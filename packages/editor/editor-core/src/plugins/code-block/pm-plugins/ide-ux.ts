@@ -80,7 +80,7 @@ export default new Plugin({
         }
         return false;
       },
-      'Mod-A': (state: EditorState, dispatch) => {
+      'Mod-a': (state: EditorState, dispatch) => {
         if (isSelectionEntirelyInsideCodeBlock(state)) {
           const { $from, $to } = state.selection;
           const isFullCodeBlockSelection =

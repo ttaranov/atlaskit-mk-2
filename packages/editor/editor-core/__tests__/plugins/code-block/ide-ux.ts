@@ -5,6 +5,7 @@ import {
   code_block,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
+import { AllSelection } from 'prosemirror-state';
 
 describe('IDE UX plugin', () => {
   const editor = doc =>
@@ -18,7 +19,7 @@ describe('IDE UX plugin', () => {
         const { editorView, refs: { start, end } } = editor(
           doc(p('start'), code_block()('{start}mid{<>}dle{end}'), p('end')),
         );
-        sendKeyToPm(editorView, 'Mod-A');
+        sendKeyToPm(editorView, 'Mod-a');
         const { from, to } = editorView.state.selection;
         expect(from).toBe(start);
         expect(to).toBe(end);
@@ -29,7 +30,7 @@ describe('IDE UX plugin', () => {
         const { editorView, refs: { start, end } } = editor(
           doc(p('start'), code_block()('{start}{<}mid{>}dle{end}'), p('end')),
         );
-        sendKeyToPm(editorView, 'Mod-A');
+        sendKeyToPm(editorView, 'Mod-a');
         const { from, to } = editorView.state.selection;
         expect(from).toBe(start);
         expect(to).toBe(end);
@@ -37,24 +38,22 @@ describe('IDE UX plugin', () => {
     });
 
     describe('when starts inside code-block and finished outside', () => {
-      it('should do nothing when Cmd+A pressed', () => {
+      it('should select whole document when Cmd+A pressed', () => {
         const { editorView } = editor(
           doc(p('start'), code_block()('mid{<}dle'), p('en{>}d')),
         );
-        const originalSelection = editorView.state.selection;
-        sendKeyToPm(editorView, 'Mod-A');
-        expect(editorView.state.selection.eq(originalSelection)).toBe(true);
+        sendKeyToPm(editorView, 'Mod-a');
+        expect(editorView.state.selection).toBeInstanceOf(AllSelection);
       });
     });
 
     describe('when selection starts outside code-block and finishes inside', () => {
-      it('should do nothing when Cmd+A pressed', () => {
+      it('should select whole document when Cmd+A pressed', () => {
         const { editorView } = editor(
           doc(p('start{<}'), code_block()('mid{>}dle'), p('end')),
         );
-        const originalSelection = editorView.state.selection;
-        sendKeyToPm(editorView, 'Mod-A');
-        expect(editorView.state.selection.eq(originalSelection)).toBe(true);
+        sendKeyToPm(editorView, 'Mod-a');
+        expect(editorView.state.selection).toBeInstanceOf(AllSelection);
       });
     });
   });
