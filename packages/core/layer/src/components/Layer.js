@@ -40,7 +40,7 @@ export type Props = {
   /** Lock scrolling behind the layer */
   lockScroll?: boolean,
   /** Force the layer to always be positioned fixed to the viewport. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
-  isAlwaysFixed: boolean,
+  isAlwaysFixed?: boolean,
 };
 
 type State = {
