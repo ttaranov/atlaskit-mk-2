@@ -102,7 +102,7 @@ export const DefaultDocument: any = {
           type: 'tableRow',
           content: [
             {
-              type: 'tableCell',
+              type: 'tableHeader',
               attrs: {
                 colwidth: [169],
               },
@@ -179,7 +179,7 @@ export const DefaultDocument: any = {
           type: 'tableRow',
           content: [
             {
-              type: 'tableCell',
+              type: 'tableHeader',
               attrs: {
                 colwidth: [169],
               },
@@ -252,7 +252,7 @@ export const DefaultDocument: any = {
           type: 'tableRow',
           content: [
             {
-              type: 'tableCell',
+              type: 'tableHeader',
               attrs: {
                 colwidth: [169],
               },
@@ -329,7 +329,7 @@ export const DefaultDocument: any = {
           type: 'tableRow',
           content: [
             {
-              type: 'tableCell',
+              type: 'tableHeader',
               attrs: {
                 colwidth: [169],
               },
@@ -402,7 +402,7 @@ export const DefaultDocument: any = {
           type: 'tableRow',
           content: [
             {
-              type: 'tableCell',
+              type: 'tableHeader',
               attrs: {
                 colwidth: [169],
               },
