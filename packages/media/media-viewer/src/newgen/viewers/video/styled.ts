@@ -1,9 +1,10 @@
 // @ts-ignore: unused variable
 import styled, { StyledComponentClass } from 'styled-components';
-// @ts-ignore: unused variable
 import {
   HTMLAttributes,
+  // @ts-ignore: unused variable
   InputHTMLAttributes,
+  // @ts-ignore: unused variable
   ClassAttributes,
   ComponentClass,
 } from 'react';
