@@ -1,9 +1,17 @@
-export const formatDuration = (duration: number) => {
-  const seconds = parseInt(`${duration}`, 10);
-  const hours = Math.floor(seconds / 3600);
-  const prettyMinutes = Math.floor((seconds - hours * 3600) / 60);
-  const prettySeconds = seconds - hours * 3600 - prettyMinutes * 60;
-  const secondsPad = prettySeconds < 10 ? '0' : '';
+const pad = (n: number) => {
+  return n < 10 ? `0${n}` : n;
+};
 
-  return `${prettyMinutes}:${secondsPad}${prettySeconds}`;
+export const formatDuration = (seconds: number) => {
+  const totalSeconds = parseInt(`${seconds}`, 10);
+  const hours = Math.floor(totalSeconds / 3600);
+
+  let remainingSeconds = totalSeconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+  remainingSeconds %= 60;
+
+  const prettyHoursWithSeparator = hours > 0 ? hours + ':' : '';
+  const prettyMinutes = prettyHoursWithSeparator ? pad(minutes) : minutes;
+
+  return `${prettyHoursWithSeparator}${prettyMinutes}:${pad(remainingSeconds)}`;
 };
