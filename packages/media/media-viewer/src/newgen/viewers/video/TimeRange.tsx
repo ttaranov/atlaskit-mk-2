@@ -6,6 +6,7 @@ import {
   Thumb,
   BufferedTime,
   CurrentTimeTooltip,
+  TimeRangeWrapper,
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
 
@@ -109,22 +110,24 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     const bufferedTimePercentage = bufferedTime * 100 / duration;
 
     return (
-      <TimeLine innerRef={this.saveWrapperElement} onClick={this.onNavigate}>
-        <BufferedTime style={{ width: `${bufferedTimePercentage}%` }} />
-        <CurrentTimeLine style={{ width: `${currentPosition}%` }}>
-          <Thumb
-            innerRef={this.saveThumbElement}
-            onMouseDown={this.onThumbMouseDown}
-          >
-            <CurrentTimeTooltip
-              isDragging={isDragging}
-              className="current-time-tooltip"
+      <TimeRangeWrapper onClick={this.onNavigate}>
+        <TimeLine innerRef={this.saveWrapperElement}>
+          <BufferedTime style={{ width: `${bufferedTimePercentage}%` }} />
+          <CurrentTimeLine style={{ width: `${currentPosition}%` }}>
+            <Thumb
+              innerRef={this.saveThumbElement}
+              onMouseDown={this.onThumbMouseDown}
             >
-              {formatDuration(currentTime)}
-            </CurrentTimeTooltip>
-          </Thumb>
-        </CurrentTimeLine>
-      </TimeLine>
+              <CurrentTimeTooltip
+                isDragging={isDragging}
+                className="current-time-tooltip"
+              >
+                {formatDuration(currentTime)}
+              </CurrentTimeTooltip>
+            </Thumb>
+          </CurrentTimeLine>
+        </TimeLine>
+      </TimeRangeWrapper>
     );
   }
 }

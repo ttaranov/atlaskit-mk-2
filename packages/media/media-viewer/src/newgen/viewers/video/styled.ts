@@ -56,7 +56,6 @@ export const TimeLine = styled.div`
   background-color: #5d646f;
   border-radius: 5px;
   position: relative;
-  cursor: pointer;
 `;
 
 export const CurrentTimeLine = styled.div`
@@ -155,4 +154,9 @@ export const CurrentTimeTooltip = styled.div`
   opacity: ${(props: CurrentTimeTooltipProps) =>
     props.isDragging ? '1' : '0'};
   transition: opacity 0.3s;
+`;
+
+export const TimeRangeWrapper = styled.div`
+  padding: 10px 0;
+  cursor: pointer;
 `;

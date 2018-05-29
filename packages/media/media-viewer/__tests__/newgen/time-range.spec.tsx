@@ -8,8 +8,8 @@ import {
   CurrentTimeLine,
   BufferedTime,
   CurrentTimeTooltip,
-  TimeLine,
   Thumb,
+  TimeRangeWrapper,
 } from '../../src/newgen/viewers/video/styled';
 
 describe('<TimeRange />', () => {
@@ -68,7 +68,7 @@ describe('<TimeRange />', () => {
     const { component, onChange } = setup();
 
     component.instance()['getWrapperWidth'] = () => 100;
-    component.find(TimeLine).simulate('click', {
+    component.find(TimeRangeWrapper).simulate('click', {
       target: {},
       nativeEvent: {
         x: 5,
