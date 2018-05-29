@@ -1,6 +1,7 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
+import { Selection } from 'prosemirror-state';
 import { browser } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
@@ -134,12 +135,14 @@ class TableComponent extends React.Component<ComponentProps> {
         editorView={view}
         render={({ containerWidth, pluginState }) => {
           return (
-            <div>
+            <div className="table-parent-container">
               <div
                 style={{
                   width: calcTableWidth(node.attrs.layout, containerWidth),
                 }}
-                className="table-container"
+                className={`table-container ${
+                  node.attrs.viewMode !== 'table' ? '-hidden' : ''
+                }`}
                 data-layout={node.attrs.layout}
               >
                 <div className="table-row-controls-wrapper">
@@ -195,13 +198,22 @@ class TableComponent extends React.Component<ComponentProps> {
                 </div>
                 {columnShadows}
               </div>
-              {chartData &&
-                node.attrs.viewMode === 'donut' && (
-                  <PieChart data={chartData.entries} legentAlignment="left" />
-                )}
-              {chartData &&
-                node.attrs.viewMode === 'timeline' && (
-                  <TimelineChart data={chartData} />
+              {node.attrs.viewMode !== 'table' &&
+                chartData && (
+                  <div
+                    className="chart-container"
+                    onClick={this.handleChartClick}
+                  >
+                    {node.attrs.viewMode === 'donut' && (
+                      <PieChart
+                        data={chartData.entries}
+                        legentAlignment="left"
+                      />
+                    )}
+                    {node.attrs.viewMode === 'timeline' && (
+                      <TimelineChart data={chartData} />
+                    )}
+                  </div>
                 )}
             </div>
           );
@@ -250,14 +262,35 @@ class TableComponent extends React.Component<ComponentProps> {
 
     this.leftShadow.style.left = `${paddingLeftPx}px`;
     this.leftShadow.style.width = `${Math.min(scrollLeft, SHADOW_MAX_WIDTH)}px`;
-    this.rightShadow.style.left = `${offsetWidth -
-      width -
-      scrollDiff +
-      paddingLeftPx}px`;
-    this.rightShadow.style.width = `${width}px`;
+    const rightShadowX = offsetWidth - width - scrollDiff + paddingLeftPx;
+    this.rightShadow.style.left = `${rightShadowX}px`;
+    this.rightShadow.style.width = `${rightShadowX > 0 ? width : 0}px`;
   };
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
+
+  private handleChartClick = event => {
+    event.preventDefault();
+
+    let target = event.target;
+    let toolbarTarget;
+    while (target) {
+      if (target.className === 'table-parent-container') {
+        toolbarTarget = target;
+        break;
+      }
+      target = target.parentNode as HTMLElement;
+    }
+
+    if (toolbarTarget) {
+      const { state, dispatch } = this.props.view;
+      const tablePos = (this.props.view as any).posAtDOM(toolbarTarget);
+
+      dispatch(
+        state.tr.setSelection(Selection.near(state.doc.resolve(tablePos))),
+      );
+    }
+  };
 }
 
 export default TableComponent;

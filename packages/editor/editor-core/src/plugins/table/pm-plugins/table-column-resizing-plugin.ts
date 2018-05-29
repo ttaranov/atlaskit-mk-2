@@ -44,11 +44,9 @@ const updateControls = (state: EditorState) => {
       ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
       : 0;
 
-    rightShadow.style.width = `${width}px`;
-    rightShadow.style.left = `${offsetWidth -
-      width -
-      scrollDiff +
-      paddingLeftPx}px`;
+    const rightShadowX = offsetWidth - width - scrollDiff + paddingLeftPx;
+    rightShadow.style.left = `${rightShadowX}px`;
+    rightShadow.style.width = `${rightShadowX > 0 ? width : 0}px`;
   }
 };
 

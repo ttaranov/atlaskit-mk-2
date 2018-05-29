@@ -81,6 +81,19 @@ export const tableStyles = `
       position: relative;
       margin: 0 auto;
       box-sizing: border-box;
+
+      &.-hidden {
+        .table-row-controls-wrapper,
+        .table-column-controls-wrapper,
+        .table-shadow {
+          display: none;
+        }
+        .table-wrapper {
+          height: 0;
+          width: 0;
+          overflow: hidden;
+        }
+      }
     }
     .table-container table[data-number-column='true'] td:first-child {
       background-color: ${tableFloatingControlsColor};

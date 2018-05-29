@@ -134,7 +134,6 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       tableElement,
       editorView,
       allowMergeCells,
-      tableActive,
       tableLayout,
       allowNumberColumn,
       allowBackgroundColor,
@@ -145,8 +144,17 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       viewMode,
     } = this.props;
 
-    if (!tableElement || !tableActive) {
+    if (!tableElement) {
       return null;
+    }
+
+    let toolbarTarget = tableElement;
+    while (toolbarTarget) {
+      if (toolbarTarget.className === 'table-parent-container') {
+        toolbarTarget = toolbarTarget;
+        break;
+      }
+      toolbarTarget = toolbarTarget.parentNode as HTMLElement;
     }
 
     let availableLayouts: TableLayout[] = [];
@@ -207,7 +215,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     return (
       <Popup
         offset={[0, 20]}
-        target={tableElement}
+        target={toolbarTarget}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}

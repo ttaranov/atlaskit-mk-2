@@ -30,28 +30,24 @@ export default class PieChart extends React.Component<Props, any> {
   }
 
   render() {
-    const { legentAlignment, colors, data } = this.props;
+    const { legentAlignment, colors, data, size } = this.props;
 
     return (
       <div className={`ProseMirror-piechart -legent-${legentAlignment}`}>
-        {this.canvas && (
-          <ul className="ProseMirror-piechart_legend">
-            {data.map((item, index) => {
-              const color = colors![index];
-              return (
-                <li>
-                  <span
-                    className="ProseMirror-piechart_bullet"
-                    style={{ backgroundColor: color }}
-                  />
-                  <span className="ProseMirror-piechart_title">
-                    {item.title}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <ul className="ProseMirror-piechart_legend">
+          {data.map((item, index) => {
+            const color = colors![index];
+            return (
+              <li>
+                <span
+                  className="ProseMirror-piechart_bullet"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="ProseMirror-piechart_title">{item.title}</span>
+              </li>
+            );
+          })}
+        </ul>
         <canvas ref={this.handleRef} />
       </div>
     );

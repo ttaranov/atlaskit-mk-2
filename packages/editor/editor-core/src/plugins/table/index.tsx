@@ -14,7 +14,6 @@ import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableNumberColumnPlugin from './pm-plugins/number-column-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
-import { findTable } from 'prosemirror-utils';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -71,10 +70,6 @@ const tablesPlugin: EditorPlugin = {
   },
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
-    const table = findTable(editorView.state.selection);
-
-    console.log('redraw toolbar');
-
     return (
       <WithPluginState
         plugins={{ tablesState: stateKey }}
