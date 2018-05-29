@@ -24,6 +24,8 @@ export interface TimeRangeState {
 export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
   wrapperElement: HTMLElement;
   thumbElement: HTMLElement;
+  wrapperElementWidth: number;
+
   state: TimeRangeState = {
     isDragging: false,
   };
@@ -31,12 +33,22 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
   componentDidMount() {
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
+    window.addEventListener('resize', this.setWrapperWidth);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
+    window.removeEventListener('resize', this.setWrapperWidth);
   }
+
+  private setWrapperWidth = () => {
+    if (!this.wrapperElement) {
+      return;
+    }
+
+    this.wrapperElementWidth = this.wrapperElement.getBoundingClientRect().width;
+  };
 
   onMouseMove = (e: MouseEvent) => {
     const { isDragging } = this.state;
@@ -44,13 +56,11 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
       return;
     }
     e.stopPropagation();
-    // TODO: how to not read wrapper dimensions on every move?
-    // subscribe to window.resize should cover all the cases since we are
-    // using position: absolute
+
     const { currentTime, onChange, duration } = this.props;
     const { movementX } = e;
     const movementPercentage =
-      Math.abs(movementX) * duration / this.getWrapperWidth();
+      Math.abs(movementX) * duration / this.wrapperElementWidth;
     const newTime =
       currentTime + (movementX > 0 ? movementPercentage : -movementPercentage);
     const newTimeWithBoundaries = Math.min(Math.max(newTime, 0), duration);
@@ -82,18 +92,15 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     const event = e.nativeEvent;
     const thumbCorrection = 8; // This is to actually center the thumb in the middle of the cursor
     const x = event.x - thumbCorrection;
-    const currentTime = x * duration / this.getWrapperWidth();
+    const currentTime = x * duration / this.wrapperElementWidth;
 
     onChange(currentTime);
   };
 
-  private getWrapperWidth(): number {
-    return this.wrapperElement.getBoundingClientRect().width;
-  }
-
   private saveWrapperElement = el => {
     if (el) {
       this.wrapperElement = el;
+      this.setWrapperWidth();
     }
   };
 
