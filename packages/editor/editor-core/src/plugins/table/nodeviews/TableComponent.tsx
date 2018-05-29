@@ -41,6 +41,7 @@ export interface ComponentProps extends Props {
 class TableComponent extends React.Component<ComponentProps> {
   private wrapper: HTMLDivElement | null;
   private table: HTMLTableElement | null;
+  private chart: HTMLDivElement | null;
   private colgroup: HTMLTableColElement | null;
 
   private leftShadow: HTMLDivElement | null;
@@ -201,7 +202,14 @@ class TableComponent extends React.Component<ComponentProps> {
               {node.attrs.viewMode !== 'table' &&
                 chartData && (
                   <div
-                    className="chart-container"
+                    className={`ProseMirror-chart-container ${
+                      this.isChartSelected(pluginState.tableElement)
+                        ? 'selected'
+                        : ''
+                    }`}
+                    ref={elem => {
+                      this.chart = elem;
+                    }}
                     onClick={this.handleChartClick}
                   >
                     {node.attrs.viewMode === 'donut' && (
@@ -285,11 +293,27 @@ class TableComponent extends React.Component<ComponentProps> {
     if (toolbarTarget) {
       const { state, dispatch } = this.props.view;
       const tablePos = (this.props.view as any).posAtDOM(toolbarTarget);
-
       dispatch(
         state.tr.setSelection(Selection.near(state.doc.resolve(tablePos))),
       );
     }
+  };
+
+  private isChartSelected = (tableElement?: HTMLElement) => {
+    if (!tableElement) {
+      return false;
+    }
+    let node = tableElement;
+    let toolbarTarget;
+    while (node) {
+      if (node.className === 'table-parent-container') {
+        toolbarTarget = node;
+        break;
+      }
+      node = node.parentNode as HTMLElement;
+    }
+
+    return toolbarTarget.contains(this.chart);
   };
 }
 

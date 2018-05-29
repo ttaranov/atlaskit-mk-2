@@ -1,6 +1,7 @@
 import { browser } from '@atlaskit/editor-common';
 import {
   akColorN40A,
+  akColorN30,
   akColorB100,
   akColorB300,
   akColorB75,
@@ -173,11 +174,25 @@ export const tableStyles = `
 
   /* =============== TABLE PIE CHART ================== */
   .ProseMirror {
+    .ProseMirror-chart-container {
+      border: 1px solid ${akColorN30};
+      padding: 16px;
+      border-radius: 5px;
+      margin: 32px 0 20px;
+
+      &:hover {
+        border-color: ${akColorN50};
+      }
+      &.selected {
+        border-color: ${akColorB300};
+      }
+    }
     .ProseMirror-piechart {
       display: flex;
       align-items: center;
       justify-content: space-around;
       max-width: 680px;
+      cursor: pointer;
 
       &.-legent-right {
         flex-direction: row-reverse;
