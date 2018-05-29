@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 10.1.5
+- [patch] FEF-1329 Fix catastrophic failure when editing pages with images [da4d2d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da4d2d4)
+- [none] Updated dependencies [da4d2d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da4d2d4)
+
 ## 10.1.4
 - [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
   - @atlaskit/media-card@28.0.5
