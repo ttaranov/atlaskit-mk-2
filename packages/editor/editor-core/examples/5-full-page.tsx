@@ -124,7 +124,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             analyticsHandler={analyticsHandler}
             UNSAFE_allowQuickInsert={true}
             allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
+            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
             allowLists={true}
             allowTextColor={true}
             allowTables={{
