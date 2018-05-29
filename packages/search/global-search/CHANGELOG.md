@@ -1,5 +1,9 @@
 # @atlaskit/global-search
 
+## 3.3.1
+- [patch] Updated dependencies [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
+  - @atlaskit/quick-search@1.7.1
+
 ## 3.3.0
 - [minor] Consistent avatar sizes [0f80c65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f80c65)
 
