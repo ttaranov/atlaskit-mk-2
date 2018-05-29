@@ -3,133 +3,89 @@
 import React, { Component, Fragment } from 'react';
 import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
 
-import defaultConfig from '../../config/default-config';
-import Drawer from '../Drawer';
-import type {
-  GlobalNavigationProps,
-  WrappedGlobalNavigationProps,
-} from './types';
+import generateDefaultConfig from '../../config/default-config';
+import generateProductConfig from '../../config/product-config';
+import type { GlobalNavigationProps } from './types';
 
-class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
-  static defaultProps = {
-    primaryActions: [],
-    secondaryActions: [],
-  };
+class GlobalNavigation extends Component<GlobalNavigationProps> {
+  static defaultProps = {};
 
-  constructPrimaryItems = () => {
-    const { create, product, search, primaryActions, navigation } = this.props;
+  constructNavItems = () => {
     const {
-      product: defaultProduct,
-      create: defaultCreate,
-      search: defaultSearch,
-    } = defaultConfig(navigation);
-
-    const inbuiltPrimaryItems = [];
-
-    if (product) {
-      const { component, ...rest } = product;
-      inbuiltPrimaryItems.push({
-        ...rest,
-        ...defaultProduct,
-        component,
-      });
-    }
-
-    if (search) {
-      inbuiltPrimaryItems.push({ ...defaultSearch, ...search });
-    }
-
-    if (create) {
-      inbuiltPrimaryItems.push({ ...defaultCreate, ...create });
-    }
-
-    return [...inbuiltPrimaryItems, ...primaryActions];
-  };
-
-  constructSecondaryItems = () => {
-    const {
-      secondaryActions,
-      navigation,
+      create,
+      product,
+      search,
+      yourWork,
       help,
       profile,
       appSwitcher,
       notification,
       people,
-    } = this.props;
+    } = generateProductConfig(this.props);
     const {
+      product: defaultProduct,
+      create: defaultCreate,
+      search: defaultSearch,
+      yourWork: defaultYourWork,
       help: defaultHelp,
       profile: defaultProfile,
       appSwitcher: defaultAppSwitcher,
       notification: defaultNotification,
       people: defaultPeople,
-    } = defaultConfig(navigation);
-    const inbuiltSecondaryItems = [];
+    } = generateDefaultConfig();
+
+    const navItems = [];
 
     if (notification) {
-      inbuiltSecondaryItems.push({ ...defaultNotification, ...notification });
+      navItems.push({ ...defaultNotification, ...notification });
     }
 
     if (people) {
-      inbuiltSecondaryItems.push({ ...defaultPeople, ...people });
+      navItems.push({ ...defaultPeople, ...people });
+    }
+
+    if (yourWork) {
+      navItems.push({ ...defaultYourWork, ...yourWork });
     }
 
     if (appSwitcher) {
-      inbuiltSecondaryItems.push({ ...defaultAppSwitcher, ...appSwitcher });
+      navItems.push({ ...defaultAppSwitcher, ...appSwitcher });
     }
 
     if (help) {
-      inbuiltSecondaryItems.push({ ...defaultHelp, ...help });
+      navItems.push({ ...defaultHelp, ...help });
     }
 
     if (profile) {
-      inbuiltSecondaryItems.push({ ...defaultProfile, ...profile });
+      navItems.push({ ...defaultProfile, ...profile });
     }
 
-    return [...secondaryActions, ...inbuiltSecondaryItems];
-  };
-
-  renderDrawer = (
-    drawerKey: 'create' | 'search' | 'notification' | 'people',
-    drawerProps,
-  ) => {
-    const { navigation } = this.props;
-    const { activeDrawer } = navigation.state;
-    const action = this.props[drawerKey];
-
-    if (!action || !action.drawer) {
-      return null;
+    if (product) {
+      navItems.push({ ...product, ...defaultProduct });
     }
 
-    const DrawerContent = action.drawer.content;
+    if (search) {
+      navItems.push({ ...defaultSearch, ...search });
+    }
 
-    return (
-      <Drawer
-        isOpen={activeDrawer === drawerKey}
-        onClose={
-          (action.drawer && action.drawer.onClose) ||
-          navigation.closeActiveDrawer
-        }
-        {...drawerProps}
-      >
-        <DrawerContent closeDrawer={navigation.closeActiveDrawer} />
-      </Drawer>
-    );
+    if (create) {
+      navItems.push({ ...defaultCreate, ...create });
+    }
+
+    return [
+      ...navItems.sort((item1, item2) => item1.position - item2.position),
+    ];
   };
 
   render() {
-    const primaryItems = this.constructPrimaryItems();
-    const secondaryItems = this.constructSecondaryItems();
+    const navItems = this.constructNavItems();
 
     return (
       <Fragment>
         <GlobalNav
-          primaryItems={primaryItems}
-          secondaryItems={secondaryItems}
+          primaryItems={navItems.slice(0, 4)}
+          secondaryItems={navItems.slice(4, 10)}
         />
-        {this.renderDrawer('create')}
-        {this.renderDrawer('search', { width: 'wide' })}
-        {this.renderDrawer('notification', { width: 'wide' })}
-        {this.renderDrawer('people', { width: 'wide' })}
       </Fragment>
     );
   }

@@ -12,8 +12,10 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^10.0.3",
+    "@atlaskit/badge": "^7.1.2",
     "@atlaskit/blanket": "^5.0.0",
     "@atlaskit/docs": "^3.0.3",
+    "@atlaskit/dropdown-menu": "^4.0.0",
     "@atlaskit/icon": "^11.0.1",
     "@atlaskit/navigation-next": "^0.1.0",
     "@atlaskit/theme": "^3.1.0",
@@ -30,7 +32,6 @@
   },
   "devDependencies": {
     "react-lorem-component": "^0.12.2",
-    "@atlaskit/onboarding": "^3.1.1",
-    "@atlaskit/dropdown-menu": "^4.0.0"
+    "@atlaskit/onboarding": "^3.1.1"
   }
 }
