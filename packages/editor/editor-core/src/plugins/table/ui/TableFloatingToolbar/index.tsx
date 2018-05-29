@@ -132,6 +132,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       popupsBoundariesElement,
       popupsScrollableElement,
       tableElement,
+      tableActive,
       editorView,
       allowMergeCells,
       tableLayout,
@@ -144,7 +145,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       viewMode,
     } = this.props;
 
-    if (!tableElement) {
+    if (!tableElement || !tableActive) {
       return null;
     }
 
