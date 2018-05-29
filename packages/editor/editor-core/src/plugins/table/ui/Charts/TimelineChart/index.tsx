@@ -13,9 +13,15 @@ export interface Props {
   itemPadding?: number;
 
   textPaddingLeft?: number;
+  viewportPaddingPct?: number;
 }
 
 export default class TimelineChart extends React.Component<Props, any> {
+  state = {
+    viewportStart: 0,
+    viewportEnd: 0,
+  };
+
   canvas?: HTMLCanvasElement;
 
   static defaultProps = {
@@ -28,12 +34,47 @@ export default class TimelineChart extends React.Component<Props, any> {
 
     textPaddingLeft: 8,
     textPaddingTopBottom: 8,
+
+    viewportPaddingPct: 5,
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data !== this.props.data) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.data !== this.props.data) {
       this.drawTimeline();
     }
+  }
+
+  static findTimeExtent(data: TimelineDataset, what: 'start' | 'end') {
+    return data.entries.reduce((extent, currentEntry) => {
+      if (
+        what === 'start'
+          ? currentEntry.start < extent
+          : currentEntry.end > extent
+      ) {
+        return currentEntry[what];
+      }
+
+      return extent;
+    }, data.entries[0][what]);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (state.viewportStart === 0 && state.viewportEnd === 0) {
+      const viewportStart = TimelineChart.findTimeExtent(props.data, 'start');
+      const viewportEnd = TimelineChart.findTimeExtent(props.data, 'end');
+
+      const viewportRange = viewportEnd - viewportStart;
+
+      return {
+        ...state,
+        viewportStart:
+          viewportStart - viewportRange * (props.viewportPaddingPct / 100),
+        viewportEnd:
+          viewportEnd + viewportRange * (props.viewportPaddingPct / 100),
+      };
+    }
+
+    return null;
   }
 
   render() {
@@ -46,39 +87,16 @@ export default class TimelineChart extends React.Component<Props, any> {
     );
   }
 
-  static findLatest(data: TimelineDataset) {
-    return data.entries.reduce((latest, currentEntry) => {
-      if (currentEntry.end > latest) {
-        return currentEntry.end;
-      }
-
-      return latest;
-    }, data.entries[0].end);
-  }
-
-  static findEarliest(data: TimelineDataset) {
-    return data.entries.reduce((earliest, currentEntry) => {
-      if (currentEntry.start < earliest) {
-        return currentEntry.start;
-      }
-
-      return earliest;
-    }, data.entries[0].start);
-  }
-
   private drawTimeline = () => {
     const canvas = this.canvas!;
     const ctx = canvas.getContext('2d')!;
 
     const { data, itemHeight, textPaddingLeft } = this.props;
+    const { viewportStart, viewportEnd } = this.state;
+    const viewportRange = viewportEnd - viewportStart;
 
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // end of viewport should be end of data
-    // FIXME: separate viewport from data range
-    const firstEntry = TimelineChart.findEarliest(data);
-    const lastEntry = TimelineChart.findLatest(data);
 
     // setup label stuff
     const textHeight = itemHeight! / 3;
@@ -86,8 +104,8 @@ export default class TimelineChart extends React.Component<Props, any> {
 
     let top = 0;
     data.entries.forEach((entry, entryIdx) => {
-      const leftPct = (entry.start - firstEntry) / (lastEntry - firstEntry);
-      const endPct = (entry.end - firstEntry) / (lastEntry - firstEntry);
+      const leftPct = (entry.start - viewportStart) / viewportRange;
+      const endPct = (entry.end - viewportStart) / viewportRange;
 
       const left = leftPct * this.props.width!;
       const end = endPct * this.props.width!;
