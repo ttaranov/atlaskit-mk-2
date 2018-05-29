@@ -10,10 +10,12 @@ export default () => (
     <Page>
       <Grid>
         <GridColumn>
-          <small>
-            These cards are all for the same URL. They should share a cache and
-            stay in sync with each other when they are updated.
-          </small>
+          <p>
+            <small>
+              These cards are all for the same URL. They should share a cache
+              and stay in sync with each other when they are updated.
+            </small>
+          </p>
           <br />
           <BlockCard url={URL_A} />
           <br />
