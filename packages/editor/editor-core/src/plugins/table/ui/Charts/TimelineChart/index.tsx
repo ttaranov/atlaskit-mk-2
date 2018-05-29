@@ -101,10 +101,11 @@ export default class TimelineChart extends React.Component<Props, any> {
     const startPct = pos / this.props.width!;
     const endPct = (this.props.width! - pos) / this.props.width!;
 
-    const SCROLL_SCALE = 1000000;
+    const SCROLL_SCALE = 3000000;
 
-    const startAdd = event.deltaY * SCROLL_SCALE * startPct;
-    const endAdd = event.deltaY * SCROLL_SCALE * endPct;
+    const delta = event.deltaMode === 0 ? event.deltaY : 30 * event.deltaY;
+    const startAdd = delta * SCROLL_SCALE * startPct;
+    const endAdd = delta * SCROLL_SCALE * endPct;
 
     this.setState({
       viewportStart: this.state.viewportStart - startAdd,
