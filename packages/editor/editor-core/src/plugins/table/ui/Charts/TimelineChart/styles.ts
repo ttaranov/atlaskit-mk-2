@@ -47,16 +47,18 @@ export const TimelineEntryContainer: ComponentClass<
     background-color: ${props => props.selectedColor};
   }
 
+  background-color: ${props => props.color};
+  transition: background-color 0.1s ease-out;
+
   ${props =>
     (props as TimelineEntryProps).selected
       ? `
-    border: 2px solid ${(props as TimelineEntryProps).color};
+    /*border: 1px solid ${(props as TimelineEntryProps).color};*/
     padding-left: 0px;
-    background-color: ${props.selectedColor}
+    /*background-color: ${props.selectedColor}*/
   `
       : `
-    padding-left: 18px;
-    background-color: ${props.color};
+    padding-left: 16px;
   `};
 `;
 
@@ -74,8 +76,8 @@ export const TimelineEntryContent: ComponentClass<
 export const ResizeButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
   cursor: ew-resize;
   content: '..';
-  width: 12px;
-  padding-left: 4px;
+  width: 10px;
+  padding-left: 6px;
   text-shadow: -1px -1px ${props => props.selectedColor};
   font-weight: bold;
   /*height: 24px;*/
@@ -89,6 +91,6 @@ export const ResizeButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   &::after {
     cursor: ew-resize;
-    content: '.. .. .. ..';
+    content: '. . . .';
   }
 `;
