@@ -203,9 +203,7 @@ class TableComponent extends React.Component<ComponentProps> {
                 chartData && (
                   <div
                     className={`ProseMirror-chart-container ${
-                      this.isChartSelected(pluginState.tableElement)
-                        ? 'selected'
-                        : ''
+                      this.isChartSelected(pluginState) ? 'selected' : ''
                     }`}
                     ref={elem => {
                       this.chart = elem;
@@ -299,8 +297,9 @@ class TableComponent extends React.Component<ComponentProps> {
     }
   };
 
-  private isChartSelected = (tableElement?: HTMLElement) => {
-    if (!tableElement) {
+  private isChartSelected = pluginState => {
+    const { tableElement, tableActive } = pluginState;
+    if (!tableElement || !tableActive) {
       return false;
     }
     let node = tableElement;
