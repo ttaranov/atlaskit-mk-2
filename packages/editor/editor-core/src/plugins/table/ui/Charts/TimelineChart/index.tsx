@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { TimelineDataset } from '../../../graphs';
-import { upscaleCanvas, COLORS } from '../utils';
+import { COLORS } from '../utils';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { TimelineContainer, TimelineEntry } from './styles';
 
 export interface Props {
   data: TimelineDataset;
@@ -20,6 +21,8 @@ export default class TimelineChart extends React.Component<Props, any> {
   state = {
     viewportStart: 0,
     viewportEnd: 0,
+    startExtent: 0,
+    endExtent: 0,
   };
 
   canvas?: HTMLCanvasElement;
@@ -71,6 +74,8 @@ export default class TimelineChart extends React.Component<Props, any> {
           viewportStart - viewportRange * (props.viewportPaddingPct / 100),
         viewportEnd:
           viewportEnd + viewportRange * (props.viewportPaddingPct / 100),
+        startExtent: viewportStart,
+        endExtent: viewportEnd,
       };
     }
 
@@ -78,31 +83,44 @@ export default class TimelineChart extends React.Component<Props, any> {
   }
 
   render() {
+    const swimlanes = this.drawTimeline();
     return (
-      <canvas
-        ref={this.handleRef}
-        height={this.props.height}
-        width={this.props.width}
-      />
+      <TimelineContainer onWheel={this.onWheel}>{swimlanes}</TimelineContainer>
     );
   }
 
-  private drawTimeline = () => {
-    const canvas = this.canvas!;
-    const ctx = canvas.getContext('2d')!;
+  private onWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    // take a % of either viewport start or end based on how far from the middle the cursor was
+    // closer to the edge we take more of %, the closer to the middle we take 0%
 
-    const { data, itemHeight, textPaddingLeft } = this.props;
+    let pos = event.clientX - event.currentTarget.getBoundingClientRect().left;
+    if (pos < 0) {
+      pos = 0;
+    }
+
+    const startPct = pos / this.props.width!;
+    const endPct = (this.props.width! - pos) / this.props.width!;
+
+    const SCROLL_SCALE = 1000000;
+
+    const startAdd = event.deltaY * SCROLL_SCALE * startPct;
+    const endAdd = event.deltaY * SCROLL_SCALE * endPct;
+
+    this.setState({
+      viewportStart: this.state.viewportStart - startAdd,
+      viewportEnd: this.state.viewportEnd + endAdd,
+    });
+
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  private drawTimeline = () => {
+    const { data } = this.props;
     const { viewportStart, viewportEnd } = this.state;
     const viewportRange = viewportEnd - viewportStart;
 
-    // clear
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // setup label stuff
-    const textHeight = itemHeight! / 3;
-    ctx.font = `${textHeight!}px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`;
-
-    let top = 0;
+    const swimlanes: JSX.Element[] = [];
     data.entries.forEach((entry, entryIdx) => {
       const leftPct = (entry.start - viewportStart) / viewportRange;
       const endPct = (entry.end - viewportStart) / viewportRange;
@@ -112,27 +130,20 @@ export default class TimelineChart extends React.Component<Props, any> {
 
       const width = end - left;
 
-      // draw bar
-      ctx.fillStyle = this.props.colors![entryIdx];
-      ctx.fillRect(left, top, width, this.props.itemHeight!);
-
-      // apply label
-      ctx.fillStyle = 'white';
-      ctx.fillText(
-        entry.title,
-        left + textPaddingLeft!,
-        top + itemHeight! / 2 + textHeight / 3,
+      swimlanes.push(
+        <TimelineEntry
+          key={entryIdx}
+          style={{
+            left: `${left}px`,
+            width: `${width}px`,
+            backgroundColor: this.props.colors![entryIdx],
+          }}
+        >
+          {entry.title}
+        </TimelineEntry>,
       );
-
-      top += itemHeight! + this.props.itemPadding!;
     });
-  };
 
-  private handleRef = ref => {
-    if (ref) {
-      this.canvas = ref;
-      upscaleCanvas(ref, this.props.width!, this.props.height!);
-      this.drawTimeline();
-    }
+    return swimlanes;
   };
 }
