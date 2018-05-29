@@ -24,6 +24,17 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Text should render empty paragraph if no content 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Text should render simple text as a paragraph 1`] = `
 Object {
   "content": Array [

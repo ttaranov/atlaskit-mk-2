@@ -23,7 +23,6 @@ const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
 };
 
-// tslint:disable-next-line:variable-name
 export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   ${getLineHeight};
   color: ${akColorN800};
@@ -191,6 +190,38 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   & img {
     max-width: 100%;
+  }
+
+  & div > .media-wrapped + .media-wrapped + *:not(.media-wrapped) {
+    clear: both;
+  }
+
+  & .media-wrapped + div:not(.media-wrapped) {
+    clear: both;
+  }
+
+  & .CodeBlock,
+  & blockquote,
+  & hr,
+  & > div > div:not(.media-wrapped) {
+    clear: both;
+  }
+
+  & .media-wrapped {
+    & + h1,
+    & + h2,
+    & + h3,
+    & + h4,
+    & + h5,
+    & + h6 {
+      margin-top: 8px;
+    }
+  }
+
+  & .wrap-left + .wrap-right,
+  & .wrap-right + .wrap-left {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   /*

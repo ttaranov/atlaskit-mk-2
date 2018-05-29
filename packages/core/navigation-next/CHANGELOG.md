@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 0.1.1
+- [patch] add some reducer util functions [3882051](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3882051)
+
 ## 0.1.0
 - [minor] export basic renderer [a53eda9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a53eda9)
 

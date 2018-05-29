@@ -1,5 +1,11 @@
 # @atlaskit/media-filmstrip
 
+## 8.0.8
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+  - @atlaskit/media-test-helpers@13.0.2
+  - @atlaskit/media-card@28.0.4
+
 ## 8.0.7
 
 

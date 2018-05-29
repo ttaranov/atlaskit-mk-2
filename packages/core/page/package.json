@@ -12,12 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    },
-    {
-      "name": "Sean C"
-    }
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -31,7 +28,7 @@
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/navigation": "^31.0.4",
     "@atlaskit/toggle": "^3.0.2",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-lorem-component": "^0.12.2",
     "react-syntax-highlighter": "^6.0.2"
   },

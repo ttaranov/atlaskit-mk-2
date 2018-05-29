@@ -125,6 +125,22 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
+  createFileFromBinary(
+    blob: Blob,
+    params: MediaStoreCreateFileFromBinaryParams = {},
+  ): Promise<MediaStoreResponse<MediaFile>> {
+    return this.request('/file/binary', {
+      method: 'POST',
+      body: blob,
+      params,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': blob.type,
+      },
+      authContext: { collectionName: params.collection },
+    }).then(mapResponseToJson);
+  }
+
   getFile = (
     fileId: string,
     params: MediaStoreGetFileParams = {},
@@ -221,6 +237,15 @@ export type MediaStoreCreateFileFromUploadParams = {
 export type MediaStoreCreateFileParams = {
   readonly occurrenceKey?: string;
   readonly collection?: string;
+};
+
+export type MediaStoreCreateFileFromBinaryParams = {
+  readonly replaceFileId?: string;
+  readonly collection?: string;
+  readonly occurrenceKey?: string;
+  readonly expireAfter?: number;
+  readonly skipConversions?: boolean;
+  readonly name?: string;
 };
 
 export type MediaStoreCreateFileFromUploadConditions = {

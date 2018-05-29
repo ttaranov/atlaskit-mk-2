@@ -1,5 +1,8 @@
 # @atlaskit/website
 
+## 1.5.23
+- [patch] Fix fullscreen examples increasing height on each browser repaint [5118ca4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5118ca4)
+
 ## 1.5.22
 - [patch] Updated dependencies [481c086](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/481c086)
   - extract-react-types-loader@0.1.3

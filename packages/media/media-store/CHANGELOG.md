@@ -1,5 +1,10 @@
 # @atlaskit/media-store
 
+## 3.1.0
+- [minor] add media mocks [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
+- [none] Updated dependencies [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
+  - @atlaskit/media-test-helpers@13.1.0
+
 ## 3.0.1
 - [patch] Bump chunkinator version to latest to unblock BB. Latest version of chunkinator has a correct dep set for "rxjs-async-map" so that installs via npm work for consumers [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)

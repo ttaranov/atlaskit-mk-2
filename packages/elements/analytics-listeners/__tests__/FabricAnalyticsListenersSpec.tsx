@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
+import FabricElementsListener from '../src/FabricElementsListener';
 import {
   DummyComponentWithAnalytics,
   DummyComponent,
@@ -20,7 +21,7 @@ describe('<FabricAnalyticsListeners />', () => {
   });
 
   describe('<FabricElementsListener />', () => {
-    it('should listen and fire an UI event with analyticsWebClient', () => {
+    it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
@@ -28,7 +29,7 @@ describe('<FabricAnalyticsListeners />', () => {
         </FabricAnalyticsListeners>,
       );
 
-      const analyticsListener = component.find('FabricElementsListener');
+      const analyticsListener = component.find(FabricElementsListener);
       expect(analyticsListener.props()).toHaveProperty(
         'client',
         analyticsWebClientMock,

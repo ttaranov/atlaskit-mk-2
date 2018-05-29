@@ -60,6 +60,10 @@ export default class DynamicTable extends Component<Props, State> {
     isRankingDisabled: false,
     onRankStart: () => {},
     onRankEnd: () => {},
+    paginationi18n: {
+      prev: 'Prev',
+      next: 'Next',
+    },
   };
   componentWillMount() {
     validateSortKey(this.props.sortKey, this.props.head);
@@ -154,6 +158,7 @@ export default class DynamicTable extends Component<Props, State> {
       isLoading,
       isRankable,
       isRankingDisabled,
+      paginationi18n,
     } = this.props;
 
     const rowsLength = rows && rows.length;
@@ -215,6 +220,7 @@ export default class DynamicTable extends Component<Props, State> {
             value={page}
             onChange={this.onSetPage}
             total={totalPages}
+            i18n={paginationi18n}
           />
         )}
         {!rowsExist &&

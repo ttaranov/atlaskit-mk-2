@@ -12,8 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Joss M",
-    "Charles L"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -39,7 +40,7 @@
     "@atlaskit/field-radio-group": "^2.0.3",
     "@atlaskit/field-text": "^5.0.3",
     "@atlaskit/inline-dialog": "^6.0.2",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-beautiful-dnd": "^4.0.1",
     "react-lorem-component": "^0.12.2"
   },

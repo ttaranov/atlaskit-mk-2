@@ -181,6 +181,55 @@ describe('MediaStore', () => {
       });
     });
 
+    describe('createFileFromBinary', () => {
+      it('should POST to /file/binary endpoint with correct options', () => {
+        const body = new Blob(['Hello World!!!'], { type: 'text/plain' });
+        const params = {
+          collection: 'some-collection',
+          occurrenceKey: 'some-occurrence-key',
+          expireAfter: 123,
+          replaceFileId: 'some-replace-file-id',
+          skipConversions: true,
+        };
+        const data: MediaFile = {
+          id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
+          mediaType: 'document',
+          mimeType: 'application/pdf',
+          name: 'example document.pdf',
+          processingStatus: 'pending',
+          size: 231392,
+          artifacts: {},
+        };
+
+        fetchMock.mock(`begin:${serviceHost}/file/binary`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.createFileFromBinary(body, params).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${serviceHost}/file/binary?${stringify(params)}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+              'Content-Type': 'text/plain',
+            },
+            body,
+          });
+          expect(authProvider).toHaveBeenCalledWith({
+            collectionName: params.collection,
+          });
+        });
+      });
+    });
+
     describe('getFile', () => {
       it('should GET to /file/{fileId} endpoint with correct options', () => {
         const collectionName = 'some-collection-name';

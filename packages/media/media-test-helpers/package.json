@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "13.0.1",
+  "version": "13.1.0",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -23,9 +23,12 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/media-core": "^18.1.1",
-    "@atlaskit/util-shared-styles": "^2.10.3",
+    "@atlaskit/media-store": "^3.1.0",
+    "@types/faker": "^4.1.2",
     "@types/lodash": "^4.14.106",
     "axios": "^0.17.1",
+    "faker": "^4.1.0",
+    "kakapo": "^3.3.1",
     "lodash": "^4.17.5",
     "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0",
@@ -35,9 +38,5 @@
   "peerDependencies": {
     "react": "^16.3.0",
     "rxjs": "^5.1.0"
-  },
-  "devDependencies": {
-    "@atlaskit/field-text": "^5.0.3",
-    "@atlaskit/media-core": "^18.1.1"
   }
 }

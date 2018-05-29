@@ -1,8 +1,17 @@
 // Simple component which wraps stories and creates a styled list out of it
 import * as React from 'react';
-import { Component, ReactNode } from 'react';
+import { Component, ReactNode, CSSProperties } from 'react';
 
-const styles = {
+interface UnitStyle {
+  statesWrapper: CSSProperties;
+  stateItem: CSSProperties;
+  stateTitle: CSSProperties;
+}
+
+const styles: {
+  column: UnitStyle;
+  row: UnitStyle;
+} = {
   column: {
     statesWrapper: {
       listStyle: 'none',

@@ -1,5 +1,29 @@
 # @atlaskit/renderer
 
+## 17.0.8
+- [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
+  - @atlaskit/media-card@28.0.5
+  - @atlaskit/editor-common@10.1.4
+
+## 17.0.7
+- [patch] Fix mediaSingle [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+- [none] Updated dependencies [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+
+## 17.0.6
+- [patch] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
+  - @atlaskit/editor-common@10.1.3
+
+## 17.0.5
+- [patch] ED-4447 Fix image breakout rendering [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
+- [none] Updated dependencies [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
+  - @atlaskit/editor-common@10.1.2
+
+## 17.0.4
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+  - @atlaskit/util-data-test@9.1.7
+  - @atlaskit/editor-common@10.1.1
+
 ## 17.0.3
 - [patch] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
 

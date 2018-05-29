@@ -2,6 +2,7 @@ import * as React from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { ELEMENTS_CHANNEL, ELEMENTS_TAG } from '../src/FabricElementsListener';
 
 export type Props = {
   onClick: (e) => void;
@@ -22,6 +23,19 @@ export const DummyComponentWithAnalytics = withAnalyticsEvents({
       eventType: 'ui',
       source: 'unknown',
     };
-    createEvent(event).fire('fabric-elements');
+    createEvent(event).fire(ELEMENTS_CHANNEL);
+  },
+})(DummyComponent);
+
+export const TaggedDummyComponentWithAnalytics = withAnalyticsEvents({
+  onClick: (createEvent, props) => {
+    const event: GasPayload = {
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+      tags: [ELEMENTS_TAG, 'foo'],
+    };
+    createEvent(event).fire(ELEMENTS_CHANNEL);
   },
 })(DummyComponent);
