@@ -40,6 +40,11 @@ export const tableStyles = `
     .table-container table ${tableSharedStyle}
 
     .table-container table {
+      td,
+      th {
+        position: relative;
+      }
+
       .selectedCell, .hoveredCell {
         position: relative;
         border: 1px solid ${tableBorderSelectedColor};
@@ -151,11 +156,6 @@ export const tableStyles = `
 
   .ProseMirror.resize-cursor {
     cursor: col-resize;
-
-    table td,
-    table th {
-      position: relative;
-    }
   }
 
   /* =============== TABLE PIE CHART ================== */
