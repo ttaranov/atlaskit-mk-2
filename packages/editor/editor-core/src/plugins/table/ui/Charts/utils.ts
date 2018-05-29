@@ -6,6 +6,13 @@ import {
   akColorP300,
   akColorT300,
   akColorN300,
+  akColorP200,
+  akColorG200,
+  akColorR200,
+  akColorY200,
+  akColorB200,
+  akColorN200,
+  akColorT200,
 } from '@atlaskit/util-shared-styles';
 
 const getPixelRatio = () => {
@@ -29,6 +36,16 @@ export const COLORS = [
   akColorB300,
   akColorT300,
   akColorN300,
+];
+
+export const SELECTED_COLORS = [
+  akColorP200,
+  akColorG200,
+  akColorR200,
+  akColorY200,
+  akColorB200,
+  akColorT200,
+  akColorN200,
 ];
 
 export const degreesToRadians = (degs: number) => {

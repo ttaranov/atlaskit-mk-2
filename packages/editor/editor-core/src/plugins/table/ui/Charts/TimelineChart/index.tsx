@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { TimelineDataset } from '../../../graphs';
-import { COLORS } from '../utils';
+import { COLORS, SELECTED_COLORS } from '../utils';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
-import { TimelineContainer, TimelineEntry } from './styles';
+import { TimelineContainer } from './styles';
+import TimelineEntry from './TimelineEntry';
 
 export interface Props {
   data: TimelineDataset;
   colors?: Array<string>;
+  selectedColors?: Array<string>;
   height?: number;
   width?: number;
 
@@ -18,20 +20,32 @@ export interface Props {
   chartSelected: boolean;
 }
 
-export default class TimelineChart extends React.Component<Props, any> {
-  state = {
+export interface State {
+  viewportStart: number;
+  viewportEnd: number;
+  startExtent: number;
+  endExtent: number;
+  dragging: boolean;
+  dragStart: number | undefined;
+  selectedEntries: number[];
+}
+
+export default class TimelineChart extends React.Component<Props, State> {
+  state: State = {
     viewportStart: 0,
     viewportEnd: 0,
     startExtent: 0,
     endExtent: 0,
     dragging: false,
     dragStart: undefined,
+    selectedEntries: [],
   };
 
   canvas?: HTMLCanvasElement;
 
   static defaultProps = {
     colors: COLORS,
+    selectedColors: SELECTED_COLORS,
     height: 250,
     width: akEditorFullPageMaxWidth,
 
@@ -94,6 +108,11 @@ export default class TimelineChart extends React.Component<Props, any> {
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
         onMouseMove={this.onMouseMove}
+        onClick={e => {
+          this.setState({
+            selectedEntries: [],
+          });
+        }}
       >
         {swimlanes}
       </TimelineContainer>
@@ -196,17 +215,34 @@ export default class TimelineChart extends React.Component<Props, any> {
       swimlanes.push(
         <TimelineEntry
           key={entryIdx}
-          style={{
-            left: `${left}px`,
-            width: `${width}px`,
-            backgroundColor: this.props.colors![entryIdx],
+          onClick={event => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            this.selectEntry(entryIdx);
           }}
+          selected={this.state.selectedEntries.indexOf(entryIdx) > -1}
+          selectedColor={this.props.selectedColors![entryIdx]}
+          color={this.props.colors![entryIdx]}
+          left={left}
+          width={width}
+          entry={entry}
         >
-          {entry.title}
+          <span>{entry.title}</span>
         </TimelineEntry>,
       );
     });
 
     return swimlanes;
   };
+
+  selectEntry(idx: number) {
+    const { selectedEntries } = this.state;
+
+    if (selectedEntries.indexOf(idx) === -1) {
+      this.setState({
+        selectedEntries: [idx],
+      });
+    }
+  }
 }
