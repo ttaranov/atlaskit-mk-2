@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 72.1.9
+- [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
+  - @atlaskit/media-card@28.0.5
+  - @atlaskit/renderer@17.0.8
+  - @atlaskit/editor-common@10.1.4
+
 ## 72.1.8
 - [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
   - @atlaskit/mention@12.0.2
