@@ -4,6 +4,7 @@ import {
   p,
   code_block,
   sendKeyToPm,
+  insertText,
 } from '@atlaskit/editor-test-helpers';
 import { AllSelection } from 'prosemirror-state';
 
@@ -378,6 +379,64 @@ describe('IDE UX plugin', () => {
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()('top\n\t\tstart\n\t\t\nbottom')),
           );
+        });
+      });
+    });
+  });
+
+  describe('Auto-closing Brackets', () => {
+    [
+      { left: '{', right: '}' },
+      { left: '[', right: ']' },
+      { left: '(', right: ')' },
+    ].forEach(({ left, right }) => {
+      describe(`when inserting '${left}'`, () => {
+        it(`should insert a matching closing bracket '${right}'`, () => {
+          const { editorView, sel } = editor(doc(code_block()('{<>}')));
+          insertText(editorView, left, sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()(`${left}${right}`)),
+          );
+          expect(editorView.state.selection.from).toBe(sel + 1);
+        });
+        it(`should insert a matching closing bracket '${right}' even when a '${right}' already exists`, () => {
+          const { editorView, sel } = editor(doc(code_block()(`{<>}${right}`)));
+          insertText(editorView, left, sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()(`${left}${right}${right}`)),
+          );
+          expect(editorView.state.selection.from).toBe(sel + 1);
+        });
+      });
+      describe(`when cursor in between '${left}' and '${right}'`, () => {
+        it(`should only move the cursor when '${right}' inserted`, () => {
+          const { editorView, sel } = editor(
+            doc(code_block()(`${left}{<>}${right}`)),
+          );
+          insertText(editorView, right, sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()(`${left}${right}`)),
+          );
+          expect(editorView.state.selection.from).toBe(sel + 1);
+        });
+        it('should remove the bracket pair when backspace pressed', () => {
+          const { editorView, sel } = editor(
+            doc(code_block()(`${left}{<>}${right}`)),
+          );
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(doc(code_block()('')));
+          expect(editorView.state.selection.from).toBe(sel - 1);
+        });
+      });
+      describe(`when cursor in between multiple '${left}' and '${right}'`, () => {
+        it(`should only move the cursor when '${right}' inserted`, () => {
+          const { editorView, sel } = editor(
+            doc(code_block()(`${left}${left}{<>}${right}${right}`)),
+          );
+          sendKeyToPm(editorView, 'Backspace');
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(doc(code_block()('')));
+          expect(editorView.state.selection.from).toBe(sel - 2);
         });
       });
     });
