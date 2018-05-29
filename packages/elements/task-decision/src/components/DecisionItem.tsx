@@ -5,6 +5,7 @@ import { colors } from '@atlaskit/theme';
 import { EditorIconWrapper } from '../styled/DecisionItem';
 import Item from './Item';
 import { Appearance, ContentRef, User } from '../types';
+import { ParticipantsAdornment } from './ParticipantsAdornment';
 
 export interface Props {
   children?: any;
@@ -23,10 +24,10 @@ export default class DecisionItem extends PureComponent<Props, {}> {
   };
 
   getAttributionText() {
-    const { creator, lastUpdater } = this.props;
+    const { creator, lastUpdater, appearance } = this.props;
     const user = lastUpdater || creator;
 
-    if (!user || !user.displayName) {
+    if (!user || !user.displayName || appearance === 'inline') {
       return undefined;
     }
 
@@ -49,15 +50,25 @@ export default class DecisionItem extends PureComponent<Props, {}> {
       </EditorIconWrapper>
     );
 
+    const endAdornments = (
+      <ParticipantsAdornment
+        appearance={appearance}
+        participants={participants}
+      />
+    );
+
     return (
       <Item
+        startAdornment={icon}
         appearance={appearance}
         contentRef={contentRef}
-        icon={icon}
-        participants={participants}
-        placeholder="Add a decision…"
-        showPlaceholder={showPlaceholder}
-        attribution={this.getAttributionText()}
+        endAdornment={endAdornments}
+        placeholder={
+          showPlaceholder
+            ? "Type your action, use '@' to assign to someone."
+            : undefined
+        }
+        helperText={this.getAttributionText()}
       >
         {children}
       </Item>

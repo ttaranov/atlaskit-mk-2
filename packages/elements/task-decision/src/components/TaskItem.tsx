@@ -4,6 +4,7 @@ import { PureComponent } from 'react';
 import { CheckBoxWrapper } from '../styled/TaskItem';
 
 import Item from './Item';
+import { ParticipantsAdornment } from './ParticipantsAdornment';
 import { Appearance, ContentRef, User } from '../types';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 
@@ -66,7 +67,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
     }
   };
 
-  getAttributionText() {
+  getHelperText() {
     const { creator, lastUpdater, isDone } = this.props;
 
     if (isDone && lastUpdater) {
@@ -105,15 +106,25 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
       </CheckBoxWrapper>
     );
 
+    const endAdornments = (
+      <ParticipantsAdornment
+        appearance={appearance}
+        participants={participants}
+      />
+    );
+
     return (
       <Item
         appearance={appearance}
         contentRef={contentRef}
-        icon={icon}
-        participants={participants}
-        placeholder="Type your action, use '@' to assign to someone."
-        showPlaceholder={showPlaceholder}
-        attribution={this.getAttributionText()}
+        startAdornment={icon}
+        endAdornment={endAdornments}
+        placeholder={
+          showPlaceholder
+            ? "Type your action, use '@' to assign to someone."
+            : undefined
+        }
+        helperText={this.getHelperText()}
       >
         {children}
       </Item>
