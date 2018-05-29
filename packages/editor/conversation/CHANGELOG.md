@@ -1,5 +1,9 @@
 # @atlaskit/conversation
 
+## 7.5.6
+- [patch] Updated dependencies [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+  - @atlaskit/renderer@17.0.7
+
 ## 7.5.5
 - [patch] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
   - @atlaskit/editor-common@10.1.3
