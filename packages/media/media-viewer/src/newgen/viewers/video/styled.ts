@@ -29,14 +29,15 @@ export const TimebarWrapper = styled.div`
 `;
 
 export const VolumeWrapper = styled.div`
-  margin-right: 10px;
+  padding-right: 10px;
   display: flex;
   width: 35px;
   overflow: hidden;
   transition: width 0.3s;
 
   &:hover {
-    width: 168px;
+    padding-right: 20px;
+    width: 180px;
   }
 `;
 
@@ -109,11 +110,11 @@ export const VolumeToggleWrapper = styled.div`
   position: relative;
 `;
 
-export interface MuttedIndicatorProps {
+export interface MutedIndicatorProps {
   isMuted: boolean;
 }
 
-export const MuttedIndicator = styled.div`
+export const MutedIndicator = styled.div`
   width: 29px;
   height: 2px;
   position: absolute;
@@ -124,7 +125,7 @@ export const MuttedIndicator = styled.div`
   opacity: 0;
   pointer-events: none;
 
-  ${(props: MuttedIndicatorProps) =>
+  ${(props: MutedIndicatorProps) =>
     props.isMuted
       ? `
     opacity: 1;
@@ -133,7 +134,7 @@ export const MuttedIndicator = styled.div`
 `;
 
 export const VolumeRange = styled.input`
-  margin-left: 20px;
+  margin-left: 30px;
 `;
 
 export interface CurrentTimeTooltipProps {

@@ -18,7 +18,7 @@ import {
   RightControls,
   ControlsWrapper,
   VolumeToggleWrapper,
-  MuttedIndicator,
+  MutedIndicator,
   VolumeRange,
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
@@ -102,7 +102,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                       </CurrentTime>
                       <VolumeWrapper>
                         <VolumeToggleWrapper>
-                          <MuttedIndicator isMuted={isMuted} />
+                          <MutedIndicator isMuted={isMuted} />
                           <Button
                             onClick={actions.toggleMute}
                             iconBefore={

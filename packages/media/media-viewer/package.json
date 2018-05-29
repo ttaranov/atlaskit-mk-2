@@ -20,7 +20,6 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/field-range": "^3.0.0",
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/media-ui": "^2.1.1",

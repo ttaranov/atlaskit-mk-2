@@ -80,7 +80,7 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
 
     const { duration, onChange } = this.props;
     const event = e.nativeEvent;
-    const thumbCorrection = 8;
+    const thumbCorrection = 8; // This is to actually center the thumb in the middle of the cursor
     const x = event.x - thumbCorrection;
     const currentTime = x * duration / this.getWrapperWidth();
 
