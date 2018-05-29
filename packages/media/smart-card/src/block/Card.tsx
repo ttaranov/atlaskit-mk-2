@@ -9,10 +9,7 @@ import { LoadingView as CollapsedLoadingView } from './collapsed/LoadingView';
 import { UnauthorisedView as CollapsedUnauthorisedView } from './collapsed/UnauthorisedView';
 import { ForbiddenView as CollapsedForbiddenView } from './collapsed/ForbiddenView';
 import { ErroredView as CollapsedErrorView } from './collapsed/ErroredView';
-import {
-  ObjectStateProvider,
-  ObjectState,
-} from '../Client/ObjectStateProvider';
+import { ObjectStateProvider } from '../Client/ObjectStateProvider';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface CardProps {
@@ -211,7 +208,6 @@ export class Card extends React.Component<CardProps, CardState> {
 
   renderContent() {
     const { status } = this.state;
-    console.log(status);
     switch (status) {
       case 'resolving':
         return this.renderResolvingState();
