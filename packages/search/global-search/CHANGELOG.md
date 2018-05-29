@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 3.3.0
+- [minor] Consistent avatar sizes [0f80c65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f80c65)
+
 ## 3.2.1
 - [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
 
