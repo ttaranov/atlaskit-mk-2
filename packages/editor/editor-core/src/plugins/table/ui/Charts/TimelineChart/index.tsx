@@ -23,6 +23,8 @@ export default class TimelineChart extends React.Component<Props, any> {
     viewportEnd: 0,
     startExtent: 0,
     endExtent: 0,
+    dragging: false,
+    dragStart: undefined,
   };
 
   canvas?: HTMLCanvasElement;
@@ -85,13 +87,68 @@ export default class TimelineChart extends React.Component<Props, any> {
   render() {
     const swimlanes = this.drawTimeline();
     return (
-      <TimelineContainer onWheel={this.onWheel}>{swimlanes}</TimelineContainer>
+      <TimelineContainer
+        onWheel={this.onWheel}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onMouseMove={this.onMouseMove}
+      >
+        {swimlanes}
+      </TimelineContainer>
     );
   }
 
+  private onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.buttons & 1) {
+      const boundingRect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - boundingRect.left;
+
+      this.setState({
+        dragging: true,
+        dragStart: x,
+      });
+
+      event.preventDefault();
+    }
+  };
+
+  private onMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!this.state.dragging) {
+      return;
+    }
+
+    this.setState({
+      dragging: false,
+      dragStart: undefined,
+    });
+  };
+
+  private onMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!this.state.dragging) {
+      return;
+    }
+
+    const boundingRect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - boundingRect.left;
+
+    // move the view
+    const viewportRange = this.state.viewportEnd - this.state.viewportStart;
+    const moveAmount = this.state.dragStart! - x;
+
+    const viewportChange = moveAmount / this.props.width! * viewportRange;
+
+    const viewportStart = this.state.viewportStart + viewportChange;
+    const viewportEnd = this.state.viewportEnd + viewportChange;
+
+    this.setState({
+      dragStart: x,
+      viewportStart,
+      viewportEnd,
+    });
+  };
+
   private onWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    // take a % of either viewport start or end based on how far from the middle the cursor was
-    // closer to the edge we take more of %, the closer to the middle we take 0%
+    event.preventDefault();
 
     let pos = event.clientX - event.currentTarget.getBoundingClientRect().left;
     if (pos < 0) {
@@ -101,8 +158,11 @@ export default class TimelineChart extends React.Component<Props, any> {
     const startPct = pos / this.props.width!;
     const endPct = (this.props.width! - pos) / this.props.width!;
 
+    // FIXME: should be scaled based on viewport
     const SCROLL_SCALE = 3000000;
 
+    // take a % of either viewport start or end based on how far from the middle the cursor was
+    // closer to the edge we take more of %, the closer to the middle we take 0%
     const delta = event.deltaMode === 0 ? event.deltaY : 30 * event.deltaY;
     const startAdd = delta * SCROLL_SCALE * startPct;
     const endAdd = delta * SCROLL_SCALE * endPct;
@@ -111,9 +171,6 @@ export default class TimelineChart extends React.Component<Props, any> {
       viewportStart: this.state.viewportStart - startAdd,
       viewportEnd: this.state.viewportEnd + endAdd,
     });
-
-    event.preventDefault();
-    event.stopPropagation();
   };
 
   private drawTimeline = () => {
