@@ -14,6 +14,7 @@ export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
   readonly featureFlags?: MediaViewerFeatureFlags;
+  readonly showControls?: () => void;
 };
 
 export type State = {
@@ -42,7 +43,7 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context, identifier, featureFlags } = this.props;
+    const { context, identifier, featureFlags, showControls } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
@@ -60,7 +61,13 @@ export class ItemViewer extends React.Component<Props, State> {
           case 'audio':
             return <AudioViewer {...viewerProps} />;
           case 'video':
-            return <VideoViewer featureFlags={featureFlags} {...viewerProps} />;
+            return (
+              <VideoViewer
+                showControls={showControls}
+                featureFlags={featureFlags}
+                {...viewerProps}
+              />
+            );
           case 'doc':
             return <PDFViewer {...viewerProps} />;
           default:

@@ -25,7 +25,7 @@ export const TimebarWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   color: white;
-  margin: 0 20px;
+  margin: 0 13px 0 9px;
 `;
 
 export const VolumeWrapper = styled.div`
@@ -103,7 +103,7 @@ export const ControlsWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px 0 20px 0;
+  padding: 20px 0 20px 0;
 `;
 
 export const VolumeToggleWrapper = styled.div`

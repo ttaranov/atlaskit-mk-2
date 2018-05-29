@@ -27,6 +27,7 @@ import { Shortcut } from '../../shortcut';
 
 export interface CustomVideoProps {
   src: string;
+  readonly showControls?: () => void;
 }
 export class CustomVideo extends Component<CustomVideoProps, {}> {
   onTimeChange = (navigate: Function) => (value: number) => {
@@ -36,6 +37,16 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
   onVolumeChange = (setVolume: Function) => (e: any) => {
     const value = e.target.value;
     setVolume(value);
+  };
+
+  shortcutHanler = (toggleButtonAction: Function) => () => {
+    const { showControls } = this.props;
+
+    toggleButtonAction();
+
+    if (showControls) {
+      showControls();
+    }
   };
 
   render() {
@@ -69,7 +80,10 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
             return (
               <VideoWrapper>
                 {video}
-                <Shortcut keyCode={32} handler={toggleButtonAction} />
+                <Shortcut
+                  keyCode={32}
+                  handler={this.shortcutHanler(toggleButtonAction)}
+                />
                 <ControlsWrapper className={hideControlsClassName}>
                   <TimeWrapper>
                     <TimeRange

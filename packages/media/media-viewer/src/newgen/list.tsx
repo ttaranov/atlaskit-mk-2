@@ -31,7 +31,7 @@ export class List extends React.Component<Props, State> {
   }
 
   renderContent(items: Identifier[]) {
-    const { context, onClose, featureFlags } = this.props;
+    const { context, onClose, featureFlags, showControls } = this.props;
     const { selectedItem } = this.state;
     if (getSelectedIndex(items, selectedItem) < 0) {
       return (
@@ -54,6 +54,7 @@ export class List extends React.Component<Props, State> {
             featureFlags={featureFlags}
             context={context}
             identifier={selectedItem}
+            showControls={showControls}
           />
           <Navigation
             items={items}

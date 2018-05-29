@@ -12,6 +12,7 @@ export type Props = {
   context: Context;
   collectionName?: string;
   readonly featureFlags?: MediaViewerFeatureFlags;
+  readonly showControls?: () => void;
 };
 
 export type State = {
@@ -27,7 +28,7 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
-    const { featureFlags } = this.props;
+    const { featureFlags, showControls } = this.props;
     const useCustomVideoPlayer = getFeatureFlag(
       'customVideoPlayer',
       featureFlags,
@@ -38,7 +39,7 @@ export class VideoViewer extends React.Component<Props, State> {
         return <Spinner />;
       case 'SUCCESSFUL':
         if (useCustomVideoPlayer) {
-          return <CustomVideo src={src.data} />;
+          return <CustomVideo showControls={showControls} src={src.data} />;
         } else {
           return <Video controls src={src.data} />;
         }
