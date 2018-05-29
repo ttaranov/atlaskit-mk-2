@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import Badge from '../index';
 
-describe('value property', () => {
+describe('DEPRECATED - value property', () => {
   it('should be visibly displayed', () => {
     expect(mount(<Badge value={5} />).text()).toBe('5');
   });
@@ -32,7 +32,7 @@ describe('value property', () => {
   });
 });
 
-describe('max property', () => {
+describe('DEPRECATED - max property', () => {
   it('should constrain to 99+ when not specified', () => {
     expect(mount(<Badge value={101} />).text()).toBe('99+');
   });
@@ -56,4 +56,16 @@ describe('appearance property', () => {
   it('should be "default" when not set', () => {
     expect(mount(<Badge />).prop('appearance')).toBe('default');
   });
+});
+
+test('children', () => {
+  expect(mount(<Badge />).text()).toBe('0');
+  expect(mount(<Badge>100+</Badge>).text()).toBe('100+');
+  expect(
+    mount(
+      <Badge>
+        <em>Something</em>
+      </Badge>,
+    ).contains(<em>Something</em>),
+  ).toBe(true);
 });

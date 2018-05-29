@@ -1,31 +1,26 @@
 {
-  "name": "@atlaskit/badge",
-  "version": "7.1.2",
-  "description": "A React component that indicates values",
+  "name": "@atlaskit/format",
+  "version": "0.0.0",
+  "description": "Components for formatting values.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
-  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/badges",
+  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/format",
   "files": [
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Raja B",
-    "Ben C",
-    "Ajay M"
+    "Trey S"
   ],
   "atlaskit": {
-    "name": "Badge",
-    "team": "elements"
+    "name": "Format",
+    "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/format": "0.0.0",
-    "@atlaskit/theme": "^3.2.2",
-    "babel-runtime": "^6.26.0",
-    "styled-components": "1.4.6 - 3"
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
     "react": "^16.3.0"
