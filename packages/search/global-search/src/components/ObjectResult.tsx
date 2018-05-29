@@ -29,15 +29,22 @@ export default class ObjectResult extends React.Component<Props> {
     type: OBJECT_RESULT_TYPE,
   };
 
+  /*
+   * Note:
+   * Icon with medium size = 24px.
+   * Avatar with small size = 24px.
+   */
   getAvatar = () => {
     if (this.props.contentType === ResultContentType.Page) {
-      return <Objects24PageIcon size="large" label={this.props.name} />;
+      return <Objects24PageIcon size="medium" label={this.props.name} />;
     } else if (this.props.contentType === ResultContentType.Blogpost) {
-      return <Objects24BlogIcon size="large" label={this.props.name} />;
+      return <Objects24BlogIcon size="medium" label={this.props.name} />;
     } else if (this.props.contentType === ResultContentType.Attachment) {
-      return <DocumentFilledIcon size="large" label={this.props.name} />;
+      return <DocumentFilledIcon size="medium" label={this.props.name} />;
     } else {
-      return <Avatar src={this.props.avatarUrl} appearance="square" />;
+      return (
+        <Avatar src={this.props.avatarUrl} size="small" appearance="square" />
+      );
     }
   };
 
