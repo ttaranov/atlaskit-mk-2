@@ -1,6 +1,16 @@
-import styled from 'styled-components';
+// @ts-ignore: unused variable
+import styled, { StyledComponentClass } from 'styled-components';
+// @ts-ignore: unused variable
+import {
+  HTMLAttributes,
+  InputHTMLAttributes,
+  ClassAttributes,
+  ComponentClass,
+} from 'react';
 
-export const CustomVideoWrapper = styled.div`
+export const CustomVideoWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
   width: 100%;
   height: 100%;
 
