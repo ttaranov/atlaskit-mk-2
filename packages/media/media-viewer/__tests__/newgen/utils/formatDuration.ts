@@ -2,7 +2,7 @@ import { formatDuration } from '../../../src/newgen/utils/formatDuration';
 
 describe('formatDuration', () => {
   const minute = 60;
-  const hour = 60 * 60;
+  const hour = 60 * minute;
   it('should format seconds into readable format', () => {
     expect(formatDuration(0)).toEqual('0:00');
     expect(formatDuration(5)).toEqual('0:05');
