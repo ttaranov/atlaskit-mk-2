@@ -10,7 +10,7 @@ import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
   VideoWrapper,
-  AppWrapper,
+  CustomVideoWrapper,
   TimebarWrapper,
   VolumeWrapper,
   TimeWrapper,
@@ -46,7 +46,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
     const { src } = this.props;
 
     return (
-      <AppWrapper>
+      <CustomVideoWrapper>
         <Video src={src} autoPlay={false}>
           {(video, videoState, actions) => {
             const isPlaying = videoState.status === 'playing';
@@ -116,7 +116,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             );
           }}
         </Video>
-      </AppWrapper>
+      </CustomVideoWrapper>
     );
   }
 }

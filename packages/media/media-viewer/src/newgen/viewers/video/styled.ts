@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AppWrapper = styled.div`
+export const CustomVideoWrapper = styled.div`
   width: 100%;
   height: 100%;
 
@@ -19,8 +19,6 @@ export const VideoWrapper = styled.div`
     flex: 1;
   }
 `;
-
-export const Timebar = styled.progress``;
 
 export const TimebarWrapper = styled.div`
   display: flex;
@@ -105,7 +103,7 @@ export const ControlsWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px 0px 20px 0;
+  padding: 10px 0 20px 0;
 `;
 
 export const VolumeToggleWrapper = styled.div`
