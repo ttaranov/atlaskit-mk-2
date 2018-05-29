@@ -16,8 +16,8 @@ type NumberChartDataset = {
 };
 
 type TimelineEntry = {
-  start: Date;
-  end: Date;
+  start: number;
+  end: number;
   title: string;
 };
 

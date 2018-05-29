@@ -34,17 +34,13 @@ export default class TimelineTransformer implements GraphTransformer {
 
         entries.push({
           title,
-          start: new Date(
-            Number(
-              row.child(this.dataSourceColumns[0]).firstChild!.firstChild!.attrs
-                .timestamp,
-            ),
+          start: Number(
+            row.child(this.dataSourceColumns[0]).firstChild!.firstChild!.attrs
+              .timestamp,
           ),
-          end: new Date(
-            Number(
-              row.child(this.dataSourceColumns[1]).firstChild!.firstChild!.attrs
-                .timestamp,
-            ),
+          end: Number(
+            row.child(this.dataSourceColumns[1]).firstChild!.firstChild!.attrs
+              .timestamp,
           ),
         });
       }
