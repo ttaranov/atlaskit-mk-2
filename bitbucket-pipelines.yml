@@ -40,18 +40,6 @@ pipelines:
             caches:
               - node
         - step:
-            name: Lint + Typecheck
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
-              - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
-              - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
-              - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
-              - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
-            caches:
-              - node
-        - step:
             name: Unit Testing
             script:
               - source ./build-setup.sh
@@ -122,7 +110,6 @@ pipelines:
             - bolt install --pure-lockfile
             - yarn build
             - yarn lint
-            - yarn typecheck
             - yarn test
             - yarn test:browser:browserstack
             - yarn test:webdriver:browserstack
