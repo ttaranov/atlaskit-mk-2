@@ -60,11 +60,21 @@ export interface WrapperProps {
   containerWidth: number;
 }
 
+/**
+ * Can't use `.attrs` to handle highly dynamic styles because we are still
+ * supporting `styled-components` v1.
+ */
 const MediaSingleDimensionHelper = ({
   width,
   height,
   layout,
+  containerWidth,
 }: WrapperProps) => css`
+  width: ${calcWidth(layout, width, containerWidth)};
+  max-width: ${containerWidth < akEditorFullPageMaxWidth
+    ? '100%'
+    : containerWidth};
+  float: ${float(layout)};
   margin: ${calcMargin(layout)};
   &::after {
     content: '';
@@ -75,14 +85,7 @@ const MediaSingleDimensionHelper = ({
 
 const Wrapper: React.ComponentClass<
   HTMLAttributes<{}> & WrapperProps
-> = styled.div.attrs<{}>({
-  style: ({ layout, width, containerWidth }) => ({
-    width: calcWidth(layout, width, containerWidth),
-    maxWidth:
-      containerWidth < akEditorFullPageMaxWidth ? '100%' : containerWidth,
-    float: float(layout),
-  }),
-})`
+> = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
   & > div {
