@@ -15,6 +15,7 @@ export interface Props {
 
   textPaddingLeft?: number;
   viewportPaddingPct?: number;
+  chartSelected: boolean;
 }
 
 export default class TimelineChart extends React.Component<Props, any> {
@@ -88,6 +89,7 @@ export default class TimelineChart extends React.Component<Props, any> {
     const swimlanes = this.drawTimeline();
     return (
       <TimelineContainer
+        dragging={this.state.dragging}
         onWheel={this.onWheel}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
@@ -108,7 +110,10 @@ export default class TimelineChart extends React.Component<Props, any> {
         dragStart: x,
       });
 
-      event.preventDefault();
+      // allow the original event to select the graph, otherwise eat the click
+      if (this.props.chartSelected) {
+        event.preventDefault();
+      }
     }
   };
 

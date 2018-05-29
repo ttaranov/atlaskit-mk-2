@@ -217,7 +217,10 @@ class TableComponent extends React.Component<ComponentProps> {
                       />
                     )}
                     {node.attrs.viewMode === 'timeline' && (
-                      <TimelineChart data={chartData} />
+                      <TimelineChart
+                        data={chartData}
+                        chartSelected={this.isChartSelected(pluginState)}
+                      />
                     )}
                   </div>
                 )}

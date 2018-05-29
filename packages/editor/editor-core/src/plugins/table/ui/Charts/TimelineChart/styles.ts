@@ -1,11 +1,23 @@
 import styled from 'styled-components';
 import { HTMLAttributes, ComponentClass } from 'react';
 
-export const TimelineContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export interface TimelineContainerProps {
+  dragging?: boolean;
+}
+
+export const TimelineContainer: ComponentClass<
+  HTMLAttributes<{}> & TimelineContainerProps
+> = styled.div`
+  ${props =>
+    (props as TimelineContainerProps).dragging
+      ? `
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;`
+      : `
   cursor: -webkit-grab;
   cursor: -moz-grab;
-
-  overflow-x: hidden;
+  cursor: grab;`} overflow-x: hidden;
 `;
 
 export const TimelineEntry: ComponentClass<HTMLAttributes<{}>> = styled.div`
