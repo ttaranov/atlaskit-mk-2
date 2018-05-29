@@ -17,6 +17,7 @@ export const mediaGroup: NodeSpec = {
   group: 'block',
   content: 'media+',
   attrs: {},
+  draggable: true,
   parseDOM: [
     {
       tag: 'div[data-node-type="mediaGroup"]',

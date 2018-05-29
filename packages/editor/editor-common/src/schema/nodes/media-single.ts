@@ -33,6 +33,7 @@ export const mediaSingle: NodeSpec = {
   group: 'block',
   content: 'media',
   attrs: defaultAttrs,
+  draggable: true,
   parseDOM: [
     {
       tag: 'div[data-node-type="mediaSingle"]',

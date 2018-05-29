@@ -63,6 +63,7 @@ export interface DOMAttributes {
 export const panel: NodeSpec = {
   group: 'block',
   content: '(paragraph | heading | bulletList | orderedList)+',
+  draggable: true,
   attrs: {
     panelType: { default: 'info' },
   },

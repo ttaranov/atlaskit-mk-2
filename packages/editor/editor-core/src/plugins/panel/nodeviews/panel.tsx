@@ -91,12 +91,13 @@ class Panel extends ContentNodeView implements NodeView {
     const { panelType } = this;
     this.domRef = document.createElement('div');
     this.domRef.setAttribute('data-panel-type', this.panelType);
+    this.domRef.setAttribute('draggable', 'true');
 
     // tslint:disable-next-line:variable-name
     const Icon = panelIcons[panelType];
 
     ReactDOM.render(
-      <Wrapper style={{ background: panelColor[panelType] }}>
+      <Wrapper style={{ background: panelColor[panelType] }} draggable="false">
         <IconWrapper style={{ color: iconColor[panelType] }}>
           <Icon label={`Panel ${panelType}`} />
         </IconWrapper>
