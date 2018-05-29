@@ -1,7 +1,14 @@
 import { Observable } from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
-import { switchMap, map, catchError, startWith } from 'rxjs/operators';
+import {
+  switchMap,
+  map,
+  catchError,
+  startWith,
+  refCount,
+  publishReplay,
+} from 'rxjs/operators';
 import { fetch } from './fetch';
 
 interface ResolveResponse {
@@ -70,6 +77,8 @@ export class ObjectStateProvider {
         ),
       ),
       catchError(() => of<ObjectState>({ status: 'errored' })),
+      publishReplay(1),
+      refCount(),
     );
   }
 
