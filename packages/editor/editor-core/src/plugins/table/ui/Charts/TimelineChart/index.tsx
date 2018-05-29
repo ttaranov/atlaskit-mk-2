@@ -11,6 +11,8 @@ export interface Props {
 
   itemHeight?: number;
   itemPadding?: number;
+
+  textPaddingLeft?: number;
 }
 
 export default class TimelineChart extends React.Component<Props, any> {
@@ -23,6 +25,9 @@ export default class TimelineChart extends React.Component<Props, any> {
 
     itemHeight: 40,
     itemPadding: 12,
+
+    textPaddingLeft: 8,
+    textPaddingTopBottom: 8,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -65,7 +70,7 @@ export default class TimelineChart extends React.Component<Props, any> {
     const canvas = this.canvas!;
     const ctx = canvas.getContext('2d')!;
 
-    const { data } = this.props;
+    const { data, itemHeight, textPaddingLeft } = this.props;
 
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -75,9 +80,12 @@ export default class TimelineChart extends React.Component<Props, any> {
     const firstEntry = TimelineChart.findEarliest(data);
     const lastEntry = TimelineChart.findLatest(data);
 
-    let top = 0;
+    // setup label stuff
+    const textHeight = itemHeight! / 3;
+    ctx.font = `${textHeight!}px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`;
 
-    data.entries.forEach(entry => {
+    let top = 0;
+    data.entries.forEach((entry, entryIdx) => {
       const leftPct = (entry.start - firstEntry) / (lastEntry - firstEntry);
       const endPct = (entry.end - firstEntry) / (lastEntry - firstEntry);
 
@@ -86,10 +94,19 @@ export default class TimelineChart extends React.Component<Props, any> {
 
       const width = end - left;
 
-      ctx.fillStyle = 'green';
+      // draw bar
+      ctx.fillStyle = this.props.colors![entryIdx];
       ctx.fillRect(left, top, width, this.props.itemHeight!);
 
-      top += this.props.itemHeight! + this.props.itemPadding!;
+      // apply label
+      ctx.fillStyle = 'white';
+      ctx.fillText(
+        entry.title,
+        left + textPaddingLeft!,
+        top + itemHeight! / 2 + textHeight / 3,
+      );
+
+      top += itemHeight! + this.props.itemPadding!;
     });
   };
 
