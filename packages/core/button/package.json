@@ -35,7 +35,7 @@
     "@atlaskit/checkbox": "^2.0.2",
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/icon": "^11.3.0",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-router-dom": "^4.2.2"
   }
 }

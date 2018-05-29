@@ -32,7 +32,7 @@
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/select": "^3.0.2",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"

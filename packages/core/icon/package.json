@@ -40,7 +40,7 @@
     "@atlaskit/tooltip": "^9.2.1",
     "babel-core": "^6.26.0",
     "classnames": "^2.2.5",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "lodash.sample": "^4.2.1",
