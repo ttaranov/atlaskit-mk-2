@@ -111,7 +111,7 @@ export const VolumeToggleWrapper = styled.div`
 `;
 
 export interface MuttedIndicatorProps {
-  isMutted: boolean;
+  isMuted: boolean;
 }
 
 export const MuttedIndicator = styled.div`
@@ -126,7 +126,7 @@ export const MuttedIndicator = styled.div`
   pointer-events: none;
 
   ${(props: MuttedIndicatorProps) =>
-    props.isMutted
+    props.isMuted
       ? `
     opacity: 1;
   `

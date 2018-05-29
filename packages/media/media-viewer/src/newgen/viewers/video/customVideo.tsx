@@ -25,14 +25,10 @@ import { formatDuration } from '../../utils/formatDuration';
 import { hideControlsClassName } from '../../styled';
 import { Shortcut } from '../../shortcut';
 
-export interface CustomVideoState {}
-
 export interface CustomVideoProps {
   src: string;
 }
-export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
-  state: CustomVideoState = {};
-
+export class CustomVideo extends Component<CustomVideoProps, {}> {
   onTimeChange = (navigate: Function) => (value: number) => {
     navigate(value);
   };
@@ -68,7 +64,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
                 onClick={actions.requestFullscreen}
               />
             );
-            const isMutted = videoState.volume === 0;
+            const isMuted = videoState.volume === 0;
 
             return (
               <VideoWrapper>
@@ -92,7 +88,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
                       </CurrentTime>
                       <VolumeWrapper>
                         <VolumeToggleWrapper>
-                          <MuttedIndicator isMutted={isMutted} />
+                          <MuttedIndicator isMuted={isMuted} />
                           <Button
                             onClick={actions.toggleMute}
                             iconBefore={

@@ -6,10 +6,11 @@ import { mount } from 'enzyme';
 import { Stubs } from '../../_stubs';
 import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
-import { VideoViewer } from '../../../src/newgen/viewers/video';
+import { VideoViewer, Props } from '../../../src/newgen/viewers/video';
 import { Video } from '../../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
 import { ErrorMessage } from '../../../src/newgen/styled';
+import { CustomVideo } from '../../../src/newgen/viewers/video/customVideo';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -42,14 +43,10 @@ function createContext(authPromise) {
   ) as any;
 }
 
-function createFixture(authPromise, collectionName?) {
+function createFixture(authPromise, props?: Partial<Props>) {
   const context = createContext(authPromise);
   const el = mount(
-    <VideoViewer
-      context={context}
-      item={videoItem}
-      collectionName={collectionName}
-    />,
+    <VideoViewer context={context} item={videoItem} {...props} />,
   );
   return { context, el };
 }
@@ -97,9 +94,24 @@ describe('Video viewer', () => {
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
     const collectionName = 'some-collection';
     const authPromise = Promise.resolve({ token, clientId });
-    const { el } = createFixture(authPromise, collectionName);
+    const { el } = createFixture(authPromise, { collectionName });
     await el.instance()['init']();
     el.update();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
+  });
+
+  it('should render a custom video player if the feature flag is active', async () => {
+    const authPromise = Promise.resolve({ token, clientId });
+    const { el } = createFixture(authPromise, {
+      featureFlags: { customVideoPlayer: true },
+    });
+
+    await el.instance()['init']();
+    el.update();
+
+    expect(el.find(CustomVideo)).toHaveLength(1);
+    expect(el.find(CustomVideo).prop('src')).toEqual(
+      'some-service-host/video?client=some-client-id&token=some-token',
+    );
   });
 });

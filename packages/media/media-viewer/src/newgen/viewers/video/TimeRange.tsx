@@ -46,10 +46,10 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     // TODO: how to not read wrapper dimensions on every move?
     // subscribe to window.resize should cover all the cases since we are
     // using position: absolute
-    const wrapperWidth = this.wrapperElement.getBoundingClientRect().width;
     const { currentTime, onChange, duration } = this.props;
     const { movementX } = e;
-    const movementPercentage = Math.abs(movementX) * duration / wrapperWidth;
+    const movementPercentage =
+      Math.abs(movementX) * duration / this.getWrapperWidth();
     const newTime =
       currentTime + (movementX > 0 ? movementPercentage : -movementPercentage);
     const newTimeWithBoundaries = Math.min(Math.max(newTime, 0), duration);
@@ -81,11 +81,14 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     const event = e.nativeEvent;
     const thumbCorrection = 8;
     const x = event.x - thumbCorrection;
-    const width = this.wrapperElement.getBoundingClientRect().width;
-    const currentTime = x * duration / width;
+    const currentTime = x * duration / this.getWrapperWidth();
 
     onChange(currentTime);
   };
+
+  private getWrapperWidth(): number {
+    return this.wrapperElement.getBoundingClientRect().width;
+  }
 
   private saveWrapperElement = el => {
     if (el) {
