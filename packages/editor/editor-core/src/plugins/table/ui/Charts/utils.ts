@@ -69,3 +69,18 @@ export const upscaleCanvas = (
     ctx.scale(pixelRatio, pixelRatio);
   }
 };
+
+export const MONTHS = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+];

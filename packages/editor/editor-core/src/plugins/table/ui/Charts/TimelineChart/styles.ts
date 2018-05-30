@@ -31,7 +31,7 @@ export const TimelineEntryContainer: ComponentClass<
   HTMLAttributes<{}> & TimelineEntryProps
 > = styled.div`
   position: relative;
-  margin: 8px;
+  margin: 8px 0;
   border-radius: 5px;
   color: white;
   box-sizing: border-box;

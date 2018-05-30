@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { TimelineDataset } from '../../../graphs';
-import { COLORS, SELECTED_COLORS } from '../utils';
+import { COLORS, SELECTED_COLORS, MONTHS } from '../utils';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { TimelineContainer } from './styles';
 import TimelineEntry from './TimelineEntry';
+import * as daysBeetween from 'date-fns/difference_in_calendar_days';
 
 export interface Props {
   data: TimelineDataset;
@@ -16,15 +17,12 @@ export interface Props {
   itemPadding?: number;
 
   textPaddingLeft?: number;
-  viewportPaddingPct?: number;
   chartSelected: boolean;
 }
 
 export interface State {
   viewportStart: number;
   viewportEnd: number;
-  startExtent: number;
-  endExtent: number;
   dragging: boolean;
   dragStart: number | undefined;
   dragOffset: number;
@@ -37,9 +35,6 @@ export default class TimelineChart extends React.Component<Props, State> {
   state: State = {
     viewportStart: 0,
     viewportEnd: 0,
-    startExtent: 0,
-    endExtent: 0,
-
     dragging: false,
     resizeDirection: undefined,
 
@@ -62,8 +57,6 @@ export default class TimelineChart extends React.Component<Props, State> {
 
     textPaddingLeft: 8,
     textPaddingTopBottom: 8,
-
-    viewportPaddingPct: 5,
   };
 
   componentDidUpdate(prevProps) {
@@ -90,17 +83,10 @@ export default class TimelineChart extends React.Component<Props, State> {
     if (state.viewportStart === 0 && state.viewportEnd === 0) {
       const viewportStart = TimelineChart.findTimeExtent(props.data, 'start');
       const viewportEnd = TimelineChart.findTimeExtent(props.data, 'end');
-
-      const viewportRange = viewportEnd - viewportStart;
-
       return {
         ...state,
-        viewportStart:
-          viewportStart - viewportRange * (props.viewportPaddingPct / 100),
-        viewportEnd:
-          viewportEnd + viewportRange * (props.viewportPaddingPct / 100),
-        startExtent: viewportStart,
-        endExtent: viewportEnd,
+        viewportStart,
+        viewportEnd,
       };
     }
 
@@ -108,9 +94,10 @@ export default class TimelineChart extends React.Component<Props, State> {
   }
 
   render() {
-    const swimlanes = this.drawTimeline();
     return (
       <TimelineContainer
+        className="ProseMirror-timeline"
+        contentEditable={false}
         dragging={this.state.dragging}
         onWheel={this.onWheel}
         onMouseDown={this.onMouseDown}
@@ -122,7 +109,8 @@ export default class TimelineChart extends React.Component<Props, State> {
           });
         }}
       >
-        {swimlanes}
+        {this.drawGrid()}
+        {this.drawTimeline()}
       </TimelineContainer>
     );
   }
@@ -223,6 +211,46 @@ export default class TimelineChart extends React.Component<Props, State> {
     });
   };
 
+  private drawGrid = () => {
+    const { viewportStart, viewportEnd } = this.state;
+
+    // calc width of each month
+    const diffDays = daysBeetween(viewportStart, viewportEnd);
+    const width = this.props.width! * 30 / Math.abs(diffDays);
+
+    // calc start month
+    // const startYear = new Date(viewportStart).getFullYear();
+    const startMonth = new Date(viewportStart).getMonth();
+    // const endMonth = new Date(viewportEnd).getMonth();
+    // const viewportRange = viewportEnd - viewportStart;
+    // const startOfTheYear = new Date(startYear, 0, 0).valueOf();
+    // const leftPct = (startOfTheYear - viewportStart) / viewportRange;
+    // console.log(`startOfTheYear:${startOfTheYear} viewportStart:${viewportStart} viewportRange:${viewportRange} leftPct:${leftPct} left:${left}`);
+    const left = 0; //leftPct * this.props.width!;
+
+    let grid: any = [];
+    for (let i = startMonth; i <= 11; i++) {
+      const month = MONTHS[i];
+      grid.push(
+        <div
+          className="ProseMirror-timeline_month"
+          style={{ width: `${width}px` }}
+        >
+          <div className="ProseMirror-timeline_month_label">{month}</div>
+        </div>,
+      );
+    }
+
+    return (
+      <div
+        className="ProseMirror-timeline_grid"
+        style={{ userSelect: 'none', left: `${left}px` }}
+      >
+        {grid}
+      </div>
+    );
+  };
+
   private drawTimeline = () => {
     const { data } = this.props;
     const { viewportStart, viewportEnd } = this.state;
@@ -288,7 +316,7 @@ export default class TimelineChart extends React.Component<Props, State> {
       );
     });
 
-    return swimlanes;
+    return <div className="ProseMirror-timeline_swimlanes">{swimlanes}</div>;
   };
 
   selectEntry(idx: number) {

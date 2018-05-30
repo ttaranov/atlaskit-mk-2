@@ -2,6 +2,7 @@ import { browser } from '@atlaskit/editor-common';
 import {
   akColorN40A,
   akColorN30,
+  akColorN100,
   akColorB100,
   akColorB300,
   akColorB75,
@@ -176,7 +177,6 @@ export const tableStyles = `
   .ProseMirror {
     .ProseMirror-chart-container {
       border: 1px solid ${akColorN30};
-      padding: 16px;
       border-radius: 5px;
       margin: 32px 0 20px;
 
@@ -187,12 +187,36 @@ export const tableStyles = `
         border-color: ${akColorB300};
       }
     }
+    .ProseMirror-timeline {
+      position: relative;
+
+      .ProseMirror-timeline_swimlanes {
+        padding: 36px 12px;
+      }
+
+      .ProseMirror-timeline_grid {
+        height: 100%;
+        position: absolute;
+        display: flex;
+
+        .ProseMirror-timeline_month {
+          border-left: 1px solid ${akColorN30};
+
+          .ProseMirror-timeline_month_label {
+            color: ${akColorN100};
+            font-size: 11px;
+            padding: 10px 20px;
+          }
+        }
+      }
+    }
     .ProseMirror-piechart {
       display: flex;
       align-items: center;
       justify-content: space-around;
       max-width: 680px;
       cursor: pointer;
+      padding: 16px;
 
       &.-legent-right {
         flex-direction: row-reverse;
