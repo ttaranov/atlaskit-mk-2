@@ -56,14 +56,6 @@ export default function generateDefaultConfig() {
       tooltip: 'Help',
     },
     profile: {
-      icon: () => (
-        <Avatar
-          borderColor="transparent"
-          isActive={false}
-          isHover={false}
-          size="small"
-        />
-      ),
       label: 'Your profile and Settings',
       position: 'bottom5',
       tooltip: 'Your profile and Settings',
