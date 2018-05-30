@@ -112,6 +112,250 @@ pipelines:
             - yarn test:webdriver:browserstack
           caches:
             - node
+    
+  
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+image: node:8.4.0
+# This ensures we do a full clone on each build which prevents issues when cross referencing
+# changesets and releases
+clone:
+  depth: full
+options:
+  size: 2x
+
+pipelines:
+  branches:
+    master:
+      - step:
+          script:
+            # Note: in master, this script will rebase you onto latest origin/master
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - (cd build/ci-scripts && yarn stop-if-older-build)
+            - yarn build
+            - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
+            # Disabled until we get rid of the race condition in Landkid
+            # - yarn lint
+            # - yarn typecheck
+            # - yarn test
+            # Disabled until we find the source of the flakeyness
+            # - yarn test:browser:browserstack
+            - yarn release
+            - (cd build/ci-scripts && yarn restart-stopped-build)
+          caches:
+            - node
+
+  default:
+    - parallel:
+        - step:
+            name: Building dists
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - yarn build
+              - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
+            caches:
+              - node
+        - step:
+            name: Lint + Typecheck
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
+              - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
+              - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
+              - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
+              - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
+            caches:
+              - node
+        - step:
+            name: Unit Testing
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
+              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
+            caches:
+              - node
+        - step:
+            name: Browser Testing
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
+            caches:
+              - node
+        - step:
+            name: Building website
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
+              - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
+              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+            caches:
+              - node
+    - step:
+        name: Sending Website Build Url
+        script:
+          - (cd build/utils && yarn install) # needed for npm-run when updating status
+          - cd build/ci-scripts
+          - yarn install
+          - node download.build.artefact.for.commit.js netlify-build.txt
+          - node update.build.status.with.netlify.link.js
+
+
+  custom: # Pipelines that can be scheduled or triggered manually
+
+    # This should only be called by a scheduled build
+    build-website-production:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - (cd website && yarn deploy)
+            # This is a sanity check to make sure the website renders on all browsers without error
+            - yarn test:webdriver:browserstack website
+          caches:
+            - node
+
+    # This will run with the webdriver tests
+    build-webdriver:
+    - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn test:webdriver:browserstack
+          caches:
+            - node
+            
+    # This will run with the visual regression tool
+    build-visual-regression:
+      - step:
+          script:
+            - source ./puppeteer.sh
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - yarn add puppeteer
+            - yarn test:vr
+          caches:
+            - node          
 
     # This will run essentially the branch builds, but without any optimizations and should be manually
     # run in any potentially risky builds
