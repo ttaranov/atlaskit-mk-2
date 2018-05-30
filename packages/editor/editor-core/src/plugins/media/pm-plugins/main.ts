@@ -13,11 +13,7 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import {
-  copyPrivateMediaAttributes,
-  MediaType,
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
