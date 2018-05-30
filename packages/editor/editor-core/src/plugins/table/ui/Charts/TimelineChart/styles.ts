@@ -55,11 +55,13 @@ export const TimelineEntryContainer: ComponentClass<
       ? `
     /*border: 1px solid ${(props as TimelineEntryProps).color};*/
     padding-left: 0px;
+    padding-right: 0px;
     cursor: default;
     /*background-color: ${props.selectedColor}*/
   `
       : `
     padding-left: 16px;
+    padding-right: 16px;
   `};
 `;
 
@@ -72,6 +74,12 @@ export const TimelineEntryContent: ComponentClass<
   & span,
   & input {
     flex: 1;
+  }
+
+  & span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 
