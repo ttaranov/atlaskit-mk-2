@@ -12268,9 +12268,9 @@ react-value@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-value/-/react-value-0.2.0.tgz#04d6e3351add34e9365d4597f207e2a13ba85564"
 
-react-video-renderer@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/react-video-renderer/-/react-video-renderer-0.0.4.tgz#56104b259beda6b16359f0a4aab8ad36e5585362"
+react-video-renderer@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-video-renderer/-/react-video-renderer-0.0.5.tgz#f95c2c17fc2ade4f7e9536604f73420ded3a678a"
 
 react-virtualized@^9.8.0:
   version "9.12.0"

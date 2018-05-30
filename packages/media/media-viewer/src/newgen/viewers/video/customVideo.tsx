@@ -5,7 +5,10 @@ import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
 import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import HipchatOutgoingSoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
 import Button from '@atlaskit/button';
-import Video from 'react-video-renderer';
+import Video, {
+  SetVolumeFunction,
+  NavigateFunction,
+} from 'react-video-renderer';
 import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
@@ -29,17 +32,20 @@ export interface CustomVideoProps {
   src: string;
   readonly showControls?: () => void;
 }
+
+export type ToggleButtonAction = () => void;
+
 export class CustomVideo extends Component<CustomVideoProps, {}> {
-  onTimeChange = (navigate: Function) => (value: number) => {
+  onTimeChange = (navigate: NavigateFunction) => (value: number) => {
     navigate(value);
   };
 
-  onVolumeChange = (setVolume: Function) => (e: any) => {
+  onVolumeChange = (setVolume: SetVolumeFunction) => (e: any) => {
     const value = e.target.value;
     setVolume(value);
   };
 
-  shortcutHanler = (toggleButtonAction: Function) => () => {
+  shortcutHanler = (toggleButtonAction: ToggleButtonAction) => () => {
     const { showControls } = this.props;
 
     toggleButtonAction();
@@ -112,7 +118,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                         </VolumeToggleWrapper>
                         <VolumeRange
                           type="range"
-                          step="0.01"
+                          step={0.01}
                           value={videoState.volume}
                           max={1}
                           onChange={this.onVolumeChange(actions.setVolume)}
