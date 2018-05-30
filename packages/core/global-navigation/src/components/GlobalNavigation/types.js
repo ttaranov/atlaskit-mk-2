@@ -49,7 +49,8 @@ export type GlobalNavigationProps = {
 
   onProfileClick?: () => void,
   profileTooltip?: string,
-  profileComponent?: ComponentType<*>, // Dropdown component with an Avatar as the trigger
+  profileItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  profileIconUrl?: string,
 
   onPeopleClick?: () => void,
   peopleTooltip?: string,
