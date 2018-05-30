@@ -5,9 +5,7 @@ import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akColorN30, akBorderRadius } from '@atlaskit/util-shared-styles';
 import { Wrapper as WrapperDefault, padding } from '../styles';
 
-export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
-  WrapperDefault,
-)`
+export const Wrapper: any = styled(WrapperDefault)`
   margin: 12px 0;
 `;
 

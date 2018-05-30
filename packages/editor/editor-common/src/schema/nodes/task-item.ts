@@ -21,6 +21,7 @@ export const taskItem: NodeSpec = {
     localId: { default: '' },
     state: { default: 'TODO' },
   },
+  draggable: true,
   parseDOM: [
     {
       tag: 'li[data-task-local-id]',
@@ -40,6 +41,7 @@ export const taskItem: NodeSpec = {
     const attrs = {
       'data-task-local-id': localId || 'local-task',
       'data-task-state': state,
+      draggable: true,
     };
     return ['li', attrs, 0];
   },

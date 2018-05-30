@@ -25,7 +25,8 @@ export const listItem: NodeSpec = {
     '(paragraph | mediaSingle) (paragraph | bulletList | orderedList | mediaSingle)*',
   defining: true,
   parseDOM: [{ tag: 'li' }],
+  draggable: true,
   toDOM() {
-    return ['li', 0];
+    return ['li', { draggable: true }, 0];
   },
 };

@@ -28,6 +28,7 @@ export default class TableView extends ContentNodeView implements NodeView {
     this.node = props.node;
 
     this.domRef = document.createElement('div');
+    this.domRef.draggable = true;
 
     this.render();
   }

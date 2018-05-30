@@ -206,6 +206,7 @@ export const table: any = {
   tableRole: 'table',
   isolating: true,
   group: 'block',
+  draggable: true,
   parseDOM: [
     {
       tag: 'table',

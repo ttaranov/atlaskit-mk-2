@@ -34,6 +34,7 @@ export const bodiedExtension: NodeSpec = {
     parameters: { default: null },
     text: { default: null },
   },
+  draggable: true,
   parseDOM: [
     {
       tag: '[data-node-type="bodied-extension"]',

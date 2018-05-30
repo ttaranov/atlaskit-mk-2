@@ -40,6 +40,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     outline: none;
   }
 
+  .ProseMirror-selectednode {
+    outline: 2px solid #8cf;
+  }
+
   .ProseMirror p,
   .ProseMirror .code {
     ${defaultEditorFontStyles};
@@ -55,6 +59,20 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       color: ${akColorN90};
       pointer-events: none;
     }
+  }
+
+  .ProseMirror-selectednode {
+    outline: none !important;
+  }
+
+  /* Make sure li selections wrap around markers */
+
+  li.ProseMirror-selectednode {
+    outline: none;
+  }
+
+  ProseMirror-selectednode:after {
+    border: 0px solid transparent !important;
   }
 
   .ProseMirror span[data-placeholder] {

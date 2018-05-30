@@ -31,6 +31,7 @@ export default class Extension extends Component<Props, any> {
     return (
       <Wrapper
         onClick={onClick}
+        draggable="true"
         className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
       >
         <Overlay className="extension-overlay" />
