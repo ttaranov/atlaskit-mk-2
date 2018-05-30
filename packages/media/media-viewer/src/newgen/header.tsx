@@ -14,6 +14,7 @@ import {
   MetadataSubText,
   MetadataIconWrapper,
   MetadataFileName,
+  hideControlsClassName,
 } from './styled';
 import { MediaTypeIcon } from './media-type-icon';
 import { constructAuthTokenUrl } from './util';
@@ -139,7 +140,7 @@ export default class Header extends React.Component<Props, State> {
 
   render() {
     return (
-      <HeaderWrapper>
+      <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
         <RightHeader>{this.renderDownload()}</RightHeader>
       </HeaderWrapper>

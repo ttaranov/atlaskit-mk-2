@@ -7,7 +7,7 @@ export type WrappedLayoutManagerProps = {
   defaultDrawerIcon?: ComponentType<*>,
   globalNavigation: ComponentType<*>,
   productRootNavigation: ComponentType<{}>,
-  productContainerNavigation: ComponentType<{}>,
+  productContainerNavigation: ?ComponentType<{}>,
 };
 
 export type LayoutManagerProps = WrappedLayoutManagerProps & {

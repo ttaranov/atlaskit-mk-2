@@ -2,6 +2,7 @@
 
 import React, { PureComponent, Fragment } from 'react';
 import { TransitionGroup, Transition } from 'react-transition-group';
+import { css as parseJss } from 'emotion';
 
 import { transitionDurationMs } from '../../common/constants';
 import { getSectionWrapperStyles } from './styles';
@@ -30,7 +31,13 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
           {state => {
             const { traversalDirection } = this.state;
             const css = getSectionWrapperStyles({ state, traversalDirection });
-            return children({ css });
+            const className = parseJss(css);
+
+            // We provide both the styles object and the computed className.
+            // This allows consumers to patch the styles if they want to, or
+            // simply apply the className if they're not using a JSS parser like
+            // emotion.
+            return children({ className, css });
           }}
         </Transition>
       </TransitionGroup>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent, CSSProperties } from 'react';
+import { PureComponent } from 'react';
 import { Popup } from '@atlaskit/editor-common';
 import { Container } from './styles';
 
@@ -11,14 +11,15 @@ export type Coordinates = {
 };
 
 export interface Props {
+  className?: string;
   target?: HTMLElement;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   offset?: number[];
   fitWidth?: number;
   fitHeight?: number;
+  alignX?: 'left' | 'center' | 'right';
   onPositionCalculated?: (position: Coordinates) => any;
-  stylesOverride?: CSSProperties;
 }
 
 export {
@@ -38,7 +39,8 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       onPositionCalculated,
       popupsMountPoint,
       popupsBoundariesElement,
-      stylesOverride,
+      className,
+      alignX = 'center',
     } = this.props;
 
     if (!target) {
@@ -47,6 +49,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
 
     return (
       <Popup
+        alignX={alignX}
         target={target}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
@@ -55,7 +58,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
         fitHeight={fitHeight}
         onPositionCalculated={onPositionCalculated}
       >
-        <Container height={fitHeight} style={stylesOverride}>
+        <Container height={fitHeight} className={className}>
           {children}
         </Container>
       </Popup>

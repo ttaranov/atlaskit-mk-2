@@ -286,6 +286,27 @@ const props = {
               },
             ],
           },
+          {
+            key: {
+              kind: 'id',
+              name: 'allowFeedbackAndHelpButtons',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'boolean',
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally allow the feedback and help buttons in the editor. The feedback button requires jQuery to be loaded on the page.',
+              },
+            ],
+          },
         ],
       },
     },

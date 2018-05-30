@@ -4,21 +4,27 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Toolbar, Separator } from './styles';
-
 export interface Props {
   element: HTMLElement | null;
   onEdit: () => void;
   onRemove: () => void;
+  stickToolbarToBottom?: boolean;
 }
 
 export default (props: Props) => {
-  const { element } = props;
+  const { element, stickToolbarToBottom } = props;
   if (!element) {
     return null;
   }
 
   return (
-    <Popup target={element} offset={[0, 8]} alignX="right">
+    <Popup
+      target={element}
+      offset={[0, 8]}
+      alignX="right"
+      stickToBottom={stickToolbarToBottom}
+      ariaLabel="Extension options"
+    >
       <Toolbar>
         <ToolbarButton
           onClick={props.onEdit}

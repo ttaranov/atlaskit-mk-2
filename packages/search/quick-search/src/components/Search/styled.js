@@ -6,8 +6,9 @@ export const SearchBox = styled.div`
   background-color: ${colors.N0};
   color: ${colors.N500};
   display: flex;
-  height: ${gridSize() * 4}px;
-  margin-bottom: ${gridSize() * 3}px;
+  height: 36px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid ${colors.B200};
 `;
 
 export const SearchFieldBaseInner = styled.div`
@@ -18,7 +19,7 @@ export const SearchFieldBaseInner = styled.div`
 `;
 
 export const SearchInner = styled.div`
-  padding: 0 ${gridSize() * 3}px ${gridSize() * 2}px;
+  padding-right: ${gridSize() * 3}px;
 `;
 
 export const getPlaceholderStyle = (style: any) => css`

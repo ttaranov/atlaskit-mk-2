@@ -1,7 +1,7 @@
 import { Popup, PopupConfig } from '../popup';
 import { MPPopupLoaded } from '../../outer/analytics/events';
-import { ContextFactory } from '@atlaskit/media-core';
 import { UploadParams } from '../..';
+import { ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaPickerPopup', () => {
   const fakeContext = { trackEvent: jest.fn() };
@@ -33,10 +33,11 @@ describe('MediaPickerPopup', () => {
     it('sets uploadParams to the default when none are supplied', () => {
       const mediaPicker = new Popup(fakeContext, context, popupConfig);
 
+      const expectedUploadParams: UploadParams = {
+        collection: '',
+      };
       expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual(
-        <UploadParams>{
-          collection: '',
-        },
+        expectedUploadParams,
       );
     });
 
@@ -79,6 +80,13 @@ describe('MediaPickerPopup', () => {
       mediaPicker.hide();
       expect(emitSpy).toHaveBeenCalled();
       expect(emitSpy.mock.calls[0][0]).toEqual('closed');
+    });
+  });
+
+  describe('cancel', () => {
+    it('should blow up with empty argument', () => {
+      const mediaPicker = new Popup(fakeContext, context, popupConfig);
+      expect(() => mediaPicker.cancel()).toThrow();
     });
   });
 });

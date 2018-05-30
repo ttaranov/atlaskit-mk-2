@@ -36,16 +36,7 @@ const reactionStyle = style({
   padding: 0,
   margin: 0,
   transition: '200ms ease-in-out',
-  $nest: {
-    '&:hover': {
-      background: akColorN30A,
-      $nest: {
-        '> .reaction-tooltip': {
-          display: 'block',
-        },
-      },
-    },
-  },
+  $nest: { '&:hover': { background: akColorN30A } },
 });
 
 const flashStyle = style({
@@ -75,13 +66,10 @@ export interface Props {
 }
 
 export interface State {
-  showTooltip: boolean;
-  emojiName: string | undefined;
+  emojiName?: string;
 }
 
 export default class Reaction extends PureComponent<Props, State> {
-  private timeouts: Array<number>;
-  private tooltipTimeout: number;
   private flashRef: FlashAnimation;
   private mounted: boolean;
 
@@ -95,12 +83,7 @@ export default class Reaction extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showTooltip: false,
-      emojiName: undefined,
-    };
-
-    this.timeouts = [];
+    this.state = {};
   }
 
   componentDidUpdate({ reaction: prevReaction }) {
@@ -139,7 +122,6 @@ export default class Reaction extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.timeouts.forEach(clearTimeout);
     this.mounted = false;
   }
 
@@ -160,26 +142,6 @@ export default class Reaction extends PureComponent<Props, State> {
       if (!reaction.users || !reaction.users.length) {
         onMouseOver(this.props.reaction, event);
       }
-
-      this.tooltipTimeout = setTimeout(() => {
-        if (this.mounted) {
-          this.setState({
-            showTooltip: true,
-          });
-        }
-      }, 500);
-      this.timeouts.push(this.tooltipTimeout);
-    }
-  };
-
-  private handleMouseOut = event => {
-    event.preventDefault();
-
-    if (this.props.onMouseOver) {
-      clearTimeout(this.tooltipTimeout);
-      this.setState({
-        showTooltip: false,
-      });
     }
   };
 
@@ -195,41 +157,35 @@ export default class Reaction extends PureComponent<Props, State> {
 
   render() {
     const { emojiProvider, reaction, className: classNameProp } = this.props;
-    const { emojiName, showTooltip } = this.state;
+    const { emojiName } = this.state;
 
     const classNames = cx(reactionStyle, classNameProp);
 
-    const { users } = reaction;
-
     const emojiId = { id: reaction.emojiId, shortName: '' };
-    const tooltip =
-      showTooltip && users && users.length ? (
-        <ReactionTooltip target={this} emojiName={emojiName} users={users} />
-      ) : null;
 
     return (
-      <button
-        className={classNames}
-        onMouseUp={this.handleMouseDown}
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-      >
-        {tooltip}
-        <FlashAnimation ref={this.handleFlashRef} className={flashStyle}>
-          <div className={emojiStyle}>
-            <ResourcedEmoji
-              emojiProvider={emojiProvider}
-              emojiId={emojiId}
-              fitToHeight={16}
+      <ReactionTooltip emojiName={emojiName} reaction={reaction}>
+        <button
+          className={classNames}
+          onMouseUp={this.handleMouseDown}
+          onMouseOver={this.handleMouseOver}
+        >
+          <FlashAnimation ref={this.handleFlashRef} className={flashStyle}>
+            <div className={emojiStyle}>
+              <ResourcedEmoji
+                emojiProvider={emojiProvider}
+                emojiId={emojiId}
+                fitToHeight={16}
+              />
+            </div>
+            <Counter
+              className={counterStyle}
+              value={reaction.count}
+              highlight={reaction.reacted}
             />
-          </div>
-          <Counter
-            className={counterStyle}
-            value={reaction.count}
-            highlight={reaction.reacted}
-          />
-        </FlashAnimation>
-      </button>
+          </FlashAnimation>
+        </button>
+      </ReactionTooltip>
     );
   }
 }

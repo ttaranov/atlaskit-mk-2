@@ -30,33 +30,6 @@ describe('inputrules', () => {
       expect(editorView.state.doc).not.toEqualDocument(doc(p(), hr(), p()));
     });
 
-    it('should convert "***" in the start of a line to a horizontal rule', () => {
-      const trackEvent = jest.fn();
-      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
-
-      insertText(editorView, '***', sel);
-
-      expect(editorView.state.doc).toEqualDocument(doc(hr(), p()));
-      expect(trackEvent).toHaveBeenCalledWith(
-        'atlassian.editor.format.horizontalrule.autoformatting',
-      );
-    });
-
-    it('should convert "***" in the start of a line after shift+enter to a horizontal rule', () => {
-      const trackEvent = jest.fn();
-      const { editorView, sel } = editor(
-        doc(p('test', hardBreak(), '{<>}')),
-        trackEvent,
-      );
-
-      insertText(editorView, '***', sel);
-
-      expect(editorView.state.doc).toEqualDocument(doc(p('test'), hr(), p()));
-      expect(trackEvent).toHaveBeenCalledWith(
-        'atlassian.editor.format.horizontalrule.autoformatting',
-      );
-    });
-
     it('should convert "---" at the start of a line to horizontal rule', () => {
       const trackEvent = jest.fn();
       const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);

@@ -36,7 +36,7 @@ export type FieldTextProps = {
   /** Handler to be called when the input loses focus. */
   onBlur?: (e: SyntheticEvent<>) => mixed,
   /** Handler to be called when the input changes. */
-  onChange?: (e: SyntheticEvent<HTMLInputElement>) => mixed,
+  onChange?: (e: SyntheticInputEvent<HTMLInputElement>) => mixed,
   /** Handler to be called when the input receives focus. */
   onFocus?: (e: SyntheticEvent<>) => mixed,
   /** Standard input onkeydown event. */

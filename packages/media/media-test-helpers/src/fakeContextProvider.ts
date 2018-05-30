@@ -1,7 +1,19 @@
 import { Observable } from 'rxjs';
 import { Context } from '@atlaskit/media-core';
+import { ContextConfig } from '../../media-store';
 
-export const fakeContext = (stubbedContext: any = {}): Context => {
+const defaultContextConfig = {
+  serviceHost: 'some-service-host',
+  authProvider: () =>
+    Promise.resolve({
+      clientId: 'some-client-id',
+      token: 'some-token',
+    }),
+};
+export const fakeContext = (
+  stubbedContext: any = {},
+  config: ContextConfig = defaultContextConfig,
+): Context => {
   const returns = (value: any) => jest.fn().mockReturnValue(value);
   const getMediaItemProvider = returns({
     observable: returns(Observable.of('nothing')),
@@ -25,6 +37,7 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
+  const uploadFile = jest.fn();
   const defaultContext: Context = {
     getBlobService,
     getLocalPreview,
@@ -36,14 +49,8 @@ export const fakeContext = (stubbedContext: any = {}): Context => {
     addLinkItem,
     getUrlPreviewProvider,
     refreshCollection,
-    config: {
-      serviceHost: 'some-service-host',
-      authProvider: () =>
-        Promise.resolve({
-          clientId: 'some-client-id',
-          token: 'some-token',
-        }),
-    },
+    uploadFile,
+    config,
   };
 
   const wrappedStubbedContext: any = {};

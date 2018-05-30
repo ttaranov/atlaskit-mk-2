@@ -1,5 +1,129 @@
 # @atlaskit/editor-common
 
+## 10.1.6
+- [patch] ED-4689 add __confluenceMetadata to link mark schema [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+- [none] Updated dependencies [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+
+## 10.1.5
+- [patch] FEF-1329 Fix catastrophic failure when editing pages with images [da4d2d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da4d2d4)
+- [none] Updated dependencies [da4d2d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da4d2d4)
+
+## 10.1.4
+- [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
+  - @atlaskit/media-card@28.0.5
+
+## 10.1.3
+- [patch] Add support for relative links [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
+- [none] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
+
+## 10.1.2
+- [patch] ED-4447 Fix image breakout rendering [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
+- [none] Updated dependencies [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
+
+## 10.1.1
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+
+## 10.1.0
+- [minor] Adds in adf traversor [450db2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/450db2e)
+- [minor] Updated dependencies [450db2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/450db2e)
+
+## 10.0.3
+
+
+
+- [none] Updated dependencies [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+  - @atlaskit/mention@12.0.0
+- [patch] Updated dependencies [db1bafa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db1bafa)
+  - @atlaskit/mention@12.0.0
+- [none] Updated dependencies [f150242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f150242)
+  - @atlaskit/mention@12.0.0
+
+## 10.0.2
+- [patch] ED-4221 Fix toolbar style inconsistencies [f3fb6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3fb6b8)
+- [none] Updated dependencies [f3fb6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3fb6b8)
+
+## 10.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/emoji@35.0.1
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-card@28.0.1
+
+## 10.0.0
+
+- [patch] ED-4570, application card without icon should render properly. [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/editor-test-helpers@4.0.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+- [major] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-core@18.1.0
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+  - @atlaskit/media-card@28.0.0
+  - @atlaskit/editor-test-helpers@4.0.0
+
+## 9.4.0
+- [minor] Add stage0 support to validator [1b5cc7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cc7f)
+- [none] Updated dependencies [1b5cc7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cc7f)
+
+## 9.3.10
+- [patch] ED-4643: added support for "wide" layout for tables [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+- [none] Updated dependencies [8c146ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c146ee)
+
+## 9.3.9
+- [patch] Support external media in bitbucket transformer and image uploader [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+- [patch] ED-4656: enable extension inside bodiedExtension [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-json-transformer@3.0.6
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/editor-json-transformer@3.0.6
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-test-helpers@3.1.8
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/media-card@27.1.4
+  - @atlaskit/media-core@18.0.3
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-test-helpers@3.1.8
+
 ## 9.3.8
 - [patch] ED-4569 Fix ADF schema issue for application card link pattern [fb831b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb831b1)
 - [none] Updated dependencies [fb831b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb831b1)

@@ -4,6 +4,7 @@ import RecentSearchClient, {
 } from '../src/api/RecentSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
+import { ResultType, AnalyticsType } from '../src/model/Result';
 
 function apiWillReturn(state: RecentItem[]) {
   const response = Array.isArray(state) ? { data: state } : state;
@@ -16,7 +17,7 @@ function apiWillReturn(state: RecentItem[]) {
 }
 
 describe('RecentSearchClient', () => {
-  let searchClient;
+  let searchClient: RecentSearchClient;
 
   beforeEach(() => {
     searchClient = new RecentSearchClient('localhost', '123');
@@ -41,13 +42,14 @@ describe('RecentSearchClient', () => {
       expect(items).toHaveLength(1);
 
       const item = items[0];
-      expect(item.type).toEqual('object');
+      expect(item.resultType).toEqual(ResultType.Object);
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
       expect(item.href).toEqual('url');
       expect(item.containerName).toEqual('container');
       expect(item.objectKey).toEqual('HOT-83341');
+      expect(item.analyticsType).toEqual(AnalyticsType.RecentJira);
     });
   });
 
@@ -60,7 +62,7 @@ describe('RecentSearchClient', () => {
           iconUrl: 'iconUrl',
           container: 'container',
           url: 'url',
-          provider: 'provider',
+          provider: 'confluence',
         },
       ]);
 
@@ -68,12 +70,13 @@ describe('RecentSearchClient', () => {
       expect(items).toHaveLength(1);
 
       const item = items[0];
-      expect(item.type).toEqual('object');
+      expect(item.resultType).toEqual(ResultType.Object);
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
       expect(item.href).toEqual('url');
       expect(item.containerName).toEqual('container');
+      expect(item.analyticsType).toEqual(AnalyticsType.RecentConfluence);
     });
 
     it('should call the api only once when client is invoked repeatedly', async () => {

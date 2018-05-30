@@ -66,10 +66,11 @@ class LayoutManager extends Component<LayoutManagerProps> {
   }
   renderProductNav({
     disableInteraction,
+    isDragging,
     isVisible,
-    resizeState,
     transitionState,
     transitionStyle,
+    width,
   }) {
     const {
       navigation,
@@ -88,13 +89,14 @@ class LayoutManager extends Component<LayoutManagerProps> {
         {isVisible ? (
           <ProductNav
             container={productContainerNavigation}
+            isDragging={isDragging}
             isHinting={isHinting}
             isPeeking={isPeeking}
             key="product-nav"
             onOverlayClick={navigation.unPeek}
-            resizeState={resizeState}
             root={productRootNavigation}
             transitionState={transitionState}
+            width={width}
           />
         ) : null}
       </ProductNavWrapper>
@@ -116,15 +118,16 @@ class LayoutManager extends Component<LayoutManagerProps> {
             { ref: this.productNavRef, property: 'width' },
           ]}
         >
-          {resizeState => (
+          {({ isDragging, width }) => (
             <ContainerNavMask>
               {this.renderGlobalNav(activeTransition)}
               {this.renderProductNav({
                 disableInteraction,
+                isDragging,
                 isVisible,
-                resizeState,
                 transitionState,
                 transitionStyle,
+                width,
               })}
             </ContainerNavMask>
           )}

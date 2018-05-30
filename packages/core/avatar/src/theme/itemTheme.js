@@ -14,6 +14,10 @@ const avatarItemTheme: Object = {
   borderRadius: '0px',
   default: {
     background: colors.backgroundOnLayer,
+    text: colors.N900,
+  },
+  active: {
+    text: colors.N900,
   },
   padding: {
     default: dropdownPadding,

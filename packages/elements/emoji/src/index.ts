@@ -1,5 +1,4 @@
 import { AbstractResource } from '@atlaskit/util-service-support';
-import AtlassianEmojiMigrationResource from './api/AtlassianEmojiMigrationResource';
 import Emoji from './components/common/Emoji';
 import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
@@ -24,7 +23,6 @@ import {
 export {
   // Classes
   AbstractResource,
-  AtlassianEmojiMigrationResource,
   Emoji,
   EmojiPlaceholder,
   EmojiLoader,

@@ -10,7 +10,13 @@ import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
 import { colors } from '@atlaskit/theme';
 
-import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
+import {
+  ClearIndicator,
+  defaultTimes,
+  DropdownIndicator,
+  parseTime,
+  defaultTimeFormat,
+} from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 
 type Option = {
@@ -60,6 +66,10 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
+  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  timeFormat?: string,
+  /** Placeholder text displayed in input */
+  placeholder?: string,
 };
 
 type State = {
@@ -73,9 +83,9 @@ function dateFromTime(time: string): Date {
   return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
 }
 
-function formatTime(time: string): string {
+function formatTime(time: string, timeFormat: string): string {
   const date = dateFromTime(time);
-  return isValid(date) ? format(date, 'h:mma') : time;
+  return isValid(date) ? format(date, timeFormat) : time;
 }
 
 const menuStyles = {
@@ -105,6 +115,8 @@ export default class TimePicker extends Component<Props, State> {
     timeIsEditable: false,
     isInvalid: false,
     hideIcon: false,
+    timeFormat: defaultTimeFormat,
+    placeholder: `e.g. ${format(new Date(), defaultTimeFormat)}`,
   };
 
   state = {
@@ -125,7 +137,8 @@ export default class TimePicker extends Component<Props, State> {
   getOptions(): Array<Option> {
     return this.props.times.map((time: string): Option => {
       return {
-        label: formatTime(time),
+        /* $FlowFixMe - Flow complaining timeFormat is undefined but it has a default... */
+        label: formatTime(time, this.props.timeFormat),
         value: time,
       };
     });
@@ -139,7 +152,7 @@ export default class TimePicker extends Component<Props, State> {
 
   /** Only allow custom times if timeIsEditable prop is true  */
   onCreateOption = (inputValue: any): void => {
-    const value = inputValue || '';
+    const value = format(parseTime(inputValue), 'HH:mm') || '';
     if (this.props.timeIsEditable) {
       this.setState({ value });
       this.props.onChange(value);
@@ -195,6 +208,8 @@ export default class TimePicker extends Component<Props, State> {
       isDisabled,
       name,
       selectProps,
+      timeFormat,
+      placeholder,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -242,7 +257,7 @@ export default class TimePicker extends Component<Props, State> {
           onFocus={this.onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
-          placeholder="e.g. 9:00am"
+          placeholder={placeholder}
           styles={mergeStyles(selectStyles, {
             control: base => ({
               ...base,
@@ -262,7 +277,8 @@ export default class TimePicker extends Component<Props, State> {
           })}
           value={
             value && {
-              label: formatTime(value),
+              /* $FlowFixMe - complaining about required args that aren't required. */
+              label: formatTime(value, timeFormat),
               value,
             }
           }

@@ -66,6 +66,7 @@ describe('@atlaskit/reactions/reactions', () => {
 
     reactions
       .find(Reaction)
+      .find('button')
       .first()
       .simulate('mouseup', { button: 0 });
     expect(onReactionClick).toHaveBeenCalled();
@@ -221,5 +222,14 @@ describe('@atlaskit/reactions/reactions', () => {
       'Sorry... something went wrong',
     );
     expect(reactions.find(ReactionPicker).prop('disabled')).toBeTruthy();
+  });
+
+  it('should render picker after reactions', () => {
+    const reactions = mount(renderReactions());
+    const container = reactions
+      .find('div')
+      .first()
+      .children();
+    expect(container.last().find(ReactionPicker)).toHaveLength(1);
   });
 });

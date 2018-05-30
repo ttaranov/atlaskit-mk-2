@@ -46,13 +46,8 @@ function randomIssueKey() {
   return pickRandom(keys) + '-' + faker.random.number(1000);
 }
 
-function randomIconCssClass() {
-  const classes = [
-    'aui-iconfont-page-default',
-    'aui-iconfont-homepage',
-    'aui-iconfont-page-blogpost',
-  ];
-  return pickRandom(classes);
+function randomSpaceIconUrl() {
+  return `https://placeimg.com/64/64/arch?bustCache=${Math.random()}`;
 }
 
 export function recentData(n = 50): RecentItemsResponse {
@@ -100,15 +95,16 @@ export function makeCrossProductSearchData(
         title: faker.company.companyName(),
         displayUrl: url,
       },
-      iconCssClass: randomIconCssClass(),
       url: url,
       baseUrl: DUMMY_BASE_URL,
+      content: {
+        type: pickRandom(['page', 'blogpost']),
+      },
     });
   }
 
   for (let i = 0; i < n; i++) {
     const url = faker.internet.url();
-    const isAttachment = faker.random.boolean() && faker.random.boolean();
 
     const newAttachment: ConfluenceItem = {
       title: faker.company.catchPhrase(),
@@ -116,17 +112,12 @@ export function makeCrossProductSearchData(
         title: faker.company.companyName(),
         displayUrl: url,
       },
-      iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
       url: url,
       baseUrl: DUMMY_BASE_URL,
+      content: {
+        type: pickRandom(['page', 'blogpost', 'attachment']),
+      },
     };
-
-    if (isAttachment) {
-      newAttachment.content = {
-        id: faker.random.alphaNumeric(3),
-        type: 'attachment' as ResultContentType,
-      };
-    }
 
     confDataWithAttachments.push(newAttachment);
   }
@@ -135,13 +126,17 @@ export function makeCrossProductSearchData(
     const title = faker.company.companyName();
     confSpaceData.push({
       title: title,
-      baseUrl: DUMMY_BASE_URL,
+      baseUrl: '',
       url: faker.internet.url(),
       content: null,
-      iconCssClass: null,
       container: {
         title: title,
         displayUrl: faker.internet.url(),
+      },
+      space: {
+        icon: {
+          path: randomSpaceIconUrl(),
+        },
       },
     });
   }
@@ -257,7 +252,7 @@ export function makeConfluenceRecentSpacesData(n: number = 15) {
     spaces.push({
       id: faker.random.uuid(),
       key: faker.hacker.abbreviation(),
-      icon: faker.image.avatar(),
+      icon: randomSpaceIconUrl(),
       name: faker.company.companyName(),
     });
   }

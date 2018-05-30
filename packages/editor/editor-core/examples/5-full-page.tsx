@@ -20,14 +20,6 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { DevTools } from '../example-helpers/DevTools';
 
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
-
 export const TitleInput: any = styled.input`
   border: none;
   outline: none;
@@ -61,15 +53,6 @@ export const Content: any = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-
-  & .ProseMirror {
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
-  }
 `;
 Content.displayName = 'Content';
 

@@ -8,6 +8,8 @@ import {
   docFileId,
   defaultCollectionName,
   unknownFileId,
+  audioNoCoverFileId,
+  videoHorizontalFileId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
@@ -31,9 +33,21 @@ const videoItem: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const videoHorizontalFileItem: MediaViewerItem = {
+  type: 'file',
+  id: videoHorizontalFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 const audioItem: MediaViewerItem = {
   type: 'file',
   id: audioFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const audioItemNoCover: MediaViewerItem = {
+  type: 'file',
+  id: audioNoCoverFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
@@ -54,21 +68,33 @@ export default class Example extends React.Component<{}, State> {
     return (
       <div>
         <Button onClick={() => this.setState({ selectedItem: imageItem })}>
-          Preview an image item
+          Image item
+        </Button>
+        <Button
+          onClick={() =>
+            this.setState({ selectedItem: videoHorizontalFileItem })
+          }
+        >
+          Video horizontal
         </Button>
         <Button onClick={() => this.setState({ selectedItem: videoItem })}>
-          Preview a video item
+          Video vertical
         </Button>
         <Button onClick={() => this.setState({ selectedItem: audioItem })}>
-          Preview an audio item
+          Audio item
+        </Button>
+        <Button
+          onClick={() => this.setState({ selectedItem: audioItemNoCover })}
+        >
+          Audio no cover
         </Button>
         <Button onClick={() => this.setState({ selectedItem: docItem })}>
-          Preview a doc item
+          Doc item
         </Button>
         <Button
           onClick={() => this.setState({ selectedItem: unsupportedItem })}
         >
-          Preview unsupported item
+          Unsupported item
         </Button>
 
         {this.state.selectedItem && (

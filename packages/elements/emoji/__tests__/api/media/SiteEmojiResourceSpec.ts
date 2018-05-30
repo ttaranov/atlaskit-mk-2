@@ -113,7 +113,7 @@ describe('SiteEmojiResource', () => {
       },
       public: {
         id: 'abc-123',
-        processingStatus: 'whatever',
+        processingStatus: 'succeeded',
       },
     };
 

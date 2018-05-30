@@ -225,27 +225,36 @@ describe('code-block', () => {
             doc(p('paragraph'), code_block()('codeBlock{<>}')),
           );
 
-          expect(pluginState.element instanceof HTMLPreElement).toBe(true);
+          expect(pluginState.element instanceof HTMLElement).toBe(true);
         });
       });
 
       describe('when at the beginning of the code block', () => {
         it('returns code block element', () => {
-          const { pluginState } = editor(
+          const { editorView, pluginState, sel } = editor(
             doc(p('paragraph'), code_block()('{<>}codeBlock')),
           );
 
-          expect(pluginState.element instanceof HTMLPreElement).toBe(true);
+          // -1 to move from the start of the node, to before the node
+          const codeBlockDOM = editorView.domAtPos(sel - 1);
+          expect(pluginState.element).toBe(
+            codeBlockDOM.node.childNodes[codeBlockDOM.offset],
+          );
         });
       });
 
       describe('when at the middle of the code block', () => {
         it('returns code block element', () => {
-          const { pluginState } = editor(
+          const { editorView, pluginState, sel } = editor(
             doc(p('paragraph'), code_block()('code{<>}Block')),
           );
 
-          expect(pluginState.element instanceof HTMLPreElement).toBe(true);
+          const codeBlockDOM = editorView.domAtPos(
+            editorView.state.doc.resolve(sel).before(),
+          );
+          expect(pluginState.element).toBe(
+            codeBlockDOM.node.childNodes[codeBlockDOM.offset],
+          );
         });
       });
     });

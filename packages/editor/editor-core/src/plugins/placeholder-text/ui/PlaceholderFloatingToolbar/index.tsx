@@ -58,8 +58,8 @@ export default class PlaceholderFloatingToolbar extends React.Component<Props> {
         onPositionCalculated={handlePositionCalculated}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
-        fitHeight={24}
-        offset={[0, 3]}
+        fitHeight={32}
+        offset={[0, 12]}
       >
         <PanelTextInput
           placeholder="Add placeholder text"

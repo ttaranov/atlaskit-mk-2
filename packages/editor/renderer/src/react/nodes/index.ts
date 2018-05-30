@@ -22,7 +22,7 @@ import InlineExtension, {
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
-import MediaSingle from './mediaSingle';
+import MediaSingle, { BreakoutProvider } from './mediaSingle';
 import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
@@ -93,7 +93,7 @@ export interface NodeSimple {
 }
 
 /*
- *  Wraps adjecent textnodes in a textWrapper
+ *  Wraps adjacent textnodes in a textWrapper
  *
  *  Input:
  *  [
@@ -252,4 +252,5 @@ export {
   TableHeader,
   TableRow,
   UnknownBlock,
+  BreakoutProvider,
 };

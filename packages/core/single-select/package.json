@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,8 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
+    "Sean C",
     "Charles L",
-    "Joss M"
+    "Mike G"
   ],
   "atlaskit": {
     "name": "Single Select",
@@ -21,12 +22,12 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^7.2.1",
-    "@atlaskit/droplist": "^5.0.2",
-    "@atlaskit/field-base": "^9.0.2",
-    "@atlaskit/icon": "^11.1.1",
-    "@atlaskit/spinner": "^5.0.1",
-    "@atlaskit/theme": "^3.1.1",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/droplist": "^5.0.3",
+    "@atlaskit/field-base": "^9.0.3",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/spinner": "^5.0.2",
+    "@atlaskit/theme": "^3.2.2",
     "classnames": "^2.2.5",
     "styled-components": "1.4.6 - 3"
   },
@@ -34,8 +35,8 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.5",
-    "@atlaskit/docs": "^3.0.3",
-    "enzyme": "^3.3.0"
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/docs": "^3.0.4",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

@@ -47,13 +47,13 @@ const renderSearchPeopleItem = (query: string) =>
     text: 'People directory',
   });
 
-const renderNoResults = (query: string) => (
-  <>
-    <NoResults />
+const renderNoResults = (query: string) => [
+  <NoResults key="no-results" />,
+  <ResultItemGroup title="" key="advanced-search">
     {renderSearchConfluenceItem(query)}
     {renderSearchPeopleItem(query)}
-  </>
-);
+  </ResultItemGroup>,
+];
 
 export interface Props {
   query: string;

@@ -19,6 +19,7 @@ import {
   findParentDomRefOfType,
   findParentNodeOfType,
   selectRow,
+  hasParentNodeOfType,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import {
@@ -267,6 +268,14 @@ export class TableState {
     this.tableLayout = layout;
 
     return true;
+  };
+
+  isLayoutSupported = () => {
+    const { selection, schema } = this.view.state;
+    return (
+      !hasParentNodeOfType(schema.nodes.layoutSection)(selection) &&
+      !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection)
+    );
   };
 
   // we keep track of selection changes because

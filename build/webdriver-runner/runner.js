@@ -10,7 +10,8 @@
 // increase default jasmine timeout not to fail on webdriver tests as tests run can
 // take a while depending on the number of threads executing.
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
+// increase this time out to handle queuing on browserstack
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
 
 const webdriverio = require('webdriverio');
 const commit = process.env.BITBUCKET_COMMIT

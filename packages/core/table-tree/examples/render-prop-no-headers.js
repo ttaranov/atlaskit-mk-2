@@ -3,24 +3,16 @@ import React from 'react';
 import TableTree, { Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
-function fetchRoots() {
-  return Promise.resolve(staticData.children);
-}
-
-function fetchChildrenOf(node) {
-  return Promise.resolve(node.children);
-}
-
-function getItemsData(parent) {
-  return parent ? fetchChildrenOf(parent) : fetchRoots();
-}
-
 export default () => (
   <TableTree>
     <Rows
-      items={getItemsData}
+      items={staticData.children}
       render={({ title, numbering, page, children }) => (
-        <Row itemId={numbering} hasChildren={children.length > 0}>
+        <Row
+          items={children}
+          itemId={numbering}
+          hasChildren={children.length > 0}
+        >
           <Cell width={300} singleLine>
             {title}
           </Cell>

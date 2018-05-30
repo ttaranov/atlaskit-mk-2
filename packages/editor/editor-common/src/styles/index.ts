@@ -48,4 +48,5 @@ export const akEditorTableToolbarDelete = akColorR75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
+export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;

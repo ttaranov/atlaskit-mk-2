@@ -5,6 +5,7 @@ import Select from '../src';
 const SingleExample = () => (
   <Select
     className="react-select"
+    classNamePrefix="select"
     options={[
       { label: 'Adelaide', value: 'adelaide' },
       { label: 'Brisbane', value: 'brisbane' },

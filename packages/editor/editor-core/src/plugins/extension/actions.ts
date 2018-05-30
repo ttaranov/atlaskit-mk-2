@@ -40,7 +40,9 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
       let tr = state.tr.setMeta(pluginKey, { element: null });
-      dispatch(selectParentNodeOfType(bodiedExtension)(tr));
+      if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
+        dispatch(selectParentNodeOfType(bodiedExtension)(tr));
+      }
       insertMacroFromMacroBrowser(macroProvider, node)(view);
       return true;
     }

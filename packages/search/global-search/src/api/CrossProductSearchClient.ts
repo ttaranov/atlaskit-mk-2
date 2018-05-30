@@ -1,4 +1,9 @@
-import { Result, ResultType, ResultContentType } from '../model/Result';
+import {
+  Result,
+  ResultType,
+  ResultContentType,
+  AnalyticsType,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -34,13 +39,16 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
-    id: string;
     type: ResultContentType;
   };
-  iconCssClass: string;
   container: {
     title: string; // this is unhighlighted
     displayUrl: string;
+  };
+  space?: {
+    icon: {
+      path: string;
+    };
   };
 }
 
@@ -130,15 +138,6 @@ export default class CrossProductSearchClientImpl
   }
 }
 
-// TODO need real icons
-export function getConfluenceAvatarUrl(iconCssClass: string): string {
-  if (iconCssClass.indexOf('blogpost') > -1) {
-    return 'https://home.useast.atlassian.io/confluence-blogpost-icon.svg';
-  } else {
-    return 'https://home.useast.atlassian.io/confluence-page-icon.svg';
-  }
-}
-
 export function removeHighlightTags(text: string): string {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
@@ -175,12 +174,12 @@ function mapConfluenceItemToResultObject(
   searchSessionId: string,
 ): Result {
   const result: Result = {
-    type: ResultType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.url,
-    avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 
   if (item.content && item.content.type) {
@@ -192,22 +191,24 @@ function mapConfluenceItemToResultObject(
 
 function mapJiraItemToResult(item: JiraItem): Result {
   return {
-    type: ResultType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
     objectKey: item.key,
+    analyticsType: AnalyticsType.ResultJira,
   };
 }
 
 function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
   return {
-    type: ResultType.Container,
+    resultType: ResultType.Container,
     resultId: 'search-' + spaceItem.container.displayUrl,
-    avatarUrl: '', // depends on XPSRCH-747
+    avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }

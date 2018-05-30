@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "3.2.0",
+  "version": "3.2.2",
   "description": "The Atlaskit theme framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -11,7 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Jed W"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -22,9 +24,9 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.1",
-    "@atlaskit/docs": "^3.0.3",
-    "enzyme": "^3.3.0"
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/docs": "^3.0.4",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

@@ -1,5 +1,36 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.9.2
+- [patch] Fix unit tests [22337bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22337bd)
+- [patch] Update for label with white background [a0d7ed7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0d7ed7)
+- [patch] Fix whitebackground for label [b8eb930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8eb930)
+- [patch] Fix white background for label [229a63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/229a63c)
+- [none] Updated dependencies [22337bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22337bd)
+  - @atlaskit/icon@11.3.1
+- [none] Updated dependencies [a0d7ed7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0d7ed7)
+  - @atlaskit/icon@11.3.1
+- [none] Updated dependencies [b8eb930](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8eb930)
+  - @atlaskit/icon@11.3.1
+- [none] Updated dependencies [229a63c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/229a63c)
+  - @atlaskit/icon@11.3.1
+
+## 8.9.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/css-reset@2.0.2
+
+## 8.9.0
+- [minor] Add divider from editor  [5cbb8a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cbb8a6)
+- [minor] Add divider fabric icon [8b794ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b794ed)
+- [minor] Add divider icon from fabric [c8adb64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8adb64)
+- [none] Updated dependencies [5cbb8a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cbb8a6)
+  - @atlaskit/icon@11.2.0
+- [none] Updated dependencies [8b794ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b794ed)
+  - @atlaskit/icon@11.2.0
+- [none] Updated dependencies [c8adb64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8adb64)
+  - @atlaskit/icon@11.2.0
+
 ## 8.8.0
 - [minor] Add label icon [72baa86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72baa86)
 

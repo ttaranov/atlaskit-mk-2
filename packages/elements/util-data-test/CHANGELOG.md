@@ -1,5 +1,81 @@
 # @atlaskit/util-data-test
 
+## 9.1.8
+- [patch] FS-2007 change productivity emoji order [609ec2f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/609ec2f)
+- [none] Updated dependencies [609ec2f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/609ec2f)
+
+## 9.1.7
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+
+## 9.1.6
+
+
+
+- [none] Updated dependencies [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+  - @atlaskit/mention@12.0.0
+- [patch] Updated dependencies [db1bafa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db1bafa)
+  - @atlaskit/mention@12.0.0
+- [none] Updated dependencies [f150242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f150242)
+  - @atlaskit/mention@12.0.0
+
+## 9.1.5
+- [patch] FS-1904 add support for emoji with ascii starting with ( [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+- [none] Updated dependencies [c83d567](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83d567)
+  - @atlaskit/emoji@35.0.2
+
+## 9.1.4
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/emoji@35.0.0
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/task-decision@6.0.6
+  - @atlaskit/emoji@35.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/task-decision@6.0.6
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/task-decision@6.0.6
+
+## 9.1.3
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/emoji@34.2.0
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/util-service-support@2.0.7
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/task-decision@6.0.5
+  - @atlaskit/mention@11.1.4
+
 ## 9.1.2
 
 ## 9.1.1

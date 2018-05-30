@@ -3,13 +3,20 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, TableHTMLAttributes } from 'react';
-import { akEditorTableBorder } from '../../styles';
+import { akEditorTableBorder, akEditorWideLayoutWidth } from '../../styles';
 import { tableBackgroundColorNames } from '../../';
+import { TableLayout } from '../../schema';
 
-const tableStyle = `
+export const tableMarginTop = 32;
+export const tableMarginBottom = 20;
+export const tableMarginSides = 8;
+
+const CONTROLLER_PADDING = 66;
+
+const tableSharedStyle = `
   {
     border-collapse: collapse;
-    margin: 20px 8px;
+    margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     width: auto;
     border: 1px solid ${akEditorTableBorder};
     table-layout: fixed;
@@ -56,8 +63,22 @@ const tableStyle = `
 
 // tslint:disable-next-line:variable-name
 const StyledTable: React.ComponentClass<HTMLAttributes<{}>> = styled.table`
-  ${tableStyle};
+  ${tableSharedStyle};
 `;
 
-export { tableStyle };
+export const calcTableWidth = (
+  layout: TableLayout,
+  containerWidth: number,
+): string => {
+  switch (layout) {
+    case 'full-width':
+      return `${containerWidth - CONTROLLER_PADDING}px`;
+    case 'wide':
+      return `${akEditorWideLayoutWidth}px`;
+    default:
+      return 'inherit';
+  }
+};
+
+export { tableSharedStyle };
 export default StyledTable;

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "6.0.4",
+  "version": "6.0.8",
   "config": {
     "access": "public"
   },
@@ -16,13 +16,13 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^3.0.0",
-    "@atlaskit/avatar": "^10.0.5",
-    "@atlaskit/button": "^7.2.1",
-    "@atlaskit/icon": "^11.1.1",
-    "@atlaskit/spinner": "^5.0.1",
-    "@atlaskit/theme": "^3.1.1",
-    "@atlaskit/util-service-support": "^2.0.5",
+    "@atlaskit/analytics": "^3.0.1",
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/spinner": "^5.0.2",
+    "@atlaskit/theme": "^3.2.2",
+    "@atlaskit/util-service-support": "^2.0.7",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "styled-components": "1.4.6 - 3",
@@ -40,11 +40,11 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.3",
-    "@atlaskit/editor-common": "^9.0.0",
-    "@atlaskit/renderer": "^16.0.9",
+    "@atlaskit/docs": "^3.0.4",
+    "@atlaskit/editor-common": "^10.0.0",
+    "@atlaskit/renderer": "^17.0.2",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^9.1.2",
+    "@atlaskit/util-data-test": "^9.1.4",
     "fetch-mock": "^5.12.1"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"

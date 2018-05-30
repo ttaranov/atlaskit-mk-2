@@ -26,20 +26,21 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
   render() {
     const {
       container: Container,
+      isDragging,
       isHinting,
       isPeeking,
       onOverlayClick,
-      resizeState,
       transitionState,
       root: Root,
+      width,
     } = this.props;
 
     const opacity = interpolateBlanketOpacity({
       floor: PRODUCT_NAV_WIDTH,
       ceil: 0,
-      val: resizeState.width,
+      val: width,
     });
-    const overlayStyle = resizeState.isDragging ? { opacity } : null;
+    const overlayStyle = isDragging ? { opacity } : null;
     const overlayIsVisible = isPeeking || transitionState === 'exiting';
 
     return (
@@ -47,14 +48,16 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
         <RootNav>
           <Root />
         </RootNav>
-        <ContainerNav isHinting={isHinting} isPeeking={isPeeking}>
-          <Container />
-          <ContainerOverlay
-            isVisible={overlayIsVisible}
-            onClick={onOverlayClick}
-            style={overlayStyle}
-          />
-        </ContainerNav>
+        {Container && (
+          <ContainerNav isHinting={isHinting} isPeeking={isPeeking}>
+            <Container />
+            <ContainerOverlay
+              isVisible={overlayIsVisible}
+              onClick={onOverlayClick}
+              style={overlayStyle}
+            />
+          </ContainerNav>
+        )}
         <InnerShadow isVisible={isPeeking} />
       </Fragment>
     );

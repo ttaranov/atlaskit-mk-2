@@ -10,6 +10,10 @@ import {
   EditorProps,
   WithEditorActions,
   CollapsedEditor,
+  ToolbarFeedback,
+  ToolbarHelp,
+  name as packageName,
+  version as packageVersion,
 } from '@atlaskit/editor-core';
 
 import { User } from '../model';
@@ -29,6 +33,7 @@ export interface Props {
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
   disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface State {
@@ -135,6 +140,7 @@ export default class Editor extends React.Component<Props, State> {
       renderEditor,
       defaultValue,
       placeholder,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     let providers = {};
 
@@ -153,6 +159,17 @@ export default class Editor extends React.Component<Props, State> {
       onSave: () => this.onSave(actions),
       onCancel: this.onCancel,
       defaultValue,
+      allowHelpDialog: allowFeedbackAndHelpButtons,
+      primaryToolbarComponents: allowFeedbackAndHelpButtons
+        ? [
+            <ToolbarFeedback
+              key="feedback"
+              packageName={packageName}
+              packageVersion={packageVersion}
+            />,
+            <ToolbarHelp key="help" />,
+          ]
+        : undefined,
       ...providers,
     };
 

@@ -1,5 +1,56 @@
 # @atlaskit/media-image
 
+## 28.0.5
+- [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
+  - @atlaskit/smart-card@3.0.3
+
+## 28.0.4
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+  - @atlaskit/media-test-helpers@13.0.2
+
+## 28.0.3
+- [patch] Fix Card's defaultProps TS type [527bc9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/527bc9c)
+
+## 28.0.2
+- [patch] Remove card's "shown" analytics event [7877ce6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7877ce6)
+
+## 28.0.1
+- [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
+  - @atlaskit/media-core@18.1.1
+  - @atlaskit/media-test-helpers@13.0.1
+
+## 28.0.0
+
+
+- [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/media-test-helpers@13.0.0
+  - @atlaskit/media-core@18.1.0
+
+## 27.1.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/smart-card@3.0.2
+  - @atlaskit/media-ui@2.1.1
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/toggle@3.0.2
+  - @atlaskit/field-radio-group@2.0.3
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/media-test-helpers@12.0.4
+  - @atlaskit/media-core@18.0.3
+  - @atlaskit/analytics-next@2.1.1
+  - @atlaskit/dropdown-menu@4.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/field-range@3.0.2
+  - @atlaskit/badge@7.1.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/lozenge@4.0.1
+
 ## 27.1.3
 - [patch] Renamed smart card components and exposed inline smart card views [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)
 - [patch] Updated dependencies [1094bb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1094bb6)

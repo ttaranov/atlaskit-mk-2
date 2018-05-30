@@ -29,14 +29,14 @@ const renderRecent = (results: Result[]) => {
 export const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
-    icon: <PeopleIcon size="large" label="Search people" />,
+    icon: <PeopleIcon size="medium" label="Search people" />,
     text: 'Search for more people',
   });
 
 const renderSearchConfluenceItem = (query: string) =>
   searchConfluenceItem({
     query: query,
-    icon: <ConfluenceIcon size="large" label="Search confluence" />,
+    icon: <ConfluenceIcon size="medium" label="Search confluence" />,
     text: 'Search for more Confluence pages and blogs',
   });
 
@@ -61,14 +61,14 @@ const renderPeople = (results: Result[], query: string) => (
   </ResultItemGroup>
 );
 
-const renderNoResults = (query: string) => (
-  <>
-    <NoResults />
+const renderNoResults = (query: string) => [
+  <NoResults key="no-results" />,
+  <ResultItemGroup title="" key="advanced-search">
     {searchJiraItem(query)}
     {renderSearchConfluenceItem(query)}
     {renderSearchPeopleItem(query)}
-  </>
-);
+  </ResultItemGroup>,
+];
 
 export interface Props {
   query: string;

@@ -1,5 +1,11 @@
 # @atlaskit/notification-log-service
 
+## 2.0.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/notification-indicator@3.0.1
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/util-service-support@2.0.7
+
 ## 2.0.3
 
 ## 2.0.2

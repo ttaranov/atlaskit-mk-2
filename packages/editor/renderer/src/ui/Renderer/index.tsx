@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { Schema } from 'prosemirror-model';
 import {
+  ADFStage,
   UnsupportedBlock,
   ProviderFactory,
   defaultSchema,
@@ -37,6 +38,7 @@ export interface Props {
   schema?: Schema;
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
+  adfStage?: ADFStage;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -82,13 +84,14 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { document, onComplete, schema, appearance } = this.props;
+    const { document, onComplete, schema, appearance, adfStage } = this.props;
 
     try {
       const { result, stat } = renderDocument(
         document,
         this.serializer,
         schema || defaultSchema,
+        adfStage,
       );
 
       if (onComplete) {

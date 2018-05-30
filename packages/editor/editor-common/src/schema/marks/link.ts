@@ -37,6 +37,9 @@ export const link: MarkSpec = {
   group: LINK,
   attrs: {
     href: {},
+    __confluenceMetadata: {
+      default: null,
+    },
   },
   inclusive: false,
   parseDOM: [
@@ -44,14 +47,40 @@ export const link: MarkSpec = {
       tag: 'a[href]',
       getAttrs: (dom: Element) => {
         let href = dom.getAttribute('href') || '';
+        const attrs: any = {
+          __confluenceMetadata: dom.hasAttribute('__confluenceMetadata')
+            ? JSON.parse(dom.getAttribute('__confluenceMetadata') || '')
+            : undefined,
+        };
+
         if (href.slice(-1) === '/') {
           href = href.slice(0, -1);
         }
-        return isSafeUrl(href) ? { href: normalizeUrl(href) } : false;
+
+        if (isSafeUrl(href)) {
+          attrs.href = normalizeUrl(href);
+        } else {
+          return false;
+        }
+
+        return attrs;
       },
     },
   ],
   toDOM(node): [string, any] {
-    return ['a', node.attrs];
+    return [
+      'a',
+      Object.keys(node.attrs).reduce((attrs, key) => {
+        if (key === '__confluenceMetadata') {
+          if (node.attrs[key] !== null) {
+            attrs[key] = JSON.stringify(node.attrs[key]);
+          }
+        } else {
+          attrs[key] = node.attrs[key];
+        }
+
+        return attrs;
+      }, {}),
+    ];
   },
 };

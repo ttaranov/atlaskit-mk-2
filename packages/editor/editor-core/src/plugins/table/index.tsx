@@ -84,6 +84,7 @@ const tablesPlugin: EditorPlugin = {
             removeTable={tablesState.removeTable}
             tableLayout={tablesState.tableLayout}
             updateLayout={tablesState.setTableLayout}
+            isLayoutSupported={tablesState.isLayoutSupported}
             allowMergeCells={tablesState.allowMergeCells}
             allowNumberColumn={tablesState.allowNumberColumn}
             allowBackgroundColor={tablesState.allowBackgroundColor}

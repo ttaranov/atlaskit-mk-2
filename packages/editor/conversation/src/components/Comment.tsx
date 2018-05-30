@@ -56,6 +56,7 @@ export interface SharedProps {
   isHighlighted?: boolean;
   placeholder?: string;
   disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface Props extends SharedProps {
@@ -84,6 +85,13 @@ const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
   }
 
   return false;
+};
+
+const userChanged = (
+  oldUser: User = { id: '' },
+  newUser: User = { id: '' },
+) => {
+  return oldUser.id !== newUser.id;
 };
 
 const Reactions: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
@@ -115,6 +123,10 @@ export default class Comment extends React.Component<Props, State> {
     }
 
     if (commentChanged(this.props.comment, nextProps.comment)) {
+      return true;
+    }
+
+    if (userChanged(this.props.user, nextProps.user)) {
       return true;
     }
 
@@ -247,6 +259,7 @@ export default class Comment extends React.Component<Props, State> {
       user,
       renderEditor,
       disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     const { isEditing } = this.state;
 
@@ -266,6 +279,7 @@ export default class Comment extends React.Component<Props, State> {
           user={user}
           renderEditor={renderEditor}
           disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }
@@ -330,7 +344,13 @@ export default class Comment extends React.Component<Props, State> {
       return null;
     }
 
-    const { dataProviders, user, renderEditor, disableScrollTo } = this.props;
+    const {
+      dataProviders,
+      user,
+      renderEditor,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
+    } = this.props;
 
     return (
       <Editor
@@ -341,6 +361,7 @@ export default class Comment extends React.Component<Props, State> {
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
+        allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
       />
     );
   }

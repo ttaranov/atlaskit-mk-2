@@ -5,6 +5,8 @@ import { isSafeUrl } from '.';
 import { inlineNodes } from '../schema';
 import { CellAttributes } from '../schema/nodes/tableNodes';
 
+export type ADFStage = 'stage0' | 'final';
+
 export interface ADDoc {
   version: 1;
   type: 'doc';
@@ -43,7 +45,7 @@ export const markOrder = [
   'subsup',
   'underline',
   'code',
-  'inlineCommentMarker',
+  'confluenceInlineComment',
 ];
 
 export const isSubSupType = (type: string): type is 'sub' | 'sup' => {
@@ -73,8 +75,9 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
 export const getValidDocument = (
   doc: ADDoc,
   schema: Schema = defaultSchema,
+  adfStage: ADFStage = 'final',
 ): ADDoc | null => {
-  const node = getValidNode(doc as ADNode, schema);
+  const node = getValidNode(doc as ADNode, schema, adfStage);
 
   if (node.type === 'doc') {
     node.content = wrapInlineNodes(node.content);
@@ -96,15 +99,18 @@ const wrapInlineNodes = (nodes: ADNode[] = []): ADNode[] => {
 export const getValidContent = (
   content: ADNode[],
   schema: Schema = defaultSchema,
+  adfStage: ADFStage = 'final',
 ): ADNode[] => {
-  return content.map(node => getValidNode(node, schema));
+  return content.map(node => getValidNode(node, schema, adfStage));
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+const RELATIVE_LINK = /^\//;
 
 const flattenUnknownBlockTree = (
   node: ADNode,
   schema: Schema = defaultSchema,
+  adfStage: ADFStage = 'final',
 ): ADNode[] => {
   const output: ADNode[] = [];
   let isPrevLeafNode = false;
@@ -122,9 +128,9 @@ const flattenUnknownBlockTree = (
     }
 
     if (isLeafNode) {
-      output.push(getValidNode(childNode, schema));
+      output.push(getValidNode(childNode, schema, adfStage));
     } else {
-      output.push(...flattenUnknownBlockTree(childNode, schema));
+      output.push(...flattenUnknownBlockTree(childNode, schema, adfStage));
     }
 
     isPrevLeafNode = isLeafNode;
@@ -206,6 +212,7 @@ export const getValidUnknownNode = (node: ADNode): ADNode => {
 export const getValidNode = (
   originalNode: ADNode,
   schema: Schema = defaultSchema,
+  adfStage: ADFStage = 'final',
 ): ADNode => {
   const { attrs, marks, text, type } = originalNode;
   let { content } = originalNode;
@@ -218,7 +225,7 @@ export const getValidNode = (
   };
 
   if (content) {
-    node.content = content = getValidContent(content, schema);
+    node.content = content = getValidContent(content, schema, adfStage);
   }
 
   // If node type doesn't exist in schema, make it an unknown node
@@ -271,7 +278,7 @@ export const getValidNode = (
         if (context && !isValidString(context.text)) {
           break;
         }
-        if (context && !isValidIcon(context.icon)) {
+        if (context && (context.icon && !isValidIcon(context.icon))) {
           break;
         }
 
@@ -512,7 +519,7 @@ export const getValidNode = (
           if (marks) {
             marks = marks.reduce(
               (acc, mark) => {
-                const validMark = getValidMark(mark);
+                const validMark = getValidMark(mark, adfStage);
                 if (validMark) {
                   acc.push(validMark);
                 }
@@ -722,7 +729,10 @@ export const getValidNode = (
  * If a node is not recognized or is missing required attributes, we should return null
  *
  */
-export const getValidMark = (mark: ADMark): ADMark | null => {
+export const getValidMark = (
+  mark: ADMark,
+  adfStage: ADFStage = 'final',
+): ADMark | null => {
   const { attrs, type } = mark;
 
   if (type) {
@@ -751,7 +761,11 @@ export const getValidMark = (mark: ADMark): ADMark | null => {
           const { href, url, __confluenceMetadata } = attrs;
           let linkHref = href || url;
 
-          if (linkHref && linkHref.indexOf(':') === -1) {
+          if (
+            linkHref &&
+            linkHref.indexOf(':') === -1 &&
+            !RELATIVE_LINK.test(linkHref)
+          ) {
             linkHref = `http://${linkHref}`;
           }
 
@@ -811,7 +825,12 @@ export const getValidMark = (mark: ADMark): ADMark | null => {
           type,
         };
       }
-      case 'inlineCommentMarker': {
+    }
+  }
+
+  if (adfStage === 'stage0') {
+    switch (type) {
+      case 'confluenceInlineComment': {
         return {
           type,
           attrs,

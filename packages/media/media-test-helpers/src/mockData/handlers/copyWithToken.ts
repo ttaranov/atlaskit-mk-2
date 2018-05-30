@@ -6,7 +6,7 @@ import {
   MediaCollectionFile,
 } from '..';
 import { MockRequest, MockResponse } from 'xhr-mock';
-import * as uuid from 'uuid/v4';
+import * as uuid from 'uuid';
 import { files, fileUri } from '../staticCommon';
 
 export const copyWithToken = (context: () => MockContext) => (
@@ -52,8 +52,8 @@ export const copyWithToken = (context: () => MockContext) => (
 
   if (matchingDataItem) {
     const intFile: InternalFile = {
-      id: uuid(),
-      occurrenceKey: uuid(),
+      id: uuid.v4(),
+      occurrenceKey: uuid.v4(),
       name: availableFiles.reduce(
         (ret, item) =>
           item.id === JSON.parse(matchingDataItem.body).sourceFile.id

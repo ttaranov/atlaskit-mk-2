@@ -142,6 +142,31 @@ describe('TableFloatingToolbar', () => {
 
         floatingToolbar.unmount();
       });
+
+      it('should disable buttons when inside an unsupported layout', () => {
+        const { editorView } = editorFullPage(
+          doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
+        );
+
+        const floatingToolbar = mount(
+          <TableFloatingToolbar
+            tableElement={document.createElement('table')}
+            editorView={editorView}
+            tableActive={true}
+            permittedLayouts={desc as PermittedLayoutsDescriptor}
+            isLayoutSupported={() => false}
+          />,
+        );
+
+        icons.forEach(icon => {
+          expect(
+            floatingToolbar
+              .find(icon)
+              .closest(ToolbarButton)
+              .prop('disabled'),
+          ).toBe(true);
+        });
+      });
     });
 
     it('should not display buttons with no layouts', () => {

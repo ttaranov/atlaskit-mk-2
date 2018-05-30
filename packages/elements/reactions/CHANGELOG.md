@@ -1,5 +1,68 @@
 # @atlaskit/reactions
 
+## 12.0.10
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+
+## 12.0.9
+- [patch] FS-1959 use @atlaskit/tooltip for reactions tooltip [ec12b0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec12b0e)
+
+## 12.0.8
+- [patch] FS-1975 place picker after reactions [4a6e1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a6e1c5)
+
+## 12.0.7
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/emoji@35.0.0
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/util-data-test@9.1.4
+  - @atlaskit/emoji@35.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/util-data-test@9.1.4
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/emoji@35.0.0
+  - @atlaskit/util-data-test@9.1.4
+
+## 12.0.6
+- [patch] FS-1921 Don't refresh reactions when getting detailed response if requests [1764815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764815)
+
+## 12.0.5
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/emoji@34.2.0
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/util-data-test@9.1.3
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+  - @atlaskit/layer@3.1.1
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/emoji@34.2.0
+  - @atlaskit/util-data-test@9.1.3
+
 ## 12.0.4
 - [patch] FS-1890 Remove sinon dependency from reactions [b6ee84e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b6ee84e)
 - [patch] FS-1890 Migrate Reactions to Jest [8e0e31e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e0e31e)

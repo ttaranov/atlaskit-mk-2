@@ -1,5 +1,15 @@
 # @atlaskit/analytics-next
 
+## 2.1.2
+- [patch] Fix prop callbacks specified in the create event map to not change reference values each render and instead only update when the original prop callback changes [586a80c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586a80c)
+- [none] Updated dependencies [586a80c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586a80c)
+
+## 2.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/docs@3.0.4
+
 ## 2.1.0
 
 - [minor] Export cleanProps function that can be used to strip analytics props provided by our HOCs, useful when spreading props to a child element [973d6ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/973d6ea)

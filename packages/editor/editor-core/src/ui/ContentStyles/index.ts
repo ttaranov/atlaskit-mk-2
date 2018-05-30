@@ -5,10 +5,8 @@ import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } 
 import {
   akEditorBlockquoteBorderColor,
   akEditorMentionSelected,
-  akEditorTableFloatingControls,
   akEditorRuleBackground,
   akEditorRuleBorderRadius,
-  akEditorCodeBackground,
   akEditorCodeFontFamily,
   akEditorCodeBlockPadding,
   defaultEditorFontStyles,
@@ -21,13 +19,9 @@ import {
   akColorN300,
   akColorB200,
   akColorN90,
+  akColorN800,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
-import {
-  tableStyle,
-  akEditorTableNumberColumnWidth,
-} from '@atlaskit/editor-common';
-
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
 import { tableStyles } from '../../plugins/table/ui/styles';
 
@@ -96,13 +90,56 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  .ProseMirror pre {
-    box-sizing: border-box;
+  .ProseMirror .code-block {
     font-family: ${akEditorCodeFontFamily};
-    background: ${akEditorCodeBackground};
-    padding: ${akEditorCodeBlockPadding};
+    background: ${akColorN20};
     border-radius: ${akBorderRadius};
-    overflow-x: scroll;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 12px 0 0 0;
+    counter-reset: line;
+    display: flex;
+
+    .line-number-gutter {
+      color: ${akColorN300};
+      background-color: rgba(9, 30, 66, 0.04);
+      text-align: right;
+      user-select: none;
+      padding: ${akEditorCodeBlockPadding} 8px;
+      border-radius: ${akBorderRadius};
+      font-size: 12px;
+      line-height: 20px;
+
+      span {
+        display: block;
+
+        &::before {
+          counter-increment: line;
+          content: counter(line);
+          display: inline-block;
+        }
+      }
+    }
+
+    .code-content {
+      padding: ${akEditorCodeBlockPadding} 16px;
+      color: ${akColorN800};
+      overflow: scroll;
+      display: flex;
+      flex: 1;
+    }
+
+    /* We render this as a basic box in IE11 because it can't handle scrolling */
+    &.ie11 {
+      display: block;
+      .line-number-gutter {
+        display: none;
+      }
+      .code-content {
+        display: block;
+        overflow: visible;
+      }
+    }
   }
 
   .ProseMirror .code {
@@ -340,27 +377,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     position: absolute;
     height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.4);
-  }
-
-  /* =============== TABLE ================== */
-  .ProseMirror {
-    .table-container table ${tableStyle} .table-column-controls {
-      position: relative;
-    }
-    .table-container {
-      position: relative;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-    .table-container table[data-number-column='true'] td:first-child {
-      background-color: ${akEditorTableFloatingControls};
-      width: ${akEditorTableNumberColumnWidth}px;
-      text-align: center;
-    }
-    .table-container[data-layout='full-width'] {
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
   }
 
   /* =============== Layouts ================== */

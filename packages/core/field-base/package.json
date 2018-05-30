@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-base",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "description": "Wraps fields and provides styles for focus/hover states",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -11,19 +11,16 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    },
-    {
-      "name": "Luke B"
-    }
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^11.1.1",
-    "@atlaskit/inline-dialog": "^6.0.1",
-    "@atlaskit/spinner": "^5.0.1",
-    "@atlaskit/theme": "^3.1.1",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/inline-dialog": "^6.0.2",
+    "@atlaskit/spinner": "^5.0.2",
+    "@atlaskit/theme": "^3.2.2",
     "babel-runtime": "^6.26.0",
     "styled-components": "1.4.6 - 3"
   },
@@ -31,9 +28,9 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.3",
-    "@atlaskit/input": "^2.0.1",
-    "enzyme": "^3.3.0"
+    "@atlaskit/docs": "^3.0.4",
+    "@atlaskit/input": "^2.0.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "atlaskit": {
     "internal": true

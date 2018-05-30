@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/size-detector",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Wrapper for components that need to respond to size changes",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -11,7 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "atlaskit": {
     "name": "Size Detector",
@@ -26,8 +28,8 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.0",
-    "enzyme": "^3.3.0",
+    "@atlaskit/docs": "^3.0.4",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "styled-components": "1.4.6 - 3"
   }
 }

@@ -3,17 +3,23 @@ import {
   insertText,
   createEditor,
   p,
-  img,
   code_block,
+  media,
+  mediaSingle,
 } from '@atlaskit/editor-test-helpers';
 import imageUpload from '../../../src/plugins/image-upload';
 import codeBlockPlugin from '../../../src/plugins/code-block';
+import mediaPlugin from '../../../src/plugins/media';
 
 describe('inputrules', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [imageUpload, codeBlockPlugin],
+      editorPlugins: [
+        imageUpload,
+        codeBlockPlugin,
+        mediaPlugin({ allowMediaSingle: true }),
+      ],
       editorProps: { analyticsHandler: trackEvent },
     });
 
@@ -24,8 +30,9 @@ describe('inputrules', () => {
 
       insertText(editorView, '![text](url)', sel);
       expect(editorView.state.doc).toEqualDocument(
-        doc(p(img({ src: 'url', alt: 'text', title: 'text' })())),
+        doc(p(), mediaSingle()(media({ type: 'external', url: 'url' })()), p()),
       );
+
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.image.autoformatting',
       );

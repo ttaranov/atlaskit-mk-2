@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import { Provider } from 'unstated';
+import { NavAPI } from '../api';
 import NavigationState from './NavigationState';
 import type { NavigationProviderProps, NavigationStateShape } from './types';
 
@@ -24,12 +25,29 @@ export default class NavigationProvider extends PureComponent<
       get: defaultGetCache,
       set: defaultSetCache,
     },
+    debug: false,
   };
+  navState: NavigationState;
+  navAPI: NavAPI;
+
+  constructor(props: NavigationProviderProps) {
+    super(props);
+
+    const { cache, initialState, debug } = props;
+    this.navState = new NavigationState(initialState, cache);
+    this.navAPI = new NavAPI({ debug });
+  }
+
+  componentWillReceiveProps(nextProps: NavigationProviderProps) {
+    if (this.props.debug !== nextProps.debug) {
+      this.navAPI.setDebug(!!nextProps.debug);
+    }
+  }
 
   render() {
-    const { children, cache, initialState } = this.props;
-    const state = new NavigationState(initialState, cache);
+    const { children } = this.props;
+    const { navState, navAPI } = this;
 
-    return <Provider inject={[state]}>{children}</Provider>;
+    return <Provider inject={[navState, navAPI]}>{children}</Provider>;
   }
 }

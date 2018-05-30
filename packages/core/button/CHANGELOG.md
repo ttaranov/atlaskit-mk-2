@@ -1,5 +1,12 @@
 # @atlaskit/button
 
+## 7.2.5
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/analytics-next@2.1.1
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
 ## 7.2.4
 - [patch] Export types for Button [6a47d88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a47d88)
 - [none] Updated dependencies [6a47d88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a47d88)

@@ -18,3 +18,5 @@ export default class GlobalItem extends PureComponent<GlobalItemProps> {
     return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
   }
 }
+
+export type { GlobalItemProps } from './types';

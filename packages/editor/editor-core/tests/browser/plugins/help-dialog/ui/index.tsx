@@ -80,7 +80,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       const autoformat = formatting.filter(f => f.name === 'Quote')[0]
         .autoFormatting;
       const label = mount(<div>{autoformat!()}</div>);
-      expect(label.text()).to.equal('> + space');
+      expect(label.text()).to.equal('> space');
       label.unmount();
     });
   });

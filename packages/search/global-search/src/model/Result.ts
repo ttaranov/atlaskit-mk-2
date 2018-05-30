@@ -1,20 +1,20 @@
-// Common properties that the quick-search Result component supports
 export interface Result {
   resultId: string;
-  type: ResultType;
   name: string;
   href: string;
-  avatarUrl: string;
+  // Either avatarUrl or contentType should be defined
+  avatarUrl?: string;
+  contentType?: ResultContentType;
   containerName?: string;
   objectKey?: string;
-  contentType?: ResultContentType;
+  resultType: ResultType;
+  analyticsType: AnalyticsType;
 }
 
-// Use string enum here because the type prop in quick-search Result is actually a string
 export enum ResultType {
-  Person = 'person',
-  Object = 'object',
-  Container = 'container',
+  Person,
+  Object,
+  Container,
 }
 
 export enum ResultContentType {
@@ -22,4 +22,15 @@ export enum ResultContentType {
   Blogpost = 'blogpost',
   Attachment = 'attachment',
   Space = 'space',
+}
+
+export enum AnalyticsType {
+  RecentJira = 'recent-jira',
+  RecentConfluence = 'recent-confluence',
+  ResultJira = 'result-jira',
+  ResultConfluence = 'result-confluence',
+  ResultPerson = 'result-person',
+  AdvancedSearchJira = 'advanced-search-jira',
+  AdvancedSearchConfluence = 'advanced-search-confluence',
+  AdvancedSearchPeople = 'advanced-search-people',
 }

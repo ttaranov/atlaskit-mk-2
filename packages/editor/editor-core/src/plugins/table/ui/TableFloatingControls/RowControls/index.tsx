@@ -7,7 +7,6 @@ import {
   RowContainer,
   RowControlsButtonWrap,
   HeaderButton,
-  DeleteRowButtonSize,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
 import { Command } from '../../../../../types';
@@ -24,6 +23,7 @@ export interface Props {
   resetHoverSelection: Command;
   scroll: number;
   updateScroll: () => void;
+  isTableInDanger?: boolean;
 }
 
 export default class RowControls extends Component<Props, any> {
@@ -48,7 +48,7 @@ export default class RowControls extends Component<Props, any> {
         }}
         onMouseLeave={() => this.hoverRows(selectedRowIdxs)}
         style={{
-          top: offsetHeight + selectionHeight / 2 - DeleteRowButtonSize / 2 - 1,
+          top: offsetHeight + selectionHeight / 2 + 2,
         }}
       />
     );
@@ -80,6 +80,7 @@ export default class RowControls extends Component<Props, any> {
       editorView: { state },
       isTableHovered,
       scroll,
+      isTableInDanger,
     } = this.props;
     if (!tableElement) {
       return null;
@@ -104,7 +105,7 @@ export default class RowControls extends Component<Props, any> {
 
       const classNames =
         isTableHovered || isRowSelected(i)(state.selection) ? ['active'] : [''];
-      if (this.state.dangerRows.indexOf(i) !== -1) {
+      if (this.state.dangerRows.indexOf(i) !== -1 || isTableInDanger) {
         classNames.push('danger');
       }
       nodes.push(

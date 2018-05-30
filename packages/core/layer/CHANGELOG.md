@@ -1,5 +1,9 @@
 # @atlaskit/layer
 
+## 3.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
 ## 3.1.0
 
 - [minor] Add lockScroll prop that locks all scrolling behind the layer when set to true. Also prevents any interaction behind the layer. Defaults to false. [96209c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96209c4)

@@ -1,6 +1,6 @@
 // @flow
 import React, {
-  PureComponent,
+  Component,
   type Node,
   type ComponentType,
   type ElementType,
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function withColumnWidth(Cell: ElementType): ComponentType<*> {
-  return class CellWithColumnWidth extends PureComponent<Props> {
+  return class CellWithColumnWidth extends Component<Props> {
     static contextTypes = {
       tableTree: PropTypes.object.isRequired,
     };

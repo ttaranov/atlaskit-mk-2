@@ -1,5 +1,19 @@
 # @atlaskit/modal-dialog
 
+## 4.0.5
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/layer-manager@3.0.4
+  - @atlaskit/inline-dialog@6.0.2
+  - @atlaskit/field-radio-group@2.0.3
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/checkbox@2.0.2
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/blanket@5.0.2
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+
 ## 4.0.4
 
 ## 4.0.3

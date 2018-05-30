@@ -1,21 +1,14 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { Builder, AddArgs } from './builder';
+import { AddArgs, Builder, List, ListItem, ListType } from '../../interfaces';
 
-export interface ListItem {
-  content?: any[];
-  parent: List;
-  children: List[];
+/**
+ * Return the type of a list from the bullets
+ */
+export function getType(bullets: string): ListType {
+  return /#/.test(bullets) ? 'orderedList' : 'bulletList';
 }
 
-export interface List {
-  children: ListItem[];
-  type: ListType;
-  parent?: ListItem;
-}
-
-export type ListType = 'bulletList' | 'orderedList';
-
-export default class ListBuilder implements Builder {
+export class ListBuilder implements Builder {
   private schema: Schema;
   private root: List;
   private lastDepth: number;
@@ -23,18 +16,9 @@ export default class ListBuilder implements Builder {
 
   constructor(schema: Schema, bullets: string) {
     this.schema = schema;
-    this.root = { children: [], type: ListBuilder.getType(bullets) };
+    this.root = { children: [], type: getType(bullets) };
     this.lastDepth = 1;
     this.lastList = this.root;
-  }
-
-  /**
-   * Return the type of a list from the bullets
-   * @param {string} bullets
-   * @returns {ListType}
-   */
-  static getType(bullets: string): ListType {
-    return /#/.test(bullets) ? 'orderedList' : 'bulletList';
   }
 
   /**
@@ -60,7 +44,7 @@ export default class ListBuilder implements Builder {
       }
 
       const depth = style.length;
-      const type = ListBuilder.getType(style);
+      const type = getType(style);
 
       if (depth > this.lastDepth) {
         // Add children starting from last node
@@ -95,7 +79,10 @@ export default class ListBuilder implements Builder {
   private buildListNode = (list: List): PMNode => {
     const listNode = this.schema.nodes[list.type];
 
-    return listNode.create({}, list.children.map(this.buildListItemNode));
+    return listNode.createChecked(
+      {},
+      list.children.map(this.buildListItemNode),
+    );
   };
 
   /**
@@ -104,15 +91,25 @@ export default class ListBuilder implements Builder {
    */
   private buildListItemNode = (item: ListItem): PMNode => {
     const { listItem } = this.schema.nodes;
-    let content: any[] = [];
+    const content: PMNode[] = [];
 
+    if (item.content && item.content.length > 0) {
+      content.push(...item.content);
+    }
     content.push(...item.children.map(this.buildListNode));
 
-    if (!item.content) {
-      return listItem.create({}, content);
+    if (
+      content.length === 0 ||
+      ['paragraph', 'mediaSingle'].indexOf(content[0].type.name) === -1
+    ) {
+      // If the content is empty or the first element is not paragraph or mediaSingle.
+      // this likely to be a nested list where the toplevel list is empty
+      // For example: *# item 1
+      // In this case we create an empty paragraph for the top level listNode
+      content.unshift(this.schema.nodes.paragraph.createChecked());
     }
 
-    return listItem.create({}, [...item.content, ...content]);
+    return listItem.createChecked({}, content);
   };
 
   /**
@@ -147,10 +144,10 @@ export default class ListBuilder implements Builder {
    * @param {PMNode[]} content
    */
   private appendToLastItem(content: PMNode[]) {
-    const { hardBreak } = this.schema.nodes;
     const { children } = this.lastList;
     const lastItem = children[children.length - 1];
-    lastItem.content!.push(hardBreak.create(), ...content);
+
+    lastItem.content!.push(...content);
   }
 
   /**

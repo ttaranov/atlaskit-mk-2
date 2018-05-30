@@ -21,6 +21,20 @@
               "title": "First grandchild with a very long name",
               "numbering": "1.2.1",
               "children": []
+            },
+            {
+              "id": "1.2.2",
+              "title": "Second grandchild",
+              "numbering": "1.2.2",
+              "children": [
+                {
+                  "id": "1.2.2.1",
+                  "title": "First great grandchild",
+                  "numbering": "1.2.2.1",
+                  "children": [
+                  ]
+                }
+              ]
             }
           ]
         }

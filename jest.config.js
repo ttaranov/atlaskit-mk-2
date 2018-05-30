@@ -3,6 +3,7 @@
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
+const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE;
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -35,8 +36,8 @@ const config = {
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
   transform: {
-    '^.+\\.tsx?$': 'ts-jest/preprocessor',
     '^.+\\.js$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest/preprocessor',
   },
   globals: {
     'ts-jest': {
@@ -81,6 +82,12 @@ if (INTEGRATION_TESTS) {
   } else {
     config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
   }
+}
+
+if (OVERRIDE_TEST_IGNORE) {
+  config.testPathIgnorePatterns.push(
+    `/${OVERRIDE_TEST_IGNORE}.+\\/__tests__\\/`,
+  );
 }
 
 /**

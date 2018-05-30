@@ -7,6 +7,10 @@ export type Identifier = {
   collectionName?: string;
 };
 
+export type ItemSource =
+  | { kind: 'COLLECTION'; collectionName: string; pageSize: number }
+  | { kind: 'ARRAY'; items: Identifier[] };
+
 export type Outcome<Data, Err> =
   | {
       status: 'PENDING';
@@ -19,3 +23,8 @@ export type Outcome<Data, Err> =
       status: 'FAILED';
       err: Err;
     };
+
+export type MediaViewerFeatureFlags = {
+  nextGen?: boolean;
+  customVideoPlayer?: boolean;
+};

@@ -8,5 +8,5 @@ import supportsVoiceover from '../../util/supportsVoiceover';
 export default withToggleInteraction(
   withItemFocus(Item),
   CheckboxIcon,
-  supportsVoiceover ? 'checkbox' : 'menuitemcheckbox',
+  () => (supportsVoiceover() ? 'checkbox' : 'menuitemcheckbox'),
 );

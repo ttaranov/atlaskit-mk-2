@@ -1,6 +1,7 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
+import { browser } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { stateKey } from '../pm-plugins/main';
@@ -17,12 +18,11 @@ import {
 import { pluginKey as widthPluginKey } from '../../width';
 
 import WithPluginState from '../../../ui/WithPluginState';
-import { TableLayout, akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { calcTableWidth } from '@atlaskit/editor-common';
 
+const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
 const DEFAULT_CELL_MIN_WIDTH = 25;
-// TODO: Should be 62 after ED-4280 is fixed
-const CONTROLLER_PADDING = 63;
 
 import { Props } from './table';
 
@@ -53,27 +53,18 @@ class TableComponent extends React.Component<ComponentProps> {
         );
       }
 
-      if (this.wrapper) {
+      if (this.wrapper && !isIE11) {
         this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
       }
     }
   }
 
   componentWillUnmount() {
-    if (this.wrapper) {
+    if (this.wrapper && !isIE11) {
       this.wrapper.removeEventListener('scroll', this.handleScrollDebounced);
     }
 
     this.handleScrollDebounced.cancel();
-  }
-
-  calcWidth(layout: TableLayout, containerWidth: number): string {
-    switch (layout) {
-      case 'full-width':
-        return `${containerWidth - CONTROLLER_PADDING}px`;
-      default:
-        return 'inherit';
-    }
   }
 
   render() {
@@ -98,7 +89,10 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const { isTableHovered } = hoverSelectionPluginKey.getState(view.state);
+    const {
+      isTableHovered,
+      isTableInDanger,
+    } = hoverSelectionPluginKey.getState(view.state);
 
     return (
       <WithPluginState
@@ -112,16 +106,12 @@ class TableComponent extends React.Component<ComponentProps> {
           return (
             <div
               style={{
-                width: this.calcWidth(node.attrs.layout, containerWidth),
-                maxWidth:
-                  containerWidth <= akEditorFullPageMaxWidth
-                    ? '100%'
-                    : `${containerWidth}px`,
+                width: calcTableWidth(node.attrs.layout, containerWidth),
               }}
               className="table-container"
               data-layout={node.attrs.layout}
             >
-              <div className="table-row-controls">
+              <div className="table-row-controls-wrapper">
                 <TableFloatingControls
                   editorView={view}
                   tableElement={pluginState.tableElement}
@@ -132,6 +122,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   insertColumn={insertColumn}
                   insertRow={insertRow}
                   remove={pluginState.remove}
+                  isTableInDanger={isTableInDanger}
                 />
               </div>
               <div
@@ -140,7 +131,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   this.wrapper = elem;
                 }}
               >
-                <div className="table-column-controls">
+                <div className="table-column-controls-wrapper">
                   <ColumnControls
                     editorView={view}
                     tableElement={pluginState.tableElement}
@@ -149,6 +140,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     remove={pluginState.remove}
                     hoverColumns={hoverColumns!}
                     resetHoverSelection={resetHoverSelection!}
+                    isTableInDanger={isTableInDanger}
                   />
                 </div>
                 <table
@@ -190,11 +182,13 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   private handleScroll = (event: Event) => {
-    if (event.target !== this.wrapper) {
-      return;
-    }
-
-    if (!this.table || !this.leftShadow || !this.rightShadow) {
+    if (
+      !this.wrapper ||
+      event.target !== this.wrapper ||
+      !this.table ||
+      !this.leftShadow ||
+      !this.rightShadow
+    ) {
       return;
     }
 

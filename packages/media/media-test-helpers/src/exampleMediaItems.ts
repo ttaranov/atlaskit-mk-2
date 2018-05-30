@@ -130,8 +130,20 @@ export const audioFileId = {
   collectionName,
 };
 
+export const audioNoCoverFileId = {
+  id: '7a5698bb-919c-4200-8699-6041e7913b11', // mp3 audio
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const videoFileId = {
   id: '1b01a476-83b4-4f44-8192-f83b2d00913a', // mp4 video
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const videoHorizontalFileId = {
+  id: '2afaf845-4385-431f-9a15-3e21520cf896', // .mov video
   mediaItemType: fileType,
   collectionName,
 };

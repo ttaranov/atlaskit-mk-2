@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A React component used for grouping and controlling @atlskit/tag components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,7 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Luke B"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "atlaskit": {
     "name": "Tag group",
@@ -24,13 +26,13 @@
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "@atlaskit/tag": "^4.0.0",
+    "@atlaskit/tag": "^4.1.1",
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.0",
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/tag": "^4.0.0",
-    "enzyme": "^3.3.0"
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/docs": "^3.0.4",
+    "@atlaskit/tag": "^4.1.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }
