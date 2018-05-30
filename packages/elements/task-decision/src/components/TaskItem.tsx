@@ -1,11 +1,15 @@
+import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 import * as React from 'react';
 import { PureComponent } from 'react';
-
 import { CheckBoxWrapper } from '../styled/TaskItem';
-
+import {
+  Appearance,
+  ContentRef,
+  User,
+  OnReminder,
+  ReminderTime,
+} from '../types';
 import Item from './Item';
-import { Appearance, ContentRef, User } from '../types';
-import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 
 export interface Props {
   taskId: string;
@@ -22,6 +26,8 @@ export interface Props {
   fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   disabled?: boolean;
+  onSetReminder?: OnReminder;
+  reminderDate?: ReminderTime;
 }
 
 let taskCount = 0;
@@ -89,6 +95,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
       participants,
       showPlaceholder,
       disabled,
+      reminderDate,
     } = this.props;
 
     const icon = (
@@ -116,6 +123,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
         attribution={this.getAttributionText()}
       >
         {children}
+        {reminderDate}
       </Item>
     );
   }

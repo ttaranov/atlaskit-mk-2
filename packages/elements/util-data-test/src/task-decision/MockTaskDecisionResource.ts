@@ -22,9 +22,12 @@ import {
   convertServiceItemResponseToItemResponse,
   convertServiceDecisionResponseToDecisionResponse,
   convertServiceTaskResponseToTaskResponse,
+  ReminderTime,
+  HandlerType,
 } from '@atlaskit/task-decision';
 
 import * as subMinutes from 'date-fns/sub_minutes';
+import { toObjectKey } from '../../../task-decision/src/type-helpers';
 
 export interface MockTaskDecisionResourceConfig {
   hasMore?: boolean;
@@ -44,7 +47,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
   private config?: MockTaskDecisionResourceConfig;
   private fakeCursor = 0;
   private lastNewItemTime = new Date();
-  private subscribers: Map<string, Handler[]> = new Map();
+  private subscribers: Map<string, Handler<any>[]> = new Map();
   private cachedItems: Map<
     string,
     BaseItem<TaskState | DecisionState>
@@ -172,17 +175,22 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
         localId: 'bff0c423-3bba-45c4-a310-d49f7a95003e',
         state: 'DONE',
         type: 'TASK',
+        reminderDate: '2018-05-30T02:40:07.106Z',
       } as BaseItem<TaskState>,
     ]);
   }
 
-  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
+  toggleTask(
+    baseItem: BaseItem<TaskState>,
+    state: TaskState,
+  ): Promise<TaskState> {
     if (debouncedTaskToggle) {
       clearTimeout(debouncedTaskToggle);
     }
+    const objectKey = toObjectKey(baseItem);
 
     // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
-    this.notifyUpdated(objectKey, state);
+    this.notifyUpdatedState(objectKey, state);
 
     return new Promise<TaskState>(resolve => {
       const key = objectKeyToString(objectKey);
@@ -192,7 +200,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
         this.cachedItems.set(key, cached);
       } else {
         this.cachedItems.set(key, {
-          ...objectKey,
+          ...baseItem,
           state,
         } as BaseItem<DecisionState | TaskState>);
       }
@@ -203,15 +211,15 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
       setTimeout(() => {
         if (this.config && this.config.error) {
           // Undo optimistic change
-          this.notifyUpdated(objectKey, toggleTaskState(state));
+          this.notifyUpdatedState(objectKey, toggleTaskState(state));
         } else {
-          this.notifyUpdated(objectKey, state);
+          this.notifyUpdatedState(objectKey, state);
         }
       }, 500 + lag);
     });
   }
 
-  subscribe(objectKey: ObjectKey, handler: Handler) {
+  subscribe(objectKey: ObjectKey, handler: Handler<any>) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key) || [];
     handlers.push(handler);
@@ -219,7 +227,8 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
 
     const cached = this.cachedItems.get(key);
     if (cached) {
-      this.notifyUpdated(objectKey, cached.state);
+      this.notifyUpdatedState(objectKey, cached.state);
+      this.notifyUpdatedReminderDate(objectKey, cached.reminderDate);
       return;
     }
 
@@ -237,13 +246,14 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
           this.cachedItems.set(objectKeyToString(objectKey), task);
 
           this.dequeueItem(objectKey);
-          this.notifyUpdated(objectKey, task.state);
+          this.notifyUpdatedState(objectKey, task.state);
+          this.notifyUpdatedReminderDate(objectKey, task.reminderDate);
         });
       });
     }, 1);
   }
 
-  unsubscribe(objectKey: ObjectKey, handler: Handler) {
+  unsubscribe(objectKey: ObjectKey, handler: Handler<any>) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
@@ -263,7 +273,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     }
   }
 
-  notifyUpdated(objectKey: ObjectKey, state: TaskState | DecisionState) {
+  notifyUpdatedState(objectKey: ObjectKey, state: TaskState | DecisionState) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
@@ -271,7 +281,23 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     }
 
     handlers.forEach(handler => {
-      handler(state);
+      if (handler.type === HandlerType.STATE) {
+        handler.callback(state);
+      }
+    });
+  }
+
+  notifyUpdatedReminderDate(objectKey: ObjectKey, timestamp?: ReminderTime) {
+    const key = objectKeyToString(objectKey);
+    const handlers = this.subscribers.get(key);
+    if (!handlers) {
+      return;
+    }
+
+    handlers.forEach(handler => {
+      if (handler.type === HandlerType.REMINDER) {
+        handler.callback(timestamp);
+      }
     });
   }
 
@@ -279,6 +305,44 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     // Return a random user or undefined from the participants list
     const randomParticipant = Math.floor(Math.random() * participants.length);
     return Math.random() < 0.75 ? participants[randomParticipant] : undefined;
+  }
+
+  updateReminderDate(
+    baseItem: BaseItem<TaskState | DecisionState>,
+    reminderDate: ReminderTime,
+  ): Promise<ReminderTime> {
+    const objectKey = toObjectKey(baseItem);
+    // Optimistically notify subscribers that the timestamp has updated so that they can re-render accordingly
+    this.notifyUpdatedReminderDate(objectKey, reminderDate);
+
+    return new Promise<ReminderTime>(resolve => {
+      const key = objectKeyToString(objectKey);
+      const cached = this.cachedItems.get(key);
+      const previousTimestamp = baseItem.reminderDate;
+      if (cached) {
+        this.cachedItems.set(key, {
+          ...cached,
+          reminderDate,
+        });
+      } else {
+        this.cachedItems.set(key, {
+          ...baseItem,
+          reminderDate,
+        } as BaseItem<DecisionState | TaskState>);
+      }
+
+      resolve(reminderDate);
+
+      const lag = (this.config && this.config.lag) || 0;
+      setTimeout(() => {
+        if (this.config && this.config.error) {
+          // Undo optimistic change
+          this.notifyUpdatedReminderDate(objectKey, previousTimestamp);
+        } else {
+          this.notifyUpdatedReminderDate(objectKey, reminderDate);
+        }
+      }, 500 + lag);
+    });
   }
 
   private queueItem(objectKey: ObjectKey) {

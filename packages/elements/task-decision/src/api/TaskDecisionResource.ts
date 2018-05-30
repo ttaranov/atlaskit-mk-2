@@ -1,6 +1,11 @@
 import * as uuid from 'uuid';
 import { RequestServiceOptions, utils } from '@atlaskit/util-service-support';
-import { PubSubSpecialEventType, PubSubClient } from '../types';
+import {
+  PubSubSpecialEventType,
+  PubSubClient,
+  ReminderTime,
+  HandlerType,
+} from '../types';
 import { defaultLimit } from '../constants';
 
 import {
@@ -34,7 +39,11 @@ import {
   ServiceItem,
 } from '../types';
 
-import { objectKeyToString, toggleTaskState } from '../type-helpers';
+import {
+  objectKeyToString,
+  toggleTaskState,
+  toObjectKey,
+} from '../type-helpers';
 
 interface RecentUpdateByIdValue {
   listener: RecentUpdatesListener;
@@ -150,7 +159,7 @@ export class ItemStateManager {
   private debouncedTaskStateQuery: number | null = null;
   private debouncedTaskToggle: Map<string, number> = new Map();
   private serviceConfig: TaskDecisionResourceConfig;
-  private subscribers: Map<string, Handler[]> = new Map();
+  private subscribers: Map<string, Handler<any>[]> = new Map();
   private trackedObjectKeys: Map<string, ObjectKey> = new Map();
   private cachedItems: Map<
     string,
@@ -175,7 +184,11 @@ export class ItemStateManager {
     this.unsubscribeFromPubSubEvents();
   }
 
-  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
+  toggleTask(
+    baseItem: BaseItem<TaskState>,
+    state: TaskState,
+  ): Promise<TaskState> {
+    const objectKey = toObjectKey(baseItem);
     const stringKey = objectKeyToString(objectKey);
     const timeout = this.debouncedTaskToggle.get(stringKey);
     if (timeout) {
@@ -185,14 +198,12 @@ export class ItemStateManager {
 
     // Update cache optimistically
     this.cachedItems.set(stringKey, {
-      ...objectKey,
-      lastUpdateDate: new Date(),
-      type: 'TASK',
-      state: state,
+      ...baseItem,
+      state,
     });
 
     // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
-    this.notifyUpdated(objectKey, state);
+    this.notifyUpdatedState(objectKey, state);
 
     return new Promise<TaskState>((resolve, reject) => {
       this.debouncedTaskToggle.set(
@@ -221,23 +232,81 @@ export class ItemStateManager {
 
               resolve(state);
               // Notify subscribers that the task have been updated so that they can re-render accordingly
-              this.notifyUpdated(objectKey, state);
+              this.notifyUpdatedState(objectKey, state);
             })
             .catch(() => {
               // Undo optimistic change
               const previousState = toggleTaskState(state);
               this.cachedItems.set(stringKey, {
-                ...objectKey,
-                lastUpdateDate: new Date(),
-                type: 'TASK',
+                ...baseItem,
                 state: previousState,
               });
 
-              this.notifyUpdated(objectKey, previousState);
+              this.notifyUpdatedState(objectKey, previousState);
               reject();
             });
         }, 500),
       );
+    });
+  }
+
+  /**
+   * TODO: Innovation week spike
+   */
+  updateReminderDate(
+    baseItem: BaseItem<TaskState | DecisionState>,
+    reminderDate: ReminderTime,
+  ): Promise<ReminderTime> {
+    const objectKey = toObjectKey(baseItem);
+    const stringKey = objectKeyToString(objectKey);
+    const previousTimestamp = baseItem.reminderDate;
+
+    // Update cache optimistically
+    this.cachedItems.set(stringKey, {
+      ...baseItem,
+      reminderDate,
+    });
+
+    // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
+    this.notifyUpdatedReminderDate(objectKey, reminderDate);
+
+    /**
+     * TODO: Make REST call to service
+     */
+    return new Promise<ReminderTime>((resolve, reject) => {
+      const options: RequestServiceOptions = {
+        path: 'tasks/reminder',
+        requestInit: {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: JSON.stringify({
+            ...objectKey,
+            reminderDate,
+          }),
+        },
+      };
+      utils
+        .requestService<ServiceTask>(this.serviceConfig, options)
+        .then(convertServiceTaskToTask)
+        .then(task => {
+          const key = objectKeyToString(objectKey);
+          this.cachedItems.set(key, task);
+
+          resolve(reminderDate);
+          // Notify subscribers that the task have been updated so that they can re-render accordingly
+          this.notifyUpdatedReminderDate(objectKey, task.reminderDate);
+        })
+        .catch(() => {
+          // Undo optimistic change
+          this.cachedItems.set(stringKey, {
+            ...baseItem,
+            reminderDate: previousTimestamp,
+          });
+          reject();
+          this.notifyUpdatedReminderDate(objectKey, previousTimestamp);
+        });
     });
   }
 
@@ -246,7 +315,7 @@ export class ItemStateManager {
     this.scheduleGetTaskState();
   }
 
-  subscribe(objectKey: ObjectKey, handler: Handler) {
+  subscribe(objectKey: ObjectKey, handler: Handler<any>) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key) || [];
     handlers.push(handler);
@@ -255,7 +324,8 @@ export class ItemStateManager {
 
     const cached = this.cachedItems.get(key);
     if (cached) {
-      this.notifyUpdated(objectKey, cached.state);
+      this.notifyUpdatedState(objectKey, cached.state);
+      this.notifyUpdatedReminderDate(objectKey, cached.reminderDate);
       return;
     }
 
@@ -264,7 +334,7 @@ export class ItemStateManager {
     this.scheduleGetTaskState();
   }
 
-  unsubscribe(objectKey: ObjectKey, handler: Handler) {
+  unsubscribe(objectKey: ObjectKey, handler: Handler<any>) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
@@ -305,7 +375,7 @@ export class ItemStateManager {
     );
   }
 
-  notifyUpdated(objectKey: ObjectKey, state: TaskState | DecisionState) {
+  notifyUpdatedState(objectKey: ObjectKey, state: TaskState | DecisionState) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
@@ -313,7 +383,23 @@ export class ItemStateManager {
     }
 
     handlers.forEach(handler => {
-      handler(state);
+      if (handler.type === HandlerType.STATE) {
+        handler.callback(state);
+      }
+    });
+  }
+
+  notifyUpdatedReminderDate(objectKey: ObjectKey, timestamp?: ReminderTime) {
+    const key = objectKeyToString(objectKey);
+    const handlers = this.subscribers.get(key);
+    if (!handlers) {
+      return;
+    }
+
+    handlers.forEach(handler => {
+      if (handler.type === HandlerType.REMINDER) {
+        handler.callback(timestamp);
+      }
     });
   }
 
@@ -332,7 +418,8 @@ export class ItemStateManager {
     const lastUpdateDate = new Date(payload.lastUpdateDate);
     if (lastUpdateDate > cached.lastUpdateDate) {
       this.cachedItems.set(key, convertServiceTaskStateToBaseItem(payload));
-      this.notifyUpdated(objectKey, payload.state);
+      this.notifyUpdatedState(objectKey, payload.state);
+      this.notifyUpdatedReminderDate(objectKey, payload.reminderDate);
       return;
     }
   };
@@ -395,13 +482,12 @@ export class ItemStateManager {
         tasks.forEach(task => {
           const { containerAri, objectAri, localId } = task;
           const objectKey = { containerAri, objectAri, localId };
-          this.cachedItems.set(
-            objectKeyToString(objectKey),
-            convertServiceTaskStateToBaseItem(task),
-          );
+          const baseItem = convertServiceTaskStateToBaseItem(task);
+          this.cachedItems.set(objectKeyToString(objectKey), baseItem);
 
           this.dequeueItem(objectKey);
-          this.notifyUpdated(objectKey, task.state);
+          this.notifyUpdatedState(objectKey, task.state);
+          this.notifyUpdatedReminderDate(objectKey, task.reminderDate);
         });
       });
     }, 1);
@@ -508,15 +594,25 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     return serviceQuery;
   }
 
-  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
-    return this.itemStateManager.toggleTask(objectKey, state);
+  toggleTask(
+    baseItem: BaseItem<TaskState>,
+    state: TaskState,
+  ): Promise<TaskState> {
+    return this.itemStateManager.toggleTask(baseItem, state);
   }
 
-  subscribe(objectKey: ObjectKey, handler: Handler) {
+  updateReminderDate(
+    baseItem: BaseItem<TaskState | DecisionState>,
+    reminderDate: ReminderTime,
+  ): Promise<ReminderTime> {
+    return this.itemStateManager.updateReminderDate(baseItem, reminderDate);
+  }
+
+  subscribe(objectKey: ObjectKey, handler: Handler<any>) {
     this.itemStateManager.subscribe(objectKey, handler);
   }
 
-  unsubscribe(objectKey: ObjectKey, handler: Handler) {
+  unsubscribe(objectKey: ObjectKey, handler: Handler<any>) {
     this.itemStateManager.unsubscribe(objectKey, handler);
   }
 

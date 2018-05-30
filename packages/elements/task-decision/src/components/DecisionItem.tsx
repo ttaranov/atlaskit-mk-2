@@ -4,7 +4,13 @@ import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import { colors } from '@atlaskit/theme';
 import { EditorIconWrapper } from '../styled/DecisionItem';
 import Item from './Item';
-import { Appearance, ContentRef, User } from '../types';
+import {
+  Appearance,
+  ContentRef,
+  User,
+  OnReminder,
+  ReminderTime,
+} from '../types';
 
 export interface Props {
   children?: any;
@@ -15,6 +21,8 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
+  onSetReminder?: OnReminder;
+  reminderDate?: ReminderTime;
 }
 
 export default class DecisionItem extends PureComponent<Props, {}> {
@@ -40,12 +48,20 @@ export default class DecisionItem extends PureComponent<Props, {}> {
       contentRef,
       participants,
       showPlaceholder,
+      onSetReminder,
+      reminderDate,
     } = this.props;
     const iconColor = showPlaceholder ? colors.N100 : colors.G300;
 
     const icon = (
       <EditorIconWrapper color={iconColor}>
-        <DecisionIcon label="Decision" size="large" />
+        <DecisionIcon
+          label="Decision"
+          size="large"
+          onClick={() =>
+            onSetReminder ? onSetReminder(new Date().toISOString()) : undefined
+          }
+        />
       </EditorIconWrapper>
     );
 
@@ -60,6 +76,7 @@ export default class DecisionItem extends PureComponent<Props, {}> {
         attribution={this.getAttributionText()}
       >
         {children}
+        {reminderDate}
       </Item>
     );
   }

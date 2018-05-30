@@ -4,10 +4,12 @@ import TaskItem from './TaskItem';
 import {
   Appearance,
   ContentRef,
+  ReminderTime,
   TaskDecisionProvider,
-  TaskState,
   User,
+  HandlerType,
 } from '../types';
+import { baseItemFromTaskProps } from '../type-helpers';
 
 export interface Props {
   taskId: string;
@@ -24,11 +26,13 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
+  reminderDate?: ReminderTime;
 }
 
 export interface State {
   isDone?: boolean;
   lastUpdater?: User;
+  reminderDate?: ReminderTime;
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
@@ -43,6 +47,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     this.state = {
       isDone: props.isDone,
       lastUpdater: props.lastUpdater,
+      reminderDate: props.reminderDate,
     };
   }
 
@@ -86,10 +91,15 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           return;
         }
         const { taskId } = this.props;
-        provider.subscribe(
-          { localId: taskId, objectAri, containerAri },
-          this.onUpdate,
-        );
+        const objectKey = { localId: taskId, objectAri, containerAri };
+        provider.subscribe(objectKey, {
+          callback: this.onStateUpdate,
+          type: HandlerType.STATE,
+        });
+        provider.subscribe(objectKey, {
+          callback: this.onReminderUpdate,
+          type: HandlerType.REMINDER,
+        });
       });
     }
   }
@@ -103,16 +113,25 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     } = this.props;
     if (taskDecisionProvider && containerAri && objectAri) {
       taskDecisionProvider.then(provider => {
-        provider.unsubscribe(
-          { localId: taskId, objectAri, containerAri },
-          this.onUpdate,
-        );
+        const objectKey = { localId: taskId, objectAri, containerAri };
+        provider.unsubscribe(objectKey, {
+          callback: this.onStateUpdate,
+          type: HandlerType.STATE,
+        });
+        provider.unsubscribe(objectKey, {
+          callback: this.onReminderUpdate,
+          type: HandlerType.REMINDER,
+        });
       });
     }
   }
 
-  private onUpdate = (state: TaskState) => {
+  private onStateUpdate = state => {
     this.setState({ isDone: state === 'DONE' });
+  };
+
+  private onReminderUpdate = (reminderDate: ReminderTime) => {
+    this.setState({ reminderDate });
   };
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
@@ -132,7 +151,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           return;
         }
         provider.toggleTask(
-          { localId: taskId, objectAri, containerAri },
+          baseItemFromTaskProps(this.props),
           isDone ? 'DONE' : 'TODO',
         );
 
@@ -155,8 +174,22 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     }
   };
 
+  private onSetReminder = (reminderDate: ReminderTime) => {
+    const { objectAri, containerAri, taskDecisionProvider } = this.props;
+    if (taskDecisionProvider && containerAri && objectAri) {
+      taskDecisionProvider.then(provider => {
+        if (provider.updateReminderDate) {
+          provider.updateReminderDate(
+            baseItemFromTaskProps(this.props),
+            reminderDate,
+          );
+        }
+      });
+    }
+  };
+
   render() {
-    const { isDone, lastUpdater } = this.state;
+    const { isDone, lastUpdater, reminderDate } = this.state;
     const {
       appearance,
       children,
@@ -182,6 +215,8 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         creator={creator}
         lastUpdater={lastUpdater}
         disabled={!taskDecisionProvider}
+        onSetReminder={this.onSetReminder}
+        reminderDate={reminderDate}
       >
         {children}
       </TaskItem>

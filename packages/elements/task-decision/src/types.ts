@@ -7,9 +7,15 @@ export type Cursor = string;
 
 export type DecisionType = 'DECISION';
 export type TaskType = 'TASK';
+// Reminder date in UTC format
+export type ReminderTime = string;
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
+}
+
+export interface OnReminder {
+  (reminderDate: ReminderTime): void;
 }
 
 export interface ObjectKey {
@@ -22,6 +28,8 @@ export interface BaseItem<S> extends ObjectKey {
   state: S;
   lastUpdateDate: Date;
   type: DecisionType | TaskType;
+  // TODO
+  reminderDate?: ReminderTime;
 }
 
 export interface ServiceDecision {
@@ -33,6 +41,9 @@ export interface ServiceDecision {
   localId: string;
   objectAri: string;
   participants: User[];
+
+  // TODO
+  reminderDate?: ReminderTime;
   // Atlassian Document fragment (json string)
   rawContent: string;
   contentAsFabricDocument: string;
@@ -68,6 +79,9 @@ export interface ServiceTaskState {
   localId: string;
   objectAri: string;
   state: TaskState;
+
+  // TODO
+  reminderDate?: ReminderTime;
 }
 
 export interface Decision extends BaseItem<DecisionState> {
@@ -129,6 +143,9 @@ export interface ServiceTask {
   parentLocalId: string;
   participants: User[];
   position: number;
+  // TODO
+  reminderDate?: ReminderTime;
+
   // Atlassian Document fragment (json string)
   rawContent: string;
   contentAsFabricDocument: string;
@@ -149,7 +166,15 @@ export interface Task extends BaseItem<TaskState> {
   type: TaskType;
 }
 
-export type Handler = (state: TaskState | DecisionState) => void;
+export enum HandlerType {
+  STATE,
+  REMINDER,
+}
+
+export interface Handler<R> {
+  callback: (result: R) => void;
+  type: HandlerType;
+}
 
 export type RecentUpdatesId = string;
 
@@ -201,10 +226,19 @@ export interface TaskDecisionProvider {
   unsubscribeRecentUpdates(id: RecentUpdatesId);
   notifyRecentUpdates(updateContext: RecentUpdateContext);
 
+  // TODO
+  updateReminderDate?(
+    baseItem: BaseItem<TaskState | DecisionState>,
+    reminderDate?: ReminderTime,
+  ): Promise<ReminderTime>;
+
   // Tasks
-  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
-  subscribe(objectKey: ObjectKey, handler: Handler): void;
-  unsubscribe(objectKey: ObjectKey, handler: Handler): void;
+  toggleTask(
+    baseItem: BaseItem<TaskState | DecisionState>,
+    state: TaskState,
+  ): Promise<TaskState>;
+  subscribe(objectKey: ObjectKey, handler: Handler<any>): void;
+  unsubscribe(objectKey: ObjectKey, handler: Handler<any>): void;
   getCurrentUser?(): User | undefined;
 }
 
