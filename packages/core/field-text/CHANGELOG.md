@@ -1,5 +1,9 @@
 # @atlaskit/field-text
 
+## 5.1.1
+- [patch] Correct Flow type for FieldTextProps:onChange [adb2ce0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adb2ce0)
+- [none] Updated dependencies [adb2ce0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adb2ce0)
+
 ## 5.1.0
 - [minor] Text fields and textareas now inherit their font-family correctly. [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)
 - [none] Updated dependencies [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)
