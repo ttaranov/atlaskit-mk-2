@@ -70,7 +70,7 @@ export interface ResourceProvider<Result> {
 
 export interface MentionProvider
   extends ResourceProvider<MentionDescription[]> {
-  filter(query?: string): void;
+  filter(query?: string, sessionId?: string): void;
   recordMentionSelection(mention: MentionDescription): void;
   shouldHighlightMention(mention: MentionDescription): boolean;
   isFiltering(query: string): boolean;
@@ -132,7 +132,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]>
   }
 
   // eslint-disable-next-line class-methods-use-this
-  filter(query?: string): void {
+  filter(query?: string, sessionId?: string): void {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
   }
 
@@ -267,17 +267,17 @@ class MentionResource extends AbstractMentionResource {
     }
   }
 
-  filter(query?: string): void {
+  filter(query?: string, sessionId?: string): void {
     const searchTime = Date.now();
 
     if (!query) {
-      this.initialState().then(
+      this.initialState(sessionId).then(
         results => this.notify(searchTime, results, query),
         error => this.notifyError(error, query),
       );
     } else {
       this.activeSearches.add(query);
-      this.search(query).then(
+      this.search(query, sessionId).then(
         results => this.notify(searchTime, results, query),
         error => this.notifyError(error, query),
       );
@@ -295,8 +295,8 @@ class MentionResource extends AbstractMentionResource {
     return this.activeSearches.has(query);
   }
 
-  private initialState(): Promise<MentionsResult> {
-    return this.remoteInitialState();
+  private initialState(sessionId?: string): Promise<MentionsResult> {
+    return this.remoteInitialState(sessionId);
   }
 
   private getUserIdsInContext(): Promise<Set<string>> {
@@ -316,9 +316,10 @@ class MentionResource extends AbstractMentionResource {
    * container.
    *
    * @param containerId
+   * @param sessionId unique identifier for this session
    * @returns Promise
    */
-  private remoteInitialState(): Promise<MentionsResult> {
+  private remoteInitialState(sessionId?: string): Promise<MentionsResult> {
     const queryParams: KeyValues = {};
 
     if (this.config.containerId) {
@@ -327,6 +328,10 @@ class MentionResource extends AbstractMentionResource {
 
     if (this.config.productId) {
       queryParams['productIdentifier'] = this.config.productId;
+    }
+
+    if (sessionId) {
+      queryParams['sessionId'] = sessionId;
     }
 
     const options = {
@@ -343,7 +348,7 @@ class MentionResource extends AbstractMentionResource {
       });
   }
 
-  private search(query: string): Promise<MentionsResult> {
+  private search(query: string, sessionId?: string): Promise<MentionsResult> {
     if (this.searchIndex.hasDocuments()) {
       return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
@@ -381,7 +386,10 @@ class MentionResource extends AbstractMentionResource {
     });
   }
 
-  private remoteSearch(query: string): Promise<MentionsResult> {
+  private remoteSearch(
+    query: string,
+    sessionId?: string,
+  ): Promise<MentionsResult> {
     const queryParams = {
       query,
       limit: MAX_QUERY_ITEMS,
@@ -393,6 +401,10 @@ class MentionResource extends AbstractMentionResource {
 
     if (this.config.productId) {
       queryParams['productIdentifier'] = this.config.productId;
+    }
+
+    if (sessionId) {
+      queryParams['sessionId'] = sessionId;
     }
 
     const options = {

@@ -35,6 +35,7 @@ export interface State {
   mentionProvider?: MentionProvider;
   contextIdentifierProvider?: ContextIdentifierProvider;
   focused?: boolean;
+  sessionId?: string;
 }
 
 export default class MentionPicker extends PureComponent<Props, State> {

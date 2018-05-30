@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
+import { MentionPickerInfoStyle, MentionPickerStyle } from './styles';
 import { OnMentionEvent } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
 import { PresenceProvider } from '../../api/PresenceResource';
@@ -38,6 +38,7 @@ export interface Props {
 export interface State {
   visible: boolean;
   info?: string;
+  sessionId?: string;
 }
 
 /**
@@ -153,10 +154,14 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
   private onFilterVisibilityChange = (oldVisibility, newVisibility) => {
     if (oldVisibility !== newVisibility) {
       if (newVisibility) {
+        if (!this.state.sessionId) {
+          this.setState({ sessionId: uniqueId('sessionId') });
+        }
         if (this.props.onOpen) {
           this.props.onOpen();
         }
       } else {
+        this.setState({ sessionId: undefined });
         if (this.props.onClose) {
           this.props.onClose();
         }
@@ -218,6 +223,7 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
         presenceProvider={presenceProvider}
         onSelection={onSelection}
         query={query}
+        sessionId={this.state.sessionId}
         ref={this.handleMentionListRef}
       />
     );

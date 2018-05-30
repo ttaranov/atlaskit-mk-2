@@ -15,6 +15,8 @@ import { analyticsService } from '../../../analytics';
 import mentionNodeView from '../nodeviews/mention';
 import { nodeViewFactory } from '../../../nodeviews';
 
+const uniqueId = prefix => `${prefix}_${window.performance.now()}`;
+
 export const mentionPluginKey: PluginKey = new PluginKey('mentionPlugin');
 
 export type MentionsStateSubscriber = (state: MentionsState) => any;
@@ -59,6 +61,7 @@ function findMentionQueryMarks(
 export class MentionsState {
   // public state
   query?: string;
+  sessionId?: string;
   lastQuery?: string;
   queryActive: boolean = false;
   enabled: boolean = true;
@@ -88,6 +91,7 @@ export class MentionsState {
     this.queryResults = new Map();
     this.tokens = new Map();
     this.previousQueryResultCount = -1;
+    this.sessionId = uniqueId('session');
 
     providerFactory.subscribe('mentionProvider', this.handleProvider);
   }
@@ -455,6 +459,7 @@ export class MentionsState {
     this.lastQuery = this.query;
     this.query = undefined;
     this.tokens.clear();
+    this.sessionId = undefined;
     this.previousQueryResultCount = -1;
   }
 
