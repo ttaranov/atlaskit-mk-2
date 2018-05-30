@@ -20,6 +20,7 @@ export interface Props {
 
   textPaddingLeft?: number;
   chartSelected: boolean;
+  onChartData: (data: TimelineDataset) => void;
 }
 
 export interface State {
@@ -138,13 +139,26 @@ export default class TimelineChart extends React.Component<Props, State> {
   };
 
   private onMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (this.state.resizeDirection) {
-      // commit the resize to the element
-    }
+    const { resizeDirection, resizeIdx } = this.state;
+    if (resizeDirection !== undefined && resizeIdx !== undefined) {
+      const { data } = this.props;
 
-    // if (!this.state.dragging) {
-    // return;
-    // }
+      const dragObj = this.calcStartEndOnDrag();
+      // deep copy
+      const newData = JSON.parse(JSON.stringify(data));
+      const entry = data.entries[resizeIdx];
+
+      newData.entries[resizeIdx] = {
+        ...entry,
+        start:
+          resizeDirection === 'left' && dragObj.start
+            ? dragObj.start
+            : entry.start,
+        end:
+          resizeDirection === 'right' && dragObj.end ? dragObj.end : entry.end,
+      };
+      this.props.onChartData(newData);
+    }
 
     this.setState({
       dragging: false,
@@ -269,14 +283,12 @@ export default class TimelineChart extends React.Component<Props, State> {
 
       // see if we need to recalculate a new start or endpoint if resizing
       if (this.state.resizeIdx === entryIdx) {
-        if (this.state.resizeDirection === 'left') {
-          start =
-            this.state.dragStart! / this.props.width! * viewportRange +
-            viewportStart;
-        } else if (this.state.resizeDirection === 'right') {
-          end =
-            this.state.dragStart! / this.props.width! * viewportRange +
-            viewportStart;
+        const dragObj = this.calcStartEndOnDrag();
+        if (dragObj.start) {
+          start = dragObj.start;
+        }
+        if (dragObj.end) {
+          end = dragObj.end;
         }
       }
 
@@ -325,7 +337,7 @@ export default class TimelineChart extends React.Component<Props, State> {
     return <div className="ProseMirror-timeline_swimlanes">{swimlanes}</div>;
   };
 
-  selectEntry(idx: number) {
+  private selectEntry(idx: number) {
     const { selectedEntries } = this.state;
 
     if (selectedEntries.indexOf(idx) === -1) {
@@ -334,4 +346,24 @@ export default class TimelineChart extends React.Component<Props, State> {
       });
     }
   }
+
+  private calcStartEndOnDrag = (): { start: number; end: number } => {
+    const {
+      viewportStart,
+      viewportEnd,
+      resizeDirection,
+      dragStart,
+    } = this.state;
+    const viewportRange = viewportEnd - viewportStart;
+    let start;
+    let end;
+
+    if (resizeDirection === 'left') {
+      start = dragStart! / this.props.width! * viewportRange + viewportStart;
+    } else if (resizeDirection === 'right') {
+      end = dragStart! / this.props.width! * viewportRange + viewportStart;
+    }
+
+    return { start, end };
+  };
 }
