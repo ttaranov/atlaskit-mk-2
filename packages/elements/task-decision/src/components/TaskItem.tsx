@@ -10,6 +10,8 @@ import {
   ReminderTime,
 } from '../types';
 import Item from './Item';
+import { ParticipantsAdornment } from './ParticipantsAdornment';
+import { ReminderAdornment } from './ReminderAdornment';
 
 export interface Props {
   taskId: string;
@@ -26,14 +28,14 @@ export interface Props {
   fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   disabled?: boolean;
-  onSetReminder?: OnReminder;
+  onReminderSet?: OnReminder;
   reminderDate?: ReminderTime;
 }
 
 let taskCount = 0;
 const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
 
-export class InternalTaskItem extends PureComponent<Props, {}> {
+export class InternalTaskItem extends PureComponent<Props> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline',
   };
@@ -72,7 +74,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
     }
   };
 
-  getAttributionText() {
+  getHelperText() {
     const { creator, lastUpdater, isDone } = this.props;
 
     if (isDone && lastUpdater) {
@@ -85,6 +87,12 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
 
     return `Added by ${creator.displayName}`;
   }
+
+  handleReminderSet = reminder => {
+    if (this.props.onReminderSet) {
+      this.props.onReminderSet(reminder);
+    }
+  };
 
   render() {
     const {
@@ -112,18 +120,32 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
       </CheckBoxWrapper>
     );
 
+    const endAdornments = [
+      <ParticipantsAdornment
+        key="participant"
+        appearance={appearance}
+        participants={participants}
+      />,
+      <ReminderAdornment
+        key="reminder"
+        onReminderSet={this.handleReminderSet}
+      />,
+    ];
+
     return (
       <Item
         appearance={appearance}
         contentRef={contentRef}
-        icon={icon}
-        participants={participants}
-        placeholder="Type your action, use '@' to assign to someone."
-        showPlaceholder={showPlaceholder}
-        attribution={this.getAttributionText()}
+        startAdornment={icon}
+        endAdornment={endAdornments}
+        placeholder={
+          showPlaceholder
+            ? "Type your action, use '@' to assign to someone."
+            : undefined
+        }
+        helperText={this.getHelperText()}
       >
         {children}
-        {reminderDate}
       </Item>
     );
   }

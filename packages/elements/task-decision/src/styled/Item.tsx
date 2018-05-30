@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import { borderRadius, gridSize, colors } from '@atlaskit/theme';
 
 const akGridSize = gridSize();
@@ -9,18 +7,21 @@ const akGridSize = gridSize();
 export const ContentWrapper: ComponentClass<
   HTMLAttributes<{}> & { innerRef?: any }
 > = styled.div`
+  flex: 1 1 auto;
+
   margin: 0;
   word-wrap: break-word;
   min-width: 0;
-  flex: 1 1 auto;
 `;
 
 export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & { theme?: any }
 > = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: ${props =>
     props.theme.appearance === 'card' ? 'column' : 'row'};
+  justify-content: flex-end;
 
   background-color: ${colors.N20};
   border-radius: ${borderRadius()}px;
@@ -42,26 +43,27 @@ export const Wrapper: ComponentClass<
   }
 `;
 
-export const ParticipantWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  margin: -2px 8px;
-`;
-
-export const CardHeadingWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  min-height: 24px;
-`;
-
-export const AttributionWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const HelperTextWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${colors.N200};
   margin-top: ${akGridSize}px;
   font-size: 12px;
   font-weight: 500;
+`;
+
+export const EndAdornmentWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  flex-shrink: 0;
+`;
+
+export const StartAdornmentAndContent: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 184px;
 `;

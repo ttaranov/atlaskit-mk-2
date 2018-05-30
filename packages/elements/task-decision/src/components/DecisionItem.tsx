@@ -11,6 +11,7 @@ import {
   OnReminder,
   ReminderTime,
 } from '../types';
+import { ParticipantsAdornment } from './ParticipantsAdornment';
 
 export interface Props {
   children?: any;
@@ -21,7 +22,7 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
-  onSetReminder?: OnReminder;
+  onReminderSet?: OnReminder;
   reminderDate?: ReminderTime;
 }
 
@@ -31,10 +32,10 @@ export default class DecisionItem extends PureComponent<Props, {}> {
   };
 
   getAttributionText() {
-    const { creator, lastUpdater } = this.props;
+    const { creator, lastUpdater, appearance } = this.props;
     const user = lastUpdater || creator;
 
-    if (!user || !user.displayName) {
+    if (!user || !user.displayName || appearance === 'inline') {
       return undefined;
     }
 
@@ -48,35 +49,38 @@ export default class DecisionItem extends PureComponent<Props, {}> {
       contentRef,
       participants,
       showPlaceholder,
-      onSetReminder,
+      onReminderSet,
       reminderDate,
     } = this.props;
     const iconColor = showPlaceholder ? colors.N100 : colors.G300;
 
     const icon = (
       <EditorIconWrapper color={iconColor}>
-        <DecisionIcon
-          label="Decision"
-          size="large"
-          onClick={() =>
-            onSetReminder ? onSetReminder(new Date().toISOString()) : undefined
-          }
-        />
+        <DecisionIcon label="Decision" size="large" />
       </EditorIconWrapper>
+    );
+
+    const endAdornments = (
+      <ParticipantsAdornment
+        appearance={appearance}
+        participants={participants}
+      />
     );
 
     return (
       <Item
+        startAdornment={icon}
         appearance={appearance}
         contentRef={contentRef}
-        icon={icon}
-        participants={participants}
-        placeholder="Add a decision…"
-        showPlaceholder={showPlaceholder}
-        attribution={this.getAttributionText()}
+        endAdornment={endAdornments}
+        placeholder={
+          showPlaceholder
+            ? "Type your action, use '@' to assign to someone."
+            : undefined
+        }
+        helperText={this.getAttributionText()}
       >
         {children}
-        {reminderDate}
       </Item>
     );
   }

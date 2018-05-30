@@ -1,27 +1,25 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import Participants from './Participants';
 
 import {
-  AttributionWrapper,
-  CardHeadingWrapper,
+  HelperTextWrapper,
   ContentWrapper,
-  ParticipantWrapper,
   Wrapper,
+  EndAdornmentWrapper,
+  StartAdornmentAndContent,
 } from '../styled/Item';
 
-import { Appearance, ContentRef, Participant } from '../types';
+import { Appearance, ContentRef } from '../types';
 import { Placeholder } from '../styled/Placeholder';
 
 export interface Props {
-  icon: JSX.Element;
-  children?: any;
-  participants?: Participant[];
+  startAdornment?: JSX.Element;
+  endAdornment?: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[];
   appearance?: Appearance;
+  helperText?: string;
   contentRef?: ContentRef;
-  placeholder: string;
-  showPlaceholder?: boolean;
-  attribution?: string;
+  placeholder?: string;
 }
 
 export default class Item extends PureComponent<Props, {}> {
@@ -29,69 +27,46 @@ export default class Item extends PureComponent<Props, {}> {
     appearance: 'inline',
   };
 
-  private renderPlaceholder() {
-    const { children, placeholder, showPlaceholder } = this.props;
-    if (!showPlaceholder || children) {
+  renderEndAdornments() {
+    return <EndAdornmentWrapper>{this.props.endAdornment}</EndAdornmentWrapper>;
+  }
+
+  renderHelperText() {
+    const { helperText, appearance } = this.props;
+
+    if (!helperText || appearance === 'inline') {
       return null;
+    }
+
+    return <HelperTextWrapper>{helperText}</HelperTextWrapper>;
+  }
+
+  renderStartAdornments() {
+    return this.props.startAdornment;
+  }
+
+  renderContent() {
+    const { children, placeholder, contentRef } = this.props;
+    if (children) {
+      return <ContentWrapper innerRef={contentRef}>{children}</ContentWrapper>;
     }
     return <Placeholder contentEditable={false}>{placeholder}</Placeholder>;
-  }
-
-  renderParticipants() {
-    const { appearance, participants = [] } = this.props;
-    if (appearance === 'inline' || !participants.length) {
-      return null;
-    }
-    return (
-      <ParticipantWrapper>
-        <Participants participants={participants} />
-      </ParticipantWrapper>
-    );
-  }
-
-  renderAttribution() {
-    const { attribution } = this.props;
-
-    if (!attribution) {
-      return null;
-    }
-
-    return <AttributionWrapper>{attribution}</AttributionWrapper>;
-  }
-
-  renderCardAppearance() {
-    const { appearance, contentRef, children, icon } = this.props;
-    return (
-      <Wrapper theme={{ appearance }}>
-        <CardHeadingWrapper>
-          {icon}
-          {this.renderParticipants()}
-          {this.renderPlaceholder()}
-        </CardHeadingWrapper>
-        <ContentWrapper innerRef={contentRef}>{children}</ContentWrapper>
-        {this.renderAttribution()}
-      </Wrapper>
-    );
-  }
-
-  renderMessageAppearance() {
-    const { appearance, contentRef, children, icon } = this.props;
-    return (
-      <Wrapper theme={{ appearance }}>
-        {icon}
-        {this.renderPlaceholder()}
-        <ContentWrapper innerRef={contentRef}>{children}</ContentWrapper>
-      </Wrapper>
-    );
   }
 
   render() {
     const { appearance } = this.props;
 
-    if (appearance === 'card') {
-      return this.renderCardAppearance();
-    }
-
-    return this.renderMessageAppearance();
+    return (
+      <div>
+        {this.renderHelperText()}
+        <Wrapper theme={{ appearance }}>
+          <StartAdornmentAndContent>
+            {this.renderStartAdornments()}
+            {this.renderContent()}
+          </StartAdornmentAndContent>
+          {this.renderEndAdornments()}
+        </Wrapper>
+      </div>
+    );
   }
 }

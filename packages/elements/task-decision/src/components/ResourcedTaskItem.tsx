@@ -174,7 +174,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     }
   };
 
-  private onSetReminder = (reminderDate: ReminderTime) => {
+  private onReminderSet = (reminderDate: ReminderTime) => {
     const { objectAri, containerAri, taskDecisionProvider } = this.props;
     if (taskDecisionProvider && containerAri && objectAri) {
       taskDecisionProvider.then(provider => {
@@ -215,7 +215,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         creator={creator}
         lastUpdater={lastUpdater}
         disabled={!taskDecisionProvider}
-        onSetReminder={this.onSetReminder}
+        onReminderSet={this.onReminderSet}
         reminderDate={reminderDate}
       >
         {children}

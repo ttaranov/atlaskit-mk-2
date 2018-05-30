@@ -91,7 +91,7 @@ export default class ResourcedDecisionItem extends Component<Props, State> {
     this.setState({ reminderDate: timestamp });
   };
 
-  private onSetReminder = (reminderDate: ReminderTime) => {
+  private onReminderSet = (reminderDate: ReminderTime) => {
     const { objectAri, containerAri, taskDecisionProvider } = this.props;
     if (taskDecisionProvider && containerAri && objectAri) {
       taskDecisionProvider.then(provider => {
@@ -117,7 +117,7 @@ export default class ResourcedDecisionItem extends Component<Props, State> {
     return (
       <DecisionItem
         {...props}
-        onSetReminder={this.onSetReminder}
+        onReminderSet={this.onReminderSet}
         reminderDate={this.state.reminderDate}
       />
     );
