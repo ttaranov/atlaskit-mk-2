@@ -1,0 +1,78 @@
+
+          /*
+            1. For each line modified
+              - Check if decorations for that line has changed
+                - To handle styling that wraps across lines, we should check if line.length + 1 has changed
+                - If decorations have not changed, then we don't need to do anything
+                - If decorations have not changed, but the extra +1 is, then we need to reparse the whole document
+                - If decorations have changed
+                    Then we need to find the earliest decoration affected (or the start of the line)
+                    And reparse all the decorations from the earliest decoration to the end of the document
+          */
+          const getLineChanged = (tr: Transaction, decorations: DecorationSet, start: number, end: number, language: string) => {
+            const potentialDecorations = getDecorationsFor(tr.doc.textBetween(start, end + 1), start, language);
+
+            let highlightGoesAcrossLines = false;
+            if (potentialDecorations.length) {
+              const lastToken = potentialDecorations[potentialDecorations.length - 1];
+              highlightGoesAcrossLines = lastToken.from < end;
+            }
+
+            if (highlightGoesAcrossLines) {
+              const decorationsAffectingStart = decorations.find(start, undefined, isCodeDecoration);
+              const changeStart = decorationsAffectingStart.length ? decorationsAffectingStart[0].from : start;
+              const changeEnd = tr.doc.resolve(changeStart).end();
+              const oldD = decorations.find(changeStart, changeEnd, isCodeDecoration);
+              const newD = getDecorationsFor(tr.doc.textBetween(changeStart, changeEnd), changeStart, language);
+              return updateDecorationSetEfficiently(decorations, oldD, newD, tr.doc);
+            } else {
+              const lineDecorations = decorations
+                .find(start, end, isCodeDecoration)
+                .filter(decoration => decoration.from >= start && decoration.to <= end);
+              if (
+                lineDecorations.every(dec => !!potentialDecorations.find(pot => isCodeDecorationEqual(pot, dec)))
+              ) {
+                return decorations;
+              } else {
+                potentialDecorations.pop();
+                return updateDecorationSetEfficiently(decorations, lineDecorations, potentialDecorations, tr.doc);
+              }
+            }
+          }
+
+
+
+          decorations = getLineChanged(tr, decorations, start, end, language);
+
+
+
+
+
+          // const updatedDecorations = getDecorationsFor(text, start, language);
+          // const existingDecorations = decorations.find(start, end, isCodeDecoration);
+          // if (updatedDecorations.length === existingDecorations.length && existingDecorations.every(i => !!updatedDecorations.find(j => isCodeDecorationEqual(i, j)))) {
+          //   decorations = decorations.remove(existingDecorations).add(tr.doc, updatedDecorations);
+          // } else {
+          //   let startOfUpdate = existingDecorations.length
+          //     ? Math.min(...existingDecorations.map(i => i.from))
+          //     : start;
+          //   const codeBlockEnd = tr.doc.resolve(startOfUpdate).end();
+          //   const newDecorations = getDecorationsFor(tr.doc.textBetween(startOfUpdate, codeBlockEnd), start, language);
+          //   const oldDecorations = decorations.find(startOfUpdate, codeBlockEnd);
+          //   decorations = updateDecorationSetEfficiently(decorations, oldDecorations, newDecorations, tr.doc);
+          // }
+        });
+
+      // // For each position, recalculate the decorations until the end
+      // positions.forEach(start => {
+      //   console.log(start);
+      //   const $start = tr.doc.resolve(start)
+      //   const end = $start.end();
+      //   const existing = decorations.find(start, end);
+      //   const updated = getDecorationsFor(
+      //     tr.doc.textBetween(start, end),
+      //     start,
+      //     $start.parent.attrs.language
+      //   );
+      //   decorations = updateDecorationSetEfficiently(decorations, existing, updated, tr.doc);
+      // });

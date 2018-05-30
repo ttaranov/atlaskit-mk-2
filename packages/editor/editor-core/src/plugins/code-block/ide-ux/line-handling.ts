@@ -1,30 +1,39 @@
 import { EditorState } from 'prosemirror-state';
+import { ResolvedPos } from 'prosemirror-model';
 
 export const getStartOfCurrentLine = (state: EditorState) => {
   const { $from } = state.selection;
-  if ($from.nodeBefore && $from.nodeBefore.isText) {
-    const prevNewLineIndex = $from.nodeBefore.text!.lastIndexOf('\n');
+  return getStartOfLine($from);
+};
+
+export const getStartOfLine = ($pos: ResolvedPos) => {
+  if ($pos.nodeBefore && $pos.nodeBefore.isText) {
+    const prevNewLineIndex = $pos.nodeBefore.text!.lastIndexOf('\n');
     return {
-      text: $from.nodeBefore.text!.substring(prevNewLineIndex + 1),
-      pos: $from.start() + prevNewLineIndex + 1,
+      text: $pos.nodeBefore.text!.substring(prevNewLineIndex + 1),
+      pos: $pos.start() + prevNewLineIndex + 1,
     };
   }
-  return { text: '', pos: $from.pos };
+  return { text: '', pos: $pos.pos };
 };
 
 export const getEndOfCurrentLine = (state: EditorState) => {
   const { $to } = state.selection;
-  if ($to.nodeAfter && $to.nodeAfter.isText) {
-    const nextNewLineIndex = $to.nodeAfter.text!.indexOf('\n');
+  return getEndOfLine($to);
+};
+
+export const getEndOfLine = ($pos: ResolvedPos) => {
+  if ($pos.nodeAfter && $pos.nodeAfter.isText) {
+    const nextNewLineIndex = $pos.nodeAfter.text!.indexOf('\n');
     return {
-      text: $to.nodeAfter.text!.substring(
+      text: $pos.nodeAfter.text!.substring(
         0,
         nextNewLineIndex >= 0 ? nextNewLineIndex : undefined,
       ),
-      pos: nextNewLineIndex >= 0 ? $to.pos + nextNewLineIndex : $to.end(),
+      pos: nextNewLineIndex >= 0 ? $pos.pos + nextNewLineIndex : $pos.end(),
     };
   }
-  return { text: '', pos: $to.pos };
+  return { text: '', pos: $pos.pos };
 };
 
 export function getLinesFromSelection(state: EditorState) {

@@ -1,3 +1,6 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import Select from '@atlaskit/select';
 import rafSchedule from 'raf-schd';
 import { EditorView } from 'prosemirror-view';
 import { Node, DOMSerializer, DOMOutputSpec } from 'prosemirror-model';
@@ -23,6 +26,7 @@ const toDOM = (node: Node) =>
           0,
         ],
       ],
+      ['div', { class: 'language-select' }],
     ],
   ] as DOMOutputSpec;
 
@@ -80,10 +84,7 @@ export class CodeBlockView {
 
   ignoreMutation(record: MutationRecord) {
     // Ensure updating the line-number gutter doesn't trigger reparsing the codeblock
-    return (
-      record.target === this.lineNumberGutter ||
-      record.target.parentNode === this.lineNumberGutter
-    );
+    return this.lineNumberGutter.contains(record.target);
   }
 }
 

@@ -3,6 +3,7 @@ import {
   TextSelection,
   Plugin,
   Transaction,
+  PluginKey,
 } from 'prosemirror-state';
 import { keydownHandler } from 'prosemirror-keymap';
 import {
@@ -10,11 +11,15 @@ import {
   getStartOfCurrentLine,
   forEachLine,
   getLineInfo,
+  getStartOfLine,
 } from '../ide-ux/line-handling';
 import { getCursor } from '../../../utils';
 import {
   getDecorationsFor,
   isCodeDecorationEqual,
+  updateDecorationSetEfficiently,
+  findCodeBlockChanges,
+  isCodeDecoration,
 } from '../ide-ux/syntax-highlighting';
 import { findChildrenByType } from 'prosemirror-utils';
 import { DecorationSet, Decoration } from 'prosemirror-view';
@@ -26,63 +31,162 @@ const isSelectionEntirelyInsideCodeBlock = (state: EditorState): boolean =>
 const isCursorInsideCodeBlock = (state: EditorState): boolean =>
   !!getCursor(state.selection) && isSelectionEntirelyInsideCodeBlock(state);
 
+export const pluginKey = new PluginKey('codeBlockIDEUX');
 export default new Plugin({
+  key: pluginKey,
   state: {
     init(_, state) {
       return findChildrenByType(state.doc, state.schema.nodes.codeBlock)
         .map(({ pos, node }) => {
           const text = node.textContent;
-          return getDecorationsFor(text, pos + 1);
+          return getDecorationsFor(text, pos + 1, node.attrs.language);
         })
         .reduce((prev: DecorationSet, curr: Decoration[]) => {
           return curr ? prev.add(state.doc, curr) : prev;
         }, DecorationSet.empty);
     },
     apply(tr: Transaction, set: DecorationSet, oldState: EditorState) {
-      if (!tr.docChanged) {
+      if (!tr.docChanged && !tr.getMeta(pluginKey)) {
         return set;
       }
       let decorations = set.map(tr.mapping, tr.doc);
-      let { codeBlock } = tr.doc.type.schema.nodes;
 
       // Find all positions inside code-blocks that have changed
-      let positions = new Set();
-      tr.steps.forEach(step => {
-        step.getMap().forEach((oldStart, oldEnd, newStart, newEnd) => {
-          if (oldStart !== newStart || oldEnd !== newEnd) {
-            const $newStart = tr.doc.resolve(newStart);
+      const changes = findCodeBlockChanges(tr);
+
+      changes.forEach(({ start, end, text, language }, i) => {
+        // // is catastrophic change means
+        // // when I retokenise the affect lines & the next three tokens
+        // // the next three tokens change as a result of the changes we've made
+
+        // const disturbedStart = getPosOfFirstDecorationAffected();
+        // const disturbedEnd = getPosOfLastDecorationAffectedPlusNextThreeTokens();
+        // const lastThreeTokens = decorations.find(end, disturbedEnd, isCodeDecoration);
+        // if (checkIfLastThreeTokensAreSame(lastThreeTokens, otherThings)) {
+        //   // if so, then we can just replace the syntax from disturbedStart to the end and we should be :thumbsup:
+        // } else {
+
+        // }
+
+        const invalidated = decorations.find(start, end, isCodeDecoration);
+        if (!invalidated.length) {
+          const $pos = tr.doc.resolve(start);
+          const invalidated = decorations.find(
+            $pos.start(),
+            $pos.end(),
+            isCodeDecoration,
+          );
+          const replacement = getDecorationsFor(
+            tr.doc.textBetween($pos.start(), $pos.end()),
+            start,
+            language,
+          );
+          decorations = updateDecorationSetEfficiently(
+            decorations,
+            invalidated,
+            replacement,
+            tr.doc,
+          );
+          return;
+        }
+        const invalidatedStart = invalidated[0].from;
+        const invalidatedEnd = invalidated[invalidated.length - 1].to;
+        const extraTokens = decorations.find(
+          invalidatedEnd,
+          invalidatedEnd + 20,
+          isCodeDecoration,
+        );
+
+        let isCatastrophic = false;
+        if (extraTokens.length) {
+          const endOfTokens = extraTokens[extraTokens.length - 1].to;
+          const replacement = getDecorationsFor(
+            tr.doc.textBetween(invalidatedStart, endOfTokens),
+            invalidatedStart,
+            language,
+          );
+
+          for (let i = extraTokens.length, j = 0; i > 0; i--, j++) {
             if (
-              newEnd <= $newStart.end() &&
-              $newStart.parent.type === codeBlock
+              !isCodeDecorationEqual(
+                extraTokens[j],
+                replacement[replacement.length - i],
+              )
             ) {
-              positions.add(newStart);
+              isCatastrophic = true;
+              break;
             }
           }
-        });
+        }
+
+        if (isCatastrophic) {
+          const numberOfExtra = Math.min(3, extraTokens.length);
+          const endOfTokens = extraTokens[numberOfExtra - 1].to;
+          const codeBlockEnd = tr.doc.resolve(endOfTokens).end();
+          const replacement = getDecorationsFor(
+            tr.doc.textBetween(invalidatedStart, codeBlockEnd),
+            invalidatedStart,
+            language,
+          );
+          const toBeReplaced = decorations.find(
+            invalidatedStart,
+            codeBlockEnd,
+            isCodeDecoration,
+          );
+          decorations = updateDecorationSetEfficiently(
+            decorations,
+            toBeReplaced,
+            replacement,
+            tr.doc,
+          );
+        } else {
+          const toBeReplaced = decorations.find(
+            invalidatedStart,
+            invalidatedEnd,
+            isCodeDecoration,
+          );
+          const replacement = getDecorationsFor(
+            tr.doc.textBetween(invalidatedStart, invalidatedEnd),
+            invalidatedStart,
+            language,
+          );
+          decorations = updateDecorationSetEfficiently(
+            decorations,
+            toBeReplaced,
+            replacement,
+            tr.doc,
+          );
+        }
       });
 
-      // For each position, recalculate the decorations until the end
-      positions.forEach(start => {
-        const end = tr.doc.resolve(start).end();
-        const existing = decorations.find(start, end);
-        const updated = getDecorationsFor(
-          tr.doc.textBetween(start, end),
-          start,
-        );
-        const remove = existing.filter(
-          e => !updated.find(u => isCodeDecorationEqual(e, u)),
-        );
-        const add = updated.filter(
-          u => !existing.find(e => isCodeDecorationEqual(e, u)),
-        );
-        decorations = decorations.remove(remove).add(tr.doc, add);
-      });
+      //   const codeBlockDecorations = decorations.find(start, end, isCodeDecoration);
+      //   const startToRecalculate = codeBlockDecorations.length ? getStartOfLine(tr.doc.resolve(codeBlockDecorations[0].from)).pos : start;
+      //   const codeBlock = tr.doc.resolve(start);
+
+      //   const decorationsPast = decorations.find(startToRecalculate, codeBlock.end(), isCodeDecoration);
+
+      //   const textBetween = tr.doc.textBetween(startToRecalculate, codeBlock.end());
+
+      //   performance.mark("getDecorationsFor_start");
+      //   const decorationsFuture = getDecorationsFor(textBetween, startToRecalculate, language);
+      //   performance.mark("getDecorationsFor_end");
+      //   performance.measure("getDecorationsFor", "getDecorationsFor_start", "getDecorationsFor_end");
+      //   performance.mark("updateDecorationSetEfficiently_start");
+      //   decorations = updateDecorationSetEfficiently(
+      //     decorations,
+      //     decorationsPast,
+      //     decorationsFuture,
+      //     tr.doc
+      //   );
+      //   performance.mark("updateDecorationSetEfficiently_end");
+      //   performance.measure("updateDecorationSetEfficiently", "updateDecorationSetEfficiently_start", "updateDecorationSetEfficiently_end");
+      // });
       return decorations;
     },
   },
   props: {
     decorations: state => {
-      return plu;
+      return pluginKey.getState(state);
     },
     handleKeyDown: keydownHandler({
       Enter: (state: EditorState, dispatch) => {

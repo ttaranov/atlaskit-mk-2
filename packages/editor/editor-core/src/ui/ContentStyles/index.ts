@@ -20,6 +20,12 @@ import {
   akColorB200,
   akColorN90,
   akColorN800,
+  akColorN400,
+  akColorT500,
+  akColorB500,
+  akColorT300,
+  akColorG400,
+  akColorP300,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
@@ -99,6 +105,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     margin: 12px 0 0 0;
     counter-reset: line;
     display: flex;
+    position: relative;
 
     .line-number-gutter {
       color: ${akColorN300};
@@ -121,12 +128,86 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       }
     }
 
+    .language-select {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
     .code-content {
       padding: ${akEditorCodeBlockPadding} 16px;
       color: ${akColorN800};
       overflow: scroll;
       display: flex;
       flex: 1;
+
+      .token.comment,
+      .token.prolog,
+      .token.doctype,
+      .token.cdata {
+        color: #93a1a1; /* base1 */
+      }
+
+      .token.punctuation {
+        color: #586e75; /* base01 */
+      }
+
+      .namespace {
+        opacity: 0.7;
+      }
+
+      .token.property,
+      .token.tag,
+      .token.boolean,
+      .token.number,
+      .token.constant,
+      .token.symbol,
+      .token.deleted {
+        color: #268bd2; /* blue */
+      }
+
+      .token.selector,
+      .token.attr-name,
+      .token.string,
+      .token.char,
+      .token.builtin,
+      .token.url,
+      .token.inserted {
+        color: #2aa198; /* cyan */
+      }
+
+      .token.entity {
+        color: #657b83; /* base00 */
+        background: #eee8d5; /* base2 */
+      }
+
+      .token.atrule,
+      .token.attr-value,
+      .token.keyword {
+        color: #859900; /* green */
+      }
+
+      .token.function {
+        color: #b58900; /* yellow */
+      }
+
+      .token.regex,
+      .token.important,
+      .token.variable {
+        color: #cb4b16; /* orange */
+      }
+
+      .token.important,
+      .token.bold {
+        font-weight: bold;
+      }
+      .token.italic {
+        font-style: italic;
+      }
+
+      .token.entity {
+        cursor: help;
+      }
     }
 
     /* We render this as a basic box in IE11 because it can't handle scrolling */

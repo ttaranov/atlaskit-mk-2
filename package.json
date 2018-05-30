@@ -377,6 +377,7 @@
     "react-virtualized": "^9.8.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
+    "refractor": "^2.4.1",
     "resolve-from": "^4.0.0",
     "resumablejs": "1.0.2",
     "rusha": "^0.8.13",
