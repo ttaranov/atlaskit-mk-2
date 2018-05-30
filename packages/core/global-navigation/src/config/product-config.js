@@ -3,6 +3,7 @@ import React, { type ComponentType } from 'react';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 import Badge from '@atlaskit/badge';
+import Avatar from '@atlaskit/avatar';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
 
@@ -30,6 +31,16 @@ const generateDropDown = (
   >
     <DropdownItems />
   </Dropdown>
+);
+
+const generateAvatar = profileIconUrl => () => (
+  <Avatar
+    borderColor="transparent"
+    src={profileIconUrl}
+    isActive={false}
+    isHover={false}
+    size="small"
+  />
 );
 
 export default function generateProductConfig(props: GlobalNavigationProps) {
@@ -60,9 +71,10 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
     ...(props.notificationTooltip && { label: props.notificationTooltip }),
     ...(props.notificationCount && {
-      badge: (notificationCount: number) => (
-        <Badge appearance="important" value={notificationCount} />
-      ),
+      badge: (notificationCount: number) =>
+        <Badge appearance="important" value={notificationCount} />(
+          props.notificationCount,
+        ),
     }),
   };
   const people = {
@@ -75,22 +87,30 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.appSwitcherTooltip && { tooltip: props.appSwitcherTooltip }),
     ...(props.appSwitcherTooltip && { label: props.appSwitcherTooltip }),
     ...(props.appSwitcherItems && {
-      component: () => generateDropDown(MenuIcon, props.appSwitcherItems),
+      component: appSwitcherItems =>
+        generateDropDown(MenuIcon, appSwitcherItems),
     }),
   };
   const help = {
     ...(props.onHelpClick && { onClick: props.onHelpClick }),
     ...(props.helpTooltip && { tooltip: props.helpTooltip }),
     ...(props.helpTooltip && { label: props.helpTooltip }),
-    ...(props.appSwitcher && {
-      component: () => generateDropDown(QuestionIcon, props.helpItems),
+    ...(props.helpItems && {
+      component: (helpItems => generateDropDown(QuestionIcon, helpItems))(
+        props.helpItems,
+      ),
     }),
   };
   const profile = {
     ...(props.onProfileClick && { onClick: props.onProfileClick }),
     ...(props.profileTooltip && { tooltip: props.profileTooltip }),
     ...(props.profileTooltip && { label: props.profileTooltip }),
-    ...(props.profileComponent && { component: props.profileComponent }),
+    ...(props.profileItems && {
+      component: (profileItems =>
+        generateDropDown(generateAvatar(props.profileIconUrl), profileItems))(
+        props.profileItems,
+      ),
+    }),
   };
 
   return removeEmptyItems({
