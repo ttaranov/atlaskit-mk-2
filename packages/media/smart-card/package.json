@@ -30,7 +30,6 @@
     "@atlaskit/tooltip": "^12.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlassian/outbound-auth-flow-client": "1.0.2",
-    "@jameslnewell/cancelable-promise": "^1.0.2",
     "@types/prop-types": "^15.5.1",
     "lodash.debounce": "^4.0.8",
     "prop-types": "^15.5.10",
