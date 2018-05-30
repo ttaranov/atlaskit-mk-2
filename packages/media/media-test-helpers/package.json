@@ -32,7 +32,7 @@
     "lodash": "^4.17.5",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0",
-    "xhr-mock": "^2.3.2"
+    "xhr-mock": "^2.4.0"
   },
   "peerDependencies": {
     "react": "^16.3.0",
