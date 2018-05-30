@@ -5,11 +5,11 @@ import { auth } from '@atlassian/outbound-auth-flow-client';
 import { Client } from '../Client';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
 import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
-import { Frame as CollapsedFrame } from './collapsed/Frame';
-import { LoadingView as CollapsedLoadingView } from './collapsed/LoadingView';
-import { UnauthorisedView as CollapsedUnauthorisedView } from './collapsed/UnauthorisedView';
-import { ForbiddenView as CollapsedForbiddenView } from './collapsed/ForbiddenView';
-import { ErroredView as CollapsedErrorView } from './collapsed/ErroredView';
+import { CollapsedFrame } from './CollapsedFrame';
+import { LoadingView } from './LoadingView';
+import { UnauthorisedView } from './UnauthorisedView';
+import { ForbiddenView } from './ForbiddenView';
+import { ErroredView } from './ErroredView';
 import {
   ObjectStateProvider,
   ObjectService,
@@ -164,14 +164,14 @@ export class Card extends React.Component<CardProps, CardState> {
   }
 
   renderResolvingState() {
-    return this.renderInTheCollapsedFrame(<CollapsedLoadingView />);
+    return this.renderInTheCollapsedFrame(<LoadingView />);
   }
 
   renderUnauthorisedState() {
     // TODO: figure out how to support multiple services
     const service = this.state.services[0];
     return this.renderInTheCollapsedFrame(
-      <CollapsedUnauthorisedView
+      <UnauthorisedView
         icon={this.collapsedIcon}
         service={service ? service.name : ''}
         onAuthorise={service ? () => this.handleAuthorise(service) : undefined}
@@ -183,7 +183,7 @@ export class Card extends React.Component<CardProps, CardState> {
     // TODO: figure out how to support multiple services
     const service = this.state.services[0];
     return this.renderInTheCollapsedFrame(
-      <CollapsedForbiddenView
+      <ForbiddenView
         icon={this.collapsedIcon}
         onAuthorise={service ? () => this.handleAuthorise(service) : undefined}
       />,
@@ -192,13 +192,13 @@ export class Card extends React.Component<CardProps, CardState> {
 
   renderNotFoundState() {
     return this.renderInTheCollapsedFrame(
-      <CollapsedErrorView message="We couldn't find this link" />,
+      <ErroredView message="We couldn't find this link" />,
     );
   }
 
   renderErroredState() {
     return this.renderInTheCollapsedFrame(
-      <CollapsedErrorView
+      <ErroredView
         message="We couldn't load this link"
         onRetry={this.handleErrorRetry}
       />,

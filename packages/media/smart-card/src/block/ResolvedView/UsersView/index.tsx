@@ -5,11 +5,11 @@ import { Wrapper } from './styled';
 
 export const maxAvatarCount = 5;
 
-export interface UsersProps {
+export interface UsersViewProps {
   users?: UserViewModel[];
 }
 
-export default class Users extends React.Component<UsersProps> {
+export default class UsersView extends React.Component<UsersViewProps> {
   /* prevent the parent link handler from opening a URL when clicked */
   handleAvatarClick = ({ event }: { event: MouseEvent }) => {
     event.preventDefault();
@@ -17,6 +17,7 @@ export default class Users extends React.Component<UsersProps> {
   };
 
   /* prevent the parent link handler from opening a URL when clicked */
+  /* NOTE: this prevents the dropdown from showing with more items */
   handleMoreClick = (event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
