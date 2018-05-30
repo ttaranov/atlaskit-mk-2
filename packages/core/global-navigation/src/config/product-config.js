@@ -1,19 +1,15 @@
 // @flow
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 import Badge from '@atlaskit/badge';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
 
-const removeEmptyKeys = (items, obj) =>
-  Object.keys(items[obj]).reduce((accumulator, curr) => {
-    return accumulator || !!items[obj][curr];
-  }, false);
-
+// Removes items with no props passed from the product.
 const removeEmptyItems = items =>
   Object.keys(items)
-    .filter(obj => removeEmptyKeys(items, obj))
+    .filter(item => Object.keys(items[item]).length > 0)
     .reduce((acc, curr) => {
       acc[curr] = items[curr];
       return acc;
@@ -38,60 +34,62 @@ const generateDropDown = (
 
 export default function generateProductConfig(props: GlobalNavigationProps) {
   const product = {
-    icon: props.productIcon,
-    onClick: props.onProductClick,
-    tooltip: props.productTooltip,
-    label: props.productTooltip,
+    ...(props.productIcon && { icon: props.productIcon }),
+    ...(props.onProductClick && { onClick: props.onProductClick }),
+    ...(props.productTooltip && { tooltip: props.productTooltip }),
+    ...(props.productTooltip && { label: props.productTooltip }),
   };
   const create = {
-    onClick: props.onCreateClick,
-    tooltip: props.createTooltip,
-    label: props.createTooltip,
+    ...(props.onCreateClick && { onClick: props.onCreateClick }),
+    ...(props.createTooltip && { tooltip: props.createTooltip }),
+    ...(props.createTooltip && { label: props.createTooltip }),
   };
   const search = {
-    onClick: props.onSearchClick,
-    tooltip: props.searchTooltip,
-    label: props.searchTooltip,
+    ...(props.onSearchClick && { onClick: props.onSearchClick }),
+    ...(props.searchTooltip && { tooltip: props.searchTooltip }),
+    ...(props.searchTooltip && { label: props.searchTooltip }),
   };
   const yourWork = {
-    onClick: props.onYourWorkClick,
-    tooltip: props.yourWorkTooltip,
-    label: props.yourWorkTooltip,
+    ...(props.onYourWorkClick && { onClick: props.onYourWorkClick }),
+    ...(props.yourWorkTooltip && { tooltip: props.yourWorkTooltip }),
+    ...(props.yourWorkTooltip && { label: props.yourWorkTooltip }),
   };
   const notification = {
-    onClick: props.onNotificationClick,
-    tooltip: props.notificationTooltip,
-    label: props.notificationTooltip,
-    badge:
-      props.notificationCount &&
-      (() => <Badge appearance="important" value={props.notificationCount} />),
+    ...(props.onNotificationClick && { onClick: props.onNotificationClick }),
+    ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
+    ...(props.notificationTooltip && { label: props.notificationTooltip }),
+    ...(props.notificationCount && {
+      badge: () => (
+        <Badge appearance="important" value={props.notificationCount} />
+      ),
+    }),
   };
   const people = {
-    onClick: props.onPeopleClick,
-    tooltip: props.peopleTooltip,
-    label: props.peopleTooltip,
+    ...(props.onPeopleClick && { onClick: props.onPeopleClick }),
+    ...(props.peopleTooltip && { tooltip: props.peopleTooltip }),
+    ...(props.peopleTooltip && { label: props.peopleTooltip }),
   };
   const appSwitcher = {
-    onClick: props.onAppSwitcherClick,
-    tooltip: props.appSwitcherTooltip,
-    label: props.appSwitcherTooltip,
-    component:
-      !!props.appSwitcher &&
-      (() => generateDropDown(MenuIcon, props.appSwitcherItems)),
+    ...(props.onAppSwitcherClick && { onClick: props.onAppSwitcherClick }),
+    ...(props.appSwitcherTooltip && { tooltip: props.appSwitcherTooltip }),
+    ...(props.appSwitcherTooltip && { label: props.appSwitcherTooltip }),
+    ...(props.appSwitcherItems && {
+      component: () => generateDropDown(MenuIcon, props.appSwitcherItems),
+    }),
   };
   const help = {
-    onClick: props.onHelpClick,
-    tooltip: props.helpTooltip,
-    label: props.helpTooltip,
-    component:
-      !!props.appSwitcher &&
-      (() => generateDropDown(QuestionIcon, props.appSwitcherItems)),
+    ...(props.onHelpClick && { onClick: props.onHelpClick }),
+    ...(props.helpTooltip && { tooltip: props.helpTooltip }),
+    ...(props.helpTooltip && { label: props.helpTooltip }),
+    ...(props.appSwitcher && {
+      component: () => generateDropDown(QuestionIcon, props.appSwitcherItems),
+    }),
   };
   const profile = {
-    onClick: props.onProfileClick,
-    tooltip: props.profileTooltip,
-    label: props.profileTooltip,
-    component: props.profileComponent,
+    ...(props.onProfileClick && { onClick: props.onProfileClick }),
+    ...(props.profileTooltip && { tooltip: props.profileTooltip }),
+    ...(props.profileTooltip && { label: props.profileTooltip }),
+    ...(props.profileComponent && { component: props.profileComponent }),
   };
 
   return removeEmptyItems({

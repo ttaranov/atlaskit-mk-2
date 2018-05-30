@@ -37,7 +37,7 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     const navItems = [];
 
     if (notification) {
-      navItems.push({ ...defaultNotification, ...notification });
+      navItems.push(Object.assign({}, defaultNotification, notification));
     }
 
     if (people) {
@@ -73,7 +73,9 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     }
 
     return [
-      ...navItems.sort((item1, item2) => item1.position - item2.position),
+      ...navItems.sort((item1, item2) =>
+        item1.position.localeCompare(item2.position),
+      ),
     ];
   };
 
@@ -83,8 +85,12 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     return (
       <Fragment>
         <GlobalNav
-          primaryItems={navItems.slice(0, 4)}
-          secondaryItems={navItems.slice(4, 10)}
+          primaryItems={navItems.filter(item =>
+            item.position.startsWith('top'),
+          )}
+          secondaryItems={navItems.filter(item =>
+            item.position.startsWith('bottom'),
+          )}
         />
       </Fragment>
     );
