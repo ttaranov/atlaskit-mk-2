@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.6.0
+- [minor] Replace <div> with Fragment so CSS rules apply to adjacent conversations [96dc1bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96dc1bf)
+
 ## 7.5.6
 - [patch] Updated dependencies [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
   - @atlaskit/renderer@17.0.7
