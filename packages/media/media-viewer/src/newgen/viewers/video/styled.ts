@@ -100,6 +100,7 @@ export const BufferedTime = styled.div`
   background-color: #aeb1b7;
   height: inherit;
   border-radius: inherit;
+  width: 0;
 `;
 
 export const LeftControls = styled.div``;

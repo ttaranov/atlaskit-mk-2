@@ -81,7 +81,6 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                 onClick={actions.requestFullscreen}
               />
             );
-            const isMuted = videoState.volume === 0;
 
             return (
               <VideoWrapper>
@@ -108,7 +107,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                       </CurrentTime>
                       <VolumeWrapper>
                         <VolumeToggleWrapper>
-                          <MutedIndicator isMuted={isMuted} />
+                          <MutedIndicator isMuted={videoState.isMuted} />
                           <Button
                             onClick={actions.toggleMute}
                             iconBefore={
