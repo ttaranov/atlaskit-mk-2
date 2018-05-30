@@ -221,15 +221,15 @@ export default class TimelineChart extends React.Component<Props, State> {
     // calc start month
     // const startYear = new Date(viewportStart).getFullYear();
     const startMonth = new Date(viewportStart).getMonth();
-    // const endMonth = new Date(viewportEnd).getMonth();
-    // const viewportRange = viewportEnd - viewportStart;
-    // const startOfTheYear = new Date(startYear, 0, 0).valueOf();
-    // const leftPct = (startOfTheYear - viewportStart) / viewportRange;
-    // console.log(`startOfTheYear:${startOfTheYear} viewportStart:${viewportStart} viewportRange:${viewportRange} leftPct:${leftPct} left:${left}`);
-    const left = 0; //leftPct * this.props.width!;
+    const endMonth = new Date(viewportEnd).getMonth();
+    const start = new Date(startYear, startMonth, 1).valueOf();
+
+    const viewportRange = viewportEnd - viewportStart;
+    const leftPct = (start - viewportStart) / viewportRange;
+    const left = leftPct * this.props.width!;
 
     let grid: any = [];
-    for (let i = startMonth; i <= 11; i++) {
+    for (let i = startMonth; i <= endMonth; i++) {
       const month = MONTHS[i];
       grid.push(
         <div
