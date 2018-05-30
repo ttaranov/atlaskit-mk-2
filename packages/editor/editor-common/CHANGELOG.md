@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 10.1.6
+- [patch] ED-4689 add __confluenceMetadata to link mark schema [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+- [none] Updated dependencies [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+
 ## 10.1.5
 - [patch] FEF-1329 Fix catastrophic failure when editing pages with images [da4d2d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da4d2d4)
 - [none] Updated dependencies [da4d2d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da4d2d4)
