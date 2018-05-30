@@ -51,7 +51,7 @@ export default class TimelineTransformer implements GraphTransformer {
     };
   }
 
-  fromChart(obj) {
+  fromChart(data: TimelineDataset) {
     return this.node;
   }
 }

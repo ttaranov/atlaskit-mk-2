@@ -57,7 +57,7 @@ export default class NumberTransformer implements GraphTransformer {
     };
   }
 
-  fromChart(obj) {
+  fromChart(data: NumberChartDataset) {
     return this.node;
   }
 }

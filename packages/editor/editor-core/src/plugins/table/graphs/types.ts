@@ -2,7 +2,7 @@ import { Node } from 'prosemirror-model';
 
 interface GraphTransformer {
   toChart: () => object;
-  fromChart: (chartData: object[]) => Node;
+  fromChart: (chartData: object) => Node;
 }
 
 type NumberChartEntry = {
