@@ -142,6 +142,12 @@ export const videoFileId = {
   collectionName,
 };
 
+export const videoHorizontalFileId = {
+  id: '2afaf845-4385-431f-9a15-3e21520cf896', // .mov video
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const imageFileId = {
   id: '5556346b-b081-482b-bc4a-4faca8ecd2de', // jpg image
   mediaItemType: fileType,

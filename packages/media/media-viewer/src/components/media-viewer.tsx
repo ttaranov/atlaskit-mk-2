@@ -5,7 +5,8 @@ import { MediaCollectionViewer } from './media-collection-viewer';
 import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
-import { ItemSource } from '../newgen/domain';
+import { ItemSource, MediaViewerFeatureFlags } from '../newgen/domain';
+import { getFeatureFlag } from '../newgen/utils/getFeatureFlag';
 
 export interface MediaViewerItem {
   id: string;
@@ -32,7 +33,7 @@ export interface MediaViewerProps {
   readonly basePath: string;
   readonly onClose?: () => void;
 
-  readonly featureFlags?: { nextGen?: boolean };
+  readonly featureFlags?: MediaViewerFeatureFlags;
 }
 
 export interface MediaViewerState {}
@@ -50,12 +51,9 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     } = this.props;
 
     const defaultPageSize = 30;
+    const useMVnextGen = getFeatureFlag('nextGen', featureFlags);
 
-    const devOverride =
-      window.localStorage &&
-      window.localStorage.getItem('MediaViewerNextGenEnabled');
-
-    if (devOverride || (featureFlags && featureFlags.nextGen)) {
+    if (useMVnextGen) {
       if (dataSource.collectionName) {
         const itemSource: ItemSource = {
           kind: 'COLLECTION',
@@ -72,6 +70,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
             selectedItem={identifier}
             onClose={onClose}
             itemSource={itemSource}
+            featureFlags={featureFlags}
           />
         );
       } else if (dataSource.list) {

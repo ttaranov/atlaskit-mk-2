@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { Video } from '../styled';
 import { FileItem, Context } from '@atlaskit/media-core';
-import { constructAuthTokenUrl } from '../util';
-import { Outcome } from '../domain';
-import { Spinner } from '../loading';
-import { ErrorMessage } from '../styled';
+import { constructAuthTokenUrl } from '../../util';
+import { Outcome, MediaViewerFeatureFlags } from '../../domain';
+import { Spinner } from '../../loading';
+import { ErrorMessage, Video } from '../../styled';
+import { CustomVideo } from './customVideo';
+import { getFeatureFlag } from '../../utils/getFeatureFlag';
 
 export type Props = {
   item: FileItem;
   context: Context;
   collectionName?: string;
+  readonly featureFlags?: MediaViewerFeatureFlags;
+  readonly showControls?: () => void;
 };
 
 export type State = {
@@ -25,11 +28,21 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
+    const { featureFlags, showControls } = this.props;
+    const useCustomVideoPlayer = getFeatureFlag(
+      'customVideoPlayer',
+      featureFlags,
+    );
+
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return <Video controls src={src.data} />;
+        if (useCustomVideoPlayer) {
+          return <CustomVideo showControls={showControls} src={src.data} />;
+        } else {
+          return <Video controls src={src.data} />;
+        }
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
@@ -58,6 +71,7 @@ export class VideoViewer extends React.Component<Props, State> {
 
 function getVideoArtifactUrl(fileItem: FileItem) {
   const artifact = 'video_640.mp4';
+
   return (
     fileItem.details &&
     fileItem.details.artifacts &&
