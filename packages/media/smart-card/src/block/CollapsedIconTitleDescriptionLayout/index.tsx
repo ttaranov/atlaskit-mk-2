@@ -2,15 +2,15 @@ import * as React from 'react';
 import { MultiLineLayout } from '../MultiLineLayout';
 import { Icon, Title, Description } from './styled';
 
-export interface IconTitleDescriptionLayoutProps {
+export interface CollapsedIconTitleDescriptionLayoutProps {
   icon?: string;
   title: string;
   description: string;
   right?: React.ReactNode;
 }
 
-export class IconTitleDescriptionLayout extends React.Component<
-  IconTitleDescriptionLayoutProps
+export class CollapsedIconTitleDescriptionLayout extends React.Component<
+  CollapsedIconTitleDescriptionLayoutProps
 > {
   renderLeft() {
     const { icon } = this.props;

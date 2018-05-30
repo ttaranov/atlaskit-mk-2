@@ -8,7 +8,7 @@ import DropdownMenu, {
 import { Wrapper } from './styled';
 
 export interface ActionHandlerCallbacks {
-  progress: () => void;
+  pending: () => void;
   success: (message?: string) => void;
   failure: () => void;
 }
@@ -56,49 +56,44 @@ export default class ActionsView extends React.Component<ActionsViewProps> {
   render() {
     const { actions = [] } = this.props;
 
-    // display a maximum of 3 actions
-    const limitedActions = actions.slice(0, 3);
-
-    if (limitedActions.length === 0) {
+    if (actions.length === 0) {
       return null;
     }
 
-    let firstAction;
-    let secondAction;
-    let otherActions;
-    if (limitedActions.length === 2) {
-      firstAction = limitedActions[0];
-      secondAction = limitedActions[1];
-      otherActions = [];
+    let buttonActions;
+    let menuActions;
+    if (actions.length > 3) {
+      buttonActions = actions.slice(0, 2);
+      menuActions = actions.slice(2);
     } else {
-      firstAction = limitedActions[0];
-      otherActions = limitedActions.slice(1);
+      buttonActions = actions.slice(0, 3);
+      menuActions = actions.slice(3);
     }
 
     return (
       <Wrapper>
         <ButtonGroup>
-          {firstAction ? (
-            <Button onClick={this.createActionHandler(firstAction)}>
-              {firstAction.text}
+          {buttonActions.map(action => (
+            <Button
+              key={action.text}
+              spacing="compact"
+              onClick={this.createActionHandler(action)}
+            >
+              {action.text}
             </Button>
-          ) : null}
-          {secondAction ? (
-            <Button onClick={this.createActionHandler(secondAction)}>
-              {secondAction.text}
-            </Button>
-          ) : null}
-          {otherActions.length ? (
+          ))}
+          {menuActions.length ? (
             <DropdownMenu
               triggerType="button"
               triggerButtonProps={{
                 appearance: 'subtle',
+                spacing: 'compact',
                 iconAfter: <MeatballIcon label="actions" size="medium" />,
               }}
               onOpenChange={this.handleOpenChange}
             >
               <DropdownItemGroup>
-                {otherActions.map(action => (
+                {menuActions.map(action => (
                   <DropdownItem
                     key={action.text}
                     onClick={this.createActionHandler(action)}

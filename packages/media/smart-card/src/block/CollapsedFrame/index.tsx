@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Wrappper } from './styled';
 
-export interface FrameProps {
+export interface CollapsedFrameProps {
   minWidth?: number;
   maxWidth?: number;
   children?: React.ReactNode;
   onClick?: () => void;
 }
 
-export class Frame extends React.Component<FrameProps> {
+export class CollapsedFrame extends React.Component<CollapsedFrameProps> {
   handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();

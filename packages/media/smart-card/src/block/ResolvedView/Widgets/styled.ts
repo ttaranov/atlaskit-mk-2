@@ -4,19 +4,22 @@ import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN300, akColorN800 } from '@atlaskit/util-shared-styles';
 import { ellipsis } from '@atlaskit/media-ui';
 
-const widgetHeight = 28;
+const widgetHeight = 24;
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
-  margin-top: auto;
+  margin-top: 3px;
 
-  height: ${widgetHeight}px;
+  height: ${widgetHeight * 2}px;
   overflow: hidden;
 
-  & > * + * {
-    margin-left: 8px;
+  & > * {
+    margin-right: 12px;
+  }
+  & > *:last-child {
+    margin-right: auto;
   }
 `;
 
@@ -25,7 +28,7 @@ export const WidgetWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-direction: row;
   align-items: center;
   height: ${widgetHeight}px;
-  max-width: calc(100% - (2 * 8px));
+  max-width: calc(100% - (2 * 12px));
 `;
 
 export const WidgetDetails: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -34,7 +37,7 @@ export const WidgetDetails: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   /* space the widget items */
   & > * + * {
-    margin-left: 2px;
+    margin-left: 4px;
   }
 `;
 
