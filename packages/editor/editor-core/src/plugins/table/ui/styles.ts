@@ -191,7 +191,7 @@ export const tableStyles = `
       position: relative;
 
       .ProseMirror-timeline_swimlanes {
-        padding: 36px 12px;
+        padding: 48px 12px 12px 12px;
       }
 
       .ProseMirror-timeline_grid {
