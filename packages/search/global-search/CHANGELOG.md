@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 3.3.2
+- [patch] Remove SVG react warnings. [89ce7d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89ce7d7)
+
 ## 3.3.1
 - [patch] Updated dependencies [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
   - @atlaskit/quick-search@1.7.1
