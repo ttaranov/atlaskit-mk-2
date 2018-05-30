@@ -2,12 +2,12 @@ import * as React from 'react';
 import { PureComponent, Children, ReactElement } from 'react';
 import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
 import DecisionItemWithProviders from './decision-item-with-providers';
-import { RendererContext } from '../';
 
 export interface Props {
   localId: string;
-  rendererContext?: RendererContext;
   providers?: ProviderFactory;
+  contentRef?: (node: HTMLElement | undefined) => void;
+  showPlaceholder?: boolean;
   children?: ReactElement<any>;
 }
 
@@ -29,13 +29,9 @@ export default class DecisionItem extends PureComponent<Props, {}> {
 
   private renderWithProvider = providers => {
     const { taskDecisionProvider, contextIdentifierProvider } = providers;
-    const { children, localId, rendererContext } = this.props;
+    const { children, localId } = this.props;
     let objectAri = '';
     let containerAri = '';
-    if (rendererContext) {
-      objectAri = rendererContext.objectAri || '';
-      containerAri = rendererContext.containerAri || '';
-    }
 
     return (
       <DecisionItemWithProviders

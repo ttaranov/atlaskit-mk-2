@@ -10,9 +10,6 @@ import {
 const mockTaskDecisionProvider = Promise.resolve(
   getMockTaskDecisionResource({ lag: 1000 }),
 );
-const mockTaskDecisionProviderError = Promise.resolve(
-  getMockTaskDecisionResource({ error: true }),
-);
 
 export default () => (
   <Grid>

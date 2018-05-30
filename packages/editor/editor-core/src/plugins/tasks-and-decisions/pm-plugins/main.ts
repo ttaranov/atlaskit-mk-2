@@ -1,7 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { AnalyticsDelegateProps } from '@atlaskit/analytics';
 import { uuid, ProviderFactory } from '@atlaskit/editor-common';
-import { decisionItemNodeView } from '../nodeviews/decisionItem';
+import { decisionItemNodeViewFactory } from '../nodeviews/decisionItem';
 import { taskItemNodeViewFactory } from '../nodeviews/taskItem';
 
 export const stateKey = new PluginKey('tasksAndDecisionsPlugin');
@@ -17,7 +17,7 @@ export function createPlugin(
           analyticDelegateProps,
           providerFactory,
         ),
-        decisionItem: decisionItemNodeView,
+        decisionItem: decisionItemNodeViewFactory(providerFactory),
       },
     },
     key: stateKey,

@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
-import { DecisionItem } from '@atlaskit/task-decision';
+import DecisionItem from '../ui/Decision';
 import { ContentNodeView } from '../../../nodeviews';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 type getPosHandler = () => number;
 
@@ -17,23 +18,33 @@ class Decision extends ContentNodeView implements NodeView {
   private domRef: HTMLElement | undefined;
   private isContentEmpty: boolean = false;
   private node: PMNode;
+  private providerFactory: ProviderFactory;
 
-  constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+  constructor(
+    node: PMNode,
+    view: EditorView,
+    getPos: getPosHandler,
+    providerFactory: ProviderFactory,
+  ) {
     super(node, view);
     this.isContentEmpty = node.content.childCount === 0;
     this.node = node;
+    this.providerFactory = providerFactory;
     this.renderReactComponent();
   }
 
   private renderReactComponent() {
     this.domRef = document.createElement('li');
     this.domRef.style['list-style-type'] = 'none';
+    const { localId } = this.node.attrs;
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
       <DecisionItem
+        localId={localId}
         contentRef={this.handleRef}
         showPlaceholder={this.isContentEmpty}
+        providers={this.providerFactory}
       />,
       this.domRef,
     );
@@ -58,10 +69,8 @@ class Decision extends ContentNodeView implements NodeView {
   }
 }
 
-export const decisionItemNodeView = (
-  node: any,
-  view: any,
-  getPos: () => number,
-): NodeView => {
-  return new Decision(node, view, getPos);
-};
+export function decisionItemNodeViewFactory(providerFactory: ProviderFactory) {
+  return (node: any, view: any, getPos: () => number): NodeView => {
+    return new Decision(node, view, getPos, providerFactory);
+  };
+}
