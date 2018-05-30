@@ -27,7 +27,10 @@ export interface State {
   endExtent: number;
   dragging: boolean;
   dragStart: number | undefined;
+  dragOffset: number;
   selectedEntries: number[];
+  resizeDirection: undefined | 'left' | 'right';
+  resizeIdx: number | undefined;
 }
 
 export default class TimelineChart extends React.Component<Props, State> {
@@ -36,9 +39,14 @@ export default class TimelineChart extends React.Component<Props, State> {
     viewportEnd: 0,
     startExtent: 0,
     endExtent: 0,
+
     dragging: false,
+    resizeDirection: undefined,
+
     dragStart: undefined,
+    dragOffset: 0,
     selectedEntries: [],
+    resizeIdx: undefined,
   };
 
   canvas?: HTMLCanvasElement;
@@ -120,40 +128,58 @@ export default class TimelineChart extends React.Component<Props, State> {
   }
 
   private onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.buttons & 1) {
-      const boundingRect = event.currentTarget.getBoundingClientRect();
-      const x = event.clientX - boundingRect.left;
+    const boundingRect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - boundingRect.left;
 
+    if (this.state.resizeDirection) {
+      console.warn('onMouseDown should be handled by TimelineEntry');
+    } else if (event.buttons & 1) {
+      // handle regular mouse down
       this.setState({
         dragging: true,
         dragStart: x,
       });
+    }
 
-      // allow the original event to select the graph, otherwise eat the click
-      if (this.props.chartSelected) {
-        event.preventDefault();
-      }
+    // allow the original event to select the graph, otherwise eat the click
+    if (this.props.chartSelected) {
+      event.preventDefault();
     }
   };
 
   private onMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!this.state.dragging) {
-      return;
+    if (this.state.resizeDirection) {
+      // commit the resize to the element
     }
+
+    // if (!this.state.dragging) {
+    // return;
+    // }
 
     this.setState({
       dragging: false,
       dragStart: undefined,
+      resizeDirection: undefined,
+      resizeIdx: undefined,
+      dragOffset: 0,
     });
   };
 
   private onMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!this.state.dragging) {
+    if (!this.state.dragging && !this.state.resizeDirection) {
       return;
     }
 
     const boundingRect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - boundingRect.left;
+
+    if (this.state.resizeDirection) {
+      this.setState({
+        dragStart: x - this.state.dragOffset,
+      });
+
+      return;
+    }
 
     // move the view
     const viewportRange = this.state.viewportEnd - this.state.viewportStart;
@@ -204,13 +230,29 @@ export default class TimelineChart extends React.Component<Props, State> {
 
     const swimlanes: JSX.Element[] = [];
     data.entries.forEach((entry, entryIdx) => {
-      const leftPct = (entry.start - viewportStart) / viewportRange;
-      const endPct = (entry.end - viewportStart) / viewportRange;
+      let start = entry.start;
+      let end = entry.end;
 
-      const left = leftPct * this.props.width!;
-      const end = endPct * this.props.width!;
+      // see if we need to recalculate a new start or endpoint if resizing
+      if (this.state.resizeIdx === entryIdx) {
+        if (this.state.resizeDirection === 'left') {
+          start =
+            this.state.dragStart! / this.props.width! * viewportRange +
+            viewportStart;
+        } else if (this.state.resizeDirection === 'right') {
+          end =
+            this.state.dragStart! / this.props.width! * viewportRange +
+            viewportStart;
+        }
+      }
 
-      const width = end - left;
+      const leftPct = (start - viewportStart) / viewportRange;
+      const endPct = (end - viewportStart) / viewportRange;
+
+      const leftPx = leftPct * this.props.width!;
+      const endPx = endPct * this.props.width!;
+
+      const widthPx = endPx - leftPx;
 
       swimlanes.push(
         <TimelineEntry
@@ -224,9 +266,22 @@ export default class TimelineChart extends React.Component<Props, State> {
           selected={this.state.selectedEntries.indexOf(entryIdx) > -1}
           selectedColor={this.props.selectedColors![entryIdx]}
           color={this.props.colors![entryIdx]}
-          left={left}
-          width={width}
+          left={leftPx}
+          width={widthPx}
           entry={entry}
+          resizing={this.state.resizeIdx === entryIdx}
+          startResize={(direction, event) => {
+            const boundingRect = event.currentTarget.parentElement!
+              .parentElement!.getBoundingClientRect();
+            const x = event.clientX - boundingRect.left;
+
+            this.setState({
+              resizeDirection: direction,
+              resizeIdx: entryIdx,
+              dragStart: leftPx,
+              dragOffset: 16, // FIXME: based on padding, should be able to get from client
+            });
+          }}
         >
           <span>{entry.title}</span>
         </TimelineEntry>,

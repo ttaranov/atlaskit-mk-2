@@ -9,6 +9,7 @@ export interface TimelineEntryProps {
   selected?: boolean;
   selectedColor?: string;
   color?: string;
+  resizing?: boolean;
 }
 
 export const TimelineContainer: ComponentClass<
@@ -50,6 +51,8 @@ export const TimelineEntryContainer: ComponentClass<
   background-color: ${props => props.color};
   transition: background-color 0.1s ease-out;
 
+  ${props => (props.resizing ? 'opacity: 0.4' : '')};
+
   ${props =>
     (props as TimelineEntryProps).selected
       ? `
@@ -83,7 +86,9 @@ export const TimelineEntryContent: ComponentClass<
   }
 `;
 
-export const ResizeButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export const ResizeButton: ComponentClass<
+  HTMLAttributes<HTMLDivElement>
+> = styled.div`
   cursor: ew-resize;
   content: '..';
   width: 10px;
