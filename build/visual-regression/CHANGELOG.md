@@ -1,6 +1,4 @@
-# @atlaskit/webdriver-runner
+# @atlaskit/visual-regression
 
-## 0.0.3
-- [patch] Remove linkCreateContext from default options and add userAuthProvider [fc2ca7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc2ca7a)
-
-## 0.0.2
+## 0.0.1
+initial commit enabling visual-regression
