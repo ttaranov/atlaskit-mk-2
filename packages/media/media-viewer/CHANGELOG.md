@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 14.5.0
+- [minor] add custom video player under feature flag [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
+- [none] Updated dependencies [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
+  - @atlaskit/media-test-helpers@13.2.0
+
 ## 14.4.1
 - [patch] Centering navigation arrows vertically in MVNG [d506235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d506235)
 
