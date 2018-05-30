@@ -2,15 +2,14 @@ import * as React from 'react';
 import { colors } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
-import { IconTitleDescriptionLayout } from '../IconTitleDescriptionLayout';
+import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescriptionLayout';
 
-export interface UnauthorisedViewProps {
+export interface ForbiddenViewProps {
   icon?: string;
-  service: string;
   onAuthorise?: () => void;
 }
 
-export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
+export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   handleAuthorise = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -37,12 +36,12 @@ export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
   }
 
   render() {
-    const { icon, service } = this.props;
+    const { icon } = this.props;
     return (
-      <IconTitleDescriptionLayout
+      <CollapsedIconTitleDescriptionLayout
         icon={icon}
-        title={`Click the button to connect your ${service} account.`}
-        description="This lets us show you information about the link."
+        title="You don't have permission to view this"
+        description="Request access or try another account to see this preview"
         right={this.renderRight()}
       />
     );

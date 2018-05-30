@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { CardFrame, IconImage } from '@atlaskit/media-ui';
-import { Frame as CollapsedFrame } from '../src/block/collapsed/Frame';
-import { LoadingView as CollapsedLoadingView } from '../src/block/collapsed/LoadingView';
-import { ErroredView as CollapsedErroredView } from '../src/block/collapsed/ErroredView';
-import { UnauthorisedView } from '../src/block/collapsed/UnauthorisedView';
-import { ForbiddenView } from '../src/block/collapsed/ForbiddenView';
-import { ResolvedView } from '../src/block/expanded/ResolvedView';
+import { CollapsedFrame } from '../src/block/CollapsedFrame';
+import { LoadingView as CollapsedLoadingView } from '../src/block/LoadingView';
+import { ErroredView as CollapsedErroredView } from '../src/block/ErroredView';
+import { UnauthorisedView } from '../src/block/UnauthorisedView';
+import { ForbiddenView } from '../src/block/ForbiddenView';
+import { ResolvedView } from '../src/block/ResolvedView';
 
 const CARD_WIDTH_MAX = 400;
 const DROPBOX_ICON =
@@ -65,13 +65,84 @@ export default () => (
 
     <h4>Resolved</h4>
     <FrameWithDetails>
+      <ResolvedView title={{ text: 'foo bar' }} byline={{ text: 'foo bar' }} />
+    </FrameWithDetails>
+    <br />
+    <br />
+    <FrameWithDetails>
       <ResolvedView
-        title={{ text: 'Spec for Smart Card actions' }}
-        description={{ text: 'Modified 59 seconds ago by Scott Simpson' }}
+        user={{
+          name: 'Foo bar',
+        }}
+        title={{
+          text:
+            'The public is more familiar with bad design than good design. It is, in effect, conditioned to prefer bad design, because that is what it lives with. The ne',
+        }}
+        byline={{
+          text: 'Entity byline (not description) is limited to a single line',
+        }}
+        description={{
+          text:
+            'Descriptions can be added in the meta data area using the text display. They are used to show additional information on the object and can be up to three lines',
+        }}
         details={[
           {
             title: 'Size',
             text: '44.5MB',
+          },
+          {
+            lozenge: {
+              text: 'foobar',
+            },
+          },
+          {
+            title: 'Size',
+            text: '44.5MB',
+          },
+          {
+            lozenge: {
+              text: 'foobar',
+            },
+          },
+          {
+            title: 'Size',
+            text: '44.5MB',
+          },
+          {
+            lozenge: {
+              text: 'foobar',
+            },
+          },
+          {
+            title: 'Size',
+            text: '44.5MB',
+          },
+          {
+            lozenge: {
+              text: 'foobar',
+            },
+          },
+        ]}
+        users={[
+          { name: 'James' },
+          { name: 'Scotty' },
+          { name: 'Artur' },
+          { name: 'Adam' },
+          { name: 'Sherif' },
+          { name: 'Waldemar' },
+        ]}
+        actions={[
+          {
+            text: 'Success',
+            handler: ({ success }) => success('Success!'),
+          },
+          {
+            text: 'Failure',
+            handler: ({ failure }) => failure(),
+          },
+          {
+            text: 'Pending',
+            handler: ({ pending }) => pending(),
           },
         ]}
       />

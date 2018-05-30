@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as debounce from 'lodash.debounce';
+import Button from '@atlaskit/button';
 import { Ellipsify } from '@atlaskit/media-ui';
 import { Wrapper } from './styled';
 
@@ -8,8 +9,8 @@ const contentWidthWhenCardIs400px = 384;
 export interface AlertViewProps {
   type: 'success' | 'failure';
   message?: string;
-  onTryAgain: () => void;
-  onCancel: () => void;
+  onRetry: () => void;
+  onDismis: () => void;
   style?: {};
 }
 
@@ -25,21 +26,21 @@ export default class AlertView extends React.Component<
 
   el: HTMLDivElement;
 
-  handleTryAgain = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  handleRetry = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const { onTryAgain } = this.props;
-    if (onTryAgain) {
-      onTryAgain();
+    const { onRetry } = this.props;
+    if (onRetry) {
+      onRetry();
     }
   };
 
-  handleCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  handleDismis = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const { onCancel } = this.props;
-    if (onCancel) {
-      onCancel();
+    const { onDismis } = this.props;
+    if (onDismis) {
+      onDismis();
     }
   };
 
@@ -83,10 +84,23 @@ export default class AlertView extends React.Component<
     }
 
     return (
-      <span>
-        <a onClick={this.handleTryAgain}>Try again</a> or{' '}
-        <a onClick={this.handleCancel}>cancel</a>.
-      </span>
+      <>
+        <Button
+          appearance="link"
+          spacing="none"
+          onClick={this.handleRetry as () => void}
+        >
+          Try again
+        </Button>{' '}
+        or{' '}
+        <Button
+          appearance="link"
+          spacing="none"
+          onClick={this.handleDismis as () => void}
+        >
+          cancel
+        </Button>.
+      </>
     );
   }
 
