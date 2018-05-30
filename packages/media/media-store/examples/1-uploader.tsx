@@ -12,7 +12,7 @@ import {
   Wrapper,
   FileInput,
 } from '../example-helpers/styled';
-import { uploadFile, MediaStore } from '../src/';
+import { uploadFile, MediaStore } from '../src';
 
 type UploaderExampleProps = {};
 export interface UploaderExampleState {
