@@ -149,7 +149,6 @@ export default class ResourcedMentionList extends React.PureComponent<
   }
 
   private applyPropChanges(prevProps: Props, nextProps: Props) {
-    debugger;
     const oldResourceProvider = prevProps.resourceProvider;
     const oldPresenceProvider = prevProps.presenceProvider;
     const oldQuery = prevProps.query;

@@ -352,7 +352,7 @@ class MentionResource extends AbstractMentionResource {
     if (this.searchIndex.hasDocuments()) {
       return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query).then(
+        this.remoteSearch(query, sessionId).then(
           result => {
             this.activeSearches.delete(query);
             this.notify(searchTime, result, query);
@@ -367,7 +367,7 @@ class MentionResource extends AbstractMentionResource {
       });
     }
 
-    return this.remoteSearch(query).then(result => {
+    return this.remoteSearch(query, sessionId).then(result => {
       this.searchIndex.indexResults(result.mentions);
       return result;
     });

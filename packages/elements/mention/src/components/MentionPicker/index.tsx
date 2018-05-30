@@ -59,6 +59,7 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
     this.subscriberKey = uniqueId('ak-mention-picker');
     this.state = {
       visible: false,
+      sessionId: uniqueId('session'),
     };
     this.applyPropChanges({} as Props, props);
   }
