@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { Outcome } from '../domain';
-import { Img, ErrorMessage, ImageWrapper } from '../styled';
+import { ErrorMessage, ImageWrapper } from '../styled';
 import { Spinner } from '../loading';
-import { ZoomControls } from '../zoomControls';
+import ZoomableImage from 'react-zoomable-image';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -23,6 +23,9 @@ const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
   zoomLevel: 1,
 };
+
+const defaultWidth = 1200;
+const defaultHeight = 800;
 
 export class ImageViewer extends React.Component<
   ImageViewerProps,
@@ -45,26 +48,22 @@ export class ImageViewer extends React.Component<
     }
   }
 
-  private onZoomChange = zoomLevel => {
-    this.setState({ zoomLevel });
-  };
-
   renderImage(src: string) {
-    const { zoomLevel } = this.state;
-    // We need to set new border value every time the zoom changes
-    // to force a re layout in Chrome.
-    // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
-    const border = `${zoomLevel / 100}px solid transparent`;
-    // We use style attr instead of SC prop for perf reasons
-    const imgStyle = {
-      transform: `scale(${zoomLevel})`,
-      border,
-    };
-
     return (
       <ImageWrapper>
-        <Img src={src} style={imgStyle} />
-        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
+        <ZoomableImage
+          displayMap={false}
+          baseImage={{
+            src,
+            width: defaultWidth,
+            height: defaultHeight,
+          }}
+          largeImage={{
+            src,
+            width: defaultWidth * 1.5,
+            height: defaultHeight * 1.5,
+          }}
+        />
       </ImageWrapper>
     );
   }
@@ -97,8 +96,8 @@ export class ImageViewer extends React.Component<
         const { response, cancel } = service.fetchImageBlobCancelable(
           fileItem,
           {
-            width: 800,
-            height: 600,
+            width: defaultWidth,
+            height: defaultHeight,
             mode: 'fit',
             allowAnimated: true,
           },

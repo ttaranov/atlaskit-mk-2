@@ -378,6 +378,7 @@
     "react-syntax-highlighter": "^6.0.2",
     "react-transition-group": "^2.2.1",
     "react-virtualized": "^9.8.0",
+    "react-zoomable-image": "^1.0.5",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "resolve-from": "^4.0.0",
