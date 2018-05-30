@@ -58,6 +58,7 @@ export default class Page extends Component<Props, void> {
   };
 
   render() {
+    const hideNav = document.location.search.indexOf('fullpage') > -1;
     return (
       <ThemeProvider theme={emptyTheme}>
         <Wrapper>
@@ -70,7 +71,7 @@ export default class Page extends Component<Props, void> {
             </BannerContainer>
           ) : null}
           <NavigationAndContent>
-            <Navigation>{this.props.navigation}</Navigation>
+            {!hideNav && <Navigation>{this.props.navigation}</Navigation>}
             <PageContent>{this.props.children}</PageContent>
           </NavigationAndContent>
         </Wrapper>
