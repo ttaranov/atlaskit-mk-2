@@ -11,47 +11,49 @@ import PeopleIcon from '@atlaskit/icon/glyph/people';
 export default function generateDefaultConfig() {
   return {
     product: {
-      position: 1,
+      label: 'Atlassian',
+      position: 'top1',
+      tooltip: 'Atlassian',
     },
     yourWork: {
       icon: TrayIcon,
-      position: 2,
-      tooltip: 'Your Work',
       label: 'Your Work',
+      position: 'top2',
+      tooltip: 'Your Work',
     },
     search: {
       icon: SearchIcon,
       label: 'Search',
-      position: 3,
+      position: 'top3',
       tooltip: 'Search',
     },
     create: {
       icon: CreateIcon,
       label: 'Create',
-      position: 4,
+      position: 'top4',
       tooltip: 'Create',
     },
     notification: {
       icon: NotificationIcon,
       label: 'Notifications',
+      position: 'bottom1',
       tooltip: 'Notifications',
-      position: 5,
     },
     people: {
       icon: PeopleIcon,
       label: 'People directory',
+      position: 'bottom2',
       tooltip: 'People directory',
-      position: 6,
     },
     appSwitcher: {
       label: 'App Switcher',
+      position: 'bottom3',
       tooltip: 'App Switcher',
-      position: 7,
     },
     help: {
       label: 'Help',
+      position: 'bottom4',
       tooltip: 'Help',
-      position: 8,
     },
     profile: {
       icon: () => (
@@ -63,8 +65,8 @@ export default function generateDefaultConfig() {
         />
       ),
       label: 'Your profile and Settings',
+      position: 'bottom5',
       tooltip: 'Your profile and Settings',
-      position: 9,
     },
   };
 }

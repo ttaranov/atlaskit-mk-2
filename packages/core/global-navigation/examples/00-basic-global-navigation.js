@@ -8,17 +8,13 @@ import GlobalNavigation from '../src/components/GlobalNavigation';
 
 const Global = () => (
   <GlobalNavigation
-    product={{
-      label: 'Jira',
-      icon: EmojiAtlassianIcon,
-    }}
-    search={{}}
-    create={{}}
-    people={{}}
-    notification={{}}
-    appSwitcher={{}}
-    help={{}}
-    profile={{}}
+    productIcon={EmojiAtlassianIcon}
+    onCreateClick={() => console.log('create clicked')}
+    onSearchClick={() => console.log('search clicked')}
+    onYourWorkClick={() => console.log('your work clicked')}
+    onNotificationClick={() => console.log('notification clicked')}
+    onPeopleClick={() => console.log('People clicked')}
+    onProfileClick={() => console.log('Profile clicked')}
   />
 );
 
