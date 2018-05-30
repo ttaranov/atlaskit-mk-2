@@ -1,14 +1,13 @@
 import * as React from 'react';
 
-import { COLORS, degreesToRadians, upscaleCanvas } from '../utils';
+import { COLORS, upscaleCanvas } from '../utils';
 import { NumberChartEntry } from '../../../graphs';
 import ChartLegend from '../ChartLegend';
 
 export interface Props {
   data: Array<NumberChartEntry>;
-  dividerWidth?: number;
   colors?: Array<string>;
-  lineWidth?: number;
+  barWidth?: number;
   legentAlignment?: 'left' | 'right';
   size?: number;
 }
@@ -18,8 +17,7 @@ export default class BarChart extends React.Component<Props, any> {
 
   static defaultProps = {
     colors: COLORS,
-    dividerWidth: 3,
-    lineWidth: 50,
+    barWidth: 50,
     legentAlignment: 'left',
     size: 250,
   };
@@ -47,44 +45,25 @@ export default class BarChart extends React.Component<Props, any> {
 
     // clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const center = this.props.size! / 2;
-    const lineWidth = this.props.lineWidth!;
-    const dividerWidth = this.props.dividerWidth!;
     const colors = this.props.colors!;
-    const radius = center - lineWidth / 2;
     const { data } = this.props;
 
-    const totalValue = data.reduce(
-      (r, dataPoint) => r + dataPoint.values[0],
-      0,
-    );
-    let angleFrom = degreesToRadians(-90);
+    var maxValue = 0;
+    data.forEach(item => {
+      maxValue = Math.max(maxValue, item.values[0]);
+    });
+    const width = this.props.size! / data.length;
+
     let colorIdx = 0;
     data.forEach((item, index) => {
       const itemValue = item.values[0];
-      const section = itemValue / totalValue * 360;
-      const angleTo = angleFrom + degreesToRadians(section);
+      var height = Math.round(this.props.size! * itemValue / maxValue);
 
-      // section
-      ctx.beginPath();
-      ctx.lineWidth = lineWidth;
-      ctx.strokeStyle = colors[colorIdx];
-      ctx.arc(center, center, radius, angleFrom, angleTo);
-      ctx.stroke();
+      ctx.save();
+      ctx.fillStyle = colors[colorIdx];
+      ctx.fillRect(index * width, this.props.size! - height, width, height);
+      ctx.restore();
 
-      // divider
-      ctx.beginPath();
-      ctx.lineWidth = dividerWidth * (index === data.length - 1 ? 1 : 2);
-      ctx.strokeStyle = 'white';
-      ctx.moveTo(center, center);
-      ctx.lineTo(
-        center + radius * 2 * Math.cos(angleTo),
-        center + radius * 2 * Math.sin(angleTo),
-      );
-      ctx.stroke();
-
-      angleFrom = angleTo;
       colorIdx++;
       if (colorIdx === colors.length) {
         colorIdx = 0;
