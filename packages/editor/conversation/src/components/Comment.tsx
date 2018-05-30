@@ -119,6 +119,10 @@ export default class Comment extends React.Component<Props, State> {
       return true;
     }
 
+    if (nextProps.user !== this.props.user) {
+      return true;
+    }
+
     const { comments: oldComments = [] } = this.props;
     const { comments: newComments = [] } = nextProps;
 
