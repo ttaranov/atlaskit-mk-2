@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.6.1
+- [patch] Fixes a bug with temp comment where createdBy wasn't set correctly [a761abc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a761abc)
+
 ## 7.6.0
 - [minor] Replace <div> with Fragment so CSS rules apply to adjacent conversations [96dc1bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96dc1bf)
 
