@@ -100,6 +100,7 @@
     "@types/mocha": "^2.2.39",
     "@types/prop-types": "^15.5.1",
     "@types/react-syntax-highlighter": "^0.0.3",
+    "@types/webdriverio": "^4.10.2",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^20.0.3",
