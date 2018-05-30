@@ -297,3 +297,8 @@ if (process.env.CI) {
     console.log = consoleLog;
   });
 }
+
+// set up for increasing time out on visual regression
+if (process.env.VISUAL_REGRESSION) {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+}
