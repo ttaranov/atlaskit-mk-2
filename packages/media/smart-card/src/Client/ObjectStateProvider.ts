@@ -15,6 +15,12 @@ interface ResolveResponse {
   meta: {
     visibility: 'public' | 'restricted' | 'other';
     access: 'granted' | 'unauthorised' | 'forbidden';
+    auth: {
+      key: string;
+      displayName: string;
+      url: string;
+    }[];
+    definitionId: string;
   };
   data?: {
     [name: string]: any;
@@ -29,9 +35,28 @@ export type ObjectStatus =
   | 'not-found'
   | 'errored';
 
+export interface ObjectService {
+  id: string;
+  name: string;
+  startAuthUrl: string;
+}
+
 export interface ObjectState {
   status: ObjectStatus;
+  services: ObjectService[];
   data?: { [name: string]: any };
+}
+
+function convertAuthToService(auth: {
+  key: string;
+  displayName: string;
+  url: string;
+}): ObjectService {
+  return {
+    id: auth.key,
+    name: auth.displayName,
+    startAuthUrl: auth.url,
+  };
 }
 
 export class ObjectStateProviderOptions {
@@ -60,23 +85,46 @@ export class ObjectStateProvider {
         }).pipe(
           map<ResolveResponse, ObjectState>(json => {
             if (json === undefined) {
-              return { status: 'not-found' };
+              return {
+                status: 'not-found',
+                services: [],
+              };
             }
             switch (json.meta.access) {
               case 'forbidden':
-                return { status: 'forbidden', data: json.data };
+                return {
+                  status: 'forbidden',
+                  services: json.meta.auth.map(convertAuthToService),
+                  data: json.data,
+                };
 
               case 'unauthorised':
-                return { status: 'unauthorised', data: json.data };
+                return {
+                  status: 'unauthorised',
+                  services: json.meta.auth.map(convertAuthToService),
+                  data: json.data,
+                };
 
               default:
-                return { status: 'resolved', data: json.data };
+                return {
+                  status: 'resolved',
+                  services: json.meta.auth.map(convertAuthToService),
+                  data: json.data,
+                };
             }
           }),
-          startWith<ObjectState>({ status: 'resolving' }),
+          startWith<ObjectState>({
+            status: 'resolving',
+            services: [],
+          }),
         ),
       ),
-      catchError(() => of<ObjectState>({ status: 'errored' })),
+      catchError(() =>
+        of<ObjectState>({
+          status: 'errored',
+          services: [],
+        }),
+      ),
       publishReplay(1),
       refCount(),
     );

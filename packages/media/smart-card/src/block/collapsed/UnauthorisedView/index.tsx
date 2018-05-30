@@ -21,6 +21,10 @@ export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
   };
 
   renderRight() {
+    const { onAuthorise } = this.props;
+    if (!onAuthorise) {
+      return null;
+    }
     return (
       <Button
         appearance="subtle"
