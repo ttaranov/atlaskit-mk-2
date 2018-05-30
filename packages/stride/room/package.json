@@ -1,0 +1,30 @@
+{
+  "name": "@atlaskit/stride-room-item",
+  "version": "0.0.0",
+  "description": "A React component that represents a stride room item.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "atlaskit:designLink": "",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Raja B"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/item": "^6.0.3",
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/tooltip": "^9.2.1"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0"
+  },
+  "devDependencies": {
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"   
+  }
+}
