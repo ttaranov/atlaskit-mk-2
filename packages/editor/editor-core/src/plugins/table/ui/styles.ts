@@ -200,7 +200,10 @@ export const tableStyles = `
         display: flex;
 
         .ProseMirror-timeline_month {
+          top: 0px;
           border-left: 1px solid ${akColorN30};
+          position: absolute;
+          height: 100%;
 
           .ProseMirror-timeline_month_label {
             color: ${akColorN100};

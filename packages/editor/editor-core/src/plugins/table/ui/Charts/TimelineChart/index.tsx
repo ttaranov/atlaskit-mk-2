@@ -5,6 +5,8 @@ import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { TimelineContainer } from './styles';
 import TimelineEntry from './TimelineEntry';
 import * as daysBeetween from 'date-fns/difference_in_calendar_days';
+import * as addMonths from 'date-fns/add_months';
+import * as startOfMonth from 'date-fns/start_of_month';
 
 export interface Props {
   data: TimelineDataset;
@@ -219,33 +221,37 @@ export default class TimelineChart extends React.Component<Props, State> {
     const width = this.props.width! * 30 / Math.abs(diffDays);
 
     // calc start month
-    // const startYear = new Date(viewportStart).getFullYear();
-    const startMonth = new Date(viewportStart).getMonth();
-    const endMonth = new Date(viewportEnd).getMonth();
-    const start = new Date(startYear, startMonth, 1).valueOf();
-
+    const startDate = new Date(viewportStart);
+    const endDate = new Date(viewportEnd);
     const viewportRange = viewportEnd - viewportStart;
-    const leftPct = (start - viewportStart) / viewportRange;
-    const left = leftPct * this.props.width!;
+
+    let currentMonthDate = startOfMonth(startDate);
+    if (currentMonthDate < startDate) {
+      currentMonthDate = addMonths(currentMonthDate, 1);
+    }
 
     let grid: any = [];
-    for (let i = startMonth; i <= endMonth; i++) {
-      const month = MONTHS[i];
+    while (currentMonthDate < endDate) {
+      const leftPct =
+        (currentMonthDate.valueOf() - viewportStart) / viewportRange;
+      const left = leftPct * this.props.width!;
+
       grid.push(
         <div
           className="ProseMirror-timeline_month"
-          style={{ width: `${width}px` }}
+          style={{ left: `${left}px` }}
         >
-          <div className="ProseMirror-timeline_month_label">{month}</div>
+          <div className="ProseMirror-timeline_month_label">
+            {MONTHS[currentMonthDate.getMonth()]}
+          </div>
         </div>,
       );
+
+      currentMonthDate = addMonths(currentMonthDate, 1);
     }
 
     return (
-      <div
-        className="ProseMirror-timeline_grid"
-        style={{ userSelect: 'none', left: `${left}px` }}
-      >
+      <div className="ProseMirror-timeline_grid" style={{ userSelect: 'none' }}>
         {grid}
       </div>
     );
