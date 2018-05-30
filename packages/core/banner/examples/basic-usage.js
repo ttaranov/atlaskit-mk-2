@@ -9,7 +9,7 @@ export default () => (
     icon={<WarningIcon label="Warning icon" secondaryColor="inherit" />}
     isOpen
   >
-    Your license is about to expire. Click{' '}
-    <a href="http://atlassian.com">here</a> to renew it.
+    Your license is about to expire. Please renew your license within the next
+    week.
   </Banner>
 );
