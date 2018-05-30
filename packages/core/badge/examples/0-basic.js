@@ -26,23 +26,25 @@ export default function Example() {
     <div>
       <Item>
         <p>Default</p>
-        <Badge value={5} />
+        <Badge>{5}</Badge>
       </Item>
       <Item>
         <p>Primary</p>
-        <Badge appearance="primary" value={-5} />
+        <Badge appearance="primary">{-5}</Badge>
       </Item>
       <Item>
         <p>Important</p>
-        <Badge appearance="important" value={25} />
+        <Badge appearance="important">{25}</Badge>
       </Item>
       <Item inverted>
         <p>Primary Inverted</p>
-        <Badge appearance="primaryInverted" value={-5} />
+        <Badge appearance="primaryInverted">{5}</Badge>
       </Item>
       <Item>
         <p>Added (no theme change)</p>
-        <Badge appearance="added" max={99} value={3000} />
+        <Badge appearance="added" max={99}>
+          {3000}
+        </Badge>
       </Item>
       <Item>
         <p>Removed (no theme change)</p>
@@ -50,7 +52,7 @@ export default function Example() {
       </Item>
       <Item>
         <p>Infinity (∞)</p>
-        <Badge max={Infinity} value={Infinity} />
+        <Badge max={Infinity}>{Infinity}</Badge>
       </Item>
     </div>
   );
