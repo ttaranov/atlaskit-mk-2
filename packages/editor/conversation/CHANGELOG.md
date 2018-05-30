@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 7.6.2
+- [patch] Comments should re-render when the user is changed [507ff28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/507ff28)
+
 ## 7.6.1
 - [patch] Fixes a bug with temp comment where createdBy wasn't set correctly [a761abc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a761abc)
 
