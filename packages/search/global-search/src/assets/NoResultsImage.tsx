@@ -16,12 +16,12 @@ export default () => (
         y2="14.6507444%"
         id="linearGradient-1"
       >
-        <stop stop-color="#C1C7D0" offset="56%" />
-        <stop stop-color="#E9EBEF" stop-opacity="0.5" offset="97%" />
+        <stop stopColor="#C1C7D0" offset="56%" />
+        <stop stopColor="#E9EBEF" stopOpacity="0.5" offset="97%" />
       </linearGradient>
     </defs>
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g transform="translate(-300.000000, -352.000000)" fill-rule="nonzero">
+    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+      <g transform="translate(-300.000000, -352.000000)" fillRule="nonzero">
         <g id="No-Results" transform="translate(300.000000, 352.000000)">
           <g
             id="Group"
