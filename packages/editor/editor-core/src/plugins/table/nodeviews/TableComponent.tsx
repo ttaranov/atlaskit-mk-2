@@ -34,6 +34,8 @@ import {
   GraphTransformer,
   NumberTransformer,
   TimelineTransformer,
+  DonutSettings,
+  TimelineSettings,
 } from '../graphs';
 
 export interface ComponentProps extends Props {
@@ -111,17 +113,20 @@ class TableComponent extends React.Component<ComponentProps> {
 
     let graphTransformer: GraphTransformer | undefined;
     let chartData;
+    let availableChartSettings;
 
     if (node.attrs.viewMode === 'donut') {
       graphTransformer = new NumberTransformer(
         this.props.view.state,
         this.props.node,
       );
+      availableChartSettings = DonutSettings;
     } else if (node.attrs.viewMode === 'timeline') {
       graphTransformer = new TimelineTransformer(
         this.props.view.state,
         this.props.node,
       );
+      availableChartSettings = TimelineSettings;
     }
 
     if (graphTransformer) {
@@ -216,6 +221,12 @@ class TableComponent extends React.Component<ComponentProps> {
                       <ChartSettingsMenu
                         target={this.chart!}
                         onPopup={this.onChartSettingsPopup}
+                        availableChartSettings={
+                          availableChartSettings ? availableChartSettings : []
+                        }
+                        currentSettings={{}}
+                        tableNode={this.props.node}
+                        state={this.props.view.state}
                       />
                     ) : null}
                     {node.attrs.viewMode === 'donut' && (

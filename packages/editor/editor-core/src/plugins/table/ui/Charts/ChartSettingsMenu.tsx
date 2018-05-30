@@ -18,6 +18,10 @@ import { dropShadow } from '../../../../ui/styles';
 
 // import Form, { Field, FormHeader, FormSection, FormFooter } from '@atlaskit/form';
 import Select from '@atlaskit/select';
+import { ChartSettings } from '../../graphs';
+import { Node } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import { containsHeaderRow } from '../../utils';
 
 export const Toolbar: React.ComponentClass<
   React.HTMLAttributes<{}>
@@ -32,10 +36,15 @@ export const Toolbar: React.ComponentClass<
 export interface Props {
   target?: HTMLElement;
   onPopup?: (isOpen: boolean) => void;
+  availableChartSettings: ChartSettings;
+  tableNode: Node;
+  state: EditorState;
 }
 
 export interface DialogProps {
   onRef?: (ref: HTMLDivElement | null) => void;
+  availableChartSettings: ChartSettings;
+  columns: string[];
 }
 
 export interface State {
@@ -54,16 +63,22 @@ export class ChartSettingsDialog extends Component<DialogProps> {
           maxHeight: '200px',
         }}
       >
-        <h5>Start date</h5>
-        <Select
-          defaultValue={{ label: 'Atlassian', value: 'atlassian' }}
-          options={[
-            { label: 'Atlassian', value: 'atlassian' },
-            { label: 'Sean Curtis', value: 'scurtis' },
-            { label: 'Mike Gardiner', value: 'mg' },
-            { label: 'Charles Lee', value: 'clee' },
-          ]}
-        />
+        {this.props.availableChartSettings.map(availableSetting => {
+          return (
+            <div>
+              <h5>{availableSetting.title}</h5>
+              {availableSetting.input === 'column-select' ? (
+                <Select
+                  options={this.props.columns.map((colname, idx) => {
+                    return { label: colname, value: idx };
+                  })}
+                />
+              ) : (
+                <input type="checkbox" />
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -116,6 +131,23 @@ export default class ChartSettingsMenu extends Component<Props, State> {
   };
 
   render() {
+    // FIXME: move out to parent component, and just pass in string array instead
+    const haveHeaderRow = containsHeaderRow(
+      this.props.state,
+      this.props.tableNode,
+    );
+
+    const columnNames: string[] = [];
+    if (haveHeaderRow) {
+      this.props.tableNode.firstChild!.forEach((col, _, colIdx) => {
+        columnNames.push(col.textContent);
+      });
+    } else {
+      for (let i = 0; i < this.props.tableNode.firstChild!.childCount; i++) {
+        columnNames.push(`Column ${i}`);
+      }
+    }
+
     return (
       <Popup
         target={this.props.target}
@@ -128,7 +160,11 @@ export default class ChartSettingsMenu extends Component<Props, State> {
       >
         <InlineDialog
           content={
-            <ChartSettingsDialog onRef={ref => (this.dialogRef = ref)} />
+            <ChartSettingsDialog
+              columns={columnNames}
+              availableChartSettings={this.props.availableChartSettings}
+              onRef={ref => (this.dialogRef = ref)}
+            />
           }
           position="bottom right"
           shouldFlip="left"

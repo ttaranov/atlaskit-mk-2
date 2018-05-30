@@ -25,10 +25,22 @@ type TimelineDataset = {
   entries: TimelineEntry[];
 };
 
+type ChartSetting = {
+  title: string;
+  for: 'transformer' | 'component';
+  input: 'column-select' | 'checkbox';
+
+  dataIdx?: number;
+};
+
+type ChartSettings = ChartSetting[];
+
 export {
   GraphTransformer,
   NumberChartDataset,
   NumberChartEntry,
   TimelineEntry,
   TimelineDataset,
+  ChartSetting,
+  ChartSettings,
 };
