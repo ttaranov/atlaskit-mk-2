@@ -39,6 +39,7 @@ export default class TimelineEntry extends React.Component<Props, any> {
               selectedColor={this.props.color}
             />
           ) : null}
+          {/* <input type='text' value={this.props.entry.title} /> */}
           <span>{this.props.entry.title}</span>
           {selected ? (
             <ResizeButton

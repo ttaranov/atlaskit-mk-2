@@ -41,7 +41,7 @@ export const TimelineEntryContainer: ComponentClass<
   flex-direction: column;
   justify-content: space-around;
 
-  cursor: default;
+  cursor: pointer;
 
   &:hover {
     background-color: ${props => props.selectedColor};
@@ -55,6 +55,7 @@ export const TimelineEntryContainer: ComponentClass<
       ? `
     /*border: 1px solid ${(props as TimelineEntryProps).color};*/
     padding-left: 0px;
+    cursor: default;
     /*background-color: ${props.selectedColor}*/
   `
       : `
@@ -68,7 +69,8 @@ export const TimelineEntryContent: ComponentClass<
   display: flex;
   justify-content: space-between;
 
-  & span {
+  & span,
+  & input {
     flex: 1;
   }
 `;
@@ -78,14 +80,9 @@ export const ResizeButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
   content: '..';
   width: 10px;
   padding-left: 6px;
-  text-shadow: -1px -1px ${props => props.selectedColor};
-  font-weight: bold;
-  /*height: 24px;*/
   display: inline-block;
   overflow: hidden;
-  line-height: 5px;
-  font-size: 12px;
-  font-family: sans-serif;
+  line-height: 4px;
   letter-spacing: 1px;
   color: white;
 
