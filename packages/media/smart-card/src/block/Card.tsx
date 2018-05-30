@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import LazyRender from 'react-lazily-render';
+import { auth } from '@atlassian/outbound-auth-flow-client';
 import { Client } from '../Client';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
 import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
@@ -122,10 +123,10 @@ export class Card extends React.Component<CardProps, CardState> {
   };
 
   handleAuthorise = () => {
-    window.open('http://example.com/');
-    setTimeout(() => {
-      this.refresh();
-    }, 3000);
+    // TODO: calling it again should open the same window
+    auth(
+      `https://outbound-auth-flow.ap-southeast-2.dev.atl-paas.net/start?containerId=f4d9cdf9-9977-4c40-a4d2-968a4986ade0&serviceKey=default`,
+    ).then(() => this.refresh(), () => this.refresh());
   };
 
   handleErrorRetry = () => {
