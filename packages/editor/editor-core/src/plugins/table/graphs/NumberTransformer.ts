@@ -1,6 +1,6 @@
-import { Node } from 'prosemirror-model';
 import { containsHeaderRow, containsHeaderColumn } from '../utils';
 import { EditorState } from 'prosemirror-state';
+import { Schema, Node as PMNode } from 'prosemirror-model';
 import {
   GraphTransformer,
   NumberChartDataset,
@@ -8,7 +8,7 @@ import {
 } from './types';
 
 export default class NumberTransformer implements GraphTransformer {
-  private node: Node;
+  private node: PMNode;
   private state: EditorState;
 
   private dataSourceColumns = [1];
@@ -57,7 +57,7 @@ export default class NumberTransformer implements GraphTransformer {
     };
   }
 
-  fromChart(data: NumberChartDataset) {
+  fromChart(data: NumberChartDataset, schema: Schema) {
     return this.node;
   }
 }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
 import { Selection } from 'prosemirror-state';
+import { replaceParentNodeOfType } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
@@ -227,6 +228,19 @@ class TableComponent extends React.Component<ComponentProps> {
                       <TimelineChart
                         data={chartData}
                         chartSelected={this.isChartSelected(pluginState)}
+                        onChartData={newChartData => {
+                          const node = graphTransformer!.fromChart(
+                            newChartData,
+                            view.state.schema,
+                          );
+                          const { state, dispatch } = view;
+                          dispatch(
+                            replaceParentNodeOfType(
+                              state.schema.nodes.table,
+                              node,
+                            )(state.tr),
+                          );
+                        }}
                       />
                     )}
                   </div>
