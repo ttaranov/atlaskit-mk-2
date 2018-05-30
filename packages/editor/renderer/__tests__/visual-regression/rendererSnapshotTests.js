@@ -13,7 +13,7 @@ import { getExampleUrl } from '@atlaskit/visual-regression/example';
 
 const path = require('path');
 
-const examples = getExamplesFor('editor-core');
+const examples = getExamplesFor('renderer');
 const imageSnapshotFolder = path.resolve(__dirname, `__image_snapshots__`);
 expect.extend({ toMatchImageSnapshot });
 
