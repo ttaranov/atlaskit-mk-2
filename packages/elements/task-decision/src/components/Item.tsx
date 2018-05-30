@@ -14,7 +14,7 @@ import { Placeholder } from '../styled/Placeholder';
 
 export interface Props {
   startAdornment?: JSX.Element;
-  endAdornment?: JSX.Element;
+  endAdornment?: JSX.Element | JSX.Element[];
   children?: JSX.Element | JSX.Element[];
   appearance?: Appearance;
   helperText?: string;

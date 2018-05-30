@@ -5,6 +5,7 @@ import { CheckBoxWrapper } from '../styled/TaskItem';
 
 import Item from './Item';
 import { ParticipantsAdornment } from './ParticipantsAdornment';
+import { ReminderAdornment } from './ReminderAdornment';
 import { Appearance, ContentRef, User } from '../types';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 
@@ -23,12 +24,14 @@ export interface Props {
   fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   disabled?: boolean;
+  reminder?: string;
+  onReminderSet?: (value?: string) => void;
 }
 
 let taskCount = 0;
 const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
 
-export class InternalTaskItem extends PureComponent<Props, {}> {
+export class InternalTaskItem extends PureComponent<Props> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline',
   };
@@ -81,6 +84,12 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
     return `Added by ${creator.displayName}`;
   }
 
+  handleReminderSet = reminder => {
+    if (this.props.onReminderSet) {
+      this.props.onReminderSet(reminder);
+    }
+  };
+
   render() {
     const {
       appearance,
@@ -106,12 +115,17 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
       </CheckBoxWrapper>
     );
 
-    const endAdornments = (
+    const endAdornments = [
       <ParticipantsAdornment
+        key="participant"
         appearance={appearance}
         participants={participants}
-      />
-    );
+      />,
+      <ReminderAdornment
+        key="reminder"
+        onReminderSet={this.handleReminderSet}
+      />,
+    ];
 
     return (
       <Item

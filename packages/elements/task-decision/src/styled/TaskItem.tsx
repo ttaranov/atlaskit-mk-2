@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
@@ -70,4 +70,15 @@ export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
       }
     }
   }
+`;
+
+export const ReminderWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  /* opacity: 0;
+  transition: opacity 2s;
+
+  ${props =>
+    props.show &&
+    css`
+      opacity: 1;
+    `}; */
 `;

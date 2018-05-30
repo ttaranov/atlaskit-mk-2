@@ -56,6 +56,7 @@ export const EndAdornmentWrapper: ComponentClass<
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
+  flex-shrink: 0;
 `;
 
 export const StartAdornmentAndContent: ComponentClass<
