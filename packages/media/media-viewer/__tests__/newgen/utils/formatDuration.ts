@@ -13,4 +13,10 @@ describe('formatDuration', () => {
     expect(formatDuration(12 * hour + 30 * minute + 10)).toEqual('12:30:10');
     expect(formatDuration(36 * hour + 30 * minute + 10)).toEqual('36:30:10');
   });
+
+  it('should deal with edge numerical cases', () => {
+    expect(formatDuration(NaN)).toEqual('0:00');
+    expect(formatDuration(Infinity)).toEqual('0:00');
+    expect(formatDuration(-33)).toEqual('0:00');
+  });
 });
