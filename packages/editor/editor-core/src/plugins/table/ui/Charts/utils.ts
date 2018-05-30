@@ -1,3 +1,4 @@
+import { EditorState } from 'prosemirror-state';
 import {
   akColorB300,
   akColorR300,
@@ -14,6 +15,7 @@ import {
   akColorN200,
   akColorT200,
 } from '@atlaskit/util-shared-styles';
+import { stateKey as tablePluginKey } from '../../pm-plugins/main';
 
 const getPixelRatio = () => {
   const ctx = document.createElement('canvas').getContext('2d') as any;
@@ -84,3 +86,50 @@ export const MONTHS = [
   'NOV',
   'DEC',
 ];
+
+export const isTimelineAvailable = (state: EditorState) => {
+  const { tableNode } = tablePluginKey.getState(state);
+  const { tableCell, date } = state.schema.nodes;
+
+  for (let rowIndex = 0; rowIndex < tableNode.childCount; rowIndex++) {
+    const row = tableNode.child(rowIndex);
+
+    for (let columnIndex = 0; columnIndex < row.childCount; columnIndex++) {
+      // TODO: take column index from chart settings (or check if its a date columnt type)
+      const cell = row.child(columnIndex);
+      if (cell.type !== tableCell) {
+        continue;
+      }
+
+      if (cell.firstChild.firstChild.type === date) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
+export const isNumberChartAvailable = (state: EditorState) => {
+  const { tableNode } = tablePluginKey.getState(state);
+  const { tableCell } = state.schema.nodes;
+
+  for (let rowIndex = 0; rowIndex < tableNode.childCount; rowIndex++) {
+    const row = tableNode.child(rowIndex);
+
+    for (let columnIndex = 0; columnIndex < row.childCount; columnIndex++) {
+      const cell = row.child(columnIndex);
+      if (cell.type !== tableCell) {
+        continue;
+      }
+
+      const node = cell.firstChild.firstChild;
+      debugger;
+      if (node.isText && /^\d+$/.test(node.textContent)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};

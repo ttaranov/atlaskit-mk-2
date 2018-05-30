@@ -28,6 +28,7 @@ import DisplayOptionsMenu from './DisplayOptionsMenu';
 import { dropShadow } from '../../../../ui/styles';
 
 import { hoverTable, clearHoverTable } from '../../actions';
+import { isTimelineAvailable, isNumberChartAvailable } from '../Charts/utils';
 
 // `Popup` doesn't work with -ve `offset` if it goes outside of the container hence the -ve margin
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -95,18 +96,22 @@ const tableViews: TableViewInfo = {
   table: {
     icon: ChartTableIcon,
     label: 'table',
+    disabled: () => false,
   },
   timeline: {
     icon: TimelineIcon,
     label: 'timeline',
+    disabled: state => !isTimelineAvailable(state),
   },
   donut: {
     icon: ChartDonutIcon,
     label: 'donut chart',
+    disabled: state => !isNumberChartAvailable(state),
   },
   barchart: {
     icon: GraphBarIcon,
     label: 'bar chart',
+    disabled: state => !isNumberChartAvailable(state),
   },
 };
 
@@ -198,7 +203,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     );
 
     const viewButtons = Object.keys(tableViews).map(viewName => {
-      const { label, icon: Icon } = tableViews[viewName];
+      const { label, icon: Icon, disabled } = tableViews[viewName];
 
       const onClick = () => {
         this.props.updateViewMode!(viewName as TableViewMode);
@@ -207,6 +212,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       return (
         <ToolbarButton
           spacing="compact"
+          disabled={disabled(editorView.state)}
           title={`View as ${label}`}
           selected={viewMode === viewName}
           onClick={this.props.updateViewMode ? onClick : undefined}
