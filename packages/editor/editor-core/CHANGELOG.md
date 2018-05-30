@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.11
+- [patch] Fixes the unncessary copy of private attributes to media node [154535b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/154535b)
+- [none] Updated dependencies [154535b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/154535b)
+
 ## 72.1.10
 - [patch] Fixing the extension title [04b010d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b010d)
 - [none] Updated dependencies [04b010d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b010d)
