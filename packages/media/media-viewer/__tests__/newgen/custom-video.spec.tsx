@@ -51,7 +51,7 @@ describe('<CustomVideo />', () => {
     it('should render the volume controls', () => {
       const { component } = setup();
 
-      expect(component.find(VolumeRange).prop('value')).toEqual(0);
+      expect(component.find(VolumeRange).prop('value')).toEqual(1);
     });
 
     it('should render the time (current/total) in the right format', () => {
