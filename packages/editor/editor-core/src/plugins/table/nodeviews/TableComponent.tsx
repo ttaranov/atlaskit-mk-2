@@ -22,6 +22,7 @@ import { pluginKey as widthPluginKey } from '../../width';
 import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import PieChart from '../ui/Charts/PieChart';
+import BarChart from '../ui/Charts/BarChart';
 import TimelineChart from '../ui/Charts/TimelineChart';
 import ChartSettingsMenu from '../ui/Charts/ChartSettingsMenu';
 
@@ -115,7 +116,7 @@ class TableComponent extends React.Component<ComponentProps> {
     let chartData;
     let availableChartSettings;
 
-    if (node.attrs.viewMode === 'donut') {
+    if (node.attrs.viewMode === 'donut' || node.attrs.viewMode === 'barchart') {
       graphTransformer = new NumberTransformer(
         this.props.view.state,
         this.props.node,
@@ -231,6 +232,12 @@ class TableComponent extends React.Component<ComponentProps> {
                     ) : null}
                     {node.attrs.viewMode === 'donut' && (
                       <PieChart
+                        data={chartData.entries}
+                        legentAlignment="left"
+                      />
+                    )}
+                    {node.attrs.viewMode === 'barchart' && (
+                      <BarChart
                         data={chartData.entries}
                         legentAlignment="left"
                       />

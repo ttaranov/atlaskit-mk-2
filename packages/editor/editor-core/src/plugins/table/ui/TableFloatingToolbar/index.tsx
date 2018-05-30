@@ -18,6 +18,7 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import ChartTableIcon from '@atlaskit/icon/glyph/editor/chart-table';
 import TimelineIcon from '@atlaskit/icon/glyph/editor/timeline';
 import ChartDonutIcon from '@atlaskit/icon/glyph/editor/chart-donut';
+import GraphBarIcon from '@atlaskit/icon/glyph/graph-bar';
 
 import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
 import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
@@ -102,6 +103,10 @@ const tableViews: TableViewInfo = {
   donut: {
     icon: ChartDonutIcon,
     label: 'donut chart',
+  },
+  barchart: {
+    icon: GraphBarIcon,
+    label: 'bar chart',
   },
 };
 

@@ -213,7 +213,7 @@ export const tableStyles = `
         }
       }
     }
-    .ProseMirror-piechart {
+    .ProseMirror-chart {
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -225,7 +225,7 @@ export const tableStyles = `
         flex-direction: row-reverse;
       }
 
-      .ProseMirror-piechart_legend {
+      .ProseMirror-chart_legend {
         list-style: none;
         margin: 0;
         padding: 0;
@@ -239,13 +239,13 @@ export const tableStyles = `
           margin-bottom: 0;
         }
 
-        .ProseMirror-piechart_bullet {
+        .ProseMirror-chart_bullet {
           border-radius: 3px;
           display: inline-block;
           height: 12px;
           width: 12px;
         }
-        .ProseMirror-piechart_title {
+        .ProseMirror-chart_title {
           margin-left: 10px;
         }
       }

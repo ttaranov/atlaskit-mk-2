@@ -135,7 +135,7 @@ export function calcTableColumnWidths(node: PmNode): number[] {
 
 export type Layout = 'default' | 'full-width' | 'wide';
 
-export type ViewMode = 'table' | 'timeline' | 'donut';
+export type ViewMode = 'table' | 'timeline' | 'donut' | 'barchart';
 
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;

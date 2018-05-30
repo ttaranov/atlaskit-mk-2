@@ -4,7 +4,6 @@ import { COLORS, SELECTED_COLORS, MONTHS } from '../utils';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { TimelineContainer } from './styles';
 import TimelineEntry from './TimelineEntry';
-import * as daysBeetween from 'date-fns/difference_in_calendar_days';
 import * as addMonths from 'date-fns/add_months';
 import * as startOfMonth from 'date-fns/start_of_month';
 
@@ -143,7 +142,7 @@ export default class TimelineChart extends React.Component<Props, State> {
     if (resizeDirection !== undefined && resizeIdx !== undefined) {
       const { data } = this.props;
 
-      const dragObj = this.calcStartEndOnDrag();
+      const dragObj = this.calcStartEndOnDrag(resizeIdx);
       // deep copy
       const newData = JSON.parse(JSON.stringify(data));
       const entry = data.entries[resizeIdx];
@@ -230,10 +229,6 @@ export default class TimelineChart extends React.Component<Props, State> {
   private drawGrid = () => {
     const { viewportStart, viewportEnd } = this.state;
 
-    // calc width of each month
-    const diffDays = daysBeetween(viewportStart, viewportEnd);
-    const width = this.props.width! * 30 / Math.abs(diffDays);
-
     // calc start month
     const startDate = new Date(viewportStart);
     const endDate = new Date(viewportEnd);
@@ -283,7 +278,7 @@ export default class TimelineChart extends React.Component<Props, State> {
 
       // see if we need to recalculate a new start or endpoint if resizing
       if (this.state.resizeIdx === entryIdx) {
-        const dragObj = this.calcStartEndOnDrag();
+        const dragObj = this.calcStartEndOnDrag(entryIdx);
         if (dragObj.start) {
           start = dragObj.start;
         }
@@ -291,7 +286,6 @@ export default class TimelineChart extends React.Component<Props, State> {
           end = dragObj.end;
         }
       }
-
       const leftPct = (start - viewportStart) / viewportRange;
       const endPct = (end - viewportStart) / viewportRange;
 
@@ -317,9 +311,9 @@ export default class TimelineChart extends React.Component<Props, State> {
           entry={entry}
           resizing={this.state.resizeIdx === entryIdx}
           startResize={(direction, event) => {
-            const boundingRect = event.currentTarget.parentElement!
-              .parentElement!.getBoundingClientRect();
-            const x = event.clientX - boundingRect.left;
+            // const boundingRect = event.currentTarget.parentElement!
+            //   .parentElement!.getBoundingClientRect();
+            // const x = event.clientX - boundingRect.left;
 
             this.setState({
               resizeDirection: direction,
@@ -347,7 +341,9 @@ export default class TimelineChart extends React.Component<Props, State> {
     }
   }
 
-  private calcStartEndOnDrag = (): { start: number; end: number } => {
+  private calcStartEndOnDrag = (
+    entryIndex: number,
+  ): { start: number; end: number } => {
     const {
       viewportStart,
       viewportEnd,
@@ -361,7 +357,11 @@ export default class TimelineChart extends React.Component<Props, State> {
     if (resizeDirection === 'left') {
       start = dragStart! / this.props.width! * viewportRange + viewportStart;
     } else if (resizeDirection === 'right') {
-      end = dragStart! / this.props.width! * viewportRange + viewportStart;
+      const _end =
+        dragStart! / this.props.width! * viewportRange + viewportStart;
+      if (this.props.data.entries[entryIndex].start !== _end) {
+        end = _end;
+      }
     }
 
     return { start, end };
