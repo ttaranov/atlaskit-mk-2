@@ -4,7 +4,6 @@ import { COLORS, SELECTED_COLORS, MONTHS } from '../utils';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { TimelineContainer } from './styles';
 import TimelineEntry from './TimelineEntry';
-import * as daysBeetween from 'date-fns/difference_in_calendar_days';
 import * as addMonths from 'date-fns/add_months';
 import * as startOfMonth from 'date-fns/start_of_month';
 
@@ -312,9 +311,9 @@ export default class TimelineChart extends React.Component<Props, State> {
           entry={entry}
           resizing={this.state.resizeIdx === entryIdx}
           startResize={(direction, event) => {
-            const boundingRect = event.currentTarget.parentElement!
-              .parentElement!.getBoundingClientRect();
-            const x = event.clientX - boundingRect.left;
+            // const boundingRect = event.currentTarget.parentElement!
+            //   .parentElement!.getBoundingClientRect();
+            // const x = event.clientX - boundingRect.left;
 
             this.setState({
               resizeDirection: direction,

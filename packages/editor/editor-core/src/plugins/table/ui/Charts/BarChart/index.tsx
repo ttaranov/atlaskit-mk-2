@@ -13,7 +13,7 @@ export interface Props {
   size?: number;
 }
 
-export default class PieChart extends React.Component<Props, any> {
+export default class BarChart extends React.Component<Props, any> {
   canvas?: HTMLCanvasElement;
 
   static defaultProps = {
