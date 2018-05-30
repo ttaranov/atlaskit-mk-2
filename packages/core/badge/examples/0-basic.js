@@ -46,7 +46,7 @@ export default function Example() {
       </Item>
       <Item>
         <p>Removed (no theme change)</p>
-        <Badge appearance="removed" />
+        <Badge appearance="removed">{100}</Badge>
       </Item>
       <Item>
         <p>Infinity (∞)</p>

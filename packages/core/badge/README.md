@@ -15,3 +15,41 @@ They must be used singly after a single item name, and have only numbers.
 ## Try it out
 
 Interact with a [live demo of the @NAME@ component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+
+## Usage
+
+The `default` export gives you full badge functionality and automatically formats the number you priovide it.
+
+```js
+import Badge from '@atlaskit/badge';
+
+// Displays: 99+
+<Badge>{1000}</Badge>
+
+// Displays: 999+
+<Badge max={999}>{1000}</Badge>
+```
+
+### Badge
+
+The named `Badge` export retains the styling of a normal badge, but without formatting. This means you can compose in whatever information you need to.
+
+```js
+import { Badge } from '@atlaskit/badge';
+
+// Displays: <em>Something</em>
+<Badge><em>Something</em></Badge>
+```
+
+_Beware that putting arbitrary content inside of a badge might cause it to take on an unitended look._
+
+### Format
+
+The `Format` export can be used to compose your own badge together, or if you need the badge  style formatting somewhere else.
+
+```js
+import { Badge, Format } from '@atlaskit/badge';
+
+// Displays: <em>999+</em>
+<Badge><em><Format>{1000}</Format></em></Badge>
+```
