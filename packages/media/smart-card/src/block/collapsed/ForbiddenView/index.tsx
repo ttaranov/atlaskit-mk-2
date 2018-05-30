@@ -20,6 +20,10 @@ export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   };
 
   renderRight() {
+    const { onAuthorise } = this.props;
+    if (!onAuthorise) {
+      return null;
+    }
     return (
       <Button
         appearance="subtle"

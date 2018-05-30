@@ -10,7 +10,11 @@ import { LoadingView as CollapsedLoadingView } from './collapsed/LoadingView';
 import { UnauthorisedView as CollapsedUnauthorisedView } from './collapsed/UnauthorisedView';
 import { ForbiddenView as CollapsedForbiddenView } from './collapsed/ForbiddenView';
 import { ErroredView as CollapsedErrorView } from './collapsed/ErroredView';
-import { ObjectStateProvider } from '../Client/ObjectStateProvider';
+import {
+  ObjectStateProvider,
+  ObjectService,
+  ObjectStatus,
+} from '../Client/ObjectStateProvider';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface CardProps {
@@ -24,13 +28,8 @@ export interface CardContext {
 }
 
 export interface CardState {
-  status:
-    | 'resolving'
-    | 'resolved'
-    | 'unauthorised'
-    | 'forbidden'
-    | 'not-found'
-    | 'errored';
+  status: ObjectStatus;
+  services: ObjectService[];
   props?: CardViewProps;
 }
 export class Card extends React.Component<CardProps, CardState> {
@@ -45,6 +44,7 @@ export class Card extends React.Component<CardProps, CardState> {
 
   state: CardState = {
     status: 'resolving',
+    services: [],
   };
 
   getClient(): Client {
@@ -83,12 +83,15 @@ export class Card extends React.Component<CardProps, CardState> {
 
     const { url } = this.props;
     const provider = client.get(url);
-    const subscription = provider.observable().subscribe(({ status, data }) =>
-      this.setState({
-        status,
-        props: data ? extractPropsFromJSONLD(data) : undefined,
-      }),
-    );
+    const subscription = provider
+      .observable()
+      .subscribe(({ status, services, data }) =>
+        this.setState({
+          status,
+          services,
+          props: data ? extractPropsFromJSONLD(data) : undefined,
+        }),
+      );
 
     this.provider = provider;
     this.subscription = subscription;
@@ -122,11 +125,8 @@ export class Card extends React.Component<CardProps, CardState> {
     }
   };
 
-  handleAuthorise = () => {
-    // TODO: calling it again should open the same window
-    auth(
-      `https://outbound-auth-flow.ap-southeast-2.dev.atl-paas.net/start?containerId=f4d9cdf9-9977-4c40-a4d2-968a4986ade0&serviceKey=default`,
-    ).then(() => this.refresh(), () => this.refresh());
+  handleAuthorise = (service: ObjectService) => {
+    auth(service.startAuthUrl).then(() => this.refresh(), () => this.refresh());
   };
 
   handleErrorRetry = () => {
@@ -168,21 +168,24 @@ export class Card extends React.Component<CardProps, CardState> {
   }
 
   renderUnauthorisedState() {
-    // TODO: extract the service name
+    // TODO: figure out how to support multiple services
+    const service = this.state.services[0];
     return this.renderInTheCollapsedFrame(
       <CollapsedUnauthorisedView
         icon={this.collapsedIcon}
-        service="Google Drive"
-        onAuthorise={this.handleAuthorise}
+        service={service ? service.name : ''}
+        onAuthorise={service ? () => this.handleAuthorise(service) : undefined}
       />,
     );
   }
 
   renderForbiddenState() {
+    // TODO: figure out how to support multiple services
+    const service = this.state.services[0];
     return this.renderInTheCollapsedFrame(
       <CollapsedForbiddenView
         icon={this.collapsedIcon}
-        onAuthorise={this.handleAuthorise}
+        onAuthorise={service ? () => this.handleAuthorise(service) : undefined}
       />,
     );
   }
