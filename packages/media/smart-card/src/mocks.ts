@@ -7,9 +7,9 @@ const context = '';
 
 const serviceAuth = {
   key: 'default',
-  displayName: 'Google Drive',
+  displayName: 'Google',
   url:
-    'https://id.stg.internal.atlassian.com/outboundAuth/start?containerId=e3e9e187-1d64-4812-a522-e4069a46fab8&serviceKey=default&redirectUrl=http%3A%2F%2Flocalhost%3A8081%2Fapps%2Foutbound-auth%2Ffinish',
+    'https://outbound-auth-flow.ap-southeast-2.dev.atl-paas.net/start?containerId=f4d9cdf9-9977-4c40-a4d2-968a4986ade0&serviceKey=default',
 };
 
 const generator = {
