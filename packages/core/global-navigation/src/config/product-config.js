@@ -33,6 +33,7 @@ const generateDropDown = (
 );
 
 export default function generateProductConfig(props: GlobalNavigationProps) {
+  // Add key only if prop is passed.
   const product = {
     ...(props.productIcon && { icon: props.productIcon }),
     ...(props.onProductClick && { onClick: props.onProductClick }),
@@ -59,8 +60,8 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
     ...(props.notificationTooltip && { label: props.notificationTooltip }),
     ...(props.notificationCount && {
-      badge: () => (
-        <Badge appearance="important" value={props.notificationCount} />
+      badge: (notificationCount: number) => (
+        <Badge appearance="important" value={notificationCount} />
       ),
     }),
   };
@@ -82,7 +83,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.helpTooltip && { tooltip: props.helpTooltip }),
     ...(props.helpTooltip && { label: props.helpTooltip }),
     ...(props.appSwitcher && {
-      component: () => generateDropDown(QuestionIcon, props.appSwitcherItems),
+      component: () => generateDropDown(QuestionIcon, props.helpItems),
     }),
   };
   const profile = {
