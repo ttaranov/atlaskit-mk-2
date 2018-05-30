@@ -8,3 +8,4 @@ export { default as CountrySelect } from './CountrySelect';
 export { default as RadioSelect } from './RadioSelect';
 export { default as CreatableSelect } from './CreatableSelect';
 export { default as AsyncCreatableSelect } from './AsyncCreatableSelect';
+export { default as CompositeSelect } from './CompositeSelect';
