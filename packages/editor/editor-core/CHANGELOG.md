@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.10
+- [patch] Fixing the extension title [04b010d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b010d)
+- [none] Updated dependencies [04b010d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b010d)
+
 ## 72.1.9
 - [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
   - @atlaskit/media-card@28.0.5
