@@ -53,19 +53,14 @@ export const TimelineEntryContainer: ComponentClass<
 
   ${props => (props.resizing ? 'opacity: 0.4' : '')};
 
-  ${props =>
-    (props as TimelineEntryProps).selected
-      ? `
-    /*border: 1px solid ${(props as TimelineEntryProps).color};*/
-    padding-left: 0px;
-    padding-right: 0px;
-    cursor: default;
-    /*background-color: ${props.selectedColor}*/
-  `
-      : `
-    padding-left: 16px;
-    padding-right: 16px;
-  `};
+  .ProseMirror-timeline_resize_btn {
+    visibility: hidden;
+  }
+
+  &:hover .ProseMirror-timeline_resize_btn,
+  &.-resizing .ProseMirror-timeline_resize_btn {
+    visibility: visible;
+  }
 `;
 
 export const TimelineEntryContent: ComponentClass<
@@ -93,7 +88,6 @@ export const ResizeButton: ComponentClass<
   content: '..';
   width: 10px;
   padding-left: 6px;
-  display: inline-block;
   overflow: hidden;
   line-height: 4px;
   letter-spacing: 1px;

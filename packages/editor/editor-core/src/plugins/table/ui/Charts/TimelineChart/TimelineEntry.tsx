@@ -27,54 +27,52 @@ export default class TimelineEntry extends React.Component<Props, any> {
   };
 
   render() {
-    const { selected } = this.props;
+    const {
+      selected,
+      resizing,
+      selectedColor,
+      color,
+      left,
+      width,
+      entry,
+    } = this.props;
 
     return (
       <TimelineEntryContainer
         onClick={this.props.onClick}
         selected={selected}
-        resizing={this.props.resizing}
-        selectedColor={this.props.selectedColor}
-        color={this.props.color}
+        resizing={resizing}
+        selectedColor={selectedColor}
+        color={color}
         style={{
-          left: `${this.props.left}px`,
-          width: `${this.props.width}px`,
+          left: `${left}px`,
+          width: `${width}px`,
         }}
+        className={`${resizing ? '-resizing' : ''}`}
       >
         <TimelineEntryContent>
-          {selected ? (
-            <ResizeButton onMouseDown={e => this.onMouseDown(e, 'left')} />
-          ) : null}
+          <ResizeButton
+            className="ProseMirror-timeline_resize_btn"
+            onMouseDown={e => this.handleMouseDown(e, 'left')}
+          />
           {/* <input type='text' value={this.props.entry.title} /> */}
-          <span>{this.props.entry.title}</span>
-          {selected ? (
-            <ResizeButton onMouseDown={e => this.onMouseDown(e, 'right')} />
-          ) : null}
+          <span>{entry.title}</span>
+          <ResizeButton
+            className="ProseMirror-timeline_resize_btn"
+            onMouseDown={e => this.handleMouseDown(e, 'right')}
+          />
         </TimelineEntryContent>
       </TimelineEntryContainer>
     );
   }
 
-  onMouseDown = (
+  private handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement>,
     direction: 'left' | 'right',
   ) => {
-    // event.preventDefault();
-    // event.stopPropagation();
-
-    // this.setState({
-    //   resizeDirection: direction
-    // });
-
-    // const boundingRect = event.currentTarget.getBoundingClientRect();
-    // const x = event.clientX - boundingRect.left;
-
-    // console.log('x was', x, 'left was', this.props.left, 'clientX', boundingRect.left);
-
-    // this.props.startResize!(direction);
-    this.props.startResize ? this.props.startResize(direction, event) : null;
-
     event.preventDefault();
     event.stopPropagation();
+
+    this.props.startResize ? this.props.startResize(direction, event) : null;
   };
 }
