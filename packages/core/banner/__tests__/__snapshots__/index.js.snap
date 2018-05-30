@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`banner should render error banner correctly with links 1`] = `
+exports[`banner should render error banner correctly 1`] = `
 .c0 {
   max-height: 52px;
   overflow: hidden;
@@ -92,7 +92,7 @@ exports[`banner should render error banner correctly with links 1`] = `
 </div>
 `;
 
-exports[`banner should render warning banner correctly with links 1`] = `
+exports[`banner should render warning banner correctly 1`] = `
 .c0 {
   max-height: 52px;
   overflow: hidden;
