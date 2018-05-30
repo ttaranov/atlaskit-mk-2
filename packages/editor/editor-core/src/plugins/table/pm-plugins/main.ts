@@ -458,7 +458,15 @@ export const createPlugin = (
           }
           return true;
         },
-        blur(view: EditorView, event) {
+        blur(view: EditorView, event: FocusEvent) {
+          if (
+            event.relatedTarget &&
+            event.srcElement &&
+            event.srcElement.contains(event.relatedTarget as HTMLElement)
+          ) {
+            return false;
+          }
+
           const pluginState: TableState = stateKey.getState(view.state);
           pluginState.updateEditorFocused(false);
           const dirty = pluginState.update();

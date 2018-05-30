@@ -22,6 +22,7 @@ import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import PieChart from '../ui/Charts/PieChart';
 import TimelineChart from '../ui/Charts/TimelineChart';
+import ChartSettingsMenu from '../ui/Charts/ChartSettingsMenu';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
@@ -210,6 +211,12 @@ class TableComponent extends React.Component<ComponentProps> {
                     }}
                     onClick={this.handleChartClick}
                   >
+                    {this.isChartSelected(pluginState) ? (
+                      <ChartSettingsMenu
+                        target={this.chart!}
+                        onPopup={this.onChartSettingsPopup}
+                      />
+                    ) : null}
                     {node.attrs.viewMode === 'donut' && (
                       <PieChart
                         data={chartData.entries}
@@ -230,6 +237,10 @@ class TableComponent extends React.Component<ComponentProps> {
       />
     );
   }
+
+  onChartSettingsPopup = isOpen => {
+    this.setState({});
+  };
 
   componentDidUpdate() {
     const { allowColumnResizing, node, cellMinWidth } = this.props;
@@ -279,12 +290,15 @@ class TableComponent extends React.Component<ComponentProps> {
   private handleScrollDebounced = rafSchedule(this.handleScroll);
 
   private handleChartClick = event => {
-    event.preventDefault();
+    // event.preventDefault();
 
-    let target = event.target;
+    let target = event.currentTarget;
     let toolbarTarget;
     while (target) {
-      if (target.className === 'table-parent-container') {
+      if (
+        target.className === 'table-parent-container' ||
+        target.className === 'ProseMirror-chart-container'
+      ) {
         toolbarTarget = target;
         break;
       }
@@ -308,14 +322,17 @@ class TableComponent extends React.Component<ComponentProps> {
     let node = tableElement;
     let toolbarTarget;
     while (node) {
-      if (node.className === 'table-parent-container') {
+      if (
+        node.className === 'table-parent-container' ||
+        node.className === 'ProseMirror-chart-container'
+      ) {
         toolbarTarget = node;
         break;
       }
       node = node.parentNode as HTMLElement;
     }
 
-    return toolbarTarget.contains(this.chart);
+    return toolbarTarget.contains(this.chart) || toolbarTarget === this.chart;
   };
 }
 
