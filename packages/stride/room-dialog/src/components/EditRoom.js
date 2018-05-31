@@ -3,6 +3,8 @@ import React, { Component, type Node } from 'react';
 import Checkbox from '@atlaskit/checkbox';
 import TextField from '@atlaskit/field-text';
 import ModalDialog from '@atlaskit/modal-dialog';
+//TODO: The logic should be the same as Create room only the header and the children passed should be updated
+// So the best way is to have a root compo called StrideDialog and add the different flavors: Create and Edit
 
 type Props = {
   /** Actions to pass to the modal dialog */
