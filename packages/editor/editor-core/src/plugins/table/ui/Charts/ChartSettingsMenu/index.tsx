@@ -51,14 +51,6 @@ export default class ChartSettingsMenu extends React.Component<Props, State> {
     isOpen: false,
   };
 
-  togglePopup = () => {
-    this.props.onPopup ? this.props.onPopup(!this.state.isOpen) : null;
-
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
-  };
-
   render() {
     // FIXME: move out to parent component, and just pass in string array instead
     const haveHeaderRow = containsHeaderRow(
@@ -122,11 +114,20 @@ export default class ChartSettingsMenu extends React.Component<Props, State> {
     );
   }
 
+  private togglePopup = () => {
+    this.props.onPopup ? this.props.onPopup(!this.state.isOpen) : null;
+
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  };
+
   private handleClickOutside = event => {
     if (
       this.dialogRef &&
       document.contains(event.target) &&
-      !this.dialogRef.contains(event.target)
+      !this.dialogRef.contains(event.target) &&
+      this.state.isOpen
     ) {
       this.togglePopup();
     }
