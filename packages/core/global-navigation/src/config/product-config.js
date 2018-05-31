@@ -45,27 +45,33 @@ const generateAvatar = profileIconUrl => () => (
 
 export default function generateProductConfig(props: GlobalNavigationProps) {
   // Add key only if prop is passed.
+  // Flow doesn't seem to understand the syntax
+  // $FlowFixMe
   const product = {
     ...(props.productIcon && { icon: props.productIcon }),
     ...(props.onProductClick && { onClick: props.onProductClick }),
     ...(props.productTooltip && { tooltip: props.productTooltip }),
     ...(props.productTooltip && { label: props.productTooltip }),
   };
+  // $FlowFixMe
   const create = {
     ...(props.onCreateClick && { onClick: props.onCreateClick }),
     ...(props.createTooltip && { tooltip: props.createTooltip }),
     ...(props.createTooltip && { label: props.createTooltip }),
   };
+  // $FlowFixMe
   const search = {
     ...(props.onSearchClick && { onClick: props.onSearchClick }),
     ...(props.searchTooltip && { tooltip: props.searchTooltip }),
     ...(props.searchTooltip && { label: props.searchTooltip }),
   };
+  // $FlowFixMe
   const yourWork = {
     ...(props.onYourWorkClick && { onClick: props.onYourWorkClick }),
     ...(props.yourWorkTooltip && { tooltip: props.yourWorkTooltip }),
     ...(props.yourWorkTooltip && { label: props.yourWorkTooltip }),
   };
+  // $FlowFixMe
   const notification = {
     ...(props.onNotificationClick && { onClick: props.onNotificationClick }),
     ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
@@ -76,11 +82,13 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
       ),
     }),
   };
+  // $FlowFixMe
   const people = {
     ...(props.onPeopleClick && { onClick: props.onPeopleClick }),
     ...(props.peopleTooltip && { tooltip: props.peopleTooltip }),
     ...(props.peopleTooltip && { label: props.peopleTooltip }),
   };
+  // $FlowFixMe
   const appSwitcher = {
     ...(props.onAppSwitcherClick && { onClick: props.onAppSwitcherClick }),
     ...(props.appSwitcherTooltip && { tooltip: props.appSwitcherTooltip }),
@@ -90,6 +98,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
         generateDropDown(MenuIcon, appSwitcherItems),
     }),
   };
+  // $FlowFixMe
   const help = {
     ...(props.onHelpClick && { onClick: props.onHelpClick }),
     ...(props.helpTooltip && { tooltip: props.helpTooltip }),
@@ -100,6 +109,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
       ),
     }),
   };
+  // $FlowFixMe
   const profile = {
     ...(props.onProfileClick && { onClick: props.onProfileClick }),
     ...(props.profileTooltip && { tooltip: props.profileTooltip }),
