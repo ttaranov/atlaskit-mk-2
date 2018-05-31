@@ -19,6 +19,10 @@ export type State = {
   src: Outcome<string, Error>;
 };
 
+const isIE =
+  navigator.userAgent.indexOf('MSIE') !== -1 ||
+  navigator.appVersion.indexOf('Trident/') > 0;
+
 export class VideoViewer extends React.Component<Props, State> {
   state: State = { src: { status: 'PENDING' } };
 
@@ -29,10 +33,8 @@ export class VideoViewer extends React.Component<Props, State> {
   render() {
     const { src } = this.state;
     const { featureFlags, showControls } = this.props;
-    const useCustomVideoPlayer = getFeatureFlag(
-      'customVideoPlayer',
-      featureFlags,
-    );
+    const useCustomVideoPlayer =
+      !isIE && getFeatureFlag('customVideoPlayer', featureFlags);
 
     switch (src.status) {
       case 'PENDING':
@@ -70,7 +72,10 @@ export class VideoViewer extends React.Component<Props, State> {
 }
 
 function getVideoArtifactUrl(fileItem: FileItem) {
-  const artifact = 'video_640.mp4';
+  const smallVideoArtifact = 'video_640.mp4';
+  const largeVideoArtifact = 'video_1280.mp4';
+  const artifact =
+    window.innerWidth <= 640 ? smallVideoArtifact : largeVideoArtifact;
 
   return (
     fileItem.details &&
