@@ -20,8 +20,6 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { DevTools } from '../example-helpers/DevTools';
 
-import { DefaultDocument } from './timeline-document';
-
 export const TitleInput: any = styled.input`
   border: none;
   outline: none;
@@ -86,7 +84,9 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {};
+export type Props = {
+  defaultValue?: Object;
+};
 export type State = { disabled: boolean };
 
 const providers = {
@@ -147,7 +147,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             allowDate={true}
             UNSAFE_allowLayouts={true}
             // allowGapCursor={true}
-            defaultValue={DefaultDocument}
+            defaultValue={this.props.defaultValue}
             allowTemplatePlaceholders={{ allowInserting: true }}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
@@ -189,12 +189,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example() {
+export default function Example({ defaultValue }) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor />
+        <ExampleEditor defaultValue={defaultValue} />
       </div>
     </EditorContext>
   );
