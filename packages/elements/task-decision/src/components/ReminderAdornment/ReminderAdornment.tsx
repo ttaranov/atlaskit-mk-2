@@ -69,7 +69,9 @@ export class ReminderAdornment extends React.Component<Props, State> {
       />
     );
     return this.props.value ? (
-      button
+      <Tooltip key="button" position="top" content={label} hideTooltipOnClick>
+        {button}
+      </Tooltip>
     ) : (
       <RecomendationsDropdown
         label={label}
