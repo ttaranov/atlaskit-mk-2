@@ -45,6 +45,7 @@ export class Footer extends Component<FooterProps> {
 
     return (
       <InsertButton
+        className="insert-button"
         appearance="primary"
         onClick={onClick}
         isDisabled={!canInsert}
