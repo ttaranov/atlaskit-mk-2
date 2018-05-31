@@ -33,11 +33,11 @@ export class ReminderAdornment extends React.Component<Props, State> {
     }));
   };
 
-  handleConfirm = value => {
+  handleOnChange = value => {
+    this.setState({ value });
     if (this.props.onReminderSet) {
       this.props.onReminderSet(value);
     }
-    this.toggleOpen();
   };
 
   getIconAndLabel() {
@@ -81,9 +81,8 @@ export class ReminderAdornment extends React.Component<Props, State> {
         key="modal"
         isOpen={this.state.isOpen}
         onRequetsClose={this.toggleOpen}
-        onChange={value => this.setState({ value })}
+        onChange={this.handleOnChange}
         value={this.state.value}
-        onConfirm={this.handleConfirm}
       />,
     ]);
   }
