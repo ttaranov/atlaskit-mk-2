@@ -1,8 +1,9 @@
 //@flow
 import React, { Component, type Node } from 'react';
+import Button from '@atlaskit/button';
 import Checkbox from '@atlaskit/checkbox';
-import TextField from '@atlaskit/field-text';
 import ModalDialog from '@atlaskit/modal-dialog';
+import TextField from '@atlaskit/field-text';
 //TODO: The logic should be the same as Create room only the header and the children passed should be updated
 // So the best way is to have a root compo called StrideDialog and add the different flavors: Create and Edit
 
@@ -45,6 +46,8 @@ export default class EditRoom extends Component<Props, State> {
           onChange={() => {}} // TO be done later
           name="checkbox-basic"
         />
+        <br />
+        <Button onClick={() => {}}>Archive Room</Button>
       </div>
     ),
   };
