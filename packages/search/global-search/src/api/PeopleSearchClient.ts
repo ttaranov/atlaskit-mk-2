@@ -103,7 +103,7 @@ function userSearchResultToResult(searchResult: SearchResult): Result {
     resultType: ResultType.Person,
     resultId: 'people-' + searchResult.id,
     name: searchResult.fullName,
-    href: '/home/people/' + searchResult.id,
+    href: '/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
     analyticsType: AnalyticsType.ResultPerson,
   };
