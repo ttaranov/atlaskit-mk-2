@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ComponentClass, StatelessComponent, PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 
-export type SimpleEventHandler = () => void;
+export type SimpleEventHandler = (evt?: Event) => void;
 
 export interface WithOutsideClickProps {
   handleClickOutside?: SimpleEventHandler;
@@ -44,7 +44,7 @@ export default function withOuterListeners<P>(
         !domNode ||
         (evt.target instanceof Node && !domNode.contains(evt.target))
       ) {
-        (this.props.handleClickOutside as SimpleEventHandler)();
+        (this.props.handleClickOutside as SimpleEventHandler)(evt);
       }
     };
 
