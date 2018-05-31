@@ -32,7 +32,7 @@ export default class BarChart extends React.Component<Props, any> {
     const { legendAlignment, colors, data } = this.props;
 
     return (
-      <div className={`ProseMirror-chart -legent-${legendAlignment}`}>
+      <div className={`ProseMirror-chart -legend-${legendAlignment}`}>
         <ChartLegend data={data} colors={colors} />
         <canvas ref={this.handleRef} />
       </div>
