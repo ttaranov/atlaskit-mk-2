@@ -5,7 +5,6 @@ import type { TreeItem, TargetPosition, TreeData, Path } from '../types';
 export type RenderItemParams = {|
   item: TreeItem,
   depth: number,
-  isDragging: boolean,
   onExpand: (item: TreeItem) => void,
   onCollapse: (item: TreeItem) => void,
 |};

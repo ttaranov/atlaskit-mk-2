@@ -7,10 +7,10 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Spinner from '@atlaskit/spinner';
 import Tree from '../src/';
-import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
 import type { TreeItem, TreeData, Path } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 import { getItem, mutateTree } from '../src/utils/tree';
+import { range } from '../src/utils/handy';
 
 const LEFT_PADDING = 35;
 
@@ -41,9 +41,33 @@ type State = {|
   tree: TreeData,
 |};
 
-export default class LazyTree extends Component<void, State> {
+const addRandomChildren = (tree: TreeData, path: Path, n: number): TreeData => {
+  const generateChildren = range(n).map(() => {
+    return {
+      id: Math.random(),
+      children: [],
+      hasChildren: true,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: { title: `Title ${path.length}` },
+    };
+  });
+  const newChildren = [...getItem(tree, path).children, ...generateChildren];
+  return mutateTree(tree, path, { children: newChildren });
+};
+
+const starterTree = {
+  id: '1',
+  children: [],
+  hasChildren: true,
+  isExpanded: true,
+  isChildrenLoading: false,
+  data: {},
+};
+
+export default class InfiniteTree extends Component<void, State> {
   state = {
-    tree: mutateTree(treeWithTwoBranches, [0], { isExpanded: false }),
+    tree: addRandomChildren(starterTree, [], 20),
   };
 
   static getIcon(
@@ -76,32 +100,25 @@ export default class LazyTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
-      <AkNavigationItem
-        text={item.data ? item.data.title : ''}
-        icon={LazyTree.getIcon(item, onExpand, onCollapse)}
-      />
-    </div>
-  );
+  renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => {
+    console.log('render');
+    return (
+      <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
+        <AkNavigationItem
+          text={item.data ? item.data.title : ''}
+          icon={InfiniteTree.getIcon(item, onExpand, onCollapse)}
+        />
+      </div>
+    );
+  };
 
   onExpand = (item: TreeItem, path: Path) => {
     const { tree }: State = this.state;
+    const newTree = mutateTree(tree, path, { isExpanded: true });
+    const newerTree = addRandomChildren(newTree, path, 20);
     this.setState({
-      tree: mutateTree(tree, path, { isChildrenLoading: true }),
+      tree: newerTree,
     });
-    setTimeout(() => {
-      const freshTree = this.state.tree;
-      const currentItem: TreeItem = getItem(freshTree, path);
-      if (currentItem.isChildrenLoading) {
-        this.setState({
-          tree: mutateTree(freshTree, path, {
-            isExpanded: true,
-            isChildrenLoading: false,
-          }),
-        });
-      }
-    }, 2000);
   };
 
   onCollapse = (item: TreeItem, path: Path) => {

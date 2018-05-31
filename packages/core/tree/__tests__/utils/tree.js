@@ -89,6 +89,20 @@ describe('@atlaskit/tree - utils/tree', () => {
   });
 
   describe('#mutateTree', () => {
+    it('mutates the root', () => {
+      const mutatedTree = mutateTree(treeWithThreeLeaves, [], {
+        children: [],
+      });
+      expect(mutatedTree).not.toBe(treeWithThreeLeaves);
+      expect(mutatedTree.id).toBe(treeWithThreeLeaves.id);
+      expect(mutatedTree.children.length).toBe(0);
+      expect(mutatedTree.hasChildren).toBe(true);
+      expect(mutatedTree.isExpanded).toBe(true);
+      expect(mutatedTree.isChildrenLoading).toBe(false);
+      expect(mutatedTree.data).toBe(treeWithThreeLeaves.data);
+      expect(treeWithThreeLeaves.children.length).toBe(3);
+    });
+
     it('changes only the changed child', () => {
       const mutatedTree = mutateTree(treeWithThreeLeaves, [1], {
         isChildrenLoading: true,
@@ -117,6 +131,21 @@ describe('@atlaskit/tree - utils/tree', () => {
       expect(
         treeWithTwoBranches.children[1].children[1].isChildrenLoading,
       ).toBe(false);
+    });
+  });
+
+  describe('#isSamePath', () => {
+    it("returns true if it's the same", () => {
+      expect(isSamePath([1, 1], [1, 1])).toBe(true);
+    });
+
+    it("returns false if it's not", () => {
+      expect(isSamePath([1, 1, 1], [1, 1])).toBe(false);
+    });
+
+    it('returns false if any of them is empty', () => {
+      expect(isSamePath([], [1, 1])).toBe(false);
+      expect(isSamePath([1], [])).toBe(false);
     });
   });
 });
