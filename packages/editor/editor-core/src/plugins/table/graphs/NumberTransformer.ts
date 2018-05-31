@@ -11,11 +11,12 @@ export default class NumberTransformer implements GraphTransformer {
   private node: PMNode;
   private state: EditorState;
 
-  private dataSourceColumns = [1];
+  private dataSourceColumns: number[] = [];
 
-  constructor(state, node) {
+  constructor(state, node, settings: any) {
     this.state = state;
     this.node = node;
+    this.dataSourceColumns = [settings.values];
   }
 
   toChart(): NumberChartDataset {

@@ -7,11 +7,12 @@ export default class TimelineTransformer implements GraphTransformer {
   private node: PMNode;
   private state: EditorState;
 
-  private dataSourceColumns = [1, 2];
+  private dataSourceColumns: number[] = [];
 
-  constructor(state, node) {
+  constructor(state, node, settings) {
     this.state = state;
     this.node = node;
+    this.dataSourceColumns = [settings.start, settings.end];
   }
 
   toChart(): TimelineDataset {

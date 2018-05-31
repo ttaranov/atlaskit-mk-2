@@ -26,6 +26,7 @@ type TimelineDataset = {
 };
 
 type ChartSetting = {
+  name: string;
   title: string;
   for: 'transformer' | 'component';
   input: 'column-select' | 'checkbox';

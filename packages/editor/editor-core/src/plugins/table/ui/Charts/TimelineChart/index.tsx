@@ -20,6 +20,7 @@ export interface Props {
   textPaddingLeft?: number;
   chartSelected: boolean;
   onChartData: (data: TimelineDataset) => void;
+  gridlines?: boolean;
 }
 
 export interface State {
@@ -111,7 +112,7 @@ export default class TimelineChart extends React.Component<Props, State> {
           });
         }}
       >
-        {this.drawGrid()}
+        {this.props.gridlines ? this.drawGrid() : null}
         {this.drawTimeline()}
       </TimelineContainer>
     );

@@ -18,7 +18,7 @@ import { dropShadow } from '../../../../ui/styles';
 
 // import Form, { Field, FormHeader, FormSection, FormFooter } from '@atlaskit/form';
 import Select from '@atlaskit/select';
-import { ChartSettings } from '../../graphs';
+import { ChartSettings, ChartSetting } from '../../graphs';
 import { Node } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { containsHeaderRow } from '../../utils';
@@ -39,12 +39,16 @@ export interface Props {
   availableChartSettings: ChartSettings;
   tableNode: Node;
   state: EditorState;
+  currentSettings: object;
+  onChange: (key: string, value: any) => void;
 }
 
 export interface DialogProps {
   onRef?: (ref: HTMLDivElement | null) => void;
   availableChartSettings: ChartSettings;
   columns: string[];
+  currentSettings: object;
+  onChange: (key: string, value: any) => void;
 }
 
 export interface State {
@@ -52,6 +56,37 @@ export interface State {
 }
 
 export class ChartSettingsDialog extends Component<DialogProps> {
+  renderSetting(setting: ChartSetting) {
+    if (setting.input === 'column-select') {
+      return (
+        <Select
+          isSearchable={false}
+          options={this.props.columns.map((colname, idx) => {
+            return { label: colname, value: idx };
+          })}
+          value={{
+            label: this.props.columns[this.props.currentSettings[setting.name]],
+            value: this.props.currentSettings[setting.name],
+          }}
+          onChange={e => {
+            this.props.onChange(setting.name, e.value);
+          }}
+        />
+      );
+    } else if (setting.input === 'checkbox') {
+      return (
+        <input
+          type="checkbox"
+          checked={this.props.currentSettings[setting.name]}
+          onChange={e => this.props.onChange(setting.name, e.target.checked)}
+        />
+      );
+    }
+
+    console.warn('cannot render setting', setting);
+    return null;
+  }
+
   render() {
     return (
       <div
@@ -67,15 +102,7 @@ export class ChartSettingsDialog extends Component<DialogProps> {
           return (
             <div>
               <h5>{availableSetting.title}</h5>
-              {availableSetting.input === 'column-select' ? (
-                <Select
-                  options={this.props.columns.map((colname, idx) => {
-                    return { label: colname, value: idx };
-                  })}
-                />
-              ) : (
-                <input type="checkbox" />
-              )}
+              {this.renderSetting(availableSetting)}
             </div>
           );
         })}
@@ -163,7 +190,9 @@ export default class ChartSettingsMenu extends Component<Props, State> {
             <ChartSettingsDialog
               columns={columnNames}
               availableChartSettings={this.props.availableChartSettings}
+              currentSettings={this.props.currentSettings}
               onRef={ref => (this.dialogRef = ref)}
+              onChange={this.props.onChange}
             />
           }
           position="bottom right"

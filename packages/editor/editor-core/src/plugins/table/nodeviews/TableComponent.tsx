@@ -37,6 +37,7 @@ import {
   TimelineTransformer,
   DonutSettings,
   TimelineSettings,
+  ChartSetting,
 } from '../graphs';
 
 export interface ComponentProps extends Props {
@@ -114,21 +115,48 @@ class TableComponent extends React.Component<ComponentProps> {
 
     let graphTransformer: GraphTransformer | undefined;
     let chartData;
-    let availableChartSettings;
+    let availableChartSettings: ChartSetting[] | undefined = undefined;
+
+    const { viewModeSettings, viewMode } = node.attrs;
+    const activeViewModeSettings = viewModeSettings[viewMode]
+      ? viewModeSettings[viewMode]
+      : {};
+    console.log(
+      'for view',
+      viewMode,
+      'using view mode settings',
+      activeViewModeSettings,
+    );
 
     if (node.attrs.viewMode === 'donut' || node.attrs.viewMode === 'barchart') {
       graphTransformer = new NumberTransformer(
         this.props.view.state,
-        this.props.node,
+        node,
+        activeViewModeSettings,
       );
       availableChartSettings = DonutSettings;
     } else if (node.attrs.viewMode === 'timeline') {
       graphTransformer = new TimelineTransformer(
         this.props.view.state,
         this.props.node,
+        activeViewModeSettings,
       );
       availableChartSettings = TimelineSettings;
     }
+
+    const componentChartSettings = availableChartSettings
+      ? availableChartSettings.reduce((componentSettings, setting) => {
+          if (
+            setting.for === 'component' &&
+            activeViewModeSettings[setting.name]
+          ) {
+            componentSettings[setting.name] =
+              activeViewModeSettings[setting.name];
+          }
+
+          return componentSettings;
+        }, {})
+      : {};
 
     if (graphTransformer) {
       chartData = graphTransformer.toChart();
@@ -225,9 +253,18 @@ class TableComponent extends React.Component<ComponentProps> {
                         availableChartSettings={
                           availableChartSettings ? availableChartSettings : []
                         }
-                        currentSettings={{}}
-                        tableNode={this.props.node}
+                        currentSettings={
+                          node.attrs.viewModeSettings[node.attrs.viewMode]
+                        }
+                        tableNode={node}
                         state={this.props.view.state}
+                        onChange={(key, value) => {
+                          const currentSettings = viewModeSettings[viewMode]
+                            ? viewModeSettings[viewMode]
+                            : {};
+                          currentSettings[key] = value;
+                          pluginState.setViewSetting(viewMode, currentSettings);
+                        }}
                       />
                     ) : null}
                     {node.attrs.viewMode === 'donut' && (
@@ -246,6 +283,7 @@ class TableComponent extends React.Component<ComponentProps> {
                       <TimelineChart
                         data={chartData}
                         chartSelected={this.isChartSelected(pluginState)}
+                        {...componentChartSettings}
                         onChartData={newChartData => {
                           const node = graphTransformer!.fromChart(
                             newChartData,

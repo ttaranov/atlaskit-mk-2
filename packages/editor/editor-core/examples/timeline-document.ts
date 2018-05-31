@@ -8,6 +8,14 @@ export const DefaultDocument: any = {
         isNumberColumnEnabled: false,
         layout: 'default',
         viewMode: 'donut',
+        viewModeSettings: {
+          donut: {
+            values: 1,
+          },
+          barchart: {
+            values: 1,
+          },
+        },
       },
       content: [
         {
@@ -480,6 +488,13 @@ export const DefaultDocument: any = {
         isNumberColumnEnabled: false,
         layout: 'default',
         viewMode: 'timeline',
+        viewModeSettings: {
+          timeline: {
+            start: 1,
+            end: 2,
+            gridlines: true,
+          },
+        },
       },
       content: [
         {

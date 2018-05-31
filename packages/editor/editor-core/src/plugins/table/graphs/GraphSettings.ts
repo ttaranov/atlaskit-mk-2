@@ -2,15 +2,33 @@ import { ChartSettings } from '.';
 
 export const TimelineSettings: ChartSettings = [
   {
+    name: 'start',
     title: 'Start date',
     for: 'transformer',
     input: 'column-select',
     dataIdx: 0,
   },
-  { title: 'End date', for: 'transformer', input: 'column-select', dataIdx: 1 },
-  { title: 'Show grid lines', for: 'component', input: 'checkbox' },
+  {
+    name: 'end',
+    title: 'End date',
+    for: 'transformer',
+    input: 'column-select',
+    dataIdx: 1,
+  },
+  {
+    name: 'gridlines',
+    title: 'Show grid lines',
+    for: 'component',
+    input: 'checkbox',
+  },
 ];
 
 export const DonutSettings: ChartSettings = [
-  { title: 'Values', for: 'transformer', input: 'column-select', dataIdx: 0 },
+  {
+    name: 'values',
+    title: 'Values',
+    for: 'transformer',
+    input: 'column-select',
+    dataIdx: 0,
+  },
 ];

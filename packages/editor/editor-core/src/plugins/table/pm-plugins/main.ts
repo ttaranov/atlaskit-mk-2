@@ -294,6 +294,23 @@ export class TableState {
     this.viewMode = newViewMode;
   };
 
+  setViewSetting = (viewMode, settings) => {
+    const tableNode = findTable(this.view.state.selection);
+    if (!tableNode) {
+      return false;
+    }
+
+    const viewModeSettings = tableNode.node.attrs.viewModeSettings;
+    viewModeSettings[viewMode] = settings;
+
+    this.view.dispatch(
+      this.view.state.tr.setNodeMarkup(tableNode.pos - 1, undefined, {
+        ...tableNode.node.attrs,
+        viewModeSettings,
+      }),
+    );
+  };
+
   isLayoutSupported = () => {
     const { selection, schema } = this.view.state;
     return (

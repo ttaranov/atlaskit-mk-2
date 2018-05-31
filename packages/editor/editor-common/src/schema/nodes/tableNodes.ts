@@ -137,11 +137,14 @@ export type Layout = 'default' | 'full-width' | 'wide';
 
 export type ViewMode = 'table' | 'timeline' | 'donut' | 'barchart';
 
+type ViewModeSettings = { [K in ViewMode]: any };
+
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
   layout?: Layout;
   __autoSize?: boolean;
   viewMode?: ViewMode;
+  viewModeSettings?: ViewModeSettings;
 }
 
 /**
@@ -206,6 +209,7 @@ export const table: any = {
     layout: { default: 'default' },
     __autoSize: { default: false },
     viewMode: { default: 'table' },
+    viewModeSettings: { default: {} },
   },
   tableRole: 'table',
   isolating: true,
@@ -219,6 +223,9 @@ export const table: any = {
         layout: dom.getAttribute('data-layout') || 'default',
         __autoSize: dom.getAttribute('data-autosize') === 'true' ? true : false,
         viewMode: dom.getAttribute('data-viewmode') || 'table',
+        viewModeSettings: dom.hasAttribute('data-viewmode-settings')
+          ? JSON.parse(dom.getAttribute('data-viewmode-settings')!)
+          : {},
       }),
     },
   ],
@@ -228,6 +235,7 @@ export const table: any = {
       'data-layout': node.attrs.layout,
       'data-autosize': node.attrs.__autoSize,
       'data-viewmode': node.attrs.viewMode,
+      'data-viewmode-settings': JSON.stringify(node.attrs.viewModeSettings),
     };
     return ['table', attrs, ['tbody', 0]];
   },
