@@ -55,6 +55,7 @@ export const EndAdornmentWrapper: ComponentClass<
 > = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   flex-grow: 1;
   flex-shrink: 0;
 `;
@@ -66,4 +67,15 @@ export const StartAdornmentAndContent: ComponentClass<
   flex-grow: 1;
   flex-shrink: 1;
   min-width: 184px;
+`;
+
+export const OnHover = styled.div`
+  ${Wrapper} & {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  ${Wrapper}:hover & {
+    opacity: 1;
+  }
 `;

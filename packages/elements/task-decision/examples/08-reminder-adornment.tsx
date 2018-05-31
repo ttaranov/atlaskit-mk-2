@@ -16,7 +16,7 @@ export default () => {
       </Item>
       <Item
         startAdornment={<CheckboxIcon label="check" />}
-        endAdornment={<ReminderAdornment value="2018-05-31T05:00:00Z" />}
+        endAdornment={<ReminderAdornment value="2018-06-04T05:00:00Z" />}
         helperText="Some helper text"
       >
         <span>

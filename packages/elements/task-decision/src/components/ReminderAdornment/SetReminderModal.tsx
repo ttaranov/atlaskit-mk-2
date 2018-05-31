@@ -1,17 +1,38 @@
 import * as React from 'react';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalHeader, ModalTitle } from '@atlaskit/modal-dialog';
 import Calendar from '@atlaskit/calendar';
-import { TimePicker } from '@atlaskit/datetime-picker';
-import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
 import * as format from 'date-fns/format';
+import * as getMonth from 'date-fns/get_month';
+import * as getYear from 'date-fns/get_year';
+import { TimePicker } from '@atlaskit/datetime-picker';
+
+import {
+  Footer,
+  TimePickerWrapper,
+  DateLabel,
+} from '../../styled/ReminderAdornment';
+
+type HeaderProps = { onClose: () => void; showKeyline: boolean };
+
+const Header = ({ onClose, showKeyline }: HeaderProps) => (
+  <ModalHeader showKeyline={showKeyline}>
+    <ModalTitle>Custom Modal</ModalTitle>
+    <Button
+      onClick={onClose}
+      appearance="subtle"
+      spacing="none"
+      iconBefore={<CrossIcon label="Close Modal" />}
+    />
+  </ModalHeader>
+);
 
 export type Props = {
   isOpen: boolean;
   onRequetsClose?: () => void;
   onChange?: (value?: string) => void;
   value?: string;
-  onConfirm?: (value: string) => void;
 };
 
 export class SetReminderModal extends React.Component<Props> {
@@ -25,15 +46,22 @@ export class SetReminderModal extends React.Component<Props> {
     }
   };
 
-  parseValue(): { date: string; time: string } | undefined {
+  parseValue(): {
+    date?: string;
+    time?: string;
+    month?: number;
+    year?: number;
+  } {
     if (this.props.value) {
       const date = new Date(this.props.value);
       return {
         date: format(date, 'YYYY-MM-DD'),
         time: format(date, 'HH:mm'),
+        month: getMonth(date) + 1,
+        year: getYear(date),
       };
     }
-    return undefined;
+    return {};
   }
 
   getNewValue({ day, month, year, iso }): Date {
@@ -68,6 +96,13 @@ export class SetReminderModal extends React.Component<Props> {
     return undefined;
   });
 
+  handleRemoveClick = () => {
+    if (this.props.onChange) {
+      this.props.onChange(undefined);
+    }
+    this.handleOnClose();
+  };
+
   triggerOnChange<T>(
     dateCreator: (arg: T) => Date | undefined,
   ): ((arg: T) => void) {
@@ -80,57 +115,34 @@ export class SetReminderModal extends React.Component<Props> {
     };
   }
 
-  handleSetReminder = () => {
-    const { value, onConfirm } = this.props;
-    if (onConfirm && value) {
-      onConfirm(value);
-    }
-  };
-
   render() {
-    const parsedValue = this.parseValue();
+    const { date, month, year, time } = this.parseValue();
 
     if (this.props.isOpen) {
       return (
-        <Modal
-          onClose={this.handleOnClose}
-          heading="Set reminder"
-          width="small"
-          actions={[
-            {
-              onClick: this.handleSetReminder,
-              text: 'Set reminder',
-            },
-            {
-              onClick: this.handleOnClose,
-              text: 'Cancel',
-            },
-          ]}
-        >
+        <Modal onClose={this.handleOnClose} header={Header} width={321}>
           <Calendar
             previouslySelected={[]}
-            value={parsedValue ? parsedValue : undefined}
+            selected={[date]}
+            defaultMonth={month}
+            defaultYear={year}
             onSelect={this.handleDateChange}
           />
-          {parsedValue && (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <div style={{ flexGrow: 1 }}>
-                <TimePicker
-                  value={parsedValue.time}
-                  onChange={this.handleTimechange}
-                />
-              </div>
-              <Button
-                appearance="subtle"
-                spacing="none"
-                iconBefore={
-                  <EditorRemoveIcon label="Remove reminder">
-                    Remove reminder
-                  </EditorRemoveIcon>
-                }
-              />
-            </div>
-          )}
+          {time
+            ? [
+                <DateLabel key="date-label">
+                  {format(this.props.value!, 'dddd, D MMM')}
+                </DateLabel>,
+                <Footer key="footer">
+                  <TimePickerWrapper>
+                    <TimePicker value={time} onChange={this.handleTimechange} />
+                  </TimePickerWrapper>
+                  <Button appearance="subtle" onClick={this.handleRemoveClick}>
+                    Remove
+                  </Button>
+                </Footer>,
+              ]
+            : null}
         </Modal>
       );
     }

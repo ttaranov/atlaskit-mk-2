@@ -15,7 +15,7 @@ export interface ContentRef {
 }
 
 export interface OnReminder {
-  (reminderDate: ReminderTime): void;
+  (reminderDate?: ReminderTime): void;
 }
 
 export interface ObjectKey {

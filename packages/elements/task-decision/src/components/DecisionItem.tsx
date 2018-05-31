@@ -11,6 +11,7 @@ import {
   OnReminder,
   ReminderTime,
 } from '../types';
+import { ReminderAdornment } from './ReminderAdornment';
 import { ParticipantsAdornment } from './ParticipantsAdornment';
 
 export interface Props {
@@ -42,6 +43,12 @@ export default class DecisionItem extends PureComponent<Props, {}> {
     return `Captured by ${user.displayName}`;
   }
 
+  handleReminderSet = reminder => {
+    if (this.props.onReminderSet) {
+      this.props.onReminderSet(reminder);
+    }
+  };
+
   render() {
     const {
       appearance,
@@ -60,12 +67,14 @@ export default class DecisionItem extends PureComponent<Props, {}> {
       </EditorIconWrapper>
     );
 
-    const endAdornments = (
+    const endAdornments = [
+      <ReminderAdornment onReminderSet={this.handleReminderSet} />,
       <ParticipantsAdornment
+        key="participant"
         appearance={appearance}
         participants={participants}
-      />
-    );
+      />,
+    ];
 
     return (
       <Item
