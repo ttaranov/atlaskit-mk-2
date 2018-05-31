@@ -19,7 +19,7 @@ const generateDropdown = () => (
   </DropdownItemGroup>
 );
 
-const Global = () => (
+const GlobalNav = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
     helpItems={generateDropdown}
@@ -31,7 +31,7 @@ const Global = () => (
 export default () => (
   <NavigationProvider>
     <LayoutManager
-      globalNavigation={Global}
+      globalNavigation={GlobalNav}
       productRootNavigation={() => null}
       productContainerNavigation={() => null}
     >
