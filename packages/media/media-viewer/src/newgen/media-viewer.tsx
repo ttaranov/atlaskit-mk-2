@@ -4,8 +4,12 @@ import { Identifier, ItemSource, MediaViewerFeatureFlags } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
-import { Blanket } from './styled';
+import { Blanket, Widget, WidgetControls } from './styled';
 import { Shortcut } from './shortcut';
+import { ItemViewer } from './item-viewer';
+import Button from '@atlaskit/button';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import VidShareScreenIcon from '@atlaskit/icon/glyph/vid-share-screen';
 
 export type Props = {
   onClose?: () => void;
@@ -15,9 +19,38 @@ export type Props = {
   itemSource: ItemSource;
 };
 
-export class MediaViewer extends React.Component<Props, {}> {
+export type State = {
+  widgetMode: boolean;
+};
+
+export class MediaViewer extends React.Component<Props, State> {
+  state: State = { widgetMode: false };
+
   render() {
-    const { onClose } = this.props;
+    const { onClose, context, selectedItem, featureFlags } = this.props;
+
+    if (selectedItem && this.state.widgetMode) {
+      return (
+        <Widget>
+          <WidgetControls>
+            <Button
+              onClick={this.onCloseWidget}
+              iconBefore={<VidShareScreenIcon label="Maximise player" />}
+            />
+            <Button
+              onClick={onClose}
+              iconBefore={<CrossIcon label="Close" />}
+            />
+          </WidgetControls>
+          {onClose && <Shortcut keyCode={27} handler={onClose} />}
+          <ItemViewer
+            featureFlags={featureFlags}
+            context={context}
+            identifier={selectedItem}
+          />
+        </Widget>
+      );
+    }
     return (
       <Blanket>
         {onClose && <Shortcut keyCode={27} handler={onClose} />}
@@ -25,6 +58,14 @@ export class MediaViewer extends React.Component<Props, {}> {
       </Blanket>
     );
   }
+
+  private onCloseWidget = () => {
+    this.setState({ widgetMode: false });
+  };
+
+  private onWidget = () => {
+    this.setState({ widgetMode: true });
+  };
 
   private renderContent() {
     const {
@@ -42,6 +83,7 @@ export class MediaViewer extends React.Component<Props, {}> {
           collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
+          onWidget={this.onWidget}
           featureFlags={featureFlags}
         />
       );
@@ -52,6 +94,7 @@ export class MediaViewer extends React.Component<Props, {}> {
           items={itemSource.items}
           context={context}
           onClose={onClose}
+          onWidget={this.onWidget}
           featureFlags={featureFlags}
         />
       );

@@ -10,6 +10,7 @@ import Header from './header';
 
 export type Props = {
   onClose?: () => void;
+  onWidget?: () => void;
   onNavigationChange?: (selectedItem: Identifier) => void;
   showControls?: () => void;
   readonly featureFlags?: MediaViewerFeatureFlags;
@@ -31,7 +32,13 @@ export class List extends React.Component<Props, State> {
   }
 
   renderContent(items: Identifier[]) {
-    const { context, onClose, featureFlags, showControls } = this.props;
+    const {
+      context,
+      onClose,
+      onWidget,
+      featureFlags,
+      showControls,
+    } = this.props;
     const { selectedItem } = this.state;
     if (getSelectedIndex(items, selectedItem) < 0) {
       return (
@@ -48,6 +55,7 @@ export class List extends React.Component<Props, State> {
               context={context}
               identifier={selectedItem}
               onClose={onClose}
+              onWidget={onWidget}
             />
           </HeaderWrapper>
           <ItemViewer

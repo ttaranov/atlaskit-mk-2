@@ -28,6 +28,20 @@ export const colors = {
 
 export const hideControlsClassName = 'mvng-hide-controls';
 
+export const Widget = styled.span`
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #0e1624;
+  background-color: #1b2638;
+`;
+
+export const WidgetControls = styled.span`
+  position: absolute;
+  z-index: 10;
+  right: 0;
+`;
+
 export const Blanket = styled.div`
   position: fixed;
   top: 0;

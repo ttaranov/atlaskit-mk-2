@@ -41,8 +41,12 @@ const getCoverUrl = (
     collectionName,
   );
 
+const saveCurrentTimeKey = 'MediaViewerPlayingTime';
+
 export class AudioViewer extends React.Component<Props, State> {
   state: State = { src: { status: 'PENDING' } };
+
+  canPlayThroughHandled: boolean;
 
   componentDidMount() {
     this.init();
@@ -84,6 +88,8 @@ export class AudioViewer extends React.Component<Props, State> {
     <AudioPlayer>
       {this.renderCover()}
       <Audio
+        onCanPlayThrough={this.onCanPlayThrough}
+        onTimeUpdate={this.onTimeUpdate}
         controls
         innerRef={this.saveAudioElement}
         src={src}
@@ -91,6 +97,19 @@ export class AudioViewer extends React.Component<Props, State> {
       />
     </AudioPlayer>
   );
+
+  private onTimeUpdate = e => {
+    this.saveCurrentPlayingTime(this.props.item, e.currentTarget.currentTime);
+  };
+
+  private onCanPlayThrough = e => {
+    if (!this.canPlayThroughHandled) {
+      this.canPlayThroughHandled = true;
+      const audio = e.currentTarget;
+      audio.currentTime = this.getCurrentPlayingTime(this.props.item);
+      audio.play();
+    }
+  };
 
   private loadCover = (coverUrl: string) => {
     return new Promise(async (resolve, reject) => {
@@ -101,6 +120,19 @@ export class AudioViewer extends React.Component<Props, State> {
       img.onerror = reject;
     });
   };
+
+  private getCurrentPlayingTime(item: FileItem): number {
+    return Number(
+      localStorage.getItem(`${saveCurrentTimeKey}${item.details.id}`),
+    );
+  }
+
+  private saveCurrentPlayingTime(item: FileItem, time: number) {
+    localStorage.setItem(
+      `${saveCurrentTimeKey}${item.details.id}`,
+      time.toString(),
+    );
+  }
 
   private setCoverUrl = async () => {
     const { context, item, collectionName } = this.props;

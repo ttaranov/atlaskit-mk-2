@@ -19,11 +19,13 @@ import {
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
 import { constructAuthTokenUrl } from './util';
+import VidShareScreenIcon from '@atlaskit/icon/glyph/vid-share-screen';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
   readonly onClose?: () => void;
+  readonly onWidget?: () => void;
 };
 
 export type State = {
@@ -146,9 +148,26 @@ export default class Header extends React.Component<Props, State> {
         <RightHeader>
           {this.renderDownload()}
           <FeedbackButton />
+          {this.renderWidgetButtonIfRequired()}
         </RightHeader>
       </HeaderWrapper>
     );
+  }
+
+  private renderWidgetButtonIfRequired() {
+    const { item } = this.state;
+    if (
+      item.status === 'SUCCESSFUL' &&
+      (item.data.details.mediaType === 'audio' ||
+        item.data.details.mediaType === 'video')
+    ) {
+      return (
+        <Button
+          onClick={this.props.onWidget}
+          iconBefore={<VidShareScreenIcon label="Open as widget" />}
+        />
+      );
+    }
   }
 
   private renderMetadata() {

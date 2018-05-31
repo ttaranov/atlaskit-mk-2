@@ -14,6 +14,7 @@ import { Spinner } from './loading';
 
 export type Props = {
   onClose?: () => void;
+  onWidget?: () => void;
   selectedItem?: Identifier;
   showControls?: () => void;
   readonly featureFlags?: MediaViewerFeatureFlags;
@@ -54,6 +55,7 @@ export class Collection extends React.Component<Props, State> {
       selectedItem,
       context,
       onClose,
+      onWidget,
       collectionName,
       showControls,
     } = this.props;
@@ -76,6 +78,7 @@ export class Collection extends React.Component<Props, State> {
             selectedItem={item}
             context={context}
             onClose={onClose}
+            onWidget={onWidget}
             onNavigationChange={this.onNavigationChange}
             showControls={showControls}
           />
