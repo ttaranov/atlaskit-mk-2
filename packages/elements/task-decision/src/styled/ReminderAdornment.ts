@@ -24,3 +24,10 @@ export const DateLabel: ComponentType<HTMLAttributes<{}>> = styled.div`
   font-size: 12px;
   font-weight: 500;
 `;
+
+export const Hint: ComponentType<HTMLAttributes<{}>> = styled.span`
+  color: ${colors.N200};
+  margin-left: ${akGridSize}px;
+  font-size: 12px;
+  font-weight: 500;
+`;
