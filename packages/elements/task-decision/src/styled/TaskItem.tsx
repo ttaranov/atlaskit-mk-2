@@ -5,6 +5,8 @@ import { keyframes } from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { gridSize, borderRadius, colors } from '@atlaskit/theme';
 
+const checkBoxSize = 16;
+
 // reveal the 2 sides of the checkmark by increasing their height
 const leftSideCheckmark = keyframes`
   0% {
@@ -82,8 +84,6 @@ const bounceRipple = keyframes`
     border-radius: ${borderRadius()}px;
   }
 `;
-
-const checkBoxSize = 16;
 
 export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   flex: 0 0 ${checkBoxSize}px;
