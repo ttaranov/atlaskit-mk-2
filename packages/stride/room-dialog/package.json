@@ -16,10 +16,16 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/field-text": "^5.0.3",
+    "@atlaskit/modal-dialog": "^4.0.5",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/checkbox": "^2.0.2"
   },
   "peerDependencies": {
     "react": "^16.3.0"
   },
   "devDependencies": {
-     }
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+  }
 }
