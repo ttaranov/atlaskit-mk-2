@@ -93,9 +93,8 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.onAppSwitcherClick && { onClick: props.onAppSwitcherClick }),
     ...(props.appSwitcherTooltip && { tooltip: props.appSwitcherTooltip }),
     ...(props.appSwitcherTooltip && { label: props.appSwitcherTooltip }),
-    ...(props.appSwitcherItems && {
-      component: appSwitcherItems =>
-        generateDropDown(MenuIcon, appSwitcherItems),
+    ...(props.appSwitcherComponent && {
+      component: props.appSwitcherComponent,
     }),
   };
   // $FlowFixMe
