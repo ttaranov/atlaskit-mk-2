@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { CheckBoxWrapper } from '../styled/TaskItem';
+import { CheckBoxWrapper } from '../styled/TaskCheckbox';
 
 export interface Props {
   id: string;
@@ -14,7 +14,7 @@ export interface State {
   animated: boolean;
 }
 
-export class TaskCheckBox extends PureComponent<Props, State> {
+export class TaskCheckbox extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
@@ -56,4 +56,4 @@ export class TaskCheckBox extends PureComponent<Props, State> {
   }
 }
 
-export default TaskCheckBox;
+export default TaskCheckbox;
