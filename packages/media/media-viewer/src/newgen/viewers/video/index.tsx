@@ -17,6 +17,7 @@ export type Props = {
 
 export type State = {
   src: Outcome<string, Error>;
+  isHDActive: boolean;
 };
 
 const isIE =
@@ -24,14 +25,19 @@ const isIE =
   navigator.appVersion.indexOf('Trident/') > 0;
 
 export class VideoViewer extends React.Component<Props, State> {
-  state: State = { src: { status: 'PENDING' } };
+  state: State = { src: { status: 'PENDING' }, isHDActive: false };
 
   componentDidMount() {
     this.init();
   }
 
+  private onHDChange = (isHDActive: boolean) => {
+    this.setState({ isHDActive });
+    this.init(isHDActive);
+  };
+
   render() {
-    const { src } = this.state;
+    const { src, isHDActive } = this.state;
     const { featureFlags, showControls } = this.props;
     const useCustomVideoPlayer =
       !isIE && getFeatureFlag('customVideoPlayer', featureFlags);
@@ -41,7 +47,14 @@ export class VideoViewer extends React.Component<Props, State> {
         return <Spinner />;
       case 'SUCCESSFUL':
         if (useCustomVideoPlayer) {
-          return <CustomVideo showControls={showControls} src={src.data} />;
+          return (
+            <CustomVideo
+              onHDChange={this.onHDChange}
+              showControls={showControls}
+              src={src.data}
+              isHDActive={isHDActive}
+            />
+          );
         } else {
           return <Video controls src={src.data} />;
         }
@@ -50,9 +63,10 @@ export class VideoViewer extends React.Component<Props, State> {
     }
   }
 
-  private async init() {
+  private async init(isHDActive?: boolean) {
     const { context, item, collectionName } = this.props;
-    const videoUrl = getVideoArtifactUrl(item);
+    const videoUrl = getVideoArtifactUrl(item, isHDActive);
+
     try {
       this.setState({
         src: {
@@ -71,11 +85,13 @@ export class VideoViewer extends React.Component<Props, State> {
   }
 }
 
-function getVideoArtifactUrl(fileItem: FileItem) {
+function getVideoArtifactUrl(fileItem: FileItem, hdMode?: boolean) {
   const smallVideoArtifact = 'video_640.mp4';
   const largeVideoArtifact = 'video_1280.mp4';
-  const artifact =
-    window.innerWidth <= 640 ? smallVideoArtifact : largeVideoArtifact;
+  const hdVideoArtifact = 'video_hd.mp4';
+  const artifact = hdMode
+    ? hdVideoArtifact
+    : window.innerWidth <= 640 ? smallVideoArtifact : largeVideoArtifact;
 
   return (
     fileItem.details &&
