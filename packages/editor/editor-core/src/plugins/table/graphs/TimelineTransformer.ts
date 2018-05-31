@@ -77,15 +77,20 @@ export default class TimelineTransformer implements GraphTransformer {
             this.dataSourceColumns[0] === colIndex ? 'start' : 'end';
           const timestamp =
             data.entries[haveHeaderRow ? rowIndex - 1 : rowIndex][entryType];
-          const dateNode = date.createChecked({
-            timestamp: Math.round(timestamp),
-          });
-          cells.push(
-            tableCell.createChecked(
-              cell.attrs,
-              paragraph.createChecked({}, dateNode),
-            ),
-          );
+          if (timestamp) {
+            const dateNode = date.createChecked({
+              timestamp: Math.round(timestamp),
+            });
+
+            cells.push(
+              tableCell.createChecked(
+                cell.attrs,
+                paragraph.createChecked({}, dateNode),
+              ),
+            );
+          } else {
+            cells.push(cell);
+          }
         } else {
           cells.push(cell);
         }
