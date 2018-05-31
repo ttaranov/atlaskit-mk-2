@@ -8,7 +8,7 @@ export interface Props {
   data: Array<NumberChartEntry>;
   colors?: Array<string>;
   barWidth?: number;
-  legentAlignment?: 'left' | 'right';
+  legendAlignment?: 'left' | 'right';
   size?: number;
 }
 
@@ -18,7 +18,7 @@ export default class BarChart extends React.Component<Props, any> {
   static defaultProps = {
     colors: COLORS,
     barWidth: 50,
-    legentAlignment: 'left',
+    legendAlignment: 'left',
     size: 250,
   };
 
@@ -29,10 +29,10 @@ export default class BarChart extends React.Component<Props, any> {
   }
 
   render() {
-    const { legentAlignment, colors, data } = this.props;
+    const { legendAlignment, colors, data } = this.props;
 
     return (
-      <div className={`ProseMirror-chart -legent-${legentAlignment}`}>
+      <div className={`ProseMirror-chart -legent-${legendAlignment}`}>
         <ChartLegend data={data} colors={colors} />
         <canvas ref={this.handleRef} />
       </div>

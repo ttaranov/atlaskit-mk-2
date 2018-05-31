@@ -221,7 +221,7 @@ export const tableStyles = `
       cursor: pointer;
       padding: 16px;
 
-      &.-legent-right {
+      &.-legend-right {
         flex-direction: row-reverse;
       }
 

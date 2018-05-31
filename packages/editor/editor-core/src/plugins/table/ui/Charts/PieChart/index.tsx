@@ -9,7 +9,7 @@ export interface Props {
   dividerWidth?: number;
   colors?: Array<string>;
   lineWidth?: number;
-  legentAlignment?: 'left' | 'right';
+  legendAlignment?: 'left' | 'right';
   size?: number;
 }
 
@@ -20,7 +20,7 @@ export default class PieChart extends React.Component<Props, any> {
     colors: COLORS,
     dividerWidth: 3,
     lineWidth: 50,
-    legentAlignment: 'left',
+    legendAlignment: 'left',
     size: 250,
   };
 
@@ -31,10 +31,10 @@ export default class PieChart extends React.Component<Props, any> {
   }
 
   render() {
-    const { legentAlignment, colors, data } = this.props;
+    const { legendAlignment, colors, data } = this.props;
 
     return (
-      <div className={`ProseMirror-chart -legent-${legentAlignment}`}>
+      <div className={`ProseMirror-chart -legend-${legendAlignment}`}>
         <ChartLegend data={data} colors={colors} />
         <canvas ref={this.handleRef} />
       </div>

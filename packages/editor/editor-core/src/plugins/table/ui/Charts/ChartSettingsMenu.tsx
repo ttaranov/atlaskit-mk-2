@@ -81,6 +81,21 @@ export class ChartSettingsDialog extends Component<DialogProps> {
           onChange={e => this.props.onChange(setting.name, e.target.checked)}
         />
       );
+    } else if (setting.input === 'select') {
+      const currentValue = setting.values!.find(optionValue => {
+        return optionValue.value === this.props.currentSettings[setting.name];
+      });
+
+      return (
+        <Select
+          isSearchable={false}
+          options={setting.values}
+          value={currentValue}
+          onChange={e => {
+            this.props.onChange(setting.name, e.value);
+          }}
+        />
+      );
     }
 
     console.warn('cannot render setting', setting);

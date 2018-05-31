@@ -270,13 +270,13 @@ class TableComponent extends React.Component<ComponentProps> {
                     {node.attrs.viewMode === 'donut' && (
                       <PieChart
                         data={chartData.entries}
-                        legentAlignment="left"
+                        {...componentChartSettings}
                       />
                     )}
                     {node.attrs.viewMode === 'barchart' && (
                       <BarChart
                         data={chartData.entries}
-                        legentAlignment="left"
+                        {...componentChartSettings}
                       />
                     )}
                     {node.attrs.viewMode === 'timeline' && (

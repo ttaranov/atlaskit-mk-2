@@ -31,4 +31,15 @@ export const DonutSettings: ChartSettings = [
     input: 'column-select',
     dataIdx: 0,
   },
+
+  {
+    name: 'legendAlignment',
+    title: 'Legend alignment',
+    for: 'component',
+    input: 'select',
+    values: [
+      { label: 'Left', value: 'left' },
+      { label: 'Right', value: 'right' },
+    ],
+  },
 ];

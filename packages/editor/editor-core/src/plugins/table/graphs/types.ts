@@ -29,9 +29,10 @@ type ChartSetting = {
   name: string;
   title: string;
   for: 'transformer' | 'component';
-  input: 'column-select' | 'checkbox';
+  input: 'column-select' | 'checkbox' | 'select';
 
   dataIdx?: number;
+  values?: { label: string; value: any }[];
 };
 
 type ChartSettings = ChartSetting[];
