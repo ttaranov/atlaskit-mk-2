@@ -1,7 +1,9 @@
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { CheckBoxWrapper } from '../styled/TaskItem';
+
+// import { CheckBoxWrapper } from '../styled/TaskItem';
+import { TaskCheckbox } from './TaskCheckbox';
 import {
   Appearance,
   ContentRef,
@@ -107,17 +109,12 @@ export class InternalTaskItem extends PureComponent<Props> {
     } = this.props;
 
     const icon = (
-      <CheckBoxWrapper contentEditable={false}>
-        <input
-          id={this.checkBoxId}
-          name={this.checkBoxId}
-          type="checkbox"
-          onChange={this.handleOnChange}
-          checked={!!isDone}
-          disabled={!!disabled}
-        />
-        <label htmlFor={this.checkBoxId} />
-      </CheckBoxWrapper>
+      <TaskCheckbox
+        id={this.checkBoxId}
+        isDone={isDone}
+        disabled={disabled}
+        onChange={this.handleOnChange}
+      />
     );
 
     const endAdornments = [

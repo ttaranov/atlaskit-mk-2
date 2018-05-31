@@ -70,6 +70,7 @@ export const StartAdornmentAndContent: ComponentClass<
 `;
 
 export const OnHover = styled.div`
+  // @ts-ignore
   ${Wrapper} & {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;

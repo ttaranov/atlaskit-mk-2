@@ -36,6 +36,7 @@ export interface MockTaskDecisionResourceConfig {
 }
 
 let debouncedTaskStateQuery: number | null = null;
+let debouncedDecisionStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;
 
 interface BaseResult {
@@ -164,6 +165,21 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     return Promise.resolve(newResult);
   }
 
+  getDecisionState(keys: ObjectKey[]): Promise<BaseItem<DecisionState>[]> {
+    return Promise.resolve([
+      {
+        containerAri:
+          'ari:cloud:app.cloud:f7ebe2c0-0309-4687-b913-41d422f2110b:conversation/12e445f8-478c-4902-a556-f4866b273033',
+        objectAri:
+          'ari:cloud:app.cloud:f7ebe2c0-0309-4687-b913-41d422f2110b:message/f1328342-7c28-11e7-a5e8-02420aff0003',
+        localId: 'd1',
+        state: 'DECIDED',
+        type: 'DECISION',
+        reminderDate: '2018-05-30T02:40:07.106Z',
+      } as BaseItem<DecisionState>,
+    ]);
+  }
+
   getTaskState(keys: ObjectKey[]): Promise<BaseItem<TaskState>[]> {
     return Promise.resolve([
       {
@@ -239,6 +255,10 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
       clearTimeout(debouncedTaskStateQuery);
     }
 
+    if (debouncedDecisionStateQuery) {
+      clearTimeout(debouncedDecisionStateQuery);
+    }
+
     this.queueItem(objectKey);
 
     debouncedTaskStateQuery = setTimeout(() => {
@@ -253,6 +273,22 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
           this.notifyUpdatedReminderDate(objectKey, task.reminderDate);
         });
       });
+    }, 1);
+
+    debouncedDecisionStateQuery = setTimeout(() => {
+      this.getDecisionState(Array.from(this.batchedKeys.values())).then(
+        tasks => {
+          tasks.forEach(task => {
+            const { containerAri, objectAri, localId } = task;
+            const objectKey = { containerAri, objectAri, localId };
+            this.cachedItems.set(objectKeyToString(objectKey), task);
+
+            this.dequeueItem(objectKey);
+            this.notifyUpdatedState(objectKey, task.state);
+            this.notifyUpdatedReminderDate(objectKey, task.reminderDate);
+          });
+        },
+      );
     }, 1);
   }
 
@@ -290,7 +326,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
-  notifyUpdatedReminderDate(objectKey: ObjectKey, reminderDate: ReminderTime) {
+  notifyUpdatedReminderDate(objectKey: ObjectKey, reminderDate?: ReminderTime) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
