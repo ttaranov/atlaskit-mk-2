@@ -32,8 +32,8 @@ import {
   toObjectKey,
 } from '../type-helpers';
 
-import DecisionItem from './DecisionItem';
 import ResourcedTaskItem from './ResourcedTaskItem';
+import ResourcedDecisionItem from './ResourcedDecisionItem';
 
 export interface Props {
   taskDecisionProvider: Promise<TaskDecisionProvider>;
@@ -248,14 +248,18 @@ export default class ResourcedItemList extends PureComponent<Props, State> {
           if (isDecision(item)) {
             return (
               <li key={objectKeyToString(objectKey)}>
-                <DecisionItem
+                <ResourcedDecisionItem
+                  localId={objectKey.localId}
+                  objectAri={objectKey.objectAri}
+                  containerAri={objectKey.containerAri}
                   appearance={appearance}
                   participants={item.participants}
                   creator={item.creator}
                   lastUpdater={item.lastUpdater}
+                  taskDecisionProvider={taskDecisionProvider}
                 >
                   {renderDocument(item.content, toRendererContext(objectKey))}
-                </DecisionItem>
+                </ResourcedDecisionItem>
               </li>
             );
           }

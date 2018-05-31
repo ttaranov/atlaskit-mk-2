@@ -10,10 +10,11 @@ export interface Props extends DecisionProps {
   objectAri?: string;
   containerAri?: string;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
+  reminderDate?: ReminderTime;
 }
 
 export interface State {
-  reminderDate?: ReminderTime;
+  reminderDate: ReminderTime;
 }
 
 export default class ResourcedDecisionItem extends Component<Props, State> {
@@ -87,8 +88,8 @@ export default class ResourcedDecisionItem extends Component<Props, State> {
     }
   }
 
-  private onReminderUpdate = (timestamp?: ReminderTime) => {
-    this.setState({ reminderDate: timestamp });
+  private onReminderUpdate = (reminderDate: ReminderTime) => {
+    this.setState({ reminderDate });
   };
 
   private onReminderSet = (reminderDate: ReminderTime) => {

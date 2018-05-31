@@ -56,7 +56,6 @@ export default class DecisionItem extends PureComponent<Props, {}> {
       contentRef,
       participants,
       showPlaceholder,
-      onReminderSet,
       reminderDate,
     } = this.props;
     const iconColor = showPlaceholder ? colors.N100 : colors.G300;
@@ -68,7 +67,11 @@ export default class DecisionItem extends PureComponent<Props, {}> {
     );
 
     const endAdornments = [
-      <ReminderAdornment onReminderSet={this.handleReminderSet} />,
+      <ReminderAdornment
+        key="reminder"
+        onReminderSet={this.handleReminderSet}
+        value={reminderDate}
+      />,
       <ParticipantsAdornment
         key="participant"
         appearance={appearance}

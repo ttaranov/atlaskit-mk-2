@@ -8,14 +8,14 @@ export type Cursor = string;
 export type DecisionType = 'DECISION';
 export type TaskType = 'TASK';
 // Reminder date in UTC format
-export type ReminderTime = string;
+export type ReminderTime = string | undefined;
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
 }
 
 export interface OnReminder {
-  (reminderDate?: ReminderTime): void;
+  (reminderDate: ReminderTime): void;
 }
 
 export interface ObjectKey {
@@ -79,6 +79,17 @@ export interface ServiceTaskState {
   localId: string;
   objectAri: string;
   state: TaskState;
+
+  // TODO
+  reminderDate?: ReminderTime;
+}
+
+export interface ServiceDecisionState {
+  containerAri: string;
+  lastUpdateDate: string;
+  localId: string;
+  objectAri: string;
+  state: DecisionState;
 
   // TODO
   reminderDate?: ReminderTime;
@@ -229,7 +240,7 @@ export interface TaskDecisionProvider {
   // TODO
   updateReminderDate?(
     baseItem: BaseItem<TaskState | DecisionState>,
-    reminderDate?: ReminderTime,
+    reminderDate: ReminderTime,
   ): Promise<ReminderTime>;
 
   // Tasks

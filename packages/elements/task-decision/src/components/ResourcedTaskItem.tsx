@@ -32,7 +32,7 @@ export interface Props {
 export interface State {
   isDone?: boolean;
   lastUpdater?: User;
-  reminderDate?: ReminderTime;
+  reminderDate: ReminderTime;
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {

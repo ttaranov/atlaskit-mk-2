@@ -5,10 +5,15 @@ import {
   PubSubClient,
   ReminderTime,
   HandlerType,
+  Task,
+  Decision,
+  ServiceDecision,
+  ServiceDecisionState,
 } from '../types';
 import { defaultLimit } from '../constants';
 
 import {
+  convertServiceDecisionToDecision,
   convertServiceDecisionResponseToDecisionResponse,
   convertServiceItemResponseToItemResponse,
   convertServiceTaskResponseToTaskResponse,
@@ -16,6 +21,7 @@ import {
   convertServiceTaskStateToBaseItem,
   findIndex,
   ResponseConverter,
+  convertServiceDecisionStateToBaseItem,
 } from './TaskDecisionUtils';
 
 import {
@@ -157,6 +163,7 @@ export class RecentUpdates {
 
 export class ItemStateManager {
   private debouncedTaskStateQuery: number | null = null;
+  private debouncedDecisionStateQuery: number | null = null;
   private debouncedTaskToggle: Map<string, number> = new Map();
   private serviceConfig: TaskDecisionResourceConfig;
   private subscribers: Map<string, Handler<any>[]> = new Map();
@@ -250,6 +257,50 @@ export class ItemStateManager {
     });
   }
 
+  private updateTaskReminder(
+    objectKey: ObjectKey,
+    reminderDate: ReminderTime,
+  ): Promise<Task> {
+    const options: RequestServiceOptions = {
+      path: 'tasks/reminder',
+      requestInit: {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          ...objectKey,
+          reminderDate: reminderDate || null,
+        }),
+      },
+    };
+    return utils
+      .requestService<ServiceTask>(this.serviceConfig, options)
+      .then(convertServiceTaskToTask);
+  }
+
+  private updateDecisionReminder(
+    objectKey: ObjectKey,
+    reminderDate: ReminderTime,
+  ): Promise<Decision> {
+    const options: RequestServiceOptions = {
+      path: 'decisions/reminder',
+      requestInit: {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          ...objectKey,
+          reminderDate: reminderDate || null,
+        }),
+      },
+    };
+    return utils
+      .requestService<ServiceDecision>(this.serviceConfig, options)
+      .then(convertServiceDecisionToDecision);
+  }
+
   /**
    * TODO: Innovation week spike
    */
@@ -274,29 +325,16 @@ export class ItemStateManager {
      * TODO: Make REST call to service
      */
     return new Promise<ReminderTime>((resolve, reject) => {
-      const options: RequestServiceOptions = {
-        path: 'tasks/reminder',
-        requestInit: {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: JSON.stringify({
-            ...objectKey,
-            reminderDate,
-          }),
-        },
-      };
-      utils
-        .requestService<ServiceTask>(this.serviceConfig, options)
-        .then(convertServiceTaskToTask)
-        .then(task => {
-          const key = objectKeyToString(objectKey);
-          this.cachedItems.set(key, task);
-
+      const response: Promise<BaseItem<TaskState | DecisionState>> =
+        baseItem.type === 'DECISION'
+          ? this.updateDecisionReminder(objectKey, reminderDate)
+          : this.updateTaskReminder(objectKey, reminderDate);
+      response
+        .then(item => {
+          this.cachedItems.set(stringKey, item);
           resolve(reminderDate);
           // Notify subscribers that the task have been updated so that they can re-render accordingly
-          this.notifyUpdatedReminderDate(objectKey, task.reminderDate);
+          this.notifyUpdatedReminderDate(objectKey, item.reminderDate);
         })
         .catch(() => {
           // Undo optimistic change
@@ -310,9 +348,10 @@ export class ItemStateManager {
     });
   }
 
-  refreshAllTasks() {
+  refreshAllItems() {
     this.queueAllItems();
     this.scheduleGetTaskState();
+    this.scheduleGetDecisionState();
   }
 
   subscribe(objectKey: ObjectKey, handler: Handler<any>) {
@@ -332,6 +371,7 @@ export class ItemStateManager {
     this.queueItem(objectKey);
 
     this.scheduleGetTaskState();
+    this.scheduleGetDecisionState();
   }
 
   unsubscribe(objectKey: ObjectKey, handler: Handler<any>) {
@@ -370,6 +410,26 @@ export class ItemStateManager {
     };
 
     return utils.requestService<ServiceTaskState[]>(
+      this.serviceConfig,
+      options,
+    );
+  }
+
+  getDecisionState(keys: ObjectKey[]) {
+    const options: RequestServiceOptions = {
+      path: 'decisions/state',
+      requestInit: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          decisionKeys: keys,
+        }),
+      },
+    };
+
+    return utils.requestService<ServiceDecisionState[]>(
       this.serviceConfig,
       options,
     );
@@ -425,7 +485,7 @@ export class ItemStateManager {
   };
 
   onReconnect = () => {
-    this.refreshAllTasks();
+    this.refreshAllItems();
   };
 
   private subscribeToPubSubEvents() {
@@ -470,6 +530,28 @@ export class ItemStateManager {
   private dequeueItem(objectKey: ObjectKey) {
     const key = objectKeyToString(objectKey);
     this.batchedKeys.delete(key);
+  }
+
+  private scheduleGetDecisionState() {
+    if (this.debouncedDecisionStateQuery) {
+      clearTimeout(this.debouncedDecisionStateQuery);
+    }
+
+    this.debouncedDecisionStateQuery = setTimeout(() => {
+      this.getDecisionState(Array.from(this.batchedKeys.values())).then(
+        decisions => {
+          decisions.forEach(decision => {
+            const { containerAri, objectAri, localId } = decision;
+            const objectKey = { containerAri, objectAri, localId };
+            const baseItem = convertServiceDecisionStateToBaseItem(decision);
+            this.cachedItems.set(objectKeyToString(objectKey), baseItem);
+
+            this.dequeueItem(objectKey);
+            this.notifyUpdatedReminderDate(objectKey, decision.reminderDate);
+          });
+        },
+      );
+    }, 1);
   }
 
   private scheduleGetTaskState() {
@@ -547,7 +629,7 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
 
   notifyRecentUpdates(recentUpdateContext: RecentUpdateContext) {
     this.recentUpdates.notify(recentUpdateContext);
-    this.itemStateManager.refreshAllTasks();
+    this.itemStateManager.refreshAllItems();
   }
 
   private query<S, R>(

@@ -6,17 +6,18 @@ import { SetReminderModal } from './SetReminderModal';
 import { RecomendationsDropdown } from './RecomendationsDropdown';
 import Tooltip from '@atlaskit/tooltip';
 import * as format from 'date-fns/format';
+import { ReminderTime, OnReminder } from '../../types';
 
 import { OnHover } from '../../styled/Item';
 
 export type Props = {
-  onReminderSet?: (value?: string) => void;
-  value?: string;
+  onReminderSet?: OnReminder;
+  value?: ReminderTime;
 };
 
 export type State = {
   isOpen: boolean;
-  value?: string;
+  value?: ReminderTime;
 };
 
 export class ReminderAdornment extends React.Component<Props, State> {

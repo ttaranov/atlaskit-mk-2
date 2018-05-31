@@ -13,6 +13,7 @@ import {
   TimePickerWrapper,
   DateLabel,
 } from '../../styled/ReminderAdornment';
+import { OnReminder } from '../../types';
 
 type HeaderProps = { onClose: () => void; showKeyline: boolean };
 
@@ -31,7 +32,7 @@ const Header = ({ onClose, showKeyline }: HeaderProps) => (
 export type Props = {
   isOpen: boolean;
   onRequetsClose?: () => void;
-  onChange?: (value?: string) => void;
+  onChange?: OnReminder;
   value?: string;
 };
 

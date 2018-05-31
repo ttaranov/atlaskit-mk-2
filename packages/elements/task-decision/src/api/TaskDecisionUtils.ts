@@ -15,6 +15,8 @@ import {
   ServiceTaskState,
   BaseItem,
   TaskState,
+  ServiceDecisionState,
+  DecisionState,
 } from '../types';
 import { isServiceDecision, isServiceTask } from '../type-helpers';
 
@@ -90,6 +92,18 @@ export const convertServiceTaskStateToBaseItem = (
 
   return {
     type: 'TASK',
+    lastUpdateDate: new Date(lastUpdateDate),
+    ...other,
+  };
+};
+
+export const convertServiceDecisionStateToBaseItem = (
+  serviceDecisionInfo: ServiceDecisionState,
+): BaseItem<DecisionState> => {
+  const { lastUpdateDate, ...other } = serviceDecisionInfo;
+
+  return {
+    type: 'DECISION',
     lastUpdateDate: new Date(lastUpdateDate),
     ...other,
   };

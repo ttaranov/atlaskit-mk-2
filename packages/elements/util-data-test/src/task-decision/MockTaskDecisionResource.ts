@@ -27,7 +27,6 @@ import {
 } from '@atlaskit/task-decision';
 
 import * as subMinutes from 'date-fns/sub_minutes';
-import { toObjectKey } from '../../../task-decision/src/type-helpers';
 
 export interface MockTaskDecisionResourceConfig {
   hasMore?: boolean;
@@ -187,7 +186,11 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     if (debouncedTaskToggle) {
       clearTimeout(debouncedTaskToggle);
     }
-    const objectKey = toObjectKey(baseItem);
+    const objectKey: ObjectKey = {
+      localId: baseItem.localId,
+      containerAri: baseItem.containerAri,
+      objectAri: baseItem.objectAri,
+    };
 
     // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
     this.notifyUpdatedState(objectKey, state);
@@ -287,7 +290,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
-  notifyUpdatedReminderDate(objectKey: ObjectKey, timestamp?: ReminderTime) {
+  notifyUpdatedReminderDate(objectKey: ObjectKey, reminderDate: ReminderTime) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
@@ -296,7 +299,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
 
     handlers.forEach(handler => {
       if (handler.type === HandlerType.REMINDER) {
-        handler.callback(timestamp);
+        handler.callback(reminderDate);
       }
     });
   }
@@ -311,7 +314,11 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     baseItem: BaseItem<TaskState | DecisionState>,
     reminderDate: ReminderTime,
   ): Promise<ReminderTime> {
-    const objectKey = toObjectKey(baseItem);
+    const objectKey: ObjectKey = {
+      localId: baseItem.localId,
+      containerAri: baseItem.containerAri,
+      objectAri: baseItem.objectAri,
+    };
     // Optimistically notify subscribers that the timestamp has updated so that they can re-render accordingly
     this.notifyUpdatedReminderDate(objectKey, reminderDate);
 

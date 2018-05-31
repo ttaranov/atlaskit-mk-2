@@ -121,7 +121,10 @@ export class InternalTaskItem extends PureComponent<Props> {
     );
 
     const endAdornments = [
-      <ReminderAdornment onReminderSet={this.handleReminderSet} />,
+      <ReminderAdornment
+        onReminderSet={this.handleReminderSet}
+        value={reminderDate}
+      />,
       <ParticipantsAdornment
         key="participant"
         appearance={appearance}
