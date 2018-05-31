@@ -7,10 +7,10 @@ import Avatar from '@atlaskit/avatar';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
 
-// Removes items with no props passed from the product.
+// Remove items with no props passed from the product.
 const removeEmptyItems = items =>
   Object.keys(items)
-    .filter(item => Object.keys(items[item]).length > 0)
+    .filter(item => Object.keys(items[item]).length)
     .reduce((acc, curr) => {
       acc[curr] = items[curr];
       return acc;
@@ -71,10 +71,9 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
     ...(props.notificationTooltip && { label: props.notificationTooltip }),
     ...(props.notificationCount && {
-      badge: (notificationCount: number) =>
-        <Badge appearance="important" value={notificationCount} />(
-          props.notificationCount,
-        ),
+      badge: () => (
+        <Badge appearance="important" value={props.notificationCount} />
+      ),
     }),
   };
   const people = {
