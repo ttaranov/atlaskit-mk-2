@@ -1,6 +1,5 @@
 // @flow
 import React, { type ComponentType } from 'react';
-import MenuIcon from '@atlaskit/icon/glyph/menu';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
@@ -77,9 +76,9 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
     ...(props.notificationTooltip && { label: props.notificationTooltip }),
     ...(props.notificationCount && {
-      badge: () => (
-        <Badge appearance="important" value={props.notificationCount} />
-      ),
+      badge: ((notificationCount: number) => () => (
+        <Badge appearance="important" value={notificationCount} />
+      ))(props.notificationCount),
     }),
   };
   // $FlowFixMe
