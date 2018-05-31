@@ -5,6 +5,7 @@ import { colors } from '@atlaskit/theme';
 import { EditorIconWrapper } from '../styled/DecisionItem';
 import Item from './Item';
 import { Appearance, ContentRef, User } from '../types';
+import { ReminderAdornment } from './ReminderAdornment';
 import { ParticipantsAdornment } from './ParticipantsAdornment';
 
 export interface Props {
@@ -16,6 +17,7 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
+  onReminderSet?: (value?: string) => void;
 }
 
 export default class DecisionItem extends PureComponent<Props, {}> {
@@ -34,6 +36,12 @@ export default class DecisionItem extends PureComponent<Props, {}> {
     return `Captured by ${user.displayName}`;
   }
 
+  handleReminderSet = reminder => {
+    if (this.props.onReminderSet) {
+      this.props.onReminderSet(reminder);
+    }
+  };
+
   render() {
     const {
       appearance,
@@ -50,12 +58,14 @@ export default class DecisionItem extends PureComponent<Props, {}> {
       </EditorIconWrapper>
     );
 
-    const endAdornments = (
+    const endAdornments = [
+      <ReminderAdornment onReminderSet={this.handleReminderSet} />,
       <ParticipantsAdornment
+        key="participant"
         appearance={appearance}
         participants={participants}
-      />
-    );
+      />,
+    ];
 
     return (
       <Item
