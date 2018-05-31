@@ -124,7 +124,7 @@ export class ChartSettingsDialog extends React.Component<DialogProps> {
       <div
         style={{
           width: '200px',
-          maxHeight: '200px',
+          maxHeight: '250px',
         }}
       >
         {this.props.availableChartSettings.map(availableSetting => {

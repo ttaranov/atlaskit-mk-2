@@ -138,7 +138,7 @@ class TableComponent extends React.Component<ComponentProps> {
       availableChartSettings = TimelineSettings;
     }
 
-    const componentChartSettings = availableChartSettings
+    const componentChartSettings: any = availableChartSettings
       ? availableChartSettings.reduce((componentSettings, setting) => {
           if (
             setting.for === 'component' &&
@@ -172,7 +172,10 @@ class TableComponent extends React.Component<ComponentProps> {
                   width: calcTableWidth(node.attrs.layout, containerWidth),
                 }}
                 className={`table-container ${
-                  node.attrs.viewMode !== 'table' ? '-hidden' : ''
+                  node.attrs.viewMode !== 'table' &&
+                  !componentChartSettings.showTable
+                    ? '-hidden'
+                    : ''
                 }`}
                 data-layout={node.attrs.layout}
               >

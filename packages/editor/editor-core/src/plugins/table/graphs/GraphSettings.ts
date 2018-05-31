@@ -21,6 +21,12 @@ export const TimelineSettings: ChartSettings = [
     for: 'component',
     input: 'checkbox',
   },
+  {
+    name: 'showTable',
+    title: 'Show table',
+    for: 'component',
+    input: 'checkbox',
+  },
 ];
 
 export const DonutSettings: ChartSettings = [
@@ -48,5 +54,11 @@ export const DonutSettings: ChartSettings = [
     title: 'Show title',
     for: 'component',
     input: 'title',
+  },
+  {
+    name: 'showTable',
+    title: 'Show table',
+    for: 'component',
+    input: 'checkbox',
   },
 ];
