@@ -24,6 +24,7 @@
     "@atlaskit/avatar": "^10.0.6",
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/calendar": "^5.0.3",
+    "@atlaskit/checkbox": "^2.0.2",
     "@atlaskit/code": "^4.0.4",
     "@atlaskit/droplist": "^5.0.3",
     "@atlaskit/editor-common": "^10.1.1",

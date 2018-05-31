@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Select from '@atlaskit/select';
+import Checkbox from '@atlaskit/checkbox';
 import { ChartSettings, ChartSetting } from '../../../graphs';
 
 export const SettingsItem: any = styled.div`
@@ -60,13 +61,15 @@ export class ChartSettingsDialog extends React.Component<DialogProps> {
     } else if (setting.input === 'checkbox') {
       return (
         <div>
-          <input
-            type="checkbox"
-            checked={this.props.currentSettings[setting.name]}
-            onChange={e => this.props.onChange(setting.name, e.target.checked)}
+          <Checkbox
+            initiallyChecked={this.props.currentSettings[setting.name]}
+            value={this.props.currentSettings[setting.name]}
+            label={setting.title}
+            onChange={({ event, isChecked }) =>
+              this.props.onChange(setting.name, isChecked)
+            }
             name={setting.name}
           />
-          <label htmlFor={'setting-' + setting.name}> {setting.title}</label>
         </div>
       );
     } else if (setting.input === 'select') {
@@ -99,18 +102,15 @@ export class ChartSettingsDialog extends React.Component<DialogProps> {
       ];
       return (
         <div>
-          <input
-            type="checkbox"
-            checked={this.props.currentSettings[setting.name]}
-            onChange={e =>
-              this.props.onChange(
-                setting.name,
-                e.target.checked ? targetColName : '',
-              )
+          <Checkbox
+            initiallyChecked={this.props.currentSettings[setting.name]}
+            value={this.props.currentSettings[setting.name]}
+            label={setting.title}
+            onChange={({ event, isChecked }) =>
+              this.props.onChange(setting.name, isChecked ? targetColName : '')
             }
             name={setting.name}
           />
-          <label htmlFor={'setting-' + setting.name}> {setting.title}</label>
         </div>
       );
     }
