@@ -1,13 +1,94 @@
 import styled from 'styled-components';
+import { keyframes } from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { gridSize, colors } from '@atlaskit/theme';
+import { gridSize, borderRadius, colors } from '@atlaskit/theme';
+
+// reveal the 2 sides of the checkmark by increasing their height
+const leftSideCheckmark = keyframes`
+  0% {
+    height: 2.2px;
+    opacity: 1;
+  }
+  100% {
+    height: 5.7px;
+    opacity: 1;
+  }
+`;
+const rightSideCheckmark = keyframes`
+  0% {
+    height: 2.2px;
+    opacity: 1;
+  }
+  100% {
+    height: 10px;
+    opacity: 1;
+  }
+`;
+
+// animate a blue box from the center of the checkbox, bouncing outside its bounds and
+// then scaling back to its final size
+const checkBounce = keyframes`
+  0% {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    top: 7px;
+    left: 7px;
+    border-radius: 0px;
+  }
+  /* set full opacity around the same size as the checkbox */
+  40% {
+    opacity: 1;
+  }
+  /* grow beyond its final size */
+  50% {
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+    top: -3px;
+    left: -3px;
+    border-radius: ${borderRadius()}px;
+  }
+  /* scale back to final size, same as checkbox */
+  100% {
+    opacity: 1;
+    width: ${checkBoxSize}px;
+    height: ${checkBoxSize}px;
+    top: -1px;
+    left: -1px;
+    border-radius: ${borderRadius()}px;
+  }
+`;
+
+// create a ripple effect showing when the animated blue box (see checkBounce animation)
+// reaches its max size before scaling back down
+const bounceRipple = keyframes`
+  0% {
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+    top: -4px;
+    left: -4px;
+    border-radius: ${borderRadius()}px;
+  }
+  100% {
+    opacity: 0;
+    width: 24px;
+    height: 24px;
+    top: -6px;
+    left: -6px;
+    border-radius: ${borderRadius()}px;
+  }
+`;
+
+const checkBoxSize = 16;
 
 export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
+  flex: 0 0 ${checkBoxSize}px;
+  width: ${checkBoxSize}px;
+  height: ${checkBoxSize}px;
   position: relative;
   align-self: start;
   margin: 2px ${gridSize()}px 0 0;
@@ -23,30 +104,59 @@ export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
 
     + label {
       box-sizing: border-box;
-      display: block;
+      display: inline-block;
       position: relative;
-      width: 100%;
       cursor: pointer;
+      background-color: ${colors.N0};
+      border: 1px solid ${colors.N50};
+      border-radius: ${borderRadius()}px;
+      box-sizing: border-box;
+      height: ${checkBoxSize}px;
+      width: ${checkBoxSize}px;
+      transition: border-color 0.2s ease;
 
+      &::before,
       &::after {
-        background: ${colors.N0};
-        background-size: 16px;
-        border-radius: 3px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: ${colors.N50};
-        box-sizing: border-box;
         content: '';
-        height: 16px;
-        left: 50%;
         position: absolute;
-        transition: border-color 0.2s ease-in-out;
-        top: 8px;
-        width: 16px;
-        transform: translate(-50%, -50%);
+        opacity: 0;
+        display: inline-block;
+        border-radius: ${borderRadius()}px;
+        background-color: ${colors.B400};
+        width: 0;
+        height: 0;
+        border: 1px solid transparent;
+      }
+      > span {
+        &::before,
+        &::after {
+          content: '';
+          box-sizing: border-box;
+          position: absolute;
+          height: 2.2px;
+          width: 2.2px;
+          background-color: ${colors.N0};
+          display: block;
+          transform-origin: left top;
+          border-radius: 5px;
+          z-index: 1;
+          opacity: 0;
+        }
+        &::before {
+          top: 11.06px;
+          left: 5.8px;
+          transform: rotate(-135deg);
+          height: 10px;
+        }
+        &::after {
+          top: 7.03px;
+          left: 1.45px;
+          transform: rotate(-45deg);
+          height: 5.7px;
+        }
       }
     }
-    &:not([disabled]) + label:hover::after {
+    &:not([disabled]) + label:hover {
       background: ${colors.N30};
       transition: border 0.2s ease-in-out;
     }
@@ -55,18 +165,43 @@ export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
       cursor: default;
     }
     &:checked {
-      + label::after {
-        background: url(data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KICA8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHJ4PSIyIiBmaWxsPSIjMDA1MkNDIj48L3JlY3Q+DQogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik05LjM3NCA0LjkxNEw1LjQ1NiA4LjgzMmEuNzY5Ljc2OSAwIDAgMS0xLjA4OCAwTDIuNjI2IDcuMDkxYS43NjkuNzY5IDAgMSAxIDEuMDg4LTEuMDg5TDQuOTEyIDcuMmwzLjM3NC0zLjM3NGEuNzY5Ljc2OSAwIDEgMSAxLjA4OCAxLjA4OCI+PC9wYXRoPg0KPC9zdmc+)
-          no-repeat 0 0;
-        background-size: 16px;
-        border: 0;
-        border-color: transparent;
-        border-radius: 0; /* FS-1392 */
+      + label {
+        &::after {
+          box-sizing: border-box;
+          opacity: 1;
+          width: ${checkBoxSize}px;
+          height: ${checkBoxSize}px;
+          top: -1px;
+          left: -1px;
+          border-radius: ${borderRadius()}px;
+        }
+        > span::before,
+        span::after {
+          opacity: 1;
+        }
       }
       &:not([disabled]) + label:hover::after {
-        background: url(data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KICA8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHJ4PSIyIiBmaWxsPSIjMDc0N0E2Ij48L3JlY3Q+DQogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik05LjM3NCA0LjkxNEw1LjQ1NiA4LjgzMmEuNzY5Ljc2OSAwIDAgMS0xLjA4OCAwTDIuNjI2IDcuMDkxYS43NjkuNzY5IDAgMSAxIDEuMDg4LTEuMDg5TDQuOTEyIDcuMmwzLjM3NC0zLjM3NGEuNzY5Ljc2OSAwIDEgMSAxLjA4OCAxLjA4OCI+PC9wYXRoPg0KPC9zdmc+)
-          no-repeat 0 0;
-        background-size: 16px;
+        background-color: ${colors.B500};
+      }
+    }
+    &.animated:checked {
+      + label {
+        > span::before,
+        span::after {
+          opacity: 0;
+        }
+        > span::before {
+          animation: ${rightSideCheckmark} 0.1s ease-in 0.2s forwards;
+        }
+        > span::after {
+          animation: ${leftSideCheckmark} 0.02s linear 0.18s forwards;
+        }
+        &::before {
+          animation: ${bounceRipple} 0.11s ease 0.15s;
+        }
+        &::after {
+          animation: ${checkBounce} 0.3s ease-in-out 0s forwards;
+        }
       }
     }
   }

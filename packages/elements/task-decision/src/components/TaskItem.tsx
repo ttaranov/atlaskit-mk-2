@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { CheckBoxWrapper } from '../styled/TaskItem';
+// import { CheckBoxWrapper } from '../styled/TaskItem';
+import { TaskCheckBox } from './TaskCheckbox';
 
 import Item from './Item';
 import { ParticipantsAdornment } from './ParticipantsAdornment';
@@ -102,17 +103,12 @@ export class InternalTaskItem extends PureComponent<Props> {
     } = this.props;
 
     const icon = (
-      <CheckBoxWrapper contentEditable={false}>
-        <input
-          id={this.checkBoxId}
-          name={this.checkBoxId}
-          type="checkbox"
-          onChange={this.handleOnChange}
-          checked={!!isDone}
-          disabled={!!disabled}
-        />
-        <label htmlFor={this.checkBoxId} />
-      </CheckBoxWrapper>
+      <TaskCheckBox
+        id={this.checkBoxId}
+        isDone={isDone}
+        disabled={disabled}
+        onChange={this.handleOnChange}
+      />
     );
 
     const endAdornments = [
