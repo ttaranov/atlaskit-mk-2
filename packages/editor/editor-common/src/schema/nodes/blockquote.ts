@@ -20,6 +20,6 @@ export const blockquote: NodeSpec = {
   draggable: true,
   parseDOM: [{ tag: 'blockquote' }],
   toDOM() {
-    return ['blockquote', { draggable: true }, 0];
+    return ['blockquote', { draggable: 'true' }, 0];
   },
 };

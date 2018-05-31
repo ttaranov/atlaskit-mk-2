@@ -174,7 +174,6 @@ export const codeBlock: NodeSpec = {
     const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
     return [
       'pre',
-      { draggable: true },
       ['code', { 'data-language': node.attrs.language, class: className }, 0],
     ];
   },

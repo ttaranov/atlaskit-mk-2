@@ -47,6 +47,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .ProseMirror p,
   .ProseMirror .code {
     ${defaultEditorFontStyles};
+    cursor: text;
   }
 
   .ProseMirror .placeholder-decoration {
@@ -71,12 +72,16 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     outline: none;
   }
 
-  ProseMirror-selectednode:after {
+  .ProseMirror-selectednode::after {
     border: 0px solid transparent !important;
   }
 
   .ProseMirror span[data-placeholder] {
     color: ${akColorN300};
+  }
+
+  .ProseMirror hr {
+    cursor: move;
   }
 
   .ProseMirror blockquote {
@@ -85,6 +90,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     border-left: 2px solid ${akEditorBlockquoteBorderColor};
     margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
     margin-right: 0;
+    cursor: move;
 
     [dir='rtl'] & {
       padding-left: 0;
@@ -127,6 +133,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       border-radius: ${akBorderRadius};
       font-size: 12px;
       line-height: 20px;
+      cursor: move;
 
       span {
         display: block;

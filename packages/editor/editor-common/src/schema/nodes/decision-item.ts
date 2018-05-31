@@ -21,7 +21,7 @@ export const decisionItem: NodeSpec = {
     localId: { default: '' },
     state: { default: 'DECIDED' },
   },
-  draggable: true,
+  draggable: 'true',
   parseDOM: [
     {
       tag: 'li[data-decision-local-id]',
@@ -41,7 +41,7 @@ export const decisionItem: NodeSpec = {
     const attrs = {
       'data-decision-local-id': localId || 'local-decision',
       'data-decision-state': state,
-      draggable: true,
+      draggable: 'true',
     };
     return ['li', attrs, 0];
   },

@@ -97,7 +97,7 @@ class Panel extends ContentNodeView implements NodeView {
     const Icon = panelIcons[panelType];
 
     ReactDOM.render(
-      <Wrapper style={{ background: panelColor[panelType] }} draggable="false">
+      <Wrapper style={{ background: panelColor[panelType], cursor: 'move' }}>
         <IconWrapper style={{ color: iconColor[panelType] }}>
           <Icon label={`Panel ${panelType}`} />
         </IconWrapper>

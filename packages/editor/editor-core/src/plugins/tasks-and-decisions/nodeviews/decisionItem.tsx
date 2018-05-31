@@ -29,6 +29,7 @@ class Decision extends ContentNodeView implements NodeView {
     this.domRef = document.createElement('li');
     this.domRef.style['list-style-type'] = 'none';
     this.domRef.draggable = true;
+    this.domRef.style['cursor'] = 'move';
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(

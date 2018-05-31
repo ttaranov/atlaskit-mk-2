@@ -56,6 +56,7 @@ class Task extends ContentNodeView implements NodeView {
   private renderReactComponent() {
     this.domRef = document.createElement('li');
     this.domRef.style['list-style-type'] = 'none';
+    this.domRef.style['cursor'] = 'move';
 
     const node = this.node;
     const { localId, state } = node.attrs;

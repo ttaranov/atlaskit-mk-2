@@ -13,6 +13,7 @@ export const Header: ComponentClass<HTMLAttributes<{}>> = styled.div`
   cursor: pointer;
   padding: ${padding / 2}px ${padding / 2}px ${padding / 4}px;
   vertical-align: middle;
+  cursor: move;
 
   &.with-children {
     padding: 0;
@@ -31,4 +32,5 @@ export const Content: ComponentClass<
 
 export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 0 ${padding}px ${padding}px;
+  cursor: move;
 `;

@@ -54,7 +54,7 @@ export function dropCursor(options) {
           if (pos) {
             var res = view.state.doc.resolve(pos.pos);
             if (res && res.depth >= 1) {
-              var target = res.end(1);
+              var target = res.end(res.depth);
               if (view.dragging) {
                 target = dropPos(
                   view.dragging.slice,
