@@ -52,14 +52,13 @@ export class DashboardsView extends Component<{}> {
   }
 }
 
-class ProjectsViewBase extends Component<*> {
+export class ProjectsView extends Component<{}> {
   viewKey = 'root/index';
 
   componentDidMount() {
     maybeRegisterRootViews();
     rootViewState.setView(this.viewKey);
     containerViewState.setView(null);
-    this.props.navUI.unPeek();
   }
 
   render() {
@@ -74,11 +73,6 @@ class ProjectsViewBase extends Component<*> {
     );
   }
 }
-export const ProjectsView = () => (
-  <NavigationSubscriber>
-    {navUI => <ProjectsViewBase navUI={navUI} />}
-  </NavigationSubscriber>
-);
 
 export class SearchIssuesView extends Component<{}> {
   viewKey = 'root/issues';
@@ -102,10 +96,11 @@ export class SearchIssuesView extends Component<{}> {
 /**
  * Container views
  */
-export class BacklogView extends Component<{}> {
+class BacklogViewBase extends Component<*> {
   viewKey = 'container/project/index';
 
   componentDidMount() {
+    this.props.navUI.unPeek();
     maybeRegisterRootViews();
     maybeRegisterContainerViews();
     containerViewState.setView(this.viewKey);
@@ -124,3 +119,8 @@ export class BacklogView extends Component<{}> {
     );
   }
 }
+export const BacklogView = () => (
+  <NavigationSubscriber>
+    {navUI => <BacklogViewBase navUI={navUI} />}
+  </NavigationSubscriber>
+);
