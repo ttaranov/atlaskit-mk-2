@@ -1,9 +1,7 @@
 // @flow
 
-import React from 'react';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
-import Avatar from '@atlaskit/avatar';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
