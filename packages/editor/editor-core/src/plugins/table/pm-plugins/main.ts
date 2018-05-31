@@ -42,7 +42,7 @@ import {
   createControlsDecorationSet,
   getSelectedColumn,
   getSelectedRow,
-  containsTableHeader,
+  containsHeaderRow,
   canInsertTable,
 } from '../utils';
 
@@ -247,7 +247,7 @@ export class TableState {
   addHeaderToTableNodes = (slice: PmNode, selectionStart: number): void => {
     const { table } = this.view.state.schema.nodes;
     slice.content.forEach((node: PmNode, offset: number) => {
-      if (node.type === table && !containsTableHeader(this.view.state, node)) {
+      if (node.type === table && !containsHeaderRow(this.view.state, node)) {
         const { state, dispatch } = this.view;
         const { tr, doc } = state;
         const $anchor = doc.resolve(selectionStart + offset);

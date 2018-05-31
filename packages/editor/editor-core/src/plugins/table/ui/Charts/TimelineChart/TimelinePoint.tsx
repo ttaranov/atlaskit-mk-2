@@ -15,11 +15,10 @@ export default class TimelinePoint extends React.Component<Props, any> {
   };
 
   render() {
-    const { selectedColor, color, left, entry } = this.props;
+    const { color, left, entry } = this.props;
 
     return (
       <TimelineEntryPoint
-        selectedColor={selectedColor}
         color={color}
         style={{
           left: `${left}px`,

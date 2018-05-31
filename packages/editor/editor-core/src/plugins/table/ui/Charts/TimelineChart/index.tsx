@@ -74,13 +74,13 @@ export default class TimelineChart extends React.Component<Props, State> {
       if (
         what === 'start'
           ? currentEntry.start < extent
-          : currentEntry.end > extent
+          : currentEntry.end! > extent
       ) {
         return currentEntry[what];
       }
 
       return extent;
-    }, data.entries[0][what]);
+    }, data.entries[0][what]!);
   }
 
   static getDerivedStateFromProps(props, state) {

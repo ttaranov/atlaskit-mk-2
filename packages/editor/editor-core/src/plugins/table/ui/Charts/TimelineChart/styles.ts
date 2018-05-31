@@ -45,13 +45,13 @@ export const TimelineEntryContainer: ComponentClass<
   cursor: pointer;
 
   &:hover {
-    background-color: ${props => props.selectedColor};
+    background-color: ${(props: any) => props.selectedColor};
   }
 
-  background-color: ${props => props.color};
+  background-color: ${(props: any) => props.color};
   transition: background-color 0.1s ease-out;
 
-  ${props => (props.resizing ? 'opacity: 0.4' : '')};
+  ${(props: any) => (props.resizing ? 'opacity: 0.4' : '')};
 
   .ProseMirror-timeline_resize_btn {
     visibility: hidden;
@@ -83,7 +83,7 @@ export const TimelineEntryPoint: ComponentClass<
 
     text-align: center;
     transform: rotate(45deg);
-    background-color: ${props => props.color};
+    background-color: ${(props: any) => props.color};
   }
 
   & span {
