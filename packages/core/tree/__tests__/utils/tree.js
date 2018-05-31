@@ -1,6 +1,6 @@
 //@flow
 
-import { flattenTree, mutateTree } from '../../src/utils/tree';
+import { flattenTree, isSamePath, mutateTree } from '../../src/utils/tree';
 import { treeWithThreeLeaves } from '../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
 
