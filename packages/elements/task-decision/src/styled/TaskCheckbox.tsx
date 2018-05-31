@@ -46,7 +46,6 @@ const checkBounce = keyframes`
   }
   /* grow beyond its final size */
   50% {
-    opacity: 1;
     width: 20px;
     height: 20px;
     top: -3px;
@@ -55,12 +54,10 @@ const checkBounce = keyframes`
   }
   /* scale back to final size, same as checkbox */
   100% {
-    opacity: 1;
     width: ${checkBoxSize}px;
     height: ${checkBoxSize}px;
     top: -1px;
     left: -1px;
-    border-radius: ${borderRadius()}px;
   }
 `;
 
@@ -73,7 +70,6 @@ const bounceRipple = keyframes`
     height: 20px;
     top: -4px;
     left: -4px;
-    border-radius: ${borderRadius()}px;
   }
   100% {
     opacity: 0;
@@ -81,7 +77,6 @@ const bounceRipple = keyframes`
     height: 24px;
     top: -6px;
     left: -6px;
-    border-radius: ${borderRadius()}px;
   }
 `;
 
@@ -125,7 +120,6 @@ export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
         background-color: ${colors.B400};
         width: 0;
         height: 0;
-        border: 1px solid transparent;
       }
       > span {
         &::before,
@@ -167,7 +161,6 @@ export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
     &:checked {
       + label {
         &::after {
-          box-sizing: border-box;
           opacity: 1;
           width: ${checkBoxSize}px;
           height: ${checkBoxSize}px;
