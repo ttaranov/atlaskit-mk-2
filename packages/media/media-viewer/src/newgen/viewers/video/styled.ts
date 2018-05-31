@@ -68,6 +68,7 @@ export const TimeLine = styled.div`
   background-color: #5d646f;
   border-radius: 5px;
   position: relative;
+  transition: all 0.1s;
 `;
 
 export const CurrentTimeLine = styled.div`
@@ -90,6 +91,7 @@ export const Thumb = styled.div`
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  transition: all 0.1s;
 
   &:hover .current-time-tooltip {
     opacity: 1;
@@ -172,4 +174,16 @@ export const CurrentTimeTooltip = styled.div`
 export const TimeRangeWrapper = styled.div`
   padding: 10px 0;
   cursor: pointer;
+
+  &:hover {
+    .timeline {
+      height: 8px;
+      transform: translateY(2px);
+    }
+
+    .time-range-thumb {
+      width: 18px;
+      height: 18px;
+    }
+  }
 `;
