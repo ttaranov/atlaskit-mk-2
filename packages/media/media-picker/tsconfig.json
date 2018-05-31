@@ -12,5 +12,8 @@
     "./example-helpers/*.ts",
     "./example-helpers/*.tsx",
     "./typings/atlaskit.d.ts"
+  ],
+  "exclude": [
+    "./__tests__/integration/**/*.ts"
   ]
 }
