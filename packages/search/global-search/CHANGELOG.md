@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 3.3.3
+- [patch] Update people results link path in global search [be04163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be04163)
+
 ## 3.3.2
 - [patch] Remove SVG react warnings. [89ce7d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89ce7d7)
 
