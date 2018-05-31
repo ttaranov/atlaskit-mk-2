@@ -124,7 +124,6 @@ export const isNumberChartAvailable = (state: EditorState) => {
       }
 
       const node = cell.firstChild.firstChild;
-      // debugger;
       if (node && node.isText && /^\d+$/.test(node.textContent)) {
         return true;
       }
