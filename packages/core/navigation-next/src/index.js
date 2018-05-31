@@ -30,7 +30,13 @@ export { NavigationStateInterface } from './state';
 export { GlobalTheme } from './theme';
 
 /** Nav API */
-export { NavAPISubscriber, NavAPI, utils as navAPIUtils } from './api';
+export {
+  ContainerViewSubscriber,
+  containerViewState,
+  RootViewSubscriber,
+  rootViewState,
+  utils as navAPIUtils,
+} from './api';
 
 /** Nav Renderer */
 export { default as NavRenderer } from './renderer';

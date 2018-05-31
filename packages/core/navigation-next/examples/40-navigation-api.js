@@ -4,21 +4,29 @@ import React, { Component, Fragment } from 'react';
 import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { Label } from '@atlaskit/field-base';
 import Toggle from '@atlaskit/toggle';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   GlobalNav,
   LayoutManager,
-  NavAPISubscriber,
+  ContainerViewSubscriber,
+  ItemAvatar,
+  RootViewSubscriber,
   NavigationProvider,
   NavRenderer,
+  containerViewState,
+  rootViewState,
 } from '../src';
 
 import {
   globalNavPrimaryItems,
   globalNavSecondaryItems,
+  containerViews,
   rootViews,
 } from './shared/mock-data';
 import ShortcutsPlugin from './shared/shortcuts-plugin';
+
+const gridSize = gridSizeFn();
 
 /**
  * Render components
@@ -31,37 +39,65 @@ const GlobalNavigation = () => (
 );
 
 const JiraWordmark = () => (
-  <div css={{ padding: '16px 0' }}>
+  <div css={{ padding: `${gridSize * 2}px 0` }}>
     <JiraWordmarkLogo />
   </div>
 );
 
+const ProjectSwitcher = ({ components: C, ...props }: *) => (
+  <div css={{ paddingBottom: `${gridSize}px` }}>
+    <C.ContainerHeader
+      before={itemState => (
+        <ItemAvatar itemState={itemState} appearance="square" />
+      )}
+      {...props}
+    />
+  </div>
+);
+
+const ViewRenderer = ({ view }: *) => {
+  const { activeView, data } = view.state;
+  return activeView && data ? (
+    <div css={{ padding: `${gridSize * 2}px 0` }}>
+      <NavRenderer
+        customComponents={{ JiraWordmark, ProjectSwitcher }}
+        items={data}
+      />
+    </div>
+  ) : (
+    'LOADING'
+  );
+};
+
 const ProductRoot = () => (
-  <NavAPISubscriber>
-    {api => {
-      const { activeView, data } = api.state;
-      return activeView && data ? (
-        <div css={{ padding: '16px 0' }}>
-          <NavRenderer customComponents={{ JiraWordmark }} items={data} />
-        </div>
-      ) : (
-        'LOADING'
-      );
-    }}
-  </NavAPISubscriber>
+  <RootViewSubscriber>
+    {rootView => <ViewRenderer view={rootView} />}
+  </RootViewSubscriber>
+);
+
+const ProductContainer = () => (
+  <ContainerViewSubscriber>
+    {containerView => <ViewRenderer view={containerView} />}
+  </ContainerViewSubscriber>
 );
 
 class Example extends Component<*> {
   componentDidMount() {
-    const { navAPI } = this.props;
+    const { containerView, rootView } = this.props;
 
+    const containerViewKeys = Object.keys(containerViews);
     const rootViewKeys = Object.keys(rootViews);
 
-    rootViewKeys.forEach(key => {
-      navAPI.addView(key, () => rootViews[key]);
+    containerViewKeys.forEach(key => {
+      containerView.addView(key, () => containerViews[key]);
     });
 
-    navAPI.setView(rootViewKeys[0]);
+    rootViewKeys.forEach(key => {
+      rootView.addView(key, () => rootViews[key]);
+    });
+
+    rootView.setView(rootViewKeys[0]);
+    containerView.setView(containerViewKeys[0]);
   }
 
   render() {
@@ -70,7 +106,7 @@ class Example extends Component<*> {
       <LayoutManager
         globalNavigation={GlobalNavigation}
         productRootNavigation={ProductRoot}
-        productContainerNavigation={null}
+        productContainerNavigation={ProductContainer}
       >
         <div style={{ padding: 30 }}>Page content</div>
         <Label label="Toggle debug logger" />
@@ -97,9 +133,11 @@ export default class extends Component<*, *> {
     return (
       <NavigationProvider debug={debugEnabled}>
         <Fragment>
-          <NavAPISubscriber>
-            {api => <Example navAPI={api} onDebugToggle={this.toggleDebug} />}
-          </NavAPISubscriber>
+          <Example
+            containerView={containerViewState}
+            rootView={rootViewState}
+            onDebugToggle={this.toggleDebug}
+          />
           <ShortcutsPlugin />
         </Fragment>
       </NavigationProvider>

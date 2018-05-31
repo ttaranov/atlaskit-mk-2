@@ -70,16 +70,18 @@ const rootIndex = [
     isRootLevel: true,
     items: [
       {
-        type: 'Item',
+        type: 'LinkItem',
         id: 'dashboards',
         text: 'Dashboards',
         icon: 'DashboardIcon',
+        to: '/',
       },
       {
-        type: 'Item',
+        type: 'LinkItem',
         id: 'projects',
         text: 'Projects',
         icon: 'FolderIcon',
+        to: '/projects',
       },
       {
         icon: 'IssuesIcon',
@@ -97,7 +99,7 @@ const rootIndex = [
 
 const rootIssues = [
   {
-    id: 'root-issues-header',
+    id: 'root/issues:header',
     isRootLevel: true,
     items: [
       { type: 'JiraWordmark', id: 'jira-wordmark' },
@@ -106,10 +108,15 @@ const rootIssues = [
     type: 'Group',
   },
   {
-    id: 'root-issues-menu',
+    id: 'root/issues:menu',
     isRootLevel: true,
     items: [
-      { type: 'Item', id: 'search-issues', text: 'Search issues' },
+      {
+        type: 'LinkItem',
+        id: 'search-issues',
+        text: 'Search issues',
+        to: '/issues/search',
+      },
       { type: 'Separator', id: 'separator-1' },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
       { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
@@ -133,74 +140,106 @@ export const rootViews = {
 };
 
 /** Product container views */
-const containerIssues = {
-  id: 'container-issues',
-  parentId: null,
-  view: [
-    {
-      key: 'menu',
-      id: 'container-issues-menu',
-      items: [
-        {
-          icon: 'BacklogIcon',
-          key: 'backlog',
-          text: 'Backlog',
-          type: 'Item',
-        },
-        {
-          icon: 'BoardIcon',
-          key: 'active-sprints',
-          text: 'Active sprints',
-          type: 'Item',
-        },
-        {
-          icon: 'GraphLineIcon',
-          key: 'reports',
-          text: 'Reports',
-          type: 'Item',
-        },
-        {
-          icon: 'ShipIcon',
-          key: 'releases',
-          text: 'Releases',
-          type: 'Item',
-        },
-        {
-          icon: 'IssuesIcon',
-          goTo: 'container-issues-issues',
-          key: 'issues',
-          text: 'Issues',
-          type: 'GoToItem',
-        },
-      ],
-      type: 'Group',
-    },
-  ],
-};
+const containerProject = [
+  {
+    id: 'container/project/index:header',
+    isRootLevel: true,
+    items: [
+      {
+        id: 'container-header',
+        subText: 'Software project',
+        text: 'Endeavour',
+        type: 'ProjectSwitcher',
+      },
+    ],
+    type: 'Group',
+  },
+  {
+    id: 'container/project/index:menu',
+    nestedGroupKey: 'menu',
+    isRootLevel: true,
+    items: [
+      {
+        icon: 'BacklogIcon',
+        key: 'backlog',
+        text: 'Backlog',
+        to: '/projects/endeavour',
+        type: 'LinkItem',
+      },
+      {
+        icon: 'BoardIcon',
+        key: 'active-sprints',
+        text: 'Active sprints',
+        type: 'Item',
+      },
+      {
+        icon: 'GraphLineIcon',
+        key: 'reports',
+        text: 'Reports',
+        type: 'Item',
+      },
+      {
+        icon: 'ShipIcon',
+        key: 'releases',
+        text: 'Releases',
+        type: 'Item',
+      },
+      {
+        icon: 'IssuesIcon',
+        goTo: 'container/project/issues',
+        key: 'issues',
+        text: 'Issues',
+        type: 'GoToItem',
+      },
+    ],
+    type: 'Nested',
+  },
+];
 
-const containerIssuesIssues = {
-  id: 'container-issues-issues',
-  parentId: 'container-issues',
-  view: [
-    {
-      key: 'menu',
-      id: 'container-issues-issues-menu',
-      parentId: 'container-issues-menu',
-      items: [
-        { type: 'Item', key: 'search-issues', text: 'Search issues' },
-        { type: 'Separator', key: 'separator-1' },
-        { type: 'Item', key: 'my-open-issues', text: 'My open issues' },
-        { type: 'Item', key: 'reported-by-me', text: 'Reported by me' },
-        { type: 'Item', key: 'all-issues', text: 'All issues' },
-        { type: 'Item', key: 'open-issues', text: 'Open issues' },
-        { type: 'Item', key: 'done-issues', text: 'Done issues' },
-        { type: 'Item', key: 'viewed-recently', text: 'Viewed recently' },
-        { type: 'Item', key: 'created-recently', text: 'Created recently' },
-        { type: 'Item', key: 'resolved-recently', text: 'Resolved recently' },
-        { type: 'Item', key: 'updated-recently', text: 'Updated recently' },
-      ],
-      type: 'Group',
-    },
-  ],
+const containerProjectIssues = [
+  {
+    id: 'container/project/issues:header',
+    isRootLevel: true,
+    items: [
+      {
+        id: 'container-header',
+        subText: 'Software project',
+        text: 'Endeavour',
+        type: 'ProjectSwitcher',
+      },
+      {
+        id: 'back-button',
+        items: [
+          { type: 'BackItem', goTo: 'container/project/index', id: 'back' },
+        ],
+        type: 'Group',
+      },
+    ],
+    type: 'Group',
+  },
+  {
+    id: 'container/project/issues:menu',
+    isRootLevel: true,
+    nestedGroupKey: 'menu',
+    parentId: 'container/project/index:menu',
+    items: [
+      { type: 'Item', key: 'search-issues', text: 'Search issues' },
+      { type: 'Separator', key: 'separator-1' },
+      { type: 'Item', key: 'my-open-issues', text: 'My open issues' },
+      { type: 'Item', key: 'reported-by-me', text: 'Reported by me' },
+      { type: 'Item', key: 'all-issues', text: 'All issues' },
+      { type: 'Item', key: 'open-issues', text: 'Open issues' },
+      { type: 'Item', key: 'done-issues', text: 'Done issues' },
+      { type: 'Item', key: 'viewed-recently', text: 'Viewed recently' },
+      { type: 'Item', key: 'created-recently', text: 'Created recently' },
+      { type: 'Item', key: 'resolved-recently', text: 'Resolved recently' },
+      { type: 'Item', key: 'updated-recently', text: 'Updated recently' },
+    ],
+    type: 'Nested',
+  },
+];
+
+export const containerViews = {
+  'container/project/index': containerProject,
+  'container/project/issues': containerProjectIssues,
 };
-export const containerViews = [containerIssues, containerIssuesIssues];

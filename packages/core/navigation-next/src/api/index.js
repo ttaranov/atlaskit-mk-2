@@ -1,5 +1,13 @@
 // @flow
 
-export { default as NavAPI } from './NavAPI';
-export { default as NavAPISubscriber } from './NavAPISubscriber';
+export {
+  default as ContainerViewSubscriber,
+  containerViewState,
+} from './ContainerViewSubscriber';
+
+export {
+  default as RootViewSubscriber,
+  rootViewState,
+} from './RootViewSubscriber';
+
 export { default as utils } from './utils';

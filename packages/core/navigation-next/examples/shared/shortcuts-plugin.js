@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
-import { NavAPISubscriber, navAPIUtils } from '../../src';
+import { RootViewSubscriber, navAPIUtils } from '../../src';
 
 const { appendChildren, findId } = navAPIUtils;
 
@@ -42,7 +42,7 @@ class Shortcuts extends Component<any> {
 }
 
 export default (props: any) => (
-  <NavAPISubscriber>
+  <RootViewSubscriber>
     {navAPI => <Shortcuts {...props} navAPI={navAPI} />}
-  </NavAPISubscriber>
+  </RootViewSubscriber>
 );
