@@ -6,6 +6,8 @@ import { SetReminderModal } from './SetReminderModal';
 import Tooltip from '@atlaskit/tooltip';
 import * as format from 'date-fns/format';
 
+import { OnHover } from '../../styled/Item';
+
 export type Props = {
   onReminderSet?: (value?: string) => void;
   value?: string;
@@ -65,8 +67,15 @@ export class ReminderAdornment extends React.Component<Props, State> {
     );
   }
 
+  withOnHover(content) {
+    if (this.props.value) {
+      return content;
+    }
+    return <OnHover>{content}</OnHover>;
+  }
+
   render() {
-    return [
+    return this.withOnHover([
       this.renderButton(),
       <SetReminderModal
         key="modal"
@@ -76,6 +85,6 @@ export class ReminderAdornment extends React.Component<Props, State> {
         value={this.state.value}
         onConfirm={this.handleConfirm}
       />,
-    ];
+    ]);
   }
 }
