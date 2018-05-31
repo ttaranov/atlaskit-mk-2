@@ -6,6 +6,7 @@ import { NumberChartEntry } from '../../../graphs';
 export interface Props {
   data: Array<NumberChartEntry>;
   colors?: Array<string>;
+  title?: string;
 }
 
 export default class ChartLegend extends React.Component<Props, any> {
@@ -13,23 +14,26 @@ export default class ChartLegend extends React.Component<Props, any> {
     colors: COLORS,
   };
   render() {
-    const { colors, data } = this.props;
+    const { colors, data, title } = this.props;
 
     return (
-      <ul className="ProseMirror-chart_legend">
-        {data.map((item, index) => {
-          const color = colors![index];
-          return (
-            <li>
-              <span
-                className="ProseMirror-chart_bullet"
-                style={{ backgroundColor: color }}
-              />
-              <span className="ProseMirror-chart_title">{item.title}</span>
-            </li>
-          );
-        })}
-      </ul>
+      <div>
+        {title ? <h3 className="ProseMirror-chart_header">{title}</h3> : null}
+        <ul className="ProseMirror-chart_legend">
+          {data.map((item, index) => {
+            const color = colors![index];
+            return (
+              <li>
+                <span
+                  className="ProseMirror-chart_bullet"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="ProseMirror-chart_title">{item.title}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     );
   }
 }

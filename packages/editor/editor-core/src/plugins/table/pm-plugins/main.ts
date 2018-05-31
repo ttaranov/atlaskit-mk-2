@@ -224,7 +224,6 @@ export class TableState {
       const viewMode = tableNode.node.attrs.viewMode;
       if (viewMode !== this.viewMode) {
         this.viewMode = viewMode;
-        console.log('view mode is now', viewMode);
         controlsDirty = true;
       }
     }

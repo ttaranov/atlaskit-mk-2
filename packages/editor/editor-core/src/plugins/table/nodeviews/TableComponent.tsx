@@ -121,12 +121,6 @@ class TableComponent extends React.Component<ComponentProps> {
     const activeViewModeSettings = viewModeSettings[viewMode]
       ? viewModeSettings[viewMode]
       : {};
-    console.log(
-      'for view',
-      viewMode,
-      'using view mode settings',
-      activeViewModeSettings,
-    );
 
     if (node.attrs.viewMode === 'donut' || node.attrs.viewMode === 'barchart') {
       graphTransformer = new NumberTransformer(

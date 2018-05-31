@@ -42,4 +42,11 @@ export const DonutSettings: ChartSettings = [
       { label: 'Right', value: 'right' },
     ],
   },
+
+  {
+    name: 'title',
+    title: 'Show title',
+    for: 'component',
+    input: 'title',
+  },
 ];

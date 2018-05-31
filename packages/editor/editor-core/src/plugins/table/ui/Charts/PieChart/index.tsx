@@ -11,6 +11,7 @@ export interface Props {
   lineWidth?: number;
   legendAlignment?: 'left' | 'right';
   size?: number;
+  title?: string;
 }
 
 export default class PieChart extends React.Component<Props, any> {
@@ -31,11 +32,11 @@ export default class PieChart extends React.Component<Props, any> {
   }
 
   render() {
-    const { legendAlignment, colors, data } = this.props;
+    const { legendAlignment, colors, data, title } = this.props;
 
     return (
       <div className={`ProseMirror-chart -legend-${legendAlignment}`}>
-        <ChartLegend data={data} colors={colors} />
+        <ChartLegend data={data} colors={colors} title={title} />
         <canvas ref={this.handleRef} />
       </div>
     );

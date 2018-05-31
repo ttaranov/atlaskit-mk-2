@@ -225,13 +225,17 @@ export const tableStyles = `
         flex-direction: row-reverse;
       }
 
+      .ProseMirror-chart_header {
+        padding-bottom: 24px;
+      }
+
       .ProseMirror-chart_legend {
         list-style: none;
         margin: 0;
         padding: 0;
 
         li {
-          margin-bottom: 16px;
+          margin-bottom: 10px;
           display: flex;
           align-items: center;
         }
