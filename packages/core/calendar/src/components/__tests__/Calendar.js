@@ -99,7 +99,7 @@ test('handleClickDay()', () => {
     .find(Date)
     .filter({ children: 1, month: 1, year: 2000 })
     .find(DateTd)
-    .simulate('mouseup', createEvent());
+    .simulate('click', createEvent());
   expect(mockOnSelect).toHaveBeenCalledWith(createEventData('2000-01-01'));
 });
 
