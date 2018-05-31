@@ -63,6 +63,34 @@ export const TimelineEntryContainer: ComponentClass<
   }
 `;
 
+export const TimelineEntryPoint: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: relative;
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+
+  & .point {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin-right: 8px;
+    margin-top: 12px;
+
+    /* make center of point where the calculated start location is */
+    margin-left: -8px;
+
+    text-align: center;
+    transform: rotate(45deg);
+    background-color: ${props => props.color};
+  }
+
+  & span {
+    /*float: right;*/
+  }
+`;
+
 export const TimelineEntryContent: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`

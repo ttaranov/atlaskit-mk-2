@@ -4,6 +4,7 @@ import { COLORS, SELECTED_COLORS, MONTHS } from '../utils';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { TimelineContainer } from './styles';
 import TimelineEntry from './TimelineEntry';
+import TimelinePoint from './TimelinePoint';
 import * as addMonths from 'date-fns/add_months';
 import * as startOfMonth from 'date-fns/start_of_month';
 
@@ -288,44 +289,57 @@ export default class TimelineChart extends React.Component<Props, State> {
         }
       }
       const leftPct = (start - viewportStart) / viewportRange;
-      const endPct = (end - viewportStart) / viewportRange;
-
       const leftPx = leftPct * this.props.width!;
-      const endPx = endPct * this.props.width!;
 
-      const widthPx = endPx - leftPx;
+      let widthPx = 0;
+      if (end) {
+        const endPct = (end - viewportStart) / viewportRange;
+        const endPx = endPct * this.props.width!;
+
+        widthPx = endPx - leftPx;
+      }
 
       swimlanes.push(
-        <TimelineEntry
-          key={entryIdx}
-          onClick={event => {
-            event.stopPropagation();
-            event.preventDefault();
+        end ? (
+          <TimelineEntry
+            key={entryIdx}
+            onClick={event => {
+              event.stopPropagation();
+              event.preventDefault();
 
-            this.selectEntry(entryIdx);
-          }}
-          selected={this.state.selectedEntries.indexOf(entryIdx) > -1}
-          selectedColor={this.props.selectedColors![entryIdx]}
-          color={this.props.colors![entryIdx]}
-          left={leftPx}
-          width={widthPx}
-          entry={entry}
-          resizing={this.state.resizeIdx === entryIdx}
-          startResize={(direction, event) => {
-            // const boundingRect = event.currentTarget.parentElement!
-            //   .parentElement!.getBoundingClientRect();
-            // const x = event.clientX - boundingRect.left;
+              this.selectEntry(entryIdx);
+            }}
+            selected={this.state.selectedEntries.indexOf(entryIdx) > -1}
+            selectedColor={this.props.selectedColors![entryIdx]}
+            color={this.props.colors![entryIdx]}
+            left={leftPx}
+            width={widthPx}
+            entry={entry}
+            resizing={this.state.resizeIdx === entryIdx}
+            startResize={(direction, event) => {
+              // const boundingRect = event.currentTarget.parentElement!
+              //   .parentElement!.getBoundingClientRect();
+              // const x = event.clientX - boundingRect.left;
 
-            this.setState({
-              resizeDirection: direction,
-              resizeIdx: entryIdx,
-              dragStart: leftPx,
-              dragOffset: 16, // FIXME: based on padding, should be able to get from client
-            });
-          }}
-        >
-          <span>{entry.title}</span>
-        </TimelineEntry>,
+              this.setState({
+                resizeDirection: direction,
+                resizeIdx: entryIdx,
+                dragStart: leftPx,
+                dragOffset: 16, // FIXME: based on padding, should be able to get from client
+              });
+            }}
+          >
+            <span>{entry.title}</span>
+          </TimelineEntry>
+        ) : (
+          <TimelinePoint
+            key={entryIdx}
+            selectedColor={this.props.selectedColors![entryIdx]}
+            color={this.props.colors![entryIdx]}
+            entry={entry}
+            left={leftPx}
+          />
+        ),
       );
     });
 

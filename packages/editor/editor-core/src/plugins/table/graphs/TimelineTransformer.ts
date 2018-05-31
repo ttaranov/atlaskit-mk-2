@@ -39,10 +39,14 @@ export default class TimelineTransformer implements GraphTransformer {
             row.child(this.dataSourceColumns[0]).firstChild!.firstChild!.attrs
               .timestamp,
           ),
-          end: Number(
-            row.child(this.dataSourceColumns[1]).firstChild!.firstChild!.attrs
-              .timestamp,
-          ),
+          end:
+            row.child(this.dataSourceColumns[1]).firstChild &&
+            row.child(this.dataSourceColumns[1]).firstChild!.firstChild
+              ? Number(
+                  row.child(this.dataSourceColumns[1]).firstChild!.firstChild!
+                    .attrs.timestamp,
+                )
+              : null,
         });
       }
     });
