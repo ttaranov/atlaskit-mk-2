@@ -92,6 +92,9 @@ const MainToolbar: React.ComponentClass<
   display: flex;
   height: 80px;
   flex-shrink: 0;
+  & object {
+    height: 0 !important;
+  }
 `;
 MainToolbar.displayName = 'MainToolbar';
 

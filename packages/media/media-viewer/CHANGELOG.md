@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 14.5.1
+- [patch] Add issue collector to MVNG [15e0ced](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15e0ced)
+
 ## 14.5.0
 - [minor] add custom video player under feature flag [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
 - [none] Updated dependencies [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
