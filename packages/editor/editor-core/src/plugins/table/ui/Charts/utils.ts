@@ -100,8 +100,8 @@ export const isTimelineAvailable = (state: EditorState) => {
       if (cell.type !== tableCell) {
         continue;
       }
-
-      if (cell.firstChild.firstChild.type === date) {
+      const node = cell.firstChild.firstChild;
+      if (node && node.type === date) {
         return true;
       }
     }

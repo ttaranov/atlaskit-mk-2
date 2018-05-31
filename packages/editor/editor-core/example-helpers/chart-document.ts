@@ -23,12 +23,13 @@ export const DefaultDocument: any = {
         viewModeSettings: {
           donut: {
             values: 1,
+            title: 'Response time (ms)',
+            legendAlignment: 'left',
           },
           barchart: {
             values: 1,
-          },
-          legendAlignment: {
-            values: 1,
+            title: 'Response time (ms)',
+            legendAlignment: 'left',
           },
         },
       },
