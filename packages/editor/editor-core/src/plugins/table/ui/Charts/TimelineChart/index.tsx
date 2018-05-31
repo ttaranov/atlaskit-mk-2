@@ -237,7 +237,7 @@ export default class TimelineChart extends React.Component<Props, State> {
 
     let currentMonthDate = startOfMonth(startDate);
     if (currentMonthDate < startDate) {
-      currentMonthDate = addMonths(currentMonthDate, 1);
+      currentMonthDate = addMonths(currentMonthDate, -1);
     }
 
     let grid: any = [];
