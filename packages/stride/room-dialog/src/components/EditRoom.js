@@ -17,7 +17,7 @@ type Props = {
   /** Header  */
   header?: any,
   /** OnClose function */
-  onClose: Function,
+  // onClose: Function,
 };
 
 type State = {
@@ -58,7 +58,7 @@ export default class EditRoom extends Component<Props, State> {
       <ModalDialog
         actions={this.props.actions}
         header={this.props.header}
-        onClose={this.props.onClose}
+        onClose={this.close}
         body={this.props.body}
       >
         {this.props.children}

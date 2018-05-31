@@ -16,6 +16,11 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/dropdown-menu": "^4.0.3",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/field-text": "^5.0.3"
   },
   "peerDependencies": {
     "react": "^16.3.0"
