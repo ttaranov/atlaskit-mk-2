@@ -9,7 +9,7 @@ declare module '@atlaskit/webdriver-runner/utils/example' {
 declare module '@atlaskit/webdriver-runner/runner' {
   import { Client } from 'webdriverio';
 
-  type Browser = 'edge' | 'ie' | 'safari' | 'firefox';
+  type Browser = 'chrome' | 'edge' | 'ie' | 'safari' | 'firefox';
 
   type BrowserTestCaseOptions = {
     readonly skip: Browser[];
