@@ -3,6 +3,18 @@ export const DefaultDocument: any = {
   type: 'doc',
   content: [
     {
+      type: 'heading',
+      content: [
+        {
+          type: 'text',
+          text: 'Performance testing results',
+        },
+      ],
+      attrs: {
+        level: 2,
+      },
+    },
+    {
       type: 'table',
       attrs: {
         isNumberColumnEnabled: false,
@@ -481,6 +493,18 @@ export const DefaultDocument: any = {
           ],
         },
       ],
+    },
+    {
+      type: 'heading',
+      content: [
+        {
+          type: 'text',
+          text: 'Program schedule',
+        },
+      ],
+      attrs: {
+        level: 2,
+      },
     },
     {
       type: 'table',
