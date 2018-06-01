@@ -129,8 +129,8 @@ export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 export const PDFWrapper = styled.div`
