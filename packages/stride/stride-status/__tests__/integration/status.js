@@ -18,6 +18,8 @@ BrowserTestCase(
     const statusTest = await new Page(client);
     await statusTest.goto(urlStatus);
     await statusTest.click(statusDropdown);
+    await statusTest.waitForSelector(urlStatus);
+    await statusTest.click(statusDropdown);
     const isMenuVisible = await statusTest.isVisible(statusDropdownMenu);
     const isStatusFieldVisible = await statusTest.isVisible(statusField);
     const isLogOutBtn = await statusTest.isVisible(logOutBtn);

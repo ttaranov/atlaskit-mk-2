@@ -22,7 +22,9 @@
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/item": "^6.0.3",
     "@atlaskit/field-text": "^5.0.3",
-    "@atlaskit/theme": "^3.2.2"
+    "@atlaskit/theme": "^3.2.2",
+    "jest-image-snapshot": "^2.4.2",
+    "puppeteer": "^0.10.2"
   },
   "peerDependencies": {
     "react": "^16.3.0"

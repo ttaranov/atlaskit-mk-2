@@ -20,7 +20,7 @@ export default () => (
     />
     <RoomItem
       image={basketBall}
-      description="Javascript"
+      description="Basketball-Syd"
       size="xsmall"
       actions={
         <Tooltip content="New messages" position="bottom">

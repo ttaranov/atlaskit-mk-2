@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { atlaskit, basketBall } from './utils';
+import { atlaskit, javascript } from './utils';
 import RoomItem from '../src';
 
 export default () => (
@@ -12,7 +12,7 @@ export default () => (
       size="small"
     />
     <RoomItem
-      image={basketBall}
+      image={javascript}
       roomName="Javascript"
       description="var x = []; console.log(x == !x); console.log( {} - [] );m"
       size="small"
