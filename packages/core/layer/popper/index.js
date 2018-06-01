@@ -1,12 +1,12 @@
 /* eslint-disable */
 /**
- * This file was copied from https://github.com/Blasz/popper.js/blob/v1.0.9/dist/popper.es5.js which contains a patch
- * to 1.0.8 containing a fix to stop repainting before popper flipping.
+ * This file was copied from https://github.com/Blasz/popper.js/blob/v1.0.10/dist/popper.es5.js which contains two patch
+ * to 1.0.8 containing a fix to stop repainting before popper flipping and a fix for fixed position boundary detection.
  * License below.
  */
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.0.9
+ * @version 1.0.10
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -34,7 +34,7 @@
         (global.Popper = factory());
   }(this, (function () {
     'use strict';
-  
+
     /**
      * Returns the offset parent of the given element
      * @method
@@ -46,14 +46,14 @@
       // NOTE: 1 DOM access here
       var offsetParent = element.offsetParent;
       var nodeName = offsetParent && offsetParent.nodeName;
-  
+
       if (!nodeName || nodeName === 'BODY' || nodeName === 'HTML') {
         return window.document.documentElement;
       }
-  
+
       return offsetParent;
     }
-  
+
     /**
      * Get CSS computed property of the given element
      * @method
@@ -69,7 +69,7 @@
       var css = window.getComputedStyle(element, null);
       return property ? css[property] : css;
     }
-  
+
     /**
      * Returns the parentNode or the host of the element
      * @method
@@ -83,7 +83,7 @@
       }
       return element.parentNode || element.host;
     }
-  
+
     /**
      * Returns the scrolling parent of the given element
      * @method
@@ -96,21 +96,21 @@
       if (!element || ['HTML', 'BODY', '#document'].indexOf(element.nodeName) !== -1) {
         return window.document.body;
       }
-  
+
       // Firefox want us to check `-x` and `-y` variations as well
-  
+
       var _getStyleComputedProp = getStyleComputedProperty(element),
         overflow = _getStyleComputedProp.overflow,
         overflowX = _getStyleComputedProp.overflowX,
         overflowY = _getStyleComputedProp.overflowY;
-  
+
       if (/(auto|scroll)/.test(overflow + overflowY + overflowX)) {
         return element;
       }
-  
+
       return getScrollParent(getParentNode(element));
     }
-  
+
     /**
      * Check if the given element is fixed or is inside a fixed parent
      * @method
@@ -129,7 +129,7 @@
       }
       return isFixed(getParentNode(element));
     }
-  
+
     /**
      * Helper used to get the position which will be applied to the popper
      * @method
@@ -139,29 +139,29 @@
      */
     function getPosition(element) {
       var container = getOffsetParent(element);
-  
+
       // Decide if the popper will be fixed
       // If the reference element is inside a fixed context, the popper will be fixed as well to allow them to scroll together
       var isParentFixed = isFixed(container);
       return isParentFixed ? 'fixed' : 'absolute';
     }
-  
+
     /*
-     * Helper to detect borders of a given element
-     * @method
-     * @memberof Popper.Utils
-     * @param {CSSStyleDeclaration} styles - result of `getStyleComputedProperty` on the given element
-     * @param {String} axis - `x` or `y`
-     * @return {Number} borders - the borders size of the given axis
-     */
-  
+    * Helper to detect borders of a given element
+    * @method
+    * @memberof Popper.Utils
+    * @param {CSSStyleDeclaration} styles - result of `getStyleComputedProperty` on the given element
+    * @param {String} axis - `x` or `y`
+    * @return {Number} borders - the borders size of the given axis
+    */
+
     function getBordersSize(styles, axis) {
       var sideA = axis === 'x' ? 'Left' : 'Top';
       var sideB = sideA === 'Left' ? 'Right' : 'Bottom';
-  
+
       return Number(styles['border' + sideA + 'Width'].split('px')[0]) + Number(styles['border' + sideB + 'Width'].split('px')[0]);
     }
-  
+
     /**
      * Get bounding client rect of given element
      * @method
@@ -172,7 +172,7 @@
     function getBoundingClientRect(element) {
       var isIE10 = navigator.appVersion.indexOf('MSIE 10') !== -1;
       var rect = void 0;
-  
+
       // IE10 10 FIX: Please, don't ask, the element isn't
       // considered in DOM in some circumstances...
       // This isn't reproducible in IE10 compatibility mode of IE11
@@ -185,7 +185,7 @@
       } else {
         rect = element.getBoundingClientRect();
       }
-  
+
       var result = {
         left: rect.left,
         top: rect.top,
@@ -194,24 +194,24 @@
         width: rect.right - rect.left,
         height: rect.bottom - rect.top
       };
-  
+
       // IE10 FIX: `getBoundingClientRect`, when executed on `documentElement`
       // will not take in account the `scrollTop` and `scrollLeft`
       if (element.nodeName === 'HTML' && isIE10) {
         var _window$document$docu = window.document.documentElement,
           scrollTop = _window$document$docu.scrollTop,
           scrollLeft = _window$document$docu.scrollLeft;
-  
+
         result.top -= scrollTop;
         result.bottom -= scrollTop;
         result.left -= scrollLeft;
         result.right -= scrollLeft;
       }
-  
+
       // subtract scrollbar size from sizes
       var horizScrollbar = rect.width - (element.clientWidth || rect.right - rect.left);
       var vertScrollbar = rect.height - (element.clientHeight || rect.bottom - rect.top);
-  
+
       // if an hypothetical scrollbar is detected, we must be sure it's not a `border`
       // we make this check conditional for performance reasons
       if (horizScrollbar || vertScrollbar) {
@@ -219,42 +219,42 @@
         horizScrollbar -= getBordersSize(styles, 'x');
         vertScrollbar -= getBordersSize(styles, 'y');
       }
-  
+
       result.right -= horizScrollbar;
       result.width -= horizScrollbar;
       result.bottom -= vertScrollbar;
       result.height -= vertScrollbar;
-  
+
       return result;
     }
-  
+
     function getScroll(element) {
       var side = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
-  
+
       var upperSide = side === 'top' ? 'scrollTop' : 'scrollLeft';
       var nodeName = element.nodeName;
-  
+
       if (nodeName === 'BODY' || nodeName === 'HTML') {
         var html = window.document.documentElement;
         var scrollingElement = window.document.scrollingElement || html;
         return scrollingElement[upperSide];
       }
-  
+
       return element[upperSide];
     }
-  
+
     /*
-     * Sum or subtract the element scroll values (left and top) from a given rect object
-     * @method
-     * @memberof Popper.Utils
-     * @param {Object} rect - Rect object you want to change
-     * @param {HTMLElement} element - The element from the function reads the scroll values
-     * @param {Boolean} subtract - set to true if you want to subtract the scroll values
-     * @return {Object} rect - The modifier rect object
-     */
+    * Sum or subtract the element scroll values (left and top) from a given rect object
+    * @method
+    * @memberof Popper.Utils
+    * @param {Object} rect - Rect object you want to change
+    * @param {HTMLElement} element - The element from the function reads the scroll values
+    * @param {Boolean} subtract - set to true if you want to subtract the scroll values
+    * @return {Object} rect - The modifier rect object
+    */
     function includeScroll(rect, element) {
       var subtract = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  
+
       var scrollTop = getScroll(element, 'top');
       var scrollLeft = getScroll(element, 'left');
       var modifier = subtract ? -1 : 1;
@@ -264,7 +264,7 @@
       rect.right += scrollLeft * modifier;
       return rect;
     }
-  
+
     /**
      * Given an element and one of its parents, return the offset
      * @method
@@ -276,11 +276,11 @@
     function getOffsetRectRelativeToCustomParent(element, parent) {
       var fixed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var transformed = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  
+
       var scrollParent = getScrollParent(parent);
       var elementRect = getBoundingClientRect(element);
       var parentRect = getBoundingClientRect(parent);
-  
+
       var rect = {
         top: elementRect.top - parentRect.top,
         left: elementRect.left - parentRect.left,
@@ -289,7 +289,7 @@
         width: elementRect.width,
         height: elementRect.height
       };
-  
+
       if (fixed && !transformed) {
         rect = includeScroll(rect, scrollParent, true);
       }
@@ -299,20 +299,20 @@
       else if (getOffsetParent(element).contains(scrollParent) && scrollParent.nodeName !== 'BODY') {
         rect = includeScroll(rect, parent);
       }
-  
+
       // subtract borderTopWidth and borderTopWidth from final result
       var styles = getStyleComputedProperty(parent);
       var borderTopWidth = Number(styles.borderTopWidth.split('px')[0]);
       var borderLeftWidth = Number(styles.borderLeftWidth.split('px')[0]);
-  
+
       rect.top -= borderTopWidth;
       rect.bottom -= borderTopWidth;
       rect.left -= borderLeftWidth;
       rect.right -= borderLeftWidth;
-  
+
       return rect;
     }
-  
+
     function getWindowSizes() {
       var body = window.document.body;
       var html = window.document.documentElement;
@@ -321,7 +321,7 @@
         width: Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth)
       };
     }
-  
+
     /**
      * Get the position of the given element, relative to its offset parent
      * @method
@@ -335,7 +335,7 @@
         var _getWindowSizes = getWindowSizes(),
           width = _getWindowSizes.width,
           height = _getWindowSizes.height;
-  
+
         elementRect = {
           width: width,
           height: height,
@@ -350,18 +350,18 @@
           top: element.offsetTop
         };
       }
-  
+
       elementRect.right = elementRect.left + elementRect.width;
       elementRect.bottom = elementRect.top + elementRect.height;
-  
+
       // position
       return elementRect;
     }
-  
+
     function getOffsetRectRelativeToViewport(element) {
       // Offset relative to offsetParent
       var relativeOffset = getOffsetRect(element);
-  
+
       if (element.nodeName !== 'HTML') {
         var offsetParent = getOffsetParent(element);
         var parentOffset = getOffsetRectRelativeToViewport(offsetParent);
@@ -375,22 +375,22 @@
         };
         return offset;
       }
-  
+
       return relativeOffset;
     }
-  
+
     function getTotalScroll(element) {
       var side = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
-  
+
       var scrollParent = getScrollParent(element);
       var scroll = getScroll(scrollParent, side);
-  
+
       if (['BODY', 'HTML'].indexOf(scrollParent.nodeName) === -1) {
         return scroll + getTotalScroll(getParentNode(scrollParent), side);
       }
       return scroll;
     }
-  
+
     /**
      * Computed the boundaries limits and return them
      * @method
@@ -404,25 +404,25 @@
       // NOTE: 1 DOM access here
       var boundaries = { top: 0, left: 0 };
       var offsetParent = getOffsetParent(popper);
-  
+
       // Handle viewport case
       if (boundariesElement === 'viewport') {
         var _getOffsetRectRelativ = getOffsetRectRelativeToViewport(offsetParent),
           left = _getOffsetRectRelativ.left,
           top = _getOffsetRectRelativ.top;
-  
+
         var _window$document$docu = window.document.documentElement,
           width = _window$document$docu.clientWidth,
           height = _window$document$docu.clientHeight;
-  
-  
-        if (getPosition(popper) === 'fixed') {
+
+
+        if (isFixed(popper) || getPosition(popper) === 'fixed') {
           boundaries.right = width;
           boundaries.bottom = height;
         } else {
           var scrollLeft = getTotalScroll(popper, 'left');
           var scrollTop = getTotalScroll(popper, 'top');
-  
+
           boundaries = {
             top: 0 - top,
             right: width - left + scrollLeft,
@@ -441,13 +441,13 @@
         } else {
           boundariesNode = boundariesElement;
         }
-  
+
         // In case of BODY, we need a different computation
         if (boundariesNode.nodeName === 'BODY') {
           var _getWindowSizes = getWindowSizes(),
             _height = _getWindowSizes.height,
             _width = _getWindowSizes.width;
-  
+
           boundaries.right = _width;
           boundaries.bottom = _height;
         }
@@ -456,16 +456,16 @@
           boundaries = getOffsetRectRelativeToCustomParent(boundariesNode, offsetParent, isFixed(popper));
         }
       }
-  
+
       // Add paddings
       boundaries.left += padding;
       boundaries.top += padding;
       boundaries.right -= padding;
       boundaries.bottom -= padding;
-  
+
       return boundaries;
     }
-  
+
     /**
      * Utility used to transform the `auto` placement to the placement with more
      * available space.
@@ -479,24 +479,24 @@
       if (placement.indexOf('auto') === -1) {
         return placement;
       }
-  
+
       var boundaries = getBoundaries(popper, 0, 'scrollParent');
-  
+
       var sides = {
         top: refRect.top - boundaries.top,
         right: boundaries.right - refRect.right,
         bottom: boundaries.bottom - refRect.bottom,
         left: refRect.left - boundaries.left
       };
-  
+
       var computedPlacement = Object.keys(sides).sort(function (a, b) {
         return sides[b] - sides[a];
       })[0];
       var variation = placement.split('-')[1];
-  
+
       return computedPlacement + (variation ? '-' + variation : '');
     }
-  
+
     var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
     var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
     var timeoutDuration = 0;
@@ -506,7 +506,7 @@
         break;
       }
     }
-  
+
     function microtaskDebounce(fn) {
       var called = false;
       return function () {
@@ -520,7 +520,7 @@
         });
       };
     }
-  
+
     function taskDebounce(fn) {
       var scheduled = false;
       return function () {
@@ -533,9 +533,9 @@
         }
       };
     }
-  
+
     var supportsMicroTasks = isBrowser && window.Promise;
-  
+
     /**
     * Create a debounced version of a method, that's asynchronously deferred
     * but called in the minimum time possible.
@@ -546,7 +546,7 @@
     * @returns {Function}
     */
     var debounce = supportsMicroTasks ? microtaskDebounce : taskDebounce;
-  
+
     /**
      * Mimics the `find` method of Array
      * @method
@@ -561,11 +561,11 @@
       if (Array.prototype.find) {
         return arr.find(check);
       }
-  
+
       // use `filter` to obtain the same behavior of `find`
       return arr.filter(check)[0];
     }
-  
+
     /**
      * Return the index of the matching object
      * @method
@@ -582,20 +582,20 @@
           return cur[prop] === value;
         });
       }
-  
+
       // use `find` + `indexOf` if `findIndex` isn't supported
       var match = find(arr, function (obj) {
         return obj[prop] === value;
       });
       return arr.indexOf(match);
     }
-  
+
     var classCallCheck = function (instance, Constructor) {
       if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
       }
     };
-  
+
     var createClass = function () {
       function defineProperties(target, props) {
         for (var i = 0; i < props.length; i++) {
@@ -606,18 +606,18 @@
           Object.defineProperty(target, descriptor.key, descriptor);
         }
       }
-  
+
       return function (Constructor, protoProps, staticProps) {
         if (protoProps) defineProperties(Constructor.prototype, protoProps);
         if (staticProps) defineProperties(Constructor, staticProps);
         return Constructor;
       };
     }();
-  
-  
-  
-  
-  
+
+
+
+
+
     var defineProperty = function (obj, key, value) {
       if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -629,24 +629,24 @@
       } else {
         obj[key] = value;
       }
-  
+
       return obj;
     };
-  
+
     var _extends = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
-  
+
         for (var key in source) {
           if (Object.prototype.hasOwnProperty.call(source, key)) {
             target[key] = source[key];
           }
         }
       }
-  
+
       return target;
     };
-  
+
     /**
      * Given the popper offsets, generate an output similar to getBoundingClientRect
      * @method
@@ -660,7 +660,7 @@
         bottom: popperOffsets.top + popperOffsets.height
       });
     }
-  
+
     /**
      * Get the outer sizes of the given element (offset size + margins)
      * @method
@@ -678,7 +678,7 @@
       };
       return result;
     }
-  
+
     /**
      * Get the opposite placement of the given one/
      * @method
@@ -692,7 +692,7 @@
         return hash[matched];
       });
     }
-  
+
     /**
      * Get offsets to the popper
      * @method
@@ -705,34 +705,34 @@
      */
     function getPopperOffsets(position, popper, referenceOffsets, placement) {
       placement = placement.split('-')[0];
-  
+
       // Get popper node sizes
       var popperRect = getOuterSizes(popper);
-  
+
       // Add position, width and height to our offsets object
       var popperOffsets = {
         position: position,
         width: popperRect.width,
         height: popperRect.height
       };
-  
+
       // depending by the popper placement we have to compute its offsets slightly differently
       var isHoriz = ['right', 'left'].indexOf(placement) !== -1;
       var mainSide = isHoriz ? 'top' : 'left';
       var secondarySide = isHoriz ? 'left' : 'top';
       var measurement = isHoriz ? 'height' : 'width';
       var secondaryMeasurement = !isHoriz ? 'height' : 'width';
-  
+
       popperOffsets[mainSide] = referenceOffsets[mainSide] + referenceOffsets[measurement] / 2 - popperRect[measurement] / 2;
       if (placement === secondarySide) {
         popperOffsets[secondarySide] = referenceOffsets[secondarySide] - popperRect[secondaryMeasurement];
       } else {
         popperOffsets[secondarySide] = referenceOffsets[getOppositePlacement(secondarySide)];
       }
-  
+
       return popperOffsets;
     }
-  
+
     /**
      * Get offsets to the reference element
      * @method
@@ -746,10 +746,10 @@
       var isParentFixed = state.position === 'fixed';
       var isParentTransformed = state.isParentTransformed;
       var offsetParent = getOffsetParent(isParentFixed && isParentTransformed ? reference : popper);
-  
+
       return getOffsetRectRelativeToCustomParent(reference, offsetParent, isParentFixed, isParentTransformed);
     }
-  
+
     /**
      * Get the prefixed supported property name
      * @method
@@ -760,7 +760,7 @@
     function getSupportedPropertyName(property) {
       var prefixes = [false, 'ms', 'webkit', 'moz', 'o'];
       var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
-  
+
       for (var i = 0; i < prefixes.length - 1; i++) {
         var prefix = prefixes[i];
         var toCheck = prefix ? '' + prefix + upperProp : property;
@@ -770,7 +770,7 @@
       }
       return null;
     }
-  
+
     /**
      * Check if the given variable is a function
      * @method
@@ -782,7 +782,7 @@
       var getType = {};
       return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
     }
-  
+
     /**
      * Helper used to know if the given modifier is enabled.
      * @method
@@ -796,7 +796,7 @@
         return enabled && name === modifierName;
       });
     }
-  
+
     /**
      * Helper used to know if the given modifier depends from another one.
      * It checks if the needed modifier is listed and enabled.
@@ -812,12 +812,12 @@
         var name = _ref.name;
         return name === requestingName;
       });
-  
+
       return !!requesting && modifiers.some(function (modifier) {
         return modifier.name === requestedName && modifier.enabled && modifier.order < requesting.order;
       });
     }
-  
+
     /**
      * Tells if a given input is a number
      * @method
@@ -828,7 +828,7 @@
     function isNumeric(n) {
       return n !== '' && !isNaN(parseFloat(n)) && isFinite(n);
     }
-  
+
     /**
      * Check if the given element has transforms applied to itself or a parent
      * @method
@@ -845,7 +845,7 @@
       }
       return getParentNode(element) ? isTransformed(getParentNode(element)) : element;
     }
-  
+
     /**
      * Remove event listeners used to update the popper position
      * @method
@@ -855,12 +855,12 @@
     function removeEventListeners(reference, state) {
       // Remove resize event listener on window
       window.removeEventListener('resize', state.updateBound);
-  
+
       // Remove scroll event listener on scroll parents
       state.scrollParents.forEach(function (target) {
         target.removeEventListener('scroll', state.updateBound);
       });
-  
+
       // Reset state
       state.updateBound = null;
       state.scrollParents = [];
@@ -868,7 +868,7 @@
       state.eventsEnabled = false;
       return state;
     }
-  
+
     /**
      * Loop trough the list of modifiers and run them in order, each of them will then edit the data object
      * @method
@@ -879,16 +879,16 @@
      */
     function runModifiers(modifiers, data, ends) {
       var modifiersToRun = ends === undefined ? modifiers : modifiers.slice(0, findIndex(modifiers, 'name', ends));
-  
+
       modifiersToRun.forEach(function (modifier) {
         if (modifier.enabled && isFunction(modifier.function)) {
           data = modifier.function(data, modifier);
         }
       });
-  
+
       return data;
     }
-  
+
     /**
      * Set the attributes to the given popper
      * @method
@@ -906,7 +906,7 @@
         }
       });
     }
-  
+
     /**
      * Set the style to the given popper
      * @method
@@ -924,18 +924,18 @@
         element.style[prop] = styles[prop] + unit;
       });
     }
-  
+
     function attachToScrollParents(scrollParent, event, callback, scrollParents) {
       var isBody = scrollParent.nodeName === 'BODY';
       var target = isBody ? window : scrollParent;
       target.addEventListener(event, callback, { passive: true });
-  
+
       if (!isBody) {
         attachToScrollParents(getScrollParent(target.parentNode), event, callback, scrollParents);
       }
       scrollParents.push(target);
     }
-  
+
     /**
      * Setup needed event listeners used to update the popper position
      * @method
@@ -946,16 +946,16 @@
       // Resize event listener on window
       state.updateBound = updateBound;
       window.addEventListener('resize', state.updateBound, { passive: true });
-  
+
       // Scroll event listener on scroll parents
       var scrollElement = getScrollParent(reference);
       attachToScrollParents(scrollElement, 'scroll', state.updateBound, state.scrollParents);
       state.scrollElement = scrollElement;
       state.eventsEnabled = true;
-  
+
       return state;
     }
-  
+
     /** @namespace Popper.Utils */
     var Utils = {
       computeAutoPlacement: computeAutoPlacement,
@@ -992,7 +992,7 @@
       setStyles: setStyles,
       setupEventListeners: setupEventListeners
     };
-  
+
     /**
      * Apply the computed styles to the popper element
      * @method
@@ -1009,15 +1009,15 @@
       var styles = {
         position: data.offsets.popper.position
       };
-  
+
       var attributes = {
         'x-placement': data.placement
       };
-  
+
       // round top and left to avoid blurry text
       var left = Math.round(data.offsets.popper.left);
       var top = Math.round(data.offsets.popper.top);
-  
+
       // if gpuAcceleration is set to true and transform is supported,
       //  we use `translate3d` to apply the position to the popper we
       // automatically use the supported prefixed version if needed
@@ -1034,25 +1034,25 @@
         styles.top = top;
         styles.willChange = 'top, left';
       }
-  
+
       // any property present in `data.styles` will be applied to the popper,
       // in this way we can make the 3rd party modifiers add custom styles to it
       // Be aware, modifiers could override the properties defined in the previous
       // lines of this modifier!
       setStyles(data.instance.popper, _extends({}, styles, data.styles));
-  
+
       // any property present in `data.attributes` will be applied to the popper,
       // they will be set as HTML attributes of the element
       setAttributes(data.instance.popper, _extends({}, attributes, data.attributes));
-  
+
       // if the arrow style has been computed, apply the arrow style
       if (data.offsets.arrow) {
         setStyles(data.arrowElement, data.offsets.arrow);
       }
-  
+
       return data;
     }
-  
+
     /**
      * Set the x-placement attribute before everything else because it could be used to add margins to the popper
      * margins needs to be calculated to get the correct popper offsets
@@ -1065,16 +1065,16 @@
     function applyStyleOnLoad(reference, popper, options, modifierOptions, state) {
       // compute reference element offsets
       var referenceOffsets = getReferenceOffsets(state, popper, reference);
-  
+
       // compute auto placement, store placement inside the data object,
       // modifiers will be able to edit `placement` if needed
       // and refer to originalPlacement to know the original value
       options.placement = computeAutoPlacement(options.placement, referenceOffsets, popper);
-  
+
       popper.setAttribute('x-placement', options.placement);
       return options;
     }
-  
+
     /**
      * Modifier used to move the arrowElements on the edge of the popper to make sure them are always between the popper and the reference element
      * It will use the CSS outer size of the arrowElement element to know how many pixels of conjuction are needed
@@ -1090,13 +1090,13 @@
         console.warn('WARNING: `keepTogether` modifier is required by arrow modifier in order to work, be sure to include it before `arrow`!');
         return data;
       }
-  
+
       var arrowElement = options.element;
-  
+
       // if arrowElement is a string, suppose it's a CSS selector
       if (typeof arrowElement === 'string') {
         arrowElement = data.instance.popper.querySelector(arrowElement);
-  
+
         // if arrowElement is not found, don't run the modifier
         if (!arrowElement) {
           return data;
@@ -1109,22 +1109,22 @@
           return data;
         }
       }
-  
+
       var placement = data.placement.split('-')[0];
       var popper = getClientRect(data.offsets.popper);
       var reference = data.offsets.reference;
       var isVertical = ['left', 'right'].indexOf(placement) !== -1;
-  
+
       var len = isVertical ? 'height' : 'width';
       var side = isVertical ? 'top' : 'left';
       var altSide = isVertical ? 'left' : 'top';
       var opSide = isVertical ? 'bottom' : 'right';
       var arrowElementSize = getOuterSizes(arrowElement)[len];
-  
+
       //
       // extends keepTogether behavior making sure the popper and its reference have enough pixels in conjuction
       //
-  
+
       // top/left side
       if (reference[opSide] - arrowElementSize < popper[side]) {
         data.offsets.popper[side] -= popper[side] - (reference[opSide] - arrowElementSize);
@@ -1133,24 +1133,24 @@
       if (reference[side] + arrowElementSize > popper[opSide]) {
         data.offsets.popper[side] += reference[side] + arrowElementSize - popper[opSide];
       }
-  
+
       // compute center of the popper
       var center = reference[side] + reference[len] / 2 - arrowElementSize / 2;
-  
+
       // Compute the sideValue using the updated popper offsets
       var sideValue = center - getClientRect(data.offsets.popper)[side];
-  
+
       // prevent arrowElement from being placed not contiguously to its popper
       sideValue = Math.max(Math.min(popper[len] - arrowElementSize, sideValue), 0);
-  
+
       data.arrowElement = arrowElement;
       data.offsets.arrow = {};
       data.offsets.arrow[side] = sideValue;
       data.offsets.arrow[altSide] = ''; // make sure to unset any eventual altSide value from the DOM node
-  
+
       return data;
     }
-  
+
     /**
      * Get the opposite placement variation of the given one/
      * @method
@@ -1166,7 +1166,7 @@
       }
       return variation;
     }
-  
+
     /**
      * Modifier used to flip the placement of the popper when the latter is starting overlapping its reference element.
      * Requires the `preventOverflow` modifier before it in order to work.
@@ -1182,73 +1182,73 @@
       if (isModifierEnabled(data.instance.modifiers, 'inner')) {
         return data;
       }
-  
+
       if (data.flipped && data.placement === data.originalPlacement) {
         // seems like flip is trying to loop, probably there's not enough space on any of the flippable sides
         return data;
       }
-  
+
       var boundaries = getBoundaries(data.instance.popper, options.padding, options.boundariesElement);
-  
+
       var placement = data.placement.split('-')[0];
       var placementOpposite = getOppositePlacement(placement);
       var variation = data.placement.split('-')[1] || '';
-  
+
       var flipOrder = [];
-  
+
       if (options.behavior === 'flip') {
         flipOrder = [placement, placementOpposite];
       } else {
         flipOrder = options.behavior;
       }
-  
+
       flipOrder.forEach(function (step, index) {
         if (placement !== step || flipOrder.length === index + 1) {
           return data;
         }
-  
+
         placement = data.placement.split('-')[0];
         placementOpposite = getOppositePlacement(placement);
-  
+
         var popperOffsets = getClientRect(data.offsets.popper);
         var refOffsets = data.offsets.reference;
-  
+
         // using floor because the reference offsets may contain decimals we are not going to consider here
         var floor = Math.floor;
         var overlapsRef = placement === 'left' && floor(popperOffsets.right) > floor(refOffsets.left) || placement === 'right' && floor(popperOffsets.left) < floor(refOffsets.right) || placement === 'top' && floor(popperOffsets.bottom) > floor(refOffsets.top) || placement === 'bottom' && floor(popperOffsets.top) < floor(refOffsets.bottom);
-  
+
         var overflowsLeft = floor(popperOffsets.left) < floor(boundaries.left);
         var overflowsRight = floor(popperOffsets.right) > floor(boundaries.right);
         var overflowsTop = floor(popperOffsets.top) < floor(boundaries.top);
         var overflowsBottom = floor(popperOffsets.bottom) > floor(boundaries.bottom);
-  
+
         var overflowsBoundaries = placement === 'left' && overflowsLeft || placement === 'right' && overflowsRight || placement === 'top' && overflowsTop || placement === 'bottom' && overflowsBottom;
-  
+
         // flip the variation if required
         var isVertical = ['top', 'bottom'].indexOf(placement) !== -1;
         var flippedVariation = !!options.flipVariations && (isVertical && variation === 'start' && overflowsLeft || isVertical && variation === 'end' && overflowsRight || !isVertical && variation === 'start' && overflowsTop || !isVertical && variation === 'end' && overflowsBottom);
-  
+
         if (overlapsRef || overflowsBoundaries || flippedVariation) {
           // this boolean to detect any flip loop
           data.flipped = true;
-  
+
           if (overlapsRef || overflowsBoundaries) {
             placement = flipOrder[index + 1];
           }
-  
+
           if (flippedVariation) {
             variation = getOppositeVariation(variation);
           }
-  
+
           data.placement = placement + (variation ? '-' + variation : '');
           data.offsets.popper = getPopperOffsets(data.instance.state.position, data.instance.popper, data.offsets.reference, data.placement);
-  
+
           data = runModifiers(data.instance.modifiers, data, 'flip');
         }
       });
       return data;
     }
-  
+
     /**
      * Modifier used to make sure the popper is always near its reference element
      * It cares only about the first axis, you can still have poppers with margin
@@ -1268,17 +1268,17 @@
       var side = isVertical ? 'right' : 'bottom';
       var opSide = isVertical ? 'left' : 'top';
       var measurement = isVertical ? 'width' : 'height';
-  
+
       if (popper[side] < floor(reference[opSide])) {
         data.offsets.popper[opSide] = floor(reference[opSide]) - popper[measurement];
       }
       if (popper[opSide] > floor(reference[side])) {
         data.offsets.popper[opSide] = floor(reference[side]);
       }
-  
+
       return data;
     }
-  
+
     /**
      * Modifier used to add an offset to the popper, useful if you more granularity positioning your popper.
      * The offsets will shift the popper on the side of its reference element.
@@ -1300,7 +1300,7 @@
     function offset(data, options) {
       var placement = data.placement;
       var popper = data.offsets.popper;
-  
+
       var offsets = void 0;
       if (isNumeric(options.offset)) {
         offsets = [options.offset, 0];
@@ -1308,25 +1308,25 @@
         // split the offset in case we are providing a pair of offsets separated
         // by a blank space
         offsets = options.offset.split(' ');
-  
+
         // itherate through each offset to compute them in case they are percentages
         offsets = offsets.map(function (offset, index) {
           // separate value from unit
           var split = offset.match(/(\d*\.?\d*)(.*)/);
           var value = +split[1];
           var unit = split[2];
-  
+
           // use height if placement is left or right and index is 0 otherwise use width
           // in this way the first offset will use an axis and the second one
           // will use the other one
           var useHeight = placement.indexOf('right') !== -1 || placement.indexOf('left') !== -1;
-  
+
           if (index === 1) {
             useHeight = !useHeight;
           }
-  
+
           var measurement = useHeight ? 'height' : 'width';
-  
+
           // if is a percentage relative to the popper (%p), we calculate the value of it using
           // as base the sizes of the popper
           // if is a percentage (% or %r), we calculate the value of it using as base the
@@ -1342,7 +1342,7 @@
               default:
                 element = data.offsets.reference;
             }
-  
+
             var rect = getClientRect(element);
             var len = rect[measurement];
             return len / 100 * value;
@@ -1367,7 +1367,7 @@
           }
         });
       }
-  
+
       if (data.placement.indexOf('left') !== -1) {
         popper.top += offsets[0];
         popper.left -= offsets[1] || 0;
@@ -1383,7 +1383,7 @@
       }
       return data;
     }
-  
+
     /**
      * Modifier used to prevent the popper from being positioned outside the boundary.
      *
@@ -1408,10 +1408,10 @@
       var boundariesElement = options.boundariesElement || getOffsetParent(data.instance.popper);
       var boundaries = getBoundaries(data.instance.popper, options.padding, boundariesElement);
       options.boundaries = boundaries;
-  
+
       var order = options.priority;
       var popper = getClientRect(data.offsets.popper);
-  
+
       var check = {
         primary: function primary(placement) {
           var value = popper[placement];
@@ -1429,17 +1429,17 @@
           return defineProperty({}, mainSide, value);
         }
       };
-  
+
       order.forEach(function (placement) {
         var side = ['left', 'top'].indexOf(placement) !== -1 ? 'primary' : 'secondary';
         popper = _extends({}, popper, check[side](placement));
       });
-  
+
       data.offsets.popper = popper;
-  
+
       return data;
     }
-  
+
     /**
      * Modifier used to shift the popper on the start or end of its reference element side
      * @method
@@ -1452,7 +1452,7 @@
       var placement = data.placement;
       var basePlacement = placement.split('-')[0];
       var shiftvariation = placement.split('-')[1];
-  
+
       // if shift shiftvariation is specified, run the modifier
       if (shiftvariation) {
         var reference = data.offsets.reference;
@@ -1460,18 +1460,18 @@
         var isVertical = ['bottom', 'top'].indexOf(basePlacement) !== -1;
         var side = isVertical ? 'left' : 'top';
         var measurement = isVertical ? 'width' : 'height';
-  
+
         var shiftOffsets = {
           start: defineProperty({}, side, reference[side]),
           end: defineProperty({}, side, reference[side] + reference[measurement] - popper[measurement])
         };
-  
+
         data.offsets.popper = _extends({}, popper, shiftOffsets[shiftvariation]);
       }
-  
+
       return data;
     }
-  
+
     /**
      * Modifier used to hide the popper when its reference element is outside of the
      * popper boundaries. It will set an x-hidden attribute which can be used to hide
@@ -1487,18 +1487,18 @@
         console.warn('WARNING: preventOverflow modifier is required by hide modifier in order to work, be sure to include it before hide!');
         return data;
       }
-  
+
       var refRect = data.offsets.reference;
       var bound = find(data.instance.modifiers, function (modifier) {
         return modifier.name === 'preventOverflow';
       }).boundaries;
-  
+
       if (refRect.bottom < bound.top || refRect.left > bound.right || refRect.top > bound.bottom || refRect.right < bound.left) {
         // Avoid unnecessary DOM access if visibility hasn't changed
         if (data.hide === true) {
           return data;
         }
-  
+
         data.hide = true;
         data.attributes['x-out-of-boundaries'] = '';
       } else {
@@ -1506,14 +1506,14 @@
         if (data.hide === false) {
           return data;
         }
-  
+
         data.hide = false;
         data.attributes['x-out-of-boundaries'] = false;
       }
-  
+
       return data;
     }
-  
+
     /**
      * Modifier used to make the popper flow toward the inner of the reference element.
      * By default, when this modifier is disabled, the popper will be placed outside
@@ -1530,17 +1530,17 @@
       var popper = getClientRect(data.offsets.popper);
       var reference = getClientRect(data.offsets.reference);
       var isHoriz = ['left', 'right'].indexOf(basePlacement) !== -1;
-  
+
       var subtractLength = ['top', 'left'].indexOf(basePlacement) === -1;
-  
+
       popper[isHoriz ? 'left' : 'top'] = reference[placement] - (subtractLength ? popper[isHoriz ? 'width' : 'height'] : 0);
-  
+
       data.placement = getOppositePlacement(placement);
       data.offsets.popper = getClientRect(popper);
-  
+
       return data;
     }
-  
+
     /**
      * Modifiers are plugins used to alter the behavior of your poppers.
      * Popper.js uses a set of 7 modifiers to provide all the basic functionalities
@@ -1626,7 +1626,7 @@
         onLoad: applyStyleOnLoad
       }
     };
-  
+
     /**
      * Modifiers can edit the `data` object to change the beheavior of the popper.
      * This object contains all the informations used by Popper.js to compute the
@@ -1637,7 +1637,7 @@
      * @param {dataObject} data
      * @return {dataObject} modified data
      */
-  
+
     /**
      * The `dataObject` is an object containing all the informations used by Popper.js
      * this object get passed to modifiers and to the `onCreate` and `onUpdate` callbacks.
@@ -1655,17 +1655,17 @@
      * @property {Object} data.offsets.reference `top`, `left`, `width`, `height` values
      * @property {Object} data.offsets.arro] `top` and `left` offsets, only one of them will be different from 0
      */
-  
+
     // Utils
     // Modifiers
     // default options
     var DEFAULTS = {
       // placement of the popper
       placement: 'bottom',
-  
+
       // whether events (resize, scroll) are initially enabled
       eventsEnabled: true,
-  
+
       /**
        * Callback called when the popper is created.
        * By default, is set to no-op.
@@ -1675,7 +1675,7 @@
        * @param {dataObject} data
        */
       onCreate: function onCreate() { },
-  
+
       /**
        * Callback called when the popper is updated, this callback is not called
        * on the initialization/creation of the popper, but only on subsequent
@@ -1687,11 +1687,11 @@
        * @param {dataObject} data
        */
       onUpdate: function onUpdate() { },
-  
+
       // list of functions used to modify the offsets before they are applied to the popper
       modifiers: modifiers
     };
-  
+
     /**
      * Create a new Popper.js instance
      * @class Popper
@@ -1764,47 +1764,47 @@
      *
      * @return {Object} instance - The generated Popper.js instance
      */
-  
+
     var Popper = function () {
       function Popper(reference, popper) {
         var _this = this;
-  
+
         var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
         classCallCheck(this, Popper);
-  
+
         this.scheduleUpdate = function () {
           return requestAnimationFrame(_this.update);
         };
-  
+
         // make update() debounced, so that it only runs at most once-per-tick
         this.update = debounce(this.update.bind(this));
-  
+
         // with {} we create a new object with the options inside it
         this.options = _extends({}, Popper.Defaults, options);
-  
+
         // init state
         this.state = {
           isDestroyed: false,
           isCreated: false,
           scrollParents: []
         };
-  
+
         // get reference and popper elements (allow jQuery wrappers)
         this.reference = reference.jquery ? reference[0] : reference;
         this.popper = popper.jquery ? popper[0] : popper;
-  
+
         // refactoring modifiers' list (Object => Array)
         this.modifiers = Object.keys(Popper.Defaults.modifiers).map(function (name) {
           return _extends({ name: name }, Popper.Defaults.modifiers[name]);
         });
-  
+
         // assign default values to modifiers, making sure to override them with
         // the ones defined by user
         this.modifiers = this.modifiers.map(function (defaultConfig) {
           var userConfig = options.modifiers && options.modifiers[defaultConfig.name] || {};
           return _extends({}, defaultConfig, userConfig);
         });
-  
+
         // add custom modifiers to the modifiers list
         if (options.modifiers) {
           this.options.modifiers = _extends({}, Popper.Defaults.modifiers, options.modifiers);
@@ -1817,15 +1817,15 @@
             }
           });
         }
-  
+
         // get the popper position type
         this.state.position = getPosition(this.reference);
-  
+
         // sort the modifiers by order
         this.modifiers = this.modifiers.sort(function (a, b) {
           return a.order - b.order;
         });
-  
+
         // modifiers have the ability to execute arbitrary code when Popper.js get inited
         // such code is executed in the same order of its modifier
         // they could add new properties to their options configuration
@@ -1835,34 +1835,34 @@
             modifierOptions.onLoad(_this.reference, _this.popper, _this.options, modifierOptions, _this.state);
           }
         });
-  
+
         // determine how we should set the origin of offsets
         this.state.isParentTransformed = isTransformed(this.popper.parentNode);
-  
+
         // fire the first update to position the popper in the right place
         this.update();
-  
+
         var eventsEnabled = this.options.eventsEnabled;
         if (eventsEnabled) {
           // setup event listeners, they will take care of update the position in specific situations
           this.enableEventListeners();
         }
-  
+
         this.state.eventsEnabled = eventsEnabled;
       }
-  
+
       //
       // Methods
       //
-  
+
       /**
        * Updates the position of the popper, computing the new offsets and applying the new style
        * Prefer `scheduleUpdate` over `update` because of performance reasons
        * @method
        * @memberof Popper
        */
-  
-  
+
+
       createClass(Popper, [{
         key: 'update',
         value: function update() {
@@ -1870,7 +1870,7 @@
           if (this.state.isDestroyed) {
             return;
           }
-  
+
           var data = {
             instance: this,
             styles: {},
@@ -1878,28 +1878,28 @@
             flipped: false,
             offsets: {}
           };
-  
+
           // make sure to apply the popper position before any computation
           this.state.position = getPosition(this.reference);
           setStyles(this.popper, { position: this.state.position });
-  
+
           // compute reference element offsets
           data.offsets.reference = getReferenceOffsets(this.state, this.popper, this.reference);
-  
+
           // compute auto placement, store placement inside the data object,
           // modifiers will be able to edit `placement` if needed
           // and refer to originalPlacement to know the original value
           data.placement = computeAutoPlacement(this.options.placement, data.offsets.reference, this.popper);
-  
+
           // store the computed placement inside `originalPlacement`
           data.originalPlacement = this.options.placement;
-  
+
           // compute the popper offsets
           data.offsets.popper = getPopperOffsets(this.state, this.popper, data.offsets.reference, data.placement);
-  
+
           // run the modifiers
           data = runModifiers(this.modifiers, data);
-  
+
           // the first `update` will call `onCreate` callback
           // the other ones will call `onUpdate` callback
           if (!this.state.isCreated) {
@@ -1909,17 +1909,17 @@
             this.options.onUpdate(data);
           }
         }
-  
+
         /**
          * Schedule an update, it will run on the next UI update available
          * @method scheduleUpdate
          * @memberof Popper
          */
-  
+
       }, {
         key: 'destroy',
-  
-  
+
+
         /**
          * Destroy the popper
          * @method
@@ -1927,7 +1927,7 @@
          */
         value: function destroy() {
           this.state.isDestroyed = true;
-  
+
           // touch DOM only if `applyStyle` modifier is enabled
           if (isModifierEnabled(this.modifiers, 'applyStyle')) {
             this.popper.removeAttribute('x-placement');
@@ -1936,9 +1936,9 @@
             this.popper.style.top = '';
             this.popper.style[getSupportedPropertyName('transform')] = '';
           }
-  
+
           this.disableEventListeners();
-  
+
           // remove the popper if user explicity asked for the deletion on destroy
           // do not use `remove` because IE11 doesn't support it
           if (this.options.removeOnDestroy) {
@@ -1946,14 +1946,14 @@
           }
           return this;
         }
-  
+
         /**
          * it will add resize/scroll events and start recalculating
          * position of the popper element when they are triggered
          * @method
          * @memberof Popper
          */
-  
+
       }, {
         key: 'enableEventListeners',
         value: function enableEventListeners() {
@@ -1961,7 +1961,7 @@
             this.state = setupEventListeners(this.reference, this.options, this.state, this.scheduleUpdate);
           }
         }
-  
+
         /**
          * it will remove resize/scroll events and won't recalculate
          * popper position when they are triggered. It also won't trigger onUpdate callback anymore,
@@ -1969,7 +1969,7 @@
          * @method
          * @memberof Popper
          */
-  
+
       }, {
         key: 'disableEventListeners',
         value: function disableEventListeners() {
@@ -1978,34 +1978,33 @@
             this.state = removeEventListeners(this.reference, this.state);
           }
         }
-  
+
         /**
          * Collection of utilities useful when writing custom modifiers
          * @memberof Popper
          */
-  
-  
+
+
         /**
          * List of accepted placements to use as values of the `placement` option
          * @memberof Popper
          */
-  
-  
+
+
         /**
          * Default Popper.js options
          * @memberof Popper
          */
-  
+
       }]);
       return Popper;
     }();
-  
+
     Popper.Utils = Utils;
     Popper.placements = ['auto', 'auto-start', 'auto-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'];
     Popper.Defaults = DEFAULTS;
-  
+
     return Popper;
-  
+
   })));
   //# sourceMappingURL=popper.es5.js.map
-  
