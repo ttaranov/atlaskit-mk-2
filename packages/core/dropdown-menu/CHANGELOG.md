@@ -1,5 +1,16 @@
 # @atlaskit/dropdown-menu
 
+## 4.1.0
+- [minor] Add `isMenuFixed` prop to force menu to render with position fixed to allow it to break out of non-visible overflow containers at the cost of detachment from the trigger on scroll. [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
+
+
+- [none] Updated dependencies [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
+  - @atlaskit/droplist@5.1.0
+- [minor] Updated dependencies [e20ac40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20ac40)
+  - @atlaskit/droplist@5.1.0
+- [minor] Updated dependencies [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
+  - @atlaskit/droplist@5.1.0
+
 ## 4.0.5
 
 
