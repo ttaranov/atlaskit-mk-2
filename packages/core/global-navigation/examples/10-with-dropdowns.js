@@ -7,7 +7,7 @@ import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
 
-const generateDropdown = () => (
+const ExampleDropdown = () => (
   <DropdownItemGroup title="Heading">
     <DropdownItem>Hello it with some really quite long text here.</DropdownItem>
     <DropdownItem>Some text 2</DropdownItem>
@@ -22,8 +22,8 @@ const generateDropdown = () => (
 const GlobalNav = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
-    helpItems={generateDropdown}
-    profileItems={generateDropdown}
+    helpItems={ExampleDropdown}
+    profileItems={ExampleDropdown}
     profileIconUrl="https://api.adorable.io/avatars/285/abott@adorable.png"
   />
 );

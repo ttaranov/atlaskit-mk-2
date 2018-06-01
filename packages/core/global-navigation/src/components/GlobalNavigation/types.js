@@ -2,10 +2,6 @@
 
 import type { ComponentType } from 'react';
 
-// import type { NavigationStateInterface } from '../../../state/types';
-
-import type { GlobalTheme } from '@atlaskit/navigation-next';
-
 export type DrawerContentProps = { closeDrawer: () => void };
 
 export type InitialNavigationStateShape = {
@@ -18,11 +14,6 @@ export type InitialNavigationStateShape = {
 
 export type NavigationStateShape = InitialNavigationStateShape & {
   isResizing?: boolean,
-};
-
-export type GlobalNavProps = {
-  children: Node,
-  theme: GlobalTheme,
 };
 
 export type GlobalNavigationProps = {

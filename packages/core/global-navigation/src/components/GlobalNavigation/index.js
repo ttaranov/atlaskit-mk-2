@@ -37,7 +37,7 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     const navItems = [];
 
     if (notification) {
-      navItems.push(Object.assign({}, defaultNotification, notification));
+      navItems.push({ ...defaultNotification, ...notification });
     }
 
     if (people) {
