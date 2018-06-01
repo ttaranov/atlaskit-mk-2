@@ -6,6 +6,7 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, Video } from '../../styled';
 import { CustomVideo } from './customVideo';
 import { getFeatureFlag } from '../../utils/getFeatureFlag';
+import { isIE } from '../../utils/isIE';
 
 export type Props = {
   item: FileItem;
@@ -20,9 +21,6 @@ export type State = {
   isHDActive: boolean;
 };
 
-const isIE =
-  navigator.userAgent.indexOf('MSIE') !== -1 ||
-  navigator.appVersion.indexOf('Trident/') > 0;
 const sdArtifact = 'video_640.mp4';
 const hdArtifact = 'video_1280.mp4';
 export class VideoViewer extends React.Component<Props, State> {
@@ -42,7 +40,7 @@ export class VideoViewer extends React.Component<Props, State> {
     const { src, isHDActive } = this.state;
     const { item, featureFlags, showControls } = this.props;
     const useCustomVideoPlayer =
-      !isIE && getFeatureFlag('customVideoPlayer', featureFlags);
+      !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
 
     switch (src.status) {
       case 'PENDING':
