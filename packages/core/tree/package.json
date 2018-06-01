@@ -21,8 +21,8 @@
     "@atlaskit/navigation": "^31.0.3",
     "@atlaskit/spinner": "^5.0.1",
     "@atlaskit/theme": "^3.2.2",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "styled-components": "1.4.6 - 3"
   },
   "keywords": [
