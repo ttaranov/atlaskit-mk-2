@@ -11,6 +11,7 @@ import {
   audioNoCoverFileId,
   videoHorizontalFileId,
   videoLargeFileId,
+  videoProcessingFailedId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
@@ -43,6 +44,12 @@ const videoHorizontalFileItem: MediaViewerItem = {
 const videoLargeFileItem: MediaViewerItem = {
   type: 'file',
   id: videoLargeFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const videoProcessingFailedItem: MediaViewerItem = {
+  type: 'file',
+  id: videoProcessingFailedId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
@@ -83,6 +90,9 @@ export default class Example extends React.Component<{}, State> {
         </Button>
         <Button onClick={this.setItem(videoLargeFileItem)}>Video large</Button>
         <Button onClick={this.setItem(videoItem)}>Video vertical</Button>
+        <Button onClick={this.setItem(videoProcessingFailedItem)}>
+          Failed video processing
+        </Button>
         <Button onClick={this.setItem(audioItem)}>Audio item</Button>
         <Button onClick={this.setItem(audioItemNoCover)}>Audio no cover</Button>
         <Button onClick={this.setItem(docItem)}>Doc item</Button>
