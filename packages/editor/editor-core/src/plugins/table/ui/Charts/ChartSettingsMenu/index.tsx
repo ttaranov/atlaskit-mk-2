@@ -16,7 +16,6 @@ import {
 
 import { dropShadow } from '../../../../../ui/styles';
 import { ChartSettings } from '../../../graphs';
-import { containsHeaderRow } from '../../../utils';
 import { ChartSettingsDialog } from './ChartSettingsDialog';
 import withOuterListeners from '../../../../../ui/with-outer-listeners';
 
@@ -38,6 +37,7 @@ export interface Props {
   state: EditorState;
   currentSettings: object;
   onChange: (key: string, value: any) => void;
+  columnNames: string[];
 }
 
 export interface State {
@@ -52,23 +52,6 @@ export default class ChartSettingsMenu extends React.Component<Props, State> {
   };
 
   render() {
-    // FIXME: move out to parent component, and just pass in string array instead
-    const haveHeaderRow = containsHeaderRow(
-      this.props.state,
-      this.props.tableNode,
-    );
-
-    const columnNames: string[] = [];
-    if (haveHeaderRow) {
-      this.props.tableNode.firstChild!.forEach((col, _, colIdx) => {
-        columnNames.push(col.textContent);
-      });
-    } else {
-      for (let i = 0; i < this.props.tableNode.firstChild!.childCount; i++) {
-        columnNames.push(`Column ${i}`);
-      }
-    }
-
     return (
       <PopupWithOutsizeListeners
         target={this.props.target}
@@ -80,7 +63,7 @@ export default class ChartSettingsMenu extends React.Component<Props, State> {
         <InlineDialog
           content={
             <ChartSettingsDialog
-              columns={columnNames}
+              columns={this.props.columnNames}
               availableChartSettings={this.props.availableChartSettings}
               currentSettings={this.props.currentSettings}
               onChange={this.props.onChange}

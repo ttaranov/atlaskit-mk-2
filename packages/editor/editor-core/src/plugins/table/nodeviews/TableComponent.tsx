@@ -39,6 +39,7 @@ import {
   TimelineSettings,
   ChartSetting,
 } from '../graphs';
+import { containsHeaderRow } from '../utils';
 
 export interface ComponentProps extends Props {
   contentDOM: (element: HTMLElement | undefined) => void;
@@ -84,6 +85,26 @@ class TableComponent extends React.Component<ComponentProps> {
     }
 
     this.handleScrollDebounced.cancel();
+  }
+
+  get columnNames() {
+    const haveHeaderRow = containsHeaderRow(
+      this.props.view.state,
+      this.props.node,
+    );
+
+    const columnNames: string[] = [];
+    if (haveHeaderRow) {
+      this.props.node.firstChild!.forEach((col, _, colIdx) => {
+        columnNames.push(col.textContent);
+      });
+    } else {
+      for (let i = 0; i < this.props.node.firstChild!.childCount; i++) {
+        columnNames.push(`Column ${i}`);
+      }
+    }
+
+    return columnNames;
   }
 
   render() {
@@ -246,6 +267,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     {this.isChartSelected(pluginState) ? (
                       <ChartSettingsMenu
                         target={this.chart!}
+                        columnNames={this.columnNames}
                         onPopup={this.onChartSettingsPopup}
                         availableChartSettings={
                           availableChartSettings ? availableChartSettings : []
