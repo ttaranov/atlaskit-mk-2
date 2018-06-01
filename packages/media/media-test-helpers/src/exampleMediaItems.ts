@@ -148,6 +148,12 @@ export const videoHorizontalFileId = {
   collectionName,
 };
 
+export const videoLargeFileId = {
+  id: 'e558199f-f982-4d23-93eb-313be5998d1b', // 1h30m video
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const imageFileId = {
   id: '5556346b-b081-482b-bc4a-4faca8ecd2de', // jpg image
   mediaItemType: fileType,
