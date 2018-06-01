@@ -11,6 +11,7 @@ export {
 } from './confluence-schema';
 export { defaultSchema } from './default-schema';
 export { hipchatSchema } from './hipchat-schema';
+export { diffSchema } from './diff-schema';
 
 export {
   default as createJIRASchema,

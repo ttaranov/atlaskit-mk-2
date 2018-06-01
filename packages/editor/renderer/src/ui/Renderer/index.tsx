@@ -39,6 +39,7 @@ export interface Props {
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
+  isDiff?: boolean;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -84,7 +85,14 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { document, onComplete, schema, appearance, adfStage } = this.props;
+    const {
+      document,
+      onComplete,
+      schema,
+      appearance,
+      adfStage,
+      isDiff,
+    } = this.props;
 
     try {
       const { result, stat } = renderDocument(
@@ -92,6 +100,7 @@ export default class Renderer extends PureComponent<Props, {}> {
         this.serializer,
         schema || defaultSchema,
         adfStage,
+        isDiff,
       );
 
       if (onComplete) {

@@ -36,6 +36,7 @@ import TableCell from './tableCell';
 import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
+import { InlineDiff, BlockDiff } from './inlineDiff';
 
 import { bigEmojiHeight } from '../../utils';
 
@@ -71,6 +72,8 @@ export const nodeToReact = {
   tableHeader: TableHeader,
   tableRow: TableRow,
   unknownBlock: UnknownBlock,
+  inlineDiff: InlineDiff,
+  blockDiff: BlockDiff,
 };
 
 export const toReact = (node: Node): React.ComponentClass<any> => {

@@ -38,6 +38,12 @@ export default class MediaSingle extends Component<
   { layout: MediaSingleLayout } & React.Props<any>,
   State
 > {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   private onExternalImageLoaded = ({ width, height }) => {
     this.setState({
       width,

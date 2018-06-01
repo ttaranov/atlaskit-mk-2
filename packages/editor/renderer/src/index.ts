@@ -49,11 +49,12 @@ export const renderDocument = <T>(
   serializer: Serializer<T>,
   schema: Schema = defaultSchema,
   adfStage: ADFStage = 'final',
+  isDiff?: boolean,
 ): RenderOutput<T | null> => {
   const stat: RenderOutputStat = { sanitizeTime: 0 };
 
   const { output: validDoc, time: sanitizeTime } = withStopwatch(() =>
-    getValidDocument(doc, schema, adfStage),
+    getValidDocument(doc, schema, adfStage, isDiff),
   );
 
   // save sanitize time to stats
@@ -65,7 +66,9 @@ export const renderDocument = <T>(
 
   const { output: node, time: buildTreeTime } = withStopwatch<PMNode>(() => {
     const pmNode = schema.nodeFromJSON(validDoc);
-    pmNode.check();
+    if (!isDiff) {
+      pmNode.check();
+    }
     return pmNode;
   });
 
