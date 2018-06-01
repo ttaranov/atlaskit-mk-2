@@ -31,7 +31,7 @@ import { Shortcut } from '../../shortcut';
 
 export interface CustomVideoProps {
   readonly src: string;
-  readonly isHDActive: boolean;
+  readonly isHDActive?: boolean;
   readonly onHDToggleClick?: () => void;
   readonly isHDAvailable: boolean;
   readonly showControls?: () => void;
