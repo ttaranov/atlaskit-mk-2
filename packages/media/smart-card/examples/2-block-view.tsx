@@ -79,12 +79,15 @@ export default () => (
             'The public is more familiar with bad design than good design. It is, in effect, conditioned to prefer bad design, because that is what it lives with. The ne',
         }}
         byline={{
-          text: 'Entity byline (not description) is limited to a single line',
+          text:
+            'Entity byline (not description) is limited to a single line, yep just one',
         }}
         description={{
           text:
             'Descriptions can be added in the meta data area using the text display. They are used to show additional information on the object and can be up to three lines',
         }}
+        thumbnail="https://www.cupcakediariesblog.com/wp-content/uploads/2016/02/cookie-monster-cupcakes-2.jpg"
+        preview="https://www.timelinecoverbanner.com/facebook-covers/2012/11/sunrise-earth.jpg"
         details={[
           {
             title: 'Size',
@@ -133,14 +136,17 @@ export default () => (
         ]}
         actions={[
           {
+            id: 'success',
             text: 'Success',
             handler: ({ success }) => success('Success!'),
           },
           {
+            id: 'failure',
             text: 'Failure',
             handler: ({ failure }) => failure(),
           },
           {
+            id: 'pending',
             text: 'Pending',
             handler: ({ pending }) => pending(),
           },

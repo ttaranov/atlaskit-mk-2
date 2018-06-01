@@ -8,7 +8,7 @@ const contentWidthWhenCardIs400px = 384;
 
 export interface AlertViewProps {
   type: 'success' | 'failure';
-  message?: string;
+  text?: string;
   onRetry: () => void;
   onDismis: () => void;
   style?: {};
@@ -64,15 +64,15 @@ export default class AlertView extends React.Component<
   }
 
   renderContent() {
-    const { type, message } = this.props;
+    const { type, text } = this.props;
     const { width } = this.state;
 
-    const text = type === 'success' ? message : 'Something went wrong.';
+    const txt = type === 'success' ? text : 'Something went wrong.';
 
     if (width && width < contentWidthWhenCardIs400px) {
-      return <Ellipsify text={text} lines={2} inline />;
+      return <Ellipsify text={txt} lines={2} inline />;
     } else {
-      return <Ellipsify text={text} lines={1} inline />;
+      return <Ellipsify text={txt} lines={1} inline />;
     }
   }
 

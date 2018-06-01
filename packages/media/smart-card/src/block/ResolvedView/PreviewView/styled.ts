@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import { akColorN30, akColorN40A } from '@atlaskit/util-shared-styles';
-import { fadeIn } from '../mixins';
+import { fadeIn } from '@atlaskit/media-ui';
 
 const borderRadius = `border-radius: 3px 3px 0 0;`;
 

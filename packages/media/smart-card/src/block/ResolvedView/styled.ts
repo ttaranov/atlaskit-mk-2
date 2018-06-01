@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { HTMLAttributes, ComponentClass } from 'react';
 import { colors } from '@atlaskit/theme';
 import { ellipsis, borderRadius, size } from '@atlaskit/media-ui';
-import { maxAvatarCount } from './UsersView';
 
 const thumbnailWidth = 40;
+export const maxAvatarCount = 6;
 
 export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
@@ -13,23 +13,12 @@ export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 8px 12px 12px 12px;
 `;
 
-export const BodyWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  min-width: 0; /* for Chrome ellipsis */
-  flex-basis: 0; /* for IE ellipsis */
-`;
-
-export const TopWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  display: flex;
-`;
-
 export const LeftWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* FIXME: top padding dependent on content*/
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  margin-top: 4px;
   margin-right: 8px;
   min-width: ${thumbnailWidth}px;
 `;
@@ -38,6 +27,11 @@ export const RightWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-grow: 1;
   min-width: 0; /* for Chrome ellipsis */
   flex-basis: 0; /* for IE ellipsis */
+`;
+
+export const FooterWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  display: flex;
+  margin-top: 8px;
 `;
 
 export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -66,6 +60,10 @@ export const Description: ComponentClass<HTMLAttributes<{}>> = styled.div`
   max-height: ${18 * 3};
 `;
 
+export const IconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin-top: 4px;
+`;
+
 export interface ThumbnailProps {
   src: string;
 }
@@ -73,18 +71,30 @@ export interface ThumbnailProps {
 export const Thumbnail: ComponentClass<
   HTMLAttributes<{}> & ThumbnailProps
 > = styled.div`
-  ${borderRadius} ${size(32)} background-color: ${colors.N30};
+  ${borderRadius} ${size(48)} float: right;
+  margin: 4px 0 12px 12px;
+  background-color: ${colors.N30};
   background-image: url(${({ src }: ThumbnailProps) => src});
   background-size: cover;
 `;
 
-export const ActionsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: 8px;
+export const UsersWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin-top: 8px;
 `;
+
+export const ActionsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin-top: 8px;
+  text-align: right;
+
+  > * {
+    margin-top: 4px;
+  }
+
+  > * + * {
+    margin-left: 4px;
+  }
+`;
+
 export const AlertWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: 0;
