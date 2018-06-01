@@ -19,7 +19,7 @@ type HeaderProps = { onClose: () => void; showKeyline: boolean };
 
 const Header = ({ onClose, showKeyline }: HeaderProps) => (
   <ModalHeader showKeyline={showKeyline}>
-    <ModalTitle>Custom Modal</ModalTitle>
+    <ModalTitle>Set Reminder</ModalTitle>
     <Button
       onClick={onClose}
       appearance="subtle"

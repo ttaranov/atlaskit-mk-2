@@ -58,6 +58,10 @@ export const EndAdornmentWrapper: ComponentClass<
   align-items: center;
   flex-grow: 1;
   flex-shrink: 0;
+
+  > div {
+    height: 24px;
+  }
 `;
 
 export const StartAdornmentAndContent: ComponentClass<

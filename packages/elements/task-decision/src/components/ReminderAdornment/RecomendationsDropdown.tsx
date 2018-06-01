@@ -6,8 +6,10 @@ import Dropdown, {
 import * as addDays from 'date-fns/add_days';
 import * as format from 'date-fns/format';
 import { Hint } from '../../styled/ReminderAdornment';
+import { addMinutes } from 'date-fns';
 
 export type RecomendationType =
+  | 'two-mins'
   | 'tomorrow-morning'
   | 'custom'
   | 'next-week'
@@ -57,6 +59,11 @@ export class RecomendationsDropdown extends React.Component<Props> {
       case 'custom':
         onCustom && onCustom();
         break;
+      case 'two-mins': {
+        const date = addMinutes(new Date(), 2);
+        this.triggerOnChange(date);
+        break;
+      }
       case 'tomorrow-morning': {
         const date = addDays(new Date(), 1);
         set9Am(date);
@@ -84,6 +91,7 @@ export class RecomendationsDropdown extends React.Component<Props> {
       label: string;
       hint?: string;
     }> = [
+      { type: 'two-mins', label: 'In Two Mins', hint: '+ 2 mins' },
       { type: 'tomorrow-morning', label: 'Tomorrow', hint: '9:00' },
       { type: 'next-week', label: 'Next week', hint: 'Mon' },
       { type: 'one-week', label: 'One week', hint: format(new Date(), 'ddd') },
