@@ -32,7 +32,8 @@ import { Shortcut } from '../../shortcut';
 export interface CustomVideoProps {
   readonly src: string;
   readonly isHDActive: boolean;
-  readonly onHDChange: (isHDActive: boolean) => void;
+  readonly onHDToggleClick?: () => void;
+  readonly isHDAvailable: boolean;
   readonly showControls?: () => void;
 }
 
@@ -58,14 +59,30 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
     }
   };
 
-  private toggleHD = () => {
-    const { onHDChange, isHDActive } = this.props;
+  renderHDButton = () => {
+    const { isHDAvailable, isHDActive, onHDToggleClick } = this.props;
 
-    onHDChange(!isHDActive);
+    if (!isHDAvailable) {
+      return;
+    }
+
+    return (
+      <Button
+        isSelected={isHDActive}
+        onClick={onHDToggleClick}
+        iconBefore={
+          <VidHdCircleIcon
+            primaryColor="#a0b0cb"
+            secondaryColor="#313d51"
+            label="hd"
+          />
+        }
+      />
+    );
   };
 
   render() {
-    const { src, isHDActive } = this.props;
+    const { src } = this.props;
 
     return (
       <CustomVideoWrapper>
@@ -119,17 +136,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                         {formatDuration(videoState.currentTime)} /{' '}
                         {formatDuration(videoState.duration)}
                       </CurrentTime>
-                      <Button
-                        isSelected={isHDActive}
-                        onClick={this.toggleHD}
-                        iconBefore={
-                          <VidHdCircleIcon
-                            primaryColor="#a0b0cb"
-                            secondaryColor="#313d51"
-                            label="hd"
-                          />
-                        }
-                      />
+                      {this.renderHDButton()}
                       <VolumeWrapper>
                         <VolumeToggleWrapper>
                           <MutedIndicator isMuted={videoState.isMuted} />

@@ -28,6 +28,8 @@ export const VideoWrapper = styled.div`
 
   video {
     flex: 1;
+    width: 100vw;
+    height: 100vh;
   }
 `;
 
