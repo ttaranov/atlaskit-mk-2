@@ -17,17 +17,17 @@ type State = {
 
 const DrawerContent = ({
   closeDrawer,
-  drawerBody,
+  drawerText,
   clearNotification,
 }: {
   closeDrawer: () => void,
   clearNotification: () => void,
-  drawerBody: string,
+  drawerText: string,
 }) => (
   <div>
-    <div>{drawerBody}</div>
+    <div>{drawerText}</div>
     <button onClick={closeDrawer}>Close Drawer</button>
-    {drawerBody.startsWith('notification') && (
+    {drawerText.startsWith('notification') && (
       <button onClick={clearNotification}>Clear Notification</button>
     )}
   </div>
@@ -78,7 +78,7 @@ class GlobalNavWithDrawers extends Component<Object, State> {
         <DrawerContent
           closeDrawer={closeDrawer}
           clearNotification={this.clearNotification}
-          drawerBody={`${drawerKey} drawer`}
+          drawerText={`${drawerKey} drawer`}
         />
       </Drawer>
     );
@@ -88,8 +88,8 @@ class GlobalNavWithDrawers extends Component<Object, State> {
       <Fragment>
         <GlobalNavigation
           productIcon={EmojiAtlassianIcon}
-          onCreateClick={this.openModal}
           onProductClick={() => console.log('product clicked')}
+          onCreateClick={this.openModal}
           onSearchClick={this.props.navigation.openSearchDrawer}
           onYourWorkClick={this.props.navigation.openYourWorkDrawer}
           onNotificationClick={this.props.navigation.openNotificationDrawer}
