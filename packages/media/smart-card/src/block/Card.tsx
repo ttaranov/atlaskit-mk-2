@@ -99,7 +99,7 @@ export class Card extends React.Component<CardProps, CardState> {
 
   refresh() {
     if (this.provider) {
-      this.provider.refresh();
+      this.provider.reload();
     }
   }
 

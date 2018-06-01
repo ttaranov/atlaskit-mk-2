@@ -9,6 +9,7 @@ import {
   refCount,
   publishReplay,
 } from 'rxjs/operators';
+import { Command } from './Command';
 import { fetch } from './fetch';
 
 interface ResolveResponse {
@@ -62,25 +63,42 @@ function convertAuthToService(auth: {
 export class ObjectStateProviderOptions {
   serviceUrl: string;
   objectUrl: string;
+  $reload: Subject<Command>;
 }
 
 export class ObjectStateProvider {
-  private _subject: Subject<string>;
-  private _observable: Observable<ObjectState>;
+  private url: string;
+  private provider: string;
+  private readonly $reload: Subject<Command>;
+  private readonly $observable: Observable<ObjectState>;
 
   constructor(options: ObjectStateProviderOptions) {
-    const { serviceUrl, objectUrl } = options;
+    const { serviceUrl, objectUrl, $reload } = options;
+
+    this.url = objectUrl;
 
     /*
 
       This observable sends a request for each string observed on the subject. In-progress requests are cancelled.
       The responses are mapped to the object state
      */
-    this._subject = new Subject();
-    this._observable = this._subject.pipe(
-      startWith('init'),
-      switchMap(() =>
-        fetch<ResolveResponse>('post', `${serviceUrl}/resolve`, {
+    this.$reload = $reload;
+    this.$observable = this.$reload.pipe(
+      startWith({
+        type: 'init',
+      }),
+      switchMap((cmd: Command) => {
+        // ignore reloads for other providers
+        if (cmd.type === 'reload') {
+          const reloadThisUrl = cmd.url === this.url;
+          const reloadForTheSameProvider =
+            cmd.provider && cmd.provider === this.provider;
+          if (!reloadThisUrl && !reloadForTheSameProvider) {
+            return Observable.of();
+          }
+        }
+
+        return fetch<ResolveResponse>('post', `${serviceUrl}/resolve`, {
           resourceUrl: encodeURI(objectUrl),
         }).pipe(
           map<ResolveResponse, ObjectState>(json => {
@@ -90,6 +108,7 @@ export class ObjectStateProvider {
                 services: [],
               };
             }
+            this.provider = json.meta.definitionId;
             switch (json.meta.access) {
               case 'forbidden':
                 return {
@@ -117,8 +136,8 @@ export class ObjectStateProvider {
             status: 'resolving',
             services: [],
           }),
-        ),
-      ),
+        );
+      }),
       catchError(() =>
         of<ObjectState>({
           status: 'errored',
@@ -131,10 +150,14 @@ export class ObjectStateProvider {
   }
 
   observable(): Observable<ObjectState> {
-    return this._observable;
+    return this.$observable;
   }
 
-  refresh() {
-    this._subject.next('refresh');
+  reload() {
+    this.$reload.next({
+      type: 'reload',
+      url: this.url,
+      provider: this.provider,
+    });
   }
 }

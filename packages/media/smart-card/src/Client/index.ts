@@ -1,7 +1,9 @@
+import { Subject } from 'rxjs';
+import { Command } from './Command';
 import { ObjectStateProvider } from './ObjectStateProvider';
 
-// TODO: improve pooling
-// TODO: add some form of caching
+// TODO: improve pooling e.g. remove items from the pool to avoid memory leaks
+// TODO: add some form of caching so that urls not currently loaded will still be fast
 
 export interface ClientOptions {
   serviceUrl?: string;
@@ -9,8 +11,12 @@ export interface ClientOptions {
 
 export class Client {
   private readonly serviceUrl: string;
+  private readonly providers: Map<string, ObjectStateProvider> = new Map();
 
-  private providers: Map<string, ObjectStateProvider> = new Map();
+  /*
+    This subject is used to trigger a refresh on all the object URLs for a specific provider
+   */
+  private readonly $reload: Subject<Command> = new Subject();
 
   constructor(options: ClientOptions = {}) {
     const {
@@ -26,6 +32,7 @@ export class Client {
       provider = new ObjectStateProvider({
         serviceUrl: this.serviceUrl,
         objectUrl: url,
+        $reload: this.$reload,
       });
       this.providers.set(url, provider);
     }

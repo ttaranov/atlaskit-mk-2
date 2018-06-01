@@ -4,6 +4,7 @@ const resolveUrl =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
 
 const context = '';
+const definitionId = 'google-drive';
 
 const serviceAuth = {
   key: 'default',
@@ -23,11 +24,12 @@ const resolvedBody = {
     visibility: 'restricted',
     access: 'granted',
     auth: [serviceAuth],
+    definitionId,
   },
   data: {
     '@context': context,
     generator,
-    name: 'Getting Started',
+    name: 'URL A',
   },
 };
 
@@ -36,6 +38,7 @@ const unauthorisedBody = {
     visibility: 'restricted',
     access: 'unauthorised',
     auth: [serviceAuth],
+    definitionId,
   },
   data: {
     '@context': context,
@@ -48,6 +51,7 @@ const forbiddenBody = {
     visibility: 'restricted',
     access: 'forbidden',
     auth: [serviceAuth],
+    definitionId,
   },
   data: {
     '@context': context,
@@ -70,6 +74,38 @@ const flowResponsesByUrl = {
     {
       status: 200,
       body: resolvedBody,
+    },
+  ],
+  'private-happy-b': [
+    {
+      status: 200,
+      body: unauthorisedBody,
+    },
+    {
+      status: 200,
+      body: {
+        ...resolvedBody,
+        data: {
+          ...resolvedBody.data,
+          name: 'URL B',
+        },
+      },
+    },
+  ],
+  'private-happy-c': [
+    {
+      status: 200,
+      body: unauthorisedBody,
+    },
+    {
+      status: 200,
+      body: {
+        ...resolvedBody,
+        data: {
+          ...resolvedBody.data,
+          name: 'URL C',
+        },
+      },
     },
   ],
   'private-forbidden': [
