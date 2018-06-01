@@ -20,18 +20,13 @@ export const LoadedView = ({ url }: { url: string }) => (
   <ImageWrapper url={url} />
 );
 
-export interface CardPreviewProps {
-  isPlaceholder?: boolean;
+export interface PreviewViewProps {
   url?: string;
 }
 
-export class CardPreview extends React.Component<CardPreviewProps> {
+export class PreviewView extends React.Component<PreviewViewProps> {
   renderContent() {
-    const { isPlaceholder, url } = this.props;
-
-    if (isPlaceholder) {
-      return <LoadingView />;
-    }
+    const { url } = this.props;
 
     if (!url) {
       return <NoImageView />;
