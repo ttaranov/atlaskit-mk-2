@@ -16,8 +16,6 @@ type Props = {
   children: Node,
   /** Header  */
   header?: any,
-  /** OnClose function */
-  // onClose: Function,
 };
 
 type State = {

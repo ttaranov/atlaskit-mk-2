@@ -116,7 +116,7 @@ function setLocalClients() {
       browserName: 'chrome',
       // Disable headless here to run on real browsers
       chromeOptions: {
-        args: ['--headless', '--disable-gpu'],
+        // args: ['--headless', '--disable-gpu'],
       },
     },
     safari: {

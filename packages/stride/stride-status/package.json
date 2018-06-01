@@ -1,0 +1,34 @@
+{
+  "name": "@atlaskit/stride-status",
+  "version": "0.0.0",
+  "description": "A React component that represents your status on Stride.",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "atlaskit:designLink": "",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Raja B"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/dropdown-menu": "^4.0.3",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/item": "^6.0.3",
+    "@atlaskit/field-text": "^5.0.3",
+    "@atlaskit/theme": "^3.2.2"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0"
+  },
+  "devDependencies": {
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "@atlaskit/webdriver-runner": "^0.0.3"
+  }
+}
