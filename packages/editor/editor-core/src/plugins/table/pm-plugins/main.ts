@@ -299,13 +299,12 @@ export class TableState {
       return false;
     }
 
-    const viewModeSettings = tableNode.node.attrs.viewModeSettings;
-    viewModeSettings[viewMode] = settings;
+    const { viewModeSettings } = tableNode.node.attrs;
 
     this.view.dispatch(
       this.view.state.tr.setNodeMarkup(tableNode.pos - 1, undefined, {
         ...tableNode.node.attrs,
-        viewModeSettings,
+        viewModeSettings: { ...viewModeSettings, ...settings },
       }),
     );
   };

@@ -21,11 +21,9 @@ export const DefaultDocument: any = {
         layout: 'default',
         viewMode: 'table',
         viewModeSettings: {
-          timeline: {
-            start: 1,
-            end: 2,
-            gridlines: true,
-          },
+          start: 1,
+          end: 2,
+          gridlines: true,
         },
       },
       content: [

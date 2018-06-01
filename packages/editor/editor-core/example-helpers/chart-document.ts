@@ -21,16 +21,9 @@ export const DefaultDocument: any = {
         layout: 'default',
         viewMode: 'table',
         viewModeSettings: {
-          donut: {
-            values: 1,
-            title: 'Response time (ms)',
-            legendAlignment: 'left',
-          },
-          barchart: {
-            values: 1,
-            title: 'Response time (ms)',
-            legendAlignment: 'left',
-          },
+          values: 1,
+          title: 'Response time (ms)',
+          legendAlignment: 'left',
         },
       },
       content: [

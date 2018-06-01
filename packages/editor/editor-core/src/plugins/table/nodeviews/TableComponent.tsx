@@ -139,9 +139,7 @@ class TableComponent extends React.Component<ComponentProps> {
     let availableChartSettings: ChartSetting[] | undefined = undefined;
 
     const { viewModeSettings, viewMode } = node.attrs;
-    const activeViewModeSettings = viewModeSettings[viewMode]
-      ? viewModeSettings[viewMode]
-      : {};
+    const activeViewModeSettings = viewModeSettings;
 
     if (node.attrs.viewMode === 'donut' || node.attrs.viewMode === 'barchart') {
       graphTransformer = new NumberTransformer(
@@ -272,15 +270,11 @@ class TableComponent extends React.Component<ComponentProps> {
                         availableChartSettings={
                           availableChartSettings ? availableChartSettings : []
                         }
-                        currentSettings={
-                          node.attrs.viewModeSettings[node.attrs.viewMode]
-                        }
+                        currentSettings={viewModeSettings}
                         tableNode={node}
                         state={this.props.view.state}
                         onChange={(key, value) => {
-                          const currentSettings = viewModeSettings[viewMode]
-                            ? viewModeSettings[viewMode]
-                            : {};
+                          const currentSettings = viewModeSettings;
                           currentSettings[key] = value;
                           pluginState.setViewSetting(viewMode, currentSettings);
                         }}
