@@ -11,9 +11,6 @@ import 'rxjs/add/operator/map';
 // import {publishReplay} from 'rxjs/operator/publishReplay';
 import {
   MediaStore,
-  MediaFileProcessingStatus,
-  MediaFile,
-  MediaStoreResponse,
   uploadFile,
   UploadableFile,
   UploadFileCallbacks,
@@ -39,56 +36,13 @@ import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
 import { FileItem } from '../item';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
+import {
+  GetFileOptions,
+  FileState,
+  mapMediaFileToFileState,
+} from '../fileState';
 
 const DEFAULT_CACHE_SIZE = 200;
-
-export type FileStatus = 'uploading' | 'processing' | 'processed' | 'error';
-export interface FilePreview {
-  blob: Blob;
-  originalDimensions?: {
-    width: number;
-    height: number;
-  };
-}
-export interface PreviewOptions {}
-export interface GetFileOptions {
-  preview?: PreviewOptions;
-  collectionName?: string;
-}
-export interface UploadingFileState {
-  status: 'uploading';
-  id: string;
-  name: string;
-  size: number;
-  progress: number;
-  preview?: FilePreview;
-}
-export interface ProcessingFileState {
-  status: 'processing';
-  id: string;
-  name: string;
-  size: number;
-  preview?: FilePreview;
-}
-export interface ProcessedFileState {
-  status: 'processed';
-  id: string;
-  name: string;
-  size: number;
-  artifacts: Object;
-  // mediaType: MediaType;
-  binaryUrl: string;
-  preview?: FilePreview;
-}
-export interface ErrorFileState {
-  status: 'error';
-  id: string;
-}
-export type FileState =
-  | UploadingFileState
-  | ProcessingFileState
-  | ProcessedFileState
-  | ErrorFileState;
 
 export interface Context {
   getMediaItemProvider(
@@ -139,31 +93,6 @@ export class ContextFactory {
   }
 }
 
-const apiProcessingStatusToFileStatus = (
-  fileStatus: MediaFileProcessingStatus,
-): FileStatus => {
-  switch (fileStatus) {
-    case 'pending':
-      return 'processing';
-    case 'succeeded':
-    case 'failed':
-      return 'processed';
-  }
-};
-
-const mapMediaFileToFileState = (
-  mediaFile: MediaStoreResponse<MediaFile>,
-): FileState => {
-  const { id, name, size, processingStatus } = mediaFile.data;
-
-  return {
-    status: apiProcessingStatusToFileStatus(processingStatus),
-    id,
-    name,
-    size,
-  } as ProcessedFileState | ProcessingFileState;
-};
-
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
@@ -187,7 +116,10 @@ class ContextImpl implements Context {
     const key = `${id}-${options && options.collectionName}`;
 
     if (this.fileStreams.has(key) === false) {
-      const fileStream$ = this.createDownloadFileStream(id).publishReplay(1);
+      const fileStream$ = this.createDownloadFileStream(
+        id,
+        options && options.collectionName,
+      ).publishReplay(1);
       // Start hot observable
       fileStream$.connect();
 
@@ -197,9 +129,9 @@ class ContextImpl implements Context {
     return this.fileStreams.get(key)!;
   }
 
-  private createDownloadFileStream = (id: string) => {
+  private createDownloadFileStream = (id: string, collection?: string) => {
     const requestFileStream$ = Observable.defer(() => {
-      return this.mediaStore.getFile(id);
+      return this.mediaStore.getFile(id, { collection });
     }).map(mapMediaFileToFileState);
 
     const fileStream$ = Observable.timer(0, 3000)
