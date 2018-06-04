@@ -7,22 +7,22 @@ import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
 describe('@atlaskit/tree - utils/tree', () => {
   describe('#flattenTree', () => {
     it('returns empty list if no children', () => {
-      expect(flattenTree({ id: '', children: [] }).length).toBe(0);
+      expect(flattenTree({ rootId: 'x', items: {} }).length).toBe(0);
     });
 
     it('returns a flat list with path for one level tree', () => {
       const flatResults = flattenTree(treeWithThreeLeaves);
       expect(flatResults.length).toBe(3);
       expect(flatResults[0]).toEqual({
-        item: treeWithThreeLeaves.children[0],
+        item: treeWithThreeLeaves.items['1-1'],
         path: [0],
       });
       expect(flatResults[1]).toEqual({
-        item: treeWithThreeLeaves.children[1],
+        item: treeWithThreeLeaves.items['1-2'],
         path: [1],
       });
       expect(flatResults[2]).toEqual({
-        item: treeWithThreeLeaves.children[2],
+        item: treeWithThreeLeaves.items['1-3'],
         path: [2],
       });
     });
@@ -31,58 +31,58 @@ describe('@atlaskit/tree - utils/tree', () => {
       const flatResults = flattenTree(treeWithTwoBranches);
       expect(flatResults.length).toBe(6);
       expect(flatResults[0]).toEqual({
-        item: treeWithTwoBranches.children[0],
+        item: treeWithTwoBranches.items['1-1'],
         path: [0],
       });
       expect(flatResults[1]).toEqual({
-        item: treeWithTwoBranches.children[0].children[0],
+        item: treeWithTwoBranches.items['1-1-1'],
         path: [0, 0],
       });
       expect(flatResults[2]).toEqual({
-        item: treeWithTwoBranches.children[0].children[1],
+        item: treeWithTwoBranches.items['1-1-2'],
         path: [0, 1],
       });
       expect(flatResults[3]).toEqual({
-        item: treeWithTwoBranches.children[1],
+        item: treeWithTwoBranches.items['1-2'],
         path: [1],
       });
       expect(flatResults[4]).toEqual({
-        item: treeWithTwoBranches.children[1].children[0],
+        item: treeWithTwoBranches.items['1-2-1'],
         path: [1, 0],
       });
       expect(flatResults[5]).toEqual({
-        item: treeWithTwoBranches.children[1].children[1],
+        item: treeWithTwoBranches.items['1-2-2'],
         path: [1, 1],
       });
     });
 
     it("doesn't show collapsed subtrees", () => {
       const collapsedTree = {
-        ...treeWithTwoBranches,
-        children: [
-          {
-            ...treeWithTwoBranches.children[0],
+        rootId: treeWithTwoBranches.rootId,
+        items: {
+          ...treeWithTwoBranches.items,
+          '1-1': {
+            ...treeWithTwoBranches.items['1-1'],
             isExpanded: false,
           },
-          { ...treeWithTwoBranches.children[1] },
-        ],
+        },
       };
       const flatResults = flattenTree(collapsedTree);
       expect(flatResults.length).toBe(4);
       expect(flatResults[0]).toEqual({
-        item: collapsedTree.children[0],
+        item: collapsedTree.items['1-1'],
         path: [0],
       });
       expect(flatResults[1]).toEqual({
-        item: collapsedTree.children[1],
+        item: collapsedTree.items['1-2'],
         path: [1],
       });
       expect(flatResults[2]).toEqual({
-        item: collapsedTree.children[1].children[0],
+        item: collapsedTree.items['1-2-1'],
         path: [1, 0],
       });
       expect(flatResults[3]).toEqual({
-        item: collapsedTree.children[1].children[1],
+        item: collapsedTree.items['1-2-2'],
         path: [1, 1],
       });
     });
@@ -90,47 +90,59 @@ describe('@atlaskit/tree - utils/tree', () => {
 
   describe('#mutateTree', () => {
     it('mutates the root', () => {
-      const mutatedTree = mutateTree(treeWithThreeLeaves, [], {
+      const rootId = treeWithThreeLeaves.rootId;
+      const mutatedTree = mutateTree(treeWithThreeLeaves, rootId, {
         children: [],
       });
       expect(mutatedTree).not.toBe(treeWithThreeLeaves);
-      expect(mutatedTree.id).toBe(treeWithThreeLeaves.id);
-      expect(mutatedTree.children.length).toBe(0);
-      expect(mutatedTree.hasChildren).toBe(true);
-      expect(mutatedTree.isExpanded).toBe(true);
-      expect(mutatedTree.isChildrenLoading).toBe(false);
-      expect(mutatedTree.data).toBe(treeWithThreeLeaves.data);
-      expect(treeWithThreeLeaves.children.length).toBe(3);
+      expect(mutatedTree.rootId).toBe(treeWithThreeLeaves.rootId);
+      expect(mutatedTree.items).not.toBe(treeWithThreeLeaves.items);
+      expect(mutatedTree.items[rootId].children.length).toBe(0);
+      expect(mutatedTree.items[rootId].hasChildren).toBe(true);
+      expect(mutatedTree.items[rootId].isExpanded).toBe(true);
+      expect(mutatedTree.items[rootId].isChildrenLoading).toBe(false);
+      expect(mutatedTree.items[rootId].data).toBe(
+        treeWithThreeLeaves.items[rootId].data,
+      );
+      expect(treeWithThreeLeaves.items[rootId].children.length).toBe(3);
     });
 
     it('changes only the changed child', () => {
-      const mutatedTree = mutateTree(treeWithThreeLeaves, [1], {
+      const itemId = '1-2';
+      const mutatedTree = mutateTree(treeWithThreeLeaves, itemId, {
         isChildrenLoading: true,
       });
       expect(mutatedTree).not.toBe(treeWithThreeLeaves);
-      expect(mutatedTree.children[0]).toBe(treeWithThreeLeaves.children[0]);
-      expect(mutatedTree.children[1]).not.toBe(treeWithThreeLeaves.children[1]);
-      expect(mutatedTree.children[1].isChildrenLoading).toBe(true);
-      expect(treeWithThreeLeaves.children[1].isChildrenLoading).toBe(false);
+      expect(mutatedTree.items['1-1']).toBe(treeWithThreeLeaves.items['1-1']);
+      expect(mutatedTree.items['1-2']).not.toBe(
+        treeWithThreeLeaves.items['1-2'],
+      );
+      expect(mutatedTree.items['1-2'].isChildrenLoading).toBe(true);
+      expect(treeWithThreeLeaves.items['1-2'].isChildrenLoading).toBe(false);
     });
 
-    it('changes only the changed path', () => {
-      const mutatedTree = mutateTree(treeWithTwoBranches, [1, 1], {
+    it('changes only the changed item', () => {
+      const itemId = '1-2-2';
+      const mutatedTree = mutateTree(treeWithTwoBranches, itemId, {
         isChildrenLoading: true,
       });
       expect(mutatedTree).not.toBe(treeWithTwoBranches);
-      expect(mutatedTree.children[0]).toBe(treeWithTwoBranches.children[0]);
-      expect(mutatedTree.children[1]).not.toBe(treeWithTwoBranches.children[1]);
-      expect(mutatedTree.children[1].children[0]).toBe(
-        treeWithTwoBranches.children[1].children[0],
+      expect(mutatedTree.items['1-1']).toBe(treeWithTwoBranches.items['1-1']);
+      expect(mutatedTree.items['1-2']).toBe(treeWithTwoBranches.items['1-2']);
+      expect(mutatedTree.items['1-2-1']).toBe(
+        treeWithTwoBranches.items['1-2-1'],
       );
-      expect(mutatedTree.children[1].children[1]).not.toBe(
-        treeWithTwoBranches.children[1].children[1],
+      expect(mutatedTree.items['1-2-2']).not.toBe(
+        treeWithTwoBranches.items['1-2-2'],
       );
-      expect(mutatedTree.children[1].children[1].isChildrenLoading).toBe(true);
+      expect(mutatedTree.items['1-2-2'].isChildrenLoading).toBe(true);
+      expect(treeWithTwoBranches.items['1-2-2'].isChildrenLoading).toBe(false);
+    });
+
+    it('does not change if item not found', () => {
       expect(
-        treeWithTwoBranches.children[1].children[1].isChildrenLoading,
-      ).toBe(false);
+        mutateTree(treeWithTwoBranches, 'notfound', { isExpanded: true }),
+      ).toBe(treeWithTwoBranches);
     });
   });
 

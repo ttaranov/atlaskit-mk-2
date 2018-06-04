@@ -7,7 +7,7 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tree from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem, TreeData, Path } from '../src/types';
+import type { TreeItem, TreeData } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 import { mutateTree } from '../src/utils/tree';
 
@@ -67,17 +67,17 @@ export default class StaticTree extends Component<void, State> {
     </div>
   );
 
-  onExpand = (item: TreeItem, path: Path) => {
+  onExpand = (item: TreeItem) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, path, { isExpanded: true }),
+      tree: mutateTree(tree, item.id, { isExpanded: true }),
     });
   };
 
-  onCollapse = (item: TreeItem, path: Path) => {
+  onCollapse = (item: TreeItem) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, path, { isExpanded: false }),
+      tree: mutateTree(tree, item.id, { isExpanded: false }),
     });
   };
 

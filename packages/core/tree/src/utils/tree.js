@@ -6,6 +6,7 @@ import type {
   Path,
   TreeData,
   TreeItemData,
+  ItemId,
 } from '../types';
 import { oneOf } from './handy';
 
@@ -17,70 +18,53 @@ export type TreeMutation = {|
   data?: TreeItemData,
 |};
 
-export const cloneTree = (tree: TreeItem): TreeItem => {
+export const flattenTree = (tree: TreeData, path: Path = []): FlattenedItem[] =>
+  tree.items[tree.rootId]
+    ? tree.items[tree.rootId].children.reduce((flat, itemId, index) => {
+        const item = tree.items[itemId];
+        const currentPath = [...path, index];
+        const currentItem = {
+          item,
+          path: currentPath,
+        };
+        const children = item.isExpanded
+          ? flattenTree({ rootId: itemId, items: tree.items }, currentPath)
+          : [];
+        return flat.concat([currentItem, ...children]);
+      }, [])
+    : [];
+
+export const mutateTree = (
+  tree: TreeData,
+  itemId: ItemId,
+  mutation: TreeMutation,
+): TreeItem => {
+  const itemToChange = tree.items[itemId];
+  if (!itemToChange) {
+    return tree;
+  }
   return {
-    id: tree.id,
-    children: [...tree.children],
-    hasChildren: tree.hasChildren,
-    isExpanded: tree.isExpanded,
-    isChildrenLoading: tree.isChildrenLoading,
-    data: { ...tree.data },
+    rootId: tree.rootId,
+    items: {
+      ...tree.items,
+      [itemId]: {
+        id: itemId,
+        isExpanded: oneOf(mutation.isExpanded, itemToChange.isExpanded),
+        hasChildren: oneOf(mutation.hasChildren, itemToChange.hasChildren),
+        children:
+          typeof mutation.children !== 'undefined'
+            ? mutation.children
+            : itemToChange.children,
+        isChildrenLoading: oneOf(
+          mutation.isChildrenLoading,
+          itemToChange.isChildrenLoading,
+        ),
+        data: oneOf(mutation.data, itemToChange.data),
+      },
+    },
   };
 };
 
-export const flattenTree = (tree: TreeData, path: Path = []): FlattenedItem[] =>
-  tree.children.reduce((flat, item, index) => {
-    const currentPath = [...path, index];
-    const currentItem = {
-      item,
-      path: currentPath,
-    };
-    const children = item.isExpanded ? flattenTree(item, currentPath) : [];
-    return flat.concat([currentItem, ...children]);
-  }, []);
-
-export const mutateTree = (
-  tree: TreeItem,
-  path: Path,
-  mutation: TreeMutation,
-): TreeItem => {
-  if (path.length === 0) {
-    return {
-      id: tree.id,
-      isExpanded: oneOf(mutation.isExpanded, tree.isExpanded),
-      hasChildren: oneOf(mutation.hasChildren, tree.hasChildren),
-      children:
-        typeof mutation.children !== 'undefined'
-          ? mutation.children
-          : tree.children,
-      isChildrenLoading: oneOf(
-        mutation.isChildrenLoading,
-        tree.isChildrenLoading,
-      ),
-      data: oneOf(mutation.data, tree.data),
-    };
-  }
-  const newTree: TreeItem = cloneTree(tree);
-  const [currentIndex, ...restPath] = path;
-  newTree.children[currentIndex] = mutateTree(
-    tree.children[currentIndex],
-    restPath,
-    mutation,
-  );
-  return newTree;
-};
-
-export const getItem = (tree: TreeData, path: Path): TreeItem => {
-  let cursor: TreeItem = tree;
-  for (const i of path) {
-    cursor = cursor.children[i];
-  }
-  return cursor;
-};
-
 export const isSamePath = (a: Path, b: Path): boolean => {
-  if (!a || !b) {
-    return false;
-  }
   return a.length === b.length && a.every((v, i) => v === b[i]);
 };

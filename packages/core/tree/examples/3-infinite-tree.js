@@ -7,9 +7,9 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Spinner from '@atlaskit/spinner';
 import Tree from '../src/';
-import type { TreeItem, TreeData, Path } from '../src/types';
+import type { TreeItem, TreeData, Path, ItemId } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
-import { getItem, mutateTree } from '../src/utils/tree';
+import { mutateTree } from '../src/utils/tree';
 import { range } from '../src/utils/handy';
 
 const LEFT_PADDING = 35;
@@ -41,33 +41,58 @@ type State = {|
   tree: TreeData,
 |};
 
-const addRandomChildren = (tree: TreeData, path: Path, n: number): TreeData => {
-  const generateChildren = range(n).map(() => {
-    return {
-      id: Math.random(),
-      children: [],
-      hasChildren: true,
-      isExpanded: false,
-      isChildrenLoading: false,
-      data: { title: `Title ${path.length}` },
-    };
-  });
-  const newChildren = [...getItem(tree, path).children, ...generateChildren];
-  return mutateTree(tree, path, { children: newChildren });
+const addRandomChildren = (
+  tree: TreeData,
+  itemId: ItemId,
+  path: Path,
+  n: number,
+): TreeData => {
+  const newChildrenHash = {};
+  range(n)
+    .map(() => {
+      return {
+        id: Math.random(),
+        children: [],
+        hasChildren: true,
+        isExpanded: false,
+        isChildrenLoading: false,
+        data: { title: `Title ${path.length}` },
+      };
+    })
+    .forEach(c => {
+      newChildrenHash[c.id] = c;
+    });
+  const newChildren = [
+    ...tree.items[itemId].children,
+    ...Object.keys(newChildrenHash),
+  ];
+  const newTree = {
+    rootId: tree.rootId,
+    items: {
+      ...tree.items,
+      ...newChildrenHash,
+    },
+  };
+  return mutateTree(newTree, itemId, { children: newChildren });
 };
 
 const starterTree = {
-  id: '1',
-  children: [],
-  hasChildren: true,
-  isExpanded: true,
-  isChildrenLoading: false,
-  data: {},
+  rootId: '1',
+  items: {
+    '1': {
+      id: '1',
+      children: [],
+      hasChildren: true,
+      isExpanded: true,
+      isChildrenLoading: false,
+      data: {},
+    },
+  },
 };
 
 export default class InfiniteTree extends Component<void, State> {
   state = {
-    tree: addRandomChildren(starterTree, [], 20),
+    tree: addRandomChildren(starterTree, starterTree.rootId, [], 20),
   };
 
   static getIcon(
@@ -114,17 +139,17 @@ export default class InfiniteTree extends Component<void, State> {
 
   onExpand = (item: TreeItem, path: Path) => {
     const { tree }: State = this.state;
-    const newTree = mutateTree(tree, path, { isExpanded: true });
-    const newerTree = addRandomChildren(newTree, path, 20);
+    const newTree = mutateTree(tree, item.id, { isExpanded: true });
+    const newerTree = addRandomChildren(newTree, item.id, path, 20);
     this.setState({
       tree: newerTree,
     });
   };
 
-  onCollapse = (item: TreeItem, path: Path) => {
+  onCollapse = (item: TreeItem) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, path, {
+      tree: mutateTree(tree, item.id, {
         isExpanded: false,
         isChildrenLoading: false,
       }),

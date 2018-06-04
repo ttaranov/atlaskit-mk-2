@@ -15,19 +15,19 @@ describe('@atlaskit/tree - Tree', () => {
       mount(<Tree tree={treeWithThreeLeaves} renderItem={mockRender} />);
       expect(mockRender).toHaveBeenCalledTimes(3);
       expect(mockRender).toBeCalledWith({
-        item: treeWithThreeLeaves.children[0],
+        item: treeWithThreeLeaves.items['1-1'],
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
       });
       expect(mockRender).toBeCalledWith({
-        item: treeWithThreeLeaves.children[1],
+        item: treeWithThreeLeaves.items['1-2'],
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
       });
       expect(mockRender).toBeCalledWith({
-        item: treeWithThreeLeaves.children[2],
+        item: treeWithThreeLeaves.items['1-3'],
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
@@ -43,17 +43,18 @@ describe('@atlaskit/tree - Tree', () => {
       expect(mockRender).toHaveBeenCalledTimes(3);
       mockRender.mockClear();
       const mutatedTree = {
-        ...treeWithThreeLeaves,
-        children: [
-          treeWithThreeLeaves.children[0],
-          treeWithThreeLeaves.children[1],
-          { ...treeWithThreeLeaves.children[2] },
-        ],
+        rootId: treeWithThreeLeaves.rootId,
+        items: {
+          ...treeWithThreeLeaves.items,
+          '1-3': {
+            ...treeWithThreeLeaves.items['1-3'],
+          },
+        },
       };
       wrapper.setProps({ tree: mutatedTree, renderItem: mockRender });
       expect(mockRender).toHaveBeenCalledTimes(1);
       expect(mockRender).toBeCalledWith({
-        item: mutatedTree.children[2],
+        item: mutatedTree.items['1-3'],
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
@@ -66,7 +67,7 @@ describe('@atlaskit/tree - Tree', () => {
       const mockRender = jest.fn();
       mockRender.mockReturnValue(<span />);
       const mockOnExpand = jest.fn();
-      const firstItem = treeWithThreeLeaves.children[0];
+      const firstItem = treeWithThreeLeaves.items['1-1'];
       mount(
         <Tree
           tree={treeWithThreeLeaves}
@@ -85,7 +86,7 @@ describe('@atlaskit/tree - Tree', () => {
       const mockRender = jest.fn();
       mockRender.mockReturnValue(<span />);
       const mockOnCollapse = jest.fn();
-      const firstItem = treeWithThreeLeaves.children[0];
+      const firstItem = treeWithThreeLeaves.items['1-1'];
       mount(
         <Tree
           tree={treeWithThreeLeaves}

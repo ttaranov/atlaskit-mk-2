@@ -1,6 +1,9 @@
 //@flow
 
-export type TreeData = TreeItem;
+export type TreeData = {
+  rootId: ItemId,
+  items: { [ItemId]: TreeItem },
+};
 
 export type ItemId = any;
 
@@ -8,7 +11,7 @@ export type TreeItemData = any;
 
 export type TreeItem = {|
   id: ItemId,
-  children: Array<TreeItem>,
+  children: Array<ItemId>,
   hasChildren?: boolean,
   isExpanded?: boolean,
   isChildrenLoading?: boolean,

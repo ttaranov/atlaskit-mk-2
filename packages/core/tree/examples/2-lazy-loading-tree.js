@@ -8,9 +8,9 @@ import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Spinner from '@atlaskit/spinner';
 import Tree from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem, TreeData, Path } from '../src/types';
+import type { TreeItem, TreeData } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
-import { getItem, mutateTree } from '../src/utils/tree';
+import { mutateTree } from '../src/utils/tree';
 
 const LEFT_PADDING = 35;
 
@@ -43,7 +43,7 @@ type State = {|
 
 export default class LazyTree extends Component<void, State> {
   state = {
-    tree: mutateTree(treeWithTwoBranches, [0], { isExpanded: false }),
+    tree: mutateTree(treeWithTwoBranches, '1-1', { isExpanded: false }),
   };
 
   static getIcon(
@@ -85,17 +85,17 @@ export default class LazyTree extends Component<void, State> {
     </div>
   );
 
-  onExpand = (item: TreeItem, path: Path) => {
+  onExpand = (item: TreeItem) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, path, { isChildrenLoading: true }),
+      tree: mutateTree(tree, item.id, { isChildrenLoading: true }),
     });
     setTimeout(() => {
       const freshTree = this.state.tree;
-      const currentItem: TreeItem = getItem(freshTree, path);
+      const currentItem: TreeItem = freshTree.items[item.id];
       if (currentItem.isChildrenLoading) {
         this.setState({
-          tree: mutateTree(freshTree, path, {
+          tree: mutateTree(freshTree, item.id, {
             isExpanded: true,
             isChildrenLoading: false,
           }),
@@ -104,10 +104,10 @@ export default class LazyTree extends Component<void, State> {
     }, 2000);
   };
 
-  onCollapse = (item: TreeItem, path: Path) => {
+  onCollapse = (item: TreeItem) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, path, {
+      tree: mutateTree(tree, item.id, {
         isExpanded: false,
         isChildrenLoading: false,
       }),

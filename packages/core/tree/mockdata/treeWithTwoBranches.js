@@ -3,32 +3,21 @@
 import type { TreeData } from '../src/types';
 
 export const treeWithTwoBranches: TreeData = {
-  id: '1',
-  children: [
-    {
+  rootId: '1',
+  items: {
+    '1': {
+      id: '1',
+      children: ['1-1', '1-2'],
+      hasChildren: true,
+      isExpanded: true,
+      isChildrenLoading: false,
+      data: {
+        title: 'root',
+      },
+    },
+    '1-1': {
       id: '1-1',
-      children: [
-        {
-          id: '1-1-1',
-          children: [],
-          hasChildren: false,
-          isExpanded: false,
-          isChildrenLoading: false,
-          data: {
-            title: 'Child one',
-          },
-        },
-        {
-          id: '1-1-2',
-          children: [],
-          hasChildren: false,
-          isExpanded: false,
-          isChildrenLoading: false,
-          data: {
-            title: 'Child two',
-          },
-        },
-      ],
+      children: ['1-1-1', '1-1-2'],
       hasChildren: true,
       isExpanded: true,
       isChildrenLoading: false,
@@ -36,30 +25,9 @@ export const treeWithTwoBranches: TreeData = {
         title: 'First parent',
       },
     },
-    {
+    '1-2': {
       id: '1-2',
-      children: [
-        {
-          id: '1-2-1',
-          children: [],
-          hasChildren: true,
-          isExpanded: true,
-          isChildrenLoading: false,
-          data: {
-            title: 'Child three',
-          },
-        },
-        {
-          id: '1-2-2',
-          children: [],
-          hasChildren: false,
-          isExpanded: false,
-          isChildrenLoading: false,
-          data: {
-            title: 'Child four',
-          },
-        },
-      ],
+      children: ['1-2-1', '1-2-2'],
       hasChildren: true,
       isExpanded: true,
       isChildrenLoading: false,
@@ -67,11 +35,45 @@ export const treeWithTwoBranches: TreeData = {
         title: 'Second parent',
       },
     },
-  ],
-  hasChildren: true,
-  isExpanded: true,
-  isChildrenLoading: false,
-  data: {
-    title: 'root',
+    '1-1-1': {
+      id: '1-1-1',
+      children: [],
+      hasChildren: false,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: {
+        title: 'Child one',
+      },
+    },
+    '1-1-2': {
+      id: '1-1-2',
+      children: [],
+      hasChildren: false,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: {
+        title: 'Child two',
+      },
+    },
+    '1-2-1': {
+      id: '1-2-1',
+      children: [],
+      hasChildren: true,
+      isExpanded: true,
+      isChildrenLoading: false,
+      data: {
+        title: 'Child three',
+      },
+    },
+    '1-2-2': {
+      id: '1-2-2',
+      children: [],
+      hasChildren: false,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: {
+        title: 'Child four',
+      },
+    },
   },
 };
