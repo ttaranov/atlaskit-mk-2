@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "11.3.2",
+  "version": "11.4.0",
   "description": "A React package that contains icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",

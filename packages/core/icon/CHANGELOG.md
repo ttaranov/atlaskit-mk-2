@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 11.4.0
+- [minor] Update emoji and add no-image [620557e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/620557e)
+- [none] Updated dependencies [620557e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/620557e)
+
 ## 11.3.2
 - [patch] Update readme to be in line with other atlaskit readmes [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)
 - [none] Updated dependencies [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)

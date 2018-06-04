@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.10.0
+- [minor] Update emoji and add no-image [620557e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/620557e)
+- [none] Updated dependencies [620557e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/620557e)
+  - @atlaskit/icon@11.4.0
+
 ## 8.9.2
 - [patch] Fix unit tests [22337bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22337bd)
 - [patch] Update for label with white background [a0d7ed7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0d7ed7)
