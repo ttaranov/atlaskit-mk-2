@@ -4,6 +4,5 @@ export type Command =
     }
   | {
       type: 'reload';
-      url: string;
-      provider?: string;
+      provider: string;
     };

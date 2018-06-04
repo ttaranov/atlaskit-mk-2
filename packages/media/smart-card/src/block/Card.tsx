@@ -10,11 +10,7 @@ import { LoadingView } from './LoadingView';
 import { UnauthorisedView } from './UnauthorisedView';
 import { ForbiddenView } from './ForbiddenView';
 import { ErroredView } from './ErroredView';
-import {
-  ObjectStateProvider,
-  ObjectService,
-  ObjectStatus,
-} from '../Client/ObjectStateProvider';
+import { State, Service, Status } from '../Client/createObjectStateObservable';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface CardProps {
@@ -28,8 +24,9 @@ export interface CardContext {
 }
 
 export interface CardState {
-  status: ObjectStatus;
-  services: ObjectService[];
+  status: Status;
+  provider?: string;
+  services: Service[];
   props?: CardViewProps;
 }
 export class Card extends React.Component<CardProps, CardState> {
@@ -37,7 +34,6 @@ export class Card extends React.Component<CardProps, CardState> {
     smartCardClient: PropTypes.object,
   };
 
-  private provider?: ObjectStateProvider;
   private subscription?: Subscription;
 
   context: CardContext;
@@ -64,7 +60,6 @@ export class Card extends React.Component<CardProps, CardState> {
   unsubscribe() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-      this.provider = undefined;
       this.subscription = undefined;
     }
   }
@@ -82,24 +77,24 @@ export class Card extends React.Component<CardProps, CardState> {
     }
 
     const { url } = this.props;
-    const provider = client.get(url);
-    const subscription = provider
-      .observable()
-      .subscribe(({ status, services, data }) =>
+    const subscription = client
+      .get(url)
+      .subscribe(({ status, provider, services, data }) =>
         this.setState({
           status,
+          provider,
           services,
           props: data ? extractPropsFromJSONLD(data) : undefined,
         }),
       );
 
-    this.provider = provider;
     this.subscription = subscription;
   }
 
   refresh() {
-    if (this.provider) {
-      this.provider.reload();
+    const { provider } = this.state;
+    if (provider) {
+      this.getClient().reload(provider);
     }
   }
 
@@ -125,7 +120,7 @@ export class Card extends React.Component<CardProps, CardState> {
     }
   };
 
-  handleAuthorise = (service: ObjectService) => {
+  handleAuthorise = (service: Service) => {
     auth(service.startAuthUrl).then(() => this.refresh(), () => this.refresh());
   };
 
