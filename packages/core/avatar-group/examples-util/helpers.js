@@ -37,8 +37,8 @@ export const Code = styled.code`
 export const Gap = styled.span`
   margin-right: ${gridSize}px;
 `;
-
-export const ShrinkWrap = styled(Gap)`
+// $FlowFixMe
+export const Dot = styled(Gap)`
   height: ${math.multiply(gridSize, 3)}px;
   width: ${math.multiply(gridSize, 3)}px;
 `;
@@ -51,7 +51,7 @@ export const Heading = styled.div`
   text-transform: uppercase;
 `;
 
-export const Block = ({
+export const ExampleGroup = ({
   children,
   heading,
 }: {
