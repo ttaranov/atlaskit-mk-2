@@ -1,19 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Select, { components } from '@atlaskit/select';
-import SingleSelect from '@atlaskit/single-select';
+import Select from '@atlaskit/select';
+import { DatePicker } from '@atlaskit/datetime-picker';
 import InlineDialog from '../src';
-
-const Option = ({ innerProps }) => {
-  const onClick = event => newValue => {
-    console.log('Option clicked');
-    event.preventDefault();
-    innerProps.onClick(newValue);
-  };
-
-  return <components.Option {...innerProps} onClick={onClick} />;
-};
 
 type State = {
   isDialogOpen: boolean,
@@ -33,14 +22,6 @@ export default class SingleSelectDialog extends Component<{}, State> {
     }
   };
 
-  selectClickHandler = (event: Event) => {
-    console.log(`Select Click ${event}`);
-  };
-
-  selectOnChangeHandler = () => {
-    this.setState({ isSelectOpen: false });
-  };
-
   render() {
     const options = [
       {
@@ -53,33 +34,11 @@ export default class SingleSelectDialog extends Component<{}, State> {
       },
     ];
 
-    const optionInnerProps = {
-      onClick: this.selectClickHandler,
-      id: 'test',
-    };
-
     const content = (
       <div style={{ width: '300px' }}>
         <h1>Using Select</h1>
-        <Select
-          options={options}
-          onChange={this.selectOnChangeHandler}
-          menuIsOpen
-          components={<Option innerProps={{ ...optionInnerProps }} />}
-        />
-        <h1>Using Old Select</h1>
-        <SingleSelect
-          items={[
-            {
-              items: [
-                {
-                  value: 'selectItem',
-                  content: 'selectItem',
-                },
-              ],
-            },
-          ]}
-        />
+        <Select options={options} />
+        <DatePicker />
       </div>
     );
 
