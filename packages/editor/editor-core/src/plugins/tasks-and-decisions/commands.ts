@@ -1,6 +1,6 @@
 import { uuid } from '@atlaskit/editor-common';
 import { Schema } from 'prosemirror-model';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
   safeInsert,
@@ -46,7 +46,9 @@ export const changeToTaskDecision = (
     view.dispatch(tr);
     return created;
   } else if ($to.node().textContent.length > 0) {
-    tr.split($to.pos, 1, [{ type: item, attrs: { localId: uuid.generate() } }]);
+    const pos = $to.end($to.depth);
+    tr.split(pos, 1, [{ type: item, attrs: { localId: uuid.generate() } }]);
+    tr.setSelection(new TextSelection(tr.doc.resolve(pos + $to.depth)));
     view.dispatch(tr);
     return true;
   }
@@ -104,6 +106,8 @@ export const createListAtSelection = (
         ),
       ]),
     )(tr);
+
+    tr = tr.setSelection(new TextSelection(tr.doc.resolve($to.pos + 1)));
 
     // replacing successful
     if (newTr !== tr) {
