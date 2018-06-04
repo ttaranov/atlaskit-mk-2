@@ -3,6 +3,8 @@ import Button from '@atlaskit/button';
 import { gridSize, math } from '@atlaskit/theme';
 import styled from 'styled-components';
 import ErrorImage from '../assets/ErrorImage';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 const ErrorWrapper = styled.div`
   text-align: center;
@@ -13,7 +15,7 @@ export interface Props {
   onRetryClick();
 }
 
-export default class SearchError extends React.Component<Props> {
+export class SearchError extends React.Component<Props> {
   render() {
     const { onRetryClick } = this.props;
 
@@ -31,3 +33,15 @@ export default class SearchError extends React.Component<Props> {
     );
   }
 }
+
+export default withAnalyticsEvents({
+  onRetryClick: (createEvent, props) => {
+    const payload: GasPayload = {
+      action: 'clicked',
+      actionSubject: 'retryButton',
+      eventType: 'ui',
+      source: 'globalSearchDrawer',
+    };
+    createEvent(payload).fire('quick-search');
+  },
+})(SearchError);

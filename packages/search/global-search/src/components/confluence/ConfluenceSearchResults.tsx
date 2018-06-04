@@ -11,6 +11,7 @@ import {
   take,
   isEmpty,
 } from '../SearchResultsUtil';
+import ShownSearchResultsTrackEvent from '../analytics/ShownSearchResultsTrackEvent';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -55,6 +56,23 @@ const renderNoResults = (query: string) => [
   </ResultItemGroup>,
 ];
 
+const ShownPreQueryResultsEvent = (results: Result[]) => (
+  <ShownSearchResultsTrackEvent
+    key="ShownPreQueryDrawerScreenEvent"
+    action="viewed"
+    actionSubject="preQuerySearchResults"
+  />
+);
+
+const ShownPostQueryResultsEvent = (results: Result[]) => (
+  <ShownSearchResultsTrackEvent
+    key="ShownPostQueryDrawerScreenEvent"
+    action="viewed"
+    actionSubject="postQuerySearchResults"
+    resultsShown={results}
+  />
+);
+
 export interface Props {
   query: string;
   isError: boolean;
@@ -88,28 +106,36 @@ export default function searchResults(props: Props) {
     return <SearchError onRetryClick={retrySearch} />;
   }
 
+  // pre query screen
   if (query.length === 0) {
+    const recentSpacesToShow = take(recentlyViewedSpaces, 5);
+    const recentPagesToShow = take(recentlyViewedPages, 5);
+
     return [
-      renderObjectsGroup(
-        'Recent pages and blogs',
-        take(recentlyViewedPages, 5),
-        query,
-      ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 5), query),
+      renderObjectsGroup('Recent pages and blogs', recentPagesToShow, query),
+      renderSpacesGroup('Recent spaces', recentSpacesToShow, query),
+      ShownPreQueryResultsEvent([...recentPagesToShow, ...recentSpacesToShow]),
     ];
   }
 
+  // no results screen
   if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
     return renderNoResults(query);
   }
 
+  // post query screen
+  const objectsToShow = take(objectResults, 5);
+  const spacesToShow = take(spaceResults, 5);
+  const peopleToShow = take(peopleResults, 5);
+
   return [
-    renderObjectsGroup(
-      'Pages, blogs and attachments',
-      take(objectResults, 5),
-      query,
-    ),
-    renderSpacesGroup('Spaces', take(spaceResults, 5), query),
-    renderPeopleGroup('People', take(peopleResults, 3), query),
+    renderObjectsGroup('Pages, blogs and attachments', objectsToShow, query),
+    renderSpacesGroup('Spaces', spacesToShow, query),
+    renderPeopleGroup('People', peopleToShow, query),
+    ShownPostQueryResultsEvent([
+      ...objectResults,
+      ...spacesToShow,
+      ...peopleToShow,
+    ]),
   ];
 }

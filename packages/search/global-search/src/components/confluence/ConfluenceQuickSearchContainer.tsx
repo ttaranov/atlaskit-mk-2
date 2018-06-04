@@ -12,12 +12,20 @@ import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  DEFAULT_GAS_ATTRIBUTES,
+  DEFAULT_GAS_SOURCE,
+  DEFUALT_GAS_CHANNEL,
+} from '../../util/analytics';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  createAnalyticsEvent?: Function; // TODO improve signature
   linkComponent?: LinkComponent;
 }
 
@@ -54,6 +62,27 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       spaceResults: [],
       peopleResults: [],
     };
+  }
+
+  componentWillUnmount() {
+    // TODO:
+    //  - Verify if this is the same as component closed?
+    //  - Check difficult involved with changing this to a callback...
+
+    if (this.props.createAnalyticsEvent) {
+      const event: GasPayload = {
+        action: 'dismissed',
+        actionSubject: 'globalSearchDrawer',
+        eventType: 'ui',
+        source: DEFAULT_GAS_SOURCE,
+        attributes: {
+          trigger: null, // TODO fill in, needs to be via callback
+          ...DEFAULT_GAS_ATTRIBUTES,
+        },
+      };
+
+      this.props.createAnalyticsEvent(event).fire(DEFUALT_GAS_CHANNEL);
+    }
   }
 
   handleSearch = (query: string) => {
@@ -214,4 +243,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 }
 
-export default withAnalytics(ConfluenceQuickSearchContainer, {}, {});
+export default withAnalyticsEvents()(
+  withAnalytics(ConfluenceQuickSearchContainer, {}, {}),
+);
