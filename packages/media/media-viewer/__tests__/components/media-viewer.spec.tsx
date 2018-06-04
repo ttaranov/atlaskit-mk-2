@@ -63,6 +63,65 @@ describe('<MediaViewer />', () => {
       expect(el.find(MediaViewerNextGen)).toHaveLength(1);
     });
 
+    describe('MSW-720: the collectionName is added to selectedItem for MVNG', () => {
+      it('adds the collectionName for list dataSources', () => {
+        const featureFlags = { nextGen: true };
+        const context = Stubs.context(contextConfig);
+        const el = mount(
+          <MediaViewer
+            context={context as any}
+            selectedItem={selectedItem}
+            dataSource={listDataSource}
+            collectionName={collectionName}
+            MediaViewer={Stubs.mediaViewerConstructor() as any}
+            basePath={basePath}
+            featureFlags={featureFlags}
+          />,
+        );
+        expect(
+          el.find(MediaViewerNextGen).props().selectedItem!.collectionName,
+        ).toEqual(collectionName);
+      });
+
+      it('adds the collectionName for collection dataSources', () => {
+        const featureFlags = { nextGen: true };
+        const context = Stubs.context(contextConfig);
+        const el = mount(
+          <MediaViewer
+            context={context as any}
+            selectedItem={selectedItem}
+            dataSource={collectionDataSource}
+            collectionName={'another-collection-name'}
+            MediaViewer={Stubs.mediaViewerConstructor() as any}
+            basePath={basePath}
+            featureFlags={featureFlags}
+          />,
+        );
+        expect(
+          el.find(MediaViewerNextGen).props().selectedItem!.collectionName,
+        ).toEqual(collectionDataSource.collectionName);
+      });
+    });
+
+    it('should pass the correct collectionName property to the next gen viewer', () => {
+      const featureFlags = { nextGen: true };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={collectionDataSource}
+          collectionName={'another-collection-name'}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+          featureFlags={featureFlags}
+        />,
+      );
+      expect(
+        (el.find(MediaViewerNextGen).props() as any).itemSource.collectionName,
+      ).toEqual(collectionDataSource.collectionName);
+    });
+
     it('should show the next gen viewer when dev flag is enabled', () => {
       let originalLocalStorage = global.window.localStorage;
       global.window.localStorage = {

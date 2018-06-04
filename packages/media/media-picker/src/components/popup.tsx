@@ -28,6 +28,7 @@ import { UploadEventPayloadMap } from '../domain/uploadEvent';
 export interface PopupConfig {
   readonly container?: HTMLElement;
   readonly uploadParams: UploadParams;
+  readonly useNewUploadService?: boolean;
 }
 
 export const USER_RECENTS_COLLECTION = 'recents';
@@ -57,12 +58,16 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   constructor(
     anlyticsContext: MediaPickerContext,
     readonly context: Context,
-    { container = document.body, uploadParams }: PopupConfig,
+    {
+      container = document.body,
+      uploadParams,
+      useNewUploadService,
+    }: PopupConfig,
   ) {
     super(anlyticsContext);
 
     this.analyticsContext.trackEvent(new MPPopupLoaded());
-    this.store = createStore(this, context);
+    this.store = createStore(this, context, useNewUploadService);
 
     this.uploadParams = {
       ...defaultUploadParams,
@@ -98,7 +103,13 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       });
   }
 
-  public cancel(uniqueIdentifier: string): void {
+  public cancel(uniqueIdentifier?: string): void {
+    if (uniqueIdentifier === undefined) {
+      // TODO Make popup able to accept undefined and cancel all the inflight uploads (MSW-691)
+      throw new Error(
+        "Popup doesn't support canceling without a unique identifier",
+      );
+    }
     this.store.dispatch(cancelUpload({ tenantUploadId: uniqueIdentifier }));
   }
 

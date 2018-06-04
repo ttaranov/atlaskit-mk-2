@@ -29,6 +29,7 @@ export interface Props {
   onExternalImageLoaded?: (
     dimensions: { width: number; height: number },
   ) => void;
+  disableOverlay?: boolean;
 }
 
 export default class MediaItem extends PureComponent<Props, {}> {
@@ -62,6 +63,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
       tempId,
       url,
       onExternalImageLoaded,
+      disableOverlay,
     } = this.props;
 
     return (
@@ -80,6 +82,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
         selected={selected}
         url={url}
         onExternalImageLoaded={onExternalImageLoaded}
+        disableOverlay={disableOverlay}
       />
     );
   };

@@ -1,5 +1,55 @@
 # @atlaskit/editor-markdown-transformer
 
+## 0.2.22
+
+
+
+
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/editor-common@10.0.0
+- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
+  - @atlaskit/editor-common@10.0.0
+  - @atlaskit/editor-core@72.0.0
+
+## 0.2.21
+
+
+
+
+
+
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [74f84c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74f84c6)
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/editor-core@71.4.0
+- [none] Updated dependencies [92cdf83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cdf83)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+- [none] Updated dependencies [4151cc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4151cc5)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+  - @atlaskit/docs@3.0.4
+- [patch] Updated dependencies [89146bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89146bf)
+  - @atlaskit/editor-core@71.4.0
+  - @atlaskit/editor-common@9.3.9
+
+## 0.2.20
+- [patch] Fix a crash for markdown transformer where the table misses a call [82bd4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82bd4c6)
+- [patch] Updated dependencies [82bd4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82bd4c6)
+  - @atlaskit/editor-core@71.3.23
+
 ## 0.2.19
 
 ## 0.2.18

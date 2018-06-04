@@ -139,8 +139,8 @@ const productContainerNavSections = [
  */
 const GlobalNavigation = () => (
   <GlobalNav
-    primaryActions={globalNavPrimaryItems}
-    secondaryActions={globalNavSecondaryItems}
+    primaryItems={globalNavPrimaryItems}
+    secondaryItems={globalNavSecondaryItems}
   />
 );
 

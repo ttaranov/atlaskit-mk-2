@@ -8,7 +8,7 @@ export { emojiQuery } from './emoji-query';
 export { mentionQuery } from './mention-query';
 export { typeAheadQuery } from './type-ahead-query';
 export { subsup } from './subsup';
-export { textColor, colorPalette } from './text-color';
+export { textColor, colorPalette, borderColorPalette } from './text-color';
 export { confluenceInlineComment } from './confluence-inline-comment';
 export {
   action,

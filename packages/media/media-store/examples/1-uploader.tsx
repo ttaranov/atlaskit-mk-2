@@ -12,7 +12,7 @@ import {
   Wrapper,
   FileInput,
 } from '../example-helpers/styled';
-import { uploadFile, MediaStore } from '../src/';
+import { uploadFile, MediaStore } from '../src';
 
 type UploaderExampleProps = {};
 export interface UploaderExampleState {
@@ -110,7 +110,7 @@ class UploaderExample extends Component<
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .deferredFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 
@@ -135,7 +135,7 @@ class UploaderExample extends Component<
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .deferredFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 }

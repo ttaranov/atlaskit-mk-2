@@ -32,6 +32,15 @@ export function escapeMarkdown(str: string, startOfLine?: boolean): string {
   return strToEscape;
 }
 
+const SPECIAL_CHARACTERS = /\u200c|↵/g;
+function removeSpecialCharacters(node: Node) {
+  if (node.nodeType === 3 && node.textContent) {
+    node.textContent = node.textContent.replace(SPECIAL_CHARACTERS, '');
+  }
+
+  Array.from(node.childNodes).forEach(child => removeSpecialCharacters(child));
+}
+
 /**
  * This function gets markup rendered by Bitbucket server and transforms it into markup that
  * can be consumed by Prosemirror HTML parser, conforming to our schema.
@@ -45,10 +54,7 @@ export function transformHtml(
 
   // Remove zero-width-non-joiner
   arrayFrom(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
-    const zwnj = /\u200c/g;
-    if (p.textContent && zwnj.test(p.textContent)) {
-      p.textContent = p.textContent.replace(zwnj, '');
-    }
+    removeSpecialCharacters(p);
   });
 
   // Convert mention containers, i.e.:
@@ -118,6 +124,118 @@ export function transformHtml(
         a.parentNode!.insertBefore(text, a);
         a.parentNode!.removeChild(a);
       });
+  }
+
+  // Parse images
+  arrayFrom(el.querySelectorAll('img:not(.emoji)')).forEach(
+    (img: HTMLImageElement) => {
+      const { parentNode } = img;
+
+      if (!parentNode) {
+        return;
+      }
+
+      /**
+       * Lift image node if parent isn't the root-element
+       */
+      if (parentNode !== el) {
+        const isValidPath = validateImageNodeParent(parentNode);
+        if (!isValidPath) {
+          liftImageNode(parentNode, img);
+        }
+      }
+
+      /**
+       * Replace image with media node
+       */
+      const mediaSingle = document.createElement('div');
+      mediaSingle.setAttribute('data-node-type', 'mediaSingle');
+
+      const media = document.createElement('div');
+      media.setAttribute('data-node-type', 'media');
+      media.setAttribute('data-type', 'external');
+      media.setAttribute('data-url', img.getAttribute('src')!);
+
+      mediaSingle.appendChild(media);
+
+      img.parentNode!.insertBefore(mediaSingle, img);
+      img.parentNode!.removeChild(img);
+    },
+  );
+
+  function validateImageNodeParent(node: Node) {
+    const ALLOWED_PARENTS = [
+      'LI',
+      'UL',
+      'OL',
+      'TD',
+      'TH',
+      'TR',
+      'TBODY',
+      'THEAD',
+      'TABLE',
+    ];
+
+    if (node === el) {
+      return true;
+    }
+
+    if (ALLOWED_PARENTS.indexOf(node.nodeName) === -1) {
+      return false;
+    }
+
+    if (!node.parentNode) {
+      return false;
+    }
+
+    return validateImageNodeParent(node.parentNode);
+  }
+
+  function liftImageNode(node: Node, img: HTMLImageElement) {
+    let foundParent = false;
+    let parent = node;
+    while (!foundParent) {
+      foundParent = validateImageNodeParent(parent.parentNode!);
+      if (!foundParent) {
+        parent = parent.parentNode!;
+      }
+    }
+
+    const cloned = parent.cloneNode();
+    const target = parent !== el ? parent.parentNode! : el;
+
+    while (img.nextSibling) {
+      cloned.appendChild(img.nextSibling);
+    }
+
+    if (node !== parent) {
+      while (node.nextSibling) {
+        cloned.appendChild(node.nextSibling);
+      }
+    }
+
+    if (parent.nextSibling) {
+      target.insertBefore(cloned, parent.nextSibling);
+      target.insertBefore(img, cloned);
+    } else {
+      target.appendChild(img);
+      target.appendChild(cloned);
+    }
+
+    /**
+     * If the splitting operation results in
+     * the old parent being empty, remove it
+     */
+    if (node.childNodes.length === 0) {
+      node.parentNode!.removeChild(node);
+    }
+
+    /**
+     * Remove cloned element if it's empty.
+     */
+    if (cloned.childNodes.length === 0) {
+      cloned.parentNode!.removeChild(cloned);
+    }
   }
 
   return el;

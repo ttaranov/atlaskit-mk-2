@@ -2,7 +2,6 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { browser } from '@atlaskit/editor-common';
 import {
-  img,
   strong,
   chaiPlugin,
   doc,
@@ -14,6 +13,8 @@ import {
   isMobileBrowser,
   ol,
   li,
+  media,
+  mediaSingle,
 } from '@atlaskit/editor-test-helpers';
 import { hyperlinkPluginKey } from '../../../../src/plugins/hyperlink/pm-plugins/main';
 
@@ -340,14 +341,17 @@ describe('paste', () => {
           // This environment does not allow mocking paste events
           return this.skip();
         }
+
         expect(editorView.state.doc).to.deep.equal(
           doc(
-            paragraph(
-              img({
-                alt: 'Atlassian',
-                src: 'http://atlassian.com/logo.png',
+            paragraph(),
+            mediaSingle()(
+              media({
+                type: 'external',
+                url: 'http://atlassian.com/logo.png',
               })(),
             ),
+            paragraph(),
           ),
         );
         editorView.destroy();

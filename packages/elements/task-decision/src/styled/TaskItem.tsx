@@ -52,6 +52,7 @@ export const CheckBoxWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
     }
     &[disabled] + label {
       opacity: 0.5;
+      cursor: default;
     }
     &:checked {
       + label::after {

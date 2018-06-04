@@ -1,8 +1,10 @@
+import * as uuid from 'uuid';
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
-import * as Rusha from 'rusha';
 
 import { MediaStore } from './media-store';
 import { MediaApiConfig } from './models/auth';
+import { createHasher } from './utils/hashing/hasherCreator';
+
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
   content: ChunkinatorFile;
@@ -13,28 +15,15 @@ export type UploadableFile = {
 
 export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
-  onId: (id: string) => void;
 };
 
-// TODO: Replace custom FileReader by Rusha.createHash().update(blob)
-// Currently Rusha can't handle blobs directly so we need to do the conversion
-// https://github.com/srijs/rusha/issues/55
+export interface UploadFileResult {
+  deferredFileId: Promise<string>;
+  cancel: () => void;
+}
+
 const hashingFunction = (blob: Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.readAsArrayBuffer(blob);
-
-    reader.onload = () => {
-      resolve(
-        Rusha.createHash()
-          .update(reader.result)
-          .digest('hex'),
-      );
-    };
-
-    reader.onerror = reject;
-  });
+  return createHasher().hash(blob);
 };
 
 const createProbingFunction = (store: MediaStore) => async (
@@ -46,12 +35,13 @@ const createProbingFunction = (store: MediaStore) => async (
   return (Object as any).values(results).map((result: any) => result.exists);
 };
 
-export const uploadFile = async (
+export const uploadFile = (
   file: UploadableFile,
   config: MediaApiConfig,
   callbacks?: UploadFileCallbacks,
-): Promise<string> => {
+): UploadFileResult => {
   const { content, collection, name, mimeType } = file;
+  const occurrenceKey = uuid.v4();
   const store = new MediaStore(config);
   const deferredUploadId = store
     .createUpload()
@@ -68,13 +58,9 @@ export const uploadFile = async (
     offset += chunks.length;
   };
 
-  const emptyFile = store.createFile();
+  const deferredEmptyFile = store.createFile({ collection, occurrenceKey });
 
-  if (callbacks && callbacks.onId) {
-    emptyFile.then(response => callbacks.onId(response.data.id));
-  }
-
-  await chunkinator(
+  const { response, cancel } = chunkinator(
     content,
     {
       hashingFunction,
@@ -96,18 +82,26 @@ export const uploadFile = async (
     },
   );
 
-  const uploadId = await deferredUploadId;
-  const fileId = (await emptyFile).data.id;
+  const fileId = Promise.all([
+    deferredUploadId,
+    deferredEmptyFile,
+    response,
+  ]).then(([uploadId, emptyFile]) => {
+    const fileId = emptyFile.data.id;
 
-  await store.createFileFromUpload(
-    { uploadId, name, mimeType },
-    {
-      collection,
-      replaceFileId: fileId,
-    },
-  );
+    return store
+      .createFileFromUpload(
+        { uploadId, name, mimeType },
+        {
+          occurrenceKey,
+          collection,
+          replaceFileId: fileId,
+        },
+      )
+      .then(() => fileId);
+  });
 
-  return fileId;
+  return { deferredFileId: fileId, cancel };
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);

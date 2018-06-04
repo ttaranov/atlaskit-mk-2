@@ -3,12 +3,13 @@ import {
   getValidDocument,
   getValidNode,
   ADNode,
+  ADFStage,
 } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 
 import { Serializer } from './serializer';
 
-export { default as ReactSerializer } from './react';
+export { default as ReactSerializer, BreakoutProvider } from './react';
 export { default as TextSerializer } from './text';
 export { default as EmailSerializer } from './email';
 
@@ -47,11 +48,12 @@ export const renderDocument = <T>(
   doc: any,
   serializer: Serializer<T>,
   schema: Schema = defaultSchema,
+  adfStage: ADFStage = 'final',
 ): RenderOutput<T | null> => {
   const stat: RenderOutputStat = { sanitizeTime: 0 };
 
   const { output: validDoc, time: sanitizeTime } = withStopwatch(() =>
-    getValidDocument(doc, schema),
+    getValidDocument(doc, schema, adfStage),
   );
 
   // save sanitize time to stats
@@ -85,8 +87,9 @@ export const renderNodes = <T>(
   serializer: Serializer<T>,
   schema: Schema = defaultSchema,
   target?: any,
+  adfStage: ADFStage = 'final',
 ): T | null => {
-  const validNodes = nodes.map(n => getValidNode(n, schema));
+  const validNodes = nodes.map(n => getValidNode(n, schema, adfStage));
 
   const pmFragment = Fragment.fromJSON(schema, validNodes);
 

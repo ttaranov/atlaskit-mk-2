@@ -1,5 +1,23 @@
 # @atlaskit/lozenge
 
+## 4.1.1
+- [patch] Updae bold color to N800 [0838cb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0838cb0)
+- [patch] Update colors of appearance to new color palette pairings [979aff5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/979aff5)
+- [none] Updated dependencies [0838cb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0838cb0)
+- [none] Updated dependencies [979aff5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/979aff5)
+
+## 4.1.0
+- [patch] Update appearance enum test [b42eaa5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b42eaa5)
+- [patch] Update test [c668ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c668ac9)
+- [minor] Update Lozenge to accept colors pairing [4638c7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638c7a)
+- [none] Updated dependencies [b42eaa5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b42eaa5)
+- [none] Updated dependencies [c668ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c668ac9)
+- [none] Updated dependencies [4638c7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638c7a)
+
+## 4.0.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
 ## 4.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 

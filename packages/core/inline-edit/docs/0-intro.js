@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
@@ -9,9 +9,9 @@ export default md`
   focused or being interacted with. It is designed to be used as a wrapper
   to control an input component
 
-  ~~~js
-  import InlineEdit, { InlineEditStateless } from '@atlaskit/inline-edit';
-  ~~~
+${code`
+import InlineEdit, { InlineEditStateless } from '@atlaskit/inline-edit';
+`}
 
   The stateful inline editor manages the onEditRequested,{' '}
   onCancel, and onConfirm events and exposes{' '}

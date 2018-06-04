@@ -90,15 +90,6 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     toolbarOption.unmount();
   });
 
-  it('should have spacing of toolbar button set to default if property isReducedSpacing=false', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarBlockType pluginState={pluginState} editorView={editorView} />,
-    );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toBe('default');
-    toolbarOption.unmount();
-  });
-
   it('should render icon in dropdown-menu if property isSmall=true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const toolbarOption = mount(

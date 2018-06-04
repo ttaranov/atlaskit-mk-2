@@ -63,9 +63,12 @@ export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
 export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');
 export const altPaste = makeKeyMapWithCommon('Paste', 'Mod-Shift-v');
 
-export function tooltip(keymap: Keymap | undefined): string | undefined {
+export function tooltip(
+  keymap: Keymap | undefined,
+  compact?: boolean,
+): string | undefined {
   if (keymap) {
-    let shortcut;
+    let shortcut: string;
     if (browser.mac) {
       shortcut = keymap.mac
         .replace(/Cmd/i, '⌘')
@@ -75,7 +78,10 @@ export function tooltip(keymap: Keymap | undefined): string | undefined {
     } else {
       shortcut = keymap.windows;
     }
-    return `${keymap.description} (${shortcut})`;
+    const keys = shortcut.split('-');
+    keys[keys.length - 1] = keys[keys.length - 1].toUpperCase();
+    shortcut = keys.join(browser.mac ? '' : '+');
+    return compact ? shortcut : `${keymap.description} ${shortcut}`;
   }
 }
 

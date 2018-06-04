@@ -15,11 +15,12 @@ export interface Props {
   tableElement?: HTMLElement;
   isTableHovered?: boolean;
   resetHoverSelection?: Command;
-  hoverTable?: Command;
-  hoverRow?: (row: number) => Command;
-  hoverColumn?: (column: number) => Command;
+  hoverTable?: (danger?: boolean) => Command;
+  hoverRows?: (rows: number[], danger?: boolean) => Command;
   insertColumn?: (column: number) => Command;
   insertRow?: (row: number) => Command;
+  remove?: () => void;
+  isTableInDanger?: boolean;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -30,13 +31,15 @@ export default class TableFloatingControls extends Component<Props, State> {
   render() {
     const {
       editorView,
-      hoverRow,
+      hoverRows,
       resetHoverSelection,
       tableElement,
       insertColumn,
       insertRow,
+      remove,
       hoverTable,
       isTableHovered,
+      isTableInDanger,
     } = this.props;
 
     if (!tableElement) {
@@ -54,16 +57,19 @@ export default class TableFloatingControls extends Component<Props, State> {
           resetHoverSelection={resetHoverSelection!}
           updateScroll={this.updateScroll}
           scroll={this.state.scroll}
+          isTableInDanger={isTableInDanger}
         />
         <RowControls
           editorView={editorView}
           tableElement={tableElement}
           isTableHovered={isTableHovered!}
           insertRow={insertRow!}
-          hoverRow={hoverRow!}
+          remove={remove!}
+          hoverRows={hoverRows!}
           resetHoverSelection={resetHoverSelection!}
           updateScroll={this.updateScroll}
           scroll={this.state.scroll}
+          isTableInDanger={isTableInDanger}
         />
       </Container>
     );

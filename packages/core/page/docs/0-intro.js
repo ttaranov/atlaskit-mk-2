@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   Page provides layout for other components
 
-  ~~~js
-  import Page, { Grid, GridColumn } from '@atlaskit/page';
-  ~~~
+${code`
+import Page, { Grid, GridColumn } from '@atlaskit/page';
+`}
 
   ${(
     <Example

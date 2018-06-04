@@ -1,4 +1,4 @@
-import { findIndex } from '../internal/helpers';
+import { findIndex, updateReadonlyArray } from '../internal/helpers';
 import { analyticsService } from '../analytics';
 import {
   ReactionsProvider,
@@ -96,18 +96,32 @@ export default class ReactionsResource extends AbstractReactionsResource
         const { containerAri, ari, emojiId } = reactionDetails;
         const key = this.objectReactionKey(containerAri, ari);
         if (!this.cachedReactions[key]) {
-          this.cachedReactions[key] = {
-            status: ReactionStatus.ready,
-            reactions: [],
+          this.cachedReactions = {
+            ...this.cachedReactions,
+            [key]: {
+              status: ReactionStatus.ready,
+              reactions: [],
+            },
           };
         }
 
         const state = this.cachedReactions[key];
         if (state.status === ReactionStatus.ready) {
-          const index = findIndex(state.reactions, r => r.emojiId === emojiId);
-          if (index !== -1) {
-            state.reactions[index] = reactionDetails;
-            this.notifyUpdated(containerAri, ari, state);
+          const reactionIndex = findIndex(
+            state.reactions,
+            r => r.emojiId === emojiId,
+          );
+          if (reactionIndex !== -1) {
+            const existingReaction = state.reactions[reactionIndex];
+            if (!existingReaction.optimisticallyUpdated) {
+              state.reactions = updateReadonlyArray(
+                state.reactions,
+                reactionIndex,
+                _ => reactionDetails,
+              );
+
+              this.notifyUpdated(containerAri, ari, state);
+            }
           }
 
           delete this.inFlightDetailsRequests[reactionId];
@@ -137,9 +151,12 @@ export default class ReactionsResource extends AbstractReactionsResource
       }).then(reactions => {
         Object.keys(reactions).forEach(ari => {
           const cacheKey = this.objectReactionKey(containerAri, ari);
-          this.cachedReactions[cacheKey] = {
-            status: ReactionStatus.ready,
-            reactions: reactions[ari],
+          this.cachedReactions = {
+            ...this.cachedReactions,
+            [cacheKey]: {
+              status: ReactionStatus.ready,
+              reactions: reactions[ari],
+            },
           };
         });
         resolve(reactions);
@@ -177,9 +194,12 @@ export default class ReactionsResource extends AbstractReactionsResource
           const key = this.objectReactionKey(containerAri, ari);
           // Do not update cache if it was already updated by a more recent action
           if (this.lastActionForAri[ari] === timestamp) {
-            this.cachedReactions[key] = {
-              status: ReactionStatus.ready,
-              reactions: reactions.reactions,
+            this.cachedReactions = {
+              ...this.cachedReactions,
+              [key]: {
+                status: ReactionStatus.ready,
+                reactions: reactions.reactions,
+              },
             };
           }
 
@@ -218,9 +238,12 @@ export default class ReactionsResource extends AbstractReactionsResource
           const key = this.objectReactionKey(containerAri, ari);
           // Do not update cache if it was already updated by a more recent action
           if (this.lastActionForAri[ari] === timestamp) {
-            this.cachedReactions[key] = {
-              status: ReactionStatus.ready,
-              reactions: reactions.reactions,
+            this.cachedReactions = {
+              ...this.cachedReactions,
+              [key]: {
+                status: ReactionStatus.ready,
+                reactions: reactions.reactions,
+              },
             };
           }
 

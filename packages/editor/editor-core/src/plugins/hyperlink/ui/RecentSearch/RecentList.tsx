@@ -10,6 +10,10 @@ const Container = styled.div`
   padding-top: 10px;
 `;
 
+const ListContainer = styled.div`
+  padding-top: 0;
+`;
+
 // tslint:disable-next-line:variable-name
 const SpinnerContainer = styled.div`
   text-align: center;
@@ -56,7 +60,7 @@ export default class RecentList extends PureComponent<Props, {}> {
     }
 
     return (
-      <Container>
+      <ListContainer>
         <List>
           {items.map((item, index) => (
             <RecentItem
@@ -68,7 +72,7 @@ export default class RecentList extends PureComponent<Props, {}> {
             />
           ))}
         </List>
-      </Container>
+      </ListContainer>
     );
   }
 }

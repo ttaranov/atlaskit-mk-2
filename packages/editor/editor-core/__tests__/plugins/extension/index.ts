@@ -3,14 +3,17 @@ import {
   createEditor,
   p as paragraph,
   bodiedExtension,
+  inlineExtension,
   macroProvider,
+  MockMacroProvider,
   sendKeyToPm,
+  inlineExtensionData,
   bodiedExtensionData,
   sleep,
   h5,
   underline,
 } from '@atlaskit/editor-test-helpers';
-
+import { NodeSelection } from 'prosemirror-state';
 import {
   setExtensionElement,
   editExtension,
@@ -53,17 +56,22 @@ describe('extension', () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
+        const elementContainer = document.createElement('div');
+        elementContainer.className = 'extension-container';
         const element = document.createElement('span');
-        document.body.appendChild(element);
+        elementContainer.appendChild(element);
+        document.body.appendChild(elementContainer);
         const result = setExtensionElement(element)(
           editorView.state,
           editorView.dispatch,
         );
 
         const pluginState = pluginKey.getState(editorView.state);
-        expect(pluginState.element).toEqual(element);
+        expect(pluginState.element).toEqual(
+          document.getElementsByClassName('extension-container')[0],
+        );
         expect(result).toBe(true);
-        document.body.removeChild(element);
+        document.body.removeChild(elementContainer);
       });
     });
 
@@ -102,6 +110,37 @@ describe('extension', () => {
           ),
         );
       });
+      it('should replace selected inlineExtension node with a new inlineExtension node', async () => {
+        const { editorView } = editor(
+          doc(
+            paragraph(
+              'one',
+              inlineExtension(inlineExtensionData[0].attrs)(),
+              'two',
+            ),
+          ),
+        );
+        editorView.dispatch(
+          editorView.state.tr.setSelection(
+            NodeSelection.create(editorView.state.doc, 4),
+          ),
+        );
+        const macroProviderPromise = Promise.resolve(
+          new MockMacroProvider(inlineExtensionData[1]),
+        );
+        const provider = await macroProviderPromise;
+        editExtension(provider)(editorView);
+        await sleep(0);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            paragraph(
+              'one',
+              inlineExtension(inlineExtensionData[1].attrs)(),
+              'two',
+            ),
+          ),
+        );
+      });
     });
 
     describe('removeExtension', () => {
@@ -121,6 +160,16 @@ describe('extension', () => {
         expect(pluginState.element).toEqual(null);
         expect(editorView.state.doc).toEqualDocument(doc(paragraph('')));
       });
+    });
+  });
+
+  describe('show extention options', () => {
+    it('should show options when the cursor is inside the extension', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
+      );
+      const pluginState = pluginKey.getState(editorView.state);
+      expect(pluginState.element).not.toEqual(null);
     });
   });
 });

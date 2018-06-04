@@ -44,7 +44,7 @@ export default function createEditorForTests<T = any>({
   pluginState: T;
 } {
   const plugins = editorPlugins
-    ? [...getDefaultPluginsList(), ...editorPlugins]
+    ? [...getDefaultPluginsList(editorProps), ...editorPlugins]
     : undefined;
   const place = document.body.appendChild(document.createElement('div'));
   const editor = mount(

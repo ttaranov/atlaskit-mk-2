@@ -1,3 +1,4 @@
+const outdent = require('outdent');
 const { generateMarkdownTemplate } = require('../../changelog/template');
 
 describe('template', () => {
@@ -20,13 +21,17 @@ describe('template', () => {
               type: 'patch',
             },
           ],
+          dependents: [],
         },
       ],
     };
 
     const output = generateMarkdownTemplate(input.releases[0], input);
-    expect(output).toBe(`## 1.0.0
-- [patch] We fix few bugs in badge. [496287c](496287c)`);
+    const expectedOutput = outdent`
+      ## 1.0.0
+      - [patch] We fix few bugs in badge. [496287c](496287c)
+    `;
+    expect(output).toBe(expectedOutput);
   });
 
   it('should generate template from a simple release object with release notes', () => {
@@ -49,14 +54,18 @@ describe('template', () => {
               type: 'patch',
             },
           ],
+          dependents: [],
         },
       ],
     };
 
     const output = generateMarkdownTemplate(input.releases[0], input);
-    expect(output).toBe(`## 1.0.0
-- [patch] We fix few bugs in badge. [496287c](496287c)
-  - See [doc.md](doc.md) for more information`);
+    const expectedOutput = outdent`
+      ## 1.0.0
+      - [patch] We fix few bugs in badge. [496287c](496287c)
+        - See [doc.md](doc.md) for more information
+    `;
+    expect(output).toBe(expectedOutput);
   });
 
   it('should generate template from a release object with multiple changesets', () => {
@@ -79,6 +88,7 @@ describe('template', () => {
               type: 'patch',
             },
           ],
+          dependents: [],
         },
         {
           summary: 'We added in a new feature in badge.',
@@ -90,16 +100,20 @@ describe('template', () => {
               type: 'minor',
             },
           ],
+          dependents: [],
         },
       ],
     };
 
     const output = generateMarkdownTemplate(input.releases[0], input);
-    expect(output).toBe(`## 1.0.0
-- [patch] We fix few bugs in badge. [496287c](496287c)
-  - See [release.md](release.md) for more information
-- [minor] We added in a new feature in badge. [898739d](898739d)
-  - See [super.md](super.md) for more information`);
+    const expectedOutput = outdent`
+      ## 1.0.0
+      - [patch] We fix few bugs in badge. [496287c](496287c)
+        - See [release.md](release.md) for more information
+      - [minor] We added in a new feature in badge. [898739d](898739d)
+        - See [super.md](super.md) for more information
+    `;
+    expect(output).toBe(expectedOutput);
   });
 
   it('should generate template from a release with dependencies', () => {
@@ -109,13 +123,11 @@ describe('template', () => {
           name: '@atlaskit/badge',
           version: '1.0.0',
           commits: ['496287c'],
-          dependencies: [],
         },
         {
           name: '@atlaskit/code',
           version: '1.0.1',
           commits: ['496287c'],
-          dependencies: ['@atlaskit/badge'],
         },
       ],
       changesets: [
@@ -141,15 +153,21 @@ describe('template', () => {
     };
 
     const output1 = generateMarkdownTemplate(input.releases[0], input);
-    expect(output1).toBe(`## 1.0.0
-- [patch] We fix few bugs in badge. [496287c](496287c)
-  - See [release.md](release.md) for more information`);
+    const expectedOutput1 = outdent`
+      ## 1.0.0
+      - [patch] We fix few bugs in badge. [496287c](496287c)
+        - See [release.md](release.md) for more information
+    `;
+    expect(output1).toBe(expectedOutput1);
 
     const output2 = generateMarkdownTemplate(input.releases[1], input);
-    expect(output2).toBe(`## 1.0.1
-- [minor] Updated dependencies [496287c](496287c)
-  - @atlaskit/badge@1.0.0`);
+    const expectedOutput2 = outdent`
+      ## 1.0.1
+      - [minor] Updated dependencies [496287c](496287c)
+        - @atlaskit/badge@1.0.0`;
+    expect(output2).toBe(expectedOutput2);
   });
+
   it('should generate full urls when given a repo url', () => {
     const input = {
       releases: [
@@ -169,17 +187,20 @@ describe('template', () => {
               type: 'patch',
             },
           ],
+          dependents: [],
         },
       ],
     };
 
-    expect(
-      generateMarkdownTemplate(
-        input.releases[0],
-        input,
-        'https://some-website.com',
-      ),
-    ).toEqual(`## 1.0.0
-- [patch] We fix few bugs in badge. [496287c](https://some-website.com/496287c)`);
+    const output = generateMarkdownTemplate(
+      input.releases[0],
+      input,
+      'https://some-website.com',
+    );
+    const expectedOutput = outdent`
+      ## 1.0.0
+      - [patch] We fix few bugs in badge. [496287c](https://some-website.com/496287c)
+    `;
+    expect(output).toEqual(expectedOutput);
   });
 });

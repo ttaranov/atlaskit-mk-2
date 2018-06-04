@@ -3,23 +3,23 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
-  akEditorTableBorderRadius,
-  akEditorTableBorder,
-  akEditorTableBorderSelected,
-  akEditorTableToolbarSize,
-} from '../../../../../styles';
-import {
   HeaderButtonDefault,
   InsertMarkerDefault,
   InsertButtonDefault,
   LineMarkerDefault,
 } from '../styles';
+import {
+  tableInsertColumnButtonSize,
+  tableDeleteColumnButtonSize,
+  tableBorderRadiusSize,
+  tableBorderColor,
+  tableBorderSelectedColor,
+  tableToolbarSize,
+  tableBorderDeleteColor,
+} from '../../styles';
 
 export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  position: absolute;
-  top: -${akEditorTableToolbarSize - 1}px;
-  left: 0;
-  height: ${akEditorTableToolbarSize}px;
+  height: ${tableToolbarSize}px;
   box-sizing: border-box;
   display: none;
 
@@ -31,7 +31,7 @@ export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const ColumnInner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   & > div:last-child > button {
-    border-top-right-radius: ${akEditorTableBorderRadius};
+    border-top-right-radius: ${tableBorderRadiusSize}px;
   }
 `;
 
@@ -49,17 +49,21 @@ export const ColumnControlsButtonWrap: ComponentClass<
 export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
   HeaderButtonDefault,
 )`
-  border-right: 1px solid ${akEditorTableBorder};
+  border-right: 1px solid ${tableBorderColor};
   border-bottom: none;
   border-radius: 0;
-  height: ${akEditorTableToolbarSize - 1}px;
+  height: ${tableToolbarSize - 1}px;
   width: 100%;
 
   &:hover,
   .active > &,
   .tableHovered & {
-    border-bottom: 1px solid ${akEditorTableBorderSelected};
-    height: ${akEditorTableToolbarSize}px;
+    border-bottom: 1px solid ${tableBorderSelectedColor};
+    height: ${tableToolbarSize}px;
+  }
+
+  .danger > & {
+    border-bottom: 1px solid ${tableBorderDeleteColor};
   }
 `;
 
@@ -67,14 +71,34 @@ export const InsertColumnButtonWrap: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: absolute;
-  top: -20px;
-  right: -10px;
-  height: 20px;
-  width: 20px;
+  top: -${tableInsertColumnButtonSize}px;
+  right: -${tableInsertColumnButtonSize / 2}px;
+  height: ${tableInsertColumnButtonSize}px;
+  width: ${tableInsertColumnButtonSize}px;
   z-index: 2;
   cursor: pointer;
   &:hover > div {
     display: flex;
+  }
+`;
+
+export const DeleteColumnButtonWrap: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: absolute;
+  top: -${tableDeleteColumnButtonSize + 6}px;
+  height: ${tableDeleteColumnButtonSize}px;
+  width: ${tableDeleteColumnButtonSize}px;
+  z-index: 2;
+  cursor: pointer;
+  & > div {
+    display: flex;
+  }
+
+  & > div,
+  & > div button {
+    width: ${tableDeleteColumnButtonSize}px;
+    height: ${tableDeleteColumnButtonSize}px;
   }
 `;
 
@@ -96,5 +120,5 @@ export const ColumnLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   width: 2px;
   left: 8px;
-  top: 20px;
+  top: ${tableInsertColumnButtonSize}px;
 `;

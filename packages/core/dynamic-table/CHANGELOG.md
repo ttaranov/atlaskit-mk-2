@@ -1,5 +1,19 @@
 # @atlaskit/dynamic-table
 
+## 8.1.0
+- [minor] Add paginationi18n prop to dynamic-table which passes this to the i18n of its pagination component [08054b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08054b1)
+
+## 8.0.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/toggle@3.0.2
+  - @atlaskit/dropdown-menu@4.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/pagination@5.0.1
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+
 ## 8.0.2
 
 ## 8.0.1

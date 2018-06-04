@@ -13,7 +13,7 @@ export interface Attributes {
   textUrl?: string;
   link?: {
     /**
-     * @pattern "^https:\/\/|^data:image\/"
+     * @pattern "^https?:\/\/|^data:image\/"
      */
     url: string;
   };

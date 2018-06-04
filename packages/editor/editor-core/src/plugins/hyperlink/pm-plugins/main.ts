@@ -13,6 +13,7 @@ import { EditorProps } from '../../../types/editor-props';
 import {
   addFakeTextCursor,
   removeFakeTextCursor,
+  FakeTextCursorSelection,
 } from '../../../plugins/fake-text-cursor/cursor';
 import { Match, getLinkMatch, normalizeUrl } from '../utils';
 
@@ -135,6 +136,14 @@ export class HyperlinkState {
       dirty = true;
     }
 
+    if (
+      !(state.selection instanceof FakeTextCursorSelection) &&
+      this.showToolbarPanel
+    ) {
+      this.showToolbarPanel = false;
+      dirty = true;
+    }
+
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.activeLinkNode = nodeInfo && nodeInfo.node;
       this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
@@ -242,7 +251,7 @@ export class HyperlinkState {
       };
     };
     return translateCoordinates(
-      editorView.coordsAtPos(pos),
+      editorView.coordsAtPos(this.activeLinkStartPos || pos),
       left,
       top - cursorHeight,
     );

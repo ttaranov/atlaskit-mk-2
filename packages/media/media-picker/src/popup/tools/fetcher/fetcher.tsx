@@ -7,7 +7,6 @@ import { getPreviewFromBlob } from '../../../util/getPreviewFromBlob';
 import {
   AuthHeaders,
   CollectionItem,
-  File,
   Service,
   ServiceAccountWithType,
   ServiceFolder,
@@ -86,7 +85,7 @@ export interface Fetcher {
     auth: Auth,
     fileId: string,
     collection?: string,
-  ): Promise<File>;
+  ): Promise<FileDetails>;
   getPreview(
     apiUrl: string,
     auth: Auth,
@@ -117,7 +116,7 @@ export interface Fetcher {
     sourceFile: SourceFile,
     destination: CopyFileDestination,
     collection?: string,
-  ): Promise<File>;
+  ): Promise<FileDetails>;
   fetchTrendingGifs(offset?: number): Promise<GiphyData>;
   fetchGifsRelevantToSearch(query: string, offset?: number): Promise<GiphyData>;
 }
@@ -159,9 +158,9 @@ export class MediaApiFetcher implements Fetcher {
     auth: Auth,
     fileId: string,
     collection?: string,
-  ): Promise<File> {
+  ): Promise<FileDetails> {
     return new Promise((resolve, reject) => {
-      return this.query<{ data: File }>(
+      return this.query<{ data: FileDetails }>(
         `${this.fileStoreUrl(apiUrl)}/file/${fileId}`,
         'GET',
         {
@@ -217,7 +216,7 @@ export class MediaApiFetcher implements Fetcher {
         },
         mapAuthToAuthHeaders(auth),
         'blob',
-      ).then(blob => getPreviewFromBlob(blob, file.mediaType));
+      ).then(blob => getPreviewFromBlob(blob, file.mediaType!));
     });
   }
 
@@ -289,9 +288,9 @@ export class MediaApiFetcher implements Fetcher {
     apiUrl: string,
     sourceFile: SourceFile,
     { auth, collection }: CopyFileDestination,
-  ): Promise<File> {
+  ): Promise<FileDetails> {
     const params = collection ? `?collection=${collection}` : '';
-    return this.query<{ data: File }>(
+    return this.query<{ data: FileDetails }>(
       `${this.fileStoreUrl(apiUrl)}/file/copy/withToken${params}`,
       'POST',
       JSON.stringify({ sourceFile }),

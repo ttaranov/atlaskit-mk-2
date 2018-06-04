@@ -1,4 +1,4 @@
-import { Result, ResultType } from '../model/Result';
+import { Result, ResultType, AnalyticsType } from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -118,12 +118,16 @@ function recentItemToResult(recentItem: RecentItem): Result {
   const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
 
   return {
-    type: ResultType.Object,
+    resultType: ResultType.Object,
     resultId: 'recent-' + recentItem.objectId,
     avatarUrl: recentItem.iconUrl,
     name: name,
     href: recentItem.url,
     containerName: recentItem.container,
     objectKey: objectKey,
+    analyticsType:
+      recentItem.provider === 'jira'
+        ? AnalyticsType.RecentJira
+        : AnalyticsType.RecentConfluence,
   };
 }

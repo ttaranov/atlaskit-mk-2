@@ -270,6 +270,16 @@ const attrs = {
   eventHandlers,
 };
 
+const attrsCardWithoutIcon = {
+  text: 'google',
+  title: { text: 'Google' },
+  collapsible: false,
+  textUrl: 'https://google.com',
+  link: { url: 'https://google.com' },
+  description: { text: 'This is a test' },
+  context: { text: 'google.com' },
+};
+
 export default function Example() {
   return (
     <div>
@@ -306,6 +316,12 @@ export default function Example() {
         <ApplicationCard
           title={{ text: 'applicationCard' }}
           {...attrs as AppCardViewProps}
+          actions={actions}
+          background={undefined}
+        />
+        <ApplicationCard
+          title={{ text: 'applicationCard' }}
+          {...attrsCardWithoutIcon as AppCardViewProps}
           actions={actions}
           background={undefined}
         />

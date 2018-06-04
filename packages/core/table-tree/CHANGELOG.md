@@ -1,5 +1,28 @@
 # @atlaskit/table-tree
 
+## 2.0.1
+- [patch] Remove line break from changelog to allow it to display properly on the website [9e30bb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e30bb1)
+
+## 2.0.0
+- [major] updated the api to capture scenarios where data can be updated on the fly [c1720e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1720e8)
+- updated the `items` prop in TableTree component to accept Array of table data instead of function
+- updated the `items` prop in Rows component to accept Array of table data instead of function
+- added an `items` prop in Row component to accept children data Array for particular parent
+- a new class is exported that will help manipulation for async loading `TableTreeDataHelper`, this is intended to make upgrade from previous API easy in case of async loading.
+
+## 1.1.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/select@3.0.2
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/spinner@5.0.2
+  - @atlaskit/docs@3.0.4
+
+## 1.1.3
+- [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
+  - @atlaskit/select@3.0.0
+
 ## 1.1.2
 
 ## 1.1.1

@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
 // eslint-disable-next-line
-import reducedStyles from '!!raw-loader!../src/bundle.css';
+import stuff from '!!style-loader!css-loader!../src/bundle.css';
+import Warning from './utils/warning';
 
 export default () => (
   <div>
-    <style>{reducedStyles}</style>
+    <Warning />
     <p>
       Note that tooltips are only available for <code>button</code> elements,
       and

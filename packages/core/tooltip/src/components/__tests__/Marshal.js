@@ -21,6 +21,7 @@ describe('Marshal', () => {
     tooltip = {
       show: jest.fn(),
       hide: jest.fn(),
+      props: { delay: 300 },
       state: {
         position: 'bottom',
       },
@@ -31,6 +32,7 @@ describe('Marshal', () => {
     anotherTooltip = {
       show: jest.fn(),
       hide: jest.fn(),
+      props: { delay: 300 },
       state: {
         position: 'bottom',
       },
@@ -54,6 +56,57 @@ describe('Marshal', () => {
 
       jest.runTimersToTime(1);
       expect(tooltip.show).toHaveBeenCalledWith({ immediate: false });
+    });
+
+    it("should delay the showing/hiding of a tooltip based on the tooltip's delay prop", () => {
+      // Non-default delay value
+      const customDelay: Tooltip = {
+        show: jest.fn(),
+        hide: jest.fn(),
+        props: { delay: 100 },
+        state: { position: 'bottom' },
+        wrapper: { parentNode: document.body },
+      };
+
+      marshal.show(customDelay);
+      expect(customDelay.show).not.toHaveBeenCalled();
+
+      jest.runTimersToTime(99);
+      expect(customDelay.show).not.toHaveBeenCalled();
+
+      jest.runTimersToTime(1);
+      expect(customDelay.show).toHaveBeenCalledWith({ immediate: false });
+
+      marshal.hide(customDelay);
+
+      expect(customDelay.hide).not.toHaveBeenCalled();
+
+      jest.runTimersToTime(99);
+      expect(customDelay.hide).not.toHaveBeenCalled();
+
+      jest.runTimersToTime(1);
+      expect(customDelay.hide).toHaveBeenCalledWith({ immediate: false });
+
+      // Zero delay value
+      const zeroDelay: Tooltip = {
+        show: jest.fn(),
+        hide: jest.fn(),
+        props: { delay: 0 },
+        state: { position: 'bottom' },
+        wrapper: { parentNode: document.body },
+      };
+
+      marshal.show(zeroDelay);
+      expect(zeroDelay.show).not.toHaveBeenCalled();
+
+      jest.runTimersToTime(1);
+      expect(zeroDelay.show).toHaveBeenCalledWith({ immediate: false });
+
+      marshal.hide(zeroDelay);
+      expect(zeroDelay.hide).not.toHaveBeenCalled();
+
+      jest.runTimersToTime(1);
+      expect(zeroDelay.hide).toHaveBeenCalledWith({ immediate: false });
     });
 
     it('should immediately show the tooltip if another tooltip is visible', () => {

@@ -1,5 +1,10 @@
 // @flow
-import { codeFontFamily, borderRadius, gridSize } from '@atlaskit/theme';
+import {
+  codeFontFamily,
+  borderRadius,
+  gridSize,
+  fontSize,
+} from '@atlaskit/theme';
 
 import { defaultColors } from './defaultTheme';
 
@@ -53,7 +58,7 @@ const codeContainerStyle = {
 };
 
 const lineNumberContainerStyle = (theme: Theme) => ({
-  fontSize: '12px',
+  fontSize: `${fontSize()}px`,
   lineHeight: '20px',
   color: theme.lineNumberColor,
   backgroundColor: theme.lineNumberBgColor,

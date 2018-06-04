@@ -2,7 +2,7 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import { AkCreateDrawer } from '../../src/index';
+import { AkCreateDrawer } from '../../src';
 import { drawerIconOffset } from '../../src/shared-variables';
 import Drawer from '../../src/components/js/Drawer';
 import requiredProps from '../_drawer-util';

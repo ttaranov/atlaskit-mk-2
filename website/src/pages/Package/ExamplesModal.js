@@ -218,13 +218,13 @@ const ModalHeaderComp = ({
               Loading...
             </Button>
           )}
-          deployButton={({ isDisabled }) => (
+          deployButton={({ isDisabled, error }) => (
             <Button
               type="submit"
               isDisabled={isDisabled}
               iconBefore={<CodeSandboxLogo />}
             >
-              Sandbox
+              {error ? error.name : 'Sandbox'}
             </Button>
           )}
         />

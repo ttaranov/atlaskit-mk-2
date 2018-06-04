@@ -8,6 +8,7 @@ import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { pluginKey as isMultilineContentPluginKey } from '../../plugins/is-multiline-content';
 import { AddonToolbar, ClickAreaInline } from '../Addon';
+import { scrollbarStyles } from '../styles';
 
 const pulseBackground = keyframes`
   50% {
@@ -62,6 +63,7 @@ const MessageEditor: any = styled.div`
 `;
 
 const ContentArea: any = styled(ContentStyles)`
+  line-height: 20px;
   padding: 6px 16px 4px 8px;
   flex-grow: 1;
   overflow-x: hidden;
@@ -70,6 +72,8 @@ const ContentArea: any = styled(ContentStyles)`
   width: ${(props: any) => (props.isMultiline ? '100%' : 'auto')};
   max-height: ${(props: MessageEditorProps) =>
     props.maxHeight ? props.maxHeight + 'px' : 'none'};
+
+  ${scrollbarStyles};
 `;
 
 const ToolbarArea: any = styled(ContentStyles)`

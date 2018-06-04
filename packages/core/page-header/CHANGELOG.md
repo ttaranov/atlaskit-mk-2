@@ -1,5 +1,16 @@
 # @atlaskit/page-header
 
+## 4.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/page@6.0.3
+  - @atlaskit/single-select@4.0.3
+  - @atlaskit/inline-edit@5.0.2
+  - @atlaskit/input@2.0.2
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/breadcrumbs@4.1.3
+  - @atlaskit/docs@3.0.4
+
 ## 4.0.1
 - [patch] Fixed alignment of title for page-header [a9f95f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9f95f6)
 

@@ -15,6 +15,8 @@ export const bitbucketSchema: Schema = createSchema({
     'hardBreak',
     'rule',
     'image',
+    'media',
+    'mediaSingle',
     'mention',
     'emoji',
     'table',

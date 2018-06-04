@@ -9,7 +9,11 @@ import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
 
-import { ClearIndicator, DropdownIndicator } from '../internal';
+import {
+  ClearIndicator,
+  DropdownIndicator,
+  defaultDateFormat,
+} from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 import type { Event } from '../types';
 
@@ -56,6 +60,8 @@ type Props = {
   hideIcon?: boolean,
   /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat: string,
+  /** Placeholder text displayed in input */
+  placeholder?: string,
 };
 
 type State = {
@@ -131,7 +137,8 @@ export default class DatePicker extends Component<Props, State> {
     defaultValue: '',
     isInvalid: false,
     hideIcon: false,
-    dateFormat: 'YYYY/MM/DD',
+    dateFormat: defaultDateFormat,
+    placeholder: `e.g. ${format(new Date(), defaultDateFormat)}`,
   };
 
   state = {
@@ -253,6 +260,7 @@ export default class DatePicker extends Component<Props, State> {
       name,
       selectProps,
       dateFormat,
+      placeholder,
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -315,7 +323,7 @@ export default class DatePicker extends Component<Props, State> {
               ...controlStyles,
             }),
           })}
-          placeholder="e.g. 2018/12/31"
+          placeholder={placeholder}
           value={
             value && {
               label: format(parse(value), dateFormat),

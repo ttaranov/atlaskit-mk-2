@@ -69,7 +69,7 @@ export const withImageLoader = <P extends any>(
       const { onExternalImageLoaded } = this.props;
       if (onExternalImageLoaded && this.img) {
         onExternalImageLoaded({
-          width: this.img.naturalHeight,
+          width: this.img.naturalWidth,
           height: this.img.naturalHeight,
         });
       }

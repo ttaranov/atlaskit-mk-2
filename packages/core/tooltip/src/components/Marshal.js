@@ -2,9 +2,6 @@
 import type { TooltipType } from './Tooltip';
 import { getStyle } from './utils';
 
-const SHOW_DELAY = 300;
-const HIDE_DELAY = 300;
-
 const SCROLLABLE = /auto|scroll/;
 
 function isScrollable(node) {
@@ -65,7 +62,7 @@ export default class TooltipMarshal {
 
     this.showTimeout = setTimeout(() => {
       this.showTooltip(tooltip, { immediate: false });
-    }, SHOW_DELAY);
+    }, tooltip.props.delay);
   }
 
   /**
@@ -164,7 +161,7 @@ export default class TooltipMarshal {
 
     this.hideTimeout = setTimeout(() => {
       this.hideTooltip(tooltip, { immediate: false });
-    }, HIDE_DELAY);
+    }, tooltip.props.delay);
   }
 
   /**

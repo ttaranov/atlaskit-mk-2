@@ -1,5 +1,15 @@
 # @atlaskit/calendar
 
+## 5.0.4
+- [patch] Fix issue causing a mouseup to select a date. It is now bound to click. [1cd0b7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd0b7e)
+
+## 5.0.3
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
 ## 5.0.2
 
 ## 5.0.1

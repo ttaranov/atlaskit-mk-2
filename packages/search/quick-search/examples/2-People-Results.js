@@ -1,11 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import Avatar from '@atlaskit/avatar';
 import { getPersonAvatarUrl } from './utils/mockData';
 import { PersonResult, ResultItemGroup } from '../src';
 
 const defaultProps = {
   resultId: 'result_id',
 };
+
+const dummyAvatarComponent = (
+  <Avatar src={getPersonAvatarUrl('wowowow')} appearance="square" />
+);
 
 export default class extends Component<*> {
   render() {
@@ -41,6 +46,15 @@ export default class extends Component<*> {
             name="Palpatine"
             presenceMessage="Custom mention prefix"
             presenceState="busy"
+          />
+          <PersonResult
+            {...defaultProps}
+            avatar={dummyAvatarComponent}
+            mentionName="TheAvatarGod"
+            mentionPrefix="#"
+            name="David Soundararaj"
+            presenceMessage="@dteen"
+            presenceState="online"
           />
           <PersonResult
             {...defaultProps}

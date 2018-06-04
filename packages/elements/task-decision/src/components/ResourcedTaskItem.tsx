@@ -135,6 +135,13 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           { localId: taskId, objectAri, containerAri },
           isDone ? 'DONE' : 'TODO',
         );
+
+        // onChange could trigger a rerender, in order to get the correct state
+        // we should only call onChange once the internal state have been modified
+        if (onChange) {
+          onChange(taskId, isDone);
+        }
+
         if (isDone) {
           // Undefined provider.getCurrentUser or currentUser shows 'Created By'
           // ie. does not update to prevent incorrect 'Completed By' message
@@ -145,9 +152,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           });
         }
       });
-    }
-    if (onChange) {
-      onChange(taskId, isDone);
     }
   };
 
@@ -162,6 +166,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
       showParticipants,
       showPlaceholder,
       taskId,
+      taskDecisionProvider,
     } = this.props;
 
     return (
@@ -176,6 +181,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         showPlaceholder={showPlaceholder}
         creator={creator}
         lastUpdater={lastUpdater}
+        disabled={!taskDecisionProvider}
       >
         {children}
       </TaskItem>

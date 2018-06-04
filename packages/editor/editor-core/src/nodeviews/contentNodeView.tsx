@@ -23,12 +23,14 @@ export default class ContentNodeView {
     }
   }
 
-  handleRef = (node: HTMLElement | undefined) => {
+  handleRef = (node: HTMLElement | undefined) => this._handleRef(node);
+
+  private _handleRef(node: HTMLElement | undefined) {
     const { contentDOM } = this;
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);
     }
-  };
+  }
 
   destroy() {
     this.contentDOM = undefined;

@@ -1,6 +1,11 @@
 import { keymap } from 'prosemirror-keymap';
 import { Schema, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  TextSelection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
@@ -24,6 +29,7 @@ import {
 } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
 import { hasOpenEnd } from '../../../utils';
+import { closeHistory } from 'prosemirror-history';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -81,7 +87,8 @@ export function createPlugin(
           // <- using the same internal flag that prosemirror-view is using
           analyticsService.trackEvent('atlassian.editor.paste.alt');
 
-          let tr = view.state.tr.replaceSelection(slice);
+          let tr = closeHistory(view.state.tr);
+          tr.replaceSelection(slice);
           const { storedMarks } = view.state;
           if (storedMarks && storedMarks.length) {
             storedMarks.forEach(
@@ -104,7 +111,9 @@ export function createPlugin(
 
           if (macro) {
             view.dispatch(
-              view.state.tr.replaceSelectionWith(macro).scrollIntoView(),
+              closeHistory(view.state.tr)
+                .replaceSelectionWith(macro)
+                .scrollIntoView(),
             );
             return true;
           }
@@ -115,7 +124,7 @@ export function createPlugin(
 
         // If we're in a code block, append the text contents of clipboard inside it
         if (text && selectedNode.type === schema.nodes.codeBlock) {
-          view.dispatch(view.state.tr.insertText(text));
+          view.dispatch(closeHistory(view.state.tr).insertText(text));
           return true;
         }
 
@@ -140,7 +149,7 @@ export function createPlugin(
         // Note: Disabling (text && isCode(text)) check (@see ED-4092) until we decide how to improve it (possibly adding the ability to undo)
         if (text && html && node && node.type === schema.nodes.codeBlock) {
           analyticsService.trackEvent('atlassian.editor.paste.code');
-          let tr = view.state.tr;
+          let tr = closeHistory(view.state.tr);
           if (isSingleLine(text)) {
             const currentNode = $to.node($to.depth);
             const nodeText = currentNode && currentNode.textContent;
@@ -155,12 +164,32 @@ export function createPlugin(
               $from.pos + text.length,
               schema.marks.code.create(),
             );
+            const { code } = view.state.schema.marks;
+            // ED-4299, if a new code mark is created by pasting cursor should be moved out of it.
+            if (!$to.marks().some(mark => mark.type === code)) {
+              tr = tr.removeStoredMark(code);
+            }
           } else {
             const codeBlockNode = schema.nodes.codeBlock.create(
               node ? node.attrs : {},
               schema.text(text),
             );
-            tr = view.state.tr.replaceSelectionWith(codeBlockNode);
+            tr = tr.replaceSelectionWith(codeBlockNode);
+            // ED-4299, If code-block is created at end of its parent a paragraph is added after it.
+            // Selection is moved position after pasted code.
+            if ($to.pos + 1 === $to.end($to.depth - 1)) {
+              const { paragraph } = view.state.schema.nodes;
+              const { $to: newSel } = tr.selection;
+              tr = tr.insert(
+                newSel.end(newSel.depth - 1),
+                paragraph.createAndFill()!,
+              );
+            }
+            tr = tr.setSelection(
+              new TextSelection(
+                tr.doc.resolve($to.pos + codeBlockNode.nodeSize),
+              ),
+            );
           }
           view.dispatch(tr.scrollIntoView());
           return true;
@@ -171,7 +200,8 @@ export function createPlugin(
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
           if (doc && doc.content) {
-            const tr = view.state.tr.replaceSelection(
+            const tr = closeHistory(view.state.tr);
+            tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),
             );
             view.dispatch(tr.scrollIntoView());
@@ -187,9 +217,8 @@ export function createPlugin(
             tableState.isRequiredToAddHeader() &&
             containsTable(view.state, slice)
           ) {
-            const { state, dispatch } = view;
-            const selectionStart = state.selection.$from.pos;
-            dispatch(state.tr.replaceSelection(slice));
+            const selectionStart = view.state.selection.$from.pos;
+            view.dispatch(closeHistory(view.state.tr).replaceSelection(slice));
             tableState.addHeaderToTableNodes(slice, selectionStart);
             return true;
           }
@@ -197,7 +226,9 @@ export function createPlugin(
           slice = linkifyContent(view.state.schema, slice) || slice;
 
           view.dispatch(
-            view.state.tr.replaceSelection(slice).setStoredMarks([]),
+            closeHistory(view.state.tr)
+              .replaceSelection(slice)
+              .setStoredMarks([]),
           );
           return true;
         }

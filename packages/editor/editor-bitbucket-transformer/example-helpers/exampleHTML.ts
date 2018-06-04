@@ -65,6 +65,8 @@ const html = `<p>Regular,
 
 <p>Emoji <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg"
  alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji"> example</p>
+
+<p>How about an image? <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg"></p>
 `;
 
 export default html;

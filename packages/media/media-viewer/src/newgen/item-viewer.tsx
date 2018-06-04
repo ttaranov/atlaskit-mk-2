@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { ErrorMessage } from './styled';
-import { Outcome, Identifier } from './domain';
+import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
+import { AudioViewer } from './viewers/audio';
 import { PDFViewer } from './viewers/pdf';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
@@ -12,14 +13,17 @@ import * as deepEqual from 'deep-equal';
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
+  readonly featureFlags?: MediaViewerFeatureFlags;
+  readonly showControls?: () => void;
 };
 
 export type State = {
   item: Outcome<FileItem, Error>;
 };
 
+const initialState: State = { item: { status: 'PENDING' } };
 export class ItemViewer extends React.Component<Props, State> {
-  state: State = { item: { status: 'PENDING' } };
+  state: State = initialState;
 
   private subscription: Subscription;
 
@@ -39,21 +43,33 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context } = this.props;
+    const { context, identifier, featureFlags, showControls } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
         const itemUnwrapped = item.data;
+        const viewerProps = {
+          context,
+          item: itemUnwrapped,
+          collectionName: identifier.collectionName,
+        };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
-            return <ImageViewer context={context} item={itemUnwrapped} />;
+            return <ImageViewer {...viewerProps} />;
           case 'audio':
+            return <AudioViewer {...viewerProps} />;
           case 'video':
-            return <VideoViewer context={context} item={itemUnwrapped} />;
+            return (
+              <VideoViewer
+                showControls={showControls}
+                featureFlags={featureFlags}
+                {...viewerProps}
+              />
+            );
           case 'doc':
-            return <PDFViewer context={context} item={itemUnwrapped} />;
+            return <PDFViewer {...viewerProps} />;
           default:
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }
@@ -63,6 +79,7 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
+    this.setState(initialState);
     const { context, identifier } = props;
     const provider = context.getMediaItemProvider(
       identifier.id,

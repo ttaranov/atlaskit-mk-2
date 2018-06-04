@@ -1,4 +1,9 @@
-import { Result, ResultType } from '../model/Result';
+import {
+  Result,
+  ResultType,
+  ResultContentType,
+  AnalyticsType,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -7,6 +12,7 @@ import {
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
+  ConfluencePageBlogAttachment = 'confluence.page,blogpost,attachment',
   ConfluenceSpace = 'confluence.space',
   JiraIssue = 'jira.issue',
 }
@@ -30,14 +36,19 @@ export interface JiraItem {
 
 export interface ConfluenceItem {
   title: string; // this is highlighted
-  lastModified: string;
   baseUrl: string;
   url: string;
-  content: object;
-  iconCssClass: string;
+  content?: {
+    type: ResultContentType;
+  };
   container: {
     title: string; // this is unhighlighted
     displayUrl: string;
+  };
+  space?: {
+    icon: {
+      path: string;
+    };
   };
 }
 
@@ -53,7 +64,7 @@ export interface CrossProductSearchClient {
   search(
     query: string,
     searchSessionId: string,
-    scopes?: Scope[],
+    scopes: Scope[],
   ): Promise<Map<Scope, Result[]>>;
 }
 
@@ -118,22 +129,12 @@ export default class CrossProductSearchClientImpl
             mapItemToResult(scopeResult.id as Scope, result, searchSessionId),
           ),
         );
-
         return resultsMap;
       },
       new Map(),
     );
 
     return results;
-  }
-}
-
-// TODO need real icons
-export function getConfluenceAvatarUrl(iconCssClass: string): string {
-  if (iconCssClass.indexOf('blogpost') > -1) {
-    return 'https://home.useast.atlassian.io/confluence-blogpost-icon.svg';
-  } else {
-    return 'https://home.useast.atlassian.io/confluence-page-icon.svg';
   }
 }
 
@@ -147,7 +148,8 @@ function mapItemToResult(
   searchSessionId: string,
 ): Result {
   switch (scope) {
-    case Scope.ConfluencePageBlog: {
+    case Scope.ConfluencePageBlog:
+    case Scope.ConfluencePageBlogAttachment: {
       return mapConfluenceItemToResultObject(
         item as ConfluenceItem,
         searchSessionId,
@@ -171,34 +173,42 @@ function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
 ): Result {
-  return {
-    type: ResultType.Object,
+  const result: Result = {
+    resultType: ResultType.Object,
     resultId: 'search-' + item.url,
-    avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
+
+  if (item.content && item.content.type) {
+    result.contentType = item.content.type as ResultContentType;
+  }
+
+  return result;
 }
 
 function mapJiraItemToResult(item: JiraItem): Result {
   return {
-    type: ResultType.Object,
+    resultType: ResultType.Object,
     resultId: 'search-' + item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
     href: '/browse/' + item.key,
     containerName: item.fields.project.name,
     objectKey: item.key,
+    analyticsType: AnalyticsType.ResultJira,
   };
 }
 
 function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
   return {
-    type: ResultType.Container,
+    resultType: ResultType.Container,
     resultId: 'search-' + spaceItem.container.displayUrl,
-    avatarUrl: '', // depends on XPSRCH-747
+    avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
+    analyticsType: AnalyticsType.ResultConfluence,
   };
 }

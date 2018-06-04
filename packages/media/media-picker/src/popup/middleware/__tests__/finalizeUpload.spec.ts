@@ -75,8 +75,8 @@ describe('finalizeUploadMiddleware', () => {
     expect(next).toBeCalledWith(action);
   });
 
-  it('should send upload end event with metadata given fetch metadata param true', () => {
-    const { fetcher, store, action } = setup({});
+  it('should send upload end event with metadata', () => {
+    const { fetcher, store, action } = setup();
 
     return finalizeUpload(fetcher, store, action).then(action => {
       expect(action).toEqual(
@@ -97,7 +97,7 @@ describe('finalizeUploadMiddleware', () => {
     });
   });
 
-  it('should send upload processing event with metadata given fetch metadata param true', () => {
+  it('should send upload processing event with metadata', () => {
     const { fetcher, store, action } = setup();
 
     return finalizeUpload(fetcher, store, action).then(action => {

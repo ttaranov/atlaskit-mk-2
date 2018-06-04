@@ -248,8 +248,9 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
             handleEscapeKeydown={this.toggleShowOptOutOption}
           >
             <ConfirmationPopup>
-              <ConfirmationHeader />
-              <ConfirmationImg src={EDITOR_IMAGE_URL} />
+              <ConfirmationHeader>
+                <ConfirmationImg src={EDITOR_IMAGE_URL} />
+              </ConfirmationHeader>
               <ConfirmationText>
                 <div>
                   We are rolling out a new editing experience across Atlassian

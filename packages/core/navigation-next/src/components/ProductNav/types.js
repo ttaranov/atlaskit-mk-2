@@ -3,11 +3,12 @@
 import type { ComponentType } from 'react';
 
 export type ProductNavProps = {
-  container: ComponentType<{}>,
+  container?: ?ComponentType<{}>,
+  isDragging: boolean,
   isHinting: boolean,
   isPeeking: boolean,
   onOverlayClick?: Event => void,
-  resizeState: Object,
   root: ComponentType<{}>,
   transitionState: 'entered' | 'entering' | 'exited' | 'exiting',
+  width: number,
 };

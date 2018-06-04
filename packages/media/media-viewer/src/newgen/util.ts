@@ -1,4 +1,8 @@
-import { Context, isClientBasedAuth } from '@atlaskit/media-core';
+import {
+  Context,
+  isClientBasedAuth,
+  MediaCollectionItem,
+} from '@atlaskit/media-core';
 import { stringify } from 'query-string';
 import { Identifier } from './domain';
 
@@ -51,6 +55,18 @@ function buildIssuerBasedUrl(
 function buildUrl(host: string, url: string, query: Object) {
   return `${host}${url}?${stringify(query)}`;
 }
+
+export const toIdentifier = (
+  item: MediaCollectionItem,
+  collectionName: string,
+): Identifier => {
+  return {
+    id: item.details.id,
+    type: item.type,
+    occurrenceKey: item.details.occurrenceKey,
+    collectionName,
+  };
+};
 
 export const getSelectedIndex = (
   items: Identifier[],

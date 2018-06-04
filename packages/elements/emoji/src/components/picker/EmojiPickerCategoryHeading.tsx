@@ -8,6 +8,7 @@ export interface Props {
   id?: string;
   title?: string;
   className?: string;
+  categoryId?: string;
 }
 
 export default class EmojiPickerCategoryHeading extends PureComponent<

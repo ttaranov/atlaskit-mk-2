@@ -119,7 +119,7 @@ BrowserTestCase(
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');
     await insertEmoji(browser, 'a');
-    await insertEmoji(browser, 'lol');
+    await insertEmoji(browser, 'light_bulb_on');
     await browser.waitForSelector(emojiItem('a'));
     await browser.type(editable, ['ArrowLeft', 'ArrowLeft']);
     await browser.type(editable, ' that ');

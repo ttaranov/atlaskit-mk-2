@@ -2,8 +2,8 @@
 
 Related reading:
 
-* https://reactjs.org/docs/uncontrolled-components.html
-* https://github.com/treshugart/react-ctrl
+* <https://reactjs.org/docs/uncontrolled-components.html>
+* <https://github.com/treshugart/react-ctrl>
 
 ## History
 

@@ -8,11 +8,11 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import { DecorationSet } from 'prosemirror-view';
+import { DecorationSet, EditorView } from 'prosemirror-view';
 import {
   resetHoverSelection,
-  hoverColumn,
-  hoverRow,
+  hoverColumns,
+  hoverRows,
   hoverTable,
 } from '../../../src/plugins/table/actions';
 import {
@@ -37,11 +37,20 @@ describe('table hover selection plugin', () => {
       pluginKey: tablePluginKey,
     });
 
+  const getTableDecorations = (editorView: EditorView, cells) => {
+    const {
+      decorationSet,
+    }: { decorationSet: DecorationSet } = hoverPluginKey.getState(
+      editorView.state,
+    );
+    return decorationSet.find(cells[0].pos, cells[cells.length - 1].pos);
+  };
+
   describe('hoverColumn(number)', () => {
     describe('when table has 3 columns', () => {
       [0, 1, 2].forEach(column => {
         describe(`when called with ${column}`, () => {
-          it(`it should create a hover selection of ${column} column`, () => {
+          it(`should create a hover selection of ${column} column`, () => {
             const { plugin, editorView } = editor(
               doc(
                 p('text'),
@@ -52,18 +61,61 @@ describe('table hover selection plugin', () => {
               ),
             );
             plugin.props.handleDOMEvents!.focus(editorView, event);
-            hoverColumn(column)(editorView.state, editorView.dispatch);
-            const cells = getCellsInColumn(column)(editorView.state.selection)!;
-            const { decorationSet } = hoverPluginKey.getState(editorView.state);
-            const deco = decorationSet.find(
-              cells[0].pos,
-              cells[cells.length - 1].pos,
+            hoverColumns([column])(editorView.state, editorView.dispatch);
+            const decos = getTableDecorations(
+              editorView,
+              getCellsInColumn(column)(editorView.state.selection)!,
             );
+
             // selection spans 2 cells in the selected column (because we have 2 rows in the table)
-            expect(deco).toHaveLength(2);
+            expect(decos).toHaveLength(2);
+          });
+        });
+
+        it(`can apply the danger class to the decoration`, () => {
+          const { plugin, editorView } = editor(
+            doc(
+              p('text'),
+              table()(
+                tr(tdCursor, tdEmpty, tdEmpty),
+                tr(tdEmpty, tdEmpty, tdEmpty),
+              ),
+            ),
+          );
+          plugin.props.handleDOMEvents!.focus(editorView, event);
+          hoverColumns([column], true)(editorView.state, editorView.dispatch);
+
+          const decos = getTableDecorations(
+            editorView,
+            getCellsInColumn(column)(editorView.state.selection)!,
+          );
+
+          expect(decos).toHaveLength(2);
+          decos.forEach(deco => {
+            // @ts-ignore
+            expect(deco.type.attrs.class.split(' ')).toContain('danger');
           });
         });
       });
+    });
+
+    describe('can create a hover selection over multiple columns', () => {
+      const { plugin, editorView } = editor(
+        doc(
+          p('text'),
+          table()(
+            tr(tdCursor, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      hoverColumns([0, 1])(editorView.state, editorView.dispatch);
+      const cells = getCellsInColumn(0)(editorView.state.selection)!.concat(
+        getCellsInColumn(1)(editorView.state.selection)!,
+      );
+
+      expect(getTableDecorations(editorView, cells)).toHaveLength(4);
     });
   });
 
@@ -71,7 +123,7 @@ describe('table hover selection plugin', () => {
     describe('when table has 3 rows', () => {
       [0, 1, 2].forEach(row => {
         describe(`when called with ${row}`, () => {
-          it(`it should create a hover selection of ${row} row`, () => {
+          it(`should create a hover selection of ${row} row`, () => {
             const { plugin, editorView } = editor(
               doc(
                 p('text'),
@@ -83,24 +135,64 @@ describe('table hover selection plugin', () => {
               ),
             );
             plugin.props.handleDOMEvents!.focus(editorView, event);
-            hoverRow(row)(editorView.state, editorView.dispatch);
-            const cells = getCellsInRow(row)(editorView.state.selection)!;
-            const { decorationSet } = hoverPluginKey.getState(editorView.state);
-            const deco = decorationSet.find(
-              cells[0].pos,
-              cells[cells.length - 1].pos,
+            hoverRows([row])(editorView.state, editorView.dispatch);
+            expect(
+              getTableDecorations(
+                editorView,
+                getCellsInRow(row)(editorView.state.selection)!,
+              ),
+            ).toHaveLength(2);
+          });
+
+          it(`can apply the danger class to the decoration`, () => {
+            const { plugin, editorView } = editor(
+              doc(
+                p('text'),
+                table()(
+                  tr(tdCursor, tdEmpty),
+                  tr(tdEmpty, tdEmpty),
+                  tr(tdEmpty, tdEmpty),
+                ),
+              ),
             );
-            // selection spans 2 cells in the selected row
-            expect(deco).toHaveLength(2);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
+            hoverRows([row], true)(editorView.state, editorView.dispatch);
+            const cells = getCellsInRow(row)(editorView.state.selection)!;
+            const decos = getTableDecorations(editorView, cells);
+
+            expect(decos).toHaveLength(2);
+            decos.forEach(deco => {
+              // @ts-ignore
+              expect(deco.type.attrs.class.split(' ')).toContain('danger');
+            });
           });
         });
       });
     });
+
+    describe('can create a hover selection over multiple rows', () => {
+      const { plugin, editorView } = editor(
+        doc(
+          p('text'),
+          table()(
+            tr(tdCursor, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+      plugin.props.handleDOMEvents!.focus(editorView, event);
+      hoverRows([0, 1])(editorView.state, editorView.dispatch);
+      const cells = getCellsInRow(0)(editorView.state.selection)!.concat(
+        getCellsInRow(1)(editorView.state.selection)!,
+      );
+
+      expect(getTableDecorations(editorView, cells)).toHaveLength(6);
+    });
   });
 
-  describe('hovertable()()', () => {
+  describe('hovertable()', () => {
     describe('when table has 3 rows', () => {
-      it('it should create a hover selection of the whole table', () => {
+      it('should create a hover selection of the whole table', () => {
         const { plugin, editorView } = editor(
           doc(
             p('text'),
@@ -112,15 +204,15 @@ describe('table hover selection plugin', () => {
           ),
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
-        hoverTable(editorView.state, editorView.dispatch);
-        const cells = getCellsInTable(editorView.state.selection)!;
-        const { decorationSet } = hoverPluginKey.getState(editorView.state);
-        const deco = decorationSet.find(
-          cells[0].pos,
-          cells[cells.length - 1].pos,
-        );
-        // selection spans all 6 cells
-        expect(deco).toHaveLength(6);
+        hoverTable()(editorView.state, editorView.dispatch);
+
+        // selection should span all 6 cells
+        expect(
+          getTableDecorations(
+            editorView,
+            getCellsInTable(editorView.state.selection)!,
+          ),
+        ).toHaveLength(6);
 
         // reset hover selection plugin to an empty DecorationSet
         resetHoverSelection(editorView.state, editorView.dispatch);

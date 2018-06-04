@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN300 } from '@atlaskit/util-shared-styles';
+import { akColorN90 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -20,14 +20,6 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { DevTools } from '../example-helpers/DevTools';
 
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
-
 export const TitleInput: any = styled.input`
   border: none;
   outline: none;
@@ -36,7 +28,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN300};
+    color: ${akColorN90};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -61,15 +53,6 @@ export const Content: any = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-
-  & .ProseMirror {
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
-  }
 `;
 Content.displayName = 'Content';
 

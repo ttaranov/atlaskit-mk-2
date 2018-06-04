@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/notification-log-client",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Client APIs for notification-log service",
   "main": "dist/es5/index.js",
   "atlaskit:src": "src/index.ts",
@@ -17,12 +17,12 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/util-service-support": "^2.0.4",
+    "@atlaskit/util-service-support": "^2.0.7",
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/notification-indicator": "^3.0.0",
+    "@atlaskit/docs": "^3.0.4",
+    "@atlaskit/notification-indicator": "^3.0.1",
     "fetch-mock": "^5.12.1",
     "whatwg-fetch": "^2.0.3"
   }

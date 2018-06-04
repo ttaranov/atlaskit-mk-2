@@ -1,24 +1,27 @@
 import * as React from 'react';
-import { Outcome } from '../domain';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { Img, ErrorMessage } from '../styled';
-import { Spinner } from '../loading';
 import * as deepEqual from 'deep-equal';
+import { Outcome } from '../domain';
+import { Img, ErrorMessage, ImageWrapper } from '../styled';
+import { Spinner } from '../loading';
+import { ZoomControls } from '../zoomControls';
 
 export type ObjectUrl = string;
-
 export const REQUEST_CANCELLED = 'request_cancelled';
 
 export type ImageViewerProps = {
   context: Context;
   item: FileItem;
+  collectionName?: string;
 };
 
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
+  zoomLevel: number;
 };
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
+  zoomLevel: 1,
 };
 
 export class ImageViewer extends React.Component<
@@ -42,13 +45,37 @@ export class ImageViewer extends React.Component<
     }
   }
 
+  private onZoomChange = zoomLevel => {
+    this.setState({ zoomLevel });
+  };
+
+  renderImage(src: string) {
+    const { zoomLevel } = this.state;
+    // We need to set new border value every time the zoom changes
+    // to force a re layout in Chrome.
+    // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
+    const border = `${zoomLevel / 100}px solid transparent`;
+    // We use style attr instead of SC prop for perf reasons
+    const imgStyle = {
+      transform: `scale(${zoomLevel})`,
+      border,
+    };
+
+    return (
+      <ImageWrapper>
+        <Img src={src} style={imgStyle} />
+        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
+      </ImageWrapper>
+    );
+  }
+
   render() {
     const { objectUrl } = this.state;
     switch (objectUrl.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return <Img src={objectUrl.data} />;
+        return this.renderImage(objectUrl.data);
       case 'FAILED':
         return <ErrorMessage>{objectUrl.err.message}</ErrorMessage>;
     }
@@ -66,7 +93,7 @@ export class ImageViewer extends React.Component<
   private async init(fileItem: FileItem, context: Context) {
     this.setState(initialState, async () => {
       try {
-        const service = context.getBlobService();
+        const service = context.getBlobService(this.props.collectionName);
         const { response, cancel } = service.fetchImageBlobCancelable(
           fileItem,
           {

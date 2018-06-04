@@ -3,7 +3,7 @@ import React from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import Lorem from 'react-lorem-component';
 import Page from '@atlaskit/page';
-import Navigation, { AkContainerTitle } from '../../../src/index';
+import Navigation, { AkContainerTitle } from '../../../src';
 import RouterLinkComponent from './RouterLinkComponent';
 import RouterLinkItem from './RouterLinkItem';
 

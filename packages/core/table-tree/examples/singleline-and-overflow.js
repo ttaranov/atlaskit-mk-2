@@ -15,10 +15,6 @@ const staticData = [
   },
 ];
 
-function getItemsData(parent) {
-  return parent ? [] : staticData;
-}
-
 const OverflowingBox = styled.div`
   background: red;
   width: 150px;
@@ -37,7 +33,7 @@ export default () => (
       <Header width={200}>Description</Header>
     </Headers>
     <Rows
-      items={getItemsData}
+      items={staticData}
       render={({ title, description }) => (
         <Row itemId={title} hasChildren={false}>
           <Cell singleLine>{title}</Cell>

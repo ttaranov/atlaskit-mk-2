@@ -24,7 +24,7 @@ export default class InlineExtension extends Component<Props, any> {
       : 'with-overlay';
 
     return (
-      <Wrapper onClick={onClick} className={className}>
+      <Wrapper onClick={onClick} className={`extension-container ${className}`}>
         <Overlay className="extension-overlay" />
         {children ? children : <ExtensionLozenge node={node} />}
       </Wrapper>

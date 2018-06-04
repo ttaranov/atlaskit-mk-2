@@ -33,7 +33,7 @@ describe('block-type', () => {
   it('should be able to change to normal', () => {
     const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
 
-    pluginState.toggleBlockType('normal', editorView);
+    pluginState.setBlockType('normal', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     editorView.destroy();
   });
@@ -41,7 +41,7 @@ describe('block-type', () => {
   it('should be able to change to heading1', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('heading1', editorView);
+    pluginState.setBlockType('heading1', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h1('text')));
     editorView.destroy();
   });
@@ -49,7 +49,7 @@ describe('block-type', () => {
   it('should be able to change to heading2', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('heading2', editorView);
+    pluginState.setBlockType('heading2', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h2('text')));
     editorView.destroy();
   });
@@ -57,7 +57,7 @@ describe('block-type', () => {
   it('should be able to change to heading3', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('heading3', editorView);
+    pluginState.setBlockType('heading3', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h3('text')));
     editorView.destroy();
   });
@@ -65,7 +65,7 @@ describe('block-type', () => {
   it('should be able to change to heading4', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('heading4', editorView);
+    pluginState.setBlockType('heading4', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h4('text')));
     editorView.destroy();
   });
@@ -73,7 +73,7 @@ describe('block-type', () => {
   it('should be able to change to heading5', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('heading5', editorView);
+    pluginState.setBlockType('heading5', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h5('text')));
     editorView.destroy();
   });
@@ -81,7 +81,7 @@ describe('block-type', () => {
   it('should be able to change to heading6', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('heading6', editorView);
+    pluginState.setBlockType('heading6', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h6('text')));
     editorView.destroy();
   });
@@ -171,16 +171,16 @@ describe('block-type', () => {
 
   it('should be able to change to back to paragraph and then change to blockquote', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-    pluginState.toggleBlockType('normal', editorView);
+    pluginState.setBlockType('normal', editorView);
     pluginState.insertBlockType('blockquote', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(blockquote(p('text'))));
     editorView.destroy();
   });
 
-  it('should not be able to change to the same block type', () => {
+  it('should not toggle block type', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-    pluginState.toggleBlockType('normal', editorView);
+    pluginState.setBlockType('normal', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     editorView.destroy();
   });
@@ -190,7 +190,7 @@ describe('block-type', () => {
       doc(p('li{<}ne1'), p('li{>}ne2')),
     );
 
-    pluginState.toggleBlockType('heading1', editorView);
+    pluginState.setBlockType('heading1', editorView);
     expect(editorView.state.doc).toEqualDocument(doc(h1('line1'), h1('line2')));
     editorView.destroy();
   });
@@ -236,7 +236,7 @@ describe('block-type', () => {
     const spy = jest.fn();
 
     pluginState.subscribe(spy);
-    pluginState.toggleBlockType('heading1', editorView);
+    pluginState.setBlockType('heading1', editorView);
 
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy).toHaveBeenCalledWith(pluginState);
@@ -247,21 +247,21 @@ describe('block-type', () => {
     describe('when origin block type is different with target block type', () => {
       it('converts to target block type', () => {
         const { pluginState, editorView } = editor(doc(p('text')));
-        const toggleBlockType = jest.spyOn(pluginState, 'toggleBlockType');
+        const setBlockType = jest.spyOn(pluginState, 'setBlockType');
 
-        pluginState.toggleBlockType('heading1', editorView);
+        pluginState.setBlockType('heading1', editorView);
 
-        expect(toggleBlockType).toHaveBeenCalledWith('heading1', editorView);
+        expect(setBlockType).toHaveBeenCalledWith('heading1', editorView);
         editorView.destroy();
       });
     });
 
     describe('when origin block type is the same as target block type', () => {
-      it('converts to a paragraph', () => {
+      it('does not convert to a paragraph', () => {
         const { pluginState, editorView } = editor(doc(h1('text')));
 
-        pluginState.toggleBlockType('heading1', editorView);
-        expect(editorView.state.doc).toEqualDocument(doc(p('text')));
+        pluginState.setBlockType('heading1', editorView);
+        expect(editorView.state.doc).toEqualDocument(doc(h1('text')));
         editorView.destroy();
       });
     });

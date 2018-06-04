@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Theme is a combined component and utility set, exporting a main component for
   use and as well as a number of helper methods to allow easy application of
   atlaskit's themes.
 
-  \`\`\`
-  import { AtlaskitThemeProvider, themed, colors } from '@atlaskit/theme';
-  \`\`\`
+${code`
+import { AtlaskitThemeProvider, themed, colors } from '@atlaskit/theme';
+`}
 
   ## The theme provider
 

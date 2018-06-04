@@ -16,19 +16,22 @@ export default class StatelessMenuExample extends Component<{}, State> {
 
   render() {
     return (
-      <DropdownMenuStateless
-        isOpen={this.state.isDropdownOpen}
-        onOpenChange={attrs => {
-          this.setState({ isDropdownOpen: attrs.isOpen });
-        }}
-        trigger="Choose"
-        triggerType="button"
-      >
-        <DropdownItemGroupRadio id="cities">
-          <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
-          <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
-        </DropdownItemGroupRadio>
-      </DropdownMenuStateless>
+      <div>
+        <DropdownMenuStateless
+          isOpen={this.state.isDropdownOpen}
+          onOpenChange={attrs => {
+            this.setState({ isDropdownOpen: attrs.isOpen });
+          }}
+          trigger="Choose"
+          triggerType="button"
+          isMenuFixed
+        >
+          <DropdownItemGroupRadio id="cities">
+            <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
+            <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
+          </DropdownItemGroupRadio>
+        </DropdownMenuStateless>
+      </div>
     );
   }
 }

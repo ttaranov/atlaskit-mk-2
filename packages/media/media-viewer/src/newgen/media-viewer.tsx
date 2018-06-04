@@ -1,73 +1,62 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { ItemViewer } from './item-viewer';
-import { Identifier } from './domain';
-import { Blanket, Content, HeaderWrapper } from './styled';
-import { getSelectedIndex } from './util';
-import { ErrorMessage } from './styled';
-import Navigation from './navigation';
-import Header from './header';
+import { Identifier, ItemSource, MediaViewerFeatureFlags } from './domain';
+import { List } from './list';
+import { Collection } from './collection';
+import { Content } from './content';
+import { Blanket } from './styled';
+import { Shortcut } from './shortcut';
 
 export type Props = {
   onClose?: () => void;
-  selectedItem: Identifier;
-  items: Identifier[];
+  selectedItem?: Identifier;
+  readonly featureFlags?: MediaViewerFeatureFlags;
   context: Context;
+  itemSource: ItemSource;
 };
 
-export type State = {
-  selectedItem: Identifier;
-};
-
-export class MediaViewer extends React.Component<Props, State> {
-  state: State = { selectedItem: this.props.selectedItem };
-
+export class MediaViewer extends React.Component<Props, {}> {
   render() {
-    return <Blanket>{this.getContent()}</Blanket>;
+    const { onClose } = this.props;
+    return (
+      <Blanket>
+        {onClose && <Shortcut keyCode={27} handler={onClose} />}
+        <Content onClose={onClose}>{this.renderContent()}</Content>
+      </Blanket>
+    );
   }
 
-  getContent() {
-    const { context, items, onClose } = this.props;
-    const { selectedItem } = this.state;
-
-    if (getSelectedIndex(items, selectedItem) < 0) {
+  private renderContent() {
+    const {
+      selectedItem,
+      context,
+      onClose,
+      itemSource,
+      featureFlags,
+    } = this.props;
+    if (itemSource.kind === 'COLLECTION') {
       return (
-        <Content onClick={this.onClickContentClose}>
-          <ErrorMessage>
-            The selected item with id '{selectedItem.id}' was not found on the
-            list
-          </ErrorMessage>;
-        </Content>
+        <Collection
+          pageSize={itemSource.pageSize}
+          selectedItem={selectedItem}
+          collectionName={itemSource.collectionName}
+          context={context}
+          onClose={onClose}
+          featureFlags={featureFlags}
+        />
+      );
+    } else if (itemSource.kind === 'ARRAY') {
+      return (
+        <List
+          selectedItem={selectedItem || itemSource.items[0]}
+          items={itemSource.items}
+          context={context}
+          onClose={onClose}
+          featureFlags={featureFlags}
+        />
       );
     } else {
-      return (
-        <Content onClick={this.onClickContentClose}>
-          <HeaderWrapper>
-            <Header
-              context={context}
-              identifier={selectedItem}
-              onClose={onClose}
-            />
-          </HeaderWrapper>
-          <ItemViewer context={context} identifier={selectedItem} />
-          <Navigation
-            items={items}
-            selectedItem={selectedItem}
-            onChange={this.onNavigationChange}
-          />
-        </Content>
-      );
+      return null as never;
     }
   }
-
-  onNavigationChange = (selectedItem: Identifier) => {
-    this.setState({ selectedItem });
-  };
-
-  private onClickContentClose = e => {
-    const { onClose } = this.props;
-    if (e.target === e.currentTarget && onClose) {
-      onClose();
-    }
-  };
 }

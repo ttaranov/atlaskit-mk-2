@@ -105,6 +105,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
         selected={selected}
         url={url}
         onExternalImageLoaded={onExternalImageLoaded}
+        disableOverlay={isMediaSingle}
       />
     );
   }

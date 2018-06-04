@@ -1,10 +1,11 @@
-import { Result, ResultType } from '../src/model/Result';
+import { Result, ResultType, AnalyticsType } from '../src/model/Result';
 
 export function makeResult(partial?: Partial<Result>): Result {
   return {
     resultId: '' + Math.random(),
     name: 'name',
-    type: ResultType.Object,
+    resultType: ResultType.Object,
+    analyticsType: AnalyticsType.ResultJira,
     avatarUrl: 'avatarUrl',
     href: 'href',
     ...partial,

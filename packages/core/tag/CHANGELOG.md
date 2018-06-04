@@ -1,5 +1,15 @@
 # @atlaskit/tag
 
+## 4.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/avatar@10.0.6
+  - @atlaskit/docs@3.0.4
+
+## 4.1.0
+- [minor] Add linkComponent to allow passing of custom link components [d2d2678](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2d2678)
+
 ## 4.0.2
 
 ## 4.0.1

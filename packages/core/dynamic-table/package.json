@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dynamic-table",
-  "version": "8.0.2",
+  "version": "8.1.0",
   "description": "Table component with pagination and sorting functionality",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,7 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Charles L"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "atlaskit": {
     "name": "Dynamic Table",
@@ -20,10 +22,10 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^7.2.1",
-    "@atlaskit/pagination": "^5.0.0",
-    "@atlaskit/spinner": "^5.0.1",
-    "@atlaskit/theme": "^3.1.1",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/pagination": "^5.0.1",
+    "@atlaskit/spinner": "^5.0.2",
+    "@atlaskit/theme": "^3.2.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prop-types": "^15.5.10",
     "react-beautiful-dnd": "^4.0.1",
@@ -34,10 +36,10 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.5",
-    "@atlaskit/docs": "^3.0.3",
-    "@atlaskit/dropdown-menu": "^4.0.2",
-    "@atlaskit/toggle": "^3.0.1",
-    "enzyme": "^3.3.0"
+    "@atlaskit/avatar": "^10.0.6",
+    "@atlaskit/docs": "^3.0.4",
+    "@atlaskit/dropdown-menu": "^4.0.3",
+    "@atlaskit/toggle": "^3.0.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

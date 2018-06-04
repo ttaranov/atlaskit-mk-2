@@ -2,8 +2,9 @@ import { stateKey as imageUploadPluginKey } from '../../../src/plugins/image-upl
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   createEditor,
-  img,
   doc,
+  media,
+  mediaSingle,
   p,
   code_block,
   createEvent,
@@ -12,15 +13,21 @@ import {
 import { setNodeSelection, setTextSelection } from '../../../src/utils';
 import imageUpload from '../../../src/plugins/image-upload';
 import codeBlockPlugin from '../../../src/plugins/code-block';
+import mediaPlugin from '../../../src/plugins/media';
 
 describe('image-upload', () => {
   const testImgSrc =
     'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
-  const testImg = () => img({ src: testImgSrc })();
+  const testImg = () =>
+    mediaSingle()(media({ type: 'external', url: testImgSrc })());
   const editor = (doc: any, imageUploadProvider?: any) =>
     createEditor({
       doc,
-      editorPlugins: [imageUpload, codeBlockPlugin],
+      editorPlugins: [
+        imageUpload,
+        codeBlockPlugin,
+        mediaPlugin({ allowMediaSingle: true }),
+      ],
       providerFactory: ProviderFactory.create({ imageUploadProvider }),
       pluginKey: imageUploadPluginKey,
     });
@@ -36,11 +43,11 @@ describe('image-upload', () => {
 
     pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(editorView.state.doc).toEqualDocument(doc(p(testImg())));
+    expect(editorView.state.doc).toEqualDocument(doc(testImg()));
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { pluginState } = editor(doc(p('{<>}', testImg())));
+    const { pluginState } = editor(doc(p('{<}'), testImg(), p('{>}')));
     const spy = jest.fn();
     pluginState.subscribe(spy);
 
@@ -52,42 +59,42 @@ describe('image-upload', () => {
   });
 
   it('emits a change when an image is selected', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}'), testImg()));
     const spy = jest.fn();
     pluginState.subscribe(spy);
 
-    setNodeSelection(editorView, sel);
+    setNodeSelection(editorView, sel + 2);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it('does not emits a change when unsubscribe', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}'), testImg()));
     const spy = jest.fn();
     pluginState.subscribe(spy);
     pluginState.unsubscribe(spy);
 
-    setNodeSelection(editorView, sel);
+    setNodeSelection(editorView, sel + 2);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
     const { editorView, pluginState, refs } = editor(
-      doc(p('{<>}t{a}e{b}st', testImg())),
+      doc(p('{<>}t{a}e{b}st'), testImg()),
     );
     const { a, b } = refs;
     const spy = jest.fn();
     pluginState.subscribe(spy);
 
-    setTextSelection(editorView, a);
-    setTextSelection(editorView, b);
+    setTextSelection(editorView, a + 2);
+    setTextSelection(editorView, b + 2);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
-    const { pluginState } = editor(doc(p('{<>}', testImg())));
+    const { pluginState } = editor(doc(p('{<>}'), testImg()));
     const spy = jest.fn();
 
     pluginState.subscribe(spy);
@@ -97,11 +104,11 @@ describe('image-upload', () => {
 
   it('emits a change event when selection leaves an image', () => {
     const { editorView, pluginState, sel, refs } = editor(
-      doc(p('{a}test{<>}', testImg())),
+      doc(p('{a}test{<>}'), testImg()),
     );
     const { a } = refs;
     const spy = jest.fn();
-    setNodeSelection(editorView, sel);
+    setNodeSelection(editorView, sel + 2);
     pluginState.subscribe(spy);
 
     setTextSelection(editorView, a);
@@ -110,12 +117,14 @@ describe('image-upload', () => {
   });
 
   it('permits an image to be added when an image is selected', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-    setNodeSelection(editorView, sel);
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}'), testImg()));
+    setNodeSelection(editorView, sel + 2);
 
     pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(editorView.state.doc).toEqualDocument(doc(p(testImg(), testImg())));
+    expect(editorView.state.doc).toEqualDocument(
+      doc(p(), testImg(), testImg()),
+    );
   });
 
   it('permits an image to be added when there is selected text', () => {
@@ -123,40 +132,16 @@ describe('image-upload', () => {
 
     pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(editorView.state.doc).toEqualDocument(doc(p('hello', testImg())));
+    expect(editorView.state.doc).toEqualDocument(doc(p('hello'), testImg()));
   });
 
-  it('does not permit an image to be added when the state is disabled', () => {
+  it('inserts an image after the code block if selection is inside code block', () => {
     const { editorView, pluginState } = editor(doc(code_block()('{<>}')));
 
     pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(editorView.state.doc).toEqualDocument(doc(code_block()()));
-  });
-
-  it('does not permit an image to be removed at a collapsed text selection', () => {
-    const { editorView, pluginState } = editor(doc(p('test{<>}')));
-
-    pluginState.removeImage(editorView);
-  });
-
-  it('can remove a selected image', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-    setNodeSelection(editorView, sel);
-
-    pluginState.removeImage(editorView);
-
-    expect(editorView.state.doc).toEqualDocument(doc(p()));
-  });
-
-  it('can update a selected image', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
-    setNodeSelection(editorView, sel);
-
-    pluginState.updateImage(editorView)({ src: 'atlassian.png' });
-
     expect(editorView.state.doc).toEqualDocument(
-      doc(p(img({ src: 'atlassian.png' })())),
+      doc(code_block()(), testImg()),
     );
   });
 

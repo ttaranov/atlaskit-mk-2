@@ -452,6 +452,20 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.context.icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {
+              text: 'test',
+            },
+          },
+        };
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
+
       it('should return "text" if attrs.context.icon.label is missing', () => {
         const applicationCard = {
           type: 'applicationCard',
@@ -1667,6 +1681,20 @@ describe('Renderer - Validator', () => {
           },
         });
       });
+
+      it('should allow relative links', () => {
+        expect(
+          getValidMark({
+            type: 'link',
+            attrs: { href: '/this/is/a/relative/link' },
+          }),
+        ).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: '/this/is/a/relative/link',
+          },
+        });
+      });
     });
 
     describe('strike', () => {
@@ -1939,6 +1967,99 @@ describe('Renderer - Validator', () => {
       };
       const newDoc = getValidDocument(original);
       expect(newDoc).to.deep.equal(expectedValidDoc);
+    });
+  });
+
+  describe('Stage0', () => {
+    it('should remove stage0 marks if flag is not explicitly set to "stage0"', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(getValidDocument(original)).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [],
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should keep stage0 marks if flag is explicitly set to "stage0"', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(getValidDocument(original, schema, 'stage0')).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
     });
   });
 });

@@ -1,16 +1,16 @@
 // @flow
 
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   Flags are designed to place a message above the regular page content.
   The <code>Flag</code> component applies styling, while <code>FlagGroup</code> animates
   the loading and unloading of flags.
 
-  \`\`\`js
-  {'import Flag, { AutoDismissFlag, FlagGroup } from @atlaskit/flag'}
-  \`\`\`
+${code`
+import Flag, { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
+`}
 
   It is recommended to wrap your application with the
   [Layer Manager](https://atlaskit.atlassian.com/components/layer-manager) component to

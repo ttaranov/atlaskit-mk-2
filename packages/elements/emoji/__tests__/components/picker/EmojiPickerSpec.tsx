@@ -10,9 +10,9 @@ import { mockNonUploadingEmojiResourceFactory } from '@atlaskit/util-data-test';
 
 import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import CategorySelector, {
-  CategoryDescriptionMap,
   sortCategories,
 } from '../../../src/components/picker/CategorySelector';
+import { CategoryDescriptionMap } from '../../../src/components/picker/categories';
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiButton from '../../../src/components/common/EmojiButton';
 import EmojiPickerFooter from '../../../src/components/picker/EmojiPickerFooter';
@@ -122,12 +122,12 @@ describe('<EmojiPicker />', () => {
       await helper.showCategory(customCategory, component, customTitle);
 
       const list = getUpdatedList(component);
-      const customHeading = helper.findCategoryHeading(customTitle, list);
+      const customHeading = helper.findCategoryHeading(customCategory, list);
       expect(customHeading).toHaveLength(1);
       expect(customHeading.prop('title')).toEqual(customTitle);
 
       const customEmojiRows = helper.emojiRowsVisibleInCategory(
-        customTitle,
+        customCategory,
         component,
       );
       const placeholders = customEmojiRows.find(EmojiPlaceholder);
@@ -162,15 +162,20 @@ describe('<EmojiPicker />', () => {
       await waitUntil(() =>
         helper.emojisVisible(component, getUpdatedList(component)),
       );
-      expect(helper.categoryVisible('flags', component)).toBe(false);
-      helper.showCategory('flags', component);
-      await waitUntil(() => helper.categoryVisible('flags', component));
+      const categoryId = 'FLAGS';
+      expect(helper.categoryVisible(categoryId, component)).toBe(false);
+
+      helper.showCategory(categoryId, component);
+      await waitUntil(() => helper.categoryVisible(categoryId, component));
       const list = getUpdatedList(component);
-      const emoji = helper.findEmojiInCategory(helper.findEmoji(list), 'flags');
-      expect(emoji!.category).toEqual('FLAGS');
+      const emoji = helper.findEmojiInCategory(
+        helper.findEmoji(list),
+        categoryId,
+      );
+      expect(emoji!.category).toEqual(categoryId);
       expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith(
         `${analyticsEmojiPrefix}.category.select`,
-        { categoryName: 'FLAGS' },
+        { categoryName: categoryId },
       );
     });
 
@@ -181,7 +186,7 @@ describe('<EmojiPicker />', () => {
       );
       expect(helper.categoryVisible(customCategory, component)).toBe(false);
       helper.showCategory(customCategory, component, customTitle);
-      await waitUntil(() => helper.categoryVisible(customTitle, component));
+      await waitUntil(() => helper.categoryVisible(customCategory, component));
 
       const list = getUpdatedList(component);
       const emoji = helper.findEmojiInCategory(
@@ -263,7 +268,7 @@ describe('<EmojiPicker />', () => {
     it('adds non-standard categories to the selector dynamically based on whether they are populated with emojis', async () => {
       const component = await helper.setupPicker();
       helper.showCategory(customCategory, component, customTitle);
-      await waitUntil(() => helper.categoryVisible(customTitle, component));
+      await waitUntil(() => helper.categoryVisible(customCategory, component));
       const categorySelector = component.find(CategorySelector);
       const buttons = categorySelector.find('button');
       expect(buttons).toHaveLength(defaultCategories.length + 2);

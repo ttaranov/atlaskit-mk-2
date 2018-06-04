@@ -13,4 +13,8 @@ export const AkButton: any = styled(AkButtonDefault)`
   & + & {
     margin-left: ${props => (props.spacing === 'none' ? '4px' : '0px')};
   }
+
+  &[disabled] {
+    pointer-events: none;
+  }
 `;

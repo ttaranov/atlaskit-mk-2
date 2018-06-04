@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   ## Why?
@@ -16,19 +16,19 @@ export default md`
   Super simple to use, just wrap your app with the default export -- we'll listen
   to the context it broadcasts, and inject your components where they belong.
 
-  \`\`\`
-  import LayerManager from '@atlaskit/layer-manager';
+${code`
+import LayerManager from '@atlaskit/layer-manager';
 
-  export default class App extends Component {
-    render() {
-      return (
-        <LayerManager>
-          ...
-        </LayerManager>
-      );
-    }
+export default class App extends Component {
+  render() {
+    return (
+      <LayerManager>
+        ...
+      </LayerManager>
+    );
   }
-  \`\`\`
+}
+`}
 
   ${(
     <Example

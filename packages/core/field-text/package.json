@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "5.0.2",
+  "version": "5.1.1",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -14,26 +14,23 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    },
-    {
-      "name": "Jared Crowe"
-    }
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/field-base": "^9.0.2",
-    "@atlaskit/theme": "^3.1.1",
+    "@atlaskit/field-base": "^9.0.3",
+    "@atlaskit/theme": "^3.2.2",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.1",
-    "@atlaskit/docs": "^3.0.3",
-    "enzyme": "^3.3.0"
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/docs": "^3.0.4",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

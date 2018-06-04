@@ -2,12 +2,15 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
+import Button from '@atlaskit/button';
 import { Stubs } from '../../_stubs';
 import {
   ImageViewer,
   REQUEST_CANCELLED,
 } from '../../../src/newgen/viewers/image';
+import { ZoomControls } from '../../../src/newgen/zoomControls';
 
+const collectionName = 'some-collection';
 const imageItem: FileItem = {
   type: 'file',
   details: {
@@ -41,7 +44,13 @@ function createFixture(fetchImageBlobCancelableResponse, cancel?) {
     cancel: cancel || jest.fn(),
   });
   const context = createContext(blobService);
-  const el = mount(<ImageViewer context={context} item={imageItem} />);
+  const el = mount(
+    <ImageViewer
+      context={context}
+      item={imageItem}
+      collectionName={collectionName}
+    />,
+  );
   return { blobService, context, el };
 }
 
@@ -131,5 +140,39 @@ describe('ImageViewer', () => {
     el.update();
     expect(revokeObjectUrl).toHaveBeenCalled();
     expect(el.state().objectUrl.status).toEqual('PENDING');
+  });
+
+  it('it allows zooming', async () => {
+    const response = Promise.resolve(new Blob());
+    const { el } = createFixture(response);
+
+    await response;
+
+    el.update();
+
+    expect(el.state('zoomLevel')).toEqual(1);
+    expect(el.find(ZoomControls)).toHaveLength(1);
+    el
+      .find(ZoomControls)
+      .find(Button)
+      .first()
+      .simulate('click');
+    expect(el.state('zoomLevel')).toEqual(0.8);
+    el
+      .find(ZoomControls)
+      .find(Button)
+      .last()
+      .simulate('click');
+    expect(el.state('zoomLevel')).toEqual(0.96);
+  });
+
+  it('MSW-720: creates the blobService with collectionName', async () => {
+    const response = Promise.resolve(new Blob());
+    const { el, context } = createFixture(response);
+
+    await response;
+    el.update();
+
+    expect(context.getBlobService).toHaveBeenCalledWith(collectionName);
   });
 });

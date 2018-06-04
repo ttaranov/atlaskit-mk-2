@@ -285,12 +285,8 @@ describe('Media PickerFacade', () => {
           triggerStatusUpdate();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
             status: 'uploading',
             progress: testFileProgress.portion,
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
           });
         });
 
@@ -298,7 +294,6 @@ describe('Media PickerFacade', () => {
           triggerPreviewUpdate();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy.mock.calls[0][0]).toMatchObject({
-            id: testTemporaryFileId,
             thumbnail: preview,
           });
         });
@@ -307,12 +302,8 @@ describe('Media PickerFacade', () => {
           triggerProcessing();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
             status: 'processing',
             publicId: testFilePublicId,
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
           });
         });
 
@@ -333,12 +324,8 @@ describe('Media PickerFacade', () => {
           triggerEnd();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
             publicId: testFilePublicId,
             status: 'ready',
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
             progress: 1,
             ready: true,
           });
@@ -501,11 +488,12 @@ describe('Media PickerFacade', () => {
           };
 
           triggerPreviewUpdate({ file });
-
+          triggerEnd();
           expect(stateManager.getState(testTemporaryFileId)).toMatchObject({
-            id: testTemporaryFileId,
-            status: 'preview',
+            status: 'ready',
             fileName: 'image-19000201-000000.png',
+            preview: true,
+            thumbnail: { src: '' },
           });
         });
       }

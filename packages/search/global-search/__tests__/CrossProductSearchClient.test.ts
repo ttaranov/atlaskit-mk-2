@@ -8,6 +8,7 @@ import CrossProductSearchClient, {
 } from '../src/api/CrossProductSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
+import { ResultType, AnalyticsType } from '../src/model/Result';
 
 function apiWillReturn(state: CrossProductSearchResponse) {
   const opts = {
@@ -38,9 +39,11 @@ describe('CrossProductSearchClient', () => {
                 title: '@@@hl@@@page@@@endhl@@@ name',
                 baseUrl: 'baseUrl',
                 url: '/url',
-                iconCssClass: 'aui-iconfont-page-default',
                 container: {
                   title: 'containerTitle',
+                },
+                content: {
+                  type: 'page',
                 },
               } as ConfluenceItem,
             ],
@@ -54,14 +57,13 @@ describe('CrossProductSearchClient', () => {
       expect(result.get(Scope.ConfluencePageBlog)).toHaveLength(1);
 
       const item = result.get(Scope.ConfluencePageBlog)[0];
-      expect(item.type).toEqual('object');
+      expect(item.resultType).toEqual(ResultType.Object);
       expect(item.resultId).toEqual('search-/url');
-      expect(item.avatarUrl).toEqual(
-        'https://home.useast.atlassian.io/confluence-page-icon.svg',
-      );
       expect(item.name).toEqual('page name');
       expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
+      expect(item.contentType).toEqual('page');
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
     });
 
     it('should return confluence spaces', async () => {
@@ -76,6 +78,11 @@ describe('CrossProductSearchClient', () => {
                   title: 'containerTitle',
                   displayUrl: '/displayUrl',
                 },
+                space: {
+                  icon: {
+                    path: '/spaceIconPath',
+                  },
+                },
               } as ConfluenceItem,
             ],
           },
@@ -88,13 +95,12 @@ describe('CrossProductSearchClient', () => {
       expect(result.get(Scope.ConfluenceSpace)).toHaveLength(1);
 
       const item = result.get(Scope.ConfluenceSpace)[0];
-      expect(item.type).toEqual('container');
+      expect(item.resultType).toEqual(ResultType.Container);
       expect(item.resultId).toEqual('search-/displayUrl');
-      expect(item.avatarUrl).toEqual(
-        '', // TODO XPSRCH-747
-      );
+      expect(item.avatarUrl).toEqual('baseUrl/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
       expect(item.href).toEqual('baseUrl/displayUrl');
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
     });
 
     it('should parse the highlight tags from the title', () => {
@@ -105,14 +111,6 @@ describe('CrossProductSearchClient', () => {
 
       text = removeHighlightTags('no highlight');
       expect(text).toEqual('no highlight');
-    });
-
-    it('should get the avatarUrl based on iconCssClass', () => {
-      let url = getConfluenceAvatarUrl('aui-iconfont-page-default');
-      expect(url).toContain('page-icon.svg');
-
-      url = getConfluenceAvatarUrl('aui-iconfont-page-blogpost');
-      expect(url).toContain('blogpost-icon.svg');
     });
   });
 
@@ -146,12 +144,13 @@ describe('CrossProductSearchClient', () => {
       expect(result.get(Scope.JiraIssue)).toHaveLength(1);
 
       const item = result.get(Scope.JiraIssue)[0];
-      expect(item.type).toEqual('object');
+      expect(item.resultType).toEqual(ResultType.Object);
       expect(item.name).toEqual('summary');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
       expect(item.containerName).toEqual('projectName');
       expect(item.objectKey).toEqual('key-1');
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultJira);
     });
   });
 

@@ -22,11 +22,12 @@ import InlineExtension, {
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
-import MediaSingle from './mediaSingle';
+import MediaSingle, { BreakoutProvider } from './mediaSingle';
 import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
+import Placeholder from './placeholder';
 import Rule from './rule';
 import TaskItem from './taskItem';
 import TaskList from './taskList';
@@ -61,6 +62,7 @@ export const nodeToReact = {
   orderedList: OrderedList,
   panel: Panel,
   paragraph: Paragraph,
+  placeholder: Placeholder,
   rule: Rule,
   taskItem: TaskItem,
   taskList: TaskList,
@@ -91,7 +93,7 @@ export interface NodeSimple {
 }
 
 /*
- *  Wraps adjecent textnodes in a textWrapper
+ *  Wraps adjacent textnodes in a textWrapper
  *
  *  Input:
  *  [
@@ -241,6 +243,7 @@ export {
   OrderedList,
   Panel,
   Paragraph,
+  Placeholder,
   Rule,
   TaskItem,
   TaskList,
@@ -249,4 +252,5 @@ export {
   TableHeader,
   TableRow,
   UnknownBlock,
+  BreakoutProvider,
 };

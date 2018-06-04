@@ -10,14 +10,16 @@ import 'rxjs/add/operator/map';
 
 // import {publishReplay} from 'rxjs/operator/publishReplay';
 import {
-  ContextConfig,
-  MediaApiConfig,
   MediaStore,
-  uploadFile,
   MediaFileProcessingStatus,
   MediaFile,
   MediaStoreResponse,
+  uploadFile,
   UploadableFile,
+  UploadFileCallbacks,
+  ContextConfig,
+  MediaApiConfig,
+  UploadFileResult,
 } from '@atlaskit/media-store';
 
 import {
@@ -122,7 +124,11 @@ export interface Context {
   refreshCollection(collectionName: string, pageSize: number): void;
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-  uploadFile(file: UploadableFile): Observable<FileState>;
+  // uploadFile(file: UploadableFile): Observable<FileState>;
+  uploadFile(
+    file: UploadableFile,
+    callbacks?: UploadFileCallbacks,
+  ): UploadFileResult;
 
   readonly config: ContextConfig;
 }
@@ -191,63 +197,63 @@ class ContextImpl implements Context {
     return this.fileStreams.get(key)!;
   }
 
-  uploadFile(file: UploadableFile): Observable<FileState> {
-    let fileId: string | undefined;
+  // uploadFile(file: UploadableFile): Observable<FileState> {
+  //   let fileId: string | undefined;
 
-    const fileStream = new Observable<FileState>(observer => {
-      const name = file.name || '';
-      let progress = 0;
+  //   const fileStream = new Observable<FileState>(observer => {
+  //     const name = file.name || '';
+  //     let progress = 0;
 
-      // TODO send local preview
-      uploadFile(file, this.apiConfig, {
-        onId: id => {
-          fileId = id;
-          this.fileStreams.set(fileId, fileStream);
+  //     // TODO send local preview
+  //     uploadFile(file, this.apiConfig, {
+  //       onId: id => {
+  //         fileId = id;
+  //         this.fileStreams.set(fileId, fileStream);
 
-          observer.next({
-            id: fileId,
-            status: 'uploading',
-            progress,
-            name,
-            size: 0, // TODO: fix
-          });
-        },
-        onProgress: uploadProgress => {
-          progress = uploadProgress;
+  //         observer.next({
+  //           id: fileId,
+  //           status: 'uploading',
+  //           progress,
+  //           name,
+  //           size: 0, // TODO: fix
+  //         });
+  //       },
+  //       onProgress: uploadProgress => {
+  //         progress = uploadProgress;
 
-          if (fileId) {
-            observer.next({
-              id: fileId,
-              progress,
-              status: 'uploading',
-              name,
-              size: 0, // TODO: fix
-            });
-          }
-        },
-      })
-        .then(id => {
-          observer.next({
-            id,
-            progress: 1,
-            status: 'uploading',
-            name,
-            size: 0, // TODO: fix
-          });
+  //         if (fileId) {
+  //           observer.next({
+  //             id: fileId,
+  //             progress,
+  //             status: 'uploading',
+  //             name,
+  //             size: 0, // TODO: fix
+  //           });
+  //         }
+  //       },
+  //     })
+  //       .then(id => {
+  //         observer.next({
+  //           id,
+  //           progress: 1,
+  //           status: 'uploading',
+  //           name,
+  //           size: 0, // TODO: fix
+  //         });
 
-          observer.complete();
-        })
-        .catch(err => observer.error(err));
-    })
-      .concat(
-        Observable.defer(() => this.createDownloadFileStream(fileId as string)),
-      )
-      .publishReplay(1);
+  //         observer.complete();
+  //       })
+  //       .catch(err => observer.error(err));
+  //   })
+  //     .concat(
+  //       Observable.defer(() => this.createDownloadFileStream(fileId as string)),
+  //     )
+  //     .publishReplay(1);
 
-    // Start hot observable
-    fileStream.connect();
-    return fileStream;
-  }
+  //   // Start hot observable
+  //   fileStream.connect();
+  //   return fileStream;
+  // }
 
   private createDownloadFileStream = (id: string) => {
     const requestFileStream$ = Observable.defer(() => {
@@ -358,6 +364,13 @@ class ContextImpl implements Context {
   ): Promise<string> {
     const linkService = new MediaLinkService(this.apiConfig);
     return linkService.addLinkItem(url, collectionName, metadata);
+  }
+
+  uploadFile(
+    file: UploadableFile,
+    callbacks?: UploadFileCallbacks,
+  ): UploadFileResult {
+    return uploadFile(file, this.apiConfig, callbacks);
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {

@@ -56,6 +56,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       const props: any = {
         document: JSON.parse(doc),
         dataProviders: this.providerFactory,
+        appearance: 'message',
       };
       return (
         <div>

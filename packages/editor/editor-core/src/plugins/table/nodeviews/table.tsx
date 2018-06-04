@@ -14,7 +14,7 @@ export interface Props {
   allowColumnResizing: boolean;
   cellMinWidth?: number;
   eventDispatcher?: EventDispatcher;
-  getPos: () => number;
+  getPos: () => number | undefined;
 }
 
 export default class TableView extends ContentNodeView implements NodeView {

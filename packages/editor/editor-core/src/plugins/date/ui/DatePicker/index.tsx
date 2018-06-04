@@ -7,6 +7,7 @@ import {
 import Calendar from '@atlaskit/calendar';
 import { akColorN60A, akBorderRadius } from '@atlaskit/util-shared-styles';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
+import { DateType } from '../../index';
 
 const PopupWithListeners = withOuterListeners(Popup);
 
@@ -19,7 +20,7 @@ const calendarStyle = {
 export interface Props {
   element: HTMLElement | null;
   onClickOutside: () => void;
-  onSelect: ({ iso: string }) => void;
+  onSelect: (date: DateType) => void;
 }
 
 export interface State {

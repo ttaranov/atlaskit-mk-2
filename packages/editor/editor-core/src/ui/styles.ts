@@ -1,20 +1,14 @@
-import styled from 'styled-components';
+import { HTMLAttributes, ComponentClass } from 'react';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import styled, { css, Styles, StyledComponentClass } from 'styled-components';
+import { akColorN30, akGridSize } from '@atlaskit/util-shared-styles';
 
 export const ButtonGroup: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
 > = styled.span`
   display: inline-flex;
   align-items: center;
-
-  & > div:not(:first-child),
-  & > span:not(:first-child) {
-    margin-left: ${({ width }: { width: 'small' | 'large' }) =>
-      width !== 'large' ? 4 : 0}px;
-  }
 
   & > div {
     display: flex;
@@ -29,9 +23,11 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin: 0 8px;
 `;
 
-export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
+export const Wrapper: ComponentClass<
+  HTMLAttributes<{}> & { isSmall?: boolean }
+> = styled.span`
   display: flex;
-  align-items: center;
+  align-items: stretch;
 
   > div,
   > span {
@@ -41,6 +37,10 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   > div > div {
     display: flex;
   }
+  /* see ED-4591 */
+  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 5 : 4)}px;
+  min-width: ${({ isSmall }: { isSmall?: boolean }) =>
+    isSmall ? '40px' : 'auto'};
 `;
 
 export const ExpandIconWrapper: ComponentClass<
@@ -61,4 +61,36 @@ export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   height: 24px;
   align-items: center;
   padding: ${(props: any) => (props.width ? 0 : '0 8px')};
+`;
+
+// Taken from the style of inline dialog components
+export const dropShadow = css`
+  box-shadow: 0 0 1px rgba(9, 30, 66, 0.31),
+    0 4px 8px -2px rgba(9, 30, 66, 0.25);
+`;
+
+export const scrollbarStyles = `
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  &::-webkit-scrollbar {
+    height: ${akGridSize};
+    width: ${akGridSize};
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: ${akGridSize};
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 `;

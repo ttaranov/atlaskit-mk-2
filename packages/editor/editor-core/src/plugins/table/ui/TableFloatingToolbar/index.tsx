@@ -1,33 +1,42 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass, Component } from 'react';
+import { HTMLAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { CellSelection } from 'prosemirror-tables';
-import { isTableSelected } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
-import { Popup } from '@atlaskit/editor-common';
+
+import {
+  Popup,
+  TableLayout,
+  tableBackgroundColorPalette,
+  tableBackgroundBorderColors,
+} from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import { tableBackgroundColorPalette } from '@atlaskit/editor-common';
-import ToolbarButton from '../../../../ui/ToolbarButton';
-import Separator from '../../../../ui/Separator';
-import { checkIfNumberColumnSelected } from '../../utils';
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
+import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+
+import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
+import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
-import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
-import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
-import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
-import { TableLayout } from '@atlaskit/editor-common';
+import { dropShadow } from '../../../../ui/styles';
 
+import { hoverTable, clearHoverTable } from '../../actions';
+
+// `Popup` doesn't work with -ve `offset` if it goes outside of the container hence the -ve margin
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin-top: -8px;
   background-color: white;
   border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  padding: 3px 6px;
+  ${dropShadow} padding: 4px 8px;
   display: flex;
-  > button {
-    flex: 1;
+
+  & > div:last-child button {
+    margin-right: 0;
+  }
+  & > div:first-child button {
+    margin-left: 0;
   }
 `;
 
@@ -46,9 +55,10 @@ export interface Props {
   allowHeaderRow?: boolean;
   allowHeaderColumn?: boolean;
   stickToolbarToBottom?: boolean;
-  remove?: () => void;
+  removeTable?: () => void;
   permittedLayouts?: PermittedLayoutsDescriptor;
   updateLayout?: (layoutName: TableLayout) => void;
+  isLayoutSupported?: () => boolean;
 }
 
 export interface State {
@@ -62,6 +72,10 @@ const tableLayouts: TableLayoutInfo = {
     icon: CenterIcon,
     label: 'inline',
   },
+  wide: {
+    icon: WideIcon,
+    label: 'wide',
+  },
   'full-width': {
     icon: FullWidthIcon,
     label: 'full width',
@@ -71,6 +85,22 @@ const tableLayouts: TableLayoutInfo = {
 export default class TableFloatingToolbar extends Component<Props, State> {
   state: State = {
     isOpen: false,
+  };
+
+  setTableinDanger = () => {
+    const { state, dispatch } = this.props.editorView;
+    hoverTable(true)(state, dispatch);
+  };
+
+  resetTableinDanger = () => {
+    const { state, dispatch } = this.props.editorView;
+    clearHoverTable(state, dispatch);
+  };
+
+  removeTable = () => {
+    const { editorView: { state, dispatch }, removeTable } = this.props;
+    clearHoverTable(state, dispatch);
+    removeTable!();
   };
 
   render() {
@@ -88,6 +118,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       allowHeaderRow,
       allowHeaderColumn,
       stickToolbarToBottom,
+      isLayoutSupported,
     } = this.props;
 
     if (!tableElement || !tableActive) {
@@ -103,6 +134,9 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       }
     }
 
+    const shouldDisableLayout = isLayoutSupported
+      ? !isLayoutSupported()
+      : false;
     const layoutButtons = Array.from(new Set(availableLayouts)).map(
       layoutName => {
         const label = `Change layout to ${tableLayouts[layoutName].label}`;
@@ -113,6 +147,8 @@ export default class TableFloatingToolbar extends Component<Props, State> {
 
         return (
           <ToolbarButton
+            spacing="compact"
+            disabled={shouldDisableLayout}
             selected={tableLayout === layoutName}
             onClick={this.props.updateLayout ? onClick : undefined}
             title={label}
@@ -141,6 +177,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               editorView={editorView}
               palette={tableBackgroundColorPalette}
               mountPoint={popupsMountPoint}
+              borderColors={tableBackgroundBorderColors}
             />
           )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (
@@ -159,30 +196,28 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               allowMergeCells={allowMergeCells}
             />
           )}
-          <Separator style={{ height: 'auto' }} />
+          {(allowBackgroundColor ||
+            allowNumberColumn ||
+            allowHeaderRow ||
+            allowHeaderColumn ||
+            allowMergeCells) && <Separator style={{ height: 'auto' }} />}
           {layoutButtons}
           {layoutButtons.length ? (
             <Separator style={{ height: 'auto' }} />
           ) : null}
-          <ToolbarButton
-            disabled={!this.canRemove()}
-            onClick={this.props.remove}
-            title="Remove selected cells"
-            iconBefore={<RemoveIcon label="Remove selected cells" />}
-          />
+          <div
+            onMouseEnter={this.setTableinDanger}
+            onMouseLeave={this.resetTableinDanger}
+          >
+            <ToolbarButtonDanger
+              spacing="compact"
+              onClick={this.removeTable}
+              title="Remove table"
+              iconBefore={<RemoveIcon label="Remove table" />}
+            />
+          </div>
         </Toolbar>
       </Popup>
     );
   }
-
-  private canRemove = (): boolean | undefined => {
-    const { cellSelection, editorView: { state } } = this.props;
-    if (
-      !cellSelection ||
-      (checkIfNumberColumnSelected(state) && !isTableSelected(state.selection))
-    ) {
-      return false;
-    }
-    return cellSelection.isColSelection() || cellSelection.isRowSelection();
-  };
 }

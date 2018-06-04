@@ -1,14 +1,14 @@
 // @flow
 
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
 The dropdown menu has two exports, a default stateful component, and a stateless component when you want to have more direct control over all actions.
 
-~~~
-import DropdownMenu, { DropdownMenuStateless } from @atlaskit/dropdown-menu
-~~~
+${code`
+import DropdownMenu, { DropdownMenuStateless } from @atlaskit/dropdown-menu;
+`}
 
 The stateful component handles selection for you, while still providing several functions that allow you to retrieve information from a form, most notably onItemActivated, which returns an item when it is clicked on.
 

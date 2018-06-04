@@ -13,11 +13,7 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import {
-  copyPrivateMediaAttributes,
-  MediaType,
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -105,8 +101,8 @@ export class MediaPluginState {
 
     const { nodes } = state.schema;
     assert(
-      nodes.media && nodes.mediaGroup,
-      'Editor: unable to init media plugin - media or mediaGroup node absent in schema',
+      nodes.media && (nodes.mediaGroup || nodes.mediaSingle),
+      'Editor: unable to init media plugin - media or mediaGroup/mediaSingle node absent in schema',
     );
 
     this.stateManager = new DefaultMediaStateManager();
@@ -586,7 +582,11 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
+      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
+        useNewUploadService: !!(
+          featureFlags && featureFlags.useNewUploadService
+        ),
         uploadParams,
       };
 
@@ -705,13 +705,15 @@ export class MediaPluginState {
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
+        if (state.publicId) {
+          this.replaceTemporaryNode(state);
+        }
         break;
 
       case 'ready':
         if (state.publicId && this.nodeHasNoPublicId(state)) {
           this.replaceTemporaryNode(state);
         }
-
         if (state.preview) {
           this.stateManager.off(state.id, this.handleMediaState);
         }
@@ -750,7 +752,7 @@ export class MediaPluginState {
     if (!view) {
       return;
     }
-    const { id, thumbnail, fileName, fileSize, publicId } = state;
+    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
@@ -767,10 +769,8 @@ export class MediaPluginState {
       height,
       __fileName: fileName,
       __fileSize: fileSize,
+      __fileMimeType: fileMimeType,
     });
-
-    // Copy all optional attributes from old node
-    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -809,7 +809,10 @@ export class MediaPluginState {
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection);
+      return (
+        !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection) &&
+        !hasParentNodeOfType(schema.nodes.layoutSection)(selection)
+      );
     }
     return false;
   }

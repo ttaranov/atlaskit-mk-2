@@ -1,18 +1,18 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   A checkbox element for use in forms and elsewhere.
 
-  ~~~js
-  import Checkbox, {
-    CheckboxStateless,
-    CheckboxGroup
-  } from '@atlaskit/checkbox';
-  ~~~
+${code`
+import Checkbox, {
+  CheckboxStateless,
+  CheckboxGroup
+} from '@atlaskit/checkbox';
+`}
 
   There is a stateful default export that manages the checked state of the checkbox, and a
   stateless version that allows you to control changes in the checked state

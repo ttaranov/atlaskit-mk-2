@@ -5,15 +5,7 @@ import * as classNames from 'classnames';
 import * as uuid from 'uuid/v1';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
-import {
-  atlassianCategory,
-  customCategory,
-  defaultCategories,
-  frequentCategory,
-  MAX_ORDINAL,
-  customTitle,
-  userCustomTitle,
-} from '../../constants';
+import { customCategory, userCustomTitle } from '../../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -34,8 +26,11 @@ import {
 import * as Items from './EmojiPickerVirtualItems';
 import * as styles from './styles';
 import { EmojiContext } from '../common/internal-types';
+import { CategoryDescriptionMap } from './categories';
 
 const categoryClassname = 'emoji-category';
+
+type CategoryMap = { [category: string]: EmojiGroup };
 
 export interface OnSearch {
   (query: string): void;
@@ -62,6 +57,7 @@ interface EmojiGroup {
   emojis: EmojiDescription[];
   title: string;
   category: string;
+  order: number;
 }
 
 /**
@@ -126,23 +122,12 @@ class CategoryTracker {
   }
 }
 
-const titleOrder = [
-  frequentCategory,
-  ...defaultCategories,
-  atlassianCategory,
-  userCustomTitle,
-  customTitle,
-];
-
-const titleComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
-  let title1 = titleOrder.indexOf(eg1.title);
-  let title2 = titleOrder.indexOf(eg2.title);
-
-  title1 = title1 === -1 ? MAX_ORDINAL : title1;
-  title2 = title2 === -1 ? MAX_ORDINAL : title2;
-
-  return title1 - title2;
+type Orderable = {
+  order?: number;
 };
+
+const byOrder = (orderableA: Orderable, orderableB: Orderable) =>
+  (orderableA.order || 0) - (orderableB.order || 0);
 
 export default class EmojiPickerVirtualList extends PureComponent<
   Props,
@@ -292,6 +277,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
             category: 'Search',
             title: 'Search results',
             emojis,
+            order: 0,
           }),
         ];
       } else {
@@ -326,59 +312,58 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
   };
 
+  private addToCategory = (
+    categories: CategoryMap,
+    emoji: EmojiDescription,
+    category: string,
+  ): CategoryMap => {
+    if (!categories[category]) {
+      const categoryDefinition = CategoryDescriptionMap[category];
+      categories[category] = {
+        emojis: [],
+        title: categoryDefinition.name,
+        category,
+        order: categoryDefinition.order,
+      };
+    }
+    categories[category].emojis.push(emoji);
+    return categories;
+  };
+
+  private groupByCategory = (currentUser?: User) => (
+    categories: CategoryMap,
+    emoji: EmojiDescription,
+  ): CategoryMap => {
+    this.addToCategory(categories, emoji, emoji.category);
+    // separate user emojis
+    if (
+      emoji.category === customCategory &&
+      currentUser &&
+      emoji.creatorUserId === currentUser.id
+    ) {
+      this.addToCategory(categories, emoji, 'USER_CUSTOM');
+    }
+    return categories;
+  };
+
   private buildGroups = (
     emojis: EmojiDescription[],
     currentUser?: User,
   ): void => {
-    const existingCategories = new Map();
+    const categoryMap: CategoryMap = emojis.reduce(
+      this.groupByCategory(currentUser),
+      {},
+    );
 
-    let currentGroup;
-    let currentCategory: string | undefined;
-
-    let userCustomGroup: EmojiGroup = {
-      emojis: [],
-      title: userCustomTitle,
-      category: customCategory,
-    };
-
-    const list: EmojiGroup[] = [];
-
-    for (let i = 0; i < emojis.length; i++) {
-      let emoji = emojis[i];
-
-      if (currentCategory !== emoji.category) {
-        currentCategory = emoji.category;
-        if (existingCategories.has(currentCategory)) {
-          currentGroup = existingCategories.get(currentCategory);
-        } else {
-          currentGroup = {
-            emojis: [],
-            title:
-              currentCategory === customCategory
-                ? customTitle
-                : currentCategory,
-            category: currentCategory,
-          };
-          existingCategories.set(currentCategory, currentGroup);
-          list.push(currentGroup);
+    this.allEmojiGroups = Object.keys(categoryMap)
+      .map(key => categoryMap[key])
+      .map(category => {
+        if (category.category !== 'FREQUENT') {
+          category.emojis.sort(byOrder);
         }
-      }
-      currentGroup.emojis.push(emoji);
-
-      // separate user emojis
-      if (
-        currentCategory === customCategory &&
-        emoji &&
-        currentUser &&
-        emoji.creatorUserId === currentUser.id
-      ) {
-        userCustomGroup.emojis.push(emoji);
-      }
-    }
-    if (userCustomGroup.emojis.length > 0) {
-      list.push(userCustomGroup);
-    }
-    this.allEmojiGroups = list.sort(titleComparator);
+        return category;
+      })
+      .sort(byOrder);
   };
 
   private repaintList = () => {

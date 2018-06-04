@@ -30,8 +30,6 @@ export const insertMacroFromMacroBrowser = (
       if (
         // trying to replace selected node
         tr.selection instanceof NodeSelection &&
-        // with bodiedExtension
-        node.type === bodiedExtension &&
         // selected node is not nested in bodiedExtension
         !hasParentNodeOfType(bodiedExtension)(tr.selection)
       ) {
