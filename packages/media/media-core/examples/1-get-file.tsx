@@ -1,25 +1,25 @@
 import * as React from 'react';
 import { Component, SyntheticEvent } from 'react';
 import {
-  // createStorybookContext,
   videoProcessingFailedId,
   imageFileId,
   defaultServiceHost,
-  defaultMediaPickerAuthProvider,
+  defaultCollectionName,
+  mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
-import { FileState, ContextFactory } from '../src';
+import { ContextFactory } from '../src';
 import { FilesWrapper, FileWrapper } from '../example-helpers/styled';
 import { Observable } from 'rxjs/Observable';
+import { FileState } from '../src/fileState';
 
 export interface ComponentProps {}
 export interface ComponentState {
   files: { [id: string]: FileState };
 }
 
-//const mediaContext = createStorybookContext();
 const mediaContext = ContextFactory.create({
   serviceHost: defaultServiceHost,
-  authProvider: defaultMediaPickerAuthProvider,
+  authProvider: mediaPickerAuthProvider('asap'),
 });
 
 class Example extends Component<ComponentProps, ComponentState> {
@@ -36,7 +36,6 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   componentDidMount() {
     this.getImageFile();
-    // this.getProcessingFailedFile();
   }
 
   getImageFile = () => {
@@ -51,7 +50,7 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   onFileUpdate = (state: FileState) => {
-    console.log('onFileUpdate', state);
+    console.log('on update', state);
     this.setState({
       files: {
         ...this.state.files,
@@ -60,8 +59,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     });
   };
 
-  getFile = (id: string, collectionName: string) => {
-    console.log('getFile', id);
+  getFile = (id: string, collectionName?: string) => {
     const stream = mediaContext.getFile(id, { collectionName });
 
     this.addStream(stream);
@@ -69,14 +67,13 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0];
-
     const { deferredFileId } = mediaContext.uploadFile({
       content: file,
       name: file.name,
+      collection: defaultCollectionName,
     });
     const fileId = await deferredFileId;
-
-    console.log('uploadFile', fileId);
+    this.getFile(fileId);
   };
 
   addStream = (stream: Observable<FileState>) => {
