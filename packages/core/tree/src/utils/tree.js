@@ -2,7 +2,6 @@
 
 import type {
   FlattenedItem,
-  TreeItem,
   Path,
   TreeData,
   TreeItemData,
