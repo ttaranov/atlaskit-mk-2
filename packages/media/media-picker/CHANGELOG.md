@@ -1,5 +1,11 @@
 # @atlaskit/media-picker
 
+## 7.0.5
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/media-store@3.1.1
+  - @atlaskit/media-core@18.1.2
+  - @atlaskit/media-editor@8.0.2
+
 ## 7.0.4
 - [patch] add media mocks [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
 - [none] Updated dependencies [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)

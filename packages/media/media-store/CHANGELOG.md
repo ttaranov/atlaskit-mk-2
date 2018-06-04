@@ -1,5 +1,9 @@
 # @atlaskit/media-store
 
+## 3.1.1
+- [patch] uploadFile() no longer creates an empty file when uploading a file to avoid empty (ghost) files being created in collections when an upload is aborted [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+- [none] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+
 ## 3.1.0
 - [minor] add media mocks [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
 - [none] Updated dependencies [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)

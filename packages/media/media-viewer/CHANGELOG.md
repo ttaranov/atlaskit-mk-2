@@ -1,5 +1,9 @@
 # @atlaskit/media-viewer
 
+## 14.6.1
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/media-core@18.1.2
+
 ## 14.6.0
 - [minor] improve VideoViewer experience [50475df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50475df)
 

@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 5.0.6
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/media-core@18.1.2
+
 ## 5.0.5
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-core@18.1.1

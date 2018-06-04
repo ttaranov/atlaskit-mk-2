@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 10.1.8
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/emoji@35.0.5
+  - @atlaskit/media-core@18.1.2
+
 ## 10.1.7
 - [patch] Quick Insert menu for internal editor things [370344f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370344f)
 - [none] Updated dependencies [370344f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370344f)

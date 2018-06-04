@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 35.0.5
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/media-picker@7.0.5
+  - @atlaskit/media-core@18.1.2
+
 ## 35.0.4
 - [patch] FS-1954 fix emoji remove button truncation [5ed86f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ed86f9)
 - [none] Updated dependencies [5ed86f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ed86f9)
