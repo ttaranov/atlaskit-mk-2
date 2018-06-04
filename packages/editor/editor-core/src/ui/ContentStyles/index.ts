@@ -141,72 +141,46 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       display: flex;
       flex: 1;
 
-      .token.comment,
-      .token.prolog,
-      .token.doctype,
-      .token.cdata {
-        color: #93a1a1; /* base1 */
+      span.cm-comment {
+        color: #8f5536;
       }
-
-      .token.punctuation {
-        color: #586e75; /* base01 */
+      span.cm-atom {
+        color: #aa759f;
       }
-
-      .namespace {
-        opacity: 0.7;
+      span.cm-number {
+        color: #aa759f;
       }
-
-      .token.property,
-      .token.tag,
-      .token.boolean,
-      .token.number,
-      .token.constant,
-      .token.symbol,
-      .token.deleted {
-        color: #268bd2; /* blue */
+      span.cm-property,
+      .cm-s-base16-light span.cm-attribute {
+        color: #90a959;
       }
-
-      .token.selector,
-      .token.attr-name,
-      .token.string,
-      .token.char,
-      .token.builtin,
-      .token.url,
-      .token.inserted {
-        color: #2aa198; /* cyan */
+      span.cm-keyword {
+        color: #ac4142;
       }
-
-      .token.entity {
-        color: #657b83; /* base00 */
-        background: #eee8d5; /* base2 */
+      span.cm-string {
+        color: #f4bf75;
       }
-
-      .token.atrule,
-      .token.attr-value,
-      .token.keyword {
-        color: #859900; /* green */
+      span.cm-variable {
+        color: #90a959;
       }
-
-      .token.function {
-        color: #b58900; /* yellow */
+      span.cm-variable-2 {
+        color: #6a9fb5;
       }
-
-      .token.regex,
-      .token.important,
-      .token.variable {
-        color: #cb4b16; /* orange */
+      span.cm-def {
+        color: #d28445;
       }
-
-      .token.important,
-      .token.bold {
-        font-weight: bold;
+      span.cm-bracket {
+        color: #202020;
       }
-      .token.italic {
-        font-style: italic;
+      span.cm-tag {
+        color: #ac4142;
       }
-
-      .token.entity {
-        cursor: help;
+      span.cm-link {
+        color: #aa759f;
+      }
+      span.cm-error {
+        background: #ac4142;
+        color: #505050;
       }
     }
 

@@ -20,6 +20,7 @@ import {
   updateDecorationSetEfficiently,
   findCodeBlockChanges,
   isCodeDecoration,
+  getDecorationsForPM,
 } from '../ide-ux/syntax-highlighting';
 import { findChildrenByType } from 'prosemirror-utils';
 import { DecorationSet, Decoration } from 'prosemirror-view';
@@ -39,7 +40,7 @@ export default new Plugin({
       return findChildrenByType(state.doc, state.schema.nodes.codeBlock)
         .map(({ pos, node }) => {
           const text = node.textContent;
-          return getDecorationsFor(text, pos + 1, node.attrs.language);
+          return getDecorationsForPM(text, pos + 1);
         })
         .reduce((prev: DecorationSet, curr: Decoration[]) => {
           return curr ? prev.add(state.doc, curr) : prev;
@@ -54,133 +55,32 @@ export default new Plugin({
       // Find all positions inside code-blocks that have changed
       const changes = findCodeBlockChanges(tr);
 
-      changes.forEach(({ start, end, text, language }, i) => {
-        // // is catastrophic change means
-        // // when I retokenise the affect lines & the next three tokens
-        // // the next three tokens change as a result of the changes we've made
+      changes.forEach(({ start, end }, i) => {
+        const $end = tr.doc.resolve(start).end();
 
-        // const disturbedStart = getPosOfFirstDecorationAffected();
-        // const disturbedEnd = getPosOfLastDecorationAffectedPlusNextThreeTokens();
-        // const lastThreeTokens = decorations.find(end, disturbedEnd, isCodeDecoration);
-        // if (checkIfLastThreeTokensAreSame(lastThreeTokens, otherThings)) {
-        //   // if so, then we can just replace the syntax from disturbedStart to the end and we should be :thumbsup:
-        // } else {
+        // const decorationsPast = decorations.find($start, $end, isCodeDecoration);
+        const textBetween = tr.doc.textBetween(start, $end);
+        const decoration = decorations.find(start, end, isCodeDecoration)[0];
 
-        // }
-
-        const invalidated = decorations.find(start, end, isCodeDecoration);
-        if (!invalidated.length) {
-          const $pos = tr.doc.resolve(start);
-          const invalidated = decorations.find(
-            $pos.start(),
-            $pos.end(),
-            isCodeDecoration,
-          );
-          const replacement = getDecorationsFor(
-            tr.doc.textBetween($pos.start(), $pos.end()),
-            start,
-            language,
-          );
-          decorations = updateDecorationSetEfficiently(
-            decorations,
-            invalidated,
-            replacement,
+        // const decorationsFuture = getDecorationsForPM(textBetween, $start);
+        // decorations = updateDecorationSetEfficiently(
+        //   decorations,
+        //   decorationsPast,
+        //   decorationsFuture,
+        //   tr.doc
+        // );
+        if (decoration && decoration.spec.start) {
+          decorations = DecorationSet.create(
             tr.doc,
-          );
-          return;
-        }
-        const invalidatedStart = invalidated[0].from;
-        const invalidatedEnd = invalidated[invalidated.length - 1].to;
-        const extraTokens = decorations.find(
-          invalidatedEnd,
-          invalidatedEnd + 20,
-          isCodeDecoration,
-        );
-
-        let isCatastrophic = false;
-        if (extraTokens.length) {
-          const endOfTokens = extraTokens[extraTokens.length - 1].to;
-          const replacement = getDecorationsFor(
-            tr.doc.textBetween(invalidatedStart, endOfTokens),
-            invalidatedStart,
-            language,
-          );
-
-          for (let i = extraTokens.length, j = 0; i > 0; i--, j++) {
-            if (
-              !isCodeDecorationEqual(
-                extraTokens[j],
-                replacement[replacement.length - i],
-              )
-            ) {
-              isCatastrophic = true;
-              break;
-            }
-          }
-        }
-
-        if (isCatastrophic) {
-          const numberOfExtra = Math.min(3, extraTokens.length);
-          const endOfTokens = extraTokens[numberOfExtra - 1].to;
-          const codeBlockEnd = tr.doc.resolve(endOfTokens).end();
-          const replacement = getDecorationsFor(
-            tr.doc.textBetween(invalidatedStart, codeBlockEnd),
-            invalidatedStart,
-            language,
-          );
-          const toBeReplaced = decorations.find(
-            invalidatedStart,
-            codeBlockEnd,
-            isCodeDecoration,
-          );
-          decorations = updateDecorationSetEfficiently(
-            decorations,
-            toBeReplaced,
-            replacement,
-            tr.doc,
+            getDecorationsForPM(textBetween, start, decoration.spec.state),
           );
         } else {
-          const toBeReplaced = decorations.find(
-            invalidatedStart,
-            invalidatedEnd,
-            isCodeDecoration,
-          );
-          const replacement = getDecorationsFor(
-            tr.doc.textBetween(invalidatedStart, invalidatedEnd),
-            invalidatedStart,
-            language,
-          );
-          decorations = updateDecorationSetEfficiently(
-            decorations,
-            toBeReplaced,
-            replacement,
+          decorations = DecorationSet.create(
             tr.doc,
+            getDecorationsForPM(textBetween, start),
           );
         }
       });
-
-      //   const codeBlockDecorations = decorations.find(start, end, isCodeDecoration);
-      //   const startToRecalculate = codeBlockDecorations.length ? getStartOfLine(tr.doc.resolve(codeBlockDecorations[0].from)).pos : start;
-      //   const codeBlock = tr.doc.resolve(start);
-
-      //   const decorationsPast = decorations.find(startToRecalculate, codeBlock.end(), isCodeDecoration);
-
-      //   const textBetween = tr.doc.textBetween(startToRecalculate, codeBlock.end());
-
-      //   performance.mark("getDecorationsFor_start");
-      //   const decorationsFuture = getDecorationsFor(textBetween, startToRecalculate, language);
-      //   performance.mark("getDecorationsFor_end");
-      //   performance.measure("getDecorationsFor", "getDecorationsFor_start", "getDecorationsFor_end");
-      //   performance.mark("updateDecorationSetEfficiently_start");
-      //   decorations = updateDecorationSetEfficiently(
-      //     decorations,
-      //     decorationsPast,
-      //     decorationsFuture,
-      //     tr.doc
-      //   );
-      //   performance.mark("updateDecorationSetEfficiently_end");
-      //   performance.measure("updateDecorationSetEfficiently", "updateDecorationSetEfficiently_start", "updateDecorationSetEfficiently_end");
-      // });
       return decorations;
     },
   },

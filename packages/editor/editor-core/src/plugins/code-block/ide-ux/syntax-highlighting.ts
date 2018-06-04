@@ -3,6 +3,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Node } from 'prosemirror-model';
 import { Transaction } from 'prosemirror-state';
 import { getEndOfLine, getStartOfLine } from './line-handling';
+import parser from './code-mirror-syntax-hightlighting';
 
 export const isCodeDecorationEqual = (left: Decoration, right: Decoration) =>
   left.from === right.from &&
@@ -44,6 +45,37 @@ export const getDecorationsFor = (
     }, []);
   }
   return [];
+};
+
+export const getDecorationsForPM = (text: string, start: number, state?) => {
+  let decorations = [] as Decoration[];
+  let offset = start;
+  parser.runMode(
+    text,
+    'javascript',
+    (text, style, line, tokenStart, tokenEnd, state) => {
+      if (text !== '\n') {
+        const size = tokenEnd - tokenStart;
+        if (style) {
+          decorations.push(
+            Decoration.inline(
+              offset,
+              offset + size,
+              {
+                class: 'cm-' + style,
+              },
+              { isCodeDecoration: true, state } as any,
+            ),
+          );
+        }
+        offset += size;
+      } else {
+        offset += 1;
+      }
+    },
+    { state },
+  );
+  return decorations;
 };
 
 export const updateDecorationSetEfficiently = (

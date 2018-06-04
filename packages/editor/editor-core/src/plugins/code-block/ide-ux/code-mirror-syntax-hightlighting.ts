@@ -1,99 +1,115 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
+import javascript from './javascript';
 
 function splitLines(string) {
   return string.split(/\r?\n|\r/);
 }
 
-function StringStream(string) {
-  this.pos = this.start = 0;
-  this.string = string;
-  this.lineStart = 0;
-}
+class StringStream {
+  string: string;
+  pos = 0;
+  start = 0;
+  lineStart = 0;
 
-StringStream.prototype = {
-  eol: function() {
+  constructor(string) {
+    this.string = string;
+  }
+
+  eol() {
     return this.pos >= this.string.length;
-  },
-  sol: function() {
+  }
+  sol() {
     return this.pos == 0;
-  },
-  peek: function() {
+  }
+  peek() {
     return this.string.charAt(this.pos) || null;
-  },
-  next: function() {
+  }
+  next() {
     if (this.pos < this.string.length) return this.string.charAt(this.pos++);
-  },
-  eat: function(match) {
-    var ch = this.string.charAt(this.pos);
-    if (typeof match == 'string') var ok = ch == match;
-    else var ok = ch && (match.test ? match.test(ch) : match(ch));
+  }
+  eat(match: string | Function | RegExp) {
+    let ch = this.string.charAt(this.pos);
+    let ok;
+    if (typeof match == 'string') {
+      ok = ch == match;
+    } else if (typeof match == 'function') {
+      ok = ch && match(ch);
+    } else {
+      ok = ch && match.test(ch);
+    }
     if (ok) {
       ++this.pos;
       return ch;
     }
-  },
-  eatWhile: function(match) {
+  }
+  eatWhile(match) {
     var start = this.pos;
     while (this.eat(match)) {}
     return this.pos > start;
-  },
-  eatSpace: function() {
+  }
+  eatSpace() {
     var start = this.pos;
     while (/[\s\u00a0]/.test(this.string.charAt(this.pos))) ++this.pos;
     return this.pos > start;
-  },
-  skipToEnd: function() {
+  }
+  skipToEnd() {
     this.pos = this.string.length;
-  },
-  skipTo: function(ch) {
+  }
+  skipTo(ch: string) {
     var found = this.string.indexOf(ch, this.pos);
     if (found > -1) {
       this.pos = found;
       return true;
     }
-  },
-  backUp: function(n) {
+  }
+  backUp(n: number) {
     this.pos -= n;
-  },
-  column: function() {
+  }
+  column() {
     return this.start - this.lineStart;
-  },
-  indentation: function() {
+  }
+  indentation() {
     return 0;
-  },
-  match: function(pattern, consume, caseInsensitive) {
+  }
+  match(pattern, consume, caseInsensitive) {
     if (typeof pattern == 'string') {
-      var cased = function(str) {
+      const cased = function(str) {
         return caseInsensitive ? str.toLowerCase() : str;
       };
-      var substr = this.string.substr(this.pos, pattern.length);
+      const substr = this.string.substr(this.pos, pattern.length);
       if (cased(substr) == cased(pattern)) {
-        if (consume !== false) this.pos += pattern.length;
+        if (consume !== false) {
+          this.pos += pattern.length;
+        }
         return true;
       }
     } else {
-      var match = this.string.slice(this.pos).match(pattern);
-      if (match && match.index > 0) return null;
-      if (match && consume !== false) this.pos += match[0].length;
+      const match = this.string.slice(this.pos).match(pattern);
+      if (match && match.index && match.index > 0) {
+        return null;
+      }
+      if (match && consume !== false) {
+        this.pos += match[0].length;
+      }
       return match;
     }
-  },
-  current: function() {
+  }
+  current() {
     return this.string.slice(this.start, this.pos);
-  },
-  hideFirstChars: function(n, inner) {
+  }
+  hideFirstChars(n: number, inner: Function) {
     this.lineStart += n;
     try {
       return inner();
     } finally {
       this.lineStart -= n;
     }
-  },
-  lookAhead: function() {
+  }
+  lookAhead() {
     return null;
-  },
-};
+  }
+}
 
 class CodeMirror {
   modes = {};
@@ -128,7 +144,8 @@ class CodeMirror {
     if (!mfactory) throw new Error('Unknown mode: ' + spec);
     return mfactory(options, spec);
   };
-  registerGlobalHelper = Math.min;
+  registerHelper = () => {};
+  registerGlobalHelper = () => {};
   runMode = function(string, modespec, callback, options) {
     var mode = this.getMode({ indentUnit: 2 }, modespec);
 
@@ -140,7 +157,7 @@ class CodeMirror {
       if (!stream.string && mode.blankLine) mode.blankLine(state);
       while (!stream.eol()) {
         var style = mode.token(stream, state);
-        callback(stream.current(), style, i, stream.start, state);
+        callback('<text>', style, i, stream.start, stream.pos, state);
         stream.start = stream.pos;
       }
     }
@@ -156,3 +173,7 @@ parser.defineMode('null', function() {
   };
 });
 parser.defineMIME('text/plain', 'null');
+
+javascript(parser);
+
+export default parser;
