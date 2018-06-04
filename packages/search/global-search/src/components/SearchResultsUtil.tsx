@@ -53,6 +53,15 @@ export function renderResults(results: Result[]) {
       QuickSearchResult
     >;
 
+    // TODO need to expose caption/subText more appropriately
+    let extraProps = {};
+    if (result.resultType == ResultType.Person) {
+      extraProps = {
+        mentionName: result.caption,
+        presenceMessage: result.subText,
+      };
+    }
+
     return (
       <Result
         key={result.resultId}
@@ -64,6 +73,7 @@ export function renderResults(results: Result[]) {
         avatarUrl={result.avatarUrl}
         objectKey={result.objectKey}
         contentType={result.contentType}
+        {...extraProps}
       />
     );
   });

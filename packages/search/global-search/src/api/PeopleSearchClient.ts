@@ -9,6 +9,7 @@ export interface GraphqlResponse {
   errors?: GraphqlError[];
   data?: {
     AccountCentricUserSearch?: SearchResult[];
+    Collaborators?: SearchResult[];
   };
 }
 
@@ -16,6 +17,9 @@ export interface SearchResult {
   id: string;
   avatarUrl: string;
   fullName: string;
+  department: string;
+  title: string;
+  nickname: string;
 }
 
 export interface GraphqlError {
@@ -25,6 +29,7 @@ export interface GraphqlError {
 
 export interface PeopleSearchClient {
   search(query: string): Promise<Result[]>;
+  getRecentPeople(): Promise<Result[]>;
 }
 
 export default class PeopleSearchClientImpl implements PeopleSearchClient {
@@ -36,7 +41,30 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     this.cloudId = cloudId;
   }
 
-  private buildQuery(query: string) {
+  private buildRecentQuery() {
+    return {
+      query: `query Collaborators(
+          $cloudId: String!,
+          $limit: Int) {
+          Collaborators(cloudId: $cloudId, limit: $limit) {
+            id,
+            fullName,
+            avatarUrl,
+            title,
+            nickname,
+            department
+          }
+        }`,
+      variables: {
+        cloudId: this.cloudId,
+        limit: 3,
+        excludeBots: true,
+        excludeInactive: true,
+      },
+    };
+  }
+
+  private buildSearchQuery(query: string) {
     return {
       query: `query Search(
         $cloudId: String!,
@@ -50,7 +78,10 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
         filter: { excludeInactive: $excludeInactive, excludeBots: $excludeBots }) {
           id,
           fullName,
-          avatarUrl
+          avatarUrl,
+          title,
+          nickname,
+          department
         }
       }`,
       variables: {
@@ -64,17 +95,40 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     };
   }
 
-  public async search(query: string): Promise<Result[]> {
-    const options: RequestServiceOptions = {
+  private buildRequestOptions(body: object) {
+    return {
       path: 'graphql',
       requestInit: {
         headers: {
           'Content-Type': 'application/json',
         },
         method: 'POST',
-        body: JSON.stringify(this.buildQuery(query)),
+        body: JSON.stringify(body),
       },
     };
+  }
+
+  public async getRecentPeople(): Promise<Result[]> {
+    const options = this.buildRequestOptions(this.buildRecentQuery());
+
+    const response = await utils.requestService<GraphqlResponse>(
+      this.serviceConfig,
+      options,
+    );
+
+    if (response.errors) {
+      return [];
+    }
+
+    if (!response.data || !response.data.Collaborators) {
+      return [];
+    }
+
+    return response.data.Collaborators.map(userSearchResultToResult);
+  }
+
+  public async search(query: string): Promise<Result[]> {
+    const options = this.buildRequestOptions(this.buildSearchQuery(query));
 
     const response = await utils.requestService<GraphqlResponse>(
       this.serviceConfig,
@@ -99,6 +153,8 @@ function makeGraphqlErrorMessage(errors: GraphqlError[]) {
 }
 
 function userSearchResultToResult(searchResult: SearchResult): Result {
+  const mention = searchResult.nickname || searchResult.fullName;
+
   return {
     resultType: ResultType.Person,
     resultId: 'people-' + searchResult.id,
@@ -106,5 +162,7 @@ function userSearchResultToResult(searchResult: SearchResult): Result {
     href: '/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
     analyticsType: AnalyticsType.ResultPerson,
+    caption: mention, // TODO move
+    subText: searchResult.title, // TODO move
   };
 }

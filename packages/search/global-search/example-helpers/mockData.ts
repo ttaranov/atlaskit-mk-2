@@ -208,6 +208,9 @@ export function makePeopleSearchData(
       id: faker.random.uuid(),
       fullName: faker.name.findName(),
       avatarUrl: faker.image.avatar(),
+      department: faker.name.jobType(),
+      title: faker.name.jobTitle(),
+      nickname: faker.name.lastName(),
     });
   }
 
@@ -220,6 +223,7 @@ export function makePeopleSearchData(
     return {
       data: {
         AccountCentricUserSearch: filteredItems,
+        Collaborators: filteredItems,
       },
     };
   };

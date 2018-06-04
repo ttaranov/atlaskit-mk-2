@@ -9,6 +9,9 @@ export interface Result {
   objectKey?: string;
   resultType: ResultType;
   analyticsType: AnalyticsType;
+  //
+  subText?: string;
+  caption?: string;
 }
 
 export enum ResultType {
