@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 0.1.2
+- [patch] navigation-next Item should be updated when new props are different than previous [615e77c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/615e77c)
+
 ## 0.1.1
 - [patch] add some reducer util functions [3882051](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3882051)
 
