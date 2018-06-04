@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.14
+- [patch] ED-4768 handle null ref callback on full-page scroll container [73bff15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/73bff15)
+- [none] Updated dependencies [73bff15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/73bff15)
+
 ## 72.1.13
 - [patch] Fix issue where Code Block numbering would be mis-aligned in Firefox [6436efd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6436efd)
 - [none] Updated dependencies [6436efd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6436efd)
