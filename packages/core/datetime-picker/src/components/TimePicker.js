@@ -116,7 +116,7 @@ export default class TimePicker extends Component<Props, State> {
     isInvalid: false,
     hideIcon: false,
     timeFormat: defaultTimeFormat,
-    placeholder: `e.g. ${format(new Date(), defaultTimeFormat)}`,
+    placeholder: 'e.g. 8:00am',
   };
 
   state = {
