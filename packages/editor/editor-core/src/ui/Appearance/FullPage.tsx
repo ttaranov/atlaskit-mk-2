@@ -129,7 +129,7 @@ export default class Editor extends React.Component<
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
     event.stopPropagation();
 
-  scrollContainerRef = ref => {
+  scrollContainerRef = (ref: HTMLElement | null) => {
     const previousScrollContainer = this.scrollContainer;
 
     // remove existing handler
@@ -140,9 +140,9 @@ export default class Editor extends React.Component<
       );
     }
 
-    this.scrollContainer = ref;
+    this.scrollContainer = ref ? ref : undefined;
 
-    if (typeof this.scrollContainer !== 'undefined') {
+    if (this.scrollContainer) {
       this.scrollContainer.addEventListener(
         'scroll',
         this.scheduleUpdateToolbarKeyline,
@@ -163,11 +163,7 @@ export default class Editor extends React.Component<
     return false;
   };
 
-  private scheduleUpdateToolbarKeyline = () => {
-    this.scheduledKeylineUpdate = rafSchedule(() =>
-      this.updateToolbarKeyline(),
-    );
-  };
+  private scheduleUpdateToolbarKeyline = rafSchedule(this.updateToolbarKeyline);
 
   componentDidMount() {
     window.addEventListener('resize', this.scheduleUpdateToolbarKeyline, false);
@@ -176,7 +172,7 @@ export default class Editor extends React.Component<
   componentWillUnmount() {
     window.removeEventListener('resize', this.scheduleUpdateToolbarKeyline);
 
-    if (typeof this.scheduledKeylineUpdate !== 'undefined') {
+    if (this.scheduledKeylineUpdate) {
       cancelAnimationFrame(this.scheduledKeylineUpdate);
     }
   }
