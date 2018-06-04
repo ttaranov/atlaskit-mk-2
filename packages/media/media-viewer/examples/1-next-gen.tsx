@@ -10,6 +10,8 @@ import {
   unknownFileId,
   audioNoCoverFileId,
   videoHorizontalFileId,
+  videoLargeFileId,
+  videoProcessingFailedId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
@@ -39,6 +41,18 @@ const videoHorizontalFileItem: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const videoLargeFileItem: MediaViewerItem = {
+  type: 'file',
+  id: videoLargeFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const videoProcessingFailedItem: MediaViewerItem = {
+  type: 'file',
+  id: videoProcessingFailedId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 const audioItem: MediaViewerItem = {
   type: 'file',
   id: audioFileId.id,
@@ -63,37 +77,26 @@ export type State = {
 
 export default class Example extends React.Component<{}, State> {
   state: State = { selectedItem: undefined };
+  setItem = (selectedItem: MediaViewerItem) => () => {
+    this.setState({ selectedItem });
+  };
 
   render() {
     return (
       <div>
-        <Button onClick={() => this.setState({ selectedItem: imageItem })}>
-          Image item
-        </Button>
-        <Button
-          onClick={() =>
-            this.setState({ selectedItem: videoHorizontalFileItem })
-          }
-        >
+        <Button onClick={this.setItem(imageItem)}>Image item</Button>
+        <Button onClick={this.setItem(videoHorizontalFileItem)}>
           Video horizontal
         </Button>
-        <Button onClick={() => this.setState({ selectedItem: videoItem })}>
-          Video vertical
+        <Button onClick={this.setItem(videoLargeFileItem)}>Video large</Button>
+        <Button onClick={this.setItem(videoItem)}>Video vertical</Button>
+        <Button onClick={this.setItem(videoProcessingFailedItem)}>
+          Failed video processing
         </Button>
-        <Button onClick={() => this.setState({ selectedItem: audioItem })}>
-          Audio item
-        </Button>
-        <Button
-          onClick={() => this.setState({ selectedItem: audioItemNoCover })}
-        >
-          Audio no cover
-        </Button>
-        <Button onClick={() => this.setState({ selectedItem: docItem })}>
-          Doc item
-        </Button>
-        <Button
-          onClick={() => this.setState({ selectedItem: unsupportedItem })}
-        >
+        <Button onClick={this.setItem(audioItem)}>Audio item</Button>
+        <Button onClick={this.setItem(audioItemNoCover)}>Audio no cover</Button>
+        <Button onClick={this.setItem(docItem)}>Doc item</Button>
+        <Button onClick={this.setItem(unsupportedItem)}>
           Unsupported item
         </Button>
 

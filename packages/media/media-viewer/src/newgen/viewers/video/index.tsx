@@ -6,6 +6,7 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, Video } from '../../styled';
 import { CustomVideo } from './customVideo';
 import { getFeatureFlag } from '../../utils/getFeatureFlag';
+import { isIE } from '../../utils/isIE';
 
 export type Props = {
   item: FileItem;
@@ -17,29 +18,44 @@ export type Props = {
 
 export type State = {
   src: Outcome<string, Error>;
+  isHDActive: boolean;
 };
 
+const sdArtifact = 'video_640.mp4';
+const hdArtifact = 'video_1280.mp4';
 export class VideoViewer extends React.Component<Props, State> {
-  state: State = { src: { status: 'PENDING' } };
+  state: State = { src: { status: 'PENDING' }, isHDActive: false };
 
   componentDidMount() {
     this.init();
   }
 
+  private onHDChange = () => {
+    const isHDActive = !this.state.isHDActive;
+    this.setState({ isHDActive });
+    this.init(isHDActive);
+  };
+
   render() {
-    const { src } = this.state;
-    const { featureFlags, showControls } = this.props;
-    const useCustomVideoPlayer = getFeatureFlag(
-      'customVideoPlayer',
-      featureFlags,
-    );
+    const { src, isHDActive } = this.state;
+    const { item, featureFlags, showControls } = this.props;
+    const useCustomVideoPlayer =
+      !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
 
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
         if (useCustomVideoPlayer) {
-          return <CustomVideo showControls={showControls} src={src.data} />;
+          return (
+            <CustomVideo
+              onHDToggleClick={this.onHDChange}
+              showControls={showControls}
+              src={src.data}
+              isHDActive={isHDActive}
+              isHDAvailable={isHDAvailable(item)}
+            />
+          );
         } else {
           return <Video controls src={src.data} />;
         }
@@ -48,9 +64,11 @@ export class VideoViewer extends React.Component<Props, State> {
     }
   }
 
-  private async init() {
+  private async init(isHDActive?: boolean) {
     const { context, item, collectionName } = this.props;
-    const videoUrl = getVideoArtifactUrl(item);
+    const preferHd = isHDActive && isHDAvailable(item);
+    const videoUrl = getVideoArtifactUrl(item, preferHd);
+
     try {
       this.setState({
         src: {
@@ -69,8 +87,17 @@ export class VideoViewer extends React.Component<Props, State> {
   }
 }
 
-function getVideoArtifactUrl(fileItem: FileItem) {
-  const artifact = 'video_640.mp4';
+function isHDAvailable(fileItem: FileItem): boolean {
+  return (
+    fileItem.details &&
+    fileItem.details.artifacts &&
+    fileItem.details.artifacts[hdArtifact] &&
+    fileItem.details.artifacts[hdArtifact].url
+  );
+}
+
+function getVideoArtifactUrl(fileItem: FileItem, preferHd?: boolean) {
+  const artifact = preferHd ? hdArtifact : sdArtifact;
 
   return (
     fileItem.details &&

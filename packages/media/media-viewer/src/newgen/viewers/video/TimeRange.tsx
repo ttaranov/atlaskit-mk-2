@@ -118,12 +118,13 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
 
     return (
       <TimeRangeWrapper onClick={this.onNavigate}>
-        <TimeLine innerRef={this.saveWrapperElement}>
+        <TimeLine className="timeline" innerRef={this.saveWrapperElement}>
           <BufferedTime style={{ width: `${bufferedTimePercentage}%` }} />
           <CurrentTimeLine style={{ width: `${currentPosition}%` }}>
             <Thumb
               innerRef={this.saveThumbElement}
               onMouseDown={this.onThumbMouseDown}
+              className="time-range-thumb"
             >
               <CurrentTimeTooltip
                 isDragging={isDragging}

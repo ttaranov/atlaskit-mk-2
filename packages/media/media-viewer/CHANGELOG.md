@@ -1,5 +1,11 @@
 # @atlaskit/media-viewer
 
+## 14.6.0
+- [minor] improve VideoViewer experience [50475df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50475df)
+
+- [none] Updated dependencies [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
+  - @atlaskit/media-test-helpers@13.3.0
+
 ## 14.5.1
 - [patch] Add issue collector to MVNG [15e0ced](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15e0ced)
 

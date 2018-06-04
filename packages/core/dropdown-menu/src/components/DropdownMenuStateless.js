@@ -48,6 +48,7 @@ export default class DropdownMenuStateless extends Component<
     onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
+    isMenuFixed: false,
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
@@ -389,6 +390,7 @@ export default class DropdownMenuStateless extends Component<
       isOpen,
       onOpenChange,
       position,
+      isMenuFixed,
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
@@ -415,6 +417,7 @@ export default class DropdownMenuStateless extends Component<
           onClick={this.handleClick}
           onOpenChange={onOpenChange}
           position={position}
+          isMenuFixed={isMenuFixed}
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}

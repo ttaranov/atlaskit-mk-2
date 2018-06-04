@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 13.3.0
+- [minor] Add new item to example items [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
+- [none] Updated dependencies [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
+
 ## 13.2.0
 - [minor] add custom video player under feature flag [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
 - [none] Updated dependencies [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
