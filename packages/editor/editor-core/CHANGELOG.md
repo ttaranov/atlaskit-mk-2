@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 72.2.0
+- [minor] Quick Insert menu for internal editor things [370344f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370344f)
+- [none] Updated dependencies [370344f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370344f)
+  - @atlaskit/editor-common@10.1.7
+
 ## 72.1.17
 - [patch] ED-4765 fix bad import with @atlastkit/theme, restores divider styling [5c7f741](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c7f741)
 - [none] Updated dependencies [5c7f741](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c7f741)
