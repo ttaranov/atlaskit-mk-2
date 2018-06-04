@@ -13,11 +13,7 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import {
-  copyPrivateMediaAttributes,
-  MediaType,
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -756,7 +752,7 @@ export class MediaPluginState {
     if (!view) {
       return;
     }
-    const { id, thumbnail, fileName, fileSize, publicId } = state;
+    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
@@ -773,10 +769,8 @@ export class MediaPluginState {
       height,
       __fileName: fileName,
       __fileSize: fileSize,
+      __fileMimeType: fileMimeType,
     });
-
-    // Copy all optional attributes from old node
-    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();

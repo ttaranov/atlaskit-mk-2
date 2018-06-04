@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "4.0.3",
+  "version": "4.1.0",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,8 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Ajay N Mathur",
-    "Trey S"
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "atlaskit": {
     "name": "Date-time picker",
@@ -25,7 +26,7 @@
     "@atlaskit/field-base": "^9.0.3",
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/layer": "^3.1.1",
-    "@atlaskit/select": "^3.0.2",
+    "@atlaskit/select": "^3.1.0",
     "@atlaskit/theme": "^3.2.2",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
@@ -41,7 +42,7 @@
     "@atlaskit/field-range": "^3.0.2",
     "@atlaskit/field-text": "^5.0.3",
     "@atlaskit/modal-dialog": "^4.0.5",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.3.0",
     "react-lorem-component": "^0.12.2",
     "react-test-renderer": "^16.3.0"

@@ -1,5 +1,17 @@
 # @atlaskit/media-image
 
+## 28.0.5
+- [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
+  - @atlaskit/smart-card@3.0.3
+
+## 28.0.4
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+  - @atlaskit/media-test-helpers@13.0.2
+
+## 28.0.3
+- [patch] Fix Card's defaultProps TS type [527bc9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/527bc9c)
+
 ## 28.0.2
 - [patch] Remove card's "shown" analytics event [7877ce6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7877ce6)
 

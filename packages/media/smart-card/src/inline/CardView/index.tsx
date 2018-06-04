@@ -5,7 +5,7 @@ import {
   IconWithTooltip,
   LozengeViewModel,
 } from '../../block/CardView/ViewModel';
-import { A, Img, Text, LozengeWrapper } from './styled';
+import { A, Img, LozengeWrapper } from './styled';
 
 export interface AnchorWithTooltip {
   href: string;
@@ -49,7 +49,7 @@ export function CardView(props: CardViewProps) {
   return (
     <A href={link.href} title={link.title}>
       {renderIcon(icon)}
-      <Text>{text}</Text>
+      {text}
       {renderLozenge(lozenge)}
     </A>
   );

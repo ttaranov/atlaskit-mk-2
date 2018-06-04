@@ -1,5 +1,10 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.0.10
+- [patch] ED-4689 add __confluenceMetadata to link mark schema [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+- [patch] Updated dependencies [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+  - @atlaskit/editor-common@10.1.6
+
 ## 4.0.9
 
 

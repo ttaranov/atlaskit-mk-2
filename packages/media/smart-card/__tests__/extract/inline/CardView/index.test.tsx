@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Lozenge from '@atlaskit/lozenge';
 import { CardView } from '../../../../src/inline/CardView/index';
-import { A, Text, Img } from '../../../../src/inline/CardView/styled';
+import { A, Img } from '../../../../src/inline/CardView/styled';
 
 describe('CardView', () => {
   it('should render anchor', () => {
@@ -16,8 +16,8 @@ describe('CardView', () => {
 
   it('should render text', () => {
     const link = { href: 'some-href', title: 'some-anchor-title' };
-    const element = shallow(<CardView link={link} text="some text content" />);
-    expect(element.find(Text).props().children).toEqual('some text content');
+    const element = mount(<CardView link={link} text="some text content" />);
+    expect(element.text()).toContain('some text content');
   });
 
   it('should render icon when it is provided', () => {

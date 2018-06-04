@@ -30,7 +30,7 @@ export { NavigationStateInterface } from './state';
 export { GlobalTheme } from './theme';
 
 /** Nav API */
-export { NavAPISubscriber, NavAPI } from './api';
+export { NavAPISubscriber, NavAPI, utils as navAPIUtils } from './api';
 
 /** Nav Renderer */
 export { default as NavRenderer } from './renderer';

@@ -9,7 +9,12 @@ import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
-import { parseDateIntoStateValues } from '../internal';
+import {
+  parseDateIntoStateValues,
+  defaultTimes,
+  defaultDateFormat,
+  defaultTimeFormat,
+} from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -47,6 +52,10 @@ type Props = {
   datePickerSelectProps: {},
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
   timePickerSelectProps: {},
+  /** The times to show in the times dropdown. */
+  times?: Array<string>,
+  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  timeFormat?: string,
 };
 
 type State = {
@@ -138,6 +147,9 @@ export default class DateTimePicker extends Component<Props, State> {
     hideIcon: false,
     datePickerSelectProps: {},
     timePickerSelectProps: {},
+    times: defaultTimes,
+    timeFormat: defaultTimeFormat,
+    dateFormat: defaultDateFormat,
   };
 
   state = {
@@ -214,6 +226,8 @@ export default class DateTimePicker extends Component<Props, State> {
       dateFormat,
       datePickerSelectProps,
       timePickerSelectProps,
+      times,
+      timeFormat,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
@@ -270,6 +284,8 @@ export default class DateTimePicker extends Component<Props, State> {
             selectProps={mergedTimePickerSelectProps}
             defaultValue={timeValue}
             timeIsEditable={timeIsEditable}
+            times={times}
+            timeFormat={timeFormat}
           />
         </FlexItem>
       </Flex>

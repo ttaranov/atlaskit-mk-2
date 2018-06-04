@@ -1,5 +1,28 @@
 # @atlaskit/conversation
 
+## 7.6.2
+- [patch] Comments should re-render when the user is changed [507ff28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/507ff28)
+
+## 7.6.1
+- [patch] Fixes a bug with temp comment where createdBy wasn't set correctly [a761abc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a761abc)
+
+## 7.6.0
+- [minor] Replace <div> with Fragment so CSS rules apply to adjacent conversations [96dc1bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96dc1bf)
+
+## 7.5.6
+- [patch] Updated dependencies [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+  - @atlaskit/renderer@17.0.7
+
+## 7.5.5
+- [patch] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
+  - @atlaskit/editor-common@10.1.3
+  - @atlaskit/renderer@17.0.6
+
+## 7.5.4
+- [patch] Updated dependencies [758b342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/758b342)
+  - @atlaskit/renderer@17.0.2
+  - @atlaskit/editor-core@72.0.7
+
 ## 7.5.3
 
 

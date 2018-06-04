@@ -14,7 +14,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Jed W"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "atlaskit": {
     "name": "Analytics",
@@ -29,7 +31,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2"
   }

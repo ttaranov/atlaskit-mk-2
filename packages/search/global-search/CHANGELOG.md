@@ -1,5 +1,21 @@
 # @atlaskit/global-search
 
+## 3.3.3
+- [patch] Update people results link path in global search [be04163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be04163)
+
+## 3.3.2
+- [patch] Remove SVG react warnings. [89ce7d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89ce7d7)
+
+## 3.3.1
+- [patch] Updated dependencies [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
+  - @atlaskit/quick-search@1.7.1
+
+## 3.3.0
+- [minor] Consistent avatar sizes [0f80c65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f80c65)
+
+## 3.2.1
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+
 ## 3.2.0
 - [minor] Updated dependencies [65392e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65392e5)
   - @atlaskit/quick-search@1.6.0

@@ -1,5 +1,20 @@
 # @atlaskit/droplist
 
+## 5.1.1
+- [patch] removed errorneous CSS cursor styles from droplist [535d585](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535d585)
+- [none] Updated dependencies [535d585](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535d585)
+
+## 5.1.0
+
+- [minor] Add `isMenuFixed` prop to force menu to render with position fixed to allow it to break out of non-visible overflow containers at the cost of scroll detachment. [e20ac40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20ac40)
+
+- [none] Updated dependencies [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
+  - @atlaskit/layer@3.2.0
+- [none] Updated dependencies [e20ac40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20ac40)
+  - @atlaskit/layer@3.2.0
+- [minor] Updated dependencies [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
+  - @atlaskit/layer@3.2.0
+
 ## 5.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

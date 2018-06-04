@@ -1,5 +1,14 @@
 # @atlaskit/select
 
+## 3.1.0
+- [minor] Added `spacing` prop, which allows for a compact mode that supports 32px trigger height for single-select, bumped react-select to beta.6 [59ab4a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ab4a6)
+- [minor] added `spacing` prop to support `compact` mode for single select.
+- bumped react-select to beta.6, this includes the following changes:
+  - `actionMeta` for `remove-value` and `pop-value` events now contain a `removedValue` property.
+  - Fixed bug with `css` attribute being applied to DOM element in SingleValue.
+  - selectValue now filters items based on getOptionValue method.
+  - Added `createOptionPosition` prop for Creatable select, which allows the user to specify whether the createOption element displays as the first or last option in the menu.
+  - Added touch handling logic to detect user intent to scroll the page when interacting with the select control.
 ## 3.0.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

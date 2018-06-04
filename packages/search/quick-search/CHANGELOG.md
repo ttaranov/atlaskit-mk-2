@@ -1,5 +1,13 @@
 # @atlaskit/quick-search
 
+## 1.7.1
+- [patch] Fix searchbox height. [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
+- [none] Updated dependencies [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
+
+## 1.7.0
+- [minor] Change subText rendering of ObjectResult [dc6bfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc6bfd7)
+- [none] Updated dependencies [dc6bfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc6bfd7)
+
 ## 1.6.0
 - [minor] UI Polish [65392e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65392e5)
 - [none] Updated dependencies [65392e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65392e5)

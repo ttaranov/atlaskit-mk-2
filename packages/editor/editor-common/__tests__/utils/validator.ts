@@ -1681,6 +1681,20 @@ describe('Renderer - Validator', () => {
           },
         });
       });
+
+      it('should allow relative links', () => {
+        expect(
+          getValidMark({
+            type: 'link',
+            attrs: { href: '/this/is/a/relative/link' },
+          }),
+        ).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: '/this/is/a/relative/link',
+          },
+        });
+      });
     });
 
     describe('strike', () => {

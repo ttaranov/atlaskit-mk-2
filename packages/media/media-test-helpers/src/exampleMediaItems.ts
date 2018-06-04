@@ -142,6 +142,24 @@ export const videoFileId = {
   collectionName,
 };
 
+export const videoHorizontalFileId = {
+  id: '2afaf845-4385-431f-9a15-3e21520cf896', // .mov video
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const videoLargeFileId = {
+  id: '3291050e-6b66-4296-94c6-12088ef6fbad',
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const videoProcessingFailedId = {
+  id: 'e558199f-f982-4d23-93eb-313be5998d1b',
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const imageFileId = {
   id: '5556346b-b081-482b-bc4a-4faca8ecd2de', // jpg image
   mediaItemType: fileType,

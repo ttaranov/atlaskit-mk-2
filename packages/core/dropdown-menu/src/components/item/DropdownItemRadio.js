@@ -8,5 +8,5 @@ import supportsVoiceover from '../../util/supportsVoiceover';
 export default withToggleInteraction(
   withItemFocus(Item),
   RadioIcon,
-  supportsVoiceover ? 'radio' : 'menuitemradio',
+  () => (supportsVoiceover() ? 'radio' : 'menuitemradio'),
 );

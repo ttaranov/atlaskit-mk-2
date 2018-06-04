@@ -1,5 +1,8 @@
 # @atlaskit/size-detector
 
+## 3.1.2
+- [patch] Made the object element invisible to hide the unremovable borders that show in IE and Edge [d529a72](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d529a72)
+
 ## 3.1.1
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/docs@3.0.4

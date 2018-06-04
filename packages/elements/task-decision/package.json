@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "6.0.6",
+  "version": "6.0.8",
   "config": {
     "access": "public"
   },
@@ -42,7 +42,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/editor-common": "^10.0.0",
-    "@atlaskit/renderer": "^17.0.0",
+    "@atlaskit/renderer": "^17.0.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^9.1.4",
     "fetch-mock": "^5.12.1"

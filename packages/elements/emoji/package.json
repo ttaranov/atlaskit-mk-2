@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "35.0.2",
+  "version": "35.0.5",
   "config": {
     "access": "public"
   },
@@ -24,7 +24,7 @@
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/field-base": "^9.0.3",
     "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/media-picker": "^7.0.1",
+    "@atlaskit/media-picker": "^7.0.5",
     "@atlaskit/spinner": "^5.0.2",
     "@atlaskit/theme": "^3.2.2",
     "@atlaskit/tooltip": "^9.2.1",
@@ -44,7 +44,7 @@
     "xregexp": "^3.2.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^18.1.1",
+    "@atlaskit/media-core": "^18.1.2",
     "react": "^16.3.0",
     "react-dom": "^16.3.0"
   },

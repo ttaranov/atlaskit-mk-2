@@ -3,6 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Layer from '../src';
+import ContentContainer from '../src/styledContentContainer';
 
 /* There is a lot in Layer that can not be tested easily in JSDom. Most of it should already be
    tested in Popper itself, but we should really have some sort of sanity checks for things like
@@ -35,7 +36,12 @@ describe('Layer', () => {
           <div id="target">Target</div>
         </Layer>,
       );
-      expect(wrapper.find('div[style]').props().style.opacity).toBe(0);
+      expect(
+        wrapper
+          .find(ContentContainer)
+          .find('div[style]')
+          .props().style.opacity,
+      ).toBe(0);
 
       const dummyPopperState = {
         offsets: {
@@ -47,7 +53,12 @@ describe('Layer', () => {
       };
       wrapper.instance().extractStyles(dummyPopperState);
       wrapper.update();
-      expect(wrapper.find('div[style]').props().style.opacity).toBe(undefined);
+      expect(
+        wrapper
+          .find(ContentContainer)
+          .find('div[style]')
+          .props().style.opacity,
+      ).toBe(undefined);
     });
   });
 

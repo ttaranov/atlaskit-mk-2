@@ -12,9 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    }
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -37,7 +37,7 @@
     "@atlaskit/multi-select": "^9.0.2",
     "@atlaskit/tag": "^4.1.1",
     "@atlaskit/tag-group": "^4.0.1",
-    "enzyme": "^3.3.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

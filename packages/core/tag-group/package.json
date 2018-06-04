@@ -12,7 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Luke B"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "atlaskit": {
     "name": "Tag group",
@@ -31,6 +33,6 @@
     "@atlaskit/avatar": "^10.0.6",
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/tag": "^4.1.1",
-    "enzyme": "^3.3.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

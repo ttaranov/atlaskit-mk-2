@@ -5,7 +5,7 @@ import {
   MediaCollectionProvider,
   isError,
 } from '@atlaskit/media-core';
-import { Outcome, Identifier } from './domain';
+import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ErrorMessage } from './styled';
 import { List } from './list';
 import { Subscription } from 'rxjs';
@@ -15,8 +15,11 @@ import { Spinner } from './loading';
 export type Props = {
   onClose?: () => void;
   selectedItem?: Identifier;
+  showControls?: () => void;
+  readonly featureFlags?: MediaViewerFeatureFlags;
   collectionName: string;
   context: Context;
+  pageSize: number;
 };
 
 export type State = {
@@ -47,7 +50,13 @@ export class Collection extends React.Component<Props, State> {
   }
 
   render() {
-    const { selectedItem, context, onClose } = this.props;
+    const {
+      selectedItem,
+      context,
+      onClose,
+      collectionName,
+      showControls,
+    } = this.props;
     const { items } = this.state;
     switch (items.status) {
       case 'PENDING':
@@ -55,14 +64,20 @@ export class Collection extends React.Component<Props, State> {
       case 'FAILED':
         return <ErrorMessage>Error loading collection</ErrorMessage>;
       case 'SUCCESSFUL':
-        const identifiers = items.data.map(toIdentifier);
+        const identifiers = items.data.map(x =>
+          toIdentifier(x, collectionName),
+        );
+        const item = selectedItem
+          ? { ...selectedItem, collectionName }
+          : identifiers[0];
         return (
           <List
             items={identifiers}
-            selectedItem={selectedItem ? selectedItem : identifiers[0]}
+            selectedItem={item}
             context={context}
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}
+            showControls={showControls}
           />
         );
     }
@@ -70,8 +85,11 @@ export class Collection extends React.Component<Props, State> {
 
   private init(props: Props) {
     this.setState(initialState);
-    const { collectionName, context, selectedItem } = props;
-    this.provider = context.getMediaCollectionProvider(collectionName, 30);
+    const { collectionName, context, selectedItem, pageSize } = props;
+    this.provider = context.getMediaCollectionProvider(
+      collectionName,
+      pageSize,
+    );
     this.subscription = this.provider.observable().subscribe({
       next: collection => {
         if (isError(collection)) {

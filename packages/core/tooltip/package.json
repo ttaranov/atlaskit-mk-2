@@ -12,8 +12,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Joss M",
-    "Jed W"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -31,7 +32,7 @@
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/icon": "^11.3.0",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-styled-components": "^4.11.0-1"
   },
   "keywords": [

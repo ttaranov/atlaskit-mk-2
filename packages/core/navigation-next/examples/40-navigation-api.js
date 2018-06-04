@@ -42,7 +42,7 @@ const ProductRoot = () => (
       const { activeView, data } = api.state;
       return activeView && data ? (
         <div css={{ padding: '16px 0' }}>
-          <NavRenderer customComponents={{ JiraWordmark }} items={data.view} />
+          <NavRenderer customComponents={{ JiraWordmark }} items={data} />
         </div>
       ) : (
         'LOADING'
@@ -55,11 +55,13 @@ class Example extends Component<*> {
   componentDidMount() {
     const { navAPI } = this.props;
 
-    rootViews.forEach(view => {
-      navAPI.addView(view.id, () => view);
+    const rootViewKeys = Object.keys(rootViews);
+
+    rootViewKeys.forEach(key => {
+      navAPI.addView(key, () => rootViews[key]);
     });
 
-    navAPI.setView(rootViews[0].id);
+    navAPI.setView(rootViewKeys[0]);
   }
 
   render() {

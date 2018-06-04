@@ -1,5 +1,16 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.0.6
+- [patch] ED-4689 add __confluenceMetadata to link mark schema [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+- [patch] Updated dependencies [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
+  - @atlaskit/editor-common@10.1.6
+
+## 1.0.5
+- [patch] Fix transformer throwing error when given an empty string to parse [bda0aac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bda0aac)
+
+## 1.0.4
+- [patch] Fix issue where providing a custom schema would crash the transformer [c5f7851](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5f7851)
+
 ## 1.0.3
 
 

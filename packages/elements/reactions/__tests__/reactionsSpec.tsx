@@ -66,6 +66,7 @@ describe('@atlaskit/reactions/reactions', () => {
 
     reactions
       .find(Reaction)
+      .find('button')
       .first()
       .simulate('mouseup', { button: 0 });
     expect(onReactionClick).toHaveBeenCalled();

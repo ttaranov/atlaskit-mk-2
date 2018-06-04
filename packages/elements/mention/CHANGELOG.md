@@ -1,5 +1,25 @@
 # @atlaskit/mention
 
+## 12.0.2
+- [patch] Moved event tag to FabricElementsListener [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/util-data-test@9.1.7
+
+## 12.0.1
+- [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+- [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
+
+## 12.0.0
+- [patch] code improvements [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+- [major] fixed/added tests for analytics-next and code improvements [db1bafa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db1bafa)
+- [patch] upgrade to analytics-next and GAS V3 [f150242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f150242)
+- [patch] Updated dependencies [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+  - @atlaskit/util-data-test@9.1.6
+- [major] Updated dependencies [db1bafa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db1bafa)
+  - @atlaskit/util-data-test@9.1.6
+- [patch] Updated dependencies [f150242](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f150242)
+  - @atlaskit/util-data-test@9.1.6
+
 ## 11.1.5
 - [patch] revert ED-2551 wrong cursor on special mentions [1cf64a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cf64a6)
 - [none] Updated dependencies [1cf64a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cf64a6)

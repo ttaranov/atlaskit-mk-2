@@ -7,6 +7,8 @@ import { Content } from '../../src/newgen/content';
 import { MediaViewer } from '../../src/newgen/media-viewer';
 import { ErrorMessage, CloseButtonWrapper } from '../../src/newgen/styled';
 import Header from '../../src/newgen/header';
+import { KeyboardEventWithKeyCode } from './shortcut.spec';
+import { ItemSource } from '../../src/newgen/domain';
 
 function createContext(subject) {
   const token = 'some-token';
@@ -28,10 +30,14 @@ function createFixture(items, identifier) {
   const subject = new Subject<MediaItem>();
   const context = createContext(subject);
   const onClose = jest.fn();
+  const itemSource: ItemSource = {
+    kind: 'ARRAY',
+    items,
+  };
   const el = mount(
     <MediaViewer
       selectedItem={identifier}
-      items={items}
+      itemSource={itemSource}
       context={context}
       onClose={onClose}
     />,
@@ -54,6 +60,17 @@ describe('<MediaViewer />', () => {
   it('should close Media Viewer on click', () => {
     const { el, onClose } = createFixture([identifier], identifier);
     el.find(Content).simulate('click');
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('should close Media Viewer on ESC shortcut', () => {
+    const { onClose } = createFixture([identifier], identifier);
+    const e = new KeyboardEventWithKeyCode('keydown', {
+      bubbles: true,
+      cancelable: true,
+      keyCode: 27,
+    });
+    document.dispatchEvent(e);
     expect(onClose).toHaveBeenCalled();
   });
 
