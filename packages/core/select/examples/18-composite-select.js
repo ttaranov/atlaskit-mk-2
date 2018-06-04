@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import { CompositeSelect } from '../src';
 
 const options = [
@@ -13,25 +13,22 @@ const options = [
   { label: 'Sydney', value: 'sydney' },
 ];
 
+const onChange = console.log;
+const defaults = { options, placeholder: 'Choose a City', onChange };
+
 const CompositeSelectExample = () => (
   <div css={{ display: 'flex', justifyContent: 'space-between' }}>
+    <CompositeSelect {...defaults} target={<button>Target</button>} />
     <CompositeSelect
-      target={<button>Target</button>}
-      options={options}
-      placeholder="Choose a City"
-    />
-    <CompositeSelect
+      {...defaults}
       target={<button>W/O Search</button>}
-      options={options}
       menuPlacement="bottom"
-      placeholder="Choose a City"
       searchThreshold={10}
     />
     <CompositeSelect
+      {...defaults}
       target={<button>Placement: &ldquo;right-start&rdquo; (flip)</button>}
-      options={options}
       menuPlacement="right-start"
-      placeholder="Choose a City"
     />
   </div>
 );

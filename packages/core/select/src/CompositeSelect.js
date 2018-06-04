@@ -45,9 +45,9 @@ const DropdownIndicator = () => (
     <SearchIcon />
   </div>
 );
-const Control = (props: *) => (
-  <div css={{ padding: '8px 8px 4px' }}>
-    <defaultComponents.Control {...props} />
+const Control = ({ innerProps: { innerRef, ...innerProps }, ...props }: *) => (
+  <div ref={innerRef} css={{ padding: '8px 8px 4px' }}>
+    <defaultComponents.Control {...props} innerProps={innerProps} />
   </div>
 );
 const DummyControl = props => (
@@ -68,12 +68,14 @@ const DummyControl = props => (
 );
 
 type Props = {
+  closeMenuOnSelect: boolean,
   components: Object,
   footer?: Node,
   menuOffset: number,
   menuPlacement: string,
   minMenuWidth: number,
   maxMenuWidth: number,
+  maxMenuHeight: number,
   onChange?: Object => void,
   options: Array<Object>,
   searchThreshold: number,
@@ -89,8 +91,10 @@ export default class CompositeSelect extends PureComponent<Props, State> {
   selectRef: ElementRef<*>;
   focusTrap: Object;
   static defaultProps = {
+    closeMenuOnSelect: true,
     components: { Control, DropdownIndicator },
     menuOffset: 8,
+    maxMenuHeight: 300,
     maxMenuWidth: 440,
     minMenuWidth: 220,
     menuPlacement: 'bottom-start',
@@ -135,9 +139,9 @@ export default class CompositeSelect extends PureComponent<Props, State> {
     }
   };
   handleSelectChange = (value: Object) => {
-    const { onChange } = this.props;
-    this.close();
-    if (onChange) onChange({ value });
+    const { closeMenuOnSelect, onChange } = this.props;
+    if (closeMenuOnSelect) this.close();
+    if (onChange) onChange(value);
   };
 
   // Internal Lifecycle
@@ -198,6 +202,20 @@ export default class CompositeSelect extends PureComponent<Props, State> {
 
     return count;
   };
+  getMaxHeight = () => {
+    const { maxMenuHeight } = this.props;
+
+    if (!this.selectRef) return maxMenuHeight;
+
+    // subtract the control height to maintain continuity
+    const showSearchControl = this.showSearchControl();
+    const offsetHeight = showSearchControl
+      ? this.selectRef.select.controlRef.offsetHeight
+      : 0;
+    const maxHeight = maxMenuHeight - offsetHeight;
+
+    return maxHeight;
+  };
 
   // if the threshold is exceeded display the search control
   showSearchControl = () => {
@@ -216,7 +234,6 @@ export default class CompositeSelect extends PureComponent<Props, State> {
       minMenuWidth,
       menuOffset,
       menuPlacement,
-      options,
       target,
       ...props
     } = this.props;
@@ -242,22 +259,20 @@ export default class CompositeSelect extends PureComponent<Props, State> {
               >
                 <Select
                   backspaceRemovesValue={false}
-                  classNamePrefix="project-switcher"
+                  controlShouldRenderValue={false}
+                  isClearable={false}
+                  tabSelectsValue={false}
+                  menuIsOpen
+                  ref={this.getSelectRef}
+                  {...props}
+                  maxMenuHeight={this.getMaxHeight()}
                   components={{
                     ...components,
                     Control: showSearchControl
                       ? components.Control
                       : DummyControl,
                   }}
-                  controlShouldRenderValue={false}
-                  isClearable={false}
-                  menuIsOpen
-                  maxMenuHeight={showSearchControl ? 260 : 310}
                   onChange={this.handleSelectChange}
-                  options={options}
-                  ref={this.getSelectRef}
-                  tabSelectsValue={false}
-                  {...props}
                 />
                 {footer}
               </Menu>
