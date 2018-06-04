@@ -8,6 +8,8 @@ import {
   findParentNodeOfType,
   findDomRefAtPos,
   findSelectedNodeOfType,
+  hasParentNodeOfType,
+  isNodeSelection,
 } from 'prosemirror-utils';
 import { closestElement } from '../../utils';
 
@@ -29,7 +31,6 @@ export default (
 
       apply(tr, state: ExtensionState, prevState, nextState) {
         const meta = tr.getMeta(pluginKey);
-
         if (meta) {
           const newState = { ...state, ...meta };
 
@@ -44,9 +45,14 @@ export default (
     view: () => {
       return {
         update: (view: EditorView) => {
-          const { state, state: { schema } } = view;
+          const { state, state: { schema, selection } } = view;
           const { element } = pluginKey.getState(state);
-          const { extension, inlineExtension, bodiedExtension } = schema.nodes;
+          const {
+            extension,
+            inlineExtension,
+            bodiedExtension,
+            layoutSection,
+          } = schema.nodes;
 
           /** Check whether selection has an extension */
           let selectedExtNode = findParentNodeOfType([
@@ -75,14 +81,16 @@ export default (
            * The check will be refactored once we have isNodeOfTypeSelected from PM-utils
            */
           if (
-            state.selection instanceof NodeSelection &&
-            (state.selection.node.type === state.schema.nodes.bodiedExtension ||
-              state.selection.node.type === state.schema.nodes.extension ||
-              state.selection.node.type === state.schema.nodes.inlineExtension)
+            isNodeSelection(selection) &&
+            findSelectedNodeOfType([
+              extension,
+              bodiedExtension,
+              inlineExtension,
+            ])
           ) {
             selectedExtNode = {
-              node: state.selection.node,
-              pos: state.selection.$head.pos,
+              node: (selection as NodeSelection).node,
+              pos: selection.$head.pos,
             };
             selectedExtDomNode = findDomRefAtPos(
               selectedExtNode.pos,
@@ -95,18 +103,14 @@ export default (
             return;
           }
 
-          let showLayoutOptions = !!(
+          const showLayoutOptions = !!(
             selectedExtNode &&
             (selectedExtNode.node.type === schema.nodes.bodiedExtension ||
-              selectedExtNode.node.type === schema.nodes.extension)
+              (selectedExtNode.node.type === schema.nodes.extension &&
+                !hasParentNodeOfType([bodiedExtension])(state.selection))) &&
+            !hasParentNodeOfType([layoutSection])(state.selection)
           );
 
-          if (
-            findSelectedNodeOfType(extension)(state.selection) &&
-            findParentNodeOfType(schema.nodes.bodiedExtension)(state.selection)
-          ) {
-            showLayoutOptions = false;
-          }
           const newElement =
             closestElement(selectedExtDomNode!, '.extension-container') ||
             selectedExtDomNode;
@@ -119,7 +123,6 @@ export default (
             }
 
             /** We still want to re-render the toolbar for any size-adjustments */
-
             dispatch(pluginKey, {
               element: newElement,
               stickToolbarToBottom,

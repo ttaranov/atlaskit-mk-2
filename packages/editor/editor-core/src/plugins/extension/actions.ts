@@ -12,6 +12,8 @@ import {
   removeSelectedNode,
   removeParentNodeOfType,
   selectParentNodeOfType,
+  isNodeSelection,
+  findSelectedNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
@@ -35,24 +37,26 @@ export const updateExtensionLayout = layout => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ) => {
-  const { selection, selection: { $from }, schema, tr } = state;
-  const parentExtNode = findParentNodeOfType([
-    schema.nodes.extension,
-    schema.nodes.inlineExtension,
-    schema.nodes.bodiedExtension,
-  ])(state.selection);
+  const { selection, schema, tr } = state;
+  const { bodiedExtension, extension, inlineExtension } = schema.nodes;
+  const parentExtNode = findParentNodeOfType([bodiedExtension])(selection);
 
   let extPosition;
   let extNode;
 
-  if (!parentExtNode && !(selection instanceof NodeSelection)) {
+  const selectedNode = findSelectedNodeOfType([
+    bodiedExtension,
+    inlineExtension,
+    extension,
+  ])(selection);
+
+  if (!parentExtNode && !selectedNode) {
     return;
   }
-
   /** set the position and node to update markup */
-  if (selection instanceof NodeSelection) {
-    extPosition = $from.pos;
-    extNode = selection.node;
+  if (selectedNode) {
+    extPosition = selectedNode.pos;
+    extNode = selectedNode.node;
   } else {
     extPosition = parentExtNode!.pos - 1;
     extNode = parentExtNode!.node;
@@ -60,7 +64,7 @@ export const updateExtensionLayout = layout => (
 
   /** Intentionally setting `undefined` here to preserve the type of node */
   dispatch(
-    tr.setNodeMarkup(Math.max(0, extPosition), undefined, {
+    tr.setNodeMarkup(extPosition, undefined, {
       ...extNode!.attrs,
       layout,
     }),

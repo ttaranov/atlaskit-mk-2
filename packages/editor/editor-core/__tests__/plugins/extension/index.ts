@@ -198,7 +198,7 @@ describe('extension', () => {
       editorView.destroy();
     });
 
-    it('respects the layout attrivut', () => {
+    it('respects the layout attribute', () => {
       const { editorView } = editor(
         doc(
           bodiedExtension({ ...extensionAttrs, layout: 'full-width' })(
