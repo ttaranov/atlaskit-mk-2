@@ -11,7 +11,7 @@ import type {
 import { oneOf } from './handy';
 
 export type TreeMutation = {|
-  children?: Array<TreeItem>,
+  children?: Array<ItemId>,
   hasChildren?: boolean,
   isExpanded?: boolean,
   isChildrenLoading?: boolean,
@@ -38,7 +38,7 @@ export const mutateTree = (
   tree: TreeData,
   itemId: ItemId,
   mutation: TreeMutation,
-): TreeItem => {
+): TreeData => {
   const itemToChange = tree.items[itemId];
   if (!itemToChange) {
     return tree;
