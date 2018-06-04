@@ -59,6 +59,19 @@ const forbiddenBody = {
   },
 };
 
+const notFoundBody = {
+  meta: {
+    visibility: 'not_found',
+    access: 'forbidden',
+    auth: [serviceAuth],
+    definitionId,
+  },
+  data: {
+    '@context': context,
+    generator,
+  },
+};
+
 const flowResponsesByUrl = {
   'public-happy': [
     {
@@ -120,7 +133,8 @@ const flowResponsesByUrl = {
   ],
   'not-found': [
     {
-      status: 404,
+      status: 200,
+      body: notFoundBody,
     },
   ],
   error: [
