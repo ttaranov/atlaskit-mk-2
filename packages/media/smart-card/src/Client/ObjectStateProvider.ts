@@ -12,9 +12,10 @@ import {
 import { Command } from './Command';
 import { fetch } from './fetch';
 
+// @see https://product-fabric.atlassian.net/wiki/spaces/CS/pages/279347271/Object+Provider
 interface ResolveResponse {
   meta: {
-    visibility: 'public' | 'restricted' | 'other';
+    visibility: 'public' | 'restricted' | 'other' | 'not_found';
     access: 'granted' | 'unauthorised' | 'forbidden';
     auth: {
       key: string;
@@ -30,10 +31,10 @@ interface ResolveResponse {
 
 export type ObjectStatus =
   | 'resolving'
+  | 'not-found'
   | 'resolved'
   | 'unauthorised'
   | 'forbidden'
-  | 'not-found'
   | 'errored';
 
 export interface ObjectService {
@@ -102,7 +103,7 @@ export class ObjectStateProvider {
           resourceUrl: encodeURI(objectUrl),
         }).pipe(
           map<ResolveResponse, ObjectState>(json => {
-            if (json === undefined) {
+            if (json.meta.visibility === 'not_found') {
               return {
                 status: 'not-found',
                 services: [],
