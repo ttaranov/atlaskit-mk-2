@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.15
+- [patch] ED-4582, fix for hyperlink floating toolbar not closing in bitbucket even after content is saved. [899b395](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/899b395)
+- [patch] Updated dependencies [899b395](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/899b395)
+
 ## 72.1.14
 - [patch] ED-4768 handle null ref callback on full-page scroll container [73bff15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/73bff15)
 - [none] Updated dependencies [73bff15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/73bff15)
