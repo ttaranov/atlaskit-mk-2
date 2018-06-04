@@ -1,9 +1,10 @@
 import { Subject, Observable } from 'rxjs';
 import mock, { once } from 'xhr-mock';
-import { Command } from '../../src/Client/Command';
-import { ObjectStateProvider } from '../../src/Client/ObjectStateProvider';
+import { Client } from '../../src/Client';
 
-const RESOLVE_URL = 'http://object-resolver-service/resolve';
+const RESOLVE_URL =
+  'https://api-private.stg.atlassian.com/object-resolver/resolve';
+const OBJECT_URL = 'http://example.com/foobar';
 
 const auth = [];
 
@@ -15,12 +16,8 @@ const generator = {
 
 const name = 'My Page';
 
-function createProvider($reload?: Subject<Command>) {
-  return new ObjectStateProvider({
-    serviceUrl: 'http://object-resolver-service',
-    objectUrl: 'https://example.com/foobar',
-    $reload: $reload || new Subject(),
-  });
+function createClient() {
+  return new Client();
 }
 
 const nth = (n: number) => <T>(source: Observable<T>) =>
@@ -64,13 +61,13 @@ function resolved() {
   );
 }
 
-describe('ObjectStateProvider', () => {
+describe('Client', () => {
   beforeEach(() => mock.setup());
   afterEach(() => mock.teardown());
 
   it('should be resolving when the object is being retrieved', async () => {
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(0))
       .toPromise();
     expect(state.status).toEqual('resolving');
@@ -94,8 +91,8 @@ describe('ObjectStateProvider', () => {
       }),
     );
 
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(1))
       .toPromise();
     expect(state.status).toEqual('not-found');
@@ -106,8 +103,8 @@ describe('ObjectStateProvider', () => {
   it('should be resolved when the object has been retrieved', async () => {
     resolved();
 
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
@@ -139,8 +136,8 @@ describe('ObjectStateProvider', () => {
       }),
     );
 
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(1))
       .toPromise();
     expect(state.status).toEqual('unauthorised');
@@ -171,8 +168,8 @@ describe('ObjectStateProvider', () => {
       }),
     );
 
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(1))
       .toPromise();
     expect(state.status).toEqual('forbidden');
@@ -184,12 +181,12 @@ describe('ObjectStateProvider', () => {
   });
 
   it('should be errored when the object cannot be retrieved', async () => {
-    mock.post('http://object-resolver-service/resolve', {
+    mock.post(RESOLVE_URL, {
       status: 500,
     });
 
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(1))
       .toPromise();
     expect(state.status).toEqual('errored');
@@ -205,8 +202,8 @@ describe('ObjectStateProvider', () => {
       Promise.reject(new Error('Uh oh')),
     );
 
-    const state = await createProvider()
-      .observable()
+    const state = await createClient()
+      .get(OBJECT_URL)
       .pipe(nth(1))
       .toPromise();
     expect(state.status).toEqual('errored');
@@ -214,15 +211,13 @@ describe('ObjectStateProvider', () => {
     expect(state.data).toBeUndefined();
   });
 
-  it('should reload when the triggered for the same url but no provider', done => {
+  it('should reload when reload is called for the same provider', done => {
     expect.assertions(4);
     resolved();
     resolved();
     let count = 0;
-    const $reload = new Subject<Command>();
-    const provider = createProvider($reload);
-    const observable = provider.observable();
-    const subscription = observable.subscribe(({ status }) => {
+    const client = createClient();
+    const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
       switch (count++) {
         case 0:
           expect(status).toEqual('resolving');
@@ -230,10 +225,7 @@ describe('ObjectStateProvider', () => {
 
         case 1:
           expect(status).toEqual('resolved');
-          $reload.next({
-            type: 'reload',
-            url: 'https://example.com/foobar',
-          });
+          client.reload(definitionId);
           break;
 
         case 2:
@@ -257,15 +249,13 @@ describe('ObjectStateProvider', () => {
     });
   });
 
-  it('should not reload when triggered for a different url but no provider', done => {
+  it('should not reload when reload is called for a different provider', done => {
     expect.assertions(2);
     resolved();
     resolved();
     let count = 0;
-    const $reload = new Subject<Command>();
-    const provider = createProvider($reload);
-    const observable = provider.observable();
-    const subscription = observable.subscribe(({ status }) => {
+    const client = createClient();
+    const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
       switch (count++) {
         case 0:
           expect(status).toEqual('resolving');
@@ -273,89 +263,7 @@ describe('ObjectStateProvider', () => {
 
         case 1:
           expect(status).toEqual('resolved');
-          $reload.next({
-            type: 'reload',
-            url: 'https://example.com/barfoo',
-          });
-          setTimeout(() => {
-            // allow other requests to happen (and fail the test)
-            subscription.unsubscribe();
-            done();
-          }, 150);
-
-          break;
-
-        default:
-          done.fail();
-      }
-    });
-  });
-
-  it('should reload when triggered for a different url but the same provider', done => {
-    expect.assertions(4);
-    resolved();
-    resolved();
-    let count = 0;
-    const $reload = new Subject<Command>();
-    const provider = createProvider($reload);
-    const observable = provider.observable();
-    const subscription = observable.subscribe(({ status }) => {
-      switch (count++) {
-        case 0:
-          expect(status).toEqual('resolving');
-          break;
-
-        case 1:
-          expect(status).toEqual('resolved');
-          $reload.next({
-            type: 'reload',
-            url: 'https://example.com/foobar',
-            provider: 'def-456',
-          });
-          break;
-
-        case 2:
-          expect(status).toEqual('resolving');
-          break;
-
-        case 3:
-          expect(status).toEqual('resolved');
-
-          setTimeout(() => {
-            // allow other requests to happen (and fail the test)
-            subscription.unsubscribe();
-            done();
-          }, 150);
-
-          break;
-
-        default:
-          done.fail();
-      }
-    });
-  });
-
-  it('should not reload when triggered for a different url and a different provider', done => {
-    expect.assertions(2);
-    resolved();
-    resolved();
-    let count = 0;
-    const $reload = new Subject<Command>();
-    const provider = createProvider($reload);
-    const observable = provider.observable();
-    const subscription = observable.subscribe(({ status }) => {
-      switch (count++) {
-        case 0:
-          expect(status).toEqual('resolving');
-          break;
-
-        case 1:
-          expect(status).toEqual('resolved');
-          $reload.next({
-            type: 'reload',
-            url: 'https://example.com/barfoo',
-            provider: 'def-456',
-          });
+          client.reload('def-456');
           setTimeout(() => {
             // allow other requests to happen (and fail the test)
             subscription.unsubscribe();
@@ -373,16 +281,19 @@ describe('ObjectStateProvider', () => {
   it('should immediately replay the most recent state to additional subscribers', done => {
     expect.assertions(1);
     resolved();
-    const observable = createProvider().observable();
-    const subscription = observable.subscribe(async stateFromFirstObserver => {
-      if (stateFromFirstObserver.status === 'resolved') {
-        const stateFromSecondObserver = await observable
-          .pipe(nth(0))
-          .toPromise();
-        expect(stateFromSecondObserver).toEqual(stateFromFirstObserver);
-        subscription.unsubscribe();
-        done();
-      }
-    });
+    const client = createClient();
+    const subscription = client
+      .get(OBJECT_URL)
+      .subscribe(async stateFromFirstObserver => {
+        if (stateFromFirstObserver.status === 'resolved') {
+          const stateFromSecondObserver = await client
+            .get(OBJECT_URL)
+            .pipe(nth(0))
+            .toPromise();
+          expect(stateFromSecondObserver).toEqual(stateFromFirstObserver);
+          subscription.unsubscribe();
+          done();
+        }
+      });
   });
 });
