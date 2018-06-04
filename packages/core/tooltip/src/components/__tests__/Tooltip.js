@@ -3,7 +3,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { shallow, mount, ReactWrapper } from 'enzyme';
-import 'jest-styled-components';
 import Tooltip, { marshal } from '../Tooltip';
 import getPosition from '../utils/getPosition';
 
