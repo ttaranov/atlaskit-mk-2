@@ -27,7 +27,7 @@
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/theme": "^3.2.2",
     "react-select": "^2.0.0-beta.6",
-    "react-transition-group": "^2.2.1",
+    "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
     "react": "^16.3.0",
