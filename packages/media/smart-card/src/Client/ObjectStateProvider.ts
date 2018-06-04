@@ -79,7 +79,6 @@ export class ObjectStateProvider {
     this.url = objectUrl;
 
     /*
-
       This observable sends a request for each string observed on the subject. In-progress requests are cancelled.
       The responses are mapped to the object state
      */

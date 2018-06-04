@@ -244,7 +244,7 @@ describe('ObjectStateProvider', () => {
           expect(status).toEqual('resolved');
 
           setTimeout(() => {
-            // allow other requests to happen
+            // allow other requests to happen (and fail the test)
             subscription.unsubscribe();
             done();
           }, 150);
@@ -278,7 +278,7 @@ describe('ObjectStateProvider', () => {
             url: 'https://example.com/barfoo',
           });
           setTimeout(() => {
-            // allow other requests to happen
+            // allow other requests to happen (and fail the test)
             subscription.unsubscribe();
             done();
           }, 150);
@@ -322,7 +322,7 @@ describe('ObjectStateProvider', () => {
           expect(status).toEqual('resolved');
 
           setTimeout(() => {
-            // allow other requests to happen
+            // allow other requests to happen (and fail the test)
             subscription.unsubscribe();
             done();
           }, 150);
@@ -357,7 +357,7 @@ describe('ObjectStateProvider', () => {
             provider: 'def-456',
           });
           setTimeout(() => {
-            // allow other requests to happen
+            // allow other requests to happen (and fail the test)
             subscription.unsubscribe();
             done();
           }, 150);
