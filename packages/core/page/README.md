@@ -4,8 +4,8 @@ Provides Grid layouts for content & components
 
 ## Installation
 
-npm install @atlaskit/page
+yarn add @atlaskit/page
 
 ## Usage
 
-See [here](https://atlaskit.atlassian.com/packages/core/page)
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/page)
