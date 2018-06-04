@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.16
+- [patch] ED-4727, selection not set correctly when creating task item from toolbar. [c5d64df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5d64df)
+- [patch] Updated dependencies [c5d64df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5d64df)
+
 ## 72.1.15
 - [patch] ED-4582, fix for hyperlink floating toolbar not closing in bitbucket even after content is saved. [899b395](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/899b395)
 - [patch] Updated dependencies [899b395](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/899b395)
