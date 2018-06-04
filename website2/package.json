@@ -1,8 +1,9 @@
 {
   "name": "website2",
   "scripts": {
-    "build-dlls": "bolt workspaces exec -- webpack --config $(pwd)/workspaces.webpack.config.js",
-    "build": "webpack"
+    "build-dlls": "bolt workspaces exec --only-fs 'packages/core/*' --ignore '@atlaskit/polyfills' -- webpack --config $(pwd)/workspaces.webpack.config.js",
+    "build:with-dll": "webpack --config ./with-dll.webpack.config.js",
+    "build:without-dll": "webpack --config ./without-dll.webpack.config.js"
   },
   "dependencies": {
     "@atlaskit/analytics": "^3.0.1",
@@ -102,6 +103,7 @@
     "@atlaskit/util-service-support": "^2.0.7"
   },
   "devDependencies": {
+    "babel-loader": "^7.1.2",
     "webpack-cli": "^2.1.4"
   }
 }
