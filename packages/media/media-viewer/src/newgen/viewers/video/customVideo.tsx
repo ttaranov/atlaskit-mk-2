@@ -4,6 +4,7 @@ import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
 import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import HipchatOutgoingSoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
+import VidHdCircleIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
 import Video, {
   SetVolumeFunction,
@@ -29,7 +30,10 @@ import { hideControlsClassName } from '../../styled';
 import { Shortcut } from '../../shortcut';
 
 export interface CustomVideoProps {
-  src: string;
+  readonly src: string;
+  readonly isHDActive?: boolean;
+  readonly onHDToggleClick?: () => void;
+  readonly isHDAvailable: boolean;
   readonly showControls?: () => void;
 }
 
@@ -55,6 +59,28 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
     }
   };
 
+  renderHDButton = () => {
+    const { isHDAvailable, isHDActive, onHDToggleClick } = this.props;
+
+    if (!isHDAvailable) {
+      return;
+    }
+
+    return (
+      <Button
+        isSelected={isHDActive}
+        onClick={onHDToggleClick}
+        iconBefore={
+          <VidHdCircleIcon
+            primaryColor="#a0b0cb"
+            secondaryColor="#313d51"
+            label="hd"
+          />
+        }
+      />
+    );
+  };
+
   render() {
     const { src } = this.props;
 
@@ -77,7 +103,12 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
             );
             const fullScreenButton = (
               <Button
-                iconBefore={<EditorMediaFullWidthIcon label="fullscreen" />}
+                iconBefore={
+                  <EditorMediaFullWidthIcon
+                    primaryColor="white"
+                    label="fullscreen"
+                  />
+                }
                 onClick={actions.requestFullscreen}
               />
             );
@@ -105,6 +136,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                         {formatDuration(videoState.currentTime)} /{' '}
                         {formatDuration(videoState.duration)}
                       </CurrentTime>
+                      {this.renderHDButton()}
                       <VolumeWrapper>
                         <VolumeToggleWrapper>
                           <MutedIndicator isMuted={videoState.isMuted} />

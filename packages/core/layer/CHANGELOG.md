@@ -1,5 +1,13 @@
 # @atlaskit/layer
 
+## 3.2.0
+
+
+- [minor] Add `isAwlwaysFixed` prop to force layered content to render with fixed position to break out of non-visible overflow containers at the cost of scroll detachment [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
+- [none] Updated dependencies [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
+- [none] Updated dependencies [e20ac40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20ac40)
+- [none] Updated dependencies [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
+
 ## 3.1.1
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/docs@3.0.4

@@ -18,7 +18,7 @@ Linting is also run as part of our CI build process.
 
 A couple of steps are required to set linting integration within vscode.
 
-1. Download the stylelint vscode extension: https://marketplace.visualstudio.com/items?itemName=shinnn.stylelint
+1. Download the stylelint vscode extension: <https://marketplace.visualstudio.com/items?itemName=shinnn.stylelint>
 2. Add the following rules to your vscode workspace settings (or user settings if you prefer):
 ```
 {
@@ -150,7 +150,7 @@ However, sometimes the linting processor will give the wrong line number. In thi
 
 ### Misc
 
-Sometimes when using interpolations for things like property names, the processor won't be able to tell what it is. The solution is to help the processor out by tagging your interpolations with some comments. More information about this is provided here: https://www.styled-components.com/docs/tooling#interpolation-tagging
+Sometimes when using interpolations for things like property names, the processor won't be able to tell what it is. The solution is to help the processor out by tagging your interpolations with some comments. More information about this is provided here: <https://www.styled-components.com/docs/tooling#interpolation-tagging>
 
 E.g.
 
@@ -177,7 +177,7 @@ const Parent = styled.div`
 
 ## Disabling Rules
 
-Stylelint rules can be disabled within css, see https://github.com/stylelint/stylelint/blob/master/docs/user-guide/configuration.md#turning-rules-off-from-within-your-css.
+Stylelint rules can be disabled within css, see <https://github.com/stylelint/stylelint/blob/master/docs/user-guide/configuration.md#turning-rules-off-from-within-your-css>.
 
 ### Globally disabled rules
 
@@ -185,5 +185,5 @@ Some rules have been disabled via the stylelint-config-styled-components and sty
 
 We have also manually disabled some rules in our [.stylelintrc](../../.stylelintrc) that we thought didn't add value or would have required a lot of change to existing code.
 
-Finally, some rules didn't work well with typescript so we have disabled them for now although they may be fixed in a future update, see https://www.styled-components.com/docs/tooling#known-issues.
+Finally, some rules didn't work well with typescript so we have disabled them for now although they may be fixed in a future update, see <https://www.styled-components.com/docs/tooling#known-issues>.
 
