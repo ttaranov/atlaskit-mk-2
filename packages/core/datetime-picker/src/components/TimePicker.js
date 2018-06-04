@@ -36,6 +36,8 @@ type Props = {
   defaultIsOpen: boolean,
   /** Default for `value`. */
   defaultValue: string,
+  /** A function that formats the input value into the display value. */
+  formatValue: string => string,
   /** The icon to show in the field. */
   icon?: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -101,6 +103,7 @@ export default class TimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
+    formatValue: value => formatTime(value, timeFormat),
     isDisabled: false,
     name: '',
     onBlur: () => {},
@@ -203,6 +206,7 @@ export default class TimePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
+      formatValue,
       id,
       innerProps,
       isDisabled,
@@ -278,7 +282,7 @@ export default class TimePicker extends Component<Props, State> {
           value={
             value && {
               /* $FlowFixMe - complaining about required args that aren't required. */
-              label: formatTime(value, timeFormat),
+              label: formatValue(value),
               value,
             }
           }

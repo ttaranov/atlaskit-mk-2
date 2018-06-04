@@ -31,6 +31,8 @@ type Props = {
   defaultValue: string,
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: Array<string>,
+  /** A function that formats the input value into the display value. */
+  formatValue: string => string,
   /** The icon to show in the field. */
   icon: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -124,6 +126,7 @@ export default class DatePicker extends Component<Props, State> {
     appearance: 'default',
     autoFocus: false,
     disabled: [],
+    formatValue: value => format(parse(value), defaultDateFormat),
     icon: CalendarIcon,
     name: '',
     isDisabled: false,
@@ -254,6 +257,7 @@ export default class DatePicker extends Component<Props, State> {
     const {
       autoFocus,
       disabled,
+      formatValue,
       id,
       innerProps,
       isDisabled,
@@ -326,7 +330,7 @@ export default class DatePicker extends Component<Props, State> {
           placeholder={placeholder}
           value={
             value && {
-              label: format(parse(value), dateFormat),
+              label: formatValue(value),
               value,
             }
           }
