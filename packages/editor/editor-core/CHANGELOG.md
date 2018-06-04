@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.1.13
+- [patch] Fix issue where Code Block numbering would be mis-aligned in Firefox [6436efd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6436efd)
+- [none] Updated dependencies [6436efd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6436efd)
+
 ## 72.1.12
 - [patch] ED-4715, fix for weird borders around toolbar in full page editor. [942b5f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/942b5f1)
 - [patch] Updated dependencies [942b5f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/942b5f1)
