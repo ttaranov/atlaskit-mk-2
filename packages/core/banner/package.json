@@ -29,6 +29,7 @@
     "@atlaskit/button": "^7.2.5",
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/icon": "^11.3.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-test-renderer": "^16.3.0"
   }
 }
