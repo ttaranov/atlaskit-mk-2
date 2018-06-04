@@ -12,7 +12,6 @@ import {
   removeSelectedNode,
   removeParentNodeOfType,
   selectParentNodeOfType,
-  isNodeSelection,
   findSelectedNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
