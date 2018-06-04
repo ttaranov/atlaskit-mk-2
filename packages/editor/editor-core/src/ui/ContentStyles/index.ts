@@ -144,7 +144,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
         overflow: visible;
 
         code {
-          display: unset;
+          display: inline;
         }
       }
     }
