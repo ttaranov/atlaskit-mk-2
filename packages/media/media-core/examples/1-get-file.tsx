@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, SyntheticEvent } from 'react';
 import {
   // createStorybookContext,
+  videoProcessingFailedId,
   imageFileId,
   defaultServiceHost,
   defaultMediaPickerAuthProvider,
@@ -35,10 +36,18 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   componentDidMount() {
     this.getImageFile();
+    // this.getProcessingFailedFile();
   }
 
   getImageFile = () => {
     this.getFile(imageFileId.id, imageFileId.collectionName);
+  };
+
+  getProcessingFailedFile = () => {
+    this.getFile(
+      videoProcessingFailedId.id,
+      videoProcessingFailedId.collectionName,
+    );
   };
 
   onFileUpdate = (state: FileState) => {
@@ -58,16 +67,16 @@ class Example extends Component<ComponentProps, ComponentState> {
     this.addStream(stream);
   };
 
-  // type later
-  uploadFile = (event: SyntheticEvent<HTMLInputElement>) => {
+  uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0];
 
-    const stream = mediaContext.uploadFile({
+    const { deferredFileId } = mediaContext.uploadFile({
       content: file,
       name: file.name,
     });
+    const fileId = await deferredFileId;
 
-    this.addStream(stream);
+    console.log('uploadFile', fileId);
   };
 
   addStream = (stream: Observable<FileState>) => {
@@ -130,6 +139,6 @@ class Example extends Component<ComponentProps, ComponentState> {
 export default () => (
   <div>
     <Example />
-    <Example />
+    {/* <Example /> */}
   </div>
 );

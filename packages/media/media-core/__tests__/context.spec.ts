@@ -236,7 +236,6 @@ describe('Context', () => {
     });
   });
 
-  // await new Promise(resolve => setTimeout(resolve, 11));
   describe('.uploadFile()', () => {
     it('should call media-store uploadFile with given callbacks', () => {
       const context = createFakeContext();
