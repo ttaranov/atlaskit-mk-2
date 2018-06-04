@@ -26,4 +26,4 @@ yarn add @atlaskit/polyfills
 
 ## Usage
 
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/polyfills)
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/polyfills).

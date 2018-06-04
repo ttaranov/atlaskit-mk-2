@@ -10,4 +10,4 @@ yarn add @atlaskit/nps
 
 ## Usage
 
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/nps)
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/nps).

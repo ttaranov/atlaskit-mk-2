@@ -8,4 +8,4 @@ yarn add @atlaskit/page
 
 ## Usage
 
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/page)
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/page).
