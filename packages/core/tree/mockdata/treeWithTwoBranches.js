@@ -58,8 +58,8 @@ export const treeWithTwoBranches: TreeData = {
     '1-2-1': {
       id: '1-2-1',
       children: [],
-      hasChildren: true,
-      isExpanded: true,
+      hasChildren: false,
+      isExpanded: false,
       isChildrenLoading: false,
       data: {
         title: 'Child three',
