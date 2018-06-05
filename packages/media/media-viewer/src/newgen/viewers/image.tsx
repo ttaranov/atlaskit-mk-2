@@ -97,8 +97,8 @@ export class ImageViewer extends React.Component<
         const { response, cancel } = service.fetchImageBlobCancelable(
           fileItem,
           {
-            width: 1280,
-            height: 800,
+            width: 1920,
+            height: 1080,
             mode: 'fit',
             allowAnimated: true,
           },
