@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { ComponentClass, ImgHTMLAttributes } from 'react';
-import { borderRadius, size as csssize } from '../mixins';
+import { borderRadius, size as csssize } from '@atlaskit/media-ui';
 
 export interface ImageProps {
   size: number;

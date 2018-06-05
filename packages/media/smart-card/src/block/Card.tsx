@@ -1,17 +1,18 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { Subscription } from 'rxjs/Subscription';
 import LazyRender from 'react-lazily-render';
 import { auth } from '@atlassian/outbound-auth-flow-client';
 import { Client } from '../Client';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
-import { CardView, CardViewProps, minWidth, maxWidth } from './CardView';
 import { CollapsedFrame } from './CollapsedFrame';
 import { LoadingView } from './LoadingView';
+import { ResolvedView, ResolvedViewProps } from './ResolvedView';
 import { UnauthorisedView } from './UnauthorisedView';
 import { ForbiddenView } from './ForbiddenView';
 import { ErroredView } from './ErroredView';
-import { State, Service, Status } from '../Client/createObjectStateObservable';
-import { Subscription } from 'rxjs/Subscription';
+import { Service, Status } from '../Client/createObjectStateObservable';
+import { minWidth, maxWidth } from './dimensions';
 
 export interface CardProps {
   client?: Client;
@@ -27,7 +28,7 @@ export interface CardState {
   status: Status;
   provider?: string;
   services: Service[];
-  props?: CardViewProps;
+  props?: ResolvedViewProps;
 }
 export class Card extends React.Component<CardProps, CardState> {
   static contextTypes = {
@@ -149,8 +150,8 @@ export class Card extends React.Component<CardProps, CardState> {
   renderInTheCollapsedFrame(children: React.ReactNode) {
     return (
       <CollapsedFrame
-        minWidth={minWidth()}
-        maxWidth={maxWidth({ hasPreview: false })}
+        minWidth={minWidth}
+        maxWidth={maxWidth}
         onClick={this.handleFrameClick}
       >
         {children}
@@ -202,7 +203,7 @@ export class Card extends React.Component<CardProps, CardState> {
 
   renderResolvedState() {
     const { props } = this.state;
-    return <CardView {...props} />;
+    return <ResolvedView {...props} />;
   }
 
   renderContent() {

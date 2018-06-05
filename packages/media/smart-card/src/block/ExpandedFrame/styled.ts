@@ -9,7 +9,7 @@ import {
   akColorN300,
   akFontFamily,
 } from '@atlaskit/util-shared-styles';
-import { borderRadius, size, ellipsis } from '../mixins';
+import { borderRadius, size, ellipsis } from '@atlaskit/media-ui';
 
 const wrapperPadding = 8;
 export const className = 'media-card-frame';
@@ -54,28 +54,6 @@ function interactive({ isInteractive }: WrapperProps) {
     return '';
   }
 }
-
-/*
-
-  Conversation confirming widths with @Scotty:
-
-  # (Standalone links/smart-cards with a feature image) OR (Filmstrip links/smart-cards):
-
-    width: 100% => take up the full width of the container
-    max-width: 400px; but don't go larger than 400px
-    min-width: 240px; but don't go smaller than 240px
-
-      => so they'll all be 400px unless someone resizes the window
-
-  # (Standalone links/smart-cards without a feature image):
-
-    width: 100% => take up the full width of the container
-    max-width: 644px; but don't go larger than 664px
-    min-width: 240px; but don't go smaller than 240px
-
-      => so they'll all be 664px unless someone resizes the window
-
- */
 
 const wrapperStyles = css`
   ${borderRadius} ${minWidth} ${maxWidth} ${interactive} display: inline-flex;

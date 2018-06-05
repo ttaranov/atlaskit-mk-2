@@ -80,7 +80,7 @@ export function createObjectStateObservable(url: string, options: Options) {
     switchMap((cmd: Command) => {
       // ignore reloads for other providers
       if (cmd.type === 'reload' && cmd.provider !== provider) {
-        return Observable.of();
+        return Observable.empty();
       }
 
       return fetch<ResolveResponse>('post', `${serviceUrl}/resolve`, {
