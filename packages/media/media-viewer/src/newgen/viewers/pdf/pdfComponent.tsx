@@ -5,9 +5,11 @@ import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { PDFWrapper } from '../../styled';
 
+export const pdfViewerClassName = 'pdfViewer';
+
 /* tslint:disable:no-unused-expression */
 injectGlobal`
-  .pdfViewer {
+  .${pdfViewerClassName} {
     .page {
       margin: 1px auto -8px auto;
       border: 9px solid transparent;
@@ -39,6 +41,7 @@ export const fetch = async (url: string): Promise<Blob> => {
 
 export type Props = {
   doc: any;
+  onClose?: () => void;
 };
 
 export type State = {
@@ -67,11 +70,22 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     this.setState({ scale });
   };
 
+  private onClickCloseHandler = e => {
+    const { onClose } = this.props;
+
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
+  };
+
   render() {
     return (
       <div>
         <PDFWrapper innerRef={this.savePdfElement}>
-          <div className="pdfViewer" />
+          <div
+            className={pdfViewerClassName}
+            onClick={this.onClickCloseHandler}
+          />
         </PDFWrapper>
         <ZoomControls zoomLevel={this.state.scale} onChange={this.handleZoom} />
       </div>
