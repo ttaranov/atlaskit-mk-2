@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.1
+- [patch] Filter links from collections in MediaViewer NG [2ac8912](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ac8912)
+
 ## 15.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
