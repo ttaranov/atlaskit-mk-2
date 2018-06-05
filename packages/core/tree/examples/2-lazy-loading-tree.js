@@ -8,7 +8,7 @@ import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Spinner from '@atlaskit/spinner';
 import Tree from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem, TreeData } from '../src/types';
+import type { TreeItem, TreeData, ItemId } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 import { mutateTree } from '../src/utils/tree';
 
@@ -48,12 +48,12 @@ export default class LazyTree extends Component<void, State> {
 
   static getIcon(
     item: TreeItem,
-    onExpand: (item: TreeItem) => void,
-    onCollapse: (item: TreeItem) => void,
+    onExpand: (itemId: ItemId) => void,
+    onCollapse: (itemId: ItemId) => void,
   ) {
     if (item.isChildrenLoading) {
       return (
-        <SpinnerContainer onClick={() => onCollapse(item)}>
+        <SpinnerContainer onClick={() => onCollapse(item.id)}>
           <Spinner size={16} />
         </SpinnerContainer>
       );
@@ -63,13 +63,13 @@ export default class LazyTree extends Component<void, State> {
         <ChevronDownIcon
           label=""
           size="medium"
-          onClick={() => onCollapse(item)}
+          onClick={() => onCollapse(item.id)}
         />
       ) : (
         <ChevronRightIcon
           label=""
           size="medium"
-          onClick={() => onExpand(item)}
+          onClick={() => onExpand(item.id)}
         />
       );
     }
@@ -85,17 +85,17 @@ export default class LazyTree extends Component<void, State> {
     </div>
   );
 
-  onExpand = (item: TreeItem) => {
+  onExpand = (itemId: ItemId) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, item.id, { isChildrenLoading: true }),
+      tree: mutateTree(tree, itemId, { isChildrenLoading: true }),
     });
     setTimeout(() => {
       const freshTree = this.state.tree;
-      const currentItem: TreeItem = freshTree.items[item.id];
+      const currentItem: TreeItem = freshTree.items[itemId];
       if (currentItem.isChildrenLoading) {
         this.setState({
-          tree: mutateTree(freshTree, item.id, {
+          tree: mutateTree(freshTree, itemId, {
             isExpanded: true,
             isChildrenLoading: false,
           }),
@@ -104,10 +104,10 @@ export default class LazyTree extends Component<void, State> {
     }, 2000);
   };
 
-  onCollapse = (item: TreeItem) => {
+  onCollapse = (itemId: ItemId) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, item.id, {
+      tree: mutateTree(tree, itemId, {
         isExpanded: false,
         isChildrenLoading: false,
       }),

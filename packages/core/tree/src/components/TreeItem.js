@@ -17,8 +17,8 @@ export default class TreeItem extends Component<Props> {
     return renderItem({
       item,
       depth: path.length - 1,
-      onExpand: expandedItem => onExpand(expandedItem, path),
-      onCollapse: collapsedItem => onCollapse(collapsedItem, path),
+      onExpand: itemId => onExpand(itemId, path),
+      onCollapse: itemId => onCollapse(itemId, path),
     });
   }
 }

@@ -102,7 +102,7 @@ export default class InfiniteTree extends Component<void, State> {
   ) {
     if (item.isChildrenLoading) {
       return (
-        <SpinnerContainer onClick={() => onCollapse(item)}>
+        <SpinnerContainer onClick={() => onCollapse(item.id)}>
           <Spinner size={16} />
         </SpinnerContainer>
       );
@@ -112,13 +112,13 @@ export default class InfiniteTree extends Component<void, State> {
         <ChevronDownIcon
           label=""
           size="medium"
-          onClick={() => onCollapse(item)}
+          onClick={() => onCollapse(item.id)}
         />
       ) : (
         <ChevronRightIcon
           label=""
           size="medium"
-          onClick={() => onExpand(item)}
+          onClick={() => onExpand(item.id)}
         />
       );
     }
@@ -137,19 +137,19 @@ export default class InfiniteTree extends Component<void, State> {
     );
   };
 
-  onExpand = (item: TreeItem, path: Path) => {
+  onExpand = (itemId: ItemId, path: Path) => {
     const { tree }: State = this.state;
-    const newTree = mutateTree(tree, item.id, { isExpanded: true });
-    const newerTree = addRandomChildren(newTree, item.id, path, 20);
+    const newTree = mutateTree(tree, itemId, { isExpanded: true });
+    const newerTree = addRandomChildren(newTree, itemId, path, 20);
     this.setState({
       tree: newerTree,
     });
   };
 
-  onCollapse = (item: TreeItem) => {
+  onCollapse = (itemId: ItemId) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, item.id, {
+      tree: mutateTree(tree, itemId, {
         isExpanded: false,
         isChildrenLoading: false,
       }),

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example } from '@atlaskit/docs';
+import { md, Example, Props } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
 
 const Warning = p => (
@@ -48,4 +48,9 @@ export default md`
     />
   )}
   
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Tree')}
+    />
+  )}
 `;

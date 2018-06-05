@@ -1,22 +1,28 @@
 // @flow
 import * as React from 'react';
-import type { TreeItem, TargetPosition, TreeData, Path } from '../types';
+import type {
+  TreeItem,
+  TargetPosition,
+  TreeData,
+  Path,
+  ItemId,
+} from '../types';
 
 export type RenderItemParams = {|
   item: TreeItem,
   depth: number,
-  onExpand: (item: TreeItem) => void,
-  onCollapse: (item: TreeItem) => void,
+  onExpand: (itemId: ItemId) => void,
+  onCollapse: (itemId: ItemId) => void,
 |};
 
 export type Props = {|
   tree: TreeData,
-  onExpand: (item: TreeItem, path: Path) => void,
-  onCollapse: (item: TreeItem, path: Path) => void,
-  onDragStart: (item: TreeItem) => void,
+  onExpand: (itemId: ItemId, path: Path) => void,
+  onCollapse: (itemId: ItemId, path: Path) => void,
+  onDragStart: (itemId: ItemId) => void,
   onDragEnd: (
-    item: TreeItem,
-    targetItem: TreeItem,
+    itemId: ItemId,
+    targetId: ItemId,
     position: TargetPosition,
   ) => void,
   renderItem: RenderItemParams => React.Node,

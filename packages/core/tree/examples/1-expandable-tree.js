@@ -7,7 +7,7 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tree from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem, TreeData } from '../src/types';
+import type { TreeItem, TreeData, ItemId } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 import { mutateTree } from '../src/utils/tree';
 
@@ -37,21 +37,21 @@ export default class StaticTree extends Component<void, State> {
 
   static getIcon(
     item: TreeItem,
-    onExpand: (item: TreeItem) => void,
-    onCollapse: (item: TreeItem) => void,
+    onExpand: (itemId: ItemId) => void,
+    onCollapse: (itemId: ItemId) => void,
   ) {
     if (item.children && item.children.length > 0) {
       return item.isExpanded ? (
         <ChevronDownIcon
           label=""
           size="medium"
-          onClick={() => onCollapse(item)}
+          onClick={() => onCollapse(item.id)}
         />
       ) : (
         <ChevronRightIcon
           label=""
           size="medium"
-          onClick={() => onExpand(item)}
+          onClick={() => onExpand(item.id)}
         />
       );
     }
@@ -67,17 +67,17 @@ export default class StaticTree extends Component<void, State> {
     </div>
   );
 
-  onExpand = (item: TreeItem) => {
+  onExpand = (itemId: ItemId) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, item.id, { isExpanded: true }),
+      tree: mutateTree(tree, itemId, { isExpanded: true }),
     });
   };
 
-  onCollapse = (item: TreeItem) => {
+  onCollapse = (itemId: ItemId) => {
     const { tree }: State = this.state;
     this.setState({
-      tree: mutateTree(tree, item.id, { isExpanded: false }),
+      tree: mutateTree(tree, itemId, { isExpanded: false }),
     });
   };
 
