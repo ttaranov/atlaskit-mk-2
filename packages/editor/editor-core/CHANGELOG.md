@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.2.4
+- [patch] ED-4714: fix table jumping on hover over resize handles [b52a82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b52a82e)
+- [none] Updated dependencies [b52a82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b52a82e)
+
 ## 72.2.3
 - [patch] Fix Code Block appearance showing gray border in IE (ED-4766) [5e1313c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e1313c)
 - [none] Updated dependencies [5e1313c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e1313c)
