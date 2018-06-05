@@ -117,9 +117,10 @@ pipelines:
     build-visual-regression:
     - step:
           script:
-            - source ./puppeteer.sh
+            - source ./build/visual-regression/puppeteer.sh
             - source ./build-setup.sh
             - bolt install --pure-lockfile
+            #to overcome puppeteer drawback yarn add again
             - yarn add puppeteer
             - yarn test:vr
           caches:
