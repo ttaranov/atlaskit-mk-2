@@ -32,17 +32,6 @@ function getPortalContents(wrapper) {
   return new ReactWrapper(instance.props.children);
 }
 
-/* Render the actual base tooltip component as the root element so we can call root-only methods
- * on the tooltip component itself.
- * Note that instance() is now not root-only in enzyme 3 so this may not be needed in the majority
- * of cases.
- * We do need to use mount tests for checking the majority of our tooltip renders since the render
- * logic relies on ref callbacks for measurement and refs do not get executed when shallow rendering.
- */
-function mountBase(element) {
-  return mount(shallow(element).get(0));
-}
-
 describe('Tooltip', () => {
   beforeEach(() => {
     // $FlowFixMe - mocked import
@@ -65,7 +54,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       const instance = wrapper.instance();
       instance.show({ immediate: true });
@@ -88,7 +77,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       const instance = wrapper.instance();
 
@@ -115,7 +104,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       const instance = wrapper.instance();
 
@@ -144,7 +133,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       const instance = wrapper.instance();
 
@@ -173,7 +162,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       const instance = wrapper.instance();
 
@@ -205,7 +194,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
 
       expect(spy).not.toHaveBeenCalled();
@@ -225,7 +214,7 @@ describe('Tooltip', () => {
         <Tooltip onMouseOver={spy}>
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       expect(spy).not.toHaveBeenCalled();
       wrapper.simulate('mouseOver', event);
@@ -239,7 +228,7 @@ describe('Tooltip', () => {
         <Tooltip onMouseOver={mouseOverSpy}>
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
 
       expect(mouseOverSpy).not.toHaveBeenCalled();
@@ -318,7 +307,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
 
       expect(instance.mouseCoordinates).toBeNull();
@@ -340,7 +329,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
       instance.hide = jest.fn();
 
@@ -356,7 +345,7 @@ describe('Tooltip', () => {
         <Tooltip hideTooltipOnClick>
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
       instance.hide = jest.fn();
 
@@ -369,13 +358,13 @@ describe('Tooltip', () => {
     });
   });
 
-  describe('render', () => {
+  describe.only('render', () => {
     it('should use a div by default for the wrapping element', () => {
       const wrapper = shallow(
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       expect(wrapper.name()).toBe('div');
     });
@@ -385,7 +374,7 @@ describe('Tooltip', () => {
         <Tooltip tag="span">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       expect(wrapper.name()).toBe('span');
     });
@@ -395,12 +384,12 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       expect(wrapper.children().equals(<div>foo</div>)).toBe(true);
     });
 
     it('should render a tooltip after show method is called', () => {
-      const wrapper = mountBase(
+      const wrapper = mount(
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
@@ -419,7 +408,7 @@ describe('Tooltip', () => {
         <Tooltip>
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
       instance.show({ immediate: true });
       wrapper.update();
@@ -428,7 +417,7 @@ describe('Tooltip', () => {
     });
 
     it('should hide the tooltip when the hide method is called', () => {
-      const wrapper = mountBase(
+      const wrapper = mount(
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
@@ -453,7 +442,7 @@ describe('Tooltip', () => {
     });
 
     it('should call getPosition to get the correct tooltip position before showing tooltip', () => {
-      const wrapper = mountBase(
+      const wrapper = mount(
         <Tooltip content="Tooltip content" position="left">
           <div>foo</div>
         </Tooltip>,
@@ -499,7 +488,7 @@ describe('Tooltip', () => {
     });
 
     it('should render the tooltip with the correct coordinates', () => {
-      const wrapper = mountBase(
+      const wrapper = mount(
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
@@ -523,7 +512,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       const instance = wrapper.instance();
       instance.show({ immediate: true });
@@ -532,7 +521,7 @@ describe('Tooltip', () => {
     });
 
     it('should render tooltip with appropriate styles', () => {
-      const wrapper = mountBase(
+      const wrapper = mount(
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
@@ -554,7 +543,7 @@ describe('Tooltip', () => {
         background: pink;
       `;
 
-      const wrapper = mountBase(
+      const wrapper = mount(
         <Tooltip content="Tooltip content" component={customTooltip}>
           <div>foo</div>
         </Tooltip>,
