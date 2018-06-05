@@ -1,12 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/publishReplay';
-import 'rxjs/add/operator/takeWhile';
-import 'rxjs/add/operator/concat';
-import 'rxjs/add/operator/map';
 
 import {
   MediaStore,
