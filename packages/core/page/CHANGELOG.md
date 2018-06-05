@@ -1,5 +1,10 @@
 # @atlaskit/page
 
+## 6.0.4
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/banner@5.0.3
+  - @atlaskit/navigation@31.0.5
+
 ## 6.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/toggle@3.0.2

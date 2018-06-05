@@ -1,5 +1,8 @@
 # @atlaskit/banner
 
+## 5.0.3
+- [patch] Color of the links inside banner will follow the text color [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+
 ## 5.0.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

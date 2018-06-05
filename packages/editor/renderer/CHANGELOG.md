@@ -1,5 +1,16 @@
 # @atlaskit/renderer
 
+## 17.0.9
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/media-card@28.0.6
+  - @atlaskit/util-data-test@9.1.9
+  - @atlaskit/task-decision@6.0.9
+  - @atlaskit/mention@12.0.3
+  - @atlaskit/editor-json-transformer@3.0.8
+  - @atlaskit/media-filmstrip@8.0.9
+  - @atlaskit/editor-test-helpers@4.0.2
+  - @atlaskit/editor-common@10.1.9
+
 ## 17.0.8
 - [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
   - @atlaskit/media-card@28.0.5

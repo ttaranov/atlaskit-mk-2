@@ -1,5 +1,11 @@
 # @atlaskit/util-data-test
 
+## 9.1.9
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/emoji@35.0.6
+  - @atlaskit/task-decision@6.0.9
+  - @atlaskit/mention@12.0.3
+
 ## 9.1.8
 - [patch] FS-2007 change productivity emoji order [609ec2f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/609ec2f)
 - [none] Updated dependencies [609ec2f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/609ec2f)

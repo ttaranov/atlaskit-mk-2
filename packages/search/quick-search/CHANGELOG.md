@@ -1,5 +1,9 @@
 # @atlaskit/quick-search
 
+## 1.7.2
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/navigation@31.0.5
+
 ## 1.7.1
 - [patch] Fix searchbox height. [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
 - [none] Updated dependencies [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)

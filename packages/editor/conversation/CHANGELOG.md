@@ -1,5 +1,14 @@
 # @atlaskit/conversation
 
+## 7.6.3
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/util-data-test@9.1.9
+  - @atlaskit/reactions@12.0.11
+  - @atlaskit/renderer@17.0.9
+  - @atlaskit/editor-core@72.2.2
+  - @atlaskit/comment@3.1.9
+  - @atlaskit/editor-common@10.1.9
+
 ## 7.6.2
 - [patch] Comments should re-render when the user is changed [507ff28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/507ff28)
 

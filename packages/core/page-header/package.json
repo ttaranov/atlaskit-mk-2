@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page-header",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A React component that represents Header of an application page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -32,7 +32,7 @@
     "@atlaskit/field-text": "^5.0.3",
     "@atlaskit/inline-edit": "^5.0.2",
     "@atlaskit/input": "^2.0.2",
-    "@atlaskit/page": "^6.0.3",
+    "@atlaskit/page": "^6.0.4",
     "@atlaskit/single-select": "^4.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-test-renderer": "^16.3.0"

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/quick-search",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "A quick-search component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/navigation": "^31.0.4",
+    "@atlaskit/navigation": "^31.0.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "faker": "^4.1.0",
     "prop-types": "^15.5.10",

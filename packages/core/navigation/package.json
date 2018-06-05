@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "31.0.4",
+  "version": "31.0.5",
   "description": "A React component that renders a sidebar, for navigation purposes.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -53,8 +53,8 @@
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/field-text": "^5.0.3",
     "@atlaskit/logo": "^7.0.1",
-    "@atlaskit/page": "^6.0.3",
-    "@atlaskit/quick-search": "^1.4.2",
+    "@atlaskit/page": "^6.0.4",
+    "@atlaskit/quick-search": "^1.7.2",
     "@atlaskit/single-select": "^4.0.3",
     "@atlaskit/toggle": "^3.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

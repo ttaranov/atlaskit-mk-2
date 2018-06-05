@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 31.0.5
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/page@6.0.4
+  - @atlaskit/quick-search@1.7.2
+
 ## 31.0.4
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0

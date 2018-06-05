@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "17.0.8",
+  "version": "17.0.9",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -19,13 +19,13 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^4.0.4",
-    "@atlaskit/editor-common": "^10.1.4",
-    "@atlaskit/editor-json-transformer": "^3.0.7",
+    "@atlaskit/editor-common": "^10.1.9",
+    "@atlaskit/editor-json-transformer": "^3.0.8",
     "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/media-card": "^28.0.5",
-    "@atlaskit/media-filmstrip": "^8.0.7",
-    "@atlaskit/mention": "^12.0.2",
-    "@atlaskit/task-decision": "^6.0.7",
+    "@atlaskit/media-card": "^28.0.6",
+    "@atlaskit/media-filmstrip": "^8.0.9",
+    "@atlaskit/mention": "^12.0.3",
+    "@atlaskit/task-decision": "^6.0.9",
     "@atlaskit/theme": "^3.2.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prosemirror-model": "^1.2.0",
@@ -37,11 +37,11 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/editor-test-helpers": "^4.0.0",
+    "@atlaskit/editor-test-helpers": "^4.0.2",
     "@atlaskit/media-core": "^18.1.0",
     "@atlaskit/media-test-helpers": "^13.0.0",
-    "@atlaskit/util-data-test": "^9.1.7",
     "@atlaskit/size-detector": "^3.0.0",
+    "@atlaskit/util-data-test": "^9.1.9",
     "@types/prosemirror-model": "^1.0.0",
     "react-live-clock": "^2.0.2"
   }

@@ -1,5 +1,9 @@
 # @atlaskit/media-picker
 
+## 7.0.6
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/media-card@28.0.6
+
 ## 7.0.5
 - [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
   - @atlaskit/media-store@3.1.1

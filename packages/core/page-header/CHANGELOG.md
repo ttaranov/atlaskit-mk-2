@@ -1,5 +1,9 @@
 # @atlaskit/page-header
 
+## 4.0.3
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/page@6.0.4
+
 ## 4.0.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/page@6.0.3

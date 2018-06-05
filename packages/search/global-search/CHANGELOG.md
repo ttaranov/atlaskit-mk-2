@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 3.3.4
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/page@6.0.4
+  - @atlaskit/navigation@31.0.5
+  - @atlaskit/quick-search@1.7.2
+
 ## 3.3.3
 - [patch] Update people results link path in global search [be04163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be04163)
 

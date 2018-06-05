@@ -1,5 +1,13 @@
 # @atlaskit/website
 
+## 1.5.24
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/page@6.0.4
+  - @atlaskit/media-card@28.0.6
+  - @atlaskit/media-filmstrip@8.0.9
+  - @atlaskit/navigation@31.0.5
+  - @atlaskit/quick-search@1.7.2
+
 ## 1.5.23
 - [patch] Fix fullscreen examples increasing height on each browser repaint [5118ca4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5118ca4)
 
