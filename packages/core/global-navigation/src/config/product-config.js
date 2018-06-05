@@ -44,83 +44,93 @@ const generateAvatar = profileIconUrl => () => (
 
 export default function generateProductConfig(props: GlobalNavigationProps) {
   // Add key only if prop is passed.
-  // Flow doesn't seem to understand the syntax
-  // $FlowFixMe
+  // TODO: Make this function less verbose
   const product = {
-    ...(props.productIcon && { icon: props.productIcon }),
-    ...(props.onProductClick && { onClick: props.onProductClick }),
-    ...(props.productTooltip && { tooltip: props.productTooltip }),
-    ...(props.productTooltip && { label: props.productTooltip }),
+    ...(props.productIcon ? { icon: props.productIcon } : null),
+    ...(props.onProductClick ? { onClick: props.onProductClick } : null),
+    ...(props.productTooltip ? { tooltip: props.productTooltip } : null),
+    ...(props.productTooltip ? { label: props.productTooltip } : null),
   };
-  // $FlowFixMe
   const create = {
-    ...(props.onCreateClick && { onClick: props.onCreateClick }),
-    ...(props.createTooltip && { tooltip: props.createTooltip }),
-    ...(props.createTooltip && { label: props.createTooltip }),
+    ...(props.onCreateClick ? { onClick: props.onCreateClick } : null),
+    ...(props.createTooltip ? { tooltip: props.createTooltip } : null),
+    ...(props.createTooltip ? { label: props.createTooltip } : null),
   };
-  // $FlowFixMe
   const search = {
-    ...(props.onSearchClick && { onClick: props.onSearchClick }),
-    ...(props.searchTooltip && { tooltip: props.searchTooltip }),
-    ...(props.searchTooltip && { label: props.searchTooltip }),
+    ...(props.onSearchClick ? { onClick: props.onSearchClick } : null),
+    ...(props.searchTooltip ? { tooltip: props.searchTooltip } : null),
+    ...(props.searchTooltip ? { label: props.searchTooltip } : null),
   };
-  // $FlowFixMe
   const yourWork = {
-    ...(props.onYourWorkClick && { onClick: props.onYourWorkClick }),
-    ...(props.yourWorkTooltip && { tooltip: props.yourWorkTooltip }),
-    ...(props.yourWorkTooltip && { label: props.yourWorkTooltip }),
+    ...(props.onYourWorkClick ? { onClick: props.onYourWorkClick } : null),
+    ...(props.yourWorkTooltip ? { tooltip: props.yourWorkTooltip } : null),
+    ...(props.yourWorkTooltip ? { label: props.yourWorkTooltip } : null),
   };
-  // $FlowFixMe
   const notification = {
-    ...(props.onNotificationClick && { onClick: props.onNotificationClick }),
-    ...(props.notificationTooltip && { tooltip: props.notificationTooltip }),
-    ...(props.notificationTooltip && { label: props.notificationTooltip }),
-    ...(props.notificationCount && {
-      badge: ((notificationCount: number) => () => (
-        <Badge appearance="important" value={notificationCount} />
-      ))(props.notificationCount),
-    }),
+    ...(props.onNotificationClick
+      ? { onClick: props.onNotificationClick }
+      : null),
+    ...(props.notificationTooltip
+      ? { tooltip: props.notificationTooltip }
+      : null),
+    ...(props.notificationTooltip
+      ? { label: props.notificationTooltip }
+      : null),
+    ...(props.notificationCount
+      ? {
+          badge: ((notificationCount: number) => () => (
+            <Badge appearance="important" value={notificationCount} />
+          ))(props.notificationCount),
+        }
+      : null),
   };
-  // $FlowFixMe
   const people = {
-    ...(props.onPeopleClick && { onClick: props.onPeopleClick }),
-    ...(props.peopleTooltip && { tooltip: props.peopleTooltip }),
-    ...(props.peopleTooltip && { label: props.peopleTooltip }),
+    ...(props.onPeopleClick ? { onClick: props.onPeopleClick } : null),
+    ...(props.peopleTooltip ? { tooltip: props.peopleTooltip } : null),
+    ...(props.peopleTooltip ? { label: props.peopleTooltip } : null),
   };
-  // $FlowFixMe
   const appSwitcher = {
-    ...(props.onAppSwitcherClick && { onClick: props.onAppSwitcherClick }),
-    ...(props.appSwitcherTooltip && { tooltip: props.appSwitcherTooltip }),
-    ...(props.appSwitcherTooltip && { label: props.appSwitcherTooltip }),
-    ...(props.appSwitcherComponent && {
-      component: props.appSwitcherComponent,
-    }),
+    ...(props.onAppSwitcherClick
+      ? { onClick: props.onAppSwitcherClick }
+      : null),
+    ...(props.appSwitcherTooltip
+      ? { tooltip: props.appSwitcherTooltip }
+      : null),
+    ...(props.appSwitcherTooltip ? { label: props.appSwitcherTooltip } : null),
+    ...(props.appSwitcherComponent
+      ? {
+          component: props.appSwitcherComponent,
+        }
+      : null),
   };
-  // $FlowFixMe
   const help = {
-    ...(props.onHelpClick && { onClick: props.onHelpClick }),
-    ...(props.helpTooltip && { tooltip: props.helpTooltip }),
-    ...(props.helpTooltip && { label: props.helpTooltip }),
-    ...(props.helpItems && {
-      component: (helpItems => generateDropDown(QuestionIcon, helpItems))(
-        props.helpItems,
-      ),
-    }),
+    ...(props.onHelpClick ? { onClick: props.onHelpClick } : null),
+    ...(props.helpTooltip ? { tooltip: props.helpTooltip } : null),
+    ...(props.helpTooltip ? { label: props.helpTooltip } : null),
+    ...(props.helpItems
+      ? {
+          component: (helpItems => generateDropDown(QuestionIcon, helpItems))(
+            props.helpItems,
+          ),
+        }
+      : null),
   };
-  // $FlowFixMe
   const profile = {
-    ...(props.onProfileClick && { onClick: props.onProfileClick }),
-    ...(props.profileTooltip && { tooltip: props.profileTooltip }),
-    ...(props.profileTooltip && { label: props.profileTooltip }),
-    ...(props.profileItems && {
-      component: (profileItems =>
-        generateDropDown(generateAvatar(props.profileIconUrl), profileItems))(
-        props.profileItems,
-      ),
-    }),
+    ...(props.onProfileClick ? { onClick: props.onProfileClick } : null),
+    ...(props.profileTooltip ? { tooltip: props.profileTooltip } : null),
+    ...(props.profileTooltip ? { label: props.profileTooltip } : null),
+    ...(props.profileItems
+      ? {
+          component: (profileItems =>
+            generateDropDown(
+              generateAvatar(props.profileIconUrl),
+              profileItems,
+            ))(props.profileItems),
+        }
+      : null),
   };
 
-  return removeEmptyItems({
+  const obj = removeEmptyItems({
     product,
     create,
     search,
@@ -131,4 +141,6 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     help,
     profile,
   });
+  console.log(obj);
+  return obj;
 }
