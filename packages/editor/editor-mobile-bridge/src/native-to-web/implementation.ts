@@ -8,6 +8,9 @@ import {
   EditorActions,
   CustomMediaPicker,
   BlockTypeState,
+  ListsState,
+  indentList,
+  outdentList,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
@@ -21,6 +24,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   editorActions: EditorActions = new EditorActions();
   mediaPicker: CustomMediaPicker | undefined;
   blockState: BlockTypeState | undefined;
+  listState: ListsState | undefined;
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -112,6 +116,29 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   onBlockSelected(blockType: string) {
     if (this.blockState && this.editorView) {
       this.blockState.toggleBlockType(blockType, this.editorView);
+    }
+  }
+
+  onOrderedListSelected() {
+    if (this.listState && this.editorView) {
+      this.listState.toggleOrderedList(this.editorView);
+    }
+  }
+  onBulletListSelected() {
+    if (this.listState && this.editorView) {
+      this.listState.toggleBulletList(this.editorView);
+    }
+  }
+
+  onIndentList() {
+    if (this.listState && this.editorView) {
+      indentList()(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  onOutdentList() {
+    if (this.listState && this.editorView) {
+      outdentList()(this.editorView.state, this.editorView.dispatch);
     }
   }
 }

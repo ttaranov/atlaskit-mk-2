@@ -4,6 +4,7 @@ import {
   default as NativeBridge,
   MediaBridge,
   PromiseBridge,
+  ListBridge,
 } from './bridge';
 
 export default class AndroidBridge implements NativeBridge {
@@ -11,12 +12,14 @@ export default class AndroidBridge implements NativeBridge {
   textFormatBridge: TextFormattingBridge;
   mediaBridge: MediaBridge;
   promiseBridge: PromiseBridge;
+  listBridge: ListBridge;
 
   constructor() {
     this.mentionBridge = window.mentionsBridge as MentionBridge;
     this.textFormatBridge = window.textFormatBridge as TextFormattingBridge;
     this.mediaBridge = window.mediaBridge as MediaBridge;
     this.promiseBridge = window.promiseBridge as PromiseBridge;
+    this.listBridge = window.listBridge as ListBridge;
   }
 
   showMentions(query: String) {
@@ -48,5 +51,8 @@ export default class AndroidBridge implements NativeBridge {
   }
   updateBlockState(currentBlockType: string) {
     this.textFormatBridge.updateBlockState(currentBlockType);
+  }
+  updateListState(listState: string) {
+    this.listBridge.updateListState(listState);
   }
 }

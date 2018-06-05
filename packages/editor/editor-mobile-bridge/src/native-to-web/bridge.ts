@@ -14,4 +14,8 @@ export default interface NativeToWebBridge {
   onPromiseResolved(uuid: string, paylaod: string);
   onPromiseRejected(uuid: string);
   onBlockSelected(blockType: string);
+  onOrderedListSelected();
+  onBulletListSelected();
+  onIndentList();
+  onOutdentList();
 };

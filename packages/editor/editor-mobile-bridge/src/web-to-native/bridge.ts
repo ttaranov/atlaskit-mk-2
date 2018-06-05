@@ -18,8 +18,13 @@ export interface PromiseBridge {
   submitPromise(name: string, uuid: string, args: string);
 }
 
+export interface ListBridge {
+  updateListState(listState: string);
+}
+
 export default interface NativeBridge
   extends MentionBridge,
     TextFormattingBridge,
     MediaBridge,
-    PromiseBridge {};
+    PromiseBridge,
+    ListBridge {};

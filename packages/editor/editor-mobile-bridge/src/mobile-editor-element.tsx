@@ -5,9 +5,12 @@ import {
   mentionPluginKey,
   textFormattingStateKey,
   blockPluginStateKey,
+  ListsState,
+  listsStateKey,
 } from '@atlaskit/editor-core';
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
-import { valueOf } from './web-to-native/markState';
+import { valueOf as valueOfMarkState } from './web-to-native/markState';
+import { valueOf as valueOfListState } from './web-to-native/listState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
 import { ContextFactory } from '@atlaskit/media-core';
@@ -62,6 +65,7 @@ class EditorWithState extends Editor {
     subscribeForMentionStateChanges(instance.view);
     subscribeForTextFormatChanges(instance.view);
     subscribeForBlockStateChanges(instance.view);
+    subscribeForListStateChanges(instance.view);
   }
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
@@ -94,7 +98,7 @@ function subscribeForTextFormatChanges(view: EditorView) {
   bridge.textFormattingPluginState = textFormattingPluginState;
   if (textFormattingPluginState) {
     textFormattingPluginState.subscribe(state =>
-      toNativeBridge.updateTextFormat(JSON.stringify(valueOf(state))),
+      toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state))),
     );
   }
 }
@@ -107,6 +111,14 @@ function subscribeForBlockStateChanges(view: EditorView) {
       toNativeBridge.updateBlockState(state.currentBlockType.name),
     );
   }
+}
+
+function subscribeForListStateChanges(view: EditorView) {
+  const listState: ListsState = listsStateKey.getState(view.state);
+  bridge.listState = listState;
+  listState.subscribe(state => {
+    toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
+  });
 }
 
 function getToken(context?: any) {
@@ -141,6 +153,7 @@ export default function mobileEditor() {
         customMediaPicker: new MobilePicker(),
         provider: Promise.resolve(createMediaProvider()),
       }}
+      allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}
