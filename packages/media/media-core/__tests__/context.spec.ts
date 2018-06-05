@@ -211,28 +211,108 @@ describe('Context', () => {
     });
   });
 
-  describe('getFile', () => {
-    it.skip('should return the local state if the file is still uploading', () => {
-      const context = createFakeContext();
-      const observer = context.getFile('1');
+  describe('.getFile()', () => {
+    it('should fetch the file if it doesnt exist locally', () => {
+      return new Promise(resolve => {
+        const context = createFakeContext();
+        const getFile = jest.fn().mockReturnValue({
+          data: {
+            processingStatus: 'succeeded',
+            id: '1',
+            name: 'file-one',
+            size: 1,
+            fooo: 'bar',
+          },
+        });
+        (context as any).mediaStore = {
+          getFile,
+        };
+        const observer = context.getFile('1');
 
-      observer.subscribe({
-        next() {},
+        observer.subscribe({
+          next(state) {
+            expect(state).toEqual({
+              id: '1',
+              status: 'processed',
+              name: 'file-one',
+              size: 1,
+              artifacts: undefined,
+              binaryUrl: '/file/1/binary',
+            });
+            resolve();
+          },
+        });
+
+        expect(getFile).toHaveBeenCalledTimes(1);
+        expect(getFile).lastCalledWith('1', { collection: undefined });
       });
     });
 
-    it.skip('should fetch the file remotelly when there is no local state for it', async () => {
-      const context = createFakeContext();
-      const observer = context.getFile('1');
+    it('should poll for changes and return the latest file state', () => {
+      jest.useFakeTimers();
 
-      observer.subscribe({
-        next(state) {
-          console.log('state', state);
-        },
-        complete() {
-          console.log('complete');
+      return new Promise(resolve => {
+        const context = createFakeContext();
+        let getFileCalledTimes = 0;
+        const getFile = jest.fn().mockImplementation(() => {
+          getFileCalledTimes++;
+          const processingStatus =
+            getFileCalledTimes === 2 ? 'succeeded' : 'pending';
+
+          return {
+            data: {
+              processingStatus,
+              id: '1',
+              name: 'file-one',
+              size: 1,
+            },
+          };
+        });
+        (context as any).mediaStore = { getFile };
+        const observer = context.getFile('1');
+        const next = jest.fn();
+
+        observer.subscribe({
+          next,
+          complete() {
+            expect(getFile).toHaveBeenCalledTimes(2);
+            expect(next).toHaveBeenCalledTimes(2);
+            expect(next.mock.calls[0][0].status).toEqual('processing');
+            expect(next.mock.calls[1][0].status).toEqual('processed');
+            resolve();
+          },
+        });
+
+        setImmediate(jest.runAllTimers);
+      });
+    });
+
+    it('should pass options down', () => {
+      const context = createFakeContext();
+      const getFile = jest.fn().mockReturnValue({
+        data: {
+          processingStatus: 'succeeded',
+          id: '1',
+          name: 'file-one',
+          size: 1,
         },
       });
+      const has = jest.fn();
+      (context as any).mediaStore = {
+        getFile,
+      };
+      (context as any).fileStreamsCache = {
+        has,
+        set: jest.fn(),
+        get: jest.fn(),
+      };
+      context.getFile('1', {
+        collectionName: 'my-collection',
+        occurrenceKey: 'some-occurrenceKey',
+      });
+
+      expect(getFile).lastCalledWith('1', { collection: 'my-collection' });
+      expect(has).toBeCalledWith('1-my-collection-some-occurrenceKey');
     });
   });
 

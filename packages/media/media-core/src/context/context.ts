@@ -88,7 +88,7 @@ export class ContextFactory {
   }
 }
 
-const pollingInterval = 3000;
+const pollingInterval = 1000;
 
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
