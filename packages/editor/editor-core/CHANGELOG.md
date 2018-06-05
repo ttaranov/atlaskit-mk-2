@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.2.3
+- [patch] Fix Code Block appearance showing gray border in IE (ED-4766) [5e1313c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e1313c)
+- [none] Updated dependencies [5e1313c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e1313c)
+
 ## 72.2.2
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/media-card@28.0.6
