@@ -12,7 +12,7 @@ import {
 
 import { containerViews, rootViews } from './mock-data';
 
-const maybeRegisterViews = (viewState: *, views: { [string]: any[] }) => () => {
+const maybeRegisterViews = (viewState: *, views: { [string]: any }) => () => {
   const viewKeys = Object.keys(views);
   viewKeys.forEach(key => {
     if (viewState.views[key]) {
@@ -119,8 +119,99 @@ class BacklogViewBase extends Component<*> {
     );
   }
 }
+
 export const BacklogView = () => (
   <NavigationSubscriber>
     {navUI => <BacklogViewBase navUI={navUI} />}
+  </NavigationSubscriber>
+);
+
+class ActiveSprintsViewBase extends Component<*> {
+  viewKey = 'container/project/index';
+
+  componentDidMount() {
+    this.props.navUI.unPeek();
+    maybeRegisterRootViews();
+    maybeRegisterContainerViews();
+    containerViewState.setView(this.viewKey);
+    rootViewState.setView(ROOT_INDEX_VIEW);
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <h1>ActiveSprints</h1>
+        <p>Hello this is active sprints page.</p>
+        <p>
+          <Link to="/">Go back home</Link>
+        </p>
+      </Fragment>
+    );
+  }
+}
+
+export const ActiveSprintsView = () => (
+  <NavigationSubscriber>
+    {navUI => <ActiveSprintsViewBase navUI={navUI} />}
+  </NavigationSubscriber>
+);
+
+class ReportsViewBase extends Component<*> {
+  viewKey = 'container/project/index';
+
+  componentDidMount() {
+    this.props.navUI.unPeek();
+    maybeRegisterRootViews();
+    maybeRegisterContainerViews();
+    containerViewState.setView(this.viewKey);
+    rootViewState.setView(ROOT_INDEX_VIEW);
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <h1>Reports</h1>
+        <p>Hello this is the reports page.</p>
+        <p>
+          <Link to="/">Go back home</Link>
+        </p>
+      </Fragment>
+    );
+  }
+}
+
+export const ReportsView = () => (
+  <NavigationSubscriber>
+    {navUI => <ReportsViewBase navUI={navUI} />}
+  </NavigationSubscriber>
+);
+
+class ReleasesViewBase extends Component<*> {
+  viewKey = 'container/project/index';
+
+  componentDidMount() {
+    this.props.navUI.unPeek();
+    maybeRegisterRootViews();
+    maybeRegisterContainerViews();
+    containerViewState.setView(this.viewKey);
+    rootViewState.setView(ROOT_INDEX_VIEW);
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <h1>Releases</h1>
+        <p>Hello this is the releases page.</p>
+        <p>
+          <Link to="/">Go back home</Link>
+        </p>
+      </Fragment>
+    );
+  }
+}
+
+export const ReleasesView = () => (
+  <NavigationSubscriber>
+    {navUI => <ReleasesViewBase navUI={navUI} />}
   </NavigationSubscriber>
 );

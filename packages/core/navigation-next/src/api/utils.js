@@ -13,7 +13,7 @@ type ItemModifier = ViewItem => ViewItem | ViewItem[] | null;
 // Recursively map over all the items in a view, and if an item satisfies a
 // given selector, apply a modifier to it.
 const walkView = (selector: ItemSelector) => (modifier: ItemModifier) => (
-  view: View,
+  view: ViewItem[],
 ) => {
   const walk = walkView(selector)(modifier);
   let newView = [];

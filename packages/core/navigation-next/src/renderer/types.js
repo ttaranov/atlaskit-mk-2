@@ -2,7 +2,7 @@
 
 import type { ComponentType } from 'react';
 
-import type { View } from '../../src/api/types';
+import type { ViewItem } from '../../src/api/types';
 
 /**
  * Components
@@ -32,7 +32,7 @@ type SharedGroupTypeProps = {
   customComponents?: CustomComponents,
   id: string,
   isRootLevel?: boolean,
-  items: View,
+  items: ViewItem[],
 };
 
 export type GroupProps = SharedGroupTypeProps & {
@@ -46,5 +46,6 @@ export type NestedProps = SharedGroupTypeProps & {
 
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,
-  items: View,
+  items: ViewItem[],
+  selectedItemId?: string | null,
 };

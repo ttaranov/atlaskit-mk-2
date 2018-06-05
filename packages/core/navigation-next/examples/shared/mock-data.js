@@ -135,8 +135,12 @@ const rootIssues = [
 ];
 
 export const rootViews = {
-  'root/index': rootIndex,
-  'root/issues': rootIssues,
+  'root/index': {
+    items: rootIndex,
+  },
+  'root/issues': {
+    items: rootIssues,
+  },
 };
 
 /** Product container views */
@@ -161,34 +165,38 @@ const containerProject = [
     items: [
       {
         icon: 'BacklogIcon',
-        key: 'backlog',
+        id: 'backlog',
         text: 'Backlog',
-        to: '/projects/endeavour',
+        to: '/projects/endeavour/backlog',
         type: 'LinkItem',
       },
       {
         icon: 'BoardIcon',
-        key: 'active-sprints',
+        id: 'active-sprints',
         text: 'Active sprints',
-        type: 'Item',
+        to: '/projects/endeavour/active-sprints',
+        type: 'LinkItem',
       },
       {
         icon: 'GraphLineIcon',
-        key: 'reports',
+        id: 'reports',
         text: 'Reports',
-        type: 'Item',
+        to: '/projects/endeavour/reports',
+        type: 'LinkItem',
       },
       {
         icon: 'ShipIcon',
-        key: 'releases',
+        id: 'releases',
         text: 'Releases',
-        type: 'Item',
+        to: '/projects/endeavour/releases',
+        type: 'LinkItem',
       },
       {
         icon: 'IssuesIcon',
         goTo: 'container/project/issues',
-        key: 'issues',
+        id: 'issues',
         text: 'Issues',
+        to: '/projects/endeavour',
         type: 'GoToItem',
       },
     ],
@@ -223,23 +231,27 @@ const containerProjectIssues = [
     nestedGroupKey: 'menu',
     parentId: 'container/project/index:menu',
     items: [
-      { type: 'Item', key: 'search-issues', text: 'Search issues' },
-      { type: 'Separator', key: 'separator-1' },
-      { type: 'Item', key: 'my-open-issues', text: 'My open issues' },
-      { type: 'Item', key: 'reported-by-me', text: 'Reported by me' },
-      { type: 'Item', key: 'all-issues', text: 'All issues' },
-      { type: 'Item', key: 'open-issues', text: 'Open issues' },
-      { type: 'Item', key: 'done-issues', text: 'Done issues' },
-      { type: 'Item', key: 'viewed-recently', text: 'Viewed recently' },
-      { type: 'Item', key: 'created-recently', text: 'Created recently' },
-      { type: 'Item', key: 'resolved-recently', text: 'Resolved recently' },
-      { type: 'Item', key: 'updated-recently', text: 'Updated recently' },
+      { type: 'Item', id: 'search-issues', text: 'Search issues' },
+      { type: 'Separator', id: 'separator-1' },
+      { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
+      { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
+      { type: 'Item', id: 'all-issues', text: 'All issues' },
+      { type: 'Item', id: 'open-issues', text: 'Open issues' },
+      { type: 'Item', id: 'done-issues', text: 'Done issues' },
+      { type: 'Item', id: 'viewed-recently', text: 'Viewed recently' },
+      { type: 'Item', id: 'created-recently', text: 'Created recently' },
+      { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
+      { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
     ],
     type: 'Nested',
   },
 ];
 
 export const containerViews = {
-  'container/project/index': containerProject,
-  'container/project/issues': containerProjectIssues,
+  'container/project/index': {
+    items: containerProject,
+  },
+  'container/project/issues': {
+    items: containerProjectIssues,
+  },
 };

@@ -195,6 +195,7 @@ const components = { ...itemComponents, ...groupComponents };
 export const ItemsRenderer = ({
   customComponents = {},
   items,
+  selectedItemId,
 }: ItemsRendererProps) =>
   items.map(({ type, ...props }) => {
     const key =
@@ -202,14 +203,23 @@ export const ItemsRenderer = ({
         ? props.nestedGroupKey
         : props.id;
 
+    const isSelected = selectedItemId != null && selectedItemId === props.id;
+
     if (groupComponents[type]) {
       const G = groupComponents[type];
-      return <G key={key} {...props} customComponents={customComponents} />;
+      return (
+        <G
+          key={key}
+          {...props}
+          customComponents={customComponents}
+          isSelected={isSelected}
+        />
+      );
     }
 
     if (itemComponents[type]) {
       const I = itemComponents[type];
-      return <I key={key} {...props} />;
+      return <I key={key} {...props} isSelected={isSelected} />;
     }
 
     if (customComponents[type]) {
@@ -222,6 +232,7 @@ export const ItemsRenderer = ({
           // they can wrap/render them if they want to.
           components={components}
           customComponents={customComponents}
+          isSelected={isSelected}
         />
       );
     }

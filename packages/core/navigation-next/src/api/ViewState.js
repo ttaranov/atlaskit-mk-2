@@ -7,6 +7,7 @@ import Logger from '../services/logger';
 import type {
   ViewStateOptions,
   ViewStateState,
+  ReducerFn,
   Reducer,
   View,
   ViewKey,
@@ -36,6 +37,7 @@ export default class ViewState extends Container<ViewStateState> {
     // Initialise state
     this.state = {
       activeView,
+      selectedItemId: null,
       data: null,
       isLoading: !activeView,
       nextView: null,
@@ -65,10 +67,10 @@ export default class ViewState extends Container<ViewStateState> {
    */
   addReducer = (
     viewKey: ViewKey,
-    reducer: Reducer,
+    reducer: ReducerFn,
     source?: string = 'unknown',
   ) => {
-    const reducerList = [
+    const reducerList: Reducer[] = [
       ...(this.reducers[viewKey] || []),
       { source, fn: reducer },
     ];
@@ -123,7 +125,7 @@ export default class ViewState extends Container<ViewStateState> {
 
   setView = (maybeViewKey: ViewKey | null) => {
     if (maybeViewKey === null) {
-      this.setState({ activeView: null, data: null });
+      this.setState({ activeView: null, data: null, selectedItemId: null });
       return;
     }
 
@@ -140,14 +142,14 @@ export default class ViewState extends Container<ViewStateState> {
         this.setState({ isLoading: true, nextView: viewKey });
 
         // Wait for the promise to resolve.
-        view.then(viewData => {
-          this.setViewData(viewKey, viewData);
+        view.then(resolvedView => {
+          this.setResolvedView(viewKey, resolvedView);
         });
         return;
       }
 
       // This view returned an Object.
-      this.setViewData(viewKey, view);
+      this.setResolvedView(viewKey, view);
       return;
     }
 
@@ -156,7 +158,7 @@ export default class ViewState extends Container<ViewStateState> {
     this.setState({ isLoading: true, nextView: viewKey });
   };
 
-  setViewData = (viewKey: ViewKey, viewData: View) => {
+  setResolvedView = (viewKey: ViewKey, view: View) => {
     this.logger.debugGroup(`Setting active view`);
     this.logger.debug(`Active view: '${viewKey}'`);
 
@@ -173,20 +175,25 @@ export default class ViewState extends Container<ViewStateState> {
       this.logger.debugGroupEnd();
 
       return reducedData;
-    }, viewData);
+    }, view.items);
 
     this.logger.debug(`View data: %O`, data);
     this.logger.debugConditional(
       reducers.length > 0,
       `Diff after reducers: %O`,
-      diff(viewData, data),
+      diff(view.items, data),
     );
     this.logger.debugGroupEnd(`Setting active view`);
+
+    const selectedItemId = view.getSelectedItemId
+      ? view.getSelectedItemId()
+      : null;
 
     this.setState({
       activeView: viewKey,
       data,
       isLoading: false,
+      selectedItemId,
       nextView: null,
     });
   };

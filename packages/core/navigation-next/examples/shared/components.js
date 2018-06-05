@@ -29,8 +29,8 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
               {children}
             </Link>
           )}
-          isSelected={pathname === to}
           {...props}
+          isSelected={pathname === to}
         />
       )}
     />
@@ -65,12 +65,13 @@ export const ProjectSwitcher = ({ components: C, ...props }: *) => (
 );
 
 const ViewRenderer = ({ view }: *) => {
-  const { activeView, data } = view.state;
+  const { activeView, data, selectedItemId } = view.state;
   return activeView && data ? (
     <div css={{ padding: `${gridSize * 2}px 0` }}>
       <NavRenderer
         customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
         items={data}
+        selectedItemId={selectedItemId}
       />
     </div>
   ) : (

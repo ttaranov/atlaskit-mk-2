@@ -56,12 +56,13 @@ const ProjectSwitcher = ({ components: C, ...props }: *) => (
 );
 
 const ViewRenderer = ({ view }: *) => {
-  const { activeView, data } = view.state;
+  const { activeView, data, selectedItemId } = view.state;
   return activeView && data ? (
     <div css={{ padding: `${gridSize * 2}px 0` }}>
       <NavRenderer
         customComponents={{ JiraWordmark, ProjectSwitcher }}
         items={data}
+        selectedItemId={selectedItemId}
       />
     </div>
   ) : (

@@ -21,6 +21,9 @@ import {
   ProjectsView,
   DashboardsView,
   SearchIssuesView,
+  ActiveSprintsView,
+  ReportsView,
+  ReleasesView,
 } from './shared/routes';
 
 export default class App extends Component<{}> {
@@ -39,6 +42,18 @@ export default class App extends Component<{}> {
               >
                 <div style={{ padding: 30 }}>
                   <Switch>
+                    <Route
+                      path="/projects/endeavour/active-sprints"
+                      component={ActiveSprintsView}
+                    />
+                    <Route
+                      path="/projects/endeavour/reports"
+                      component={ReportsView}
+                    />
+                    <Route
+                      path="/projects/endeavour/releases"
+                      component={ReleasesView}
+                    />
                     <Route path="/projects/endeavour" component={BacklogView} />
                     <Route path="/projects" component={ProjectsView} />
                     <Route path="/issues/search" component={SearchIssuesView} />
