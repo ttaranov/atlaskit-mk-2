@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "6.0.2",
+  "version": "7.0.0",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,19 +18,19 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/layer": "^3.1.1",
-    "@atlaskit/theme": "^3.2.2",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/layer": "^4.0.0",
+    "@atlaskit/theme": "^4.0.0"
   },
   "peerDependencies": {
     "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react-dom": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.5",
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/single-select": "^4.0.3",
+    "@atlaskit/button": "^8.0.0",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/icon": "^12.0.0",
+    "@atlaskit/single-select": "^5.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [

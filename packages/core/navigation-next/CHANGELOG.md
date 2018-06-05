@@ -1,5 +1,22 @@
 # @atlaskit/navigation-next
 
+## 0.1.3
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/toggle@4.0.0
+  - @atlaskit/logo@8.0.0
+  - @atlaskit/field-base@10.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/lozenge@5.0.0
+  - @atlaskit/badge@8.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/dropdown-menu@5.0.0
+  - @atlaskit/avatar@11.0.0
+
+## 0.1.2
+- [patch] navigation-next Item should be updated when new props are different than previous [615e77c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/615e77c)
+
 ## 0.1.1
 - [patch] add some reducer util functions [3882051](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3882051)
 
