@@ -130,7 +130,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
       : null),
   };
 
-  const obj = removeEmptyItems({
+  return removeEmptyItems({
     product,
     create,
     search,
@@ -141,6 +141,4 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     help,
     profile,
   });
-  console.log(obj);
-  return obj;
 }
