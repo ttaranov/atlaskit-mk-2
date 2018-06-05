@@ -2,13 +2,10 @@ import * as React from 'react';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import Button from '@atlaskit/button';
-import { IconImage } from '@atlaskit/media-ui';
-import {
-  TextWithTooltip,
-  IconWithTooltip,
-  UserViewModel,
-  DetailViewModel,
-} from '../CardView/ViewModel';
+import { IconImage } from './IconImage';
+import { LinkIcon } from './LinkIcon';
+import { minWidth, maxWidth } from '../dimensions';
+import { ExpandedFrame } from '../ExpandedFrame';
 import AlertView from './AlertView';
 import { PreviewView } from './PreviewView';
 import Widgets from './Widgets';
@@ -31,6 +28,54 @@ import Transition from './Transition';
 // hack: Button's types aren't up-to-date and don't support isLoading
 const GenericButton = Button as any;
 
+export interface ContextViewModel {
+  icon?: string;
+  text: string;
+}
+
+export interface IconWithTooltip {
+  url: string;
+  tooltip?: string;
+}
+
+export interface TextWithTooltip {
+  text: string;
+  tooltip?: string;
+}
+
+export interface UserViewModel {
+  icon?: string;
+  name?: string;
+  // in the future we might add other things supported by <Avatar/> e.g. href
+}
+
+export interface BadgeViewModel {
+  value: number;
+  max?: number;
+  appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed'; // defaults to 'default'
+}
+
+export interface LozengeViewModel {
+  text: string;
+  appearance?:
+    | 'default'
+    | 'success'
+    | 'removed'
+    | 'inprogress'
+    | 'new'
+    | 'moved'; // defaults to 'default'
+  isBold?: boolean; // defaults to false
+}
+
+export interface DetailViewModel {
+  title?: string;
+  icon?: string;
+  badge?: BadgeViewModel;
+  lozenge?: LozengeViewModel;
+  text?: string;
+  tooltip?: string;
+}
+
 export interface ActionHandlerCallbacks {
   pending: () => void;
   success: (message?: string) => void;
@@ -44,16 +89,19 @@ export interface Action {
 }
 
 export interface ResolvedViewProps {
+  context?: ContextViewModel;
+  link?: string;
+  icon?: IconWithTooltip;
+  user?: UserViewModel;
+  thumbnail?: string;
+  preview?: string;
   title?: TextWithTooltip;
   byline?: TextWithTooltip;
   description?: TextWithTooltip;
-  icon?: IconWithTooltip;
-  user?: UserViewModel;
-  users?: UserViewModel[];
-  thumbnail?: string;
-  preview?: string;
   details?: DetailViewModel[];
+  users?: UserViewModel[];
   actions?: Action[];
+  onClick?: () => void;
 }
 
 export interface ResolvedViewState {
@@ -329,17 +377,26 @@ export class ResolvedView extends React.Component<
 
   render() {
     const {
+      link,
+      context,
       title,
       byline,
       description,
       icon,
       user,
       preview,
-      users,
       details,
+      onClick,
     } = this.props;
     return (
-      <>
+      <ExpandedFrame
+        minWidth={minWidth}
+        maxWidth={maxWidth}
+        href={link}
+        icon={<LinkIcon src={context && context.icon} />}
+        text={context && context.text}
+        onClick={onClick}
+      >
         {preview ? <PreviewView url={preview} /> : null}
         <ContentWrapper>
           {this.renderAlert()}
@@ -369,7 +426,7 @@ export class ResolvedView extends React.Component<
             {this.renderActions()}
           </RightWrapper>
         </ContentWrapper>
-      </>
+      </ExpandedFrame>
     );
   }
 }
