@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 10.1.10
+- [patch] ED-4789: fix sticky toolbars [6d09683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d09683)
+- [none] Updated dependencies [6d09683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d09683)
+
 ## 10.1.9
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/media-card@28.0.6
