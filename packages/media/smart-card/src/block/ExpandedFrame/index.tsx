@@ -10,7 +10,7 @@ import {
   Content,
 } from './styled';
 
-export interface CardFrameProps {
+export interface ExpandedFrameProps {
   isPlaceholder?: boolean;
   href?: string;
   icon?: React.ReactElement<any>;
@@ -21,7 +21,7 @@ export interface CardFrameProps {
   onClick?: () => void;
 }
 
-export class CardFrame extends React.Component<CardFrameProps> {
+export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
   get isInteractive() {
     const { isPlaceholder, href, onClick } = this.props;
     return !isPlaceholder && (Boolean(href) || Boolean(onClick));
