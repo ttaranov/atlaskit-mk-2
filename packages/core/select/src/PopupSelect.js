@@ -91,7 +91,7 @@ type Props = {
 };
 type State = { isOpen: boolean };
 
-export default class CompositeSelect extends PureComponent<Props, State> {
+export default class PopupSelect extends PureComponent<Props, State> {
   state = { isOpen: false };
   menuRef: HTMLElement;
   targetRef: HTMLElement;

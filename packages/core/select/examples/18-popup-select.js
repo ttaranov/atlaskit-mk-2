@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment } from 'react';
-import { CompositeSelect } from '../src';
+import { PopupSelect } from '../src';
 
 const options = [
   { label: 'Adelaide', value: 'adelaide' },
@@ -16,17 +16,17 @@ const options = [
 const onChange = console.log;
 const defaults = { options, placeholder: 'Choose a City', onChange };
 
-const CompositeSelectExample = () => (
+const PopupSelectExample = () => (
   <Fragment>
     <div css={{ display: 'flex', justifyContent: 'space-between' }}>
-      <CompositeSelect {...defaults} target={<button>Target</button>} />
-      <CompositeSelect
+      <PopupSelect {...defaults} target={<button>Target</button>} />
+      <PopupSelect
         {...defaults}
         target={<button>W/O Search</button>}
         popperProps={{ placement: 'bottom', positionFixed: true }}
         searchThreshold={10}
       />
-      <CompositeSelect
+      <PopupSelect
         {...defaults}
         target={<button>Placement: &ldquo;right-start&rdquo; (flip)</button>}
         popperProps={{ placement: 'right-start' }}
@@ -45,11 +45,11 @@ const CompositeSelectExample = () => (
     >
       <h3>Scroll Container</h3>
       <div style={{ height: 100 }} />
-      <CompositeSelect {...defaults} target={<button>Target</button>} />
+      <PopupSelect {...defaults} target={<button>Target</button>} />
       <div style={{ height: 1000 }} />
     </div>
     <div style={{ height: 1000 }} />
   </Fragment>
 );
 
-export default CompositeSelectExample;
+export default PopupSelectExample;
