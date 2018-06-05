@@ -49,12 +49,16 @@ class Example extends Component<ComponentProps, ComponentState> {
     );
   };
 
-  onFileUpdate = (state: FileState) => {
-    console.log('on update', state);
+  getNonExistingFile = () => {
+    this.getFile('fake-file-id', 'fake-collection-name');
+  };
+
+  onFileUpdate = (streamId: number) => (state: FileState) => {
+    console.log('on update', streamId, state);
     this.setState({
       files: {
         ...this.state.files,
-        [state.id]: state,
+        [streamId]: state,
       },
     });
   };
@@ -77,13 +81,15 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   addStream = (stream: Observable<FileState>) => {
+    const streamId = new Date().getTime();
+
     stream.subscribe({
-      next: this.onFileUpdate,
+      next: this.onFileUpdate(streamId),
       complete() {
-        console.log('complete');
+        console.log('stream complete');
       },
       error(error) {
-        console.log('error', error);
+        console.log('stream error', error);
       },
     });
 
@@ -97,7 +103,7 @@ class Example extends Component<ComponentProps, ComponentState> {
       let name, progress;
 
       if (file.status !== 'error') {
-        name = <div>name: {file['name']}</div>;
+        name = <div>name: {file.name}</div>;
       }
 
       if (file.status === 'uploading') {
@@ -123,7 +129,11 @@ class Example extends Component<ComponentProps, ComponentState> {
     return (
       <div>
         <input type="file" onChange={this.uploadFile} />
-        <button onClick={this.getImageFile}>Get image file</button>
+        <button onClick={this.getImageFile}>Get processed file</button>
+        <button onClick={this.getProcessingFailedFile}>
+          Get processing failed file
+        </button>
+        <button onClick={this.getNonExistingFile}>Get non existing file</button>
         <div>
           <h1>Files</h1>
           {this.renderFiles()}
@@ -136,6 +146,5 @@ class Example extends Component<ComponentProps, ComponentState> {
 export default () => (
   <div>
     <Example />
-    {/* <Example /> */}
   </div>
 );

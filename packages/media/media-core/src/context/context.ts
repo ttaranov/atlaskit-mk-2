@@ -8,7 +8,6 @@ import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/map';
 
-// import {publishReplay} from 'rxjs/operator/publishReplay';
 import {
   MediaStore,
   uploadFile,
@@ -41,6 +40,7 @@ import {
   FileState,
   mapMediaFileToFileState,
 } from '../fileState';
+import { Observer } from 'rxjs/Observer';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -93,6 +93,17 @@ export class ContextFactory {
   }
 }
 
+const getFileKey = (id: string, options?: GetFileOptions): string => {
+  const collection =
+    options && options.collectionName ? `-${options.collectionName}` : '';
+  const occurrence =
+    options && options.occurrenceKey ? `-${options.occurrenceKey}` : '';
+
+  return `${id}${collection}${occurrence}`;
+};
+
+const pollingInterval = 3000;
+
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
@@ -113,34 +124,52 @@ class ContextImpl implements Context {
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
-    const key = `${id}-${options && options.collectionName}`;
+    const key = getFileKey(id, options);
 
     if (this.fileStreams.has(key) === false) {
+      const collection = options && options.collectionName;
       const fileStream$ = this.createDownloadFileStream(
         id,
-        options && options.collectionName,
+        collection,
       ).publishReplay(1);
-      // Start hot observable
-      fileStream$.connect();
 
+      fileStream$.connect();
       this.fileStreams.set(key, fileStream$);
     }
 
     return this.fileStreams.get(key)!;
   }
 
-  private createDownloadFileStream = (id: string, collection?: string) => {
-    const requestFileStream$ = Observable.defer(() => {
-      return this.mediaStore.getFile(id, { collection });
-    }).map(mapMediaFileToFileState);
+  private createDownloadFileStream = (
+    id: string,
+    collection?: string,
+  ): ConnectableObservable<FileState> => {
+    return Observable.create(async (observer: Observer<FileState>) => {
+      let timeoutId: number;
 
-    const fileStream$ = Observable.timer(0, 3000)
-      .switchMapTo(requestFileStream$)
-      .takeWhile(file => file.status === 'processing')
-      // TODO: concat will make an extra request, investigate how to fix it
-      .concat(requestFileStream$);
+      const fetchFile = async () => {
+        try {
+          const response = await this.mediaStore.getFile(id, { collection });
+          const fileState = mapMediaFileToFileState(response);
 
-    return fileStream$;
+          observer.next(fileState);
+
+          if (fileState.status === 'processing') {
+            timeoutId = window.setTimeout(fetchFile, pollingInterval);
+          } else {
+            observer.complete();
+          }
+        } catch (e) {
+          observer.error(e);
+        }
+      };
+
+      fetchFile();
+
+      return () => {
+        window.clearTimeout(timeoutId);
+      };
+    });
   };
 
   getMediaItemProvider(

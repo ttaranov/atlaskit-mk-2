@@ -16,6 +16,7 @@ export interface PreviewOptions {}
 export interface GetFileOptions {
   preview?: PreviewOptions;
   collectionName?: string;
+  occurrenceKey?: string;
 }
 export interface UploadingFileState {
   status: 'uploading';
