@@ -37,6 +37,7 @@ exports[`banner should render error banner correctly 1`] = `
 .c1 a:active,
 .c1 a:focus {
   color: #FFFFFF;
+  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -129,6 +130,7 @@ exports[`banner should render warning banner correctly 1`] = `
 .c1 a:active,
 .c1 a:focus {
   color: #253858;
+  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 

@@ -215,7 +215,7 @@
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/profilecard": "^3.13.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -307,7 +307,7 @@
     "is-reachable": "^2.4.0",
     "jest-fixtures": "^0.5.0",
     "jest-junit": "^3.4.1",
-    "jest-styled-components": "^4.11.0-1",
+    "jest-styled-components": "^5.0.0",
     "keycode": "^2.1.7",
     "kind2string": "^0.3.0",
     "landkid": "^0.0.20",
@@ -397,7 +397,7 @@
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
     "string-raw": "^1.0.1",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "stylelint": "^8.4.0",
     "stylelint-config-prettier": "^2.0.0",
     "stylelint-config-standard": "^18.1.0",
@@ -419,6 +419,9 @@
     "uuid": "^3.1.0",
     "video-snapshot": "^1.0.1",
     "xregexp": "^3.2.0"
+  },
+  "resolutions": {
+    "**/@atlaskit/theme/styled-components": "^3.2.6"
   },
   "engines": {
     "node": "^8.4.0"

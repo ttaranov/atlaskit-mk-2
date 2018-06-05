@@ -21,12 +21,12 @@
   "dependencies": {
     "@atlaskit/icon": "^11.3.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "styled-components": "1.4.6 - 3",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^18.1.2",
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/docs": "^3.0.4",
