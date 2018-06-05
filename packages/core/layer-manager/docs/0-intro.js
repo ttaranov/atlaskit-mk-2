@@ -87,7 +87,7 @@ const App = () => (
     <Example
       Component={require('../examples/1-scroll-lock').default}
       source={require('!!raw-loader!../examples/1-scroll-lock')}
-      title="Scroll Lock"
+      title="Scroll Lock - DEPRECATED"
     />
   )}
 
