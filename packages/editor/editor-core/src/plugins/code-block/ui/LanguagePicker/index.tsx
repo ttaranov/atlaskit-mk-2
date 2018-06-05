@@ -58,7 +58,7 @@ export class LanguagePicker extends React.Component<Props> {
 
     return (
       <FloatingToolbar
-        innerRef={innerRef}
+        containerRef={innerRef}
         target={activeCodeBlockDOM}
         offset={[0, 12]}
         popupsMountPoint={popupsMountPoint}

@@ -1,6 +1,7 @@
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import Select from '@atlaskit/select';
+import Button from '@atlaskit/button';
 import { TrashToolbarButton } from '../../../../src/plugins/code-block/ui/LanguagePicker/styles';
 import LanguagePickerWithOutsideListeners, {
   LanguagePicker,
@@ -20,6 +21,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
         setLanguage={setLanguageStub}
       />,
     );
+    console.log(languagePicker.debug());
   });
 
   afterEach(() => {
@@ -55,13 +57,16 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   describe('#render', () => {
     it('should call deleteCodeBlock when trash icon clicked', () => {
       expect(deleteCodeBlockStub).toHaveBeenCalledTimes(0);
-      languagePicker.find(TrashToolbarButton).simulate('click');
+      languagePicker
+        .find(TrashToolbarButton)
+        .find(Button)
+        .simulate('click');
       expect(deleteCodeBlockStub).toHaveBeenCalledTimes(1);
     });
 
     it('should show active language by default in select', () => {
       languagePicker.setProps({ activeLanguage: 'javascript' });
-      const defaultValue = languagePicker.find(Select).prop('defaultValue');
+      const defaultValue = languagePicker.find(Select).prop('value');
       expect(defaultValue).toEqual({
         label: 'JavaScript',
         value: 'javascript',
@@ -88,8 +93,8 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
   const getElementInsideToolbar = () =>
     wrapper
       .find(LanguagePicker)
-      .getDOMNode()
-      .querySelector('[placeholder="Select language"]') as HTMLElement;
+      .find(Select)
+      .getDOMNode() as HTMLElement;
   beforeEach(() => {
     wrapper = mount(
       <LanguagePickerWithOutsideListeners

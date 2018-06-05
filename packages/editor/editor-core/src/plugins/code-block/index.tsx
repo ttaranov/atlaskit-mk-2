@@ -22,7 +22,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
 
     pmPlugins() {
       return [
-        { rank: 700, plugin: () => plugin },
+        { rank: 700, plugin: ({ dispatch }) => plugin(dispatch) },
         {
           rank: 710,
           plugin: () => (options.enableKeybindingsForIDE ? ideUX : undefined),
