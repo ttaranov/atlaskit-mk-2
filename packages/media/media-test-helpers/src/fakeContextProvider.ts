@@ -32,6 +32,7 @@ export const fakeContext = (
   const getUrlPreviewProvider = returns({
     observable: returns(Observable.of('nothing')),
   });
+  const getFile = jest.fn();
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
@@ -39,6 +40,7 @@ export const fakeContext = (
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
   const defaultContext: Context = {
+    getFile,
     getBlobService,
     getLocalPreview,
     setLocalPreview,
