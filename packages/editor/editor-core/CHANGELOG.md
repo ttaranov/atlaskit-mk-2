@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.0.1
+- [patch] ED-4716, smart replacements should not work inside mention query. [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)
+- [patch] Updated dependencies [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)
+
 ## 73.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
