@@ -7,7 +7,7 @@ import Select, {
 } from '@atlaskit/select';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
-import React, { Component, type Node } from 'react';
+import React, { Component, type ComponentType, type Node } from 'react';
 import { colors } from '@atlaskit/theme';
 
 import {
@@ -26,9 +26,7 @@ type Option = {
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Defines the appearance which can be default or subtle - no borders, background or icon.
-   *  Appearance values will be ignored if styles are parsed via the selectProps.
-   */
+  /** Defines the appearance which can be default or subtle - no borders, background or icon. Appearance values will be ignored if styles are parsed via the selectProps. */
   appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
@@ -54,12 +52,22 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
+  /** The custom select component to use instead of the built-in one. */
+  Select: ComponentType<*>,
+
+  // TODO deprecated and remove.
+  // Not necessary because you can specify Select.
   /** Props to apply to the select. */
   selectProps: Object,
+
   /** The times to show in the dropdown. */
   times: Array<string>,
+
+  // TODO deprecated and remove.
+  // Not necessary because you can specify Select.
   /** Allow users to edit the input and add a time */
   timeIsEditable?: boolean,
+
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** Indicates current value is invalid & changes border color. */
@@ -117,6 +125,7 @@ export default class TimePicker extends Component<Props, State> {
     hideIcon: false,
     timeFormat: defaultTimeFormat,
     placeholder: `e.g. ${format(new Date(), defaultTimeFormat)}`,
+    Select,
   };
 
   state = {
@@ -210,6 +219,7 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
       timeFormat,
       placeholder,
+      Select,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -231,6 +241,13 @@ export default class TimePicker extends Component<Props, State> {
       this.props.appearance === 'subtle'
         ? this.getSubtleControlStyles(selectStyles)
         : {};
+
+    // TODO deprecated and remove.
+    // Not necessary because you can specify Select.
+    //
+    // By being able to specify  the Select component as props, this is no
+    // longer necessary because the consumer can just specify a custom Select
+    // component using CreatableSelect.
     const SelectComponent = this.props.timeIsEditable
       ? CreatableSelect
       : Select;

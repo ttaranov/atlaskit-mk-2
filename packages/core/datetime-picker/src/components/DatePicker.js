@@ -6,7 +6,12 @@ import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
-import React, { Component, type Node, type ElementRef } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type Node,
+  type ElementRef,
+} from 'react';
 import styled from 'styled-components';
 
 import {
@@ -19,9 +24,7 @@ import type { Event } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  /** Defines the appearance which can be default or subtle - no borders, background or icon.
-   * Appearance values will be ignored if styles are parsed via the selectProps.
-   */
+  /** Defines the appearance which can be default or subtle - no borders, background or icon. Appearance values will be ignored if styles are parsed via the selectProps. */
   appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
@@ -49,9 +52,12 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
-  /** Props to apply to the select. This can be used to set options such as placeholder text.
-   *  See [here](/packages/core/select) for documentation on select props. */
+
+  // TODO deprecated and remove.
+  // Not necessary because you can specify Select.
+  /** Props to apply to the select. This can be used to set options such as placeholder text. See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
+
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** Indicates current value is invalid & changes border color */
@@ -62,6 +68,8 @@ type Props = {
   dateFormat: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
+  /** The custom select component to use instead of the built-in one. */
+  Select: ComponentType<*>,
 };
 
 type State = {
@@ -139,6 +147,7 @@ export default class DatePicker extends Component<Props, State> {
     hideIcon: false,
     dateFormat: defaultDateFormat,
     placeholder: `e.g. ${format(new Date(), defaultDateFormat)}`,
+    Select,
   };
 
   state = {
@@ -261,6 +270,7 @@ export default class DatePicker extends Component<Props, State> {
       selectProps,
       dateFormat,
       placeholder,
+      Select,
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';

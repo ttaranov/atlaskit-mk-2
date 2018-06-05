@@ -4,7 +4,7 @@ import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors } from '@atlaskit/theme';
 import pick from 'lodash.pick';
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import styled from 'styled-components';
 
 import DatePicker from './DatePicker';
@@ -22,6 +22,8 @@ type Props = {
   appearance?: 'default' | 'subtle',
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
+  /** Custom DatePicker component to use instead of the built-in one. */
+  DatePicker: ComponentType<any>,
   /** Default for `value`. */
   defaultValue: string,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -56,6 +58,8 @@ type Props = {
   times?: Array<string>,
   /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
+  /** Custom TimePicker component to use instead of the built-in one. */
+  TimePicker: ComponentType<any>,
 };
 
 type State = {
@@ -134,6 +138,7 @@ export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
+    DatePicker,
     isDisabled: false,
     name: '',
     onBlur: () => {},
@@ -150,6 +155,7 @@ export default class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     timeFormat: defaultTimeFormat,
     dateFormat: defaultDateFormat,
+    TimePicker,
   };
 
   state = {
@@ -218,6 +224,7 @@ export default class DateTimePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
+      DatePicker,
       id,
       innerProps,
       isDisabled,
@@ -228,6 +235,7 @@ export default class DateTimePicker extends Component<Props, State> {
       timePickerSelectProps,
       times,
       timeFormat,
+      TimePicker,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
