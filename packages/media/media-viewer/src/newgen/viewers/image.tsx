@@ -13,6 +13,7 @@ export type ImageViewerProps = {
   context: Context;
   item: FileItem;
   collectionName?: string;
+  onClose?: () => void;
 };
 
 export type ImageViewerState = {
@@ -62,12 +63,19 @@ export class ImageViewer extends React.Component<
     };
 
     return (
-      <ImageWrapper>
+      <ImageWrapper onClick={this.onClickContentClose}>
         <Img src={src} style={imgStyle} />
         <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
       </ImageWrapper>
     );
   }
+
+  private onClickContentClose = e => {
+    const { onClose } = this.props;
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
+  };
 
   render() {
     const { objectUrl } = this.state;
