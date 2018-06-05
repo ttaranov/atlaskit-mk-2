@@ -30,7 +30,7 @@ function createRule() {
    *   paragraph_close
    *   media_single_open
    *   media
-   *   media_single)close
+   *   media_single_close
    *   paragraph_open
    *   inline - content: World!
    *   paragraph_close
