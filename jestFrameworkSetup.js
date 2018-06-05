@@ -307,7 +307,7 @@ if (process.env.VISUAL_REGRESSION) {
   beforeAll(async () => {
     global.browser = await puppeteer.launch({
       // run test in headless mode
-      headless: false,
+      headless: true,
       slowMo: 100,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
