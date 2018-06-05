@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Avatar from '../src/';
+import Avatar from '../src';
 import { Block } from './helpers';
 import { omit } from '../src/utils';
 

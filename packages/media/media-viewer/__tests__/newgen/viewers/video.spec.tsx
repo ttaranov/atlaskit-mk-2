@@ -3,6 +3,7 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount } from 'enzyme';
+import Button from '@atlaskit/button';
 import { Stubs } from '../../_stubs';
 import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
@@ -24,6 +25,9 @@ const videoItem: FileItem = {
     artifacts: {
       'video_640.mp4': {
         url: '/video',
+      },
+      'video_1280.mp4': {
+        url: '/video_hd',
       },
     },
   },
@@ -113,5 +117,21 @@ describe('Video viewer', () => {
     expect(el.find(CustomVideo).prop('src')).toEqual(
       'some-service-host/video?client=some-client-id&token=some-token',
     );
+  });
+
+  it('should toggle hd when button is clicked', async () => {
+    const authPromise = Promise.resolve({ token, clientId });
+    const { el } = createFixture(authPromise, {
+      featureFlags: { customVideoPlayer: true },
+    });
+
+    await el.instance()['init']();
+    el.update();
+    expect(el.state('isHDActive')).toBeFalsy();
+    el
+      .find(Button)
+      .at(1)
+      .simulate('click');
+    expect(el.state('isHDActive')).toBeTruthy();
   });
 });

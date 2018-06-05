@@ -1,5 +1,29 @@
 # @atlaskit/form
 
+## 2.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/select@4.0.0
+  - @atlaskit/datetime-picker@5.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/toggle@4.0.0
+  - @atlaskit/single-select@5.0.0
+  - @atlaskit/multi-select@10.0.0
+  - @atlaskit/inline-edit@6.0.0
+  - @atlaskit/field-radio-group@3.0.0
+  - @atlaskit/field-text-area@3.0.0
+  - @atlaskit/field-text@6.0.0
+  - @atlaskit/checkbox@3.0.0
+  - @atlaskit/calendar@6.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/field-range@4.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/droplist@6.0.0
+  - @atlaskit/dropdown-menu@5.0.0
+
 ## 1.0.4
 - [patch] Updated dependencies [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)
   - @atlaskit/field-text@5.1.0

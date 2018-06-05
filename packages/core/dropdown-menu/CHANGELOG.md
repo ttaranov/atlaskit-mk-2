@@ -1,5 +1,33 @@
 # @atlaskit/dropdown-menu
 
+## 5.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/item@7.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/lozenge@5.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/droplist@6.0.0
+  - @atlaskit/avatar@11.0.0
+
+## 4.1.1
+- [patch] Updated dependencies [535d585](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535d585)
+  - @atlaskit/droplist@5.1.1
+
+## 4.1.0
+- [minor] Add `isMenuFixed` prop to force menu to render with position fixed to allow it to break out of non-visible overflow containers at the cost of detachment from the trigger on scroll. [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
+
+
+- [none] Updated dependencies [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
+  - @atlaskit/droplist@5.1.0
+- [minor] Updated dependencies [e20ac40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20ac40)
+  - @atlaskit/droplist@5.1.0
+- [minor] Updated dependencies [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
+  - @atlaskit/droplist@5.1.0
+
 ## 4.0.5
 
 

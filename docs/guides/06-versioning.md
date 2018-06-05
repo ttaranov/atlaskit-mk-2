@@ -147,3 +147,43 @@ If you were to change the return type of a function in your public API, this alo
 If you're fixing a bug, you might change a type that ends up getting exported, but it may not affect your public API. In this scenario, you'd release a patch, even though the type might cause errors once consumed during development.
 
 _Our stance on versioning and Flow types is subject to change as we learn more about how it affects consumers, so feedback is welcome._
+
+## Deprecating and discontinuing support
+
+Deprecating and eventually discontinuing the support of a package is never something we take lightly.
+
+### Communicate intent
+
+First and foremost, we should communicate our intent to deprecate and give reasoning. Internally, we should notify our consumers directly and discuss the ramifications of deprecating and eventually removing the package in question. It's also a good candidate for a blog post to get a wider opinion.
+
+### Deprecate
+
+Based on the response to the communication, we should come up with a reasonable deprecation timeline where we still support the component and may offer bugfixes, but will discontinue feature development.
+
+#### Add deprecation notice to package docs
+
+We should add a deprecation notice to the top of the component docs that says something like:
+
+> This package is deprecated and will be supported until [insert date].
+
+If there is an alternative package, then documenting it would also be a good idea.
+
+> This package is deprecated and will be supported until [insert date]. We recommend using [x package] instead.
+
+#### Run `npm deprecate`
+
+The `npm deprecate` command deprecates a version of a package, but it can be run on a verison range. We should run this on the current version and any future versions and specify the same message that we put in the docs.
+
+#### Wait it out
+
+During the deprecation period, we may need to push a critical bug fix or two. We should strive not to have to do this, and encourage alternatives.
+
+#### Communicate one last time
+
+Give one last heads up to consumers. Internally this can be done via internal comms. This is also a good candidate for a blog post, but we do not need to wait for feedback at this point.
+
+Go ahead and move on to the next step.
+
+#### Delete!
+
+Once you've notified everyone, create a PR deleting the package from our repository. No action needs to be taken on NPM as it's already deprecated and we don't want to unpublish it as it will probably still be depended on for some time.
