@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import { CompositeSelect } from '../src';
 
 const options = [
@@ -17,20 +17,39 @@ const onChange = console.log;
 const defaults = { options, placeholder: 'Choose a City', onChange };
 
 const CompositeSelectExample = () => (
-  <div css={{ display: 'flex', justifyContent: 'space-between' }}>
-    <CompositeSelect {...defaults} target={<button>Target</button>} />
-    <CompositeSelect
-      {...defaults}
-      target={<button>W/O Search</button>}
-      menuPlacement="bottom"
-      searchThreshold={10}
-    />
-    <CompositeSelect
-      {...defaults}
-      target={<button>Placement: &ldquo;right-start&rdquo; (flip)</button>}
-      menuPlacement="right-start"
-    />
-  </div>
+  <Fragment>
+    <div css={{ display: 'flex', justifyContent: 'space-between' }}>
+      <CompositeSelect {...defaults} target={<button>Target</button>} />
+      <CompositeSelect
+        {...defaults}
+        target={<button>W/O Search</button>}
+        popperProps={{ placement: 'bottom', positionFixed: true }}
+        searchThreshold={10}
+      />
+      <CompositeSelect
+        {...defaults}
+        target={<button>Placement: &ldquo;right-start&rdquo; (flip)</button>}
+        popperProps={{ placement: 'right-start' }}
+      />
+    </div>
+    <div
+      style={{
+        background: 'AliceBlue',
+        marginBottom: '1em',
+        marginTop: '1em',
+        padding: '1em',
+        height: 500,
+        width: 300,
+        overflowY: 'auto',
+      }}
+    >
+      <h3>Scroll Container</h3>
+      <div style={{ height: 100 }} />
+      <CompositeSelect {...defaults} target={<button>Target</button>} />
+      <div style={{ height: 1000 }} />
+    </div>
+    <div style={{ height: 1000 }} />
+  </Fragment>
 );
 
 export default CompositeSelectExample;
