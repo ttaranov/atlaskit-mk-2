@@ -8,7 +8,13 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import createFocusTrap from 'focus-trap';
-import { Manager, Reference, Popper } from 'react-popper';
+import {
+  Manager,
+  Reference,
+  Popper,
+  type PopperProps,
+  type PopperChildrenProps,
+} from 'react-popper';
 import NodeResolver from 'react-node-resolver';
 import Select, { components as defaultComponents } from 'react-select';
 
@@ -67,17 +73,18 @@ const DummyControl = props => (
   </div>
 );
 
+type PopperChildren = { children: PopperChildrenProps => Node };
+type PopperPropsNoChildren = $Diff<PopperProps, PopperChildren>;
 type Props = {
   closeMenuOnSelect: boolean,
   components: Object,
   footer?: Node,
-  menuOffset: number,
-  menuPlacement: string,
   minMenuWidth: number,
   maxMenuWidth: number,
   maxMenuHeight: number,
   onChange?: Object => void,
   options: Array<Object>,
+  popperProps?: PopperPropsNoChildren,
   searchThreshold: number,
   styles: Object,
   target: Element<*>,
@@ -90,19 +97,27 @@ export default class CompositeSelect extends PureComponent<Props, State> {
   targetRef: HTMLElement;
   selectRef: ElementRef<*>;
   focusTrap: Object;
+  popperProps: PopperPropsNoChildren;
   static defaultProps = {
     closeMenuOnSelect: true,
     components: { Control, DropdownIndicator },
-    menuOffset: 8,
     maxMenuHeight: 300,
     maxMenuWidth: 440,
     minMenuWidth: 220,
-    menuPlacement: 'bottom-start',
+    popperProps: {},
     searchThreshold: 5,
     styles: { menu: () => null },
   };
   componentDidMount() {
+    this.mergePopperProps();
     document.addEventListener('click', this.handleClick);
+  }
+  // TODO work around this before react@17
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.popperProps !== this.props.popperProps) {
+      this.mergePopperProps();
+    }
   }
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClick);
@@ -202,6 +217,14 @@ export default class CompositeSelect extends PureComponent<Props, State> {
 
     return count;
   };
+  mergePopperProps = () => {
+    const defaults = {
+      modifiers: { offset: { offset: `0, 8` } },
+      placement: 'bottom-start',
+    };
+
+    this.popperProps = Object.assign({}, defaults, this.props.popperProps);
+  };
   getMaxHeight = () => {
     const { maxMenuHeight } = this.props;
 
@@ -232,8 +255,6 @@ export default class CompositeSelect extends PureComponent<Props, State> {
       footer,
       maxMenuWidth,
       minMenuWidth,
-      menuOffset,
-      menuPlacement,
       target,
       ...props
     } = this.props;
@@ -243,11 +264,8 @@ export default class CompositeSelect extends PureComponent<Props, State> {
 
     if (!portalDestination || !isOpen) return null;
 
-    return createPortal(
-      <Popper
-        placement={menuPlacement}
-        modifiers={{ offset: { offset: `0, ${menuOffset}` } }}
-      >
+    const popper = (
+      <Popper {...this.popperProps}>
         {({ placement, ref, style }) => {
           return (
             <NodeResolver innerRef={this.resolveMenuRef(ref)}>
@@ -279,9 +297,12 @@ export default class CompositeSelect extends PureComponent<Props, State> {
             </NodeResolver>
           );
         }}
-      </Popper>,
-      portalDestination,
+      </Popper>
     );
+
+    return this.popperProps.positionFixed
+      ? popper
+      : createPortal(popper, portalDestination);
   };
 
   render() {
