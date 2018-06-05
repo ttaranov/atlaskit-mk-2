@@ -1,5 +1,17 @@
 # @atlaskit/media-filmstrip
 
+## 9.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-card@29.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/field-radio-group@3.0.0
+  - @atlaskit/checkbox@3.0.0
+  - @atlaskit/field-range@4.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 8.0.9
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/media-card@28.0.6

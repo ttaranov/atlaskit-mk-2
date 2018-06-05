@@ -1,5 +1,18 @@
 # @atlaskit/dropdown-menu
 
+## 5.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/item@7.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/lozenge@5.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/droplist@6.0.0
+  - @atlaskit/avatar@11.0.0
+
 ## 4.1.1
 - [patch] Updated dependencies [535d585](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/535d585)
   - @atlaskit/droplist@5.1.1

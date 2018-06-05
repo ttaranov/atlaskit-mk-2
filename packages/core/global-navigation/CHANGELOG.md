@@ -1,5 +1,16 @@
 # @atlaskit/global-navigation
 
+## 0.0.7
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/navigation-next@0.1.3
+  - @atlaskit/onboarding@4.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/blanket@6.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/dropdown-menu@5.0.0
+  - @atlaskit/avatar@11.0.0
+
 ## 0.0.6
 - [patch] Updated dependencies [615e77c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/615e77c)
   - @atlaskit/navigation-next@0.1.2

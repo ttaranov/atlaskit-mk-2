@@ -1,5 +1,23 @@
 # @atlaskit/smart-card
 
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/page@7.0.0
+  - @atlaskit/media-ui@3.0.0
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/inline-message@5.0.0
+  - @atlaskit/field-text@6.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/lozenge@5.0.0
+  - @atlaskit/field-range@4.0.0
+  - @atlaskit/badge@8.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/dropdown-menu@5.0.0
+  - @atlaskit/avatar@11.0.0
+
 ## 3.0.4
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/page@6.0.4

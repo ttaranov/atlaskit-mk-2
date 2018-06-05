@@ -1,5 +1,16 @@
 # @atlaskit/editor-common
 
+## 11.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-card@29.0.0
+  - @atlaskit/emoji@35.0.7
+  - @atlaskit/mention@13.0.0
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/editor-test-helpers@4.0.3
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/icon@12.0.0
+
 ## 10.1.10
 - [patch] ED-4789: fix sticky toolbars [6d09683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d09683)
 - [none] Updated dependencies [6d09683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d09683)

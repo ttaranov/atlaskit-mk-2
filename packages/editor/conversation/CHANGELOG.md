@@ -1,5 +1,18 @@
 # @atlaskit/conversation
 
+## 8.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/reactions@12.0.12
+  - @atlaskit/renderer@18.0.0
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/comment@4.0.0
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/single-select@5.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/avatar@11.0.0
+
 ## 7.6.3
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/util-data-test@9.1.9

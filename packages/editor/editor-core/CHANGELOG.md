@@ -1,5 +1,43 @@
 # @atlaskit/editor-core
 
+## 73.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-card@29.0.0
+  - @atlaskit/media-picker@8.0.0
+  - @atlaskit/emoji@35.0.7
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/task-decision@7.0.0
+  - @atlaskit/mention@13.0.0
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/editor-bitbucket-transformer@3.1.4
+  - @atlaskit/media-filmstrip@9.0.0
+  - @atlaskit/renderer@18.0.0
+  - @atlaskit/editor-test-helpers@4.0.3
+  - @atlaskit/editor-markdown-transformer@1.0.0
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/layer-manager@4.0.0
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/item@7.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/single-select@5.0.0
+  - @atlaskit/logo@8.0.0
+  - @atlaskit/calendar@6.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/lozenge@5.0.0
+  - @atlaskit/code@5.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/size-detector@4.0.0
+  - @atlaskit/layer@4.0.0
+  - @atlaskit/analytics@3.0.2
+  - @atlaskit/droplist@6.0.0
+  - @atlaskit/avatar@11.0.0
+
 ## 72.2.5
 - [patch] SPS-426 Fix editing action, decision and media in FF [ab783c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab783c5)
 - [none] Updated dependencies [ab783c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab783c5)

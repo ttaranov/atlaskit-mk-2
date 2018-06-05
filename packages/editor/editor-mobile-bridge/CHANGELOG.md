@@ -1,5 +1,12 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.1.8
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/mention@13.0.0
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/media-core@19.0.0
+
 ## 0.1.7
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/mention@12.0.3

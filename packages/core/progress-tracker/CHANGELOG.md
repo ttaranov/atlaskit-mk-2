@@ -1,5 +1,12 @@
 # @atlaskit/progress-tracker
 
+## 3.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/page@7.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 2.0.3
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/page@6.0.4

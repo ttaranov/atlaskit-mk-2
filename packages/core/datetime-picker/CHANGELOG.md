@@ -1,5 +1,20 @@
 # @atlaskit/datetime-picker
 
+## 5.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/select@4.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/field-base@10.0.0
+  - @atlaskit/field-text@6.0.0
+  - @atlaskit/calendar@6.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/field-range@4.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/layer@4.0.0
+
 ## 4.1.1
 - [patch] Fix DateTimePicker not setting TimePicker value [0c073e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c073e6)
 

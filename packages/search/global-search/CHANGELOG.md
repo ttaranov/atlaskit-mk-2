@@ -1,5 +1,19 @@
 # @atlaskit/global-search
 
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/quick-search@2.0.0
+  - @atlaskit/navigation@32.0.0
+  - @atlaskit/page@7.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/util-service-support@2.0.8
+  - @atlaskit/analytics@3.0.2
+  - @atlaskit/avatar@11.0.0
+
 ## 3.3.4
 - [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
   - @atlaskit/page@6.0.4
