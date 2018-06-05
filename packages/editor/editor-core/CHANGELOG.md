@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 72.2.5
+- [patch] SPS-426 Fix editing action, decision and media in FF [ab783c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab783c5)
+- [none] Updated dependencies [ab783c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab783c5)
+
 ## 72.2.4
 - [patch] ED-4714: fix table jumping on hover over resize handles [b52a82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b52a82e)
 - [none] Updated dependencies [b52a82e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b52a82e)
