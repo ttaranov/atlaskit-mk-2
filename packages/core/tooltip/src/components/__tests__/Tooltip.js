@@ -251,7 +251,7 @@ describe('Tooltip', () => {
         <Tooltip content="Tooltip content">
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
 
       expect(spy).not.toHaveBeenCalled();
@@ -271,7 +271,7 @@ describe('Tooltip', () => {
         <Tooltip onMouseOut={spy}>
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
 
       expect(spy).not.toHaveBeenCalled();
       wrapper.simulate('mouseOut', event);
@@ -285,7 +285,7 @@ describe('Tooltip', () => {
         <Tooltip onMouseOut={mouseOutSpy}>
           <div>foo</div>
         </Tooltip>,
-      ).dive();
+      );
       const instance = wrapper.instance();
 
       expect(mouseOutSpy).not.toHaveBeenCalled();
@@ -358,7 +358,7 @@ describe('Tooltip', () => {
     });
   });
 
-  describe.only('render', () => {
+  describe('render', () => {
     it('should use a div by default for the wrapping element', () => {
       const wrapper = shallow(
         <Tooltip content="Tooltip content">
