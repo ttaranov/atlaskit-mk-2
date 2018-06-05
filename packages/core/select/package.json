@@ -38,6 +38,7 @@
     "react-dom": "^16.3.0"
   },
   "devDependencies": {
+    "@atlaskit/button": "^7.2.5",
     "@atlaskit/checkbox": "^2.0.2",
     "@atlaskit/docs": "^3.0.4",
     "@atlaskit/modal-dialog": "^4.0.5",
