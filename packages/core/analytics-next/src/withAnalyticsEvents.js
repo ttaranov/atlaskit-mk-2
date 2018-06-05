@@ -2,6 +2,7 @@
 
 import React, {
   Component,
+  type Node,
   type ComponentType,
   type ElementConfig,
 } from 'react';
@@ -22,13 +23,89 @@ type AnalyticsEventsProps = {
   createAnalyticsEvent: CreateUIAnalyticsEvent | void,
 };
 
-type EventMap<ProvidedProps> = {
-  [string]:
-    | AnalyticsEventPayload
-    | ((
-        create: CreateUIAnalyticsEvent,
-        props: ProvidedProps,
-      ) => UIAnalyticsEvent | void),
+type AnalyticsEventCreator<ProvidedProps: {}> = (
+  create: CreateUIAnalyticsEvent,
+  props: ProvidedProps,
+) => UIAnalyticsEvent;
+
+type EventMap<ProvidedProps: {}> = {
+  [string]: AnalyticsEventPayload | AnalyticsEventCreator<ProvidedProps>,
+};
+
+// This component is used to grab the analytics functions off context.
+// It uses legacy context, but provides an API similar to 16.3 context.
+// This makes it easier to use with the forward ref API.
+class AnalyticsContextConsumer extends Component<{
+  children: CreateUIAnalyticsEvent => Node,
+}> {
+  static contextTypes = {
+    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
+    getAtlaskitAnalyticsContext: PropTypes.func,
+  };
+  createAnalyticsEvent = (payload: AnalyticsEventPayload): UIAnalyticsEvent => {
+    const {
+      getAtlaskitAnalyticsEventHandlers,
+      getAtlaskitAnalyticsContext,
+    } = this.context;
+    const context =
+      (typeof getAtlaskitAnalyticsContext === 'function' &&
+        getAtlaskitAnalyticsContext()) ||
+      [];
+    const handlers =
+      (typeof getAtlaskitAnalyticsEventHandlers === 'function' &&
+        getAtlaskitAnalyticsEventHandlers()) ||
+      [];
+    return new UIAnalyticsEvent({ context, handlers, payload });
+  };
+  render() {
+    return this.props.children(this.createAnalyticsEvent);
+  }
+}
+
+const creator = <T: {}>(
+  descriptor: AnalyticsEventPayload | AnalyticsEventCreator<T>,
+): AnalyticsEventCreator<T> =>
+  typeof descriptor === 'object'
+    ? // $FlowFixMe unfortunately flow can't narrow between and object and function
+      (create, props) => create(descriptor)
+    : descriptor;
+
+const toObject = <K: string, V>(
+  obj: { [K]: V },
+  { key, value }: { key: K, value: V },
+) => ({
+  ...obj,
+  [key]: value,
+});
+
+// given all props and a map with the callback props to add analytics,
+// patch the callbacks to provide analytics information.
+const modifyCallbackProps = <T: {}>(
+  props: T,
+  eventMap: $Shape<T>,
+  createAnalyticsEvent: CreateUIAnalyticsEvent,
+): $Shape<T> =>
+  Object.keys(eventMap)
+    .map(key => ({ key, value: creator(eventMap[key]) }))
+    .map(({ key, value }) => ({
+      key,
+      value: (...args) => {
+        const providedCallback = props[key];
+        const event = value(createAnalyticsEvent, props);
+        if (providedCallback) {
+          providedCallback(...args, event);
+        }
+      },
+    }))
+    .reduce(toObject, {});
+
+const createCache = () => {
+  let value = {};
+  return next => {
+    const ret = value;
+    value = next;
+    return ret;
+  };
 };
 
 export default function withAnalyticsEvents<
@@ -38,100 +115,48 @@ export default function withAnalyticsEvents<
 >(
   createEventMap: EventMap<ExternalProps> = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
-  return WrappedComponent =>
-    class WithAnalyticsEvents extends Component<ExternalProps> {
-      static displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
-        WrappedComponent.name})`;
-
-      static contextTypes = {
-        getAtlaskitAnalyticsEventHandlers: PropTypes.func,
-        getAtlaskitAnalyticsContext: PropTypes.func,
-      };
-
-      // Store references to the original and patched event props so we can determine when to update
-      // the patched props
-      originalEventProps: {} = {};
-      patchedEventProps: {} = {};
-
-      constructor(props) {
-        super(props);
-        Object.keys(createEventMap).forEach(p => {
-          this.originalEventProps[p] = props[p];
-        });
-        this.patchedEventProps = this.mapCreateEventsToProps(
-          Object.keys(createEventMap),
-          props,
-        );
-      }
-
-      // Update patched event props only if the original props have changed
-      updatePatchedEventProps = props => {
-        const changedPropCallbacks = Object.keys(createEventMap).filter(
-          p => this.originalEventProps[p] !== props[p],
-        );
-        if (changedPropCallbacks.length > 0) {
-          this.patchedEventProps = {
-            ...this.patchedEventProps,
-            ...this.mapCreateEventsToProps(changedPropCallbacks, props),
-          };
-          changedPropCallbacks.forEach(p => {
-            this.originalEventProps[p] = props[p];
-          });
-        }
-
-        return this.patchedEventProps;
-      };
-
-      createAnalyticsEvent = (
-        payload: AnalyticsEventPayload,
-      ): UIAnalyticsEvent => {
-        const {
-          getAtlaskitAnalyticsEventHandlers,
-          getAtlaskitAnalyticsContext,
-        } = this.context;
-        const context =
-          (typeof getAtlaskitAnalyticsContext === 'function' &&
-            getAtlaskitAnalyticsContext()) ||
-          [];
-        const handlers =
-          (typeof getAtlaskitAnalyticsEventHandlers === 'function' &&
-            getAtlaskitAnalyticsEventHandlers()) ||
-          [];
-        return new UIAnalyticsEvent({ context, handlers, payload });
-      };
-
-      mapCreateEventsToProps = (changedPropNames: string[], props) =>
-        changedPropNames.reduce((modified, propCallbackName) => {
-          const eventCreator = createEventMap[propCallbackName];
-          const providedCallback = props[propCallbackName];
-          if (!['object', 'function'].includes(typeof eventCreator)) {
-            return modified;
-          }
-          const modifiedCallback = (...args) => {
-            const analyticsEvent =
-              typeof eventCreator === 'function'
-                ? eventCreator(this.createAnalyticsEvent, props)
-                : this.createAnalyticsEvent(eventCreator);
-
-            if (providedCallback) {
-              providedCallback(...args, analyticsEvent);
-            }
-          };
-          return {
-            ...modified,
-            [propCallbackName]: modifiedCallback,
-          };
-        }, {});
-
-      render() {
-        const patchedEventProps = this.updatePatchedEventProps(this.props);
-        const props = { ...this.props, ...patchedEventProps };
+  return WrappedComponent => {
+    const propsCache = createCache();
+    const modifiedPropsCache = createCache();
+    // $FlowFixMe - flow 0.67 doesn't know about forwardRef
+    const WithAnalyticsEvents = React.forwardRef(
+      (props: ExternalProps, ref) => {
         return (
-          <WrappedComponent
-            {...props}
-            createAnalyticsEvent={this.createAnalyticsEvent}
-          />
+          <AnalyticsContextConsumer>
+            {createAnalyticsEvent => {
+              const modifiedProps = modifyCallbackProps(
+                props,
+                createEventMap,
+                createAnalyticsEvent,
+              );
+              const prevProps = propsCache(props);
+              const prevModifiedProps = modifiedPropsCache(modifiedProps);
+              const cachedProps = Object.keys(modifiedProps)
+                .map(key => ({
+                  key,
+                  value:
+                    prevProps[key] === props[key]
+                      ? prevModifiedProps[key]
+                      : modifiedProps[key],
+                }))
+                .reduce(toObject, {});
+              return (
+                <WrappedComponent
+                  {...props}
+                  {...cachedProps}
+                  createAnalyticsEvent={createAnalyticsEvent}
+                  ref={ref}
+                />
+              );
+            }}
+          </AnalyticsContextConsumer>
         );
-      }
-    };
+      },
+    );
+
+    WithAnalyticsEvents.displayName = `WithAnalyticsEvents(${WrappedComponent.displayName ||
+      WrappedComponent.name})`;
+
+    return WithAnalyticsEvents;
+  };
 }
