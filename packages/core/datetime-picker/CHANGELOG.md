@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 4.1.1
+- [patch] Fix DateTimePicker not setting TimePicker value [0c073e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c073e6)
+
 ## 4.1.0
 - [minor] Updated dependencies [59ab4a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ab4a6)
   - @atlaskit/select@3.1.0
