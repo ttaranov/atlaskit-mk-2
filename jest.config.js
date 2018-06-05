@@ -40,15 +40,17 @@ const config = {
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
   transform: {
-    '^.+\\.tsx?$': 'ts-jest/preprocessor',
     '^.+\\.js$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest/preprocessor',
   },
   globals: {
     'ts-jest': {
       tsConfigFile: './tsconfig.fabric.json',
       skipBabel: true,
     },
-    __BASEURL__: 'http://localhost:9000',
+    __BASEURL__: PROD
+      ? 'https://atlaskit.atlassian.com'
+      : 'http://localhost:9000',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleNameMapper: {
@@ -125,10 +127,6 @@ if (config.testMatch.length === 0) {
   if (process.stdout.isTTY) {
     console.log('No packages were changed, so no tests should be run.');
   }
-}
-
-if (PROD) {
-  config.globals.__BASEURL__ = 'https://atlaskit.atlassian.com';
 }
 
 module.exports = config;
