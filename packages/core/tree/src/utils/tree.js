@@ -65,5 +65,8 @@ export const mutateTree = (
 };
 
 export const isSamePath = (a: Path, b: Path): boolean => {
+  if (a === b) {
+    return true;
+  }
   return a.length === b.length && a.every((v, i) => v === b[i]);
 };

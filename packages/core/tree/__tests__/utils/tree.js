@@ -147,6 +147,11 @@ describe('@atlaskit/tree - utils/tree', () => {
   });
 
   describe('#isSamePath', () => {
+    it('returns true if for the same instances', () => {
+      const path = [1, 1];
+      expect(isSamePath(path, path)).toBe(true);
+    });
+
     it("returns true if it's the same", () => {
       expect(isSamePath([1, 1], [1, 1])).toBe(true);
     });

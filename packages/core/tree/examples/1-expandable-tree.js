@@ -11,7 +11,7 @@ import type { TreeItem, TreeData, ItemId } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 import { mutateTree } from '../src/utils/tree';
 
-const LEFT_PADDING = 35;
+const PADDING_PER_LEVEL = 35;
 
 const Container = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ export default class StaticTree extends Component<void, State> {
   }
 
   renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
+    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item, onExpand, onCollapse)}

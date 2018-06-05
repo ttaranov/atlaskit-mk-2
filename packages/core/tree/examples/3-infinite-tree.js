@@ -12,7 +12,7 @@ import type { RenderItemParams } from '../src/components/Tree-types';
 import { mutateTree } from '../src/utils/tree';
 import { range } from '../src/utils/handy';
 
-const LEFT_PADDING = 35;
+const PADDING_PER_LEVEL = 35;
 
 const Container = styled.div`
   display: flex;
@@ -128,7 +128,7 @@ export default class InfiniteTree extends Component<void, State> {
   renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => {
     console.log('render');
     return (
-      <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
+      <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
         <AkNavigationItem
           text={item.data ? item.data.title : ''}
           icon={InfiniteTree.getIcon(item, onExpand, onCollapse)}

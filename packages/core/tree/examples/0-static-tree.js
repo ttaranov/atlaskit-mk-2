@@ -10,7 +10,7 @@ import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
 import type { TreeItem } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 
-const LEFT_PADDING = 35;
+const PADDING_PER_LEVEL = 35;
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ export default class StaticTree extends Component<void> {
   }
 
   renderItem = ({ item, depth }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
+    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item)}

@@ -12,7 +12,7 @@ import type { TreeItem, TreeData, ItemId } from '../src/types';
 import type { RenderItemParams } from '../src/components/Tree-types';
 import { mutateTree } from '../src/utils/tree';
 
-const LEFT_PADDING = 35;
+const PADDING_PER_LEVEL = 35;
 
 const Container = styled.div`
   display: flex;
@@ -77,24 +77,34 @@ export default class LazyTree extends Component<void, State> {
   }
 
   renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * LEFT_PADDING }}>
+    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={LazyTree.getIcon(item, onExpand, onCollapse)}
+        onKeyDown={() => console.log('asd')}
       />
     </div>
   );
 
+  // Lazy loaded example by emulating a fake long lasting request to server
   onExpand = (itemId: ItemId) => {
     const { tree }: State = this.state;
+
+    // 1. Marking the expanded item with `isChildrenLoading` flag
     this.setState({
       tree: mutateTree(tree, itemId, { isChildrenLoading: true }),
     });
+
+    // 2. Setting up a timeout to emulate an async server request
     setTimeout(() => {
+      // 3. When the request comes back we can mutate the tree.
+      //    It's important to get a fresh reference from the state.
       const freshTree = this.state.tree;
       const currentItem: TreeItem = freshTree.items[itemId];
       if (currentItem.isChildrenLoading) {
+        // 4. Good to check if it's still loading. Loading is cancelled by collapsing the same item in this example.
         this.setState({
+          // 5. Mutating the tree to expand and removing the loading indicator.
           tree: mutateTree(freshTree, itemId, {
             isExpanded: true,
             isChildrenLoading: false,
