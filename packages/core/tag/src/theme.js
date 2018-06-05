@@ -23,7 +23,7 @@ type Properties = {|
   tealLight: Themes,
   yellowLight: Themes,
 |};
-// Should it be appearance or color?
+
 const textColors = themed(
   'color',
   ({

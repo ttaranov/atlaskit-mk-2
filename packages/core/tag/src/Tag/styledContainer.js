@@ -29,9 +29,12 @@ function getRemovingStyles({ isRemoving }) {
   return styles;
 }
 
-export default styled.div`
+export default styled.span`
   box-sizing: border-box;
   display: inline-block;
-
+  ${props => `
+    background-color: ${props.backgroundColor};
+    color: ${props.textColor};
+  `};
   ${getRemovingStyles} ${getRemovedStyles};
 `;

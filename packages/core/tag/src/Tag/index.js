@@ -100,7 +100,6 @@ export default class Tag extends Component<Props, State> {
   render() {
     const { isFocused, isRemoved, isRemoving, markedForRemoval } = this.state;
 
-    // Should we pass color?
     const {
       appearance,
       elemBefore,
@@ -113,7 +112,7 @@ export default class Tag extends Component<Props, State> {
 
     const isRemovable = Boolean(removeButtonText);
     const isRounded = appearance === 'rounded';
-    // How to pass styled to styleProps
+
     const styled = {
       isFocused,
       isRemovable,
@@ -126,7 +125,7 @@ export default class Tag extends Component<Props, State> {
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
-      <Appearance props={color} state={styled} theme={theme}>
+      <Appearance props={styled} theme={theme}>
         {styleProps => (
           <Container {...styleProps} onAnimationEnd={onAnimationEnd}>
             <Chrome
