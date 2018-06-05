@@ -41,6 +41,7 @@ import {
   mapMediaFileToFileState,
 } from '../fileState';
 import { Observer } from 'rxjs/Observer';
+import FileStreamCache from './fileStreamCache';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -93,15 +94,6 @@ export class ContextFactory {
   }
 }
 
-const getFileKey = (id: string, options?: GetFileOptions): string => {
-  const collection =
-    options && options.collectionName ? `-${options.collectionName}` : '';
-  const occurrence =
-    options && options.occurrenceKey ? `-${options.occurrenceKey}` : '';
-
-  return `${id}${collection}${occurrence}`;
-};
-
 const pollingInterval = 3000;
 
 class ContextImpl implements Context {
@@ -110,13 +102,13 @@ class ContextImpl implements Context {
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
-  private readonly fileStreams: Map<string, ConnectableObservable<FileState>>;
+  private readonly fileStreamsCache: FileStreamCache;
   private readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreams = new Map();
+    this.fileStreamsCache = new FileStreamCache();
     this.mediaStore = new MediaStore({
       serviceHost: config.serviceHost,
       authProvider: config.authProvider,
@@ -124,9 +116,9 @@ class ContextImpl implements Context {
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
-    const key = getFileKey(id, options);
+    const key = FileStreamCache.createKey(id, options);
 
-    if (this.fileStreams.has(key) === false) {
+    if (!this.fileStreamsCache.has(key)) {
       const collection = options && options.collectionName;
       const fileStream$ = this.createDownloadFileStream(
         id,
@@ -134,10 +126,10 @@ class ContextImpl implements Context {
       ).publishReplay(1);
 
       fileStream$.connect();
-      this.fileStreams.set(key, fileStream$);
+      this.fileStreamsCache.set(key, fileStream$);
     }
 
-    return this.fileStreams.get(key)!;
+    return this.fileStreamsCache.get(key)!;
   }
 
   private createDownloadFileStream = (
