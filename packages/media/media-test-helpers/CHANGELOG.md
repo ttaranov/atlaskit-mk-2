@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 13.3.1
+- [patch] MSW-741 : handle unexpected media types without crashes [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+- [none] Updated dependencies [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+
 ## 13.3.0
 - [minor] Add new item to example items [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
 - [none] Updated dependencies [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
