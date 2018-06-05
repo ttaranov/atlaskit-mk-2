@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 3.2.0
+- [minor] Add named export "CompositeSelect" to the Atlaskit select package [9c34042](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c34042)
+
 ## 3.1.0
 - [minor] Added `spacing` prop, which allows for a compact mode that supports 32px trigger height for single-select, bumped react-select to beta.6 [59ab4a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ab4a6)
 - [minor] added `spacing` prop to support `compact` mode for single select.
