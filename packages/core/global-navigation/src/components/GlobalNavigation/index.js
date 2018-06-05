@@ -11,86 +11,34 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
   static defaultProps = {};
 
   constructNavItems = () => {
-    const {
-      create,
-      product,
-      search,
-      yourWork,
-      help,
-      profile,
-      appSwitcher,
-      notification,
-      people,
-    } = generateProductConfig(this.props);
-    const {
-      product: defaultProduct,
-      create: defaultCreate,
-      search: defaultSearch,
-      yourWork: defaultYourWork,
-      help: defaultHelp,
-      profile: defaultProfile,
-      appSwitcher: defaultAppSwitcher,
-      notification: defaultNotification,
-      people: defaultPeople,
-    } = generateDefaultConfig();
+    const config = generateProductConfig(this.props);
+    const defaultConfig = generateDefaultConfig();
 
-    const navItems = [];
+    const navItems = Object.keys(defaultConfig).map(item => ({
+      ...(config[item] && {
+        ...defaultConfig[item],
+        ...config[item],
+      }),
+    }));
 
-    if (notification) {
-      navItems.push({ ...defaultNotification, ...notification });
-    }
-
-    if (people) {
-      navItems.push({ ...defaultPeople, ...people });
-    }
-
-    if (yourWork) {
-      navItems.push({ ...defaultYourWork, ...yourWork });
-    }
-
-    if (appSwitcher) {
-      navItems.push({ ...defaultAppSwitcher, ...appSwitcher });
-    }
-
-    if (help) {
-      navItems.push({ ...defaultHelp, ...help });
-    }
-
-    if (profile) {
-      navItems.push({ ...defaultProfile, ...profile });
-    }
-
-    if (product) {
-      navItems.push({ ...product, ...defaultProduct });
-    }
-
-    if (search) {
-      navItems.push({ ...defaultSearch, ...search });
-    }
-
-    if (create) {
-      navItems.push({ ...defaultCreate, ...create });
-    }
-
-    return [
-      ...navItems.sort((item1, item2) =>
-        item1.position.localeCompare(item2.position),
-      ),
-    ];
+    return {
+      primaryItems: navItems
+        .filter(item => item.section === 'top')
+        .sort((item1, item2) => item1.rank - item2.rank),
+      secondaryItems: navItems
+        .filter(item => item.section === 'bottom')
+        .sort((item1, item2) => item1.rank - item2.rank),
+    };
   };
 
   render() {
-    const navItems = this.constructNavItems();
+    const { primaryItems, secondaryItems } = this.constructNavItems();
 
     return (
       <Fragment>
         <GlobalNav
-          primaryItems={navItems.filter(item =>
-            item.position.startsWith('top'),
-          )}
-          secondaryItems={navItems.filter(item =>
-            item.position.startsWith('bottom'),
-          )}
+          primaryItems={primaryItems}
+          secondaryItems={secondaryItems}
         />
       </Fragment>
     );
