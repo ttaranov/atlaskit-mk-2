@@ -11,7 +11,8 @@ export default class StatelessExample extends Component<void, State> {
     value: '',
   };
 
-  setValue = (e: any) => this.setState({ value: e.target.value });
+  setValue = (e: SyntheticInputEvent<HTMLInputElement>) =>
+    this.setState({ value: e.target.value });
 
   render() {
     return (

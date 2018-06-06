@@ -2,6 +2,7 @@ import WikiMarkupTransformer from '../../src';
 
 describe('JIRA wiki markup - Text', () => {
   const testCases: Array<[string, string]> = [
+    ['should render empty paragraph if no content', ''],
     ['should render simple text as a paragraph', 'foo bar'],
     [
       'should ignore leading spaces on each line',

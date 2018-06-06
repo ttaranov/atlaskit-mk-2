@@ -16,6 +16,7 @@ import {
   tableMarginBottom,
   akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
+import { scrollbarStyles } from '../../../ui/styles';
 
 export const tableToolbarColor = akColorN20;
 export const tableBorderColor = akColorN50;
@@ -39,6 +40,10 @@ export const tableStyles = `
     .table-container table ${tableSharedStyle}
 
     .table-container table {
+      td, th {
+        position: relative;
+      }
+
       .selectedCell, .hoveredCell {
         position: relative;
         border: 1px solid ${tableBorderSelectedColor};
@@ -129,6 +134,7 @@ export const tableStyles = `
     }
     .table-wrapper {
       overflow-x: ${isIE11 ? 'none' : 'auto'};
+      ${!isIE11 ? scrollbarStyles : ''}
     }
     .column-resize-handle {
       background-color: ${tableBorderSelectedColor};
@@ -149,11 +155,6 @@ export const tableStyles = `
 
   .ProseMirror.resize-cursor {
     cursor: col-resize;
-
-    table td,
-    table th {
-      position: relative;
-    }
   }
 `;
 
@@ -176,5 +177,7 @@ export const tableCommentEditorStyles = `
   .ProseMirror .table-container table {
     margin-left: 0;
     margin-right: 0;
+
+    ${scrollbarStyles};
   }
 `;

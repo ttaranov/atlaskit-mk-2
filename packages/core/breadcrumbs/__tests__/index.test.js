@@ -6,7 +6,7 @@ import Button from '@atlaskit/button';
 import Breadcrumbs, {
   BreadcrumbsStateless,
   BreadcrumbsItem as Item,
-} from '../src/';
+} from '../src';
 import EllipsisItem from '../src/components/EllipsisItem';
 
 describe('Breadcrumbs', () => {

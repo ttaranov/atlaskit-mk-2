@@ -21,8 +21,18 @@ describe('<Content />', () => {
 
   it('should render children', () => {
     const { component } = setup();
+    expect(component.children()).toHaveLength(2);
+  });
 
-    expect(component.find('div')).toHaveLength(2);
+  it('should allow children to show controls', () => {
+    const { component } = setup();
+
+    expect(
+      component
+        .children()
+        .at(1)
+        .prop('showControls'),
+    ).toBeDefined();
   });
 
   it('should handle mouse move', () => {

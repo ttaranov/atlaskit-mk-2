@@ -24,14 +24,13 @@ import {
   TimeStyle,
 } from './styles';
 
-type ReactComponentConstructor = new () => React.Component<any, any>;
+type ReactComponentConstructor = new (props: any) => React.Component<any, any>;
 
 interface Part {
   value: string;
   matches: boolean;
 }
 
-// tslint:disable:next-line variable-name
 function renderHighlight(
   ReactComponent: ReactComponentConstructor,
   value?: string,

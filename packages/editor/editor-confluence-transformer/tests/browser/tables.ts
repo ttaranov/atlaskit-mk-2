@@ -6,7 +6,7 @@ import { browser } from '@atlaskit/editor-common';
 
 chai.use(chaiPlugin);
 
-describe('confluence tables transform', () => {
+describe.skip('confluence tables transform', () => {
   const onAllBrowsersExceptiOSIt = !browser.ios ? it : it.skip;
 
   // skip iOS since the viewport size is different, so tables will map to a different size

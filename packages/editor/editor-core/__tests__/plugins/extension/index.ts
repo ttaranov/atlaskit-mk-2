@@ -56,17 +56,22 @@ describe('extension', () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
+        const elementContainer = document.createElement('div');
+        elementContainer.className = 'extension-container';
         const element = document.createElement('span');
-        document.body.appendChild(element);
+        elementContainer.appendChild(element);
+        document.body.appendChild(elementContainer);
         const result = setExtensionElement(element)(
           editorView.state,
           editorView.dispatch,
         );
 
         const pluginState = pluginKey.getState(editorView.state);
-        expect(pluginState.element).toEqual(element);
+        expect(pluginState.element).toEqual(
+          document.getElementsByClassName('extension-container')[0],
+        );
         expect(result).toBe(true);
-        document.body.removeChild(element);
+        document.body.removeChild(elementContainer);
       });
     });
 
@@ -155,6 +160,16 @@ describe('extension', () => {
         expect(pluginState.element).toEqual(null);
         expect(editorView.state.doc).toEqualDocument(doc(paragraph('')));
       });
+    });
+  });
+
+  describe('show extention options', () => {
+    it('should show options when the cursor is inside the extension', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
+      );
+      const pluginState = pluginKey.getState(editorView.state);
+      expect(pluginState.element).not.toEqual(null);
     });
   });
 });

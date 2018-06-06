@@ -239,6 +239,7 @@ import MediaServicesGridIcon from '../glyph/media-services/grid';
 import MediaServicesImageIcon from '../glyph/media-services/image';
 import MediaServicesLineThicknessIcon from '../glyph/media-services/line-thickness';
 import MediaServicesLineIcon from '../glyph/media-services/line';
+import MediaServicesNoImageIcon from '../glyph/media-services/no-image';
 import MediaServicesOpenMediaviewerIcon from '../glyph/media-services/open-mediaviewer';
 import MediaServicesOvalIcon from '../glyph/media-services/oval';
 import MediaServicesPdfIcon from '../glyph/media-services/pdf';
@@ -1801,6 +1802,12 @@ export default {
     component: MediaServicesLineIcon,
     componentName: 'MediaServicesLineIcon',
     package: '@atlaskit/icon/glyph/media-services/line',
+  },
+  'media-services/no-image': {
+    keywords: ['media-services/no-image', 'mediaservicesnoimage'],
+    component: MediaServicesNoImageIcon,
+    componentName: 'MediaServicesNoImageIcon',
+    package: '@atlaskit/icon/glyph/media-services/no-image',
   },
   'media-services/open-mediaviewer': {
     keywords: ['media-services/open-mediaviewer', 'mediaservicesopenmediaviewer'],

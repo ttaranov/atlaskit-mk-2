@@ -1,65 +1,64 @@
-import * as React from 'react';
-import InfoIcon from '@atlaskit/icon/glyph/editor/info';
-import DateIcon from '@atlaskit/icon/glyph/editor/date';
-import TableIcon from '@atlaskit/icon/glyph/editor/table';
-import { createTableNode } from '../table/utils';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorPlugin } from '../../types';
+import { QuickInsertItem } from './types';
 import { find } from './search';
 
-const ITEMS = [
-  {
-    title: 'Panel',
-    icon: () => <InfoIcon label="Insert Panel" />,
-    action(state, replaceWith) {
-      return replaceWith(
-        state.schema.nodes.panel.createChecked(
-          {},
-          state.schema.nodes.paragraph.createChecked(),
-        ),
-      );
-    },
-  },
-  {
-    title: 'Table',
-    icon: () => <TableIcon label="Insert table" />,
-    action(state, replaceWith) {
-      return replaceWith(createTableNode(3, 3, state.schema));
-    },
-  },
-  {
-    title: 'Date',
-    icon: () => <DateIcon label="Insert Date" />,
-    action(state, replaceWith) {
-      return replaceWith(
-        state.schema.nodes.date.createChecked({ timestamp: Date.now() }),
-      );
-    },
-  },
-  {
-    title: 'Browse all...',
-    action() {
-      document.location.href = 'https://atlassian.com';
-      return true;
-    },
-  },
-];
+const getItemSearchString = (item: QuickInsertItem) =>
+  `${item.title} ${(item.keywords || []).join(' ')}`;
 
 const quickInsertPlugin: EditorPlugin = {
+  name: 'quickInsert',
+
+  pmPlugins(quickInsert: Array<Array<QuickInsertItem>>) {
+    return [
+      {
+        rank: 500, // It's important that this plugin is above TypeAheadPlugin
+        plugin: () => quickInsertPluginFactory(quickInsert),
+      },
+    ];
+  },
+
   pluginsOptions: {
     typeAhead: {
       trigger: '/',
-      getItems(query) {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve(find(query, ITEMS, item => item.title));
-          }, 100);
-        });
+      getItems: (query, state) => {
+        const quickInsertItems = pluginKey.getState(state);
+        return Promise.resolve(
+          find(query, quickInsertItems, getItemSearchString),
+        );
       },
-      selectItem: (state, item, replaceWith) => {
-        return item.action(state, replaceWith);
-      },
+      selectItem: (state, item, insert) =>
+        (item as QuickInsertItem).action(insert, state),
     },
   },
 };
 
 export default quickInsertPlugin;
+
+/**
+ *
+ * ProseMirror Plugin
+ *
+ */
+
+export const pluginKey = new PluginKey('quickInsertPluginKey');
+
+function quickInsertPluginFactory(
+  quickInsertItems: Array<Array<QuickInsertItem>>,
+) {
+  return new Plugin({
+    key: pluginKey,
+    state: {
+      init() {
+        return (quickInsertItems || []).reduce(
+          (acc, item) => acc.concat(...item),
+          [],
+        );
+      },
+
+      apply(tr, pluginState) {
+        return pluginState;
+      },
+    },
+  });
+}

@@ -1,5 +1,20 @@
 # @atlaskit/dynamic-table
 
+## 9.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/toggle@4.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/pagination@6.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/dropdown-menu@5.0.0
+  - @atlaskit/avatar@11.0.0
+
+## 8.1.0
+- [minor] Add paginationi18n prop to dynamic-table which passes this to the i18n of its pagination component [08054b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08054b1)
+
 ## 8.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/toggle@3.0.2

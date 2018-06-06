@@ -46,9 +46,9 @@ function calcWidth(
 function calcMargin(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
-      return '12px auto 24px 24px';
+      return '12px auto 12px 24px';
     case 'wrap-left':
-      return '12px 24px 24px auto';
+      return '12px 24px 12px auto';
     default:
       return '24px auto';
   }
@@ -60,18 +60,22 @@ export interface WrapperProps {
   containerWidth: number;
 }
 
+/**
+ * Can't use `.attrs` to handle highly dynamic styles because we are still
+ * supporting `styled-components` v1.
+ */
 const MediaSingleDimensionHelper = ({
-  layout,
   width,
   height,
+  layout,
   containerWidth,
 }: WrapperProps) => css`
-  margin: ${calcMargin(layout)};
-  float: ${float(layout)};
+  width: ${calcWidth(layout, width, containerWidth)};
   max-width: ${containerWidth < akEditorFullPageMaxWidth
     ? '100%'
-    : `${containerWidth}px`};
-  width: ${calcWidth(layout, width, containerWidth)};
+    : containerWidth};
+  float: ${float(layout)};
+  margin: ${calcMargin(layout)};
   &::after {
     content: '';
     display: block;

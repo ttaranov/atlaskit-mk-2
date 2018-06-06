@@ -66,7 +66,8 @@ ListWrapper.displayName = 'ListWrapper';
 export const ArrowsWrapper = styled.div`
   display: flex;
   position: absolute;
-  top: 40%;
+  top: 50%;
+  transform: translateY(-50%);
   left: 0;
   width: 100%;
 `;
@@ -79,14 +80,23 @@ export const CloseButtonWrapper = styled.div`
 `;
 
 export const ZoomWrapper = styled.div`
+  width: 100%;
   position: absolute;
   bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+`;
 
+export const ZoomControlsWrapper = styled.div`
   button {
     margin-right: 10px;
   }
+`;
+
+export const ZoomLevel = styled.span`
+  position: absolute;
+  right: 24px;
+  top: 0;
+  color: #b8c7e0;
 `;
 
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
@@ -116,11 +126,13 @@ export const ErrorMessage = styled.div`
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   transition: transform 0.2s;
   transform-origin: center;
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 export const PDFWrapper = styled.div`

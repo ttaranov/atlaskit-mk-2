@@ -21,7 +21,7 @@ export default md`
   ~~~js
   import * as React from 'react';
   import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-  import FabricElementsListener from '@atlaskit/analytics-listeners';
+  import AtlaskitAnalyticsListener from '@atlaskit/analytics-listeners';
 
   import { GasPayload } from '@atlaskit/analytics-gas-types';
 

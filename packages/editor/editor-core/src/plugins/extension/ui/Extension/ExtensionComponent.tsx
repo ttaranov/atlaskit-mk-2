@@ -67,7 +67,7 @@ export default class ExtensionComponent extends Component<Props, State> {
           <Extension
             node={node}
             macroProvider={macroProvider}
-            onClick={this.handleClick}
+            onClick={this.selectExtension}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
           >
@@ -79,7 +79,7 @@ export default class ExtensionComponent extends Component<Props, State> {
           <InlineExtension
             node={node}
             macroProvider={macroProvider}
-            onClick={this.handleClick}
+            onClick={this.selectExtension}
           >
             {extensionHandlerResult}
           </InlineExtension>
@@ -95,7 +95,7 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   };
 
-  private handleClick = (event: React.SyntheticEvent<any>) => {
+  private selectExtension = (event: React.SyntheticEvent<any>) => {
     if (event.nativeEvent.defaultPrevented) {
       return;
     }

@@ -9,6 +9,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "https://product-fabric.atlassian.net/browse/FAB-983",
               },
               "type": "link",
@@ -43,6 +44,7 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
+                "__confluenceMetadata": null,
                 "href": "https://product-fabric.atlassian.net/browse/FAB-983",
               },
               "type": "link",

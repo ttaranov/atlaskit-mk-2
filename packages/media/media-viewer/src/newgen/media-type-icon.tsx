@@ -1,4 +1,4 @@
-/* tslint:disable:variable-name */
+/* tslint:disable:variable-collectionName */
 import * as React from 'react';
 import ImageIcon from '@atlaskit/icon/glyph/media-services/image';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
@@ -30,7 +30,7 @@ export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
   render() {
     const { type } = this.props;
     const typeWithDefault = type || defaultType;
-    const Icon = icons[typeWithDefault];
+    const Icon = icons[typeWithDefault] || icons[defaultType];
 
     return (
       <IconWrapper type={typeWithDefault}>

@@ -1,5 +1,46 @@
 # @atlaskit/website
 
+## 2.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/quick-search@2.0.0
+  - @atlaskit/navigation@32.0.0
+  - @atlaskit/page@7.0.0
+  - @atlaskit/media-card@29.0.0
+  - @atlaskit/media-filmstrip@9.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/layer-manager@4.0.0
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/flag@8.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/dynamic-table@9.0.0
+  - @atlaskit/tag@5.0.0
+  - @atlaskit/tag-group@5.0.0
+  - @atlaskit/single-select@5.0.0
+  - @atlaskit/inline-dialog@7.0.0
+  - @atlaskit/logo@8.0.0
+  - @atlaskit/field-text@6.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/lozenge@5.0.0
+  - @atlaskit/code@5.0.0
+  - @atlaskit/badge@8.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/css-reset@2.0.3
+
+## 1.5.24
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/page@6.0.4
+  - @atlaskit/media-card@28.0.6
+  - @atlaskit/media-filmstrip@8.0.9
+  - @atlaskit/navigation@31.0.5
+  - @atlaskit/quick-search@1.7.2
+
+## 1.5.23
+- [patch] Fix fullscreen examples increasing height on each browser repaint [5118ca4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5118ca4)
+
 ## 1.5.22
 - [patch] Updated dependencies [481c086](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/481c086)
   - extract-react-types-loader@0.1.3

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-viewer",
-  "version": "14.2.0",
+  "version": "15.0.2",
   "description": "MediaViewer is Atlassian's powerful solution for viewing files on the web. It's both powerful and extendable yet easy-to-integrate",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -20,34 +20,35 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^7.2.5",
-    "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/media-ui": "^2.1.1",
-    "@atlaskit/spinner": "^5.0.2",
-    "@atlaskit/theme": "^3.2.2",
+    "@atlaskit/button": "^8.0.0",
+    "@atlaskit/icon": "^12.0.0",
+    "@atlaskit/media-ui": "^3.0.0",
+    "@atlaskit/spinner": "^6.0.0",
+    "@atlaskit/theme": "^4.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "deep-equal": "^1.0.1",
     "pdfjs-dist": "^2.0.466",
     "query-string": "^4.3.2",
-    "styled-components": "1.4.6 - 3",
+    "react-video-renderer": "^1.0.1",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^18.1.1",
+    "@atlaskit/media-core": "^19.0.0",
     "jquery": "^3.2.1",
     "react": "^16.3.0",
-    "rxjs": "^5.1.0"
+    "rxjs": "^5.1.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.5",
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/media-core": "^18.1.1",
-    "@atlaskit/media-test-helpers": "^13.0.1",
+    "@atlaskit/button": "^8.0.0",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/media-core": "^19.0.0",
+    "@atlaskit/media-test-helpers": "^14.0.0",
+    "@types/enzyme": "^3.1.6",
     "@types/jquery": "^2.0.41",
     "@types/query-string": "^4.3.1",
     "@types/sinon-chai": "^2.7.27",
-    "@types/enzyme": "^3.1.6",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jquery": "^3.2.1",
     "sinon-chai": "^2.9.0"
   }

@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { Identifier } from './domain';
+import { Identifier, ItemSource, MediaViewerFeatureFlags } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
-import { Blanket, ErrorMessage } from './styled';
+import { Blanket } from './styled';
 import { Shortcut } from './shortcut';
 
 export type Props = {
   onClose?: () => void;
   selectedItem?: Identifier;
-  collectionName?: string;
-  items?: Identifier[];
+  readonly featureFlags?: MediaViewerFeatureFlags;
   context: Context;
+  itemSource: ItemSource;
 };
 
 export class MediaViewer extends React.Component<Props, {}> {
@@ -28,32 +28,35 @@ export class MediaViewer extends React.Component<Props, {}> {
 
   private renderContent() {
     const {
-      items,
-      collectionName,
       selectedItem,
       context,
       onClose,
+      itemSource,
+      featureFlags,
     } = this.props;
-    if (collectionName) {
+    if (itemSource.kind === 'COLLECTION') {
       return (
         <Collection
+          pageSize={itemSource.pageSize}
           selectedItem={selectedItem}
-          collectionName={collectionName}
+          collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
+          featureFlags={featureFlags}
         />
       );
-    } else if (items) {
+    } else if (itemSource.kind === 'ARRAY') {
       return (
         <List
-          selectedItem={selectedItem || items[0]}
-          items={items}
+          selectedItem={selectedItem || itemSource.items[0]}
+          items={itemSource.items}
           context={context}
           onClose={onClose}
+          featureFlags={featureFlags}
         />
       );
     } else {
-      return <ErrorMessage>No media found</ErrorMessage>;
+      return null as never;
     }
   }
 }

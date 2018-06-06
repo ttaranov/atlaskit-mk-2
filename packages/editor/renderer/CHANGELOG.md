@@ -1,5 +1,59 @@
 # @atlaskit/renderer
 
+## 18.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-card@29.0.0
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/task-decision@7.0.0
+  - @atlaskit/mention@13.0.0
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/media-filmstrip@9.0.0
+  - @atlaskit/editor-test-helpers@4.0.3
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/code@5.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/size-detector@4.0.0
+
+## 17.0.9
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/media-card@28.0.6
+  - @atlaskit/util-data-test@9.1.9
+  - @atlaskit/task-decision@6.0.9
+  - @atlaskit/mention@12.0.3
+  - @atlaskit/editor-json-transformer@3.0.8
+  - @atlaskit/media-filmstrip@8.0.9
+  - @atlaskit/editor-test-helpers@4.0.2
+  - @atlaskit/editor-common@10.1.9
+
+## 17.0.8
+- [patch] Updated dependencies [35d547f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d547f)
+  - @atlaskit/media-card@28.0.5
+  - @atlaskit/editor-common@10.1.4
+
+## 17.0.7
+- [patch] Fix mediaSingle [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+- [none] Updated dependencies [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+
+## 17.0.6
+- [patch] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
+  - @atlaskit/editor-common@10.1.3
+
+## 17.0.5
+- [patch] ED-4447 Fix image breakout rendering [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
+- [none] Updated dependencies [b73e05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b73e05d)
+  - @atlaskit/editor-common@10.1.2
+
+## 17.0.4
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+  - @atlaskit/util-data-test@9.1.7
+  - @atlaskit/editor-common@10.1.1
+
 ## 17.0.3
 - [patch] Updated dependencies [0edc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0edc6c8)
 

@@ -56,11 +56,15 @@ function buildUrl(host: string, url: string, query: Object) {
   return `${host}${url}?${stringify(query)}`;
 }
 
-export const toIdentifier = (item: MediaCollectionItem): Identifier => {
+export const toIdentifier = (
+  item: MediaCollectionItem,
+  collectionName: string,
+): Identifier => {
   return {
     id: item.details.id,
     type: item.type,
     occurrenceKey: item.details.occurrenceKey,
+    collectionName,
   };
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reduced-ui-pack",
-  "version": "8.9.1",
+  "version": "8.10.1",
   "description": "CSS classes which provide styling for a reduced number of Atlaskit components.",
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
@@ -13,18 +13,20 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.10.3"
   },
   "peerDependencies": {
-    "@atlaskit/css-reset": "^2.0.2"
+    "@atlaskit/css-reset": "^2.0.3"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/icon": "^12.0.0",
     "cheerio": "^0.22.0",
     "glob": "^7.1.2",
     "less": "^2.7.1",

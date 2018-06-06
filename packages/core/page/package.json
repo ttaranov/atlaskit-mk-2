@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "6.0.3",
+  "version": "7.0.0",
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,26 +12,22 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Mike G"
-    },
-    {
-      "name": "Sean C"
-    }
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
-  "dependencies": {
-    "styled-components": "1.4.6 - 3"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/banner": "^5.0.2",
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/navigation": "^31.0.4",
-    "@atlaskit/toggle": "^3.0.2",
-    "enzyme": "^3.3.0",
+    "@atlaskit/banner": "^6.0.0",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/navigation": "^32.0.0",
+    "@atlaskit/toggle": "^4.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-lorem-component": "^0.12.2",
     "react-syntax-highlighter": "^6.0.2"
   },

@@ -10,6 +10,7 @@ import {
 } from '../../../src/newgen/viewers/image';
 import { ZoomControls } from '../../../src/newgen/zoomControls';
 
+const collectionName = 'some-collection';
 const imageItem: FileItem = {
   type: 'file',
   details: {
@@ -43,7 +44,13 @@ function createFixture(fetchImageBlobCancelableResponse, cancel?) {
     cancel: cancel || jest.fn(),
   });
   const context = createContext(blobService);
-  const el = mount(<ImageViewer context={context} item={imageItem} />);
+  const el = mount(
+    <ImageViewer
+      context={context}
+      item={imageItem}
+      collectionName={collectionName}
+    />,
+  );
   return { blobService, context, el };
 }
 
@@ -157,5 +164,15 @@ describe('ImageViewer', () => {
       .last()
       .simulate('click');
     expect(el.state('zoomLevel')).toEqual(0.96);
+  });
+
+  it('MSW-720: creates the blobService with collectionName', async () => {
+    const response = Promise.resolve(new Blob());
+    const { el, context } = createFixture(response);
+
+    await response;
+    el.update();
+
+    expect(context.getBlobService).toHaveBeenCalledWith(collectionName);
   });
 });

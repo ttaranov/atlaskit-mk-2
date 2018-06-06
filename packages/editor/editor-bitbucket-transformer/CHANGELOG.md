@@ -1,5 +1,24 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 3.1.4
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/editor-test-helpers@4.0.3
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/docs@4.0.0
+
+## 3.1.3
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/util-data-test@9.1.9
+  - @atlaskit/editor-core@72.2.2
+  - @atlaskit/editor-test-helpers@4.0.2
+  - @atlaskit/editor-common@10.1.9
+
+## 3.1.2
+- [patch] Fix image parsing [5fc825b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5fc825b)
+- [none] Updated dependencies [5fc825b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5fc825b)
+
 ## 3.1.1
 
 

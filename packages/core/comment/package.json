@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "3.1.8",
+  "version": "4.0.0",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,24 +12,26 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^7.2.5",
-    "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/lozenge": "^4.0.1",
-    "@atlaskit/theme": "^3.2.2",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/button": "^8.0.0",
+    "@atlaskit/icon": "^12.0.0",
+    "@atlaskit/lozenge": "^5.0.0",
+    "@atlaskit/theme": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.6",
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/editor-core": "^72.0.0",
-    "enzyme": "^3.3.0"
+    "@atlaskit/avatar": "^11.0.0",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/editor-core": "^73.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

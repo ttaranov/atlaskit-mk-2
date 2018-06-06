@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,10 +12,11 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Trey S",
-    "Jed W",
+    "Sean C",
+    "Charles L",
+    "Mike G",
     "Joss M",
-    "Charles L"
+    "Jed W"
   ],
   "atlaskit": {
     "name": "Select",
@@ -23,22 +24,26 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/theme": "^3.2.2",
+    "@atlaskit/icon": "^12.0.0",
+    "@atlaskit/theme": "^4.0.0",
+    "focus-trap": "^2.4.5",
+    "react-node-resolver": "^1.0.1",
+    "react-popper": "1.0.0-beta.6",
     "react-select": "^2.0.0-beta.6",
-    "react-transition-group": "^2.2.1",
-    "styled-components": "1.4.6 - 3"
+    "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.5",
-    "@atlaskit/checkbox": "^2.0.2",
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/modal-dialog": "^4.0.5",
+    "@atlaskit/button": "^8.0.0",
+    "@atlaskit/checkbox": "^3.0.0",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/modal-dialog": "^5.0.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
-    "enzyme": "^3.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-value": "^0.2.0"
   }
 }

@@ -1,5 +1,17 @@
 # @atlaskit/editor-markdown-transformer
 
+## 1.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/docs@4.0.0
+
+## 0.2.23
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/editor-core@72.2.2
+  - @atlaskit/editor-common@10.1.9
+
 ## 0.2.22
 
 

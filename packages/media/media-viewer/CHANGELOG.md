@@ -1,5 +1,59 @@
 # @atlaskit/media-viewer
 
+## 15.0.2
+- [patch] Better image resizing in MediaViewer NG [29f6f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29f6f90)
+
+## 15.0.1
+- [patch] Filter links from collections in MediaViewer NG [2ac8912](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ac8912)
+
+## 15.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-ui@3.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+
+## 14.6.2
+- [patch] MSW-741 : handle unexpected media types without crashes [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+- [none] Updated dependencies [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+  - @atlaskit/media-test-helpers@13.3.1
+
+## 14.6.1
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/media-core@18.1.2
+
+## 14.6.0
+- [minor] improve VideoViewer experience [50475df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50475df)
+
+- [none] Updated dependencies [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
+  - @atlaskit/media-test-helpers@13.3.0
+
+## 14.5.1
+- [patch] Add issue collector to MVNG [15e0ced](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15e0ced)
+
+## 14.5.0
+- [minor] add custom video player under feature flag [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
+- [none] Updated dependencies [9041109](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041109)
+  - @atlaskit/media-test-helpers@13.2.0
+
+## 14.4.1
+- [patch] Centering navigation arrows vertically in MVNG [d506235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d506235)
+
+## 14.4.0
+- [patch] Fix pageSize in MediaViewer NG [4eac436](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eac436)
+- [minor] show controls when navigation happen in MediaViewer [3917aa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3917aa6)
+
+## 14.3.1
+- [patch] MSW-720 : pass collectionName to all the places for correct auth [f7fa512](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7fa512)
+
+## 14.3.0
+- [minor] Add zoom level for image and document viewer [856dfae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/856dfae)
+
 ## 14.2.0
 - [minor] Add keyboard shortcuts to MediaViewer NG [52c56c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52c56c1)
 
