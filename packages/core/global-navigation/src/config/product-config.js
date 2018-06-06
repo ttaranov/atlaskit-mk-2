@@ -127,7 +127,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
               profileItems,
             ))(props.profileItems),
         }
-      : null),
+      : { icon: generateAvatar(props.profileIconUrl) }),
   };
 
   return removeEmptyItems({
