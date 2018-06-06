@@ -1,11 +1,11 @@
 // @flow
-import React, { type Node } from 'react';
+import React, { type Element } from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@atlaskit/tooltip';
 import { withContextFromProps } from '../src';
 
 type Props = {
-  children: Node,
+  children: Element<*>,
 };
 const ContextTypes = {
   organisation: PropTypes.string,

@@ -211,7 +211,7 @@ describe('Tooltip', () => {
         target: {},
       };
       const wrapper = shallow(
-        <Tooltip onMouseOver={spy}>
+        <Tooltip content="required content" onMouseOver={spy}>
           <div>foo</div>
         </Tooltip>,
       );
@@ -225,7 +225,7 @@ describe('Tooltip', () => {
       const mouseOverSpy = jest.fn();
       const marshalSpy = jest.spyOn(marshal, 'show');
       const wrapper = shallow(
-        <Tooltip onMouseOver={mouseOverSpy}>
+        <Tooltip content="required content" onMouseOver={mouseOverSpy}>
           <div>foo</div>
         </Tooltip>,
       );
@@ -268,7 +268,7 @@ describe('Tooltip', () => {
         target: {},
       };
       const wrapper = shallow(
-        <Tooltip onMouseOut={spy}>
+        <Tooltip content="required content" onMouseOut={spy}>
           <div>foo</div>
         </Tooltip>,
       );
@@ -282,7 +282,7 @@ describe('Tooltip', () => {
       const mouseOutSpy = jest.fn();
       const marshalSpy = jest.spyOn(marshal, 'hide');
       const wrapper = shallow(
-        <Tooltip onMouseOut={mouseOutSpy}>
+        <Tooltip content="required content" onMouseOut={mouseOutSpy}>
           <div>foo</div>
         </Tooltip>,
       );
@@ -342,7 +342,7 @@ describe('Tooltip', () => {
     });
     it('should hide the tooltip if the hideTooltipOnClick prop is true', () => {
       const wrapper = shallow(
-        <Tooltip hideTooltipOnClick>
+        <Tooltip content="required content" hideTooltipOnClick>
           <div>foo</div>
         </Tooltip>,
       );
@@ -371,7 +371,7 @@ describe('Tooltip', () => {
 
     it('should use the wrapping element specified by the tag prop', () => {
       const wrapper = shallow(
-        <Tooltip tag="span">
+        <Tooltip content="required content" tag="span">
           <div>foo</div>
         </Tooltip>,
       );
@@ -405,7 +405,7 @@ describe('Tooltip', () => {
 
     it('should not render a tooltip if no content prop provided', () => {
       const wrapper = shallow(
-        <Tooltip>
+        <Tooltip content="required content">
           <div>foo</div>
         </Tooltip>,
       );
