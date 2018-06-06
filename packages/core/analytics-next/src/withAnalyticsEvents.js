@@ -62,14 +62,7 @@ class AnalyticsContextConsumer extends Component<{
   }
 }
 
-type Obj<T> = { [string]: T };
-// helper that provides an easy way to map an object's values
-// ({ string: A }, (string, A) => B) => { string: B }
-const vmap = <A, B>(obj: Obj<A>, fn: (string, A) => B): Obj<B> =>
-  Object.keys(obj).reduce((curr, k) => ({ ...curr, [k]: fn(k, obj[k]) }), {});
-
-// given all props and a map with the callback props to add analytics,
-// patch the callbacks to provide analytics information.
+// patch the callback so it provides analytics information.
 const modifyCallbackProp = <T: {}>(
   propName: string,
   eventMapEntry: AnalyticsEventPayload | AnalyticsEventCreator<T>,
@@ -85,6 +78,12 @@ const modifyCallbackProp = <T: {}>(
     providedCallback(...args, event);
   }
 };
+
+type Obj<T> = { [string]: T };
+// helper that provides an easy way to map an object's values
+// ({ string: A }, (string, A) => B) => { string: B }
+const vmap = <A, B>(obj: Obj<A>, fn: (string, A) => B): Obj<B> =>
+  Object.keys(obj).reduce((curr, k) => ({ ...curr, [k]: fn(k, obj[k]) }), {});
 
 const createCache = () => {
   let value = {};
