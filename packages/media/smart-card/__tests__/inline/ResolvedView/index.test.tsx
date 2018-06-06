@@ -2,9 +2,9 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import Lozenge from '@atlaskit/lozenge';
 import { ResolvedView } from '../../../src/inline/ResolvedView/index';
-import { Icon, Link } from '../../../src/inline/ResolvedView/styled';
+import { Icon } from '../../../src/inline/ResolvedView/styled';
 
-describe('CardView', () => {
+describe('ResolvedView', () => {
   it('should render the text', () => {
     const element = mount(<ResolvedView text="some text content" />);
     expect(element.text()).toContain('some text content');
