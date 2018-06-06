@@ -405,14 +405,14 @@ describe('Tooltip', () => {
 
     it('should not render a tooltip if no content prop provided', () => {
       const wrapper = shallow(
-        <Tooltip content="required content">
+        // $FlowFixMe - we are deliberately excluding content to demonstrate what happens
+        <Tooltip>
           <div>foo</div>
         </Tooltip>,
       );
       const instance = wrapper.instance();
       instance.show({ immediate: true });
       wrapper.update();
-
       expect(wrapper.children().equals(<div>foo</div>)).toBe(true);
     });
 
