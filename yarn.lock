@@ -5696,7 +5696,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.7, fbjs@^0.8.9:
+fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.9:
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
@@ -10945,10 +10945,6 @@ pluralize@^7.0.0:
 polished@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/polished/-/polished-1.5.0.tgz#bbc9856ea13f57a20d7ba02ce0e7184b35fa4b93"
-
-popper.js@1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.0.8.tgz#05c2cb34fdf78af99eb33337605a1384fbaffa32"
 
 popper.js@^1.14.1:
   version "1.14.3"
