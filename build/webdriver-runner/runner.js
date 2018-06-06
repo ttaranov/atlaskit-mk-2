@@ -186,6 +186,7 @@ function setBrowserStackClients() {
     const option = {
       desiredCapabilities: {
         os: launchers[key].os,
+        os_version: launchers[key].os_version,
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
         project: 'Atlaskit MK2',
