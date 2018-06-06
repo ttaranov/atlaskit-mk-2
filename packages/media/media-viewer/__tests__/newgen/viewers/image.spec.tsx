@@ -44,14 +44,16 @@ function createFixture(fetchImageBlobCancelableResponse, cancel?) {
     cancel: cancel || jest.fn(),
   });
   const context = createContext(blobService);
+  const onClose = jest.fn();
   const el = mount(
     <ImageViewer
       context={context}
       item={imageItem}
       collectionName={collectionName}
+      onClose={onClose}
     />,
   );
-  return { blobService, context, el };
+  return { blobService, context, el, onClose };
 }
 
 async function awaitError(response, expectedMessage) {
@@ -152,14 +154,12 @@ describe('ImageViewer', () => {
 
     expect(el.state('zoomLevel')).toEqual(1);
     expect(el.find(ZoomControls)).toHaveLength(1);
-    el
-      .find(ZoomControls)
+    el.find(ZoomControls)
       .find(Button)
       .first()
       .simulate('click');
     expect(el.state('zoomLevel')).toEqual(0.8);
-    el
-      .find(ZoomControls)
+    el.find(ZoomControls)
       .find(Button)
       .last()
       .simulate('click');
@@ -174,5 +174,15 @@ describe('ImageViewer', () => {
     el.update();
 
     expect(context.getBlobService).toHaveBeenCalledWith(collectionName);
+  });
+
+  it('MSW-700: clicking on background of ImageViewer does not close it', async () => {
+    const response = Promise.resolve(new Blob());
+    const { el, onClose } = createFixture(response);
+
+    await response;
+    el.simulate('click');
+
+    expect(onClose).toHaveBeenCalled();
   });
 });

@@ -1,8 +1,8 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { NavAPI } from '../api';
+import { getContainerViewState, getRootViewState } from '../api';
 import NavigationState from './NavigationState';
 import type { NavigationProviderProps, NavigationStateShape } from './types';
 
@@ -17,7 +17,7 @@ function defaultSetCache(state: NavigationStateShape) {
   localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
-export default class NavigationProvider extends PureComponent<
+export default class NavigationProvider extends Component<
   NavigationProviderProps,
 > {
   static defaultProps = {
@@ -28,26 +28,29 @@ export default class NavigationProvider extends PureComponent<
     debug: false,
   };
   navState: NavigationState;
-  navAPI: NavAPI;
 
   constructor(props: NavigationProviderProps) {
     super(props);
 
     const { cache, initialState, debug } = props;
     this.navState = new NavigationState(initialState, cache);
-    this.navAPI = new NavAPI({ debug });
+    if (debug) {
+      getContainerViewState().setDebug(debug);
+      getRootViewState().setDebug(debug);
+    }
   }
 
   componentWillReceiveProps(nextProps: NavigationProviderProps) {
     if (this.props.debug !== nextProps.debug) {
-      this.navAPI.setDebug(!!nextProps.debug);
+      getContainerViewState().setDebug(!!nextProps.debug);
+      getRootViewState().setDebug(!!nextProps.debug);
     }
   }
 
   render() {
     const { children } = this.props;
-    const { navState, navAPI } = this;
+    const { navState } = this;
 
-    return <Provider inject={[navState, navAPI]}>{children}</Provider>;
+    return <Provider inject={[navState]}>{children}</Provider>;
   }
 }

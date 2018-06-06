@@ -24,7 +24,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   const editor = (doc: any) =>
     createEditor<CodeBlockState>({
       doc,
-      editorPlugins: [codeBlockPlugin],
+      editorPlugins: [codeBlockPlugin()],
       pluginKey: codeBlockPluginKey,
     });
 

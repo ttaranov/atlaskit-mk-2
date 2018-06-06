@@ -1,5 +1,21 @@
 # @atlaskit/editor-core
 
+## 73.1.3
+- [patch] ED-4799, fixing vertical alignment of separators in toolbar. [4146e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4146e4f)
+- [patch] Updated dependencies [4146e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4146e4f)
+
+## 73.1.2
+- [patch] ED-4190, fix for scroll of editor to top when adding date or clicking date. [90ece93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ece93)
+- [patch] Updated dependencies [90ece93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ece93)
+
+## 73.1.1
+- [patch] ED-4742: fix removing rows inside bodied ext [4ad8738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ad8738)
+- [none] Updated dependencies [4ad8738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ad8738)
+
+## 73.1.0
+- [minor] Add support for indent/outdenting text inside a code-block via the `Mod-[` / `Mod-]` shortcuts. `Enter` will now persist the indentation of the previous line, and `Tab` will insert the appropriate indentation. This can be enabled via the `enableKeybindingsForIDE` option that can now be passed through to `allowCodeBlocks` option. This is hidden behind an option only until we are confident with the implementation, at which point it will likely become default behaviour. [ED-4638] [c02281b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02281b)
+- [none] Updated dependencies [c02281b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02281b)
+
 ## 73.0.1
 - [patch] ED-4716, smart replacements should not work inside mention query. [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)
 - [patch] Updated dependencies [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)

@@ -29,7 +29,7 @@ describe('media-files', () => {
       editorPlugins: [
         mediaPlugin(),
         mentionsPlugin,
-        codeBlockPlugin,
+        codeBlockPlugin(),
         rulePlugin,
         panelPlugin,
       ],

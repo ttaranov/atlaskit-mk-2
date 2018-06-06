@@ -36,22 +36,13 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/editor-test-helpers": "^4.0.0",
-    "@atlaskit/media-core": "^18.1.0",
-    "@atlaskit/media-test-helpers": "^13.0.0",
-    "@atlaskit/util-data-test": "^9.1.7",
-    "@atlaskit/size-detector": "^3.0.0",
     "@atlaskit/visual-regression":"^0.0.1",
-=======
     "@atlaskit/docs": "^4.0.0",
     "@atlaskit/editor-test-helpers": "^4.0.3",
     "@atlaskit/media-core": "^19.0.0",
     "@atlaskit/media-test-helpers": "^14.0.0",
     "@atlaskit/size-detector": "^4.0.0",
     "@atlaskit/util-data-test": "^9.1.10",
->>>>>>> master
     "@types/prosemirror-model": "^1.0.0",
     "react-live-clock": "^2.0.2"
   }
