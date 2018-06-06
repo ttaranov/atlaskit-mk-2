@@ -20,8 +20,7 @@ export interface LinkProps {
 const selected = ({ isSelected }: LinkProps) => {
   if (isSelected) {
     return `
-      &, &:hover, &:focus {
-        cursor: default;
+      &, :hover, :focus, :active {
         color: ${colors.N300};
         text-decoration: none;
       }
@@ -32,7 +31,11 @@ const selected = ({ isSelected }: LinkProps) => {
 };
 
 export const Link: ComponentClass<HTMLAttributes<{}> & LinkProps> = styled.a`
-  ${selected} font-size: 14px;
+  ${selected} &, :hover, :focus, :active {
+    color: ${colors.B400};
+    text-decoration: none;
+  }
+  font-size: 14px;
   line-height: ${20 / 14};
 `;
 

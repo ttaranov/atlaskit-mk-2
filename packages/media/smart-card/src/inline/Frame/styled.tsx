@@ -8,12 +8,24 @@ export interface WrapperProps {
   isInteractive?: boolean;
 }
 
-const interactive = ({ isInteractive }: WrapperProps) => {
+const selected = `
+  cursor: pointer;
+  box-shadow: 0 0 0 2px ${colors.B100};
+  outline: none;
+`;
+
+const isInteractive = ({ isInteractive }: WrapperProps) => {
   if (isInteractive) {
     return `
       cursor: pointer;
-      :hover, :focus {
+      :hover {
         background-color: ${colors.N20};
+      }
+      :active {
+        background-color: ${colors.B50};
+      }
+      :focus {
+        ${selected}
       }
     `;
   } else {
@@ -21,14 +33,9 @@ const interactive = ({ isInteractive }: WrapperProps) => {
   }
 };
 
-const selected = ({ isSelected }: WrapperProps) => {
+const isSelected = ({ isSelected }: WrapperProps) => {
   if (isSelected) {
-    return `
-      background-color: ${colors.B50};
-      :hover, :focus {
-        background-color: ${colors.B50};
-      }
-    `;
+    return selected;
   } else {
     return '';
   }
@@ -37,7 +44,7 @@ const selected = ({ isSelected }: WrapperProps) => {
 export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & WrapperProps
 > = styled.span`
-  ${interactive} ${selected} display: inline-flex;
+  ${isInteractive} ${isSelected} display: inline-flex;
   align-items: center;
   padding: 2px;
   border-radius: ${akBorderRadius};
