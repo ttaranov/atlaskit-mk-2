@@ -6,10 +6,7 @@ import { getCursor } from '../../../utils';
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   return keymap({
     Enter: (state: EditorState, dispatch) => {
-      const {
-        selection,
-        schema: { nodes },
-      } = state;
+      const { selection, schema: { nodes } } = state;
       const { $from, $to } = selection;
       const node = $from.node($from.depth);
 

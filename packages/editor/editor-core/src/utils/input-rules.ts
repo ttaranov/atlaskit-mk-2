@@ -54,10 +54,7 @@ const hasUnsupportedMarkForBlockInputRule = (
   start: number,
   end: number,
 ) => {
-  const {
-    doc,
-    schema: { marks },
-  } = state;
+  const { doc, schema: { marks } } = state;
   let unsupportedMarksPresent = false;
   const isUnsupportedMark = node =>
     node.type === marks.code ||
@@ -76,10 +73,7 @@ const hasUnsupportedMarkForInputRule = (
   start: number,
   end: number,
 ) => {
-  const {
-    doc,
-    schema: { marks },
-  } = state;
+  const { doc, schema: { marks } } = state;
   let unsupportedMarksPresent = false;
   const isCodemark = node =>
     node.type === marks.code || node.type === marks.mentionQuery;
