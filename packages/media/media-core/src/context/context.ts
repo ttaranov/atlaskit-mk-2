@@ -1,7 +1,9 @@
 import { Observable } from 'rxjs/Observable';
+import { interval } from 'rxjs/observable/interval';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/publishReplay';
+import { map, mergeMap } from 'rxjs/operators';
 
 import {
   MediaStore,
@@ -34,8 +36,8 @@ import {
   FileState,
   mapMediaFileToFileState,
 } from '../fileState';
-import { Observer } from 'rxjs/Observer';
 import FileStreamCache from './fileStreamCache';
+import { takeUntil } from '../utils/takeUntil';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -88,8 +90,6 @@ export class ContextFactory {
   }
 }
 
-const pollingInterval = 1000;
-
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
@@ -125,37 +125,16 @@ class ContextImpl implements Context {
     });
   }
 
-  private createDownloadFileStream = (
+  private createDownloadFileStream(
     id: string,
     collection?: string,
-  ): Observable<FileState> => {
-    return Observable.create(async (observer: Observer<FileState>) => {
-      let timeoutId: number;
-
-      const fetchFile = async () => {
-        try {
-          const response = await this.mediaStore.getFile(id, { collection });
-          const fileState = mapMediaFileToFileState(response);
-
-          observer.next(fileState);
-
-          if (fileState.status === 'processing') {
-            timeoutId = window.setTimeout(fetchFile, pollingInterval);
-          } else {
-            observer.complete();
-          }
-        } catch (e) {
-          observer.error(e);
-        }
-      };
-
-      fetchFile();
-
-      return () => {
-        window.clearTimeout(timeoutId);
-      };
-    });
-  };
+  ): Observable<FileState> {
+    return interval(1000).pipe(
+      mergeMap(() => this.mediaStore.getFile(id, { collection })),
+      map(mapMediaFileToFileState),
+      takeUntil(({ status }) => status !== 'processing'),
+    );
+  }
 
   getMediaItemProvider(
     id: string,
