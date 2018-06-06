@@ -1,6 +1,7 @@
 export { Client, ClientOptions } from './Client';
 export { Provider, ProviderProps } from './Provider';
 export { Card as BlockCard, CardProps as BlockCardProps } from './block/Card';
+
 export {
   ResolvedView as BlockResolvedView,
   ResolvedViewProps as BlockResolvedViewProps,
