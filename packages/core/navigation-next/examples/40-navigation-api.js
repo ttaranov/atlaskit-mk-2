@@ -7,15 +7,15 @@ import Toggle from '@atlaskit/toggle';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
-  GlobalNav,
-  LayoutManager,
   ContainerViewSubscriber,
+  getContainerViewState,
+  getRootViewState,
+  GlobalNav,
   ItemAvatar,
-  RootViewSubscriber,
+  LayoutManager,
   NavigationProvider,
   NavRenderer,
-  containerViewState,
-  rootViewState,
+  RootViewSubscriber,
 } from '../src';
 
 import {
@@ -134,8 +134,8 @@ export default class extends Component<*, *> {
       <NavigationProvider debug={debugEnabled}>
         <Fragment>
           <Example
-            containerView={containerViewState}
-            rootView={rootViewState}
+            containerView={getContainerViewState()}
+            rootView={getRootViewState()}
             onDebugToggle={this.toggleDebug}
           />
           <ShortcutsPlugin />

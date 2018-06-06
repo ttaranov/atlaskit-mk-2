@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { containerViewState, rootViewState } from '../api';
+import { getContainerViewState, getRootViewState } from '../api';
 import NavigationState from './NavigationState';
 import type { NavigationProviderProps, NavigationStateShape } from './types';
 
@@ -35,15 +35,15 @@ export default class NavigationProvider extends Component<
     const { cache, initialState, debug } = props;
     this.navState = new NavigationState(initialState, cache);
     if (debug) {
-      containerViewState.setDebug(debug);
-      rootViewState.setDebug(debug);
+      getContainerViewState().setDebug(debug);
+      getRootViewState().setDebug(debug);
     }
   }
 
   componentWillReceiveProps(nextProps: NavigationProviderProps) {
     if (this.props.debug !== nextProps.debug) {
-      containerViewState.setDebug(!!nextProps.debug);
-      rootViewState.setDebug(!!nextProps.debug);
+      getContainerViewState().setDebug(!!nextProps.debug);
+      getRootViewState().setDebug(!!nextProps.debug);
     }
   }
 

@@ -5,12 +5,19 @@ import { Subscribe } from 'unstated';
 
 import ViewState from './ViewState';
 
-type RootViewSubscriberProps = {|
+type ContainerViewSubscriberProps = {|
   children: ViewState => Node,
 |};
 
-export const containerViewState = new ViewState();
+let containerViewState = new ViewState();
 
-export default ({ children }: RootViewSubscriberProps) => (
+export const getContainerViewState = () => containerViewState;
+
+// Reset this singleton for SSR.
+export const resetContainerViewState = () => {
+  containerViewState = new ViewState();
+};
+
+export default ({ children }: ContainerViewSubscriberProps) => (
   <Subscribe to={[containerViewState]}>{children}</Subscribe>
 );

@@ -32,11 +32,14 @@ export { GlobalTheme } from './theme';
 /** Nav API */
 export {
   ContainerViewSubscriber,
-  containerViewState,
+  getContainerViewState,
+  getRootViewState,
   RootViewSubscriber,
-  rootViewState,
   utils as navAPIUtils,
 } from './api';
 
 /** Nav Renderer */
 export { default as NavRenderer } from './renderer';
+
+/** SSR singleton reset function */
+export { resetServerContext } from './common/utils';

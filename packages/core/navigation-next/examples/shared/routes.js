@@ -5,12 +5,15 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  containerViewState,
-  rootViewState,
+  getContainerViewState,
+  getRootViewState,
   NavigationSubscriber,
 } from '../../src';
 
 import { containerViews, rootViews } from './mock-data';
+
+const containerViewState = getContainerViewState();
+const rootViewState = getRootViewState();
 
 const maybeRegisterViews = (viewState: *, views: { [string]: any[] }) => () => {
   const viewKeys = Object.keys(views);

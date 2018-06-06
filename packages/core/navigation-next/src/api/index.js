@@ -2,12 +2,14 @@
 
 export {
   default as ContainerViewSubscriber,
-  containerViewState,
+  getContainerViewState,
+  resetContainerViewState,
 } from './ContainerViewSubscriber';
 
 export {
   default as RootViewSubscriber,
-  rootViewState,
+  getRootViewState,
+  resetRootViewState,
 } from './RootViewSubscriber';
 
 export { default as utils } from './utils';
