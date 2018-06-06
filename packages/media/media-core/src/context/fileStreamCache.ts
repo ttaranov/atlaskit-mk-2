@@ -1,12 +1,9 @@
 import { FileState, GetFileOptions } from '../fileState';
-import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { LRUCache } from 'lru-fast';
+import { Observable } from 'rxjs/Observable';
 
 export class FileStreamCache {
-  private readonly fileStreams: LRUCache<
-    string,
-    ConnectableObservable<FileState>
-  >;
+  private readonly fileStreams: LRUCache<string, Observable<FileState>>;
 
   constructor() {
     this.fileStreams = new LRUCache(1000);
@@ -25,12 +22,23 @@ export class FileStreamCache {
     return !!this.fileStreams.find(id);
   }
 
-  set(id: string, fileStream: ConnectableObservable<FileState>) {
+  set(id: string, fileStream: Observable<FileState>) {
     this.fileStreams.set(id, fileStream);
   }
 
-  get(id: string): ConnectableObservable<FileState> | undefined {
+  get(id: string): Observable<FileState> | undefined {
     return this.fileStreams.get(id);
+  }
+
+  getOrInsert(
+    id: string,
+    callback: () => Observable<FileState>,
+  ): Observable<FileState> {
+    if (!this.has(id)) {
+      this.set(id, callback());
+    }
+
+    return this.get(id)!;
   }
 }
 

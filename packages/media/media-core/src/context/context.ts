@@ -112,7 +112,7 @@ class ContextImpl implements Context {
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
 
-    if (!this.fileStreamsCache.has(key)) {
+    return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = this.createDownloadFileStream(
         id,
@@ -120,10 +120,9 @@ class ContextImpl implements Context {
       ).publishReplay(1);
 
       fileStream$.connect();
-      this.fileStreamsCache.set(key, fileStream$);
-    }
 
-    return this.fileStreamsCache.get(key)!;
+      return fileStream$;
+    });
   }
 
   private createDownloadFileStream = (
