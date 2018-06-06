@@ -72,8 +72,14 @@ export class Content extends Component<ContentProps, ContentState> {
   };
 
   private checkMouseMovement = (e?: SyntheticEvent<HTMLElement>) => {
+    const { showControls } = this.state;
     this.clearTimeout();
-    this.setState({ showControls: true });
+    // This check is needed to not trigger a render call on every movement.
+    // Even if nothing will be re-renderer since the value is the same, it
+    // will go into any children render method for nothing.
+    if (!showControls) {
+      this.setState({ showControls: true });
+    }
     this.checkActivityTimeout = window.setTimeout(
       this.hideControls(e && (e.target as HTMLElement)),
       mouseMovementDelay,

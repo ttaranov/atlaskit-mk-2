@@ -40,7 +40,7 @@ describe('searchPeopleItem', () => {
 
   it('should append the url encoded query', () => {
     const wrapper = render({ query: 'test query' });
-    expect(wrapper.prop('href')).toEqual('/home/people?q=test%20query');
+    expect(wrapper.prop('href')).toEqual('/people/search?q=test%20query');
   });
 });
 

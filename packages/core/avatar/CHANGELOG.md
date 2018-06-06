@@ -1,5 +1,18 @@
 # @atlaskit/avatar
 
+## 11.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/item@7.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/toggle@4.0.0
+  - @atlaskit/field-base@10.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/dropdown-menu@5.0.0
+
 ## 10.0.7
 - [patch] Fix text color for items with href in AvatarGroup [2cbb9ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cbb9ff)
 - [none] Updated dependencies [2cbb9ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cbb9ff)

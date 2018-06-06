@@ -11,6 +11,7 @@ import {
 } from './utils';
 
 export interface Props {
+  zIndex?: number;
   alignX?: 'left' | 'right' | 'center';
   alignY?: 'top' | 'bottom';
   target?: HTMLElement;
@@ -175,7 +176,7 @@ export default class Popup extends PureComponent<Props, State> {
         ref={this.handleRef}
         style={{
           position: 'absolute',
-          zIndex: akEditorFloatingPanelZIndex,
+          zIndex: this.props.zIndex || akEditorFloatingPanelZIndex,
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}

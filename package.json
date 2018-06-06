@@ -217,7 +217,7 @@
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/profilecard": "^3.13.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -296,6 +296,7 @@
     "execa": "^0.10.0",
     "filesize": "^3.2.1",
     "flow": "^0.2.3",
+    "focus-trap": "^2.4.5",
     "focusin": "^2.0.0",
     "forever": "^0.15.3",
     "fs-extra": "^4.0.2",
@@ -308,7 +309,7 @@
     "is-reachable": "^2.4.0",
     "jest-fixtures": "^0.5.0",
     "jest-junit": "^3.4.1",
-    "jest-styled-components": "^4.11.0-1",
+    "jest-styled-components": "^5.0.0",
     "keycode": "^2.1.7",
     "kind2string": "^0.3.0",
     "landkid": "^0.0.20",
@@ -372,6 +373,7 @@
     "react-markdown": "^2.5.0",
     "react-markings": "^1.1.7",
     "react-node-resolver": "^1.0.1",
+    "react-popper": "1.0.0-beta.6",
     "react-render-image": "^1.1.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -379,6 +381,7 @@
     "react-select": "^2.0.0-beta.6",
     "react-syntax-highlighter": "^6.0.2",
     "react-transition-group": "^2.2.1",
+    "react-video-renderer": "^1.0.1",
     "react-virtualized": "^9.8.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
@@ -396,7 +399,7 @@
     "snake-case": "^2.1.0",
     "source-trace": "^2.0.0",
     "string-raw": "^1.0.1",
-    "styled-components": "1.4.6 - 3",
+    "styled-components": "^3.2.6",
     "stylelint": "^8.4.0",
     "stylelint-config-prettier": "^2.0.0",
     "stylelint-config-standard": "^18.1.0",
@@ -418,6 +421,9 @@
     "uuid": "^3.1.0",
     "video-snapshot": "^1.0.1",
     "xregexp": "^3.2.0"
+  },
+  "resolutions": {
+    "**/@atlaskit/theme/styled-components": "^3.2.6"
   },
   "engines": {
     "node": "^8.4.0"

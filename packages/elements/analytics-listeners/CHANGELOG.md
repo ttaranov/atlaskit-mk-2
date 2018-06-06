@@ -1,5 +1,11 @@
 # @atlaskit/analytics-listeners
 
+## 1.1.1
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/analytics-next@2.1.4
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/analytics-gas-types@2.1.1
+
 ## 1.1.0
 
 - [minor] Add listener for events fired by core atlaskit components [bcc7d8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcc7d8f)
