@@ -151,7 +151,7 @@ function setBrowserStackClients() {
       os: 'Windows',
       os_version: '10',
       browserName: 'firefox',
-      browser_version: '59',
+      browser_version: '60',
       resolution: '1440x900',
     },
     ie: {
