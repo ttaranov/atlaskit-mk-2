@@ -8,8 +8,8 @@ import {
   findParentNodeOfType,
   findDomRefAtPos,
   findSelectedNodeOfType,
-  hasParentNodeOfType,
   isNodeSelection,
+  hasParentNodeOfType,
 } from 'prosemirror-utils';
 import { closestElement } from '../../utils';
 
@@ -19,121 +19,131 @@ export type ExtensionState = {
   element: HTMLElement | null;
 };
 
+const getSelectedExtNode = state => {
+  const { extension, inlineExtension, bodiedExtension } = state.schema.nodes;
+
+  let selectedExtNode = findParentNodeOfType([
+    extension,
+    inlineExtension,
+    bodiedExtension,
+  ])(state.selection);
+
+  if (
+    isNodeSelection(state.selection) &&
+    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])
+  ) {
+    selectedExtNode = {
+      node: (state.selection as NodeSelection).node,
+      pos: state.selection.$head.pos,
+    };
+  }
+
+  return selectedExtNode;
+};
+
 export default (
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
   portalProviderAPI: PortalProviderAPI,
+  allowExtension,
 ) =>
   new Plugin({
     state: {
-      init: () => ({ element: null, layout: 'default' }),
+      init: () => {
+        let stickToolbarToBottom = true;
 
-      apply(tr, state: ExtensionState, prevState, nextState) {
-        const meta = tr.getMeta(pluginKey);
-        if (meta) {
-          const newState = { ...state, ...meta };
-
-          dispatch(pluginKey, newState);
-
-          return newState;
+        if (
+          typeof allowExtension === 'object' &&
+          allowExtension.stickToolbarToBottom === false
+        ) {
+          stickToolbarToBottom = false;
         }
 
+        return {
+          element: null,
+          layout: 'default',
+          showLayoutOptions: true,
+          stickToolbarToBottom,
+        };
+      },
+      apply(tr, state: ExtensionState, prevState, nextState) {
+        const nextPluginState = tr.getMeta(pluginKey);
+        if (nextPluginState) {
+          dispatch(pluginKey, nextPluginState);
+          return nextPluginState;
+        }
+
+        const pluginState = pluginKey.getState(prevState);
+        dispatch(pluginKey, pluginState);
         return state;
       },
     },
-    view: () => {
+    view: (editorView: EditorView) => {
+      const domAtPos = editorView.domAtPos.bind(editorView);
+
       return {
         update: (view: EditorView) => {
-          const { state, state: { schema, selection } } = view;
-          const { element } = pluginKey.getState(state);
-          const {
-            extension,
-            inlineExtension,
-            bodiedExtension,
-            layoutSection,
-          } = schema.nodes;
-
-          /** Check whether selection has an extension */
-          let selectedExtNode = findParentNodeOfType([
-            extension,
-            inlineExtension,
-            bodiedExtension,
-          ])(state.selection);
-
-          const domAtPos = view.domAtPos.bind(view);
-
-          let stickToolbarToBottom = true;
-
-          if (selectedExtNode && selectedExtNode.node.attrs.parameters) {
-            stickToolbarToBottom =
-              typeof selectedExtNode.node.attrs.parameters
-                .stickToolbarToBottom === 'undefined'
-                ? true
-                : selectedExtNode.node.attrs.parameters.stickToolbarToBottom;
-          }
-
-          let selectedExtDomNode =
+          const { dispatch: editorDispatch, state, state: { schema } } = view;
+          const selectedExtNode = getSelectedExtNode(state);
+          const selectedExtDomNode =
             selectedExtNode &&
             (findDomRefAtPos(selectedExtNode.pos, domAtPos) as HTMLElement);
+          const pluginState = pluginKey.getState(state);
 
-          /** If a node is selected, get position of that instead
-           * The check will be refactored once we have isNodeOfTypeSelected from PM-utils
-           */
-          if (
-            isNodeSelection(selection) &&
-            findSelectedNodeOfType([
-              extension,
-              bodiedExtension,
-              inlineExtension,
-            ])
-          ) {
-            selectedExtNode = {
-              node: (selection as NodeSelection).node,
-              pos: selection.$head.pos,
-            };
-            selectedExtDomNode = findDomRefAtPos(
-              selectedExtNode.pos,
-              domAtPos,
-            ) as HTMLElement;
-          }
-
-          /** No-op, extensions not even in the picture */
-          if (!selectedExtNode && !element) {
+          if (!selectedExtNode && !pluginState.element) {
             return;
           }
 
+          const {
+            bodiedExtension,
+            extension,
+            inlineExtension,
+            layoutSection,
+            table,
+          } = schema.nodes;
           const showLayoutOptions = !!(
             selectedExtNode &&
-            (selectedExtNode.node.type === schema.nodes.bodiedExtension ||
-              (selectedExtNode.node.type === schema.nodes.extension &&
-                !hasParentNodeOfType([bodiedExtension])(state.selection))) &&
+            (selectedExtNode.node.type === bodiedExtension ||
+              (selectedExtNode.node.type === extension &&
+                !hasParentNodeOfType([bodiedExtension, table])(
+                  state.selection,
+                ))) &&
             !hasParentNodeOfType([layoutSection])(state.selection)
           );
 
-          const newElement =
-            closestElement(selectedExtDomNode!, '.extension-container') ||
-            selectedExtDomNode;
+          const isNonContentMacros = findSelectedNodeOfType([
+            inlineExtension,
+            extension,
+          ])(state.selection);
 
-          if (selectedExtNode) {
-            /** Update with new element */
-            if (element !== newElement) {
-              const tr = state.tr.setMeta(pluginKey, { element: newElement });
-              view.dispatch(tr);
-            }
+          /** Non-content macros can be nested in bodied-macros, the following check is necessary for that case */
+          const newElement = selectedExtNode
+            ? isNonContentMacros
+              ? selectedExtDomNode!.querySelector('.extension-container') ||
+                selectedExtDomNode
+              : closestElement(selectedExtDomNode!, '.extension-container') ||
+                selectedExtDomNode
+            : undefined;
 
-            /** We still want to re-render the toolbar for any size-adjustments */
-            dispatch(pluginKey, {
-              element: newElement,
-              stickToolbarToBottom,
-              layout: selectedExtNode.node.attrs.layout,
-              showLayoutOptions,
-            });
-          } else if (!selectedExtNode && element !== null) {
-            /** case 2: selection has no extension, but element is alive and kicking */
-            const tr = state.tr.setMeta(pluginKey, { element: null });
-            view.dispatch(tr);
+          if (pluginState.element !== newElement) {
+            editorDispatch(
+              state.tr.setMeta(pluginKey, {
+                ...pluginState,
+                element: newElement,
+                showLayoutOptions,
+                layout: selectedExtNode && selectedExtNode!.node.attrs.layout,
+              }),
+            );
+            return true;
           }
+
+          /** Required toolbar re-positioning */
+          dispatch(pluginKey, {
+            ...pluginState,
+          });
+
+          return true;
         },
       };
     },

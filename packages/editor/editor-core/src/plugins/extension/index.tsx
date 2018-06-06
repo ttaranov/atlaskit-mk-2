@@ -40,6 +40,7 @@ const extensionPlugin: EditorPlugin = {
             providerFactory,
             props.extensionHandlers || {},
             portalProviderAPI,
+            props.allowExtension,
           ),
       },
     ];
@@ -64,8 +65,8 @@ const extensionPlugin: EditorPlugin = {
             stickToolbarToBottom={extensionState.stickToolbarToBottom}
             showLayoutOptions={extensionState.showLayoutOptions}
             layout={extensionState.layout}
-            onLayoutChange={mode =>
-              updateExtensionLayout(mode)(editorView.state, dispatch)
+            onLayoutChange={layout =>
+              updateExtensionLayout(layout)(editorView.state, dispatch)
             }
           />
         )}

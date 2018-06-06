@@ -22,11 +22,13 @@ export const setExtensionElement = (element: HTMLElement | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  let tr = state.tr.setMeta(pluginKey, { element });
+  const pluginState = pluginKey.getState(state);
+  const tr = state.tr.setMeta(pluginKey, {
+    ...pluginState,
+    element,
+  });
   if (!element) {
-    tr = tr.setSelection(
-      TextSelection.create(state.doc, state.selection.$from.pos),
-    );
+    tr.setSelection(TextSelection.create(state.doc, state.selection.$from.pos));
   }
   dispatch(tr);
   return true;
@@ -52,7 +54,7 @@ export const updateExtensionLayout = layout => (
   if (!parentExtNode && !selectedNode) {
     return;
   }
-  /** set the position and node to update markup */
+
   if (selectedNode) {
     extPosition = selectedNode.pos;
     extNode = selectedNode.node;
@@ -61,13 +63,16 @@ export const updateExtensionLayout = layout => (
     extNode = parentExtNode!.node;
   }
 
-  /** Intentionally setting `undefined` here to preserve the type of node */
-  dispatch(
-    tr.setNodeMarkup(extPosition, undefined, {
+  const pluginState = pluginKey.getState(state);
+
+  tr
+    .setNodeMarkup(extPosition, undefined, {
       ...extNode!.attrs,
       layout,
-    }),
-  );
+    })
+    .setMeta(pluginKey, { ...pluginState, layout });
+
+  dispatch(tr);
 
   return true;
 };

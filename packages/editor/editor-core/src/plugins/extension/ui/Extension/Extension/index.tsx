@@ -27,9 +27,13 @@ export default class Extension extends Component<Props, any> {
   calcWidth = (layout, containerWidth: number) => {
     switch (layout) {
       case 'full-width':
-        return `${containerWidth}px`;
+        return containerWidth <= akEditorFullPageMaxWidth
+          ? '100%'
+          : `${containerWidth}px`;
       case 'wide':
-        return `${akEditorWideLayoutWidth}px`;
+        return containerWidth <= akEditorWideLayoutWidth
+          ? '100%'
+          : `${akEditorWideLayoutWidth}px`;
       default:
         return 'inherit';
     }
@@ -62,8 +66,6 @@ export default class Extension extends Component<Props, any> {
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
                 width: this.calcWidth(node.attrs.layout, width),
-                maxWidth:
-                  width <= akEditorFullPageMaxWidth ? '100%' : `${width}px`,
               }}
             >
               <Overlay className="extension-overlay" />
