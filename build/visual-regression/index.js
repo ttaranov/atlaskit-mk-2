@@ -37,6 +37,7 @@ function runCommand(cmd, resolve, reject) {
   tests.on('error', reject);
 
   tests.on('close', (code, signal) => {
+    // wait for visual-regression tests to resolve and complete
     setTimeout(resolve, JEST_WAIT_FOR_INPUT_TIMEOUT, { code, signal });
   });
 }
@@ -44,7 +45,7 @@ function runCommand(cmd, resolve, reject) {
 async function main() {
   const serverAlreadyRunning = await isReachable('http://localhost:9000');
   if (!serverAlreadyRunning) {
-    // Overriding the env variable to start the correct packages
+    // overriding the env variable to start the correct packages
     process.env.VISUAL_REGRESSION = 'true';
     await webpack.startDevServer();
   }
