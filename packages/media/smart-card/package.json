@@ -29,7 +29,7 @@
     "@atlaskit/theme": "^4.0.3",
     "@atlaskit/tooltip": "^10.2.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "@atlassian/outbound-auth-flow-client": "1.0.2",
+    "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@types/prop-types": "^15.5.1",
     "lodash.debounce": "^4.0.8",
     "prop-types": "^15.5.10",
