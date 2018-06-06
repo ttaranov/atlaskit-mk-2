@@ -108,6 +108,7 @@ export default (
               ? selectedExtDomNode!.querySelector('.extension-container') ||
                 selectedExtDomNode
               : closestElement(selectedExtDomNode!, '.extension-container') ||
+                selectedExtDomNode!.querySelector('.extension-container') ||
                 selectedExtDomNode
             : undefined;
 
