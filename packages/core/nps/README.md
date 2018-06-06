@@ -2,10 +2,12 @@
 
 React component for rendering an NPS survery dialog
 
-[Documentation](https://atlaskit.atlassian.com/packages/core/nps)
-
 ## Installation
 
 ```sh
-npm install @NAME@
+yarn add @atlaskit/nps
 ```
+
+## Usage
+
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/nps).
