@@ -5,6 +5,7 @@ import { Outcome } from '../domain';
 import { Img, ErrorMessage, ImageWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
+import { closeOnDirectClick } from '../utils/closeOnDirectClick';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -13,6 +14,7 @@ export type ImageViewerProps = {
   context: Context;
   item: FileItem;
   collectionName?: string;
+  onClose?: () => void;
 };
 
 export type ImageViewerState = {
@@ -51,6 +53,7 @@ export class ImageViewer extends React.Component<
 
   renderImage(src: string) {
     const { zoomLevel } = this.state;
+    const { onClose } = this.props;
     // We need to set new border value every time the zoom changes
     // to force a re layout in Chrome.
     // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
@@ -62,7 +65,7 @@ export class ImageViewer extends React.Component<
     };
 
     return (
-      <ImageWrapper>
+      <ImageWrapper onClick={closeOnDirectClick(onClose)}>
         <Img src={src} style={imgStyle} />
         <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
       </ImageWrapper>

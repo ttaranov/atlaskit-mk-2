@@ -1,5 +1,9 @@
 # @atlaskit/analytics-next
 
+## 2.1.6
+- [patch] Unpublish fake TS declaration file [ec9f11f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec9f11f)
+- [none] Updated dependencies [ec9f11f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec9f11f)
+
 ## 2.1.5
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
