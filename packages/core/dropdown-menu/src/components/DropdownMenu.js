@@ -29,6 +29,7 @@ export default class DropdownMenu extends Component<
     onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
+    isMenuFixed: false,
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
@@ -102,6 +103,7 @@ export default class DropdownMenu extends Component<
       isLoading,
       items,
       position,
+      isMenuFixed,
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
@@ -120,6 +122,7 @@ export default class DropdownMenu extends Component<
         onItemActivated={this.handleItemActivation}
         onOpenChange={this.handleOpenChange}
         position={position}
+        isMenuFixed={isMenuFixed}
         shouldAllowMultilineItems={shouldAllowMultilineItems}
         shouldFitContainer={shouldFitContainer}
         shouldFlip={shouldFlip}

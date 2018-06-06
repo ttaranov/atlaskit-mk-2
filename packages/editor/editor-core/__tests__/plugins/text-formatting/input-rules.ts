@@ -12,6 +12,7 @@ import {
   h1,
   code_block,
   hardBreak,
+  mentionQuery,
 } from '@atlaskit/editor-test-helpers';
 
 import codeBlockPlugin from '../../../src/plugins/code-block';
@@ -180,6 +181,25 @@ describe('text-formatting input rules', () => {
 
       expect(trackEvent).toHaveBeenCalledWith(
         `atlassian.editor.format.quote.autoformatting`,
+      );
+    });
+
+    describe('should not work in mention query', () => {
+      trackEvent = jest.fn();
+      const { editorView } = editor(doc(p(mentionQuery()('@o{<>}'))));
+      typeText(editorView, 'it');
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery()('@oit{<>}'))),
+      );
+
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery()("@oit's{<>}"))),
+      );
+
+      typeText(editorView, "'");
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery()("@oit's'{<>}"))),
       );
     });
 

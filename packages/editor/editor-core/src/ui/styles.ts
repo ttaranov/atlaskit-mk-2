@@ -2,7 +2,7 @@ import { HTMLAttributes, ComponentClass } from 'react';
 // @ts-ignore: unused variable
 // prettier-ignore
 import styled, { css, Styles, StyledComponentClass } from 'styled-components';
-import { akColorN30, akGridSize } from '@atlaskit/theme';
+import { akColorN30, akGridSize } from '@atlaskit/util-shared-styles';
 
 export const ButtonGroup: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }

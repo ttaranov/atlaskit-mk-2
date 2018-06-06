@@ -1,5 +1,9 @@
 # @atlaskit/util-service-support
 
+## 2.0.8
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/docs@4.0.0
+
 ## 2.0.7
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/docs@3.0.4

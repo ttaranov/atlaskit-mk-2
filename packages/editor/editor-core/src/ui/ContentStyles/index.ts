@@ -127,6 +127,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       overflow: scroll;
       display: flex;
       flex: 1;
+
+      code {
+        display: inline-block;
+      }
     }
 
     /* We render this as a basic box in IE11 because it can't handle scrolling */
@@ -138,6 +142,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       .code-content {
         display: block;
         overflow: visible;
+
+        code {
+          display: inline;
+        }
       }
     }
   }

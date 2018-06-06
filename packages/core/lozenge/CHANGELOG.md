@@ -1,5 +1,11 @@
 # @atlaskit/lozenge
 
+## 5.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 4.1.1
 - [patch] Updae bold color to N800 [0838cb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0838cb0)
 - [patch] Update colors of appearance to new color palette pairings [979aff5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/979aff5)

@@ -1,5 +1,38 @@
 # @atlaskit/global-search
 
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/quick-search@2.0.0
+  - @atlaskit/navigation@32.0.0
+  - @atlaskit/page@7.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/util-service-support@2.0.8
+  - @atlaskit/analytics@3.0.2
+  - @atlaskit/avatar@11.0.0
+
+## 3.3.4
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/page@6.0.4
+  - @atlaskit/navigation@31.0.5
+  - @atlaskit/quick-search@1.7.2
+
+## 3.3.3
+- [patch] Update people results link path in global search [be04163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be04163)
+
+## 3.3.2
+- [patch] Remove SVG react warnings. [89ce7d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89ce7d7)
+
+## 3.3.1
+- [patch] Updated dependencies [586f868](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f868)
+  - @atlaskit/quick-search@1.7.1
+
+## 3.3.0
+- [minor] Consistent avatar sizes [0f80c65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f80c65)
+
 ## 3.2.1
 - [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
 

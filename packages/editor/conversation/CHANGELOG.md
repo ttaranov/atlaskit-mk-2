@@ -1,5 +1,40 @@
 # @atlaskit/conversation
 
+## 8.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/reactions@12.0.12
+  - @atlaskit/renderer@18.0.0
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/comment@4.0.0
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/single-select@5.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/avatar@11.0.0
+
+## 7.6.3
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/util-data-test@9.1.9
+  - @atlaskit/reactions@12.0.11
+  - @atlaskit/renderer@17.0.9
+  - @atlaskit/editor-core@72.2.2
+  - @atlaskit/comment@3.1.9
+  - @atlaskit/editor-common@10.1.9
+
+## 7.6.2
+- [patch] Comments should re-render when the user is changed [507ff28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/507ff28)
+
+## 7.6.1
+- [patch] Fixes a bug with temp comment where createdBy wasn't set correctly [a761abc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a761abc)
+
+## 7.6.0
+- [minor] Replace <div> with Fragment so CSS rules apply to adjacent conversations [96dc1bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96dc1bf)
+
+## 7.5.6
+- [patch] Updated dependencies [179332e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179332e)
+  - @atlaskit/renderer@17.0.7
+
 ## 7.5.5
 - [patch] Updated dependencies [41eb1c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41eb1c1)
   - @atlaskit/editor-common@10.1.3

@@ -30,6 +30,7 @@ exports[`CardGenericViewSmall InfoView Subtitle should render as a link when isL
 
 .media-card:hover .c0 {
   color: #0065FF;
+  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 

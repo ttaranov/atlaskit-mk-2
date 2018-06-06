@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { colors } from '@atlaskit/theme';
+import Objects24CodeIcon from '@atlaskit/icon/glyph/objects/24/code';
 import { codeBlock } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from './pm-plugins/main';
@@ -36,6 +38,22 @@ const codeBlockPlugin: EditorPlugin = {
         popupsBoundariesElement={popupsBoundariesElement}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Code block',
+        keywords: ['javascript', 'typescript'],
+        icon: () => (
+          <Objects24CodeIcon label="Code block" primaryColor={colors.N300} />
+        ),
+        action(insert, state) {
+          const schema = state.schema;
+          return insert(schema.nodes.codeBlock.createChecked());
+        },
+      },
+    ],
   },
 };
 
