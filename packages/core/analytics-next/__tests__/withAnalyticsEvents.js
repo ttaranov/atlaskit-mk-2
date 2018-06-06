@@ -281,16 +281,3 @@ it('should forward the ref of inner component', () => {
   const [ref] = spy.mock.calls[0];
   expect(ref).toBeInstanceOf(ButtonWithCreate);
 });
-
-it('should forward the ref of inner component', () => {
-  const spy = jest.fn();
-  const ButtonWithAnalytics = withAnalyticsEvents()(ButtonWithCreate);
-  mount(
-    <div>
-      <ButtonWithAnalytics ref={spy}>Hello</ButtonWithAnalytics>
-    </div>,
-  );
-  expect(spy).toHaveBeenCalled();
-  const [ref] = spy.mock.calls[0];
-  expect(ref).toBeInstanceOf(ButtonWithCreate);
-});
