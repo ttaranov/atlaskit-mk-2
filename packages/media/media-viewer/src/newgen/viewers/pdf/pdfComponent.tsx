@@ -4,6 +4,7 @@ import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { PDFWrapper } from '../../styled';
+import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 
 export const pdfViewerClassName = 'pdfViewer';
 
@@ -70,21 +71,13 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     this.setState({ scale });
   };
 
-  private onClickCloseHandler = e => {
-    const { onClose } = this.props;
-
-    if (e.target === e.currentTarget && onClose) {
-      onClose();
-    }
-  };
-
   render() {
     return (
       <div>
         <PDFWrapper innerRef={this.savePdfElement}>
           <div
             className={pdfViewerClassName}
-            onClick={this.onClickCloseHandler}
+            onClick={closeOnDirectClick(this.props.onClose)}
           />
         </PDFWrapper>
         <ZoomControls zoomLevel={this.state.scale} onChange={this.handleZoom} />
