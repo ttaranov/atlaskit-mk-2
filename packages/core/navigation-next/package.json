@@ -41,6 +41,8 @@
     "@atlaskit/field-base": "^10.0.0",
     "@atlaskit/logo": "^8.0.0",
     "@atlaskit/lozenge": "^5.0.0",
-    "@atlaskit/toggle": "^4.0.0"
+    "@atlaskit/toggle": "^4.0.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   }
 }
