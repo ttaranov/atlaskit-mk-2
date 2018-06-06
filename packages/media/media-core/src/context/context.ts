@@ -36,6 +36,11 @@ import {
 } from '../fileState';
 import { Observer } from 'rxjs/Observer';
 import FileStreamCache from './fileStreamCache';
+import {
+  deferUnsubscribeAfterUpload,
+  observableFromObservablePool,
+} from '../providers/util/observableFromObservablePool';
+import { Pool } from '../providers/util/pool';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -93,16 +98,15 @@ const pollingInterval = 1000;
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
+  private readonly fileStatePool = new Pool<Observable<FileState>>();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
-  private readonly fileStreamsCache: FileStreamCache;
   private readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreamsCache = new FileStreamCache();
     this.mediaStore = new MediaStore({
       serviceHost: config.serviceHost,
       authProvider: config.authProvider,
@@ -110,19 +114,33 @@ class ContextImpl implements Context {
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
-    const key = FileStreamCache.createKey(id, options);
+    const poolId = FileStreamCache.createKey(id, options);
 
-    return this.fileStreamsCache.getOrInsert(key, () => {
-      const collection = options && options.collectionName;
-      const fileStream$ = this.createDownloadFileStream(
-        id,
-        collection,
-      ).publishReplay(1);
+    // The pool implementation is generic enough to be doing what we want already
+    // No need for any new code, we can just reuse the battle-tested implementation.
+    const observable = observableFromObservablePool(
+      this.fileStatePool,
+      poolId,
+      () => {
+        const collection = options && options.collectionName;
+        const fileStream$ = this.createDownloadFileStream(
+          id,
+          collection,
+        ).publishReplay(1);
 
-      fileStream$.connect();
+        fileStream$.connect();
 
-      return fileStream$;
-    });
+        return fileStream$;
+      },
+    );
+
+    // The only thing we need to make sure is that a customer never unsubscribes before
+    // the file has been uploaded. We can do that by wrapping the observable into another observable.
+    const deferedUnsubscribeObservable = deferUnsubscribeAfterUpload(
+      observable,
+    );
+
+    return deferedUnsubscribeObservable;
   }
 
   private createDownloadFileStream = (
