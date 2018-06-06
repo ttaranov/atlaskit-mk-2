@@ -83,6 +83,8 @@ export default (
       return {
         update: (view: EditorView) => {
           const { dispatch: editorDispatch, state, state: { schema } } = view;
+
+          /** this fetches the selected extn node, either by keyboard selection or click for all types of extns */
           const selectedExtNode = getSelectedExtNode(state);
           const selectedExtDomNode =
             selectedExtNode &&
@@ -95,14 +97,14 @@ export default (
 
           const { extension, inlineExtension } = schema.nodes;
 
-          const isNonContentMacros = findSelectedNodeOfType([
+          const isNonContentExt = findSelectedNodeOfType([
             inlineExtension,
             extension,
           ])(state.selection);
 
-          /** Non-content macros can be nested in bodied-macros, the following check is necessary for that case */
+          /** Non-content extension can be nested in bodied-extension, the following check is necessary for that case */
           const newElement = selectedExtNode
-            ? isNonContentMacros
+            ? isNonContentExt
               ? selectedExtDomNode!.querySelector('.extension-container') ||
                 selectedExtDomNode
               : closestElement(selectedExtDomNode!, '.extension-container') ||
