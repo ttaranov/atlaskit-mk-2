@@ -30,18 +30,15 @@ export type GlobalNavigationProps = {
   onSearchClick?: () => void,
   searchTooltip?: string,
 
-  onAppSwitcherClick?: () => void,
-  appSwitcherTooltip?: string,
   appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
 
-  onHelpClick?: () => void,
   helpTooltip?: string,
   helpItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
 
-  onProfileClick?: () => void,
   profileTooltip?: string,
   profileItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
   profileIconUrl?: string,
+  loginHref?: string, // Login url to redirect anonymous users to login page.
 
   onPeopleClick?: () => void,
   peopleTooltip?: string,
