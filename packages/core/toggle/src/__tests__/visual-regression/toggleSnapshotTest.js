@@ -26,7 +26,7 @@ describe('Snapshot Test', () => {
       );
       const image = await takeScreenShot(global.page, url);
       //$FlowFixMe
-      expect(image).toMatchImageSnapshot();
+      expect(image).toMatchProdImageSnapshot();
     });
   });
 });
