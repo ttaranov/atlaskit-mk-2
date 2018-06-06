@@ -14,6 +14,25 @@ import {
 } from './actions';
 import ExtensionEditPanel from './ui/ExtensionEditPanel';
 import WithPluginState from '../../ui/WithPluginState';
+import { hasParentNodeOfType } from 'prosemirror-utils';
+
+const isLayoutSupported = (state, selectedExtNode) => {
+  const {
+    schema: { nodes: { bodiedExtension, extension, layoutSection, table } },
+    selection,
+  } = state;
+
+  if (!selectedExtNode) {
+    return false;
+  }
+
+  return !!(
+    (selectedExtNode.node.type === bodiedExtension ||
+      (selectedExtNode.node.type === extension &&
+        !hasParentNodeOfType([bodiedExtension, table])(selection))) &&
+    !hasParentNodeOfType([layoutSection])(selection)
+  );
+};
 
 const extensionPlugin: EditorPlugin = {
   nodes() {
@@ -63,7 +82,10 @@ const extensionPlugin: EditorPlugin = {
             onEdit={() => editExtension(macroState.macroProvider)(editorView)}
             onRemove={() => removeExtension(editorView.state, dispatch)}
             stickToolbarToBottom={extensionState.stickToolbarToBottom}
-            showLayoutOptions={extensionState.showLayoutOptions}
+            showLayoutOptions={isLayoutSupported(
+              editorView.state,
+              extensionState.node,
+            )}
             layout={extensionState.layout}
             onLayoutChange={layout =>
               updateExtensionLayout(layout)(editorView.state, dispatch)

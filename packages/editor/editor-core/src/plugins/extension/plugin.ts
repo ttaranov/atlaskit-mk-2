@@ -9,7 +9,6 @@ import {
   findDomRefAtPos,
   findSelectedNodeOfType,
   isNodeSelection,
-  hasParentNodeOfType,
 } from 'prosemirror-utils';
 import { closestElement } from '../../utils';
 
@@ -65,6 +64,7 @@ export default (
           layout: 'default',
           showLayoutOptions: true,
           stickToolbarToBottom,
+          node: null,
         };
       },
       apply(tr, state: ExtensionState, prevState, nextState) {
@@ -93,22 +93,7 @@ export default (
             return;
           }
 
-          const {
-            bodiedExtension,
-            extension,
-            inlineExtension,
-            layoutSection,
-            table,
-          } = schema.nodes;
-          const showLayoutOptions = !!(
-            selectedExtNode &&
-            (selectedExtNode.node.type === bodiedExtension ||
-              (selectedExtNode.node.type === extension &&
-                !hasParentNodeOfType([bodiedExtension, table])(
-                  state.selection,
-                ))) &&
-            !hasParentNodeOfType([layoutSection])(state.selection)
-          );
+          const { extension, inlineExtension } = schema.nodes;
 
           const isNonContentMacros = findSelectedNodeOfType([
             inlineExtension,
@@ -129,8 +114,8 @@ export default (
               state.tr.setMeta(pluginKey, {
                 ...pluginState,
                 element: newElement,
-                showLayoutOptions,
                 layout: selectedExtNode && selectedExtNode!.node.attrs.layout,
+                node: selectedExtNode,
               }),
             );
             return true;
