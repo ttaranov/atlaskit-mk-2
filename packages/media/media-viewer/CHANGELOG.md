@@ -1,5 +1,32 @@
 # @atlaskit/media-viewer
 
+## 15.0.2
+- [patch] Better image resizing in MediaViewer NG [29f6f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29f6f90)
+
+## 15.0.1
+- [patch] Filter links from collections in MediaViewer NG [2ac8912](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ac8912)
+
+## 15.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-ui@3.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+
+## 14.6.2
+- [patch] MSW-741 : handle unexpected media types without crashes [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+- [none] Updated dependencies [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+  - @atlaskit/media-test-helpers@13.3.1
+
+## 14.6.1
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/media-core@18.1.2
+
 ## 14.6.0
 - [minor] improve VideoViewer experience [50475df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50475df)
 

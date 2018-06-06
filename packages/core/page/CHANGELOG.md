@@ -1,5 +1,18 @@
 # @atlaskit/page
 
+## 7.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/navigation@32.0.0
+  - @atlaskit/toggle@4.0.0
+  - @atlaskit/banner@6.0.0
+  - @atlaskit/docs@4.0.0
+
+## 6.0.4
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/banner@5.0.3
+  - @atlaskit/navigation@31.0.5
+
 ## 6.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/toggle@3.0.2

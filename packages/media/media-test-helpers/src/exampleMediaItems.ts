@@ -201,6 +201,12 @@ export const passwordProtectedPdfFileId = {
   collectionName,
 };
 
+export const archiveFileId = {
+  id: '1abbae6b-f507-4b4f-b181-21016bf3b7cc',
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const unknownFileId = {
   id: 'e0652e68-c596-4800-8a91-1920e6b8a585',
   mediaItemType: fileType,

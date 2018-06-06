@@ -1,5 +1,13 @@
 # @atlaskit/field-text-area
 
+## 3.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/field-base@10.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 2.1.0
 - [minor] Text fields and textareas now inherit their font-family correctly. [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)
 - [none] Updated dependencies [6859cf6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6859cf6)

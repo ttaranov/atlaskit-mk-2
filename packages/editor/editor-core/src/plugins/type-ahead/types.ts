@@ -4,6 +4,7 @@ import { Node } from 'prosemirror-model';
 export type TypeAheadItem = {
   title: string;
   icon?: () => React.ReactElement<any>;
+  [key: string]: any;
 };
 
 export type TypeAheadHandler = {
