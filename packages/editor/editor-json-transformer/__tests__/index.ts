@@ -110,10 +110,7 @@ describe('JSONTransformer:', () => {
         ),
       );
       const pmDoc = editorView.state.doc;
-      expect(toJSON(pmDoc)).toEqual({
-        version: 1,
-        ...pmDoc.toJSON(),
-      });
+      expect(toJSON(pmDoc)).toMatchSnapshot();
     });
 
     it('should strip optional attrs from media node', () => {
@@ -245,6 +242,74 @@ describe('JSONTransformer:', () => {
               {
                 type: 'text',
                 text: 'var foo = 2;',
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should strip optional attributes from link mark', () => {
+      const { editorView } = editor(
+        doc(p(a({ href: 'https://atlassian.com' })('Atlassian'))),
+      );
+
+      expect(toJSON(editorView.state.doc)).toEqual({
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Atlassian',
+                marks: [
+                  {
+                    type: 'link',
+                    attrs: {
+                      href: 'https://atlassian.com',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should preserve optional attributes if they are !== null', () => {
+      const { editorView } = editor(
+        doc(
+          p(
+            a({
+              href: 'https://atlassian.com',
+              __confluenceMetadata: { linkType: '' },
+            })('Atlassian'),
+          ),
+        ),
+      );
+
+      expect(toJSON(editorView.state.doc)).toEqual({
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Atlassian',
+                marks: [
+                  {
+                    type: 'link',
+                    attrs: {
+                      href: 'https://atlassian.com',
+                      __confluenceMetadata: { linkType: '' },
+                    },
+                  },
+                ],
               },
             ],
           },
