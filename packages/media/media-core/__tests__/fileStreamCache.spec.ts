@@ -12,4 +12,26 @@ describe('FileStreamCache', () => {
     expect(cache.has('2')).toBeFalsy();
     expect(cache.get('1')).toEqual(fileStream1);
   });
+
+  it('createKey()', () => {
+    expect(FileStreamCache.createKey('123')).toEqual('123');
+    expect(
+      FileStreamCache.createKey('123', { collectionName: 'some-collection' }),
+    ).toEqual('123-some-collection');
+    expect(
+      FileStreamCache.createKey('123', {
+        collectionName: 'collection',
+        occurrenceKey: 'occurrenceKey',
+      }),
+    ).toEqual('123-collection-occurrenceKey');
+    expect(
+      FileStreamCache.createKey('123', { occurrenceKey: 'occurrenceKey' }),
+    ).toEqual('123-occurrenceKey');
+    expect(
+      FileStreamCache.createKey('123', {
+        collectionName: '',
+        occurrenceKey: '',
+      }),
+    ).toEqual('123');
+  });
 });

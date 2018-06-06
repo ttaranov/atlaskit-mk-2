@@ -111,7 +111,7 @@ class Example extends Component<ComponentProps, ComponentState> {
       }
 
       return (
-        <FileWrapper key={key}>
+        <FileWrapper status={file.status} key={key}>
           <div>Id: {file.id}</div>
           <div>Status: {file.status}</div>
           <div>
