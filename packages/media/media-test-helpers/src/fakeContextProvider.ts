@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
-import { Context } from '@atlaskit/media-core';
-import { ContextConfig } from '../../media-store';
+import { Context, ContextConfig } from '@atlaskit/media-core';
 
 const defaultContextConfig = {
   serviceHost: 'some-service-host',
