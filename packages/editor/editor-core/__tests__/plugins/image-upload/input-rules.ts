@@ -17,7 +17,7 @@ describe('inputrules', () => {
       doc,
       editorPlugins: [
         imageUpload,
-        codeBlockPlugin,
+        codeBlockPlugin(),
         mediaPlugin({ allowMediaSingle: true }),
       ],
       editorProps: { analyticsHandler: trackEvent },
