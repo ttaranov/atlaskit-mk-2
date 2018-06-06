@@ -21,6 +21,11 @@ if [ "$BITBUCKET_BRANCH" = "master" ]; then
   git pull --rebase origin master
 fi
 
+# We curl the yarnpkg download first to see if we are going to get an error
+echo "Checking if yarn is up..."
+curl -I https://yarnpkg.com/downloads/1.2.1/yarn-v1.2.1.tar.gz
+
+
 # NOTE: the node image comes with a version of yarn installed already in /opt/yarn
 # We put our yarn path at the front of the PATH var so that we use our version instead of theirs
 curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
