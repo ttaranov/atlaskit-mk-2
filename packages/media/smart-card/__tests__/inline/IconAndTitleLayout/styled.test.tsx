@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Link } from '../../../src/inline/ResolvedView/styled';
+import { TitleWrapper } from '../../../src/inline/IconAndTitleLayout/styled';
 
-describe('Link', () => {
+describe('Title', () => {
   test('it should have selected styles', () => {
-    const element = shallow(<Link isSelected={true} />);
+    const element = shallow(<TitleWrapper isSelected={true} />);
     expect(element).toMatchSnapshot();
   });
 
   test('it should not have selected styles', () => {
-    const element = shallow(<Link />);
+    const element = shallow(<TitleWrapper />);
     expect(element).toMatchSnapshot();
   });
 });

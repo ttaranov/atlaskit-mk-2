@@ -5,33 +5,49 @@ import { ResolvedView } from '../../../src/inline/ResolvedView/index';
 import { Icon } from '../../../src/inline/ResolvedView/styled';
 
 describe('ResolvedView', () => {
-  it('should render the text', () => {
-    const element = mount(<ResolvedView text="some text content" />);
+  it('should render the title', () => {
+    const element = mount(<ResolvedView title="some text content" />);
     expect(element.text()).toContain('some text content');
   });
 
-  it('should render an icon when it is provided', () => {
-    const element = shallow(
-      <ResolvedView icon="some-link-to-icon" text="some text content" />,
+  it('should render an icon when one is provided', () => {
+    const element = mount(
+      <ResolvedView icon="some-link-to-icon" title="some text content" />,
     );
-
     expect(element.find(Icon)).toHaveLength(1);
-    expect(element.find(Icon).props().src).toEqual('some-link-to-icon');
+    expect(element.find(Icon).props()).toEqual(
+      expect.objectContaining({
+        src: 'some-link-to-icon',
+      }),
+    );
   });
 
-  it('should render a lozenge when it is provided', () => {
+  it('should not render an icon when one is not provided', () => {
+    const element = mount(<ResolvedView title="some text content" />);
+    expect(element.find(Icon)).toHaveLength(0);
+  });
+
+  it('should render a lozenge when one is provided', () => {
     const lozenge = {
       text: 'some-lozenge-text',
       isBold: true,
       appearance: 'inprogress' as 'inprogress',
     };
-
     const element = shallow(
-      <ResolvedView text="some text content" lozenge={lozenge} />,
+      <ResolvedView title="some text content" lozenge={lozenge} />,
     );
     expect(element.find(Lozenge)).toHaveLength(1);
-    expect(element.find(Lozenge).prop('children')).toEqual('some-lozenge-text');
-    expect(element.find(Lozenge).prop('appearance')).toEqual('inprogress');
-    expect(element.find(Lozenge).prop('isBold')).toEqual(true);
+    expect(element.find(Lozenge).props()).toEqual(
+      expect.objectContaining({
+        appearance: 'inprogress',
+        isBold: true,
+        children: 'some-lozenge-text',
+      }),
+    );
+  });
+
+  it('should not render a lozenge when one is not provided', () => {
+    const element = shallow(<ResolvedView title="some text content" />);
+    expect(element.find(Lozenge)).toHaveLength(0);
   });
 });

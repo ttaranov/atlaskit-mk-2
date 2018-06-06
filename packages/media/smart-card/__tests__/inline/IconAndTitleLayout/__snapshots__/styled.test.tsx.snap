@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Link it should have selected styles 1`] = `
+exports[`Title it should have selected styles 1`] = `
 .c0 {
   font-size: 14px;
   line-height: 1.1428571428571428;
@@ -29,7 +29,7 @@ exports[`Link it should have selected styles 1`] = `
 />
 `;
 
-exports[`Link it should not have selected styles 1`] = `
+exports[`Title it should not have selected styles 1`] = `
 .c0 {
   font-size: 14px;
   line-height: 1.1428571428571428;

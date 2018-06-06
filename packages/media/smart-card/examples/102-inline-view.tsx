@@ -10,7 +10,7 @@ export default () => (
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
         ex, vel molestie arcu. Phasellus commodo
         <ResolvedView
-          text="MSW-524: [RFC] Api for inline Link cards UI component"
+          title="MSW-524: [RFC] Api for inline Link cards UI component"
           onClick={() =>
             window.open('https://product-fabric.atlassian.net/browse/MSW-524')
           }
@@ -20,7 +20,7 @@ export default () => (
         ut
         <ResolvedView
           icon="https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg"
-          text="MSW-524: [RFC] Api for inline Link cards UI component"
+          title="MSW-524: [RFC] Api for inline Link cards UI component"
           lozenge={{
             text: 'in progress',
             appearance: 'inprogress',
@@ -33,7 +33,7 @@ export default () => (
         tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet interdum,
         <ResolvedView
           icon="https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg"
-          text="MSW-524: [RFC] Api for inline Link cards UI component"
+          title="MSW-524: [RFC] Api for inline Link cards UI component"
           lozenge={{
             text: 'in progress',
             appearance: 'inprogress',

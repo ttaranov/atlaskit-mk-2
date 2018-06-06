@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Frame } from '../Frame';
 import Lozenge from '@atlaskit/lozenge';
 import { LozengeViewModel } from '../../block/CardView/ViewModel';
-import { Icon, Link, LozengeWrapper } from './styled';
+import { IconAndTitleLayout } from '../IconAndTitleLayout';
+import { Icon } from './styled';
 
 export interface ResolvedViewProps {
   icon?: string;
-  text: string;
+  title: string;
   lozenge?: LozengeViewModel;
   isSelected?: boolean;
   onClick?: () => void;
@@ -27,24 +28,26 @@ export class ResolvedView extends React.Component<ResolvedViewProps> {
       return null;
     }
     return (
-      <LozengeWrapper>
-        <Lozenge
-          appearance={lozenge.appearance || 'default'}
-          isBold={lozenge.isBold}
-        >
-          {lozenge.text}
-        </Lozenge>
-      </LozengeWrapper>
+      <Lozenge
+        appearance={lozenge.appearance || 'default'}
+        isBold={lozenge.isBold}
+      >
+        {lozenge.text}
+      </Lozenge>
     );
   }
 
   render() {
-    const { text, isSelected, onClick } = this.props;
+    const { title, isSelected, onClick } = this.props;
     return (
       <Frame isSelected={isSelected} onClick={onClick}>
-        {this.renderIcon()}
-        <Link isSelected={isSelected}>{text}</Link>
-        {this.renderLozenge()}
+        <IconAndTitleLayout
+          icon={this.renderIcon()}
+          title={title}
+          isSelected={isSelected}
+        >
+          {this.renderLozenge()}
+        </IconAndTitleLayout>
       </Frame>
     );
   }
