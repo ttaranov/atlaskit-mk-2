@@ -62,42 +62,29 @@ class AnalyticsContextConsumer extends Component<{
   }
 }
 
-const creator = <T: {}>(
-  descriptor: AnalyticsEventPayload | AnalyticsEventCreator<T>,
-): AnalyticsEventCreator<T> =>
-  typeof descriptor === 'object'
-    ? // $FlowFixMe unfortunately flow can't narrow between and object and function
-      (create, props) => create(descriptor)
-    : descriptor;
-
-const toObject = <K: string, V>(
-  obj: { [K]: V },
-  { key, value }: { key: K, value: V },
-) => ({
-  ...obj,
-  [key]: value,
-});
+type Obj<T> = { [string]: T };
+// helper that provides an easy way to map an object's values
+// ({ string: A }, (string, A) => B) => { string: B }
+const vmap = <A, B>(obj: Obj<A>, fn: (string, A) => B): Obj<B> =>
+  Object.keys(obj).reduce((curr, k) => ({ ...curr, [k]: fn(k, obj[k]) }), {});
 
 // given all props and a map with the callback props to add analytics,
 // patch the callbacks to provide analytics information.
-const modifyCallbackProps = <T: {}>(
+const modifyCallbackProp = <T: {}>(
+  propName: string,
+  eventMapEntry: AnalyticsEventPayload | AnalyticsEventCreator<T>,
   props: T,
-  eventMap: $Shape<T>,
   createAnalyticsEvent: CreateUIAnalyticsEvent,
-): $Shape<T> =>
-  Object.keys(eventMap)
-    .map(key => ({ key, value: creator(eventMap[key]) }))
-    .map(({ key, value }) => ({
-      key,
-      value: (...args) => {
-        const providedCallback = props[key];
-        const event = value(createAnalyticsEvent, props);
-        if (providedCallback) {
-          providedCallback(...args, event);
-        }
-      },
-    }))
-    .reduce(toObject, {});
+) => (...args) => {
+  const event =
+    typeof eventMapEntry === 'function'
+      ? eventMapEntry(createAnalyticsEvent, props)
+      : createAnalyticsEvent(eventMapEntry);
+  const providedCallback = props[propName];
+  if (providedCallback) {
+    providedCallback(...args, event);
+  }
+};
 
 const createCache = () => {
   let value = {};
@@ -124,26 +111,25 @@ export default function withAnalyticsEvents<
         return (
           <AnalyticsContextConsumer>
             {createAnalyticsEvent => {
-              const modifiedProps = modifyCallbackProps(
-                props,
-                createEventMap,
-                createAnalyticsEvent,
-              );
               const prevProps = propsCache(props);
-              const prevModifiedProps = modifiedPropsCache(modifiedProps);
-              const cachedProps = Object.keys(modifiedProps)
-                .map(key => ({
-                  key,
-                  value:
-                    prevProps[key] === props[key]
-                      ? prevModifiedProps[key]
-                      : modifiedProps[key],
-                }))
-                .reduce(toObject, {});
+              const prevModifiedProps = modifiedPropsCache({});
+              const modifiedProps = vmap(
+                createEventMap,
+                (propName, entry) =>
+                  prevProps[propName] === props[propName]
+                    ? prevModifiedProps[propName]
+                    : modifyCallbackProp(
+                        propName,
+                        entry,
+                        props,
+                        createAnalyticsEvent,
+                      ),
+              );
+              modifiedPropsCache(modifiedProps);
               return (
                 <WrappedComponent
                   {...props}
-                  {...cachedProps}
+                  {...modifiedProps}
                   createAnalyticsEvent={createAnalyticsEvent}
                   ref={ref}
                 />
