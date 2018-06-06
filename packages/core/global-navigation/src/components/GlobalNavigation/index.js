@@ -15,10 +15,12 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     const defaultConfig = generateDefaultConfig();
 
     const navItems = Object.keys(defaultConfig).map(item => ({
-      ...(config[item] && {
-        ...defaultConfig[item],
-        ...config[item],
-      }),
+      ...(config[item]
+        ? {
+            ...defaultConfig[item],
+            ...config[item],
+          }
+        : null),
     }));
 
     return {
