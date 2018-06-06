@@ -4,13 +4,18 @@ import Button from '@atlaskit/button';
 import FeedbackDialog from './FeedbackDialog';
 import { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
+import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import { colors } from '@atlaskit/theme';
 
 // Positions the button right of the drawer
-const ButtonPositionHack = styled.div`
+const RightOfDrawerPositionHack = styled.div`
   position: fixed;
   left: 620px;
   margin-top: 8px;
+`;
+
+const OpacityFix = styled.div`
+  opacity: 0.75;
 `;
 
 export interface Props {
@@ -37,10 +42,16 @@ export default class FeedbackButton extends React.Component<Props> {
     const { showDialog, showFlag } = this.state;
 
     return (
-      <ButtonPositionHack>
-        <Button appearance="primary" onClick={this.showDialog}>
-          Give Feedback
-        </Button>
+      <RightOfDrawerPositionHack>
+        <OpacityFix>
+          <Button
+            appearance="primary"
+            onClick={this.showDialog}
+            iconBefore={<FeedbackIcon label="feedback" />}
+          >
+            Give feedback
+          </Button>
+        </OpacityFix>
         {showDialog && (
           <FeedbackDialog
             collectorId={this.props.collectorId}
@@ -61,7 +72,7 @@ export default class FeedbackButton extends React.Component<Props> {
             []
           )}
         </FlagGroup>
-      </ButtonPositionHack>
+      </RightOfDrawerPositionHack>
     );
   }
 }

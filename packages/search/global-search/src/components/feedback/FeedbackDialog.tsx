@@ -40,7 +40,7 @@ export default class FeedbackDialog extends React.Component<Props> {
 
   render() {
     const actions = [
-      { text: 'Submit', onClick: this.submit },
+      { text: 'Submit feedback', onClick: this.submit },
       { text: 'Cancel', onClick: this.props.onClose },
     ];
 
@@ -49,13 +49,13 @@ export default class FeedbackDialog extends React.Component<Props> {
         actions={actions}
         width="small"
         onClose={this.props.onClose}
-        heading="Quick Search Feedback"
+        heading="Quick search feedback"
         autoFocus
       >
         <p>
           Thank you for taking the time to write about your Confluence quick
-          search experience. We guarantee that we'll read all feedback and
-          consider it carefully!
+          search experience (dogfooding only). We guarantee we’ll read all
+          feedback and consider it carefully!
         </p>
         <FieldTextArea
           autoFocus

@@ -44,7 +44,7 @@ export default async function sendFeedback(
   };
 
   const options: RequestServiceOptions = {
-    path: '/api/feedback',
+    path: 'api/feedback',
     requestInit: {
       headers: {
         'Content-Type': 'application/json',
