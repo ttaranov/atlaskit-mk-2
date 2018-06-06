@@ -5,28 +5,28 @@ import { diff } from 'deep-object-diff';
 
 import Logger from '../services/logger';
 import type {
-  NavAPIOptions,
-  NavAPIState,
+  ViewStateOptions,
+  ViewStateState,
   Reducer,
   View,
   ViewKey,
   ViewResolver,
 } from './types';
 
-const defaultOptions: NavAPIOptions = {
+const defaultOptions: ViewStateOptions = {
   activeView: null,
   reducers: {},
   views: {},
   debug: false,
 };
 
-export default class NavAPI extends Container<NavAPIState> {
+export default class ViewState extends Container<ViewStateState> {
   reducers: { [ViewKey]: Reducer[] } = {};
   views: { [ViewKey]: ViewResolver } = {};
   debug: boolean;
   logger: Logger;
 
-  constructor(options: NavAPIOptions | void) {
+  constructor(options: ViewStateOptions | void) {
     super();
     const { activeView, reducers, views, debug } = {
       ...defaultOptions,
@@ -121,7 +121,13 @@ export default class NavAPI extends Container<NavAPIState> {
     }
   };
 
-  setView = (viewKey: ViewKey) => {
+  setView = (maybeViewKey: ViewKey | null) => {
+    if (maybeViewKey === null) {
+      this.setState({ activeView: null, data: null });
+      return;
+    }
+
+    const viewKey: ViewKey = maybeViewKey;
     const viewGetter = this.views[viewKey];
 
     // This view has already been added.

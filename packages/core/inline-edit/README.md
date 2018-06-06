@@ -1,11 +1,11 @@
-# Inline Edit
+# Inline-edit
 
 A component for displaying and editing values in fields.
 
 ## Installation
 
-npm install @atlaskit/inline-edit
+yarn add @atlaskit/inline-edit
 
 ## Usage
 
-See [here](https://atlaskit.atlassian.com/packages/core/inline-edit)
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/inline-edit).

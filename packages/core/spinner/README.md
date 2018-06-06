@@ -1,10 +1,13 @@
-# Tag
+# Spinner
 
-This component is displayed as an accessible tag with an optional link and/or
-button to remove it.
+A React component that displays a spinning icon to show a loading state.
 
-![Example tags](https://i.imgur.com/UPtxaIM.png)
+## Installation
 
-Although the `tag` component can be used by itself, it works best in
-conjunction with the [`@atlaskit/tag-group`](https://www.npmjs.com/package/@atlaskit/tag-group)
-component.
+```sh
+yarn add @atlaskit/spinner
+```
+
+## Usage
+
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/spinner)

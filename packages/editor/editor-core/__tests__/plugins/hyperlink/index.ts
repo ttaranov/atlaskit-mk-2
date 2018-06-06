@@ -23,7 +23,7 @@ describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin],
+      editorPlugins: [codeBlockPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
       },

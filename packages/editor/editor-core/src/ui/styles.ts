@@ -27,7 +27,7 @@ export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & { isSmall?: boolean }
 > = styled.span`
   display: flex;
-  align-items: stretch;
+  align-items: center;
 
   > div,
   > span {

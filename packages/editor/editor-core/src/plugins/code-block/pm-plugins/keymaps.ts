@@ -1,11 +1,15 @@
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
 import { Plugin, EditorState } from 'prosemirror-state';
+import { getCursor } from '../../../utils';
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   return keymap({
     Enter: (state: EditorState, dispatch) => {
-      const { selection, schema: { nodes } } = state;
+      const {
+        selection,
+        schema: { nodes },
+      } = state;
       const { $from, $to } = selection;
       const node = $from.node($from.depth);
 
@@ -31,16 +35,19 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       return false;
     },
     Backspace: (state: EditorState, dispatch) => {
-      const { selection, tr, schema: { nodes } } = state;
-      if (!selection.empty || selection.from !== 1) {
-        return false;
-      }
-
-      const { $anchor } = selection;
-      const node = $anchor.node($anchor.depth);
-      if (node && node.type === nodes.codeBlock) {
-        tr.setBlockType($anchor.pos, $anchor.pos, nodes.paragraph);
-        dispatch(tr);
+      const $cursor = getCursor(state.selection);
+      if (
+        $cursor &&
+        $cursor.pos === 1 &&
+        $cursor.parent.type === state.schema.nodes.codeBlock
+      ) {
+        dispatch(
+          state.tr.setBlockType(
+            $cursor.pos,
+            $cursor.pos,
+            state.schema.nodes.paragraph,
+          ),
+        );
         return true;
       }
       return false;

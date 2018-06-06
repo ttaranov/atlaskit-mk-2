@@ -53,7 +53,7 @@ describe('table keymap', () => {
         listsPlugin,
         panelPlugin,
         mediaPlugin({ allowMediaSingle: true }),
-        codeBlockPlugin,
+        codeBlockPlugin(),
         tasksAndDecisionsPlugin,
         extensionPlugin,
       ],
@@ -269,7 +269,12 @@ describe('table keymap', () => {
       });
 
       const backspace = (view: EditorView) => {
-        const { state: { tr, selection: { $head } } } = view;
+        const {
+          state: {
+            tr,
+            selection: { $head },
+          },
+        } = view;
         view.dispatch(tr.delete($head.pos - 1, $head.pos));
       };
 

@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.2
+- [patch] Better image resizing in MediaViewer NG [29f6f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29f6f90)
+
 ## 15.0.1
 - [patch] Filter links from collections in MediaViewer NG [2ac8912](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ac8912)
 

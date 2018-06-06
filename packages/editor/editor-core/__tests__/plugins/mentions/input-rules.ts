@@ -31,7 +31,7 @@ describe('mentions - input rules', () => {
   const editor = (doc: any) =>
     createEditor<MentionsState>({
       doc,
-      editorPlugins: [mentionsPlugin, emojiPlugin, codeBlockPlugin],
+      editorPlugins: [mentionsPlugin, emojiPlugin, codeBlockPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
       },
