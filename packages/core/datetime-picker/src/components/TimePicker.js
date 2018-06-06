@@ -103,7 +103,7 @@ export default class TimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
-    formatDisplayValue: value => formatTime(value, timeFormat),
+    formatDisplayValue: (value: string) => formatTime(value, defaultTimeFormat),
     isDisabled: false,
     name: '',
     onBlur: () => {},
