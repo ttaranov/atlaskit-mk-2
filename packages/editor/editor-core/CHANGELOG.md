@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.1.0
+- [minor] Add support for indent/outdenting text inside a code-block via the `Mod-[` / `Mod-]` shortcuts. `Enter` will now persist the indentation of the previous line, and `Tab` will insert the appropriate indentation. This can be enabled via the `enableKeybindingsForIDE` option that can now be passed through to `allowCodeBlocks` option. This is hidden behind an option only until we are confident with the implementation, at which point it will likely become default behaviour. [ED-4638] [c02281b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02281b)
+- [none] Updated dependencies [c02281b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02281b)
+
 ## 73.0.1
 - [patch] ED-4716, smart replacements should not work inside mention query. [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)
 - [patch] Updated dependencies [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)
