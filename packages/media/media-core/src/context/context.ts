@@ -29,7 +29,6 @@ import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
 import { FileItem } from '../item';
-import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import {
   GetFileOptions,
   FileState,
@@ -130,7 +129,7 @@ class ContextImpl implements Context {
   private createDownloadFileStream = (
     id: string,
     collection?: string,
-  ): ConnectableObservable<FileState> => {
+  ): Observable<FileState> => {
     return Observable.create(async (observer: Observer<FileState>) => {
       let timeoutId: number;
 
