@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.1.3
+- [patch] ED-4799, fixing vertical alignment of separators in toolbar. [4146e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4146e4f)
+- [patch] Updated dependencies [4146e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4146e4f)
+
 ## 73.1.2
 - [patch] ED-4190, fix for scroll of editor to top when adding date or clicking date. [90ece93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ece93)
 - [patch] Updated dependencies [90ece93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ece93)
