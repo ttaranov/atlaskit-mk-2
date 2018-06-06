@@ -3,7 +3,7 @@
 exports[`Link it should have selected styles 1`] = `
 .c0 {
   font-size: 14px;
-  line-height: 1.4285714285714286;
+  line-height: 1.1428571428571428;
 }
 
 .c0,
@@ -32,7 +32,7 @@ exports[`Link it should have selected styles 1`] = `
 exports[`Link it should not have selected styles 1`] = `
 .c0 {
   font-size: 14px;
-  line-height: 1.4285714285714286;
+  line-height: 1.1428571428571428;
 }
 
 .c0,

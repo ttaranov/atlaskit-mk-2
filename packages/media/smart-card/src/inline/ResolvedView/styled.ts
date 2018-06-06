@@ -36,7 +36,7 @@ export const Link: ComponentClass<HTMLAttributes<{}> & LinkProps> = styled.a`
     text-decoration: none;
   }
   font-size: 14px;
-  line-height: ${20 / 14};
+  line-height: ${16 / 14};
 `;
 
 export const LozengeWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`

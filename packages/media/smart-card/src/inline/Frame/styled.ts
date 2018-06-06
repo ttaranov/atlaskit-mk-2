@@ -46,6 +46,7 @@ export const Wrapper: ComponentClass<
 > = styled.span`
   ${isInteractive} ${isSelected} display: inline-flex;
   align-items: center;
+  margin: 2px;
   padding: 2px;
   border-radius: ${akBorderRadius};
   user-select: none;
