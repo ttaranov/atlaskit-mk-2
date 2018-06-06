@@ -126,7 +126,8 @@ export default class DatePicker extends Component<Props, State> {
     appearance: 'default',
     autoFocus: false,
     disabled: [],
-    formatDisplayValue: value => format(parse(value), defaultDateFormat),
+    formatDisplayValue: (value: string) =>
+      format(parse(value), defaultDateFormat),
     icon: CalendarIcon,
     name: '',
     isDisabled: false,
