@@ -20,5 +20,6 @@ export default ({ children, props, state, theme }: Props) => {
       merged[key] = theme[key]({ appearance });
     }
   });
+  console.log(children(merged));
   return children(merged);
 };
