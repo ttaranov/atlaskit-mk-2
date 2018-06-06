@@ -74,8 +74,6 @@ export default (
           return nextPluginState;
         }
 
-        const pluginState = pluginKey.getState(prevState);
-        dispatch(pluginKey, pluginState);
         return state;
       },
     },

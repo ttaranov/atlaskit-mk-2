@@ -7,10 +7,7 @@ import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
 import ExtensionLozenge from '../Lozenge';
 import { pluginKey as widthPluginKey } from '../../../../width';
-import {
-  akEditorFullPageMaxWidth,
-  akEditorWideLayoutWidth,
-} from '@atlaskit/editor-common';
+import { calcExtensionWidth } from '@atlaskit/editor-common';
 import WithPluginState from '../../../../../ui/WithPluginState';
 
 export interface Props {
@@ -24,21 +21,6 @@ export interface Props {
 }
 
 export default class Extension extends Component<Props, any> {
-  calcWidth = (layout, containerWidth: number) => {
-    switch (layout) {
-      case 'full-width':
-        return containerWidth <= akEditorFullPageMaxWidth
-          ? '100%'
-          : `${containerWidth}px`;
-      case 'wide':
-        return containerWidth <= akEditorWideLayoutWidth
-          ? '100%'
-          : `${akEditorWideLayoutWidth}px`;
-      default:
-        return 'inherit';
-    }
-  };
-
   render() {
     const {
       node,
@@ -65,7 +47,7 @@ export default class Extension extends Component<Props, any> {
               onClick={onClick}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
-                width: this.calcWidth(node.attrs.layout, width),
+                width: calcExtensionWidth(node.attrs.layout, width),
               }}
             >
               <Overlay className="extension-overlay" />
