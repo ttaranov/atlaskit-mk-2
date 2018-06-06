@@ -15,6 +15,7 @@ declare const global: any;
 
 describe('<FabricAnalyticsListeners />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
+  let clientPromise: Promise<AnalyticsWebClient>;
 
   beforeEach(() => {
     analyticsWebClientMock = {
@@ -23,6 +24,7 @@ describe('<FabricAnalyticsListeners />', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
+    clientPromise = Promise.resolve(analyticsWebClientMock);
   });
 
   describe('FabricAnalyticsListener', () => {
@@ -44,7 +46,7 @@ describe('<FabricAnalyticsListeners />', () => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners
-          client={analyticsWebClientMock}
+          client={clientPromise}
           logLevel={LOG_LEVEL.ERROR}
         >
           <IncorrectEventType onClick={compOnClick} />
@@ -66,22 +68,22 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
-        <FabricAnalyticsListeners client={analyticsWebClientMock}>
+        <FabricAnalyticsListeners client={clientPromise}>
           <DummyComponentWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
       const analyticsListener = component.find(FabricElementsListener);
-      expect(analyticsListener.props()).toHaveProperty(
-        'client',
-        analyticsWebClientMock,
-      );
+      expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
 
       const dummyComponent = analyticsListener.find(DummyComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
-      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
+
+      return clientPromise.then(client =>
+        expect(client.sendUIEvent).toBeCalled(),
+      );
     });
   });
 
@@ -89,22 +91,22 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
-        <FabricAnalyticsListeners client={analyticsWebClientMock}>
+        <FabricAnalyticsListeners client={clientPromise}>
           <DummyAtlaskitComponentWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
       const analyticsListener = component.find(FabricElementsListener);
-      expect(analyticsListener.props()).toHaveProperty(
-        'client',
-        analyticsWebClientMock,
-      );
+      expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
 
       const dummyComponent = analyticsListener.find(DummyComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
-      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
+
+      return clientPromise.then(client =>
+        expect(client.sendUIEvent).toBeCalled(),
+      );
     });
   });
 });

@@ -8,7 +8,7 @@ import Logger from './helpers/logger';
 export type Props = {
   /** Children! */
   children?: React.ReactNode;
-  client: AnalyticsWebClient;
+  client: Promise<AnalyticsWebClient>;
   logLevel?: number;
 };
 
