@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
+import { Label } from '@atlaskit/field-base';
+import { ToggleStateless } from '@atlaskit/toggle';
 
 import {
   ContainerViewSubscriber,
@@ -23,11 +25,21 @@ import {
   SearchIssuesView,
 } from './shared/routes';
 
-export default class App extends Component<{}> {
+export default class App extends Component<{}, { isDebugEnabled: boolean }> {
+  state = {
+    isDebugEnabled: true,
+  };
+
+  onDebugToggle = () => {
+    this.setState({ isDebugEnabled: !this.state.isDebugEnabled });
+  };
+
   render() {
+    const { isDebugEnabled } = this.state;
+
     return (
       <HashRouter>
-        <NavigationProvider>
+        <NavigationProvider debug={isDebugEnabled}>
           <ContainerViewSubscriber>
             {containerView => (
               <LayoutManager
@@ -44,6 +56,11 @@ export default class App extends Component<{}> {
                     <Route path="/issues/search" component={SearchIssuesView} />
                     <Route path="/" component={DashboardsView} />
                   </Switch>
+                  <Label label="Toggle debug logger" />
+                  <ToggleStateless
+                    isChecked={isDebugEnabled}
+                    onChange={this.onDebugToggle}
+                  />
                 </div>
               </LayoutManager>
             )}

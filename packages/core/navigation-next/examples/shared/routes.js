@@ -11,6 +11,7 @@ import {
 } from '../../src';
 
 import { containerViews, rootViews } from './mock-data';
+import ShortcutsPlugin from './shortcuts-plugin';
 
 const containerViewState = getContainerViewState();
 const rootViewState = getRootViewState();
@@ -118,6 +119,7 @@ class BacklogViewBase extends Component<*> {
         <p>
           <Link to="/">Go back home</Link>
         </p>
+        <ShortcutsPlugin />
       </Fragment>
     );
   }

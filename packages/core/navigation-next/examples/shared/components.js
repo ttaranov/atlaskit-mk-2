@@ -18,6 +18,19 @@ import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
 const gridSize = gridSizeFn();
 
+export const DefaultGlobalNavigation = () => (
+  <GlobalNav
+    primaryItems={globalNavPrimaryItems}
+    secondaryItems={globalNavSecondaryItems}
+  />
+);
+
+export const JiraWordmark = () => (
+  <div css={{ padding: `${gridSize * 2}px 0` }}>
+    <JiraWordmarkLogo />
+  </div>
+);
+
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
     <Route
@@ -36,22 +49,6 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
     />
   );
 };
-
-/**
- * Render components
- */
-export const DefaultGlobalNavigation = () => (
-  <GlobalNav
-    primaryItems={globalNavPrimaryItems}
-    secondaryItems={globalNavSecondaryItems}
-  />
-);
-
-export const JiraWordmark = () => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <JiraWordmarkLogo />
-  </div>
-);
 
 export const ProjectSwitcher = ({ components: C, ...props }: *) => (
   <div css={{ paddingBottom: `${gridSize}px` }}>
