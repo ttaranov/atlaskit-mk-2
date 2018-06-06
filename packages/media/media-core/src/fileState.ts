@@ -39,7 +39,7 @@ export interface ProcessedFileState {
   name: string;
   size: number;
   artifacts: Object;
-  // mediaType: MediaType;
+  mediaType: string;
   binaryUrl: string;
   preview?: FilePreview;
 }
@@ -69,7 +69,14 @@ const apiProcessingStatusToFileStatus = (
 export const mapMediaFileToFileState = (
   mediaFile: MediaStoreResponse<MediaFile>,
 ): FileState => {
-  const { id, name, size, processingStatus, artifacts } = mediaFile.data;
+  const {
+    id,
+    name,
+    size,
+    processingStatus,
+    artifacts,
+    mediaType,
+  } = mediaFile.data;
   const status = apiProcessingStatusToFileStatus(processingStatus);
 
   switch (status) {
@@ -96,6 +103,7 @@ export const mapMediaFileToFileState = (
         name,
         size,
         artifacts,
+        mediaType,
         binaryUrl: `/file/${id}/binary`,
       };
     case 'error':
