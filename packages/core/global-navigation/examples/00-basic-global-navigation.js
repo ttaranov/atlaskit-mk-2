@@ -3,6 +3,7 @@
 import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
+import MenuIcon from '@atlaskit/icon/glyph/menu';
 
 import GlobalNavigation from '../src/components/GlobalNavigation';
 
@@ -16,7 +17,12 @@ const Global = () => (
     onYourWorkClick={() => console.log('your work clicked')}
     onNotificationClick={() => console.log('notification clicked')}
     onPeopleClick={() => console.log('People clicked')}
-    onProfileClick={() => console.log('Profile clicked')}
+    appSwitcherComponent={({ className }) => (
+      <span className={className}>
+        <MenuIcon />
+      </span>
+    )}
+    loginHref="#loginUrl"
   />
 );
 
