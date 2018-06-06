@@ -5,7 +5,7 @@ import Tag from '../src';
 
 export default () => (
   <Tag
-    appearance="rounded"
+    shape="rounded"
     elemBefore={<Avatar size="xsmall" />}
     text="Default Avatar"
     removeButtonText="Remove me"

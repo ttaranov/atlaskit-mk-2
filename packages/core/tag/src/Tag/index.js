@@ -10,29 +10,13 @@ import Before from './styledBefore';
 import Container from './styledContainer';
 import * as theme from '../theme';
 
-import type { AppearanceType } from '../types';
+import type { TagColor, TagShape } from '../types';
 
 type Props = {
   /** Set whether tags should be rounded. */
-  appearance: AppearanceType,
-  /** The color theme to apply, setting both background and text color. */
-  color:
-    | 'standard'
-    | 'green'
-    | 'blue'
-    | 'red'
-    | 'purple'
-    | 'grey'
-    | 'teal'
-    | 'yellow'
-    | 'greenLight'
-    | 'blueLight'
-    | 'redLight'
-    | 'purpleLight'
-    | 'greyLight'
-    | 'tealLight'
-    | 'yellowLight'
-    | {},
+  shape: TagShape,
+  /** The appearance theme to apply, setting both background and text color. */
+  appearance: TagColor,
   /** Component to be rendered before the Tag. */
   elemBefore?: Node,
   /** Text to be displayed in the tag. */
@@ -62,8 +46,8 @@ type State = {
 
 export default class Tag extends Component<Props, State> {
   static defaultProps = {
-    color: 'standard',
-    appearance: 'default',
+    appearance: 'standard',
+    shape: 'default',
     elemBefore: null,
     onAfterRemoveAction: () => {},
     onBeforeRemoveAction: () => true,
@@ -106,12 +90,12 @@ export default class Tag extends Component<Props, State> {
       href,
       removeButtonText,
       text,
-      color,
+      shape,
       linkComponent,
     } = this.props;
 
     const isRemovable = Boolean(removeButtonText);
-    const isRounded = appearance === 'rounded';
+    const isRounded = shape === 'rounded';
 
     const styled = {
       isFocused,
@@ -120,7 +104,7 @@ export default class Tag extends Component<Props, State> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      color,
+      appearance,
     };
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 

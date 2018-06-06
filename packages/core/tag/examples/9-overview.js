@@ -19,13 +19,13 @@ export default () => (
       removeButtonText="Remove me"
     />
     <Tag
-      appearance="rounded"
+      shape="rounded"
       text="A. Cool Name"
       elemBefore={<Avatar size="xsmall" />}
       removeButtonText="Remove me"
     />
     <Tag
-      appearance="rounded"
+      shape="rounded"
       href="https://some.link"
       text="A. Cool Name"
       elemBefore={<Avatar size="xsmall" />}

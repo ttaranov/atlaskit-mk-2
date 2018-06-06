@@ -6,7 +6,7 @@ export default () => (
   <div>
     <Tag
       text="Custom tag"
-      appearance={{ backgroundColor: 'green', textColor: 'blue' }}
+      color={{ backgroundColor: 'green', textColor: 'blue' }}
     />
   </div>
 );
