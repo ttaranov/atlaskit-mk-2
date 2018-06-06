@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {
   Popup,
   timestampToDate,
@@ -80,8 +81,9 @@ export default class DatePicker extends React.Component<Props, State> {
   };
 
   private handleRef = (ref?: HTMLElement) => {
-    if (ref) {
-      ref.focus();
+    const elm = ref && (ReactDOM.findDOMNode(ref) as HTMLElement);
+    if (elm) {
+      elm.focus();
     }
   };
 }
