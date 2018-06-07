@@ -40,7 +40,7 @@ export default class StaticTree extends Component<void, State> {
     onExpand: (itemId: ItemId) => void,
     onCollapse: (itemId: ItemId) => void,
   ) {
-    if (item.children && item.children.length > 0) {
+    if (item.hasChildren) {
       return item.isExpanded ? (
         <ChevronDownIcon
           label=""
@@ -63,9 +63,25 @@ export default class StaticTree extends Component<void, State> {
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item, onExpand, onCollapse)}
+        onKeyDown={event => this.onKeyDown(event, item, onExpand, onCollapse)}
       />
     </div>
   );
+
+  onKeyDown = (
+    event: KeyboardEvent,
+    item: TreeItem,
+    onExpand: (itemId: ItemId) => void,
+    onCollapse: (itemId: ItemId) => void,
+  ) => {
+    if (event.key === 'Enter' && item.hasChildren) {
+      if (item.isExpanded) {
+        onCollapse(item.id);
+      } else {
+        onExpand(item.id);
+      }
+    }
+  };
 
   onExpand = (itemId: ItemId) => {
     const { tree }: State = this.state;
