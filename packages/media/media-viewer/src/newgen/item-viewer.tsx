@@ -15,6 +15,7 @@ export type Props = {
   readonly context: Context;
   readonly featureFlags?: MediaViewerFeatureFlags;
   readonly showControls?: () => void;
+  readonly onClose?: () => void;
 };
 
 export type State = {
@@ -43,7 +44,13 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context, identifier, featureFlags, showControls } = this.props;
+    const {
+      context,
+      identifier,
+      featureFlags,
+      showControls,
+      onClose,
+    } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
@@ -54,6 +61,7 @@ export class ItemViewer extends React.Component<Props, State> {
           context,
           item: itemUnwrapped,
           collectionName: identifier.collectionName,
+          onClose,
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':

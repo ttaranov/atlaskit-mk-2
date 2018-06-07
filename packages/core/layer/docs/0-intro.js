@@ -15,7 +15,7 @@ export default md`
   ## Installation
 
   ~~~js
-  npm install @atlaskit/layer
+  yarn add @atlaskit/layer
   ~~~
 
   ## Using the component

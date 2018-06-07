@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import styled from 'styled-components';
 import {
   akBorderRadius,
@@ -29,8 +28,6 @@ const InlineNode = styled.span`
   }
 `;
 
-export default class UnsupportedInlineNode extends Component<{}, {}> {
-  render() {
-    return <InlineNode>Unsupported content</InlineNode>;
-  }
+export default function UnsupportedInlineNode() {
+  return <InlineNode>Unsupported content</InlineNode>;
 }

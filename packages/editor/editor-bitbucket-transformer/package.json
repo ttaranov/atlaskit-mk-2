@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket-transformer",
-  "version": "3.1.2",
+  "version": "3.1.5",
   "description": "Editor Bitbucket transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -18,7 +18,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^10.0.0",
+    "@atlaskit/editor-common": "^11.0.0",
     "prosemirror-markdown": "^1.0.3",
     "prosemirror-model": "^1.2.0"
   },
@@ -26,11 +26,11 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/editor-common": "^10.0.0",
-    "@atlaskit/editor-core": "^72.0.0",
-    "@atlaskit/editor-test-helpers": "^4.0.0",
-    "@atlaskit/util-data-test": "^9.1.4",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/editor-common": "^11.0.0",
+    "@atlaskit/editor-core": "^73.0.0",
+    "@atlaskit/editor-test-helpers": "^4.0.3",
+    "@atlaskit/util-data-test": "^9.1.10",
     "chai-as-promised": "^6.0.0"
   }
 }

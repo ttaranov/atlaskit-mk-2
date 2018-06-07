@@ -1,5 +1,25 @@
 # @atlaskit/table-tree
 
+## 3.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/select@4.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/spinner@6.0.1
+  - @atlaskit/docs@4.0.1
+
+## 3.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/select@4.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 2.0.1
 - [patch] Remove line break from changelog to allow it to display properly on the website [9e30bb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e30bb1)
 

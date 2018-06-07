@@ -5,7 +5,7 @@ import { date } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { insertDate, selectElement } from './actions';
-import createPlugin, { DateState, pluginKey } from './plugin';
+import createDatePlugin, { DateState, pluginKey } from './plugin';
 import DatePicker from './ui/DatePicker';
 
 export type DateType = {
@@ -23,8 +23,7 @@ const datePlugin: EditorPlugin = {
     return [
       {
         rank: 2410,
-        plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+        plugin: createDatePlugin,
       },
     ];
   },

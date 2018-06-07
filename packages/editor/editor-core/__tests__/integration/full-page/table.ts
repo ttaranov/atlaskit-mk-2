@@ -6,7 +6,7 @@ const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
 const enterArr: string[] = [];
 const arrowUpArr: string[] = [];
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 80; i++) {
   enterArr.push('Enter');
   arrowUpArr.push('Up arrow');
 }
@@ -23,7 +23,6 @@ BrowserTestCase(
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
     await browser.click(editorSelector);
-    await browser.type(editorSelector, enterArr);
     await browser.click(insertTableMenu);
     await browser.type(editorSelector, enterArr);
     await browser.type(editorSelector, arrowUpArr);

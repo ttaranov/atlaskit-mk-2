@@ -7,6 +7,7 @@ import {
   videoFileId,
   docFileId,
   defaultCollectionName,
+  archiveFileId,
   unknownFileId,
   audioNoCoverFileId,
   videoHorizontalFileId,
@@ -65,6 +66,12 @@ const audioItemNoCover: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const archiveItem: MediaViewerItem = {
+  type: 'file',
+  id: archiveFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 const unsupportedItem: MediaViewerItem = {
   type: 'file',
   id: unknownFileId.id,
@@ -96,6 +103,7 @@ export default class Example extends React.Component<{}, State> {
         <Button onClick={this.setItem(audioItem)}>Audio item</Button>
         <Button onClick={this.setItem(audioItemNoCover)}>Audio no cover</Button>
         <Button onClick={this.setItem(docItem)}>Doc item</Button>
+        <Button onClick={this.setItem(archiveItem)}>Archive</Button>
         <Button onClick={this.setItem(unsupportedItem)}>
           Unsupported item
         </Button>

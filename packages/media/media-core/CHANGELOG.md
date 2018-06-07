@@ -1,5 +1,17 @@
 # @atlaskit/media-core
 
+## 19.0.1
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/button@8.0.1
+  - @atlaskit/docs@4.0.1
+
+## 19.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-store@4.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 18.1.2
 - [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
   - @atlaskit/media-store@3.1.1

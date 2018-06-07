@@ -65,7 +65,7 @@ describe('table plugin', () => {
       editorPlugins: [
         listPlugin,
         tablesPlugin,
-        codeBlockPlugin,
+        codeBlockPlugin(),
         mediaPlugin({ allowMediaSingle: true }),
       ],
       editorProps: {
@@ -109,14 +109,13 @@ describe('table plugin', () => {
 
       // create the NodeView
       const node = table()(tr(tdCursor, tdEmpty, tdEmpty))(defaultSchema);
-      const { editorView } = editor(doc(p()));
+      const { editorView, portalProviderAPI } = editor(doc(p()));
       const tableView = new TableView({
         node,
         allowColumnResizing: false,
         view: editorView,
-        getPos: () => {
-          return undefined;
-        },
+        portalProviderAPI,
+        getPos: () => 1,
       });
 
       // we expect to have a contentDOM after instanciating the NodeView so that
@@ -1273,13 +1272,11 @@ describe('table plugin', () => {
         doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
-      const tables = editorView.dom.getElementsByTagName('table');
-      expect(tables.length).toBe(1);
-      const tableElement = tables[0];
-
+      let tableElement = editorView.dom.getElementsByTagName('table')[0];
       expect(tableElement.getAttribute('data-layout')).toBe('default');
 
       pluginState.setTableLayout('full-width');
+      tableElement = editorView.dom.getElementsByTagName('table')[0];
       expect(tableElement.getAttribute('data-layout')).toBe('full-width');
 
       editorView.destroy();
@@ -1304,15 +1301,14 @@ describe('table plugin', () => {
         doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
-      const firstTables = editorView.dom.getElementsByTagName('table');
-      expect(firstTables.length).toBe(1);
-      const firstTableElement = firstTables[0];
+      let firstTableElement = editorView.dom.getElementsByTagName('table')[0];
 
       expect(firstTableElement.getAttribute('data-layout')).toBe('default');
       expect(pluginState.tableLayout).toBe('default');
 
       pluginState.setTableLayout('full-width');
 
+      firstTableElement = editorView.dom.getElementsByTagName('table')[0];
       expect(firstTableElement.getAttribute('data-layout')).toBe('full-width');
       expect(pluginState.tableLayout).toBe('full-width');
 

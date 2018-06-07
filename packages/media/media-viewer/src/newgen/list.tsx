@@ -55,6 +55,7 @@ export class List extends React.Component<Props, State> {
             context={context}
             identifier={selectedItem}
             showControls={showControls}
+            onClose={onClose}
           />
           <Navigation
             items={items}
