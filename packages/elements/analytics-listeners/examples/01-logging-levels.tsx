@@ -21,6 +21,13 @@ const logLevels = [
   { name: 'OFF', level: LOG_LEVEL.OFF },
 ];
 
+const analyticsWebClientMock = {
+  sendUIEvent: event => {},
+  sendOperationalEvent: event => {},
+  sendTrackEvent: (event: any) => {},
+  sendScreenEvent: (event: any) => {},
+};
+
 export default class Example extends React.Component {
   state = {
     loggingLevelIdx: 0,
@@ -35,7 +42,10 @@ export default class Example extends React.Component {
   render() {
     const logLevel = logLevels[this.state.loggingLevelIdx];
     return (
-      <FabricAnalyticsListeners logLevel={logLevel.level}>
+      <FabricAnalyticsListeners
+        client={Promise.resolve(analyticsWebClientMock)}
+        logLevel={logLevel.level}
+      >
         <div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Button appearance="primary" onClick={this.changeLogLevel}>
