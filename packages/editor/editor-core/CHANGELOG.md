@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.3
+- [patch] ED-4758, fix for confluence issue media single toolbar not visible for saved media. [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
+- [patch] Updated dependencies [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
+
 ## 73.3.2
 - [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
   - @atlaskit/media-card@29.0.2
