@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 3.1.5
+- [patch] Fix issue where parsing an empty string would throw a SyntaxError in IE11 due to a bug with `querySelectorAll` and pseudo-elements. (https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/16104908/) (BBCDEV-10195) [274e0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/274e0ad)
+- [none] Updated dependencies [274e0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/274e0ad)
+
 ## 3.1.4
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/util-data-test@9.1.10
