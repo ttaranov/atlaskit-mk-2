@@ -16,6 +16,7 @@ import patchEditorViewForJSDOM from './jsdom-fixtures';
 import {
   PortalProvider,
   PortalProviderAPI,
+  PortalRenderer,
 } from '../../editor-core/src/ui/PortalProvider';
 
 class TestReactEditorView extends ReactEditorView<{
@@ -58,16 +59,19 @@ export default function createEditorForTests<T = any>({
       render={portalProvider => {
         portalProviderAPI = portalProvider;
         return (
-          <TestReactEditorView
-            editorProps={editorProps}
-            portalProviderAPI={portalProvider}
-            providerFactory={
-              providerFactory ? providerFactory : new ProviderFactory()
-            }
-            onEditorCreated={() => {}}
-            onEditorDestroyed={() => {}}
-            plugins={plugins}
-          />
+          <>
+            <TestReactEditorView
+              editorProps={editorProps}
+              portalProviderAPI={portalProvider}
+              providerFactory={
+                providerFactory ? providerFactory : new ProviderFactory()
+              }
+              onEditorCreated={() => {}}
+              onEditorDestroyed={() => {}}
+              plugins={plugins}
+            />
+            <PortalRenderer portalProviderAPI={portalProviderAPI} />
+          </>
         );
       }}
     />,

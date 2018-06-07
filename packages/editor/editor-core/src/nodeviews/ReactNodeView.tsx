@@ -141,7 +141,7 @@ export default class ReactNodeView implements NodeView {
       return;
     }
 
-    this.portalProviderAPI.destroy(this.domRef);
+    this.portalProviderAPI.remove(this.domRef);
     this.domRef = undefined;
     this.contentDOM = undefined;
   }
