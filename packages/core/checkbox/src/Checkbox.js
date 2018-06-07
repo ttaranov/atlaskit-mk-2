@@ -44,9 +44,7 @@ export default class Checkbox extends Component<Props, State> {
 
   state = { isChecked: !!this.props.initiallyChecked };
 
-  onChange = (
-    event: SyntheticEvent<any> & { currentTarget: HTMLInputElement },
-  ) => {
+  onChange = (event: SyntheticEvent<HTMLInputElement>) => {
     const { isDisabled, onChange, name, value } = this.props;
     if (isDisabled) return null;
     const isChecked = event.currentTarget.checked;
