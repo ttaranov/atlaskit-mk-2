@@ -1,6 +1,6 @@
 // @flow
 
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import Badge from '..';
 import Format from '../Format';
@@ -12,7 +12,7 @@ function getFormatProps(badge) {
 }
 
 test('snapshot', () => {
-  expect(shallow(<Badge />)).toMatchSnapshot();
+  expect(mount(<Badge />)).toMatchSnapshot();
 });
 
 test('DEPRECATED - value', () => {
