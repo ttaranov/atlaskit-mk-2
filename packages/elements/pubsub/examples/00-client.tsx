@@ -75,7 +75,7 @@ class PubSubEventComponent extends Component<{}, State> {
 
   onEventTypeChange = e => {
     this.setState({
-      channelInput: e.target.value,
+      eventType: e.target.value,
     });
   };
 
