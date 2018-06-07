@@ -2,8 +2,8 @@
 
 import { shallow } from 'enzyme';
 import React from 'react';
-import Badge from '../Badge';
+import Container from '../Container';
 
 test('snapshot', () => {
-  expect(shallow(<Badge />)).toMatchSnapshot();
+  expect(shallow(<Container />)).toMatchSnapshot();
 });

@@ -1,5 +1,5 @@
 // @flow
 
 export { default } from './components';
-export { default as Badge } from './components/Badge';
+export { default as Container } from './components/Container';
 export { default as Format } from './components/Format';

@@ -8,8 +8,9 @@ type Props = {
   max?: number,
 };
 
-const Format = ({ children = 0, max = 0 }: Props): string => {
+const Format = (props: Props): string => {
   let formatted = '';
+  let { children = 0, max = 0 } = props;
 
   if (children < 0) {
     children = 0;

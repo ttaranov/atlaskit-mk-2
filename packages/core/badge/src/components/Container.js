@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 
-const Badge = styled.span`
+const Container = styled.span`
   ${props => `
     background-color: ${props.backgroundColor};
     color: ${props.textColor};
@@ -16,6 +16,6 @@ const Badge = styled.span`
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 `;
-Badge.displayName = 'Ak.Badge.Badge';
+Container.displayName = 'Ak.Badge.Container';
 
-export default Badge;
+export default Container;
