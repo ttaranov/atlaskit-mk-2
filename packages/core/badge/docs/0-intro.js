@@ -41,10 +41,10 @@ export default md`
   The named \`Container\` export retains the styling of a normal badge, but without formatting. This means you can compose in whatever information you need to.
 
   \`\`\`js
-  import { Badge } from '@atlaskit/badge';
+  import { Container } from '@atlaskit/badge';
 
   // Displays: <em>Something</em>
-  <Badge><em>Something</em></Badge>
+  <Container><em>Something</em></Container>
   \`\`\`
 
   _Beware that putting arbitrary content inside of a badge might cause it to take on an unitended look._
@@ -54,10 +54,10 @@ export default md`
   The \`Format\` export can be used to compose your own badge together, or if you need the badge  style formatting somewhere else.
 
   \`\`\`js
-  import { Badge, Format } from '@atlaskit/badge';
+  import { Container, Format } from '@atlaskit/badge';
 
   // Displays: <em>999+</em>
-  <Badge><em><Format>{1000}</Format></em></Badge>
+  <Container><em><Format>{1000}</Format></em></Container>
   \`\`\`
 
   ## Examples
