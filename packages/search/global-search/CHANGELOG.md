@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.3.0
+- [minor] Show more recent results [25d5dd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d5dd8)
+
 ## 4.2.0
 - [minor] Support for feedback button [0538c52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0538c52)
 
