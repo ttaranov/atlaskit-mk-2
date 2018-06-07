@@ -4,6 +4,7 @@ import {
   imageFileId,
   wideImageFileId,
   videoFileId,
+  videoHorizontalFileId,
   docFileId,
   defaultCollectionName,
   unknownFileId,
@@ -43,6 +44,12 @@ const videoIdentifier: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const videoHorizontalFileItem: MediaViewerItem = {
+  type: 'file',
+  id: videoHorizontalFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
 const unsupportedIdentifier: MediaViewerItem = {
   type: 'file',
   id: unknownFileId.id,
@@ -71,6 +78,7 @@ export default class Example extends React.Component<{}, State> {
             dataSource={{
               list: [
                 videoIdentifier,
+                videoHorizontalFileItem,
                 imageIdentifier,
                 wideImageIdentifier,
                 docIdentifier,

@@ -6,6 +6,7 @@ import { EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ErrorReporter from '../utils/error-reporter';
 import { name, version } from '../version';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
+import { PortalProviderAPI } from '../ui/PortalProvider';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -114,15 +115,25 @@ export function createSchema(editorConfig: EditorConfig) {
   return new Schema({ nodes, marks });
 }
 
-export function createPMPlugins(
-  editorConfig: EditorConfig,
-  schema: Schema,
-  props: EditorProps,
-  dispatch: Dispatch,
-  eventDispatcher: EventDispatcher,
-  providerFactory: ProviderFactory,
-  errorReporter: ErrorReporter,
-): Plugin[] {
+export function createPMPlugins({
+  editorConfig,
+  schema,
+  props,
+  dispatch,
+  eventDispatcher,
+  providerFactory,
+  errorReporter,
+  portalProviderAPI,
+}: {
+  editorConfig: EditorConfig;
+  schema: Schema;
+  props: EditorProps;
+  dispatch: Dispatch;
+  eventDispatcher: EventDispatcher;
+  providerFactory: ProviderFactory;
+  errorReporter: ErrorReporter;
+  portalProviderAPI: PortalProviderAPI;
+}): Plugin[] {
   return editorConfig.pmPlugins
     .sort(sortByRank)
     .map(({ plugin }) =>
@@ -133,6 +144,7 @@ export function createPMPlugins(
         providerFactory,
         errorReporter,
         eventDispatcher,
+        portalProviderAPI,
       }),
     )
     .filter(plugin => !!plugin) as Plugin[];

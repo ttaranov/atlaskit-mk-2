@@ -34,6 +34,7 @@ exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
 }
 
 .c0:hover {
+  -webkit-text-decoration: none;
   text-decoration: none;
 }
 
@@ -67,6 +68,7 @@ exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] =
 }
 
 .c0:hover {
+  -webkit-text-decoration: none;
   text-decoration: none;
 }
 

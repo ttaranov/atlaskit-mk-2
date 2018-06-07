@@ -1,5 +1,26 @@
 # @atlaskit/task-decision
 
+## 7.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/renderer@18.0.0
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+  - @atlaskit/util-service-support@2.0.8
+  - @atlaskit/analytics@3.0.2
+  - @atlaskit/avatar@11.0.0
+
+## 6.0.9
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/util-data-test@9.1.9
+  - @atlaskit/renderer@17.0.9
+  - @atlaskit/editor-common@10.1.9
+
 ## 6.0.8
 - [patch]  [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)
 - [none] Updated dependencies [f87724e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f87724e)

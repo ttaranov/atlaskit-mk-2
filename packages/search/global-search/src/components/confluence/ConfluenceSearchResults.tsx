@@ -106,10 +106,10 @@ export default function searchResults(props: Props) {
   return [
     renderObjectsGroup(
       'Pages, blogs and attachments',
-      take(objectResults, 5),
+      take(objectResults, 8),
       query,
     ),
-    renderSpacesGroup('Spaces', take(spaceResults, 5), query),
+    renderSpacesGroup('Spaces', take(spaceResults, 3), query),
     renderPeopleGroup('People', take(peopleResults, 3), query),
   ];
 }

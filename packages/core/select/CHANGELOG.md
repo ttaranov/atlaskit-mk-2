@@ -1,5 +1,28 @@
 # @atlaskit/select
 
+## 4.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/modal-dialog@5.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/checkbox@3.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/docs@4.0.1
+
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/checkbox@3.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
+## 3.2.0
+- [minor] Add named export "CompositeSelect" to the Atlaskit select package [9c34042](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c34042)
+
 ## 3.1.0
 - [minor] Added `spacing` prop, which allows for a compact mode that supports 32px trigger height for single-select, bumped react-select to beta.6 [59ab4a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ab4a6)
 - [minor] added `spacing` prop to support `compact` mode for single select.

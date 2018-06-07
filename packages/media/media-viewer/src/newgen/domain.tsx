@@ -23,3 +23,8 @@ export type Outcome<Data, Err> =
       status: 'FAILED';
       err: Err;
     };
+
+export type MediaViewerFeatureFlags = {
+  nextGen?: boolean;
+  customVideoPlayer?: boolean;
+};

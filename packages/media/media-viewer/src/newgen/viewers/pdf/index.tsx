@@ -11,6 +11,7 @@ export type Props = {
   context: Context;
   item: FileItem;
   collectionName?: string;
+  onClose?: () => void;
 };
 
 export type State = {
@@ -74,6 +75,7 @@ export class PDFViewer extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { onClose } = this.props;
     const { PDFComponent } = PDFViewer;
     const { doc } = this.state;
 
@@ -87,9 +89,7 @@ export class PDFViewer extends React.PureComponent<Props, State> {
       case 'SUCCESSFUL':
         return (
           <PDFWrapper>
-            <PDFComponent doc={doc.data}>
-              <div className="pdfViewer" />
-            </PDFComponent>
+            <PDFComponent doc={doc.data} onClose={onClose} />
           </PDFWrapper>
         );
       case 'FAILED':
