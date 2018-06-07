@@ -11804,7 +11804,7 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-scrolllock@^3.0.0:
+react-scrolllock@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-3.0.1.tgz#76955fef2de5bfba677166b36ce4eb28231b37a9"
   dependencies:
