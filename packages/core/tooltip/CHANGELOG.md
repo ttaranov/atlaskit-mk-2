@@ -1,5 +1,9 @@
 # @atlaskit/tooltip
 
+## 10.1.0
+- [minor] Remove warning HoC from tooltip, meaning base class is the default export again [c88ff8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c88ff8c)
+- [none] Updated dependencies [c88ff8c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c88ff8c)
+
 ## 10.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
