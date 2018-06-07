@@ -1,22 +1,21 @@
 import * as React from 'react';
-import { IconWrapper, TitleWrapper, OtherWrapper } from './styled';
+import { IconWrapper, OtherWrapper } from './styled';
 
 export interface IconAndTitleLayoutProps {
   icon?: React.ReactNode;
   title: React.ReactNode;
   right?: React.ReactNode;
-  isSelected?: boolean;
 }
 
 export class IconAndTitleLayout extends React.Component<
   IconAndTitleLayoutProps
 > {
   render() {
-    const { icon, title, isSelected, children } = this.props;
+    const { icon, title, children } = this.props;
     return (
       <>
         {icon && <IconWrapper>{icon}</IconWrapper>}
-        <TitleWrapper isSelected={isSelected}>{title}</TitleWrapper>
+        {title}
         {children && <OtherWrapper>{children}</OtherWrapper>}
       </>
     );

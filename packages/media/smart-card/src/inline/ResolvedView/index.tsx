@@ -3,7 +3,7 @@ import { Frame } from '../Frame';
 import Lozenge from '@atlaskit/lozenge';
 import { LozengeViewModel } from '../../block/CardView/ViewModel';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
-import { Icon } from './styled';
+import { Icon, Title } from './styled';
 
 export interface ResolvedViewProps {
   icon?: string;
@@ -43,8 +43,7 @@ export class ResolvedView extends React.Component<ResolvedViewProps> {
       <Frame isSelected={isSelected} onClick={onClick}>
         <IconAndTitleLayout
           icon={this.renderIcon()}
-          title={title}
-          isSelected={isSelected}
+          title={<Title isSelected={isSelected}>{title}</Title>}
         >
           {this.renderLozenge()}
         </IconAndTitleLayout>
