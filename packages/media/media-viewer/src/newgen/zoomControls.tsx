@@ -19,12 +19,7 @@ export interface ZoomControlsProps {
 
 const zoomValues = [20, 50, 100, 200, 500];
 
-export interface ZoomControlsState {}
-
-export class ZoomControls extends Component<
-  ZoomControlsProps,
-  ZoomControlsState
-> {
+export class ZoomControls extends Component<ZoomControlsProps, {}> {
   zoom = (direction: ZoomDirection) => () => {
     const { onChange } = this.props;
     const newZoom = this.getNewZoomValue(direction);
