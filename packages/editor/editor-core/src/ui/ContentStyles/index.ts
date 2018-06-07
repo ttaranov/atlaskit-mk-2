@@ -13,9 +13,9 @@ import {
 } from '../../styles';
 import {
   akGridSizeUnitless,
+  akBorderRadius,
   akColorN20,
   akColorN40,
-  akBorderRadius,
   akColorN300,
   akColorB200,
   akColorN90,
@@ -423,6 +423,19 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   ${gapCursorStyles};
   ${tableStyles};
+
+  /**
+   * Panel
+   */
+  .panelView-content-wrap {
+    min-height: 42px;
+    margin: ${akGridSizeUnitless / 2}px 0;
+    padding: 1px 0;
+
+    & > .panel-content-dom {
+      padding: ${akGridSizeUnitless}px;
+    }
+  }
 `;
 
 export default ContentStyles;

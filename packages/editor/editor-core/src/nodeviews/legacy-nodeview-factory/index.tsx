@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ComponentClass, StatelessComponent } from 'react';
-import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { EventDispatcher } from '../../event-dispatcher';
+import { PortalProviderAPI } from '../../ui/PortalProvider';
 import ReactPMNode from './ui/prosemirror-node';
-import { EventDispatcher } from '../event-dispatcher';
 import connect from './connect';
 
 type getPosHandler = () => number;
@@ -26,11 +26,13 @@ class NodeViewElem implements NodeView {
   private providerFactory: ProviderFactory;
   private reactNodeViewComponents: ReactNodeViewComponents;
   private eventDispatcher: EventDispatcher;
+  private portalProviderAPI: PortalProviderAPI;
 
   constructor(
     node: PMNode,
     view: EditorView,
     getPos: getPosHandler,
+    portalProviderAPI: PortalProviderAPI,
     providerFactory: ProviderFactory,
     reactNodeViewComponents: ReactNodeViewComponents,
   ) {
@@ -42,6 +44,7 @@ class NodeViewElem implements NodeView {
 
     this.domRef = createTemporaryContainer(node);
     this.eventDispatcher = new EventDispatcher();
+    this.portalProviderAPI = portalProviderAPI;
 
     this.setDomAttrs(node);
     this.renderReactComponent(node);
@@ -79,7 +82,7 @@ class NodeViewElem implements NodeView {
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.domRef!);
+    this.portalProviderAPI.destroy(this.domRef!);
     this.eventDispatcher.destroy();
     this.domRef = undefined;
   }
@@ -103,7 +106,7 @@ class NodeViewElem implements NodeView {
 
     const ConnectedReactPMNode = connect(ReactPMNode, eventDispatcher);
 
-    ReactDOM.render(
+    this.portalProviderAPI.render(
       <ConnectedReactPMNode
         node={node}
         getPos={getPos}
@@ -117,6 +120,7 @@ class NodeViewElem implements NodeView {
 }
 
 export default function nodeViewFactory(
+  portalProviderAPI: PortalProviderAPI,
   providerFactory: ProviderFactory,
   reactNodeViewComponents: ReactNodeViewComponents,
 ) {
@@ -125,6 +129,7 @@ export default function nodeViewFactory(
       node,
       view,
       getPos,
+      portalProviderAPI,
       providerFactory,
       reactNodeViewComponents,
     );

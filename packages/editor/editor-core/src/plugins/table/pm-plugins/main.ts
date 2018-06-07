@@ -48,6 +48,7 @@ import {
 
 import { TableLayout } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../../../event-dispatcher';
+import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
 
@@ -328,6 +329,7 @@ export const stateKey = new PluginKey('tablePlugin');
 
 export const createPlugin = (
   dispatch: Dispatch,
+  portalProviderAPI: PortalProviderAPI,
   eventDispatcher: EventDispatcher,
   pluginConfig: PluginConfig,
 ) =>
@@ -372,6 +374,7 @@ export const createPlugin = (
             view,
             allowColumnResizing,
             eventDispatcher,
+            portalProviderAPI,
             getPos,
           });
         },
