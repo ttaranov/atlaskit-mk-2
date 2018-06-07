@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.2.0
+- [minor] Updated dependencies [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
+  - @atlaskit/editor-markdown-transformer@1.1.0
+
 ## 73.1.4
 - [patch] Updated dependencies [732d2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/732d2f5)
   - @atlaskit/media-card@29.0.1

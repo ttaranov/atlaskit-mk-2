@@ -1,5 +1,10 @@
 # @atlaskit/editor-markdown-transformer
 
+## 1.1.0
+- [minor] Adds support for images [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
+- [none] Updated dependencies [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
+  - @atlaskit/editor-core@73.2.0
+
 ## 1.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
