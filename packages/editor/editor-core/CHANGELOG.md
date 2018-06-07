@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.1
+- [patch] Convert special/smart subtitution characters back to the plain-text ascii counterparts when formatted in inline-code (ED-4635) [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)
+- [none] Updated dependencies [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)
+
 ## 73.3.0
 - [minor] Pass context to node views [e3d2802](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d2802)
 - [none] Updated dependencies [e3d2802](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d2802)
