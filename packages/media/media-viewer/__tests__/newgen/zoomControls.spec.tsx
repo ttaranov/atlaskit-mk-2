@@ -48,6 +48,24 @@ describe('Zooming', () => {
       expect(onChange).lastCalledWith(200);
     });
 
+    it('should not allow zooming above upper limit', () => {
+      const { component, onChange } = setup({ zoom: 500 });
+      component
+        .find(Button)
+        .last()
+        .simulate('click');
+      expect(onChange).not.toBeCalled();
+    });
+
+    it('should not allow zooming below lower limit', () => {
+      const { component, onChange } = setup({ zoom: 20 });
+      component
+        .find(Button)
+        .first()
+        .simulate('click');
+      expect(onChange).not.toBeCalled();
+    });
+
     describe('zoom level indicator', () => {
       it('shows 100% zoom level', () => {
         const { component } = setup({ zoom: 100 });
