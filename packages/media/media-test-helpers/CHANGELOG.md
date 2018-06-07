@@ -1,5 +1,15 @@
 # @atlaskit/media-test-helpers
 
+## 14.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-store@4.0.0
+  - @atlaskit/media-core@19.0.0
+
+## 13.3.1
+- [patch] MSW-741 : handle unexpected media types without crashes [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+- [none] Updated dependencies [0353017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0353017)
+
 ## 13.3.0
 - [minor] Add new item to example items [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)
 - [none] Updated dependencies [602c46e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602c46e)

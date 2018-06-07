@@ -1,5 +1,11 @@
 # @atlaskit/input
 
+## 3.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/field-base@10.0.0
+  - @atlaskit/theme@4.0.0
+
 ## 2.0.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/field-base@9.0.3

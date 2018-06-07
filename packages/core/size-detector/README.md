@@ -1,16 +1,16 @@
-# Size detector
+# Size-detector
 
 This is a utility component that informs the child function of the available width and height.
-
-## Try it out
-
-Interact with a [live demo of the @atlaskit/size-detector component](https://atlaskit.atlassian.com).
 
 ## Installation
 
 ```sh
 yarn add @atlaskit/size-detector
 ```
+## Usage
+
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/size-detector).
+
 
 ## Acknowledgements
 

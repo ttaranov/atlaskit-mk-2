@@ -1,3 +1,5 @@
+import Logger from './helpers/logger';
+
 export type AnalyticsWebClient = {
   sendUIEvent: (event: any) => void;
   sendOperationalEvent: (event: any) => void;
@@ -7,7 +9,8 @@ export type AnalyticsWebClient = {
 
 export type ListenerProps = {
   children?: React.ReactNode;
-  client: AnalyticsWebClient;
+  client: Promise<AnalyticsWebClient>;
+  logger: Logger;
 };
 
 export type EventNextType = {

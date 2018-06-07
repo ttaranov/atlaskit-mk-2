@@ -6,6 +6,7 @@ import { browser } from '@atlaskit/editor-common';
 
 chai.use(chaiPlugin);
 
+// TODO: Flakey unskip in: https://product-fabric.atlassian.net/browse/ED-4579
 describe.skip('confluence tables transform', () => {
   const onAllBrowsersExceptiOSIt = !browser.ios ? it : it.skip;
 

@@ -42,7 +42,7 @@ export type ViewResolver = () => View;
 
 export type Reducer = (View, ViewKey) => View;
 
-export type NavAPIState = {|
+export type ViewStateState = {|
   activeView: ViewKey | null,
   data: View | null,
   isLoading: boolean,
@@ -51,7 +51,7 @@ export type NavAPIState = {|
 
 export type ComponentTypesMap = { [string]: ComponentType<any> };
 
-export type NavAPIOptions = {|
+export type ViewStateOptions = {|
   activeView?: ViewKey | null,
   reducers?: { [ViewKey]: Reducer[] },
   views?: { [ViewKey]: ViewResolver },

@@ -37,6 +37,8 @@ const createAnalyticsContexts = contexts => ({ children }) =>
 
 describe('AtlaskitListener', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
+  let clientPromise: Promise<AnalyticsWebClient>;
+  let loggerMock;
 
   beforeEach(() => {
     analyticsWebClientMock = {
@@ -45,11 +47,18 @@ describe('AtlaskitListener', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
+    clientPromise = Promise.resolve(analyticsWebClientMock);
+    loggerMock = {
+      debug: jest.fn(),
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+    };
   });
 
   it('should register an Analytics listener on the atlaskit channel', () => {
     const component = mount(
-      <AtlaskitListener client={analyticsWebClientMock}>
+      <AtlaskitListener client={clientPromise} logger={loggerMock}>
         <div />
       </AtlaskitListener>,
     );
@@ -66,7 +75,7 @@ describe('AtlaskitListener', () => {
       const AnalyticsContexts = createAnalyticsContexts(context);
 
       const component = mount(
-        <AtlaskitListener client={analyticsWebClientMock}>
+        <AtlaskitListener client={clientPromise} logger={loggerMock}>
           <AnalyticsContexts>
             <ButtonWithAnalytics onClick={spy} />
           </AnalyticsContexts>
@@ -74,7 +83,12 @@ describe('AtlaskitListener', () => {
       );
 
       component.find(ButtonWithAnalytics).simulate('click');
-      expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(clientPayload);
+
+      return clientPromise.then(client => {
+        expect(
+          (analyticsWebClientMock.sendUIEvent as any).mock.calls[0][0],
+        ).toMatchObject(clientPayload);
+      });
     },
     [
       {
@@ -339,6 +353,29 @@ describe('AtlaskitListener', () => {
           },
           source: 'navigation',
           tags: ['somethingInteresting', 'atlaskit'],
+        },
+      },
+      {
+        name: 'without event type',
+        eventPayload: {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          actionSubjectId: 'someComponentId',
+        },
+        context: [{ component: 'navigationNext', source: 'navigation' }],
+        clientPayload: {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          actionSubjectId: 'someComponentId',
+          attributes: {
+            sourceHierarchy: 'navigation',
+            packageHierarchy: undefined,
+            componentHierarchy: 'navigationNext',
+            packageName: undefined,
+            packageVersion: undefined,
+          },
+          source: 'navigation',
+          tags: ['atlaskit'],
         },
       },
     ],

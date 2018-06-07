@@ -15,19 +15,16 @@ BrowserTestCase(
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const dropdownMenu = '[aria-label="Open or close insert block dropdown"]';
-
     const bodiedExtensionItem = '.bodied-macro';
-
     const extensionOptions = '[aria-label="Extension options"]';
-
     const browser = await new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
     await browser.click(editorSelector);
-    await browser.type(editorSelector, enterArr);
     await browser.click(dropdownMenu);
     await browser.click(bodiedExtensionItem);
+    await browser.click(`${editorSelector} .extension-container`);
     await browser.type(editorSelector, enterArr);
     expect(await browser.isExisting(extensionOptions)).toBe(true);
     expect(await browser.isVisible(extensionOptions)).toBe(true);

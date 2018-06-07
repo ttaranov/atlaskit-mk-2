@@ -118,6 +118,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         target={anchorElement}
         fitHeight={350}
         fitWidth={350}
+        zIndex={500}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
         mountTo={popupsMountPoint}

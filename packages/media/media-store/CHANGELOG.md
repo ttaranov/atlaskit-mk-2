@@ -1,5 +1,16 @@
 # @atlaskit/media-store
 
+## 4.1.0
+- [minor] add failed status to MediaFileProcessingStatus [2e66dab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e66dab)
+
+- [none] Updated dependencies [2e66dab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e66dab)
+- [none] Updated dependencies [4494d91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4494d91)
+
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-test-helpers@14.0.0
+
 ## 3.1.1
 - [patch] uploadFile() no longer creates an empty file when uploading a file to avoid empty (ghost) files being created in collections when an upload is aborted [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
 - [none] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)

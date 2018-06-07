@@ -90,6 +90,8 @@ export class Collection extends React.Component<Props, State> {
       collectionName,
       pageSize,
     );
+    const collectionFileItemFilter = (item: MediaCollectionItem) =>
+      item.type === 'file';
     this.subscription = this.provider.observable().subscribe({
       next: collection => {
         if (isError(collection)) {
@@ -103,7 +105,7 @@ export class Collection extends React.Component<Props, State> {
           this.setState({
             items: {
               status: 'SUCCESSFUL',
-              data: collection.items,
+              data: collection.items.filter(collectionFileItemFilter),
             },
           });
           if (selectedItem && this.shouldLoadNext(selectedItem)) {
