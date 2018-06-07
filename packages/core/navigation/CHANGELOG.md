@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 32.0.2
+- [patch] Fixing onKeyDown callback on AkNavigationItem. [44137ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44137ed)
+- [patch] Updated dependencies [44137ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44137ed)
+  - @atlaskit/item@7.0.2
+
 ## 32.0.1
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
   - @atlaskit/tooltip@10.0.1
