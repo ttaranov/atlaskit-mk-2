@@ -46,10 +46,10 @@ export type Props = {
 };
 
 export type State = {
-  scale: number;
+  zoom: number;
 };
 
-const initialState: State = { scale: 1 };
+const initialState: State = { zoom: 100 };
 
 export class PDFViewer extends React.PureComponent<Props, State> {
   private el: HTMLDivElement;
@@ -66,9 +66,9 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     this.el = el;
   };
 
-  private handleZoom = scale => {
-    this.pdfViewer.currentScale = scale;
-    this.setState({ scale });
+  private handleZoom = zoom => {
+    this.pdfViewer.currentScale = zoom / 100;
+    this.setState({ zoom });
   };
 
   render() {
@@ -80,7 +80,7 @@ export class PDFViewer extends React.PureComponent<Props, State> {
             onClick={closeOnDirectClick(this.props.onClose)}
           />
         </PDFWrapper>
-        <ZoomControls zoomLevel={this.state.scale} onChange={this.handleZoom} />
+        <ZoomControls zoom={this.state.zoom} onChange={this.handleZoom} />
       </div>
     );
   }
