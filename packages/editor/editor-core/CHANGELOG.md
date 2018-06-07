@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 73.3.2
+- [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
+  - @atlaskit/media-card@29.0.2
+  - @atlaskit/renderer@18.0.2
+  - @atlaskit/editor-common@11.0.3
+
 ## 73.3.1
 - [patch] Convert special/smart subtitution characters back to the plain-text ascii counterparts when formatted in inline-code (ED-4635) [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)
 - [none] Updated dependencies [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)

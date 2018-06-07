@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 5.1.0
+- [minor] added the LinkView for inline cards in the resolving/errored state [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
+
 ## 5.0.0
 - [major] Renamed and refactored the resolved for inline cards [732d2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/732d2f5)
 
