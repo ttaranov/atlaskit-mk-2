@@ -2,7 +2,7 @@
 
 import { Appearance } from '@atlaskit/theme';
 import React, { PureComponent } from 'react';
-import Badge from './Badge';
+import Container from './Container';
 import Format from './Format';
 import * as theme from '../theme';
 
@@ -67,9 +67,9 @@ export default class extends PureComponent<Props> {
     return (
       <Appearance props={appearance} theme={theme}>
         {style => (
-          <Badge {...style}>
+          <Container {...style}>
             <Format max={max}>{value || children}</Format>
-          </Badge>
+          </Container>
         )}
       </Appearance>
     );

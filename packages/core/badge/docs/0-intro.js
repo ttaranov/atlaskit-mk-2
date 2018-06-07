@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
@@ -23,5 +24,9 @@ export default md`
     />
   )}
 
-  ${<Props props={require('!!extract-react-types-loader!../src/Badge')} />}
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/index')}
+    />
+  )}
 `;
