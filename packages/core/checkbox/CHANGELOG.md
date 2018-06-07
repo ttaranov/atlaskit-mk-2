@@ -1,5 +1,11 @@
 # @atlaskit/checkbox
 
+## 3.0.2
+- [patch] Fix for flow  [33f632f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33f632f)
+- [patch] Update onChange function to pass type for name and value [f3e768c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3e768c)
+- [none] Updated dependencies [33f632f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33f632f)
+- [none] Updated dependencies [f3e768c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3e768c)
+
 ## 3.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
