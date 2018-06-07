@@ -249,13 +249,13 @@ export default class TimePicker extends Component<Props, State> {
     // component using CreatableSelect.
     const SelectComponent = this.props.timeIsEditable
       ? CreatableSelect
-      : Select;
+      : this.props.Select;
 
     return (
       <div {...innerProps} ref={this.getContainerRef}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <this.props.Select
+        <SelectComponent
           autoFocus={autoFocus}
           components={{
             ClearIndicator,

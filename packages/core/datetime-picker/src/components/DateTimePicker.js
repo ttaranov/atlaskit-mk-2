@@ -154,6 +154,8 @@ export default class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     timeFormat: defaultTimeFormat,
     dateFormat: defaultDateFormat,
+    DatePicker,
+    TimePicker,
   };
 
   state = {
@@ -222,7 +224,6 @@ export default class DateTimePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
-      DatePicker,
       id,
       innerProps,
       isDisabled,
@@ -233,7 +234,6 @@ export default class DateTimePicker extends Component<Props, State> {
       timePickerSelectProps,
       times,
       timeFormat,
-      TimePicker,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
