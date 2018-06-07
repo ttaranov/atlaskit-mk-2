@@ -13,6 +13,16 @@ import {
   AnalyticsType,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_SOURCE,
+  DEFAULT_GAS_ATTRIBUTES,
+} from '../util/analytics';
 
 // Common properties that the quick-search Result component supports
 interface QuickSearchResult extends ComponentClass {
@@ -26,16 +36,47 @@ interface QuickSearchResult extends ComponentClass {
   contentType?: ResultContentType;
 }
 
+function createAndFireSearchResultSelectedEvent(createEvent, props): void {
+  const event = createEvent(); // created empty to initialise with context
+  event.update({
+    action: 'selected',
+    actionSubject: 'navigationItem',
+    actionSubjectId: 'searchResult',
+    eventType: 'track',
+    source: DEFAULT_GAS_SOURCE,
+    attributes: {
+      searchSessionId: event.context[0].searchSessionId,
+      resultType: props.type,
+      ...DEFAULT_GAS_ATTRIBUTES,
+    },
+  });
+  event.fire(DEFUALT_GAS_CHANNEL);
+}
+
+const searchResultsAnalyticsEvents = {
+  onClick: createAndFireSearchResultSelectedEvent,
+};
+
+const ObjectResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ObjectResult);
+const PersonResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(PersonResult);
+const ContainerResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ContainerResult);
+
 function getResultComponent(resultType: ResultType): ComponentClass {
   switch (resultType) {
     case ResultType.Object: {
-      return ObjectResult;
+      return ObjectResultWithAnalytics;
     }
     case ResultType.Person: {
-      return PersonResult;
+      return PersonResultWithAnalytics;
     }
     case ResultType.Container: {
-      return ContainerResult;
+      return ContainerResultWithAnalytics;
     }
     default: {
       // Make the TS compiler verify that all enums have been matched

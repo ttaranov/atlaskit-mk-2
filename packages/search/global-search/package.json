@@ -22,6 +22,8 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics": "^3.0.2",
+    "@atlaskit/analytics-gas-types": "^2.1.1",
+    "@atlaskit/analytics-next": "^2.1.6",
     "@atlaskit/avatar": "^11.0.0",
     "@atlaskit/button": "^8.0.0",
     "@atlaskit/icon": "^12.0.0",
