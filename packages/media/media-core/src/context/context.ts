@@ -7,10 +7,8 @@ import {
   MediaStore,
   uploadFile,
   UploadableFile,
-  UploadFileCallbacks,
   ContextConfig,
   MediaApiConfig,
-  UploadFileResult,
 } from '@atlaskit/media-store';
 
 import {
@@ -73,11 +71,7 @@ export interface Context {
   refreshCollection(collectionName: string, pageSize: number): void;
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-
-  uploadFile(
-    file: UploadableFile,
-    callbacks?: UploadFileCallbacks,
-  ): UploadFileResult;
+  uploadFile(file: UploadableFile): Observable<FileState>;
 
   readonly config: ContextConfig;
 }
@@ -111,7 +105,7 @@ class ContextImpl implements Context {
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
-
+    // TODO: check if the key exists within the temporary ids
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = this.createDownloadFileStream(
@@ -254,11 +248,49 @@ class ContextImpl implements Context {
     return linkService.addLinkItem(url, collectionName, metadata);
   }
 
-  uploadFile(
-    file: UploadableFile,
-    callbacks?: UploadFileCallbacks,
-  ): UploadFileResult {
-    return uploadFile(file, this.apiConfig, callbacks);
+  uploadFile(file: UploadableFile): Observable<FileState> {
+    let id: string;
+    const size = file.content instanceof Blob ? file.content.size : 0;
+    const tempFileId = new Date().getTime().toString(); // TODO: use uuid
+    const fileStream = Observable.create(
+      async (observer: Observer<FileState>) => {
+        try {
+          const name = file.name || '';
+          // TODO send local preview
+          const { deferredFileId } = uploadFile(file, this.apiConfig, {
+            onProgress: progress => {
+              observer.next({
+                id: tempFileId,
+                progress,
+                status: 'uploading',
+                name,
+                size,
+              });
+            },
+          });
+
+          id = await deferredFileId;
+          observer.next({
+            id,
+            progress: 1,
+            status: 'uploading',
+            name,
+            size,
+          });
+          observer.complete();
+        } catch (e) {
+          observer.error(e);
+        }
+      },
+    )
+      .concat(Observable.defer(() => this.createDownloadFileStream(id)))
+      .publishReplay(1);
+
+    this.fileItemCache.set(tempFileId, fileStream);
+    // Start hot observable
+    fileStream.connect();
+
+    return fileStream;
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {
