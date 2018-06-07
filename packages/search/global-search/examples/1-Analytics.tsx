@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
-import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 import styled from 'styled-components';
 
 import { AnalyticsListener } from '@atlaskit/analytics';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
 
 const Panel = styled.div`
   flex: 1;
