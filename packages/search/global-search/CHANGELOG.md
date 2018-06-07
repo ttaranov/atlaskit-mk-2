@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.2.0
+- [minor] Support for feedback button [0538c52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0538c52)
+
 ## 4.1.0
 - [minor] Minor UI tweaks. [800f2bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/800f2bb)
 
