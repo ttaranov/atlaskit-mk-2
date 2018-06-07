@@ -11,9 +11,15 @@ import {
 
 const gridSizeUnitless = gridSize();
 
-const colorRemoval = themed({ light: colors.R500, dark: colors.DN30 });
-const colorRemovalHover = themed({ light: colors.N700, dark: colors.DN30 });
-const backgroundColorRemoval = themed({ light: colors.R50, dark: colors.R100 });
+const colorRemoval = themed('appearance', {
+  removal: { light: colors.R500, dark: colors.DN30 },
+});
+const colorRemovalHover = themed('appearance', {
+  removalHover: { light: colors.N700, dark: colors.DN30 },
+});
+const backgroundColorRemoval = themed('appearance', {
+  removallight: { light: colors.R50, dark: colors.R100 },
+});
 
 export const Span = styled.span`
   &:focus {

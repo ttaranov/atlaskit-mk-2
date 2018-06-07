@@ -12,7 +12,7 @@ type Props = {
   isRounded?: boolean,
   markedForRemoval: boolean,
   onFocusChange: (focused: boolean) => mixed,
-  color: TagColor,
+  appearance: TagColor,
 };
 
 export default class Chrome extends PureComponent<Props> {
@@ -44,7 +44,7 @@ export default class Chrome extends PureComponent<Props> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      color,
+      appearance,
     } = this.props;
 
     const props = {
@@ -60,7 +60,7 @@ export default class Chrome extends PureComponent<Props> {
       onFocus: this.handleFocus,
       onKeyPress: this.handleKeyPress,
       tabIndex: -1,
-      color,
+      appearance,
       role: '',
     };
 
