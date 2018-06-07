@@ -92,10 +92,10 @@ export default function searchResults(props: Props) {
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
-        take(recentlyViewedPages, 5),
+        take(recentlyViewedPages, 8),
         query,
       ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 5), query),
+      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
     ];
   }
 

@@ -205,7 +205,7 @@ describe('CrossProductSearchClient', () => {
 
     expect(body.query).toEqual('query');
     expect(body.cloudId).toEqual('123');
-    expect(body.limit).toEqual(5);
+    expect(body.limit).toEqual(10);
     expect(body.scopes).toEqual(
       expect.arrayContaining(['jira.issue', 'confluence.page,blogpost']),
     );
