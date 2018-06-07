@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.4
+- [patch] SDK-5812 Fix unsupported content after editing media only doc [25baf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25baf0a)
+- [none] Updated dependencies [25baf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25baf0a)
+
 ## 73.3.3
 - [patch] ED-4758, fix for confluence issue media single toolbar not visible for saved media. [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
 - [patch] Updated dependencies [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
