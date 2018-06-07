@@ -11,22 +11,30 @@ import {
 import { HighlightGroup, Highlight } from './styled';
 
 type State = {
-  active: boolean,
+  spotlight: 'target-one' | 'target-two' | 'off',
 };
 
 const Base = props => <div style={{ paddingBottom: 40 }} {...props} />;
+
+const Paragraph = ({ position }: { position: number }) => (
+  <React.Fragment>
+    <h3>{position}</h3>
+    <Lorem seed={position} count={1} style={{ marginBottom: 20 }} />
+  </React.Fragment>
+);
 
 export default class SpotlightAutoscrollExample extends Component<*, State> {
   constructor() {
     super();
     this.state = {
-      active: false,
+      spotlight: 'off',
     };
   }
-  show = () => this.setState({ active: true });
-  hide = () => this.setState({ active: false });
+  highlightOne = () => this.setState({ spotlight: 'target-one' });
+  highlightTwo = () => this.setState({ spotlight: 'target-two' });
+  close = () => this.setState({ spotlight: 'off' });
   render() {
-    const { active } = this.state;
+    const { spotlight } = this.state;
     return (
       <SpotlightManager component={Base}>
         <p>
@@ -36,13 +44,15 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
         </p>
         <p>Scroll down to see the target element.</p>
         <p style={{ marginBottom: '1em' }}>
-          <button onClick={this.show}>Show</button>
+          <button onClick={this.highlightOne}>Show</button>
         </p>
 
-        <Lorem count={10} style={{ marginBottom: 20 }} />
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
+          <Paragraph key={i} position={i} />
+        ))}
 
         <HighlightGroup>
-          <SpotlightTarget name="scroll-behaviour">
+          <SpotlightTarget name="target-one">
             <Highlight color="red">
               I&apos;m out of view{' '}
               <span role="img" aria-label="sad face">
@@ -50,31 +60,42 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
               </span>
             </Highlight>
           </SpotlightTarget>
+          <SpotlightTarget name="target-two">
+            <Highlight color="red">
+              I&apos;m also out of view{' '}
+              <span role="img" aria-label="sad face">
+                😞
+              </span>
+            </Highlight>
+          </SpotlightTarget>
         </HighlightGroup>
 
-        <Lorem count={10} style={{ marginTop: 20 }} />
+        {[11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(i => (
+          <Paragraph key={i} position={i} />
+        ))}
 
         <p style={{ marginBottom: '1em' }}>
-          <button onClick={this.show}>Show</button>
+          <button onClick={this.highlightTwo}>Show</button>
         </p>
 
-        {active && (
+        {spotlight !== 'off' && (
           <Spotlight
-            actions={[{ onClick: this.hide, text: 'Got it' }]}
+            actions={[
+              spotlight === 'target-one'
+                ? {
+                    onClick: this.highlightTwo,
+                    text: 'Next',
+                  }
+                : {
+                    onClick: this.highlightOne,
+                    text: 'Prev',
+                  },
+              { onClick: this.close, text: 'Got it' },
+            ]}
             dialogPlacement="bottom left"
             heading="Aww, yiss!"
-            key="scroll-behaviour"
-            target="scroll-behaviour"
-            targetReplacement={rect => (
-              <SpotlightPulse style={{ position: 'absolute', ...rect }}>
-                <Highlight color="green" style={{ width: rect.width }}>
-                  I&apos;m in view{' '}
-                  <span role="img" aria-label="happy face">
-                    😌
-                  </span>
-                </Highlight>
-              </SpotlightPulse>
-            )}
+            key={spotlight}
+            target={spotlight}
           >
             <Lorem count={1} />
           </Spotlight>
