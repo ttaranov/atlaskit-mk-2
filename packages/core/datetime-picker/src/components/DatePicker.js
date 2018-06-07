@@ -270,6 +270,7 @@ export default class DatePicker extends Component<Props, State> {
       selectProps,
       dateFormat,
       placeholder,
+      Select: SelectComponent,
     } = this.props;
     const { isOpen, value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -314,7 +315,7 @@ export default class DatePicker extends Component<Props, State> {
       >
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <this.props.Select
+        <SelectComponent
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
