@@ -34,9 +34,15 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({ props: { allowTables }, eventDispatcher, dispatch }) => {
+        plugin: ({
+          props: { allowTables },
+          eventDispatcher,
+          dispatch,
+          portalProviderAPI,
+        }) => {
           return createPlugin(
             dispatch,
+            portalProviderAPI,
             eventDispatcher,
             pluginConfig(allowTables),
           );

@@ -1,5 +1,57 @@
 # @atlaskit/editor-core
 
+## 73.3.5
+- [patch] ED-4722, fix for mention and emoji floating toolbar hidden behind table floating toolbar. [a13c9f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a13c9f5)
+- [patch] Updated dependencies [a13c9f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a13c9f5)
+
+## 73.3.4
+- [patch] SDK-5812 Fix unsupported content after editing media only doc [25baf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25baf0a)
+- [none] Updated dependencies [25baf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25baf0a)
+
+## 73.3.3
+- [patch] ED-4758, fix for confluence issue media single toolbar not visible for saved media. [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
+- [patch] Updated dependencies [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
+
+## 73.3.2
+- [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
+  - @atlaskit/media-card@29.0.2
+  - @atlaskit/renderer@18.0.2
+  - @atlaskit/editor-common@11.0.3
+
+## 73.3.1
+- [patch] Convert special/smart subtitution characters back to the plain-text ascii counterparts when formatted in inline-code (ED-4635) [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)
+- [none] Updated dependencies [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)
+
+## 73.3.0
+- [minor] Pass context to node views [e3d2802](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d2802)
+- [none] Updated dependencies [e3d2802](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d2802)
+
+## 73.2.0
+- [minor] Updated dependencies [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
+  - @atlaskit/editor-markdown-transformer@1.1.0
+
+## 73.1.4
+- [patch] Updated dependencies [732d2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/732d2f5)
+  - @atlaskit/media-card@29.0.1
+  - @atlaskit/renderer@18.0.1
+  - @atlaskit/editor-common@11.0.2
+
+## 73.1.3
+- [patch] ED-4799, fixing vertical alignment of separators in toolbar. [4146e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4146e4f)
+- [patch] Updated dependencies [4146e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4146e4f)
+
+## 73.1.2
+- [patch] ED-4190, fix for scroll of editor to top when adding date or clicking date. [90ece93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ece93)
+- [patch] Updated dependencies [90ece93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ece93)
+
+## 73.1.1
+- [patch] ED-4742: fix removing rows inside bodied ext [4ad8738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ad8738)
+- [none] Updated dependencies [4ad8738](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ad8738)
+
+## 73.1.0
+- [minor] Add support for indent/outdenting text inside a code-block via the `Mod-[` / `Mod-]` shortcuts. `Enter` will now persist the indentation of the previous line, and `Tab` will insert the appropriate indentation. This can be enabled via the `enableKeybindingsForIDE` option that can now be passed through to `allowCodeBlocks` option. This is hidden behind an option only until we are confident with the implementation, at which point it will likely become default behaviour. [ED-4638] [c02281b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02281b)
+- [none] Updated dependencies [c02281b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c02281b)
+
 ## 73.0.1
 - [patch] ED-4716, smart replacements should not work inside mention query. [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)
 - [patch] Updated dependencies [a5c5a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5c5a5e)

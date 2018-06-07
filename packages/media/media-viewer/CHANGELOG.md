@@ -1,5 +1,11 @@
 # @atlaskit/media-viewer
 
+## 15.0.4
+- [patch] More consistent zoom experience [905f1b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/905f1b0)
+
+## 15.0.3
+- [patch] MSW-700 : Clicking on the background of the MVNG ImageViewer should close it [a57a058](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a57a058)
+
 ## 15.0.2
 - [patch] Better image resizing in MediaViewer NG [29f6f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29f6f90)
 

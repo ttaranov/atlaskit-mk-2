@@ -11,7 +11,15 @@ const basePlugin: EditorPlugin = {
       { rank: 9800, plugin: () => reactNodeView },
       { rank: 9900, plugin: () => history() },
       // should be last :(
-      { rank: 10000, plugin: () => keymap(baseKeymap) },
+      {
+        rank: 10000,
+        plugin: () =>
+          keymap({
+            ...baseKeymap,
+            'Mod-[': () => true,
+            'Mod-]': () => true,
+          }),
+      },
     ];
   },
   nodes() {

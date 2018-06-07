@@ -38,9 +38,13 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
-        plugin: ({ schema, props, dispatch, providerFactory }) => {
+        plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {
           const { delegateAnalyticsEvent } = props;
-          return createPlugin({ delegateAnalyticsEvent }, providerFactory);
+          return createPlugin(
+            portalProviderAPI,
+            { delegateAnalyticsEvent },
+            providerFactory,
+          );
         },
       },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },

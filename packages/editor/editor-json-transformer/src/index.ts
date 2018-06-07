@@ -1,6 +1,7 @@
 import {
   codeBlockToJSON,
   defaultSchema,
+  linkToJSON,
   mediaToJSON,
   mentionToJSON,
   tableToJSON,
@@ -8,7 +9,7 @@ import {
   toJSONTableHeader,
   Transformer,
 } from '@atlaskit/editor-common';
-import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode, Mark as PMMark } from 'prosemirror-model';
 
 export type JSONNode = {
   type: string;
@@ -31,6 +32,7 @@ const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
 const isTable = (node: PMNode) => node.type.name === 'table';
 const isTableCell = (node: PMNode) => node.type.name === 'tableCell';
 const isTableHeader = (node: PMNode) => node.type.name === 'tableHeader';
+const isLinkMark = (mark: PMMark) => mark.type.name === 'link';
 
 const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
@@ -66,7 +68,12 @@ const toJSON = (node: PMNode): JSONNode => {
   }
 
   if (node.marks.length) {
-    obj.marks = node.marks.map(n => n.toJSON());
+    obj.marks = node.marks.map(n => {
+      if (isLinkMark(n)) {
+        return linkToJSON(n);
+      }
+      return n.toJSON();
+    });
   }
   return obj;
 };

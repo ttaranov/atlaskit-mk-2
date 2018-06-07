@@ -1,5 +1,10 @@
 # @atlaskit/editor-json-transformer
 
+## 3.0.10
+- [patch] Strip empty optional attributes from the link mark in editor-json-transformer [c3b3100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b3100)
+- [none] Updated dependencies [c3b3100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b3100)
+  - @atlaskit/editor-common@11.0.1
+
 ## 3.0.9
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/util-data-test@9.1.10

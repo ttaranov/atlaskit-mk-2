@@ -1,5 +1,30 @@
 # @atlaskit/navigation
 
+## 32.0.2
+- [patch] Fixing onKeyDown callback on AkNavigationItem. [44137ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44137ed)
+- [patch] Updated dependencies [44137ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44137ed)
+  - @atlaskit/item@7.0.2
+
+## 32.0.1
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/tooltip@10.0.1
+  - @atlaskit/page@7.0.1
+  - @atlaskit/item@7.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/toggle@4.0.1
+  - @atlaskit/logo@8.0.1
+  - @atlaskit/field-text@6.0.1
+  - @atlaskit/checkbox@3.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/blanket@6.0.1
+  - @atlaskit/docs@4.0.1
+  - @atlaskit/size-detector@4.0.1
+  - @atlaskit/polyfills@2.0.3
+  - @atlaskit/analytics@3.0.3
+  - @atlaskit/dropdown-menu@5.0.1
+  - @atlaskit/avatar@11.0.1
+
 ## 32.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

@@ -10,13 +10,12 @@ import {
   a as link,
   p,
   h1,
+  emoji,
   code_block,
   hardBreak,
   mentionQuery,
 } from '@atlaskit/editor-test-helpers';
 
-import codeBlockPlugin from '../../../src/plugins/code-block';
-import mentionsPlugin from '../../../src/plugins/mentions';
 import {
   strongRegex1,
   strongRegex2,
@@ -26,6 +25,7 @@ import {
   codeRegex,
 } from '../../../src/plugins/text-formatting/pm-plugins/input-rule';
 import { EditorView } from 'prosemirror-view';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 const autoFormatPatterns = [
   {
@@ -51,11 +51,17 @@ describe('text-formatting input rules', () => {
   const editor = (doc: any, disableCode = false) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin, mentionsPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
+        allowMentions: true,
+        allowCodeBlocks: true,
         textFormatting: { disableCode },
+        emojiProvider: new Promise(() => {}),
+        mentionProvider: new Promise(() => {}),
       },
+      providerFactory: ProviderFactory.create({
+        emojiProvider: new Promise(() => {}),
+      }),
     });
 
   beforeEach(() => {
@@ -347,6 +353,18 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(p('hey! ', code('hello, @helga there'), '?')),
+      );
+    });
+
+    it('should convert emoji to plain text', () => {
+      const emojiNode = emoji({ shortName: ':smile:', text: '🙂' })();
+      const { editorView, sel } = editor(
+        doc(p('hey! `', emojiNode, ' there{<>}')),
+      );
+      insertText(editorView, '`', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('hey! ', code('🙂 there'))),
       );
     });
 

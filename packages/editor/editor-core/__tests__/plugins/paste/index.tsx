@@ -35,7 +35,7 @@ describe('paste plugins', () => {
       doc,
       editorPlugins: [
         mediaPlugin({ allowMediaSingle: true }),
-        codeBlockPlugin,
+        codeBlockPlugin(),
         extensionPlugin,
         tasksAndDecisionsPlugin,
         tablesPlugin,
@@ -45,7 +45,7 @@ describe('paste plugins', () => {
   const messageEditor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [mediaPlugin(), codeBlockPlugin],
+      editorPlugins: [mediaPlugin(), codeBlockPlugin()],
       editorProps: { appearance: 'message' },
     });
 

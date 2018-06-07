@@ -1,5 +1,14 @@
 # @atlaskit/global-search
 
+## 4.3.0
+- [minor] Show more recent results [25d5dd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d5dd8)
+
+## 4.2.0
+- [minor] Support for feedback button [0538c52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0538c52)
+
+## 4.1.0
+- [minor] Minor UI tweaks. [800f2bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/800f2bb)
+
 ## 4.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

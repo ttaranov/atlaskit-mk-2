@@ -6,6 +6,6 @@ export {
   CardViewProps as BlockCardViewProps,
 } from './block/CardView';
 export {
-  CardView as InlineCardView,
-  CardViewProps as InlineCardViewProps,
-} from './inline/CardView';
+  ResolvedView as InlineResolvedView,
+  ResolvedViewProps as InlineResolvedViewProps,
+} from './inline/ResolvedView';

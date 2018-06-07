@@ -1,19 +1,20 @@
+import { Fragment, Node, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import {
   MentionProvider,
   MentionDescription,
   isSpecialMention,
 } from '@atlaskit/mention';
-import { Fragment, Node, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   isMarkTypeAllowedInCurrentSelection,
   isChromeWithSelectionBug,
 } from '../../../utils';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../../analytics';
 import mentionNodeView from '../nodeviews/mention';
-import { nodeViewFactory } from '../../../nodeviews';
+import { ReactNodeView } from '../../../nodeviews';
+import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export const mentionPluginKey: PluginKey = new PluginKey('mentionPlugin');
 
@@ -479,7 +480,10 @@ export class MentionsState {
   }
 }
 
-export function createPlugin(providerFactory: ProviderFactory) {
+export function createPlugin(
+  portalProviderAPI: PortalProviderAPI,
+  providerFactory: ProviderFactory,
+) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -493,7 +497,11 @@ export function createPlugin(providerFactory: ProviderFactory) {
     },
     props: {
       nodeViews: {
-        mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
+        mention: ReactNodeView.fromComponent(
+          mentionNodeView,
+          portalProviderAPI,
+          { providerFactory },
+        ),
       },
       handleDOMEvents: {
         focus(view: EditorView, event) {

@@ -1,5 +1,22 @@
 # @atlaskit/navigation-next
 
+## 0.2.1
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/tooltip@10.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/toggle@4.0.1
+  - @atlaskit/logo@8.0.1
+  - @atlaskit/field-base@10.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/lozenge@5.0.1
+  - @atlaskit/badge@8.0.1
+  - @atlaskit/docs@4.0.1
+  - @atlaskit/dropdown-menu@5.0.1
+  - @atlaskit/avatar@11.0.1
+
+## 0.2.0
+- [minor] rename NavAPI to ViewState and export a RootViewSubscriber and a ContainerViewSubscriber instead of NavAPISubscriber. we now have independent view state managers for root and container views. [41f5218](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41f5218)
+
 ## 0.1.3
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/tooltip@10.0.0
