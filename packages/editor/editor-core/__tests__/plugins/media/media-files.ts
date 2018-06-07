@@ -346,7 +346,7 @@ describe('media-files', () => {
         });
 
         describe('when there is an existing media group nearby', () => {
-          it('prepand media to the media group after parent', () => {
+          it('prepend media to the media group after parent', () => {
             const { editorView } = editor(
               doc(
                 mediaGroup(
@@ -434,7 +434,7 @@ describe('media-files', () => {
           editorView.destroy();
         });
 
-        it('prepends to exisiting media group after parent', () => {
+        it('prepends to existing media group after parent', () => {
           const { editorView } = editor(
             doc(
               p('te{<}xt{>}'),
@@ -512,7 +512,7 @@ describe('media-files', () => {
       });
 
       describe('when selection is a media node', () => {
-        it('prepends to the existsing media group', () => {
+        it('prepends to the existing media group', () => {
           const { editorView } = editor(
             doc(
               mediaGroup(
@@ -551,6 +551,48 @@ describe('media-files', () => {
                 })(),
               ),
               p('text'),
+            ),
+          );
+          editorView.destroy();
+        });
+
+        it('prepends to the existing media group - w/o any following paragraph', () => {
+          const { editorView } = editor(
+            doc(
+              mediaGroup(
+                media({
+                  id: temporaryFileId,
+                  __key: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+              ),
+            ),
+          );
+          setNodeSelection(editorView, 1);
+
+          insertMediaGroupNode(
+            editorView,
+            [{ id: 'new one', status: 'uploading' }],
+            testCollectionName,
+          );
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              mediaGroup(
+                media({
+                  id: 'new one',
+                  __key: 'new one',
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+                media({
+                  id: temporaryFileId,
+                  __key: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+              ),
             ),
           );
           editorView.destroy();
@@ -600,7 +642,7 @@ describe('media-files', () => {
       });
 
       describe('when selection is a non media block node', () => {
-        describe('when no exisiting media group', () => {
+        describe('when no existing media group', () => {
           it('append a media node under selected node', () => {
             const { editorView } = editor(doc(hr()));
             setNodeSelection(editorView, 0);
@@ -876,6 +918,7 @@ describe('media-files', () => {
       });
     });
   });
+
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView } = editor(doc(h1('text{<>}')));
 
