@@ -1,5 +1,9 @@
 # @atlaskit/checkbox
 
+## 3.0.3
+- [patch] ref prop on checkbox stateless component is now reference to class [05b4ffd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05b4ffd)
+- [none] Updated dependencies [05b4ffd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05b4ffd)
+
 ## 3.0.2
 - [patch] Fix for flow  [33f632f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33f632f)
 - [patch] Update onChange function to pass type for name and value [f3e768c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3e768c)
