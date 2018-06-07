@@ -34,6 +34,7 @@
     "@atlaskit/button": "^8.0.0",
     "@atlaskit/docs": "^4.0.0",
     "@atlaskit/field-text": "^6.0.0",
+    "@atlaskit/lozenge": "^5.0.1",
     "@atlaskit/theme": "^4.0.0",
     "@types/fetch-mock": "^5.12.1",
     "es6-promise": "^4.0.5",
