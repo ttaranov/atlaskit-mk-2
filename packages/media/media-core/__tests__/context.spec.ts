@@ -298,11 +298,13 @@ describe('Context', () => {
         },
       });
       const has = jest.fn();
+      const getOrInsert = jest.fn();
       (context as any).mediaStore = {
         getFile,
       };
       (context as any).fileStreamsCache = {
         has,
+        getOrInsert,
         set: jest.fn(),
         get: jest.fn(),
       };
@@ -310,9 +312,9 @@ describe('Context', () => {
         collectionName: 'my-collection',
         occurrenceKey: 'some-occurrenceKey',
       });
-
-      expect(getFile).lastCalledWith('1', { collection: 'my-collection' });
-      expect(has).toBeCalledWith('1-my-collection-some-occurrenceKey');
+      expect(getOrInsert.mock.calls[0][0]).toEqual(
+        '1-my-collection-some-occurrenceKey',
+      );
     });
   });
 
