@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "29.0.0",
+  "version": "29.0.1",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -35,7 +35,7 @@
     "@atlaskit/icon": "^12.0.0",
     "@atlaskit/lozenge": "^5.0.0",
     "@atlaskit/media-ui": "^3.0.0",
-    "@atlaskit/smart-card": "^4.0.0",
+    "@atlaskit/smart-card": "^5.0.0",
     "@atlaskit/spinner": "^6.0.0",
     "@atlaskit/tooltip": "^10.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
