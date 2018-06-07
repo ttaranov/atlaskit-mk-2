@@ -8,7 +8,7 @@ import {
   CloseButtonWrapper,
   hideControlsClassName,
 } from './styled';
-
+import { colors } from '@atlaskit/theme';
 export interface ContentProps {
   onClose?: () => void;
   children: ReactNode;
@@ -126,7 +126,10 @@ export class Content extends Component<ContentProps, ContentState> {
         onClick={this.onClick}
       >
         <CloseButtonWrapper className={hideControlsClassName}>
-          <Button onClick={onClose} iconBefore={<CrossIcon label="Close" />} />
+          <Button
+            onClick={onClose}
+            iconBefore={<CrossIcon primaryColor={colors.DN600} label="Close" />}
+          />
         </CloseButtonWrapper>
         {children}
       </ContentWrapper>

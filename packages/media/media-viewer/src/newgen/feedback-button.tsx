@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as jQuery from 'jquery';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import Button from '@atlaskit/button';
+import { colors } from '@atlaskit/theme';
 
 // The following function fetches the code to show a JIRA issue collector.
 // It inserts a script element into the document and then waits until
@@ -47,7 +48,9 @@ export class FeedbackButton extends React.Component<{}, {}> {
     return (
       <Button
         onClick={this.showFeedbackDialog}
-        iconBefore={<FeedbackIcon label="feedback" />}
+        iconBefore={
+          <FeedbackIcon primaryColor={colors.DN600} label="feedback" />
+        }
       />
     );
   }

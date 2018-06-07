@@ -14,6 +14,7 @@ import {
   akColorN400,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
+import { colors as themeColors } from '@atlaskit/theme';
 
 const overlayZindex = 999;
 
@@ -189,7 +190,7 @@ export const MetadataFileName = styled.div`
 `;
 
 export const MetadataSubText = styled.div`
-  color: ${akColorN400};
+  color: ${themeColors.DN300};
 `;
 
 export const MetadataIconWrapper = styled.div`

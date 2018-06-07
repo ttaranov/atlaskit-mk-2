@@ -19,7 +19,7 @@ import {
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
 import { constructAuthTokenUrl } from './util';
-
+import { colors } from '@atlaskit/theme';
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
@@ -134,7 +134,9 @@ export default class Header extends React.Component<Props, State> {
     return (
       <Button
         onClick={this.downloadItem(item.data)}
-        iconBefore={<DownloadIcon label="download" />}
+        iconBefore={
+          <DownloadIcon primaryColor={colors.DN600} label="download" />
+        }
       />
     );
   };
