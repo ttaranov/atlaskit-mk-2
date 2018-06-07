@@ -14,9 +14,11 @@
     "@atlaskit/build-utils": "^1.12.1",
     "adf-builder": "^3.2.0",
     "axios": "^0.17.1",
+    "babel-core": "^6.26.0",
     "bitbucket-build-status": "^1.0.3",
     "bolt-webpack-analyzer": "^0.0.1",
     "chalk": "^2.1.0",
+    "globby": "^6.1.0",
     "npm-run": "^4.1.2",
     "s3-cli": "^0.13.0",
     "spawndamnit": "^1.0.0"
