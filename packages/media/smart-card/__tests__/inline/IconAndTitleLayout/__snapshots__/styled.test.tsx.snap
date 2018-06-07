@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Title it should have selected styles 1`] = `
+.c0 {
+  font-size: 14px;
+  line-height: 1.1428571428571428;
+}
+
+.c0,
+.c0:hover,
+.c0:focus,
+.c0:active {
+  color: #5E6C84;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c0,
+.c0:hover,
+.c0:focus,
+.c0:active {
+  color: #0052CC;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<a
+  className="c0"
+/>
+`;
+
+exports[`Title it should not have selected styles 1`] = `
+.c0 {
+  font-size: 14px;
+  line-height: 1.1428571428571428;
+}
+
+.c0,
+.c0:hover,
+.c0:focus,
+.c0:active {
+  color: #0052CC;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<a
+  className="c0"
+/>
+`;

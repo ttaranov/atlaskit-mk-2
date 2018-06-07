@@ -3,7 +3,7 @@ export { code } from './code';
 export { strike } from './strike';
 export { strong } from './strong';
 export { underline } from './underline';
-export { link, LinkAttributes } from './link';
+export { link, LinkAttributes, toJSON as linkToJSON } from './link';
 export { emojiQuery } from './emoji-query';
 export { mentionQuery } from './mention-query';
 export { typeAheadQuery } from './type-ahead-query';

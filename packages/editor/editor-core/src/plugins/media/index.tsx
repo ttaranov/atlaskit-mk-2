@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { colors } from '@atlaskit/theme';
+import Objects24ImageIcon from '@atlaskit/icon/glyph/objects/24/image';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
 
 import { EditorPlugin } from '../../types';
-import { nodeViewFactory } from '../../nodeviews';
+import { legacyNodeViewFactory } from '../../nodeviews';
 import WithPluginState from '../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../width';
 
@@ -76,36 +78,45 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           eventDispatcher,
           providerFactory,
           errorReporter,
+          portalProviderAPI,
         }) =>
           createPlugin(
             schema,
             {
               providerFactory,
               nodeViews: {
-                mediaGroup: nodeViewFactory(providerFactory, {
-                  mediaGroup: ReactMediaGroupNode,
-                  media: ReactMediaNode,
-                }),
-                mediaSingle: nodeViewFactory(providerFactory, {
-                  mediaSingle: ({ view, node, ...props }) => (
-                    <WithPluginState
-                      editorView={view}
-                      eventDispatcher={eventDispatcher}
-                      plugins={{
-                        width: widthPluginKey,
-                      }}
-                      render={({ width }) => (
-                        <ReactMediaSingleNode
-                          view={view}
-                          node={node}
-                          width={width}
-                          {...props}
-                        />
-                      )}
-                    />
-                  ),
-                  media: ReactMediaNode,
-                }),
+                mediaGroup: legacyNodeViewFactory(
+                  portalProviderAPI,
+                  providerFactory,
+                  {
+                    mediaGroup: ReactMediaGroupNode,
+                    media: ReactMediaNode,
+                  },
+                ),
+                mediaSingle: legacyNodeViewFactory(
+                  portalProviderAPI,
+                  providerFactory,
+                  {
+                    mediaSingle: ({ view, node, ...props }) => (
+                      <WithPluginState
+                        editorView={view}
+                        eventDispatcher={eventDispatcher}
+                        plugins={{
+                          width: widthPluginKey,
+                        }}
+                        render={({ width }) => (
+                          <ReactMediaSingleNode
+                            view={view}
+                            node={node}
+                            width={width}
+                            {...props}
+                          />
+                        )}
+                      />
+                    ),
+                    media: ReactMediaNode,
+                  },
+                ),
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
@@ -161,6 +172,25 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
         isReducedSpacing={true}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Files and images',
+        icon: () => (
+          <Objects24ImageIcon
+            label="Files and images"
+            primaryColor={colors.Y300}
+          />
+        ),
+        action(insert, state) {
+          const pluginState = pluginKey.getState(state);
+          pluginState.showMediaPicker();
+          return insert();
+        },
+      },
+    ],
   },
 });
 

@@ -4,11 +4,14 @@ import { Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ErrorReporter from '../utils/error-reporter';
-import { NodeConfig, MarkConfig } from './editor-config';
-import { EditorProps, EditorAppearance } from './editor-props';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 import EditorActions from '../actions';
 import { ToolbarSize } from '../ui/Toolbar';
+import { QuickInsertItem } from '../plugins/quick-insert/types';
+import { TypeAheadHandler } from '../plugins/type-ahead/types';
+import { PortalProviderAPI } from '../ui/PortalProvider';
+import { NodeConfig, MarkConfig } from './editor-config';
+import { EditorProps, EditorAppearance } from './editor-props';
 
 export type PMPluginFactory = (
   params: {
@@ -18,6 +21,7 @@ export type PMPluginFactory = (
     eventDispatcher: EventDispatcher;
     providerFactory: ProviderFactory;
     errorReporter: ErrorReporter;
+    portalProviderAPI: PortalProviderAPI;
   },
 ) => Plugin | undefined;
 
@@ -46,6 +50,12 @@ export type ToolbarUIComponentFactory = (
   params: ToolbarUiComponentFactoryParams,
 ) => React.ReactElement<any> | null;
 
+export type PluginsOptions = {
+  [pluginName: string]: any;
+  quickInsert?: Array<QuickInsertItem>;
+  typeAhead?: TypeAheadHandler;
+};
+
 export interface EditorPlugin {
   /**
    * Name of a plugin, that other plugins can use to provide options to it.
@@ -55,7 +65,7 @@ export interface EditorPlugin {
   /**
    * Options that will be passed to a plugin with a corresponding name if it exists and enabled.
    */
-  pluginsOptions?: { [pluginName: string]: any };
+  pluginsOptions?: PluginsOptions;
 
   /**
    * List of ProseMirror-plugins. This is where we define which plugins will be added to EditorView (main-plugin, keybindings, input-rules, etc.).

@@ -44,14 +44,16 @@ function createFixture(fetchImageBlobCancelableResponse, cancel?) {
     cancel: cancel || jest.fn(),
   });
   const context = createContext(blobService);
+  const onClose = jest.fn();
   const el = mount(
     <ImageViewer
       context={context}
       item={imageItem}
       collectionName={collectionName}
+      onClose={onClose}
     />,
   );
-  return { blobService, context, el };
+  return { blobService, context, el, onClose };
 }
 
 async function awaitError(response, expectedMessage) {
@@ -174,5 +176,15 @@ describe('ImageViewer', () => {
     el.update();
 
     expect(context.getBlobService).toHaveBeenCalledWith(collectionName);
+  });
+
+  it('MSW-700: clicking on background of ImageViewer does not close it', async () => {
+    const response = Promise.resolve(new Blob());
+    const { el, onClose } = createFixture(response);
+
+    await response;
+    el.simulate('click');
+
+    expect(onClose).toHaveBeenCalled();
   });
 });

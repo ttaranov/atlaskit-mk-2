@@ -2,7 +2,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { AtlassianLogo } from '../src/';
+import { AtlassianLogo } from '../src';
 
 describe('Logo component', () => {
   it('should render an svg', () => {

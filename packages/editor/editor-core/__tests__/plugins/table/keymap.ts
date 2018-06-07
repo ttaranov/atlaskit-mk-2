@@ -53,7 +53,7 @@ describe('table keymap', () => {
         listsPlugin,
         panelPlugin,
         mediaPlugin({ allowMediaSingle: true }),
-        codeBlockPlugin,
+        codeBlockPlugin(),
         tasksAndDecisionsPlugin,
         extensionPlugin,
       ],

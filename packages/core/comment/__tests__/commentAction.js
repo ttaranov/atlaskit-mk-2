@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 
-import { CommentAction } from '../src/';
+import { CommentAction } from '../src';
 
 describe('@atlaskit comments', () => {
   describe('CommentAction', () => {

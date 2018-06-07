@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Banner from '../src';
 import {
@@ -17,6 +18,7 @@ import {
 describe('banner', () => {
   it('basic sanity check', () =>
     expect(shallow(<Banner />)).not.toBe(undefined));
+
   describe('props', () => {
     describe('appearance prop', () => {
       it('should default to warning appearance', () =>
@@ -29,10 +31,12 @@ describe('banner', () => {
         expect(textColor(props)).toBe(testErrorTextColor);
       });
     });
+
     it('should render children prop', () => {
       const wrapper = mount(<Banner>Testing!</Banner>);
       expect(wrapper.find(Text).text()).toBe('Testing!');
     });
+
     it('should render icon prop', () => {
       const wrapper = shallow(
         <Banner
@@ -41,6 +45,7 @@ describe('banner', () => {
       );
       expect(wrapper.find(WarningIcon).exists()).toBe(true);
     });
+
     describe('isOpen prop', () => {
       it('should default to not being open', () =>
         expect(mount(<Banner />).prop('isOpen')).toBe(false));
@@ -50,6 +55,7 @@ describe('banner', () => {
       });
     });
   });
+
   describe('a11y', () => {
     it('should have role=alert', () =>
       expect(
@@ -57,17 +63,39 @@ describe('banner', () => {
           .find(Container)
           .is('[role="alert"]'),
       ).toBe(true));
+
     it('should be aria-hidden=false when isOpen is true', () =>
       expect(
         shallow(<Banner isOpen />)
           .find(Container)
           .is('[aria-hidden=false]'),
       ).toBe(true));
+
     it('should be aria-hidden=true when isOpen is false', () =>
       expect(
         shallow(<Banner />)
           .find(Container)
           .is('[aria-hidden=true]'),
       ).toBe(true));
+  });
+
+  it('should render warning banner correctly', () => {
+    const wrapper = (
+      <Banner isOpen appearance="warning">
+        This is a warning banner with a <a href="http://atlassian.com">link</a>
+      </Banner>
+    );
+    const Component = renderer.create(wrapper).toJSON();
+    expect(Component).toMatchSnapshot();
+  });
+
+  it('should render error banner correctly', () => {
+    const wrapper = (
+      <Banner isOpen appearance="error">
+        This is an error banner with a <a href="http://atlassian.com">link</a>
+      </Banner>
+    );
+    const Component = renderer.create(wrapper).toJSON();
+    expect(Component).toMatchSnapshot();
   });
 });

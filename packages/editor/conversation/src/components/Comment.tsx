@@ -87,6 +87,13 @@ const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
   return false;
 };
 
+const userChanged = (
+  oldUser: User = { id: '' },
+  newUser: User = { id: '' },
+) => {
+  return oldUser.id !== newUser.id;
+};
+
 const Reactions: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   height: 20px;
   & > div {
@@ -116,6 +123,10 @@ export default class Comment extends React.Component<Props, State> {
     }
 
     if (commentChanged(this.props.comment, nextProps.comment)) {
+      return true;
+    }
+
+    if (userChanged(this.props.user, nextProps.user)) {
       return true;
     }
 

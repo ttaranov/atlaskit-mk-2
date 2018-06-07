@@ -64,12 +64,17 @@ export const selectItem = (
   item: TypeAheadItem,
 ): Command => (state, dispatch) => {
   return withTypeAheadQueryMarkPosition(state, (start, end) => {
-    const replaceWith = (node: Node) => {
+    const insert = (node?: Node) => {
       let tr = state.tr;
 
       tr = tr
         .setMeta(pluginKey, { action: ACTIONS.SELECT_CURRENT })
         .replaceWith(start, end, Fragment.empty);
+
+      if (!node) {
+        dispatch(tr);
+        return true;
+      }
 
       /**
        *
@@ -103,7 +108,7 @@ export const selectItem = (
       return true;
     };
 
-    if (handler.selectItem(state, item, replaceWith) === false) {
+    if (handler.selectItem(state, item, insert) === false) {
       return insertFallbackCommand(start, end)(state, dispatch);
     }
 

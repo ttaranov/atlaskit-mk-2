@@ -1,5 +1,26 @@
 # @atlaskit/media-avatar-picker
 
+## 8.0.1
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/modal-dialog@5.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/field-range@4.0.1
+  - @atlaskit/spinner@6.0.1
+  - @atlaskit/docs@4.0.1
+
+## 8.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-ui@3.0.0
+  - @atlaskit/media-test-helpers@14.0.0
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/field-range@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 7.1.3
 - [patch] Updated dependencies [bd26d3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd26d3c)
   - @atlaskit/media-test-helpers@13.0.1

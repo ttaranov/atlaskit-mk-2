@@ -59,7 +59,9 @@ export default class ExtensionLozenge extends Component<Props, any> {
         <span className="extension-title">{capitalizeFirstLetter(title)}</span>
         {params && (
           <PlaceholderFallbackParams>
-            {Object.keys(params).map(key => ` | ${key} = ${params[key].value}`)}
+            {Object.keys(params).map(
+              key => key && ` | ${key} = ${params[key].value}`,
+            )}
           </PlaceholderFallbackParams>
         )}
       </PlaceholderFallback>
