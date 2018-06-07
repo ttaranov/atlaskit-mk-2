@@ -10,8 +10,13 @@ const updateControls = (state: EditorState) => {
   if (!tableElement) {
     return;
   }
+  const tr = tableElement.querySelector('tr');
 
-  const cols = tableElement.querySelector('tr')!.children;
+  if (!tr) {
+    return;
+  }
+
+  const cols = tr.children;
   const columnControls: any = tableElement.parentElement.querySelectorAll(
     '.table-column',
   );

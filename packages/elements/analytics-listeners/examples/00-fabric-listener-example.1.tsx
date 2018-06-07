@@ -27,7 +27,7 @@ const analyticsWebClientMock = {
 
 export default function Example() {
   return (
-    <FabricAnalyticsListeners client={analyticsWebClientMock}>
+    <FabricAnalyticsListeners client={Promise.resolve(analyticsWebClientMock)}>
       <div>
         <DummyComponentWithAnalytics onClick={myOnClickHandler} />
         <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />

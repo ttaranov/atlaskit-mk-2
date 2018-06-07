@@ -9,7 +9,7 @@ export type AnalyticsWebClient = {
 
 export type ListenerProps = {
   children?: React.ReactNode;
-  client: AnalyticsWebClient;
+  client: Promise<AnalyticsWebClient>;
   logger: Logger;
 };
 

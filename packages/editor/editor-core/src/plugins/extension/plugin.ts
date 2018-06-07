@@ -2,6 +2,7 @@ import { Plugin, PluginKey, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
+import { PortalProviderAPI } from '../../ui/PortalProvider';
 import ExtensionNodeView from './nodeviews/extension';
 import { findParentNodeOfType, findDomRefAtPos } from 'prosemirror-utils';
 import { closestElement } from '../../utils';
@@ -16,6 +17,7 @@ export default (
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
+  portalProviderAPI: PortalProviderAPI,
 ) =>
   new Plugin({
     state: {
@@ -122,9 +124,21 @@ export default (
     key: pluginKey,
     props: {
       nodeViews: {
-        extension: ExtensionNodeView(providerFactory, extensionHandlers),
-        bodiedExtension: ExtensionNodeView(providerFactory, extensionHandlers),
-        inlineExtension: ExtensionNodeView(providerFactory, extensionHandlers),
+        extension: ExtensionNodeView(
+          portalProviderAPI,
+          providerFactory,
+          extensionHandlers,
+        ),
+        bodiedExtension: ExtensionNodeView(
+          portalProviderAPI,
+          providerFactory,
+          extensionHandlers,
+        ),
+        inlineExtension: ExtensionNodeView(
+          portalProviderAPI,
+          providerFactory,
+          extensionHandlers,
+        ),
       },
     },
   });

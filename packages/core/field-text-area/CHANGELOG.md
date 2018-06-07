@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 3.0.2
+- [patch] Fixing documentation typo [c6bc90d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6bc90d)
+
 ## 3.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)

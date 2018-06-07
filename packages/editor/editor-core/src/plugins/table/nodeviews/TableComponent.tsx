@@ -1,6 +1,5 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
-import { updateColumnsOnResize } from 'prosemirror-tables';
 import { browser } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
@@ -22,18 +21,17 @@ import { calcTableWidth } from '@atlaskit/editor-common';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
-const DEFAULT_CELL_MIN_WIDTH = 25;
 
 import { Props } from './table';
 
 export interface ComponentProps extends Props {
+  onComponentUpdate: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 }
 
 class TableComponent extends React.Component<ComponentProps> {
   private wrapper: HTMLDivElement | null;
   private table: HTMLTableElement | null;
-  private colgroup: HTMLTableColElement | null;
 
   private leftShadow: HTMLDivElement | null;
   private rightShadow: HTMLDivElement | null;
@@ -43,19 +41,8 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidMount() {
-    if (this.props.allowColumnResizing) {
-      if (this.colgroup && this.table) {
-        updateColumnsOnResize(
-          this.props.node,
-          this.colgroup,
-          this.table,
-          this.props.cellMinWidth || DEFAULT_CELL_MIN_WIDTH,
-        );
-      }
-
-      if (this.wrapper && !isIE11) {
-        this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
-      }
+    if (this.props.allowColumnResizing && this.wrapper && !isIE11) {
+      this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
     }
   }
 
@@ -129,6 +116,10 @@ class TableComponent extends React.Component<ComponentProps> {
                 className="table-wrapper"
                 ref={elem => {
                   this.wrapper = elem;
+                  this.props.contentDOM(elem ? elem : undefined);
+                  if (elem) {
+                    this.table = elem.querySelector('table');
+                  }
                 }}
               >
                 <div className="table-column-controls-wrapper">
@@ -143,23 +134,6 @@ class TableComponent extends React.Component<ComponentProps> {
                     isTableInDanger={isTableInDanger}
                   />
                 </div>
-                <table
-                  ref={elem => {
-                    this.table = elem;
-                    this.props.contentDOM(elem ? elem : undefined);
-                  }}
-                  data-number-column={node.attrs.isNumberColumnEnabled}
-                  data-layout={node.attrs.layout}
-                  data-autosize={node.attrs.__autoSize}
-                >
-                  {allowColumnResizing ? (
-                    <colgroup
-                      ref={elem => {
-                        this.colgroup = elem;
-                      }}
-                    />
-                  ) : null}
-                </table>
               </div>
               {columnShadows}
             </div>
@@ -170,15 +144,8 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidUpdate() {
-    const { allowColumnResizing, node, cellMinWidth } = this.props;
-    if (allowColumnResizing && this.colgroup && this.table) {
-      updateColumnsOnResize(
-        node,
-        this.colgroup,
-        this.table,
-        cellMinWidth || DEFAULT_CELL_MIN_WIDTH,
-      );
-    }
+    const { onComponentUpdate } = this.props;
+    onComponentUpdate();
   }
 
   private handleScroll = (event: Event) => {

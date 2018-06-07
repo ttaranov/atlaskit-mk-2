@@ -4,9 +4,9 @@ import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { stateKey as reactNodeViewStateKey } from '../../plugins/base/pm-plugins/react-nodeview';
-import { ReactComponentConstructor } from '../types';
-import { ReactNodeViewComponents } from '../factory';
+import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
+import { ReactComponentConstructor } from '../../types';
+import { ReactNodeViewComponents } from '../';
 import wrapComponentWithClickArea from './wrapper-click-area';
 
 export interface ReactProsemirrorNodeProps {

@@ -1,5 +1,5 @@
 import * as URL from 'url';
-import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+import * as USP from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 import {
   KeyValues,
   RequestServiceOptions,
@@ -7,6 +7,8 @@ import {
   SecurityOptions,
   buildCredentials,
 } from './types';
+
+const URLSearchParams = USP.default || USP;
 
 const defaultRequestServiceOptions: RequestServiceOptions = {};
 

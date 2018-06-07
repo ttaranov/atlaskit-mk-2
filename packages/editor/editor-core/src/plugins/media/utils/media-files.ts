@@ -14,7 +14,7 @@ import {
 } from '../../../utils';
 import { MediaState } from '../types';
 import {
-  posOfPreceedingMediaGroup,
+  posOfPrecedingMediaGroup,
   posOfMediaGroupNearby,
   posOfParentMediaGroup,
   isSelectionNonMediaBlockNode,
@@ -49,7 +49,11 @@ export const insertMediaGroupNode = (
   const resolvedInsertPos = tr.doc.resolve(mediaInsertPos);
   const parent = resolvedInsertPos.parent;
   const grandParent = state.selection.$from.node(-1);
+  const selectionParent = state.selection.$anchor.node();
+
   const shouldSplit =
+    selectionParent &&
+    selectionParent.type !== schema.nodes.mediaGroup &&
     grandParent &&
     grandParent.type.validContent(
       Fragment.from(
@@ -63,7 +67,7 @@ export const insertMediaGroupNode = (
     isTableCell(state) ||
     isInListItem(state) ||
     (atTheEndOfDoc(state) &&
-      (!posOfPreceedingMediaGroup(state) ||
+      (!posOfPrecedingMediaGroup(state) ||
         isSelectionNonMediaBlockNode(state)));
 
   if (shouldSplit) {
@@ -95,7 +99,8 @@ export const insertMediaGroupNode = (
       ? mediaNodes // If parent is a mediaGroup do not wrap items again.
       : [schema.nodes.mediaGroup.createChecked({}, mediaNodes)];
 
-  if (shouldAppendParagraph) {
+  // Don't append new paragraph when adding media to a existing mediaGroup
+  if (shouldAppendParagraph && parent.type !== schema.nodes.mediaGroup) {
     content.push(paragraph.create());
   }
 
