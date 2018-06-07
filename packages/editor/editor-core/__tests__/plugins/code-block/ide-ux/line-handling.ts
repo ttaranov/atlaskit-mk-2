@@ -207,5 +207,12 @@ describe('IDE UX - Line Handling', () => {
         }),
       );
     });
+    it('should set `indentText` to an empty string when no indentation', () => {
+      expect(getLineInfo('hello world')).toEqual(
+        expect.objectContaining({
+          indentText: '',
+        }),
+      );
+    });
   });
 });
