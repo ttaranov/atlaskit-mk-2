@@ -18,11 +18,11 @@ const Global = () => (
     onNotificationClick={() => console.log('notification clicked')}
     onPeopleClick={() => console.log('People clicked')}
     appSwitcherComponent={({ className }) => (
-      <span className={className}>
-        <MenuIcon />
-      </span>
+      <button className={className}>
+        <MenuIcon onClick={() => console.log('AppSwitcher clicked')} />
+      </button>
     )}
-    loginHref="#loginUrl"
+    loginHref="#login"
   />
 );
 
