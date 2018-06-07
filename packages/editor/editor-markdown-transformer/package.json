@@ -24,7 +24,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.0.0",
-    "@atlaskit/editor-core": "^73.0.0"
+    "@atlaskit/editor-core": "^73.0.0",
+    "@atlaskit/editor-test-helpers": "^4.0.0"
   },
   "peerDependencies": {
     "styled-components": "^3.2.6"
