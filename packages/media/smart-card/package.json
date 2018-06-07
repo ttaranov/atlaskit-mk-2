@@ -25,6 +25,7 @@
     "@atlaskit/lozenge": "^5.0.0",
     "@atlaskit/media-ui": "^3.0.0",
     "@atlaskit/spinner": "^6.0.0",
+    "@atlaskit/theme": "^4.0.0",
     "@atlaskit/tooltip": "^10.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prop-types": "^15.5.1",
