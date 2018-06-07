@@ -1,8 +1,4 @@
 import * as URL from 'url';
-
-// Have to be imported with require https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#support-for-import-d-from-cjs-form-commonjs-modules-with---esmoduleinterop
-const URLSearchParams = require('url-search-params'); // IE, Safari, Mobile Chrome, Mobile Safari
-
 import {
   KeyValues,
   RequestServiceOptions,
@@ -10,6 +6,10 @@ import {
   SecurityOptions,
   buildCredentials,
 } from './types';
+
+// Have to be imported with require https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#support-for-import-d-from-cjs-form-commonjs-modules-with---esmoduleinterop
+// tslint:disable-next-line import/no-unresolved, no-var-requires
+const URLSearchParams = require('url-search-params'); // IE, Safari, Mobile Chrome, Mobile Safari
 
 const defaultRequestServiceOptions: RequestServiceOptions = {};
 
