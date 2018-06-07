@@ -17,9 +17,15 @@ export interface ZoomControlsProps {
   zoom: number;
 }
 
-const zoomValues = [20, 50, 100, 200, 500];
-
 export class ZoomControls extends Component<ZoomControlsProps, {}> {
+  private zoomLevel: ZoomLevelCalculator;
+
+  constructor(props) {
+    super(props);
+    const { zoom } = this.props;
+    this.zoomLevel = new ZoomLevelCalculator([20, 50, 100, 200, 500], zoom);
+  }
+
   zoom = (direction: ZoomDirection) => () => {
     const { onChange } = this.props;
     const newZoom = this.getNewZoomValue(direction);
@@ -29,16 +35,15 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
   };
 
   get canZoomOut(): boolean {
-    return this.getNewZoomValue('out') !== undefined;
+    return this.zoomLevel.decrease() !== undefined;
   }
 
   get canZoomIn(): boolean {
-    return this.getNewZoomValue('in') !== undefined;
+    return this.zoomLevel.increase() !== undefined;
   }
 
   render() {
     const { canZoomOut, canZoomIn } = this;
-    const { zoom } = this.props;
     return (
       <ZoomWrapper className={hideControlsClassName}>
         <ZoomControlsWrapper>
@@ -53,14 +58,46 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
             iconBefore={<ZoomInIcon primaryColor="white" label="zoom in" />}
           />
         </ZoomControlsWrapper>
-        <ZoomLevel>{zoom} %</ZoomLevel>
+        <ZoomLevel>{this.zoomLevel.toString()}</ZoomLevel>
       </ZoomWrapper>
     );
   }
 
   private getNewZoomValue(direction: ZoomDirection): number | undefined {
-    const { zoom } = this.props;
-    const index = zoomValues.indexOf(zoom);
-    return direction === 'out' ? zoomValues[index - 1] : zoomValues[index + 1];
+    return direction === 'out'
+      ? this.zoomLevel.decrease()
+      : this.zoomLevel.increase();
+  }
+}
+
+class ZoomLevelCalculator {
+  constructor(
+    private readonly allowedZoomLevels: number[],
+    private readonly zoomLevel: number,
+  ) {
+    if (this.getIndex() < 0) {
+      throw new Error('current zoomLevel not in the allowed range');
+    }
+  }
+
+  increase(): number | undefined {
+    return this.allowedZoomLevels[this.getIndex() + 1];
+  }
+
+  decrease(): number | undefined {
+    return this.allowedZoomLevels[this.getIndex() - 1];
+  }
+
+  // use this to convert the floating point number to a nice clean percentage including the `%` symbol.
+  toString(): string {
+    return `${this.zoomLevel} %`;
+  }
+
+  valueOf(): number {
+    return this.zoomLevel;
+  }
+
+  private getIndex() {
+    return this.allowedZoomLevels.indexOf(this.zoomLevel);
   }
 }
