@@ -260,11 +260,11 @@ export class MediaPluginState {
   private getDomElement(docView: any): HTMLElement | undefined {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node, offset } = docView.domFromPos(from);
+      const { node } = docView.domFromPos(from);
       if (!node.childNodes.length) {
         return node.parentNode;
       }
-      return node.childNodes[offset].querySelector('.wrapper');
+      return node.querySelector('.wrapper');
     }
   }
 
