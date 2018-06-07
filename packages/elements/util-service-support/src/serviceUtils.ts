@@ -1,4 +1,5 @@
 import * as URL from 'url';
+import * as USP from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 import {
   KeyValues,
   RequestServiceOptions,
@@ -6,12 +7,8 @@ import {
   SecurityOptions,
   buildCredentials,
 } from './types';
-// import 'url-search-params';
 
-// Have to be imported with require https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#support-for-import-d-from-cjs-form-commonjs-modules-with---esmoduleinterop
-// tslint:disable-next-line import/no-unresolved, no-var-requires
-declare var require: any;
-const URLSearchParams = require('url-search-params'); // IE, Safari, Mobile Chrome, Mobile Safari
+const URLSearchParams = USP.default || USP;
 
 const defaultRequestServiceOptions: RequestServiceOptions = {};
 
