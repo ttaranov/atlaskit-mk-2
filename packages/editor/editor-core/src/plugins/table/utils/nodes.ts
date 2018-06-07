@@ -44,8 +44,8 @@ export const canInsertTable = (state: EditorState): boolean => {
   return true;
 };
 
-export const containsTable = (state: EditorState, slice: Slice): boolean => {
-  const { table } = state.schema.nodes;
+export const containsTable = (schema: Schema, slice: Slice): boolean => {
+  const { table } = schema.nodes;
   let contains = false;
   slice.content.forEach(node => {
     if (node.type === table) {
