@@ -138,7 +138,6 @@ export default class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
-    DatePicker,
     isDisabled: false,
     name: '',
     onBlur: () => {},
@@ -155,7 +154,6 @@ export default class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     timeFormat: defaultTimeFormat,
     dateFormat: defaultDateFormat,
-    TimePicker,
   };
 
   state = {
@@ -273,7 +271,7 @@ export default class DateTimePicker extends Component<Props, State> {
       >
         <input name={name} type="hidden" value={value} />
         <FlexItem>
-          <DatePicker
+          <this.props.DatePicker
             {...bothProps}
             autoFocus={autoFocus}
             dateFormat={dateFormat}
@@ -285,7 +283,7 @@ export default class DateTimePicker extends Component<Props, State> {
           />
         </FlexItem>
         <FlexItem>
-          <TimePicker
+          <this.props.TimePicker
             {...bothProps}
             icon={icon}
             onChange={this.onTimeChange}

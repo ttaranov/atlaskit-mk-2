@@ -219,7 +219,6 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
       timeFormat,
       placeholder,
-      Select,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -256,7 +255,7 @@ export default class TimePicker extends Component<Props, State> {
       <div {...innerProps} ref={this.getContainerRef}>
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
-        <SelectComponent
+        <this.props.Select
           autoFocus={autoFocus}
           components={{
             ClearIndicator,
