@@ -10,10 +10,13 @@ const ATLASKIT_CHANNEL = 'atlaskit';
 
 export default class AtlaskitListener extends React.Component<ListenerProps> {
   listenerHandler: ListenerFunction = event => {
-    const payload = processEvent(event);
+    const { client, logger } = this.props;
+    logger.debug('Received Atlaskit event', event);
+    const payload = processEvent(event, logger);
+    logger.debug('Processed Atlaskit event', payload);
 
     if (payload) {
-      sendEvent(this.props.client)(payload);
+      sendEvent(client, logger)(payload);
     }
   };
 

@@ -1,5 +1,20 @@
 # @atlaskit/modal-dialog
 
+## 5.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/layer-manager@4.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/inline-dialog@7.0.1
+  - @atlaskit/field-radio-group@3.0.1
+  - @atlaskit/field-text@6.0.1
+  - @atlaskit/checkbox@3.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/blanket@6.0.1
+  - @atlaskit/docs@4.0.1
+  - @atlaskit/avatar@11.0.1
+
 ## 5.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

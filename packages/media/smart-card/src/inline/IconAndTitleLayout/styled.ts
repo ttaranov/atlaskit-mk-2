@@ -3,7 +3,7 @@ import { ImgHTMLAttributes, HTMLAttributes, ComponentClass } from 'react';
 import { colors } from '@atlaskit/theme';
 
 export const IconWrapper: ComponentClass<ImgHTMLAttributes<{}>> = styled.span`
-  display: inline-block;
+  display: inline-flex;
   margin-right: 2px;
 `;
 
@@ -36,5 +36,6 @@ export const TitleWrapper: ComponentClass<
 `;
 
 export const OtherWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
+  display: inline-flex;
   margin-left: 4px;
 `;
