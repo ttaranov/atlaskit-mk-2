@@ -13,32 +13,29 @@ import {
 export type ZoomDirection = 'out' | 'in';
 
 export interface ZoomControlsProps {
-  zoomLevel: number;
-  onChange: (zoomLevel: number) => void;
-  step?: number;
+  onChange: (zoomLevel: number, step: number) => void;
+  minZoom: number;
+  maxZoom: number;
+  steps: number;
+  step: number;
 }
 
 export interface ZoomControlsState {}
 
-const minZoomLevel = 0.2;
-const maxZoomLevel = 5;
-const zoomingStep = 0.2;
-
 export const getZoomLevel = (
-  currentZoomLevel: number,
-  direction: ZoomDirection,
-  step: number = zoomingStep,
+  minZoom: number,
+  maxZoom: number,
+  steps: number,
+  step: number,
 ): number => {
-  const increase = step * currentZoomLevel;
-  const newZoomLevel = direction === 'out' ? -increase : increase;
-  const zoomLevel = Math.min(
-    Math.max(
-      Math.round((currentZoomLevel + newZoomLevel) * 100) / 100,
-      minZoomLevel,
-    ),
-    maxZoomLevel,
-  );
+  const logMinZoom = Math.log(minZoom);
+  const logMaxZoom = Math.log(maxZoom);
 
+  const logZoom = logMinZoom + (logMaxZoom - logMinZoom) * step / (steps - 1);
+  const zoomLevel = Math.min(
+    Math.max(Math.round(Math.exp(logZoom) * 100) / 100, minZoom),
+    maxZoom,
+  );
   return zoomLevel;
 };
 
@@ -46,33 +43,29 @@ export class ZoomControls extends Component<
   ZoomControlsProps,
   ZoomControlsState
 > {
-  static defaultProps: Partial<ZoomControlsProps> = {
-    step: zoomingStep,
-  };
-
   zoom = (direction: ZoomDirection) => () => {
-    const { onChange, step } = this.props;
-    const { zoomLevel: currentZoomLevel } = this.props;
-    const zoomLevel = getZoomLevel(currentZoomLevel, direction, step);
-
-    onChange(zoomLevel);
+    const { onChange } = this.props;
+    const step = this.getNewStep(direction);
+    onChange(this.getNewZoomLevel(step), step);
   };
 
   get canZoomOut(): boolean {
-    const { zoomLevel } = this.props;
+    const { minZoom } = this.props;
+    console.log('zoom out:', this.getNewZoomLevel(this.getNewStep('out')));
 
-    return zoomLevel > minZoomLevel;
+    return this.getNewZoomLevel(this.getNewStep('out')) > minZoom;
   }
 
   get canZoomIn(): boolean {
-    const { zoomLevel } = this.props;
-
-    return zoomLevel < maxZoomLevel;
+    console.log('zoom in:', this.getNewZoomLevel(this.getNewStep('in')));
+    const { maxZoom } = this.props;
+    return this.getNewZoomLevel(this.getNewStep('in')) < maxZoom;
   }
 
   render() {
     const { canZoomOut, canZoomIn } = this;
-    const { zoomLevel } = this.props;
+    const { steps, step, minZoom, maxZoom } = this.props;
+    const zoomLevel = getZoomLevel(minZoom, maxZoom, steps, step);
 
     return (
       <ZoomWrapper className={hideControlsClassName}>
@@ -91,6 +84,16 @@ export class ZoomControls extends Component<
         <ZoomLevel>{this.getFriendlyZoomLevel(zoomLevel)} %</ZoomLevel>
       </ZoomWrapper>
     );
+  }
+
+  private getNewStep(direction: ZoomDirection) {
+    const { step } = this.props;
+    return direction === 'out' ? step - 1 : step + 1;
+  }
+
+  private getNewZoomLevel(step: number) {
+    const { steps, minZoom, maxZoom } = this.props;
+    return getZoomLevel(minZoom, maxZoom, steps, step);
   }
 
   private getFriendlyZoomLevel(zoomLevel: number) {

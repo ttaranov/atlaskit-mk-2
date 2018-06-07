@@ -20,10 +20,12 @@ export type ImageViewerProps = {
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
   zoomLevel: number;
+  step: number;
 };
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
   zoomLevel: 1,
+  step: 4,
 };
 
 export class ImageViewer extends React.Component<
@@ -47,8 +49,8 @@ export class ImageViewer extends React.Component<
     }
   }
 
-  private onZoomChange = zoomLevel => {
-    this.setState({ zoomLevel });
+  private onZoomChange = (zoomLevel, step) => {
+    this.setState({ zoomLevel, step });
   };
 
   renderImage(src: string) {
@@ -67,7 +69,13 @@ export class ImageViewer extends React.Component<
     return (
       <ImageWrapper onClick={closeOnDirectClick(onClose)}>
         <Img src={src} style={imgStyle} />
-        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
+        <ZoomControls
+          minZoom={0.2}
+          maxZoom={5}
+          steps={10}
+          step={this.state.step}
+          onChange={this.onZoomChange}
+        />
       </ImageWrapper>
     );
   }
