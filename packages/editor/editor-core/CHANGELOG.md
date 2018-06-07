@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.0
+- [minor] Pass context to node views [e3d2802](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d2802)
+- [none] Updated dependencies [e3d2802](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d2802)
+
 ## 73.2.0
 - [minor] Updated dependencies [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
   - @atlaskit/editor-markdown-transformer@1.1.0
