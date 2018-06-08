@@ -476,6 +476,52 @@ describe('BitbucketTransformer: parser', () => {
         ),
       );
     });
+
+    it('with images ', () => {
+      const result = parse(
+        '<table>' +
+          '<thead>' +
+          '<tr>' +
+          '<th>Hello there <img src="http://path/to/image.jpg" /> <strong>hi</strong></th>' +
+          '</tr>' +
+          '</thead>' +
+          '<tbody>' +
+          '<tr>' +
+          '<td><em><img src="http://path/to/image.jpg" /></em></td>' +
+          '</tr>' +
+          '</tbody>' +
+          '</table>',
+      );
+
+      expect(result).toEqualDocument(
+        doc(
+          table()(
+            tr(
+              th({})(
+                p('Hello there'),
+                mediaSingle()(
+                  media({
+                    url: 'http://path/to/image.jpg',
+                    type: 'external',
+                  })(),
+                ),
+                p(strong('hi')),
+              ),
+            ),
+            tr(
+              td({})(
+                mediaSingle()(
+                  media({
+                    url: 'http://path/to/image.jpg',
+                    type: 'external',
+                  })(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    });
   });
 
   describe('code', () => {
