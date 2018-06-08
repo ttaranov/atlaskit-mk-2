@@ -80,7 +80,7 @@ describe(name, () => {
             eventDispatcher: {} as any,
             providerFactory: {} as any,
             errorReporter: {} as any,
-            portalProviderAPI: { render() {}, destroy() {} } as any,
+            portalProviderAPI: { render() {}, remove() {} } as any,
           }).length,
         ).toEqual(1);
       });
