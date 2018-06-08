@@ -12,7 +12,6 @@ import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -189,30 +188,30 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       objectResults,
       spaceResults,
       peopleResults,
+      searchSessionId,
     } = this.state;
 
     return (
-      <AnalyticsContext data={{ searchSessionId: this.state.searchSessionId }}>
-        <GlobalQuickSearch
-          onMount={this.handleMount}
-          onSearch={this.handleSearch}
-          isLoading={isLoading}
-          query={query}
-          linkComponent={linkComponent}
-        >
-          {renderSearchResults({
-            query,
-            isError,
-            isLoading,
-            retrySearch: this.retrySearch,
-            recentlyViewedPages,
-            recentlyViewedSpaces,
-            objectResults,
-            spaceResults,
-            peopleResults,
-          })}
-        </GlobalQuickSearch>
-      </AnalyticsContext>
+      <GlobalQuickSearch
+        onMount={this.handleMount}
+        onSearch={this.handleSearch}
+        isLoading={isLoading}
+        query={query}
+        linkComponent={linkComponent}
+        searchSessionId={searchSessionId}
+      >
+        {renderSearchResults({
+          query,
+          isError,
+          isLoading,
+          retrySearch: this.retrySearch,
+          recentlyViewedPages,
+          recentlyViewedSpaces,
+          objectResults,
+          spaceResults,
+          peopleResults,
+        })}
+      </GlobalQuickSearch>
     );
   }
 }

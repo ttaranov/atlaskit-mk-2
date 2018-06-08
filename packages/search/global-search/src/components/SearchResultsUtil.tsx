@@ -13,11 +13,7 @@ import {
   AnalyticsType,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
-import {
-  withAnalyticsEvents,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   DEFUALT_GAS_CHANNEL,
   DEFAULT_GAS_SOURCE,
@@ -38,6 +34,9 @@ interface QuickSearchResult extends ComponentClass {
 
 function createAndFireSearchResultSelectedEvent(createEvent, props): void {
   const event = createEvent(); // created empty to initialise with context
+  const searchSessionId = event.context[0]
+    ? event.context[0].searchSessionId
+    : null;
   event.update({
     action: 'selected',
     actionSubject: 'navigationItem',
@@ -45,7 +44,7 @@ function createAndFireSearchResultSelectedEvent(createEvent, props): void {
     eventType: 'track',
     source: DEFAULT_GAS_SOURCE,
     attributes: {
-      searchSessionId: event.context[0].searchSessionId,
+      searchSessionId: searchSessionId,
       resultType: props.type,
       ...DEFAULT_GAS_ATTRIBUTES,
     },
@@ -57,13 +56,13 @@ const searchResultsAnalyticsEvents = {
   onClick: createAndFireSearchResultSelectedEvent,
 };
 
-const ObjectResultWithAnalytics = withAnalyticsEvents(
+export const ObjectResultWithAnalytics = withAnalyticsEvents(
   searchResultsAnalyticsEvents,
 )(ObjectResult);
-const PersonResultWithAnalytics = withAnalyticsEvents(
+export const PersonResultWithAnalytics = withAnalyticsEvents(
   searchResultsAnalyticsEvents,
 )(PersonResult);
-const ContainerResultWithAnalytics = withAnalyticsEvents(
+export const ContainerResultWithAnalytics = withAnalyticsEvents(
   searchResultsAnalyticsEvents,
 )(ContainerResult);
 

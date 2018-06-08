@@ -3,7 +3,10 @@ import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
 import { LinkComponent } from './GlobalQuickSearchWrapper';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import {
+  withAnalyticsEvents,
+  AnalyticsContext,
+} from '@atlaskit/analytics-next';
 
 import {
   DEFAULT_GAS_ATTRIBUTES,
@@ -18,6 +21,7 @@ export interface Props {
 
   isLoading: boolean;
   query: string;
+  searchSessionId: string;
   children: React.ReactNode;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: Function;
@@ -46,6 +50,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
     if (this.props.createAnalyticsEvent) {
       const sanitizedQuery = sanitizeSearchQuery(query);
       const event = this.props.createAnalyticsEvent();
+      const searchSessionId = this.props.searchSessionId;
       const payload: GasPayload = {
         action: 'entered',
         actionSubject: 'text',
@@ -53,13 +58,12 @@ export class GlobalQuickSearch extends React.Component<Props> {
         source: DEFAULT_GAS_SOURCE,
         attributes: {
           queryId: null,
-          queryVersion: this.queryVersion,
+          //queryVersion: this.queryVersion,
           queryLength: sanitizedQuery.length,
           wordCount:
             sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
-          componentName: 'GlobalQuickSearch',
           ...DEFAULT_GAS_ATTRIBUTES,
-          searchSessionId: this.props.searchSessionId,
+          searchSessionId: searchSessionId,
         },
       };
       event.update(payload).fire(DEFUALT_GAS_CHANNEL);
@@ -72,14 +76,16 @@ export class GlobalQuickSearch extends React.Component<Props> {
     const { query, isLoading, linkComponent, children } = this.props;
 
     return (
-      <QuickSearch
-        isLoading={isLoading}
-        onSearchInput={this.handleSearchInput}
-        value={query}
-        linkComponent={linkComponent}
-      >
-        {children}
-      </QuickSearch>
+      <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
+        <QuickSearch
+          isLoading={isLoading}
+          onSearchInput={this.handleSearchInput}
+          value={query}
+          linkComponent={linkComponent}
+        >
+          {children}
+        </QuickSearch>
+      </AnalyticsContext>
     );
   }
 }
