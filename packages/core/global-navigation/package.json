@@ -31,6 +31,7 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
+    "@atlaskit/modal-dialog": "^4.0.5",
     "@atlaskit/onboarding": "^4.1.2",
     "react-lorem-component": "^0.12.2"
   }
