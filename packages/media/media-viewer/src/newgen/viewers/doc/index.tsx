@@ -3,8 +3,15 @@ import { Context, FileItem } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
 import { PDFWrapper, ErrorMessage } from '../../styled';
 import { Spinner } from '../../loading';
-import { componentLoader } from './loader';
 import { constructAuthTokenUrl } from '../../util';
+import { Props as RendererProps } from './pdfRenderer';
+
+const moduleLoader = () =>
+  import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
+
+const componentLoader: () => Promise<
+  React.ComponentClass<RendererProps>
+> = () => moduleLoader().then(module => module.PDFRenderer);
 
 export type Props = {
   context: Context;
@@ -21,7 +28,7 @@ const initialState: State = {
   src: { status: 'PENDING' },
 };
 
-export class PDFViewer extends React.PureComponent<Props, State> {
+export class DocViewer extends React.PureComponent<Props, State> {
   static PDFComponent;
 
   state: State = initialState;
@@ -31,8 +38,8 @@ export class PDFViewer extends React.PureComponent<Props, State> {
   }
 
   private async init() {
-    if (!PDFViewer.PDFComponent) {
-      await this.loadPDFViewer(this.props);
+    if (!DocViewer.PDFComponent) {
+      await this.loadDocViewer(this.props);
     }
     const { item, context, collectionName } = this.props;
 
@@ -68,14 +75,14 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     }
   }
 
-  private async loadPDFViewer(props: Props) {
-    PDFViewer.PDFComponent = await componentLoader();
+  private async loadDocViewer(props: Props) {
+    DocViewer.PDFComponent = await componentLoader();
     this.forceUpdate();
   }
 
   render() {
     const { onClose } = this.props;
-    const { PDFComponent } = PDFViewer;
+    const { PDFComponent } = DocViewer;
     const { src } = this.state;
 
     if (!PDFComponent) {

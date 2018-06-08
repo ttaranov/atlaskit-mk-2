@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
 import { Stubs } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
-import { PDFViewer } from '../../../../src/newgen/viewers/pdf/index';
+import { DocViewer } from '../../../../src/newgen/viewers/doc/index';
 
 function createContext() {
   const subject = new Subject<FileItem>();
@@ -30,13 +30,13 @@ function createFixture(fetchPromise, item, collectionName?) {
   const context = createContext();
   const onClose = jest.fn(() => fetchPromise);
   const el = mount(
-    <PDFViewer item={item} context={context} collectionName={collectionName} />,
+    <DocViewer item={item} context={context} collectionName={collectionName} />,
   );
   el.instance()['fetch'] = jest.fn();
   return { context, el, onClose };
 }
 
-describe('PDFViewer', () => {
+describe('DocViewer', () => {
   afterEach(() => {
     constructAuthTokenUrlSpy.mockClear();
   });
