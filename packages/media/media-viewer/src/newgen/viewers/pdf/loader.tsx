@@ -6,5 +6,3 @@ const moduleLoader = () =>
 
 export const componentLoader: () => Promise<ComponentClass<Props>> = () =>
   moduleLoader().then(module => module.PDFViewer);
-export const fetch = (url: string): Promise<Blob> =>
-  moduleLoader().then(module => module.fetch(url));

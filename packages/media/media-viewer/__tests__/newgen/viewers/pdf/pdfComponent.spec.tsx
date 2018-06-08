@@ -9,7 +9,7 @@ import { ZoomControls } from '../../../../src/newgen/zoomControls';
 
 function createFixture() {
   const onClose = jest.fn();
-  const el = mount(<PDFViewer doc={null} onClose={onClose} />);
+  const el = mount(<PDFViewer src={''} onClose={onClose} />);
   return { el, onClose };
 }
 

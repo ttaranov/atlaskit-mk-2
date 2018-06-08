@@ -41,7 +41,7 @@ describe('PDFViewer', () => {
     constructAuthTokenUrlSpy.mockClear();
   });
 
-  it('assigns a document object when successful', async () => {
+  it('assigns a document src when successful', async () => {
     const fetchPromise = Promise.resolve();
     const item: FileItem = {
       type: 'file',
@@ -60,7 +60,7 @@ describe('PDFViewer', () => {
     await el.instance()['init']();
 
     expect(el.state()).toMatchObject({
-      doc: {
+      src: {
         status: 'SUCCESSFUL',
       },
     });
@@ -103,7 +103,7 @@ describe('PDFViewer', () => {
     await el.instance()['init']();
 
     expect(el.state()).toMatchObject({
-      doc: {
+      src: {
         status: 'FAILED',
         err: new Error('no pdf artifacts found for this file'),
       },
