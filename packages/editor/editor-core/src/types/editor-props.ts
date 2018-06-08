@@ -49,6 +49,7 @@ export type InsertMenuCustomItem = {
 
 export interface ExtensionConfig {
   stickToolbarToBottom?: boolean;
+  allowBreakout?: boolean;
 }
 
 export interface EditorProps {

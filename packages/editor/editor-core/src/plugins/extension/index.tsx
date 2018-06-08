@@ -16,13 +16,17 @@ import ExtensionEditPanel from './ui/ExtensionEditPanel';
 import WithPluginState from '../../ui/WithPluginState';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 
+let isExtensionBreakoutSupported = false;
+
 const isLayoutSupported = (state, selectedExtNode) => {
   const {
-    schema: { nodes: { bodiedExtension, extension, layoutSection, table } },
+    schema: {
+      nodes: { bodiedExtension, extension, layoutSection, table },
+    },
     selection,
   } = state;
 
-  if (!selectedExtNode) {
+  if (!selectedExtNode || !isExtensionBreakoutSupported) {
     return false;
   }
 
@@ -53,14 +57,19 @@ const extensionPlugin: EditorPlugin = {
           dispatch,
           providerFactory,
           portalProviderAPI,
-        }) =>
-          createPlugin(
+        }) => {
+          isExtensionBreakoutSupported = !!(
+            typeof props.allowExtension === 'object' &&
+            props.allowExtension.allowBreakout
+          );
+          return createPlugin(
             dispatch,
             providerFactory,
             props.extensionHandlers || {},
             portalProviderAPI,
             props.allowExtension,
-          ),
+          );
+        },
       },
     ];
   },

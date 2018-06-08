@@ -33,7 +33,7 @@ const getSelectedExtNode = state => {
   ) {
     selectedExtNode = {
       node: (state.selection as NodeSelection).node,
-      pos: state.selection.$head.pos,
+      pos: state.selection.$head.pos - 1,
     };
   }
 
@@ -82,7 +82,11 @@ export default (
 
       return {
         update: (view: EditorView) => {
-          const { dispatch: editorDispatch, state, state: { schema } } = view;
+          const {
+            dispatch: editorDispatch,
+            state,
+            state: { schema },
+          } = view;
 
           /** this fetches the selected extn node, either by keyboard selection or click for all types of extns */
           const selectedExtNode = getSelectedExtNode(state);
@@ -103,14 +107,15 @@ export default (
           ])(state.selection);
 
           /** Non-content extension can be nested in bodied-extension, the following check is necessary for that case */
-          const newElement = selectedExtNode
-            ? isNonContentExt
-              ? selectedExtDomNode!.querySelector('.extension-container') ||
-                selectedExtDomNode
-              : closestElement(selectedExtDomNode!, '.extension-container') ||
-                selectedExtDomNode!.querySelector('.extension-container') ||
-                selectedExtDomNode
-            : undefined;
+          const newElement =
+            selectedExtNode && selectedExtDomNode
+              ? isNonContentExt
+                ? selectedExtDomNode.querySelector('.extension-container') ||
+                  selectedExtDomNode
+                : closestElement(selectedExtDomNode!, '.extension-container') ||
+                  selectedExtDomNode!.querySelector('.extension-container') ||
+                  selectedExtDomNode
+              : undefined;
 
           if (pluginState.element !== newElement) {
             editorDispatch(
@@ -128,7 +133,6 @@ export default (
           dispatch(pluginKey, {
             ...pluginState,
           });
-
           return true;
         },
       };

@@ -31,6 +31,11 @@ describe('extension', () => {
     return createEditor({
       doc,
       editorPlugins: [extensionPlugin],
+      editorProps: {
+        allowExtension: {
+          allowBreakout: true,
+        },
+      },
     });
   };
 
@@ -180,7 +185,9 @@ describe('extension', () => {
       const { editorView } = editor(
         doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
       );
-      const { state: { schema, selection } } = editorView;
+      const {
+        state: { schema, selection },
+      } = editorView;
       const nodeInitial = findParentNodeOfType(schema.nodes.bodiedExtension)(
         selection,
       )!.node;
@@ -253,7 +260,9 @@ describe('extension', () => {
         ),
       );
 
-      const { state: { schema } } = editorView;
+      const {
+        state: { schema },
+      } = editorView;
 
       const getExtension = editorView.dom.getElementsByClassName(
         'extension-container',

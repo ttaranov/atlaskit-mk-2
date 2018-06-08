@@ -141,7 +141,9 @@ export class ExampleEditor extends React.Component<Props, State> {
             allowJiraIssue={true}
             allowUnsupportedContent={true}
             allowPanel={true}
-            allowExtension={true}
+            allowExtension={{
+              allowBreakout: true,
+            }}
             allowRule={true}
             allowDate={true}
             UNSAFE_allowLayouts={true}

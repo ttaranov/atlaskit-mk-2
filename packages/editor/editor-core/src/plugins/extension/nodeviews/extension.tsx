@@ -33,22 +33,13 @@ class ExtensionNode extends ReactNodeView {
 
   render(props, forwardRef) {
     return (
-      <WithPluginState
+      <Extension
         editorView={this.view}
-        plugins={{
-          width: widthPluginKey,
-        }}
-        render={({ width }) => (
-          <Extension
-            editorView={this.view}
-            node={this.node}
-            width={width}
-            providerFactory={props.providerFactory}
-            handleContentDOMRef={forwardRef}
-            extensionHandlers={props.extensionHandlers}
-          />
-        )}
-        />
+        node={this.node}
+        providerFactory={props.providerFactory}
+        handleContentDOMRef={forwardRef}
+        extensionHandlers={props.extensionHandlers}
+      />
     );
   }
 }
