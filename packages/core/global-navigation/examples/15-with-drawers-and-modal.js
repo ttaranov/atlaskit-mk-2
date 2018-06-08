@@ -2,6 +2,8 @@
 
 import React, { Fragment, Component } from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
+import Modal from '@atlaskit/modal-dialog';
+import Lorem from 'react-lorem-component';
 import {
   LayoutManager,
   NavigationProvider,
@@ -12,49 +14,40 @@ import GlobalNavigation from '../src/components/GlobalNavigation';
 import Drawer from '../src/components/Drawer';
 
 type State = {
-  notificationCount: number,
+  isModalOpen: boolean,
 };
 
 const DrawerContent = ({
   closeDrawer,
   drawerText,
-  clearNotification,
 }: {
   closeDrawer: () => void,
-  clearNotification: () => void,
   drawerText: string,
 }) => (
   <div>
     <div>{drawerText}</div>
     <button onClick={closeDrawer}>Close Drawer</button>
-    {drawerText.startsWith('notification') && (
-      <button onClick={clearNotification}>Clear Notification</button>
-    )}
   </div>
 );
 
 class GlobalNavWithDrawers extends Component<Object, State> {
   state = {
-    notificationCount: 1,
+    isModalOpen: false,
   };
 
-  dialogRef = null;
-
   openModal = () => {
-    // $FlowFixMe
-    this.dialogRef.showModal();
+    this.setState({
+      isModalOpen: true,
+    });
   };
 
   closeModal = () => {
-    // $FlowFixMe
-    this.dialogRef.close();
+    this.setState({
+      isModalOpen: false,
+    });
   };
 
-  clearNotification = () => {
-    this.setState(() => ({
-      notificationCount: 0,
-    }));
-  };
+  secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
   renderDrawer = (
     drawerKey: 'create' | 'search' | 'notification' | 'people',
@@ -77,13 +70,17 @@ class GlobalNavWithDrawers extends Component<Object, State> {
       >
         <DrawerContent
           closeDrawer={closeDrawer}
-          clearNotification={this.clearNotification}
           drawerText={`${drawerKey} drawer`}
         />
       </Drawer>
     );
   };
   render() {
+    const actions = [
+      { text: 'Close', onClick: this.closeModal },
+      { text: 'Secondary Action', onClick: this.secondaryAction },
+    ];
+
     return (
       <Fragment>
         <GlobalNavigation
@@ -93,20 +90,20 @@ class GlobalNavWithDrawers extends Component<Object, State> {
           onSearchClick={this.props.navigation.openSearchDrawer}
           onYourWorkClick={this.props.navigation.openYourWorkDrawer}
           onNotificationClick={this.props.navigation.openNotificationDrawer}
-          notificationCount={this.state.notificationCount}
           onPeopleClick={this.props.navigation.openPeopleDrawer}
         />
         {this.renderDrawer('search', { width: 'wide' })}
         {this.renderDrawer('notification', { width: 'wide' })}
         {this.renderDrawer('people', { width: 'wide' })}
-        <dialog
-          ref={element => {
-            this.dialogRef = element;
-          }}
-        >
-          <div>Create Modal</div>
-          <button onClick={this.closeModal}>Close Modal</button>
-        </dialog>
+        {this.state.isModalOpen && (
+          <Modal
+            actions={actions}
+            onClose={this.closeModal}
+            heading="Modal Title"
+          >
+            <Lorem count={2} />
+          </Modal>
+        )}
       </Fragment>
     );
   }
