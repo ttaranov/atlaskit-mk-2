@@ -5,7 +5,6 @@ import { PDFWrapper, ErrorMessage } from '../../styled';
 import { Spinner } from '../../loading';
 import { componentLoader } from './loader';
 import { constructAuthTokenUrl } from '../../util';
-import { fetch } from './loader';
 
 export type Props = {
   context: Context;
@@ -15,15 +14,17 @@ export type Props = {
 };
 
 export type State = {
-  doc: Outcome<any, Error>;
+  src: Outcome<string, Error>;
+};
+
+const initialState: State = {
+  src: { status: 'PENDING' },
 };
 
 export class PDFViewer extends React.PureComponent<Props, State> {
   static PDFComponent;
 
-  state: State = {
-    doc: { status: 'PENDING' },
-  };
+  state: State = initialState;
 
   componentDidMount() {
     this.init();
@@ -33,15 +34,14 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     if (!PDFViewer.PDFComponent) {
       await this.loadPDFViewer(this.props);
     }
-
     const { item, context, collectionName } = this.props;
 
     const pdfArtifactUrl = getPDFUrl(item);
     if (!pdfArtifactUrl) {
       this.setState({
-        doc: {
+        src: {
           status: 'FAILED',
-          err: new Error('no artifacts found for this file'),
+          err: new Error('no pdf artifacts found for this file'),
         },
       });
       return;
@@ -52,16 +52,15 @@ export class PDFViewer extends React.PureComponent<Props, State> {
         context,
         collectionName,
       );
-      const data = await this.fetch(src);
       this.setState({
-        doc: {
+        src: {
           status: 'SUCCESSFUL',
-          data: data,
+          data: src,
         },
       });
     } catch (err) {
       this.setState({
-        doc: {
+        src: {
           status: 'FAILED',
           err,
         },
@@ -77,28 +76,24 @@ export class PDFViewer extends React.PureComponent<Props, State> {
   render() {
     const { onClose } = this.props;
     const { PDFComponent } = PDFViewer;
-    const { doc } = this.state;
+    const { src } = this.state;
 
     if (!PDFComponent) {
-      return null;
+      return <Spinner />;
     }
 
-    switch (doc.status) {
+    switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
         return (
           <PDFWrapper>
-            <PDFComponent doc={doc.data} onClose={onClose} />
+            <PDFComponent src={src.data} onClose={onClose} />
           </PDFWrapper>
         );
       case 'FAILED':
-        return <ErrorMessage>{doc.err.message}</ErrorMessage>;
+        return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
-  }
-
-  public fetch(src: string): Promise<any> {
-    return fetch(src);
   }
 }
 
