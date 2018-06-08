@@ -10,7 +10,7 @@ import type { GlobalNavigationProps } from '../components/GlobalNavigation/types
 // Remove items with no props passed from the product.
 const removeEmptyItems = items =>
   Object.keys(items)
-    .filter(item => items[item] && Object.keys(items[item]).length)
+    .filter(item => !!items[item])
     .reduce((acc, curr) => {
       acc[curr] = items[curr];
       return acc;
