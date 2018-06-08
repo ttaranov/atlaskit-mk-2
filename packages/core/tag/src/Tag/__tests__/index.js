@@ -10,12 +10,6 @@ import Tag from '../index';
 import Before from '../styledBefore';
 import Container from '../styledContainer';
 
-// TODO: Revisit all these tests. AK-1975
-// Large parts of the API are not tested (hrefs should render anchors, truncation should occur, etc)
-// Most of these tests are testing React behaviour (setting props) where they should be testing
-// props + state => expectedRenderedOutput
-// They also don't follow the normal naming standards for describe and it blocks
-
 describe('Tag component', () => {
   const atlassianHref = 'https://www.atlassian.com';
   const atlassianText = 'Atlassian';
