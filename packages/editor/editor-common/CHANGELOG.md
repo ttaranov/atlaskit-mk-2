@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 11.0.4
+- [patch] ED-4818: add inlineCard to schema [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
+- [none] Updated dependencies [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
+  - @atlaskit/editor-test-helpers@4.0.4
+
 ## 11.0.3
 - [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
   - @atlaskit/media-card@29.0.2

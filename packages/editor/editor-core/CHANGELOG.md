@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 73.3.7
+- [patch] ED-4818: add inlineCard to schema [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
+- [none] Updated dependencies [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
+  - @atlaskit/editor-test-helpers@4.0.4
+  - @atlaskit/editor-common@11.0.4
+
 ## 73.3.6
 - [patch] Fix PortalProvider performance [a157f3b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a157f3b)
 - [none] Updated dependencies [a157f3b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a157f3b)
