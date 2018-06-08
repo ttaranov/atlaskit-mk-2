@@ -5,8 +5,6 @@ import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { ReactNodeView } from '../../../nodeviews';
 import Extension from '../ui/Extension';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import WithPluginState from '../../../ui/WithPluginState';
-import { pluginKey as widthPluginKey } from '../../width';
 
 export interface Props {
   node: PmNode;
