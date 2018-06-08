@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.6
+- [patch] Fix PortalProvider performance [a157f3b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a157f3b)
+- [none] Updated dependencies [a157f3b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a157f3b)
+
 ## 73.3.5
 - [patch] ED-4722, fix for mention and emoji floating toolbar hidden behind table floating toolbar. [a13c9f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a13c9f5)
 - [patch] Updated dependencies [a13c9f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a13c9f5)
