@@ -45,8 +45,7 @@ export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & WrapperProps
 > = styled.span`
   color: ${colors.N300};
-  display: inline-flex;
-  align-items: center;
+  display: inline;
   margin: 2px;
   padding: 2px;
   border-radius: ${akBorderRadius};

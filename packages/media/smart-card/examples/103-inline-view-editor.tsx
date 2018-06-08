@@ -38,16 +38,8 @@ And still
 `;
 
 const defaultText = `{
-  "link": {
-    "href": "https://product-fabric.atlassian.net/browse/MSW-524",
-    "title": "Link to ticket"
-  },
-  "icon": {
-    "url":
-      "https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg",
-    "tooltip": "Issue type"
-  },
-  "text": "MSW-524: [RFC] Api for inline Link cards UI component",
+  "icon": "https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg",
+  "title": "MSW-524: [RFC] Api for inline Link cards UI component",
   "lozenge": {
     "text": "in progress",
     "appearance": "inprogress"
