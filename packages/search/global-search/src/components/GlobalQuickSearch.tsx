@@ -58,7 +58,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
         source: DEFAULT_GAS_SOURCE,
         attributes: {
           queryId: null,
-          //queryVersion: this.queryVersion,
+          queryVersion: this.queryVersion,
           queryLength: sanitizedQuery.length,
           wordCount:
             sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
