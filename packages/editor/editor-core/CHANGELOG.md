@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.8
+- [patch] Fix onComponentUpdate sometimes being undefined in tables node views [57225fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57225fd)
+- [none] Updated dependencies [57225fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57225fd)
+
 ## 73.3.7
 - [patch] ED-4818: add inlineCard to schema [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
 - [none] Updated dependencies [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
