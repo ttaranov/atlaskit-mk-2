@@ -17,14 +17,14 @@ describe('PDFViewer', () => {
   it('supports zooming', async () => {
     const { el } = createFixture();
 
-    expect(el.state('scale')).toEqual(1);
+    expect(el.state('zoom')).toEqual(100);
     expect(el.find(ZoomControls)).toHaveLength(1);
     el
       .find(ZoomControls)
       .find(Button)
       .first()
       .simulate('click');
-    expect(el.state('scale')).toBeLessThan(1);
+    expect(el.state('zoom')).toBeLessThan(100);
   });
 
   it('MSW-700: clicking on background of PDFViewer does not close it', () => {

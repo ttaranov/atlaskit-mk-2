@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 73.3.5
+- [patch] ED-4722, fix for mention and emoji floating toolbar hidden behind table floating toolbar. [a13c9f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a13c9f5)
+- [patch] Updated dependencies [a13c9f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a13c9f5)
+
+## 73.3.4
+- [patch] SDK-5812 Fix unsupported content after editing media only doc [25baf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25baf0a)
+- [none] Updated dependencies [25baf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25baf0a)
+
+## 73.3.3
+- [patch] ED-4758, fix for confluence issue media single toolbar not visible for saved media. [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
+- [patch] Updated dependencies [730b047](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/730b047)
+
+## 73.3.2
+- [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
+  - @atlaskit/media-card@29.0.2
+  - @atlaskit/renderer@18.0.2
+  - @atlaskit/editor-common@11.0.3
+
 ## 73.3.1
 - [patch] Convert special/smart subtitution characters back to the plain-text ascii counterparts when formatted in inline-code (ED-4635) [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)
 - [none] Updated dependencies [76fdbf3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76fdbf3)

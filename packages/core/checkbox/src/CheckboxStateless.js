@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import { withTheme, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 
 type Props = {|
@@ -27,7 +27,7 @@ type Props = {|
   be called with an object containing the react synthetic event as well as the
   state the checkbox will naturally be set to. The stateless version does not
   automatically update whether the checkbox is checked. */
-  onChange: (event: Event & { currentTarget: HTMLInputElement }) => mixed,
+  onChange: (event: SyntheticEvent<HTMLInputElement>) => mixed,
   /** The value to be used in the checkbox input. This is the value that will
    be returned on form submission. */
   value: number | string,
@@ -40,7 +40,9 @@ type State = {|
   mouseIsDown: boolean,
 |};
 
-class CheckboxStateless extends Component<Props, State> {
+const emptyTheme = {};
+
+export default class CheckboxStateless extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   state: State = {
     isActive: false,
@@ -138,55 +140,43 @@ class CheckboxStateless extends Component<Props, State> {
     const { isFocused, isActive, isHovered } = this.state;
 
     return (
-      <Label
-        isDisabled={isDisabled}
-        isFullWidth={isFullWidth}
-        onMouseDown={this.onMouseDown}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
-        onMouseUp={this.onMouseUp}
-      >
-        <HiddenCheckbox
-          disabled={isDisabled}
-          checked={isChecked}
-          onChange={onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          onKeyUp={this.onKeyUp}
-          onKeyDown={this.onKeyDown}
-          type="checkbox"
-          value={value}
-          name={name}
-          innerRef={r => (this.checkbox = r)} // eslint-disable-line
-        />
-        <Wrapper>
-          <IconWrapper
-            isChecked={isChecked}
-            isDisabled={isDisabled}
-            isFocused={isFocused}
-            isActive={isActive}
-            isHovered={isHovered}
-            isInvalid={isInvalid}
-          >
-            {this.renderCheckboxIcon()}
-          </IconWrapper>
-          <span>{label}</span>
-        </Wrapper>
-      </Label>
+      <ThemeProvider theme={emptyTheme}>
+        <Label
+          isDisabled={isDisabled}
+          isFullWidth={isFullWidth}
+          onMouseDown={this.onMouseDown}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onMouseUp={this.onMouseUp}
+        >
+          <HiddenCheckbox
+            disabled={isDisabled}
+            checked={isChecked}
+            onChange={onChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            type="checkbox"
+            value={value}
+            name={name}
+            innerRef={r => (this.checkbox = r)} // eslint-disable-line
+          />
+          <Wrapper>
+            <IconWrapper
+              isChecked={isChecked}
+              isDisabled={isDisabled}
+              isFocused={isFocused}
+              isActive={isActive}
+              isHovered={isHovered}
+              isInvalid={isInvalid}
+            >
+              {this.renderCheckboxIcon()}
+            </IconWrapper>
+            <span>{label}</span>
+          </Wrapper>
+        </Label>
+      </ThemeProvider>
     );
   }
-}
-// TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
-// possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
-// $FlowFixMe
-const CheckboxWithTheme = withTheme(CheckboxStateless);
-
-const emptyTheme = {};
-
-export default function(props: any) {
-  return (
-    <ThemeProvider theme={emptyTheme}>
-      <CheckboxWithTheme {...props} />
-    </ThemeProvider>
-  );
 }

@@ -1,5 +1,8 @@
 # @atlaskit/util-service-support
 
+## 2.0.9
+- [patch] FS-797 Allow setting url for pubsub example and fix url-search-params import style [1c85e67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c85e67)
+
 ## 2.0.8
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/docs@4.0.0

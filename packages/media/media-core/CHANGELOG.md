@@ -1,5 +1,13 @@
 # @atlaskit/media-core
 
+## 19.1.0
+
+- [minor] add context.getFile [4494d91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4494d91)
+- [patch] Updated dependencies [2e66dab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e66dab)
+  - @atlaskit/media-store@4.1.0
+- [none] Updated dependencies [4494d91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4494d91)
+  - @atlaskit/media-store@4.1.0
+
 ## 19.0.1
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
   - @atlaskit/button@8.0.1

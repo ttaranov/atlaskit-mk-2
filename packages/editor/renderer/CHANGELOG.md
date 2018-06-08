@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 18.0.2
+- [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
+  - @atlaskit/media-card@29.0.2
+  - @atlaskit/editor-common@11.0.3
+
 ## 18.0.1
 - [patch] Updated dependencies [732d2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/732d2f5)
   - @atlaskit/media-card@29.0.1
