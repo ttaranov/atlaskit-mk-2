@@ -7,6 +7,7 @@ import {
   CellAttributes,
   LinkAttributes,
   TableAttributes,
+  CardAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -366,6 +367,8 @@ export const layoutSection = (
   attrs: { layoutType: string } = { layoutType: 'two-equal' },
 ) => nodeFactory(sampleSchema.nodes.layoutSection, attrs);
 export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
+export const inlineCard = (attrs: CardAttributes) =>
+  nodeFactory(sampleSchema.nodes.inlineCard, attrs);
 
 //
 // Marks

@@ -85,6 +85,8 @@ export interface EditorProps {
   // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
   UNSAFE_allowQuickInsert?: boolean;
 
+  UNSAFE_allowCards?: boolean;
+
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
   disabled?: boolean;

@@ -38,6 +38,7 @@ import {
   subsup,
   textColor,
   text,
+  inlineCard,
 } from './schema-builder';
 
 export const createText: Function = txt => schema => text(txt, schema);
@@ -83,6 +84,8 @@ export const pmNodeFactory: object = {
     bodiedExtension({ extensionKey: '123', extensionType: 'bodiedExtension' })(
       content,
     ),
+  inlineCard: () =>
+    inlineCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
 };
 
 export const pmNodeBuilder: object = {
@@ -149,6 +152,9 @@ export const pmNodeBuilder: object = {
     text: 'fake card',
     title: { text: 'fake card title' },
   })(),
+  inlineCard: inlineCard({
+    url: 'https://product-fabric.atlassian.net/browse/ED-1',
+  }),
 };
 
 export const pmMarkBuilder: object = {
