@@ -90,6 +90,7 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
+      // TODO: pass cancel from the observer
       const { deferredFileId, cancel } = this.context.uploadFile(
         uploadableFile,
         {

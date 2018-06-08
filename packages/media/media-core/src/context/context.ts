@@ -1,6 +1,9 @@
+import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/publishReplay';
 
 import {
@@ -251,7 +254,7 @@ class ContextImpl implements Context {
   uploadFile(file: UploadableFile): Observable<FileState> {
     let id: string;
     const size = file.content instanceof Blob ? file.content.size : 0;
-    const tempFileId = new Date().getTime().toString(); // TODO: use uuid
+    const tempFileId = uuid.v4();
     const fileStream = Observable.create(
       async (observer: Observer<FileState>) => {
         try {
@@ -270,6 +273,7 @@ class ContextImpl implements Context {
           });
 
           id = await deferredFileId;
+          // TODO: create tempId - publicId mapping
           observer.next({
             id,
             progress: 1,
@@ -286,7 +290,7 @@ class ContextImpl implements Context {
       .concat(Observable.defer(() => this.createDownloadFileStream(id)))
       .publishReplay(1);
 
-    this.fileItemCache.set(tempFileId, fileStream);
+    this.fileStreamsCache.set(tempFileId, fileStream);
     // Start hot observable
     fileStream.connect();
 
