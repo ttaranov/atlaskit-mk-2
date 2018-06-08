@@ -117,10 +117,23 @@ pipelines:
     build-visual-regression:
     - step:
           script:
+<<<<<<< HEAD
             - source ./build/visual-regression/puppeteer.sh
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             #to overcome puppeteer drawback yarn add again
+=======
+            # When running Puppeteer in Docker, 
+            # getting headless Chrome up and running in Docker can be tricky.
+            # The bundled Chromium that Puppeteer installs is missing the necessary shared library dependencies.
+            # To fix, you'll need to install the missing dependencies and the latest Chromium package in your Dockerfile:
+            - source ./build/visual-regression/puppeteer.sh
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile 
+            # Install puppeteer so it's available in the container.
+            # Even if it is present in the package.json
+            # For further details see: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
+>>>>>>> 15224103d467d755bea1a72a84d514bb9b3b941c
             - yarn add puppeteer
             - yarn test:vr
           caches:
