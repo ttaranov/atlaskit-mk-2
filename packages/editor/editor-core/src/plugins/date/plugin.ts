@@ -1,8 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { Dispatch } from '../../event-dispatcher';
 import DateNodeView from './nodeviews/date';
-import { nodeViewFactory } from '../../nodeviews';
+import { ReactNodeView } from '../../nodeviews';
+import { PMPluginFactory } from '../../types';
 
 export const pluginKey = new PluginKey('datePlugin');
 
@@ -10,7 +9,7 @@ export type DateState = {
   element: HTMLElement | null;
 };
 
-export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
+const createPlugin: PMPluginFactory = ({ dispatch, portalProviderAPI }) =>
   new Plugin({
     state: {
       init: () => ({ element: null }),
@@ -30,7 +29,9 @@ export default (dispatch: Dispatch, providerFactory: ProviderFactory) =>
     key: pluginKey,
     props: {
       nodeViews: {
-        date: nodeViewFactory(providerFactory, { date: DateNodeView }),
+        date: ReactNodeView.fromComponent(DateNodeView, portalProviderAPI),
       },
     },
   });
+
+export default createPlugin;

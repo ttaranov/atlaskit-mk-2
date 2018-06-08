@@ -62,6 +62,24 @@ describe(name, () => {
       cb.setProps({ isIndeterminate: true });
       expect(element.indeterminate).toBe(true);
     });
+    it('should have ref to CheckboxStateless class', () => {
+      const spy = jest.fn();
+      mount(
+        <div>
+          <CheckboxStateless
+            ref={spy}
+            label=""
+            isChecked
+            onChange={() => {}}
+            name="stub"
+            value="stub value"
+          />
+        </div>,
+      );
+      expect(spy).toHaveBeenCalled();
+      const [instance] = spy.mock.calls[0];
+      expect(instance).toBeInstanceOf(CheckboxStateless);
+    });
   });
   describe('<Checkbox />', () => {
     it('should render initiallyChecked', () => {

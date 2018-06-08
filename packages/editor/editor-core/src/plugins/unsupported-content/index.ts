@@ -3,15 +3,15 @@ import {
   confluenceUnsupportedInline,
 } from '@atlaskit/editor-common';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
-import { EditorPlugin } from '../../types';
-import { nodeViewFactory } from '../../nodeviews';
+import { EditorPlugin, PMPluginFactory } from '../../types';
+import { ReactNodeView } from '../../nodeviews';
 import ReactUnsupportedBlockNode from './nodeviews/unsupported-block';
 import ReactUnsupportedInlineNode from './nodeviews/unsupported-inline';
 import { traverseNode } from './utils';
 
 export const pluginKey = new PluginKey('unsupportedContentPlugin');
 
-const createPlugin = (schema, providerFactory) => {
+const createPlugin: PMPluginFactory = ({ schema, portalProviderAPI }) => {
   return new Plugin({
     state: {
       init(config, state: EditorState) {
@@ -24,12 +24,14 @@ const createPlugin = (schema, providerFactory) => {
     key: pluginKey,
     props: {
       nodeViews: {
-        confluenceUnsupportedBlock: nodeViewFactory(providerFactory, {
-          confluenceUnsupportedBlock: ReactUnsupportedBlockNode,
-        }),
-        confluenceUnsupportedInline: nodeViewFactory(providerFactory, {
-          confluenceUnsupportedInline: ReactUnsupportedInlineNode,
-        }),
+        confluenceUnsupportedBlock: ReactNodeView.fromComponent(
+          ReactUnsupportedBlockNode,
+          portalProviderAPI,
+        ),
+        confluenceUnsupportedInline: ReactNodeView.fromComponent(
+          ReactUnsupportedInlineNode,
+          portalProviderAPI,
+        ),
       },
     },
   });
@@ -55,8 +57,7 @@ const unsupportedContentPlugin: EditorPlugin = {
     return [
       {
         rank: 1320,
-        plugin: ({ schema, providerFactory }) =>
-          createPlugin(schema, providerFactory),
+        plugin: createPlugin,
       },
     ];
   },

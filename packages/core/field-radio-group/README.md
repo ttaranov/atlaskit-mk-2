@@ -1,11 +1,13 @@
-# RadioGroup
+# Radio-group
 
 Provides a standard way to select a single option from a list.
 
 ## Installation
 
-npm install @atlaskit/field-radio-group
+```sh
+yarn add @atlaskit/field-radio-group
+```
 
 ## Usage
 
-See [here](https://atlaskit.atlassian.com/packages/core/field-radio-group)
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/field-radio-group).

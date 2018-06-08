@@ -123,8 +123,9 @@ export class ExampleEditor extends React.Component<Props, State> {
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             UNSAFE_allowQuickInsert={true}
+            delegateAnalyticsEvent={(...args) => console.log(args)}
             allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
+            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
             allowLists={true}
             allowTextColor={true}
             allowTables={{
@@ -146,6 +147,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             UNSAFE_allowLayouts={true}
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
+            UNSAFE_allowCards={true}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."

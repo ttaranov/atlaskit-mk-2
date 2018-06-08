@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, SyntheticEvent, ReactElement, ReactNode } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
+import { closeOnDirectClick } from './utils/closeOnDirectClick';
 import {
   ContentWrapper,
   CloseButtonWrapper,
@@ -97,16 +98,9 @@ export class Content extends Component<ContentProps, ContentState> {
   // We want to check mouse movement on click too
   // in order to not hide controls when user is interacting with any control
   private onClick = e => {
-    this.checkMouseMovement();
-    this.onClickContentClose(e);
-  };
-
-  private onClickContentClose = e => {
     const { onClose } = this.props;
-
-    if (e.target === e.currentTarget && onClose) {
-      onClose();
-    }
+    this.checkMouseMovement();
+    closeOnDirectClick(onClose)(e);
   };
 
   private saveContentWrapperRef = el => {

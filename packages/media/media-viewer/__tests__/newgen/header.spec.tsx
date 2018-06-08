@@ -213,7 +213,7 @@ describe('<Header />', () => {
       });
     });
 
-    it('shows nothing with metadata failed to be retrieved', () => {
+    it('shows nothing when metadata failed to be retrieved', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
         <Header context={createContext(subject)} identifier={identifier} />,

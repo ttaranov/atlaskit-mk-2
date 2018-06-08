@@ -4,10 +4,13 @@ import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { PDFWrapper } from '../../styled';
+import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
+
+export const pdfViewerClassName = 'pdfViewer';
 
 /* tslint:disable:no-unused-expression */
 injectGlobal`
-  .pdfViewer {
+  .${pdfViewerClassName} {
     .page {
       margin: 1px auto -8px auto;
       border: 9px solid transparent;
@@ -39,13 +42,14 @@ export const fetch = async (url: string): Promise<Blob> => {
 
 export type Props = {
   doc: any;
+  onClose?: () => void;
 };
 
 export type State = {
-  scale: number;
+  zoom: number;
 };
 
-const initialState: State = { scale: 1 };
+const initialState: State = { zoom: 100 };
 
 export class PDFViewer extends React.PureComponent<Props, State> {
   private el: HTMLDivElement;
@@ -62,18 +66,21 @@ export class PDFViewer extends React.PureComponent<Props, State> {
     this.el = el;
   };
 
-  private handleZoom = scale => {
-    this.pdfViewer.currentScale = scale;
-    this.setState({ scale });
+  private handleZoom = zoom => {
+    this.pdfViewer.currentScale = zoom / 100;
+    this.setState({ zoom });
   };
 
   render() {
     return (
       <div>
         <PDFWrapper innerRef={this.savePdfElement}>
-          <div className="pdfViewer" />
+          <div
+            className={pdfViewerClassName}
+            onClick={closeOnDirectClick(this.props.onClose)}
+          />
         </PDFWrapper>
-        <ZoomControls zoomLevel={this.state.scale} onChange={this.handleZoom} />
+        <ZoomControls zoom={this.state.zoom} onChange={this.handleZoom} />
       </div>
     );
   }

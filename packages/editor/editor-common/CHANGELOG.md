@@ -1,5 +1,55 @@
 # @atlaskit/editor-common
 
+## 11.0.4
+- [patch] ED-4818: add inlineCard to schema [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
+- [none] Updated dependencies [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
+  - @atlaskit/editor-test-helpers@4.0.4
+
+## 11.0.3
+- [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
+  - @atlaskit/media-card@29.0.2
+
+## 11.0.2
+- [patch] Updated dependencies [732d2f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/732d2f5)
+  - @atlaskit/media-card@29.0.1
+
+## 11.0.1
+- [patch] Strip empty optional attributes from the link mark in editor-json-transformer [c3b3100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b3100)
+- [none] Updated dependencies [c3b3100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b3100)
+  - @atlaskit/editor-json-transformer@3.0.10
+
+## 11.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/media-card@29.0.0
+  - @atlaskit/emoji@35.0.7
+  - @atlaskit/mention@13.0.0
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/editor-test-helpers@4.0.3
+  - @atlaskit/media-core@19.0.0
+  - @atlaskit/icon@12.0.0
+
+## 10.1.10
+- [patch] ED-4789: fix sticky toolbars [6d09683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d09683)
+- [none] Updated dependencies [6d09683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d09683)
+
+## 10.1.9
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/media-card@28.0.6
+  - @atlaskit/emoji@35.0.6
+  - @atlaskit/mention@12.0.3
+  - @atlaskit/editor-json-transformer@3.0.8
+  - @atlaskit/editor-test-helpers@4.0.2
+
+## 10.1.8
+- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
+  - @atlaskit/emoji@35.0.5
+  - @atlaskit/media-core@18.1.2
+
+## 10.1.7
+- [patch] Quick Insert menu for internal editor things [370344f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370344f)
+- [none] Updated dependencies [370344f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370344f)
+
 ## 10.1.6
 - [patch] ED-4689 add __confluenceMetadata to link mark schema [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
 - [none] Updated dependencies [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)

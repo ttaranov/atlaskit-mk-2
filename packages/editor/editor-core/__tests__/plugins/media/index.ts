@@ -71,7 +71,7 @@ describe('Media plugin', () => {
           allowMediaSingle: true,
           customDropzoneContainer: dropzoneContainer,
         }),
-        codeBlockPlugin,
+        codeBlockPlugin(),
         rulePlugin,
         tablePlugin,
       ],

@@ -123,7 +123,7 @@ function addCodeMark(
     }
     analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');
     const regexStart = end - match[2].length + 1;
-    return transformToCodeAction(state, regexStart, end)
+    return transformToCodeAction(regexStart, end, state.tr)
       .delete(regexStart, regexStart + specialChar.length)
       .removeStoredMark(markType);
   };

@@ -168,6 +168,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         target={anchorElement}
         fitHeight={300}
         fitWidth={340}
+        zIndex={500}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
         scrollableElement={popupsScrollableElement}

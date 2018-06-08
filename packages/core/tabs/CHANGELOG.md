@@ -1,5 +1,21 @@
 # @atlaskit/tabs
 
+## 7.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/tooltip@10.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/spinner@6.0.1
+  - @atlaskit/docs@4.0.1
+
+## 7.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/spinner@6.0.0
+  - @atlaskit/docs@4.0.0
+
 ## 6.0.3
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/tooltip@9.2.1

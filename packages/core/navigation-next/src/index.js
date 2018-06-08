@@ -30,7 +30,16 @@ export { NavigationStateInterface } from './state';
 export { GlobalTheme } from './theme';
 
 /** Nav API */
-export { NavAPISubscriber, NavAPI, utils as navAPIUtils } from './api';
+export {
+  ContainerViewSubscriber,
+  getContainerViewState,
+  getRootViewState,
+  RootViewSubscriber,
+  utils as navAPIUtils,
+} from './api';
 
 /** Nav Renderer */
 export { default as NavRenderer } from './renderer';
+
+/** SSR singleton reset function */
+export { resetServerContext } from './common/utils';

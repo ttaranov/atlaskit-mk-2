@@ -73,6 +73,9 @@ export default class CrossProductSearchClientImpl
   private serviceConfig: ServiceConfig;
   private cloudId: string;
 
+  // result limit per scope
+  private readonly RESULT_LIMIT = 10;
+
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
@@ -95,7 +98,7 @@ export default class CrossProductSearchClientImpl
     const body = {
       query: query,
       cloudId: this.cloudId,
-      limit: 5,
+      limit: this.RESULT_LIMIT,
       scopes: scopes,
     };
 
