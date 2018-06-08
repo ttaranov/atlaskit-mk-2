@@ -147,6 +147,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             UNSAFE_allowLayouts={true}
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
+            UNSAFE_allowCards={true}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."

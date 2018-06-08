@@ -77,6 +77,7 @@ export {
   placeholder,
   layoutSection,
   layoutColumn,
+  inlineCard,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
