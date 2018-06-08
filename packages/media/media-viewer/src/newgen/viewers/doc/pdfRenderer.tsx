@@ -53,7 +53,7 @@ export type State = {
 
 const initialState: State = { zoom: 100, doc: { status: 'PENDING' } };
 
-export class PDFViewer extends React.PureComponent<Props, State> {
+export class PDFRenderer extends React.PureComponent<Props, State> {
   private el: HTMLDivElement;
   private pdfViewer: any;
 

@@ -5,7 +5,7 @@ import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
-import { PDFViewer } from './viewers/pdf';
+import { DocViewer } from './viewers/doc';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
@@ -77,7 +77,7 @@ export class ItemViewer extends React.Component<Props, State> {
               />
             );
           case 'doc':
-            return <PDFViewer {...viewerProps} />;
+            return <DocViewer {...viewerProps} />;
           default:
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }
