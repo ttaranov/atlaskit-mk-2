@@ -26,13 +26,11 @@ export interface Props {
 }
 
 export class LanguagePicker extends React.Component<Props> {
-  handleLanguageSelected = ({ value }) => {
-    this.props.setLanguage(value);
-  };
-
-  handleCodeBlockDelete = () => {
-    this.props.deleteCodeBlock();
-  };
+  private prevActiveCodeBlockHeight: number;
+  constructor(props: Props) {
+    super(props);
+    this.prevActiveCodeBlockHeight = props.activeCodeBlockDOM.scrollHeight;
+  }
 
   shouldComponentUpdate(nextProps: Props) {
     if (nextProps.activeLanguage !== this.props.activeLanguage) {
@@ -41,8 +39,26 @@ export class LanguagePicker extends React.Component<Props> {
     if (nextProps.activeCodeBlockDOM !== this.props.activeCodeBlockDOM) {
       return true;
     }
+    if (
+      nextProps.activeCodeBlockDOM.scrollHeight !==
+      this.prevActiveCodeBlockHeight
+    ) {
+      return true;
+    }
     return false;
   }
+
+  componentDidUpdate() {
+    this.prevActiveCodeBlockHeight = this.props.activeCodeBlockDOM.scrollHeight;
+  }
+
+  handleLanguageSelected = ({ value }) => {
+    this.props.setLanguage(value);
+  };
+
+  handleCodeBlockDelete = () => {
+    this.props.deleteCodeBlock();
+  };
 
   render() {
     const {

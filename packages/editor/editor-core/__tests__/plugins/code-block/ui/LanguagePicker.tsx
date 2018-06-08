@@ -10,18 +10,19 @@ import LanguagePickerWithOutsideListeners, {
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   let languagePicker: ReactWrapper<any, any>;
   let setLanguageStub, deleteCodeBlockStub;
+  let dom: HTMLElement;
 
   beforeEach(() => {
     setLanguageStub = jest.fn();
     deleteCodeBlockStub = jest.fn();
+    dom = document.createElement('div');
     languagePicker = mount(
       <LanguagePicker
-        activeCodeBlockDOM={document.body}
+        activeCodeBlockDOM={dom}
         deleteCodeBlock={deleteCodeBlockStub}
         setLanguage={setLanguageStub}
       />,
     );
-    console.log(languagePicker.debug());
   });
 
   afterEach(() => {
@@ -41,6 +42,12 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
       expect(renderSpy).toHaveBeenCalledTimes(0);
     });
 
+    it('should not re-render if activeCodeBlockDOM height has not changed', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      languagePicker.setProps({ activeCodeBlockDOM: dom });
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+    });
+
     it('should re-render if activeLanguage prop changes', () => {
       const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
       languagePicker.setProps({ activeLanguage: 'javascript' });
@@ -49,7 +56,14 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('should re-render if activeCodeBlockDOM prop changes', () => {
       const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
-      languagePicker.setProps({ activeCodeBlockDOM: undefined as any });
+      languagePicker.setProps({ activeCodeBlockDOM: document.head });
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should re-render if activeCodeBlockDOM height has changed', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      Object.defineProperty(dom, 'scrollHeight', { value: 100 });
+      languagePicker.setProps({ activeCodeBlockDOM: dom });
       expect(renderSpy).toHaveBeenCalledTimes(1);
     });
   });
