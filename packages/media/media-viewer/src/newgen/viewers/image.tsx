@@ -19,11 +19,12 @@ export type ImageViewerProps = {
 
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
-  zoomLevel: number;
+  zoom: number;
 };
+
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
-  zoomLevel: 1,
+  zoom: 100,
 };
 
 export class ImageViewer extends React.Component<
@@ -47,27 +48,27 @@ export class ImageViewer extends React.Component<
     }
   }
 
-  private onZoomChange = zoomLevel => {
-    this.setState({ zoomLevel });
+  private onZoomChange = zoom => {
+    this.setState({ zoom });
   };
 
   renderImage(src: string) {
-    const { zoomLevel } = this.state;
     const { onClose } = this.props;
+    const { zoom } = this.state;
     // We need to set new border value every time the zoom changes
     // to force a re layout in Chrome.
     // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
-    const border = `${zoomLevel / 100}px solid transparent`;
+    const border = `${zoom / 10000}px solid transparent`;
     // We use style attr instead of SC prop for perf reasons
     const imgStyle = {
-      transform: `scale(${zoomLevel})`,
+      transform: `scale(${zoom / 100})`,
       border,
     };
 
     return (
       <ImageWrapper onClick={closeOnDirectClick(onClose)}>
         <Img src={src} style={imgStyle} />
-        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
+        <ZoomControls zoom={this.state.zoom} onChange={this.onZoomChange} />
       </ImageWrapper>
     );
   }

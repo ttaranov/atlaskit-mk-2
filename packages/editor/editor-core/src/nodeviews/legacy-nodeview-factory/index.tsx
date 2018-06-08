@@ -82,7 +82,7 @@ class NodeViewElem implements NodeView {
   }
 
   destroy() {
-    this.portalProviderAPI.destroy(this.domRef!);
+    this.portalProviderAPI.remove(this.domRef!);
     this.eventDispatcher.destroy();
     this.domRef = undefined;
   }

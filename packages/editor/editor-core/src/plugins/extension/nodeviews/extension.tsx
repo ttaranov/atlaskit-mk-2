@@ -20,9 +20,11 @@ class ExtensionNode extends ReactNodeView {
   }
 
   getContentDOM() {
-    const dom = document.createElement(
-      this.node.type.name === 'inlineExtension' ? 'span' : 'div',
-    );
+    if (this.node.isInline) {
+      return;
+    }
+
+    const dom = document.createElement('div');
     dom.className = `${this.node.type.name}-content-dom-wrapper`;
     return { dom };
   }

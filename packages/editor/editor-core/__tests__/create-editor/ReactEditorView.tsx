@@ -17,9 +17,9 @@ import { patchEditorViewForJSDOM } from '@atlaskit/editor-test-helpers/';
 import { EditorView } from 'prosemirror-view';
 import { EventDispatcher } from '../../src/event-dispatcher';
 
-const portalProviderAPI = {
+const portalProviderAPI: any = {
   render() {},
-  destroy() {},
+  remove() {},
 };
 
 describe(name, () => {
