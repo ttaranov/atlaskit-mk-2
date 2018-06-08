@@ -17,7 +17,7 @@ async function takeScreenShot(page /*:any*/, url /*:string*/) {
 }
 
 //function to check if image snapshot dir exists and delete it
-function removeOldPrdSnapshots(snapshotDir /*: string */) {
+function removeOldProdSnapshots(snapshotDir /*: string */) {
   if (process.env.PROD === 'true' && fs.existsSync(snapshotDir)) {
     fs.removeSync(snapshotDir);
   }
@@ -58,7 +58,7 @@ const getExampleUrl = (
 
 module.exports = {
   getExamplesFor,
-  removeOldPrdSnapshots,
+  removeOldProdSnapshots,
   takeScreenShot,
   getExampleUrl,
 };

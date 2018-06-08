@@ -3,7 +3,7 @@ import {
   getExamplesFor,
   getExampleUrl,
   takeScreenShot,
-  removeOldPrdSnapshots,
+  removeOldProdSnapshots,
 } from '@atlaskit/visual-regression/helper';
 
 const path = require('path');
@@ -13,7 +13,7 @@ const examples = getExamplesFor('toggle');
 
 describe('Snapshot Test', () => {
   beforeAll(async () => {
-    removeOldPrdSnapshots(imageSnapshotFolder);
+    removeOldProdSnapshots(imageSnapshotFolder);
   });
 
   examples.forEach(example => {
