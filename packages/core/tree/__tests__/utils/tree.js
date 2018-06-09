@@ -1,8 +1,21 @@
 //@flow
 
-import { flattenTree, isSamePath, mutateTree } from '../../src/utils/tree';
+import {
+  flattenTree,
+  getDestinationPath,
+  getDragPosition,
+  getItem,
+  getParentOfFlattenedIndex,
+  getSourcePath,
+  isSamePath,
+  mutateTree,
+} from '../../src/utils/tree';
 import { treeWithThreeLeaves } from '../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
+import { complexTree } from '../../mockdata/complexTree';
+
+const flatTreeWithTwoBranches = flattenTree(treeWithTwoBranches);
+const flatComplexTree = flattenTree(complexTree);
 
 describe('@atlaskit/tree - utils/tree', () => {
   describe('#flattenTree', () => {
@@ -163,6 +176,205 @@ describe('@atlaskit/tree - utils/tree', () => {
     it('returns false if any of them is empty', () => {
       expect(isSamePath([], [1, 1])).toBe(false);
       expect(isSamePath([1], [])).toBe(false);
+    });
+  });
+
+  describe('#getParentOfFlattenedIndex', () => {
+    it('returns the parent of a given index', () => {
+      expect(getParentOfFlattenedIndex(flatTreeWithTwoBranches, 1)).toEqual(
+        treeWithTwoBranches.items['1-1'],
+      );
+    });
+
+    it('returns null if if top level', () => {
+      expect(getParentOfFlattenedIndex(flatTreeWithTwoBranches, 3)).toBe(null);
+    });
+  });
+
+  describe('#getItem', () => {
+    it('returns item from the first level of tree', () => {
+      expect(getItem(treeWithThreeLeaves, [1])).toBe(
+        treeWithThreeLeaves.items['1-2'],
+      );
+    });
+
+    it('returns item from deep the tree', () => {
+      expect(getItem(treeWithTwoBranches, [1, 1])).toBe(
+        treeWithTwoBranches.items['1-2-2'],
+      );
+    });
+
+    it('returns undefined if item does not exist', () => {
+      expect(getItem(treeWithThreeLeaves, [100])).toBe(undefined);
+    });
+  });
+
+  describe('#getSourcePath', () => {
+    it('handles the top element', () => {
+      expect(getSourcePath(flatTreeWithTwoBranches, 0)).toEqual([0]);
+    });
+
+    it('handles element deeper', () => {
+      expect(getSourcePath(flatTreeWithTwoBranches, 1)).toEqual([0, 0]);
+    });
+  });
+
+  describe('#getDestinationPath', () => {
+    it('returns the same path if the index did not change', () => {
+      expect(getDestinationPath(flatComplexTree, 1, 1)).toEqual([1]);
+    });
+
+    describe('moving down', () => {
+      describe('same parent', () => {
+        it('moves to the top of the list', () => {
+          // not valid
+        });
+        it('moves to the middle of the list', () => {
+          expect(getDestinationPath(flatComplexTree, 3, 4)).toEqual([2, 1]);
+        });
+        it('moves to the end of the list', () => {
+          expect(getDestinationPath(flatComplexTree, 3, 6)).toEqual([2, 3]);
+        });
+      });
+
+      describe('different parent', () => {
+        describe('higher level', () => {
+          it('moves to the top of the list', () => {
+            // not valid
+          });
+          it('moves to the middle of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 8)).toEqual([5]);
+          });
+          it('moves to the end of the list to the top level', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 20)).toEqual([9]);
+          });
+          it('moves to the end of the list to not top level', () => {
+            expect(getDestinationPath(flatComplexTree, 15, 18)).toEqual([6, 5]);
+          });
+        });
+
+        describe('same level', () => {
+          it('moves to the top of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 10)).toEqual([6, 0]);
+          });
+          it('moves to the middle of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 12)).toEqual([6, 2]);
+          });
+          it('moves to the end of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 18)).toEqual([6, 5]);
+          });
+        });
+
+        describe('lower level', () => {
+          it('moves to the top of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 13)).toEqual([
+              6,
+              2,
+              0,
+            ]);
+          });
+          it('moves to the middle of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 14)).toEqual([
+              6,
+              2,
+              1,
+            ]);
+          });
+          it('moves to the end of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 16)).toEqual([6, 3]);
+          });
+        });
+      });
+    });
+
+    describe('moving up', () => {
+      describe('same parent', () => {
+        it('moves to the top of the list', () => {
+          expect(getDestinationPath(flatComplexTree, 4, 3)).toEqual([2, 0]);
+        });
+        it('moves to the middle of the list', () => {
+          expect(getDestinationPath(flatComplexTree, 5, 4)).toEqual([2, 1]);
+        });
+        it('moves to the end of the list', () => {
+          // not valid
+        });
+      });
+
+      describe('different parent', () => {
+        describe('higher level', () => {
+          it('moves to the top of the list on the top level', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 0)).toEqual([0]);
+          });
+          it('moves to the top of the list not on the top level', () => {
+            expect(getDestinationPath(flatComplexTree, 15, 11)).toEqual([6, 0]);
+          });
+          it('moves to the middle of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 4, 1)).toEqual([1]);
+          });
+          it('moves to the end of the list', () => {
+            // not valid
+          });
+        });
+
+        describe('same level', () => {
+          it('moves to the top of the list on same level', () => {
+            expect(getDestinationPath(flatComplexTree, 12, 3)).toEqual([2, 0]);
+          });
+          it('moves to the middle of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 12, 4)).toEqual([2, 1]);
+          });
+          it('moves to the end of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 12, 7)).toEqual([2, 4]);
+          });
+        });
+
+        describe('lower level', () => {
+          it('moves to the top of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 18, 14)).toEqual([
+              6,
+              2,
+              0,
+            ]);
+          });
+          it('moves to the middle of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 18, 15)).toEqual([
+              6,
+              2,
+              1,
+            ]);
+          });
+          it('moves to the end of the list', () => {
+            expect(getDestinationPath(flatComplexTree, 18, 17)).toEqual([6, 3]);
+          });
+        });
+      });
+    });
+  });
+
+  describe('#getDragPosition', () => {
+    it('returns the top element', () => {
+      expect(getDragPosition(treeWithTwoBranches, [0])).toEqual({
+        parentId: '1',
+        index: 0,
+      });
+    });
+
+    it('returns the top element of a sublist', () => {
+      expect(getDragPosition(treeWithTwoBranches, [0, 0])).toEqual({
+        parentId: '1-1',
+        index: 0,
+      });
+    });
+
+    it('returns the last element of a sublist', () => {
+      expect(getDragPosition(treeWithTwoBranches, [0, 1])).toEqual({
+        parentId: '1-1',
+        index: 1,
+      });
+    });
+
+    it('returns undefined for invalid', () => {
+      expect(getDragPosition(treeWithTwoBranches, [100, 1])).toEqual(null);
     });
   });
 });

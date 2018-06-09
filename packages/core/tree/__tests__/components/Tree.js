@@ -19,18 +19,24 @@ describe('@atlaskit/tree - Tree', () => {
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
+        provided: expect.any(Object),
+        snapshot: expect.any(Object),
       });
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.items['1-2'],
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
+        provided: expect.any(Object),
+        snapshot: expect.any(Object),
       });
       expect(mockRender).toBeCalledWith({
         item: treeWithThreeLeaves.items['1-3'],
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
+        provided: expect.any(Object),
+        snapshot: expect.any(Object),
       });
     });
 
@@ -58,6 +64,8 @@ describe('@atlaskit/tree - Tree', () => {
         depth: 0,
         onExpand: expect.any(Function),
         onCollapse: expect.any(Function),
+        provided: expect.any(Object),
+        snapshot: expect.any(Object),
       });
     });
   });
