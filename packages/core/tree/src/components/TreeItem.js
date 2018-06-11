@@ -2,15 +2,14 @@
 import { Component } from 'react';
 import type { Props } from './TreeItem-types';
 import { isSamePath } from '../utils/tree';
+import { sameProps } from '../utils/react';
 
 export default class TreeItem extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
-    if (
-      ['item', 'provided', 'snapshot'].find(p => this.props[p] !== nextProps[p])
-    ) {
-      return true;
-    }
-    return !isSamePath(this.props.path, nextProps.path);
+    return (
+      !sameProps(this.props, nextProps, ['item', 'provided', 'snapshot']) ||
+      !isSamePath(this.props.path, nextProps.path)
+    );
   }
 
   render() {
