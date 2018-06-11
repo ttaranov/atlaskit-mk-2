@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 3.1.6
+- [patch] Fix issue where images would not be serialised when inside tables [e47dc42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47dc42)
+- [none] Updated dependencies [e47dc42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47dc42)
+
 ## 3.1.5
 - [patch] Fix issue where parsing an empty string would throw a SyntaxError in IE11 due to a bug with `querySelectorAll` and pseudo-elements. (https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/16104908/) (BBCDEV-10195) [274e0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/274e0ad)
 - [none] Updated dependencies [274e0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/274e0ad)

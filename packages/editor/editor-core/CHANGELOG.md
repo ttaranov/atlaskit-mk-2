@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.3.9
+- [patch] Adds support for auto-closing brackets inside code-blocks [9d69d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d69d58)
+- [none] Updated dependencies [9d69d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d69d58)
+
 ## 73.3.8
 - [patch] Fix onComponentUpdate sometimes being undefined in tables node views [57225fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57225fd)
 - [none] Updated dependencies [57225fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57225fd)

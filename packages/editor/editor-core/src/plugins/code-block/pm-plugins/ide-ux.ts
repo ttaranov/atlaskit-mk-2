@@ -1,12 +1,19 @@
 import { EditorState, TextSelection, Plugin } from 'prosemirror-state';
 import { keydownHandler } from 'prosemirror-keymap';
 import {
+  getAutoClosingBracketInfo,
+  isCursorBeforeClosingBracket,
+  isClosingBracket,
+} from '../ide-ux/bracket-handling';
+import {
+  getEndOfCurrentLine,
   getLinesFromSelection,
   getStartOfCurrentLine,
   forEachLine,
   getLineInfo,
 } from '../ide-ux/line-handling';
 import { getCursor } from '../../../utils';
+import { setTextSelection } from 'prosemirror-utils';
 
 const isSelectionEntirelyInsideCodeBlock = (state: EditorState): boolean =>
   state.selection.$from.sameParent(state.selection.$to) &&
@@ -17,6 +24,34 @@ const isCursorInsideCodeBlock = (state: EditorState): boolean =>
 
 export default new Plugin({
   props: {
+    handleTextInput(view, from, to, text) {
+      const { state, dispatch } = view;
+      if (isCursorInsideCodeBlock(state)) {
+        const beforeText = getStartOfCurrentLine(state).text;
+        const afterText = getEndOfCurrentLine(state).text;
+
+        // Ignore right bracket when user types it and it already exists
+        if (isCursorBeforeClosingBracket(afterText)) {
+          if (isClosingBracket(text)) {
+            view.dispatch(setTextSelection(to + text.length)(state.tr));
+            return true;
+          }
+        }
+
+        // Automatically add right-hand side bracket when user types the left bracket
+        const { left, right } = getAutoClosingBracketInfo(
+          beforeText + text,
+          afterText,
+        );
+        if (left && right) {
+          const bracketPair = state.schema.text(text + right);
+          let tr = state.tr.replaceWith(from, to, bracketPair);
+          dispatch(setTextSelection(from + text.length)(tr));
+          return true;
+        }
+      }
+      return false;
+    },
     handleKeyDown: keydownHandler({
       Enter: (state: EditorState, dispatch) => {
         if (isCursorInsideCodeBlock(state)) {
@@ -40,6 +75,29 @@ export default new Plugin({
           return true;
         } else if (isSelectionEntirelyInsideCodeBlock(state)) {
           return true;
+        }
+        return false;
+      },
+      Backspace: (state: EditorState, dispatch) => {
+        if (isCursorInsideCodeBlock(state)) {
+          const {
+            left,
+            right,
+            hasTrailingMatchingBracket,
+          } = getAutoClosingBracketInfo(
+            getStartOfCurrentLine(state).text,
+            getEndOfCurrentLine(state).text,
+          );
+          if (left && right && hasTrailingMatchingBracket) {
+            const $cursor = getCursor(state.selection)!;
+            dispatch(
+              state.tr.delete(
+                $cursor.pos - left.length,
+                $cursor.pos + right.length,
+              ),
+            );
+            return true;
+          }
         }
         return false;
       },
@@ -80,7 +138,7 @@ export default new Plugin({
         }
         return false;
       },
-      'Mod-A': (state: EditorState, dispatch) => {
+      'Mod-a': (state: EditorState, dispatch) => {
         if (isSelectionEntirelyInsideCodeBlock(state)) {
           const { $from, $to } = state.selection;
           const isFullCodeBlockSelection =
@@ -89,10 +147,7 @@ export default new Plugin({
           if (!isFullCodeBlockSelection) {
             dispatch(
               state.tr.setSelection(
-                new TextSelection(
-                  state.doc.resolve($from.start()),
-                  state.doc.resolve($to.end()),
-                ),
+                TextSelection.create(state.doc, $from.start(), $to.end()),
               ),
             );
             return true;
