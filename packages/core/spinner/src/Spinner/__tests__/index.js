@@ -102,17 +102,17 @@ describe('Spinner', () => {
       const large = mount(<Spinner size="large" />);
       const xlarge = mount(<Spinner size="xlarge" />);
 
-      expect(small.find(Svg).prop('height')).toBe(20);
-      expect(small.find(Svg).prop('width')).toBe(20);
+      expect(small.find(Svg).prop('height')).toBe(8);
+      expect(small.find(Svg).prop('width')).toBe(8);
 
-      expect(medium.find(Svg).prop('height')).toBe(30);
-      expect(medium.find(Svg).prop('width')).toBe(30);
+      expect(medium.find(Svg).prop('height')).toBe(16);
+      expect(medium.find(Svg).prop('width')).toBe(16);
 
-      expect(large.find(Svg).prop('height')).toBe(50);
-      expect(large.find(Svg).prop('height')).toBe(50);
+      expect(large.find(Svg).prop('height')).toBe(24);
+      expect(large.find(Svg).prop('height')).toBe(24);
 
-      expect(xlarge.find(Svg).prop('width')).toBe(100);
-      expect(xlarge.find(Svg).prop('width')).toBe(100);
+      expect(xlarge.find(Svg).prop('width')).toBe(48);
+      expect(xlarge.find(Svg).prop('width')).toBe(48);
     });
 
     it('should render the spinner with a custom size', () => {
@@ -125,8 +125,8 @@ describe('Spinner', () => {
     it('should render the spinner with the default size if an unsupported value is provided', () => {
       // $FlowFixMe
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
-      expect(custom.find(Svg).prop('height')).toBe(20);
-      expect(custom.find(Svg).prop('width')).toBe(20);
+      expect(custom.find(Svg).prop('height')).toBe(8);
+      expect(custom.find(Svg).prop('width')).toBe(8);
     });
   });
 
