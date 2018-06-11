@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   Draggable,
   Droppable,
@@ -65,7 +65,7 @@ export default class Tree extends Component<Props> {
         key={flatItem.item.id}
       >
         {(provided, snapshot) => (
-          <React.Fragment>
+          <Fragment>
             <TreeItem
               key={flatItem.item.id}
               item={flatItem.item}
@@ -77,7 +77,7 @@ export default class Tree extends Component<Props> {
               snapshot={snapshot}
             />
             {provided.placeholder}
-          </React.Fragment>
+          </Fragment>
         )}
       </Draggable>
     ));

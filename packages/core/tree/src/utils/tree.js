@@ -12,7 +12,8 @@ import type {
 import { oneOf } from './handy';
 import type { DragPosition } from '../components/Tree-types';
 
-export type TreeMutation = {|
+export type TreeItemMutation = {|
+  id?: ItemId,
   children?: Array<ItemId>,
   hasChildren?: boolean,
   isExpanded?: boolean,
@@ -62,7 +63,7 @@ const flattenChildren = function(
 export const mutateTree = (
   tree: TreeData,
   itemId: ItemId,
-  mutation: TreeMutation,
+  mutation: TreeItemMutation,
 ): TreeData => {
   const itemToChange = tree.items[itemId];
   if (!itemToChange) {
@@ -77,21 +78,28 @@ export const mutateTree = (
       // copy all old items
       ...tree.items,
       // overwriting only the item being changed
-      [itemId]: {
-        id: itemId,
-        isExpanded: oneOf(mutation.isExpanded, itemToChange.isExpanded),
-        hasChildren: oneOf(mutation.hasChildren, itemToChange.hasChildren),
-        children:
-          typeof mutation.children !== 'undefined'
-            ? mutation.children
-            : itemToChange.children,
-        isChildrenLoading: oneOf(
-          mutation.isChildrenLoading,
-          itemToChange.isChildrenLoading,
-        ),
-        data: oneOf(mutation.data, itemToChange.data),
-      },
+      [itemId]: mutateTreeItem(itemToChange, mutation),
     },
+  };
+};
+
+export const mutateTreeItem = (
+  treeItem: TreeItem,
+  mutation: TreeItemMutation,
+): TreeItem => {
+  return {
+    id: oneOf(mutation.id, treeItem.id),
+    isExpanded: oneOf(mutation.isExpanded, treeItem.isExpanded),
+    hasChildren: oneOf(mutation.hasChildren, treeItem.hasChildren),
+    children:
+      typeof mutation.children !== 'undefined'
+        ? mutation.children
+        : treeItem.children,
+    isChildrenLoading: oneOf(
+      mutation.isChildrenLoading,
+      treeItem.isChildrenLoading,
+    ),
+    data: oneOf(mutation.data, treeItem.data),
   };
 };
 

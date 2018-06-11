@@ -1,6 +1,7 @@
 //@flow
 
 import type { ItemId, TreeItem } from '../src/types';
+import { mutateTreeItem } from '../src/utils/tree';
 
 export default class TreeBuilder {
   rootId: ItemId;
@@ -24,13 +25,14 @@ export default class TreeBuilder {
   withSubTree(tree: TreeBuilder) {
     const subTree = tree.build();
     this._addItemToRoot(`${this.rootId}-${subTree.rootId}`);
-    Object.values(subTree.items).forEach(item => {
-      const finalId = `${this.rootId}-${item.id}`;
-      this.items[finalId] = {
-        ...item,
+    Object.keys(subTree.items).forEach(itemId => {
+      const finalId = `${this.rootId}-${itemId}`;
+      this.items[finalId] = mutateTreeItem(subTree.items[itemId], {
         id: finalId,
-        children: item.children.map(i => `${this.rootId}-${i}`),
-      };
+        children: subTree.items[itemId].children.map(
+          i => `${this.rootId}-${i}`,
+        ),
+      });
     });
     return this;
   }
