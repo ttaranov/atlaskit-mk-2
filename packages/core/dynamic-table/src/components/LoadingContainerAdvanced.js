@@ -20,6 +20,7 @@ type Props = {
   isLoading?: boolean,
   spinnerSize?: SpinnerSizeType,
   contentsOpacity: number,
+  // eslint-disable-line
   targetRef?: Function,
 };
 
