@@ -28,7 +28,7 @@ const initialState: State = {
   src: { status: 'PENDING' },
 };
 
-export class DocViewer extends React.PureComponent<Props, State> {
+export class DocViewer extends React.Component<Props, State> {
   static PDFComponent;
 
   state: State = initialState;
