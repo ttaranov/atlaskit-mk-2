@@ -310,7 +310,7 @@
     "jest-styled-components": "^5.0.0",
     "keycode": "^2.1.7",
     "kind2string": "^0.3.0",
-    "landkid": "^0.2.5",
+    "landkid": "^0.2.6",
     "less-loader": "^4.0.5",
     "linkify-it": "^2.0.3",
     "lodash": "^4.17.5",

@@ -8,7 +8,7 @@ scaling:
 links:
   binary:
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v15
+    tag: v17
     type: docker
   healthcheck:
     uri: /
