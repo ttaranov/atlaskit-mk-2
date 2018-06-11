@@ -1,8 +1,8 @@
 # Atlaskit
 
-[![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
-[![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
-[![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
+[![node](https://img.shields.io/badge/node-8.4.0%2B-brightgreen.svg)](https://nodejs.org/en/)
+[![yarn](https://img.shields.io/badge/bolt-0.20.6%2B-brightgreen.svg)](http://boltpkg.com/)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://bitbucket.org/atlassian/atlaskit-mk-2/src/fc2a265c47d90026df05e1363bb52027dd20689a/CONTRIBUTING.md)
 
 Atlaskit is the technical implementation of the [Atlassian Design Guidelines][adg]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm.
 
