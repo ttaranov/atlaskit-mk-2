@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/quick-search",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "description": "A quick-search component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,21 +20,21 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics": "^3.0.1",
-    "@atlaskit/avatar": "^10.0.6",
-    "@atlaskit/field-base": "^9.0.3",
-    "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/item": "^6.0.3",
-    "@atlaskit/theme": "^3.2.2",
-    "babel-runtime": "^6.26.0",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/analytics": "^3.0.2",
+    "@atlaskit/avatar": "^11.0.0",
+    "@atlaskit/field-base": "^10.0.0",
+    "@atlaskit/icon": "^12.0.0",
+    "@atlaskit/item": "^7.0.0",
+    "@atlaskit/theme": "^4.0.0",
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.3.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/navigation": "^31.0.4",
+    "@atlaskit/docs": "^4.0.0",
+    "@atlaskit/navigation": "^32.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "faker": "^4.1.0",
     "prop-types": "^15.5.10",

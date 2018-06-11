@@ -282,7 +282,7 @@ export default class DateTimePicker extends Component<Props, State> {
             icon={icon}
             onChange={this.onTimeChange}
             selectProps={mergedTimePickerSelectProps}
-            defaultValue={timeValue}
+            value={timeValue}
             timeIsEditable={timeIsEditable}
             times={times}
             timeFormat={timeFormat}

@@ -31,6 +31,8 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
 
+  private readonly RESULT_LIMIT = 5;
+
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
@@ -56,7 +58,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
       variables: {
         cloudId: this.cloudId,
         displayName: query,
-        first: 5,
+        first: this.RESULT_LIMIT,
         offset: 1,
         excludeInactive: true,
         excludeBots: true,
@@ -103,7 +105,7 @@ function userSearchResultToResult(searchResult: SearchResult): Result {
     resultType: ResultType.Person,
     resultId: 'people-' + searchResult.id,
     name: searchResult.fullName,
-    href: '/home/people/' + searchResult.id,
+    href: '/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
     analyticsType: AnalyticsType.ResultPerson,
   };

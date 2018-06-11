@@ -1,5 +1,21 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.0.8
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/util-data-test@9.1.10
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/renderer@18.0.0
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/editor-test-helpers@4.0.3
+  - @atlaskit/editor-common@11.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
+## 1.0.7
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/editor-test-helpers@4.0.2
+  - @atlaskit/editor-common@10.1.9
+
 ## 1.0.6
 - [patch] ED-4689 add __confluenceMetadata to link mark schema [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)
 - [patch] Updated dependencies [e76e4b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76e4b4)

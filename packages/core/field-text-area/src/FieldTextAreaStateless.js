@@ -43,7 +43,7 @@ type Props = {
   maxLength?: number,
   /** The minimum number of rows of text to display */
   minimumRows?: number,
-  /** Disables the resizing of the text area. */
+  /** Enables the resizing of the text area. */
   enableResize?: boolean,
   /** Type of field */
   type?: string, //eslint-disable-line react/no-unused-prop-types

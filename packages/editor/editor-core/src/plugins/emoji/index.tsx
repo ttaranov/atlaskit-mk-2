@@ -21,7 +21,8 @@ const emojiPlugin: EditorPlugin = {
     return [
       {
         rank: 400,
-        plugin: ({ providerFactory }) => createPlugin(providerFactory),
+        plugin: ({ providerFactory, portalProviderAPI }) =>
+          createPlugin(portalProviderAPI, providerFactory),
       },
       { rank: 410, plugin: ({ schema }) => inputRulePlugin(schema) },
       { rank: 420, plugin: ({ schema }) => keymap(schema) },

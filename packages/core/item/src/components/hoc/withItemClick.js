@@ -20,6 +20,8 @@ type Props = {
   href?: string,
   /** Standard onClick handler */
   onClick: Function,
+  /** Standard onKeyDown handler */
+  onKeyDown?: Function,
 };
 
 // HOC that typically wraps @atlaskit/item
@@ -47,7 +49,9 @@ const withItemClick = (WrappedItem: ComponentType<any>) =>
     };
 
     handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Space' || event.key === 'Enter') {
+      if (this.props.onKeyDown) {
+        this.props.onKeyDown(event);
+      } else if (event.key === 'Space' || event.key === 'Enter') {
         this.handleClick(event);
       }
     };

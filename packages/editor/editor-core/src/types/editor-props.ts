@@ -26,6 +26,7 @@ import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit';
+import { CodeBlockOptions } from '../plugins/code-block';
 
 export type EditorAppearance =
   | 'message'
@@ -62,7 +63,7 @@ export interface EditorProps {
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
-  allowCodeBlocks?: boolean;
+  allowCodeBlocks?: boolean | CodeBlockOptions;
   allowLists?: boolean;
   allowTextColor?: boolean;
   allowTables?: boolean | TablesPluginConfig;
@@ -83,6 +84,8 @@ export interface EditorProps {
 
   // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
   UNSAFE_allowQuickInsert?: boolean;
+
+  UNSAFE_allowCards?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

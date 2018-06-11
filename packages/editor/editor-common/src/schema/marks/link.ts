@@ -1,4 +1,4 @@
-import { MarkSpec } from 'prosemirror-model';
+import { MarkSpec, Mark } from 'prosemirror-model';
 import { LINK, COLOR } from '../groups';
 import { isSafeUrl, normalizeUrl } from '../../utils';
 
@@ -84,3 +84,21 @@ export const link: MarkSpec = {
     ];
   },
 };
+
+const OPTIONAL_ATTRS = [
+  'title',
+  'id',
+  'collection',
+  'occurrenceKey',
+  '__confluenceMetadata',
+];
+
+export const toJSON = (mark: Mark) => ({
+  type: mark.type.name,
+  attrs: Object.keys(mark.attrs).reduce((attrs, key) => {
+    if (OPTIONAL_ATTRS.indexOf(key) === -1 || mark.attrs[key] !== null) {
+      attrs[key] = mark.attrs[key];
+    }
+    return attrs;
+  }, {}),
+});

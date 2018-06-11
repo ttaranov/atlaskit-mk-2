@@ -1,9 +1,11 @@
 import { AnalyticsWebClient } from './types';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
+import Logger from './helpers/logger';
 
-export const sendEvent = (client: AnalyticsWebClient) => (
-  event: GasPayload,
-): void => {
+export const sendEvent = (
+  client: Promise<AnalyticsWebClient>,
+  logger: Logger,
+) => (event: GasPayload): void => {
   const gasEvent = {
     ...event,
   };
@@ -11,23 +13,27 @@ export const sendEvent = (client: AnalyticsWebClient) => (
 
   switch (event.eventType) {
     case 'ui':
-      client.sendUIEvent(gasEvent);
+      logger.debug('Sending UI Event via analytics client', gasEvent);
+      client.then(c => c.sendUIEvent(gasEvent));
       break;
 
     case 'operational':
-      client.sendOperationalEvent(gasEvent);
+      logger.debug('Sending Operational Event via analytics client', gasEvent);
+      client.then(c => c.sendOperationalEvent(gasEvent));
       break;
 
     case 'track':
-      client.sendTrackEvent(gasEvent);
+      logger.debug('Sending Track Event via analytics client', gasEvent);
+      client.then(c => c.sendTrackEvent(gasEvent));
       break;
 
     case 'screen':
-      client.sendScreenEvent(gasEvent);
+      logger.debug('Sending Screen Event via analytics client', gasEvent);
+      client.then(c => c.sendScreenEvent(gasEvent));
       break;
 
     default:
-      throw Error(
+      logger.error(
         `cannot map eventType ${
           event.eventType
         } to an analytics-web-client function`,

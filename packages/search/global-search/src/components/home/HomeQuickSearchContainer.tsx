@@ -199,6 +199,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       jiraResults,
       confluenceResults,
       peopleResults,
+      searchSessionId,
     } = this.state;
 
     return (
@@ -208,6 +209,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         isLoading={isLoading}
         query={query}
         linkComponent={linkComponent}
+        searchSessionId={searchSessionId}
       >
         {renderSearchResults({
           query,

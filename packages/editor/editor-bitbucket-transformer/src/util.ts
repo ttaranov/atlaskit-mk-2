@@ -1,11 +1,4 @@
 /**
- * A replacement for `Array.from` until it becomes widely implemented.
- */
-function arrayFrom(obj: any): any[] {
-  return Array.prototype.slice.call(obj);
-}
-
-/**
  * A replacement for `String.repeat` until it becomes widely available.
  */
 export function stringRepeat(text: string, length: number): string {
@@ -53,13 +46,13 @@ export function transformHtml(
   el.innerHTML = html;
 
   // Remove zero-width-non-joiner
-  arrayFrom(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
+  Array.from(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
     removeSpecialCharacters(p);
   });
 
   // Convert mention containers, i.e.:
   //   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>
-  arrayFrom(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
+  Array.from(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
     const span = document.createElement('span');
     span.setAttribute('class', 'editor-entity-mention');
     span.setAttribute('contenteditable', 'false');
@@ -86,7 +79,7 @@ export function transformHtml(
 
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
-  arrayFrom(el.querySelectorAll('img.emoji')).forEach(
+  Array.from(el.querySelectorAll('img.emoji')).forEach(
     (img: HTMLImageElement) => {
       const span = document.createElement('span');
       let shortName = img.getAttribute('data-emoji-short-name') || '';
@@ -113,22 +106,26 @@ export function transformHtml(
 
   if (!options.disableBitbucketLinkStripping) {
     // Convert all automatic links to plain text, because they will be re-created on render by the server
-    arrayFrom(el.querySelectorAll('a'))
+    Array.from(el.querySelectorAll('a'))
       // Don't convert external links (i.e. not automatic links)
       .filter(
-        (a: HTMLLinkElement) =>
+        (a: HTMLAnchorElement) =>
           a.getAttribute('data-is-external-link') !== 'true',
       )
-      .forEach((a: HTMLLinkElement) => {
-        const text = document.createTextNode(a.innerText);
-        a.parentNode!.insertBefore(text, a);
+      .forEach((a: HTMLAnchorElement) => {
+        Array.from(a.childNodes).forEach(child => {
+          a.parentNode!.insertBefore(child, a);
+        });
         a.parentNode!.removeChild(a);
       });
   }
 
   // Parse images
-  arrayFrom(el.querySelectorAll('img:not(.emoji)')).forEach(
-    (img: HTMLImageElement) => {
+  // Not using :pseudo because of IE11 bug:
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/16104908/
+  Array.from(el.querySelectorAll('img'))
+    .filter(img => !img.classList.contains('emoji'))
+    .forEach((img: HTMLImageElement) => {
       const { parentNode } = img;
 
       if (!parentNode) {
@@ -160,8 +157,7 @@ export function transformHtml(
 
       img.parentNode!.insertBefore(mediaSingle, img);
       img.parentNode!.removeChild(img);
-    },
-  );
+    });
 
   function validateImageNodeParent(node: Node) {
     const ALLOWED_PARENTS = [
