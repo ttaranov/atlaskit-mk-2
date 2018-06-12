@@ -100,3 +100,4 @@ export {
   bodiedExtensionData,
 } from './mock-extension-data';
 export * from './schema-element-builder';
+export { cardProvider, CardProviderMock } from './card-provider';

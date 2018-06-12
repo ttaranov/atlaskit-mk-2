@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { GlobalSearchResult } from '../src/model/Result';
 import {
   searchPeopleItem,
   searchConfluenceItem,
@@ -10,6 +9,7 @@ import {
 } from '../src/components/SearchResultsUtil';
 import { AnalyticsType } from '../src/model/Result';
 import ObjectResult from '../src/components/ObjectResult';
+import { ObjectResultWithAnalytics } from '../src/components/SearchResultsUtil';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {

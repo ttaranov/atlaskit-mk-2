@@ -25,7 +25,7 @@ const SHADOW_MAX_WIDTH = 8;
 import { Props } from './table';
 
 export interface ComponentProps extends Props {
-  onComponentUpdate: () => void;
+  onComponentUpdate?: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 }
 
@@ -145,7 +145,9 @@ class TableComponent extends React.Component<ComponentProps> {
 
   componentDidUpdate() {
     const { onComponentUpdate } = this.props;
-    onComponentUpdate();
+    if (onComponentUpdate) {
+      onComponentUpdate();
+    }
   }
 
   private handleScroll = (event: Event) => {

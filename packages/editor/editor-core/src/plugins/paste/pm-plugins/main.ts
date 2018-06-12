@@ -13,8 +13,6 @@ import { analyticsService } from '../../../analytics';
 import * as keymaps from '../../../keymaps';
 import * as clipboard from '../../../utils/clipboard';
 import { EditorAppearance } from '../../../types';
-import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
-import { containsTable } from '../../table/utils';
 import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
@@ -30,6 +28,12 @@ import {
 import { linkifyContent } from '../../hyperlink/utils';
 import { hasOpenEnd } from '../../../utils';
 import { closeHistory } from 'prosemirror-history';
+import { hasParentNodeOfType } from 'prosemirror-utils';
+import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
+
+// @ts-ignore
+import { handlePaste as handlePasteTable } from 'prosemirror-tables';
+import { transformSliceToAddTableHeaders } from '../../table/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -209,27 +213,33 @@ export function createPlugin(
           }
         }
 
-        // If the clipboard contains rich text, pass it through the schema and import what's allowed.
+        // finally, handle rich-text copy-paste
         if (html) {
-          const tableState = tableStateKey.getState(view.state);
-          if (
-            tableState &&
-            tableState.isRequiredToAddHeader() &&
-            containsTable(view.state, slice)
-          ) {
-            const selectionStart = view.state.selection.$from.pos;
-            view.dispatch(closeHistory(view.state.tr).replaceSelection(slice));
-            tableState.addHeaderToTableNodes(slice, selectionStart);
-            return true;
-          }
-
+          // linkify the text where possible
           slice = linkifyContent(view.state.schema, slice) || slice;
 
-          view.dispatch(
-            closeHistory(view.state.tr)
-              .replaceSelection(slice)
-              .setStoredMarks([]),
-          );
+          const { table, tableCell } = view.state.schema.nodes;
+
+          // if we're pasting to outside a table or outside a table
+          // header, ensure that we apply any table headers to the first
+          // row of content we see, if required
+          if (!hasParentNodeOfType([table, tableCell])(view.state.selection)) {
+            const tableState = tableStateKey.getState(view.state);
+            if (tableState && tableState.isRequiredToAddHeader()) {
+              slice = transformSliceToAddTableHeaders(slice, view.state.schema);
+            }
+          }
+
+          // get prosemirror-tables to handle pasting tables if it can
+          // otherwise, just the replace the selection with the content
+          if (!handlePasteTable(view, null, slice)) {
+            view.dispatch(
+              closeHistory(view.state.tr)
+                .replaceSelection(slice)
+                .setStoredMarks([]),
+            );
+          }
+
           return true;
         }
 

@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.5
+- [patch] Chores for document viewer [fefa35c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fefa35c)
+
 ## 15.0.4
 - [patch] More consistent zoom experience [905f1b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/905f1b0)
 

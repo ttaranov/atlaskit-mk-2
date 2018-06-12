@@ -193,6 +193,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       objectResults,
       spaceResults,
       peopleResults,
+      searchSessionId,
     } = this.state;
 
     return (
@@ -202,6 +203,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         isLoading={isLoading}
         query={query}
         linkComponent={linkComponent}
+        searchSessionId={searchSessionId}
       >
         {renderSearchResults({
           query,

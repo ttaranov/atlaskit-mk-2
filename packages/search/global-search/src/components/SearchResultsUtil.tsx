@@ -15,6 +15,46 @@ import {
   GlobalSearchConfluenceObjectResult,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import {
+  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_SOURCE,
+  DEFAULT_GAS_ATTRIBUTES,
+} from '../util/analytics';
+
+function createAndFireSearchResultSelectedEvent(createEvent, props): void {
+  const event = createEvent(); // created empty to initialise with context
+  const searchSessionId = event.context[0]
+    ? event.context[0].searchSessionId
+    : null;
+  event.update({
+    action: 'selected',
+    actionSubject: 'navigationItem',
+    actionSubjectId: 'searchResult',
+    eventType: 'track',
+    source: DEFAULT_GAS_SOURCE,
+    attributes: {
+      searchSessionId: searchSessionId,
+      resultType: props.type,
+      ...DEFAULT_GAS_ATTRIBUTES,
+    },
+  });
+  event.fire(DEFUALT_GAS_CHANNEL);
+}
+
+const searchResultsAnalyticsEvents = {
+  onClick: createAndFireSearchResultSelectedEvent,
+};
+
+export const ObjectResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ObjectResult);
+export const PersonResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(PersonResult);
+export const ContainerResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ContainerResult);
 
 export function renderResults(results: GlobalSearchResult[]) {
   return results.map(result => {
@@ -27,7 +67,7 @@ export function renderResults(results: GlobalSearchResult[]) {
     switch (resultType) {
       case GlobalSearchResultTypes.ConfluenceObjectResult: {
         return (
-          <ObjectResult
+          <ObjectResultWithAnalytics
             {...additionalProps}
             {...result as GlobalSearchConfluenceObjectResult}
           />
@@ -35,7 +75,7 @@ export function renderResults(results: GlobalSearchResult[]) {
       }
       case GlobalSearchResultTypes.JiraObjectResult: {
         return (
-          <ObjectResult
+          <ObjectResultWithAnalytics
             {...additionalProps}
             {...result as GlobalSearchJiraObjectResult}
           />
@@ -43,7 +83,7 @@ export function renderResults(results: GlobalSearchResult[]) {
       }
       case GlobalSearchResultTypes.GenericContainerResult: {
         return (
-          <ContainerResult
+          <ContainerResultWithAnalytics
             {...additionalProps}
             {...result as GlobalSearchContainerResult}
           />
@@ -51,7 +91,7 @@ export function renderResults(results: GlobalSearchResult[]) {
       }
       case GlobalSearchResultTypes.PersonResult: {
         return (
-          <PersonResult
+          <PersonResultWithAnalytics
             {...additionalProps}
             {...result as GlobalSearchPersonResult}
           />
