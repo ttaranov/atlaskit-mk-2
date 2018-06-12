@@ -2,16 +2,16 @@
 
 exports[`Wrapper it should have interactive styles 1`] = `
 .c0 {
-  cursor: pointer;
-  display: inline;
-  margin: 2px;
+  color: #5E6C84;
+  line-height: 1rem;
+  margin: 0 2px;
   padding: 2px;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  vertical-align: middle;
+  cursor: pointer;
 }
 
 .c0:hover {
@@ -35,18 +35,18 @@ exports[`Wrapper it should have interactive styles 1`] = `
 
 exports[`Wrapper it should have selected styles 1`] = `
 .c0 {
-  cursor: pointer;
-  box-shadow: 0 0 0 2px #4C9AFF;
-  outline: none;
-  display: inline;
-  margin: 2px;
+  color: #5E6C84;
+  line-height: 1rem;
+  margin: 0 2px;
   padding: 2px;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  vertical-align: middle;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px #4C9AFF;
+  outline: none;
 }
 
 <span
@@ -56,15 +56,15 @@ exports[`Wrapper it should have selected styles 1`] = `
 
 exports[`Wrapper it should not have interactive or selected styles 1`] = `
 .c0 {
-  display: inline;
-  margin: 2px;
+  color: #5E6C84;
+  line-height: 1rem;
+  margin: 0 2px;
   padding: 2px;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  vertical-align: middle;
 }
 
 <span

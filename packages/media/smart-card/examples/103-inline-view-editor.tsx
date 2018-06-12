@@ -113,7 +113,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
             />
             {error && <InlineMessage type="error" title={error} />}
             <br />
-            <ResolvedView {...json as any} />
+            <ResolvedView {...json as any} onClick={() => {}} />
             <br />
             <FieldRange
               label="Message width (px)"

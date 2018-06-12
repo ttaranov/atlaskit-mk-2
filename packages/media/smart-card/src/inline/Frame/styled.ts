@@ -45,8 +45,8 @@ export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & WrapperProps
 > = styled.span`
   color: ${colors.N300};
-  display: inline;
-  margin: 2px;
+  line-height: 1rem;
+  margin: 0 2px;
   padding: 2px;
   border-radius: ${akBorderRadius};
   user-select: none;
