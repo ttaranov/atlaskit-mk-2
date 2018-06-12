@@ -188,7 +188,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(gapCursorPlugin);
   }
 
-  if (props.UNSAFE_allowCards) {
+  if (props.UNSAFE_cards) {
     plugins.push(cardPlugin);
   }
 
