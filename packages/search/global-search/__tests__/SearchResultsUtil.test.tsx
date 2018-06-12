@@ -89,30 +89,5 @@ describe('searchJiraItem', () => {
     it('should pass the correct properties to ObjectResult for Confluence results', () => {});
 
     it('should pass the correct properties to ContainerResult for Confluence spaces', () => {});
-
-    // TODO replace with specific tests for each component result type
-    // it('should pass the required properties to the Result component', () => {
-    //   const result: GlobalSearchResult = {
-    //     resultId: 'resultId',
-    //     resultType: ResultType.Object,
-    //     analyticsType: AnalyticsType.RecentConfluence,
-    //     name: 'name',
-    //     containerName: 'containerName',
-    //     href: 'href',
-    //     avatarUrl: 'avatarUrl',
-    //     objectKey: 'objectKey',
-    //     contentType: ResultContentType.Page,
-    //   };
-    //   const wrapper = shallow(<span>{renderResults([result])}</span>);
-    //   const resultComponent = wrapper.find(ObjectResult);
-    //   expect(resultComponent.prop('resultId')).toEqual('resultId');
-    //   expect(resultComponent.prop('type')).toEqual('recent-confluence');
-    //   expect(resultComponent.prop('name')).toEqual('name');
-    //   expect(resultComponent.prop('containerName')).toEqual('containerName');
-    //   expect(resultComponent.prop('href')).toEqual('href');
-    //   expect(resultComponent.prop('avatarUrl')).toEqual('avatarUrl');
-    //   expect(resultComponent.prop('objectKey')).toEqual('objectKey');
-    //   expect(resultComponent.prop('contentType')).toEqual('page');
-    // });
   });
 });
