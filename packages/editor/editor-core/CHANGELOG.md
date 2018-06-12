@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 73.3.10
+- [patch] ED-4823: added card provider [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)
+- [none] Updated dependencies [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)
+  - @atlaskit/editor-test-helpers@4.0.5
+
 ## 73.3.9
 - [patch] Adds support for auto-closing brackets inside code-blocks [9d69d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d69d58)
 - [none] Updated dependencies [9d69d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d69d58)
