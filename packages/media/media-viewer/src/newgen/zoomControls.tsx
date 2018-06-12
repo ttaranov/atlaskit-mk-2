@@ -12,30 +12,27 @@ import {
 } from './styled';
 
 export interface ZoomControlsProps {
-  onChange: (newZoom: number) => void;
-  zoom: number;
+  onChange: (newZoomLevel: ZoomLevel) => void;
+  zoomLevel: ZoomLevel;
 }
 
 export class ZoomControls extends Component<ZoomControlsProps, {}> {
   zoomIn = () => {
-    const { onChange, zoom } = this.props;
-    const zoomLevel = new ZoomLevel(zoom / 100);
+    const { onChange, zoomLevel } = this.props;
     if (zoomLevel.canZoomIn) {
-      onChange(zoomLevel.zoomIn().value * 100);
+      onChange(zoomLevel.zoomIn());
     }
   };
 
   zoomOut = () => {
-    const { onChange, zoom } = this.props;
-    const zoomLevel = new ZoomLevel(zoom / 100);
+    const { onChange, zoomLevel } = this.props;
     if (zoomLevel.canZoomOut) {
-      onChange(zoomLevel.zoomOut().value * 100);
+      onChange(zoomLevel.zoomOut());
     }
   };
 
   render() {
-    const { zoom } = this.props;
-    const zoomLevel = new ZoomLevel(zoom / 100);
+    const { zoomLevel } = this.props;
     return (
       <ZoomWrapper className={hideControlsClassName}>
         <ZoomControlsWrapper>

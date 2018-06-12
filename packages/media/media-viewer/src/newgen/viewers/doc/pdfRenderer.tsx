@@ -5,7 +5,7 @@ import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { ErrorMessage, PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
-import { Outcome } from '../../domain';
+import { Outcome, ZoomLevel } from '../../domain';
 import { Spinner } from '../../loading';
 
 export const pdfViewerClassName = 'pdfViewer';
@@ -49,10 +49,13 @@ export type Props = {
 
 export type State = {
   doc: Outcome<any, Error>;
-  zoom: number;
+  zoomLevel: ZoomLevel;
 };
 
-const initialState: State = { zoom: 100, doc: { status: 'PENDING' } };
+const initialState: State = {
+  zoomLevel: new ZoomLevel(),
+  doc: { status: 'PENDING' },
+};
 
 export class PDFRenderer extends React.Component<Props, State> {
   private el: HTMLDivElement;
@@ -80,9 +83,9 @@ export class PDFRenderer extends React.Component<Props, State> {
     this.el = el;
   };
 
-  private handleZoom = zoom => {
-    this.pdfViewer.currentScale = zoom / 100;
-    this.setState({ zoom });
+  private handleZoom = zoomLevel => {
+    this.pdfViewer.currentScale = zoomLevel.value;
+    this.setState({ zoomLevel });
   };
 
   render() {
@@ -97,7 +100,7 @@ export class PDFRenderer extends React.Component<Props, State> {
               className={pdfViewerClassName}
               onClick={closeOnDirectClick(this.props.onClose)}
             />
-            <ZoomControls zoom={this.state.zoom} onChange={this.handleZoom} />
+            <ZoomControls zoomLevel={this.state.zoomLevel} onChange={this.handleZoom} />
           </PDFWrapper>
         );
       case 'FAILED':
