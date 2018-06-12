@@ -245,7 +245,10 @@ export class MentionsState {
 
     while (activeMentionQueryMarks.length) {
       const mark = activeMentionQueryMarks.pop()!;
-      const distance = Math.abs(from - mark!.start);
+      const distance = Math.min(
+        Math.abs(from - mark!.start),
+        Math.abs(from - mark!.end),
+      );
       if (distance < closestDistance) {
         closestDistance = distance;
         closestMark = mark;

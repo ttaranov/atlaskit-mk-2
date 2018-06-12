@@ -587,6 +587,21 @@ describe('mentions', () => {
       expect(editorView.state.doc.nodeAt(9)!.type.spec).toEqual(mentionNode);
       editorView.destroy();
     });
+
+    it('should replace mention-query mark closest to selection ', () => {
+      const { editorView, pluginState } = editor(
+        doc(p(mentionQuery()('@os{<>}'), mentionQuery()('@os'))),
+      );
+
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234',
+      });
+
+      expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(mentionNode);
+      editorView.destroy();
+    });
   });
 
   describe('remove', () => {
