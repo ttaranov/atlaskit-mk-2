@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 73.4.2
+- [patch] Fix issue where clicking over empty space in a code-block would not select the end of the line. ED-4637 [8120815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8120815)
+- [patch] Code-block toolbar refactored to rely less on view state. This also fixes issues with the code-block in IE11. [9249525](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9249525)
+- [none] Updated dependencies [8120815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8120815)
+- [none] Updated dependencies [9249525](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9249525)
+
 ## 73.4.1
 - [patch] Fix issue where mention-picker when two users would have a mention picker open at the same time in collaborative editing. [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
 - [none] Updated dependencies [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
