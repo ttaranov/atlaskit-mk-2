@@ -128,8 +128,12 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       display: flex;
       flex: 1;
 
+      pre {
+        width: 100%;
+      }
       code {
         display: inline-block;
+        min-width: 100%;
       }
     }
 
@@ -143,6 +147,9 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
         display: block;
         overflow: visible;
 
+        pre {
+          width: auto;
+        }
         code {
           display: inline;
         }
