@@ -16,6 +16,6 @@ const Loading = (props: {}) => (
     <Spinner {...props} />
   </Container>
 );
-Loading.defaultProps = { size: 'xlarge' };
+Loading.defaultProps = { size: 'large' };
 
 export default Loading;

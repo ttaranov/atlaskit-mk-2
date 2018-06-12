@@ -97,22 +97,26 @@ describe('Spinner', () => {
 
   describe('size prop', () => {
     it('should render tee-shirt sizes with the proper heights/widths', () => {
+      const xsmall = mount(<Spinner size="xsmall" />);
       const small = mount(<Spinner size="small" />);
       const medium = mount(<Spinner size="medium" />);
       const large = mount(<Spinner size="large" />);
       const xlarge = mount(<Spinner size="xlarge" />);
 
-      expect(small.find(Svg).prop('height')).toBe(8);
-      expect(small.find(Svg).prop('width')).toBe(8);
+      expect(xsmall.find(Svg).prop('height')).toBe(8);
+      expect(xsmall.find(Svg).prop('width')).toBe(8);
 
-      expect(medium.find(Svg).prop('height')).toBe(16);
-      expect(medium.find(Svg).prop('width')).toBe(16);
+      expect(small.find(Svg).prop('height')).toBe(16);
+      expect(small.find(Svg).prop('width')).toBe(16);
 
-      expect(large.find(Svg).prop('height')).toBe(24);
-      expect(large.find(Svg).prop('height')).toBe(24);
+      expect(medium.find(Svg).prop('height')).toBe(24);
+      expect(medium.find(Svg).prop('width')).toBe(24);
 
-      expect(xlarge.find(Svg).prop('width')).toBe(48);
-      expect(xlarge.find(Svg).prop('width')).toBe(48);
+      expect(large.find(Svg).prop('height')).toBe(48);
+      expect(large.find(Svg).prop('height')).toBe(48);
+
+      expect(xlarge.find(Svg).prop('width')).toBe(96);
+      expect(xlarge.find(Svg).prop('width')).toBe(96);
     });
 
     it('should render the spinner with a custom size', () => {
@@ -125,8 +129,8 @@ describe('Spinner', () => {
     it('should render the spinner with the default size if an unsupported value is provided', () => {
       // $FlowFixMe
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
-      expect(custom.find(Svg).prop('height')).toBe(8);
-      expect(custom.find(Svg).prop('width')).toBe(8);
+      expect(custom.find(Svg).prop('height')).toBe(16);
+      expect(custom.find(Svg).prop('width')).toBe(16);
     });
   });
 
