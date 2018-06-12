@@ -82,25 +82,10 @@ const prependChildren = (prepended: View) => (item: ViewItem) => ({
   items: [...prepended, ...(item.items || [])],
 });
 
-// Replaces the selected item's onClick property with the provided callback. The
-// callback is passed the item object followed by any other arguments. If the
-// item already has an onClick property this will be called after the provided
-// callback, unless the callback returns `false`.
-const handleClick = (onClickCb: ViewItem => mixed) => (item: ViewItem) => ({
-  ...item,
-  onClick: (...args: mixed[]) => {
-    const res = onClickCb(item, ...args);
-    if (res !== false && typeof item.onClick === 'function') {
-      item.onClick();
-    }
-  },
-});
-
 export default {
   appendChildren,
   findId,
   findLegacyId,
-  handleClick,
   insertAfter,
   insertBefore,
   matchId,
