@@ -14,7 +14,7 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     const config = generateProductConfig(this.props);
     const defaultConfig = generateDefaultConfig();
 
-    const navItems = Object.keys(defaultConfig).map(item => ({
+    const navItems = Object.keys(config).map(item => ({
       ...(config[item]
         ? {
             ...defaultConfig[item],
