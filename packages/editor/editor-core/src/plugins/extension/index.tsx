@@ -16,8 +16,6 @@ import ExtensionEditPanel from './ui/ExtensionEditPanel';
 import WithPluginState from '../../ui/WithPluginState';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 
-let isExtensionBreakoutSupported = false;
-
 const isLayoutSupported = (state, selectedExtNode) => {
   const {
     schema: {
@@ -26,7 +24,7 @@ const isLayoutSupported = (state, selectedExtNode) => {
     selection,
   } = state;
 
-  if (!selectedExtNode || !isExtensionBreakoutSupported) {
+  if (!selectedExtNode) {
     return false;
   }
 
@@ -57,19 +55,14 @@ const extensionPlugin: EditorPlugin = {
           dispatch,
           providerFactory,
           portalProviderAPI,
-        }) => {
-          isExtensionBreakoutSupported = !!(
-            typeof props.allowExtension === 'object' &&
-            props.allowExtension.allowBreakout
-          );
-          return createPlugin(
+        }) =>
+          createPlugin(
             dispatch,
             providerFactory,
             props.extensionHandlers || {},
             portalProviderAPI,
             props.allowExtension,
-          );
-        },
+          ),
       },
     ];
   },
@@ -91,10 +84,10 @@ const extensionPlugin: EditorPlugin = {
             onEdit={() => editExtension(macroState.macroProvider)(editorView)}
             onRemove={() => removeExtension(editorView.state, dispatch)}
             stickToolbarToBottom={extensionState.stickToolbarToBottom}
-            showLayoutOptions={isLayoutSupported(
-              editorView.state,
-              extensionState.node,
-            )}
+            showLayoutOptions={
+              extensionState.allowBreakout &&
+              isLayoutSupported(editorView.state, extensionState.node)
+            }
             layout={extensionState.layout}
             onLayoutChange={layout =>
               updateExtensionLayout(layout)(editorView.state, dispatch)

@@ -51,12 +51,11 @@ export default (
     state: {
       init: () => {
         let stickToolbarToBottom = true;
+        let allowBreakout = false;
 
-        if (
-          typeof allowExtension === 'object' &&
-          allowExtension.stickToolbarToBottom === false
-        ) {
-          stickToolbarToBottom = false;
+        if (typeof allowExtension === 'object') {
+          stickToolbarToBottom = !!allowExtension.stickToolbarToBottom;
+          allowBreakout = !!allowExtension.allowBreakout;
         }
 
         return {
@@ -65,6 +64,7 @@ export default (
           showLayoutOptions: true,
           stickToolbarToBottom,
           node: null,
+          allowBreakout,
         };
       },
       apply(tr, state: ExtensionState, prevState, nextState) {
