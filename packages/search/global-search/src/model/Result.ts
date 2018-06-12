@@ -13,8 +13,6 @@ export interface GlobalSearchResult {
   name: string;
   // url to link the result to
   href: string;
-  // an avatar component to show, overrides avatarUrl if supplied
-  avatar?: Component;
   // url to display the avatar from
   avatarUrl?: string;
   // the analytics type to send in the analytics attributes
@@ -41,7 +39,9 @@ export interface GlobalSearchContainerResult extends GlobalSearchResult {
 }
 
 export interface GlobalSearchPersonResult extends GlobalSearchResult {
+  // the person's @mention.
   mentionName: string;
+  // the message to display underneath the name, unfortuntately named this way ATM.
   presenceMessage: string;
   globalSearchResultType: GlobalSearchResultTypes.PersonResult;
 }
