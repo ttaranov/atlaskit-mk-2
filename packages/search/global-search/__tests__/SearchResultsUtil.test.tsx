@@ -82,6 +82,14 @@ describe('searchJiraItem', () => {
   });
 
   describe('renderResults', () => {
+    it('should pass the correct properties to ObjectResult for Jira results', () => {});
+
+    it('should pass the correct properties to PersonResult for people results', () => {});
+
+    it('should pass the correct properties to ObjectResult for Confluence results', () => {});
+
+    it('should pass the correct properties to ContainerResult for Confluence spaces', () => {});
+
     // TODO replace with specific tests for each component result type
     // it('should pass the required properties to the Result component', () => {
     //   const result: GlobalSearchResult = {

@@ -142,7 +142,7 @@ function recentItemToResult(recentItem: RecentItem): GlobalSearchResult {
     } as GlobalSearchJiraObjectResult;
   } else {
     return {
-      objectType: ObjectType.JiraIssue,
+      objectType: ObjectType.ConfluenceAmbiguous, // not provided, but not needed
       globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
       ...baseResult,

@@ -57,6 +57,7 @@ export enum ObjectType {
   ConfluenceAttachment = 'confluence-attachment',
   ConfluenceSpace = 'confluence-space',
   Person = 'person',
+  ConfluenceAmbiguous = 'confluence-ambiguous',
 }
 
 export enum AnalyticsType {

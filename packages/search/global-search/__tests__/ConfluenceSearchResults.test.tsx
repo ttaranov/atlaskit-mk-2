@@ -9,7 +9,6 @@ import {
   ContainerResult,
   ResultBase,
 } from '@atlaskit/quick-search';
-import { ResultType, Result } from '../src/model/Result';
 import {
   ObjectResultWithAnalytics,
   ContainerResultWithAnalytics,
@@ -18,6 +17,7 @@ import {
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
+import { ObjectType, GlobalSearchResultTypes } from '../src/model/Result';
 
 enum Group {
   Objects = 'objects',
@@ -39,6 +39,7 @@ describe('ConfluenceSearchResults', () => {
       retrySearch: () => {},
       recentlyViewedPages: [],
       recentlyViewedSpaces: [],
+      recentlyInteractedPeople: [],
       objectResults: [],
       spaceResults: [],
       peopleResults: [],
@@ -64,7 +65,13 @@ describe('ConfluenceSearchResults', () => {
   it('should render recently viewed spaces when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedSpaces: [makeResult()],
+      recentlyViewedSpaces: [
+        makeResult({
+          objectType: ObjectType.ConfluenceSpace,
+          globalSearchResultType:
+            GlobalSearchResultTypes.GenericContainerResult,
+        }),
+      ],
     };
 
     const wrapper = render(props);
@@ -76,7 +83,14 @@ describe('ConfluenceSearchResults', () => {
   it('should render objects when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      objectResults: [makeResult({ name: 'name' })],
+      objectResults: [
+        makeResult({
+          name: 'name',
+          globalSearchResultType:
+            GlobalSearchResultTypes.ConfluenceObjectResult,
+          objectType: ObjectType.ConfluencePage,
+        }),
+      ],
     };
 
     const wrapper = render(props);
@@ -90,7 +104,12 @@ describe('ConfluenceSearchResults', () => {
     const props: Partial<Props> = {
       query: 'na',
       spaceResults: [
-        makeResult({ resultType: ResultType.Container, name: 'name' }),
+        makeResult({
+          name: 'name',
+          globalSearchResultType:
+            GlobalSearchResultTypes.GenericContainerResult,
+          objectType: ObjectType.ConfluenceSpace,
+        }),
       ],
     };
 
@@ -107,7 +126,11 @@ describe('ConfluenceSearchResults', () => {
     const props: Partial<Props> = {
       query: 'na',
       peopleResults: [
-        makeResult({ resultType: ResultType.Person, name: 'name' }),
+        makeResult({
+          name: 'name',
+          globalSearchResultType: GlobalSearchResultTypes.PersonResult,
+          objectType: ObjectType.Person,
+        }),
       ],
     };
 

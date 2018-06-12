@@ -1,13 +1,21 @@
-import { Result, ResultType, AnalyticsType } from '../src/model/Result';
+import {
+  GlobalSearchResult,
+  AnalyticsType,
+  ObjectType,
+  GlobalSearchResultTypes,
+} from '../src/model/Result';
 
-export function makeResult(partial?: Partial<Result>): Result {
+export function makeResult(
+  partial?: Partial<GlobalSearchResult>,
+): GlobalSearchResult {
   return {
     resultId: '' + Math.random(),
     name: 'name',
-    resultType: ResultType.Object,
     analyticsType: AnalyticsType.ResultJira,
     avatarUrl: 'avatarUrl',
     href: 'href',
+    globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
+    objectType: ObjectType.JiraIssue,
     ...partial,
   };
 }

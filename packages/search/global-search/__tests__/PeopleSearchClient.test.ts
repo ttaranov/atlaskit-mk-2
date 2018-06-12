@@ -4,7 +4,11 @@ import PeopleSearchClient, {
 } from '../src/api/PeopleSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
-import { ResultType, AnalyticsType } from '../src/model/Result';
+import {
+  AnalyticsType,
+  GlobalSearchResultTypes,
+  GlobalSearchPersonResult,
+} from '../src/model/Result';
 
 function apiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const response = Array.isArray(state)
@@ -45,19 +49,26 @@ describe('PeopleSearchClient', () => {
           id: '123',
           fullName: 'fullName',
           avatarUrl: 'avatarUrl',
+          department: 'department',
+          title: 'abc',
+          nickname: 'nickname',
         },
       ]);
 
       const items = await searchClient.search('query');
       expect(items).toHaveLength(1);
 
-      const item = items[0];
-      expect(item.resultType).toEqual(ResultType.Person);
+      const item: GlobalSearchPersonResult = items[0] as GlobalSearchPersonResult;
+
+      expect(item.globalSearchResultType).toEqual(
+        GlobalSearchResultTypes.PersonResult,
+      );
+      expect(item.mentionName).toEqual('nickname');
+      expect(item.presenceMessage).toEqual('abc');
       expect(item.resultId).toEqual('people-123');
       expect(item.avatarUrl).toEqual('avatarUrl');
       expect(item.name).toEqual('fullName');
       expect(item.href).toEqual('/people/123');
-      expect(item.containerName).toBeUndefined();
       expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
     });
 

@@ -6,7 +6,6 @@ import {
   PersonResult,
   ResultBase,
 } from '@atlaskit/quick-search';
-import { ResultType, Result } from '../src/model/Result';
 import {
   ObjectResultWithAnalytics,
   PersonResultWithAnalytics,
@@ -14,6 +13,7 @@ import {
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
+import { GlobalSearchResultTypes, ObjectType } from '../src/model/Result';
 
 enum Group {
   Recent = 'recent',
@@ -99,7 +99,14 @@ describe('HomeSearchResults', () => {
   it('should render confluence results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [makeResult({ name: 'name' })],
+      confluenceResults: [
+        makeResult({
+          name: 'name',
+          objectType: ObjectType.ConfluencePage,
+          globalSearchResultType:
+            GlobalSearchResultTypes.ConfluenceObjectResult,
+        }),
+      ],
     };
 
     const wrapper = render(props);
@@ -113,7 +120,11 @@ describe('HomeSearchResults', () => {
     const props: Partial<Props> = {
       query: 'na',
       peopleResults: [
-        makeResult({ resultType: ResultType.Person, name: 'name' }),
+        makeResult({
+          name: 'name',
+          objectType: ObjectType.Person,
+          globalSearchResultType: GlobalSearchResultTypes.PersonResult,
+        }),
       ],
     };
 
@@ -140,7 +151,13 @@ describe('HomeSearchResults', () => {
   it('should render a confluence result item to search confluence', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [makeResult()],
+      confluenceResults: [
+        makeResult({
+          objectType: ObjectType.ConfluencePage,
+          globalSearchResultType:
+            GlobalSearchResultTypes.ConfluenceObjectResult,
+        }),
+      ],
     };
 
     const wrapper = render(props);
@@ -155,7 +172,12 @@ describe('HomeSearchResults', () => {
   it('should render a people result item to search people', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makeResult({ resultType: ResultType.Person })],
+      peopleResults: [
+        makeResult({
+          objectType: ObjectType.Person,
+          globalSearchResultType: GlobalSearchResultTypes.PersonResult,
+        }),
+      ],
     };
 
     const wrapper = render(props);

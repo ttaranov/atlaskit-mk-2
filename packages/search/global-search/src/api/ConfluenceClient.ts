@@ -20,9 +20,11 @@ export interface ConfluenceClient {
   getRecentSpaces(): Promise<GlobalSearchResult[]>;
 }
 
+export type ConfluenceContentType = 'blogpost' | 'page';
+
 export interface RecentPage {
   available: boolean;
-  contentType: 'blogpost' | 'page';
+  contentType: ConfluenceContentType;
   id: string;
   lastSeen: number;
   space: string;

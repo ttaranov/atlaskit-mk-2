@@ -4,7 +4,14 @@ import RecentSearchClient, {
 } from '../src/api/RecentSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
-import { ResultType, AnalyticsType } from '../src/model/Result';
+import {
+  GlobalSearchResult,
+  GlobalSearchJiraObjectResult,
+  AnalyticsType,
+  GlobalSearchResultTypes,
+  ObjectType,
+  GlobalSearchConfluenceObjectResult,
+} from '../src/model/Result';
 
 function apiWillReturn(state: RecentItem[]) {
   const response = Array.isArray(state) ? { data: state } : state;
@@ -41,8 +48,7 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
-      const item = items[0];
-      expect(item.resultType).toEqual(ResultType.Object);
+      const item: GlobalSearchJiraObjectResult = items[0] as GlobalSearchJiraObjectResult;
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
@@ -50,6 +56,10 @@ describe('RecentSearchClient', () => {
       expect(item.containerName).toEqual('container');
       expect(item.objectKey).toEqual('HOT-83341');
       expect(item.analyticsType).toEqual(AnalyticsType.RecentJira);
+      expect(item.globalSearchResultType).toEqual(
+        GlobalSearchResultTypes.JiraObjectResult,
+      );
+      expect(item.objectType).toEqual(ObjectType.JiraIssue);
     });
   });
 
@@ -69,14 +79,17 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.search('name');
       expect(items).toHaveLength(1);
 
-      const item = items[0];
-      expect(item.resultType).toEqual(ResultType.Object);
+      const item: GlobalSearchConfluenceObjectResult = items[0] as GlobalSearchConfluenceObjectResult;
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
       expect(item.href).toEqual('url');
       expect(item.containerName).toEqual('container');
       expect(item.analyticsType).toEqual(AnalyticsType.RecentConfluence);
+      expect(item.globalSearchResultType).toEqual(
+        GlobalSearchResultTypes.ConfluenceObjectResult,
+      );
+      expect(item.objectType).toEqual(ObjectType.ConfluenceAmbiguous);
     });
 
     it('should call the api only once when client is invoked repeatedly', async () => {
@@ -170,11 +183,15 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
-      const item = items[0];
+      const item: GlobalSearchConfluenceObjectResult = items[0] as GlobalSearchConfluenceObjectResult;
       expect(item.name).toEqual(
         'HOT-83341 PIR - Lets get to the bottom of this!',
       );
-      expect(item.objectKey).toEqual(undefined);
+      expect(item).not.toHaveProperty('objectKey');
+      expect(item.globalSearchResultType).toEqual(
+        GlobalSearchResultTypes.ConfluenceObjectResult,
+      );
+      expect(item.objectType).toEqual(ObjectType.ConfluenceAmbiguous);
     });
   });
 });
