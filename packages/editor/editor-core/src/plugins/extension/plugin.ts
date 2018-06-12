@@ -33,7 +33,7 @@ const getSelectedExtNode = state => {
   ) {
     selectedExtNode = {
       node: (state.selection as NodeSelection).node,
-      pos: state.selection.$head.pos - 1,
+      pos: state.selection.$from.pos,
     };
   }
 
@@ -108,9 +108,9 @@ export default (
 
           /** Non-content extension can be nested in bodied-extension, the following check is necessary for that case */
           const newElement =
-            selectedExtNode && selectedExtDomNode
+            selectedExtNode && selectedExtDomNode!.querySelector
               ? isNonContentExt
-                ? selectedExtDomNode.querySelector('.extension-container') ||
+                ? selectedExtDomNode!.querySelector('.extension-container') ||
                   selectedExtDomNode
                 : closestElement(selectedExtDomNode!, '.extension-container') ||
                   selectedExtDomNode!.querySelector('.extension-container') ||
