@@ -17,6 +17,7 @@ const Outer = props => (
 );
 const Inner = ({ ...props }) => (
   <div
+    className="affordance-region"
     css={{
       height: '100%',
       opacity: 0,
@@ -25,10 +26,6 @@ const Inner = ({ ...props }) => (
       width: OUTER_WIDTH,
       ':hover': {
         opacity: 1,
-        '& .drag-affordance': {
-          transform: 'translateX(0)',
-          transitionDelay: '120ms',
-        },
       },
     }}
     {...props}
@@ -63,7 +60,6 @@ const Handle = props => {
 const Button = ({ ...props }) => (
   <button
     type="button"
-    className="drag-affordance"
     css={{
       background: 0,
       border: 0,
@@ -79,6 +75,11 @@ const Button = ({ ...props }) => (
       transform: 'translateX(-20%)',
       transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
       transitionDelay: 0,
+
+      '.affordance-region:hover &': {
+        transform: 'translateX(0)',
+        transitionDelay: '120ms',
+      },
 
       '& svg': {
         color: 'transparent',
