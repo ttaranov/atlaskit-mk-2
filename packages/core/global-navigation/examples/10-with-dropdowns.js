@@ -21,7 +21,6 @@ const ExampleDropdown = () => (
 
 const GlobalNav = () => (
   <GlobalNavigation
-    productIcon={EmojiAtlassianIcon}
     helpItems={ExampleDropdown}
     profileItems={ExampleDropdown}
     profileIconUrl="https://api.adorable.io/avatars/285/abott@adorable.png"

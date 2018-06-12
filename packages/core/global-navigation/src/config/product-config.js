@@ -7,16 +7,10 @@ import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
 
-const isEmpty = obj => (obj ? !!obj : !!Object.keys(obj).length);
-
-// Remove empty and falsey (including 0) keys from an object
-const compact = (items: GlobalNavigationProps) =>
-  Object.keys(items)
-    .filter(item => isEmpty(item))
-    .reduce((acc, curr) => {
-      acc[curr] = items[curr];
-      return acc;
-    }, {});
+const isEmpty = obj => {
+  const values = Object.values(obj);
+  return !(values.length && values.reduce((acc, curr) => acc && !!curr, true));
+};
 
 const generateDropDown = (
   Trigger: ComponentType<*>,
@@ -57,7 +51,7 @@ function configFactory(onClick, tooltip, otherConfig = {}) {
   return {
     onClick,
     ...(tooltip ? { tooltip, label: tooltip } : null),
-    ...compact(otherConfig),
+    ...otherConfig,
   };
 }
 
@@ -73,7 +67,7 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
   return {
     component: generateDropDown(QuestionIcon, items),
     ...(tooltip ? { tooltip, label: tooltip } : null),
-    ...compact(otherConfig),
+    ...otherConfig,
   };
 }
 
@@ -105,7 +99,7 @@ function profileConfigFactory(
   return {
     ...profileComponent,
     ...(tooltip ? { tooltip, label: tooltip } : null),
-    ...compact(otherConfig),
+    ...otherConfig,
   };
 }
 
@@ -140,7 +134,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
       : null,
   };
 
-  return compact({
+  return {
     product: configFactory(onProductClick, productTooltip, {
       icon: productIcon,
     }),
@@ -163,5 +157,5 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     appSwitcher: appSwitcherComponent
       ? { component: appSwitcherComponent }
       : null,
-  });
+  };
 }
