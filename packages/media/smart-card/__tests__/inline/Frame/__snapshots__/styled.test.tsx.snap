@@ -3,9 +3,9 @@
 exports[`Wrapper it should have interactive styles 1`] = `
 .c0 {
   color: #5E6C84;
-  line-height: 1rem;
-  margin: 0 2px;
-  padding: 2px;
+  line-height: 1.1428571428571428;
+  margin: 2px 2px 2px 0;
+  padding: 2px 2px 2px 2px;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -36,9 +36,9 @@ exports[`Wrapper it should have interactive styles 1`] = `
 exports[`Wrapper it should have selected styles 1`] = `
 .c0 {
   color: #5E6C84;
-  line-height: 1rem;
-  margin: 0 2px;
-  padding: 2px;
+  line-height: 1.1428571428571428;
+  margin: 2px 2px 2px 0;
+  padding: 2px 2px 2px 2px;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -57,9 +57,9 @@ exports[`Wrapper it should have selected styles 1`] = `
 exports[`Wrapper it should not have interactive or selected styles 1`] = `
 .c0 {
   color: #5E6C84;
-  line-height: 1rem;
-  margin: 0 2px;
-  padding: 2px;
+  line-height: 1.1428571428571428;
+  margin: 2px 2px 2px 0;
+  padding: 2px 2px 2px 2px;
   border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
