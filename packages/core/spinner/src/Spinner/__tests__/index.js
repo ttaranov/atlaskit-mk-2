@@ -129,8 +129,8 @@ describe('Spinner', () => {
     it('should render the spinner with the default size if an unsupported value is provided', () => {
       // $FlowFixMe
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
-      expect(custom.find(Svg).prop('height')).toBe(16);
-      expect(custom.find(Svg).prop('width')).toBe(16);
+      expect(custom.find(Svg).prop('height')).toBe(24);
+      expect(custom.find(Svg).prop('width')).toBe(24);
     });
   });
 
