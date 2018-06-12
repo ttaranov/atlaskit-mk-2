@@ -119,9 +119,6 @@ function setLocalClients() {
         args: ['--headless', '--disable-gpu'],
       },
     },
-    safari: {
-      browserName: 'safari',
-    },
     firefox: {
       browserName: 'firefox',
       'moz:firefoxOptions': {
