@@ -6,15 +6,22 @@ import Select from '../src';
 const formatOptionLabel = (option, { context }) => {
   if (context === 'menu') {
     return (
-      <span
+      <div
         style={{
           display: 'flex',
           alignItems: 'center',
         }}
       >
         <AtlassianIcon />
-        {option.label}
-      </span>
+        <span
+          style={{
+            paddingLeft: 8,
+            paddingBottom: 0,
+          }}
+        >
+          {option.label}
+        </span>
+      </div>
     );
   }
   return option.label;

@@ -1,7 +1,6 @@
 // @flow
 import React, { Component, Fragment, type Node } from 'react';
-import { md } from '@atlaskit/docs';
-import { CheckboxSelect, RadioSelect } from '../src';
+import { CheckboxSelect, RadioSelect } from '../../src';
 import PropStatus from './propStatus';
 
 const allOptions = [
@@ -9,6 +8,12 @@ const allOptions = [
   { value: 'unchanged', label: 'unchanged' },
   { value: 'renamed', label: 'renamed' },
   { value: 'changed', label: 'changed' },
+];
+
+const packageOptions = [
+  { value: 'all', label: 'all' },
+  { value: 'single', label: 'single only' },
+  { value: 'multi', label: 'multi only' },
 ];
 
 const filterOptions = [
@@ -45,6 +50,24 @@ const getDisplayedStatus = status => {
   return status;
 };
 
+const matchPackageFilter = (packages, packageFilter) => {
+  switch (packageFilter) {
+    case 'single':
+      if (packages.includes('single')) {
+        return true;
+      }
+      return false;
+    case 'multi':
+      if (!packages.includes('single')) {
+        return true;
+      }
+      return false;
+    case 'all':
+    default:
+      return true;
+  }
+};
+
 type Prop = { data: Array<Array<string>> };
 
 type State = {
@@ -56,23 +79,35 @@ export default class PropChanges extends Component<Prop, State> {
   state = {
     selectedOptions: allOptions.map(opt => opt.value),
     filterValue: filterOptions[0].value,
+    packageFilter: 'all',
   };
   onFilterChange = (option: Array<*>) => {
     this.setState({ selectedOptions: option.map(opt => opt.value) });
+  };
+  onPackageChange = (option: Array<*>) => {
+    this.setState({
+      packageFilter: option.value,
+    });
   };
   onSortChange = (option: { value: string, label: string }) => {
     this.setState({ filterValue: option.value });
   };
   render() {
     const { data } = this.props;
-    const { selectedOptions, filterValue } = this.state;
+    const { selectedOptions, filterValue, packageFilter } = this.state;
     return (
       <Fragment>
-        <h4> Filter Props </h4>
+        <h4> Filter by Props </h4>
         <CheckboxSelect
           defaultValue={allOptions}
           options={allOptions}
           onChange={this.onFilterChange}
+        />
+        <h4> Filter by Package</h4>
+        <RadioSelect
+          defaultValue={packageOptions[0]}
+          options={packageOptions}
+          onChange={this.onPackageChange}
         />
         <h4> Sort Props </h4>
         <RadioSelect
@@ -88,24 +123,28 @@ export default class PropChanges extends Component<Prop, State> {
               <Header>Notes</Header>
             </tr>
           </thead>
-          {data
-            .sort((a, b) => {
-              if (filterValue === 'propName') return a[0].localeCompare(b[0]);
-              return getDisplayedStatus(a[1]).localeCompare(
-                getDisplayedStatus(b[1]),
-              );
-            })
-            .map(entry => {
-              const [prop, status, note] = entry;
-              return selectedOptions.includes(getDisplayedStatus(status)) ? (
-                <PropStatus
-                  key={prop}
-                  prop={prop}
-                  status={status}
-                  note={note}
-                />
-              ) : null;
-            })}
+          <tbody>
+            {data
+              .sort((a, b) => {
+                if (filterValue === 'propName')
+                  return a.key.localeCompare(b.key);
+                return getDisplayedStatus(a.status).localeCompare(
+                  getDisplayedStatus(b.status),
+                );
+              })
+              .map(entry => {
+                const { key, status, content, packages } = entry;
+                return selectedOptions.includes(getDisplayedStatus(status)) &&
+                  matchPackageFilter(packages, packageFilter) ? (
+                  <PropStatus
+                    key={key}
+                    prop={key}
+                    status={status}
+                    content={content}
+                  />
+                ) : null;
+              })}
+          </tbody>
         </Table>
       </Fragment>
     );
