@@ -2,12 +2,12 @@ import * as React from 'react';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';
-import { IconImage } from '@atlaskit/media-ui';
+import { IconImage } from '../IconImage';
 import {
   DetailViewModel,
   BadgeViewModel,
   LozengeViewModel,
-} from '../../CardView/ViewModel';
+} from '../../ResolvedView';
 import { Wrapper, WidgetWrapper, WidgetDetails, Title, Text } from './styled';
 
 export interface WidgetsProps {
