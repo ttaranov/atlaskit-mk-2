@@ -16,10 +16,11 @@ import {
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
+  containsTable,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
-import { Node } from 'prosemirror-model';
+import { Node, Slice, Fragment, Schema } from 'prosemirror-model';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
@@ -305,3 +306,54 @@ export const insertRow = (row: number): Command => (
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
   return true;
 };
+
+export function transformSliceToAddTableHeaders(
+  slice: Slice,
+  schema: Schema,
+): Slice {
+  if (!containsTable(schema, slice)) {
+    return slice;
+  }
+
+  const nodes: Node[] = [];
+
+  const { table, tableHeader, tableRow } = schema.nodes;
+
+  // walk the slice content
+  slice.content.forEach((node, _offset, _index) => {
+    if (node.type === table) {
+      const rows: Node[] = [];
+
+      node.forEach((oldRow, _, rowIdx) => {
+        if (rowIdx === 0) {
+          // if it's the first row, make everything a header cell
+          const headerCols: Node[] = [];
+          oldRow.forEach((oldCol, _a, _b) => {
+            headerCols.push(
+              tableHeader.createChecked(
+                oldCol.attrs,
+                oldCol.content,
+                oldCol.marks,
+              ),
+            );
+          });
+
+          // construct a new row that holds the header cells
+          rows.push(
+            tableRow.createChecked(oldRow.attrs, headerCols, oldRow.marks),
+          );
+        } else {
+          // keep remainder of table unmodified
+          rows.push(oldRow);
+        }
+      });
+
+      nodes.push(table.createChecked(node.attrs, rows, node.marks));
+    } else {
+      // node wasn't a table, keep unmodified
+      nodes.push(node);
+    }
+  });
+
+  return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
+}
