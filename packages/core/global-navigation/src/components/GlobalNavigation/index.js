@@ -25,10 +25,10 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
 
     return {
       primaryItems: navItems
-        .filter(item => item.section === 'top')
+        .filter(item => item.section === 'primary')
         .sort((item1, item2) => item1.rank - item2.rank),
       secondaryItems: navItems
-        .filter(item => item.section === 'bottom')
+        .filter(item => item.section === 'secondary')
         .sort((item1, item2) => item1.rank - item2.rank),
     };
   };
