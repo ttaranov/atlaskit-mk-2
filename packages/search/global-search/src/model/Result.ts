@@ -1,30 +1,62 @@
-export interface Result {
+import { Component } from 'react';
+
+export enum GlobalSearchResultTypes {
+  JiraObjectResult,
+  GenericContainerResult,
+  PersonResult,
+  ConfluenceObjectResult,
+}
+
+export interface GlobalSearchResult {
   resultId: string;
+  // main text to show
   name: string;
+  // url to link the result to
   href: string;
-  // Either avatarUrl or contentType should be defined
+  // an avatar component to show, overrides avatarUrl if supplied
+  avatar?: Component;
+  // url to display the avatar from
   avatarUrl?: string;
-  contentType?: ResultContentType;
-  containerName?: string;
-  objectKey?: string;
-  resultType: ResultType;
+  // the analytics type to send in the analytics attributes
   analyticsType: AnalyticsType;
-  //
-  subText?: string;
-  caption?: string;
+  // the type of result
+  objectType: ObjectType;
+  // field to disambiguate between result types
+  globalSearchResultType: GlobalSearchResultTypes;
 }
 
-export enum ResultType {
-  Person,
-  Object,
-  Container,
+export interface GlobalSearchConfluenceObjectResult extends GlobalSearchResult {
+  containerName: string;
+  globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult;
 }
 
-export enum ResultContentType {
-  Page = 'page',
-  Blogpost = 'blogpost',
-  Attachment = 'attachment',
-  Space = 'space',
+export interface GlobalSearchJiraObjectResult extends GlobalSearchResult {
+  objectKey: string;
+  containerName: string;
+  globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult;
+}
+
+export interface GlobalSearchContainerResult extends GlobalSearchResult {
+  globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult;
+}
+
+export interface GlobalSearchPersonResult extends GlobalSearchResult {
+  mentionName: string;
+  presenceMessage: string;
+  globalSearchResultType: GlobalSearchResultTypes.PersonResult;
+}
+
+/**
+ * An enum to identify the specific type of content each search result is displaying.
+ * It is used to select the appropriate icon to display.
+ */
+export enum ObjectType {
+  JiraIssue = 'jira-issue',
+  ConfluencePage = 'confluence-page',
+  ConfluenceBlogpost = 'confluence-blogpost',
+  ConfluenceAttachment = 'confluence-attachment',
+  ConfluenceSpace = 'confluence-space',
+  Person = 'person',
 }
 
 export enum AnalyticsType {

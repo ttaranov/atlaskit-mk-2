@@ -7,7 +7,7 @@ import {
   CrossProductSearchClient,
   Scope,
 } from '../../api/CrossProductSearchClient';
-import { Result } from '../../model/Result';
+import { GlobalSearchResult } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './HomeSearchResults';
 import settlePromises from '../../util/settle-promises';
@@ -26,11 +26,11 @@ export interface State {
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
-  recentlyViewedItems: Result[];
-  recentResults: Result[];
-  jiraResults: Result[];
-  confluenceResults: Result[];
-  peopleResults: Result[];
+  recentlyViewedItems: GlobalSearchResult[];
+  recentResults: GlobalSearchResult[];
+  jiraResults: GlobalSearchResult[];
+  confluenceResults: GlobalSearchResult[];
+  peopleResults: GlobalSearchResult[];
 }
 
 /**
@@ -71,7 +71,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  async searchRecent(query: string): Promise<Result[]> {
+  async searchRecent(query: string): Promise<GlobalSearchResult[]> {
     const results = await this.props.recentSearchClient.search(query);
 
     if (this.state.query === query) {
@@ -83,7 +83,9 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     return results;
   }
 
-  async searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
+  async searchCrossProduct(
+    query: string,
+  ): Promise<Map<Scope, GlobalSearchResult[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
@@ -100,7 +102,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     return results;
   }
 
-  async searchPeople(query: string): Promise<Result[]> {
+  async searchPeople(query: string): Promise<GlobalSearchResult[]> {
     const results = await this.props.peopleSearchClient.search(query);
 
     if (this.state.query === query) {

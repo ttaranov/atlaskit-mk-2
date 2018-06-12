@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ComponentClass } from 'react';
 import {
   PersonResult,
   ContainerResult,
@@ -7,75 +6,65 @@ import {
 } from '@atlaskit/quick-search';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import {
-  Result,
-  ResultType,
-  ResultContentType,
+  GlobalSearchResult,
+  GlobalSearchContainerResult,
+  GlobalSearchJiraObjectResult,
+  GlobalSearchPersonResult,
   AnalyticsType,
+  GlobalSearchResultTypes,
+  GlobalSearchConfluenceObjectResult,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
 
-// Common properties that the quick-search Result component supports
-interface QuickSearchResult extends ComponentClass {
-  type: string;
-  name: string;
-  resultId: string;
-  href: string;
-  avatarUrl?: string;
-  containerName?: string;
-  objectKey?: string;
-  contentType?: ResultContentType;
-}
-
-function getResultComponent(resultType: ResultType): ComponentClass {
-  switch (resultType) {
-    case ResultType.Object: {
-      return ObjectResult;
-    }
-    case ResultType.Person: {
-      return PersonResult;
-    }
-    case ResultType.Container: {
-      return ContainerResult;
-    }
-    default: {
-      // Make the TS compiler verify that all enums have been matched
-      const _nonExhaustiveMatch: never = resultType;
-      throw new Error(
-        `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
-      );
-    }
-  }
-}
-
-export function renderResults(results: Result[]) {
+export function renderResults(results: GlobalSearchResult[]) {
   return results.map(result => {
-    const Result = getResultComponent(result.resultType) as ComponentClass<
-      QuickSearchResult
-    >;
+    const resultType: GlobalSearchResultTypes = result.globalSearchResultType;
 
-    // TODO need to expose caption/subText more appropriately
-    let extraProps = {};
-    if (result.resultType == ResultType.Person) {
-      extraProps = {
-        mentionName: result.caption,
-        presenceMessage: result.subText,
-      };
+    const additionalProps = {
+      key: result.resultId,
+    };
+
+    switch (resultType) {
+      case GlobalSearchResultTypes.ConfluenceObjectResult: {
+        return (
+          <ObjectResult
+            {...additionalProps}
+            {...result as GlobalSearchConfluenceObjectResult}
+          />
+        );
+      }
+      case GlobalSearchResultTypes.JiraObjectResult: {
+        return (
+          <ObjectResult
+            {...additionalProps}
+            {...result as GlobalSearchJiraObjectResult}
+          />
+        );
+      }
+      case GlobalSearchResultTypes.GenericContainerResult: {
+        return (
+          <ContainerResult
+            {...additionalProps}
+            {...result as GlobalSearchContainerResult}
+          />
+        );
+      }
+      case GlobalSearchResultTypes.PersonResult: {
+        return (
+          <PersonResult
+            {...additionalProps}
+            {...result as GlobalSearchPersonResult}
+          />
+        );
+      }
+      default: {
+        // Make the TS compiler verify that all enums have been matched
+        const _nonExhaustiveMatch: never = resultType;
+        throw new Error(
+          `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
+        );
+      }
     }
-
-    return (
-      <Result
-        key={result.resultId}
-        resultId={result.resultId}
-        type={result.analyticsType}
-        name={result.name}
-        containerName={result.containerName}
-        href={result.href}
-        avatarUrl={result.avatarUrl}
-        objectKey={result.objectKey}
-        contentType={result.contentType}
-        {...extraProps}
-      />
-    );
   });
 }
 

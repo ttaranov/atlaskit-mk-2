@@ -1,4 +1,10 @@
-import { Result, ResultType, AnalyticsType } from '../model/Result';
+import {
+  GlobalSearchPersonResult,
+  GlobalSearchResultTypes,
+  AnalyticsType,
+  GlobalSearchResult,
+  ObjectType,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -28,8 +34,8 @@ export interface GraphqlError {
 }
 
 export interface PeopleSearchClient {
-  search(query: string): Promise<Result[]>;
-  getRecentPeople(): Promise<Result[]>;
+  search(query: string): Promise<GlobalSearchResult[]>;
+  getRecentPeople(): Promise<GlobalSearchResult[]>;
 }
 
 export default class PeopleSearchClientImpl implements PeopleSearchClient {
@@ -97,7 +103,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     };
   }
 
-  private buildRequestOptions(body: object) {
+  private buildRequestOptions(body: object): RequestServiceOptions {
     return {
       path: 'graphql',
       requestInit: {
@@ -110,7 +116,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     };
   }
 
-  public async getRecentPeople(): Promise<Result[]> {
+  public async getRecentPeople(): Promise<GlobalSearchResult[]> {
     const options = this.buildRequestOptions(this.buildRecentQuery());
 
     const response = await utils.requestService<GraphqlResponse>(
@@ -129,7 +135,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     return response.data.Collaborators.map(userSearchResultToResult);
   }
 
-  public async search(query: string): Promise<Result[]> {
+  public async search(query: string): Promise<GlobalSearchResult[]> {
     const options = this.buildRequestOptions(this.buildSearchQuery(query));
 
     const response = await utils.requestService<GraphqlResponse>(
@@ -154,17 +160,20 @@ function makeGraphqlErrorMessage(errors: GraphqlError[]) {
   return `${firstError.category}: ${firstError.message}`;
 }
 
-function userSearchResultToResult(searchResult: SearchResult): Result {
+function userSearchResultToResult(
+  searchResult: SearchResult,
+): GlobalSearchPersonResult {
   const mention = searchResult.nickname || searchResult.fullName;
 
   return {
-    resultType: ResultType.Person,
+    globalSearchResultType: GlobalSearchResultTypes.PersonResult,
     resultId: 'people-' + searchResult.id,
     name: searchResult.fullName,
     href: '/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
     analyticsType: AnalyticsType.ResultPerson,
-    caption: mention, // TODO move
-    subText: searchResult.title, // TODO move
+    mentionName: mention,
+    presenceMessage: searchResult.title,
+    objectType: ObjectType.Person,
   };
 }

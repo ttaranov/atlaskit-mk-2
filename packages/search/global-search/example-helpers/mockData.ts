@@ -1,15 +1,13 @@
 import * as faker from 'faker';
 import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
-import { RecentItemsResponse, RecentItem } from '../src/api/RecentSearchClient';
+import { RecentItemsResponse } from '../src/api/RecentSearchClient';
 import {
   CrossProductSearchResponse,
   Scope,
-  SearchItem,
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
 import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
-import { ResultContentType } from '../src/model/Result';
 
 const DUMMY_BASE_URL = 'http://localhost';
 
@@ -235,7 +233,7 @@ export function makeConfluenceRecentPagesData(n: number = 300) {
   for (let i = 0; i < n; i++) {
     items.push({
       available: true,
-      contentType: ResultContentType.Page,
+      contentType: 'page',
       id: faker.random.uuid(),
       lastSeen: faker.date.past(1).getTime(),
       space: faker.company.companyName(),

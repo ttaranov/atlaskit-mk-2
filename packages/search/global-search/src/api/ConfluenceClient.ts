@@ -1,8 +1,10 @@
 import {
-  Result,
-  ResultType,
-  ResultContentType,
+  GlobalSearchContainerResult,
+  GlobalSearchResultTypes,
+  GlobalSearchResult,
   AnalyticsType,
+  GlobalSearchConfluenceObjectResult,
+  ObjectType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -14,13 +16,13 @@ const RECENT_PAGES_PATH: string = 'rest/recentlyviewed/1.0/recent';
 const RECENT_SPACE_PATH: string = 'rest/recentlyviewed/1.0/recent/spaces';
 
 export interface ConfluenceClient {
-  getRecentItems(): Promise<Result[]>;
-  getRecentSpaces(): Promise<Result[]>;
+  getRecentItems(): Promise<GlobalSearchResult[]>;
+  getRecentSpaces(): Promise<GlobalSearchResult[]>;
 }
 
 export interface RecentPage {
   available: boolean;
-  contentType: ResultContentType;
+  contentType: 'blogpost' | 'page';
   id: string;
   lastSeen: number;
   space: string;
@@ -48,7 +50,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     this.cloudId = cloudId;
   }
 
-  public async getRecentItems(): Promise<Result[]> {
+  public async getRecentItems(): Promise<GlobalSearchResult[]> {
     const recentPages = await this.createRecentRequestPromise<RecentPage>(
       RECENT_PAGES_PATH,
     );
@@ -59,7 +61,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     );
   }
 
-  public async getRecentSpaces(): Promise<Result[]> {
+  public async getRecentSpaces(): Promise<GlobalSearchResult[]> {
     const recentSpaces = await this.createRecentRequestPromise<RecentSpace>(
       RECENT_SPACE_PATH,
     );
@@ -83,28 +85,32 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   }
 }
 
-function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
+function recentPageToResult(
+  recentPage: RecentPage,
+  baseUrl: string,
+): GlobalSearchResult {
   return {
     resultId: recentPage.id,
-    resultType: ResultType.Object,
     name: recentPage.title,
     href: `${baseUrl}${recentPage.url}`,
     containerName: recentPage.space,
-    contentType: recentPage.contentType,
     analyticsType: AnalyticsType.RecentConfluence,
-  };
+    globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
+    objectType: `confluence-${recentPage.contentType}` as ObjectType,
+  } as GlobalSearchConfluenceObjectResult;
 }
 
 function recentSpaceToResult(
   recentSpace: RecentSpace,
   baseUrl: string,
-): Result {
+): GlobalSearchResult {
   return {
     resultId: recentSpace.id,
-    resultType: ResultType.Container,
     name: recentSpace.name,
     href: `${baseUrl}/spaces/${recentSpace.key}/overview`,
     avatarUrl: recentSpace.icon,
     analyticsType: AnalyticsType.RecentConfluence,
-  };
+    globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
+    objectType: ObjectType.ConfluenceSpace,
+  } as GlobalSearchContainerResult;
 }

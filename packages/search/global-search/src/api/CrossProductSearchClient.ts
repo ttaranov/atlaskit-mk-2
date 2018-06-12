@@ -1,14 +1,19 @@
 import {
-  Result,
-  ResultType,
-  ResultContentType,
+  GlobalSearchResult,
+  GlobalSearchResultTypes,
   AnalyticsType,
+  GlobalSearchContainerResult,
+  ObjectType,
+  GlobalSearchJiraObjectResult,
+  GlobalSearchConfluenceObjectResult,
 } from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
+
+type ConfluenceItemContentType = 'page' | 'blogpost';
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
@@ -39,7 +44,7 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
-    type: ResultContentType;
+    type: ConfluenceItemContentType;
   };
   container: {
     title: string; // this is unhighlighted
@@ -65,7 +70,7 @@ export interface CrossProductSearchClient {
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, Result[]>>;
+  ): Promise<Map<Scope, GlobalSearchResult[]>>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -85,7 +90,7 @@ export default class CrossProductSearchClientImpl
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, Result[]>> {
+  ): Promise<Map<Scope, GlobalSearchResult[]>> {
     const response = await this.makeRequest(query, scopes);
 
     return this.parseResponse(response, searchSessionId, scopes);
@@ -123,8 +128,8 @@ export default class CrossProductSearchClientImpl
     response: CrossProductSearchResponse,
     searchSessionId: string,
     scopes: Scope[],
-  ): Map<Scope, Result[]> {
-    const results: Map<Scope, Result[]> = response.scopes.reduce(
+  ): Map<Scope, GlobalSearchResult[]> {
+    const results: Map<Scope, GlobalSearchResult[]> = response.scopes.reduce(
       (resultsMap, scopeResult) => {
         resultsMap.set(
           scopeResult.id,
@@ -149,7 +154,7 @@ function mapItemToResult(
   scope: Scope,
   item: SearchItem,
   searchSessionId: string,
-): Result {
+): GlobalSearchResult {
   switch (scope) {
     case Scope.ConfluencePageBlog:
     case Scope.ConfluencePageBlogAttachment: {
@@ -175,43 +180,42 @@ function mapItemToResult(
 function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
-): Result {
-  const result: Result = {
-    resultType: ResultType.Object,
-    resultId: 'search-' + item.url,
+): GlobalSearchConfluenceObjectResult {
+  return {
+    resultId: `search-${item.url}`,
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
+    objectType: `confluence-${item.content!.type}` as ObjectType,
+    globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
   };
-
-  if (item.content && item.content.type) {
-    result.contentType = item.content.type as ResultContentType;
-  }
-
-  return result;
 }
 
-function mapJiraItemToResult(item: JiraItem): Result {
+function mapJiraItemToResult(item: JiraItem): GlobalSearchJiraObjectResult {
   return {
-    resultType: ResultType.Object,
-    resultId: 'search-' + item.key,
+    resultId: `search- + ${item.key}`,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
-    href: '/browse/' + item.key,
+    href: `/browse/${item.key}`,
     containerName: item.fields.project.name,
     objectKey: item.key,
     analyticsType: AnalyticsType.ResultJira,
+    objectType: ObjectType.JiraIssue,
+    globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
   };
 }
 
-function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
+function mapConfluenceItemToResultSpace(
+  spaceItem: ConfluenceItem,
+): GlobalSearchContainerResult {
   return {
-    resultType: ResultType.Container,
-    resultId: 'search-' + spaceItem.container.displayUrl,
+    resultId: `search-${spaceItem.container.displayUrl}`,
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
     analyticsType: AnalyticsType.ResultConfluence,
+    globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
+    objectType: ObjectType.ConfluenceSpace,
   };
 }

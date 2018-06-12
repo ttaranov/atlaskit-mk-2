@@ -1,4 +1,11 @@
-import { Result, ResultType, AnalyticsType } from '../model/Result';
+import {
+  GlobalSearchResult,
+  GlobalSearchResultTypes,
+  AnalyticsType,
+  GlobalSearchJiraObjectResult,
+  ObjectType,
+  GlobalSearchConfluenceObjectResult,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -19,8 +26,8 @@ export interface RecentItem {
 }
 
 export interface RecentSearchClient {
-  getRecentItems(): Promise<Result[]>;
-  search(query: string): Promise<Result[]>;
+  getRecentItems(): Promise<GlobalSearchResult[]>;
+  search(query: string): Promise<GlobalSearchResult[]>;
 }
 
 export default class RecentSearchClientImpl implements RecentSearchClient {
@@ -33,12 +40,12 @@ export default class RecentSearchClientImpl implements RecentSearchClient {
     this.cloudId = cloudId;
   }
 
-  public async getRecentItems(): Promise<Result[]> {
+  public async getRecentItems(): Promise<GlobalSearchResult[]> {
     const recentItems = await this.fetchRecentItems();
     return recentItems.map(recentItemToResult);
   }
 
-  public async search(query: string): Promise<Result[]> {
+  public async search(query: string): Promise<GlobalSearchResult[]> {
     const recentItems = await this.fetchRecentItems();
     const filteredRecentItems = this.filterItems(recentItems, query);
 
@@ -114,20 +121,31 @@ function maybeSplitIssueKeyAndName(recentItem: RecentItem) {
   }
 }
 
-function recentItemToResult(recentItem: RecentItem): Result {
+function recentItemToResult(recentItem: RecentItem): GlobalSearchResult {
   const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
 
-  return {
-    resultType: ResultType.Object,
-    resultId: 'recent-' + recentItem.objectId,
+  const baseResult = {
+    resultId: `recent-${recentItem.objectId}`,
     avatarUrl: recentItem.iconUrl,
     name: name,
     href: recentItem.url,
     containerName: recentItem.container,
-    objectKey: objectKey,
-    analyticsType:
-      recentItem.provider === 'jira'
-        ? AnalyticsType.RecentJira
-        : AnalyticsType.RecentConfluence,
   };
+
+  if (recentItem.provider === 'jira') {
+    return {
+      objectKey: objectKey!,
+      objectType: ObjectType.JiraIssue,
+      globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
+      analyticsType: AnalyticsType.RecentJira,
+      ...baseResult,
+    } as GlobalSearchJiraObjectResult;
+  } else {
+    return {
+      objectType: ObjectType.JiraIssue,
+      globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
+      analyticsType: AnalyticsType.RecentConfluence,
+      ...baseResult,
+    } as GlobalSearchConfluenceObjectResult;
+  }
 }
