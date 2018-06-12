@@ -126,6 +126,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       legacyImageUploadProvider,
       media,
       collabEdit,
+      UNSAFE_cards,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
@@ -154,6 +155,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
     this.providerFactory.setProvider('macroProvider', macroProvider);
+    if (UNSAFE_cards && UNSAFE_cards.provider) {
+      this.providerFactory.setProvider('cardProvider', UNSAFE_cards.provider);
+    }
   }
 
   handleSave = (view: EditorView): void => {
