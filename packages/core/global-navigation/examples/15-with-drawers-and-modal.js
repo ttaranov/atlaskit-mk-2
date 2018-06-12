@@ -90,6 +90,7 @@ class GlobalNavWithDrawers extends Component<Object, State> {
           onSearchClick={this.props.navigation.openSearchDrawer}
           onYourWorkClick={this.props.navigation.openYourWorkDrawer}
           onNotificationClick={this.props.navigation.openNotificationDrawer}
+          notificationCount={5}
           onPeopleClick={this.props.navigation.openPeopleDrawer}
         />
         {this.renderDrawer('search', { width: 'wide' })}
