@@ -1,38 +1,28 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 import { Client } from '../src/Client';
 import { Provider } from '../src/Provider';
-
-class Child extends React.Component {
-  static contextTypes = {
-    smartCardClient: PropTypes.object.isRequired,
-  };
-
-  render() {
-    return <div />;
-  }
-}
+import Context from '../src/Context';
 
 describe('Provider', () => {
   it('should inject the default client instance', () => {
-    const wrapper = mount(
+    const render = jest.fn();
+    mount(
       <Provider>
-        <Child />
+        <Context.Consumer>{render}</Context.Consumer>
       </Provider>,
     );
-    expect(wrapper.find(Child).instance().context.smartCardClient).toBe(
-      Provider.defaultClient,
-    );
+    expect(render).toBeCalledWith(Provider.defaultClient);
   });
 
   it('should inject the custom client instance', () => {
+    const render = jest.fn();
     const client = new Client();
-    const wrapper = mount(
+    mount(
       <Provider client={client}>
-        <Child />
+        <Context.Consumer>{render}</Context.Consumer>
       </Provider>,
     );
-    expect(wrapper.find(Child).instance().context.smartCardClient).toBe(client);
+    expect(render).toBeCalledWith(client);
   });
 });
