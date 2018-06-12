@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.4.1
+- [patch] Fix issue where mention-picker when two users would have a mention picker open at the same time in collaborative editing. [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
+- [none] Updated dependencies [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
+
 ## 73.4.0
 - [minor] ED-4657: unbreak table copy-paste [38b5ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b5ce7)
 - [none] Updated dependencies [38b5ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b5ce7)
