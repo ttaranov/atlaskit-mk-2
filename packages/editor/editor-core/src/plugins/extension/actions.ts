@@ -5,12 +5,14 @@ import {
   TextSelection,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { findParentNodeOfType } from 'prosemirror-utils';
 import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
   removeSelectedNode,
   removeParentNodeOfType,
   selectParentNodeOfType,
+  findSelectedNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
@@ -20,13 +22,58 @@ export const setExtensionElement = (element: HTMLElement | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  let tr = state.tr.setMeta(pluginKey, { element });
+  const pluginState = pluginKey.getState(state);
+  const tr = state.tr.setMeta(pluginKey, {
+    ...pluginState,
+    element,
+  });
   if (!element) {
-    tr = tr.setSelection(
-      TextSelection.create(state.doc, state.selection.$from.pos),
-    );
+    tr.setSelection(TextSelection.create(state.doc, state.selection.$from.pos));
   }
   dispatch(tr);
+  return true;
+};
+
+export const updateExtensionLayout = layout => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => {
+  const { selection, schema, tr } = state;
+  const { bodiedExtension, extension, inlineExtension } = schema.nodes;
+  const parentExtNode = findParentNodeOfType([bodiedExtension])(selection);
+
+  let extPosition;
+  let extNode;
+
+  const selectedNode = findSelectedNodeOfType([
+    bodiedExtension,
+    inlineExtension,
+    extension,
+  ])(selection);
+
+  if (!parentExtNode && !selectedNode) {
+    return;
+  }
+
+  if (selectedNode) {
+    extPosition = selectedNode.pos;
+    extNode = selectedNode.node;
+  } else {
+    extPosition = parentExtNode!.pos - 1;
+    extNode = parentExtNode!.node;
+  }
+
+  const pluginState = pluginKey.getState(state);
+
+  tr
+    .setNodeMarkup(extPosition, undefined, {
+      ...extNode!.attrs,
+      layout,
+    })
+    .setMeta(pluginKey, { ...pluginState, layout });
+
+  dispatch(tr);
+
   return true;
 };
 
