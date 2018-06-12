@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import { ZoomControls, ZoomControlsProps } from '../../src/newgen/zoomControls';
-import { ZoomLevel } from '../../src/newgen/styled';
+import { ZoomLevelIndicator } from '../../src/newgen/styled';
 
 describe('Zooming', () => {
   describe('<ZoomControls />', () => {
@@ -71,7 +71,7 @@ describe('Zooming', () => {
         const { component } = setup({ zoom: 100 });
         expect(
           component
-            .find(ZoomLevel)
+            .find(ZoomLevelIndicator)
             .dive()
             .text(),
         ).toEqual('100 %');
