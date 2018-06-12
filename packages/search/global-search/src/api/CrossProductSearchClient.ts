@@ -13,7 +13,7 @@ import {
   utils,
 } from '@atlaskit/util-service-support';
 
-type ConfluenceItemContentType = 'page' | 'blogpost';
+export type ConfluenceItemContentType = 'page' | 'blogpost';
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',

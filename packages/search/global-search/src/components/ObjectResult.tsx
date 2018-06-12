@@ -38,7 +38,7 @@ export default class ObjectResult extends React.Component<Props> {
    * Colors come from: https://extranet.atlassian.com/display/ADG/Object+icons%3A+Colors
    */
   getAvatar = () => {
-    if (this.props.objectType == ObjectType.ConfluencePage) {
+    if (this.props.objectType === ObjectType.ConfluencePage) {
       return (
         <Objects24PageIcon
           size="medium"
@@ -46,7 +46,7 @@ export default class ObjectResult extends React.Component<Props> {
           label={this.props.name}
         />
       );
-    } else if (this.props.objectType == ObjectType.ConfluenceBlogpost) {
+    } else if (this.props.objectType === ObjectType.ConfluenceBlogpost) {
       return (
         <Objects24BlogIcon
           size="medium"
@@ -54,7 +54,7 @@ export default class ObjectResult extends React.Component<Props> {
           label={this.props.name}
         />
       );
-    } else if (this.props.objectType == ObjectType.ConfluenceAttachment) {
+    } else if (this.props.objectType === ObjectType.ConfluenceAttachment) {
       return (
         <Objects24ImageIcon
           size="medium"
