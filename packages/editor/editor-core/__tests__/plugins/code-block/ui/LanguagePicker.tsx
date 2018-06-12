@@ -42,7 +42,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
       expect(renderSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should not re-render if activeCodeBlockDOM height has not changed', () => {
+    it('should not re-render if activeCodeBlockDOM height/width has not changed', () => {
       const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
       languagePicker.setProps({ activeCodeBlockDOM: dom });
       expect(renderSpy).toHaveBeenCalledTimes(0);
@@ -60,9 +60,16 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
       expect(renderSpy).toHaveBeenCalledTimes(1);
     });
 
+    it('should re-render if activeCodeBlockDOM width has changed', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      Object.defineProperty(dom, 'clientWidth', { value: 100 });
+      languagePicker.setProps({ activeCodeBlockDOM: dom });
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
+
     it('should re-render if activeCodeBlockDOM height has changed', () => {
       const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
-      Object.defineProperty(dom, 'scrollHeight', { value: 100 });
+      Object.defineProperty(dom, 'clientHeight', { value: 100 });
       languagePicker.setProps({ activeCodeBlockDOM: dom });
       expect(renderSpy).toHaveBeenCalledTimes(1);
     });
