@@ -2,7 +2,9 @@ import { Subject, Observable } from 'rxjs';
 import { Command } from './Command';
 import {
   createObjectStateObservable,
-  State,
+  ObjectState,
+  ObjectStatus,
+  AuthService,
 } from './createObjectStateObservable';
 
 // TODO: add some form of caching so that urls not currently loaded will still be fast
@@ -15,7 +17,7 @@ export class Client {
   static SERVICE_URL = 'https://api-private.stg.atlassian.com/object-resolver';
 
   private readonly serviceUrl: string;
-  private readonly pool: Map<string, Observable<State>> = new Map();
+  private readonly pool: Map<string, Observable<ObjectState>> = new Map();
   private readonly $commands: Subject<Command> = new Subject();
 
   constructor(options: ClientOptions = {}) {
@@ -23,8 +25,8 @@ export class Client {
     this.serviceUrl = serviceUrl;
   }
 
-  get(url: string): Observable<State> {
-    return new Observable<State>(observer => {
+  get(url: string): Observable<ObjectState> {
+    return new Observable<ObjectState>(observer => {
       let observable = this.pool.get(url);
       if (!observable) {
         observable = createObjectStateObservable(url, {
@@ -49,3 +51,5 @@ export class Client {
     });
   }
 }
+
+export { ObjectStatus, ObjectState, AuthService };

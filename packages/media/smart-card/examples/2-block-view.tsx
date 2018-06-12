@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { CollapsedFrame } from '../src/block/CollapsedFrame';
-import { LoadingView as CollapsedLoadingView } from '../src/block/LoadingView';
+import { ResolvingView } from '../src/block/ResolvingView';
 import { ErroredView as CollapsedErroredView } from '../src/block/ErroredView';
 import { UnauthorisedView } from '../src/block/UnauthorisedView';
 import { ForbiddenView } from '../src/block/ForbiddenView';
@@ -29,7 +29,7 @@ export default () => (
       <GridColumn>
         <h4>Loading</h4>
         <CollapsedFrameWithDetails>
-          <CollapsedLoadingView />
+          <ResolvingView />
         </CollapsedFrameWithDetails>
 
         <h4>Errored</h4>

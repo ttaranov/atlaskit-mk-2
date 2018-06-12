@@ -1,119 +1,42 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Subscription } from 'rxjs/Subscription';
+import memoize from 'memoize-one';
 import LazyRender from 'react-lazily-render';
 import { auth } from '@atlassian/outbound-auth-flow-client';
-import { Client } from '../Client';
+import { ObjectState, AuthService, Client } from '../Client';
+import { WithObject } from '../WithObject';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
 import { CollapsedFrame } from './CollapsedFrame';
-import { LoadingView } from './LoadingView';
-import { ResolvedView, ResolvedViewProps } from './ResolvedView';
+import { ResolvingView } from './ResolvingView';
+import { ResolvedView } from './ResolvedView';
 import { UnauthorisedView } from './UnauthorisedView';
 import { ForbiddenView } from './ForbiddenView';
 import { ErroredView } from './ErroredView';
-import { Service, Status } from '../Client/createObjectStateObservable';
 import { minWidth, maxWidth } from './dimensions';
 
-export interface CardProps {
-  client?: Client;
-  url: string;
+const memoizeExtractPropsFromJSONLD = memoize(extractPropsFromJSONLD);
+
+interface CardContentProps {
+  state: ObjectState;
+  reload: () => void;
   onClick?: () => void;
 }
 
-export interface CardContext {
-  smartCardClient?: Client;
-}
-
-export interface CardState {
-  status: Status;
-  provider?: string;
-  services: Service[];
-  props?: ResolvedViewProps;
-}
-export class Card extends React.Component<CardProps, CardState> {
-  static contextTypes = {
-    smartCardClient: PropTypes.object,
-  };
-
-  private subscription?: Subscription;
-
-  context: CardContext;
-
-  state: CardState = {
-    status: 'resolving',
-    services: [],
-  };
-
-  getClient(): Client {
-    const client = this.context.smartCardClient || this.props.client;
-    if (!client) {
-      throw new Error(
-        '@atlaskit/smart-card: No client provided. Provide a client like <Card client={new Client()} url=""/> or <Provider client={new Client()}><Card url=""/></Provider>.',
-      );
-    }
-    return client;
-  }
-
-  shouldFetch(prevProps: CardProps, nextProps: CardProps) {
-    return prevProps.url !== nextProps.url;
-  }
-
-  unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = undefined;
-    }
-  }
-
-  subscribe() {
-    let client;
-    try {
-      client = this.getClient();
-    } catch (error) {
-      // report the error for consumers to fix
-      // tslint:disable-next-line:no-console
-      console.error(error.message);
-      this.setState({ status: 'errored' });
-      return;
-    }
-
-    const { url } = this.props;
-    const subscription = client
-      .get(url)
-      .subscribe(({ status, provider, services, data }) =>
-        this.setState({
-          status,
-          provider,
-          services,
-          props: data ? extractPropsFromJSONLD(data) : undefined,
-        }),
-      );
-
-    this.subscription = subscription;
-  }
-
-  refresh() {
-    const { provider } = this.state;
-    if (provider) {
-      this.getClient().reload(provider);
-    }
+class CardContent extends React.Component<CardContentProps> {
+  extractViewProps() {
+    const { state } = this.props;
+    return memoizeExtractPropsFromJSONLD(state.data || {});
   }
 
   get collapsedIcon() {
-    const { props } = this.state;
+    const props = this.extractViewProps();
     return (
       (props && props.icon && props.icon.url) ||
       (props && props.context && props.context.icon)
     );
   }
 
-  // we don't fetch the props on mount, but when the card is scrolled into view
-  handleLazilyRender = () => {
-    this.subscribe();
-  };
-
   handleFrameClick = () => {
-    const { url, onClick } = this.props;
+    const { url, onClick } = this.extractViewProps();
     if (onClick) {
       onClick();
     } else {
@@ -121,31 +44,15 @@ export class Card extends React.Component<CardProps, CardState> {
     }
   };
 
-  handleAuthorise = (service: Service) => {
-    auth(service.startAuthUrl).then(() => this.refresh(), () => this.refresh());
+  handleAuthorise = (service: AuthService) => {
+    const { reload } = this.props;
+    auth(service.startAuthUrl).then(() => reload(), () => reload());
   };
 
   handleErrorRetry = () => {
-    this.refresh();
+    const { reload } = this.props;
+    reload();
   };
-
-  componentWillReceiveProps(nextProps: CardProps) {
-    if (this.shouldFetch(this.props, nextProps)) {
-      // TODO: check we're not causing cascading updates
-      this.setState({ status: 'resolving' });
-    }
-  }
-
-  componentDidUpdate(prevProps: CardProps) {
-    if (this.shouldFetch(prevProps, this.props)) {
-      this.unsubscribe();
-      this.subscribe();
-    }
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
 
   renderInTheCollapsedFrame(children: React.ReactNode) {
     return (
@@ -160,12 +67,13 @@ export class Card extends React.Component<CardProps, CardState> {
   }
 
   renderResolvingState() {
-    return this.renderInTheCollapsedFrame(<LoadingView />);
+    return this.renderInTheCollapsedFrame(<ResolvingView />);
   }
 
   renderUnauthorisedState() {
+    const { state } = this.props;
     // TODO: figure out how to support multiple services
-    const service = this.state.services[0];
+    const service = state.services[0];
     return this.renderInTheCollapsedFrame(
       <UnauthorisedView
         icon={this.collapsedIcon}
@@ -176,8 +84,9 @@ export class Card extends React.Component<CardProps, CardState> {
   }
 
   renderForbiddenState() {
+    const { state } = this.props;
     // TODO: figure out how to support multiple services
-    const service = this.state.services[0];
+    const service = state.services[0];
     return this.renderInTheCollapsedFrame(
       <ForbiddenView
         icon={this.collapsedIcon}
@@ -202,13 +111,13 @@ export class Card extends React.Component<CardProps, CardState> {
   }
 
   renderResolvedState() {
-    const { props } = this.state;
+    const props = this.extractViewProps();
     return <ResolvedView {...props} />;
   }
 
-  renderContent() {
-    const { status } = this.state;
-    switch (status) {
+  render() {
+    const { state } = this.props;
+    switch (state.status) {
       case 'resolving':
         return this.renderResolvingState();
 
@@ -228,15 +137,24 @@ export class Card extends React.Component<CardProps, CardState> {
         return this.renderErroredState();
     }
   }
+}
 
-  render() {
-    return (
-      <LazyRender
-        offset={100}
-        placeholder={this.renderResolvingState()}
-        content={this.renderContent()}
-        onRender={this.handleLazilyRender}
-      />
-    );
-  }
+export interface CardProps {
+  client?: Client;
+  url: string;
+}
+
+export function Card(props: CardProps) {
+  const { client, url } = props;
+  return (
+    <LazyRender
+      offset={100}
+      placeholder={<ResolvingView />}
+      content={
+        <WithObject client={client} url={url}>
+          {({ state, reload }) => <CardContent state={state} reload={reload} />}
+        </WithObject>
+      }
+    />
+  );
 }

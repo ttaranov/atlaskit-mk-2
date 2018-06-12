@@ -29,7 +29,7 @@ interface ResolveResponse {
   };
 }
 
-export type Status =
+export type ObjectStatus =
   | 'resolving'
   | 'not-found'
   | 'resolved'
@@ -37,16 +37,16 @@ export type Status =
   | 'forbidden'
   | 'errored';
 
-export interface Service {
+export interface AuthService {
   id: string;
   name: string;
   startAuthUrl: string;
 }
 
-export interface State {
-  status: Status;
+export interface ObjectState {
+  status: ObjectStatus;
   provider?: string;
-  services: Service[];
+  services: AuthService[];
   data?: { [name: string]: any };
 }
 
@@ -54,7 +54,7 @@ function convertAuthToService(auth: {
   key: string;
   displayName: string;
   url: string;
-}): Service {
+}): AuthService {
   return {
     id: auth.key,
     name: auth.displayName,
@@ -86,7 +86,7 @@ export function createObjectStateObservable(url: string, options: Options) {
       return fetch<ResolveResponse>('post', `${serviceUrl}/resolve`, {
         resourceUrl: encodeURI(objectUrl),
       }).pipe(
-        map<ResolveResponse, State>(json => {
+        map<ResolveResponse, ObjectState>(json => {
           if (json.meta.visibility === 'not_found') {
             return {
               status: 'not-found',
@@ -121,14 +121,14 @@ export function createObjectStateObservable(url: string, options: Options) {
               };
           }
         }),
-        startWith<State>({
+        startWith<ObjectState>({
           status: 'resolving',
           services: [],
         }),
       );
     }),
     catchError(() =>
-      of<State>({
+      of<ObjectState>({
         status: 'errored',
         services: [],
       }),
