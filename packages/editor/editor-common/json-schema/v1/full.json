@@ -1382,6 +1382,13 @@
             "parameters": {},
             "text": {
               "type": "string"
+            },
+            "layout": {
+              "enum": [
+                "wide",
+                "full-width",
+                "default"
+              ]
             }
           },
           "required": [
@@ -1456,6 +1463,13 @@
             "parameters": {},
             "text": {
               "type": "string"
+            },
+            "layout": {
+              "enum": [
+                "wide",
+                "full-width",
+                "default"
+              ]
             }
           },
           "required": [
