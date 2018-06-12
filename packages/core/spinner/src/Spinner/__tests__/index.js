@@ -96,6 +96,12 @@ describe('Spinner', () => {
   });
 
   describe('size prop', () => {
+    it('should render the spinner with the default size if no value is provided', () => {
+      const custom = mount(<Spinner />);
+      expect(custom.find(Svg).prop('height')).toBe(24);
+      expect(custom.find(Svg).prop('width')).toBe(24);
+    });
+
     it('should render tee-shirt sizes with the proper heights/widths', () => {
       const xsmall = mount(<Spinner size="xsmall" />);
       const small = mount(<Spinner size="small" />);
@@ -124,13 +130,6 @@ describe('Spinner', () => {
 
       expect(custom.find(Svg).prop('height')).toBe(72);
       expect(custom.find(Svg).prop('width')).toBe(72);
-    });
-
-    it('should render the spinner with the default size if an unsupported value is provided', () => {
-      // $FlowFixMe
-      const custom = mount(<Spinner size={{ something: 'weird' }} />);
-      expect(custom.find(Svg).prop('height')).toBe(24);
-      expect(custom.find(Svg).prop('width')).toBe(24);
     });
   });
 
