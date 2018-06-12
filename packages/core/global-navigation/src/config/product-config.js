@@ -7,10 +7,10 @@ import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
 
-const isEmpty = obj => obj && !!Object.keys(obj).length;
+const isEmpty = obj => (obj ? !!obj : !!Object.keys(obj).length);
 
 // Remove empty and falsey (including 0) keys from an object
-const compact = items =>
+const compact = (items: GlobalNavigationProps) =>
   Object.keys(items)
     .filter(item => isEmpty(item))
     .reduce((acc, curr) => {
@@ -131,7 +131,7 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
     profileTooltip,
     loginHref,
     profileIconUrl,
-    appSwitcherComponent: appSwitcher,
+    appSwitcherComponent,
   } = props;
 
   const notificationBadge = {
@@ -160,6 +160,8 @@ export default function generateProductConfig(props: GlobalNavigationProps) {
       loginHref,
       profileIconUrl,
     ),
-    appSwitcherComponent: appSwitcher ? { component: appSwitcher } : null,
+    appSwitcher: appSwitcherComponent
+      ? { component: appSwitcherComponent }
+      : null,
   });
 }
