@@ -39,7 +39,6 @@ export interface GlobalSearchContainerResult extends GlobalSearchResult {
 }
 
 export interface GlobalSearchPersonResult extends GlobalSearchResult {
-  // the person's @mention.
   mentionName: string;
   // the message to display underneath the name, unfortuntately named this way ATM.
   presenceMessage: string;
