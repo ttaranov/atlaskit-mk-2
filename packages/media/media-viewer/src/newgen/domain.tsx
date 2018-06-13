@@ -49,14 +49,14 @@ export class ZoomLevel {
 
   zoomIn(): ZoomLevel {
     const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
-    const nextValue = ZoomLevel.ZOOM_LEVELS[index + 1] || this.value;
-    return new ZoomLevel(nextValue);
+    const nextValue = ZoomLevel.ZOOM_LEVELS[index + 1];
+    return nextValue ? new ZoomLevel(nextValue) : this;
   }
 
   zoomOut(): ZoomLevel {
     const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
-    const nextValue = ZoomLevel.ZOOM_LEVELS[index - 1] || this.value;
-    return new ZoomLevel(nextValue);
+    const nextValue = ZoomLevel.ZOOM_LEVELS[index - 1];
+    return nextValue ? new ZoomLevel(nextValue) : this;
   }
 
   get canZoomIn(): boolean {
