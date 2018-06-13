@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ComponentType } from 'react';
 import {
   PersonResult,
   ContainerResult,
@@ -13,6 +14,7 @@ import {
   AnalyticsType,
   GlobalSearchResultTypes,
   GlobalSearchConfluenceObjectResult,
+  ContentType,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
@@ -21,6 +23,27 @@ import {
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
 } from '../util/analytics';
+
+export interface BaseResultProps {
+  type: string;
+  name: string;
+  resultId: string;
+  href: string;
+  avatarUrl?: string;
+}
+
+export interface ObjectResultProps extends BaseResultProps {
+  containerName?: string;
+  contentType?: ContentType;
+  objectKey?: string;
+}
+
+export interface ContainerResultProps extends BaseResultProps {}
+
+export interface PersonResultProps extends BaseResultProps {
+  mentionName?: string;
+  presenceMessage?: string;
+}
 
 function createAndFireSearchResultSelectedEvent(createEvent, props): void {
   const event = createEvent(); // created empty to initialise with context
@@ -46,15 +69,17 @@ const searchResultsAnalyticsEvents = {
   onClick: createAndFireSearchResultSelectedEvent,
 };
 
-export const ObjectResultWithAnalytics = withAnalyticsEvents(
-  searchResultsAnalyticsEvents,
-)(ObjectResult);
-export const PersonResultWithAnalytics = withAnalyticsEvents(
-  searchResultsAnalyticsEvents,
-)(PersonResult);
-export const ContainerResultWithAnalytics = withAnalyticsEvents(
-  searchResultsAnalyticsEvents,
-)(ContainerResult);
+export const ObjectResultWithAnalytics: ComponentType<
+  ObjectResultProps
+> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ObjectResult);
+
+export const PersonResultWithAnalytics: ComponentType<
+  PersonResultProps
+> = withAnalyticsEvents(searchResultsAnalyticsEvents)(PersonResult);
+
+export const ContainerResultWithAnalytics: ComponentType<
+  ContainerResultProps
+> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ContainerResult);
 
 export function renderResults(results: GlobalSearchResult[]) {
   return results.map(result => {
