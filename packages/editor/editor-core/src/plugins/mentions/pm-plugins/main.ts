@@ -1,20 +1,19 @@
-import { Fragment, Node, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import {
   MentionProvider,
   MentionDescription,
   isSpecialMention,
 } from '@atlaskit/mention';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { Fragment, Node, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import {
   isMarkTypeAllowedInCurrentSelection,
   isChromeWithSelectionBug,
 } from '../../../utils';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../../analytics';
 import mentionNodeView from '../nodeviews/mention';
-import { ReactNodeView } from '../../../nodeviews';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
+import { nodeViewFactory } from '../../../nodeviews';
 
 export const mentionPluginKey: PluginKey = new PluginKey('mentionPlugin');
 
@@ -31,14 +30,12 @@ interface QueryMark {
 function findMentionQueryMarks(
   state: EditorState,
   active: boolean = true,
-  start: number = 0,
-  end?: number,
 ): QueryMark[] {
   const { doc, schema } = state;
   const { mentionQuery } = schema.marks;
 
   const marks: QueryMark[] = [];
-  doc.nodesBetween(start, end || doc.nodeSize - 2, (node, pos) => {
+  doc.nodesBetween(0, doc.nodeSize - 2, (node, pos) => {
     let mark = mentionQuery.isInSet(node.marks);
     if (mark) {
       const query = node.textContent.substr(1).trim();
@@ -166,16 +163,9 @@ export class MentionsState {
       this.dismiss();
     }
 
-    const mark = findMentionQueryMarks(this.state, true, from - 1, to).pop();
-    if (!mark && this.queryActive) {
-      this.dismiss();
-    }
-
-    const domRef = mark ? this.view.domAtPos(mark.start) : undefined;
-    const newAnchorElement = domRef
-      ? ((domRef.node as HTMLElement).childNodes[domRef.offset] as HTMLElement)
-      : undefined;
-
+    const newAnchorElement = this.view.dom.querySelector(
+      '[data-mention-query]',
+    ) as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       this.dirty = true;
       this.anchorElement = newAnchorElement;
@@ -239,23 +229,11 @@ export class MentionsState {
 
   private findActiveMentionQueryMark() {
     const activeMentionQueryMarks = findMentionQueryMarks(this.state, true);
-    let from = this.state.selection.from;
-    let closestMark = { start: -1, end: -1, query: '' };
-    let closestDistance = Number.MAX_SAFE_INTEGER;
-
-    while (activeMentionQueryMarks.length) {
-      const mark = activeMentionQueryMarks.pop()!;
-      const distance = Math.min(
-        Math.abs(from - mark!.start),
-        Math.abs(from - mark!.end),
-      );
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestMark = mark;
-      }
+    if (activeMentionQueryMarks.length !== 1) {
+      return { start: -1, end: -1, query: '' };
     }
 
-    return closestMark;
+    return activeMentionQueryMarks[0];
   }
 
   insertMention(mentionData?: MentionDescription, queryMark?: { start; end }) {
@@ -501,10 +479,7 @@ export class MentionsState {
   }
 }
 
-export function createPlugin(
-  portalProviderAPI: PortalProviderAPI,
-  providerFactory: ProviderFactory,
-) {
+export function createPlugin(providerFactory: ProviderFactory) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -518,11 +493,7 @@ export function createPlugin(
     },
     props: {
       nodeViews: {
-        mention: ReactNodeView.fromComponent(
-          mentionNodeView,
-          portalProviderAPI,
-          { providerFactory },
-        ),
+        mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
       },
       handleDOMEvents: {
         focus(view: EditorView, event) {

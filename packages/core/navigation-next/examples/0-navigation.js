@@ -81,7 +81,6 @@ const globalNavSecondaryItems = [
 const productRootNavSections = [
   {
     key: 'header',
-    isRootLevel: true,
     items: [
       {
         type: () => (
@@ -95,7 +94,6 @@ const productRootNavSections = [
   },
   {
     key: 'menu',
-    isRootLevel: true,
     items: [
       {
         type: Item,
@@ -112,7 +110,6 @@ const productRootNavSections = [
 const productContainerNavSections = [
   {
     key: 'header',
-    isRootLevel: true,
     items: [
       {
         type: ContainerHeader,
@@ -127,7 +124,6 @@ const productContainerNavSections = [
   },
   {
     key: 'menu',
-    isRootLevel: true,
     items: [
       { type: SectionTitle, key: 'title', children: 'Section title' },
       { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
@@ -150,12 +146,10 @@ const GlobalNavigation = () => (
 
 const RenderSection = ({ section }: *) => (
   <div css={{ paddingTop: '16px' }}>
-    {section.map(({ key, isRootLevel, items }) => (
+    {section.map(({ key, items }) => (
       <Section key={key}>
         {({ css }) => (
-          <div
-            css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
-          >
+          <div css={css}>
             {items.map(({ type: Component, ...props }) => (
               <Component {...props} />
             ))}

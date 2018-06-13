@@ -13,32 +13,67 @@ import {
 export type ZoomDirection = 'out' | 'in';
 
 export interface ZoomControlsProps {
-  onChange: (newZoom: number) => void;
-  zoom: number;
+  zoomLevel: number;
+  onChange: (zoomLevel: number) => void;
+  step?: number;
 }
 
-const zoomValues = [20, 50, 100, 200, 500];
+export interface ZoomControlsState {}
 
-export class ZoomControls extends Component<ZoomControlsProps, {}> {
+const minZoomLevel = 0.2;
+const maxZoomLevel = 5;
+const zoomingStep = 0.2;
+
+export const getZoomLevel = (
+  currentZoomLevel: number,
+  direction: ZoomDirection,
+  step: number = zoomingStep,
+): number => {
+  const increase = step * currentZoomLevel;
+  const newZoomLevel = direction === 'out' ? -increase : increase;
+  const zoomLevel = Math.min(
+    Math.max(
+      Math.round((currentZoomLevel + newZoomLevel) * 100) / 100,
+      minZoomLevel,
+    ),
+    maxZoomLevel,
+  );
+
+  return zoomLevel;
+};
+
+export class ZoomControls extends Component<
+  ZoomControlsProps,
+  ZoomControlsState
+> {
+  static defaultProps: Partial<ZoomControlsProps> = {
+    step: zoomingStep,
+  };
+
   zoom = (direction: ZoomDirection) => () => {
-    const { onChange } = this.props;
-    const newZoom = this.getNewZoomValue(direction);
-    if (newZoom) {
-      onChange(newZoom);
-    }
+    const { onChange, step } = this.props;
+    const { zoomLevel: currentZoomLevel } = this.props;
+    const zoomLevel = getZoomLevel(currentZoomLevel, direction, step);
+
+    onChange(zoomLevel);
   };
 
   get canZoomOut(): boolean {
-    return this.getNewZoomValue('out') !== undefined;
+    const { zoomLevel } = this.props;
+
+    return zoomLevel > minZoomLevel;
   }
 
   get canZoomIn(): boolean {
-    return this.getNewZoomValue('in') !== undefined;
+    const { zoomLevel } = this.props;
+
+    return zoomLevel < maxZoomLevel;
   }
 
   render() {
     const { canZoomOut, canZoomIn } = this;
-    const { zoom } = this.props;
+    const { zoomLevel } = this.props;
+
     return (
       <ZoomWrapper className={hideControlsClassName}>
         <ZoomControlsWrapper>
@@ -53,14 +88,12 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
             iconBefore={<ZoomInIcon primaryColor="white" label="zoom in" />}
           />
         </ZoomControlsWrapper>
-        <ZoomLevel>{zoom} %</ZoomLevel>
+        <ZoomLevel>{this.getFriendlyZoomLevel(zoomLevel)} %</ZoomLevel>
       </ZoomWrapper>
     );
   }
 
-  private getNewZoomValue(direction: ZoomDirection): number | undefined {
-    const { zoom } = this.props;
-    const index = zoomValues.indexOf(zoom);
-    return direction === 'out' ? zoomValues[index - 1] : zoomValues[index + 1];
+  private getFriendlyZoomLevel(zoomLevel: number) {
+    return Math.round(zoomLevel * 100);
   }
 }

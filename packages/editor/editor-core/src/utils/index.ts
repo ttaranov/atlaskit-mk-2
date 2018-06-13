@@ -180,10 +180,6 @@ export function endPositionOfParent(resolvedPos: ResolvedPos): number {
   return resolvedPos.end(resolvedPos.depth) + 1;
 }
 
-export function getCursor(selection: Selection): ResolvedPos | undefined {
-  return (selection as TextSelection).$cursor || undefined;
-}
-
 /**
  * Check if a mark is allowed at the current selection / cursor based on a given state.
  * This method looks at both the currently active marks on the transaction, as well as
@@ -731,18 +727,3 @@ export const isInListItem = (state: EditorState): boolean => {
 export const hasOpenEnd = (slice: Slice): boolean => {
   return slice.openStart > 0 || slice.openEnd > 0;
 };
-
-export function filterChildrenBetween(
-  doc: Node,
-  from: number,
-  to: number,
-  predicate: (node: Node, pos: number, parent: Node) => boolean | undefined,
-) {
-  const results = [] as { node: Node; pos: number }[];
-  doc.nodesBetween(from, to, (node, pos, parent) => {
-    if (predicate(node, pos, parent)) {
-      results.push({ node, pos });
-    }
-  });
-  return results;
-}

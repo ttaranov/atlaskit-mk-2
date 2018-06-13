@@ -31,21 +31,15 @@ test('should prevent default event actions on mouse down', () => {
   expect(spy).toHaveBeenCalled();
 });
 
-test('should not trigger onClick on mouseup', () => {
-  const wrapper = create({ onClick: dummyOnClickProp });
-  wrapper.find(DateTd).simulate('mouseup');
-  expect(dummyOnClickProp).not.toHaveBeenCalled();
-});
-
 test('should not call onClick prop when date is disabled', () => {
   const wrapper = create({ disabled: true, onClick: dummyOnClickProp });
-  wrapper.find(DateTd).simulate('click');
+  wrapper.find(DateTd).simulate('mouseup');
   expect(dummyOnClickProp).not.toHaveBeenCalled();
 });
 
 test('should call onClick prop when date is enabled (default scenario)', () => {
   const wrapper = create({ onClick: dummyOnClickProp });
-  wrapper.find(DateTd).simulate('click');
+  wrapper.find(DateTd).simulate('mouseup');
   expect(dummyOnClickProp).toHaveBeenCalled();
 });
 

@@ -39,7 +39,7 @@ describe('@atlaskit/editore-core/utils', () => {
       doc,
       editorPlugins: [
         mediaPlugin({ allowMediaSingle: true }),
-        codeBlockPlugin(),
+        codeBlockPlugin,
         panelPlugin,
         listPlugin,
         mentionsPlugin,

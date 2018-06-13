@@ -1,4 +1,4 @@
-import { MarkSpec, Mark } from 'prosemirror-model';
+import { MarkSpec } from 'prosemirror-model';
 import { LINK, COLOR } from '../groups';
 import { isSafeUrl, normalizeUrl } from '../../utils';
 
@@ -37,9 +37,6 @@ export const link: MarkSpec = {
   group: LINK,
   attrs: {
     href: {},
-    __confluenceMetadata: {
-      default: null,
-    },
   },
   inclusive: false,
   parseDOM: [
@@ -47,58 +44,14 @@ export const link: MarkSpec = {
       tag: 'a[href]',
       getAttrs: (dom: Element) => {
         let href = dom.getAttribute('href') || '';
-        const attrs: any = {
-          __confluenceMetadata: dom.hasAttribute('__confluenceMetadata')
-            ? JSON.parse(dom.getAttribute('__confluenceMetadata') || '')
-            : undefined,
-        };
-
         if (href.slice(-1) === '/') {
           href = href.slice(0, -1);
         }
-
-        if (isSafeUrl(href)) {
-          attrs.href = normalizeUrl(href);
-        } else {
-          return false;
-        }
-
-        return attrs;
+        return isSafeUrl(href) ? { href: normalizeUrl(href) } : false;
       },
     },
   ],
   toDOM(node): [string, any] {
-    return [
-      'a',
-      Object.keys(node.attrs).reduce((attrs, key) => {
-        if (key === '__confluenceMetadata') {
-          if (node.attrs[key] !== null) {
-            attrs[key] = JSON.stringify(node.attrs[key]);
-          }
-        } else {
-          attrs[key] = node.attrs[key];
-        }
-
-        return attrs;
-      }, {}),
-    ];
+    return ['a', node.attrs];
   },
 };
-
-const OPTIONAL_ATTRS = [
-  'title',
-  'id',
-  'collection',
-  'occurrenceKey',
-  '__confluenceMetadata',
-];
-
-export const toJSON = (mark: Mark) => ({
-  type: mark.type.name,
-  attrs: Object.keys(mark.attrs).reduce((attrs, key) => {
-    if (OPTIONAL_ATTRS.indexOf(key) === -1 || mark.attrs[key] !== null) {
-      attrs[key] = mark.attrs[key];
-    }
-    return attrs;
-  }, {}),
-});

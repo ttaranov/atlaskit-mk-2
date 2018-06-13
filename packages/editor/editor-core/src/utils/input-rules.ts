@@ -15,8 +15,8 @@ export function defaultInputRuleHandler(
     // Skip any input rule inside code
     // https://product-fabric.atlassian.net/wiki/spaces/E/pages/37945345/Editor+content+feature+rules#Editorcontent/featurerules-Rawtextblocks
     const unsupportedMarks = isBlockNodeRule
-      ? hasUnsupportedMarkForBlockInputRule(state, start, end)
-      : hasUnsupportedMarkForInputRule(state, start, end);
+      ? hasMarksNotSupportedByBlocks(state, start, end)
+      : hasCodeMark(state, start, end);
     if (state.selection.$from.parent.type.spec.code || unsupportedMarks) {
       return;
     }
@@ -49,17 +49,18 @@ export const uuid = () =>
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
 
-const hasUnsupportedMarkForBlockInputRule = (
+const hasMarksNotSupportedByBlocks = (
   state: EditorState,
   start: number,
   end: number,
 ) => {
-  const { doc, schema: { marks } } = state;
+  const {
+    doc,
+    schema: { marks },
+  } = state;
   let unsupportedMarksPresent = false;
   const isUnsupportedMark = node =>
-    node.type === marks.code ||
-    node.type === marks.link ||
-    node.type === marks.mentionQuery;
+    node.type === marks.code || node.type === marks.link;
   doc.nodesBetween(start, end, node => {
     unsupportedMarksPresent =
       unsupportedMarksPresent ||
@@ -68,15 +69,13 @@ const hasUnsupportedMarkForBlockInputRule = (
   return unsupportedMarksPresent;
 };
 
-const hasUnsupportedMarkForInputRule = (
-  state: EditorState,
-  start: number,
-  end: number,
-) => {
-  const { doc, schema: { marks } } = state;
+const hasCodeMark = (state: EditorState, start: number, end: number) => {
+  const {
+    doc,
+    schema: { marks },
+  } = state;
   let unsupportedMarksPresent = false;
-  const isCodemark = node =>
-    node.type === marks.code || node.type === marks.mentionQuery;
+  const isCodemark = node => node.type === marks.code;
   doc.nodesBetween(start, end, node => {
     unsupportedMarksPresent =
       unsupportedMarksPresent || node.marks.filter(isCodemark).length > 0;

@@ -6,9 +6,18 @@ dialog footers and as stand-alone action triggers.
 ## Installation
 
 ```sh
-yarn add @atlaskit/button
+npm install @atlaskit/button
 ```
 
-## Usage
+## Using the component
 
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/button).
+### HTML
+
+This package exports the `@NAME@` React component.
+
+Import the component in your React app as follows:
+
+```javascript
+import Button from '@atlaskit/button';
+ReactDOM.render(<Button />, container);
+```

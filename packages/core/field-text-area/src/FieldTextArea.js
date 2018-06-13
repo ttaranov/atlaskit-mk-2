@@ -44,7 +44,7 @@ type Props = {|
   maxLength?: number,
   /** The minimum number of rows of text to display */
   minimumRows?: number,
-  /** Enables the resizing of the text area. */
+  /** Disables the resizing of the text area. */
   enableResize?: boolean,
 |};
 

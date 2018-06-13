@@ -13,20 +13,16 @@ type Props = {|
   /** The label to be displayed to the right of the checkbox. The label is part
    of the clickable element to select the checkbox. */
   label: string,
+  /** The name of the submitted field in a checkbox. */
+  name: string,
   /** Marks the field as invalid. Changes style of unchecked component. */
   isInvalid?: boolean,
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
   new state of the checkbox. */
-  onChange?: ({
-    event: SyntheticEvent<any>,
-    isChecked: boolean,
-    name: string,
-    value: number | string,
-  }) => mixed,
-  /** The name of the submitted field in a checkbox. */
-  name: string,
-  /** The value to be used in the checkbox input. This is the value that will be returned on form submission. */
+  onChange?: ({ event: SyntheticEvent<any>, isChecked: boolean }) => mixed,
+  /** The value to be used in the checkbox input. This is the value that will
+   be returned on form submission. */
   value: number | string,
 |};
 
@@ -44,7 +40,9 @@ export default class Checkbox extends Component<Props, State> {
 
   state = { isChecked: !!this.props.initiallyChecked };
 
-  onChange = (event: SyntheticEvent<HTMLInputElement>) => {
+  onChange = (
+    event: SyntheticEvent<any> & { currentTarget: HTMLInputElement },
+  ) => {
     const { isDisabled, onChange, name, value } = this.props;
     if (isDisabled) return null;
     const isChecked = event.currentTarget.checked;

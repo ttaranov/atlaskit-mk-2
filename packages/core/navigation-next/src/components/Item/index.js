@@ -17,10 +17,6 @@ export default class Item extends PureComponent<ItemProps> {
   renderItem = (state: *) => <ItemPrimitive {...state} {...this.props} />;
 
   render() {
-    return (
-      <InteractionStateManager {...this.props}>
-        {this.renderItem}
-      </InteractionStateManager>
-    );
+    return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
   }
 }

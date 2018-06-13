@@ -13,7 +13,6 @@ import { EditorProps } from '../../../types/editor-props';
 import {
   addFakeTextCursor,
   removeFakeTextCursor,
-  FakeTextCursorSelection,
 } from '../../../plugins/fake-text-cursor/cursor';
 import { Match, getLinkMatch, normalizeUrl } from '../utils';
 
@@ -133,14 +132,6 @@ export class HyperlinkState {
 
     if (canAddLink !== this.linkable) {
       this.linkable = canAddLink;
-      dirty = true;
-    }
-
-    if (
-      !(state.selection instanceof FakeTextCursorSelection) &&
-      this.showToolbarPanel
-    ) {
-      this.showToolbarPanel = false;
       dirty = true;
     }
 

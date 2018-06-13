@@ -321,6 +321,7 @@ export const uploadPreview = style({
   alignItems: 'center',
   background: colors.N20,
   borderRadius: `${borderRadius()}px`,
+  marginBottom: '12px',
   padding: '10px',
 });
 
@@ -339,7 +340,6 @@ export const uploadPreviewText = style({
 });
 
 export const bigEmojiPreview = style({
-  paddingLeft: '4px',
   $nest: {
     img: {
       maxHeight: '40px',
@@ -351,8 +351,6 @@ export const bigEmojiPreview = style({
 export const uploadAddRow = style({
   display: 'flex',
   justifyContent: 'flex-end',
-  alignItems: 'center',
-  paddingTop: '10px',
 });
 
 export const AddCustomEmoji = style({
@@ -403,9 +401,9 @@ export const deleteFooter = style({
     },
 
     [`.${submitDelete}`]: {
-      width: '84px',
+      width: '80px',
       fontWeight: 'bold',
-      marginRight: '4px',
+      marginRight: '6px',
     },
     button: {
       display: 'flex',
@@ -423,10 +421,10 @@ export const deleteFooter = style({
 
 export const emojiDeleteErrorMessage = style({
   display: 'flex',
-  color: colors.R400,
+  color: colors.R300,
   alignItems: 'center',
   justifyContent: 'flex-end',
-  paddingRight: '4px',
+  paddingRight: '10px',
 });
 
 export const emojiChooseFileErrorMessage = style({
@@ -438,7 +436,7 @@ export const emojiChooseFileErrorMessage = style({
 
 export const emojiPreviewErrorMessage = style({
   display: 'inline-flex',
-  color: colors.R400,
+  color: colors.R300,
   paddingRight: '10px',
   justifyContent: 'flex-end',
   alignItems: 'center',
@@ -448,7 +446,7 @@ export const uploadRetryButton = style({
   width: '93px',
   justifyContent: 'center',
   fontWeight: 'bold',
-  marginRight: '4px',
+  marginRight: '6px',
   $nest: {
     div: {
       display: 'flex',
@@ -459,7 +457,7 @@ export const uploadRetryButton = style({
 export const uploadEmojiButton = style({
   width: '93px',
   justifyContent: 'center',
-  marginRight: '4px',
+  marginRight: '6px',
   $nest: {
     div: {
       display: 'flex',

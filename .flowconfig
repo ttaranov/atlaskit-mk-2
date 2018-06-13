@@ -4,7 +4,6 @@
 .*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
 .*/website/.*
-.*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
 .*/packages/elements/icon/es5/.*
 .*/node_modules/stylelint/.*
 .*/node_modules/babel-flow-types/.*

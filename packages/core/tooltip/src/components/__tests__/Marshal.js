@@ -1,12 +1,14 @@
 // @flow
+
 import Marshal from '../Marshal';
+import Tooltip from '../Tooltip';
 
 jest.useFakeTimers();
 
 describe('Marshal', () => {
   let marshal;
-  let tooltip: any;
-  let anotherTooltip: any;
+  let tooltip: Tooltip;
+  let anotherTooltip: Tooltip;
   const scrollableParent = document.createElement('div');
   scrollableParent.style.overflow = 'auto';
   if (document.body) {
@@ -58,7 +60,7 @@ describe('Marshal', () => {
 
     it("should delay the showing/hiding of a tooltip based on the tooltip's delay prop", () => {
       // Non-default delay value
-      const customDelay: any = {
+      const customDelay: Tooltip = {
         show: jest.fn(),
         hide: jest.fn(),
         props: { delay: 100 },
@@ -86,7 +88,7 @@ describe('Marshal', () => {
       expect(customDelay.hide).toHaveBeenCalledWith({ immediate: false });
 
       // Zero delay value
-      const zeroDelay: any = {
+      const zeroDelay: Tooltip = {
         show: jest.fn(),
         hide: jest.fn(),
         props: { delay: 0 },

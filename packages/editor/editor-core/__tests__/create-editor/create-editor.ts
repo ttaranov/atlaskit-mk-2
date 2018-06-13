@@ -72,16 +72,15 @@ describe(name, () => {
           ],
         };
         expect(
-          createPMPlugins({
-            editorConfig: editorConfig as any,
-            schema: {} as any,
-            props: {} as any,
-            dispatch: () => {},
-            eventDispatcher: {} as any,
-            providerFactory: {} as any,
-            errorReporter: {} as any,
-            portalProviderAPI: { render() {}, remove() {} } as any,
-          }).length,
+          createPMPlugins(
+            editorConfig as any,
+            {} as any,
+            {} as any,
+            () => {},
+            {} as any,
+            {} as any,
+            {} as any,
+          ).length,
         ).toEqual(1);
       });
     });

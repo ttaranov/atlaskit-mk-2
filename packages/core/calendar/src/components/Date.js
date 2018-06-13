@@ -43,8 +43,6 @@ export default class extends Component<Props, State> {
   };
   onMouseUp = () => {
     this.setState({ isActive: false });
-  };
-  onClick = () => {
     const { children: day, month, onClick, year, disabled } = this.props;
     if (!disabled && onClick) {
       onClick({ year, month, day });
@@ -64,7 +62,6 @@ export default class extends Component<Props, State> {
       <DateTd
         aria-selected={selected ? 'true' : 'false'}
         role="gridcell"
-        onClick={this.onClick}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
       >

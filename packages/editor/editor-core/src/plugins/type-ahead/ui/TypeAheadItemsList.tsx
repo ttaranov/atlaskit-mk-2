@@ -8,14 +8,11 @@ const itemTheme = {
   [itemThemeNamespace]: {
     padding: {
       default: {
-        bottom: 12,
+        bottom: 8,
         left: 12,
         right: 12,
-        top: 12,
+        top: 8,
       },
-    },
-    beforeItemSpacing: {
-      default: () => 12,
     },
     borderRadius: () => 0,
     selected: {
@@ -31,27 +28,6 @@ export type TypeAheadItemsListProps = {
   currentIndex: number;
   insertByIndex: (index: number) => void;
 };
-
-export function scrollIntoViewIfNeeded(element: HTMLElement) {
-  const { offsetTop, offsetHeight, offsetParent } = element;
-
-  const {
-    offsetHeight: offsetParentHeight,
-    scrollTop,
-  } = offsetParent as HTMLElement;
-
-  const direction =
-    offsetTop + offsetHeight > offsetParentHeight + scrollTop
-      ? 1
-      : scrollTop > offsetTop ? -1 : 0;
-
-  if (direction !== 0) {
-    offsetParent.scrollTop =
-      direction === 1
-        ? offsetTop + offsetHeight - offsetParentHeight
-        : offsetTop;
-  }
-}
 
 export function TypeAheadItemsList({
   items,
@@ -71,11 +47,6 @@ export function TypeAheadItemsList({
             onClick={() => insertByIndex(index)}
             elemBefore={item.icon ? item.icon() : null}
             isSelected={index === currentIndex}
-            ref={
-              index === currentIndex
-                ? ref => ref && scrollIntoViewIfNeeded(ref.ref)
-                : null
-            }
           >
             {item.title}
           </Item>

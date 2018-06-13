@@ -49,7 +49,6 @@ export default createSchema({
     'placeholder',
     'layoutSection',
     'layoutColumn',
-    'inlineCard',
   ],
   marks: [
     'em',

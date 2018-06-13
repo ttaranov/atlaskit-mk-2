@@ -13,7 +13,6 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
-                "__confluenceMetadata": null,
                 "href": "http://www.host.com/image.gif",
               },
               "type": "link",

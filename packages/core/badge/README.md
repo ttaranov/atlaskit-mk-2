@@ -10,12 +10,8 @@ They must be used singly after a single item name, and have only numbers.
 * Use labels to call out tags and high-visibility attributes.
 * Use a tooltip if you want to indicate units.
 
-## Installation
+![Example badge](//i.imgur.com/ZQHLeGg.png)
 
-```sh
-yarn add @atlaskit/badge
-```
+## Try it out
 
-## Usage
-
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/badge).
+Interact with a [live demo of the @NAME@ component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).

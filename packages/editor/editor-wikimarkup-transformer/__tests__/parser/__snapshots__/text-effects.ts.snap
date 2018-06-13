@@ -188,7 +188,6 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
-                "__confluenceMetadata": null,
                 "href": "https://app.datadoghq.com/screen/220506/product-fabric-content-service?tv_mode=true",
               },
               "type": "link",
@@ -204,7 +203,6 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
-                "__confluenceMetadata": null,
                 "href": "https://app.datadoghq.com/screen/282018/product-fabric-adf-service?tv_mode=true#close",
               },
               "type": "link",

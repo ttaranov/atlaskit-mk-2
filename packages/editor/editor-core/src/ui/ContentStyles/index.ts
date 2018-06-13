@@ -13,9 +13,9 @@ import {
 } from '../../styles';
 import {
   akGridSizeUnitless,
-  akBorderRadius,
   akColorN20,
   akColorN40,
+  akBorderRadius,
   akColorN300,
   akColorB200,
   akColorN90,
@@ -127,14 +127,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       overflow: scroll;
       display: flex;
       flex: 1;
-
-      pre {
-        width: 100%;
-      }
-      code {
-        display: inline-block;
-        min-width: 100%;
-      }
     }
 
     /* We render this as a basic box in IE11 because it can't handle scrolling */
@@ -146,13 +138,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
       .code-content {
         display: block;
         overflow: visible;
-
-        pre {
-          width: auto;
-        }
-        code {
-          display: inline;
-        }
       }
     }
   }
@@ -430,19 +415,6 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   ${gapCursorStyles};
   ${tableStyles};
-
-  /**
-   * Panel
-   */
-  .panelView-content-wrap {
-    min-height: 42px;
-    margin: ${akGridSizeUnitless / 2}px 0;
-    padding: 1px 0;
-
-    & > .panel-content-dom {
-      padding: ${akGridSizeUnitless}px;
-    }
-  }
 `;
 
 export default ContentStyles;

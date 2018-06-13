@@ -16,13 +16,12 @@ export default class FabricElementsListener extends React.Component<
   ListenerProps
 > {
   listenerHandler: ListenerFunction = event => {
-    const { client, logger } = this.props;
     if (event.payload) {
       const tags: Set<string> = new Set(event.payload.tags || []);
       tags.add(ELEMENTS_TAG);
       event.payload.tags = Array.from(tags);
     }
-    sendEvent(client, logger)(event.payload);
+    sendEvent(this.props.client)(event.payload);
   };
 
   render() {

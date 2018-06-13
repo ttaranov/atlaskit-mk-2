@@ -1,10 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/publishReplay';
 
 import {
-  MediaStore,
   uploadFile,
   UploadableFile,
   UploadFileCallbacks,
@@ -29,13 +27,6 @@ import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
 import { FileItem } from '../item';
-import {
-  GetFileOptions,
-  FileState,
-  mapMediaFileToFileState,
-} from '../fileState';
-import { Observer } from 'rxjs/Observer';
-import FileStreamCache from './fileStreamCache';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -72,8 +63,6 @@ export interface Context {
 
   refreshCollection(collectionName: string, pageSize: number): void;
 
-  getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-
   uploadFile(
     file: UploadableFile,
     callbacks?: UploadFileCallbacks,
@@ -88,74 +77,18 @@ export class ContextFactory {
   }
 }
 
-const pollingInterval = 1000;
-
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
-  private readonly fileStreamsCache: FileStreamCache;
-  private readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
+
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreamsCache = new FileStreamCache();
-    this.mediaStore = new MediaStore({
-      serviceHost: config.serviceHost,
-      authProvider: config.authProvider,
-    });
   }
-
-  getFile(id: string, options?: GetFileOptions): Observable<FileState> {
-    const key = FileStreamCache.createKey(id, options);
-
-    return this.fileStreamsCache.getOrInsert(key, () => {
-      const collection = options && options.collectionName;
-      const fileStream$ = this.createDownloadFileStream(
-        id,
-        collection,
-      ).publishReplay(1);
-
-      fileStream$.connect();
-
-      return fileStream$;
-    });
-  }
-
-  private createDownloadFileStream = (
-    id: string,
-    collection?: string,
-  ): Observable<FileState> => {
-    return Observable.create(async (observer: Observer<FileState>) => {
-      let timeoutId: number;
-
-      const fetchFile = async () => {
-        try {
-          const response = await this.mediaStore.getFile(id, { collection });
-          const fileState = mapMediaFileToFileState(response);
-
-          observer.next(fileState);
-
-          if (fileState.status === 'processing') {
-            timeoutId = window.setTimeout(fetchFile, pollingInterval);
-          } else {
-            observer.complete();
-          }
-        } catch (e) {
-          observer.error(e);
-        }
-      };
-
-      fetchFile();
-
-      return () => {
-        window.clearTimeout(timeoutId);
-      };
-    });
-  };
 
   getMediaItemProvider(
     id: string,

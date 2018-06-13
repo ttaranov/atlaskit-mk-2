@@ -110,4 +110,7 @@ const Back = ({ children, to }: { children?: Node | string, to: string }) => (
 
 const LogWrapper = styled.div`
   margin-top: 2em;
+  p {
+    display: none;
+  }
 `;

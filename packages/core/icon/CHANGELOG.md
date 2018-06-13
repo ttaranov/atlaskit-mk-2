@@ -1,29 +1,5 @@
 # @atlaskit/icon
 
-## 12.0.1
-- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
-- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
-  - @atlaskit/tooltip@10.0.1
-  - @atlaskit/modal-dialog@5.0.1
-  - @atlaskit/field-text@6.0.1
-  - @atlaskit/button@8.0.1
-  - @atlaskit/theme@4.0.1
-  - @atlaskit/docs@4.0.1
-
-## 12.0.0
-- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-  - @atlaskit/tooltip@10.0.0
-  - @atlaskit/modal-dialog@5.0.0
-  - @atlaskit/field-text@6.0.0
-  - @atlaskit/button@8.0.0
-  - @atlaskit/theme@4.0.0
-  - @atlaskit/docs@4.0.0
-
-## 11.4.0
-- [minor] Update emoji and add no-image [620557e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/620557e)
-- [none] Updated dependencies [620557e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/620557e)
-
 ## 11.3.2
 - [patch] Update readme to be in line with other atlaskit readmes [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)
 - [none] Updated dependencies [75f016c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75f016c)

@@ -142,10 +142,10 @@ export default class Conversation extends React.PureComponent<Props> {
 
   render() {
     return (
-      <>
+      <div>
         {this.renderComments()}
         {this.renderEditor()}
-      </>
+      </div>
     );
   }
 }

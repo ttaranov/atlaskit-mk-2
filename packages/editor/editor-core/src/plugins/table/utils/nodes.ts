@@ -28,7 +28,10 @@ export const isIsolating = (node: PmNode): boolean => {
 export const canInsertTable = (state: EditorState): boolean => {
   const {
     selection: { $from },
-    schema: { marks: { code }, nodes: { codeBlock } },
+    schema: {
+      marks: { code },
+      nodes: { codeBlock },
+    },
   } = state;
 
   for (let i = $from.depth; i > 0; i--) {
@@ -44,8 +47,8 @@ export const canInsertTable = (state: EditorState): boolean => {
   return true;
 };
 
-export const containsTable = (schema: Schema, slice: Slice): boolean => {
-  const { table } = schema.nodes;
+export const containsTable = (state: EditorState, slice: Slice): boolean => {
+  const { table } = state.schema.nodes;
   let contains = false;
   slice.content.forEach(node => {
     if (node.type === table) {

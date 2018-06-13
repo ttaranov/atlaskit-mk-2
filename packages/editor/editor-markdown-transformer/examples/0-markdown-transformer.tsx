@@ -65,9 +65,6 @@ class Example extends React.PureComponent<Props, State> {
           allowLists={true}
           allowRule={true}
           allowTables={true}
-          media={{
-            allowMediaSingle: true,
-          }}
           contentTransformerProvider={schema => new MarkdownTransformer(schema)}
         />
       </Container>

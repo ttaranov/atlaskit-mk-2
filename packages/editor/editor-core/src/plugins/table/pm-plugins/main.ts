@@ -1,5 +1,11 @@
 import { Node as PmNode } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, Selection } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  Selection,
+  TextSelection,
+} from 'prosemirror-state';
 import {
   CellSelection,
   deleteTable,
@@ -36,12 +42,12 @@ import {
   createControlsDecorationSet,
   getSelectedColumn,
   getSelectedRow,
+  containsTableHeader,
   canInsertTable,
 } from '../utils';
 
 import { TableLayout } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../../../event-dispatcher';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
 
@@ -181,7 +187,12 @@ export class TableState {
   update(): boolean {
     let controlsDirty = this.updateSelection();
     const { state } = this.view;
-    const { schema: { nodes: { table } }, selection } = state;
+    const {
+      schema: {
+        nodes: { table },
+      },
+      selection,
+    } = state;
     const domAtPos = this.view.domAtPos.bind(this.view);
 
     const parent = findParentDomRefOfType(table, domAtPos)(selection);
@@ -230,6 +241,19 @@ export class TableState {
   }
 
   isRequiredToAddHeader = (): boolean => this.isHeaderRowRequired;
+
+  addHeaderToTableNodes = (slice: PmNode, selectionStart: number): void => {
+    const { table } = this.view.state.schema.nodes;
+    slice.content.forEach((node: PmNode, offset: number) => {
+      if (node.type === table && !containsTableHeader(this.view.state, node)) {
+        const { state, dispatch } = this.view;
+        const { tr, doc } = state;
+        const $anchor = doc.resolve(selectionStart + offset);
+        dispatch(tr.setSelection(new TextSelection($anchor)));
+        this.convertFirstRowToHeader();
+      }
+    });
+  };
 
   setTableLayout = (layout: TableLayout): boolean => {
     const tableNode = findTable(this.view.state.selection);
@@ -309,7 +333,6 @@ export const stateKey = new PluginKey('tablePlugin');
 
 export const createPlugin = (
   dispatch: Dispatch,
-  portalProviderAPI: PortalProviderAPI,
   eventDispatcher: EventDispatcher,
   pluginConfig: PluginConfig,
 ) =>
@@ -354,7 +377,6 @@ export const createPlugin = (
             view,
             allowColumnResizing,
             eventDispatcher,
-            portalProviderAPI,
             getPos,
           });
         },
@@ -405,7 +427,12 @@ export const createPlugin = (
 
           const {
             dispatch,
-            state: { tr, schema: { nodes: { paragraph } } },
+            state: {
+              tr,
+              schema: {
+                nodes: { paragraph },
+              },
+            },
           } = view;
           const editorElement = table.node.nodeAt(map.map[cellIndex]) as PmNode;
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/checkbox",
-  "version": "3.0.3",
+  "version": "2.1.0",
   "description": "Checkbox component for use in forms",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,19 +18,19 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^8.0.1",
-    "@atlaskit/icon": "^12.0.1",
-    "@atlaskit/theme": "^4.0.1",
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/icon": "^11.3.0",
+    "@atlaskit/theme": "^3.2.2",
     "babel-runtime": "^6.26.0",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "styled-components": "^3.2.6"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^4.0.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "@atlaskit/docs": "^3.0.4",
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",

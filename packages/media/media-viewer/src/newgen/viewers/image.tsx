@@ -5,7 +5,6 @@ import { Outcome } from '../domain';
 import { Img, ErrorMessage, ImageWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
-import { closeOnDirectClick } from '../utils/closeOnDirectClick';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -14,17 +13,15 @@ export type ImageViewerProps = {
   context: Context;
   item: FileItem;
   collectionName?: string;
-  onClose?: () => void;
 };
 
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
-  zoom: number;
+  zoomLevel: number;
 };
-
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
-  zoom: 100,
+  zoomLevel: 1,
 };
 
 export class ImageViewer extends React.Component<
@@ -48,27 +45,26 @@ export class ImageViewer extends React.Component<
     }
   }
 
-  private onZoomChange = zoom => {
-    this.setState({ zoom });
+  private onZoomChange = zoomLevel => {
+    this.setState({ zoomLevel });
   };
 
   renderImage(src: string) {
-    const { onClose } = this.props;
-    const { zoom } = this.state;
+    const { zoomLevel } = this.state;
     // We need to set new border value every time the zoom changes
     // to force a re layout in Chrome.
     // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
-    const border = `${zoom / 10000}px solid transparent`;
+    const border = `${zoomLevel / 100}px solid transparent`;
     // We use style attr instead of SC prop for perf reasons
     const imgStyle = {
-      transform: `scale(${zoom / 100})`,
+      transform: `scale(${zoomLevel})`,
       border,
     };
 
     return (
-      <ImageWrapper onClick={closeOnDirectClick(onClose)}>
+      <ImageWrapper>
         <Img src={src} style={imgStyle} />
-        <ZoomControls zoom={this.state.zoom} onChange={this.onZoomChange} />
+        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
       </ImageWrapper>
     );
   }
@@ -101,8 +97,8 @@ export class ImageViewer extends React.Component<
         const { response, cancel } = service.fetchImageBlobCancelable(
           fileItem,
           {
-            width: 1920,
-            height: 1080,
+            width: 800,
+            height: 600,
             mode: 'fit',
             allowAnimated: true,
           },

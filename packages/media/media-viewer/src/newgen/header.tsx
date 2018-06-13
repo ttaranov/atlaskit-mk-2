@@ -17,7 +17,6 @@ import {
   hideControlsClassName,
 } from './styled';
 import { MediaTypeIcon } from './media-type-icon';
-import { FeedbackButton } from './feedback-button';
 import { constructAuthTokenUrl } from './util';
 
 export type Props = {
@@ -143,10 +142,7 @@ export default class Header extends React.Component<Props, State> {
     return (
       <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
-        <RightHeader>
-          {this.renderDownload()}
-          <FeedbackButton />
-        </RightHeader>
+        <RightHeader>{this.renderDownload()}</RightHeader>
       </HeaderWrapper>
     );
   }

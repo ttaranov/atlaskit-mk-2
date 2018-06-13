@@ -9,8 +9,8 @@ Related reading:
 * [Error handling](./error-handling)
 * [Testing](./testing)
 * [Linting styles](./linting-styles)
-* <https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627>
-* <https://flow.org/en/docs/react/types/>
+* https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627
+* https://flow.org/en/docs/react/types/
 
 ## Problem
 

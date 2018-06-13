@@ -9,7 +9,6 @@ import { EditorProps } from './types';
 import { ReactEditorView } from './create-editor';
 import { EventDispatcher } from './event-dispatcher';
 import EditorContext from './ui/EditorContext';
-import { PortalProvider, PortalRenderer } from './ui/PortalProvider';
 
 export * from './types';
 
@@ -65,9 +64,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     );
     if (this.props.shouldFocus) {
       if (!instance.view.hasFocus()) {
-        setTimeout(() => {
-          instance.view.focus();
-        }, 0);
+        instance.view.focus();
       }
     }
   }
@@ -126,7 +123,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
       legacyImageUploadProvider,
       media,
       collabEdit,
-      UNSAFE_cards,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
@@ -155,9 +151,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
     this.providerFactory.setProvider('macroProvider', macroProvider);
-    if (UNSAFE_cards && UNSAFE_cards.provider) {
-      this.providerFactory.setProvider('cardProvider', UNSAFE_cards.provider);
-    }
   }
 
   handleSave = (view: EditorView): void => {
@@ -189,48 +182,38 @@ export default class Editor extends React.Component<EditorProps, {}> {
 
     return (
       <EditorContext editorActions={this.editorActions}>
-        <PortalProvider
-          render={portalProviderAPI => (
-            <>
-              <ReactEditorView
-                editorProps={overriddenEditorProps}
-                portalProviderAPI={portalProviderAPI}
-                providerFactory={this.providerFactory}
-                onEditorCreated={this.onEditorCreated}
-                onEditorDestroyed={this.onEditorDestroyed}
-                render={({ editor, view, eventDispatcher, config }) => (
-                  <Component
-                    disabled={this.props.disabled}
-                    editorActions={this.editorActions}
-                    editorDOMElement={editor}
-                    editorView={view}
-                    providerFactory={this.providerFactory}
-                    eventDispatcher={eventDispatcher}
-                    maxHeight={this.props.maxHeight}
-                    onSave={this.props.onSave ? this.handleSave : undefined}
-                    onCancel={this.props.onCancel}
-                    popupsMountPoint={this.props.popupsMountPoint}
-                    popupsBoundariesElement={this.props.popupsBoundariesElement}
-                    contentComponents={config.contentComponents}
-                    primaryToolbarComponents={config.primaryToolbarComponents}
-                    secondaryToolbarComponents={
-                      config.secondaryToolbarComponents
-                    }
-                    insertMenuItems={this.props.insertMenuItems}
-                    customContentComponents={this.props.contentComponents}
-                    customPrimaryToolbarComponents={
-                      this.props.primaryToolbarComponents
-                    }
-                    customSecondaryToolbarComponents={
-                      this.props.secondaryToolbarComponents
-                    }
-                    addonToolbarComponents={this.props.addonToolbarComponents}
-                    collabEdit={this.props.collabEdit}
-                  />
-                )}
-              />
-              <PortalRenderer portalProviderAPI={portalProviderAPI} />
-            </>
+        <ReactEditorView
+          editorProps={overriddenEditorProps}
+          providerFactory={this.providerFactory}
+          onEditorCreated={this.onEditorCreated}
+          onEditorDestroyed={this.onEditorDestroyed}
+          render={({ editor, view, eventDispatcher, config }) => (
+            <Component
+              disabled={this.props.disabled}
+              editorActions={this.editorActions}
+              editorDOMElement={editor}
+              editorView={view}
+              providerFactory={this.providerFactory}
+              eventDispatcher={eventDispatcher}
+              maxHeight={this.props.maxHeight}
+              onSave={this.props.onSave ? this.handleSave : undefined}
+              onCancel={this.props.onCancel}
+              popupsMountPoint={this.props.popupsMountPoint}
+              popupsBoundariesElement={this.props.popupsBoundariesElement}
+              contentComponents={config.contentComponents}
+              primaryToolbarComponents={config.primaryToolbarComponents}
+              secondaryToolbarComponents={config.secondaryToolbarComponents}
+              insertMenuItems={this.props.insertMenuItems}
+              customContentComponents={this.props.contentComponents}
+              customPrimaryToolbarComponents={
+                this.props.primaryToolbarComponents
+              }
+              customSecondaryToolbarComponents={
+                this.props.secondaryToolbarComponents
+              }
+              addonToolbarComponents={this.props.addonToolbarComponents}
+              collabEdit={this.props.collabEdit}
+            />
           )}
         />
       </EditorContext>

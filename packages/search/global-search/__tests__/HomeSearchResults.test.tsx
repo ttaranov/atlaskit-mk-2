@@ -7,10 +7,7 @@ import {
   ResultBase,
 } from '@atlaskit/quick-search';
 import { ResultType, Result } from '../src/model/Result';
-import {
-  ObjectResultWithAnalytics,
-  PersonResultWithAnalytics,
-} from '../src/components/SearchResultsUtil';
+import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
@@ -55,7 +52,7 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.Recent, wrapper);
 
     expect(group.prop('title')).toEqual('Recently viewed');
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
   it('should only show the recently viewed group when no query is entered', () => {
@@ -80,7 +77,7 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.Recent, wrapper);
 
     expect(group.prop('title')).toEqual('Recently viewed');
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
   it('should render jira results when there are results', () => {
@@ -93,7 +90,7 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.Jira, wrapper);
 
     expect(group.prop('title')).toEqual('Jira issues');
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
   it('should render confluence results when there are results', () => {
@@ -106,7 +103,7 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.Confluence, wrapper);
 
     expect(group.prop('title')).toEqual('Confluence pages and blogs');
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
   it('should render people results when there are results', () => {
@@ -121,7 +118,7 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.People, wrapper);
 
     expect(group.prop('title')).toEqual('People');
-    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(PersonResult).prop('name')).toEqual('name');
   });
 
   it('should render a jira result item to search jira', () => {

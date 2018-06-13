@@ -30,7 +30,7 @@ export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
   render() {
     const { type } = this.props;
     const typeWithDefault = type || defaultType;
-    const Icon = icons[typeWithDefault] || icons[defaultType];
+    const Icon = icons[typeWithDefault];
 
     return (
       <IconWrapper type={typeWithDefault}>

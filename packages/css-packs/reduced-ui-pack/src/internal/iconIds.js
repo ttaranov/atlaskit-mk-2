@@ -236,7 +236,6 @@ const iconIds = [
   'media-services/line-thickness',
   'media-services/line',
   'media-services/open-mediaviewer',
-  'media-services/no-image',
   'media-services/oval',
   'media-services/pdf',
   'media-services/preselected',

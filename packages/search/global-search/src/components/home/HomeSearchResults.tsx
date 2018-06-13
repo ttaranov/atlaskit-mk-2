@@ -29,14 +29,14 @@ const renderRecent = (results: Result[]) => {
 export const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
-    icon: <PeopleIcon size="medium" label="Search people" />,
+    icon: <PeopleIcon size="large" label="Search people" />,
     text: 'Search for more people',
   });
 
 const renderSearchConfluenceItem = (query: string) =>
   searchConfluenceItem({
     query: query,
-    icon: <ConfluenceIcon size="medium" label="Search confluence" />,
+    icon: <ConfluenceIcon size="large" label="Search confluence" />,
     text: 'Search for more Confluence pages and blogs',
   });
 

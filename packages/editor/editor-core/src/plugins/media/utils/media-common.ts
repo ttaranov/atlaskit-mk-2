@@ -24,7 +24,7 @@ export const posOfMediaGroupNearby = (
   return (
     posOfParentMediaGroup(state) ||
     posOfFollowingMediaGroup(state) ||
-    posOfPrecedingMediaGroup(state)
+    posOfPreceedingMediaGroup(state)
   );
 };
 
@@ -34,7 +34,7 @@ export const isSelectionNonMediaBlockNode = (state: EditorState): boolean => {
   return node && node.type !== state.schema.nodes.media && node.isBlock;
 };
 
-export const posOfPrecedingMediaGroup = (
+export const posOfPreceedingMediaGroup = (
   state: EditorState,
 ): number | undefined => {
   if (!atTheBeginningOfBlock(state)) {

@@ -57,7 +57,7 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef, editorView } = this.props;
+    const { node, handleContentDOMRef } = this.props;
     const extensionHandlerResult = this.tryExtensionHandler();
 
     switch (node.type.name) {
@@ -70,7 +70,6 @@ export default class ExtensionComponent extends Component<Props, State> {
             onClick={this.selectExtension}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
-            view={editorView}
           >
             {extensionHandlerResult}
           </Extension>

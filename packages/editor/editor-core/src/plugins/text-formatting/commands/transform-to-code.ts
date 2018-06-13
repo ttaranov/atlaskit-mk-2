@@ -1,70 +1,42 @@
-import { Transaction } from 'prosemirror-state';
-import { filterChildrenBetween } from '../../../utils';
-
-const SMART_TO_ASCII = {
-  '…': '...',
-  '→': '->',
-  '←': '<-',
-  '–': '--',
-  '“': '"',
-  '”': '"',
-  '‘': "'",
-  '’': "'",
-};
-
-const FIND_SMART_CHAR = new RegExp(
-  `[${Object.keys(SMART_TO_ASCII).join('')}]`,
-  'g',
-);
+import { Transaction, EditorState } from 'prosemirror-state';
+import { ReplaceStep, Step } from 'prosemirror-transform';
+import { createSliceWithContent } from '../../../utils';
 
 export function transformToCodeAction(
+  state: EditorState,
   from: number,
   to: number,
-  tr: Transaction,
+  transaction?: Transaction,
 ): Transaction {
-  const { schema } = tr.doc.type;
-  const { mention, text, emoji } = schema.nodes;
+  const replaceSteps: Step[] = [];
+  let tr = transaction || state.tr;
 
   // Traverse through all the nodes within the range and replace them with their plaintext counterpart
-  const children = filterChildrenBetween(
-    tr.doc,
-    from,
-    to,
-    (node, _, parent) => {
-      if (node.type === mention || node.type === emoji || node.type === text) {
-        return parent.isTextblock;
-      }
-    },
-  );
-
-  children.forEach(({ node, pos }) => {
-    if (node.type === mention || node.type === emoji) {
-      const currentPos = tr.mapping.map(pos);
-      tr.replaceWith(
-        currentPos,
-        currentPos + node.nodeSize,
-        schema.text(node.attrs.text),
+  state.doc.nodesBetween(from, to, (node, nodePos) => {
+    const cur = nodePos;
+    const end = cur + node.nodeSize;
+    if (node.type === state.schema.nodes.mention) {
+      const content = node.attrs.text;
+      replaceSteps.push(
+        new ReplaceStep(
+          cur,
+          end,
+          createSliceWithContent(content, state),
+          false,
+        ),
       );
-    } else if (node.type === text) {
-      if (node.text) {
-        let match: RegExpExecArray | null;
-        while ((match = FIND_SMART_CHAR.exec(node.text))) {
-          const { 0: smartChar, index: offset } = match;
-          const replacePos = tr.mapping.map(pos + offset);
-          const replacementText = schema.text(SMART_TO_ASCII[smartChar]);
-          tr.replaceWith(
-            replacePos,
-            replacePos + smartChar.length,
-            replacementText,
-          );
-        }
-      }
     }
   });
 
-  const codeMark = schema.marks.code.create();
-  tr
-    .addMark(tr.mapping.map(from), tr.mapping.map(to), codeMark)
-    .setStoredMarks([codeMark]);
+  // Step from the end so that we don't have to recalculate the positions
+  for (let i = replaceSteps.length - 1; i >= 0; i--) {
+    tr.step(replaceSteps[i]);
+  }
+
+  const updatedTo = state.apply(tr).selection.to;
+  const codeMark = state.schema.marks.code.create();
+
+  tr.addMark(from, updatedTo, codeMark).setStoredMarks([codeMark]);
+
   return tr;
 }

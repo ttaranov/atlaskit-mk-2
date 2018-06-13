@@ -255,13 +255,10 @@ export function itemsListUpdatedActionHandler({
   pluginState,
   tr,
 }: ActionHandlerParams): PluginState {
-  const items = tr.getMeta(pluginKey).items;
   const newPluginState = {
     ...pluginState,
-    items,
     itemsLoader: null,
-    currentIndex:
-      pluginState.currentIndex > items.length ? 0 : pluginState.currentIndex,
+    items: tr.getMeta(pluginKey).items,
   };
   dispatch(pluginKey, newPluginState);
   return newPluginState;

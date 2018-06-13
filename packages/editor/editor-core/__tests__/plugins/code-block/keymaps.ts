@@ -11,7 +11,7 @@ describe('codeBlock - keymaps', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin()],
+      editorPlugins: [codeBlockPlugin],
     });
 
   describe('Enter keypress', () => {

@@ -61,16 +61,6 @@ const mediaCollection: MediaCollection = {
         occurrenceKey: identifier2.occurrenceKey,
       },
     },
-    {
-      type: 'link',
-      details: {
-        type: 'link',
-        id: identifier2.id,
-        occurrenceKey: '',
-        url: 'http://mylink',
-        title: 'test',
-      },
-    },
   ],
 };
 
@@ -108,15 +98,6 @@ describe('<Collection />', () => {
       'my-collection',
       999,
     );
-  });
-
-  it('should filter links', () => {
-    const subject = new Subject<MediaCollection | Error>();
-    const context = createContext(subject);
-    const el = createFixture(context, subject, identifier);
-    subject.next(mediaCollection);
-    expect(mediaCollection.items).toHaveLength(3);
-    expect(el.state().items.data).toHaveLength(2);
   });
 
   it('should show an error if items failed to be fetched', () => {

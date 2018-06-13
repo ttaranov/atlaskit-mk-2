@@ -1,18 +1,5 @@
 # @atlaskit/layer
 
-## 4.0.0
-- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-  - @atlaskit/docs@4.0.0
-
-## 3.2.0
-
-
-- [minor] Add `isAwlwaysFixed` prop to force layered content to render with fixed position to break out of non-visible overflow containers at the cost of scroll detachment [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
-- [none] Updated dependencies [e710cfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e710cfa)
-- [none] Updated dependencies [e20ac40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20ac40)
-- [none] Updated dependencies [4eb5378](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4eb5378)
-
 ## 3.1.1
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/docs@3.0.4

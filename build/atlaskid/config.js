@@ -26,7 +26,7 @@ const atlaskitTeam = [
   'pete_gleeson',
   'mgardiner_atlas',
   'padmaia',
-  'isriharsha', // Navteam
+  'isriharsha',
 ];
 const editorTeam = [
   'imsysoev',
@@ -98,20 +98,12 @@ module.exports = {
     botPassword: botPassword,
     repoOwner: repoOwner,
     repoName: repoName,
-    repoUuid: '{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}',
+    usersAllowedToApprove: usersAllowedToApprove,
   },
   ciConfig: {
     botUsername: botUsername,
     botPassword: botPassword,
     repoOwner: repoOwner,
     repoName: repoName,
-  },
-  prSettings: {
-    requiredApprovals: 1,
-    canApproveOwnPullRequest: false,
-    requireClosedTasks: true,
-    requireGreenBuild: true,
-    allowLandWhenAble: true,
-    usersAllowedToApprove: usersAllowedToApprove,
   },
 };

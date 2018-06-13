@@ -22,7 +22,7 @@ describe('inputrules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [listPlugin, codeBlockPlugin(), panelPlugin],
+      editorPlugins: [listPlugin, codeBlockPlugin, panelPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },

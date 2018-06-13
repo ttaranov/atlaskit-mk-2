@@ -51,21 +51,6 @@ There are some helpers scripts that can be run here:
   * **This should only be used if you know what you are doing**
   * This will bump the tag number, pause builds, wait for the queue to empty, build a new docker image, push image to docker repository and then deploy the app to micros
   * You will need access to the private docker repository and micros and be logged in to both to do this.
-  * Once the release is done, there can sometimes a short period where the old instance will stay alive (up to an hour).
-    To verify if there is an old version running you can run
-    ```
-    micros service:show atlaskit-atlaskid -e stg-west
-    ```
-    If you see one listed like this:
-    ```
-    other (deploying or awaiting cleanup):
-        atlaskit-atlaskid--stg-west--v15--2018-06-08-21-03-utc--8u5hm5e74oq028i5 - (CREATE_COMPLETE)
-    ```
-    You can remove it immediately by running
-    ```
-    micros stack:delete atlaskit-atlaskid--stg-west--v15--2018-06-08-21-03-utc--8u5hm5e74oq028i5 -e stg-west -v
-    ```
-    In the future we might add this to the deploy script
 
 # atlaskit-atlaskid.sd.yml
 

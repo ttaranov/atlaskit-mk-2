@@ -13,11 +13,9 @@ import ShipIcon from '@atlaskit/icon/glyph/ship';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
-  ContainerHeader,
-  ContainerViewSubscriber,
   Item as BaseItem,
   ItemPrimitive,
-  RootViewSubscriber,
+  NavAPISubscriber,
   Section,
   SectionSeparator,
   SectionTitle,
@@ -57,19 +55,10 @@ const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
   }
 
   const props = { ...rest, after };
-  const ViewSubscriber = goTo.match(/^root\//)
-    ? RootViewSubscriber
-    : ContainerViewSubscriber;
-
-  const handleClick = (e, view) => {
-    e.preventDefault();
-    view.setView(goTo);
-  };
-
   return (
-    <ViewSubscriber>
-      {view => <Item onClick={e => handleClick(e, view)} {...props} />}
-    </ViewSubscriber>
+    <NavAPISubscriber>
+      {api => <Item onClick={() => api.setView(goTo)} {...props} />}
+    </NavAPISubscriber>
   );
 };
 
@@ -178,8 +167,16 @@ const Nested = ({
   </Section>
 );
 
+// PluginPoint
+/** @todo: We might not need this now (use Group instead). */
+const PluginPoint = ({ customComponents, items }: GroupProps) =>
+  items ? (
+    <div css={rootLevelGroupStyles}>
+      <ItemsRenderer items={items} customComponents={customComponents} />
+    </div>
+  ) : null;
+
 const itemComponents = {
-  ContainerHeader,
   Debug,
   GoToItem,
   Item,
@@ -191,6 +188,7 @@ const itemComponents = {
 const groupComponents = {
   Group,
   Nested,
+  PluginPoint,
 };
 
 const components = { ...itemComponents, ...groupComponents };
@@ -203,10 +201,7 @@ export const ItemsRenderer = ({
   items,
 }: ItemsRendererProps) =>
   items.map(({ type, ...props }) => {
-    const key =
-      typeof props.nestedGroupKey === 'string'
-        ? props.nestedGroupKey
-        : props.id;
+    const key = props.nestedGroupKey || props.id;
 
     if (groupComponents[type]) {
       const G = groupComponents[type];

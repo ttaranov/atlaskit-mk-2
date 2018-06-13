@@ -127,6 +127,7 @@ class ExampleNavigation extends Component {
       onCodeToggle,
     } = this.props;
     const { error } = this.state;
+    console.log(error);
     const example = examples && examples.children.find(e => e.id === exampleId);
 
     return (

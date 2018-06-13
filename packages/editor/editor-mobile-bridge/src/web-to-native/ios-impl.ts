@@ -43,24 +43,9 @@ export default class IosBridge implements NativeBridge {
   }
 
   getCollection(): string {
-    if (window.mediaBridge) {
-      return window.mediaBridge.getCollection();
-    } else {
-      // ¯\_(ツ)_/¯ @see #getServiceHost()
-      return 'FabricMediaSampleCollection';
-    }
+    // ¯\_(ツ)_/¯ @see #getServiceHost()
+    return 'FabricSampleCollection';
   }
 
-  submitPromise(name: string, uuid: string, args: string) {
-    if (window.webkit && window.webkit.messageHandlers.promiseBridge) {
-      window.webkit.messageHandlers.promiseBridge.postMessage({
-        name: 'submitPromise',
-        promise: {
-          name: name,
-          uuid: uuid,
-        },
-        args: args,
-      });
-    }
-  }
+  submitPromise(name: string, uuid: string, args: string) {}
 }

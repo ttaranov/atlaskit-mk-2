@@ -1,4 +1,4 @@
-import { md, code } from '@atlaskit/docs';
+import { md } from '@atlaskit/docs';
 
 export default md`
   # Fabric aggregated listeners for analytics-next API
@@ -6,24 +6,19 @@ export default md`
   The main purpose of this component is to provide a high level abstraction of all Fabric listeners used with analytics-next API so
   the Products can only import this component instead of having multiple nested listeners in their code.
 
-  The following listeners are currently implemented:
-
-  * Fabric elements
-  * Atlaskit (core)
-
   ## Installation
 
-${code`
-  npm install @atlaskit/analytics-listeners
+  ~~~js
+  npm install @atlaskit/analitics-listeners
   # or
-  yarn add @atlaskit/analytics-listeners
-`}
+  yarn add  @atlaskit/analitics-listeners
+  ~~~
 
   ## Using the component
 
   Example firing an analytics-next event:
 
-${code`
+  ~~~js
   import * as React from 'react';
   import { withAnalyticsEvents } from '@atlaskit/analytics-next';
   import AtlaskitAnalyticsListener from '@atlaskit/analytics-listeners';
@@ -51,7 +46,7 @@ ${code`
         eventType: 'ui',
         source: 'unknown',
       };
-      createEvent(event).fire('fabricElements');
+      createEvent(event).fire('fabric-elements');
     },
   })(DummyComponent);
 
@@ -64,5 +59,5 @@ ${code`
     </div>,
     container,
   );
-`}
+  ~~~
 `;

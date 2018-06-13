@@ -1,9 +1,5 @@
 # @atlaskit/analytics-gas-types
 
-## 2.1.1
-- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-  - @atlaskit/docs@4.0.0
-
 ## 2.1.0
 - [minor] Export individual event types as constants [9be1db0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9be1db0)
 

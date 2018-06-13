@@ -5,7 +5,7 @@ flow-typed
 packages/core/icon/glyph/**
 packages/core/icon/es5/**
 packages/core/icon/utils/**
-packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__
+
 
 # tmp
 build

@@ -34,7 +34,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const editor = (doc: any, analyticsHandler = () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [emojiPlugin, codeBlockPlugin(), mentionsPlugin],
+      editorPlugins: [emojiPlugin, codeBlockPlugin, mentionsPlugin],
       editorProps: {
         analyticsHandler,
       },

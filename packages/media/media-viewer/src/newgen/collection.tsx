@@ -5,7 +5,7 @@ import {
   MediaCollectionProvider,
   isError,
 } from '@atlaskit/media-core';
-import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
+import { Outcome, Identifier } from './domain';
 import { ErrorMessage } from './styled';
 import { List } from './list';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,6 @@ export type Props = {
   onClose?: () => void;
   selectedItem?: Identifier;
   showControls?: () => void;
-  readonly featureFlags?: MediaViewerFeatureFlags;
   collectionName: string;
   context: Context;
   pageSize: number;
@@ -90,8 +89,6 @@ export class Collection extends React.Component<Props, State> {
       collectionName,
       pageSize,
     );
-    const collectionFileItemFilter = (item: MediaCollectionItem) =>
-      item.type === 'file';
     this.subscription = this.provider.observable().subscribe({
       next: collection => {
         if (isError(collection)) {
@@ -105,7 +102,7 @@ export class Collection extends React.Component<Props, State> {
           this.setState({
             items: {
               status: 'SUCCESSFUL',
-              data: collection.items.filter(collectionFileItemFilter),
+              data: collection.items,
             },
           });
           if (selectedItem && this.shouldLoadNext(selectedItem)) {

@@ -119,7 +119,6 @@ Object {
                   "marks": Array [
                     Object {
                       "attrs": Object {
-                        "__confluenceMetadata": null,
                         "href": "http://www.google.com",
                       },
                       "type": "link",
@@ -306,7 +305,6 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
-                "__confluenceMetadata": null,
                 "href": "http://www.google.com",
               },
               "type": "link",

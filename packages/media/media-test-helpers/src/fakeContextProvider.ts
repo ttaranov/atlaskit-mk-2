@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
-import { Context, ContextConfig } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
+import { ContextConfig } from '../../media-store';
 
 const defaultContextConfig = {
   serviceHost: 'some-service-host',
@@ -31,7 +32,6 @@ export const fakeContext = (
   const getUrlPreviewProvider = returns({
     observable: returns(Observable.of('nothing')),
   });
-  const getFile = jest.fn();
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
@@ -39,7 +39,6 @@ export const fakeContext = (
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
   const defaultContext: Context = {
-    getFile,
     getBlobService,
     getLocalPreview,
     setLocalPreview,

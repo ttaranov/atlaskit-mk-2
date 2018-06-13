@@ -10,11 +10,7 @@ import {
   ResultBase,
 } from '@atlaskit/quick-search';
 import { ResultType, Result } from '../src/model/Result';
-import {
-  ObjectResultWithAnalytics,
-  ContainerResultWithAnalytics,
-  PersonResultWithAnalytics,
-} from '../src/components/SearchResultsUtil';
+import ObjectResult from '../src/components/ObjectResult';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
@@ -42,7 +38,6 @@ describe('ConfluenceSearchResults', () => {
       objectResults: [],
       spaceResults: [],
       peopleResults: [],
-      isLoading: false,
       ...partialProps,
     };
 
@@ -83,7 +78,7 @@ describe('ConfluenceSearchResults', () => {
     const group = findGroup(Group.Objects, wrapper);
 
     expect(group.prop('title')).toEqual('Pages, blogs and attachments');
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResult).prop('name')).toEqual('name');
   });
 
   it('should render spaces when there are results', () => {
@@ -98,9 +93,7 @@ describe('ConfluenceSearchResults', () => {
     const group = findGroup(Group.Spaces, wrapper);
 
     expect(group.prop('title')).toEqual('Spaces');
-    expect(group.find(ContainerResultWithAnalytics).prop('name')).toEqual(
-      'name',
-    );
+    expect(group.find(ContainerResult).prop('name')).toEqual('name');
   });
 
   it('should render people results when there are results', () => {
@@ -115,7 +108,7 @@ describe('ConfluenceSearchResults', () => {
     const group = findGroup(Group.People, wrapper);
 
     expect(group.prop('title')).toEqual('People');
-    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(PersonResult).prop('name')).toEqual('name');
   });
 
   it('should render search error when there is an error', () => {

@@ -22,7 +22,7 @@ describe('ascii emojis - input rules', () => {
   const editor = (doc: any) => {
     const editor = createEditor({
       doc,
-      editorPlugins: [emojiPlugin, codeBlockPlugin()],
+      editorPlugins: [emojiPlugin, codeBlockPlugin],
       providerFactory,
     });
 

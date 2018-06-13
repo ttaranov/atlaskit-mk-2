@@ -488,11 +488,8 @@ export class ConversationResource extends AbstractConversationResource {
     doc: any,
     localId: string = <string>uuid.generate(),
   ): Comment {
-    const { store } = this;
-    const state = store.getState();
-
     return {
-      createdBy: state!.user || { id: 'unknown' },
+      createdBy: this.config.user!,
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),
       document: {

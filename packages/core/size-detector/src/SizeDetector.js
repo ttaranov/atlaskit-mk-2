@@ -21,7 +21,6 @@ const objectStyle = {
   left: 0,
   height: '100%',
   width: '100%',
-  opacity: 0,
   overflow: 'hidden',
   pointerEvents: 'none',
   zIndex: -1,

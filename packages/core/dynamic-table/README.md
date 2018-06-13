@@ -1,6 +1,12 @@
-# Dynamic-table
+# DynamicTable
 
 Table component with pagination and sorting functionality.
+
+![DynamicTable](http://i.imgur.com/H3Z93jk.png)
+
+## Try it out
+
+Interact with a [live demo of the @atlaskit/dynamic-table component](https://atlaskit.atlassian.com).
 
 ## Installation
 
@@ -8,6 +14,4 @@ Table component with pagination and sorting functionality.
 yarn add @atlaskit/dynamic-table
 ```
 
-## Usage
-
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/dynamic-table).
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com).

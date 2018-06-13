@@ -3,7 +3,6 @@ import * as MarkdownIt from 'markdown-it';
 import { markdownItTable } from 'markdown-it-table';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { Schema, Node as PMNode } from 'prosemirror-model';
-import { markdownItMedia } from './media';
 
 function filterMdToPmSchemaMapping(schema: Schema, map: any) {
   return Object.keys(map).reduce((newMap, key) => {
@@ -68,20 +67,13 @@ const mdToPmMapping = {
     block: 'codeBlock',
     attrs: (tok: any) => ({ language: tok.info || null }),
   },
-  media_single: {
-    block: 'mediaSingle',
-    attrs: (tok: any) => {
-      return {};
-    },
-  },
-  media: {
-    node: 'media',
-    attrs: (tok: any) => {
-      return {
-        url: tok.attrGet('url'),
-        type: 'external',
-      };
-    },
+  image: {
+    node: 'image',
+    attrs: (tok: any) => ({
+      src: tok.attrGet('src'),
+      title: tok.attrGet('title') || null,
+      alt: (tok.children[0] && tok.children[0].content) || null,
+    }),
   },
   emoji: {
     node: 'emoji',
@@ -126,10 +118,6 @@ export class MarkdownTransformer implements Transformer<Markdown> {
 
     if (schema.nodes.table) {
       md.use(markdownItTable);
-    }
-
-    if (schema.nodes.media && schema.nodes.mediaSingle) {
-      md.use(markdownItMedia);
     }
 
     this.markdownParser = new MarkdownParser(

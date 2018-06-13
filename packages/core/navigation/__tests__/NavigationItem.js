@@ -49,12 +49,6 @@ describe('<NavigationItem />', () => {
       navigation.find('Item').simulate('click');
       expect(spy).toHaveBeenCalledTimes(1);
     });
-    it('with an onKeyDown should call the onKeyDown', () => {
-      const spy = jest.fn();
-      const navigation = mountWithRootTheme(<NavigationItem onKeyDown={spy} />);
-      navigation.find('Item').simulate('keydown');
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
     it('with an onMouseEnter should call the onMouseEnter', () => {
       const spy = jest.fn();
       const navigation = mountWithRootTheme(

@@ -1,148 +1,163 @@
 import * as React from 'react';
-import Select from '@atlaskit/select';
+import { PureComponent } from 'react';
+import { EditorView } from 'prosemirror-view';
+
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import Separator from '../../../../ui/Separator';
-import { TrashToolbarButton, FloatingToolbar } from './styles';
+import Select from '@atlaskit/single-select';
+
+import { CodeBlockState } from '../../pm-plugins/main';
 import {
   createLanguageList,
-  DEFAULT_LANGUAGES,
+  filterSupportedLanguages,
+  findMatchedLanguage,
   getLanguageIdentifier,
-} from '@atlaskit/editor-common';
-
-const LANGUAGE_LIST_ITEMS = createLanguageList(DEFAULT_LANGUAGES).map(lang => ({
-  label: lang.name,
-  value: getLanguageIdentifier(lang),
-}));
+  Language,
+} from './languageList';
+import { TrashToolbarButton, FloatingToolbar } from './styles';
 
 export interface Props {
-  activeCodeBlockDOM: HTMLElement;
-  activeLanguage?: string;
-  setLanguage: (language: string) => void;
-  deleteCodeBlock: () => void;
-  innerRef?: (node?: HTMLElement) => void;
-
+  editorView: EditorView;
+  pluginState: CodeBlockState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  popupsScrollableElement?: HTMLElement;
 }
 
-export class LanguagePicker extends React.Component<Props> {
-  private prevActiveCodeBlockWidth: { height: number; width: number };
-  constructor(props: Props) {
+export interface State {
+  active?: boolean;
+  element?: HTMLElement;
+  activeLanguage?: Language;
+  supportedLanguages: Language[];
+  toolbarVisible: boolean;
+  isLanguageSelectOpen?: boolean;
+  languageSelectFocused?: boolean;
+}
+
+export default class LanguagePicker extends PureComponent<Props, State> {
+  items: object[];
+
+  constructor(props) {
     super(props);
-    const {
-      clientHeight: height,
-      clientWidth: width,
-    } = props.activeCodeBlockDOM;
-    this.prevActiveCodeBlockWidth = { height, width };
+
+    this.state = {
+      language: undefined,
+      toolbarVisible: false,
+      supportedLanguages: filterSupportedLanguages(
+        props.pluginState.supportedLanguages,
+      ),
+    } as State;
   }
-
-  shouldComponentUpdate(nextProps: Props) {
-    if (nextProps.activeLanguage !== this.props.activeLanguage) {
-      return true;
-    }
-    if (nextProps.activeCodeBlockDOM !== this.props.activeCodeBlockDOM) {
-      return true;
-    }
-    if (
-      this.prevActiveCodeBlockWidth.height !==
-        nextProps.activeCodeBlockDOM.clientHeight ||
-      this.prevActiveCodeBlockWidth.width !==
-        nextProps.activeCodeBlockDOM.clientWidth
-    ) {
-      return true;
-    }
-    return false;
-  }
-
-  componentDidUpdate() {
-    const {
-      clientHeight: height,
-      clientWidth: width,
-    } = this.props.activeCodeBlockDOM;
-    this.prevActiveCodeBlockWidth = {
-      height,
-      width,
-    };
-  }
-
-  handleLanguageSelected = ({ value }) => {
-    this.props.setLanguage(value);
-  };
-
-  handleCodeBlockDelete = () => {
-    this.props.deleteCodeBlock();
-  };
-
-  render() {
-    const {
-      innerRef,
-      popupsMountPoint,
-      popupsBoundariesElement,
-      activeCodeBlockDOM,
-      activeLanguage,
-    } = this.props;
-
-    const defaultLanguage =
-      LANGUAGE_LIST_ITEMS.find(lang => lang.value === activeLanguage) || null;
-
-    return (
-      <FloatingToolbar
-        containerRef={innerRef}
-        target={activeCodeBlockDOM}
-        offset={[0, 12]}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-      >
-        <div style={{ width: '200px' }}>
-          <Select
-            options={LANGUAGE_LIST_ITEMS}
-            value={defaultLanguage}
-            onChange={this.handleLanguageSelected}
-            placeholder="Select language"
-          />
-        </div>
-        <Separator />
-        <TrashToolbarButton
-          onClick={this.handleCodeBlockDelete}
-          title="Remove code block"
-          iconBefore={<RemoveIcon label="Remove code block" />}
-        />
-      </FloatingToolbar>
-    );
-  }
-}
-
-export default class LanguagePickerWithOutsideListeners extends React.PureComponent<
-  Props & { isEditorFocused: boolean },
-  { isToolbarFocused: boolean }
-> {
-  state = { isToolbarFocused: false };
-  toolbar?: HTMLElement;
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleClick);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick);
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
+    const { supportedLanguages } = this.state;
+
+    this.items = [
+      {
+        items: createLanguageList(supportedLanguages).map(lang => ({
+          content: lang.name,
+          value: getLanguageIdentifier(lang),
+        })),
+      },
+    ];
   }
 
-  setToolbarRef = (node?: HTMLElement) => {
-    this.toolbar = node;
+  componentWillUnmount() {
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+  }
+
+  onLanguageSelectMouseDown = event => {
+    event.preventDefault();
+    this.setState({
+      languageSelectFocused: true,
+    });
   };
 
-  handleClick = (event: MouseEvent) => {
-    const wasToolbarClicked =
-      !!this.toolbar && this.toolbar.contains(event.target as Node);
-    if (wasToolbarClicked !== this.state.isToolbarFocused) {
-      this.setState({ isToolbarFocused: wasToolbarClicked });
-    }
+  resetLanguageSelectFocused = event => {
+    this.setState({
+      languageSelectFocused: false,
+    });
   };
 
   render() {
-    const { isEditorFocused, ...rest } = this.props;
-    if (isEditorFocused || this.state.isToolbarFocused) {
-      return <LanguagePicker {...rest} innerRef={this.setToolbarRef} />;
+    const {
+      activeLanguage,
+      element,
+      toolbarVisible,
+      languageSelectFocused,
+    } = this.state;
+
+    const defaultLanguage = activeLanguage
+      ? {
+          content: activeLanguage.name,
+          value: getLanguageIdentifier(activeLanguage),
+        }
+      : undefined;
+
+    if (toolbarVisible || languageSelectFocused) {
+      return (
+        <FloatingToolbar target={element} offset={[0, 12]}>
+          <div
+            tabIndex={0}
+            onMouseDown={this.onLanguageSelectMouseDown}
+            onBlur={this.resetLanguageSelectFocused}
+          >
+            <Select
+              id="test"
+              hasAutocomplete={true}
+              shouldFocus={languageSelectFocused}
+              items={this.items}
+              onSelected={this.handleLanguageChange}
+              defaultSelected={defaultLanguage}
+              placeholder="Select language"
+            />
+          </div>
+          <TrashToolbarButton
+            onClick={this.handleRemoveCodeBlock}
+            title="Remove code block"
+            iconBefore={<RemoveIcon label="Remove code block" />}
+          />
+        </FloatingToolbar>
+      );
     }
+
     return null;
   }
+
+  private handlePluginStateChange = (pluginState: CodeBlockState) => {
+    const { element, language, toolbarVisible } = pluginState;
+    const { supportedLanguages } = this.state;
+
+    const updatedLanguage = findMatchedLanguage(supportedLanguages, language);
+
+    this.setState({
+      activeLanguage: updatedLanguage,
+      element,
+      toolbarVisible,
+    });
+
+    const activeLanguageValue = updatedLanguage
+      ? getLanguageIdentifier(updatedLanguage)
+      : undefined;
+    if (language !== activeLanguageValue) {
+      this.props.pluginState.updateLanguage(
+        activeLanguageValue,
+        this.props.editorView,
+      );
+    }
+  };
+
+  private handleLanguageChange = (language: any) => {
+    this.props.pluginState.updateLanguage(
+      language.item.value,
+      this.props.editorView,
+    );
+    this.setState({
+      toolbarVisible: true,
+    });
+  };
+
+  private handleRemoveCodeBlock = () => {
+    this.props.pluginState.removeCodeBlock(this.props.editorView);
+  };
 }

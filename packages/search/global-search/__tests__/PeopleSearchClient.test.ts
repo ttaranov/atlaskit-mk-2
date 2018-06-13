@@ -56,7 +56,7 @@ describe('PeopleSearchClient', () => {
       expect(item.resultId).toEqual('people-123');
       expect(item.avatarUrl).toEqual('avatarUrl');
       expect(item.name).toEqual('fullName');
-      expect(item.href).toEqual('/people/123');
+      expect(item.href).toEqual('/home/people/123');
       expect(item.containerName).toBeUndefined();
       expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
     });

@@ -29,7 +29,7 @@ export class PanelState {
   private activeNode: Node | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
 
-  element?: HTMLElement;
+  element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
   toolbarVisible?: boolean | undefined;
   editorFocused: boolean = false;
@@ -46,12 +46,18 @@ export class PanelState {
 
   changePanelType(view: EditorView, { panelType }: PanelType) {
     analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
-    const { state: { tr, schema }, dispatch } = view;
+    const {
+      state: { tr, schema },
+      dispatch,
+    } = view;
     dispatch(setParentNodeMarkup(schema.nodes.panel, null, { panelType })(tr));
   }
 
   removePanel(view: EditorView) {
-    const { state: { tr, schema }, dispatch } = view;
+    const {
+      state: { tr, schema },
+      dispatch,
+    } = view;
     dispatch(removeParentNodeOfType(schema.nodes.panel)(tr));
   }
 
@@ -74,32 +80,46 @@ export class PanelState {
         this.editorFocused &&
         !!newPanel &&
         (domEvent || this.element !== newElement);
-      this.element = newElement || undefined;
+      this.element = newElement;
       this.activePanelType = newPanel && newPanel.attrs['panelType'];
       this.changeHandlers.forEach(cb => cb(this));
     }
   }
 
   private getActivePanel(): Node | undefined {
-    const { state: { selection, schema: { nodes: { panel } } } } = this;
+    const {
+      state: {
+        selection,
+        schema: {
+          nodes: { panel },
+        },
+      },
+    } = this;
     const parent = findParentNodeOfType(panel)(selection);
     if (parent) {
       return parent.node;
     }
   }
 
-  private getDomElement(domAtPos: DomAtPos): HTMLElement | null {
-    const { state: { selection, schema: { nodes: { panel } } } } = this;
+  private getDomElement(domAtPos: DomAtPos): HTMLElement | undefined {
+    const {
+      state: {
+        selection,
+        schema: {
+          nodes: { panel },
+        },
+      },
+    } = this;
     let node = findParentDomRefOfType(panel, domAtPos)(
       selection,
-    ) as HTMLElement | null;
+    ) as HTMLElement;
     if (node) {
       // getting panel nodeView wrapper
-      while (node && !node.attributes['data-panel-type']) {
-        node = node.parentElement;
+      while (!node.attributes['data-panel-type']) {
+        node = node.parentNode as HTMLElement;
       }
+      return node;
     }
-    return node;
   }
 }
 
@@ -108,7 +128,7 @@ export type PanelStateSubscriber = (state: PanelState) => any;
 export const stateKey = new PluginKey('panelPlugin');
 
 // TODO: Fix types (ED-2987)
-export const createPlugin = ({ portalProviderAPI }) =>
+export const createPlugin = () =>
   new Plugin({
     state: {
       init(config, state: EditorState) {
@@ -134,7 +154,7 @@ export const createPlugin = ({ portalProviderAPI }) =>
     },
     props: {
       nodeViews: {
-        panel: panelNodeView(portalProviderAPI),
+        panel: panelNodeView,
       },
       handleClick(view: EditorView, event) {
         stateKey

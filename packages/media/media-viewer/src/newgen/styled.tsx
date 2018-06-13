@@ -126,13 +126,11 @@ export const ErrorMessage = styled.div`
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   transition: transform 0.2s;
   transform-origin: center;
-  max-width: 100%;
-  max-height: 100%;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 `;
 
 export const PDFWrapper = styled.div`

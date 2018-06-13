@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { tableEditing, columnResizing } from 'prosemirror-tables';
-import TableIcon from '@atlaskit/icon/glyph/editor/table';
 import {
   table,
   tableCell,
@@ -10,7 +9,6 @@ import {
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import TableFloatingToolbar from './ui/TableFloatingToolbar';
-import { createTableNode } from './utils';
 import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
@@ -34,15 +32,9 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({
-          props: { allowTables },
-          eventDispatcher,
-          dispatch,
-          portalProviderAPI,
-        }) => {
+        plugin: ({ props: { allowTables }, eventDispatcher, dispatch }) => {
           return createPlugin(
             dispatch,
-            portalProviderAPI,
             eventDispatcher,
             pluginConfig(allowTables),
           );
@@ -104,18 +96,6 @@ const tablesPlugin: EditorPlugin = {
         )}
       />
     );
-  },
-
-  pluginsOptions: {
-    quickInsert: [
-      {
-        title: 'Table',
-        icon: () => <TableIcon label="Table" />,
-        action(insert, state) {
-          return insert(createTableNode(3, 3, state.schema));
-        },
-      },
-    ],
   },
 };
 

@@ -1,4 +1,0 @@
-# Using a separate .gitignore so I don't make the other one messy for files specific
-# to this package
-log.txt
-yarn.lock

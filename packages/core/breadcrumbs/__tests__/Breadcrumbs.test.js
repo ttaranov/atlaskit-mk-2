@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import cases from 'jest-in-case';
 
-import { BreadcrumbsStateless, BreadcrumbsItem as Item } from '../src';
+import { BreadcrumbsStateless, BreadcrumbsItem as Item } from '../src/';
 
 import EllipsisItem from '../src/components/EllipsisItem';
 

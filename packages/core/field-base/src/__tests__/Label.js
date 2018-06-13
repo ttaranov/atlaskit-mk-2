@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import { Label } from '../../src';
+import { Label } from '../../src/';
 // import { type Props } from '../components/Label';
 import { RequiredIndicator, LabelInner } from '../../src/styled/Label';
 

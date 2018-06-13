@@ -33,7 +33,7 @@ describe('mediaSingle - keymap', () => {
       doc,
       editorPlugins: [
         mediaPlugin({ provider: mediaProvider, allowMediaSingle: true }),
-        codeBlockPlugin(),
+        codeBlockPlugin,
       ],
     });
   };

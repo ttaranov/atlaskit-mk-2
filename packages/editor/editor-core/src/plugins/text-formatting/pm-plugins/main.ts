@@ -65,7 +65,7 @@ export class TextFormattingState {
     const { from, to } = this.state.selection;
     if (code) {
       if (!this.codeActive) {
-        view.dispatch(transformToCodeAction(from, to, view.state.tr));
+        view.dispatch(transformToCodeAction(view.state, from, to));
         return true;
       }
       return toggleMark(code)(view.state, view.dispatch);
@@ -299,27 +299,16 @@ export class TextFormattingState {
   ): boolean {
     const { state } = view;
     if (state.selection.empty) {
-      const { nodeBefore: before } = state.doc.resolve(from);
-      const { nodeAfter: after } = state.doc.resolve(to);
-
-      const hasTickBefore = before && before.text && before.text.endsWith('`');
-      const hasTickAfter = after && after.text && after.text.startsWith('`');
-      if (hasTickBefore && hasTickAfter) {
+      const nodeContent = state.selection.$from.node().textContent;
+      const start = state.selection.$from.start();
+      const charBefore = nodeContent[from - start - 1];
+      const charAfter = nodeContent[from - start];
+      if (charBefore === '`' && charAfter === '`') {
         analyticsService.trackEvent(
           `atlassian.editor.format.code.autoformatting`,
         );
-        const tr = state.tr.replaceRangeWith(
-          from - 1,
-          to + 1,
-          state.schema.text(text),
-        );
-        view.dispatch(
-          transformToCodeAction(
-            tr.mapping.map(from - 1),
-            tr.mapping.map(to + 1),
-            tr,
-          ),
-        );
+        const tr = state.tr.delete(from - 1, from + 1).insertText(text);
+        view.dispatch(transformToCodeAction(state, from - 1, from, tr));
         return true;
       }
     }

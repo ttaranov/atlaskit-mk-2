@@ -138,7 +138,6 @@ export const bodiedExtensionData = [
     attrs: {
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'expand',
-      layout: 'default',
       parameters: {
         macroMetadata: {
           macroId: { value: new Date().valueOf() },
@@ -189,7 +188,6 @@ export const bodiedExtensionData = [
     attrs: {
       extensionType: 'com.atlassian.confluence.macro.core',
       extensionKey: 'expand',
-      layout: 'default',
       parameters: {
         macroMetadata: {
           macroId: { value: new Date().valueOf() },

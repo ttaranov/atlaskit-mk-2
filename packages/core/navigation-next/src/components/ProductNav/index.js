@@ -2,12 +2,8 @@
 
 import React, { PureComponent, Fragment } from 'react';
 import interpolate, { clamp } from 'interpolate-range';
-import { Transition } from 'react-transition-group';
 
-import {
-  PRODUCT_NAV_WIDTH,
-  transitionDurationMs,
-} from '../../common/constants';
+import { PRODUCT_NAV_WIDTH } from '../../common/constants';
 import {
   ContainerNav,
   ContainerOverlay,
@@ -52,31 +48,16 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
         <RootNav>
           <Root />
         </RootNav>
-
-        <Transition
-          in={!!Container}
-          timeout={transitionDurationMs}
-          mountOnEnter
-          unmountOnExit
-        >
-          {state => (
-            <ContainerNav
-              isEntering={state === 'entering'}
-              isExiting={state === 'exiting'}
-              isHinting={isHinting}
-              isPeeking={isPeeking}
-            >
-              <Fragment>
-                {Container && <Container />}
-                <ContainerOverlay
-                  isVisible={overlayIsVisible}
-                  onClick={onOverlayClick}
-                  style={overlayStyle}
-                />
-              </Fragment>
-            </ContainerNav>
-          )}
-        </Transition>
+        {Container && (
+          <ContainerNav isHinting={isHinting} isPeeking={isPeeking}>
+            <Container />
+            <ContainerOverlay
+              isVisible={overlayIsVisible}
+              onClick={onOverlayClick}
+              style={overlayStyle}
+            />
+          </ContainerNav>
+        )}
         <InnerShadow isVisible={isPeeking} />
       </Fragment>
     );

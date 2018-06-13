@@ -17,11 +17,6 @@ import { patchEditorViewForJSDOM } from '@atlaskit/editor-test-helpers/';
 import { EditorView } from 'prosemirror-view';
 import { EventDispatcher } from '../../src/event-dispatcher';
 
-const portalProviderAPI: any = {
-  render() {},
-  remove() {},
-};
-
 describe(name, () => {
   describe('<ReactEditorView />', () => {
     it('should place the initial selection at the end of the document', () => {
@@ -30,7 +25,6 @@ describe(name, () => {
         <ReactEditorView
           editorProps={{ defaultValue: toJSON(document) }}
           providerFactory={new ProviderFactory()}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={() => {}}
           onEditorDestroyed={() => {}}
         />,
@@ -46,7 +40,6 @@ describe(name, () => {
         <ReactEditorView
           editorProps={{}}
           providerFactory={new ProviderFactory()}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={() => {}}
           onEditorDestroyed={() => {}}
         />,
@@ -68,7 +61,6 @@ describe(name, () => {
             media: { provider: mediaProvider },
           }}
           providerFactory={ProviderFactory.create({ mediaProvider })}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={() => {}}
           onEditorDestroyed={() => {}}
         />,
@@ -88,7 +80,6 @@ describe(name, () => {
         <ReactEditorView
           editorProps={{}}
           providerFactory={ProviderFactory.create({})}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={() => {}}
           onEditorDestroyed={() => {}}
         />,
@@ -103,7 +94,6 @@ describe(name, () => {
           <ReactEditorView
             editorProps={{}}
             providerFactory={ProviderFactory.create({})}
-            portalProviderAPI={portalProviderAPI}
             onEditorCreated={() => {}}
             onEditorDestroyed={() => {}}
           />,
@@ -125,7 +115,6 @@ describe(name, () => {
         <ReactEditorView
           editorProps={{ appearance: 'message' }}
           providerFactory={new ProviderFactory()}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={handleEditorCreated}
           onEditorDestroyed={() => {}}
         />,
@@ -152,7 +141,6 @@ describe(name, () => {
         <ReactEditorView
           editorProps={{ appearance: 'message' }}
           providerFactory={new ProviderFactory()}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={() => {}}
           onEditorDestroyed={handleEditorDestroyed}
         />,
@@ -185,7 +173,6 @@ describe(name, () => {
             mediaProvider: mediaProvider,
           }}
           providerFactory={ProviderFactory.create({ mediaProvider })}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={({ view }) => {
             spies = view.state.plugins
               .map(plugin => plugin.getState(view.state))
@@ -208,7 +195,6 @@ describe(name, () => {
         <ReactEditorView
           editorProps={{}}
           providerFactory={new ProviderFactory()}
-          portalProviderAPI={portalProviderAPI}
           onEditorCreated={({ eventDispatcher }) => {
             eventDispatcherDestroySpy = jest.spyOn(eventDispatcher, 'destroy');
           }}
@@ -226,7 +212,6 @@ describe(name, () => {
           <ReactEditorView
             editorProps={{ appearance: 'message' }}
             providerFactory={new ProviderFactory()}
-            portalProviderAPI={portalProviderAPI}
             onEditorCreated={() => {}}
             onEditorDestroyed={handleEditorDestroyed}
           />,
@@ -256,7 +241,6 @@ describe(name, () => {
           <ReactEditorView
             editorProps={{}}
             providerFactory={new ProviderFactory()}
-            portalProviderAPI={portalProviderAPI}
             onEditorCreated={({ view }) => {
               // So we don't accidently re-set this when we create the new editor view
               if (!editorViewDestroy) {
@@ -280,7 +264,6 @@ describe(name, () => {
           <ReactEditorView
             editorProps={{}}
             providerFactory={new ProviderFactory()}
-            portalProviderAPI={portalProviderAPI}
             onEditorCreated={({ view }) => {
               newEditorView = view;
             }}
@@ -304,7 +287,6 @@ describe(name, () => {
           <ReactEditorView
             editorProps={{}}
             providerFactory={new ProviderFactory()}
-            portalProviderAPI={portalProviderAPI}
             onEditorCreated={({ eventDispatcher }) => {
               // So we don't accidently re-set this when we create the new editor view
               if (!oldEventDispatcher) {

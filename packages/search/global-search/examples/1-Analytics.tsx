@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
+import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
-import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 import styled from 'styled-components';
 
 import { AnalyticsListener } from '@atlaskit/analytics';
@@ -56,13 +56,6 @@ export default class extends React.Component<any, any> {
     }));
   };
 
-  onAnalyticsNextEvent(event) {
-    this.onEvent(
-      `${event.payload.actionSubject} ${event.payload.action}`,
-      event.payload,
-    );
-  }
-
   render() {
     const events = this.state.events;
 
@@ -73,14 +66,9 @@ export default class extends React.Component<any, any> {
           <Bordered>
             <AnalyticsListener onEvent={this.onEvent}>
               <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
-                <AnalyticsNextListener
-                  channel="globalSearch"
-                  onEvent={e => this.onAnalyticsNextEvent(e)}
-                >
-                  <AtlaskitThemeProvider mode="light">
-                    <GlobalQuickSearch cloudId="cloudId" context="confluence" />
-                  </AtlaskitThemeProvider>
-                </AnalyticsNextListener>
+                <AtlaskitThemeProvider mode="light">
+                  <GlobalQuickSearch cloudId="cloudId" context="home" />
+                </AtlaskitThemeProvider>
               </AnalyticsListener>
             </AnalyticsListener>
           </Bordered>
@@ -90,8 +78,8 @@ export default class extends React.Component<any, any> {
           <h2>Analytics Events</h2>
           <Bordered>
             <EventsList>
-              {events.map((event, i) => (
-                <li key={i}>
+              {events.map(event => (
+                <li>
                   <strong>Event:</strong> {event.name} | <strong>Data:</strong>{' '}
                   {JSON.stringify(event.data)}
                 </li>

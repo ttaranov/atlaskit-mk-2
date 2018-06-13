@@ -169,7 +169,6 @@ export default class PubNubProtocol implements Protocol {
   private onConnected() {
     logDebug('Connected');
     this.connectionState = ConnectionState.CONNECTED;
-    this.eventEmitter.emit(EventType.NETWORK_UP, {});
   }
 
   private onNetworkDown() {

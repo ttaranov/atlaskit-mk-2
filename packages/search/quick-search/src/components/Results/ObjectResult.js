@@ -40,23 +40,13 @@ export default class ObjectResult extends PureComponent<Props> {
     );
   };
 
-  getSubtext() {
-    const { objectKey, containerName } = this.props;
-
-    if (objectKey) {
-      return `${objectKey} · ${containerName}`;
-    }
-
-    return containerName;
-  }
-
   render() {
     const { containerName, objectKey, name, ...resultBaseProps } = this.props;
     return (
       <ResultBase
         {...resultBaseProps}
         icon={this.getAvatar()}
-        subText={this.getSubtext()}
+        subText={`${objectKey ? `${objectKey} ` : ''}in ${containerName}`}
         text={name}
       />
     );

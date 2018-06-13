@@ -23,7 +23,7 @@ const renderNode = (
     state.write(' ');
   }
   node.content.forEach((child: PMNode, i: number) => {
-    if (child.isTextblock || child.type.name === 'mediaSingle') {
+    if (child.isTextblock) {
       if (i > 0) {
         state.write(' ');
       }

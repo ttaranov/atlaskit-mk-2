@@ -3,7 +3,6 @@
 exports[`should render the component 1`] = `
 <styled.td
   aria-selected="false"
-  onClick={[Function]}
   onMouseDown={[Function]}
   onMouseUp={[Function]}
   role="gridcell"

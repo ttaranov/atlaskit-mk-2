@@ -92,9 +92,6 @@ const MainToolbar: React.ComponentClass<
   display: flex;
   height: 80px;
   flex-shrink: 0;
-  & object {
-    height: 0 !important;
-  }
 `;
 MainToolbar.displayName = 'MainToolbar';
 
@@ -129,7 +126,7 @@ export default class Editor extends React.Component<
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
     event.stopPropagation();
 
-  scrollContainerRef = (ref: HTMLElement | null) => {
+  scrollContainerRef = ref => {
     const previousScrollContainer = this.scrollContainer;
 
     // remove existing handler
@@ -140,9 +137,9 @@ export default class Editor extends React.Component<
       );
     }
 
-    this.scrollContainer = ref ? ref : undefined;
+    this.scrollContainer = ref;
 
-    if (this.scrollContainer) {
+    if (typeof this.scrollContainer !== 'undefined') {
       this.scrollContainer.addEventListener(
         'scroll',
         this.scheduleUpdateToolbarKeyline,
@@ -163,7 +160,11 @@ export default class Editor extends React.Component<
     return false;
   };
 
-  private scheduleUpdateToolbarKeyline = rafSchedule(this.updateToolbarKeyline);
+  private scheduleUpdateToolbarKeyline = () => {
+    this.scheduledKeylineUpdate = rafSchedule(() =>
+      this.updateToolbarKeyline(),
+    );
+  };
 
   componentDidMount() {
     window.addEventListener('resize', this.scheduleUpdateToolbarKeyline, false);
@@ -172,7 +173,7 @@ export default class Editor extends React.Component<
   componentWillUnmount() {
     window.removeEventListener('resize', this.scheduleUpdateToolbarKeyline);
 
-    if (this.scheduledKeylineUpdate) {
+    if (typeof this.scheduledKeylineUpdate !== 'undefined') {
       cancelAnimationFrame(this.scheduledKeylineUpdate);
     }
   }

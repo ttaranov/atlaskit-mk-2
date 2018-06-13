@@ -1,11 +1,13 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
-import { ReactNodeView } from '../../../nodeviews';
+import { ContentNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
+
+type getPosHandler = () => number;
 
 export interface Props {
   children?: React.ReactNode;
@@ -13,9 +15,30 @@ export interface Props {
   node: PMNode;
 }
 
-class Task extends ReactNodeView {
-  private isContentEmpty() {
-    return this.node.content.childCount === 0;
+class Task extends ContentNodeView implements NodeView {
+  private domRef: HTMLElement | undefined;
+  private node: PMNode;
+  private view: EditorView;
+  private getPos: getPosHandler;
+  private isContentEmpty: boolean = false;
+  private analyticsDelegateContext: AnalyticsDelegateProps;
+  private providerFactory: ProviderFactory;
+
+  constructor(
+    node: PMNode,
+    view: EditorView,
+    getPos: getPosHandler,
+    analyticsDelegateContext: AnalyticsDelegateProps,
+    providerFactory: ProviderFactory,
+  ) {
+    super(node, view);
+    this.node = node;
+    this.view = view;
+    this.getPos = getPos;
+    this.isContentEmpty = node.content.childCount === 0;
+    this.analyticsDelegateContext = analyticsDelegateContext;
+    this.providerFactory = providerFactory;
+    this.renderReactComponent();
   }
 
   private handleOnChange = (taskId: string, isChecked: boolean) => {
@@ -30,36 +53,33 @@ class Task extends ReactNodeView {
     this.view.dispatch(tr);
   };
 
-  getDomRef() {
-    const domRef = document.createElement('li');
-    domRef.style['list-style-type'] = 'none';
-    return domRef;
-  }
+  private renderReactComponent() {
+    this.domRef = document.createElement('li');
+    this.domRef.style['list-style-type'] = 'none';
 
-  getContentDOM() {
-    return { dom: document.createElement('div') };
-  }
-
-  render(props, forawardRef) {
     const node = this.node;
     const { localId, state } = node.attrs;
 
     const taskItem = (
       <TaskItem
         taskId={localId}
-        contentRef={forawardRef}
+        contentRef={this.handleRef}
         isDone={state === 'DONE'}
         onChange={this.handleOnChange}
-        showPlaceholder={this.isContentEmpty()}
-        providers={props.providerFactory}
+        showPlaceholder={this.isContentEmpty}
+        providers={this.providerFactory}
       />
     );
-
-    return (
-      <AnalyticsDelegate {...props.analyticsDelegateContext}>
+    ReactDOM.render(
+      <AnalyticsDelegate {...this.analyticsDelegateContext}>
         {taskItem}
-      </AnalyticsDelegate>
+      </AnalyticsDelegate>,
+      this.domRef,
     );
+  }
+
+  get dom() {
+    return this.domRef;
   }
 
   update(node: PMNode) {
@@ -72,17 +92,25 @@ class Task extends ReactNodeView {
      */
     return false;
   }
+
+  destroy() {
+    ReactDOM.unmountComponentAtNode(this.domRef!);
+    this.domRef = undefined;
+    super.destroy();
+  }
 }
 
 export function taskItemNodeViewFactory(
-  portalProviderAPI: PortalProviderAPI,
   analyticsDelegateContext: AnalyticsDelegateProps,
   providerFactory: ProviderFactory,
 ) {
   return (node: any, view: any, getPos: () => number): NodeView => {
-    return new Task(node, view, getPos, portalProviderAPI, {
+    return new Task(
+      node,
+      view,
+      getPos,
       analyticsDelegateContext,
       providerFactory,
-    });
+    );
   };
 }

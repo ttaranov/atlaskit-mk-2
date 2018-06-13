@@ -22,7 +22,7 @@ describe('text-formatting', () => {
     createEditor<TextFormattingState>({
       doc,
       pluginKey: stateKey,
-      editorPlugins: [codeBlockPlugin()],
+      editorPlugins: [codeBlockPlugin],
     });
 
   describe('code', () => {

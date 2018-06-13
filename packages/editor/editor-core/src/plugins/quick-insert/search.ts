@@ -1,45 +1,29 @@
 export function distance(str1, str2) {
-  const lowerStr2 = str2.toLowerCase().replace(/\s/g, '');
+  const lowerStr2 = str2.toLowerCase();
   return str1
-    .replace(/\s/g, '')
     .toLowerCase()
     .split('')
-    .reduce(
-      (acc, char, index) => {
-        if (acc.dist === Infinity) {
-          return acc;
-        }
+    .reduce((dist, char, index) => {
+      const indexInStr2 = lowerStr2.indexOf(char);
+      if (indexInStr2 === -1) {
+        return Infinity;
+      }
 
-        const indexInStr2 = lowerStr2.indexOf(char, acc.offset);
+      if (index === indexInStr2) {
+        return dist;
+      }
 
-        if (indexInStr2 === -1) {
-          return { dist: Infinity, offset: 0 };
-        }
-
-        return {
-          offset: indexInStr2,
-          dist:
-            acc.dist +
-            (index !== indexInStr2 ? Math.abs(index - indexInStr2) : 0),
-        };
-      },
-      { dist: 0, offset: 0 },
-    ).dist;
+      return dist + Math.abs(index - indexInStr2);
+    }, 0);
 }
 
 export function find(query, items, extractSearchString = item => item) {
-  const itemsWithDistances = items
-    .sort((a, b) => {
-      const aStr = extractSearchString(a);
-      const bStr = extractSearchString(b);
-      return aStr > bStr ? 1 : aStr < bStr ? -1 : 0;
-    })
-    .map(item => {
-      return {
-        item,
-        dist: distance(query, extractSearchString(item)),
-      };
-    });
+  const itemsWithDistances = items.map(item => {
+    return {
+      item,
+      dist: distance(query, extractSearchString(item)),
+    };
+  });
 
   return itemsWithDistances
     .filter(item => item.dist !== Infinity)

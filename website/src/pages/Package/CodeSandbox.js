@@ -91,11 +91,6 @@ export default class CodeSandbox extends Component<{}, {}> {
         ]}
         dependencies={{
           '@atlaskit/css-reset': 'latest',
-          'styled-components':
-            pkgJSON.peerDependencies &&
-            pkgJSON.peerDependencies['styled-components']
-              ? pkgJSON.peerDependencies['styled-components']
-              : 'latest',
           [pkgJSON.name]: pkgJSON.version,
         }}
         providedFiles={baseFiles(groupId, packageId, example.id)}

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
 
-import { CommentLayout } from '../src';
+import { CommentLayout } from '../src/';
 import {
   AvatarSectionDiv,
   Container,

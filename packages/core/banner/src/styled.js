@@ -35,15 +35,6 @@ export const Content = styled.div`
   padding: ${math.multiply(gridSize, 2)}px;
   text-align: center;
   transition: color ${TRANSITION_DURATION};
-
-  a,
-  a:visited,
-  a:hover,
-  a:active,
-  a:focus {
-    color: ${textColor};
-    text-decoration: underline;
-  }
 `;
 
 // Icon

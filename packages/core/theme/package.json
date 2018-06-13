@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "4.0.1",
+  "version": "3.2.2",
   "description": "The Atlaskit theme framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,16 +17,16 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "styled-components": "^3.2.6"
+    "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.0.1",
-    "@atlaskit/docs": "^4.0.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "@atlaskit/button": "^7.2.5",
+    "@atlaskit/docs": "^3.0.4",
+    "enzyme": "^3.3.0"
   },
   "keywords": [
     "atlaskit",

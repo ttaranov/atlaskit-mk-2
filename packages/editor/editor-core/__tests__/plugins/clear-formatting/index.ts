@@ -33,7 +33,7 @@ describe('clear-formatting', () => {
     const editor = createEditor({
       doc,
       editorPlugins: [
-        codeBlockPlugin(),
+        codeBlockPlugin,
         textColorPlugin,
         listPlugin,
         panelPlugin,

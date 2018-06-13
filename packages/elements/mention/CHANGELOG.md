@@ -1,23 +1,5 @@
 # @atlaskit/mention
 
-## 13.0.0
-- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-  - @atlaskit/util-data-test@9.1.10
-  - @atlaskit/tooltip@10.0.0
-  - @atlaskit/icon@12.0.0
-  - @atlaskit/analytics-next@2.1.4
-  - @atlaskit/lozenge@5.0.0
-  - @atlaskit/docs@4.0.0
-  - @atlaskit/util-service-support@2.0.8
-  - @atlaskit/analytics-gas-types@2.1.1
-  - @atlaskit/analytics@3.0.2
-  - @atlaskit/avatar@11.0.0
-
-## 12.0.3
-- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
-  - @atlaskit/util-data-test@9.1.9
-
 ## 12.0.2
 - [patch] Moved event tag to FabricElementsListener [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
 - [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)

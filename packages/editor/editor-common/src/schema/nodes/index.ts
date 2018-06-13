@@ -70,4 +70,3 @@ export { date } from './date';
 export { placeholder } from './placeholder';
 export { layoutSection } from './layout-section';
 export { layoutColumn } from './layout-column';
-export { inlineCard, CardAttributes } from './inline-card';

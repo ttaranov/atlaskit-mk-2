@@ -8,7 +8,6 @@ import {
 } from '@atlaskit/editor-core';
 import { BitbucketTransformer } from '../src';
 import exampleBitbucketHTML from '../example-helpers/exampleHTML';
-import imageUploadHandler from '../../editor-core/example-helpers/imageUpload';
 
 const Container = styled.div`
   display: grid;
@@ -73,8 +72,8 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowCodeBlocks={true}
             allowLists={true}
             allowRule={true}
-            allowTables={{ isHeaderRowRequired: true }}
-            legacyImageUploadProvider={Promise.resolve(imageUploadHandler)}
+            allowTables={true}
+            legacyImageUploadProvider={Promise.resolve(() => {})}
             contentTransformerProvider={schema =>
               new BitbucketTransformer(schema)
             }

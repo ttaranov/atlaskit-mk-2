@@ -1,11 +1,10 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
-import { colors } from '@atlaskit/theme';
 import { ResultBase } from '@atlaskit/quick-search';
 import { ResultContentType } from '../model/Result';
 import Objects24PageIcon from '@atlaskit/icon/glyph/objects/24/page';
 import Objects24BlogIcon from '@atlaskit/icon/glyph/objects/24/blog';
-import Objects24ImageIcon from '@atlaskit/icon/glyph/objects/24/image';
+import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
 
 const OBJECT_RESULT_TYPE = 'object';
 
@@ -30,42 +29,15 @@ export default class ObjectResult extends React.Component<Props> {
     type: OBJECT_RESULT_TYPE,
   };
 
-  /*
-   * Note:
-   * Icon with medium size = 24px.
-   * Avatar with small size = 24px.
-   * 
-   * Colors come from: https://extranet.atlassian.com/display/ADG/Object+icons%3A+Colors
-   */
   getAvatar = () => {
     if (this.props.contentType === ResultContentType.Page) {
-      return (
-        <Objects24PageIcon
-          size="medium"
-          primaryColor={colors.B200}
-          label={this.props.name}
-        />
-      );
+      return <Objects24PageIcon size="large" label={this.props.name} />;
     } else if (this.props.contentType === ResultContentType.Blogpost) {
-      return (
-        <Objects24BlogIcon
-          size="medium"
-          primaryColor={colors.B200}
-          label={this.props.name}
-        />
-      );
+      return <Objects24BlogIcon size="large" label={this.props.name} />;
     } else if (this.props.contentType === ResultContentType.Attachment) {
-      return (
-        <Objects24ImageIcon
-          size="medium"
-          primaryColor={colors.R300}
-          label={this.props.name}
-        />
-      );
+      return <DocumentFilledIcon size="large" label={this.props.name} />;
     } else {
-      return (
-        <Avatar src={this.props.avatarUrl} size="small" appearance="square" />
-      );
+      return <Avatar src={this.props.avatarUrl} appearance="square" />;
     }
   };
 

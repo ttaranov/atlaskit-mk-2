@@ -2,13 +2,12 @@ export interface Result {
   resultId: string;
   name: string;
   href: string;
-  // Either avatarUrl or contentType should be defined
-  avatarUrl?: string;
-  contentType?: ResultContentType;
+  avatarUrl: string;
   containerName?: string;
   objectKey?: string;
   resultType: ResultType;
   analyticsType: AnalyticsType;
+  contentType?: ResultContentType;
 }
 
 export enum ResultType {

@@ -13,7 +13,11 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
+import {
+  copyPrivateMediaAttributes,
+  MediaType,
+  MediaSingleLayout,
+} from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -260,11 +264,11 @@ export class MediaPluginState {
   private getDomElement(docView: any): HTMLElement | undefined {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node } = docView.domFromPos(from);
+      const { node, offset } = docView.domFromPos(from);
       if (!node.childNodes.length) {
         return node.parentNode;
       }
-      return node.querySelector('.wrapper');
+      return node.childNodes[offset].querySelector('.wrapper');
     }
   }
 
@@ -485,7 +489,11 @@ export class MediaPluginState {
       return false;
     }
 
-    const { selection: { from }, schema, tr } = this.view.state;
+    const {
+      selection: { from },
+      schema,
+      tr,
+    } = this.view.state;
 
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
@@ -731,7 +739,11 @@ export class MediaPluginState {
     if (!mediaNodeWithPos) {
       return;
     }
-    const { node: { attrs: { id: mediaNodeId } } } = mediaNodeWithPos;
+    const {
+      node: {
+        attrs: { id: mediaNodeId },
+      },
+    } = mediaNodeWithPos;
     return mediaNodeId.match(/^temporary:/);
   };
 
@@ -752,7 +764,7 @@ export class MediaPluginState {
     if (!view) {
       return;
     }
-    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
+    const { id, thumbnail, fileName, fileSize, publicId } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
@@ -769,8 +781,10 @@ export class MediaPluginState {
       height,
       __fileName: fileName,
       __fileSize: fileSize,
-      __fileMimeType: fileMimeType,
     });
+
+    // Copy all optional attributes from old node
+    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -927,7 +941,10 @@ export const createPlugin = (
           return;
         }
 
-        const { schema, selection: { $anchor } } = state;
+        const {
+          schema,
+          selection: { $anchor },
+        } = state;
         // When a media is already selected
         if (state.selection instanceof NodeSelection) {
           return;

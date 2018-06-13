@@ -27,7 +27,7 @@ describe('block-type – keymaps', () => {
           analyticsHandler: trackEvent,
         },
         editorPlugins: [
-          codeBlockPlugin(),
+          codeBlockPlugin,
           mentionsPlugin,
           listPlugin,
           tablesPlugin,

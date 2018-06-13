@@ -12,7 +12,6 @@ export type ItemProps = {
   before?: ComponentType<*>,
   href?: string,
   icon?: string,
-  id: string,
   goTo?: string,
 };
 

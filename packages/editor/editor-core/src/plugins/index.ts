@@ -42,4 +42,3 @@ export { default as unsupportedContentPlugin } from './unsupported-content';
 export { default as widthPlugin } from './width';
 export { default as gapCursorPlugin } from './gap-cursor';
 export { default as inlineActionPlugin } from './inline-action';
-export { default as cardPlugin } from './card';

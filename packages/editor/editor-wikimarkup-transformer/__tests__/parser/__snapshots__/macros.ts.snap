@@ -552,7 +552,6 @@ Object {
       "attrs": Object {
         "extensionKey": "unknown",
         "extensionType": "com.atlassian.jira.macro",
-        "layout": "default",
         "parameters": Object {
           "rawAttrs": undefined,
         },

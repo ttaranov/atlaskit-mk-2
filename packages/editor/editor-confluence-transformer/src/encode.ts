@@ -174,7 +174,9 @@ export default function encode(node: PMNode, schema: Schema) {
       const rowElement = doc.createElement('tr');
 
       rowNode.content.forEach((colNode, _, j) => {
-        const { attrs: { background, rowspan, colspan } } = colNode;
+        const {
+          attrs: { background, rowspan, colspan },
+        } = colNode;
 
         const cellElement =
           colNode.type === schema.nodes.tableCell
@@ -272,13 +274,7 @@ export default function encode(node: PMNode, schema: Schema) {
           case 'mentionQuery':
             break;
           case 'link':
-            const mark = getNodeMarkOfType(node, schema.marks.link);
-            if (mark && mark.attrs.__confluenceMetadata !== null) {
-              // need to use fab:adf to maintain confluenceMetadata
-              return encodeAsADF(node);
-            } else {
-              elem = elem.appendChild(encodeLink(node));
-            }
+            elem = elem.appendChild(encodeLink(node));
             break;
           case 'confluenceInlineComment':
             // Because this function encodes marks into dom nodes inwards, multiple inline comment
@@ -528,7 +524,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeAsADF(node: PMNode): Element {
     const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
-    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node.toJSON())));
+    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node)));
     return nsNode;
   }
 }

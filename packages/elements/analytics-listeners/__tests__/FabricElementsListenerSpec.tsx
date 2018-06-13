@@ -8,14 +8,12 @@ import {
   DummyComponentWithAnalytics,
   TaggedDummyComponentWithAnalytics,
   Props,
-} from '../examples/helpers';
+} from '../example-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../src/types';
 
 describe('<FabricElementsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
-  let loggerMock;
 
   beforeEach(() => {
     analyticsWebClientMock = {
@@ -23,13 +21,6 @@ describe('<FabricElementsListener />', () => {
       sendOperationalEvent: jest.fn(),
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
-    };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
-    loggerMock = {
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn(),
     };
   });
 
@@ -39,7 +30,7 @@ describe('<FabricElementsListener />', () => {
   ) => {
     const compOnClick = jest.fn();
     const component = mount(
-      <FabricElementsListener client={clientPromise} logger={loggerMock}>
+      <FabricElementsListener client={analyticsWebClientMock}>
         <Component onClick={compOnClick} />
       </FabricElementsListener>,
     );
@@ -53,9 +44,7 @@ describe('<FabricElementsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    return clientPromise.then(client => {
-      expect(client.sendUIEvent).toBeCalledWith(expectedEvent);
-    });
+    expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
   };
 
   it('should listen and fire an UI event with analyticsWebClient', () => {

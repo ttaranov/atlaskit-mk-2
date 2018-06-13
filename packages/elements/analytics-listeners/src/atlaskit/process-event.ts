@@ -25,8 +25,6 @@ import {
   getComponents,
 } from './extract-data-from-event';
 import { EventNextType } from '../types';
-import Logger from '../helpers/logger';
-import { version as listenerVersion } from '../../package.json';
 
 const ATLASKIT_TAG = 'atlaskit';
 
@@ -57,7 +55,7 @@ const ATLASKIT_TAG = 'atlaskit';
  *  }
  */
 
-export default (event: EventNextType, logger: Logger): GasPayload | null => {
+export default (event: EventNextType): GasPayload | null => {
   const sources = getSources(event);
   const source = last(sources);
   const extraAttributes = getExtraAttributes(event);
@@ -72,13 +70,12 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
   );
 
   const {
-    eventType = UI_EVENT_TYPE,
+    eventType,
     action,
     actionSubjectId,
     attributes: payloadAttributes,
   } = event.payload;
   const attributes = {
-    listenerVersion,
     sourceHierarchy: sources.join('.') || undefined,
     componentHierarchy: components.join('.') || undefined,
     packageHierarchy: packageHierarchy.join(',') || undefined,
@@ -107,11 +104,10 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
       eventType === OPERATIONAL_EVENT_TYPE ||
       eventType === SCREEN_EVENT_TYPE
     ) {
-      logger.error(
+      // tslint:disable-next-line no-console
+      console.error(
         'Track, screen and operational events are currently not supported for atlaskit events',
       );
-    } else {
-      logger.error('Invalid event type', eventType);
     }
   }
 

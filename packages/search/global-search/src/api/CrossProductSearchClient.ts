@@ -39,8 +39,10 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
+    id: string;
     type: ResultContentType;
   };
+  iconCssClass: string;
   container: {
     title: string; // this is unhighlighted
     displayUrl: string;
@@ -73,9 +75,6 @@ export default class CrossProductSearchClientImpl
   private serviceConfig: ServiceConfig;
   private cloudId: string;
 
-  // result limit per scope
-  private readonly RESULT_LIMIT = 10;
-
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
@@ -98,7 +97,7 @@ export default class CrossProductSearchClientImpl
     const body = {
       query: query,
       cloudId: this.cloudId,
-      limit: this.RESULT_LIMIT,
+      limit: 5,
       scopes: scopes,
     };
 
@@ -141,6 +140,15 @@ export default class CrossProductSearchClientImpl
   }
 }
 
+// TODO need real icons
+export function getConfluenceAvatarUrl(iconCssClass: string): string {
+  if (iconCssClass.indexOf('blogpost') > -1) {
+    return 'https://home.useast.atlassian.io/confluence-blogpost-icon.svg';
+  } else {
+    return 'https://home.useast.atlassian.io/confluence-page-icon.svg';
+  }
+}
+
 export function removeHighlightTags(text: string): string {
   return text.replace(/@@@hl@@@|@@@endhl@@@/g, '');
 }
@@ -179,6 +187,7 @@ function mapConfluenceItemToResultObject(
   const result: Result = {
     resultType: ResultType.Object,
     resultId: 'search-' + item.url,
+    avatarUrl: getConfluenceAvatarUrl(item.iconCssClass),
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,

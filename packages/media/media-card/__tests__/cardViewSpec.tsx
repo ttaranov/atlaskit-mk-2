@@ -1,10 +1,5 @@
-jest.mock('../src/utils/breakpoint', () => ({
-  breakpointSize: jest.fn(),
-  breakpointStyles: jest.fn(),
-}));
-jest.mock('../src/utils/shouldDisplayImageThumbnail', () => ({
-  shouldDisplayImageThumbnail: jest.fn(() => true),
-}));
+jest.mock('../src/utils/breakpoint');
+jest.mock('../src/utils/shouldDisplayImageThumbnail');
 
 import * as React from 'react';
 

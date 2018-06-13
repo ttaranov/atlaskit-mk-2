@@ -55,6 +55,7 @@ export const SpinnerContainer = styled.div`
 `;
 
 export const Trigger = styled.div`
+  cursor: pointer;
   display: inline-flex;
   transition-duration: 0.2s;
   transition: box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);

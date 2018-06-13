@@ -1,34 +1,5 @@
 # @atlaskit/media-picker
 
-## 8.0.0
-- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
-  - @atlaskit/media-card@29.0.0
-  - @atlaskit/media-test-helpers@14.0.0
-  - @atlaskit/media-store@4.0.0
-  - @atlaskit/media-core@19.0.0
-  - @atlaskit/media-editor@9.0.0
-  - @atlaskit/modal-dialog@5.0.0
-  - @atlaskit/flag@8.0.0
-  - @atlaskit/icon@12.0.0
-  - @atlaskit/toggle@4.0.0
-  - @atlaskit/field-text@6.0.0
-  - @atlaskit/analytics-next@2.1.4
-  - @atlaskit/button@8.0.0
-  - @atlaskit/spinner@6.0.0
-  - @atlaskit/docs@4.0.0
-  - @atlaskit/dropdown-menu@5.0.0
-
-## 7.0.6
-- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
-  - @atlaskit/media-card@28.0.6
-
-## 7.0.5
-- [patch] Updated dependencies [5ee48c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ee48c4)
-  - @atlaskit/media-store@3.1.1
-  - @atlaskit/media-core@18.1.2
-  - @atlaskit/media-editor@8.0.2
-
 ## 7.0.4
 - [patch] add media mocks [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)
 - [none] Updated dependencies [1754450](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1754450)

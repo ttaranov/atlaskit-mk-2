@@ -9,7 +9,6 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
-                "__confluenceMetadata": null,
                 "href": "https://hello.com",
               },
               "type": "link",
@@ -35,7 +34,6 @@ Object {
           "marks": Array [
             Object {
               "attrs": Object {
-                "__confluenceMetadata": null,
                 "href": "https://hello.com",
               },
               "type": "link",

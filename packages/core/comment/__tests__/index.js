@@ -14,7 +14,7 @@ import Comment, {
   CommentEdited,
   CommentLayout,
   CommentTime,
-} from '../src';
+} from '../src/';
 import { ActionsContainer } from '../src/styled/FooterStyles';
 import { TopItem } from '../src/styled/HeaderStyles';
 import { Container, Highlight } from '../src/styled/LayoutStyles';

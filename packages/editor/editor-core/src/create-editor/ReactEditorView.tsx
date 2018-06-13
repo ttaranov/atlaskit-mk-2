@@ -4,9 +4,8 @@ import { EventDispatcher, createDispatch } from '../event-dispatcher';
 import { processRawValue } from '../utils';
 import createPluginList from './create-plugins-list';
 import { EditorState, Transaction, Selection } from 'prosemirror-state';
-import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps, EditorConfig, EditorPlugin } from '../types';
-import { PortalProviderAPI } from '../ui/PortalProvider';
+import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import {
   processPluginsList,
   createSchema,
@@ -18,7 +17,6 @@ import {
 export interface EditorViewProps {
   editorProps: EditorProps;
   providerFactory: ProviderFactory;
-  portalProviderAPI: PortalProviderAPI;
   render?: (
     props: {
       editor: JSX.Element;
@@ -133,16 +131,15 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     this.eventDispatcher = new EventDispatcher();
     const dispatch = createDispatch(this.eventDispatcher);
     const errorReporter = createErrorReporter(errorReporterHandler);
-    const plugins = createPMPlugins({
+    const plugins = createPMPlugins(
+      this.config,
       schema,
+      options.props.editorProps,
       dispatch,
+      this.eventDispatcher,
+      options.props.providerFactory,
       errorReporter,
-      editorConfig: this.config,
-      props: options.props.editorProps,
-      eventDispatcher: this.eventDispatcher,
-      providerFactory: options.props.providerFactory,
-      portalProviderAPI: this.props.portalProviderAPI,
-    });
+    );
 
     this.contentTransformer = contentTransformerProvider
       ? contentTransformerProvider(schema)

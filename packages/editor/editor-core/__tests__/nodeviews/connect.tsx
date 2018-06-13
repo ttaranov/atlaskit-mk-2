@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { mount } from 'enzyme';
 
 import { EventDispatcher } from '../../src/event-dispatcher';
-import connect from '../../src/nodeviews/legacy-nodeview-factory/connect';
+import connect from '../../src/nodeviews/connect';
 
 describe('connect', () => {
   class DummyComponent extends Component {
@@ -14,7 +14,10 @@ describe('connect', () => {
   }
 
   const eventDispatcher = new EventDispatcher();
-  const ConnectedComponent = connect(DummyComponent, eventDispatcher);
+  const ConnectedComponent = connect(
+    DummyComponent,
+    eventDispatcher,
+  );
 
   it('should pass all the props to the wrapped component', () => {
     const wrapper = mount(<ConnectedComponent x="1" y={2} />);

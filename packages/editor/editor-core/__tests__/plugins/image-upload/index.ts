@@ -25,7 +25,7 @@ describe('image-upload', () => {
       doc,
       editorPlugins: [
         imageUpload,
-        codeBlockPlugin(),
+        codeBlockPlugin,
         mediaPlugin({ allowMediaSingle: true }),
       ],
       providerFactory: ProviderFactory.create({ imageUploadProvider }),

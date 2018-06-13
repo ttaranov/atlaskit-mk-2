@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
@@ -21,8 +22,7 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
-import ReactNodeView from '../../../nodeviews/ReactNodeView';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
+import { ContentNodeView } from '../../../nodeviews';
 
 const panelColor = {
   info: akColorB50,
@@ -51,13 +51,13 @@ const panelIcons = {
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
   border-radius: ${akBorderRadius};
+  margin: ${akGridSizeUnitless / 2}px 0;
   padding: ${akGridSizeUnitless}px;
-  min-height: 26px;
 `;
 
 // tslint:disable-next-line:variable-name
 const ContentWrapper = styled.div`
-  margin-left: ${akGridSizeUnitless * 4}px;
+  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
 `;
 
 // tslint:disable-next-line:variable-name
@@ -67,69 +67,70 @@ const IconWrapper = styled.span`
   position: absolute;
 `;
 
+type getPosHandler = () => number;
+
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
   node: PMNode;
 }
 
-export type PanelComponentProps = {
-  panelType: string;
-  forwardRef: (ref: HTMLElement) => void;
-};
+class Panel extends ContentNodeView implements NodeView {
+  private domRef: HTMLElement | undefined;
+  private panelType: string;
+  private node: PMNode;
 
-class PanelComponent extends React.Component<PanelComponentProps> {
-  shouldComponentUpdate(nextProps) {
-    return this.props.panelType !== nextProps.panelType;
+  constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+    super(node, view);
+    this.node = node;
+    this.panelType = node.attrs.panelType;
+    this.renderReactComponent();
   }
 
-  render() {
-    const { panelType, forwardRef } = this.props;
+  private renderReactComponent() {
+    const { panelType } = this;
+    this.domRef = document.createElement('div');
+    this.domRef.setAttribute('data-panel-type', this.panelType);
+
+    // tslint:disable-next-line:variable-name
     const Icon = panelIcons[panelType];
 
-    return (
+    ReactDOM.render(
       <Wrapper style={{ background: panelColor[panelType] }}>
         <IconWrapper style={{ color: iconColor[panelType] }}>
           <Icon label={`Panel ${panelType}`} />
         </IconWrapper>
-        <ContentWrapper innerRef={forwardRef} />
-      </Wrapper>
+        <ContentWrapper innerRef={this.handleRef} />
+      </Wrapper>,
+      this.domRef,
     );
+  }
+
+  get dom() {
+    return this.domRef;
+  }
+
+  update(node) {
+    if (
+      node.attrs.panelType !== this.node.attrs.panelType ||
+      node.type !== this.node.type
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  destroy() {
+    ReactDOM.unmountComponentAtNode(this.domRef!);
+    this.domRef = undefined;
+    super.destroy();
   }
 }
 
-class Panel extends ReactNodeView {
-  getDomRef() {
-    const domRef = document.createElement('div');
-    domRef.setAttribute('data-panel-type', this.node.attrs.panelType);
-    return domRef;
-  }
-
-  getContentDOM() {
-    const dom = document.createElement('div');
-    dom.className = 'panel-content-dom';
-    return { dom };
-  }
-
-  render(props, forwardRef) {
-    const { panelType } = this.node.attrs;
-    return <PanelComponent panelType={panelType} forwardRef={forwardRef} />;
-  }
-
-  update(node, decorations) {
-    return super.update(
-      node,
-      decorations,
-      (currentNode, newNode) =>
-        currentNode.attrs.panelType === newNode.attrs.panelType,
-    );
-  }
-}
-
-export const panelNodeView = (portalProviderAPI: PortalProviderAPI) => (
+export const panelNodeView = (
   node: any,
   view: any,
   getPos: () => number,
 ): NodeView => {
-  return new Panel(node, view, getPos, portalProviderAPI);
+  return new Panel(node, view, getPos);
 };

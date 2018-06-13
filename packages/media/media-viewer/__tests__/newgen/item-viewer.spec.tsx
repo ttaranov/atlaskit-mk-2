@@ -7,7 +7,7 @@ import { ErrorMessage } from '../../src/newgen/styled';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
 import { AudioViewer } from '../../src/newgen/viewers/audio';
-import { DocViewer } from '../../src/newgen/viewers/doc';
+import { PDFViewer } from '../../src/newgen/viewers/pdf';
 import { Stubs } from '../_stubs';
 import { Subject } from 'rxjs';
 
@@ -176,9 +176,9 @@ describe('<ItemViewer />', () => {
     );
     subject.next(docItem);
     el.update();
-    expect(el.find(DocViewer)).toHaveLength(1);
+    expect(el.find(PDFViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
-    expect(el.find(DocViewer).prop('collectionName')).toEqual(
+    expect(el.find(PDFViewer).prop('collectionName')).toEqual(
       identifier.collectionName,
     );
   });

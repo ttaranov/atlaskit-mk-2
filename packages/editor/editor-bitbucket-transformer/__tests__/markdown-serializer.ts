@@ -29,10 +29,6 @@ import {
   defaultSchema,
   media,
   mediaSingle,
-  table,
-  td,
-  th,
-  tr,
 } from '@atlaskit/editor-test-helpers';
 
 const markdownSerializer = new MarkdownSerializer(nodes, marks);
@@ -699,26 +695,6 @@ describe('BitbucketTransformer: serializer', () => {
           )(defaultSchema),
         ),
       ).toEqual('![](http://path/to/image.jpg)\n');
-    });
-
-    it('should be serialized inside table', () => {
-      expect(
-        markdownSerializer.serialize(
-          table()(
-            tr(th({})(p('h1'))),
-            tr(
-              td({})(
-                mediaSingle()(
-                  media({
-                    url: 'http://path/to/image.jpg',
-                    type: 'external',
-                  })(),
-                ),
-              ),
-            ),
-          )(defaultSchema),
-        ),
-      ).toEqual('| h1 |\n| --- |\n| ![](http://path/to/image.jpg) |\n');
     });
   });
 

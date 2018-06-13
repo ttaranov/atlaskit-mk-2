@@ -1,13 +1,26 @@
 # Pagination
 
-This package provides component used for pagination. It truncates the total number of pages and shows ellipsis when needed.
+1-indexed pagination component.
+
+<img src="http://i.imgur.com/aA91Oi5.gif" alt="Example @NAME@" style="height: 25px;"/>
+
+## Try it out
+
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-yarn add @atlaskit/pagination
+npm install @NAME@
 ```
 
-## Usage
+## Using the component
 
-Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/pagination).
+Use the component in your React app as follows:
+
+```js
+import AkPagination from '@NAME@';
+ReactDOM.render(<AkPagination total={10} defaultCurrent={3}/>, container);
+```
+
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@atlaskit/@NAME@/@VERSION@/).

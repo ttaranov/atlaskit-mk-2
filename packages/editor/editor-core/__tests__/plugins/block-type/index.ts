@@ -26,7 +26,7 @@ describe('block-type', () => {
   const editor = (doc: any) =>
     createEditor<BlockTypeState>({
       doc,
-      editorPlugins: [codeBlockPlugin(), panelPlugin, listPlugin],
+      editorPlugins: [codeBlockPlugin, panelPlugin, listPlugin],
       pluginKey: blockTypePluginKey,
     });
 

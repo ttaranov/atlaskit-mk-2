@@ -14,7 +14,7 @@ describe('inputrules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin(), listPlugin],
+      editorPlugins: [codeBlockPlugin, listPlugin],
       editorProps: {
         textFormatting: {
           disableCode: true,

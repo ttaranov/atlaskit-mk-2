@@ -11,8 +11,7 @@ import {
   isMarkTypeAllowedInCurrentSelection,
   isChromeWithSelectionBug,
 } from '../../../utils';
-import { ReactNodeView } from '../../../nodeviews';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
+import { nodeViewFactory } from '../../../nodeviews';
 import emojiNodeView from '../nodeviews/emoji';
 
 export const emojiPluginKey = new PluginKey('emojiPlugin');
@@ -263,10 +262,7 @@ export class EmojiState {
   }
 }
 
-export function createPlugin(
-  portalProviderAPI: PortalProviderAPI,
-  providerFactory: ProviderFactory,
-) {
+export function createPlugin(providerFactory: ProviderFactory) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -279,9 +275,7 @@ export function createPlugin(
     },
     props: {
       nodeViews: {
-        emoji: ReactNodeView.fromComponent(emojiNodeView, portalProviderAPI, {
-          providerFactory,
-        }),
+        emoji: nodeViewFactory(providerFactory, { emoji: emojiNodeView }),
       },
       handleDOMEvents: {
         focus(view: EditorView, event) {

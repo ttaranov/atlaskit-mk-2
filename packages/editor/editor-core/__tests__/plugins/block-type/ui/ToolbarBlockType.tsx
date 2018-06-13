@@ -24,7 +24,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     createEditor({
       doc,
       pluginKey: stateKey,
-      editorPlugins: [panelPlugin, listPlugin, codeBlockPlugin()],
+      editorPlugins: [panelPlugin, listPlugin, codeBlockPlugin],
     });
 
   it('should render disabled ToolbarButton if isDisabled property is true', () => {

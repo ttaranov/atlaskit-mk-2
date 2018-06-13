@@ -1,20 +1,19 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { confluenceJiraIssue } from '@atlaskit/editor-common';
-import { EditorPlugin, PMPluginFactory } from '../../types';
-import { ReactNodeView } from '../../nodeviews';
+import { EditorPlugin } from '../../types';
+import { nodeViewFactory } from '../../nodeviews';
 import ReactJIRAIssueNode from './nodeviews/jira-issue';
 
 export const pluginKey = new PluginKey('jiraIssuePlugin');
 
-const createPlugin: PMPluginFactory = ({ portalProviderAPI }) => {
+const createPlugin = (schema, providerFactory) => {
   return new Plugin({
     key: pluginKey,
     props: {
       nodeViews: {
-        confluenceJiraIssue: ReactNodeView.fromComponent(
-          ReactJIRAIssueNode,
-          portalProviderAPI,
-        ),
+        confluenceJiraIssue: nodeViewFactory(providerFactory, {
+          confluenceJiraIssue: ReactJIRAIssueNode,
+        }),
       },
     },
   });
@@ -31,7 +30,8 @@ const jiraIssuePlugin: EditorPlugin = {
     return [
       {
         rank: 1410,
-        plugin: createPlugin,
+        plugin: ({ schema, providerFactory }) =>
+          createPlugin(schema, providerFactory),
       },
     ];
   },
