@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { type Element } from 'react';
 import { md } from '@atlaskit/docs';
 
 function getLabel(children) {
@@ -28,7 +28,13 @@ function slugify(str: string): string {
   return str.replace(/\W/g, '-').toLowerCase();
 }
 
-const Heading = ({ children, level }: { children: Node, level: number }) => {
+const Heading = ({
+  children,
+  level,
+}: {
+  children: Element<*>,
+  level: number,
+}) => {
   const Tag = `h${level}`;
   const label = getLabel(children);
   const slug = slugify(label);

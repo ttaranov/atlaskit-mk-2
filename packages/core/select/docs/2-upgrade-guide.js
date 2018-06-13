@@ -67,19 +67,19 @@ export default md`
   }>
   ~~~
 
-  By default, we form very few opinions about the shape of your passed in options.
-  The only attribute we really force any opinions on, are whether or not your option object has an option property of its own.
-  We use this to identify whether or not a group hierarchy has been used, so that we can augment our internal options map and render groups accordingly.
-  Otherwise, by default we will filter based on the \`value\` property and render the specified \`label\` value.
-  However we provide you with a series of props to augment this behaviour at multiple levels of use, please see the **custom data structures** section of our [api docs](/packages/core/select/docs/api).
+  By default, @atlaskit/select form very few opinions about the shape of your passed in options.
+  The only attribute @atlaskit/select really forces any opinions on, is whether or not your option object has an option property of its own.
+  This is used to identify whether or not a group hierarchy has been used, so that @atlaskit/select can augment our internal options map and render groups accordingly.
+  Otherwise, by default @atlaskit/select will filter based on the \`value\` property and render the specified \`label\` value.
+  However @atlaskit/select provides you with a series of props to augment this behaviour at multiple levels of use, please see the **custom data structures** section of our [api docs](/packages/core/select/docs/api).
   for more details.
 
-  While the shape of each item is much less explicit, due to how we expose component customisation, the same functionality that the previous item shape enabled
-  can still be achieved, without locking us down to any particular set of opinions. For example:
+  While the shape of each item is much less explicit, due to how @atlaskit/select exposes component customisation, the same functionality that the previous item shape enabled
+  can still be achieved, without locking you down to any particular set of opinions. For example:
 
   ### elemBefore
   While elemBefore is no longer an explicitly supported property on passed in options,
-  we expose a formatOptionLabel method of the following shape
+  @atlaskit/select exposes a formatOptionLabel method of the following shape
 
   ~~~
   (option, { context, inputValue, selectedValue }) => Node
@@ -99,7 +99,7 @@ export default md`
 
   ### tooltipDescription & tooltipPosition
 
-  Previously in @atlaskit/single-select & @atlaskit/multi-select, we optionally rendered @atlaskit/tooltip, depending on whether or not a tooltipDescription was passed in.
+  Previously @atlaskit/single-select & @atlaskit/multi-select optionally rendered @atlaskit/tooltip, depending on whether or not a tooltipDescription was passed in.
   This is no longer the case in @atlaskit/select in the interest of not depending on more @atlaskit packages than needed.
 
   However, with the **component customisation api** section of our (api docs)(/packages/core/select/docs/api#components-api) wrapping your options in an @atlaskit/tooltip instance
@@ -121,11 +121,11 @@ export default md`
   The intention behind this was to allow you to pass through a series of string values through which
   the internal filtration logic would be able to reduce search results on.
 
-  In @atlaskit/select, we surface a variety of configurations for customising how
+  @atlaskit/select surfaces a variety of configurations for customising how
   options get filtered, that mean that this prop is no longer necessary.
 
   For a more detailed explanation of these configurations,
-  please see the 'custom filtration' section of the api page [here](###).
+  please see the 'custom filtration' section of the [api page](/packages/core/select/docs/api)
 
   If you do however want to use this pattern, below is how you could enable that in @atlaskit/select.
 
@@ -139,7 +139,7 @@ export default md`
 
   ### description
   Similar to elemBefore, you can recreate the functionality provided by the **description** property in items,
-  by using the \`formatOptionLabel\` prop we provide you. See below for an example of how to do this:
+  by using the \`formatOptionLabel\` prop @atlaskit/select provides you. See below for an example of how to do this:
 
   ${(
     <Example

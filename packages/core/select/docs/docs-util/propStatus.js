@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment, type Node, type Element } from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import Modal from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
@@ -16,17 +16,21 @@ const Cell = ({ children }: { children: Node }) => (
   </td>
 );
 
-export default class PropStatus extends Component<*> {
+type State = {
+  modalIsOpen: boolean,
+};
+
+export default class PropStatus extends Component<*, State> {
   state = {
     modalIsOpen: false,
   };
-  onClick = (event: SyntheticEvent<Element>) => {
+  onClick = (event: SyntheticEvent<HTMLElement>) => {
     event.preventDefault();
     this.setState({
       modalIsOpen: true,
     });
   };
-  onClose = (event: SyntheticEvent<Element>) => {
+  onClose = (event: SyntheticEvent<HTMLElement>) => {
     event.preventDefault();
     this.setState({
       modalIsOpen: false,

@@ -12,7 +12,7 @@ export default md`
 
   ## Controllable Props
 
-  In **@atlaskit/single-select** and **@atlaskit/multi-select** we had the concept of **Stateful** and **Stateless** components.
+  **@atlaskit/single-select** and **@atlaskit/multi-select** had the concept of **Stateful** and **Stateless** components.
   Where the exported **stateful** component, internally managed specific props available in the Stateless component in state.
   These props were:
 
@@ -62,7 +62,7 @@ export default md`
   ## Components API
 
   In single-select and multi-select, we've had several issues opened as a result of users wanting to customise
-  the appearance or functionality of the exported select in various ways. In @atlaskit/select we've opened up the api
+  the appearance or functionality of the exported select in various ways. @atlaskit/select opens up the api
   to allow customisation and configuration of any / every part of the select by exposing a new components prop.
 
   For example, to render a custom Option component:
@@ -103,8 +103,8 @@ export default md`
 
   ## Custom Data Structure
 
-  In @atlaskit/select we try to enforce as little opinion about the shape of your options as possible. With the combination of custom components api, and the styling api,
-  your options can really take whatever shape you like. Of course by default, we make **assumptions** about how to render and filter options and values, however we expose
+  @atlaskit/select enforces as little opinion about the shape of your options as possible. With the combination of custom components api, and the styling api,
+  your options can really take whatever shape you like. Of course by default, **assumptions** are made about how to render and filter options and values, however @atlaskit/select exposes
   the following methods to allow you to configure this as you choose.
 
   ### getOptionValue
@@ -149,7 +149,7 @@ export default md`
 
   ## isOptionDisabled
 
-  By default we look for a isDisabled property your passed in options. However as is the case with all the methods mentioned above, we expose a 'isOptionDisabled' prop that allows you to override this inbuilt logic. This takes the following shape:
+  By default @atlaskit/select looks for a isDisabled property your passed in options. However as is the case with all the methods mentioned above, @atlaskit/select exposes a 'isOptionDisabled' prop that allows you to override this inbuilt logic. This takes the following shape:
 
   ~~~
   (option: OptionType) => boolean
@@ -157,9 +157,9 @@ export default md`
 
   ## isOptionSelected
 
-  Similar to isOptionDisabled, for a select instance with isMulti active, we provide an isOptionSelected prop to validate whether or not an option is already a selected value, before we decide whether we select it or deselect it.
+  Similar to isOptionDisabled, for a select instance with isMulti active, @atlaskit/select provides an isOptionSelected prop to validate whether or not an option is already a selected value, before it decide whether to select or deselect an option.
 
-  By default we do a reference equality check between the candidate option and the value objects within our internally maintained dictionary of selected values.
+  By default @atlaskit/select performs a reference equality check between the candidate option and the value objects within our internally maintained dictionary of selected values.
 
   However if you pass in a function of the following shape:
 
@@ -202,14 +202,14 @@ export default md`
 
   ## Custom Filter
 
-  In @atlaskit/select we expose a **filterOption** prop that allows you to configure how options in your select get filtered down by a search value.
+  @atlaskit/select exposes a **filterOption** prop that allows you to configure how options in your select get filtered down by a search value.
   This takes the following shape:
 
   ~~~
   (OptionType, string) => boolean
   ~~~
 
-  Additionally, we also export a \`createFilter\` closure which takes in a configuration object of the following shape:
+  Additionally, @atlaskit/select also exports a \`createFilter\` closure which takes in a configuration object of the following shape:
 
   ~~~
   {
@@ -227,11 +227,11 @@ export default md`
   {
     ignoreCase: true,
     ignoreAccents: true,
-    stringify: option => \`${option.label} ${option.value}\`
+    stringify: option => option.label + " " + option.value
     trim: true,
     matchFrom: 'any'
   }
   ~~~
 
-  The goal here is to allow for varying levels of configuration of the core filtration logic used within a select instance. We recognise that you may not want to replace all of the filtration logic we have in place by default, and by invoking the createFilter export with your desired config, you should be able to pick and choose filtration decisions that best suit you, without having to rewrite the logic from scratch. If you _do_ want to do this however, supplying us with a filterOption function of the specified shape is always a viable option.
+  The goal here is to allow for varying levels of configuration of the core filtration logic used within a select instance. We recognise that you may not want to replace all of the filtration logic put have in place by default, and by invoking the createFilter export with your desired config, you should be able to pick and choose filtration decisions that best suit you, without having to rewrite the logic from scratch. If you _do_ want to do this however, supplying a filterOption function of the specified shape is always a viable option.
 `;

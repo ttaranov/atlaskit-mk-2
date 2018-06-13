@@ -68,11 +68,20 @@ const matchPackageFilter = (packages, packageFilter) => {
   }
 };
 
-type Prop = { data: Array<Array<string>> };
+type Prop = {
+  data: Array<{
+    content?: Node,
+    label: string,
+    key: string,
+    status: string,
+    packages: Array<string>,
+  }>,
+};
 
 type State = {
   selectedOptions: Array<string>,
   filterValue: string,
+  packageFilter: string,
 };
 
 export default class PropChanges extends Component<Prop, State> {
@@ -84,7 +93,7 @@ export default class PropChanges extends Component<Prop, State> {
   onFilterChange = (option: Array<*>) => {
     this.setState({ selectedOptions: option.map(opt => opt.value) });
   };
-  onPackageChange = (option: Array<*>) => {
+  onPackageChange = (option: { value: string }) => {
     this.setState({
       packageFilter: option.value,
     });

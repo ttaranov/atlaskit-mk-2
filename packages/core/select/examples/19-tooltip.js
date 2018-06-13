@@ -4,7 +4,7 @@ import Tooltip from '@atlaskit/tooltip';
 import Select, { components } from '../src';
 
 const Option = props => {
-  const { data } = props;
+  const { data } = props; // eslint-disable-line react/prop-types
   const { tooltipDescription, tooltipPosition } = data;
   return (
     <Tooltip content={tooltipDescription} position={tooltipPosition}>
