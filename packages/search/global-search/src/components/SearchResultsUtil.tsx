@@ -62,11 +62,12 @@ export function renderResults(results: GlobalSearchResult[]) {
 
     switch (resultType) {
       case GlobalSearchResultTypes.ConfluenceObjectResult: {
-        const confluenceResult: GlobalSearchConfluenceObjectResult = result as GlobalSearchConfluenceObjectResult;
+        const confluenceResult = result as GlobalSearchConfluenceObjectResult;
 
         return (
           <ObjectResultWithAnalytics
             key={confluenceResult.resultId}
+            resultId={confluenceResult.resultId}
             name={confluenceResult.name}
             href={confluenceResult.href}
             type={confluenceResult.analyticsType}
@@ -76,11 +77,12 @@ export function renderResults(results: GlobalSearchResult[]) {
         );
       }
       case GlobalSearchResultTypes.JiraObjectResult: {
-        const jiraResult: GlobalSearchJiraObjectResult = result as GlobalSearchJiraObjectResult;
+        const jiraResult = result as GlobalSearchJiraObjectResult;
 
         return (
           <ObjectResultWithAnalytics
             key={jiraResult.resultId}
+            resultId={jiraResult.resultId}
             name={jiraResult.name}
             href={jiraResult.href}
             type={jiraResult.analyticsType}
@@ -91,11 +93,12 @@ export function renderResults(results: GlobalSearchResult[]) {
         );
       }
       case GlobalSearchResultTypes.GenericContainerResult: {
-        const containerResult: GlobalSearchContainerResult = result as GlobalSearchContainerResult;
+        const containerResult = result as GlobalSearchContainerResult;
 
         return (
           <ContainerResultWithAnalytics
             key={containerResult.resultId}
+            resultId={containerResult.resultId}
             name={containerResult.name}
             href={containerResult.href}
             type={containerResult.analyticsType}
@@ -104,11 +107,12 @@ export function renderResults(results: GlobalSearchResult[]) {
         );
       }
       case GlobalSearchResultTypes.PersonResult: {
-        const personResult: GlobalSearchPersonResult = result as GlobalSearchPersonResult;
+        const personResult = result as GlobalSearchPersonResult;
 
         return (
           <PersonResultWithAnalytics
             key={personResult.resultId}
+            resultId={personResult.resultId}
             name={personResult.name}
             href={personResult.href}
             type={personResult.analyticsType}

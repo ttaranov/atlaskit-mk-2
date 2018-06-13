@@ -108,6 +108,7 @@ describe('renderResults', () => {
 
     expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
       href: 'href',
+      resultId: 'resultId',
       type: 'result-jira',
       objectKey: 'objectKey',
       avatarUrl: 'avatarUrl',
@@ -128,6 +129,7 @@ describe('renderResults', () => {
 
     expect(wrapper.find(PersonResultWithAnalytics).props()).toEqual({
       href: 'href',
+      resultId: 'resultId',
       type: 'result-person',
       avatarUrl: 'avatarUrl',
       name: 'name',
@@ -146,6 +148,7 @@ describe('renderResults', () => {
 
     expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
       href: 'href',
+      resultId: 'resultId',
       type: 'result-confluence',
       name: 'name',
       containerName: 'containerName',
@@ -167,6 +170,7 @@ describe('renderResults', () => {
 
     expect(wrapper.find(ContainerResultWithAnalytics).props()).toEqual({
       href: 'href',
+      resultId: 'resultId',
       type: 'result-confluence',
       avatarUrl: 'avatarUrl',
       name: 'name',
