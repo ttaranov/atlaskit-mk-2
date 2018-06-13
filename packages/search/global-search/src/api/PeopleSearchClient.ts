@@ -3,7 +3,6 @@ import {
   GlobalSearchResultTypes,
   AnalyticsType,
   GlobalSearchResult,
-  ObjectType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -174,6 +173,5 @@ function userSearchResultToResult(
     analyticsType: AnalyticsType.ResultPerson,
     mentionName: mention,
     presenceMessage: searchResult.title,
-    objectType: ObjectType.Person,
   };
 }

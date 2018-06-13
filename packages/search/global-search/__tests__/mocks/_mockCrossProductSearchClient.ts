@@ -2,15 +2,15 @@ import {
   Scope,
   CrossProductSearchClient,
 } from '../../src/api/CrossProductSearchClient';
-import { Result } from '../../src/model/Result';
-import { makeResult } from '../_test-util';
+import { GlobalSearchResult } from '../../src/model/Result';
+import { makeJiraObjectResult } from '../_test-util';
 
 export function makeSingleResultCrossProductSearchResponse(
   scope: Scope,
-  result?: Result,
-): Map<Scope, Result[]> {
+  result?: GlobalSearchResult,
+): Map<Scope, GlobalSearchResult[]> {
   const response = new Map();
-  response.set(scope, [result || makeResult()]);
+  response.set(scope, [result || makeJiraObjectResult()]);
   return response;
 }
 

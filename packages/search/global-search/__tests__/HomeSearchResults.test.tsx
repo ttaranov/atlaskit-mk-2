@@ -12,8 +12,11 @@ import {
 } from '../src/components/SearchResultsUtil';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
-import { makeResult } from './_test-util';
-import { GlobalSearchResultTypes, ObjectType } from '../src/model/Result';
+import {
+  makeJiraObjectResult,
+  makeConfluenceObjectResult,
+  makePersonResult,
+} from './_test-util';
 
 enum Group {
   Recent = 'recent',
@@ -48,7 +51,7 @@ describe('HomeSearchResults', () => {
   it('should render recently viewed items when no query is entered', () => {
     const props = {
       query: '',
-      recentlyViewedItems: [makeResult()],
+      recentlyViewedItems: [makeJiraObjectResult()],
     };
 
     const wrapper = render(props);
@@ -61,7 +64,7 @@ describe('HomeSearchResults', () => {
   it('should only show the recently viewed group when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedItems: [makeResult()],
+      recentlyViewedItems: [makeJiraObjectResult()],
     };
 
     const wrapper = render(props);
@@ -73,7 +76,7 @@ describe('HomeSearchResults', () => {
   it('should render recent results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      recentResults: [makeResult({ name: 'name' })],
+      recentResults: [makeJiraObjectResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -86,7 +89,7 @@ describe('HomeSearchResults', () => {
   it('should render jira results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      jiraResults: [makeResult({ name: 'name' })],
+      jiraResults: [makeJiraObjectResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -99,14 +102,7 @@ describe('HomeSearchResults', () => {
   it('should render confluence results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [
-        makeResult({
-          name: 'name',
-          objectType: ObjectType.ConfluencePage,
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
-        }),
-      ],
+      confluenceResults: [makeConfluenceObjectResult()],
     };
 
     const wrapper = render(props);
@@ -119,13 +115,7 @@ describe('HomeSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [
-        makeResult({
-          name: 'name',
-          objectType: ObjectType.Person,
-          globalSearchResultType: GlobalSearchResultTypes.PersonResult,
-        }),
-      ],
+      peopleResults: [makePersonResult()],
     };
 
     const wrapper = render(props);
@@ -138,7 +128,7 @@ describe('HomeSearchResults', () => {
   it('should render a jira result item to search jira', () => {
     const props: Partial<Props> = {
       query: 'na',
-      jiraResults: [makeResult()],
+      jiraResults: [makeJiraObjectResult()],
     };
 
     const wrapper = render(props);
@@ -151,13 +141,7 @@ describe('HomeSearchResults', () => {
   it('should render a confluence result item to search confluence', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [
-        makeResult({
-          objectType: ObjectType.ConfluencePage,
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
-        }),
-      ],
+      confluenceResults: [makeConfluenceObjectResult()],
     };
 
     const wrapper = render(props);
@@ -172,12 +156,7 @@ describe('HomeSearchResults', () => {
   it('should render a people result item to search people', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [
-        makeResult({
-          objectType: ObjectType.Person,
-          globalSearchResultType: GlobalSearchResultTypes.PersonResult,
-        }),
-      ],
+      peopleResults: [makePersonResult()],
     };
 
     const wrapper = render(props);

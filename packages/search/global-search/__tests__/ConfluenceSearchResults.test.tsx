@@ -16,8 +16,12 @@ import {
 } from '../src/components/SearchResultsUtil';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
-import { makeResult } from './_test-util';
-import { ObjectType, GlobalSearchResultTypes } from '../src/model/Result';
+import {
+  makeConfluenceContainerResult,
+  makeConfluenceObjectResult,
+  makePersonResult,
+} from './_test-util';
+import { ContentType, GlobalSearchResultTypes } from '../src/model/Result';
 
 enum Group {
   Objects = 'objects',
@@ -53,7 +57,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render recently viewed objects when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedPages: [makeResult()],
+      recentlyViewedPages: [makeConfluenceObjectResult()],
     };
 
     const wrapper = render(props);
@@ -65,13 +69,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render recently viewed spaces when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedSpaces: [
-        makeResult({
-          objectType: ObjectType.ConfluenceSpace,
-          globalSearchResultType:
-            GlobalSearchResultTypes.GenericContainerResult,
-        }),
-      ],
+      recentlyViewedSpaces: [makeConfluenceContainerResult()],
     };
 
     const wrapper = render(props);
@@ -84,11 +82,8 @@ describe('ConfluenceSearchResults', () => {
     const props: Partial<Props> = {
       query: 'na',
       objectResults: [
-        makeResult({
+        makeConfluenceObjectResult({
           name: 'name',
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
-          objectType: ObjectType.ConfluencePage,
         }),
       ],
     };
@@ -104,11 +99,8 @@ describe('ConfluenceSearchResults', () => {
     const props: Partial<Props> = {
       query: 'na',
       spaceResults: [
-        makeResult({
+        makeConfluenceContainerResult({
           name: 'name',
-          globalSearchResultType:
-            GlobalSearchResultTypes.GenericContainerResult,
-          objectType: ObjectType.ConfluenceSpace,
         }),
       ],
     };
@@ -125,13 +117,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [
-        makeResult({
-          name: 'name',
-          globalSearchResultType: GlobalSearchResultTypes.PersonResult,
-          objectType: ObjectType.Person,
-        }),
-      ],
+      peopleResults: [makePersonResult()],
     };
 
     const wrapper = render(props);

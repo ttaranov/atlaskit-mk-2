@@ -1,21 +1,69 @@
 import {
   GlobalSearchResult,
   AnalyticsType,
-  ObjectType,
   GlobalSearchResultTypes,
+  GlobalSearchJiraObjectResult,
+  GlobalSearchConfluenceObjectResult,
+  ContentType,
+  GlobalSearchContainerResult,
+  GlobalSearchPersonResult,
 } from '../src/model/Result';
 
-export function makeResult(
-  partial?: Partial<GlobalSearchResult>,
-): GlobalSearchResult {
+function buildMockSearchResultProperties() {
   return {
     resultId: '' + Math.random(),
     name: 'name',
-    analyticsType: AnalyticsType.ResultJira,
     avatarUrl: 'avatarUrl',
     href: 'href',
+  };
+}
+
+export function makeJiraObjectResult(
+  partial?: Partial<GlobalSearchJiraObjectResult>,
+): GlobalSearchJiraObjectResult {
+  return {
+    analyticsType: AnalyticsType.ResultJira,
     globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
-    objectType: ObjectType.JiraIssue,
+    objectKey: 'HOT-123',
+    containerName: 'PROJECT',
+    ...buildMockSearchResultProperties(),
+    ...partial,
+  };
+}
+
+export function makeConfluenceObjectResult(
+  partial?: Partial<GlobalSearchConfluenceObjectResult>,
+): GlobalSearchConfluenceObjectResult {
+  return {
+    analyticsType: AnalyticsType.ResultConfluence,
+    globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
+    containerName: 'SPACE',
+    contentType: ContentType.ConfluencePage,
+    ...buildMockSearchResultProperties(),
+    ...partial,
+  };
+}
+
+export function makeConfluenceContainerResult(
+  partial?: Partial<GlobalSearchContainerResult>,
+): GlobalSearchContainerResult {
+  return {
+    analyticsType: AnalyticsType.ResultConfluence,
+    globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
+    ...buildMockSearchResultProperties(),
+    ...partial,
+  };
+}
+
+export function makePersonResult(
+  partial?: Partial<GlobalSearchPersonResult>,
+): GlobalSearchPersonResult {
+  return {
+    mentionName: 'patato',
+    presenceMessage: 'head of everything',
+    analyticsType: AnalyticsType.ResultPerson,
+    globalSearchResultType: GlobalSearchResultTypes.PersonResult,
+    ...buildMockSearchResultProperties(),
     ...partial,
   };
 }

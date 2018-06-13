@@ -6,7 +6,9 @@ import ConfluenceClient, {
 import {
   AnalyticsType,
   GlobalSearchResultTypes,
-  ObjectType,
+  ContentType,
+  GlobalSearchConfluenceObjectResult,
+  GlobalSearchContainerResult,
 } from '../src/model/Result';
 
 import 'whatwg-fetch';
@@ -81,7 +83,7 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.RecentConfluence,
           globalSearchResultType:
             GlobalSearchResultTypes.ConfluenceObjectResult,
-          objectType: ObjectType.ConfluencePage,
+          contentType: ContentType.ConfluencePage,
         },
         {
           resultId: pages[1].id,
@@ -91,7 +93,7 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.RecentConfluence,
           globalSearchResultType:
             GlobalSearchResultTypes.ConfluenceObjectResult,
-          objectType: ObjectType.ConfluenceBlogpost,
+          contentType: ContentType.ConfluenceBlogpost,
         },
       ]);
     });
@@ -111,7 +113,7 @@ describe('ConfluenceClient', () => {
 
       const result = await confluenceClient.getRecentSpaces();
 
-      expect(result).toEqual([
+      const expectedResults: GlobalSearchContainerResult[] = [
         {
           resultId: MOCK_SPACE.id,
           name: MOCK_SPACE.name,
@@ -120,7 +122,6 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.RecentConfluence,
           globalSearchResultType:
             GlobalSearchResultTypes.GenericContainerResult,
-          objectType: ObjectType.ConfluenceSpace,
         },
         {
           resultId: MOCK_SPACE.id,
@@ -130,9 +131,10 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.RecentConfluence,
           globalSearchResultType:
             GlobalSearchResultTypes.GenericContainerResult,
-          objectType: ObjectType.ConfluenceSpace,
         },
-      ]);
+      ];
+
+      expect(result).toEqual(expectedResults);
     });
 
     it('should not break if no spaces are returned', async () => {

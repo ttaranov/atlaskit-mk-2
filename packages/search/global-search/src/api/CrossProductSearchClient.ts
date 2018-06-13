@@ -3,9 +3,9 @@ import {
   GlobalSearchResultTypes,
   AnalyticsType,
   GlobalSearchContainerResult,
-  ObjectType,
   GlobalSearchJiraObjectResult,
   GlobalSearchConfluenceObjectResult,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -187,7 +187,7 @@ function mapConfluenceItemToResultObject(
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
-    objectType: `confluence-${item.content!.type}` as ObjectType,
+    contentType: `confluence-${item.content!.type}` as ContentType,
     globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
   };
 }
@@ -201,7 +201,6 @@ function mapJiraItemToResult(item: JiraItem): GlobalSearchJiraObjectResult {
     containerName: item.fields.project.name,
     objectKey: item.key,
     analyticsType: AnalyticsType.ResultJira,
-    objectType: ObjectType.JiraIssue,
     globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
   };
 }
@@ -216,6 +215,5 @@ function mapConfluenceItemToResultSpace(
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
     analyticsType: AnalyticsType.ResultConfluence,
     globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
-    objectType: ObjectType.ConfluenceSpace,
   };
 }

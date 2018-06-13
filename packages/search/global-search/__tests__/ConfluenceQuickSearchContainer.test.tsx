@@ -9,12 +9,17 @@ import {
   GlobalSearchResultTypes,
   GlobalSearchResult,
   GlobalSearchPersonResult,
-  ObjectType,
+  ContentType,
 } from '../src/model/Result';
 import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
 import { Scope } from '../src/api/CrossProductSearchClient';
 import SearchError from '../src/components/SearchError';
-import { makeResult, delay } from './_test-util';
+import {
+  delay,
+  makeConfluenceObjectResult,
+  makeConfluenceContainerResult,
+  makePersonResult,
+} from './_test-util';
 import {
   noResultsCrossProductSearchClient,
   errorCrossProductSearchClient,
@@ -122,13 +127,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   it('should render recently viewed pages on mount', async () => {
     const mockConfluenceClient = {
       getRecentItems() {
-        return Promise.resolve([
-          makeResult({
-            globalSearchResultType:
-              GlobalSearchResultTypes.ConfluenceObjectResult,
-            objectType: ObjectType.ConfluencePage,
-          }),
-        ]);
+        return Promise.resolve([makeConfluenceObjectResult()]);
       },
       getRecentSpaces() {
         return Promise.resolve([]);
@@ -154,13 +153,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         return Promise.resolve([]);
       },
       getRecentSpaces() {
-        return Promise.resolve([
-          makeResult({
-            globalSearchResultType:
-              GlobalSearchResultTypes.GenericContainerResult,
-            objectType: ObjectType.ConfluenceSpace,
-          }),
-        ]);
+        return Promise.resolve([makeConfluenceContainerResult()]);
       },
     };
 
@@ -209,12 +202,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     const wrapper = render({
       peopleSearchClient: {
         search() {
-          return Promise.resolve([
-            makeResult({
-              globalSearchResultType: GlobalSearchResultTypes.PersonResult,
-              objectType: ObjectType.Person,
-            }),
-          ]);
+          return Promise.resolve([makePersonResult()]);
         },
         getRecentPeople() {
           return Promise.resolve([]);
@@ -239,21 +227,19 @@ describe('ConfluenceQuickSearchContainer', () => {
     */
 
     function searchPeople(query: string): Promise<GlobalSearchPersonResult[]> {
-      const personResult = makeResult({
-        globalSearchResultType: GlobalSearchResultTypes.PersonResult,
-        objectType: ObjectType.Person,
-      }) as GlobalSearchPersonResult;
+      const personResult = makePersonResult();
 
       return delay(5, [personResult]);
     }
 
     function searchCrossProduct(
       query: string,
-    ): Promise<Map<Scope, GlobalSearchPersonResult[]>> {
+    ): Promise<Map<Scope, GlobalSearchResult[]>> {
       return delay(
         5,
         makeSingleResultCrossProductSearchResponse(
           Scope.ConfluencePageBlogAttachment,
+          makePersonResult(),
         ),
       );
     }
@@ -298,12 +284,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     ): Promise<Map<Scope, GlobalSearchResult[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
         Scope.ConfluencePageBlogAttachment,
-        makeResult({
-          name: 'delayed result',
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
-          objectType: ObjectType.ConfluencePage,
-        }),
+        makeConfluenceObjectResult(),
       );
 
       return delay(5, response);
@@ -314,11 +295,8 @@ describe('ConfluenceQuickSearchContainer', () => {
     ): Promise<Map<Scope, GlobalSearchResult[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
         Scope.ConfluencePageBlogAttachment,
-        makeResult({
+        makeConfluenceObjectResult({
           name: 'current result',
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
-          objectType: ObjectType.ConfluencePage,
         }),
       );
 

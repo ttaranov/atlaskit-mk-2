@@ -4,7 +4,7 @@ import {
   GlobalSearchResult,
   AnalyticsType,
   GlobalSearchConfluenceObjectResult,
-  ObjectType,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -98,7 +98,7 @@ function recentPageToResult(
     containerName: recentPage.space,
     analyticsType: AnalyticsType.RecentConfluence,
     globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
-    objectType: `confluence-${recentPage.contentType}` as ObjectType,
+    contentType: `confluence-${recentPage.contentType}` as ContentType,
   } as GlobalSearchConfluenceObjectResult;
 }
 
@@ -113,6 +113,5 @@ function recentSpaceToResult(
     avatarUrl: recentSpace.icon,
     analyticsType: AnalyticsType.RecentConfluence,
     globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
-    objectType: ObjectType.ConfluenceSpace,
   } as GlobalSearchContainerResult;
 }

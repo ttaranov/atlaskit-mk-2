@@ -10,7 +10,7 @@ import {
   AnalyticsType,
   GlobalSearchConfluenceObjectResult,
   GlobalSearchResultTypes,
-  ObjectType,
+  ContentType,
   GlobalSearchContainerResult,
   GlobalSearchJiraObjectResult,
 } from '../src/model/Result';
@@ -72,7 +72,7 @@ describe('CrossProductSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.ConfluenceObjectResult,
       );
-      expect(item.objectType).toEqual(ObjectType.ConfluencePage);
+      expect(item.contentType).toEqual(ContentType.ConfluencePage);
     });
 
     it('should return confluence spaces', async () => {
@@ -114,7 +114,6 @@ describe('CrossProductSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.GenericContainerResult,
       );
-      expect(item.objectType).toBe(ObjectType.ConfluenceSpace);
     });
 
     it('should parse the highlight tags from the title', () => {
@@ -169,7 +168,6 @@ describe('CrossProductSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.JiraObjectResult,
       );
-      expect(item.objectType).toEqual(ObjectType.JiraIssue);
     });
   });
 

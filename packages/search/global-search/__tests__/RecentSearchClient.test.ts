@@ -5,12 +5,11 @@ import RecentSearchClient, {
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
-  GlobalSearchResult,
   GlobalSearchJiraObjectResult,
   AnalyticsType,
   GlobalSearchResultTypes,
-  ObjectType,
   GlobalSearchConfluenceObjectResult,
+  ContentType,
 } from '../src/model/Result';
 
 function apiWillReturn(state: RecentItem[]) {
@@ -20,7 +19,11 @@ function apiWillReturn(state: RecentItem[]) {
     name: 'recent',
   };
 
-  fetchMock.get('localhost/api/client/recent?cloudId=123', response, opts);
+  fetchMock.get(
+    'localhost/api/client/recent?cloudId=123',
+    response,
+    opts as fetchMock.MockOptionsMethodGet,
+  );
 }
 
 describe('RecentSearchClient', () => {
@@ -59,7 +62,6 @@ describe('RecentSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.JiraObjectResult,
       );
-      expect(item.objectType).toEqual(ObjectType.JiraIssue);
     });
   });
 
@@ -89,7 +91,7 @@ describe('RecentSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.ConfluenceObjectResult,
       );
-      expect(item.objectType).toEqual(ObjectType.ConfluenceAmbiguous);
+      expect(item.contentType).toEqual(ContentType.ConfluenceAmbiguous);
     });
 
     it('should call the api only once when client is invoked repeatedly', async () => {
@@ -191,7 +193,7 @@ describe('RecentSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.ConfluenceObjectResult,
       );
-      expect(item.objectType).toEqual(ObjectType.ConfluenceAmbiguous);
+      expect(item.contentType).toEqual(ContentType.ConfluenceAmbiguous);
     });
   });
 });

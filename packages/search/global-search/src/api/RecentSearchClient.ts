@@ -3,8 +3,8 @@ import {
   GlobalSearchResultTypes,
   AnalyticsType,
   GlobalSearchJiraObjectResult,
-  ObjectType,
   GlobalSearchConfluenceObjectResult,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -133,19 +133,22 @@ function recentItemToResult(recentItem: RecentItem): GlobalSearchResult {
   };
 
   if (recentItem.provider === 'jira') {
-    return {
+    const jiraResult: GlobalSearchJiraObjectResult = {
       objectKey: objectKey!,
-      objectType: ObjectType.JiraIssue,
       globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
       analyticsType: AnalyticsType.RecentJira,
       ...baseResult,
-    } as GlobalSearchJiraObjectResult;
+    };
+
+    return jiraResult;
   } else {
-    return {
-      objectType: ObjectType.ConfluenceAmbiguous, // not provided, but not needed
+    const confluenceResult: GlobalSearchConfluenceObjectResult = {
+      contentType: ContentType.ConfluenceAmbiguous, // not provided, but not needed
       globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
       ...baseResult,
-    } as GlobalSearchConfluenceObjectResult;
+    };
+
+    return confluenceResult;
   }
 }

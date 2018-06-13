@@ -1,5 +1,3 @@
-import { Component } from 'react';
-
 export enum GlobalSearchResultTypes {
   JiraObjectResult,
   GenericContainerResult,
@@ -17,14 +15,13 @@ export interface GlobalSearchResult {
   avatarUrl?: string;
   // the analytics type to send in the analytics attributes
   analyticsType: AnalyticsType;
-  // the type of result
-  objectType: ObjectType;
   // field to disambiguate between result types
   globalSearchResultType: GlobalSearchResultTypes;
 }
 
 export interface GlobalSearchConfluenceObjectResult extends GlobalSearchResult {
   containerName: string;
+  contentType: ContentType;
   globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult;
 }
 
@@ -49,13 +46,12 @@ export interface GlobalSearchPersonResult extends GlobalSearchResult {
  * An enum to identify the specific type of content each search result is displaying.
  * It is used to select the appropriate icon to display.
  */
-export enum ObjectType {
-  JiraIssue = 'jira-issue',
+export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
-  ConfluenceSpace = 'confluence-space',
-  Person = 'person',
+
+  // if unspecified, such as when retrieving results from the recent api, 'ambiguous' is used
   ConfluenceAmbiguous = 'confluence-ambiguous',
 }
 
