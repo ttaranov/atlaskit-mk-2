@@ -29,7 +29,9 @@ const getSelectedExtNode = state => {
 
   if (
     isNodeSelection(state.selection) &&
-    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])
+    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])(
+      state.selection,
+    )
   ) {
     selectedExtNode = {
       node: (state.selection as NodeSelection).node,
