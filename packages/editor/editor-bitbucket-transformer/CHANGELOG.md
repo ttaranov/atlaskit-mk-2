@@ -1,5 +1,12 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 3.1.7
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-core@73.4.4
+
 ## 3.1.6
 - [patch] Fix issue where images would not be serialised when inside tables [e47dc42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47dc42)
 - [none] Updated dependencies [e47dc42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47dc42)
