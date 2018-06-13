@@ -22,7 +22,7 @@ injectGlobal`
         overflow: hidden;
       }
 
-      .textLayer, .annotationLayer {
+      .textLayer {
         position: absolute;
         left: 0;
         top: 0;
@@ -30,6 +30,44 @@ injectGlobal`
         bottom: 0;
         overflow: hidden;
         line-height: 1;
+        font-family: sans-serif;
+        opacity: 0.8;
+        
+        ::selection {
+          background: rgb(0,0,255);
+        }
+      }
+      
+      .annotationLayer {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+      
+      .textLayer > div, .annotationLayer > section {
+        color: transparent;
+        position: absolute;
+        white-space: pre;
+        cursor: text;
+        transform-origin: 0% 0%;
+      }
+      .linkAnnotation > a {
+        position: absolute;
+        font-size: 1em;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .linkAnnotation > a {
+        background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 repeat;
+      }
+
+      .linkAnnotation > a:hover {
+        opacity: 0.2;
+        background: #ff0;
+        box-shadow: 0 2px 10px #ff0;
       }
     }
   }
