@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.7
+- [patch] MSW-744 : let header background disappear together with controls [f4cda94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4cda94)
+
 ## 15.0.6
 - [patch] Add document loading spinner [ff372e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff372e1)
 
