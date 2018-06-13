@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
-import { PDFWrapper, ErrorMessage } from '../../styled';
+import { ErrorMessage } from '../../styled';
 import { Spinner } from '../../loading';
 import { constructAuthTokenUrl } from '../../util';
 import { Props as RendererProps } from './pdfRenderer';
@@ -28,7 +28,7 @@ const initialState: State = {
   src: { status: 'PENDING' },
 };
 
-export class DocViewer extends React.PureComponent<Props, State> {
+export class DocViewer extends React.Component<Props, State> {
   static PDFComponent;
 
   state: State = initialState;
@@ -93,11 +93,7 @@ export class DocViewer extends React.PureComponent<Props, State> {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return (
-          <PDFWrapper>
-            <PDFComponent src={src.data} onClose={onClose} />
-          </PDFWrapper>
-        );
+        return <PDFComponent src={src.data} onClose={onClose} />;
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }

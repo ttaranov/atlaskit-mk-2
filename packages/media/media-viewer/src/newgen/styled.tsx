@@ -81,7 +81,7 @@ export const CloseButtonWrapper = styled.div`
 
 export const ZoomWrapper = styled.div`
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   text-align: center;
 `;

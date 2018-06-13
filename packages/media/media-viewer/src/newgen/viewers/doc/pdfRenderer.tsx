@@ -3,9 +3,10 @@ import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
-import { PDFWrapper } from '../../styled';
+import { ErrorMessage, PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 import { Outcome } from '../../domain';
+import { Spinner } from '../../loading';
 
 export const pdfViewerClassName = 'pdfViewer';
 
@@ -37,7 +38,7 @@ injectGlobal`
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
 
-const fetch = async (url: string): Promise<Blob> => {
+const fetch = (url: string): Promise<Blob> => {
   return pdfjsLib.getDocument(url).promise;
 };
 
@@ -53,7 +54,7 @@ export type State = {
 
 const initialState: State = { zoom: 100, doc: { status: 'PENDING' } };
 
-export class PDFRenderer extends React.PureComponent<Props, State> {
+export class PDFRenderer extends React.Component<Props, State> {
   private el: HTMLDivElement;
   private pdfViewer: any;
 
@@ -64,11 +65,12 @@ export class PDFRenderer extends React.PureComponent<Props, State> {
   }
 
   private async init() {
-    this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
     try {
       const doc = await fetch(this.props.src);
-      this.setState({ doc: { status: 'SUCCESSFUL', data: doc } });
-      this.pdfViewer.setDocument(doc);
+      this.setState({ doc: { status: 'SUCCESSFUL', data: doc } }, () => {
+        this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
+        this.pdfViewer.setDocument(doc);
+      });
     } catch (err) {
       this.setState({ doc: { status: 'FAILED', err } });
     }
@@ -84,16 +86,22 @@ export class PDFRenderer extends React.PureComponent<Props, State> {
   };
 
   render() {
-    return (
-      <div>
-        <PDFWrapper innerRef={this.savePdfElement}>
-          <div
-            className={pdfViewerClassName}
-            onClick={closeOnDirectClick(this.props.onClose)}
-          />
-        </PDFWrapper>
-        <ZoomControls zoom={this.state.zoom} onChange={this.handleZoom} />
-      </div>
-    );
+    const { doc } = this.state;
+    switch (doc.status) {
+      case 'PENDING':
+        return <Spinner />;
+      case 'SUCCESSFUL':
+        return (
+          <PDFWrapper innerRef={this.savePdfElement}>
+            <div
+              className={pdfViewerClassName}
+              onClick={closeOnDirectClick(this.props.onClose)}
+            />
+            <ZoomControls zoom={this.state.zoom} onChange={this.handleZoom} />
+          </PDFWrapper>
+        );
+      case 'FAILED':
+        return <ErrorMessage>{doc.err.message}</ErrorMessage>;
+    }
   }
 }
