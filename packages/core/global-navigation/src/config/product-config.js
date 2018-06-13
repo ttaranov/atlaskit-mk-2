@@ -7,9 +7,9 @@ import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
 
-const isEmpty = obj => {
+const isNotEmpty = obj => {
   const values = Object.values(obj);
-  return !(values.length && values.reduce((acc, curr) => acc && !!curr, true));
+  return !!(values.length && values.reduce((acc, curr) => acc && !!curr, true));
 };
 
 const generateDropDown = (
@@ -40,7 +40,7 @@ const generateAvatar = profileIconUrl => () => (
 );
 
 function configFactory(onClick, tooltip, otherConfig = {}) {
-  if (!onClick && (tooltip || !isEmpty(otherConfig))) {
+  if (!onClick && (tooltip || isNotEmpty(otherConfig))) {
     /* eslint-disable no-console */
     console.warn(
       `One of the items in the Global Navigation is missing an onClick handler. This item will not be rendered in Global Navigation.`,
@@ -58,7 +58,7 @@ function configFactory(onClick, tooltip, otherConfig = {}) {
 }
 
 function helpConfigFactory(items, tooltip, otherConfig = {}) {
-  if (!items && (tooltip || !isEmpty(otherConfig))) {
+  if (!items && (tooltip || isNotEmpty(otherConfig))) {
     /* eslint-disable no-console */
     console.warn(
       'You have provided some prop(s) for help, but not helpItems. Help will not be rendered in Global Navigation',
@@ -82,7 +82,7 @@ function profileConfigFactory(
   profileIconUrl,
   otherConfig = {},
 ) {
-  if (!items && !href && (tooltip || !isEmpty(otherConfig))) {
+  if (!items && !href && (tooltip || isNotEmpty(otherConfig))) {
     /* eslint-disable no-console */
     console.warn(
       'You provided some prop(s) for profile, but not profileItems or loginHref. Profile will not be rendered in Global Navigation',
