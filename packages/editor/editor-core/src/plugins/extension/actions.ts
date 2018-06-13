@@ -80,11 +80,12 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
 ): boolean => {
   const { state, dispatch } = view;
   // insert macro if there's macroProvider available
+  const pluginState = pluginKey.getState(state);
   if (macroProvider) {
     const node = getExtensionNode(state);
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
-      let tr = state.tr.setMeta(pluginKey, { element: null });
+      let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
       if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
         dispatch(selectParentNodeOfType(bodiedExtension)(tr));
       }
@@ -101,7 +102,8 @@ export const removeExtension = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { schema, selection } = state;
-  let tr = state.tr.setMeta(pluginKey, { element: null });
+  const pluginState = pluginKey.getState(state);
+  let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
 
   if (selection instanceof NodeSelection) {
     tr = removeSelectedNode(tr);

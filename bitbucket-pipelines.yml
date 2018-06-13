@@ -66,7 +66,7 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
             caches:
               - node
         - step:
@@ -99,9 +99,7 @@ pipelines:
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
             # This is a sanity check to make sure the website renders on all browsers without error
-
-            # Removing this until OOM errors resolved
-            # - yarn test:webdriver:browserstack website
+            - yarn test:webdriver:browserstack website
           caches:
             - node
 
@@ -159,7 +157,7 @@ pipelines:
             - yarn build
             - yarn build:bundle-analysis
           caches:
-            - node
+            - node 
 
 
     landkid:
