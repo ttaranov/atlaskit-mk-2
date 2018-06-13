@@ -58,8 +58,8 @@ export function makePersonResult(
   partial?: Partial<PersonResult>,
 ): PersonResult {
   return {
-    mentionName: 'patato',
-    presenceMessage: 'head of everything',
+    mentionName: 'mentionName',
+    presenceMessage: 'presenceMessage',
     analyticsType: AnalyticsType.ResultPerson,
     resultType: ResultType.PersonResult,
     ...buildMockSearchResultProperties(),

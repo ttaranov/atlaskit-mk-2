@@ -133,6 +133,8 @@ describe('renderResults', () => {
       type: 'result-person',
       avatarUrl: 'avatarUrl',
       name: 'name',
+      mentionName: 'mentionName',
+      presenceMessage: 'presenceMessage',
     });
   });
 

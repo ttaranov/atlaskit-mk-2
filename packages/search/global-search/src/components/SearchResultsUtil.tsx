@@ -142,6 +142,8 @@ export function renderResults(results: Result[]) {
             href={personResult.href}
             type={personResult.analyticsType}
             avatarUrl={personResult.avatarUrl}
+            mentionName={personResult.mentionName}
+            presenceMessage={personResult.presenceMessage}
           />
         );
       }
