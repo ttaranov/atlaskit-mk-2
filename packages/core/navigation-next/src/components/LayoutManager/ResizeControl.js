@@ -54,7 +54,6 @@ const Handle = props => {
     />
   );
 };
-console.log(css);
 const Button = ({ ...props }) => (
   <button
     type="button"
