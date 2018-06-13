@@ -106,9 +106,9 @@ export default function gridSize(root: any, j: any) {
         endOfLine.value.cooked = `px${endOfLine.value.cooked}`;
       }
 
-      n
-        .closest(j.TemplateLiteral)
-        .replaceWith(j.callExpression(j.identifier(localName), []));
+      n.closest(j.TemplateLiteral).replaceWith(
+        j.callExpression(j.identifier(localName), []),
+      );
     });
 
   removeNamedImport(
