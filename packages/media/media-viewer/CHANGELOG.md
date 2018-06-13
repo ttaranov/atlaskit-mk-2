@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.6
+- [patch] Add document loading spinner [ff372e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff372e1)
+
 ## 15.0.5
 - [patch] Chores for document viewer [fefa35c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fefa35c)
 
