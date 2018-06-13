@@ -40,7 +40,6 @@ const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
 export default class ReactionsResource extends AbstractReactionsResource
   implements ReactionsProvider {
   private inFlightDetailsRequests = {};
-  protected lastActionForAri: { [ari: string]: number } = {};
 
   constructor(private config: ReactionsProviderConfig) {
     super();

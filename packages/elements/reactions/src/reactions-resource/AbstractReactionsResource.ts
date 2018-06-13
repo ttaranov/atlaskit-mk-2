@@ -22,11 +22,12 @@ const getNewValue = <T>(updater: Updater<T>) => (previousValue: T): T => {
 
 export default abstract class AbstractReactionsResource
   implements ReactionsProvider {
-  private excludeArisFromAutoPoll: string[] = [];
-  private cachedReactions: {
+  protected excludeArisFromAutoPoll: string[] = [];
+  protected cachedReactions: {
     readonly [key: string]: ReactionsState;
   } = {};
-  private subscribers: { [ari: string]: Listener[] } = {};
+  protected subscribers: { [ari: string]: Listener[] } = {};
+  protected lastActionForAri: { [ari: string]: number } = {};
 
   private batchedKeys: ObjectReactionKey[] = [];
   private debounced: number | null = null;
