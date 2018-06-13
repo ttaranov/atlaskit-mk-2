@@ -6,9 +6,21 @@ import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { AnalyticsType, ResultType, PersonResult } from '../src/model/Result';
 
-function apiWillReturn(state: SearchResult[] | GraphqlResponse) {
+function searchApiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const response = Array.isArray(state)
     ? { data: { AccountCentricUserSearch: state } }
+    : state;
+
+  const opts = {
+    name: 'people',
+  };
+
+  fetchMock.post('localhost/graphql', response, opts);
+}
+
+function recentPeopleApiWillReturn(state: SearchResult[] | GraphqlResponse) {
+  const response = Array.isArray(state)
+    ? { data: { Collaborators: state } }
     : state;
 
   const opts = {
@@ -29,7 +41,7 @@ describe('PeopleSearchClient', () => {
 
   describe('search()', () => {
     it('should put cloudId and search query into the graphql query', () => {
-      apiWillReturn([]);
+      searchApiWillReturn([]);
       searchClient.search('query');
 
       const call = fetchMock.calls('people')[0];
@@ -40,7 +52,7 @@ describe('PeopleSearchClient', () => {
     });
 
     it('should return result items', async () => {
-      apiWillReturn([
+      searchApiWillReturn([
         {
           id: '123',
           fullName: 'fullName',
@@ -67,7 +79,7 @@ describe('PeopleSearchClient', () => {
     });
 
     it('should throw when data.AccountCentricUserSearch is not defined', async () => {
-      apiWillReturn({
+      searchApiWillReturn({
         data: 'foo',
       } as GraphqlResponse);
 
@@ -80,7 +92,7 @@ describe('PeopleSearchClient', () => {
     });
 
     it('should throw when data.errors is defined', async () => {
-      apiWillReturn({
+      searchApiWillReturn({
         errors: [
           {
             message: 'error1',
@@ -95,6 +107,68 @@ describe('PeopleSearchClient', () => {
       } catch (e) {
         expect(e.message).toEqual('category: error1');
       }
+    });
+  });
+
+  describe('getRecentPeople()', () => {
+    it('should put cloudId into the graphql query', () => {
+      recentPeopleApiWillReturn([]);
+      searchClient.getRecentPeople();
+
+      const call = fetchMock.calls('people')[0];
+      const body = JSON.parse(call[0]._bodyText);
+
+      expect(body.variables.cloudId).toEqual('123');
+    });
+
+    it('should return result items', async () => {
+      recentPeopleApiWillReturn([
+        {
+          id: '123',
+          fullName: 'fullName',
+          avatarUrl: 'avatarUrl',
+          department: 'department',
+          title: 'abc',
+          nickname: 'nickname',
+        },
+      ]);
+
+      const items = await searchClient.getRecentPeople();
+      expect(items).toHaveLength(1);
+
+      const item = items[0] as PersonResult;
+
+      expect(item.resultType).toEqual(ResultType.PersonResult);
+      expect(item.mentionName).toEqual('nickname');
+      expect(item.presenceMessage).toEqual('abc');
+      expect(item.resultId).toEqual('people-123');
+      expect(item.avatarUrl).toEqual('avatarUrl');
+      expect(item.name).toEqual('fullName');
+      expect(item.href).toEqual('/people/123');
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
+    });
+
+    it('should return empty array when data.Collaborators is not defined', async () => {
+      recentPeopleApiWillReturn({
+        data: 'foo',
+      } as GraphqlResponse);
+
+      const items = await searchClient.getRecentPeople();
+      expect(items).toEqual([]);
+    });
+
+    it('should return empty array when data.errors is defined', async () => {
+      recentPeopleApiWillReturn({
+        errors: [
+          {
+            message: 'error1',
+            category: 'category',
+          },
+        ],
+      });
+
+      const items = await searchClient.getRecentPeople();
+      expect(items).toEqual([]);
     });
   });
 });

@@ -124,6 +124,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     );
 
     if (response.errors) {
+      // TODO should probably catch and log this
       return [];
     }
 
