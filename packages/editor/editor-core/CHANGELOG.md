@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.4.6
+- [patch] Fix a regression in task-decision in editor after NodeView's PR [b7a4fd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7a4fd5)
+- [none] Updated dependencies [b7a4fd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7a4fd5)
+
 ## 73.4.5
 - [patch] Fixes the image toolbar [05f69d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05f69d1)
 - [none] Updated dependencies [05f69d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05f69d1)
