@@ -18,7 +18,7 @@ class Task extends ReactNodeView {
     return this.node.content.childCount === 0;
   }
 
-  private handleOnChange = (taskId: string, isChecked: boolean) => {
+  private handleOnChange(taskId: string, isChecked: boolean) {
     const { tr } = this.view.state;
     const nodePos = this.getPos();
 
@@ -28,7 +28,7 @@ class Task extends ReactNodeView {
     });
 
     this.view.dispatch(tr);
-  };
+  }
 
   getDomRef() {
     const domRef = document.createElement('li');
@@ -43,13 +43,14 @@ class Task extends ReactNodeView {
   render(props, forawardRef) {
     const node = this.node;
     const { localId, state } = node.attrs;
+    const handleOnChange = this.handleOnChange.bind(this);
 
     const taskItem = (
       <TaskItem
         taskId={localId}
         contentRef={forawardRef}
         isDone={state === 'DONE'}
-        onChange={this.handleOnChange}
+        onChange={handleOnChange}
         showPlaceholder={this.isContentEmpty()}
         providers={props.providerFactory}
       />
