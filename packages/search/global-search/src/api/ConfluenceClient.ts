@@ -41,6 +41,8 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
 
+  private readonly RESULT_LIMIT = 10;
+
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
@@ -73,7 +75,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
       path: path,
       queryParams: {
         cloudId: this.cloudId,
-        limit: 10,
+        limit: this.RESULT_LIMIT,
       },
     };
 
@@ -87,7 +89,6 @@ function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
     resultType: ResultType.Object,
     name: recentPage.title,
     href: `${baseUrl}${recentPage.url}`,
-    avatarUrl: '',
     containerName: recentPage.space,
     contentType: recentPage.contentType,
     analyticsType: AnalyticsType.RecentConfluence,

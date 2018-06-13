@@ -48,6 +48,7 @@ const unsupportedNodes = [
   'placeholder',
   'layoutSection',
   'layoutColumn',
+  'inlineCard',
 ];
 
 const unsupportedMarks = [

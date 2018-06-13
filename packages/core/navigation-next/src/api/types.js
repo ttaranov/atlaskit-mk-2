@@ -2,7 +2,7 @@
 
 import type { ComponentType } from 'react';
 
-export type ItemArgs = {|
+export type ItemArgs = {
   actionAfter?: string,
   goTo?: string,
   icon?: ComponentType<{
@@ -22,36 +22,36 @@ export type ItemArgs = {|
   text?: string,
   type: string,
   url?: string,
-|};
+};
 
-export type GroupArgs = {|
-  children: ItemArgs[],
-  id?: string,
+export type GroupArgs = {
+  id: string,
+  items: View[],
+  nestedGroupKey?: string,
+  parentId?: string,
   type: string,
-  // key?: string,
-  // parentId?: string,
-|};
+};
+
+export type ViewItem = ItemArgs | GroupArgs;
 
 export type ViewKey = string;
 
-export type View = GroupArgs[];
+export type View = ViewItem[];
 
-export type ViewData = { id: ViewKey, parentId: ?ViewKey, view: View };
+export type ViewResolver = () => View;
 
-export type ViewResolver = () => ViewData;
+export type Reducer = (View, ViewKey) => View;
 
-export type Reducer = (ViewData, ViewKey) => ViewData;
-
-export type NavAPIState = {|
+export type ViewStateState = {|
   activeView: ViewKey | null,
-  data: ViewData | null,
+  data: View | null,
   isLoading: boolean,
   nextView: ViewKey | null,
 |};
 
 export type ComponentTypesMap = { [string]: ComponentType<any> };
 
-export type NavAPIOptions = {|
+export type ViewStateOptions = {|
   activeView?: ViewKey | null,
   reducers?: { [ViewKey]: Reducer[] },
   views?: { [ViewKey]: ViewResolver },

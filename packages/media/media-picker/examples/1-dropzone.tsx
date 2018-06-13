@@ -128,9 +128,15 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     }
 
     return lastItems.map((item, key) => {
+      const { id, details } = item;
+
+      // details are not always present in the response
+      const name = details ? details.name : '<no-details>';
+      const mediaType = details ? details.mediaType : '<no-details>';
+
       return (
         <div key={key}>
-          {item.id} | {item.details.name} | {item.details.mediaType}
+          {id} | {name} |{mediaType}
         </div>
       );
     });

@@ -6,7 +6,7 @@ export const SearchBox = styled.div`
   background-color: ${colors.N0};
   color: ${colors.N500};
   display: flex;
-  height: ${gridSize() * 4}px;
+  height: 36px;
   padding-bottom: 2px;
   border-bottom: 2px solid ${colors.B200};
 `;

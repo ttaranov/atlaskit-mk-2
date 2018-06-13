@@ -13,6 +13,12 @@ import {
   AnalyticsType,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import {
+  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_SOURCE,
+  DEFAULT_GAS_ATTRIBUTES,
+} from '../util/analytics';
 
 // Common properties that the quick-search Result component supports
 interface QuickSearchResult extends ComponentClass {
@@ -26,16 +32,50 @@ interface QuickSearchResult extends ComponentClass {
   contentType?: ResultContentType;
 }
 
+function createAndFireSearchResultSelectedEvent(createEvent, props): void {
+  const event = createEvent(); // created empty to initialise with context
+  const searchSessionId = event.context[0]
+    ? event.context[0].searchSessionId
+    : null;
+  event.update({
+    action: 'selected',
+    actionSubject: 'navigationItem',
+    actionSubjectId: 'searchResult',
+    eventType: 'track',
+    source: DEFAULT_GAS_SOURCE,
+    attributes: {
+      searchSessionId: searchSessionId,
+      resultType: props.type,
+      ...DEFAULT_GAS_ATTRIBUTES,
+    },
+  });
+  event.fire(DEFUALT_GAS_CHANNEL);
+}
+
+const searchResultsAnalyticsEvents = {
+  onClick: createAndFireSearchResultSelectedEvent,
+};
+
+export const ObjectResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ObjectResult);
+export const PersonResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(PersonResult);
+export const ContainerResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ContainerResult);
+
 function getResultComponent(resultType: ResultType): ComponentClass {
   switch (resultType) {
     case ResultType.Object: {
-      return ObjectResult;
+      return ObjectResultWithAnalytics;
     }
     case ResultType.Person: {
-      return PersonResult;
+      return PersonResultWithAnalytics;
     }
     case ResultType.Container: {
-      return ContainerResult;
+      return ContainerResultWithAnalytics;
     }
     default: {
       // Make the TS compiler verify that all enums have been matched
@@ -91,7 +131,7 @@ export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
 export const searchJiraItem = (query: string) => (
   <ResultBase
     href={`/issues/?jql=${encodeURIComponent(`text ~ "${query}"`)}`}
-    icon={<JiraIcon size="large" label="Search Jira" />}
+    icon={<JiraIcon size="medium" label="Search Jira" />}
     key="search_jira"
     resultId="search_jira"
     text="Search for more Jira issues"
@@ -101,7 +141,7 @@ export const searchJiraItem = (query: string) => (
 
 export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
   <ResultBase
-    href={`/home/people?q=${encodeURIComponent(props.query)}`}
+    href={`/people/search?q=${encodeURIComponent(props.query)}`}
     icon={props.icon}
     key="search_people"
     resultId="search_people"

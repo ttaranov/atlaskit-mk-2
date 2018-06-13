@@ -15,7 +15,7 @@ export default md`
   ## Installation
 
   ~~~js
-  npm install @atlaskit/layer
+  yarn add @atlaskit/layer
   ~~~
 
   ## Using the component
@@ -39,7 +39,7 @@ export default md`
   );
   ~~~
 
-  Any content that is passed to Layer as children will always be rendered and any content passed throught the \`content\` prop will be rendered aligned to the internal content.
+  Any content that is passed to Layer as children will always be rendered and any content passed through the \`content\` prop will be rendered aligned to the internal content.
 
 ${(
   <Props

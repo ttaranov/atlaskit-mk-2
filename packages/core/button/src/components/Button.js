@@ -88,7 +88,9 @@ class Button extends Component<ButtonProps, State> {
 
   customComponent = null;
 
-  onMouseEnter = () => this.setState({ isHover: true });
+  onMouseEnter = () => {
+    this.setState({ isHover: true });
+  };
 
   onMouseLeave = () => this.setState({ isHover: false, isActive: false });
 
@@ -162,7 +164,6 @@ class Button extends Component<ButtonProps, State> {
       (iconBefore && !iconAfter && !children) ||
       (iconAfter && !iconBefore && !children)
     );
-
     return (
       <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>

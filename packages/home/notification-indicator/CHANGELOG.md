@@ -1,5 +1,11 @@
 # @atlaskit/notification-indicator
 
+## 3.0.2
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/badge@8.0.0
+  - @atlaskit/notification-log-client@2.0.5
+  - @atlaskit/docs@4.0.0
+
 ## 3.0.1
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/badge@7.1.2

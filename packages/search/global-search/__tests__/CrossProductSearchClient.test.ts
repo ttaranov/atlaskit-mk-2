@@ -39,7 +39,6 @@ describe('CrossProductSearchClient', () => {
                 title: '@@@hl@@@page@@@endhl@@@ name',
                 baseUrl: 'baseUrl',
                 url: '/url',
-                iconCssClass: 'aui-iconfont-page-default',
                 container: {
                   title: 'containerTitle',
                 },
@@ -60,9 +59,6 @@ describe('CrossProductSearchClient', () => {
       const item = result.get(Scope.ConfluencePageBlog)[0];
       expect(item.resultType).toEqual(ResultType.Object);
       expect(item.resultId).toEqual('search-/url');
-      expect(item.avatarUrl).toEqual(
-        'https://home.useast.atlassian.io/confluence-page-icon.svg',
-      );
       expect(item.name).toEqual('page name');
       expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
@@ -115,14 +111,6 @@ describe('CrossProductSearchClient', () => {
 
       text = removeHighlightTags('no highlight');
       expect(text).toEqual('no highlight');
-    });
-
-    it('should get the avatarUrl based on iconCssClass', () => {
-      let url = getConfluenceAvatarUrl('aui-iconfont-page-default');
-      expect(url).toContain('page-icon.svg');
-
-      url = getConfluenceAvatarUrl('aui-iconfont-page-blogpost');
-      expect(url).toContain('blogpost-icon.svg');
     });
   });
 
@@ -217,7 +205,7 @@ describe('CrossProductSearchClient', () => {
 
     expect(body.query).toEqual('query');
     expect(body.cloudId).toEqual('123');
-    expect(body.limit).toEqual(5);
+    expect(body.limit).toEqual(10);
     expect(body.scopes).toEqual(
       expect.arrayContaining(['jira.issue', 'confluence.page,blogpost']),
     );
