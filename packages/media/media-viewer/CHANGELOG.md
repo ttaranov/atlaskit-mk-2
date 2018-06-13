@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.10
+- [patch] MSW-710  : add shadow to footer component [ea0ab01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea0ab01)
+
 ## 15.0.9
 - [patch] introduce zoom level domain [29dcff3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29dcff3)
 
