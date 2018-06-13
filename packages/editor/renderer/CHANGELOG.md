@@ -1,5 +1,12 @@
 # @atlaskit/renderer
 
+## 18.0.3
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-json-transformer@3.0.11
+
 ## 18.0.2
 - [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
   - @atlaskit/media-card@29.0.2

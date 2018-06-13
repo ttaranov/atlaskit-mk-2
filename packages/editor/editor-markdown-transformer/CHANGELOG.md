@@ -1,5 +1,12 @@
 # @atlaskit/editor-markdown-transformer
 
+## 1.1.1
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-core@73.4.4
+
 ## 1.1.0
 - [minor] Adds support for images [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
 - [none] Updated dependencies [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)

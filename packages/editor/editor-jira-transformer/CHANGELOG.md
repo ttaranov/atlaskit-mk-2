@@ -1,5 +1,13 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.0.11
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-json-transformer@3.0.11
+  - @atlaskit/editor-core@73.4.4
+
 ## 3.0.10
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/util-data-test@9.1.10

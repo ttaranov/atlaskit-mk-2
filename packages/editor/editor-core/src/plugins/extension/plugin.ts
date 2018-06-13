@@ -29,7 +29,9 @@ const getSelectedExtNode = state => {
 
   if (
     isNodeSelection(state.selection) &&
-    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])
+    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])(
+      state.selection,
+    )
   ) {
     selectedExtNode = {
       node: (state.selection as NodeSelection).node,
@@ -82,11 +84,7 @@ export default (
 
       return {
         update: (view: EditorView) => {
-          const {
-            dispatch: editorDispatch,
-            state,
-            state: { schema },
-          } = view;
+          const { dispatch: editorDispatch, state, state: { schema } } = view;
 
           /** this fetches the selected extn node, either by keyboard selection or click for all types of extns */
           const selectedExtNode = getSelectedExtNode(state);
