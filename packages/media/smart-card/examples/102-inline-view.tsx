@@ -25,7 +25,7 @@ export default () => (
       <GridColumn>
         <h4>LinkView (initial Resolving/Errored)</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo
+        ex, vel molestie arcu. Phasellus commodo this is <code>LinkView</code>:
         <LinkView text={url} onClick={onClick} />
         quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
         laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
@@ -35,7 +35,8 @@ export default () => (
         Phasellus dictum sollicitudin nunc in gravida.
         <h4>ResolvingView</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo
+        ex, vel molestie arcu. Phasellus commodo this is{' '}
+        <code>ResolvingView</code>:
         <ResolvingView url={url} onClick={onClick} />
         quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
         laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
@@ -45,11 +46,12 @@ export default () => (
         Phasellus dictum sollicitudin nunc in gravida.
         <h4>ResolvedView</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo
+        ex, vel molestie arcu. Phasellus commodo this is{' '}
+        <code>ResolvedView</code>:
         <ResolvedView title={title} onClick={onClick} />
         quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
         laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
-        ut
+        ut this is <code>ResolvedView</code>:
         <ResolvedView
           icon={icon}
           title={title}
@@ -58,6 +60,7 @@ export default () => (
         />
         vehicula. Donec volutpat libero id ullamcorper faucibus. Sed vestibulum
         tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet interdum,
+        <code>ResolvedView (selected)</code>:
         <ResolvedView
           icon={icon}
           title={title}
