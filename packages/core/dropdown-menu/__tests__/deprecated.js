@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Droplist, { Group } from '@atlaskit/droplist';
-import Button from '@atlaskit/button';
+import Button, { defaultProps as defaultButtonProps } from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Tooltip from '@atlaskit/tooltip';
@@ -26,16 +26,6 @@ const itemsList = [
     items: [],
   },
 ];
-
-const defaultButtonProps = {
-  isDisabled: false,
-  isLoading: false,
-  isSelected: false,
-  spacing: 'default',
-  type: 'button',
-  shouldFitContainer: true,
-  autoFocus: false,
-};
 
 describe('dropdown menu', () => {
   const animStub = window.cancelAnimationFrame;

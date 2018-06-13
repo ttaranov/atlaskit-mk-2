@@ -1,13 +1,13 @@
 // @flow
 import cloneDeep from 'lodash.clonedeep';
-import type { ItemTheme } from './types';
+import type { AnyTheme, ThemeMap } from './types';
 import {
   containerTitleHorizontalPadding,
   containerTitleIconSpacing,
 } from '../shared-variables';
 
-const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
-  const original: ItemTheme = outerTheme[key];
+const overrideItemTheme = (outerTheme: ThemeMap, key: string): ThemeMap => {
+  const original: AnyTheme = outerTheme[key];
 
   if (!original || !original.padding) {
     // eslint-disable-next-line no-console
