@@ -1,10 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { colors } from '@atlaskit/theme';
+import Objects24ActionIcon from '@atlaskit/icon/glyph/objects/24/action';
+import Objects24DecisionIcon from '@atlaskit/icon/glyph/objects/24/decision';
 import {
   decisionItem,
   decisionList,
   taskItem,
   taskList,
+  uuid,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
@@ -34,9 +38,13 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
-        plugin: ({ schema, props, dispatch, providerFactory }) => {
+        plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {
           const { delegateAnalyticsEvent } = props;
-          return createPlugin({ delegateAnalyticsEvent }, providerFactory);
+          return createPlugin(
+            portalProviderAPI,
+            { delegateAnalyticsEvent },
+            providerFactory,
+          );
         },
       },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
@@ -59,6 +67,46 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
         />
       </TaskDecisionToolbarGroup>
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Action',
+        icon: () => (
+          <Objects24ActionIcon label="Action" primaryColor={colors.B300} />
+        ),
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.taskList.createChecked(
+              { localId: uuid.generate() },
+              state.schema.nodes.taskItem.createChecked({
+                localId: uuid.generate(),
+              }),
+            ),
+          );
+        },
+      },
+      {
+        title: 'Decision',
+        icon: () => (
+          <Objects24DecisionIcon
+            label="Insert Decision"
+            primaryColor={colors.G300}
+          />
+        ),
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.decisionList.createChecked(
+              { localId: uuid.generate() },
+              state.schema.nodes.decisionItem.createChecked({
+                localId: uuid.generate(),
+              }),
+            ),
+          );
+        },
+      },
+    ],
   },
 };
 

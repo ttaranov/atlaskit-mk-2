@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
 import { stringify } from 'query-string';
 
-import { AuthProvider, MediaStore } from '../src/';
+import { AuthProvider, MediaStore } from '../src';
 import {
   MediaUpload,
   MediaChunksProbe,

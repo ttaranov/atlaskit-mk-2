@@ -13,9 +13,11 @@ import ShipIcon from '@atlaskit/icon/glyph/ship';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
+  ContainerHeader,
+  ContainerViewSubscriber,
   Item as BaseItem,
   ItemPrimitive,
-  NavAPISubscriber,
+  RootViewSubscriber,
   Section,
   SectionSeparator,
   SectionTitle,
@@ -55,10 +57,19 @@ const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
   }
 
   const props = { ...rest, after };
+  const ViewSubscriber = goTo.match(/^root\//)
+    ? RootViewSubscriber
+    : ContainerViewSubscriber;
+
+  const handleClick = (e, view) => {
+    e.preventDefault();
+    view.setView(goTo);
+  };
+
   return (
-    <NavAPISubscriber>
-      {api => <Item onClick={() => api.setView(goTo)} {...props} />}
-    </NavAPISubscriber>
+    <ViewSubscriber>
+      {view => <Item onClick={e => handleClick(e, view)} {...props} />}
+    </ViewSubscriber>
   );
 };
 
@@ -168,6 +179,7 @@ const Nested = ({
 );
 
 const itemComponents = {
+  ContainerHeader,
   Debug,
   GoToItem,
   Item,

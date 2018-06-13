@@ -2,9 +2,9 @@
 
 Related reading:
 
-- https://codeburst.io/when-to-use-component-or-purecomponent-a60cfad01a81
-- https://github.com/facebook/react/issues/8184
-- https://news.ycombinator.com/item?id=14418576
+- <https://codeburst.io/when-to-use-component-or-purecomponent-a60cfad01a81>
+- <https://github.com/facebook/react/issues/8184>
+- <https://news.ycombinator.com/item?id=14418576>
 
 Since we're a component library, if we used `PureComponent` for our components, we'd be having an opinion on how we should re-render. This can cause issues down the tree and becomes apparent if an app is responding to changes in context. If we used `PureComponent`, anything underneath a component that extends it would prevent renders from happening down the tree.
 

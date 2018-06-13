@@ -1,9 +1,11 @@
 import * as React from 'react';
+import Objects24CalendarIcon from '@atlaskit/icon/glyph/objects/24/calendar';
+import { colors } from '@atlaskit/theme';
 import { date } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { insertDate, selectElement } from './actions';
-import createPlugin, { DateState, pluginKey } from './plugin';
+import createDatePlugin, { DateState, pluginKey } from './plugin';
 import DatePicker from './ui/DatePicker';
 
 export type DateType = {
@@ -21,8 +23,7 @@ const datePlugin: EditorPlugin = {
     return [
       {
         rank: 2410,
-        plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+        plugin: createDatePlugin,
       },
     ];
   },
@@ -47,6 +48,23 @@ const datePlugin: EditorPlugin = {
         }
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Date',
+        keywords: ['time'],
+        icon: () => (
+          <Objects24CalendarIcon label="Date" primaryColor={colors.R300} />
+        ),
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.date.createChecked({ timestamp: Date.now() }),
+          );
+        },
+      },
+    ],
   },
 };
 

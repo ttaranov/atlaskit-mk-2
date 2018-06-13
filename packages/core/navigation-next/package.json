@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "0.1.1",
+  "version": "0.2.2",
   "description": "The Atlassian navigation component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,10 +17,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/avatar": "^10.0.6",
-    "@atlaskit/icon": "^11.3.0",
-    "@atlaskit/theme": "^3.2.2",
-    "@atlaskit/tooltip": "^9.2.1",
+    "@atlaskit/avatar": "^11.0.1",
+    "@atlaskit/icon": "^12.0.1",
+    "@atlaskit/theme": "^4.0.1",
+    "@atlaskit/tooltip": "^10.0.1",
     "chromatism": "^2.6.0",
     "deep-object-diff": "^1.1.0",
     "emotion": "^9.1.1",
@@ -35,12 +35,14 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/badge": "^7.1.2",
-    "@atlaskit/docs": "^3.0.4",
-    "@atlaskit/dropdown-menu": "^4.0.3",
-    "@atlaskit/field-base": "^9.0.2",
-    "@atlaskit/logo": "^7.0.1",
-    "@atlaskit/lozenge": "^4.0.1",
-    "@atlaskit/toggle": "^3.0.1"
+    "@atlaskit/badge": "^8.0.1",
+    "@atlaskit/docs": "^4.0.1",
+    "@atlaskit/dropdown-menu": "^5.0.1",
+    "@atlaskit/field-base": "^10.0.1",
+    "@atlaskit/logo": "^8.0.1",
+    "@atlaskit/lozenge": "^5.0.1",
+    "@atlaskit/toggle": "^4.0.1",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   }
 }

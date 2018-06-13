@@ -37,6 +37,7 @@ function runCommand(cmd, resolve, reject) {
   tests.on('error', reject);
 
   tests.on('close', (code, signal) => {
+    // wait for visual-regression tests to close all browsers
     setTimeout(resolve, JEST_WAIT_FOR_INPUT_TIMEOUT, { code, signal });
   });
 }

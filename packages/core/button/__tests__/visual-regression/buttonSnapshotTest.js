@@ -3,7 +3,7 @@ import {
   getExamplesFor,
   getExampleUrl,
   takeScreenShot,
-  removeOldPrdSnapshots,
+  removeOldProdSnapshots,
 } from '@atlaskit/visual-regression/helper';
 
 const path = require('path');
@@ -13,7 +13,7 @@ const examples = getExamplesFor('button');
 
 describe('Snapshot Test', () => {
   beforeAll(async () => {
-    removeOldPrdSnapshots(imageSnapshotFolder);
+    removeOldProdSnapshots(imageSnapshotFolder);
   });
 
   examples.forEach(example => {
@@ -26,7 +26,7 @@ describe('Snapshot Test', () => {
       );
       const image = await takeScreenShot(global.page, url);
       //$FlowFixMe
-      expect(image).toMatchImageSnapshot();
+      expect(image).toMatchProdImageSnapshot();
     });
   });
 });

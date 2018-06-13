@@ -15,6 +15,7 @@ export class MediaMock {
   enable() {
     this.server.use(createDatabase());
     this.server.use(createMediaPlaygroundRouter());
+    // @ts-ignore
     this.server.use(createApiRouter());
 
     generateUserData();

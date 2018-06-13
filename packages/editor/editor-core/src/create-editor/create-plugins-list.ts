@@ -39,6 +39,7 @@ import {
   quickInsertPlugin,
   gapCursorPlugin,
   inlineActionPlugin,
+  cardPlugin,
 } from '../plugins';
 
 /**
@@ -94,7 +95,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.allowCodeBlocks) {
-    plugins.push(codeBlockPlugin);
+    const options = props.allowCodeBlocks !== true ? props.allowCodeBlocks : {};
+    plugins.push(codeBlockPlugin(options));
   }
 
   if (props.mentionProvider) {
@@ -172,9 +174,9 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowTemplatePlaceholders) {
     const options =
-      props.allowTemplatePlaceholders === true
-        ? {}
-        : props.allowTemplatePlaceholders;
+      props.allowTemplatePlaceholders !== true
+        ? props.allowTemplatePlaceholders
+        : {};
     plugins.push(placeholderTextPlugin(options));
   }
 
@@ -184,6 +186,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowGapCursor) {
     plugins.push(gapCursorPlugin);
+  }
+
+  if (props.UNSAFE_cards) {
+    plugins.push(cardPlugin);
   }
 
   // UI only plugins

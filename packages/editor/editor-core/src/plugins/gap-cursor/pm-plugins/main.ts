@@ -10,7 +10,7 @@ export const pluginKey = new PluginKey('gapCursorPlugin');
 
 export const isButton = (elem: HTMLElement | null) => {
   const tableControls = document.querySelector(
-    '.table-column-controls-wrapper',
+    '.table-column-controls-wrapper, .table-row-controls-wrapper',
   );
   return (
     elem &&

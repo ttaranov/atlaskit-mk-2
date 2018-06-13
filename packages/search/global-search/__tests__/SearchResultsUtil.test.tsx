@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { ResultBase } from '@atlaskit/quick-search';
 import {
   searchPeopleItem,
   searchConfluenceItem,
@@ -14,7 +13,7 @@ import {
   AnalyticsType,
   ResultContentType,
 } from '../src/model/Result';
-import ObjectResult from '../src/components/ObjectResult';
+import { ObjectResultWithAnalytics } from '../src/components/SearchResultsUtil';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {
@@ -40,7 +39,7 @@ describe('searchPeopleItem', () => {
 
   it('should append the url encoded query', () => {
     const wrapper = render({ query: 'test query' });
-    expect(wrapper.prop('href')).toEqual('/home/people?q=test%20query');
+    expect(wrapper.prop('href')).toEqual('/people/search?q=test%20query');
   });
 });
 
@@ -101,7 +100,7 @@ describe('searchJiraItem', () => {
       };
 
       const wrapper = shallow(<span>{renderResults([result])}</span>);
-      const resultComponent = wrapper.find(ObjectResult);
+      const resultComponent = wrapper.find(ObjectResultWithAnalytics);
 
       expect(resultComponent.prop('resultId')).toEqual('resultId');
       expect(resultComponent.prop('type')).toEqual('recent-confluence');

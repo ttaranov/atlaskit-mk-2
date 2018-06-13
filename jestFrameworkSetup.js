@@ -318,10 +318,10 @@ if (process.env.VISUAL_REGRESSION) {
     await global.browser.close();
   });
 
-  const toMatchImageSnapshot = configureToMatchImageSnapshot({
+  const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
     customDiffConfig: { threshold: 0.2 },
     noColors: true,
   });
 
-  expect.extend({ toMatchImageSnapshot });
+  expect.extend({ toMatchProdImageSnapshot });
 }

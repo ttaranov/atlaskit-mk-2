@@ -4,4 +4,13 @@ Empty State is used for various scenarios, for example: empty search, no items,
 broken link, general error message, welcome screen etc. (usually it takes the
 whole page).
 
-![Example empty state](https://imgur.com/llMvEF1)
+## Installation
+
+```sh
+yarn add @atlaskit/empty-state
+```
+
+## Usage
+
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/empty-state).
+

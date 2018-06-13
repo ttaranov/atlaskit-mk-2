@@ -20,7 +20,7 @@ type Props = {
   isLoading?: boolean,
   spinnerSize?: SpinnerSizeType,
   contentsOpacity: number,
-  targetRef?: Function,
+  targetRef?: Function, // eslint-disable-line react/no-unused-prop-types
 };
 
 export default class LoadingContainerAdvanced extends Component<Props, {}> {

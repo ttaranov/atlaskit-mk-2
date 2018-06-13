@@ -246,7 +246,8 @@ export function findOverflowScrollParent(
     if (
       style.overflow === 'scroll' ||
       style.overflowX === 'scroll' ||
-      style.overflowY === 'scroll'
+      style.overflowY === 'scroll' ||
+      style['scrollBehavior'] === 'smooth'
     ) {
       return parent;
     }

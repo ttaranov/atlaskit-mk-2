@@ -13,11 +13,7 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import {
-  copyPrivateMediaAttributes,
-  MediaType,
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -264,11 +260,11 @@ export class MediaPluginState {
   private getDomElement(docView: any): HTMLElement | undefined {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node, offset } = docView.domFromPos(from);
+      const { node } = docView.domFromPos(from);
       if (!node.childNodes.length) {
         return node.parentNode;
       }
-      return node.childNodes[offset].querySelector('.wrapper');
+      return node.querySelector('.wrapper');
     }
   }
 
@@ -756,7 +752,7 @@ export class MediaPluginState {
     if (!view) {
       return;
     }
-    const { id, thumbnail, fileName, fileSize, publicId } = state;
+    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
@@ -773,10 +769,8 @@ export class MediaPluginState {
       height,
       __fileName: fileName,
       __fileSize: fileSize,
+      __fileMimeType: fileMimeType,
     });
-
-    // Copy all optional attributes from old node
-    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
