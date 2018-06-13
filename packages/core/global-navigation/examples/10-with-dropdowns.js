@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 
