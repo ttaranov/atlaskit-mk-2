@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.0.9
+- [patch] introduce zoom level domain [29dcff3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29dcff3)
+
 ## 15.0.8
 - [patch] MSW-630: properly render PDF annotations and text layer [0682c53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0682c53)
 
