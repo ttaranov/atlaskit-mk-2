@@ -1,4 +1,4 @@
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import mock, { once } from 'xhr-mock';
 import { Client } from '../../src/Client';
 

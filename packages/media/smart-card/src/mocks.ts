@@ -1,4 +1,4 @@
-import mock, { delay } from 'xhr-mock';
+import mock, { delay, proxy } from 'xhr-mock';
 
 const resolveUrl =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
@@ -170,3 +170,5 @@ mock.post(
     }
   }, 900),
 );
+
+mock.use(proxy);
