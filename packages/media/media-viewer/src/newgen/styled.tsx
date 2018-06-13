@@ -82,11 +82,17 @@ export const CloseButtonWrapper = styled.div`
 export const ZoomWrapper = styled.div`
   width: 100%;
   position: fixed;
-  bottom: 10px;
-  text-align: center;
+  bottom: 0;
+  height: 98px;
+  background-image: linear-gradient(to top, #0e1624, rgba(14, 22, 36, 0));
+  opacity: 0.85;
 `;
 
 export const ZoomControlsWrapper = styled.div`
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  bottom: 10px;
   button {
     margin-right: 10px;
   }
@@ -95,7 +101,7 @@ export const ZoomControlsWrapper = styled.div`
 export const ZoomLevelIndicator = styled.span`
   position: absolute;
   right: 24px;
-  top: 0;
+  bottom: 22px;
   color: #b8c7e0;
 `;
 
