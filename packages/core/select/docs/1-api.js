@@ -12,8 +12,8 @@ export default md`
 
   ## Controllable Props
 
-  **@atlaskit/single-select** and **@atlaskit/multi-select** had the concept of **Stateful** and **Stateless** components.
-  Where the exported **stateful** component, internally managed specific props available in the Stateless component in state.
+  **@atlaskit/single-select** and **@atlaskit/multi-select** had the concept of **stateful** and **stateless** components.
+  Where the exported **stateful** component, internally managed specific (in state) props available in the stateless component.
   These props were:
 
   * selectedItem
@@ -57,7 +57,6 @@ export default md`
   ~~~
 
   We enable this by wrapping the select in a stateManager that uses the above specified prop values if they exist, otherwise it defers to internally managed state values.
-  For more information, see controlled components and uncontrolled components in the React docs [here](####).
 
   ## Components API
 
@@ -84,7 +83,7 @@ export default md`
 
   You don't have to use these props, and are free to implement or reimplement as you like - but they are intended to help make custom implementations easier to manage.
 
-  See the [Components Documentation](###ADDURL) for more details and examples.
+  See the [Components Documentation](https://deploy-preview-2289--react-select.netlify.com/components) for more details and examples.
 
   ## Styles API
 
@@ -234,4 +233,6 @@ export default md`
   ~~~
 
   The goal here is to allow for varying levels of configuration of the core filtration logic used within a select instance. We recognise that you may not want to replace all of the filtration logic put have in place by default, and by invoking the createFilter export with your desired config, you should be able to pick and choose filtration decisions that best suit you, without having to rewrite the logic from scratch. If you _do_ want to do this however, supplying a filterOption function of the specified shape is always a viable option.
+
+  For more comprehensive documentation and prop specification, please see the [react-select.v2 docs](https://deploy-preview-2289--react-select.netlify.com/)
 `;
