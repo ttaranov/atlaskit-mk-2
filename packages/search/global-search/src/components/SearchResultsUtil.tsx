@@ -1,22 +1,22 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import {
-  PersonResult,
-  ContainerResult,
+  PersonResult as PersonResultComponent,
+  ContainerResult as ContainerResultComponent,
   ResultBase,
 } from '@atlaskit/quick-search';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import {
-  GlobalSearchResult,
-  GlobalSearchContainerResult,
-  GlobalSearchJiraObjectResult,
-  GlobalSearchPersonResult,
+  Result,
+  ContainerResult,
+  JiraObjectResult,
+  PersonResult,
   AnalyticsType,
-  GlobalSearchResultTypes,
-  GlobalSearchConfluenceObjectResult,
+  ResultType,
+  ConfluenceObjectResult,
   ContentType,
 } from '../model/Result';
-import ObjectResult from './ObjectResult';
+import ObjectResultComponent from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   DEFUALT_GAS_CHANNEL,
@@ -71,23 +71,23 @@ const searchResultsAnalyticsEvents = {
 
 export const ObjectResultWithAnalytics: ComponentType<
   ObjectResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ObjectResult);
+> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ObjectResultComponent);
 
 export const PersonResultWithAnalytics: ComponentType<
   PersonResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(PersonResult);
+> = withAnalyticsEvents(searchResultsAnalyticsEvents)(PersonResultComponent);
 
 export const ContainerResultWithAnalytics: ComponentType<
   ContainerResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ContainerResult);
+> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ContainerResultComponent);
 
-export function renderResults(results: GlobalSearchResult[]) {
+export function renderResults(results: Result[]) {
   return results.map(result => {
-    const resultType: GlobalSearchResultTypes = result.globalSearchResultType;
+    const resultType: ResultType = result.resultType;
 
     switch (resultType) {
-      case GlobalSearchResultTypes.ConfluenceObjectResult: {
-        const confluenceResult = result as GlobalSearchConfluenceObjectResult;
+      case ResultType.ConfluenceObjectResult: {
+        const confluenceResult = result as ConfluenceObjectResult;
 
         return (
           <ObjectResultWithAnalytics
@@ -101,8 +101,8 @@ export function renderResults(results: GlobalSearchResult[]) {
           />
         );
       }
-      case GlobalSearchResultTypes.JiraObjectResult: {
-        const jiraResult = result as GlobalSearchJiraObjectResult;
+      case ResultType.JiraObjectResult: {
+        const jiraResult = result as JiraObjectResult;
 
         return (
           <ObjectResultWithAnalytics
@@ -117,8 +117,8 @@ export function renderResults(results: GlobalSearchResult[]) {
           />
         );
       }
-      case GlobalSearchResultTypes.GenericContainerResult: {
-        const containerResult = result as GlobalSearchContainerResult;
+      case ResultType.GenericContainerResult: {
+        const containerResult = result as ContainerResult;
 
         return (
           <ContainerResultWithAnalytics
@@ -131,8 +131,8 @@ export function renderResults(results: GlobalSearchResult[]) {
           />
         );
       }
-      case GlobalSearchResultTypes.PersonResult: {
-        const personResult = result as GlobalSearchPersonResult;
+      case ResultType.PersonResult: {
+        const personResult = result as PersonResult;
 
         return (
           <PersonResultWithAnalytics

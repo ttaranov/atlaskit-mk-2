@@ -1,11 +1,11 @@
-export enum GlobalSearchResultTypes {
+export enum ResultType {
   JiraObjectResult,
   GenericContainerResult,
   PersonResult,
   ConfluenceObjectResult,
 }
 
-export interface GlobalSearchResult {
+export interface Result {
   resultId: string;
   // main text to show
   name: string;
@@ -16,30 +16,30 @@ export interface GlobalSearchResult {
   // the analytics type to send in the analytics attributes
   analyticsType: AnalyticsType;
   // field to disambiguate between result types
-  globalSearchResultType: GlobalSearchResultTypes;
+  resultType: ResultType;
 }
 
-export interface GlobalSearchConfluenceObjectResult extends GlobalSearchResult {
+export interface ConfluenceObjectResult extends Result {
   containerName: string;
   contentType?: ContentType;
-  globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult;
+  resultType: ResultType.ConfluenceObjectResult;
 }
 
-export interface GlobalSearchJiraObjectResult extends GlobalSearchResult {
+export interface JiraObjectResult extends Result {
   objectKey: string;
   containerName: string;
-  globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult;
+  resultType: ResultType.JiraObjectResult;
 }
 
-export interface GlobalSearchContainerResult extends GlobalSearchResult {
-  globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult;
+export interface ContainerResult extends Result {
+  resultType: ResultType.GenericContainerResult;
 }
 
-export interface GlobalSearchPersonResult extends GlobalSearchResult {
+export interface PersonResult extends Result {
   mentionName: string;
   // the message to display underneath the name, unfortuntately named this way ATM.
   presenceMessage: string;
-  globalSearchResultType: GlobalSearchResultTypes.PersonResult;
+  resultType: ResultType.PersonResult;
 }
 
 /**

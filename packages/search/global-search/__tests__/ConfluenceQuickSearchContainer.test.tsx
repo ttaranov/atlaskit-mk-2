@@ -6,9 +6,9 @@ import {
   Props,
 } from '../src/components/confluence/ConfluenceQuickSearchContainer';
 import {
-  GlobalSearchResultTypes,
-  GlobalSearchResult,
-  GlobalSearchPersonResult,
+  ResultType,
+  Result,
+  PersonResult,
   ContentType,
 } from '../src/model/Result';
 import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
@@ -226,15 +226,13 @@ describe('ConfluenceQuickSearchContainer', () => {
      5. Make sure search results appeared in time
     */
 
-    function searchPeople(query: string): Promise<GlobalSearchPersonResult[]> {
+    function searchPeople(query: string): Promise<PersonResult[]> {
       const personResult = makePersonResult();
 
       return delay(5, [personResult]);
     }
 
-    function searchCrossProduct(
-      query: string,
-    ): Promise<Map<Scope, GlobalSearchResult[]>> {
+    function searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
       return delay(
         5,
         makeSingleResultCrossProductSearchResponse(
@@ -279,9 +277,7 @@ describe('ConfluenceQuickSearchContainer', () => {
       5. Make sure the fast result is displayed and not the delayed result
     */
 
-    function searchDelayed(
-      query: string,
-    ): Promise<Map<Scope, GlobalSearchResult[]>> {
+    function searchDelayed(query: string): Promise<Map<Scope, Result[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
         Scope.ConfluencePageBlogAttachment,
         makeConfluenceObjectResult(),
@@ -290,9 +286,7 @@ describe('ConfluenceQuickSearchContainer', () => {
       return delay(5, response);
     }
 
-    function searchCurrent(
-      query: string,
-    ): Promise<Map<Scope, GlobalSearchResult[]>> {
+    function searchCurrent(query: string): Promise<Map<Scope, Result[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
         Scope.ConfluencePageBlogAttachment,
         makeConfluenceObjectResult({

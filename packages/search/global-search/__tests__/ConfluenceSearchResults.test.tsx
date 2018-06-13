@@ -21,7 +21,7 @@ import {
   makeConfluenceObjectResult,
   makePersonResult,
 } from './_test-util';
-import { ContentType, GlobalSearchResultTypes } from '../src/model/Result';
+import { ContentType, ResultType } from '../src/model/Result';
 
 enum Group {
   Objects = 'objects',

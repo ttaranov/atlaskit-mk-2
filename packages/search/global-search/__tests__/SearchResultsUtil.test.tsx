@@ -11,10 +11,10 @@ import {
   ContainerResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
 import {
-  GlobalSearchJiraObjectResult,
-  GlobalSearchContainerResult,
-  GlobalSearchConfluenceObjectResult,
-  GlobalSearchPersonResult,
+  JiraObjectResult,
+  ContainerResult,
+  ConfluenceObjectResult,
+  PersonResult,
   AnalyticsType,
   ContentType,
 } from '../src/model/Result';
@@ -98,7 +98,7 @@ describe('searchJiraItem', () => {
 
 describe('renderResults', () => {
   it('should pass the correct properties to ObjectResult for Jira results', () => {
-    const jiraResults: GlobalSearchJiraObjectResult[] = [
+    const jiraResults: JiraObjectResult[] = [
       makeJiraObjectResult({
         resultId: 'resultId',
       }),
@@ -118,7 +118,7 @@ describe('renderResults', () => {
   });
 
   it('should pass the correct properties to PersonResult for people results', () => {
-    const peopleResults: GlobalSearchPersonResult[] = [
+    const peopleResults: PersonResult[] = [
       makePersonResult({
         resultId: 'resultId',
         analyticsType: AnalyticsType.ResultPerson,
@@ -137,7 +137,7 @@ describe('renderResults', () => {
   });
 
   it('should pass the correct properties to ObjectResult for Confluence results', () => {
-    const confluenceResults: GlobalSearchConfluenceObjectResult[] = [
+    const confluenceResults: ConfluenceObjectResult[] = [
       makeConfluenceObjectResult({
         resultId: 'resultId',
         analyticsType: AnalyticsType.ResultConfluence,
@@ -157,7 +157,7 @@ describe('renderResults', () => {
   });
 
   it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
-    const confluenceSpaceResults: GlobalSearchContainerResult[] = [
+    const confluenceSpaceResults: ContainerResult[] = [
       makeConfluenceContainerResult({
         resultId: 'resultId',
         analyticsType: AnalyticsType.ResultConfluence,

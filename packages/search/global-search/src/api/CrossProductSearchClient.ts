@@ -1,10 +1,10 @@
 import {
-  GlobalSearchResult,
-  GlobalSearchResultTypes,
+  Result,
+  ResultType,
   AnalyticsType,
-  GlobalSearchContainerResult,
-  GlobalSearchJiraObjectResult,
-  GlobalSearchConfluenceObjectResult,
+  ContainerResult,
+  JiraObjectResult,
+  ConfluenceObjectResult,
   ContentType,
 } from '../model/Result';
 import {
@@ -70,7 +70,7 @@ export interface CrossProductSearchClient {
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, GlobalSearchResult[]>>;
+  ): Promise<Map<Scope, Result[]>>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -90,7 +90,7 @@ export default class CrossProductSearchClientImpl
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, GlobalSearchResult[]>> {
+  ): Promise<Map<Scope, Result[]>> {
     const response = await this.makeRequest(query, scopes);
 
     return this.parseResponse(response, searchSessionId, scopes);
@@ -128,8 +128,8 @@ export default class CrossProductSearchClientImpl
     response: CrossProductSearchResponse,
     searchSessionId: string,
     scopes: Scope[],
-  ): Map<Scope, GlobalSearchResult[]> {
-    const results: Map<Scope, GlobalSearchResult[]> = response.scopes.reduce(
+  ): Map<Scope, Result[]> {
+    const results: Map<Scope, Result[]> = response.scopes.reduce(
       (resultsMap, scopeResult) => {
         resultsMap.set(
           scopeResult.id,
@@ -154,7 +154,7 @@ function mapItemToResult(
   scope: Scope,
   item: SearchItem,
   searchSessionId: string,
-): GlobalSearchResult {
+): Result {
   switch (scope) {
     case Scope.ConfluencePageBlog:
     case Scope.ConfluencePageBlogAttachment: {
@@ -180,7 +180,7 @@ function mapItemToResult(
 function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
-): GlobalSearchConfluenceObjectResult {
+): ConfluenceObjectResult {
   return {
     resultId: `search-${item.url}`,
     name: removeHighlightTags(item.title),
@@ -188,11 +188,11 @@ function mapConfluenceItemToResultObject(
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
     contentType: `confluence-${item.content!.type}` as ContentType,
-    globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
+    resultType: ResultType.ConfluenceObjectResult,
   };
 }
 
-function mapJiraItemToResult(item: JiraItem): GlobalSearchJiraObjectResult {
+function mapJiraItemToResult(item: JiraItem): JiraObjectResult {
   return {
     resultId: `search- + ${item.key}`,
     avatarUrl: item.fields.issuetype.iconUrl,
@@ -201,19 +201,19 @@ function mapJiraItemToResult(item: JiraItem): GlobalSearchJiraObjectResult {
     containerName: item.fields.project.name,
     objectKey: item.key,
     analyticsType: AnalyticsType.ResultJira,
-    globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
+    resultType: ResultType.JiraObjectResult,
   };
 }
 
 function mapConfluenceItemToResultSpace(
   spaceItem: ConfluenceItem,
-): GlobalSearchContainerResult {
+): ContainerResult {
   return {
     resultId: `search-${spaceItem.container.displayUrl}`,
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
     analyticsType: AnalyticsType.ResultConfluence,
-    globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
+    resultType: ResultType.GenericContainerResult,
   };
 }

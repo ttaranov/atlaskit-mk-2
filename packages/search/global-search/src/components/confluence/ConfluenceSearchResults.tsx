@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import { GlobalSearchResult } from '../../model/Result';
+import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import NoResults from '../NoResults';
 import {
@@ -12,33 +12,21 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderObjectsGroup = (
-  title: string,
-  results: GlobalSearchResult[],
-  query: string,
-) =>
+const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="objects">
       {renderResults(results)}
     </ResultItemGroup>
   ) : null;
 
-const renderSpacesGroup = (
-  title: string,
-  results: GlobalSearchResult[],
-  query: string,
-) =>
+const renderSpacesGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="spaces">
       {renderResults(results)}
     </ResultItemGroup>
   ) : null;
 
-const renderPeopleGroup = (
-  title: string,
-  results: GlobalSearchResult[],
-  query: string,
-) => (
+const renderPeopleGroup = (title: string, results: Result[], query: string) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
     {renderSearchPeopleItem(query)}
@@ -72,12 +60,12 @@ export interface Props {
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentlyViewedPages: GlobalSearchResult[];
-  recentlyViewedSpaces: GlobalSearchResult[];
-  recentlyInteractedPeople: GlobalSearchResult[];
-  objectResults: GlobalSearchResult[];
-  spaceResults: GlobalSearchResult[];
-  peopleResults: GlobalSearchResult[];
+  recentlyViewedPages: Result[];
+  recentlyViewedSpaces: Result[];
+  recentlyInteractedPeople: Result[];
+  objectResults: Result[];
+  spaceResults: Result[];
+  peopleResults: Result[];
 }
 
 export default function searchResults(props: Props) {

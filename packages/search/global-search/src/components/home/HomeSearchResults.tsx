@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
-import { GlobalSearchResult } from '../../model/Result';
+import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import NoResults from '../NoResults';
 import {
@@ -14,7 +14,7 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderRecent = (results: GlobalSearchResult[]) => {
+const renderRecent = (results: Result[]) => {
   if (isEmpty(results)) {
     return null;
   }
@@ -40,21 +40,21 @@ const renderSearchConfluenceItem = (query: string) =>
     text: 'Search for more Confluence pages and blogs',
   });
 
-const renderJira = (results: GlobalSearchResult[], query: string) => (
+const renderJira = (results: Result[], query: string) => (
   <ResultItemGroup title="Jira issues" key="jira">
     {renderResults(results)}
     {searchJiraItem(query)}
   </ResultItemGroup>
 );
 
-const renderConfluence = (results: GlobalSearchResult[], query: string) => (
+const renderConfluence = (results: Result[], query: string) => (
   <ResultItemGroup title="Confluence pages and blogs" key="confluence">
     {renderResults(results)}
     {renderSearchConfluenceItem(query)}
   </ResultItemGroup>
 );
 
-const renderPeople = (results: GlobalSearchResult[], query: string) => (
+const renderPeople = (results: Result[], query: string) => (
   <ResultItemGroup title="People" key="people">
     {renderResults(results)}
     {renderSearchPeopleItem(query)}
@@ -74,11 +74,11 @@ export interface Props {
   query: string;
   isError: boolean;
   retrySearch();
-  recentlyViewedItems: GlobalSearchResult[];
-  recentResults: GlobalSearchResult[];
-  jiraResults: GlobalSearchResult[];
-  confluenceResults: GlobalSearchResult[];
-  peopleResults: GlobalSearchResult[];
+  recentlyViewedItems: Result[];
+  recentResults: Result[];
+  jiraResults: Result[];
+  confluenceResults: Result[];
+  peopleResults: Result[];
 }
 
 export default function searchResults(props: Props) {

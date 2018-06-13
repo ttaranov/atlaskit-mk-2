@@ -1,8 +1,8 @@
 import {
-  GlobalSearchPersonResult,
-  GlobalSearchResultTypes,
+  PersonResult,
+  ResultType,
   AnalyticsType,
-  GlobalSearchResult,
+  Result,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -33,8 +33,8 @@ export interface GraphqlError {
 }
 
 export interface PeopleSearchClient {
-  search(query: string): Promise<GlobalSearchResult[]>;
-  getRecentPeople(): Promise<GlobalSearchResult[]>;
+  search(query: string): Promise<Result[]>;
+  getRecentPeople(): Promise<Result[]>;
 }
 
 export default class PeopleSearchClientImpl implements PeopleSearchClient {
@@ -115,7 +115,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     };
   }
 
-  public async getRecentPeople(): Promise<GlobalSearchResult[]> {
+  public async getRecentPeople(): Promise<Result[]> {
     const options = this.buildRequestOptions(this.buildRecentQuery());
 
     const response = await utils.requestService<GraphqlResponse>(
@@ -134,7 +134,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
     return response.data.Collaborators.map(userSearchResultToResult);
   }
 
-  public async search(query: string): Promise<GlobalSearchResult[]> {
+  public async search(query: string): Promise<Result[]> {
     const options = this.buildRequestOptions(this.buildSearchQuery(query));
 
     const response = await utils.requestService<GraphqlResponse>(
@@ -159,13 +159,11 @@ function makeGraphqlErrorMessage(errors: GraphqlError[]) {
   return `${firstError.category}: ${firstError.message}`;
 }
 
-function userSearchResultToResult(
-  searchResult: SearchResult,
-): GlobalSearchPersonResult {
+function userSearchResultToResult(searchResult: SearchResult): PersonResult {
   const mention = searchResult.nickname || searchResult.fullName;
 
   return {
-    globalSearchResultType: GlobalSearchResultTypes.PersonResult,
+    resultType: ResultType.PersonResult,
     resultId: 'people-' + searchResult.id,
     name: searchResult.fullName,
     href: '/people/' + searchResult.id,

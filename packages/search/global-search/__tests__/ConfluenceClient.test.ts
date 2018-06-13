@@ -5,10 +5,9 @@ import ConfluenceClient, {
 } from '../src/api/ConfluenceClient';
 import {
   AnalyticsType,
-  GlobalSearchResultTypes,
+  ResultType,
   ContentType,
-  GlobalSearchConfluenceObjectResult,
-  GlobalSearchContainerResult,
+  ContainerResult,
 } from '../src/model/Result';
 
 import 'whatwg-fetch';
@@ -81,8 +80,7 @@ describe('ConfluenceClient', () => {
           href: `${DUMMY_CONFLUENCE_HOST}${pages[0].url}`,
           containerName: pages[0].space,
           analyticsType: AnalyticsType.RecentConfluence,
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
+          resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
         },
         {
@@ -91,8 +89,7 @@ describe('ConfluenceClient', () => {
           href: `${DUMMY_CONFLUENCE_HOST}${pages[1].url}`,
           containerName: pages[1].space,
           analyticsType: AnalyticsType.RecentConfluence,
-          globalSearchResultType:
-            GlobalSearchResultTypes.ConfluenceObjectResult,
+          resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceBlogpost,
         },
       ]);
@@ -113,15 +110,14 @@ describe('ConfluenceClient', () => {
 
       const result = await confluenceClient.getRecentSpaces();
 
-      const expectedResults: GlobalSearchContainerResult[] = [
+      const expectedResults: ContainerResult[] = [
         {
           resultId: MOCK_SPACE.id,
           name: MOCK_SPACE.name,
           href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
-          globalSearchResultType:
-            GlobalSearchResultTypes.GenericContainerResult,
+          resultType: ResultType.GenericContainerResult,
         },
         {
           resultId: MOCK_SPACE.id,
@@ -129,8 +125,7 @@ describe('ConfluenceClient', () => {
           href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
-          globalSearchResultType:
-            GlobalSearchResultTypes.GenericContainerResult,
+          resultType: ResultType.GenericContainerResult,
         },
       ];
 

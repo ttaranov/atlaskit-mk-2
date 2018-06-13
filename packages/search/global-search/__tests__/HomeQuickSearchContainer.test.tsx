@@ -5,7 +5,7 @@ import {
   HomeQuickSearchContainer,
   Props,
 } from '../src/components/home/HomeQuickSearchContainer';
-import { GlobalSearchResult } from '../src/model/Result';
+import { Result } from '../src/model/Result';
 import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
 import { Scope } from '../src/api/CrossProductSearchClient';
 import SearchError from '../src/components/SearchError';
@@ -215,13 +215,11 @@ describe('HomeQuickSearchContainer', () => {
      5. Make sure search results appeared in time
     */
 
-    function searchRecent(query: string): Promise<GlobalSearchResult[]> {
+    function searchRecent(query: string): Promise<Result[]> {
       return delay(5, [makeJiraObjectResult()]);
     }
 
-    function searchCrossProduct(
-      query: string,
-    ): Promise<Map<Scope, GlobalSearchResult[]>> {
+    function searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
       return delay(
         5,
         makeSingleResultCrossProductSearchResponse(Scope.JiraIssue),
@@ -261,9 +259,7 @@ describe('HomeQuickSearchContainer', () => {
       5. Make sure the fast result is displayed and not the delayed result
     */
 
-    function searchDelayed(
-      query: string,
-    ): Promise<Map<Scope, GlobalSearchResult[]>> {
+    function searchDelayed(query: string): Promise<Map<Scope, Result[]>> {
       return delay(
         5,
         makeSingleResultCrossProductSearchResponse(
@@ -273,9 +269,7 @@ describe('HomeQuickSearchContainer', () => {
       );
     }
 
-    function searchCurrent(
-      query: string,
-    ): Promise<Map<Scope, GlobalSearchResult[]>> {
+    function searchCurrent(query: string): Promise<Map<Scope, Result[]>> {
       return Promise.resolve(
         makeSingleResultCrossProductSearchResponse(
           Scope.JiraIssue,

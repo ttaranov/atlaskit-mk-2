@@ -7,7 +7,7 @@ import {
   CrossProductSearchClient,
   Scope,
 } from '../../api/CrossProductSearchClient';
-import { GlobalSearchResult } from '../../model/Result';
+import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
@@ -26,12 +26,12 @@ export interface State {
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
-  recentlyViewedPages: GlobalSearchResult[];
-  recentlyViewedSpaces: GlobalSearchResult[];
-  recentlyInteractedPeople: GlobalSearchResult[];
-  objectResults: GlobalSearchResult[];
-  spaceResults: GlobalSearchResult[];
-  peopleResults: GlobalSearchResult[];
+  recentlyViewedPages: Result[];
+  recentlyViewedSpaces: Result[];
+  recentlyInteractedPeople: Result[];
+  objectResults: Result[];
+  spaceResults: Result[];
+  peopleResults: Result[];
 }
 
 /**
@@ -78,7 +78,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   async searchCrossProductConfluence(
     query: string,
-  ): Promise<Map<Scope, GlobalSearchResult[]>> {
+  ): Promise<Map<Scope, Result[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
@@ -95,7 +95,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     return results;
   }
 
-  async searchPeople(query: string): Promise<GlobalSearchResult[]> {
+  async searchPeople(query: string): Promise<Result[]> {
     const results = await this.props.peopleSearchClient.search(query);
 
     if (this.state.query === query) {

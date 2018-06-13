@@ -1,10 +1,9 @@
 import {
-  GlobalSearchResult,
-  GlobalSearchResultTypes,
+  Result,
+  ResultType,
   AnalyticsType,
-  GlobalSearchJiraObjectResult,
-  GlobalSearchConfluenceObjectResult,
-  ContentType,
+  JiraObjectResult,
+  ConfluenceObjectResult,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -26,8 +25,8 @@ export interface RecentItem {
 }
 
 export interface RecentSearchClient {
-  getRecentItems(): Promise<GlobalSearchResult[]>;
-  search(query: string): Promise<GlobalSearchResult[]>;
+  getRecentItems(): Promise<Result[]>;
+  search(query: string): Promise<Result[]>;
 }
 
 export default class RecentSearchClientImpl implements RecentSearchClient {
@@ -40,12 +39,12 @@ export default class RecentSearchClientImpl implements RecentSearchClient {
     this.cloudId = cloudId;
   }
 
-  public async getRecentItems(): Promise<GlobalSearchResult[]> {
+  public async getRecentItems(): Promise<Result[]> {
     const recentItems = await this.fetchRecentItems();
     return recentItems.map(recentItemToResult);
   }
 
-  public async search(query: string): Promise<GlobalSearchResult[]> {
+  public async search(query: string): Promise<Result[]> {
     const recentItems = await this.fetchRecentItems();
     const filteredRecentItems = this.filterItems(recentItems, query);
 
@@ -121,7 +120,7 @@ function maybeSplitIssueKeyAndName(recentItem: RecentItem) {
   }
 }
 
-function recentItemToResult(recentItem: RecentItem): GlobalSearchResult {
+function recentItemToResult(recentItem: RecentItem): Result {
   const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
 
   const baseResult = {
@@ -133,17 +132,17 @@ function recentItemToResult(recentItem: RecentItem): GlobalSearchResult {
   };
 
   if (recentItem.provider === 'jira') {
-    const jiraResult: GlobalSearchJiraObjectResult = {
+    const jiraResult: JiraObjectResult = {
       objectKey: objectKey!,
-      globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
+      resultType: ResultType.JiraObjectResult,
       analyticsType: AnalyticsType.RecentJira,
       ...baseResult,
     };
 
     return jiraResult;
   } else {
-    const confluenceResult: GlobalSearchConfluenceObjectResult = {
-      globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
+    const confluenceResult: ConfluenceObjectResult = {
+      resultType: ResultType.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
       ...baseResult,
     };

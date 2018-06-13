@@ -5,10 +5,10 @@ import RecentSearchClient, {
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
-  GlobalSearchJiraObjectResult,
+  JiraObjectResult,
   AnalyticsType,
-  GlobalSearchResultTypes,
-  GlobalSearchConfluenceObjectResult,
+  ResultType,
+  ConfluenceObjectResult,
   ContentType,
 } from '../src/model/Result';
 
@@ -51,7 +51,7 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
-      const item: GlobalSearchJiraObjectResult = items[0] as GlobalSearchJiraObjectResult;
+      const item = items[0] as JiraObjectResult;
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
@@ -59,9 +59,7 @@ describe('RecentSearchClient', () => {
       expect(item.containerName).toEqual('container');
       expect(item.objectKey).toEqual('HOT-83341');
       expect(item.analyticsType).toEqual(AnalyticsType.RecentJira);
-      expect(item.globalSearchResultType).toEqual(
-        GlobalSearchResultTypes.JiraObjectResult,
-      );
+      expect(item.resultType).toEqual(ResultType.JiraObjectResult);
     });
   });
 
@@ -81,16 +79,14 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.search('name');
       expect(items).toHaveLength(1);
 
-      const item: GlobalSearchConfluenceObjectResult = items[0] as GlobalSearchConfluenceObjectResult;
+      const item = items[0] as ConfluenceObjectResult;
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
       expect(item.href).toEqual('url');
       expect(item.containerName).toEqual('container');
       expect(item.analyticsType).toEqual(AnalyticsType.RecentConfluence);
-      expect(item.globalSearchResultType).toEqual(
-        GlobalSearchResultTypes.ConfluenceObjectResult,
-      );
+      expect(item.resultType).toEqual(ResultType.ConfluenceObjectResult);
       expect(item.contentType).toBeUndefined();
     });
 
@@ -185,14 +181,12 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
-      const item: GlobalSearchConfluenceObjectResult = items[0] as GlobalSearchConfluenceObjectResult;
+      const item = items[0] as ConfluenceObjectResult;
       expect(item.name).toEqual(
         'HOT-83341 PIR - Lets get to the bottom of this!',
       );
       expect(item).not.toHaveProperty('objectKey');
-      expect(item.globalSearchResultType).toEqual(
-        GlobalSearchResultTypes.ConfluenceObjectResult,
-      );
+      expect(item.resultType).toEqual(ResultType.ConfluenceObjectResult);
       expect(item.contentType).toBeUndefined();
     });
   });

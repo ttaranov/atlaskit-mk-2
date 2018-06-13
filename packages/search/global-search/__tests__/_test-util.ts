@@ -1,11 +1,11 @@
 import {
   AnalyticsType,
-  GlobalSearchResultTypes,
-  GlobalSearchJiraObjectResult,
-  GlobalSearchConfluenceObjectResult,
+  ResultType,
+  JiraObjectResult,
+  ConfluenceObjectResult,
   ContentType,
-  GlobalSearchContainerResult,
-  GlobalSearchPersonResult,
+  ContainerResult,
+  PersonResult,
 } from '../src/model/Result';
 
 function buildMockSearchResultProperties() {
@@ -18,11 +18,11 @@ function buildMockSearchResultProperties() {
 }
 
 export function makeJiraObjectResult(
-  partial?: Partial<GlobalSearchJiraObjectResult>,
-): GlobalSearchJiraObjectResult {
+  partial?: Partial<JiraObjectResult>,
+): JiraObjectResult {
   return {
     analyticsType: AnalyticsType.ResultJira,
-    globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
+    resultType: ResultType.JiraObjectResult,
     objectKey: 'objectKey',
     containerName: 'containerName',
     ...buildMockSearchResultProperties(),
@@ -31,11 +31,11 @@ export function makeJiraObjectResult(
 }
 
 export function makeConfluenceObjectResult(
-  partial?: Partial<GlobalSearchConfluenceObjectResult>,
-): GlobalSearchConfluenceObjectResult {
+  partial?: Partial<ConfluenceObjectResult>,
+): ConfluenceObjectResult {
   return {
     analyticsType: AnalyticsType.ResultConfluence,
-    globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
+    resultType: ResultType.ConfluenceObjectResult,
     containerName: 'containerName',
     contentType: ContentType.ConfluencePage,
     ...buildMockSearchResultProperties(),
@@ -44,24 +44,24 @@ export function makeConfluenceObjectResult(
 }
 
 export function makeConfluenceContainerResult(
-  partial?: Partial<GlobalSearchContainerResult>,
-): GlobalSearchContainerResult {
+  partial?: Partial<ContainerResult>,
+): ContainerResult {
   return {
     analyticsType: AnalyticsType.ResultConfluence,
-    globalSearchResultType: GlobalSearchResultTypes.GenericContainerResult,
+    resultType: ResultType.GenericContainerResult,
     ...buildMockSearchResultProperties(),
     ...partial,
   };
 }
 
 export function makePersonResult(
-  partial?: Partial<GlobalSearchPersonResult>,
-): GlobalSearchPersonResult {
+  partial?: Partial<PersonResult>,
+): PersonResult {
   return {
     mentionName: 'patato',
     presenceMessage: 'head of everything',
     analyticsType: AnalyticsType.ResultPerson,
-    globalSearchResultType: GlobalSearchResultTypes.PersonResult,
+    resultType: ResultType.PersonResult,
     ...buildMockSearchResultProperties(),
     ...partial,
   };

@@ -4,11 +4,7 @@ import PeopleSearchClient, {
 } from '../src/api/PeopleSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
-import {
-  AnalyticsType,
-  GlobalSearchResultTypes,
-  GlobalSearchPersonResult,
-} from '../src/model/Result';
+import { AnalyticsType, ResultType, PersonResult } from '../src/model/Result';
 
 function apiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const response = Array.isArray(state)
@@ -58,11 +54,9 @@ describe('PeopleSearchClient', () => {
       const items = await searchClient.search('query');
       expect(items).toHaveLength(1);
 
-      const item: GlobalSearchPersonResult = items[0] as GlobalSearchPersonResult;
+      const item = items[0] as PersonResult;
 
-      expect(item.globalSearchResultType).toEqual(
-        GlobalSearchResultTypes.PersonResult,
-      );
+      expect(item.resultType).toEqual(ResultType.PersonResult);
       expect(item.mentionName).toEqual('nickname');
       expect(item.presenceMessage).toEqual('abc');
       expect(item.resultId).toEqual('people-123');
