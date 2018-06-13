@@ -52,7 +52,6 @@ export default class DropdownMenuStateless extends Component<
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
-    triggerButtonProps: {},
     triggerType: 'default',
   };
 

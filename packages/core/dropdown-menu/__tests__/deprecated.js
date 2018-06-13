@@ -27,6 +27,16 @@ const itemsList = [
   },
 ];
 
+const defaultButtonProps = {
+  isDisabled: false,
+  isLoading: false,
+  isSelected: false,
+  spacing: 'default',
+  type: 'button',
+  shouldFitContainer: true,
+  autoFocus: false,
+};
+
 describe('dropdown menu', () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
@@ -106,6 +116,7 @@ describe('dropdown menu', () => {
 
     it('should pass through triggerButtonProps to the trigger for triggerType=button', () => {
       const triggerProps = {
+        ...defaultButtonProps,
         appearance: 'subtle',
         id: 'button-123',
         theme: 'dark',
@@ -125,6 +136,7 @@ describe('dropdown menu', () => {
 
     it('should render provided iconAfter in trigger instead of default expand icon if provided', () => {
       const triggerProps = {
+        ...defaultButtonProps,
         iconAfter: <MoreIcon label="more" />,
       };
       const menu = mount(
@@ -142,6 +154,7 @@ describe('dropdown menu', () => {
 
     it('should render provided iconBefore in trigger instead of default expand icon if provided', () => {
       const triggerProps = {
+        ...defaultButtonProps,
         iconBefore: <MoreIcon label="more" />,
       };
       const menu = mount(
