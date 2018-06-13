@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent, Fragment } from 'react';
+import { css } from 'emotion';
 import raf from 'raf-schd';
 import { colors } from '@atlaskit/theme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
@@ -15,22 +16,18 @@ const OUTER_WIDTH = 32;
 const Outer = props => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const Inner = ({ ...props }) => (
-  <div
-    className="affordance-region"
-    css={{
-      height: '100%',
-      opacity: 0,
-      position: 'relative',
-      transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1) 80ms',
-      width: OUTER_WIDTH,
-      ':hover': {
-        opacity: 1,
-      },
-    }}
-    {...props}
-  />
-);
+const innerStyles = css({
+  height: '100%',
+  opacity: 0,
+  position: 'relative',
+  transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1) 80ms',
+  width: OUTER_WIDTH,
+  ':hover': {
+    opacity: 1,
+  },
+});
+
+const Inner = ({ ...props }) => <div className={innerStyles} {...props} />;
 const Handle = props => {
   const handleWidth = 12;
   const lineWidth = 2;
@@ -57,6 +54,7 @@ const Handle = props => {
     />
   );
 };
+console.log(css);
 const Button = ({ ...props }) => (
   <button
     type="button"
@@ -76,7 +74,7 @@ const Button = ({ ...props }) => (
       transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
       transitionDelay: 0,
 
-      '.affordance-region:hover &': {
+      [`.${innerStyles}:hover &`]: {
         transform: 'translateX(0)',
         transitionDelay: '120ms',
       },
