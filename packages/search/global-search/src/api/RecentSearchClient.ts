@@ -143,7 +143,6 @@ function recentItemToResult(recentItem: RecentItem): GlobalSearchResult {
     return jiraResult;
   } else {
     const confluenceResult: GlobalSearchConfluenceObjectResult = {
-      contentType: ContentType.ConfluenceAmbiguous, // not provided, but not needed
       globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
       ...baseResult,

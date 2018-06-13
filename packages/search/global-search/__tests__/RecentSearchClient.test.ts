@@ -91,7 +91,7 @@ describe('RecentSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.ConfluenceObjectResult,
       );
-      expect(item.contentType).toEqual(ContentType.ConfluenceAmbiguous);
+      expect(item.contentType).toBeUndefined();
     });
 
     it('should call the api only once when client is invoked repeatedly', async () => {
@@ -193,7 +193,7 @@ describe('RecentSearchClient', () => {
       expect(item.globalSearchResultType).toEqual(
         GlobalSearchResultTypes.ConfluenceObjectResult,
       );
-      expect(item.contentType).toEqual(ContentType.ConfluenceAmbiguous);
+      expect(item.contentType).toBeUndefined();
     });
   });
 });

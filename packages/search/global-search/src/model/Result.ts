@@ -21,7 +21,7 @@ export interface GlobalSearchResult {
 
 export interface GlobalSearchConfluenceObjectResult extends GlobalSearchResult {
   containerName: string;
-  contentType: ContentType;
+  contentType?: ContentType;
   globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult;
 }
 
@@ -50,9 +50,6 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
-
-  // if unspecified, such as when retrieving results from the recent api, 'ambiguous' is used
-  ConfluenceAmbiguous = 'confluence-ambiguous',
 }
 
 export enum AnalyticsType {
