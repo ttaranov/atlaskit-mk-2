@@ -41,9 +41,11 @@ const generateAvatar = profileIconUrl => () => (
 
 function configFactory(onClick, tooltip, otherConfig = {}) {
   if (!onClick && (tooltip || !isEmpty(otherConfig))) {
+    /* eslint-disable no-console */
     console.warn(
       `One of the items in the Global Navigation is missing an onClick handler. This item will not be rendered in Global Navigation.`,
     );
+    /* eslint-enable no-console */
   }
 
   if (!onClick) return null;
@@ -57,9 +59,11 @@ function configFactory(onClick, tooltip, otherConfig = {}) {
 
 function helpConfigFactory(items, tooltip, otherConfig = {}) {
   if (!items && (tooltip || !isEmpty(otherConfig))) {
+    /* eslint-disable no-console */
     console.warn(
       'You have provided some prop(s) for help, but not helpItems. Help will not be rendered in Global Navigation',
     );
+    /* eslint-enable no-console */
   }
 
   if (!items) return null;
@@ -79,17 +83,21 @@ function profileConfigFactory(
   otherConfig = {},
 ) {
   if (!items && !href && (tooltip || !isEmpty(otherConfig))) {
+    /* eslint-disable no-console */
     console.warn(
       'You provided some prop(s) for profile, but not profileItems or loginHref. Profile will not be rendered in Global Navigation',
     );
+    /* eslint-enable no-console */
   }
 
   if (!items && !href) return null;
 
   if (items && href) {
+    /* eslint-disable no-console */
     console.warn(
       'You have provided both loginHref and profileItems. loginUrl prop will be ignored by Global Navigation',
     );
+    /* eslint-enable no-console */
   }
 
   const profileComponent = items
