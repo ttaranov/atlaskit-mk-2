@@ -307,7 +307,7 @@ if (process.env.VISUAL_REGRESSION) {
   beforeAll(async () => {
     global.browser = await puppeteer.launch({
       // run test in headless mode
-      headless: false,
+      headless: true,
       slowMo: 100,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
@@ -318,10 +318,10 @@ if (process.env.VISUAL_REGRESSION) {
     await global.browser.close();
   });
 
-  const toMatchImageSnapshot = configureToMatchImageSnapshot({
+  const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
     customDiffConfig: { threshold: 0.2 },
     noColors: true,
   });
 
-  expect.extend({ toMatchImageSnapshot });
+  expect.extend({ toMatchProdImageSnapshot });
 }
