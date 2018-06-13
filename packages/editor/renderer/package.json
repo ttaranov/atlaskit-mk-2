@@ -42,6 +42,7 @@
     "@atlaskit/media-test-helpers": "^14.0.0",
     "@atlaskit/size-detector": "^4.0.0",
     "@atlaskit/util-data-test": "^9.1.10",
+    "@atlaskit/visual-regression":"^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
     "react-live-clock": "^2.0.2"
   }
