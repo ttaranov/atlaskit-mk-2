@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
 import { Identifier, MediaViewerFeatureFlags } from './domain';
-import { HeaderWrapper, ListWrapper } from './styled';
+import { HeaderWrapper, hideControlsClassName, ListWrapper } from './styled';
 import { getSelectedIndex } from './util';
 import { ErrorMessage } from './styled';
 import Navigation from './navigation';
@@ -43,7 +43,7 @@ export class List extends React.Component<Props, State> {
     } else {
       return (
         <ListWrapper>
-          <HeaderWrapper>
+          <HeaderWrapper className={hideControlsClassName}>
             <Header
               context={context}
               identifier={selectedItem}
