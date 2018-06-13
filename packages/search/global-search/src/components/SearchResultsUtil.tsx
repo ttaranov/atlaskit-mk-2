@@ -60,40 +60,59 @@ export function renderResults(results: GlobalSearchResult[]) {
   return results.map(result => {
     const resultType: GlobalSearchResultTypes = result.globalSearchResultType;
 
-    const additionalProps = {
-      key: result.resultId,
-    };
-
     switch (resultType) {
       case GlobalSearchResultTypes.ConfluenceObjectResult: {
+        const confluenceResult: GlobalSearchConfluenceObjectResult = result as GlobalSearchConfluenceObjectResult;
+
         return (
           <ObjectResultWithAnalytics
-            {...additionalProps}
-            {...result as GlobalSearchConfluenceObjectResult}
+            key={confluenceResult.resultId}
+            name={confluenceResult.name}
+            href={confluenceResult.href}
+            type={confluenceResult.analyticsType}
+            contentType={confluenceResult.contentType}
+            containerName={confluenceResult.containerName}
           />
         );
       }
       case GlobalSearchResultTypes.JiraObjectResult: {
+        const jiraResult: GlobalSearchJiraObjectResult = result as GlobalSearchJiraObjectResult;
+
         return (
           <ObjectResultWithAnalytics
-            {...additionalProps}
-            {...result as GlobalSearchJiraObjectResult}
+            key={jiraResult.resultId}
+            name={jiraResult.name}
+            href={jiraResult.href}
+            type={jiraResult.analyticsType}
+            objectKey={jiraResult.objectKey}
+            containerName={jiraResult.containerName}
+            avatarUrl={jiraResult.avatarUrl}
           />
         );
       }
       case GlobalSearchResultTypes.GenericContainerResult: {
+        const containerResult: GlobalSearchContainerResult = result as GlobalSearchContainerResult;
+
         return (
           <ContainerResultWithAnalytics
-            {...additionalProps}
-            {...result as GlobalSearchContainerResult}
+            key={containerResult.resultId}
+            name={containerResult.name}
+            href={containerResult.href}
+            type={containerResult.analyticsType}
+            avatarUrl={containerResult.avatarUrl}
           />
         );
       }
       case GlobalSearchResultTypes.PersonResult: {
+        const personResult: GlobalSearchPersonResult = result as GlobalSearchPersonResult;
+
         return (
           <PersonResultWithAnalytics
-            {...additionalProps}
-            {...result as GlobalSearchPersonResult}
+            key={personResult.resultId}
+            name={personResult.name}
+            href={personResult.href}
+            type={personResult.analyticsType}
+            avatarUrl={personResult.avatarUrl}
           />
         );
       }

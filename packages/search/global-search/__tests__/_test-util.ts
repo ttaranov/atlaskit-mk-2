@@ -1,5 +1,4 @@
 import {
-  GlobalSearchResult,
   AnalyticsType,
   GlobalSearchResultTypes,
   GlobalSearchJiraObjectResult,
@@ -24,8 +23,8 @@ export function makeJiraObjectResult(
   return {
     analyticsType: AnalyticsType.ResultJira,
     globalSearchResultType: GlobalSearchResultTypes.JiraObjectResult,
-    objectKey: 'HOT-123',
-    containerName: 'PROJECT',
+    objectKey: 'objectKey',
+    containerName: 'containerName',
     ...buildMockSearchResultProperties(),
     ...partial,
   };
@@ -37,7 +36,7 @@ export function makeConfluenceObjectResult(
   return {
     analyticsType: AnalyticsType.ResultConfluence,
     globalSearchResultType: GlobalSearchResultTypes.ConfluenceObjectResult,
-    containerName: 'SPACE',
+    containerName: 'containerName',
     contentType: ContentType.ConfluencePage,
     ...buildMockSearchResultProperties(),
     ...partial,

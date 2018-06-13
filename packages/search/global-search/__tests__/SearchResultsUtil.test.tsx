@@ -6,10 +6,24 @@ import {
   AdvancedSearchItemProps,
   searchJiraItem,
   renderResults,
+  ObjectResultWithAnalytics,
+  PersonResultWithAnalytics,
+  ContainerResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
-import { AnalyticsType } from '../src/model/Result';
-import ObjectResult from '../src/components/ObjectResult';
-import { ObjectResultWithAnalytics } from '../src/components/SearchResultsUtil';
+import {
+  GlobalSearchJiraObjectResult,
+  GlobalSearchContainerResult,
+  GlobalSearchConfluenceObjectResult,
+  GlobalSearchPersonResult,
+  AnalyticsType,
+  ContentType,
+} from '../src/model/Result';
+import {
+  makeConfluenceObjectResult,
+  makeConfluenceContainerResult,
+  makePersonResult,
+  makeJiraObjectResult,
+} from './_test-util';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {
@@ -80,14 +94,82 @@ describe('searchJiraItem', () => {
       '/issues/?jql=text%20~%20%22test%20query%22',
     );
   });
+});
 
-  describe('renderResults', () => {
-    it('should pass the correct properties to ObjectResult for Jira results', () => {});
+describe('renderResults', () => {
+  it('should pass the correct properties to ObjectResult for Jira results', () => {
+    const jiraResults: GlobalSearchJiraObjectResult[] = [
+      makeJiraObjectResult({
+        resultId: 'resultId',
+      }),
+    ];
 
-    it('should pass the correct properties to PersonResult for people results', () => {});
+    const wrapper = shallow(<span>{renderResults(jiraResults)}</span>);
 
-    it('should pass the correct properties to ObjectResult for Confluence results', () => {});
+    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      type: 'result-jira',
+      objectKey: 'objectKey',
+      avatarUrl: 'avatarUrl',
+      name: 'name',
+      containerName: 'containerName',
+    });
+  });
 
-    it('should pass the correct properties to ContainerResult for Confluence spaces', () => {});
+  it('should pass the correct properties to PersonResult for people results', () => {
+    const peopleResults: GlobalSearchPersonResult[] = [
+      makePersonResult({
+        resultId: 'resultId',
+        analyticsType: AnalyticsType.ResultPerson,
+      }),
+    ];
+
+    const wrapper = shallow(<span>{renderResults(peopleResults)}</span>);
+
+    expect(wrapper.find(PersonResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      type: 'result-person',
+      avatarUrl: 'avatarUrl',
+      name: 'name',
+    });
+  });
+
+  it('should pass the correct properties to ObjectResult for Confluence results', () => {
+    const confluenceResults: GlobalSearchConfluenceObjectResult[] = [
+      makeConfluenceObjectResult({
+        resultId: 'resultId',
+        analyticsType: AnalyticsType.ResultConfluence,
+      }),
+    ];
+
+    const wrapper = shallow(<span>{renderResults(confluenceResults)}</span>);
+
+    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      type: 'result-confluence',
+      name: 'name',
+      containerName: 'containerName',
+      contentType: ContentType.ConfluencePage,
+    });
+  });
+
+  it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
+    const confluenceSpaceResults: GlobalSearchContainerResult[] = [
+      makeConfluenceContainerResult({
+        resultId: 'resultId',
+        analyticsType: AnalyticsType.ResultConfluence,
+      }),
+    ];
+
+    const wrapper = shallow(
+      <span>{renderResults(confluenceSpaceResults)}</span>,
+    );
+
+    expect(wrapper.find(ContainerResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      type: 'result-confluence',
+      avatarUrl: 'avatarUrl',
+      name: 'name',
+    });
   });
 });
