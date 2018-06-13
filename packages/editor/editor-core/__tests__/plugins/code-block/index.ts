@@ -48,10 +48,9 @@ describe('code-block', () => {
     describe('#state.update', () => {
       describe('when entering code block', () => {
         it('sets the activeCodeBlock', () => {
-          const {
-            refs: { cbPos },
-            editorView,
-          } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+          const { refs: { cbPos }, editorView } = editor(
+            doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')),
+          );
 
           setTextSelection(editorView, cbPos);
           const pluginState = codeBlockPluginKey.getState(editorView.state);
@@ -65,10 +64,7 @@ describe('code-block', () => {
 
       describe('when moving to a different code block', () => {
         it('should update the activeCodeBlock', () => {
-          const {
-            refs: { cbPos },
-            editorView,
-          } = editor(
+          const { refs: { cbPos }, editorView } = editor(
             doc(
               code_block()('codeBlock{<>}'),
               code_block()('codeBlock{cbPos}'),
@@ -91,11 +87,9 @@ describe('code-block', () => {
 
       describe('when moving within the same code block', () => {
         it('should not update state', () => {
-          const {
-            refs: { cbPos },
-            pluginState,
-            editorView,
-          } = editor(doc(code_block()('{<>}codeBlock{cbPos}')));
+          const { refs: { cbPos }, pluginState, editorView } = editor(
+            doc(code_block()('{<>}codeBlock{cbPos}')),
+          );
 
           setTextSelection(editorView, cbPos);
           expect(codeBlockPluginKey.getState(editorView.state)).toEqual(
@@ -107,10 +101,9 @@ describe('code-block', () => {
 
       describe('when leaving code block', () => {
         it('should unset the activeCodeBlock', () => {
-          const {
-            refs: { pPos },
-            editorView,
-          } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+          const { refs: { pPos }, editorView } = editor(
+            doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')),
+          );
 
           expect(
             codeBlockPluginKey.getState(editorView.state).activeCodeBlock,

@@ -63,9 +63,7 @@ export const plugin = (dispatch: Dispatch) =>
             adjustPositionFix(activeCodeBlock),
           );
         } else if (tr.docChanged && pluginState.activeCodeBlock) {
-          const {
-            activeCodeBlock: { pos, node },
-          } = pluginState;
+          const { activeCodeBlock: { pos, node } } = pluginState;
           const trPos = tr.mapping.map(pos);
           const trNode = tr.doc.nodeAt(trPos);
           // Update activeCodeBlock when node updated or deleted
