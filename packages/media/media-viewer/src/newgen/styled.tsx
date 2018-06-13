@@ -92,7 +92,7 @@ export const ZoomControlsWrapper = styled.div`
   }
 `;
 
-export const ZoomLevel = styled.span`
+export const ZoomLevelIndicator = styled.span`
   position: absolute;
   right: 24px;
   top: 0;
