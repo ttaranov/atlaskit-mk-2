@@ -23,7 +23,7 @@
   "dependencies": {
     "@atlaskit/editor-common": "^11.0.5",
     "@atlaskit/theme": "^4.0.0",
-    "prosemirror-model": "^1.2.0"
+    "prosemirror-model": "1.4.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.0.0",

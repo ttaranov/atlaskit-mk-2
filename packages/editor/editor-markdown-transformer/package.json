@@ -20,7 +20,7 @@
     "markdown-it": "^6.0.4",
     "markdown-it-table": "^2.0.3",
     "prosemirror-markdown": "^1.0.3",
-    "prosemirror-model": "^1.2.0"
+    "prosemirror-model": "1.4.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.0.0",
