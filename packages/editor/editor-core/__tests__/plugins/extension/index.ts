@@ -18,9 +18,11 @@ import {
   setExtensionElement,
   editExtension,
   removeExtension,
+  updateExtensionLayout,
 } from '../../../src/plugins/extension/actions';
 import { pluginKey } from '../../../src/plugins/extension/plugin';
 import extensionPlugin from '../../../src/plugins/extension';
+import { findParentNodeOfType } from 'prosemirror-utils';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
 
@@ -29,6 +31,11 @@ describe('extension', () => {
     return createEditor({
       doc,
       editorPlugins: [extensionPlugin],
+      editorProps: {
+        allowExtension: {
+          allowBreakout: true,
+        },
+      },
     });
   };
 
@@ -170,6 +177,116 @@ describe('extension', () => {
       );
       const pluginState = pluginKey.getState(editorView.state);
       expect(pluginState.element).not.toEqual(null);
+    });
+  });
+
+  describe('extension layouts', () => {
+    it('should update the extension node layout attribute', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
+      );
+      const {
+        state: { schema, selection },
+      } = editorView;
+      const nodeInitial = findParentNodeOfType(schema.nodes.bodiedExtension)(
+        selection,
+      )!.node;
+      expect(nodeInitial!.attrs.layout).toBe('default');
+      updateExtensionLayout('full-width')(
+        editorView.state,
+        editorView.dispatch,
+      );
+
+      const { node } = findParentNodeOfType(schema.nodes.bodiedExtension)(
+        editorView.state.selection,
+      )!;
+      expect(node).toBeDefined();
+      expect(node!.attrs.layout).toBe('full-width');
+      editorView.destroy();
+    });
+
+    it('respects the layout attribute', () => {
+      const { editorView } = editor(
+        doc(
+          bodiedExtension({ ...extensionAttrs, layout: 'full-width' })(
+            paragraph('te{<>}xt'),
+          ),
+        ),
+      );
+
+      const getExtension = editorView.dom.getElementsByClassName(
+        'extension-container',
+      );
+      expect(getExtension.length).toBe(1);
+      const getExtensionElement = getExtension[0];
+
+      expect(getExtensionElement.getAttribute('data-layout')).toBe(
+        'full-width',
+      );
+
+      editorView.destroy();
+    });
+
+    it('sets the data-layout attribute on the extension DOM element', () => {
+      const { editorView } = editor(
+        doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
+      );
+
+      const getExtension = editorView.dom.getElementsByClassName(
+        'extension-container',
+      );
+      expect(getExtension.length).toBe(1);
+      const getExtensionElement = getExtension[0];
+
+      expect(getExtensionElement.getAttribute('data-layout')).toBe('default');
+
+      updateExtensionLayout('full-width')(
+        editorView.state,
+        editorView.dispatch,
+      );
+      expect(getExtensionElement.getAttribute('data-layout')).toBe(
+        'full-width',
+      );
+
+      editorView.destroy();
+    });
+
+    it('sets layout attributes uniquely on extension elements', () => {
+      const { editorView } = editor(
+        doc(
+          bodiedExtension(extensionAttrs)(paragraph('text')),
+          paragraph('hello'),
+          bodiedExtension(extensionAttrs)(paragraph('te{<>}xt')),
+        ),
+      );
+
+      const {
+        state: { schema },
+      } = editorView;
+
+      const getExtension = editorView.dom.getElementsByClassName(
+        'extension-container',
+      );
+      expect(getExtension.length).toBe(2);
+      updateExtensionLayout('full-width')(
+        editorView.state,
+        editorView.dispatch,
+      );
+      const { node } = findParentNodeOfType(schema.nodes.bodiedExtension)(
+        editorView.state.selection,
+      )!;
+      expect(node).toBeDefined();
+      expect(node!.attrs.layout).toBe('full-width');
+
+      const getFirstExtensionElement = getExtension[0];
+      const getSecondExtensionElement = getExtension[1];
+      expect(getFirstExtensionElement.getAttribute('data-layout')).toBe(
+        'default',
+      );
+      expect(getSecondExtensionElement.getAttribute('data-layout')).toBe(
+        'full-width',
+      );
+      editorView.destroy();
     });
   });
 });

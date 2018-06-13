@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 6.0.2
+- [patch] moved atlaskit from dependencies to dev dependency [5e14f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e14f44)
+
 ## 6.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)

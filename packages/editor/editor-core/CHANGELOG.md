@@ -1,5 +1,25 @@
 # @atlaskit/editor-core
 
+## 73.4.3
+- [patch] Adding breakout to extensions [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+- [none] Updated dependencies [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+  - @atlaskit/editor-test-helpers@4.0.6
+  - @atlaskit/editor-common@11.0.5
+
+## 73.4.2
+- [patch] Fix issue where clicking over empty space in a code-block would not select the end of the line. ED-4637 [8120815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8120815)
+- [patch] Code-block toolbar refactored to rely less on view state. This also fixes issues with the code-block in IE11. [9249525](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9249525)
+- [none] Updated dependencies [8120815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8120815)
+- [none] Updated dependencies [9249525](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9249525)
+
+## 73.4.1
+- [patch] Fix issue where mention-picker when two users would have a mention picker open at the same time in collaborative editing. [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
+- [none] Updated dependencies [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
+
+## 73.4.0
+- [minor] ED-4657: unbreak table copy-paste [38b5ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b5ce7)
+- [none] Updated dependencies [38b5ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b5ce7)
+
 ## 73.3.10
 - [patch] ED-4823: added card provider [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)
 - [none] Updated dependencies [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)

@@ -60,9 +60,15 @@ const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
   const ViewSubscriber = goTo.match(/^root\//)
     ? RootViewSubscriber
     : ContainerViewSubscriber;
+
+  const handleClick = (e, view) => {
+    e.preventDefault();
+    view.setView(goTo);
+  };
+
   return (
     <ViewSubscriber>
-      {view => <Item onClick={() => view.setView(goTo)} {...props} />}
+      {view => <Item onClick={e => handleClick(e, view)} {...props} />}
     </ViewSubscriber>
   );
 };

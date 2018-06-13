@@ -48,6 +48,11 @@ export type InsertMenuCustomItem = {
   onClick: (editorActions: EditorActions) => void;
 };
 
+export interface ExtensionConfig {
+  stickToolbarToBottom?: boolean;
+  allowBreakout?: boolean;
+}
+
 export interface EditorProps {
   appearance?: EditorAppearance;
   // Legacy analytics support
@@ -72,7 +77,7 @@ export interface EditorProps {
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
-  allowExtension?: boolean;
+  allowExtension?: boolean | ExtensionConfig;
   allowConfluenceInlineComment?: boolean;
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;

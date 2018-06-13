@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.1.9
+- [patch] Provided bridge implementation to support Media on iOS. [43875e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43875e6)
+
 ## 0.1.8
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/mention@13.0.0

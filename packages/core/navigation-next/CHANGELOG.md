@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 0.2.2
+- [patch] Fix goTo items not working with href properties. If they have an href, they will prevent the default link action and transition instead, however, they will still be able to be opened in a new tab via middle/right click. [ba0ba79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba0ba79)
+
 ## 0.2.1
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
   - @atlaskit/tooltip@10.0.1

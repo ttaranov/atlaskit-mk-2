@@ -31,6 +31,7 @@ export interface Props {
 
 export interface State {
   query?: string;
+  queryActive?: boolean;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
   contextIdentifierProvider?: ContextIdentifierProvider;
@@ -128,8 +129,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (state: MentionsState) => {
-    const { anchorElement, query, focused } = state;
-    this.setState({ anchorElement, query, focused });
+    const { anchorElement, query, focused, queryActive } = state;
+    this.setState({ anchorElement, query, queryActive, focused });
   };
 
   private handleOnOpen = () => {
@@ -151,7 +152,13 @@ export default class MentionPicker extends PureComponent<Props, State> {
   };
 
   render() {
-    const { focused, anchorElement, query, mentionProvider } = this.state;
+    const {
+      focused,
+      anchorElement,
+      query,
+      queryActive,
+      mentionProvider,
+    } = this.state;
     const {
       popupsBoundariesElement,
       popupsMountPoint,
@@ -159,7 +166,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       popupsScrollableElement,
     } = this.props;
 
-    if (!focused || !anchorElement || query === undefined || !mentionProvider) {
+    if (!focused || !anchorElement || !queryActive || !mentionProvider) {
       return null;
     }
 

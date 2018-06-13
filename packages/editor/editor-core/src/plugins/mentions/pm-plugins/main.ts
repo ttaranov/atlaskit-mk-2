@@ -31,12 +31,14 @@ interface QueryMark {
 function findMentionQueryMarks(
   state: EditorState,
   active: boolean = true,
+  start: number = 0,
+  end?: number,
 ): QueryMark[] {
   const { doc, schema } = state;
   const { mentionQuery } = schema.marks;
 
   const marks: QueryMark[] = [];
-  doc.nodesBetween(0, doc.nodeSize - 2, (node, pos) => {
+  doc.nodesBetween(start, end || doc.nodeSize - 2, (node, pos) => {
     let mark = mentionQuery.isInSet(node.marks);
     if (mark) {
       const query = node.textContent.substr(1).trim();
@@ -164,9 +166,16 @@ export class MentionsState {
       this.dismiss();
     }
 
-    const newAnchorElement = this.view.dom.querySelector(
-      '[data-mention-query]',
-    ) as HTMLElement;
+    const mark = findMentionQueryMarks(this.state, true, from - 1, to).pop();
+    if (!mark && this.queryActive) {
+      this.dismiss();
+    }
+
+    const domRef = mark ? this.view.domAtPos(mark.start) : undefined;
+    const newAnchorElement = domRef
+      ? ((domRef.node as HTMLElement).childNodes[domRef.offset] as HTMLElement)
+      : undefined;
+
     if (newAnchorElement !== this.anchorElement) {
       this.dirty = true;
       this.anchorElement = newAnchorElement;
@@ -230,11 +239,23 @@ export class MentionsState {
 
   private findActiveMentionQueryMark() {
     const activeMentionQueryMarks = findMentionQueryMarks(this.state, true);
-    if (activeMentionQueryMarks.length !== 1) {
-      return { start: -1, end: -1, query: '' };
+    let from = this.state.selection.from;
+    let closestMark = { start: -1, end: -1, query: '' };
+    let closestDistance = Number.MAX_SAFE_INTEGER;
+
+    while (activeMentionQueryMarks.length) {
+      const mark = activeMentionQueryMarks.pop()!;
+      const distance = Math.min(
+        Math.abs(from - mark!.start),
+        Math.abs(from - mark!.end),
+      );
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestMark = mark;
+      }
     }
 
-    return activeMentionQueryMarks[0];
+    return closestMark;
   }
 
   insertMention(mentionData?: MentionDescription, queryMark?: { start; end }) {
