@@ -14,6 +14,7 @@ export interface MediaImageProps {
   width?: number;
   height?: number;
   collectionName?: string;
+  onError?: (imgElem: HTMLImageElement) => void;
 }
 
 export interface MediaImageState {}
@@ -42,15 +43,28 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     };
   }
 
+  private onError(imgElem) {
+    const { onError } = this.props;
+
+    !!onError && onError(imgElem);
+  }
+
   render() {
-    const { hasAuth, style, imgSrc } = this;
+    const { hasAuth, style, imgSrc, onError } = this;
     if (!hasAuth) {
       return null;
     }
 
     const { className } = this.props;
 
-    return <img src={imgSrc} style={style} className={className} />;
+    return (
+      <img
+        src={imgSrc}
+        style={style}
+        className={className}
+        onerror={onError(this)}
+      />
+    );
   }
 }
 
