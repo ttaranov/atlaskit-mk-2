@@ -20,7 +20,7 @@
   "dependencies": {
     "@atlaskit/editor-common": "^11.0.0",
     "prosemirror-markdown": "^1.0.3",
-    "prosemirror-model": "^1.2.0"
+    "prosemirror-model": "1.4.0"
   },
   "peerDependencies": {
     "react": "^16.3.0"
