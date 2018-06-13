@@ -1,4 +1,4 @@
-import { CardViewProps } from '../CardView';
+import { ResolvedViewProps } from '../ResolvedView';
 import { genericExtractPropsFromJSONLD } from '../../genericExtractPropsFromJSONLD';
 import { extractPropsFromObject } from './extractPropsFromObject';
 import { extractPropsFromDocument } from './extractPropsFromDocument';
@@ -16,7 +16,7 @@ const blockExtractorFunctionsByType = {
   Spreadsheet: extractPropsFromSpreadsheet,
 };
 
-export function extractPropsFromJSONLD(json: any): CardViewProps {
+export function extractPropsFromJSONLD(json: any): ResolvedViewProps {
   return genericExtractPropsFromJSONLD({
     extractorPrioritiesByType: blockExtractorPrioritiesByType,
     extractorFunctionsByType: blockExtractorFunctionsByType,

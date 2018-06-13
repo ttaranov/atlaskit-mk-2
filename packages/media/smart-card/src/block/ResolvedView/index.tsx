@@ -24,6 +24,7 @@ import {
   AlertWrapper,
 } from './styled';
 import Transition from './Transition';
+import { LozengeViewModel } from '../../types';
 
 // hack: Button's types aren't up-to-date and don't support isLoading
 const GenericButton = Button as any;
@@ -53,18 +54,6 @@ export interface BadgeViewModel {
   value: number;
   max?: number;
   appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed'; // defaults to 'default'
-}
-
-export interface LozengeViewModel {
-  text: string;
-  appearance?:
-    | 'default'
-    | 'success'
-    | 'removed'
-    | 'inprogress'
-    | 'new'
-    | 'moved'; // defaults to 'default'
-  isBold?: boolean; // defaults to false
 }
 
 export interface DetailViewModel {
