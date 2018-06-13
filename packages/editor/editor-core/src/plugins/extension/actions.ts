@@ -65,12 +65,10 @@ export const updateExtensionLayout = layout => (
 
   const pluginState = pluginKey.getState(state);
 
-  tr
-    .setNodeMarkup(extPosition, undefined, {
-      ...extNode!.attrs,
-      layout,
-    })
-    .setMeta(pluginKey, { ...pluginState, layout });
+  tr.setNodeMarkup(extPosition, undefined, {
+    ...extNode!.attrs,
+    layout,
+  }).setMeta(pluginKey, { ...pluginState, layout });
 
   dispatch(tr);
 
@@ -82,11 +80,12 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
 ): boolean => {
   const { state, dispatch } = view;
   // insert macro if there's macroProvider available
+  const pluginState = pluginKey.getState(state);
   if (macroProvider) {
     const node = getExtensionNode(state);
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
-      let tr = state.tr.setMeta(pluginKey, { element: null });
+      let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
       if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
         dispatch(selectParentNodeOfType(bodiedExtension)(tr));
       }
@@ -103,7 +102,8 @@ export const removeExtension = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { schema, selection } = state;
-  let tr = state.tr.setMeta(pluginKey, { element: null });
+  const pluginState = pluginKey.getState(state);
+  let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
 
   if (selection instanceof NodeSelection) {
     tr = removeSelectedNode(tr);
@@ -119,8 +119,14 @@ export const removeBodiedExtensionWrapper = (
   state: EditorState,
   slice: Slice,
 ) => {
-  const { schema: { nodes: { bodiedExtension } } } = state;
-  const { content: { firstChild: wrapper } } = slice;
+  const {
+    schema: {
+      nodes: { bodiedExtension },
+    },
+  } = state;
+  const {
+    content: { firstChild: wrapper },
+  } = slice;
 
   if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
     return slice;
@@ -137,7 +143,12 @@ export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   slice: Slice,
   state: EditorState,
 ) => {
-  const { selection, schema: { nodes: { bodiedExtension } } } = state;
+  const {
+    selection,
+    schema: {
+      nodes: { bodiedExtension },
+    },
+  } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
     const nodes: PmNode[] = [];
