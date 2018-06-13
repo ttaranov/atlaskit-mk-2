@@ -1,14 +1,8 @@
 // @flow
 
-import { Component, type Element as ReactElement } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { Component, type Element as ReactElement } from 'react';
 import PropTypes from 'prop-types';
-
-import FocusMarshal, {
-  type AutoFocus,
-  type Boundary,
-  type TeardownOptions,
-} from './FocusMarshal';
+import NewFocusLock from './FocusLock';
 
 type Props = {
   /**
@@ -35,13 +29,9 @@ type Props = {
   enabled?: boolean,
 };
 
-// global focus marshal
-const marshal = new FocusMarshal();
-
 /* eslint-disable react/sort-comp */
 export default class FocusLock extends Component<Props> {
   ariaHiddenNode: HTMLElement;
-  boundary: Boundary;
   initFromProps: boolean = false;
   teardownFromProps: boolean = false;
   static contextTypes = {
@@ -74,10 +64,6 @@ export default class FocusLock extends Component<Props> {
   }
 
   initialise = () => {
-    const { autoFocus } = this.props;
-
-    this.getBoundary();
-
     // set the element to hide from assistive technology
     this.ariaHiddenNode =
       this.props.ariaHiddenNode || this.context.ariaHiddenNode;
@@ -86,29 +72,21 @@ export default class FocusLock extends Component<Props> {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.setAttribute('aria-hidden', '');
     }
-
-    // register the boundary
-    marshal.register({ autoFocus, boundary: this.boundary });
   };
   teardown = (options: TeardownOptions) => {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.removeAttribute('aria-hidden');
     }
-
-    marshal.unregister(options);
   };
-  getBoundary() {
-    // eslint-disable-next-line react/no-find-dom-node
-    const boundary = findDOMNode(this);
-
-    // findDOMNode's return type is `Element | Text | null`
-    // This check keeps flow happy
-    if (boundary instanceof HTMLElement) {
-      this.boundary = boundary;
-    }
-  }
 
   render() {
-    return this.props.children;
+    const { autoFocus, enabled = false } = this.props;
+    const initialFocus =
+      typeof autoFocus === 'function' ? autoFocus : undefined;
+    return (
+      <NewFocusLock enabled={enabled} initialFocus={initialFocus}>
+        {this.props.children}
+      </NewFocusLock>
+    );
   }
 }
