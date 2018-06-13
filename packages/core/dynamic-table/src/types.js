@@ -39,7 +39,12 @@ export type RowType = {
 
 export type SortOrderType = 'ASC' | 'DESC';
 
-export type SpinnerSizeType = 'small' | 'medium' | 'large' | 'xlarge';
+export type SpinnerSizeType =
+  | 'xsmall'
+  | 'small'
+  | 'medium'
+  | 'large'
+  | 'xlarge';
 
 export type LoadingSpinnerSizeType = 'small' | 'large';
 
