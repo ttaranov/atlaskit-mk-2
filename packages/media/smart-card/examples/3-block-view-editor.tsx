@@ -6,8 +6,12 @@ import 'brace/mode/json';
 import 'brace/theme/tomorrow';
 import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
-import { Provider, BlockCardView } from '../src';
-import { extractPropsFromJSONLD } from '../src/block/extractPropsFromJSONLD';
+import {
+  Provider,
+  BlockResolvedView,
+  BlockResolvedViewProps,
+  extractBlockPropsFromJSONLD,
+} from '../src';
 
 const defaultText = `{
   "@type": "Document",
@@ -20,13 +24,13 @@ const defaultText = `{
   "summary": "Today is a big day for Atlassian – we have entered into an agreement to buy Trello. (boom)"
 }`;
 
-const defaultJSON = extractPropsFromJSONLD(JSON.parse(defaultText));
+const defaultJSON = extractBlockPropsFromJSONLD(JSON.parse(defaultText));
 
 export interface ExampleProps {}
 
 export interface ExampleState {
   text: string;
-  props: Object;
+  props: BlockResolvedViewProps;
   error?: string;
 }
 
@@ -38,7 +42,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
 
   handleChange = (text: string) => {
     try {
-      const props = extractPropsFromJSONLD(JSON.parse(text));
+      const props = extractBlockPropsFromJSONLD(JSON.parse(text));
       this.setState({
         text,
         props,
@@ -59,7 +63,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
         <Page>
           <Grid>
             <GridColumn>
-              <BlockCardView {...props as any} />
+              <BlockResolvedView {...props as any} />
               <br />
               <br />
               <AceEditor

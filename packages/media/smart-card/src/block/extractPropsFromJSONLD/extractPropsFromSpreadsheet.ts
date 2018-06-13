@@ -1,7 +1,7 @@
-import { CardViewProps } from '../CardView';
+import { ResolvedViewProps } from '../ResolvedView';
 import { extractPropsFromDocument } from './extractPropsFromDocument';
 
-export function extractPropsFromSpreadsheet(json: any): CardViewProps {
+export function extractPropsFromSpreadsheet(json: any): ResolvedViewProps {
   const props = extractPropsFromDocument(json);
 
   props.icon = {

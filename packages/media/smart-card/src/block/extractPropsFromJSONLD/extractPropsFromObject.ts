@@ -1,7 +1,7 @@
-import { CardViewProps } from '../CardView';
+import { ResolvedViewProps } from '../ResolvedView';
 
-export function extractPropsFromObject(json: any): CardViewProps {
-  const props: CardViewProps = {
+export function extractPropsFromObject(json: any): ResolvedViewProps {
+  const props: ResolvedViewProps = {
     title: {
       text: typeof json.name === 'string' ? json.name : '',
     },

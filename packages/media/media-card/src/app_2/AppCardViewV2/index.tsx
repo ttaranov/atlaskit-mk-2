@@ -15,10 +15,14 @@ import {
   AppCardUser as OldUserViewModel,
   OnActionClickCallback,
 } from '../../app/model';
-import { BlockCardView, BlockCardViewProps } from '@atlaskit/smart-card';
+import {
+  BlockResolvedView,
+  BlockResolvedViewProps,
+} from '@atlaskit/smart-card';
 import { AppCardView } from '../../app/components/AppCardView';
+import { v4 } from 'uuid';
 
-export type AppCardProps = BlockCardViewProps;
+export type AppCardProps = BlockResolvedViewProps;
 
 function convertUser(oldUser: OldUserViewModel) {
   return {
@@ -114,6 +118,7 @@ function getActions(
   }
   return oldViewModel.actions.map(oldAction => {
     return {
+      id: v4(),
       text: oldAction.title,
       handler: actionCallbackHandlers => {
         if (onActionClick) {
@@ -158,7 +163,7 @@ class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
     const { newDesign, model, onClick, onActionClick } = this.props;
     if (newDesign) {
       return (
-        <BlockCardView
+        <BlockResolvedView
           {...convertAppCardToSmartCard(model)}
           onClick={onClick}
           actions={getActions(model, onActionClick)}
