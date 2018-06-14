@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 12.1.1
+- [patch] FS-1889 make reactions resource immutable [deba783](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deba783)
+
 ## 12.1.0
 
 
