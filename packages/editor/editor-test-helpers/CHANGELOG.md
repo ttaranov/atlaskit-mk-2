@@ -1,5 +1,41 @@
 # @atlaskit/editor-test-helpers
 
+## 4.1.0
+
+
+
+
+
+
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/editor-common@11.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+
 ## 4.0.7
 - [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
 - [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)

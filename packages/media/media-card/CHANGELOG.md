@@ -1,5 +1,107 @@
 # @atlaskit/media-image
 
+## 29.1.0
+
+
+
+
+
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/smart-card@5.2.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/field-radio-group@3.0.2
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/smart-card@5.2.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/field-radio-group@3.0.2
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/smart-card@5.2.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/field-radio-group@3.0.2
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/smart-card@5.2.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/field-radio-group@3.0.2
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/smart-card@5.2.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/field-radio-group@3.0.2
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+
 ## 29.0.3
 
 

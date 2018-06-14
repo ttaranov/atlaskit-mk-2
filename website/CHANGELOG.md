@@ -1,5 +1,147 @@
 # @atlaskit/website
 
+## 2.1.0
+
+
+
+
+
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/navigation@32.1.0
+  - @atlaskit/quick-search@2.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/inline-dialog@7.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/tag-group@5.1.0
+  - @atlaskit/tag@5.0.2
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/css-reset@2.0.4
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/code@5.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/dynamic-table@9.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/navigation@32.1.0
+  - @atlaskit/quick-search@2.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/inline-dialog@7.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/tag-group@5.1.0
+  - @atlaskit/tag@5.0.2
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/css-reset@2.0.4
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/code@5.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/dynamic-table@9.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/navigation@32.1.0
+  - @atlaskit/quick-search@2.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/inline-dialog@7.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/tag-group@5.1.0
+  - @atlaskit/tag@5.0.2
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/css-reset@2.0.4
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/code@5.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/dynamic-table@9.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/navigation@32.1.0
+  - @atlaskit/quick-search@2.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/inline-dialog@7.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/tag-group@5.1.0
+  - @atlaskit/tag@5.0.2
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/css-reset@2.0.4
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/code@5.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/dynamic-table@9.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/navigation@32.1.0
+  - @atlaskit/quick-search@2.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/inline-dialog@7.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/tag-group@5.1.0
+  - @atlaskit/tag@5.0.2
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/css-reset@2.0.4
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/code@5.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/dynamic-table@9.1.0
+  - @atlaskit/button@8.1.0
+
 ## 2.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

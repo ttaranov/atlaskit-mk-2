@@ -1,5 +1,52 @@
 # @atlaskit/layer-manager
 
+## 4.1.0
+
+
+
+
+
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+
 ## 4.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)

@@ -1,5 +1,57 @@
 # @atlaskit/global-navigation
 
+## 0.1.0
+
+
+
+
+
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/navigation-next@0.3.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/blanket@6.0.2
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/navigation-next@0.3.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/blanket@6.0.2
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/navigation-next@0.3.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/blanket@6.0.2
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/navigation-next@0.3.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/blanket@6.0.2
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/navigation-next@0.3.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/blanket@6.0.2
+
 ## 0.0.10
 - [patch] Updated dependencies [ba0ba79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba0ba79)
   - @atlaskit/navigation-next@0.2.2

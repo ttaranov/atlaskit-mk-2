@@ -1,5 +1,27 @@
 # @atlaskit/pagination
 
+## 6.0.3
+
+
+
+
+
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/button@8.1.0
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/button@8.1.0
+- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/button@8.1.0
+
 ## 6.0.2
 - [patch] moved atlaskit from dependencies to dev dependency [5e14f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e14f44)
 
