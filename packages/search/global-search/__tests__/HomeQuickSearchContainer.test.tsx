@@ -5,11 +5,13 @@ import {
   HomeQuickSearchContainer,
   Props,
 } from '../src/components/home/HomeQuickSearchContainer';
-import { Result } from '../src/model/Result';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
+import GlobalQuickSearch, {
+  Props as GlobalQuickSearchProps,
+} from '../src/components/GlobalQuickSearch';
 import { Scope } from '../src/api/CrossProductSearchClient';
+import { Result, ResultType } from '../src/model/Result';
 import SearchError from '../src/components/SearchError';
-import { delay, makeJiraObjectResult } from './_test-util';
+import { makeResult, delay } from './_test-util';
 import {
   noResultsPeopleSearchClient,
   errorPeopleSearchClient,
@@ -27,7 +29,7 @@ import {
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
-  const onSearchFn = quicksearch.prop('onSearch') as Function;
+  const onSearchFn = quicksearch.prop('onSearch');
   onSearchFn(query);
   wrapper.update();
 }
@@ -121,7 +123,7 @@ describe('HomeQuickSearchContainer', () => {
     const wrapper = render({
       recentSearchClient: {
         search() {
-          return Promise.resolve([makeJiraObjectResult()]);
+          return Promise.resolve([makeResult()]);
         },
         getRecentItems() {
           return Promise.resolve([]);
@@ -139,7 +141,7 @@ describe('HomeQuickSearchContainer', () => {
   it('should render recently viewed items on mount', async () => {
     const mockRecentClient = {
       getRecentItems() {
-        return Promise.resolve([makeJiraObjectResult()]);
+        return Promise.resolve([makeResult()]);
       },
       search(query: string) {
         return Promise.resolve([]);
@@ -191,10 +193,7 @@ describe('HomeQuickSearchContainer', () => {
     const wrapper = render({
       peopleSearchClient: {
         search() {
-          return Promise.resolve([makeJiraObjectResult()]);
-        },
-        getRecentPeople() {
-          return Promise.resolve([]);
+          return Promise.resolve([makeResult()]);
         },
       },
     });
@@ -216,7 +215,7 @@ describe('HomeQuickSearchContainer', () => {
     */
 
     function searchRecent(query: string): Promise<Result[]> {
-      return delay(5, [makeJiraObjectResult()]);
+      return delay(5, [makeResult()]);
     }
 
     function searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
@@ -264,7 +263,7 @@ describe('HomeQuickSearchContainer', () => {
         5,
         makeSingleResultCrossProductSearchResponse(
           Scope.JiraIssue,
-          makeJiraObjectResult({ name: 'delayed result' }),
+          makeResult({ name: 'delayed result' }),
         ),
       );
     }
@@ -273,7 +272,7 @@ describe('HomeQuickSearchContainer', () => {
       return Promise.resolve(
         makeSingleResultCrossProductSearchResponse(
           Scope.JiraIssue,
-          makeJiraObjectResult({ name: 'current result' }),
+          makeResult({ name: 'current result' }),
         ),
       );
     }
@@ -308,9 +307,6 @@ describe('HomeQuickSearchContainer', () => {
         peopleSearchClient: {
           search(query: string) {
             return Promise.reject(new TypeError('failed'));
-          },
-          getRecentPeople() {
-            return Promise.resolve([]);
           },
         },
         firePrivateAnalyticsEvent: firePrivateAnalyticsEventMock,

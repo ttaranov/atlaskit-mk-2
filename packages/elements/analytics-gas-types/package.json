@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-gas-types",
-  "version": "2.1.2",
+  "version": "2.1.1",
   "description": "Shared analytics functions/components for Fabric Elements",
   "config": {
     "access": "public"
@@ -27,7 +27,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^4.1.0"
+    "@atlaskit/docs": "^4.0.0"
   },
   "atlaskit": {
     "internal": true

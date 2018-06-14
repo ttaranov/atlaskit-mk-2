@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-navigation",
-  "version": "0.1.0",
+  "version": "0.0.10",
   "description": "Global navigation component for Atlassian",
   "main": "dist/cjs/index.js",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -11,14 +11,14 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^11.1.0",
+    "@atlaskit/avatar": "^11.0.1",
     "@atlaskit/badge": "^8.0.1",
-    "@atlaskit/blanket": "^6.0.2",
-    "@atlaskit/docs": "^4.1.0",
+    "@atlaskit/blanket": "^6.0.1",
+    "@atlaskit/docs": "^4.0.1",
     "@atlaskit/dropdown-menu": "^5.0.1",
-    "@atlaskit/icon": "^12.1.0",
-    "@atlaskit/navigation-next": "^0.3.0",
-    "@atlaskit/theme": "^4.0.2",
+    "@atlaskit/icon": "^12.0.1",
+    "@atlaskit/navigation-next": "^0.2.2",
+    "@atlaskit/theme": "^4.0.1",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",
@@ -31,9 +31,8 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/dropdown-menu": "^5.0.2",
     "@atlaskit/modal-dialog": "^5.0.1",
-    "@atlaskit/onboarding": "^4.1.0",
+    "@atlaskit/onboarding": "^4.0.1",
     "react-lorem-component": "^0.12.2"
   }
 }

@@ -155,14 +155,8 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
           ? this.contentTransformer.parse(defaultValue)
           : processRawValue(schema, defaultValue);
     }
-    let selection: Selection | undefined;
-    if (doc) {
-      // ED-4759: Don't set selection at end for full-page editor - should be at start
-      selection =
-        options.props.editorProps.appearance === 'full-page'
-          ? Selection.atStart(doc)
-          : Selection.atEnd(doc);
-    }
+
+    const selection = doc ? Selection.atEnd(doc) : undefined;
     // Workaround for ED-3507: When media node is the last element, scrollIntoView throws an error
     const patchedSelection = selection
       ? Selection.findFrom(selection.$head, -1, true) || undefined

@@ -1,10 +1,8 @@
 import {
-  ContainerResult,
-  ResultType,
   Result,
+  ResultType,
+  ResultContentType,
   AnalyticsType,
-  ConfluenceObjectResult,
-  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -20,11 +18,9 @@ export interface ConfluenceClient {
   getRecentSpaces(): Promise<Result[]>;
 }
 
-export type ConfluenceContentType = 'blogpost' | 'page';
-
 export interface RecentPage {
   available: boolean;
-  contentType: ConfluenceContentType;
+  contentType: ResultContentType;
   id: string;
   lastSeen: number;
   space: string;
@@ -90,13 +86,13 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
 function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
   return {
     resultId: recentPage.id,
+    resultType: ResultType.Object,
     name: recentPage.title,
     href: `${baseUrl}${recentPage.url}`,
     containerName: recentPage.space,
+    contentType: recentPage.contentType,
     analyticsType: AnalyticsType.RecentConfluence,
-    resultType: ResultType.ConfluenceObjectResult,
-    contentType: `confluence-${recentPage.contentType}` as ContentType,
-  } as ConfluenceObjectResult;
+  };
 }
 
 function recentSpaceToResult(
@@ -105,10 +101,10 @@ function recentSpaceToResult(
 ): Result {
   return {
     resultId: recentSpace.id,
+    resultType: ResultType.Container,
     name: recentSpace.name,
     href: `${baseUrl}/spaces/${recentSpace.key}/overview`,
     avatarUrl: recentSpace.icon,
     analyticsType: AnalyticsType.RecentConfluence,
-    resultType: ResultType.GenericContainerResult,
-  } as ContainerResult;
+  };
 }

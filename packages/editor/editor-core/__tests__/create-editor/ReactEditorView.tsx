@@ -40,25 +40,6 @@ describe(name, () => {
       expect(cursorPos).toEqual(document.refs.endPos);
     });
 
-    it('should place the initial selection at the start of the document when in full-page appearance', () => {
-      const document = doc(p('{startPos}hello'))(defaultSchema);
-      const wrapper = shallow(
-        <ReactEditorView
-          editorProps={{
-            defaultValue: toJSON(document),
-            appearance: 'full-page',
-          }}
-          providerFactory={new ProviderFactory()}
-          portalProviderAPI={portalProviderAPI}
-          onEditorCreated={() => {}}
-          onEditorDestroyed={() => {}}
-        />,
-      );
-      const { editorState } = wrapper.instance() as ReactEditorView;
-      const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
-      expect(cursorPos).toEqual(document.refs.startPos);
-    });
-
     it('should place the initial selection at the start/end when document is empty', () => {
       const document = doc(p('{endPos}'))(defaultSchema);
       const wrapper = shallow(

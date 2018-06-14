@@ -138,10 +138,7 @@ export class PDFRenderer extends React.Component<Props, State> {
               className={pdfViewerClassName}
               onClick={closeOnDirectClick(this.props.onClose)}
             />
-            <ZoomControls
-              zoomLevel={this.state.zoomLevel}
-              onChange={this.handleZoom}
-            />
+            <ZoomControls zoomLevel={this.state.zoomLevel} onChange={this.handleZoom} />
           </PDFWrapper>
         );
       case 'FAILED':

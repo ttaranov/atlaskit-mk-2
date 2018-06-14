@@ -1,9 +1,8 @@
 // @flow
 export const SIZES_MAP = {
-  xsmall: 8,
-  small: 16,
-  medium: 24,
-  large: 48,
-  xlarge: 96,
+  small: 20,
+  medium: 30,
+  large: 50,
+  xlarge: 100,
 };
 export const DEFAULT_SIZE = SIZES_MAP.small;

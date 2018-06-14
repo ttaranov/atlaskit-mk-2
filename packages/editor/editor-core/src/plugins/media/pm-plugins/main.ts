@@ -214,8 +214,6 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
-  getMediaOptions = () => this.options;
-
   updateElement(): void {
     let newElement;
     if (this.selectedMediaNode() && this.isMediaSingle()) {
@@ -487,11 +485,7 @@ export class MediaPluginState {
       return false;
     }
 
-    const {
-      selection: { from },
-      schema,
-      tr,
-    } = this.view.state;
+    const { selection: { from }, schema, tr } = this.view.state;
 
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
@@ -737,11 +731,7 @@ export class MediaPluginState {
     if (!mediaNodeWithPos) {
       return;
     }
-    const {
-      node: {
-        attrs: { id: mediaNodeId },
-      },
-    } = mediaNodeWithPos;
+    const { node: { attrs: { id: mediaNodeId } } } = mediaNodeWithPos;
     return mediaNodeId.match(/^temporary:/);
   };
 
@@ -937,10 +927,7 @@ export const createPlugin = (
           return;
         }
 
-        const {
-          schema,
-          selection: { $anchor },
-        } = state;
+        const { schema, selection: { $anchor } } = state;
         // When a media is already selected
         if (state.selection instanceof NodeSelection) {
           return;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 import { colors } from '@atlaskit/theme';
 import { ResultBase } from '@atlaskit/quick-search';
-import { ContentType } from '../model/Result';
+import { ResultContentType } from '../model/Result';
 import Objects24PageIcon from '@atlaskit/icon/glyph/objects/24/page';
 import Objects24BlogIcon from '@atlaskit/icon/glyph/objects/24/blog';
 import Objects24ImageIcon from '@atlaskit/icon/glyph/objects/24/image';
@@ -14,7 +14,7 @@ export interface Props {
   containerName: string;
   avatarUrl?: string;
   objectKey?: string;
-  contentType?: ContentType;
+  contentType?: ResultContentType;
 }
 
 /**
@@ -38,7 +38,7 @@ export default class ObjectResult extends React.Component<Props> {
    * Colors come from: https://extranet.atlassian.com/display/ADG/Object+icons%3A+Colors
    */
   getAvatar = () => {
-    if (this.props.contentType === ContentType.ConfluencePage) {
+    if (this.props.contentType === ResultContentType.Page) {
       return (
         <Objects24PageIcon
           size="medium"
@@ -46,7 +46,7 @@ export default class ObjectResult extends React.Component<Props> {
           label={this.props.name}
         />
       );
-    } else if (this.props.contentType === ContentType.ConfluenceBlogpost) {
+    } else if (this.props.contentType === ResultContentType.Blogpost) {
       return (
         <Objects24BlogIcon
           size="medium"
@@ -54,7 +54,7 @@ export default class ObjectResult extends React.Component<Props> {
           label={this.props.name}
         />
       );
-    } else if (this.props.contentType === ContentType.ConfluenceAttachment) {
+    } else if (this.props.contentType === ResultContentType.Attachment) {
       return (
         <Objects24ImageIcon
           size="medium"

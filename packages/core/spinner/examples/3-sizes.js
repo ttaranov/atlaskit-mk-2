@@ -10,10 +10,6 @@ export default () => (
       <Spinner />
     </div>
     <div>
-      <h3>xsmall</h3>
-      <Spinner size="xsmall" />
-    </div>
-    <div>
       <h3>small</h3>
       <Spinner size="small" />
     </div>

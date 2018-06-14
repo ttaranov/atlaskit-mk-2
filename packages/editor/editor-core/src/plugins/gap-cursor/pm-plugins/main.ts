@@ -8,15 +8,14 @@ import { setGapCursorAtPos } from '../actions';
 
 export const pluginKey = new PluginKey('gapCursorPlugin');
 
-export const isButton = (elem: HTMLElement) => {
-  const rowControls = document.querySelector('.table-row-controls-wrapper');
-  const columnControls = document.querySelector(
-    '.table-column-controls-wrapper',
+export const isButton = (elem: HTMLElement | null) => {
+  const tableControls = document.querySelector(
+    '.table-column-controls-wrapper, .table-row-controls-wrapper',
   );
   return (
-    elem.nodeName === 'BUTTON' ||
-    (rowControls && rowControls.contains(elem)) ||
-    (columnControls && columnControls.contains(elem))
+    elem &&
+    (elem.nodeName === 'BUTTON' ||
+      (tableControls && tableControls.contains(elem)))
   );
 };
 

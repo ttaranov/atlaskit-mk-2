@@ -47,7 +47,7 @@ function mockCrossProductSearchApi() {
 function mockPeopleApi() {
   fetchMock.post(new RegExp('/graphql'), async request => {
     const body = await request.json();
-    const query = body.variables.displayName || '';
+    const query = body.variables.displayName;
     const results = queryPeopleSearch(query);
 
     return delay(500, results);

@@ -62,7 +62,6 @@ export interface Props {
   retrySearch();
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
-  recentlyInteractedPeople: Result[];
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
@@ -76,7 +75,6 @@ export default function searchResults(props: Props) {
     retrySearch,
     recentlyViewedPages,
     recentlyViewedSpaces,
-    recentlyInteractedPeople,
     objectResults,
     spaceResults,
     peopleResults,
@@ -98,7 +96,6 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup('People', take(recentlyInteractedPeople, 3), query),
     ];
   }
 

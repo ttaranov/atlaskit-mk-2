@@ -5,21 +5,14 @@ import {
   ConfluenceQuickSearchContainer,
   Props,
 } from '../src/components/confluence/ConfluenceQuickSearchContainer';
-import {
-  ResultType,
-  Result,
-  PersonResult,
-  ContentType,
-} from '../src/model/Result';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
+import GlobalQuickSearch, {
+  Props as GlobalQuickSearchProps,
+} from '../src/components/GlobalQuickSearch';
 import { Scope } from '../src/api/CrossProductSearchClient';
+import { ConfluenceClient } from '../src/api/ConfluenceClient';
+import { Result, ResultType } from '../src/model/Result';
 import SearchError from '../src/components/SearchError';
-import {
-  delay,
-  makeConfluenceObjectResult,
-  makeConfluenceContainerResult,
-  makePersonResult,
-} from './_test-util';
+import { makeResult, delay } from './_test-util';
 import {
   noResultsCrossProductSearchClient,
   errorCrossProductSearchClient,
@@ -34,7 +27,7 @@ import { noResultsConfluenceClient } from './mocks/_mockConfluenceClient';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
-  const onSearchFn = quicksearch.prop('onSearch') as Function;
+  const onSearchFn = quicksearch.prop('onSearch');
   onSearchFn(query);
   wrapper.update();
 }
@@ -127,7 +120,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   it('should render recently viewed pages on mount', async () => {
     const mockConfluenceClient = {
       getRecentItems() {
-        return Promise.resolve([makeConfluenceObjectResult()]);
+        return Promise.resolve([makeResult()]);
       },
       getRecentSpaces() {
         return Promise.resolve([]);
@@ -153,7 +146,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         return Promise.resolve([]);
       },
       getRecentSpaces() {
-        return Promise.resolve([makeConfluenceContainerResult()]);
+        return Promise.resolve([makeResult()]);
       },
     };
 
@@ -202,10 +195,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     const wrapper = render({
       peopleSearchClient: {
         search() {
-          return Promise.resolve([makePersonResult()]);
-        },
-        getRecentPeople() {
-          return Promise.resolve([]);
+          return Promise.resolve([makeResult()]);
         },
       },
     });
@@ -226,10 +216,8 @@ describe('ConfluenceQuickSearchContainer', () => {
      5. Make sure search results appeared in time
     */
 
-    function searchPeople(query: string): Promise<PersonResult[]> {
-      const personResult = makePersonResult();
-
-      return delay(5, [personResult]);
+    function searchPeople(query: string): Promise<Result[]> {
+      return delay(5, [makeResult()]);
     }
 
     function searchCrossProduct(query: string): Promise<Map<Scope, Result[]>> {
@@ -237,7 +225,6 @@ describe('ConfluenceQuickSearchContainer', () => {
         5,
         makeSingleResultCrossProductSearchResponse(
           Scope.ConfluencePageBlogAttachment,
-          makePersonResult(),
         ),
       );
     }
@@ -248,9 +235,6 @@ describe('ConfluenceQuickSearchContainer', () => {
 
     const mockPeopleSearchClient = {
       search: jest.fn(searchPeople),
-      getRecentPeople() {
-        return Promise.resolve([]);
-      },
     };
 
     const wrapper = render({
@@ -280,7 +264,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     function searchDelayed(query: string): Promise<Map<Scope, Result[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
         Scope.ConfluencePageBlogAttachment,
-        makeConfluenceObjectResult(),
+        makeResult({ name: 'delayed result' }),
       );
 
       return delay(5, response);
@@ -289,9 +273,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     function searchCurrent(query: string): Promise<Map<Scope, Result[]>> {
       const response = makeSingleResultCrossProductSearchResponse(
         Scope.ConfluencePageBlogAttachment,
-        makeConfluenceObjectResult({
-          name: 'current result',
-        }),
+        makeResult({ name: 'current result' }),
       );
 
       return Promise.resolve(response);
@@ -326,9 +308,6 @@ describe('ConfluenceQuickSearchContainer', () => {
         peopleSearchClient: {
           search(query: string) {
             return Promise.reject(new TypeError('failed'));
-          },
-          getRecentPeople() {
-            return Promise.resolve([]);
           },
         },
         firePrivateAnalyticsEvent: firePrivateAnalyticsEventMock,

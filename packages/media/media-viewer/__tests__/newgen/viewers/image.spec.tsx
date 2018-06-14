@@ -154,12 +154,14 @@ describe('ImageViewer', () => {
 
     expect(el.state('zoomLevel').value).toEqual(1);
     expect(el.find(ZoomControls)).toHaveLength(1);
-    el.find(ZoomControls)
+    el
+      .find(ZoomControls)
       .find(Button)
       .first()
       .simulate('click');
     expect(el.state('zoomLevel').value).toBeLessThan(1);
-    el.find(ZoomControls)
+    el
+      .find(ZoomControls)
       .find(Button)
       .last()
       .simulate('click');

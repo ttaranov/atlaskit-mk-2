@@ -6,17 +6,14 @@ import {
   PersonResult,
   ResultBase,
 } from '@atlaskit/quick-search';
+import { ResultType, Result } from '../src/model/Result';
 import {
   ObjectResultWithAnalytics,
   PersonResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
-import {
-  makeJiraObjectResult,
-  makeConfluenceObjectResult,
-  makePersonResult,
-} from './_test-util';
+import { makeResult } from './_test-util';
 
 enum Group {
   Recent = 'recent',
@@ -51,7 +48,7 @@ describe('HomeSearchResults', () => {
   it('should render recently viewed items when no query is entered', () => {
     const props = {
       query: '',
-      recentlyViewedItems: [makeJiraObjectResult()],
+      recentlyViewedItems: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -64,7 +61,7 @@ describe('HomeSearchResults', () => {
   it('should only show the recently viewed group when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedItems: [makeJiraObjectResult()],
+      recentlyViewedItems: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -76,7 +73,7 @@ describe('HomeSearchResults', () => {
   it('should render recent results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      recentResults: [makeJiraObjectResult({ name: 'name' })],
+      recentResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -89,7 +86,7 @@ describe('HomeSearchResults', () => {
   it('should render jira results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      jiraResults: [makeJiraObjectResult({ name: 'name' })],
+      jiraResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -102,7 +99,7 @@ describe('HomeSearchResults', () => {
   it('should render confluence results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [makeConfluenceObjectResult()],
+      confluenceResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -115,7 +112,9 @@ describe('HomeSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makePersonResult()],
+      peopleResults: [
+        makeResult({ resultType: ResultType.Person, name: 'name' }),
+      ],
     };
 
     const wrapper = render(props);
@@ -128,7 +127,7 @@ describe('HomeSearchResults', () => {
   it('should render a jira result item to search jira', () => {
     const props: Partial<Props> = {
       query: 'na',
-      jiraResults: [makeJiraObjectResult()],
+      jiraResults: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -141,7 +140,7 @@ describe('HomeSearchResults', () => {
   it('should render a confluence result item to search confluence', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [makeConfluenceObjectResult()],
+      confluenceResults: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -156,7 +155,7 @@ describe('HomeSearchResults', () => {
   it('should render a people result item to search people', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makePersonResult()],
+      peopleResults: [makeResult({ resultType: ResultType.Person })],
     };
 
     const wrapper = render(props);

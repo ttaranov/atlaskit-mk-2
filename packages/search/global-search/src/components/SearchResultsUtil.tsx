@@ -1,22 +1,18 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
+import { ComponentClass } from 'react';
 import {
-  PersonResult as PersonResultComponent,
-  ContainerResult as ContainerResultComponent,
+  PersonResult,
+  ContainerResult,
   ResultBase,
 } from '@atlaskit/quick-search';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import {
   Result,
-  ContainerResult,
-  JiraObjectResult,
-  PersonResult,
-  AnalyticsType,
   ResultType,
-  ConfluenceObjectResult,
-  ContentType,
+  ResultContentType,
+  AnalyticsType,
 } from '../model/Result';
-import ObjectResultComponent from './ObjectResult';
+import ObjectResult from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   DEFUALT_GAS_CHANNEL,
@@ -24,25 +20,16 @@ import {
   DEFAULT_GAS_ATTRIBUTES,
 } from '../util/analytics';
 
-export interface BaseResultProps {
+// Common properties that the quick-search Result component supports
+interface QuickSearchResult extends ComponentClass {
   type: string;
   name: string;
   resultId: string;
   href: string;
   avatarUrl?: string;
-}
-
-export interface ObjectResultProps extends BaseResultProps {
   containerName?: string;
-  contentType?: ContentType;
   objectKey?: string;
-}
-
-export interface ContainerResultProps extends BaseResultProps {}
-
-export interface PersonResultProps extends BaseResultProps {
-  mentionName?: string;
-  presenceMessage?: string;
+  contentType?: ResultContentType;
 }
 
 function createAndFireSearchResultSelectedEvent(createEvent, props): void {
@@ -69,92 +56,56 @@ const searchResultsAnalyticsEvents = {
   onClick: createAndFireSearchResultSelectedEvent,
 };
 
-export const ObjectResultWithAnalytics: ComponentType<
-  ObjectResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ObjectResultComponent);
+export const ObjectResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ObjectResult);
+export const PersonResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(PersonResult);
+export const ContainerResultWithAnalytics = withAnalyticsEvents(
+  searchResultsAnalyticsEvents,
+)(ContainerResult);
 
-export const PersonResultWithAnalytics: ComponentType<
-  PersonResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(PersonResultComponent);
-
-export const ContainerResultWithAnalytics: ComponentType<
-  ContainerResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ContainerResultComponent);
+function getResultComponent(resultType: ResultType): ComponentClass {
+  switch (resultType) {
+    case ResultType.Object: {
+      return ObjectResultWithAnalytics;
+    }
+    case ResultType.Person: {
+      return PersonResultWithAnalytics;
+    }
+    case ResultType.Container: {
+      return ContainerResultWithAnalytics;
+    }
+    default: {
+      // Make the TS compiler verify that all enums have been matched
+      const _nonExhaustiveMatch: never = resultType;
+      throw new Error(
+        `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
+      );
+    }
+  }
+}
 
 export function renderResults(results: Result[]) {
   return results.map(result => {
-    const resultType: ResultType = result.resultType;
+    const Result = getResultComponent(result.resultType) as ComponentClass<
+      QuickSearchResult
+    >;
 
-    switch (resultType) {
-      case ResultType.ConfluenceObjectResult: {
-        const confluenceResult = result as ConfluenceObjectResult;
-
-        return (
-          <ObjectResultWithAnalytics
-            key={confluenceResult.resultId}
-            resultId={confluenceResult.resultId}
-            name={confluenceResult.name}
-            href={confluenceResult.href}
-            type={confluenceResult.analyticsType}
-            contentType={confluenceResult.contentType}
-            containerName={confluenceResult.containerName}
-          />
-        );
-      }
-      case ResultType.JiraObjectResult: {
-        const jiraResult = result as JiraObjectResult;
-
-        return (
-          <ObjectResultWithAnalytics
-            key={jiraResult.resultId}
-            resultId={jiraResult.resultId}
-            name={jiraResult.name}
-            href={jiraResult.href}
-            type={jiraResult.analyticsType}
-            objectKey={jiraResult.objectKey}
-            containerName={jiraResult.containerName}
-            avatarUrl={jiraResult.avatarUrl}
-          />
-        );
-      }
-      case ResultType.GenericContainerResult: {
-        const containerResult = result as ContainerResult;
-
-        return (
-          <ContainerResultWithAnalytics
-            key={containerResult.resultId}
-            resultId={containerResult.resultId}
-            name={containerResult.name}
-            href={containerResult.href}
-            type={containerResult.analyticsType}
-            avatarUrl={containerResult.avatarUrl}
-          />
-        );
-      }
-      case ResultType.PersonResult: {
-        const personResult = result as PersonResult;
-
-        return (
-          <PersonResultWithAnalytics
-            key={personResult.resultId}
-            resultId={personResult.resultId}
-            name={personResult.name}
-            href={personResult.href}
-            type={personResult.analyticsType}
-            avatarUrl={personResult.avatarUrl}
-            mentionName={personResult.mentionName}
-            presenceMessage={personResult.presenceMessage}
-          />
-        );
-      }
-      default: {
-        // Make the TS compiler verify that all enums have been matched
-        const _nonExhaustiveMatch: never = resultType;
-        throw new Error(
-          `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
-        );
-      }
-    }
+    return (
+      <Result
+        key={result.resultId}
+        resultId={result.resultId}
+        type={result.analyticsType}
+        name={result.name}
+        containerName={result.containerName}
+        href={result.href}
+        avatarUrl={result.avatarUrl}
+        objectKey={result.objectKey}
+        contentType={result.contentType}
+      />
+    );
   });
 }
 

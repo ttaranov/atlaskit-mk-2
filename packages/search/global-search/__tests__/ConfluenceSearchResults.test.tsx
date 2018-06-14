@@ -9,6 +9,7 @@ import {
   ContainerResult,
   ResultBase,
 } from '@atlaskit/quick-search';
+import { ResultType, Result } from '../src/model/Result';
 import {
   ObjectResultWithAnalytics,
   ContainerResultWithAnalytics,
@@ -16,12 +17,7 @@ import {
 } from '../src/components/SearchResultsUtil';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
-import {
-  makeConfluenceContainerResult,
-  makeConfluenceObjectResult,
-  makePersonResult,
-} from './_test-util';
-import { ContentType, ResultType } from '../src/model/Result';
+import { makeResult } from './_test-util';
 
 enum Group {
   Objects = 'objects',
@@ -43,7 +39,6 @@ describe('ConfluenceSearchResults', () => {
       retrySearch: () => {},
       recentlyViewedPages: [],
       recentlyViewedSpaces: [],
-      recentlyInteractedPeople: [],
       objectResults: [],
       spaceResults: [],
       peopleResults: [],
@@ -57,7 +52,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render recently viewed objects when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedPages: [makeConfluenceObjectResult()],
+      recentlyViewedPages: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -69,7 +64,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render recently viewed spaces when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedSpaces: [makeConfluenceContainerResult()],
+      recentlyViewedSpaces: [makeResult()],
     };
 
     const wrapper = render(props);
@@ -81,11 +76,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render objects when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      objectResults: [
-        makeConfluenceObjectResult({
-          name: 'name',
-        }),
-      ],
+      objectResults: [makeResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -99,9 +90,7 @@ describe('ConfluenceSearchResults', () => {
     const props: Partial<Props> = {
       query: 'na',
       spaceResults: [
-        makeConfluenceContainerResult({
-          name: 'name',
-        }),
+        makeResult({ resultType: ResultType.Container, name: 'name' }),
       ],
     };
 
@@ -117,7 +106,9 @@ describe('ConfluenceSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makePersonResult()],
+      peopleResults: [
+        makeResult({ resultType: ResultType.Person, name: 'name' }),
+      ],
     };
 
     const wrapper = render(props);
