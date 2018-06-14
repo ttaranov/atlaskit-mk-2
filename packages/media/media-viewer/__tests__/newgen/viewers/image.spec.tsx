@@ -152,20 +152,18 @@ describe('ImageViewer', () => {
 
     el.update();
 
-    expect(el.state('zoom')).toEqual(100);
+    expect(el.state('zoomLevel').value).toEqual(1);
     expect(el.find(ZoomControls)).toHaveLength(1);
-    el
-      .find(ZoomControls)
+    el.find(ZoomControls)
       .find(Button)
       .first()
       .simulate('click');
-    expect(el.state('zoom')).toEqual(50);
-    el
-      .find(ZoomControls)
+    expect(el.state('zoomLevel').value).toBeLessThan(1);
+    el.find(ZoomControls)
       .find(Button)
       .last()
       .simulate('click');
-    expect(el.state('zoom')).toEqual(100);
+    expect(el.state('zoomLevel').value).toEqual(1);
   });
 
   it('MSW-720: creates the blobService with collectionName', async () => {

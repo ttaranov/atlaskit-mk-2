@@ -1,5 +1,32 @@
 # @atlaskit/spinner
 
+## 7.0.0
+- [major] Update examples [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+- [major] Update test to reflect the changes and remove the one that flow was supposed to check [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+- [major] Update default to be medium 24px [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+- [major] Add a xsmall size to avoid consumer issues [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+- [major] Update spinner sizes based on design specs [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+- [major] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+
 ## 6.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)

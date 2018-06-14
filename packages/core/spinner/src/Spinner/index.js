@@ -20,7 +20,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     isCompleting: false,
     invertColor: false,
     onComplete: () => {},
-    size: 'small',
+    size: 'medium',
   };
 
   transitionNode: ?HTMLElement;

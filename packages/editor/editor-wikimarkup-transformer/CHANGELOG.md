@@ -1,5 +1,74 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.1.0
+
+
+
+
+
+
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+- [patch] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+
+## 1.0.10
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/renderer@18.0.3
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-json-transformer@3.0.11
+  - @atlaskit/editor-core@73.4.4
+
 ## 1.0.9
 - [patch] Adding breakout to extensions [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
 - [none] Updated dependencies [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)

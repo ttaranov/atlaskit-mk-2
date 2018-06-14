@@ -96,23 +96,33 @@ describe('Spinner', () => {
   });
 
   describe('size prop', () => {
+    it('should render the spinner with the default size if no value is provided', () => {
+      const custom = mount(<Spinner />);
+      expect(custom.find(Svg).prop('height')).toBe(24);
+      expect(custom.find(Svg).prop('width')).toBe(24);
+    });
+
     it('should render tee-shirt sizes with the proper heights/widths', () => {
+      const xsmall = mount(<Spinner size="xsmall" />);
       const small = mount(<Spinner size="small" />);
       const medium = mount(<Spinner size="medium" />);
       const large = mount(<Spinner size="large" />);
       const xlarge = mount(<Spinner size="xlarge" />);
 
-      expect(small.find(Svg).prop('height')).toBe(20);
-      expect(small.find(Svg).prop('width')).toBe(20);
+      expect(xsmall.find(Svg).prop('height')).toBe(8);
+      expect(xsmall.find(Svg).prop('width')).toBe(8);
 
-      expect(medium.find(Svg).prop('height')).toBe(30);
-      expect(medium.find(Svg).prop('width')).toBe(30);
+      expect(small.find(Svg).prop('height')).toBe(16);
+      expect(small.find(Svg).prop('width')).toBe(16);
 
-      expect(large.find(Svg).prop('height')).toBe(50);
-      expect(large.find(Svg).prop('height')).toBe(50);
+      expect(medium.find(Svg).prop('height')).toBe(24);
+      expect(medium.find(Svg).prop('width')).toBe(24);
 
-      expect(xlarge.find(Svg).prop('width')).toBe(100);
-      expect(xlarge.find(Svg).prop('width')).toBe(100);
+      expect(large.find(Svg).prop('height')).toBe(48);
+      expect(large.find(Svg).prop('height')).toBe(48);
+
+      expect(xlarge.find(Svg).prop('width')).toBe(96);
+      expect(xlarge.find(Svg).prop('width')).toBe(96);
     });
 
     it('should render the spinner with a custom size', () => {
@@ -120,13 +130,6 @@ describe('Spinner', () => {
 
       expect(custom.find(Svg).prop('height')).toBe(72);
       expect(custom.find(Svg).prop('width')).toBe(72);
-    });
-
-    it('should render the spinner with the default size if an unsupported value is provided', () => {
-      // $FlowFixMe
-      const custom = mount(<Spinner size={{ something: 'weird' }} />);
-      expect(custom.find(Svg).prop('height')).toBe(20);
-      expect(custom.find(Svg).prop('width')).toBe(20);
     });
   });
 
