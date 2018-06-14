@@ -31,17 +31,8 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@atlaskit/modal-dialog": "^5.0.1",
-=======
-    "@atlaskit/modal-dialog": "^5.1.0",
->>>>>>> Update global-nav dependencies
     "@atlaskit/onboarding": "^4.1.0",
-=======
-    "@atlaskit/modal-dialog": "^4.0.5",
-    "@atlaskit/onboarding": "^3.1.1",
->>>>>>> Use ak modal-dialog
     "react-lorem-component": "^0.12.2"
   }
 }
