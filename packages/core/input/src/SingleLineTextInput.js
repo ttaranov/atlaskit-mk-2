@@ -18,6 +18,13 @@ const ReadView = styled.div`
   white-space: nowrap;
 `;
 
+// Safari puts on some difficult to remove styles, mainly for disabled inputs
+// but we want full control so need to override them in all cases
+const overrideSafariDisabledStyles = `
+  -webkit-text-fill-color: unset;
+  -webkit-opacity: 1;
+`;
+
 const EditView = styled.input`
   ${common} background: transparent;
   border: 0;
@@ -29,8 +36,13 @@ const EditView = styled.input`
   outline: none;
   padding: 0;
   width: 100%;
+
   :invalid {
     box-shadow: none;
+  }
+
+  [disabled] {
+    ${overrideSafariDisabledStyles};
   }
 `;
 
