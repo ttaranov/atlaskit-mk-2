@@ -40,7 +40,7 @@ describe('typeAhead keymaps', () => {
       editorPlugins: [plugin],
     });
     sendKeyToPm(editorView, 'Enter');
-    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected ')));
+    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected')));
   });
 
   it('tab should select current item', () => {
@@ -50,7 +50,7 @@ describe('typeAhead keymaps', () => {
       editorPlugins: [plugin],
     });
     sendKeyToPm(editorView, 'Tab');
-    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected ')));
+    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected')));
   });
 
   it('up arrow should move selection to a previous item', () => {
@@ -92,7 +92,7 @@ describe('typeAhead keymaps', () => {
       editorPlugins: [plugin],
     });
     sendKeyToPm(editorView, 'Space');
-    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected ')));
+    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected')));
   });
 
   it('space should dismiss type ahead query if not items is available', () => {

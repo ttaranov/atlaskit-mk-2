@@ -1,6 +1,7 @@
 import { Selection, EditorState } from 'prosemirror-state';
 import { Fragment, Node } from 'prosemirror-model';
 import { safeInsert } from 'prosemirror-utils';
+import { analyticsService } from '../../../analytics';
 import { Command } from '../../../types';
 import { isChromeWithSelectionBug } from '../../../utils';
 import { pluginKey, ACTIONS } from '../pm-plugins/main';
@@ -76,12 +77,15 @@ export const selectItem = (
         return true;
       }
 
-      /**
-       *
-       * Replacing a type ahead query mark with a block node.
-       *
-       */
-      if (node.isBlock) {
+      if (node.isText) {
+        tr = tr.replaceWith(start, start, node);
+
+        /**
+         *
+         * Replacing a type ahead query mark with a block node.
+         *
+         */
+      } else if (node.isBlock) {
         tr = safeInsert(node)(tr);
 
         /**
@@ -91,6 +95,7 @@ export const selectItem = (
          */
       } else if (node.isInline) {
         const fragment = Fragment.fromArray([node, state.schema.text(' ')]);
+
         tr = tr.replaceWith(start, start, fragment);
 
         // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
@@ -107,6 +112,10 @@ export const selectItem = (
       dispatch(tr);
       return true;
     };
+
+    analyticsService.trackEvent('atlassian.editor.typeahead.select', {
+      item: item.title,
+    });
 
     if (handler.selectItem(state, item, insert) === false) {
       return insertFallbackCommand(start, end)(state, dispatch);
