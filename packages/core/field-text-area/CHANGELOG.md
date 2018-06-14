@@ -1,5 +1,9 @@
 # @atlaskit/field-text-area
 
+## 3.0.4
+- [patch] Fixed disabled field colour in Safari [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
+- [none] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
+
 ## 3.0.3
 
 

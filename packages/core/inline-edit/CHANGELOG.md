@@ -1,5 +1,10 @@
 # @atlaskit/inline-edit
 
+## 6.1.1
+- [patch] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
+  - @atlaskit/input@3.0.1
+  - @atlaskit/field-text@6.0.3
+
 ## 6.1.0
 
 
