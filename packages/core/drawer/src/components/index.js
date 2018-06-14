@@ -11,25 +11,6 @@ import { Fade } from './transitions';
 import type { DrawerProps } from './types';
 
 // resolve lifecycle methods
-const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
-const DrawerSwitch = ({ icon, isOpen, ...props }, { defaultDrawerIcon }) => {
-  const div = document.createElement('div');
-  const body = document.querySelector('body');
-  if (!body) {
-    return;
-  }
-  body.appendChild(div);
-  return createPortal(
-    <TransitionGroup component={OnlyChild}>
-      {isOpen ? <Drawer icon={icon || defaultDrawerIcon} {...props} /> : null}
-    </TransitionGroup>,
-    div,
-  );
-};
-DrawerSwitch.contextTypes = {
-  defaultDrawerIcon: PropTypes.func,
-};
-
 class Drawer extends Component<DrawerProps> {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -55,16 +36,37 @@ class Drawer extends Component<DrawerProps> {
     }
   };
   render() {
+    console.log(this.props.in);
     return (
       <Fragment>
         {/* $FlowFixMe the `in` prop is internal */}
-        <Fade in={this.props.in}>
+        <Fade in={this.props.isOpen}>
           <Blanket isTinted onBlanketClicked={this.handleClose} />
         </Fade>
-        <DrawerPrimitive {...this.props} />
+        <DrawerPrimitive {...this.props} isOpen={this.props.isOpen} />
       </Fragment>
     );
   }
 }
+
+const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
+const DrawerSwitch = ({ icon, isOpen, ...props }, { defaultDrawerIcon }) => {
+  console.log(isOpen);
+  const div = document.createElement('div');
+  const body = document.querySelector('body');
+  if (!body) {
+    return;
+  }
+  body.appendChild(div);
+  return createPortal(
+    <TransitionGroup component={OnlyChild}>
+      <Drawer icon={icon || defaultDrawerIcon} isOpen={isOpen} {...props} />
+    </TransitionGroup>,
+    div,
+  );
+};
+DrawerSwitch.contextTypes = {
+  defaultDrawerIcon: PropTypes.func,
+};
 
 export default (props: *) => <DrawerSwitch {...props} />;

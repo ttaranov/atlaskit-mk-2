@@ -447,8 +447,8 @@
   resolved "https://registry.yarnpkg.com/@types/bytes/-/bytes-2.5.1.tgz#392c42adb65e16d32328b82b58fbc1611b75da89"
 
 "@types/chai@*", "@types/chai@^4.0.4":
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.3.tgz#b8a74352977a23b604c01aa784f5b793443fb7dc"
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.4.tgz#5ca073b330d90b4066d6ce18f60d57f2084ce8ca"
 
 "@types/cheerio@*":
   version "0.22.7"
@@ -502,25 +502,20 @@
     "@types/lodash" "*"
 
 "@types/lodash@*", "@types/lodash@^4.14.106":
-<<<<<<< HEAD
-  version "4.14.106"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.106.tgz#6093e9a02aa567ddecfe9afadca89e53e5dce4dd"
-=======
   version "4.14.109"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.109.tgz#b1c4442239730bf35cabaf493c772b18c045886d"
->>>>>>> Drawer package inital commit
 
 "@types/mocha@^2.2.39":
   version "2.2.48"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.48.tgz#3523b126a0b049482e1c3c11877460f76622ffab"
 
 "@types/node@*":
-  version "10.3.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.2.tgz#3840ec6c12556fdda6e0e6d036df853101d732a4"
+  version "10.3.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.3.tgz#8798d9e39af2fa604f715ee6a6b19796528e46c3"
 
 "@types/node@^8.0.19":
-  version "8.10.19"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.19.tgz#66b5b6325c048cbf4512b7a88b0e79c2ee99d3d2"
+  version "8.10.20"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.20.tgz#fe674ea52e13950ab10954433a7824438aabbcac"
 
 "@types/orderedmap@*", "@types/orderedmap@^1.0.0":
   version "1.0.0"
@@ -639,20 +634,15 @@
     redux "*"
 
 "@types/sinon-chai@^2.7.27":
-  version "2.7.32"
-  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-2.7.32.tgz#022ca9ef62c2dee97ee7773346871c12fd11a7b6"
+  version "2.7.33"
+  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-2.7.33.tgz#28899cee7246755cdb3a4371af9f5b7e9774edd0"
   dependencies:
     "@types/chai" "*"
     "@types/sinon" "*"
 
 "@types/sinon@*":
-<<<<<<< HEAD
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-4.0.0.tgz#9a93ffa4ee1329e85166278a5ed99f81dc4c8362"
-=======
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-5.0.1.tgz#a15b36ec42f1f53166617491feabd1734cb03e21"
->>>>>>> Drawer package inital commit
 
 "@webassemblyjs/ast@1.5.12":
   version "1.5.12"
@@ -844,11 +834,7 @@ acorn@^4.0.3, acorn@^4.0.4:
   version "4.0.13"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.13.tgz#105495ae5361d697bd195c825192e1ad7f253787"
 
-<<<<<<< HEAD
-acorn@^5.0.0, acorn@^5.1.1, acorn@^5.6.2:
-=======
 acorn@^5.0.0, acorn@^5.3.0, acorn@^5.5.0, acorn@^5.6.2:
->>>>>>> Drawer package inital commit
   version "5.6.2"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.6.2.tgz#b1da1d7be2ac1b4a327fb9eab851702c5045b4e7"
 
@@ -1699,20 +1685,12 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-<<<<<<< HEAD
-babel-plugin-emotion@^9.1.0, babel-plugin-emotion@^9.1.2:
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-emotion/-/babel-plugin-emotion-9.1.2.tgz#e26b313fa0fecd0f2cc07b1e4ef05da167e4f740"
-  dependencies:
-    "@babel/helper-module-imports" "7.0.0-beta.32"
-=======
 babel-plugin-emotion@^9.1.0, babel-plugin-emotion@^9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-emotion/-/babel-plugin-emotion-9.2.0.tgz#43543dd02c7b5cd89d464aeedef864edb754b852"
   dependencies:
     "@babel/helper-module-imports" "7.0.0-beta.40"
     "@emotion/babel-utils" "^0.5.3"
->>>>>>> Drawer package inital commit
     "@emotion/hash" "^0.6.2"
     "@emotion/memoize" "^0.6.1"
     "@emotion/stylis" "^0.6.5"
@@ -2110,13 +2088,8 @@ babel-polyfill@^6.26.0:
     regenerator-runtime "^0.10.5"
 
 babel-preset-env@^1.6.0, babel-preset-env@^1.6.1:
-<<<<<<< HEAD
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.6.1.tgz#a18b564cc9b9afdf4aae57ae3c1b0d99188e6f48"
-=======
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.7.0.tgz#dea79fa4ebeb883cd35dab07e260c1c9c04df77a"
->>>>>>> Drawer package inital commit
   dependencies:
     babel-plugin-check-es2015-constants "^6.22.0"
     babel-plugin-syntax-trailing-function-commas "^6.22.0"
@@ -2327,25 +2300,15 @@ babylon@7.0.0-beta.19:
   version "7.0.0-beta.19"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.19.tgz#e928c7e807e970e0536b078ab3e0c48f9e052503"
 
-<<<<<<< HEAD
-babylon@7.0.0-beta.22:
-  version "7.0.0-beta.22"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.22.tgz#74f0ad82ed7c7c3cfeab74cf684f815104161b65"
-=======
 babylon@7.0.0-beta.44:
   version "7.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.44.tgz#89159e15e6e30c5096e22d738d8c0af8a0e8ca1d"
->>>>>>> Drawer package inital commit
 
 babylon@^6.17.0, babylon@^6.17.3, babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
-<<<<<<< HEAD
-babylon@^7.0.0-beta.22, babylon@^7.0.0-beta.47:
-=======
 babylon@^7.0.0-beta.22, babylon@^7.0.0-beta.40, babylon@^7.0.0-beta.47:
->>>>>>> Drawer package inital commit
   version "7.0.0-beta.47"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.47.tgz#6d1fa44f0abec41ab7c780481e62fd9aafbdea80"
 
@@ -2792,11 +2755,7 @@ browserslist@^1.3.6, browserslist@^1.5.2, browserslist@^1.7.6:
     caniuse-db "^1.0.30000639"
     electron-to-chromium "^1.2.7"
 
-<<<<<<< HEAD
-browserslist@^2.1.2, browserslist@^2.11.3:
-=======
 browserslist@^2.11.3:
->>>>>>> Drawer package inital commit
   version "2.11.3"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.11.3.tgz#fe36167aed1bbcde4827ebfe71347a2cc70b99b2"
   dependencies:
@@ -3081,19 +3040,13 @@ caniuse-db@1.0.30000671:
   version "1.0.30000671"
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000671.tgz#9f071bbc7b96994638ccbaf47829d58a1577a8ed"
 
-<<<<<<< HEAD
-caniuse-lite@^1.0.30000670, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805:
-  version "1.0.30000810"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000810.tgz#47585fffce0e9f3593a6feea4673b945424351d9"
-=======
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000852"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000852.tgz#c37a706048f8d81f87946a7c13f39ed636876659"
+  version "1.0.30000855"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000855.tgz#34f88bf1577aa505395e48e412dc21f7dd41ef3b"
 
 caniuse-lite@^1.0.30000670, caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30000844:
-  version "1.0.30000852"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000852.tgz#8b7510cec030cac7842e52beca2bf292af65f935"
->>>>>>> Drawer package inital commit
+  version "1.0.30000855"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000855.tgz#d5a26a9093b932d6266bf4ed9294b41b84945d14"
 
 capture-stack-trace@^1.0.0:
   version "1.0.0"
@@ -3161,11 +3114,7 @@ chalk@^1.0.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-<<<<<<< HEAD
-chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.3.1, chalk@^2.3.2:
-=======
 chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.1:
->>>>>>> Drawer package inital commit
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.1.tgz#18c49ab16a037b6eb0152cc83e3471338215b66e"
   dependencies:
@@ -3389,12 +3338,20 @@ cli-width@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
 
-cliff@0.1.9, cliff@~0.1.9:
+cliff@0.1.9:
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/cliff/-/cliff-0.1.9.tgz#a211e09c6a3de3ba1af27d049d301250d18812bc"
   dependencies:
     colors "0.x.x"
     eyes "0.1.x"
+    winston "0.8.x"
+
+cliff@~0.1.9:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/cliff/-/cliff-0.1.10.tgz#53be33ea9f59bec85609ee300ac4207603e52013"
+  dependencies:
+    colors "~1.0.3"
+    eyes "~0.1.8"
     winston "0.8.x"
 
 clipboard-polyfill@2.4.3:
@@ -3403,15 +3360,9 @@ clipboard-polyfill@2.4.3:
   dependencies:
     es6-promise "4.1.1"
 
-<<<<<<< HEAD
-clipboard@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-1.7.1.tgz#360d6d6946e99a7a1fef395e42ba92b5e9b5a16b"
-=======
 clipboard@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-2.0.1.tgz#a12481e1c13d8a50f5f036b0560fe5d16d74e46a"
->>>>>>> Drawer package inital commit
   dependencies:
     good-listener "^1.2.2"
     select "^1.1.2"
@@ -3627,7 +3578,7 @@ colors@0.6.x, colors@0.x.x, colors@~0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/colors/-/colors-0.6.2.tgz#2423fe6678ac0c5dae8852e5d0e5be08c997abcc"
 
-colors@1.0.3, colors@1.0.x:
+colors@1.0.3, colors@1.0.x, colors@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
 
@@ -3657,15 +3608,9 @@ comma-separated-tokens@^1.0.0:
   dependencies:
     trim "0.0.1"
 
-<<<<<<< HEAD
-commander@2.11.x, commander@~2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
-=======
 commander@2.15.x, commander@^2.11.0, commander@^2.12.1, commander@^2.13.0, commander@^2.9.0, commander@~2.15.0:
   version "2.15.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
->>>>>>> Drawer package inital commit
 
 commander@2.9.0:
   version "2.9.0"
@@ -3673,13 +3618,6 @@ commander@2.9.0:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-<<<<<<< HEAD
-commander@^2.11.0, commander@^2.12.1, commander@^2.9.0:
-  version "2.15.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
-
-=======
->>>>>>> Drawer package inital commit
 commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
@@ -3917,13 +3855,8 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.2.0, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0:
-<<<<<<< HEAD
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.6.tgz#0fe6d45bf3cac3ac364a9d72de7576f4eb221b9d"
-=======
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
->>>>>>> Drawer package inital commit
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -3984,15 +3917,9 @@ create-emotion-styled@^9.2.3:
   dependencies:
     "@emotion/is-prop-valid" "^0.6.1"
 
-<<<<<<< HEAD
-create-emotion@^9.1.2:
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/create-emotion/-/create-emotion-9.1.2.tgz#a4227ac0c1bd9f07160f1e87161bffdb1732e148"
-=======
 create-emotion@^9.2.1:
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/create-emotion/-/create-emotion-9.2.1.tgz#1316189d53bf65cf191a59d3ac6ecb6f4e13e020"
->>>>>>> Drawer package inital commit
   dependencies:
     "@emotion/hash" "^0.6.2"
     "@emotion/memoize" "^0.6.1"
@@ -4371,11 +4298,7 @@ debounce@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.1.0.tgz#6a1a4ee2a9dc4b7c24bb012558dbcdb05b37f408"
 
-<<<<<<< HEAD
-debug@2, debug@2.6.9, debug@^2.1.1, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.4.1, debug@^2.6.3, debug@^2.6.6, debug@^2.6.8:
-=======
 debug@2, debug@2.6.9, debug@^2.1.1, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8, debug@^2.6.9:
->>>>>>> Drawer package inital commit
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
@@ -4868,30 +4791,17 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
-<<<<<<< HEAD
-ejs@^2.5.6, ejs@^2.5.9:
-=======
 ejs@^2.5.7, ejs@^2.5.9:
->>>>>>> Drawer package inital commit
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
 ejs@~2.5.6:
-<<<<<<< HEAD
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
-
-electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.11, electron-to-chromium@^1.3.30:
-  version "1.3.33"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.33.tgz#bf00703d62a7c65238136578c352d6c5c042a545"
-=======
   version "2.5.9"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.9.tgz#7ba254582a560d267437109a68354112475b0ce5"
 
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.11, electron-to-chromium@^1.3.30, electron-to-chromium@^1.3.47:
   version "1.3.48"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.48.tgz#d3b0d8593814044e092ece2108fc3ac9aea4b900"
->>>>>>> Drawer package inital commit
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -4924,17 +4834,6 @@ emotion-theming@^9.0.0:
     hoist-non-react-statics "^2.3.1"
 
 emotion@^9.0.2, emotion@^9.1.1, emotion@^9.1.2:
-<<<<<<< HEAD
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/emotion/-/emotion-9.1.2.tgz#b89ff80c8449a2eb146a4a0fc87f3e1aefedd253"
-  dependencies:
-    babel-plugin-emotion "^9.1.2"
-    create-emotion "^9.1.2"
-
-encodeurl@~1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.1.tgz#79e3d58655346909fe6f0f45a5de68103b294d20"
-=======
   version "9.2.3"
   resolved "https://registry.yarnpkg.com/emotion/-/emotion-9.2.3.tgz#c93b9a222df92e6281036afa02b3b5b8cfb9e049"
   dependencies:
@@ -4944,7 +4843,6 @@ encodeurl@~1.0.1:
 encodeurl@~1.0.1, encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
->>>>>>> Drawer package inital commit
 
 encoding@^0.1.11:
   version "0.1.12"
@@ -5195,13 +5093,8 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.0, escape-string-regexp@^1
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
 escodegen@1.x.x, escodegen@^1.6.1, escodegen@^1.8.0:
-<<<<<<< HEAD
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.9.1.tgz#dbae17ef96c8e4bedb1356f4504fa4cc2f7cb7e2"
-=======
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.10.0.tgz#f647395de22519fbd0d928ffcf1d17e0dec2603e"
->>>>>>> Drawer package inital commit
   dependencies:
     esprima "^3.1.3"
     estraverse "^4.2.0"
@@ -5768,15 +5661,11 @@ extsprintf@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
 
-<<<<<<< HEAD
-eyes@0.1.x:
-=======
 extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
 eyes@0.1.x, eyes@~0.1.8:
->>>>>>> Drawer package inital commit
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/eyes/-/eyes-0.1.8.tgz#62cf120234c683785d902348a800ef3e0cc20bc0"
 
@@ -6109,15 +5998,9 @@ focusin@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/focusin/-/focusin-2.0.0.tgz#58c01180dfb1949f03e3ddeee063739fc33b6ffc"
 
-<<<<<<< HEAD
-follow-redirects@^1.2.3, follow-redirects@^1.2.5:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.4.1.tgz#d8120f4518190f55aac65bb6fc7b85fcd666d6aa"
-=======
 follow-redirects@^1.0.0, follow-redirects@^1.2.3, follow-redirects@^1.2.5:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.0.tgz#234f49cf770b7f35b40e790f636ceba0c3a0ab77"
->>>>>>> Drawer package inital commit
   dependencies:
     debug "^3.1.0"
 
@@ -6177,11 +6060,7 @@ form-data@1.0.0-rc3:
     combined-stream "^1.0.5"
     mime-types "^2.1.3"
 
-<<<<<<< HEAD
-form-data@^2.3.1, form-data@~2.3.1:
-=======
 form-data@^2.3.1, form-data@^2.3.2, form-data@~2.3.1:
->>>>>>> Drawer package inital commit
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.2.tgz#4970498be604c20c005d4f5c23aecd21d6b49099"
   dependencies:
@@ -6197,13 +6076,10 @@ form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
-<<<<<<< HEAD
-=======
 format@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
 
->>>>>>> Drawer package inital commit
 formatio@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/formatio/-/formatio-1.1.1.tgz#5ed3ccd636551097383465d996199100e86161e9"
@@ -6323,19 +6199,11 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
 
 fsevents@^1.0.0, fsevents@^1.1.2:
-<<<<<<< HEAD
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.3.tgz#08292982e7059f6674c93d8b829c1e8604979ac0"
-  dependencies:
-    nan "^2.9.2"
-    node-pre-gyp "^0.9.0"
-=======
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.4.tgz#f41dcb1af2582af3692da36fc55cbd8e1041c426"
   dependencies:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"
->>>>>>> Drawer package inital commit
 
 "fstream@>= 0.1.30 < 1":
   version "0.1.31"
@@ -6751,11 +6619,7 @@ got@^7.0.0:
     url-parse-lax "^1.0.0"
     url-to-options "^1.0.1"
 
-<<<<<<< HEAD
-got@^8.0.3, got@^8.2.0, got@^8.3.1:
-=======
 got@^8.0.3, got@^8.3.1:
->>>>>>> Drawer package inital commit
   version "8.3.1"
   resolved "https://registry.yarnpkg.com/got/-/got-8.3.1.tgz#093324403d4d955f5a16a7a8d39955d055ae10ed"
   dependencies:
@@ -7029,21 +6893,12 @@ hoek@2.x.x:
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
 hoek@4.x.x:
-<<<<<<< HEAD
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
-
-hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
-=======
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
 
 hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.4.tgz#fc3b1ac05d2ae3abedec84eba846511b0d4fcc4f"
->>>>>>> Drawer package inital commit
 
 home-dir@^0.2.0:
   version "0.2.0"
@@ -7276,22 +7131,11 @@ i@0.3.x:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/i/-/i-0.3.6.tgz#d96c92732076f072711b6b10fd7d4f65ad8ee23d"
 
-<<<<<<< HEAD
-iconv-lite@0.4.13:
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.13.tgz#1f88aba4ab0b1508e8312acc39345f36e992e2f2"
-
-=======
->>>>>>> Drawer package inital commit
 iconv-lite@0.4.19:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
-<<<<<<< HEAD
-iconv-lite@^0.4.17, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
-=======
 iconv-lite@0.4.23, iconv-lite@^0.4.17, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
->>>>>>> Drawer package inital commit
   version "0.4.23"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.23.tgz#297871f63be507adcfbfca715d0cd0eed84e9a63"
   dependencies:
@@ -7332,17 +7176,12 @@ ignore-walk@^3.0.1:
     minimatch "^3.0.4"
 
 ignore@^3.2.0, ignore@^3.3.3, ignore@^3.3.5:
-<<<<<<< HEAD
-  version "3.3.7"
-  resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
-=======
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.8.tgz#3f8e9c35d38708a3a7e0e9abb6c73e7ee7707b2b"
 
 image-size@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.2.tgz#8ee316d4298b028b965091b673d5f1537adee5b4"
->>>>>>> Drawer package inital commit
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
 
 image-size@~0.5.0:
   version "0.5.5"
@@ -7487,11 +7326,7 @@ interpolate-range@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/interpolate-range/-/interpolate-range-2.1.0.tgz#fec3f907a3a075476feb478439ae8d166bc826a5"
 
-<<<<<<< HEAD
-interpret@^1.0.0, interpret@^1.0.4:
-=======
 interpret@^1.0.0, interpret@^1.1.0:
->>>>>>> Drawer package inital commit
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
 
@@ -7748,19 +7583,11 @@ is-object@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-object/-/is-object-1.0.1.tgz#8952688c5ec2ffd6b03ecc85e769e02903083470"
 
-<<<<<<< HEAD
-is-observable@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/is-observable/-/is-observable-0.2.0.tgz#b361311d83c6e5d726cabf5e250b0237106f5ae2"
-  dependencies:
-    symbol-observable "^0.2.2"
-=======
 is-observable@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-observable/-/is-observable-1.1.0.tgz#b3e986c8f44de950867cab5403f5a3465005975e"
   dependencies:
     symbol-observable "^1.1.0"
->>>>>>> Drawer package inital commit
 
 is-odd@^2.0.0:
   version "2.0.0"
@@ -9245,11 +9072,7 @@ lodash@^3.10.1, lodash@^3.3.1, lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-<<<<<<< HEAD
-lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.8.0, lodash@~4.17.4:
-=======
 lodash@^4.0.0, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.8.0, lodash@~4.17.10:
->>>>>>> Drawer package inital commit
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
@@ -9370,13 +9193,6 @@ lz-string@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
 
-<<<<<<< HEAD
-macaddress@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
-
-=======
->>>>>>> Drawer package inital commit
 make-dir@^1.0.0, make-dir@^1.1.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"
@@ -9586,7 +9402,7 @@ meow@^5.0.0:
     trim-newlines "^2.0.0"
     yargs-parser "^10.0.0"
 
-meow@sindresorhus/meow#43401c3:
+"meow@github:sindresorhus/meow#43401c3":
   version "3.6.0"
   resolved "https://codeload.github.com/sindresorhus/meow/tar.gz/43401c39ee442db308288f50d6f213cd0e6e602c"
   dependencies:
@@ -9846,12 +9662,6 @@ moment-timezone@0.5.13:
   dependencies:
     moment ">= 2.9.0"
 
-<<<<<<< HEAD
-moment@2.18.1, "moment@>= 2.9.0", moment@^2.10.6:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
-
-=======
 moment@2.19.3:
   version "2.19.3"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.3.tgz#bdb99d270d6d7fda78cc0fbace855e27fe7da69f"
@@ -9860,7 +9670,6 @@ moment@2.19.3:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
->>>>>>> Drawer package inital commit
 morgan@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.9.0.tgz#d01fa6c65859b76fcf31b3cb53a3821a311d8051"
@@ -9938,11 +9747,7 @@ mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-<<<<<<< HEAD
-nan@^2.3.3, nan@^2.9.2:
-=======
 nan@^2.10.0, nan@^2.9.2:
->>>>>>> Drawer package inital commit
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
@@ -10140,15 +9945,6 @@ node-notifier@^5.0.2:
   resolved "https://registry.yarnpkg.com/node-notifier/-/node-notifier-5.2.1.tgz#fa313dd08f5517db0e2502e5758d664ac69f9dea"
   dependencies:
     growly "^1.3.0"
-<<<<<<< HEAD
-    semver "^5.3.0"
-    shellwords "^0.1.0"
-    which "^1.2.12"
-
-node-pre-gyp@^0.9.0:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.9.1.tgz#f11c07516dd92f87199dbc7e1838eab7cd56c9e0"
-=======
     semver "^5.4.1"
     shellwords "^0.1.1"
     which "^1.3.0"
@@ -10156,7 +9952,6 @@ node-pre-gyp@^0.9.0:
 node-pre-gyp@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.10.0.tgz#6e4ef5bb5c5203c6552448828c852c40111aac46"
->>>>>>> Drawer package inital commit
   dependencies:
     detect-libc "^1.0.2"
     mkdirp "^0.5.1"
@@ -10672,15 +10467,9 @@ p-lazy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-lazy/-/p-lazy-1.0.0.tgz#ec53c802f2ee3ac28f166cc82d0b2b02de27a835"
 
-<<<<<<< HEAD
-p-limit@^1.1.0, p-limit@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.2.0.tgz#0e92b6bedcb59f022c13d0f1949dc82d15909f1c"
-=======
 p-limit@^1.0.0, p-limit@^1.1.0, p-limit@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.3.0.tgz#b86bd5f0c25690911c7590fcbfc2010d54b3ccb8"
->>>>>>> Drawer package inital commit
   dependencies:
     p-try "^1.0.0"
 
@@ -11090,9 +10879,13 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-pkginfo@0.3.x, pkginfo@0.x.x:
+pkginfo@0.3.x:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.3.1.tgz#5b29f6a81f70717142e09e765bbeab97b4f81e21"
+
+pkginfo@0.x.x:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.4.1.tgz#b5418ef0439de5425fc4995042dced14fb2a84ff"
 
 pluralize@^1.2.1:
   version "1.2.1"
@@ -11421,15 +11214,9 @@ postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0
     source-map "^0.5.6"
     supports-color "^3.2.3"
 
-<<<<<<< HEAD
-postcss@^6.0.1, postcss@^6.0.14, postcss@^6.0.15, postcss@^6.0.17, postcss@^6.0.6, postcss@^6.0.8:
-  version "6.0.19"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.19.tgz#76a78386f670b9d9494a655bf23ac012effd1555"
-=======
 postcss@^6.0.1, postcss@^6.0.14, postcss@^6.0.17, postcss@^6.0.21, postcss@^6.0.6, postcss@^6.0.8:
   version "6.0.22"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.22.tgz#e23b78314905c3b90cbd61702121e7a78848f2a3"
->>>>>>> Drawer package inital commit
   dependencies:
     chalk "^2.4.1"
     source-map "^0.6.1"
@@ -11487,21 +11274,12 @@ prettier-eslint@^8.2.1:
     pretty-format "^22.0.3"
     require-relative "^0.8.7"
     typescript "^2.5.1"
-<<<<<<< HEAD
-    typescript-eslint-parser "^8.0.0"
-
-prettier@^1.5.3, prettier@^1.7.1, prettier@^1.9.2:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.12.1.tgz#c1ad20e803e7749faf905a409d2367e06bbe7325"
-
-=======
     typescript-eslint-parser "^11.0.0"
 
 prettier@^1.12.1, prettier@^1.7.0, prettier@^1.9.2:
   version "1.13.5"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.5.tgz#7ae2076998c8edce79d63834e9b7b09fead6bfd0"
 
->>>>>>> Drawer package inital commit
 pretty-bytes@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-4.0.2.tgz#b2bf82e7350d65c6c33aa95aaa5a4f6327f61cd9"
@@ -11565,15 +11343,6 @@ prettyjson@^1.1.2:
     colors "^1.1.2"
     minimist "^1.2.0"
 
-<<<<<<< HEAD
-prettysize@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/prettysize/-/prettysize-0.1.0.tgz#38ee534e2d298bc945fb7243203dd873cefc9679"
-
-prismjs@^1.6.0, prismjs@^1.8.4, prismjs@~1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.10.0.tgz#77e5187c2ae6b3253fcc313029cf25fe53778721"
-=======
 prettysize@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/prettysize/-/prettysize-1.1.0.tgz#c6c52f87161ff172ea435f375f99831dd9a97bb0"
@@ -11581,7 +11350,6 @@ prettysize@^1.1.0:
 prismjs@^1.6.0, prismjs@^1.8.4, prismjs@~1.14.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.14.0.tgz#bbccfdb8be5d850d26453933cb50122ca0362ae0"
->>>>>>> Drawer package inital commit
   optionalDependencies:
     clipboard "^2.0.0"
 
@@ -11589,15 +11357,7 @@ private@^0.1.6, private@^0.1.8, private@~0.1.5:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
 
-<<<<<<< HEAD
-process-nextick-args@^1.0.6:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"
-
-process-nextick-args@~2.0.0:
-=======
 process-nextick-args@^2.0.0, process-nextick-args@~2.0.0:
->>>>>>> Drawer package inital commit
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
 
@@ -11755,15 +11515,15 @@ prosemirror-markdown@^1.0.3:
     markdown-it "^6.0.4"
     prosemirror-model "^1.0.0"
 
-<<<<<<< HEAD
-prosemirror-model@1.4.0, prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0:
+prosemirror-model@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.4.0.tgz#5172c635f62d7378451fcbfd27a580a633f02e2d"
-=======
-prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.2.0:
+  dependencies:
+    orderedmap "^1.0.0"
+
+prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.5.0.tgz#4fa5498ed08eaabafec3e88ea2dcba149d5d458a"
->>>>>>> Drawer package inital commit
   dependencies:
     orderedmap "^1.0.0"
 
@@ -11888,8 +11648,8 @@ public-encrypt@^4.0.0:
     randombytes "^2.0.1"
 
 pubnub@^4.20.3:
-  version "4.21.1"
-  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-4.21.1.tgz#51d20639bc31ece3608cebe47b190dc272065183"
+  version "4.21.2"
+  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-4.21.2.tgz#40da7c6079ec476ab07c0555abae85f752f6c278"
   dependencies:
     agentkeepalive "^3.1.0"
     lil-uuid "^0.1.1"
@@ -11972,11 +11732,7 @@ qs@6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
 
-<<<<<<< HEAD
-qs@^6.5.1, qs@^6.5.2, qs@~6.5.1:
-=======
 qs@6.5.2, qs@^6.5.1, qs@^6.5.2, qs@~6.5.1:
->>>>>>> Drawer package inital commit
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
@@ -12190,8 +11946,8 @@ react-dock@^0.2.3:
     prop-types "^15.5.8"
 
 react-dom@^16.3.0:
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.0.tgz#099f067dd5827ce36a29eaf9a6cdc7cbf6216b1e"
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.1.tgz#7f8b0223b3a5fbe205116c56deb85de32685dad6"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -12218,9 +11974,9 @@ react-input-autosize@^2.2.1:
   dependencies:
     prop-types "^15.5.8"
 
-react-is@^16.3.1, react-is@^16.3.2, react-is@^16.4.0:
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.0.tgz#cc9fdc855ac34d2e7d9d2eb7059bbc240d35ffcf"
+react-is@^16.3.1, react-is@^16.3.2, react-is@^16.4.1:
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.1.tgz#d624c4650d2c65dbd52c72622bbf389435d9776e"
 
 react-json-tree@^0.11.0:
   version "0.11.0"
@@ -12272,13 +12028,8 @@ react-markdown@^2.5.0:
     prop-types "^15.5.1"
 
 react-markings@^1.1.7, react-markings@^1.2.0:
-<<<<<<< HEAD
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.2.0.tgz#0aa0bf7ad9f0fb5a3cf66b7a44caebddd6d19ca8"
-=======
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.3.0.tgz#7bb6826013bfc4fb37dc511a8ba2e578d9b4c284"
->>>>>>> Drawer package inital commit
   dependencies:
     commonmark "^0.27.0"
     commonmark-react-renderer "^4.3.3"
@@ -12386,13 +12137,13 @@ react-syntax-highlighter@^6.0.2:
     refractor "^2.0.0"
 
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.3.0:
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.4.0.tgz#0dbe0e24263e94e1830c7afb1f403707fad313a3"
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.4.1.tgz#f2fb30c2c7b517db6e5b10ed20bb6b0a7ccd8d70"
   dependencies:
     fbjs "^0.8.16"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
-    react-is "^16.4.0"
+    react-is "^16.4.1"
 
 react-transition-group@^1.2.0:
   version "1.2.1"
@@ -12432,8 +12183,8 @@ react-virtualized@^9.8.0:
     react-lifecycles-compat "^3.0.4"
 
 "react@^15.6.2 || ^16.0", react@^16.3.0:
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.4.0.tgz#402c2db83335336fba1962c08b98c6272617d585"
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -12518,11 +12269,7 @@ read@1.0.x:
   dependencies:
     mute-stream "~0.0.4"
 
-<<<<<<< HEAD
-"readable-stream@1 || 2", readable-stream@2, readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.2.6, readable-stream@^2.2.9:
-=======
 "readable-stream@1 || 2", readable-stream@2, readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.2.9, readable-stream@^2.3.0, readable-stream@^2.3.3, readable-stream@^2.3.5, readable-stream@^2.3.6:
->>>>>>> Drawer package inital commit
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   dependencies:
@@ -12903,15 +12650,9 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-<<<<<<< HEAD
-request@2.81.0:
-  version "2.81.0"
-  resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
-=======
 request@2.87.0, request@^2.55.0, request@^2.79.0, request@^2.81.0:
   version "2.87.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.87.0.tgz#32f00235cd08d482b4d0d68db93a829c0ed5756e"
->>>>>>> Drawer package inital commit
   dependencies:
     aws-sign2 "~0.7.0"
     aws4 "^1.6.0"
@@ -12934,11 +12675,7 @@ request@2.87.0, request@^2.55.0, request@^2.79.0, request@^2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.1.0"
 
-<<<<<<< HEAD
-request@^2.55.0, request@^2.79.0, request@^2.81.0, request@~2.83.0:
-=======
 request@~2.83.0:
->>>>>>> Drawer package inital commit
   version "2.83.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.83.0.tgz#ca0b65da02ed62935887808e6f510381034e3356"
   dependencies:
@@ -13108,8 +12845,8 @@ revalidator@0.1.x:
   resolved "https://registry.yarnpkg.com/revalidator/-/revalidator-0.1.8.tgz#fece61bfa0c1b52a206bd6b18198184bdd523a3b"
 
 rgb2hex@~0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/rgb2hex/-/rgb2hex-0.1.1.tgz#81abc922b60e9087a42c3e1ce20bf62d2359e400"
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/rgb2hex/-/rgb2hex-0.1.3.tgz#0d7dae754ab9ef98845e4f9d52ab3f7dd88c0501"
 
 right-align@^0.1.1:
   version "0.1.3"
@@ -13203,14 +12940,6 @@ rxjs-async-map@^0.1.2:
   dependencies:
     rxjs "^5.5.6"
 
-<<<<<<< HEAD
-rxjs@^5.0.0-beta.11, rxjs@^5.1.0, rxjs@^5.4.2, rxjs@^5.5.2, rxjs@^5.5.6:
-  version "5.5.10"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.10.tgz#fde02d7a614f6c8683d0d1957827f492e09db045"
-  dependencies:
-    symbol-observable "1.0.1"
-
-=======
 rxjs@^5.0.0-beta.11, rxjs@^5.1.0, rxjs@^5.5.2, rxjs@^5.5.6:
   version "5.5.11"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.11.tgz#f733027ca43e3bec6b994473be4ab98ad43ced87"
@@ -13223,7 +12952,6 @@ rxjs@^6.1.0:
   dependencies:
     tslib "^1.9.0"
 
->>>>>>> Drawer package inital commit
 s3-cli@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/s3-cli/-/s3-cli-0.13.0.tgz#a47b800be76377952eb2cdb097dc655252a64aaa"
@@ -13767,13 +13495,6 @@ source-map-url@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
 
-<<<<<<< HEAD
-source-map-url@~0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.3.0.tgz#7ecaf13b57bcd09da8a40c5d269db33799d4aaf9"
-
-=======
->>>>>>> Drawer package inital commit
 source-map@0.5.x, source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.1:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
@@ -13938,15 +13659,11 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
-<<<<<<< HEAD
-"statuses@>= 1.2.1 < 2", "statuses@>= 1.3.1 < 2", statuses@~1.3.1:
-=======
 "statuses@>= 1.2.1 < 2", "statuses@>= 1.3.1 < 2", "statuses@>= 1.4.0 < 2":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
 
 statuses@~1.3.1:
->>>>>>> Drawer package inital commit
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
 
@@ -14037,15 +13754,7 @@ string.prototype.repeat@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/string.prototype.repeat/-/string.prototype.repeat-0.2.0.tgz#aba36de08dcee6a5a337d49b2ea1da1b28fc0ecf"
 
-<<<<<<< HEAD
-string_decoder@^0.10.25, string_decoder@~0.10.x:
-  version "0.10.31"
-  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
-
-string_decoder@~1.1.1:
-=======
 string_decoder@^1.0.0, string_decoder@~1.1.1:
->>>>>>> Drawer package inital commit
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   dependencies:
@@ -14148,13 +13857,8 @@ style-search@^0.1.0:
   resolved "https://registry.yarnpkg.com/style-search/-/style-search-0.1.0.tgz#7958c793e47e32e07d2b5cafe5c0bf8e12e77902"
 
 "styled-components@1.4.6 - 3", styled-components@^3.2.6:
-<<<<<<< HEAD
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.2.6.tgz#99e6e75a746bdedd295a17e03dd1493055a1cc3b"
-=======
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.3.2.tgz#087b96830ee3d60d9a8b5ef17c132b4f29cc71df"
->>>>>>> Drawer package inital commit
   dependencies:
     buffer "^5.0.3"
     css-to-react-native "^2.0.3"
@@ -14315,15 +14019,9 @@ supports-color@^4.2.1:
   dependencies:
     has-flag "^2.0.0"
 
-<<<<<<< HEAD
-supports-color@^5.1.0, supports-color@^5.2.0, supports-color@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.3.0.tgz#5b24ac15db80fa927cf5227a4a33fd3c4c7676c0"
-=======
 supports-color@^5.1.0, supports-color@^5.3.0, supports-color@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.4.0.tgz#1c6b337402c2137605efe19f10fec390f6faab54"
->>>>>>> Drawer package inital commit
   dependencies:
     has-flag "^3.0.0"
 
@@ -14413,15 +14111,7 @@ symbol-observable@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
 
-<<<<<<< HEAD
-symbol-observable@^0.2.2:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-0.2.4.tgz#95a83db26186d6af7e7a18dbd9760a2f86d08f40"
-
-symbol-observable@^1.0.3, symbol-observable@^1.0.4:
-=======
 symbol-observable@^1.0.3, symbol-observable@^1.0.4, symbol-observable@^1.1.0, symbol-observable@^1.2.0:
->>>>>>> Drawer package inital commit
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
 
@@ -14437,8 +14127,6 @@ tabbable@^1.0.3, tabbable@^1.1.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.1.3.tgz#0e4ee376f3631e42d7977a074dbd2b3827843081"
 
-<<<<<<< HEAD
-=======
 table@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/table/-/table-4.0.2.tgz#a33447375391e766ad34d3486e6e2aedc84d2e36"
@@ -14450,7 +14138,6 @@ table@4.0.2:
     slice-ansi "1.0.0"
     string-width "^2.1.1"
 
->>>>>>> Drawer package inital commit
 table@^3.7.8:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/table/-/table-3.8.3.tgz#2bbc542f0fda9861a755d3947fefd8b3f513855f"
@@ -14493,38 +14180,17 @@ tape@~2.3.2:
     through "~2.3.4"
 
 tar-fs@^1.15.3:
-<<<<<<< HEAD
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-1.16.0.tgz#e877a25acbcc51d8c790da1c57c9cf439817b896"
-=======
   version "1.16.2"
   resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-1.16.2.tgz#17e5239747e399f7e77344f5f53365f04af53577"
->>>>>>> Drawer package inital commit
   dependencies:
     chownr "^1.0.1"
     mkdirp "^0.5.1"
     pump "^1.0.0"
     tar-stream "^1.1.2"
-<<<<<<< HEAD
-
-tar-stream@1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/tar-stream/-/tar-stream-1.5.2.tgz#fbc6c6e83c1a19d4cb48c7d96171fc248effc7bf"
-  dependencies:
-    bl "^1.0.0"
-    end-of-stream "^1.0.0"
-    readable-stream "^2.0.0"
-    xtend "^4.0.0"
-
-tar-stream@^1.1.2, tar-stream@^1.5.0, tar-stream@^1.5.4:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/tar-stream/-/tar-stream-1.5.5.tgz#5cad84779f45c83b1f2508d96b09d88c7218af55"
-=======
 
 tar-stream@1.6.1, tar-stream@^1.1.2, tar-stream@^1.5.0, tar-stream@^1.5.4:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/tar-stream/-/tar-stream-1.6.1.tgz#f84ef1696269d6223ca48f6e1eeede3f7e81f395"
->>>>>>> Drawer package inital commit
   dependencies:
     bl "^1.0.0"
     buffer-alloc "^1.1.0"
@@ -14847,15 +14513,9 @@ tslint@^5.9.1:
     tslib "^1.8.0"
     tsutils "^2.12.1"
 
-<<<<<<< HEAD
-tsutils@^2.12.1, tsutils@^2.8.0:
-  version "2.26.0"
-  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.26.0.tgz#706240d63bcf1ae1797d1716738d6c6be0d0848b"
-=======
 tsutils@^2.12.1, tsutils@^2.13.1:
   version "2.27.1"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.27.1.tgz#ab0276ac23664f36ce8fd4414daec4aebf4373ee"
->>>>>>> Drawer package inital commit
   dependencies:
     tslib "^1.8.1"
 
@@ -14928,15 +14588,11 @@ typescript@2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.0.10.tgz#ccdd4ed86fd5550a407101a0814012e1b3fac3dd"
 
-<<<<<<< HEAD
-typescript@^2.5.1, typescript@~2.6.2:
-=======
 typescript@^2.5.1:
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.1.tgz#fdb19d2c67a15d11995fd15640e373e09ab09961"
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
 typescript@~2.6.2:
->>>>>>> Drawer package inital commit
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
 
@@ -15262,22 +14918,9 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
-<<<<<<< HEAD
-url-parse@1.0.x:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.0.5.tgz#0854860422afdcfefeb6c965c662d4800169927b"
-  dependencies:
-    querystringify "0.0.x"
-    requires-port "1.0.x"
-
-url-parse@^1.1.8, url-parse@^1.2.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.3.0.tgz#04a06c420d22beb9804f7ada2d57ad13160a4258"
-=======
 url-parse@^1.1.8, url-parse@^1.2.0, url-parse@~1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.1.tgz#4dec9dad3dc8585f862fed461d2e19bbf623df30"
->>>>>>> Drawer package inital commit
   dependencies:
     querystringify "^2.0.0"
     requires-port "^1.0.0"
@@ -15622,11 +15265,7 @@ webpack-cli@^2.0.14:
     yeoman-environment "^2.1.1"
     yeoman-generator "^2.0.5"
 
-<<<<<<< HEAD
-webpack-dev-middleware@1.12.2, webpack-dev-middleware@^1.0.11:
-=======
 webpack-dev-middleware@1.12.2, webpack-dev-middleware@^1.12.0:
->>>>>>> Drawer package inital commit
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-1.12.2.tgz#f8fc1120ce3b4fc5680ceecb43d777966b21105e"
   dependencies:
@@ -15880,13 +15519,8 @@ wordwrap@~1.0.0:
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
 
 worker-farm@^1.3.1, worker-farm@^1.5.2:
-<<<<<<< HEAD
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/worker-farm/-/worker-farm-1.5.2.tgz#32b312e5dc3d5d45d79ef44acc2587491cd729ae"
-=======
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/worker-farm/-/worker-farm-1.6.0.tgz#aecc405976fab5a95526180846f0dba288f3a4a0"
->>>>>>> Drawer package inital commit
   dependencies:
     errno "~0.1.7"
 
@@ -16105,7 +15739,24 @@ yargs@6.6.0:
     y18n "^3.2.1"
     yargs-parser "^4.2.0"
 
-yargs@^11.0.0, yargs@^11.1.0:
+yargs@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-11.0.0.tgz#c052931006c5eee74610e5fc0354bedfd08a201b"
+  dependencies:
+    cliui "^4.0.0"
+    decamelize "^1.1.1"
+    find-up "^2.1.0"
+    get-caller-file "^1.0.1"
+    os-locale "^2.0.0"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^2.0.0"
+    which-module "^2.0.0"
+    y18n "^3.2.1"
+    yargs-parser "^9.0.2"
+
+yargs@^11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-11.1.0.tgz#90b869934ed6e871115ea2ff58b03f4724ed2d77"
   dependencies:
