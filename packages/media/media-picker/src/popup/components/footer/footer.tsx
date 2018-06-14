@@ -45,7 +45,7 @@ export class Footer extends Component<FooterProps> {
 
     return (
       <InsertButton
-        className="insert-button"
+        className="e2e-insert-button"
         appearance="primary"
         onClick={onClick}
         isDisabled={!canInsert}

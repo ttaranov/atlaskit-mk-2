@@ -173,7 +173,7 @@ export class StatelessUploadView extends Component<
     return uploadingFilesCards
       .concat(recentFilesCards)
       .map(({ key, el: card }) => (
-        <CardWrapper className="recent-upload-card" key={key}>
+        <CardWrapper className="e2e-recent-upload-card" key={key}>
           {card}
         </CardWrapper>
       ));

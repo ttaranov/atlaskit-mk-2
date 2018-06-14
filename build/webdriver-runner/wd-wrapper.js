@@ -183,9 +183,17 @@ export default class Page {
     return this.browser.waitForVisible(selector, ms, reverse);
   }
 
+  waitUntil(predicate) {
+    return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
+  }
+
   // Window
   setViewPort(size, type) {
     return this.browser.setViewPort(size, type);
+  }
+
+  chooseFile(selector, localPath) {
+    return this.browser.chooseFile(selector, localPath);
   }
 }
 //TODO: Maybe wrapping all functions?

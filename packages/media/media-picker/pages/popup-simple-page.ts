@@ -1,10 +1,14 @@
-import { Client } from 'webdriverio';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { PopupUploadEventPayloadMap } from '../src/components/popup';
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 export type Event = {
   readonly name: string;
   readonly payload: any;
+};
+
+export type RecentUploadCard = {
+  readonly filename: string;
 };
 
 /**
@@ -12,42 +16,52 @@ export type Event = {
  * @see https://www.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern
  */
 export class PopupSimplePage {
-  constructor(private readonly client: Client<any>) {}
+  constructor(private readonly page: Page) {}
 
-  async go() {
-    const url = getExampleUrl('media', 'media-picker', 'popup-simple');
-    await this.client.url(url);
+  async clickUploadButton(): Promise<void> {
+    const selector = '.e2e-upload-button';
+    await this.page.waitForSelector(selector);
+    await this.page.click(selector);
   }
 
-  getUploadButton() {
-    return this.client.$('//button[contains(., "Upload a file")]');
+  async getRecentUploadCards(): Promise<RecentUploadCard[]> {
+    const selector = '.e2e-recent-upload-card .title .ellipsed-text';
+    const results = await this.page.getHTML(selector);
+
+    return results.map(html => {
+      const div = document.createElement('div');
+      div.innerHTML = html.trim();
+      return {
+        filename: div.firstChild.textContent,
+      };
+    });
   }
 
-  getRecentUploadCards() {
-    return this.client.$$('.recent-upload-card');
+  async getRecentUploadCard(
+    filename: string,
+  ): Promise<RecentUploadCard | undefined> {
+    await this.page.waitUntil(async () =>
+      (await this.getRecentUploadCards()).some(cardWithFilename(filename)),
+    );
+    return (await this.getRecentUploadCards()).find(cardWithFilename(filename));
   }
 
-  getRecentUploadCard(filename: string) {
-    return this.client.$(`//div[contains(., "${filename}")]`);
-  }
-
-  getInsertButton() {
-    return this.client.$('.insert-button');
+  async clickInsertButton(): Promise<void> {
+    await this.page.click('.e2e-insert-button');
   }
 
   async getEvents(): Promise<Event[]> {
-    return JSON.parse(await this.client.getText('#events'));
+    return JSON.parse(await this.page.getText('#events'));
   }
 
   async getEvent(name: keyof PopupUploadEventPayloadMap): Promise<Event> {
-    await this.client.waitUntil(
-      async () => (await this.getEvents()).some(isEvent(name)),
-      3000,
+    await this.page.waitUntil(async () =>
+      (await this.getEvents()).some(eventWithName(name)),
     );
 
     const events = await this.getEvents();
 
-    const event = events.find(isEvent(name));
+    const event = events.find(eventWithName(name));
     if (event) {
       return event;
     } else {
@@ -56,19 +70,24 @@ export class PopupSimplePage {
   }
 
   async uploadFile(localPath: string) {
-    await this.getUploadButton().click();
-    await this.client.chooseFile('input', localPath);
+    await this.clickUploadButton();
+    await this.page.chooseFile('input', localPath);
   }
 }
 
 export async function gotoPopupSimplePage(
-  client: Client<any>,
+  client: any,
 ): Promise<PopupSimplePage> {
-  const page = new PopupSimplePage(client);
-  await page.go();
-  return page;
+  const page = await new Page(client);
+  const url = getExampleUrl('media', 'media-picker', 'popup-simple');
+  await page.goto(url);
+  return new PopupSimplePage(page);
 }
 
-function isEvent(name: string) {
+function eventWithName(name: string) {
   return (event: Event) => event.name === name;
+}
+
+function cardWithFilename(filename: string) {
+  return (card: RecentUploadCard) => card.filename === filename;
 }

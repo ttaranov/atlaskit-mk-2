@@ -7,15 +7,13 @@ declare module '@atlaskit/webdriver-runner/utils/example' {
 }
 
 declare module '@atlaskit/webdriver-runner/runner' {
-  import { Client } from 'webdriverio';
-
   type Browser = 'chrome' | 'edge' | 'ie' | 'safari' | 'firefox';
 
   type BrowserTestCaseOptions = {
     readonly skip: Browser[];
   };
 
-  type Tester = (client: Client<any>) => void;
+  type Tester = (client: any) => void;
 
   function BrowserTestCase(
     testCase: string,
