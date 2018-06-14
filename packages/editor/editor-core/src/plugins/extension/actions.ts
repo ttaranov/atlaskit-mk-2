@@ -65,10 +65,12 @@ export const updateExtensionLayout = layout => (
 
   const pluginState = pluginKey.getState(state);
 
-  tr.setNodeMarkup(extPosition, undefined, {
-    ...extNode!.attrs,
-    layout,
-  }).setMeta(pluginKey, { ...pluginState, layout });
+  tr
+    .setNodeMarkup(extPosition, undefined, {
+      ...extNode!.attrs,
+      layout,
+    })
+    .setMeta(pluginKey, { ...pluginState, layout });
 
   dispatch(tr);
 
@@ -119,14 +121,8 @@ export const removeBodiedExtensionWrapper = (
   state: EditorState,
   slice: Slice,
 ) => {
-  const {
-    schema: {
-      nodes: { bodiedExtension },
-    },
-  } = state;
-  const {
-    content: { firstChild: wrapper },
-  } = slice;
+  const { schema: { nodes: { bodiedExtension } } } = state;
+  const { content: { firstChild: wrapper } } = slice;
 
   if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
     return slice;
@@ -143,12 +139,7 @@ export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   slice: Slice,
   state: EditorState,
 ) => {
-  const {
-    selection,
-    schema: {
-      nodes: { bodiedExtension },
-    },
-  } = state;
+  const { selection, schema: { nodes: { bodiedExtension } } } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
     const nodes: PmNode[] = [];
