@@ -1,5 +1,11 @@
-import { Plugin, PluginKey, NodeSelection } from 'prosemirror-state';
+import {
+  Plugin,
+  PluginKey,
+  NodeSelection,
+  EditorState,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { Node as PMNode } from 'prosemirror-model';
 import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { PortalProviderAPI } from '../../ui/PortalProvider';
@@ -18,7 +24,9 @@ export type ExtensionState = {
   element: HTMLElement | null;
 };
 
-const getSelectedExtNode = state => {
+const getSelectedExtNode = (
+  state: EditorState,
+): { node: PMNode; pos: number; start: number } | undefined => {
   const { extension, inlineExtension, bodiedExtension } = state.schema.nodes;
 
   let selectedExtNode = findParentNodeOfType([
@@ -36,6 +44,7 @@ const getSelectedExtNode = state => {
     selectedExtNode = {
       node: (state.selection as NodeSelection).node,
       pos: state.selection.$from.pos,
+      start: state.selection.$from.pos + 1,
     };
   }
 
@@ -84,7 +93,11 @@ export default (
 
       return {
         update: (view: EditorView) => {
-          const { dispatch: editorDispatch, state, state: { schema } } = view;
+          const {
+            dispatch: editorDispatch,
+            state,
+            state: { schema },
+          } = view;
 
           /** this fetches the selected extn node, either by keyboard selection or click for all types of extns */
           const selectedExtNode = getSelectedExtNode(state);

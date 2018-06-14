@@ -57,9 +57,9 @@ const goToNextCell = (direction: number): Command => {
     const cell = findParentNodeOfType([tableCell, tableHeader])(
       state.selection,
     )!;
-    const firstCellPos = map.positionAt(0, 0, table.node) + table.pos + 1;
+    const firstCellPos = map.positionAt(0, 0, table.node) + table.start;
     const lastCellPos =
-      map.positionAt(map.height - 1, map.width - 1, table.node) + table.pos + 1;
+      map.positionAt(map.height - 1, map.width - 1, table.node) + table.start;
 
     const event =
       direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';

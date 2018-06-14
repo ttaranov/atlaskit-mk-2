@@ -50,7 +50,7 @@ const plugin = new Plugin({
         if (side === Side.RIGHT && $from.nodeBefore) {
           const nodeBeforeStart = findPositionOfNodeBefore(selection);
           if (typeof nodeBeforeStart === 'number') {
-            position = nodeBeforeStart - 1;
+            position = nodeBeforeStart;
           }
         }
 

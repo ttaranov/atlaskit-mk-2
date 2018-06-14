@@ -145,7 +145,7 @@ export const toggleHeaderRow: Command = (
     if (isHeaderColumnEnabled && column === 0) {
       continue;
     }
-    const from = tr.mapping.map(table.pos + map.map[column]);
+    const from = tr.mapping.map(table.start + map.map[column]);
     const cell = table.node.child(0).child(column);
 
     tr.setNodeMarkup(from, type, cell.attrs);
@@ -173,7 +173,7 @@ export const toggleHeaderColumn: Command = (
     const column = 0;
     const cell = table.node.child(row).child(column);
     tr.setNodeMarkup(
-      table.pos + map.map[column + row * map.width],
+      table.start + map.map[column + row * map.width],
       type,
       cell.attrs,
     );
@@ -187,9 +187,9 @@ export const toggleNumberColumn: Command = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { tr } = state;
-  const { node, pos: start } = findTable(state.selection)!;
+  const { node, pos } = findTable(state.selection)!;
 
-  tr.setNodeMarkup(start - 1, state.schema.nodes.table, {
+  tr.setNodeMarkup(pos, state.schema.nodes.table, {
     ...node.attrs,
     isNumberColumnEnabled: !node.attrs.isNumberColumnEnabled,
   });
@@ -238,7 +238,7 @@ export const insertColumn = (column: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created column
   const pos = TableMap.get(table.node).positionAt(0, column, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
   analyticsService.trackEvent('atlassian.editor.format.table.column.button');
   return true;
 };
@@ -253,7 +253,7 @@ export const insertRow = (row: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
   return true;
 };

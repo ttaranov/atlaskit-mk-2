@@ -41,14 +41,17 @@ import DeleteRowButton from '../../../../src/plugins/table/ui/TableFloatingContr
 import InsertRowButton from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls/InsertRowButton';
 
 const selectRows = rowIdxs => tr => {
-  const cells: { pos: number; node: Node }[] = rowIdxs.reduce((acc, rowIdx) => {
-    const rowCells = getCellsInRow(rowIdx)(tr.selection);
-    return rowCells ? acc.concat(rowCells) : acc;
-  }, []);
+  const cells: { pos: number; start: number; node: Node }[] = rowIdxs.reduce(
+    (acc, rowIdx) => {
+      const rowCells = getCellsInRow(rowIdx)(tr.selection);
+      return rowCells ? acc.concat(rowCells) : acc;
+    },
+    [],
+  );
 
   if (cells) {
-    const $anchor = tr.doc.resolve(cells[0].pos - 1);
-    const $head = tr.doc.resolve(cells[cells.length - 1].pos - 1);
+    const $anchor = tr.doc.resolve(cells[0].pos);
+    const $head = tr.doc.resolve(cells[cells.length - 1].pos);
     return tr.setSelection(new CellSelection($anchor, $head));
   }
 };
@@ -69,9 +72,11 @@ describe('RowControls', () => {
         for (let i = 1; i < row; i++) {
           rows.push(tr(tdEmpty));
         }
-        const { editorView, plugin, pluginState: { tableElement } } = editor(
-          doc(p('text'), table()(...rows)),
-        );
+        const {
+          editorView,
+          plugin,
+          pluginState: { tableElement },
+        } = editor(doc(p('text'), table()(...rows)));
         const floatingControls = mount(
           <TableFloatingControls
             tableElement={tableElement}
@@ -202,7 +207,11 @@ describe('RowControls', () => {
 
   describe('DeleteRowButton', () => {
     it('does not render a delete button with no selection', () => {
-      const { plugin, editorView, pluginState: { tableElement } } = editor(
+      const {
+        plugin,
+        editorView,
+        pluginState: { tableElement },
+      } = editor(
         doc(
           table()(
             tr(thEmpty, td({})(p()), thEmpty),
@@ -276,7 +285,11 @@ describe('RowControls', () => {
   });
 
   it('calls remove on clicking the remove button', () => {
-    const { plugin, editorView, pluginState: { tableElement } } = editor(
+    const {
+      plugin,
+      editorView,
+      pluginState: { tableElement },
+    } = editor(
       doc(
         table()(
           tr(thEmpty, td({})(p()), thEmpty),

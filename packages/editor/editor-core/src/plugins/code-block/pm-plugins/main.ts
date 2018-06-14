@@ -11,14 +11,6 @@ export interface CodeBlockState {
   activeCodeBlock?: ActiveCodeBlock;
 }
 
-const adjustPositionFix = (activeCodeBlock?: ActiveCodeBlock) =>
-  activeCodeBlock
-    ? {
-        node: activeCodeBlock.node,
-        pos: activeCodeBlock.pos - 1,
-      }
-    : undefined;
-
 const setActiveCodeBlock = (
   state: CodeBlockState,
   activeCodeBlock?: ActiveCodeBlock,
@@ -36,10 +28,7 @@ export const plugin = (dispatch: Dispatch) =>
         const activeCodeBlock = findParentNodeOfType(
           state.schema.nodes.codeBlock,
         )(state.selection);
-        return setActiveCodeBlock(
-          { isEditorFocused: true },
-          adjustPositionFix(activeCodeBlock),
-        );
+        return setActiveCodeBlock({ isEditorFocused: true }, activeCodeBlock);
       },
       apply(
         tr,
@@ -58,12 +47,11 @@ export const plugin = (dispatch: Dispatch) =>
           let activeCodeBlock = findParentNodeOfType(
             tr.doc.type.schema.nodes.codeBlock,
           )(tr.selection);
-          state = setActiveCodeBlock(
-            pluginState,
-            adjustPositionFix(activeCodeBlock),
-          );
+          state = setActiveCodeBlock(pluginState, activeCodeBlock);
         } else if (tr.docChanged && pluginState.activeCodeBlock) {
-          const { activeCodeBlock: { pos, node } } = pluginState;
+          const {
+            activeCodeBlock: { pos, node },
+          } = pluginState;
           const trPos = tr.mapping.map(pos);
           const trNode = tr.doc.nodeAt(trPos);
           // Update activeCodeBlock when node updated or deleted

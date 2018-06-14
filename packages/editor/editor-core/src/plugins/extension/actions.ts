@@ -59,7 +59,7 @@ export const updateExtensionLayout = layout => (
     extPosition = selectedNode.pos;
     extNode = selectedNode.node;
   } else {
-    extPosition = parentExtNode!.pos - 1;
+    extPosition = parentExtNode!.pos;
     extNode = parentExtNode!.node;
   }
 
@@ -121,8 +121,14 @@ export const removeBodiedExtensionWrapper = (
   state: EditorState,
   slice: Slice,
 ) => {
-  const { schema: { nodes: { bodiedExtension } } } = state;
-  const { content: { firstChild: wrapper } } = slice;
+  const {
+    schema: {
+      nodes: { bodiedExtension },
+    },
+  } = state;
+  const {
+    content: { firstChild: wrapper },
+  } = slice;
 
   if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
     return slice;
@@ -139,7 +145,12 @@ export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
   slice: Slice,
   state: EditorState,
 ) => {
-  const { selection, schema: { nodes: { bodiedExtension } } } = state;
+  const {
+    selection,
+    schema: {
+      nodes: { bodiedExtension },
+    },
+  } = state;
 
   if (hasParentNodeOfType(bodiedExtension)(selection)) {
     const nodes: PmNode[] = [];
