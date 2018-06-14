@@ -6,6 +6,7 @@ const getAppearanceProps = (props, state) => {
     appearance,
     className,
     isDisabled,
+    isLoading,
     isSelected,
     spacing,
     shouldFitContainer,
@@ -20,6 +21,7 @@ const getAppearanceProps = (props, state) => {
     isActive,
     isFocus,
     isHover,
+    isLoading,
     isSelected,
     spacing,
     fit: shouldFitContainer,
@@ -82,6 +84,13 @@ const getButtonProps = (component: ButtonType) => {
     return {
       ...props,
       ...defaultProps,
+    };
+  }
+
+  if (props.isLoading) {
+    return {
+      ...defaultProps,
+      onClick: null,
     };
   }
 

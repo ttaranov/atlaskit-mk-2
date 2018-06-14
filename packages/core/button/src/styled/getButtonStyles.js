@@ -80,6 +80,7 @@ export default function getButtonStyles(props: Object) {
   let outline = 'none';
   // $FlowFixMe TEMPORARY
   let padding = `0 ${gridSize(props)}px`;
+  let pointerEvents = 'auto';
   let transitionDuration = '0.1s, 0.15s';
   let transition =
     'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)';
@@ -136,6 +137,11 @@ export default function getButtonStyles(props: Object) {
     cursor = 'not-allowed';
   }
 
+  // Disabled
+  if (props.isLoading) {
+    pointerEvents = 'none';
+  }
+
   // Fit to parent width
   if (props.fit) {
     width = '100%';
@@ -160,6 +166,7 @@ export default function getButtonStyles(props: Object) {
     max-width: 100%;
     outline: ${outline} !important;
     padding: ${padding};
+    pointer-events: ${pointerEvents};
     text-align: center;
     text-decoration: ${textDecoration};
     transition: ${transition};
