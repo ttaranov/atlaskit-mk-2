@@ -13,6 +13,17 @@ const documentBody = fn => {
     fn(document.body);
   }
 };
+const nextTick = fn =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        fn();
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    }, 0);
+  });
 
 it('should focus button', () => {
   const ref = React.createRef();
@@ -145,4 +156,90 @@ it('should work through Portals', () => {
     </div>,
   );
   expect(textContent(document.activeElement)).toBe('Button 3');
+});
+
+// eslint-disable-next-line react/no-multi-comp
+class FocusLockWithState extends React.Component<
+  {
+    children: (boolean, () => void) => Node,
+    defaultEnabled: boolean,
+  },
+  { enabled: boolean },
+> {
+  state = {
+    enabled: this.props.defaultEnabled,
+  };
+  render() {
+    const { enabled } = this.state;
+    return (
+      <FocusLock enabled={enabled}>
+        {this.props.children(enabled, () =>
+          this.setState({ enabled: !enabled }),
+        )}
+      </FocusLock>
+    );
+  }
+}
+
+it('should focus on outer lock after state change', () => {
+  const ref = React.createRef();
+  const wrapper = mount(
+    <FocusLock enabled>
+      <button ref={ref}>Button 1</button>
+      <FocusLockWithState defaultEnabled>
+        {(enabled, toggle) => (
+          <button id="button-2" onClick={toggle}>
+            {`Button 2 ${enabled ? 'locked' : 'unlocked'}`}
+          </button>
+        )}
+      </FocusLockWithState>
+    </FocusLock>,
+  );
+  wrapper.find('#button-2').simulate('click');
+  expect(textContent(document.activeElement)).toBe('Button 1');
+});
+
+it('should focus on previous lock after state change', () => {
+  const ref = React.createRef();
+  const wrapper = mount(
+    <div>
+      <FocusLock enabled>
+        <button ref={ref}>Button 1</button>
+      </FocusLock>
+      <FocusLockWithState defaultEnabled>
+        {(enabled, toggle) => (
+          <button id="button-2" onClick={toggle}>
+            {`Button 2 ${enabled ? 'locked' : 'unlocked'}`}
+          </button>
+        )}
+      </FocusLockWithState>
+    </div>,
+  );
+  wrapper.find('#button-2').simulate('click');
+  return nextTick(() =>
+    expect(textContent(document.activeElement)).toBe('Button 1'),
+  );
+});
+
+it('should focus on previous lock after a couple of state changes', () => {
+  const ref = React.createRef();
+  const wrapper = mount(
+    <div>
+      <FocusLock enabled>
+        <button>Button 1</button>
+      </FocusLock>
+      <FocusLockWithState defaultEnabled>
+        {(enabled, toggle) => (
+          <button id="button-2" onClick={toggle} ref={ref}>
+            {`Button 2 ${enabled ? 'locked' : 'unlocked'}`}
+          </button>
+        )}
+      </FocusLockWithState>
+    </div>,
+  );
+  wrapper.find('#button-2').simulate('click');
+  wrapper.find('#button-2').simulate('click');
+  return nextTick(() =>
+    expect(textContent(document.activeElement)).toBe('Button 2 locked'),
+  );
 });
