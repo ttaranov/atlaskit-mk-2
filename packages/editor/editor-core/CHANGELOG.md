@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.5.1
+- [patch] ED-4816: fix removing columns/rows when outside of the content area [789e640](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/789e640)
+- [none] Updated dependencies [789e640](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/789e640)
+
 ## 73.5.0
 - [patch] Set selection at the start of the document when editing a document in the full-page appearance. (ED-4759) [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
 
