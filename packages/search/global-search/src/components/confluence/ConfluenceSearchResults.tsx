@@ -29,15 +29,15 @@ const renderSpacesGroup = (title: string, results: Result[], query: string) =>
 const renderPeopleGroup = (title: string, results: Result[], query: string) => (
   <ResultItemGroup title={title} key="people">
     {renderResults(results)}
-    {renderSearchPeopleItem(query)}
   </ResultItemGroup>
 );
 
-export const renderSearchConfluenceItem = (query: string) =>
+export const renderSearchConfluenceItem = (query: string, text: string) =>
   searchConfluenceItem({
     query: query,
     icon: <SearchIcon size="medium" label="Advanced search" />,
-    text: 'Advanced search for more filter options',
+    text: text,
+    showKeyboardLozenge: true,
   });
 
 const renderSearchPeopleItem = (query: string) =>
@@ -50,10 +50,22 @@ const renderSearchPeopleItem = (query: string) =>
 const renderNoResults = (query: string) => [
   <NoResults key="no-results" />,
   <ResultItemGroup title="" key="advanced-search">
-    {renderSearchConfluenceItem(query)}
+    {renderSearchConfluenceItem(query, 'Advanced search with filters')}
     {renderSearchPeopleItem(query)}
   </ResultItemGroup>,
 ];
+
+const renderAdvancedSearchGroup = (query: string) => {
+  const text =
+    query.length === 0 ? 'Advanced Search' : `Advanced Search for "${query}"`;
+
+  return (
+    <ResultItemGroup key="advanced-search">
+      {renderSearchPeopleItem(query)}
+      {renderSearchConfluenceItem(query, text)}
+    </ResultItemGroup>
+  );
+};
 
 export interface Props {
   query: string;
@@ -96,6 +108,7 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
+      renderAdvancedSearchGroup(query),
     ];
   }
 
@@ -111,5 +124,6 @@ export default function searchResults(props: Props) {
     ),
     renderSpacesGroup('Spaces', take(spaceResults, 3), query),
     renderPeopleGroup('People', take(peopleResults, 3), query),
+    renderAdvancedSearchGroup(query),
   ];
 }

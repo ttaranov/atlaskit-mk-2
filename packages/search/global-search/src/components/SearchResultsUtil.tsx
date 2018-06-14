@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { ComponentClass } from 'react';
-import {
-  PersonResult,
-  ContainerResult,
-  ResultBase,
-} from '@atlaskit/quick-search';
+import { PersonResult, ContainerResult } from '@atlaskit/quick-search';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import {
   Result,
@@ -13,6 +9,7 @@ import {
   AnalyticsType,
 } from '../model/Result';
 import ObjectResult from './ObjectResult';
+import AdvancedSearchResult from './AdvancedSearchResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   DEFUALT_GAS_CHANNEL,
@@ -113,23 +110,23 @@ export interface AdvancedSearchItemProps {
   query: string;
   icon: JSX.Element;
   text: string;
+  showKeyboardLozenge?: boolean;
 }
 
 export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
-  <ResultBase
-    href={`/wiki/dosearchsite.action?queryString=${encodeURIComponent(
-      props.query,
-    )}`}
-    icon={props.icon}
+  <AdvancedSearchResult
+    href={getConfluenceAdvancedSearchLink(props.query)}
     key="search_confluence"
     resultId="search_confluence"
     text={props.text}
+    icon={props.icon}
     type={AnalyticsType.AdvancedSearchConfluence}
+    showKeyboardLozenge={props.showKeyboardLozenge || false}
   />
 );
 
 export const searchJiraItem = (query: string) => (
-  <ResultBase
+  <AdvancedSearchResult
     href={`/issues/?jql=${encodeURIComponent(`text ~ "${query}"`)}`}
     icon={<JiraIcon size="medium" label="Search Jira" />}
     key="search_jira"
@@ -140,7 +137,7 @@ export const searchJiraItem = (query: string) => (
 );
 
 export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
-  <ResultBase
+  <AdvancedSearchResult
     href={`/people/search?q=${encodeURIComponent(props.query)}`}
     icon={props.icon}
     key="search_people"
@@ -149,6 +146,15 @@ export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
     type={AnalyticsType.AdvancedSearchPeople}
   />
 );
+
+function getConfluenceAdvancedSearchLink(query: string) {
+  return `/wiki/dosearchsite.action?queryString=${encodeURIComponent(query)}`;
+}
+
+export function redirectToConfluenceAdvancedSearch(query = '') {
+  // TODO this breaks SPA navigation. Consumer needs to pass in a redirect/navigate function.
+  window.location.assign(getConfluenceAdvancedSearchLink(query));
+}
 
 export function take<T>(array: Array<T>, n: number) {
   return array.slice(0, n);

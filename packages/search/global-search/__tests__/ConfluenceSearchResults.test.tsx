@@ -3,12 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import searchResults, {
   Props,
 } from '../src/components/confluence/ConfluenceSearchResults';
-import {
-  ResultItemGroup,
-  PersonResult,
-  ContainerResult,
-  ResultBase,
-} from '@atlaskit/quick-search';
+import { ResultItemGroup } from '@atlaskit/quick-search';
 import { ResultType, Result } from '../src/model/Result';
 import {
   ObjectResultWithAnalytics,
@@ -18,11 +13,13 @@ import {
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import { makeResult } from './_test-util';
+import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
 
 enum Group {
   Objects = 'objects',
   Spaces = 'spaces',
   People = 'people',
+  AdvancedSearch = 'advanced-search',
 }
 
 function findGroup(group: Group, wrapper: ShallowWrapper) {
@@ -71,6 +68,37 @@ describe('ConfluenceSearchResults', () => {
     const group = findGroup(Group.Spaces, wrapper);
 
     expect(group.children()).toHaveLength(1);
+  });
+
+  it('should render links to advanced search when no query is entered', () => {
+    const props: Partial<Props> = {
+      query: '',
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.AdvancedSearch, wrapper);
+
+    expect(group.childAt(0).prop('resultId')).toEqual('search_people');
+
+    expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
+    expect(group.childAt(1).prop('text')).toEqual('Advanced Search');
+  });
+
+  it('should render links to advanced search when a query is entered and there are results', () => {
+    const props: Partial<Props> = {
+      query: 'foo bar',
+      objectResults: [makeResult({ name: 'name' })],
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.AdvancedSearch, wrapper);
+
+    expect(group.childAt(0).prop('resultId')).toEqual('search_people');
+
+    expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
+    expect(group.childAt(1).prop('text')).toEqual(
+      'Advanced Search for "foo bar"',
+    );
   });
 
   it('should render objects when there are results', () => {
@@ -152,7 +180,7 @@ describe('ConfluenceSearchResults', () => {
     ['search_confluence', 'search_people'].forEach(resultId => {
       expect(
         wrapper
-          .find(ResultBase)
+          .find(AdvancedSearchResult)
           .findWhere(wrapper => wrapper.prop('resultId') === resultId)
           .exists(),
       ).toBe(true);

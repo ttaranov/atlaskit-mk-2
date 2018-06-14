@@ -49,6 +49,7 @@ describe('searchConfluenceItem', () => {
       query: 'query',
       icon: <div />,
       text: 'text',
+      showKeyboardLozenge: false,
       ...partialProps,
     };
 

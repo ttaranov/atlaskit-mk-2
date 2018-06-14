@@ -38,6 +38,7 @@ const renderSearchConfluenceItem = (query: string) =>
     query: query,
     icon: <ConfluenceIcon size="medium" label="Search confluence" />,
     text: 'Search for more Confluence pages and blogs',
+    showKeyboardLozenge: false,
   });
 
 const renderJira = (results: Result[], query: string) => (

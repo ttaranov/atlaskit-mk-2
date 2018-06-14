@@ -256,8 +256,10 @@ export class QuickSearch extends Component<Props, State> {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectNext();
     } else if (event.key === 'Enter') {
-      // If an item is selected
-      if (this.state.selectedResultId) {
+      // shift key pressed or no result selected
+      if (event.shiftKey || !this.state.selectedResultId) {
+        this.props.onSearchSubmit();
+      } else {
         event.preventDefault(); // Don't fire submit event from input
         const result = getResultById(
           this.flatResults,
@@ -286,9 +288,6 @@ export class QuickSearch extends Component<Props, State> {
         if (result.props.href) {
           window.location.assign(result.props.href);
         }
-        // If nothing is selected
-      } else {
-        this.props.onSearchSubmit();
       }
     }
   };

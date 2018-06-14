@@ -12,6 +12,7 @@ import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import renderSearchResults from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
+import { redirectToConfluenceAdvancedSearch } from '../SearchResultsUtil';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -72,6 +73,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     } else {
       this.doSearch(query);
     }
+  };
+
+  handleSearchSubmit = () => {
+    const { query } = this.state;
+    redirectToConfluenceAdvancedSearch(query);
   };
 
   async searchCrossProductConfluence(
@@ -195,6 +201,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       <GlobalQuickSearch
         onMount={this.handleMount}
         onSearch={this.handleSearch}
+        onSearchSubmit={this.handleSearchSubmit}
         isLoading={isLoading}
         query={query}
         linkComponent={linkComponent}
