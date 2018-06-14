@@ -400,9 +400,11 @@ export class ResolvedView extends React.Component<
             <Tooltip content={title ? title.tooltip : undefined}>
               <Title>{title ? title.text : undefined}</Title>
             </Tooltip>
-            <Tooltip content={byline ? byline.tooltip : undefined}>
-              <Byline>{byline ? byline.text : undefined}</Byline>
-            </Tooltip>
+            {byline && (
+              <Tooltip content={byline ? byline.tooltip : undefined}>
+                <Byline>{byline ? byline.text : undefined}</Byline>
+              </Tooltip>
+            )}
             {description && (
               <Tooltip content={description ? description.tooltip : undefined}>
                 <Description>

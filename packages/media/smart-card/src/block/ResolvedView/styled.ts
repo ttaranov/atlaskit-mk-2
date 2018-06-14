@@ -39,7 +39,8 @@ export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   font-size: 16px;
   font-weight: 500;
   line-height: ${20 / 16};
-  max-height: ${20 * 4};
+  max-height: ${20 * 4}px;
+  overflow: hidden;
 `;
 
 export const Byline: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -57,7 +58,8 @@ export const Description: ComponentClass<HTMLAttributes<{}>> = styled.div`
   font-size: 12px;
   font-weight: normal;
   line-height: ${18 / 12};
-  max-height: ${18 * 3};
+  max-height: ${18 * 3}px;
+  overflow: hidden;
 `;
 
 export const IconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`

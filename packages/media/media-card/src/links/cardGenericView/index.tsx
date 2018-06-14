@@ -2,12 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { CardDimensions, CardAppearance } from '../../index';
 
-import {
-  ErrorCard,
-  CardFrame,
-  CardPreview,
-  LinkIcon,
-} from '@atlaskit/media-ui';
+import { BlockResolvedView, BlockErroredView } from '@atlaskit/smart-card';
 import { getCardMinWidth, getCardMaxWidth } from '../../utils/cardDimensions';
 import { CardAction } from '../../actions';
 import CardDetails from './CardDetails';
@@ -88,27 +83,16 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
     const { isLoading, site, linkUrl, appearance, errorMessage } = this.props;
 
     if (errorMessage) {
-      return (
-        <ErrorCard
-          hasPreview={appearance !== 'horizontal'}
-          minWidth={getCardMinWidth(appearance)}
-          maxWidth={getCardMaxWidth(appearance)}
-        />
-      );
+      return <BlockErroredView message="We stumbled a bit here" />;
     }
 
     return (
-      <CardFrame
-        isPlaceholder={isLoading}
-        href={linkUrl}
-        icon={this.renderIcon()}
-        text={site || linkUrl}
-        minWidth={getCardMinWidth(appearance)}
-        maxWidth={getCardMaxWidth(appearance)}
-      >
-        {this.renderPreview()}
-        {this.renderDetails()}
-      </CardFrame>
+      <ResolvedView
+        context={{
+          text: site || linkUrl,
+          icon: this.renderIcon(),
+        }}
+      />
     );
   }
 }
