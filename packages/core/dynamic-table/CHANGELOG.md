@@ -2,10 +2,6 @@
 
 ## 9.1.0
 - [minor] Update examples [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-
-
-
-
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/spinner@7.0.0
   - @atlaskit/dropdown-menu@5.0.2
@@ -15,42 +11,7 @@
   - @atlaskit/theme@4.0.2
   - @atlaskit/pagination@6.0.3
   - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/pagination@6.0.3
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/pagination@6.0.3
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/pagination@6.0.3
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/pagination@6.0.3
-  - @atlaskit/button@8.1.0
+
 
 ## 9.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
