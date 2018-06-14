@@ -12,7 +12,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-wrap: wrap;
   margin-top: 3px;
 
-  height: ${widgetHeight * 2}px;
+  max-height: ${widgetHeight * 2}px;
   overflow: hidden;
 
   & > * {
