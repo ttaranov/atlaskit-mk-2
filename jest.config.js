@@ -68,7 +68,7 @@ if (CHANGED_PACKAGES) {
 
 // If the INTEGRATION_TESTS flag is set we need to
 if (INTEGRATION_TESTS) {
-  const testPathIgnorePatterns: string[] = config.testPathIgnorePatterns.filter(
+  const testPathIgnorePatterns /*: string[] */ = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
   );
   config.testPathIgnorePatterns = testPathIgnorePatterns;
