@@ -1,5 +1,6 @@
 // @flow
-import React, { Component } from 'react';
+
+import React, { Component, Fragment } from 'react';
 import Lorem from 'react-lorem-component';
 
 import {
@@ -15,6 +16,12 @@ type State = {
 };
 
 const Base = props => <div style={{ paddingBottom: 40 }} {...props} />;
+const Paragraph = ({ position }: { position: number }) => (
+  <Fragment>
+    <h3>{position}</h3>
+    <Lorem seed={position} count={1} style={{ marginBottom: 20 }} />
+  </Fragment>
+);
 
 export default class SpotlightAutoscrollExample extends Component<*, State> {
   constructor() {

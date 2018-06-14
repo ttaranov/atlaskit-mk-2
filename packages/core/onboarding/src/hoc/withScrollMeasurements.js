@@ -150,7 +150,7 @@ export default function withScrollMeasurements(
       this.setState({
         clone: node.outerHTML,
         rect: { height, left, top, width },
-        scrollY: getScrollY(),
+        scrollY: getScrollY(node),
       });
     };
     render() {

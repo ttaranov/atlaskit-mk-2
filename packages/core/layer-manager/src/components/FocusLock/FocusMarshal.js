@@ -1,4 +1,5 @@
 // @flow
+
 import tabbable from 'tabbable';
 import focusin from 'focusin';
 
@@ -76,7 +77,14 @@ export default class FocusLockRegistry {
     }
 
     if (options.shouldRestoreFocus) {
-      this.restoreFocus();
+      // Using a setTimeout here delays the refocusing of the original element.
+      // The reason we want to do this is so that if you unmount and remount a
+      // FocusLock that it doesn't unnecessarily restore focus to the original
+      // element. This can have major unwanted side-effects such as jank and
+      // scroll / dimension calculations / setting being messed with.
+      setTimeout(() => {
+        this.restoreFocus();
+      });
     }
 
     this.currentLock = null;
