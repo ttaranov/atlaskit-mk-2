@@ -1,5 +1,16 @@
 # @atlaskit/media-image
 
+## 29.0.3
+
+
+
+- [patch] Updated dependencies [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
+  - @atlaskit/smart-card@5.1.1
+- [patch] Updated dependencies [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
+  - @atlaskit/smart-card@5.1.1
+- [patch] Updated dependencies [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
+  - @atlaskit/smart-card@5.1.1
+
 ## 29.0.2
 - [patch] Updated dependencies [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
   - @atlaskit/smart-card@5.1.0
