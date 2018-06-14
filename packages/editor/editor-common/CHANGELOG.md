@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 11.1.1
+- [patch] ED-3474 add redesigned table numbering column, fix table styling regressions [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
+- [none] Updated dependencies [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
+
 ## 11.1.0
 
 
