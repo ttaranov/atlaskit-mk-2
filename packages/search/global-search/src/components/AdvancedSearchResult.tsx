@@ -17,7 +17,7 @@ export interface Props {
 export default class AdvancedSearchResult extends React.Component<Props> {
   static defaultProps = {
     isSelected: false,
-    showKeyboardLozenge: true,
+    showKeyboardLozenge: false,
   };
 
   getElemAfter() {
