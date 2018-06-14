@@ -24,7 +24,11 @@ const createTable = (): Command => {
     }
     pluginState.focusEditor();
     const table = createTableNode(3, 3, state.schema);
-    const { tr, selection: { $from }, storedMarks } = state;
+    const {
+      tr,
+      selection: { $from },
+      storedMarks,
+    } = state;
     const marks =
       storedMarks && storedMarks.length ? storedMarks : $from.marks();
     if (marks && marks.length) {
@@ -37,13 +41,6 @@ const createTable = (): Command => {
         .setSelection(Selection.near(tr.doc.resolve($from.pos)))
         .scrollIntoView(),
     );
-
-    // Disable inline table editing and resizing controls in Firefox
-    // https://github.com/ProseMirror/prosemirror/issues/432
-    if ('execCommand' in document) {
-      document.execCommand('enableObjectResizing', false, 'false');
-      document.execCommand('enableInlineTableEditing', false, 'false');
-    }
     return true;
   };
 };

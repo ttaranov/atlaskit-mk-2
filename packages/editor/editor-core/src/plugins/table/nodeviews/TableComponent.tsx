@@ -33,6 +33,16 @@ class TableComponent extends React.Component<ComponentProps> {
 
   constructor(props) {
     super(props);
+
+    // Disable inline table editing and resizing controls in Firefox
+    // https://github.com/ProseMirror/prosemirror/issues/432
+    if ('execCommand' in document) {
+      ['enableObjectResizing', 'enableInlineTableEditing'].forEach(cmd => {
+        if (document.queryCommandSupported(cmd)) {
+          document.execCommand(cmd, false, 'false');
+        }
+      });
+    }
   }
 
   componentDidMount() {
