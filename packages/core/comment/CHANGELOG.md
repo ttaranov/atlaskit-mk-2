@@ -1,5 +1,16 @@
 # @atlaskit/comment
 
+## 4.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/editor-core@73.7.1
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/lozenge@5.0.3
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 4.1.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/editor-core@73.5.0

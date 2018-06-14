@@ -1,5 +1,29 @@
 # @atlaskit/website
 
+## 2.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/quick-search@2.1.1
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/media-filmstrip@9.0.2
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/css-reset@2.0.5
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/layer-manager@4.1.1
+  - @atlaskit/tag@5.0.3
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/single-select@5.1.1
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/lozenge@5.0.3
+  - @atlaskit/inline-dialog@7.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/logo@8.1.1
+  - @atlaskit/dynamic-table@9.1.1
+  - @atlaskit/code@5.0.3
+  - @atlaskit/button@8.1.1
+  - @atlaskit/badge@8.0.3
+
 ## 2.1.0
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/spinner@7.0.0

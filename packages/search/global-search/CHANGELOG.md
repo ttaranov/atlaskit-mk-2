@@ -1,5 +1,20 @@
 # @atlaskit/global-search
 
+## 4.4.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/quick-search@2.1.1
+  - @atlaskit/util-service-support@2.0.11
+  - @atlaskit/analytics-gas-types@2.1.3
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/analytics-next@2.1.8
+  - @atlaskit/button@8.1.1
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+  - @atlaskit/analytics@3.0.5
+
 ## 4.4.0
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/navigation@32.1.0

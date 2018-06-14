@@ -1,5 +1,12 @@
 # @atlaskit/notification-indicator
 
+## 3.0.4
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/notification-log-client@2.0.7
+  - @atlaskit/badge@8.0.3
+  - @atlaskit/docs@4.1.1
+
 ## 3.0.3
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/docs@4.1.0

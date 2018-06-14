@@ -1,5 +1,22 @@
 # @atlaskit/renderer
 
+## 18.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/util-data-test@9.1.12
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/media-filmstrip@9.0.2
+  - @atlaskit/editor-test-helpers@4.1.1
+  - @atlaskit/editor-common@11.1.2
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/code@5.0.3
+  - @atlaskit/docs@4.1.1
+  - @atlaskit/size-detector@4.1.1
+
 ## 18.1.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/editor-test-helpers@4.1.0

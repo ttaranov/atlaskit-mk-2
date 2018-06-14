@@ -1,5 +1,12 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.2.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/editor-core@73.7.1
+  - @atlaskit/media-core@19.1.2
+
 ## 0.2.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/editor-core@73.5.0

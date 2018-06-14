@@ -1,5 +1,14 @@
 # @atlaskit/editor-common
 
+## 11.1.2
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/editor-test-helpers@4.1.1
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/icon@12.1.1
+
 ## 11.1.1
 - [patch] ED-3474 add redesigned table numbering column, fix table styling regressions [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
 - [none] Updated dependencies [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)

@@ -1,5 +1,11 @@
 # @atlaskit/util-data-test
 
+## 9.1.12
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/util-service-support@2.0.11
+  - @atlaskit/docs@4.1.1
+
 ## 9.1.11
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/task-decision@7.1.0

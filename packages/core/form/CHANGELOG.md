@@ -1,5 +1,23 @@
 # @atlaskit/form
 
+## 2.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/single-select@5.1.1
+  - @atlaskit/select@4.2.1
+  - @atlaskit/multi-select@10.1.1
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/inline-edit@6.1.2
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/field-radio-group@3.0.3
+  - @atlaskit/droplist@6.1.1
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/checkbox@3.0.5
+  - @atlaskit/calendar@6.1.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 2.1.0
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/single-select@5.1.0

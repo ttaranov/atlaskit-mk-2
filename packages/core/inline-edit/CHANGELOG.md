@@ -1,5 +1,17 @@
 # @atlaskit/inline-edit
 
+## 6.1.2
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/tag@5.0.3
+  - @atlaskit/multi-select@10.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/field-radio-group@3.0.3
+  - @atlaskit/field-base@10.1.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 6.1.1
 - [patch] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
   - @atlaskit/input@3.0.1

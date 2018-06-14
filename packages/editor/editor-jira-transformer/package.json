@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira-transformer",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Editor JIRA transformer's",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -18,7 +18,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^11.1.0",
+    "@atlaskit/editor-common": "^11.1.2",
     "collapse-whitespace": "^1.1.6",
     "prosemirror-model": "1.4.0"
   },
@@ -26,11 +26,11 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/editor-core": "^73.5.0",
-    "@atlaskit/editor-json-transformer": "^3.1.0",
-    "@atlaskit/editor-test-helpers": "^4.1.0",
-    "@atlaskit/util-data-test": "^9.1.11",
+    "@atlaskit/docs": "^4.1.1",
+    "@atlaskit/editor-core": "^73.7.1",
+    "@atlaskit/editor-json-transformer": "^3.1.1",
+    "@atlaskit/editor-test-helpers": "^4.1.1",
+    "@atlaskit/util-data-test": "^9.1.12",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"
   }

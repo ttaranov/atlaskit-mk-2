@@ -1,5 +1,39 @@
 # @atlaskit/editor-core
 
+## 73.7.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/media-picker@8.1.1
+  - @atlaskit/util-data-test@9.1.12
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/editor-bitbucket-transformer@3.2.1
+  - @atlaskit/media-filmstrip@9.0.2
+  - @atlaskit/renderer@18.1.1
+  - @atlaskit/editor-test-helpers@4.1.1
+  - @atlaskit/editor-markdown-transformer@1.2.1
+  - @atlaskit/editor-common@11.1.2
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/layer-manager@4.1.1
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/select@4.2.1
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/lozenge@5.0.3
+  - @atlaskit/item@7.0.4
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/logo@8.1.1
+  - @atlaskit/droplist@6.1.1
+  - @atlaskit/code@5.0.3
+  - @atlaskit/calendar@6.1.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+  - @atlaskit/size-detector@4.1.1
+  - @atlaskit/layer@4.0.2
+  - @atlaskit/analytics@3.0.5
+
 ## 73.7.0
 - [minor] Introduce support for Tab / Shift-Tab to indent / unindent text in a code block (ED-4638) [e6df77b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6df77b)
 - [none] Updated dependencies [e6df77b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6df77b)
