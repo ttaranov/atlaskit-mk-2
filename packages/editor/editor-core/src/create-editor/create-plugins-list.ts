@@ -133,7 +133,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.collabEdit || props.collabEditProvider) {
-    plugins.push(collabEditPlugin);
+    plugins.push(collabEditPlugin(props.collabEdit));
   }
 
   if (props.maxContentSize) {

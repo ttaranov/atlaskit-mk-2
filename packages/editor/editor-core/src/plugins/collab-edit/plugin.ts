@@ -54,8 +54,9 @@ export const createPlugin = (
             prevActiveParticipants !== activeParticipants;
 
           if (
-            (sessionId && selectionChanged && !tr.docChanged) ||
-            (sessionId && participantsChanged)
+            isReady &&
+            ((sessionId && selectionChanged && !tr.docChanged) ||
+              (sessionId && participantsChanged))
           ) {
             const selection = getSendableSelection(newState.selection);
             // Delay sending selection till next tick so that participants info
@@ -223,11 +224,16 @@ export class PluginState {
         const rawTo = anchor >= head ? anchor : head;
         const isSelection = rawTo - rawFrom > 0;
 
-        const from = getValidPos(
-          tr,
-          isSelection ? Math.max(rawFrom - 1, 0) : rawFrom,
-        );
-        const to = isSelection ? getValidPos(tr, rawTo) : from;
+        let from = 1;
+        let to = 1;
+
+        try {
+          from = getValidPos(
+            tr,
+            isSelection ? Math.max(rawFrom - 1, 0) : rawFrom,
+          );
+          to = isSelection ? getValidPos(tr, rawTo) : from;
+        } catch (err) {}
 
         add = add.concat(
           createTelepointers(
@@ -243,39 +249,36 @@ export class PluginState {
 
     if (tr.docChanged) {
       // Adjust decoration positions to changes made by the transaction
-      decorationSet = decorationSet.map(tr.mapping, tr.doc, {
-        // Reapplies decorators those got removed by the state change
-        onRemove: (spec: { pointer: { sessionId: string } }) => {
-          if (spec.pointer && spec.pointer.sessionId) {
-            const step = tr.steps.filter(isReplaceStep)[0];
-            if (step) {
-              const { sessionId } = spec.pointer;
-              const {
-                slice: {
-                  content: { size },
-                },
-                from,
-              } = step as any;
-              const pos = getValidPos(
-                tr,
-                size
-                  ? Math.min(from + size, tr.doc.nodeSize - 3)
-                  : Math.max(from, 1),
-              );
+      try {
+        decorationSet = decorationSet.map(tr.mapping, tr.doc, {
+          // Reapplies decorators those got removed by the state change
+          onRemove: (spec: { pointer: { sessionId: string } }) => {
+            if (spec.pointer && spec.pointer.sessionId) {
+              const step = tr.steps.filter(isReplaceStep)[0];
+              if (step) {
+                const { sessionId } = spec.pointer;
+                const { slice: { content: { size } }, from } = step as any;
+                const pos = getValidPos(
+                  tr,
+                  size
+                    ? Math.min(from + size, tr.doc.nodeSize - 3)
+                    : Math.max(from, 1),
+                );
 
-              add = add.concat(
-                createTelepointers(
-                  pos,
-                  pos,
-                  sessionId,
-                  false,
-                  this.getInitial(sessionId),
-                ),
-              );
+                add = add.concat(
+                  createTelepointers(
+                    pos,
+                    pos,
+                    sessionId,
+                    false,
+                    this.getInitial(sessionId),
+                  ),
+                );
+              }
             }
-          }
-        },
-      });
+          },
+        });
+      } catch (err) {}
 
       // Remove any selection decoration within the change range,
       // takes care of the issue when after pasting we end up with a dead selection

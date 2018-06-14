@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+import { receiveTransaction } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
 import { AllSelection, NodeSelection, Selection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -12,7 +14,7 @@ import {
 } from './types';
 
 export const handleInit = (initData: InitData, view: EditorView) => {
-  const { doc, json } = initData;
+  const { doc, json, version } = initData;
   if (doc) {
     const {
       state,
@@ -27,11 +29,19 @@ export const handleInit = (initData: InitData, view: EditorView) => {
       tr.replaceWith(0, state.doc.nodeSize - 2, content);
       tr.setSelection(Selection.atStart(tr.doc));
       tr.scrollIntoView();
-      const newState = state.apply(tr);
+      let newState = state.apply(tr);
+
+      if (typeof version !== undefined) {
+        const collabState = { version, unconfirmed: [] };
+        const { tr } = newState;
+
+        newState = newState.apply(tr.setMeta('collab$', collabState));
+      }
+
       view.updateState(newState);
     }
   } else if (json) {
-    applyRemoteSteps(json, view);
+    applyRemoteSteps(json, undefined, view);
   }
 };
 
@@ -56,30 +66,50 @@ export const handlePresence = (
 };
 
 export const applyRemoteData = (remoteData: RemoteData, view: EditorView) => {
-  const { json, newState } = remoteData;
+  const { json, newState, clientIDs = [] } = remoteData;
   if (json) {
-    applyRemoteSteps(json, view);
+    applyRemoteSteps(json, clientIDs, view);
   } else if (newState) {
     view.updateState(newState);
   }
 };
 
-export const applyRemoteSteps = (json: any[], view: EditorView) => {
+export const applyRemoteSteps = (
+  json: any[],
+  clientIDs: string[] | undefined,
+  view: EditorView,
+) => {
   const {
     state,
     state: { schema },
   } = view;
-  let { tr } = state;
 
-  json.forEach(stepJson => {
-    const step = Step.fromJSON(schema, stepJson);
-    tr.step(step);
-  });
+  const steps = json.map(step => Step.fromJSON(schema, step));
 
-  tr.setMeta('addToHistory', false);
-  tr.scrollIntoView();
-  const newState = state.apply(tr);
-  view.updateState(newState);
+  console.log('appyling steps', json);
+
+  let tr;
+
+  if (clientIDs) {
+    // try {
+    tr = receiveTransaction(state, steps, clientIDs);
+    // } catch (err) {
+    //   throw new Error()
+    //   console.log(, err);
+    // }
+  } else {
+    tr = state.tr;
+    steps.forEach(step => tr.step(step));
+  }
+
+  if (tr) {
+    tr.setMeta('addToHistory', false);
+    tr.scrollIntoView();
+    const newState = state.apply(tr);
+    view.updateState(newState);
+  } else {
+    console.log('could not apply steps!', json);
+  }
 };
 
 export const handleTelePointer = (
