@@ -241,10 +241,8 @@ export class MentionsState {
     const activeMentionQueryMarks = findMentionQueryMarks(this.state, true);
     let from = this.state.selection.from;
     let closestMark = { start: -1, end: -1, query: '' };
-    let closestDistance = Number.MAX_SAFE_INTEGER;
-
-    while (activeMentionQueryMarks.length) {
-      const mark = activeMentionQueryMarks.pop()!;
+    let closestDistance = Infinity;
+    activeMentionQueryMarks.forEach(mark => {
       const distance = Math.min(
         Math.abs(from - mark!.start),
         Math.abs(from - mark!.end),
@@ -253,7 +251,7 @@ export class MentionsState {
         closestDistance = distance;
         closestMark = mark;
       }
-    }
+    });
 
     return closestMark;
   }
