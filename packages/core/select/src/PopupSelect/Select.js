@@ -7,6 +7,7 @@ import React, {
   type Node,
 } from 'react';
 import { createPortal } from 'react-dom';
+import Select from 'react-select';
 import createFocusTrap from 'focus-trap';
 import {
   Manager,
@@ -16,62 +17,14 @@ import {
   type PopperChildrenProps,
 } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
-import Select, { components as defaultComponents } from 'react-select';
 
 import { colors } from '@atlaskit/theme';
-import SearchIcon from '@atlaskit/icon/glyph/editor/search';
 
-// Styled Components
+import { Menu, DummyControl, defaultComponents } from './components';
+
 // ==============================
-
-type MenuProps = { maxWidth: number, minWidth: number };
-
-const Menu = ({ maxWidth, minWidth, ...props }: MenuProps) => {
-  const shadow = colors.N40A;
-  return (
-    <div
-      css={{
-        backgroundColor: 'white',
-        borderRadius: 4,
-        boxShadow: `0 0 0 1px ${shadow}, 0 4px 11px ${shadow}`,
-        maxWidth,
-        minWidth,
-        zIndex: 2,
-      }}
-      {...props}
-    />
-  );
-};
-
-// Custom Components
+// Types
 // ==============================
-
-const DropdownIndicator = () => (
-  <div css={{ marginRight: 2, textAlign: 'center', width: 32 }}>
-    <SearchIcon />
-  </div>
-);
-const Control = ({ innerProps: { innerRef, ...innerProps }, ...props }: *) => (
-  <div ref={innerRef} css={{ padding: '8px 8px 4px' }}>
-    <defaultComponents.Control {...props} innerProps={innerProps} />
-  </div>
-);
-const DummyControl = props => (
-  <div
-    css={{
-      border: 0,
-      clip: 'rect(1px, 1px, 1px, 1px)',
-      height: 1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      whiteSpace: 'nowrap',
-      width: 1,
-    }}
-  >
-    <defaultComponents.Control {...props} />
-  </div>
-);
 
 type PopperChildren = { children: PopperChildrenProps => Node };
 type PopperPropsNoChildren = $Diff<PopperProps, PopperChildren>;
@@ -79,10 +32,13 @@ type Props = {
   closeMenuOnSelect: boolean,
   components: Object,
   footer?: Node,
+  isOpen: boolean,
   minMenuWidth: number,
   maxMenuWidth: number,
   maxMenuHeight: number,
   onChange?: Object => void,
+  onOpen: () => void,
+  onClose: () => void,
   options: Array<Object>,
   popperProps?: PopperPropsNoChildren,
   searchThreshold: number,
@@ -91,22 +47,49 @@ type Props = {
 };
 type State = { isOpen: boolean };
 
+// ==============================
+// Class
+// ==============================
+
+const defaultStyles = {
+  groupHeading: provided => ({ ...provided, color: colors.N80 }),
+  menu: () => null,
+};
+
 export default class PopupSelect extends PureComponent<Props, State> {
-  state = { isOpen: false };
-  menuRef: HTMLElement;
-  targetRef: HTMLElement;
-  selectRef: ElementRef<*>;
+  components: Object;
   focusTrap: Object;
+  menuRef: HTMLElement;
   popperProps: PopperPropsNoChildren;
+  selectRef: ElementRef<*>;
+  targetRef: HTMLElement;
+
   static defaultProps = {
     closeMenuOnSelect: true,
-    components: { Control, DropdownIndicator },
+    components: defaultComponents,
     maxMenuHeight: 300,
     maxMenuWidth: 440,
     minMenuWidth: 220,
     popperProps: {},
     searchThreshold: 5,
-    styles: { menu: () => null },
+    styles: {},
+  };
+
+  constructor(props: Props) {
+    super(props);
+    this.cacheComponents(props.components);
+    this.state = { isOpen: false };
+  }
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.components !== this.props.components) {
+      this.cacheComponents(nextProps.components);
+    }
+  }
+  cacheComponents = (components?: {}) => {
+    this.components = {
+      ...defaultComponents,
+      ...components,
+    };
   };
   componentDidMount() {
     this.mergePopperProps();
@@ -163,6 +146,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
   // ==============================
 
   open = () => {
+    const { onOpen } = this.props;
+    if (onOpen) onOpen();
+
     this.setState({ isOpen: true }, this.initialiseFocusTrap);
     this.selectRef.select.focusOption('first'); // HACK
     window.addEventListener('keydown', this.handleKeyDown);
@@ -178,6 +164,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
     this.focusTrap.activate();
   };
   close = () => {
+    const { onClose } = this.props;
+    if (onClose) onClose();
+
     this.setState({ isOpen: false });
     this.focusTrap.deactivate();
     window.removeEventListener('keydown', this.handleKeyDown);
@@ -250,15 +239,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
   // ==============================
 
   renderSelect = () => {
-    const {
-      components,
-      footer,
-      maxMenuWidth,
-      minMenuWidth,
-      target,
-      ...props
-    } = this.props;
+    const { footer, maxMenuWidth, minMenuWidth, target, ...props } = this.props;
     const { isOpen } = this.state;
+    const { components } = this;
     const showSearchControl = this.showSearchControl();
     const portalDestination = document.body;
 
@@ -283,6 +266,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
                   menuIsOpen
                   ref={this.getSelectRef}
                   {...props}
+                  styles={{ ...defaultStyles, ...props.styles }}
                   maxMenuHeight={this.getMaxHeight()}
                   components={{
                     ...components,
