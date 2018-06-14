@@ -1,8 +1,8 @@
 // @flow
 
-import React, { Component, type Element as ReactElement } from 'react';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
-import NewFocusLock from './FocusLock';
+import FocusTrap from 'react-focus-lock';
 
 type Props = {
   /**
@@ -18,15 +18,15 @@ type Props = {
     - TRUE will automatically find the first "tabbable" element within the boundary
     - Providing a function should return the element you want to focus
   */
-  autoFocus?: AutoFocus,
+  autoFocus: AutoFocus,
   /**
     Accepts a single child
   */
-  children?: ReactElement<*>,
+  children?: Node,
   /**
     Toggle focus management outside of mount/unmount lifecycle methods
   */
-  enabled?: boolean,
+  enabled: boolean,
 };
 
 /* eslint-disable react/sort-comp */
@@ -38,32 +38,43 @@ export default class FocusLock extends Component<Props> {
     /** available when invoked within @atlaskit/layer-manager */
     ariaHiddenNode: PropTypes.object,
   };
+  static defaultProps = {
+    autoFocus: true,
+    enabled: true,
+  };
 
   componentDidMount() {
     const { enabled } = this.props;
 
-    if (enabled || enabled === undefined) {
+    if (typeof autoFocus === 'function') {
+      console.warn(
+        '@atlaskit/layer-manager warning: passing a function as autoFocus in FocusLock is deprecated. Please see...',
+      );
+    }
+
+    if (enabled) {
       this.initialise();
     }
   }
   componentWillUnmount() {
     if (!this.initFromProps && !this.teardownFromProps) {
-      this.teardown({ shouldRestoreFocus: true });
+      this.teardown();
     }
   }
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.enabled && nextProps.enabled !== this.props.enabled) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.enabled && this.props.enabled !== prevProps.enabled) {
       this.initFromProps = true;
       this.initialise();
     }
 
-    if (!nextProps.enabled && nextProps.enabled !== this.props.enabled) {
+    if (!this.props.enabled && this.props.enabled !== prevProps.enabled) {
       this.teardownFromProps = true;
-      this.teardown({ shouldRestoreFocus: true });
+      this.teardown();
     }
   }
 
   initialise = () => {
+    const { autoFocus } = this.props;
     // set the element to hide from assistive technology
     this.ariaHiddenNode =
       this.props.ariaHiddenNode || this.context.ariaHiddenNode;
@@ -72,21 +83,26 @@ export default class FocusLock extends Component<Props> {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.setAttribute('aria-hidden', '');
     }
+    if (typeof autoFocus === 'function') {
+      const elem = autoFocus();
+      if (elem && elem.focus) {
+        elem.focus();
+      }
+    }
   };
-  teardown = (options: TeardownOptions) => {
+  teardown = () => {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.removeAttribute('aria-hidden');
     }
   };
 
   render() {
-    const { autoFocus, enabled = false } = this.props;
-    const initialFocus =
-      typeof autoFocus === 'function' ? autoFocus : undefined;
+    const { enabled, autoFocus } = this.props;
+    const shouldAutoFocus = typeof autoFocus === 'boolean' && autoFocus;
     return (
-      <NewFocusLock enabled={enabled} initialFocus={initialFocus}>
+      <FocusTrap disabled={!enabled} autoFocus={shouldAutoFocus}>
         {this.props.children}
-      </NewFocusLock>
+      </FocusTrap>
     );
   }
 }

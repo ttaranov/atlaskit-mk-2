@@ -26,32 +26,15 @@ const nextTick = fn =>
   });
 
 it('should focus button', () => {
-  const ref = React.createRef();
-  const wrapper = mount(
-    <div>
-      <FocusLock enabled>
-        <button ref={ref}>Button 1</button>
-      </FocusLock>
-    </div>,
+  mount(
+    <FocusLock enabled>
+      <button>Button 1</button>
+    </FocusLock>,
   );
   expect(textContent(document.activeElement)).toBe('Button 1');
 });
 
-it('should focus element with a function', () => {
-  const ref = React.createRef();
-  const wrapper = mount(
-    <FocusLock enabled autoFocus={() => ref.current}>
-      <div>
-        <button>Button 1</button>
-        <button ref={ref}>Button 2</button>
-      </div>
-    </FocusLock>,
-  );
-  expect(textContent(document.activeElement)).toBe('Button 2');
-});
-
 it('should focus in last rendered lock', () => {
-  const ref = React.createRef();
   mount(
     <div>
       <FocusLock enabled>
@@ -61,7 +44,7 @@ it('should focus in last rendered lock', () => {
         <button>Button 2</button>
       </FocusLock>
       <FocusLock enabled>
-        <button ref={ref}>Button 3</button>
+        <button>Button 3</button>
       </FocusLock>
     </div>,
   );
@@ -69,16 +52,15 @@ it('should focus in last rendered lock', () => {
 });
 
 it('should focus last enabled lock', () => {
-  const ref = React.createRef();
   mount(
     <div>
       <FocusLock enabled>
         <button>Button 1</button>
       </FocusLock>
       <FocusLock enabled>
-        <button ref={ref}>Button 2</button>
+        <button>Button 2</button>
       </FocusLock>
-      <FocusLock>
+      <FocusLock enabled={false}>
         <button>Button 3</button>
       </FocusLock>
     </div>,
@@ -87,12 +69,11 @@ it('should focus last enabled lock', () => {
 });
 
 it('should focus on inner lock', () => {
-  const ref = React.createRef();
   mount(
     <FocusLock enabled>
       <button>Button 1</button>
       <FocusLock enabled>
-        <button ref={ref}>Button 2</button>
+        <button>Button 2</button>
       </FocusLock>
     </FocusLock>,
   );
@@ -100,29 +81,25 @@ it('should focus on inner lock', () => {
 });
 
 it('should focus on last enabled inner lock', () => {
-  const ref = React.createRef();
   mount(
-    <div>
-      <FocusLock enabled>
-        <div>
-          <button>Button 1</button>
-          <FocusLock enabled>
-            <div>
-              <button ref={ref}>Button 2</button>
-              <FocusLock>
-                <button>Button 3</button>
-              </FocusLock>
-            </div>
-          </FocusLock>
-        </div>
-      </FocusLock>
-    </div>,
+    <FocusLock enabled>
+      <div>
+        <button>Button 1</button>
+        <FocusLock enabled>
+          <div>
+            <button>Button 2</button>
+            <FocusLock enabled={false}>
+              <button>Button 3</button>
+            </FocusLock>
+          </div>
+        </FocusLock>
+      </div>
+    </FocusLock>,
   );
   expect(textContent(document.activeElement)).toBe('Button 2');
 });
 
 it('should work through Portals', () => {
-  const ref = React.createRef();
   class Portal extends React.Component<{ children: Node }> {
     domNode = document.createElement('div');
     constructor(props) {
@@ -150,7 +127,7 @@ it('should work through Portals', () => {
       </Portal>
       <Portal>
         <FocusLock enabled>
-          <button ref={ref}>Button 3</button>
+          <button>Button 3</button>
         </FocusLock>
       </Portal>
     </div>,
@@ -181,11 +158,10 @@ class FocusLockWithState extends React.Component<
   }
 }
 
-it('should focus on outer lock after state change', () => {
-  const ref = React.createRef();
+it('should stay focused in inner lock when disabled', () => {
   const wrapper = mount(
     <FocusLock enabled>
-      <button ref={ref}>Button 1</button>
+      <button>Button 1</button>
       <FocusLockWithState defaultEnabled>
         {(enabled, toggle) => (
           <button id="button-2" onClick={toggle}>
@@ -196,7 +172,9 @@ it('should focus on outer lock after state change', () => {
     </FocusLock>,
   );
   wrapper.find('#button-2').simulate('click');
-  expect(textContent(document.activeElement)).toBe('Button 1');
+  return nextTick(() =>
+    expect(textContent(document.activeElement)).toBe('Button 2 unlocked'),
+  );
 });
 
 it('should focus on previous lock after state change', () => {
