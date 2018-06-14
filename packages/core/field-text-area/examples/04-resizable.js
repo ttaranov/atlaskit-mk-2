@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import FieldTextArea from '../src/FieldTextArea';
 
-export default class BasicExample extends PureComponent<void, void> {
+export default class ResizableExample extends PureComponent<void, void> {
   render() {
     return (
       <div>
