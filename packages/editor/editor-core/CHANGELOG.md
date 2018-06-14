@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.6.2
+- [patch] ED-4856: fix resize border in Firefox [b8577e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8577e7)
+- [none] Updated dependencies [b8577e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8577e7)
+
 ## 73.6.1
 - [patch] Fix issue where mentions were not selectable in IE11 [2126e1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2126e1e)
 - [none] Updated dependencies [2126e1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2126e1e)
