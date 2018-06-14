@@ -165,8 +165,7 @@ mock.post(
       if (response.body) res.body(JSON.stringify(response.body));
       return res;
     } else {
-      res.status(404);
-      return res;
+      return undefined;
     }
   }, 900),
 );
