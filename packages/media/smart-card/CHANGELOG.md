@@ -1,5 +1,10 @@
 # @atlaskit/smart-card
 
+## 5.1.1
+- [patch] Fix UI issues with inline card resolving view [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
+- [patch] Fix for inline resolved card [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
+- [patch] Fix the resolving view [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
+
 ## 5.1.0
 - [minor] added the LinkView for inline cards in the resolving/errored state [823caef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/823caef)
 
