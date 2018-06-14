@@ -15,3 +15,19 @@ Uses landkid version 0.0.20
    front end.
   * `curl -H "Content-Type: application/json" -X POST https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net/api/pause -d '{"reason":"Upgrade in progress"}'`
 * Added `elementsTeam` and `searchAndSmartsTeam` to allowed users
+
+## v14 (not sure)
+
+* This was the last release before the major refactor/ui update
+* If reverting back to this, make sure the config is updated! There were breaking changes
+
+## v17 (2018-06-11)
+
+* Major internal refactor
+* Adds landkid preact ui
+* Adds lots more config options
+  * NOTE: Moves `usersAllowedToMerge` into `prSettings` (BREAKING CHANGE)
+
+## v18 (2018-06-14)
+
+* Just minor UI changes to how builds link (they now link to the pullrequest AND the build and links are now clickable before the first statusUpdate is received)
