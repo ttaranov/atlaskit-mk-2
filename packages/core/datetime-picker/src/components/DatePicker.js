@@ -146,7 +146,7 @@ export default class DatePicker extends Component<Props, State> {
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
-    view: '',
+    view: this.props.value || this.props.defaultValue,
     selectedValue: this.props.value || this.props.defaultValue,
   };
 
