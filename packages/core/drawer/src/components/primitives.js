@@ -98,13 +98,13 @@ const IconWrapper = (props: IconWrapperProps) => (
 
 export default class DrawerPrimitive extends Component<DrawerProps> {
   render() {
-    const { children, icon: Icon, onClose, navigation, ...props } = this.props;
+    const { children, icon: Icon, onClose, ...props } = this.props;
 
     return (
       <Slide component={Wrapper} {...props}>
         <Sidebar>
           <IconWrapper>{Icon ? <Icon size="large" /> : null}</IconWrapper>
-          <IconWrapper onClick={onClose || navigation.closeActiveDrawer}>
+          <IconWrapper onClick={onClose}>
             <ArrowLeft />
           </IconWrapper>
         </Sidebar>
