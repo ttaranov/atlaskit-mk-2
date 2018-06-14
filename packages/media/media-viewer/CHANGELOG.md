@@ -1,5 +1,20 @@
 # @atlaskit/media-viewer
 
+## 15.0.10
+- [patch] MSW-710  : add shadow to footer component [ea0ab01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea0ab01)
+
+## 15.0.9
+- [patch] introduce zoom level domain [29dcff3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29dcff3)
+
+## 15.0.8
+- [patch] MSW-630: properly render PDF annotations and text layer [0682c53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0682c53)
+
+## 15.0.7
+- [patch] MSW-744 : let header background disappear together with controls [f4cda94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4cda94)
+
+## 15.0.6
+- [patch] Add document loading spinner [ff372e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff372e1)
+
 ## 15.0.5
 - [patch] Chores for document viewer [fefa35c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fefa35c)
 

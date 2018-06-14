@@ -1,5 +1,17 @@
 # @atlaskit/editor-test-helpers
 
+## 4.0.7
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-core@73.4.4
+
+## 4.0.6
+- [patch] Adding breakout to extensions [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+- [none] Updated dependencies [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+  - @atlaskit/editor-core@73.4.3
+  - @atlaskit/editor-common@11.0.5
+
 ## 4.0.5
 - [patch] ED-4823: added card provider [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)
 - [none] Updated dependencies [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)

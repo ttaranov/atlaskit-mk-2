@@ -1,5 +1,27 @@
 # @atlaskit/editor-common
 
+## 11.0.7
+
+
+
+- [patch] Updated dependencies [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
+  - @atlaskit/media-card@29.0.3
+- [patch] Updated dependencies [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
+  - @atlaskit/media-card@29.0.3
+- [patch] Updated dependencies [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
+  - @atlaskit/media-card@29.0.3
+
+## 11.0.6
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-json-transformer@3.0.11
+
+## 11.0.5
+- [patch] Adding breakout to extensions [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+- [none] Updated dependencies [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+  - @atlaskit/editor-test-helpers@4.0.6
+
 ## 11.0.4
 - [patch] ED-4818: add inlineCard to schema [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)
 - [none] Updated dependencies [a303cbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a303cbd)

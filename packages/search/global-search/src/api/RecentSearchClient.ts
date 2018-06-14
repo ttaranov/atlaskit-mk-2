@@ -1,4 +1,10 @@
-import { Result, ResultType, AnalyticsType } from '../model/Result';
+import {
+  Result,
+  ResultType,
+  AnalyticsType,
+  JiraObjectResult,
+  ConfluenceObjectResult,
+} from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
@@ -117,17 +123,30 @@ function maybeSplitIssueKeyAndName(recentItem: RecentItem) {
 function recentItemToResult(recentItem: RecentItem): Result {
   const { name, objectKey } = maybeSplitIssueKeyAndName(recentItem);
 
-  return {
-    resultType: ResultType.Object,
-    resultId: 'recent-' + recentItem.objectId,
+  const baseResult = {
+    resultId: `recent-${recentItem.objectId}`,
     avatarUrl: recentItem.iconUrl,
     name: name,
     href: recentItem.url,
     containerName: recentItem.container,
-    objectKey: objectKey,
-    analyticsType:
-      recentItem.provider === 'jira'
-        ? AnalyticsType.RecentJira
-        : AnalyticsType.RecentConfluence,
   };
+
+  if (recentItem.provider === 'jira') {
+    const jiraResult: JiraObjectResult = {
+      objectKey: objectKey!,
+      resultType: ResultType.JiraObjectResult,
+      analyticsType: AnalyticsType.RecentJira,
+      ...baseResult,
+    };
+
+    return jiraResult;
+  } else {
+    const confluenceResult: ConfluenceObjectResult = {
+      resultType: ResultType.ConfluenceObjectResult,
+      analyticsType: AnalyticsType.RecentConfluence,
+      ...baseResult,
+    };
+
+    return confluenceResult;
+  }
 }
