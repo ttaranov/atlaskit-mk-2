@@ -1,5 +1,33 @@
 # @atlaskit/editor-common
 
+## 11.1.2
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/editor-test-helpers@4.1.1
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/icon@12.1.1
+
+## 11.1.1
+- [patch] ED-3474 add redesigned table numbering column, fix table styling regressions [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
+- [none] Updated dependencies [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
+
+## 11.1.0
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+
+## 11.0.7
+- [patch] Updated dependencies [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
+  - @atlaskit/media-card@29.0.3
+- [patch] Updated dependencies [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
+  - @atlaskit/media-card@29.0.3
+- [patch] Updated dependencies [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
+  - @atlaskit/media-card@29.0.3
+
 ## 11.0.6
 - [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
 - [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)

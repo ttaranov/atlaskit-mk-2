@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/docs",
-  "version": "4.0.1",
+  "version": "4.1.1",
   "description": "Utilities for building documentation",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,9 +19,9 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/code": "^5.0.1",
-    "@atlaskit/icon": "^12.0.1",
-    "@atlaskit/theme": "^4.0.1",
+    "@atlaskit/code": "^5.0.3",
+    "@atlaskit/icon": "^12.1.1",
+    "@atlaskit/theme": "^4.0.3",
     "babel-runtime": "^6.26.0",
     "pretty-proptypes": "^0.2.1",
     "react-markings": "^1.1.7",

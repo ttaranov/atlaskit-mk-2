@@ -1,5 +1,37 @@
 # @atlaskit/media-picker
 
+## 8.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-editor@9.1.1
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/analytics-next@2.1.8
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
+## 8.1.0
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-editor@9.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/button@8.1.0
+  
 ## 8.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

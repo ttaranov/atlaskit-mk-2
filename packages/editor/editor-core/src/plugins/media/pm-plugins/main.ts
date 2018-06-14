@@ -214,6 +214,8 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
+  getMediaOptions = () => this.options;
+
   updateElement(): void {
     let newElement;
     if (this.selectedMediaNode() && this.isMediaSingle()) {

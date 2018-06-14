@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { isRowSelected, selectRow, isTableSelected } from 'prosemirror-utils';
+import { isRowSelected, isTableSelected } from 'prosemirror-utils';
 import {
   RowInner,
   RowContainer,
@@ -9,7 +9,6 @@ import {
   HeaderButton,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
-import { Command } from '../../../../../types';
 import { getLineMarkerWidth, findRowSelection, TableSelection } from '../utils';
 import DeleteRowButton from './DeleteRowButton';
 
@@ -17,17 +16,23 @@ export interface Props {
   editorView: EditorView;
   tableElement: HTMLElement;
   isTableHovered: boolean;
-  insertRow: (row: number) => Command;
+  selectRow: (row: number) => void;
+  insertRow: (row: number) => void;
   remove: () => void;
-  hoverRows: (rows: number[], danger?: boolean) => Command;
-  resetHoverSelection: Command;
-  scroll: number;
-  updateScroll: () => void;
+  hoverRows: (rows: number[], danger?: boolean) => void;
+  dangerRows?: number[];
+  hoveredRows?: number[];
+  resetHoverSelection: () => void;
+  scroll?: number;
   isTableInDanger?: boolean;
 }
 
 export default class RowControls extends Component<Props, any> {
-  state: { dangerRows: number[] } = { dangerRows: [] };
+  static defaultProps = {
+    dangerRows: [],
+    hoveredRows: [],
+    scroll: 0,
+  };
 
   createDeleteRowButton(selection, offsetHeight, selectionHeight) {
     const selectedRowIdxs: number[] = [];
@@ -40,13 +45,12 @@ export default class RowControls extends Component<Props, any> {
         key="delete"
         onClick={() => {
           this.props.remove();
-          this.resetHoverSelection();
+          this.props.resetHoverSelection();
         }}
         onMouseEnter={() => {
-          this.hoverRows(selectedRowIdxs, true);
-          this.props.updateScroll();
+          this.props.hoverRows(selectedRowIdxs, true);
         }}
-        onMouseLeave={() => this.hoverRows(selectedRowIdxs)}
+        onMouseLeave={() => this.props.hoverRows(selectedRowIdxs)}
         style={{
           top: offsetHeight + selectionHeight / 2 + 2,
         }}
@@ -74,13 +78,45 @@ export default class RowControls extends Component<Props, any> {
     );
   }
 
-  render() {
+  private classNamesForRow(i, len) {
+    const classNames = ['table-row'];
     const {
-      tableElement,
       editorView: { state },
       isTableHovered,
-      scroll,
       isTableInDanger,
+      scroll,
+    } = this.props;
+
+    if (
+      isTableHovered ||
+      isRowSelected(i)(state.selection) ||
+      this.props.hoveredRows!.indexOf(i) !== -1
+    ) {
+      classNames.push('active');
+    }
+
+    if (this.props.dangerRows!.indexOf(i) !== -1 || isTableInDanger) {
+      classNames.push('danger');
+    }
+
+    // since we can't use :last selector with class name selector (.table-row),
+    // create a class-based selector instead
+    if (i === len - 1) {
+      classNames.push('last');
+    }
+
+    if (scroll && scroll > 0) {
+      classNames.push('scrolling');
+    }
+
+    return classNames;
+  }
+
+  render() {
+    const {
+      editorView: { state },
+      tableElement,
+      scroll,
     } = this.props;
     if (!tableElement) {
       return null;
@@ -92,7 +128,7 @@ export default class RowControls extends Component<Props, any> {
 
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
-    const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
+    const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll!);
     let prevRowHeights = 0;
 
     const selection = findRowSelection(state, rows);
@@ -103,31 +139,27 @@ export default class RowControls extends Component<Props, any> {
         !isTableSelected(state.selection) &&
         !selection.hasMultipleSelection;
 
-      const classNames =
-        isTableHovered || isRowSelected(i)(state.selection) ? ['active'] : [''];
-      if (this.state.dangerRows.indexOf(i) !== -1 || isTableInDanger) {
-        classNames.push('danger');
-      }
       nodes.push(
         <RowControlsButtonWrap
           key={i}
-          className={`${classNames.join(' ')} table-row`}
-          style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
+          className={this.classNamesForRow(i, len).join(' ')}
+          style={{
+            height: (rows[i] as HTMLElement).offsetHeight + 1,
+          }}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
-            onClick={() => this.selectRow(i)}
-            onMouseOver={() => this.hoverRows([i])}
-            onMouseOut={this.resetHoverSelection}
+            onClick={() => this.props.selectRow(i)}
+            onMouseOver={() => this.props.hoverRows([i])}
+            onMouseOut={() => this.props.resetHoverSelection()}
           />
           {/* tslint:enable:jsx-no-lambda */}
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (
             <InsertRowButton
-              onClick={() => this.insertRow(i + 1)}
+              onClick={() => this.props.insertRow(i + 1)}
               lineMarkerWidth={lineMarkerWidth}
-              onMouseOver={this.props.updateScroll}
             />
           ) : null}
         </RowControlsButtonWrap>,
@@ -154,28 +186,4 @@ export default class RowControls extends Component<Props, any> {
       </RowContainer>
     );
   }
-
-  private selectRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    dispatch(selectRow(row)(state.tr));
-    this.resetHoverSelection();
-  };
-
-  private hoverRows = (rows: number[], danger?: boolean) => {
-    const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerRows: danger ? rows : [] });
-    this.props.hoverRows(rows, danger)(state, dispatch);
-  };
-
-  private resetHoverSelection = () => {
-    const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerRows: [] });
-    this.props.resetHoverSelection(state, dispatch);
-  };
-
-  private insertRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.insertRow(row)(state, dispatch);
-    this.resetHoverSelection();
-  };
 }

@@ -34,7 +34,7 @@ import AkButton from '@atlaskit/button';
 
 import { tablesPlugin } from '../../../../src/plugins';
 import { setTextSelection } from '../../../../src';
-import { selectTable, getCellsInRow } from 'prosemirror-utils';
+import { selectTable, getCellsInRow, selectRow } from 'prosemirror-utils';
 import { Node } from 'prosemirror-model';
 import { CellSelection } from 'prosemirror-tables';
 import DeleteRowButton from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls/DeleteRowButton';
@@ -76,8 +76,6 @@ describe('RowControls', () => {
           <TableFloatingControls
             tableElement={tableElement}
             editorView={editorView}
-            hoverRows={hoverRows}
-            resetHoverSelection={resetHoverSelection}
           />,
         );
         plugin.props.handleDOMEvents!.focus(editorView, event);
@@ -109,8 +107,6 @@ describe('RowControls', () => {
           <TableFloatingControls
             tableElement={tableElement}
             editorView={editorView}
-            hoverRows={hoverRows}
-            resetHoverSelection={resetHoverSelection}
           />,
         );
 
@@ -157,7 +153,7 @@ describe('RowControls', () => {
         } = editor(
           doc(
             table()(
-              tr(thEmpty, td({})(p()), thEmpty),
+              tr(thEmpty, td({})(p('<>')), thEmpty),
               tr(tdCursor, tdEmpty, tdEmpty),
               tr(tdEmpty, tdEmpty, tdEmpty),
             ),
@@ -168,13 +164,20 @@ describe('RowControls', () => {
           <RowControls
             tableElement={tableElement!}
             editorView={editorView}
-            hoverRows={hoverRows}
-            resetHoverSelection={resetHoverSelection}
+            hoverRows={(rows, danger) => {
+              hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+            }}
+            resetHoverSelection={() => {
+              resetHoverSelection(editorView.state, editorView.dispatch);
+            }}
             isTableHovered={false}
-            insertRow={insertRow}
+            insertRow={row => {
+              insertRow(row)(editorView.state, editorView.dispatch);
+            }}
+            selectRow={row => {
+              editorView.dispatch(selectRow(row)(editorView.state.tr));
+            }}
             remove={remove}
-            scroll={0}
-            updateScroll={() => {}}
           />,
         );
 
@@ -186,8 +189,9 @@ describe('RowControls', () => {
           .at(row)
           .simulate('click');
 
-        // reapply state to force re-render
-        floatingControls.setState(floatingControls.state());
+        // selecting the row mutates the editor state (which is inside editorView)
+        // so, re-apply the updated prop
+        floatingControls.setProps({ editorView });
 
         // we should now have a delete button
         expect(floatingControls.find(DeleteRowButton).length).toBe(1);
@@ -212,7 +216,6 @@ describe('RowControls', () => {
         <TableFloatingControls
           tableElement={tableElement}
           editorView={editorView}
-          hoverRows={hoverRows}
         />,
       );
 
@@ -221,42 +224,6 @@ describe('RowControls', () => {
       expect(floatingControls.find(DeleteRowButton).length).toBe(0);
       floatingControls.unmount();
     });
-  });
-
-  it('calls hoverRows when button hovered', () => {
-    const { plugin, editorView, pluginState: { tableElement } } = editor(
-      doc(
-        table()(
-          tr(thEmpty, td({})(p()), thEmpty),
-          tr(tdCursor, tdEmpty, tdEmpty),
-          tr(tdEmpty, tdEmpty, tdEmpty),
-        ),
-      ),
-    );
-
-    const hoverRowsMock = jest.fn(hoverRows);
-
-    const floatingControls = mount(
-      <TableFloatingControls
-        tableElement={tableElement}
-        editorView={editorView}
-        hoverRows={hoverRowsMock}
-      />,
-    );
-
-    plugin.props.handleDOMEvents!.focus(editorView, event);
-
-    editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
-
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
-
-    floatingControls.find(DeleteRowButton).simulate('mouseenter');
-
-    // expect to want to apply the hover decoration on the rows, with danger
-    expect(hoverRowsMock).toBeCalledWith([0, 1], true);
-
-    floatingControls.unmount();
   });
 
   it('applies the danger class to the row buttons', () => {
@@ -278,24 +245,25 @@ describe('RowControls', () => {
       <RowControls
         tableElement={tableElement!}
         editorView={editorView}
-        hoverRows={hoverRows}
-        resetHoverSelection={resetHoverSelection}
+        hoverRows={(rows, danger) => {
+          hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+        }}
+        resetHoverSelection={() => {
+          resetHoverSelection(editorView.state, editorView.dispatch);
+        }}
         isTableHovered={false}
-        insertRow={insertRow}
+        insertRow={row => {
+          insertRow(row)(editorView.state, editorView.dispatch);
+        }}
         remove={remove}
-        scroll={0}
-        updateScroll={() => {}}
+        dangerRows={[0, 1]}
+        selectRow={row => {
+          editorView.dispatch(selectRow(row)(editorView.state.tr));
+        }}
       />,
     );
 
     plugin.props.handleDOMEvents!.focus(editorView, event);
-
-    editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
-
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
-
-    floatingControls.find(DeleteRowButton).simulate('mouseenter');
 
     floatingControls
       .find(RowControlsButtonWrap)
@@ -324,13 +292,20 @@ describe('RowControls', () => {
       <RowControls
         tableElement={tableElement!}
         editorView={editorView}
-        hoverRows={hoverRows}
-        resetHoverSelection={resetHoverSelection}
+        hoverRows={(rows, danger) => {
+          hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+        }}
+        resetHoverSelection={() => {
+          resetHoverSelection(editorView.state, editorView.dispatch);
+        }}
         isTableHovered={false}
-        insertRow={insertRow}
+        insertRow={row => {
+          insertRow(row)(editorView.state, editorView.dispatch);
+        }}
         remove={removeMock}
-        scroll={0}
-        updateScroll={() => {}}
+        selectRow={row => {
+          editorView.dispatch(selectRow(row)(editorView.state.tr));
+        }}
       />,
     );
 
@@ -338,8 +313,9 @@ describe('RowControls', () => {
 
     editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
+    // selecting the row mutates the editor state (which is inside editorView)
+    // so, re-apply the updated prop
+    floatingControls.setProps({ editorView });
 
     expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 
@@ -373,13 +349,20 @@ describe('RowControls', () => {
       <RowControls
         tableElement={tableElement!}
         editorView={editorView}
-        hoverRows={hoverRows}
-        resetHoverSelection={resetHoverSelection}
+        hoverRows={(rows, danger) => {
+          hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+        }}
+        resetHoverSelection={() => {
+          resetHoverSelection(editorView.state, editorView.dispatch);
+        }}
         isTableHovered={false}
-        insertRow={insertRow}
+        insertRow={row => {
+          insertRow(row)(editorView.state, editorView.dispatch);
+        }}
         remove={remove}
-        scroll={0}
-        updateScroll={() => {}}
+        selectRow={row => {
+          editorView.dispatch(selectRow(row)(editorView.state.tr));
+        }}
       />,
     );
 
@@ -388,8 +371,9 @@ describe('RowControls', () => {
     // select the whole table
     editorView.dispatch(selectTable(editorView.state.tr));
 
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
+    // selecting the row mutates the editor state (which is inside editorView)
+    // so, re-apply the updated prop
+    floatingControls.setProps({ editorView });
 
     expect(floatingControls.find(DeleteRowButton).length).toBe(0);
     floatingControls.unmount();
@@ -415,13 +399,20 @@ describe('RowControls', () => {
         <RowControls
           tableElement={tableElement!}
           editorView={editorView}
-          hoverRows={hoverRows}
-          resetHoverSelection={resetHoverSelection}
+          hoverRows={(rows, danger) => {
+            hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+          }}
+          resetHoverSelection={() => {
+            resetHoverSelection(editorView.state, editorView.dispatch);
+          }}
           isTableHovered={false}
-          insertRow={insertRow}
+          insertRow={row => {
+            insertRow(row)(editorView.state, editorView.dispatch);
+          }}
           remove={remove}
-          scroll={0}
-          updateScroll={() => {}}
+          selectRow={row => {
+            editorView.dispatch(selectRow(row)(editorView.state.tr));
+          }}
         />,
       );
 
@@ -431,8 +422,9 @@ describe('RowControls', () => {
 
       editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
-      // reapply state to force re-render
-      floatingControls.setState(floatingControls.state());
+      // selecting the row mutates the editor state (which is inside editorView)
+      // so, re-apply the updated prop
+      floatingControls.setProps({ editorView });
 
       expect(floatingControls.find(InsertRowButton).length).toBe(2);
 
@@ -458,13 +450,20 @@ describe('RowControls', () => {
         <RowControls
           tableElement={tableElement!}
           editorView={editorView}
-          hoverRows={hoverRows}
-          resetHoverSelection={resetHoverSelection}
+          hoverRows={(rows, danger) => {
+            hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+          }}
+          resetHoverSelection={() => {
+            resetHoverSelection(editorView.state, editorView.dispatch);
+          }}
           isTableHovered={false}
-          insertRow={insertRow}
+          insertRow={row => {
+            insertRow(row)(editorView.state, editorView.dispatch);
+          }}
           remove={remove}
-          scroll={0}
-          updateScroll={() => {}}
+          selectRow={row => {
+            editorView.dispatch(selectRow(row)(editorView.state.tr));
+          }}
         />,
       );
 
@@ -474,8 +473,9 @@ describe('RowControls', () => {
 
       editorView.dispatch(selectRows([0, 1, 2])(editorView.state.tr));
 
-      // reapply state to force re-render
-      floatingControls.setState(floatingControls.state());
+      // selecting the row mutates the editor state (which is inside editorView)
+      // so, re-apply the updated prop
+      floatingControls.setProps({ editorView });
 
       expect(floatingControls.find(InsertRowButton).length).toBe(1);
 
@@ -501,13 +501,20 @@ describe('RowControls', () => {
         <RowControls
           tableElement={tableElement!}
           editorView={editorView}
-          hoverRows={hoverRows}
-          resetHoverSelection={resetHoverSelection}
+          hoverRows={(rows, danger) => {
+            hoverRows(rows, danger)(editorView.state, editorView.dispatch);
+          }}
+          resetHoverSelection={() => {
+            resetHoverSelection(editorView.state, editorView.dispatch);
+          }}
           isTableHovered={false}
-          insertRow={insertRow}
+          insertRow={row => {
+            insertRow(row)(editorView.state, editorView.dispatch);
+          }}
           remove={remove}
-          scroll={0}
-          updateScroll={() => {}}
+          selectRow={row => {
+            editorView.dispatch(selectRow(row)(editorView.state.tr));
+          }}
         />,
       );
 
@@ -515,8 +522,9 @@ describe('RowControls', () => {
 
       editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
-      // reapply state to force re-render
-      floatingControls.setState(floatingControls.state());
+      // selecting the row mutates the editor state (which is inside editorView)
+      // so, re-apply the updated prop
+      floatingControls.setProps({ editorView });
 
       expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 

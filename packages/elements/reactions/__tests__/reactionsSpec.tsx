@@ -6,7 +6,9 @@ import { Reactions, OnEmoji } from '../src';
 import { sortByRelevance } from '../src/internal/helpers';
 import Reaction from '../src/internal/reaction';
 import ReactionPicker from '../src/reaction-picker';
-import { reactionsProvider } from '../src/mock-reactions-provider';
+import MockReactionsProvider, {
+  reactionsProvider,
+} from '../src/mock-reactions-provider';
 import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
 import { ObjectReactionKey, ReactionStatus } from '../src/reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
@@ -31,10 +33,9 @@ describe('@atlaskit/reactions/reactions', () => {
   };
 
   const getSortedReactions = () => {
-    const reactionSummaries = (reactionsProvider as any).cachedReactions[
-      reactionsProvider.objectReactionKey(containerAri, demoAri)
-    ];
-    return [...reactionSummaries.reactions].sort(sortByRelevance);
+    const reactionSummaries = (reactionsProvider as MockReactionsProvider)
+      .mockData[reactionsProvider.objectReactionKey(containerAri, demoAri)];
+    return [...reactionSummaries].sort(sortByRelevance);
   };
 
   beforeAll(() => {
@@ -45,12 +46,15 @@ describe('@atlaskit/reactions/reactions', () => {
       .mockImplementation(
         (objectReactionKey: ObjectReactionKey, handler: Function) => {
           subscribe.call(reactionsProvider, objectReactionKey, handler);
-          reactionsProvider.notifyUpdated(
+          (reactionsProvider as any).updateReactionState(
             containerAri,
             demoAri,
-            (reactionsProvider as any).cachedReactions[
-              reactionsProvider.objectReactionKeyToString(objectReactionKey)
-            ],
+            {
+              status: ReactionStatus.ready,
+              reactions: (reactionsProvider as MockReactionsProvider).mockData[
+                reactionsProvider.objectReactionKeyToString(objectReactionKey)
+              ],
+            },
           );
         },
       );

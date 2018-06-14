@@ -30,7 +30,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeEach(async function() {
+    beforeAll(async function() {
       for (let client of clients) {
         if (client) {
           const browserName /*: string */ =

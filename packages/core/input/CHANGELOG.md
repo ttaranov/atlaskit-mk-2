@@ -1,5 +1,9 @@
 # @atlaskit/input
 
+## 3.0.1
+- [patch] Fixed disabled field colour in Safari [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
+- [none] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
+
 ## 3.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

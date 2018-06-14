@@ -43,7 +43,7 @@ describe('PDFRenderer', () => {
     await documentPromise;
     el.update();
 
-    expect(el.state('zoom')).toEqual(100);
+    expect(el.state('zoomLevel').value).toEqual(1);
     expect(el.state('doc').status).toEqual('SUCCESSFUL');
     expect(el.find(ZoomControls)).toHaveLength(1);
     el
@@ -51,7 +51,7 @@ describe('PDFRenderer', () => {
       .find(Button)
       .first()
       .simulate('click');
-    expect(el.state('zoom')).toBeLessThan(100);
+    expect(el.state('zoomLevel').value).toBeLessThan(1);
   });
 
   it('shows a loading indicator until the document is ready', () => {

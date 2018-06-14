@@ -1,5 +1,20 @@
 # @atlaskit/media-editor
 
+## 9.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/docs@4.1.1
+
+## 9.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+
 ## 9.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)

@@ -1,4 +1,14 @@
 import { EditorState } from 'prosemirror-state';
+import { getCursor } from '../../../utils';
+
+export const isSelectionEntirelyInsideCodeBlock = (
+  state: EditorState,
+): boolean =>
+  state.selection.$from.sameParent(state.selection.$to) &&
+  state.selection.$from.parent.type === state.schema.nodes.codeBlock;
+
+export const isCursorInsideCodeBlock = (state: EditorState): boolean =>
+  !!getCursor(state.selection) && isSelectionEntirelyInsideCodeBlock(state);
 
 export const getStartOfCurrentLine = (state: EditorState) => {
   const { $from } = state.selection;
@@ -52,6 +62,9 @@ export const getLineInfo = (line: string) => {
   const indentLength = line.search(
     indentToken.token === '\t' ? indentToken.regex : indentToken.regex,
   );
-  const indentText = line.substring(0, indentLength);
+  const indentText = line.substring(
+    0,
+    indentLength >= 0 ? indentLength : line.length,
+  );
   return { indentToken, indentText };
 };

@@ -1,5 +1,30 @@
 # @atlaskit/conversation
 
+## 8.2.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/util-data-test@9.1.12
+  - @atlaskit/renderer@18.1.1
+  - @atlaskit/editor-core@73.7.1
+  - @atlaskit/comment@4.1.1
+  - @atlaskit/editor-common@11.1.2
+  - @atlaskit/single-select@5.1.1
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
+## 8.2.0
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/reactions@12.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/comment@4.1.0
+
+## 8.1.1
+- [patch] Updated dependencies [b7a4fd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7a4fd5)
+  - @atlaskit/editor-core@73.4.6
+
 ## 8.1.0
 - [minor] Updated dependencies [cad95fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cad95fa)
   - @atlaskit/editor-core@73.2.0

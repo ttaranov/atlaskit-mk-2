@@ -1,5 +1,43 @@
 # @atlaskit/media-viewer
 
+## 15.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-ui@3.1.1
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
+## 15.1.0
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+
+## 15.0.10
+- [patch] MSW-710  : add shadow to footer component [ea0ab01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea0ab01)
+
+## 15.0.9
+- [patch] introduce zoom level domain [29dcff3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29dcff3)
+
+## 15.0.8
+- [patch] MSW-630: properly render PDF annotations and text layer [0682c53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0682c53)
+
+## 15.0.7
+- [patch] MSW-744 : let header background disappear together with controls [f4cda94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4cda94)
+
+## 15.0.6
+- [patch] Add document loading spinner [ff372e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff372e1)
+
 ## 15.0.5
 - [patch] Chores for document viewer [fefa35c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fefa35c)
 

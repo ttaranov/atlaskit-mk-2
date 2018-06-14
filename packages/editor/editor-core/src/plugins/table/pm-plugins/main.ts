@@ -181,7 +181,12 @@ export class TableState {
   update(): boolean {
     let controlsDirty = this.updateSelection();
     const { state } = this.view;
-    const { schema: { nodes: { table } }, selection } = state;
+    const {
+      schema: {
+        nodes: { table },
+      },
+      selection,
+    } = state;
     const domAtPos = this.view.domAtPos.bind(this.view);
 
     const parent = findParentDomRefOfType(table, domAtPos)(selection);
@@ -405,7 +410,12 @@ export const createPlugin = (
 
           const {
             dispatch,
-            state: { tr, schema: { nodes: { paragraph } } },
+            state: {
+              tr,
+              schema: {
+                nodes: { paragraph },
+              },
+            },
           } = view;
           const editorElement = table.node.nodeAt(map.map[cellIndex]) as PmNode;
 

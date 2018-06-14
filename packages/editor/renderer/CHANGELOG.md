@@ -1,5 +1,58 @@
 # @atlaskit/renderer
 
+## 18.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-card@29.1.1
+  - @atlaskit/util-data-test@9.1.12
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/media-filmstrip@9.0.2
+  - @atlaskit/editor-test-helpers@4.1.1
+  - @atlaskit/editor-common@11.1.2
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/code@5.0.3
+  - @atlaskit/docs@4.1.1
+  - @atlaskit/size-detector@4.1.1
+
+## 18.1.0
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/size-detector@4.1.0
+  - @atlaskit/code@5.0.2
+
+## 18.0.4
+- [patch] Updated dependencies [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
+  - @atlaskit/media-card@29.0.3
+  - @atlaskit/editor-common@11.0.7
+- [patch] Updated dependencies [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
+  - @atlaskit/media-card@29.0.3
+  - @atlaskit/editor-common@11.0.7
+- [patch] Updated dependencies [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
+  - @atlaskit/media-card@29.0.3
+  - @atlaskit/editor-common@11.0.7
+
 ## 18.0.3
 - [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
 - [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)

@@ -5,7 +5,7 @@ import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { ErrorMessage, PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
-import { Outcome } from '../../domain';
+import { Outcome, ZoomLevel } from '../../domain';
 import { Spinner } from '../../loading';
 
 export const pdfViewerClassName = 'pdfViewer';
@@ -22,7 +22,7 @@ injectGlobal`
         overflow: hidden;
       }
 
-      .textLayer, .annotationLayer {
+      .textLayer {
         position: absolute;
         left: 0;
         top: 0;
@@ -30,6 +30,44 @@ injectGlobal`
         bottom: 0;
         overflow: hidden;
         line-height: 1;
+        font-family: sans-serif;
+        opacity: 0.8;
+        
+        ::selection {
+          background: rgb(0,0,255);
+        }
+      }
+      
+      .annotationLayer {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+      
+      .textLayer > div, .annotationLayer > section {
+        color: transparent;
+        position: absolute;
+        white-space: pre;
+        cursor: text;
+        transform-origin: 0% 0%;
+      }
+      .linkAnnotation > a {
+        position: absolute;
+        font-size: 1em;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .linkAnnotation > a {
+        background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 repeat;
+      }
+
+      .linkAnnotation > a:hover {
+        opacity: 0.2;
+        background: #ff0;
+        box-shadow: 0 2px 10px #ff0;
       }
     }
   }
@@ -49,10 +87,13 @@ export type Props = {
 
 export type State = {
   doc: Outcome<any, Error>;
-  zoom: number;
+  zoomLevel: ZoomLevel;
 };
 
-const initialState: State = { zoom: 100, doc: { status: 'PENDING' } };
+const initialState: State = {
+  zoomLevel: new ZoomLevel(),
+  doc: { status: 'PENDING' },
+};
 
 export class PDFRenderer extends React.Component<Props, State> {
   private el: HTMLDivElement;
@@ -80,9 +121,9 @@ export class PDFRenderer extends React.Component<Props, State> {
     this.el = el;
   };
 
-  private handleZoom = zoom => {
-    this.pdfViewer.currentScale = zoom / 100;
-    this.setState({ zoom });
+  private handleZoom = zoomLevel => {
+    this.pdfViewer.currentScale = zoomLevel.value;
+    this.setState({ zoomLevel });
   };
 
   render() {
@@ -97,7 +138,7 @@ export class PDFRenderer extends React.Component<Props, State> {
               className={pdfViewerClassName}
               onClick={closeOnDirectClick(this.props.onClose)}
             />
-            <ZoomControls zoom={this.state.zoom} onChange={this.handleZoom} />
+            <ZoomControls zoomLevel={this.state.zoomLevel} onChange={this.handleZoom} />
           </PDFWrapper>
         );
       case 'FAILED':

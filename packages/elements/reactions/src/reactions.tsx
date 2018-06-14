@@ -179,7 +179,7 @@ export default class Reactions extends Component<Props, State> {
         key={emojiId}
         ref={this.handleReactionRef(emojiId)}
         className={reactionStyle}
-        reaction={{ ...reaction }}
+        reaction={reaction}
         emojiProvider={this.props.emojiProvider}
         onClick={this.onEmojiClick}
         onMouseOver={this.onReactionHover}
