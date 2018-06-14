@@ -209,7 +209,7 @@ export default class ResizeControl extends PureComponent<Props, State> {
     }
 
     // allow the product nav to be 75% of the available page width
-    const maxWidth = window.innerWidth / 4 * 3;
+    const maxWidth = (window.innerWidth / 4) * 3;
     const adjustedMax = Math.round(maxWidth) - initialWidth - GLOBAL_NAV_WIDTH;
 
     const delta = Math.min(event.pageX - initialX, adjustedMax);
