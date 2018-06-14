@@ -1,4 +1,3 @@
-import { findIndex, updateReadonlyArray } from '../internal/helpers';
 import { analyticsService } from '../analytics';
 import {
   ReactionsProvider,
@@ -15,6 +14,8 @@ export interface ReactionsProviderConfig {
   baseUrl: string;
   autoPoll?: number;
 }
+
+type ReactionsResponse = { ari: string; reactions: ReactionSummary[] };
 
 const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
   const url = `${baseUrl}/${path}`;
@@ -94,39 +95,14 @@ export default class ReactionsResource extends AbstractReactionsResource
         reaction,
       ).then(reactionDetails => {
         const { containerAri, ari, emojiId } = reactionDetails;
-        const key = this.objectReactionKey(containerAri, ari);
-        if (!this.cachedReactions[key]) {
-          this.cachedReactions = {
-            ...this.cachedReactions,
-            [key]: {
-              status: ReactionStatus.ready,
-              reactions: [],
-            },
-          };
-        }
-
-        const state = this.cachedReactions[key];
-        if (state.status === ReactionStatus.ready) {
-          const reactionIndex = findIndex(
-            state.reactions,
-            r => r.emojiId === emojiId,
-          );
-          if (reactionIndex !== -1) {
-            const existingReaction = state.reactions[reactionIndex];
-            if (!existingReaction.optimisticallyUpdated) {
-              state.reactions = updateReadonlyArray(
-                state.reactions,
-                reactionIndex,
-                _ => reactionDetails,
-              );
-
-              this.notifyUpdated(containerAri, ari, state);
-            }
+        this.updateEmojiState(containerAri, ari, emojiId, emojiState => {
+          if (emojiState.count === 0 || emojiState.optimisticallyUpdated) {
+            return emojiState;
+          } else {
+            return reactionDetails;
           }
-
-          delete this.inFlightDetailsRequests[reactionId];
-        }
-        return reactionDetails;
+        });
+        delete this.inFlightDetailsRequests[reactionId];
       }, () => delete this.inFlightDetailsRequests[reactionId]);
     }
 
@@ -150,14 +126,10 @@ export default class ReactionsResource extends AbstractReactionsResource
         credentials: 'include',
       }).then(reactions => {
         Object.keys(reactions).forEach(ari => {
-          const cacheKey = this.objectReactionKey(containerAri, ari);
-          this.cachedReactions = {
-            ...this.cachedReactions,
-            [cacheKey]: {
-              status: ReactionStatus.ready,
-              reactions: reactions[ari],
-            },
-          };
+          this.updateReactionState(containerAri, ari, {
+            status: ReactionStatus.ready,
+            reactions: reactions[ari],
+          });
         });
         resolve(reactions);
       });
@@ -179,34 +151,16 @@ export default class ReactionsResource extends AbstractReactionsResource
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
 
-    return new Promise<ReactionsState>((resolve, reject) => {
-      requestService<{ ari: string; reactions: ReactionSummary[] }>(
-        this.config.baseUrl,
-        'reactions',
-        {
-          method: 'POST',
-          headers: this.getHeaders(),
-          body: JSON.stringify({ emojiId, ari, containerAri }),
-          credentials: 'include',
-        },
-      )
-        .then(reactions => {
-          const key = this.objectReactionKey(containerAri, ari);
-          // Do not update cache if it was already updated by a more recent action
-          if (this.lastActionForAri[ari] === timestamp) {
-            this.cachedReactions = {
-              ...this.cachedReactions,
-              [key]: {
-                status: ReactionStatus.ready,
-                reactions: reactions.reactions,
-              },
-            };
-          }
-
-          resolve(this.cachedReactions[key]);
-        })
-        .catch(() => reject());
-    });
+    return requestService<{ ari: string; reactions: ReactionSummary[] }>(
+      this.config.baseUrl,
+      'reactions',
+      {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ emojiId, ari, containerAri }),
+        credentials: 'include',
+      },
+    ).then(this.updateState(containerAri, timestamp));
   }
 
   deleteReaction(
@@ -224,32 +178,29 @@ export default class ReactionsResource extends AbstractReactionsResource
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
 
-    return new Promise<ReactionsState>((resolve, reject) => {
-      requestService<{ ari: string; reactions: ReactionSummary[] }>(
-        this.config.baseUrl,
-        `reactions?ari=${ari}&emojiId=${emojiId}&containerAri=${containerAri}`,
-        {
-          method: 'DELETE',
-          headers: this.getHeaders(),
-          credentials: 'include',
-        },
-      )
-        .then(reactions => {
-          const key = this.objectReactionKey(containerAri, ari);
-          // Do not update cache if it was already updated by a more recent action
-          if (this.lastActionForAri[ari] === timestamp) {
-            this.cachedReactions = {
-              ...this.cachedReactions,
-              [key]: {
-                status: ReactionStatus.ready,
-                reactions: reactions.reactions,
-              },
-            };
-          }
-
-          resolve(this.cachedReactions[key]);
-        })
-        .catch(() => reject());
-    });
+    return requestService<ReactionsResponse>(
+      this.config.baseUrl,
+      `reactions?ari=${ari}&emojiId=${emojiId}&containerAri=${containerAri}`,
+      {
+        method: 'DELETE',
+        headers: this.getHeaders(),
+        credentials: 'include',
+      },
+    ).then(this.updateState(containerAri, timestamp));
   }
+
+  private updateState = (containerAri: string, timestamp: number) => ({
+    ari,
+    reactions,
+  }: ReactionsResponse): ReactionsState =>
+    this.updateReactionState(containerAri, ari, reactionsState => {
+      // Do not update cache if it was already updated by a more recent action
+      if (this.lastActionForAri[ari] === timestamp) {
+        return {
+          status: ReactionStatus.ready,
+          reactions,
+        };
+      }
+      return reactionsState;
+    });
 }
