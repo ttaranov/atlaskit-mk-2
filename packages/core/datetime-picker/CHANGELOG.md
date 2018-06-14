@@ -1,5 +1,72 @@
 # @atlaskit/datetime-picker
 
+## 5.2.0
+
+
+
+
+
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/select@4.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/field-base@10.1.0
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/select@4.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/field-base@10.1.0
+  - @atlaskit/button@8.1.0
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/select@4.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/field-base@10.1.0
+  - @atlaskit/button@8.1.0
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/select@4.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/field-base@10.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/select@4.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/field-base@10.1.0
+  - @atlaskit/button@8.1.0
+
 ## 5.1.0
 - [minor] Fixed DatetimePicker not clearing input on ESC  [c58f3db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c58f3db)
 

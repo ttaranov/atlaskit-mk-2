@@ -1,5 +1,77 @@
 # @atlaskit/task-decision
 
+## 7.1.0
+
+
+
+
+
+
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-common@11.1.0
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/util-service-support@2.0.10
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/util-service-support@2.0.10
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/util-service-support@2.0.10
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/util-service-support@2.0.10
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/util-service-support@2.0.10
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/button@8.1.0
+
 ## 7.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
