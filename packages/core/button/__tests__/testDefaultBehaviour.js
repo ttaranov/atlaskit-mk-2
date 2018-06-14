@@ -47,22 +47,8 @@ describe('ak-button/default-behaviour', () => {
     expect(wrapper.find('a').length).toBe(0);
   });
 
-  it('should render span when the button is loading and has href property', () => {
-    const wrapper = mount(<Button isLoading href="test" />);
-    expect(wrapper.find('StyledSpan').length).toBe(1);
-    expect(wrapper.find('button').length).toBe(0);
-    expect(wrapper.find('a').length).toBe(0);
-  });
-
   it("should not render span when the button is disabled, but doesn't have href", () => {
     const wrapper = mount(<Button isDisabled />);
-    expect(wrapper.find('StyledSpan').length).toBe(0);
-    expect(wrapper.find('button').length).toBe(1);
-    expect(wrapper.find('a').length).toBe(0);
-  });
-
-  it("should not render span when the button is loading, but doesn't have href", () => {
-    const wrapper = mount(<Button isLoading />);
     expect(wrapper.find('StyledSpan').length).toBe(0);
     expect(wrapper.find('button').length).toBe(1);
     expect(wrapper.find('a').length).toBe(0);

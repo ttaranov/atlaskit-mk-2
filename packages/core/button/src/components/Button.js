@@ -88,7 +88,7 @@ class Button extends Component<ButtonProps, State> {
 
   customComponent = null;
 
-  isClickable = () => !this.props.isDisabled && !this.props.isLoading;
+  isInteractive = () => !this.props.isDisabled && !this.props.isLoading;
 
   onMouseEnter = () => {
     this.setState({ isHover: true });
@@ -119,7 +119,7 @@ class Button extends Component<ButtonProps, State> {
 
   /* Swallow click events when the button is disabled to prevent inner child clicks bubbling up */
   onInnerClick = (e: Event) => {
-    if (!this.isClickable()) {
+    if (!this.isInteractive()) {
       e.stopPropagation();
     }
     return true;
@@ -134,7 +134,7 @@ class Button extends Component<ButtonProps, State> {
     }
 
     if (this.props.href) {
-      return !this.isClickable() ? StyledSpan : StyledLink;
+      return this.props.isDisabled ? StyledSpan : StyledLink;
     }
 
     return StyledButton;

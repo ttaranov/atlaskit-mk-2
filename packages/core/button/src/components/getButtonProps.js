@@ -38,7 +38,14 @@ const getInteractionProps = component => {
     onMouseUp,
   } = component;
 
-  const { onClick, tabIndex } = component.props;
+  const { tabIndex } = component.props;
+
+  // Block onClick/Keyboard submit while isLoading
+  const onClick = component.props.isLoading
+    ? (e: SyntheticEvent<>) => {
+        e.preventDefault();
+      }
+    : component.props.onClick;
 
   return {
     onBlur,
@@ -84,13 +91,6 @@ const getButtonProps = (component: ButtonType) => {
     return {
       ...props,
       ...defaultProps,
-    };
-  }
-
-  if (props.isLoading) {
-    return {
-      ...defaultProps,
-      onClick: null,
     };
   }
 
