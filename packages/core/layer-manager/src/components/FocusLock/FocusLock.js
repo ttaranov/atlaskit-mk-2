@@ -55,11 +55,6 @@ type FocusTrapProps = {
   enabled?: boolean,
 };
 
-const initialFocusElement = (elem: HTMLElement | string | Function) =>
-  typeof elem === 'string' || typeof elem === 'function'
-    ? tabbable(elem)[0]
-    : elem;
-
 class FocusTrap extends React.Component<FocusTrapProps & { manager: Object }> {
   static defaultProps = {
     enabled: false,
@@ -76,8 +71,9 @@ class FocusTrap extends React.Component<FocusTrapProps & { manager: Object }> {
   resolveNode = (elem: HTMLElement) => {
     const { initialFocus, enabled, manager } = this.props;
     if (elem) {
+      const initialFocusElement = initialFocus || tabbable(elem)[0] || elem;
       this.trap = createFocusTrap(elem, {
-        initialFocus: initialFocusElement(initialFocus || elem),
+        initialFocus: initialFocusElement,
         clickOutsideDeactivates: true,
         escapeDeactivates: false,
       });

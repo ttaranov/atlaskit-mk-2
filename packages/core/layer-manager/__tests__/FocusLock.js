@@ -26,15 +26,13 @@ it('should focus button', () => {
   expect(textContent(document.activeElement)).toBe('Button 1');
 });
 
-it.only('should focus element by id', () => {
+it('should focus element with a function', () => {
   const ref = React.createRef();
   const wrapper = mount(
-    <FocusLock enabled autoFocus="button-2">
+    <FocusLock enabled autoFocus={() => ref.current}>
       <div>
         <button>Button 1</button>
-        <button ref={ref} id="button-2">
-          Button 2
-        </button>
+        <button ref={ref}>Button 2</button>
       </div>
     </FocusLock>,
   );
@@ -80,16 +78,12 @@ it('should focus last enabled lock', () => {
 it('should focus on inner lock', () => {
   const ref = React.createRef();
   mount(
-    <div>
+    <FocusLock enabled>
+      <button>Button 1</button>
       <FocusLock enabled>
-        <div>
-          <button>Button 1</button>
-          <FocusLock enabled>
-            <button ref={ref}>Button 2</button>
-          </FocusLock>
-        </div>
+        <button ref={ref}>Button 2</button>
       </FocusLock>
-    </div>,
+    </FocusLock>,
   );
   expect(textContent(document.activeElement)).toBe('Button 2');
 });
