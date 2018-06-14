@@ -34,6 +34,8 @@ describe('nodeviews/mediaGroup', () => {
   beforeEach(() => {
     pluginState = {} as MediaPluginState;
     pluginState.stateManager = stateManager;
+    pluginState.getMediaOptions = () => ({});
+    pluginState.getMediaNodeState = () => ({});
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
   });
 
@@ -72,6 +74,28 @@ describe('nodeviews/mediaGroup', () => {
     const spy = jest.spyOn(wrapper.instance(), 'render');
     wrapper.setState({ offset: 10 });
     expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should re-render for custom media picker with no thumb', () => {
+    pluginState.getMediaOptions = () => ({ customMediaPicker: {} });
+
+    const mediaGroupNode = mediaGroup(mediaNode);
+    const props = {
+      view: view,
+      node: mediaGroupNode(defaultSchema),
+    };
+
+    const wrapper = shallow(
+      <MediaGroup {...props}>
+        <Media node={mediaNode(defaultSchema)} />
+      </MediaGroup>,
+    );
+
+    wrapper.setState({ offset: 10 });
+    const spy = jest.spyOn(wrapper.instance(), 'render');
+    wrapper.setState({ offset: 10 });
+
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   afterEach(() => {
