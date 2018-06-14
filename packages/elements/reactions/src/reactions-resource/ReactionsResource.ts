@@ -60,6 +60,12 @@ export default class ReactionsResource extends AbstractReactionsResource
     return headers;
   }
 
+  private generateLocalActionId(ari: string): number {
+    const localId = (this.lastActionForAri[ari] || 0) + 1;
+    this.lastActionForAri[ari] = localId;
+    return localId;
+  }
+
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
     const { containerAri, ari, emojiId } = reaction;
     analyticsService.trackEvent('reactions.detailed.reaction', {
@@ -148,8 +154,7 @@ export default class ReactionsResource extends AbstractReactionsResource
     });
     this.optimisticAddReaction(containerAri, ari, emojiId);
 
-    const timestamp = Date.now();
-    this.lastActionForAri[ari] = timestamp;
+    const localActionId = this.generateLocalActionId(ari);
 
     return requestService<{ ari: string; reactions: ReactionSummary[] }>(
       this.config.baseUrl,
@@ -160,7 +165,7 @@ export default class ReactionsResource extends AbstractReactionsResource
         body: JSON.stringify({ emojiId, ari, containerAri }),
         credentials: 'include',
       },
-    ).then(this.updateState(containerAri, timestamp));
+    ).then(this.updateState(containerAri, localActionId));
   }
 
   deleteReaction(
@@ -175,8 +180,7 @@ export default class ReactionsResource extends AbstractReactionsResource
     });
     this.optimisticDeleteReaction(containerAri, ari, emojiId);
 
-    const timestamp = Date.now();
-    this.lastActionForAri[ari] = timestamp;
+    const localActionId = this.generateLocalActionId(ari);
 
     return requestService<ReactionsResponse>(
       this.config.baseUrl,
@@ -186,16 +190,16 @@ export default class ReactionsResource extends AbstractReactionsResource
         headers: this.getHeaders(),
         credentials: 'include',
       },
-    ).then(this.updateState(containerAri, timestamp));
+    ).then(this.updateState(containerAri, localActionId));
   }
 
-  private updateState = (containerAri: string, timestamp: number) => ({
+  private updateState = (containerAri: string, localActionId: number) => ({
     ari,
     reactions,
   }: ReactionsResponse): ReactionsState =>
     this.updateReactionState(containerAri, ari, reactionsState => {
       // Do not update cache if it was already updated by a more recent action
-      if (this.lastActionForAri[ari] === timestamp) {
+      if (this.lastActionForAri[ari] === localActionId) {
         return {
           status: ReactionStatus.ready,
           reactions,
