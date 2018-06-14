@@ -1,5 +1,18 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.11.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/css-reset@2.0.5
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/docs@4.1.1
+
+## 8.11.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/css-reset@2.0.4
+
 ## 8.10.1
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/icon@12.0.0

@@ -622,7 +622,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         expect(spy).toHaveBeenCalledWith(
           reaction.containerAri,
           reaction.ari,
-          reactionsState,
+          expect.objectContaining({
+            ...reactionsState,
+            reactions: expect.arrayContaining([
+              expect.objectContaining(reactionsState.reactions[0]),
+            ]),
+          }),
         );
         spy.mockRestore();
       });
@@ -659,7 +664,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         },
         matcher: 'end:reactions',
         response: new Promise(resolve => {
-          setTimeout(() => resolve(fetchAddReaction()), 100);
+          setTimeout(() => resolve(fetchAddReaction()), 200);
         }),
       });
 

@@ -1,5 +1,27 @@
 # @atlaskit/media-avatar-picker
 
+## 8.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-ui@3.1.1
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
+## 8.1.0
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/media-ui@3.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/button@8.1.0
+
 ## 8.0.1
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
   - @atlaskit/modal-dialog@5.0.1

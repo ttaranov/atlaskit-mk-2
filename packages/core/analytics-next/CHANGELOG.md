@@ -1,5 +1,17 @@
 # @atlaskit/analytics-next
 
+## 2.1.8
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
+## 2.1.7
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/button@8.1.0
+
 ## 2.1.6
 - [patch] Unpublish fake TS declaration file [ec9f11f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec9f11f)
 - [none] Updated dependencies [ec9f11f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec9f11f)
@@ -32,7 +44,6 @@
   - @atlaskit/docs@3.0.4
 
 ## 2.1.0
-
 - [minor] Export cleanProps function that can be used to strip analytics props provided by our HOCs, useful when spreading props to a child element [973d6ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/973d6ea)
 
 ## 2.0.0
@@ -46,7 +57,6 @@
 - [patch] Uses element config flow type with button deprecation warnings hoc [a9aa90a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9aa90a)
 
 ## 1.1.8
-
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
 
 ## 1.1.7

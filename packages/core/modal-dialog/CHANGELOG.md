@@ -1,5 +1,33 @@
 # @atlaskit/modal-dialog
 
+## 5.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/layer-manager@4.1.1
+  - @atlaskit/inline-dialog@7.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/field-radio-group@3.0.3
+  - @atlaskit/checkbox@3.0.5
+  - @atlaskit/button@8.1.1
+  - @atlaskit/blanket@6.0.3
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
+## 5.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/inline-dialog@7.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/field-radio-group@3.0.2
+  - @atlaskit/checkbox@3.0.4
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/blanket@6.0.2
+  - @atlaskit/button@8.1.0
+
 ## 5.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)

@@ -1,5 +1,21 @@
 # @atlaskit/editor-json-transformer
 
+## 3.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/util-data-test@9.1.12
+  - @atlaskit/editor-core@73.7.1
+  - @atlaskit/editor-test-helpers@4.1.1
+  - @atlaskit/editor-common@11.1.2
+  - @atlaskit/docs@4.1.1
+
+## 3.1.0
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/editor-common@11.1.0
+
 ## 3.0.11
 - [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
 - [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)

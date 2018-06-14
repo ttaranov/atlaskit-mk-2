@@ -1,5 +1,32 @@
 # @atlaskit/analytics-listeners
 
+## 2.0.1
+
+
+
+
+
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/analytics-next@2.1.7
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/analytics-next@2.1.7
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/analytics-next@2.1.7
+- [none] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/analytics-next@2.1.7
+- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/analytics-next@2.1.7
+
 ## 2.0.0
 - [major] client parameter changed to a Promise in the listeners given Confluence gets the AnalyticsWebClient instance asynchronously [628e427](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/628e427)
 

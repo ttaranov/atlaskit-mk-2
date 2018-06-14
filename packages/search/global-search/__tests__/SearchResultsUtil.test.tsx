@@ -6,14 +6,24 @@ import {
   AdvancedSearchItemProps,
   searchJiraItem,
   renderResults,
+  ObjectResultWithAnalytics,
+  PersonResultWithAnalytics,
+  ContainerResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
 import {
-  Result,
-  ResultType,
+  JiraObjectResult,
+  ContainerResult,
+  ConfluenceObjectResult,
+  PersonResult,
   AnalyticsType,
-  ResultContentType,
+  ContentType,
 } from '../src/model/Result';
-import { ObjectResultWithAnalytics } from '../src/components/SearchResultsUtil';
+import {
+  makeConfluenceObjectResult,
+  makeConfluenceContainerResult,
+  makePersonResult,
+  makeJiraObjectResult,
+} from './_test-util';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {
@@ -85,32 +95,88 @@ describe('searchJiraItem', () => {
       '/issues/?jql=text%20~%20%22test%20query%22',
     );
   });
+});
 
-  describe('renderResults', () => {
-    it('should pass the required properties to the Result component', () => {
-      const result: Result = {
+describe('renderResults', () => {
+  it('should pass the correct properties to ObjectResult for Jira results', () => {
+    const jiraResults: JiraObjectResult[] = [
+      makeJiraObjectResult({
         resultId: 'resultId',
-        resultType: ResultType.Object,
-        analyticsType: AnalyticsType.RecentConfluence,
-        name: 'name',
-        containerName: 'containerName',
-        href: 'href',
-        avatarUrl: 'avatarUrl',
-        objectKey: 'objectKey',
-        contentType: ResultContentType.Page,
-      };
+      }),
+    ];
 
-      const wrapper = shallow(<span>{renderResults([result])}</span>);
-      const resultComponent = wrapper.find(ObjectResultWithAnalytics);
+    const wrapper = shallow(<span>{renderResults(jiraResults)}</span>);
 
-      expect(resultComponent.prop('resultId')).toEqual('resultId');
-      expect(resultComponent.prop('type')).toEqual('recent-confluence');
-      expect(resultComponent.prop('name')).toEqual('name');
-      expect(resultComponent.prop('containerName')).toEqual('containerName');
-      expect(resultComponent.prop('href')).toEqual('href');
-      expect(resultComponent.prop('avatarUrl')).toEqual('avatarUrl');
-      expect(resultComponent.prop('objectKey')).toEqual('objectKey');
-      expect(resultComponent.prop('contentType')).toEqual('page');
+    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      resultId: 'resultId',
+      type: 'result-jira',
+      objectKey: 'objectKey',
+      avatarUrl: 'avatarUrl',
+      name: 'name',
+      containerName: 'containerName',
+    });
+  });
+
+  it('should pass the correct properties to PersonResult for people results', () => {
+    const peopleResults: PersonResult[] = [
+      makePersonResult({
+        resultId: 'resultId',
+        analyticsType: AnalyticsType.ResultPerson,
+      }),
+    ];
+
+    const wrapper = shallow(<span>{renderResults(peopleResults)}</span>);
+
+    expect(wrapper.find(PersonResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      resultId: 'resultId',
+      type: 'result-person',
+      avatarUrl: 'avatarUrl',
+      name: 'name',
+      mentionName: 'mentionName',
+      presenceMessage: 'presenceMessage',
+    });
+  });
+
+  it('should pass the correct properties to ObjectResult for Confluence results', () => {
+    const confluenceResults: ConfluenceObjectResult[] = [
+      makeConfluenceObjectResult({
+        resultId: 'resultId',
+        analyticsType: AnalyticsType.ResultConfluence,
+      }),
+    ];
+
+    const wrapper = shallow(<span>{renderResults(confluenceResults)}</span>);
+
+    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      resultId: 'resultId',
+      type: 'result-confluence',
+      name: 'name',
+      containerName: 'containerName',
+      contentType: ContentType.ConfluencePage,
+    });
+  });
+
+  it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
+    const confluenceSpaceResults: ContainerResult[] = [
+      makeConfluenceContainerResult({
+        resultId: 'resultId',
+        analyticsType: AnalyticsType.ResultConfluence,
+      }),
+    ];
+
+    const wrapper = shallow(
+      <span>{renderResults(confluenceSpaceResults)}</span>,
+    );
+
+    expect(wrapper.find(ContainerResultWithAnalytics).props()).toEqual({
+      href: 'href',
+      resultId: 'resultId',
+      type: 'result-confluence',
+      avatarUrl: 'avatarUrl',
+      name: 'name',
     });
   });
 });

@@ -1,5 +1,8 @@
-import { EditorState, TextSelection, Plugin } from 'prosemirror-state';
+import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { keydownHandler } from 'prosemirror-keymap';
+import { setTextSelection } from 'prosemirror-utils';
+import { getCursor } from '../../../utils';
+import { filter } from '../../../utils/commands';
 import {
   getAutoClosingBracketInfo,
   isCursorBeforeClosingBracket,
@@ -7,20 +10,16 @@ import {
 } from '../ide-ux/bracket-handling';
 import {
   getEndOfCurrentLine,
-  getLinesFromSelection,
   getStartOfCurrentLine,
-  forEachLine,
-  getLineInfo,
+  isCursorInsideCodeBlock,
+  isSelectionEntirelyInsideCodeBlock,
 } from '../ide-ux/line-handling';
-import { getCursor } from '../../../utils';
-import { setTextSelection } from 'prosemirror-utils';
-
-const isSelectionEntirelyInsideCodeBlock = (state: EditorState): boolean =>
-  state.selection.$from.sameParent(state.selection.$to) &&
-  state.selection.$from.parent.type === state.schema.nodes.codeBlock;
-
-const isCursorInsideCodeBlock = (state: EditorState): boolean =>
-  !!getCursor(state.selection) && isSelectionEntirelyInsideCodeBlock(state);
+import {
+  insertIndent,
+  deindent,
+  indent,
+  insertNewlineWithIndent,
+} from '../ide-ux/commands';
 
 export default new Plugin({
   props: {
@@ -53,31 +52,6 @@ export default new Plugin({
       return false;
     },
     handleKeyDown: keydownHandler({
-      Enter: (state: EditorState, dispatch) => {
-        if (isCursorInsideCodeBlock(state)) {
-          const { text: textAtStartOfLine } = getStartOfCurrentLine(state);
-          const { indentText } = getLineInfo(textAtStartOfLine);
-          if (indentText) {
-            dispatch(state.tr.insertText('\n' + indentText));
-            return true;
-          }
-        }
-      },
-      Tab: (state: EditorState, dispatch) => {
-        if (isCursorInsideCodeBlock(state)) {
-          const { text: textAtStartOfLine } = getStartOfCurrentLine(state);
-          const { indentToken } = getLineInfo(textAtStartOfLine);
-          const indentToAdd = indentToken.token.repeat(
-            indentToken.size - textAtStartOfLine.length % indentToken.size ||
-              indentToken.size,
-          );
-          dispatch(state.tr.insertText(indentToAdd));
-          return true;
-        } else if (isSelectionEntirelyInsideCodeBlock(state)) {
-          return true;
-        }
-        return false;
-      },
       Backspace: (state: EditorState, dispatch) => {
         if (isCursorInsideCodeBlock(state)) {
           const {
@@ -101,43 +75,22 @@ export default new Plugin({
         }
         return false;
       },
-      'Mod-]': (state: EditorState, dispatch) => {
-        if (isSelectionEntirelyInsideCodeBlock(state)) {
-          const { text, start } = getLinesFromSelection(state);
-          const { tr } = state;
-          forEachLine(text, (line, offset) => {
-            const { indentText, indentToken } = getLineInfo(line);
-            const indentToAdd = indentToken.token.repeat(
-              indentToken.size - indentText.length % indentToken.size ||
-                indentToken.size,
-            );
-            tr.insertText(indentToAdd, tr.mapping.map(start + offset));
-          });
-          dispatch(tr);
-          return true;
-        }
-        return false;
-      },
-      'Mod-[': (state: EditorState, dispatch) => {
-        if (isSelectionEntirelyInsideCodeBlock(state)) {
-          const { text, start } = getLinesFromSelection(state);
-          const { tr } = state;
-          forEachLine(text, (line, offset) => {
-            const { indentText, indentToken } = getLineInfo(line);
-            if (indentText) {
-              const unindentLength =
-                indentText.length % indentToken.size || indentToken.size;
-              tr.delete(
-                tr.mapping.map(start + offset),
-                tr.mapping.map(start + offset + unindentLength),
-              );
-            }
-          });
-          dispatch(tr);
-          return true;
-        }
-        return false;
-      },
+      Enter: filter(
+        isSelectionEntirelyInsideCodeBlock,
+        insertNewlineWithIndent,
+      ),
+      'Mod-]': filter(isSelectionEntirelyInsideCodeBlock, indent),
+      'Mod-[': filter(isSelectionEntirelyInsideCodeBlock, deindent),
+      Tab: filter(
+        isSelectionEntirelyInsideCodeBlock,
+        (state: EditorState, dispatch) => {
+          if (isCursorInsideCodeBlock(state)) {
+            return insertIndent(state, dispatch);
+          }
+          return indent(state, dispatch);
+        },
+      ),
+      'Shift-Tab': filter(isSelectionEntirelyInsideCodeBlock, deindent),
       'Mod-a': (state: EditorState, dispatch) => {
         if (isSelectionEntirelyInsideCodeBlock(state)) {
           const { $from, $to } = state.selection;

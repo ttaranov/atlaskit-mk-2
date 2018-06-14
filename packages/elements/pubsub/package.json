@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/pubsub",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/util-service-support": "^2.0.9",
+    "@atlaskit/util-service-support": "^2.0.10",
     "eventemitter2": "^4.1.0",
     "pubnub": "^4.20.3",
     "tslib": "^1.8.0"
@@ -31,11 +31,11 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.0.0",
-    "@atlaskit/docs": "^4.0.0",
-    "@atlaskit/field-text": "^6.0.0",
-    "@atlaskit/lozenge": "^5.0.1",
-    "@atlaskit/theme": "^4.0.0",
+    "@atlaskit/button": "^8.1.0",
+    "@atlaskit/docs": "^4.1.0",
+    "@atlaskit/field-text": "^6.0.2",
+    "@atlaskit/lozenge": "^5.0.2",
+    "@atlaskit/theme": "^4.0.2",
     "@types/fetch-mock": "^5.12.1",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",

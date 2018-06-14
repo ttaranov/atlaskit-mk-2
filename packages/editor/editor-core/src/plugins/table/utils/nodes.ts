@@ -1,5 +1,5 @@
 import { Fragment, Node as PmNode, Schema, Slice } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { findTable } from 'prosemirror-utils';
 
@@ -28,7 +28,10 @@ export const isIsolating = (node: PmNode): boolean => {
 export const canInsertTable = (state: EditorState): boolean => {
   const {
     selection: { $from },
-    schema: { marks: { code }, nodes: { codeBlock } },
+    schema: {
+      marks: { code },
+      nodes: { codeBlock },
+    },
   } = state;
 
   for (let i = $from.depth; i > 0; i--) {
@@ -55,28 +58,27 @@ export const containsTable = (schema: Schema, slice: Slice): boolean => {
   return contains;
 };
 
-export const containsTableHeader = (
+export const containsHeaderColumn = (
   state: EditorState,
   table: PmNode,
 ): boolean => {
   const { tableHeader } = state.schema.nodes;
-  let contains = false;
+  let contains = true;
   table.content.forEach(row => {
-    if (row.firstChild!.type === tableHeader) {
-      contains = true;
+    if (row.firstChild!.type !== tableHeader) {
+      contains = false;
     }
   });
   return contains;
 };
 
-export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
-  const table = findTable(state.selection);
-  if (!table) {
-    return false;
-  }
-  const map = TableMap.get(table.node);
+export const containsHeaderRow = (
+  state: EditorState,
+  table: PmNode,
+): boolean => {
+  const map = TableMap.get(table);
   for (let i = 0; i < map.width; i++) {
-    const cell = table.node.nodeAt(map.map[i]);
+    const cell = table.nodeAt(map.map[i]);
     if (cell && cell.type !== state.schema.nodes.tableHeader) {
       return false;
     }
@@ -84,24 +86,30 @@ export const checkIfHeaderRowEnabled = (state: EditorState): boolean => {
   return true;
 };
 
-export const checkIfHeaderColumnEnabled = (state: EditorState): boolean => {
-  const table = findTable(state.selection);
-  if (!table) {
-    return false;
+export function filterNearSelection<T, U>(
+  state: EditorState,
+  findNode: (selection: Selection) => { pos: number; node: PmNode } | undefined,
+  predicate: (state: EditorState, node: PmNode, pos?: number) => T,
+  defaultValue: U,
+): T | U {
+  const found = findNode(state.selection);
+  if (!found) {
+    return defaultValue;
   }
-  const map = TableMap.get(table.node);
-  for (let i = 0; i < map.height; i++) {
-    // if number column is enabled, second column becomes header (next to the number column)
-    const column = table.node.attrs.isNumberColumnEnabled ? 1 : 0;
-    const cell = table.node.nodeAt(map.map[column + i * map.width]);
-    if (cell && cell.type !== state.schema.nodes.tableHeader) {
-      return false;
-    }
-  }
-  return true;
-};
 
-export const checkIfNumberColumnEnabled = (state: EditorState): boolean => {
-  const table = findTable(state.selection);
-  return !!(table && table.node.attrs.isNumberColumnEnabled);
-};
+  return predicate(state, found.node, found.pos);
+}
+
+export const checkIfHeaderColumnEnabled = (state: EditorState): boolean =>
+  filterNearSelection(state, findTable, containsHeaderColumn, false);
+
+export const checkIfHeaderRowEnabled = (state: EditorState): boolean =>
+  filterNearSelection(state, findTable, containsHeaderRow, false);
+
+export const checkIfNumberColumnEnabled = (state: EditorState): boolean =>
+  filterNearSelection(
+    state,
+    findTable,
+    (_, table) => !!table.attrs.isNumberColumnEnabled,
+    false,
+  );

@@ -29,6 +29,7 @@ export interface State {
   isError: boolean;
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
+  recentlyInteractedPeople: Result[];
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
@@ -51,6 +52,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedPages: [],
       recentlyViewedSpaces: [],
+      recentlyInteractedPeople: [],
       objectResults: [],
       spaceResults: [],
       peopleResults: [],
@@ -172,10 +174,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   handleMount = async () => {
     const recentItemsPromise = this.props.confluenceClient.getRecentItems();
     const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces();
+    const recentPeoplePromise = this.props.peopleSearchClient.getRecentPeople();
 
     this.setState({
       recentlyViewedPages: await recentItemsPromise,
       recentlyViewedSpaces: await recentSpacesPromise,
+      recentlyInteractedPeople: await recentPeoplePromise,
     });
   };
 
@@ -191,6 +195,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       isError,
       recentlyViewedPages,
       recentlyViewedSpaces,
+      recentlyInteractedPeople,
       objectResults,
       spaceResults,
       peopleResults,
@@ -214,6 +219,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           retrySearch: this.retrySearch,
           recentlyViewedPages,
           recentlyViewedSpaces,
+          recentlyInteractedPeople,
           objectResults,
           spaceResults,
           peopleResults,

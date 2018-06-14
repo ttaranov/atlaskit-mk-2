@@ -1,5 +1,32 @@
 # @atlaskit/navigation-next
 
+## 0.3.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/lozenge@5.0.3
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/logo@8.1.1
+  - @atlaskit/field-base@10.1.1
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/badge@8.0.3
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
+## 0.3.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/toggle@4.0.2
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/badge@8.0.2
+  - @atlaskit/field-base@10.1.0
+
 ## 0.2.2
 - [patch] Fix goTo items not working with href properties. If they have an href, they will prevent the default link action and transition instead, however, they will still be able to be opened in a new tab via middle/right click. [ba0ba79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba0ba79)
 

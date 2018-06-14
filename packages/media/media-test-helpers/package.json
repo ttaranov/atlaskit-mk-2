@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "14.0.0",
+  "version": "14.0.2",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -22,7 +22,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-core": "^19.0.0",
+    "@atlaskit/media-core": "^19.1.2",
     "@atlaskit/media-store": "^4.0.0",
     "@types/faker": "^4.1.2",
     "@types/lodash": "^4.14.106",

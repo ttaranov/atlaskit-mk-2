@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { shallow, mount, ShallowWrapper } from 'enzyme';
-import GlobalQuickSearch, {
-  LinkComponent,
-} from '../src/components/GlobalQuickSearchWrapper';
+import GlobalQuickSearch from '../src/components/GlobalQuickSearchWrapper';
+import { mount } from 'enzyme';
 import { HomeQuickSearchContainer } from '../src/components/home/HomeQuickSearchContainer';
 import { ConfluenceQuickSearchContainer } from '../src/components/confluence/ConfluenceQuickSearchContainer';
-import { reduceEachTrailingCommentRange } from 'typescript';
 
 it('should render the home container with context home', () => {
   const wrapper = mount(<GlobalQuickSearch cloudId="123" context="home" />);
