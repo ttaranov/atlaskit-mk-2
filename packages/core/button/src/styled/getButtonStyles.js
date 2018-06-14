@@ -137,8 +137,7 @@ export default function getButtonStyles(props: Object) {
   }
 
   // Loading
-  const isLoadingStyles = props =>
-    props.isLoading ? 'pointer-events: none;' : null;
+  const isLoadingStyles = p => (p.isLoading ? 'pointer-events: none;' : null);
 
   // Fit to parent width
   if (props.fit) {
