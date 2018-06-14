@@ -99,6 +99,7 @@ const IconWrapper = (props: IconWrapperProps) => (
 export default class DrawerPrimitive extends Component<DrawerProps> {
   render() {
     const { children, icon: Icon, onClose, ...props } = this.props;
+    console.log(this.props);
 
     return (
       <Slide component={Wrapper} {...props}>
