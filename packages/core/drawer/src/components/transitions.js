@@ -47,6 +47,7 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       transitionProps,
       ...props
     } = this.props;
+    console.log(this.props.isOpen);
     const timeout = { enter: 0, exit: transitionDurationMs };
 
     return (
