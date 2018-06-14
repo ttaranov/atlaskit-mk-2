@@ -204,7 +204,7 @@ function getConfluenceAdvancedSearchLink(query: string) {
 }
 
 export function redirectToConfluenceAdvancedSearch(query = '') {
-  // TODO this breaks SPA navigation. Consumer needs to pass in a redirect/navigate function.
+  // XPSRCH-891: this breaks SPA navigation. Consumer needs to pass in a redirect/navigate function.
   window.location.assign(getConfluenceAdvancedSearchLink(query));
 }
 
