@@ -23,13 +23,6 @@ const Paragraph = ({ position }: { position: number }) => (
   </Fragment>
 );
 
-const Paragraph = ({ position }: { position: number }) => (
-  <React.Fragment>
-    <h3>{position}</h3>
-    <Lorem seed={position} count={1} style={{ marginBottom: 20 }} />
-  </React.Fragment>
-);
-
 export default class SpotlightAutoscrollExample extends Component<*, State> {
   constructor() {
     super();

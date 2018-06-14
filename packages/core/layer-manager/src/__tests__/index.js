@@ -3,8 +3,8 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import { Gateway, GatewayDest, GatewayProvider } from '../src';
-import { name } from '../package.json';
+import { Gateway, GatewayDest, GatewayProvider } from '..';
+import { name } from '../../package.json';
 
 function render(jsx) {
   return ReactDOMServer.renderToStaticMarkup(jsx);
