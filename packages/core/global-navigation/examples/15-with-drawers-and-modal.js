@@ -3,6 +3,7 @@
 import React, { Fragment, Component } from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Modal from '@atlaskit/modal-dialog';
+import Drawer from '@atlaskit/drawer';
 import Lorem from 'react-lorem-component';
 import {
   LayoutManager,
@@ -10,8 +11,7 @@ import {
   NavigationSubscriber,
 } from '@atlaskit/navigation-next';
 
-import GlobalNavigation from '../src';
-import Drawer from '../src/components/Drawer';
+import GlobalNavigation from '../src/components/GlobalNavigation';
 
 type State = {
   isModalOpen: boolean,

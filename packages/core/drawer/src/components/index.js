@@ -6,7 +6,6 @@ import { createPortal } from 'react-dom';
 import { TransitionGroup } from 'react-transition-group';
 import Blanket from '@atlaskit/blanket';
 
-import { NavigationSubscriber } from '@atlaskit/navigation-next';
 import DrawerPrimitive from './primitives';
 import { Fade } from './transitions';
 import type { DrawerProps } from './types';
@@ -14,13 +13,17 @@ import type { DrawerProps } from './types';
 // resolve lifecycle methods
 const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
 const DrawerSwitch = ({ icon, isOpen, ...props }, { defaultDrawerIcon }) => {
-  if (!props.navigation.drawerGateway) return null;
-
+  const div = document.createElement('div');
+  const body = document.querySelector('body');
+  if (!body) {
+    return;
+  }
+  body.appendChild(div);
   return createPortal(
     <TransitionGroup component={OnlyChild}>
       {isOpen ? <Drawer icon={icon || defaultDrawerIcon} {...props} /> : null}
     </TransitionGroup>,
-    props.navigation.drawerGateway,
+    div,
   );
 };
 DrawerSwitch.contextTypes = {
@@ -35,10 +38,11 @@ class Drawer extends Component<DrawerProps> {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
   handleClose = event => {
-    const { onClose, navigation } = this.props;
-    const closeFn = onClose || navigation.closeActiveDrawer;
+    const { onClose } = this.props;
 
-    closeFn(event);
+    if (onClose) {
+      onClose(event);
+    }
   };
   handleKeyDown = (event: SyntheticKeyboardEvent<*>) => {
     const { onKeyDown } = this.props;
@@ -63,8 +67,4 @@ class Drawer extends Component<DrawerProps> {
   }
 }
 
-export default (props: *) => (
-  <NavigationSubscriber>
-    {navigation => <DrawerSwitch navigation={navigation} {...props} />}
-  </NavigationSubscriber>
-);
+export default (props: *) => <DrawerSwitch {...props} />;
