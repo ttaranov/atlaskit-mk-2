@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent, Fragment } from 'react';
+import { css } from 'emotion';
 import raf from 'raf-schd';
 import { colors } from '@atlaskit/theme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
@@ -15,19 +16,18 @@ const OUTER_WIDTH = 32;
 const Outer = props => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-type InnerProps = { show: boolean };
-const Inner = ({ show, ...props }: InnerProps) => (
-  <div
-    css={{
-      height: '100%',
-      opacity: show ? 1 : 0,
-      position: 'relative',
-      transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1) 80ms',
-      width: OUTER_WIDTH,
-    }}
-    {...props}
-  />
-);
+const innerStyles = css({
+  height: '100%',
+  opacity: 0,
+  position: 'relative',
+  transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1) 80ms',
+  width: OUTER_WIDTH,
+  ':hover': {
+    opacity: 1,
+  },
+});
+
+const Inner = ({ ...props }) => <div className={innerStyles} {...props} />;
 const Handle = props => {
   const handleWidth = 12;
   const lineWidth = 2;
@@ -54,8 +54,7 @@ const Handle = props => {
     />
   );
 };
-type ButtonProps = { show: boolean };
-const Button = ({ show, ...props }: ButtonProps) => (
+const Button = ({ ...props }) => (
   <button
     type="button"
     css={{
@@ -70,9 +69,14 @@ const Button = ({ show, ...props }: ButtonProps) => (
       paddingRight: 0,
       position: 'absolute',
       width: 24,
-      transform: `translateX(${show ? 0 : -20}%)`,
+      transform: 'translateX(-20%)',
       transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
-      transitionDelay: show ? '120ms' : 0,
+      transitionDelay: 0,
+
+      [`.${innerStyles}:hover &`]: {
+        transform: 'translateX(0)',
+        transitionDelay: '120ms',
+      },
 
       '& svg': {
         color: 'transparent',
@@ -117,7 +121,6 @@ type State = {
   initialWidth: number,
   initialX: number,
   isDragging: boolean,
-  isVisible: boolean,
   mouseIsDown: boolean,
   width: number,
 };
@@ -130,27 +133,17 @@ export default class ResizeControl extends PureComponent<Props, State> {
     delta: 0,
     didDragOpen: false,
     isDragging: false,
-    isVisible: false,
     initialWidth: 0,
     initialX: 0,
     mouseIsDown: false,
     width: this.props.navigation.state.productNavWidth,
   };
 
-  show = () => {
-    this.setState({ isVisible: true });
-  };
-  hide = () => {
-    this.setState({ isVisible: false });
-  };
-
   collapseProductNav = () => {
     this.props.navigation.collapseProductNav();
-    this.hide();
   };
   expandProductNav = () => {
     this.props.navigation.expandProductNav();
-    this.hide();
   };
   toggleProductNav = () => {
     if (this.props.navigation.state.productNavIsCollapsed) {
@@ -216,7 +209,7 @@ export default class ResizeControl extends PureComponent<Props, State> {
     }
 
     // allow the product nav to be 75% of the available page width
-    const maxWidth = window.innerWidth / 4 * 3;
+    const maxWidth = (window.innerWidth / 4) * 3;
     const adjustedMax = Math.round(maxWidth) - initialWidth - GLOBAL_NAV_WIDTH;
 
     const delta = Math.min(event.pageX - initialX, adjustedMax);
@@ -254,10 +247,8 @@ export default class ResizeControl extends PureComponent<Props, State> {
 
       if (didDragOpen && delta > expandThreshold) {
         shouldCollapse = false;
-        this.hide();
       } else {
         shouldCollapse = true;
-        this.hide();
       }
     } else {
       shouldCollapse = navigation.state.productNavIsCollapsed;
@@ -284,13 +275,10 @@ export default class ResizeControl extends PureComponent<Props, State> {
   };
 
   render() {
-    const { didDragOpen, isDragging, isVisible, mouseIsDown } = this.state;
+    const { didDragOpen, isDragging, mouseIsDown } = this.state;
     const { children, navigation } = this.props;
     const { productNavIsCollapsed } = navigation.state;
 
-    // account for rare case where the user moves their mouse fast enough
-    // to invoke a leave event and "hide" the resize control
-    const shouldBeVisible = isDragging || isVisible;
     const isDisabled = navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
@@ -304,11 +292,11 @@ export default class ResizeControl extends PureComponent<Props, State> {
         {children(this.state)}
         {isDisabled ? null : (
           <Fragment>
-            <Outer onMouseEnter={this.show} onMouseLeave={this.hide}>
+            <Outer>
               <Shadow isBold={mouseIsDown} />
-              <Inner show={shouldBeVisible}>
+              <Inner>
                 <Handle onMouseDown={this.handleResizeStart} />
-                <Button onClick={this.toggleProductNav} show={shouldBeVisible}>
+                <Button onClick={this.toggleProductNav}>
                   <ButtonIcon />
                 </Button>
               </Inner>
