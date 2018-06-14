@@ -1,7 +1,12 @@
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { findPositionOfNodeBefore, findDomRefAtPos } from 'prosemirror-utils';
-import { tableMarginTop, tableMarginBottom } from '@atlaskit/editor-common';
+import {
+  tableMarginTop,
+  tableMarginBottom,
+  // akEditorTableNumberColumnWidth,
+  // akEditorTableToolbarSize,
+} from '@atlaskit/editor-common';
 
 import { GapCursorSelection, Side } from './selection';
 
@@ -89,6 +94,7 @@ export const fixCursorAlignment = (view: EditorView) => {
   let width = 0;
   let marginTop = 0;
   let breakoutWidth = 0;
+  let paddingLeft = 0;
 
   // gets width and height of the prevNode DOM element, or its nodeView wrapper DOM element
   do {
@@ -97,8 +103,11 @@ export const fixCursorAlignment = (view: EditorView) => {
     );
     const isInTableCell = /td|th/i.test(targetNodeRef.parentNode!.nodeName);
 
-    height = parseInt(css['height']!, 10);
-    width = parseInt(css['width']!, 10);
+    height = parseInt(css.height!, 10);
+    width = parseInt(css.width!, 10);
+
+    // padding is cumulative
+    paddingLeft += parseInt(css.paddingLeft!, 10);
 
     if (previousSibling || isMediaWithWrapping || isInTableCell) {
       const curNodeMarginTop = getDomNodeVerticalMargin(targetNodeRef, 'top');
@@ -127,6 +136,7 @@ export const fixCursorAlignment = (view: EditorView) => {
   if (targetNode.type === schema.nodes.table) {
     height -= tableMarginTop + tableMarginBottom;
     marginTop = tableMarginTop;
+    gapCursorRef.style.paddingLeft = `${paddingLeft}px`;
   }
 
   // breakout mode

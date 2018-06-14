@@ -1,18 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { CellSelection } from 'prosemirror-tables';
-import {
-  selectColumn,
-  isTableSelected,
-  findTable,
-  getCellsInColumn,
-} from 'prosemirror-utils';
-import { Command } from '../../../../../types';
-import {
-  checkIfHeaderColumnEnabled,
-  checkIfNumberColumnEnabled,
-} from '../../../utils';
+import { selectColumn, isTableSelected } from 'prosemirror-utils';
 import {
   ColumnContainer,
   ColumnInner,
@@ -24,14 +13,16 @@ import { tableDeleteColumnButtonSize } from '../../styles';
 import InsertColumnButton from './InsertColumnButton';
 import DeleteColumnButton from './DeleteColumnButton';
 import { findColumnSelection, TableSelection } from '../utils';
+import {
+  resetHoverSelection,
+  hoverColumns,
+  insertColumn,
+} from '../../../actions';
 
 export interface Props {
   editorView: EditorView;
   tableElement?: HTMLElement;
   isTableHovered: boolean;
-  insertColumn: (column: number) => Command;
-  hoverColumns: (columns: number[], danger?: boolean) => Command;
-  resetHoverSelection: Command;
   remove: () => void;
   isTableInDanger?: boolean;
 }
@@ -84,13 +75,30 @@ export default class ColumnControls extends Component<Props, any> {
     );
   }
 
+  private classNamesForRow(i, len, selection) {
+    const { isTableHovered, isTableInDanger } = this.props;
+
+    const classNames = ['table-column'];
+
+    if (selection.inSelection(i) || isTableHovered) {
+      classNames.push('active');
+    }
+
+    if (this.state.dangerColumns.indexOf(i) !== -1 || isTableInDanger) {
+      classNames.push('danger');
+    }
+
+    // since we can't use :last selector with class name selector (.table-row),
+    // create a class-based selector instead
+    if (i === len - 1) {
+      classNames.push('last');
+    }
+
+    return classNames;
+  }
+
   render() {
-    const {
-      editorView: { state },
-      tableElement,
-      isTableHovered,
-      isTableInDanger,
-    } = this.props;
+    const { editorView: { state }, tableElement } = this.props;
     if (!tableElement) {
       return null;
     }
@@ -112,18 +120,11 @@ export default class ColumnControls extends Component<Props, any> {
         selection.inSelection(i) &&
         !isTableSelected(state.selection) &&
         !selection.hasMultipleSelection;
-      const isNumberColumn = checkIfNumberColumnEnabled(state)
-        ? i === 0
-        : false;
-      const classNames =
-        selection.inSelection(i) || isTableHovered ? ['active'] : [''];
-      if (this.state.dangerColumns.indexOf(i) !== -1 || isTableInDanger) {
-        classNames.push('danger');
-      }
+
       nodes.push(
         <ColumnControlsButtonWrap
           key={i}
-          className={`${classNames.join(' ')} table-column`}
+          className={this.classNamesForRow(i, len, selection).join(' ')}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           onMouseDown={this.handleMouseDown}
         >
@@ -134,24 +135,20 @@ export default class ColumnControls extends Component<Props, any> {
             onMouseOut={this.resetHoverSelection}
           />
           {!(
-            i === 0 &&
-            checkIfNumberColumnEnabled(state) &&
-            checkIfHeaderColumnEnabled(state)
-          ) &&
-          !(selection.hasMultipleSelection && selection.frontOfSelection(i)) ? (
+            selection.hasMultipleSelection && selection.frontOfSelection(i)
+          ) ? (
             <InsertColumnButton
               onClick={() => this.insertColumn(i + 1)}
               lineMarkerHeight={tableHeight + toolbarSize}
             />
           ) : null}
         </ColumnControlsButtonWrap>,
-        onlyThisColumnSelected && !isNumberColumn
-          ? this.createDeleteColumnButton(
-              selection,
-              prevColWidths,
-              (cols[i] as HTMLElement).offsetWidth,
-            )
-          : null,
+        onlyThisColumnSelected &&
+          this.createDeleteColumnButton(
+            selection,
+            prevColWidths,
+            (cols[i] as HTMLElement).offsetWidth,
+          ),
       );
 
       prevColWidths += (cols[i] as HTMLElement).offsetWidth;
@@ -172,41 +169,8 @@ export default class ColumnControls extends Component<Props, any> {
     event.preventDefault();
   };
 
-  private selectColumns = columnIdxs => tr => {
-    const cells: { pos: number; node: Node }[] = columnIdxs.reduce(
-      (acc, colIdx) => {
-        const colCells = getCellsInColumn(colIdx)(tr.selection);
-        return colCells ? acc.concat(colCells) : acc;
-      },
-      [],
-    );
-
-    if (cells) {
-      const $anchor = tr.doc.resolve(cells[0].pos);
-      const $head = tr.doc.resolve(cells[cells.length - 1].pos);
-      return tr.setSelection(new CellSelection($anchor, $head));
-    }
-  };
-
   private deleteColumns(cols: number[]) {
-    const { editorView: { dispatch, state } } = this.props;
-    const table = findTable(state.selection);
-    if (
-      table &&
-      cols.length &&
-      table.node.attrs.isNumberColumnEnabled &&
-      cols[0] === 0
-    ) {
-      // select all except number column to remove cells
-      dispatch(this.selectColumns(cols.slice(1))(state.tr));
-      this.props.remove();
-
-      // reselect the number column
-      this.selectColumns(cols[0]);
-    } else {
-      // normal delete
-      this.props.remove();
-    }
+    this.props.remove();
     this.resetHoverSelection();
   }
 
@@ -218,17 +182,17 @@ export default class ColumnControls extends Component<Props, any> {
   private hoverColumns = (columns: number[], danger?: boolean) => {
     const { state, dispatch } = this.props.editorView;
     this.setState({ dangerColumns: danger ? columns : [] });
-    this.props.hoverColumns(columns, danger)(state, dispatch);
+    hoverColumns(columns, danger)(state, dispatch);
   };
 
   private resetHoverSelection = () => {
     const { state, dispatch } = this.props.editorView;
     this.setState({ dangerColumns: [] });
-    this.props.resetHoverSelection(state, dispatch);
+    resetHoverSelection(state, dispatch);
   };
 
   private insertColumn = (column: number) => {
     const { state, dispatch } = this.props.editorView;
-    this.props.insertColumn(column)(state, dispatch);
+    insertColumn(column)(state, dispatch);
   };
 }

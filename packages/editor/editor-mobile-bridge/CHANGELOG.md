@@ -1,5 +1,45 @@
 # @atlaskit/editor-mobile-bridge
 
+## 0.2.0
+
+
+
+
+
+
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/media-core@19.1.1
+
+## 0.1.9
+- [patch] Provided bridge implementation to support Media on iOS. [43875e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43875e6)
+
 ## 0.1.8
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
   - @atlaskit/mention@13.0.0

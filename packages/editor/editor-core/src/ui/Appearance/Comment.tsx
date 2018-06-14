@@ -71,7 +71,7 @@ const CommentEditor: any = styled.div`
 `;
 CommentEditor.displayName = 'CommentEditor';
 
-const TableControlsPadding = 16;
+const TableControlsPadding = 24;
 
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`

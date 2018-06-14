@@ -11,7 +11,7 @@ export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
 
-const CONTROLLER_PADDING = 66;
+const CONTROLLER_PADDING = 80;
 
 const tableSharedStyle = `
   {

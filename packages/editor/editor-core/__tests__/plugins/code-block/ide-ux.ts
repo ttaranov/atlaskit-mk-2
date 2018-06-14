@@ -110,11 +110,11 @@ describe('IDE UX plugin', () => {
         describe('and line starts with spaces', () => {
           it('should indent only selected lines by two spaces', () => {
             const { editorView } = editor(
-              doc(code_block()('to{<}p\nstart\nbott{>}om')),
+              doc(code_block()('\nto{<}p\nstart\nbott{>}om\n')),
             );
             sendKeyToPm(editorView, 'Mod-]');
             expect(editorView.state.doc).toEqualDocument(
-              doc(code_block()('  top\n  start\n  bottom')),
+              doc(code_block()('\n  top\n  start\n  bottom\n')),
             );
           });
 
@@ -128,7 +128,7 @@ describe('IDE UX plugin', () => {
             );
           });
 
-          it('should indent lines with odd indentation levels when', () => {
+          it('should indent lines with odd indentation levels', () => {
             const { editorView } = editor(
               doc(code_block()(' to{<}p\nstart\n   bott{>}om')),
             );
@@ -140,17 +140,17 @@ describe('IDE UX plugin', () => {
         });
 
         describe('and line starts with tabs', () => {
-          it('should indent selected lines by a tab spaces when Mod-] pressed', () => {
+          it('should indent selected lines by a tab', () => {
             const { editorView } = editor(
-              doc(code_block()('\tto{<}p\n\tstart\nbott{>}om')),
+              doc(code_block()('\n\tto{<}p\n\tstart\nbott{>}om\n')),
             );
             sendKeyToPm(editorView, 'Mod-]');
             expect(editorView.state.doc).toEqualDocument(
-              doc(code_block()('\t\ttop\n\t\tstart\n  bottom')),
+              doc(code_block()('\n\t\ttop\n\t\tstart\n  bottom\n')),
             );
           });
 
-          it('should indent lines with different indentation levels when Mod-] pressed', () => {
+          it('should indent lines with different indentation levels', () => {
             const { editorView } = editor(
               doc(code_block()('\tto{<}p\nstart\n\tbott{>}om')),
             );
@@ -178,7 +178,7 @@ describe('IDE UX plugin', () => {
     describe('Mod-[ pressed', () => {
       describe('when cursor on line', () => {
         describe('and line starts with spaces', () => {
-          it('should unindent by 2 spaces when Mod-[ pressed', () => {
+          it('should unindent by 2 spaces', () => {
             const { editorView } = editor(
               doc(code_block()('top\n{<>}  start\nbottom')),
             );
@@ -233,17 +233,17 @@ describe('IDE UX plugin', () => {
       });
       describe('when selection is across multiple lines', () => {
         describe('and line starts with spaces', () => {
-          it('should unindent only selected lines by two spaces when Mod-[ pressed', () => {
+          it('should unindent only selected lines by two spaces', () => {
             const { editorView } = editor(
-              doc(code_block()('  to{<}p\n  start\n  bott{>}om')),
+              doc(code_block()('  \n  to{<}p\n  start\n  bott{>}om\n  ')),
             );
             sendKeyToPm(editorView, 'Mod-[');
             expect(editorView.state.doc).toEqualDocument(
-              doc(code_block()('top\nstart\nbottom')),
+              doc(code_block()('  \ntop\nstart\nbottom\n  ')),
             );
           });
 
-          it('should unindent lines with different indentation levels when Mod-[ pressed', () => {
+          it('should unindent lines with different indentation levels', () => {
             const { editorView } = editor(
               doc(code_block()('    to{<}p\n  start\n      bott{>}om')),
             );
@@ -253,7 +253,7 @@ describe('IDE UX plugin', () => {
             );
           });
 
-          it('should unindent lines with odd indentation levels when Mod-[ pressed', () => {
+          it('should unindent lines with odd indentation levels', () => {
             const { editorView } = editor(
               doc(code_block()(' to{<}p\n  start\n   bott{>}om')),
             );
@@ -264,17 +264,17 @@ describe('IDE UX plugin', () => {
           });
         });
         describe('and line starts with tabs', () => {
-          it('should unindent only selected lines by two spaces when Mod-[ pressed', () => {
+          it('should unindent only selected lines by a tab', () => {
             const { editorView } = editor(
-              doc(code_block()('\tto{<}p\n\tstart\n\tbott{>}om')),
+              doc(code_block()('\t\n\tto{<}p\n\tstart\n\tbott{>}om\n\t')),
             );
             sendKeyToPm(editorView, 'Mod-[');
             expect(editorView.state.doc).toEqualDocument(
-              doc(code_block()('top\nstart\nbottom')),
+              doc(code_block()('\t\ntop\nstart\nbottom\n\t')),
             );
           });
 
-          it('should unindent lines with different indentation levels when Mod-[ pressed', () => {
+          it('should unindent lines with different indentation levels', () => {
             const { editorView } = editor(
               doc(code_block()('\t\tto{<}p\n\tstart\n\t\t\tbott{>}om')),
             );
@@ -287,7 +287,7 @@ describe('IDE UX plugin', () => {
       });
 
       describe('when selection goes outside the code-block', () => {
-        it('should not unindent text when Mod-[ pressed', () => {
+        it('should not unindent text', () => {
           const { editorView } = editor(
             doc(code_block()('{<}  to'), p('end{>}')),
           );
@@ -346,13 +346,193 @@ describe('IDE UX plugin', () => {
       });
 
       describe('when selection is across multiple lines', () => {
-        it('should do nothing', () => {
+        describe('and line starts with spaces', () => {
+          it('should indent only selected lines by two spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('\nto{<}p\nstart\nbott{>}om\n')),
+            );
+            sendKeyToPm(editorView, 'Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\n  top\n  start\n  bottom\n')),
+            );
+          });
+
+          it('should indent lines with different indentation levels', () => {
+            const { editorView } = editor(
+              doc(code_block()('  to{<}p\nstart\n    bott{>}om')),
+            );
+            sendKeyToPm(editorView, 'Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('    top\n  start\n      bottom')),
+            );
+          });
+
+          it('should indent lines with odd indentation levels when', () => {
+            const { editorView } = editor(
+              doc(code_block()(' to{<}p\nstart\n   bott{>}om')),
+            );
+            sendKeyToPm(editorView, 'Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  top\n  start\n    bottom')),
+            );
+          });
+        });
+
+        describe('and line starts with tabs', () => {
+          it('should indent selected lines by a tab', () => {
+            const { editorView } = editor(
+              doc(code_block()('\n\tto{<}p\n\tstart\nbott{>}om\n')),
+            );
+            sendKeyToPm(editorView, 'Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\n\t\ttop\n\t\tstart\n  bottom\n')),
+            );
+          });
+
+          it('should indent lines with different indentation levels', () => {
+            const { editorView } = editor(
+              doc(code_block()('\tto{<}p\nstart\n\tbott{>}om')),
+            );
+            sendKeyToPm(editorView, 'Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\t\ttop\n  start\n\t\tbottom')),
+            );
+          });
+        });
+      });
+
+      describe('when selection goes outside the code-block', () => {
+        it('should not indent text', () => {
           const { editorView } = editor(
-            doc(code_block()('to{<}p\n  start\nbot{>}tom')),
+            doc(code_block()('{<}to'), p('end{>}')),
           );
           sendKeyToPm(editorView, 'Tab');
           expect(editorView.state.doc).toEqualDocument(
-            doc(code_block()('top\n  start\nbottom')),
+            doc(code_block()('to'), p('end')),
+          );
+        });
+      });
+    });
+
+    describe('Shift-Tab pressed', () => {
+      describe('when cursor on line', () => {
+        describe('and line starts with spaces', () => {
+          it('should unindent by 2 spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('top\n{<>}  start\nbottom')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('top\nstart\nbottom')),
+            );
+          });
+
+          it('should only unindent by 1 space when odd number of spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('top\n{<>}   start\nend')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('top\n  start\nend')),
+            );
+          });
+
+          it('should do nothing when no indentation on line', () => {
+            const { editorView } = editor(
+              doc(code_block()('top\n{<>}start\nend')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('top\n{<>}start\nend')),
+            );
+          });
+        });
+
+        describe('and line starts with tabs', () => {
+          it('should unindent by a tab', () => {
+            const { editorView } = editor(
+              doc(code_block()('top\n\tsta{<>}rt\nbottom')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('top\nstart\nbottom')),
+            );
+          });
+
+          it('should unindent by a tab when line also has spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('top\n\t sta{<>}rt\nend')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('top\n start\nend')),
+            );
+          });
+        });
+      });
+      describe('when selection is across multiple lines', () => {
+        describe('and line starts with spaces', () => {
+          it('should unindent only selected lines by two spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('  \n  to{<}p\n  start\n  bott{>}om\n  ')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  \ntop\nstart\nbottom\n  ')),
+            );
+          });
+
+          it('should unindent lines with different indentation levels', () => {
+            const { editorView } = editor(
+              doc(code_block()('    to{<}p\n  start\n      bott{>}om')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  top\nstart\n    bottom')),
+            );
+          });
+
+          it('should unindent lines with odd indentation levels', () => {
+            const { editorView } = editor(
+              doc(code_block()(' to{<}p\n  start\n   bott{>}om')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('top\nstart\n  bottom')),
+            );
+          });
+        });
+        describe('and line starts with tabs', () => {
+          it('should unindent only selected lines a tab', () => {
+            const { editorView } = editor(
+              doc(code_block()('\t\n\tto{<}p\n\tstart\n\tbott{>}om\n\t')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\t\ntop\nstart\nbottom\n\t')),
+            );
+          });
+
+          it('should unindent lines with different indentation levels', () => {
+            const { editorView } = editor(
+              doc(code_block()('\t\tto{<}p\n\tstart\n\t\t\tbott{>}om')),
+            );
+            sendKeyToPm(editorView, 'Shift-Tab');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\ttop\nstart\n\t\tbottom')),
+            );
+          });
+        });
+      });
+
+      describe('when selection goes outside the code-block', () => {
+        it('should not unindent text', () => {
+          const { editorView } = editor(
+            doc(code_block()('{<}  to'), p('end{>}')),
+          );
+          sendKeyToPm(editorView, 'Shift-Tab');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('  to'), p('end')),
           );
         });
       });

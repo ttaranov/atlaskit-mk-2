@@ -28,6 +28,13 @@ const getPlaceholderColor = css`
   color: ${colors.placeholderText};
 `;
 
+// Safari puts on some difficult to remove styles, mainly for disabled inputs
+// but we want full control so need to override them in all cases
+const overrideSafariDisabledStyles = `
+  -webkit-text-fill-color: unset;
+  -webkit-opacity: 1;
+`;
+
 const TextArea = styled.textarea`
   background: transparent;
   padding: 0;
@@ -41,6 +48,11 @@ const TextArea = styled.textarea`
   line-height: ${20 / fontSize()};
   outline: none;
   width: 100%;
+
+  [disabled] {
+    ${overrideSafariDisabledStyles};
+  }
+
   ${({ minimumRows }) =>
     css`
       min-height: ${20 * minimumRows}px;

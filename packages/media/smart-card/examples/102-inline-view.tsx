@@ -2,6 +2,7 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { LinkView } from '../src/inline/LinkView';
 import { ResolvedView } from '../src/inline/ResolvedView';
+import { ResolvingView } from '../src/inline/ResolvingView';
 
 interface Lozenge {
   text: string;
@@ -22,10 +23,21 @@ export default () => (
   <Page>
     <Grid>
       <GridColumn>
-        <h4>LinkView (Loading/Errored)</h4>
+        <h4>LinkView (initial Resolving/Errored)</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo
+        ex, vel molestie arcu. Phasellus commodo this is <code>LinkView</code>:
         <LinkView text={url} onClick={onClick} />
+        quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
+        laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
+        ut vehicula. Donec volutpat libero id ullamcorper faucibus. Sed
+        vestibulum tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet
+        interdum, nunc mauris bibendum mauris, in consequat mi est vitae mauris.
+        Phasellus dictum sollicitudin nunc in gravida.
+        <h4>ResolvingView</h4>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
+        ex, vel molestie arcu. Phasellus commodo this is{' '}
+        <code>ResolvingView</code>:
+        <ResolvingView url={url} onClick={onClick} />
         quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
         laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
         ut vehicula. Donec volutpat libero id ullamcorper faucibus. Sed
@@ -34,11 +46,12 @@ export default () => (
         Phasellus dictum sollicitudin nunc in gravida.
         <h4>ResolvedView</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo
+        ex, vel molestie arcu. Phasellus commodo this is{' '}
+        <code>ResolvedView</code>:
         <ResolvedView title={title} onClick={onClick} />
         quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
         laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
-        ut
+        ut this is <code>ResolvedView</code>:
         <ResolvedView
           icon={icon}
           title={title}
@@ -47,6 +60,7 @@ export default () => (
         />
         vehicula. Donec volutpat libero id ullamcorper faucibus. Sed vestibulum
         tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet interdum,
+        <code>ResolvedView (selected)</code>:
         <ResolvedView
           icon={icon}
           title={title}

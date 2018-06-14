@@ -73,6 +73,8 @@ type ReactSelectProps = {
   onBlur?: (SyntheticFocusEvent<HTMLElement>) => void,
   /* Handle change events on the select */
   onChange?: (ValueType, {}) => void,
+  /* Click events by default have preventDefault & stopPropogation called on them. Use this prop to disable this behaviour  */
+  onClickPreventDefault?: boolean,
   /* Handle focus events on the control */
   onFocus?: (SyntheticFocusEvent<HTMLElement>) => void,
   /* Handle change events on the input; return a string to modify the value */
@@ -192,7 +194,11 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       super(props);
       this.cacheComponents(props.components);
     }
-    static defaultProps = { validationState: 'default', spacing: 'default' };
+    static defaultProps = {
+      validationState: 'default',
+      spacing: 'default',
+      onClickPreventDefault: true,
+    };
     componentWillReceiveProps(nextProps: Props) {
       if (nextProps.components !== this.props.components) {
         this.cacheComponents(nextProps.components);
@@ -214,6 +220,12 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
     onSelectRef = (ref: ElementRef<*>) => {
       this.select = ref;
     };
+    /** Menu click events aren't handled or exposed in react-select so we set preventDefault to work with dialog & layer components */
+    onClick = (e: MouseEvent) => {
+      if (this.props.onClickPreventDefault) {
+        e.preventDefault();
+      }
+    };
     render() {
       // $FlowFixMe: `validationState` is passed in from a parent validation component
       const {
@@ -227,13 +239,16 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
 
       // props must be spread first to stop `components` being overridden
       return (
-        <WrappedComponent
-          ref={this.onSelectRef}
-          isMulti={isMulti}
-          {...props}
-          components={this.components}
-          styles={mergeStyles(baseStyles(validationState, isCompact), styles)}
-        />
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div onClick={this.onClick}>
+          <WrappedComponent
+            ref={this.onSelectRef}
+            isMulti={isMulti}
+            {...props}
+            components={this.components}
+            styles={mergeStyles(baseStyles(validationState, isCompact), styles)}
+          />
+        </div>
       );
     }
   };

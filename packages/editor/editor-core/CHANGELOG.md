@@ -1,5 +1,284 @@
 # @atlaskit/editor-core
 
+## 73.7.0
+- [minor] Introduce support for Tab / Shift-Tab to indent / unindent text in a code block (ED-4638) [e6df77b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6df77b)
+- [none] Updated dependencies [e6df77b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6df77b)
+
+## 73.6.2
+- [patch] ED-4856: fix resize border in Firefox [b8577e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8577e7)
+- [none] Updated dependencies [b8577e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8577e7)
+
+## 73.6.1
+- [patch] Fix issue where mentions were not selectable in IE11 [2126e1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2126e1e)
+- [none] Updated dependencies [2126e1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2126e1e)
+
+## 73.6.0
+- [minor] ED-3474 add redesigned table numbering column, fix table styling regressions [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
+- [none] Updated dependencies [1bef41a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bef41a)
+  - @atlaskit/editor-common@11.1.1
+
+## 73.5.2
+- [patch] WIP [57d5f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57d5f4a)
+- [none] Updated dependencies [57d5f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57d5f4a)
+
+## 73.5.1
+- [patch] ED-4816: fix removing columns/rows when outside of the content area [789e640](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/789e640)
+- [none] Updated dependencies [789e640](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/789e640)
+
+## 73.5.0
+- [patch] Set selection at the start of the document when editing a document in the full-page appearance. (ED-4759) [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+
+
+
+
+
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-markdown-transformer@1.2.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/editor-bitbucket-transformer@3.2.0
+- [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-picker@8.1.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-markdown-transformer@1.2.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/editor-bitbucket-transformer@3.2.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/item@7.0.3
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/size-detector@4.1.0
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/code@5.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/droplist@6.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-picker@8.1.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-markdown-transformer@1.2.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/editor-bitbucket-transformer@3.2.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/item@7.0.3
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/size-detector@4.1.0
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/code@5.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/droplist@6.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-picker@8.1.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-markdown-transformer@1.2.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/editor-bitbucket-transformer@3.2.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/item@7.0.3
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/size-detector@4.1.0
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/code@5.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/droplist@6.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-picker@8.1.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-markdown-transformer@1.2.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/editor-bitbucket-transformer@3.2.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/item@7.0.3
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/size-detector@4.1.0
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/code@5.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/droplist@6.1.0
+  - @atlaskit/button@8.1.0
+- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
+  - @atlaskit/spinner@7.0.0
+  - @atlaskit/media-picker@8.1.0
+  - @atlaskit/media-card@29.1.0
+  - @atlaskit/media-filmstrip@9.0.1
+  - @atlaskit/renderer@18.1.0
+  - @atlaskit/editor-common@11.1.0
+  - @atlaskit/editor-test-helpers@4.1.0
+  - @atlaskit/editor-markdown-transformer@1.2.0
+  - @atlaskit/editor-json-transformer@3.1.0
+  - @atlaskit/editor-bitbucket-transformer@3.2.0
+  - @atlaskit/task-decision@7.1.0
+  - @atlaskit/util-data-test@9.1.11
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/emoji@35.1.0
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/layer-manager@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/item@7.0.3
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/logo@8.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/media-core@19.1.1
+  - @atlaskit/media-test-helpers@14.0.1
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/size-detector@4.1.0
+  - @atlaskit/lozenge@5.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/code@5.0.2
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/droplist@6.1.0
+  - @atlaskit/button@8.1.0
+
+## 73.4.7
+
+
+
+- [patch] Updated dependencies [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
+  - @atlaskit/media-card@29.0.3
+  - @atlaskit/renderer@18.0.4
+  - @atlaskit/editor-common@11.0.7
+- [patch] Updated dependencies [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
+  - @atlaskit/media-card@29.0.3
+  - @atlaskit/renderer@18.0.4
+  - @atlaskit/editor-common@11.0.7
+- [patch] Updated dependencies [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
+  - @atlaskit/media-card@29.0.3
+  - @atlaskit/renderer@18.0.4
+  - @atlaskit/editor-common@11.0.7
+
+## 73.4.6
+- [patch] Fix a regression in task-decision in editor after NodeView's PR [b7a4fd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7a4fd5)
+- [none] Updated dependencies [b7a4fd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7a4fd5)
+
+## 73.4.5
+- [patch] Fixes the image toolbar [05f69d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05f69d1)
+- [none] Updated dependencies [05f69d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05f69d1)
+
+## 73.4.4
+- [patch] Update and lock prosemirror-model version to 1.4.0 [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+- [none] Updated dependencies [febf753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febf753)
+  - @atlaskit/renderer@18.0.3
+  - @atlaskit/editor-common@11.0.6
+  - @atlaskit/editor-test-helpers@4.0.7
+  - @atlaskit/editor-markdown-transformer@1.1.1
+  - @atlaskit/editor-json-transformer@3.0.11
+  - @atlaskit/editor-bitbucket-transformer@3.1.7
+
+## 73.4.3
+- [patch] Adding breakout to extensions [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+- [none] Updated dependencies [3d1b0ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d1b0ab)
+  - @atlaskit/editor-test-helpers@4.0.6
+  - @atlaskit/editor-common@11.0.5
+
+## 73.4.2
+- [patch] Fix issue where clicking over empty space in a code-block would not select the end of the line. ED-4637 [8120815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8120815)
+- [patch] Code-block toolbar refactored to rely less on view state. This also fixes issues with the code-block in IE11. [9249525](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9249525)
+- [none] Updated dependencies [8120815](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8120815)
+- [none] Updated dependencies [9249525](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9249525)
+
+## 73.4.1
+- [patch] Fix issue where mention-picker when two users would have a mention picker open at the same time in collaborative editing. [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
+- [none] Updated dependencies [5974137](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5974137)
+
+## 73.4.0
+- [minor] ED-4657: unbreak table copy-paste [38b5ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b5ce7)
+- [none] Updated dependencies [38b5ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38b5ce7)
+
+## 73.3.10
+- [patch] ED-4823: added card provider [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)
+- [none] Updated dependencies [583ae09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583ae09)
+  - @atlaskit/editor-test-helpers@4.0.5
+
 ## 73.3.9
 - [patch] Adds support for auto-closing brackets inside code-blocks [9d69d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d69d58)
 - [none] Updated dependencies [9d69d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d69d58)

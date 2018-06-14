@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
-import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { Config } from '../src/api/configureSearchClients';
 
 const config: Partial<Config> = {

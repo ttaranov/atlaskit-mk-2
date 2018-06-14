@@ -1,11 +1,5 @@
 import { Node as PmNode } from 'prosemirror-model';
-import {
-  EditorState,
-  Plugin,
-  PluginKey,
-  Selection,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey, Selection } from 'prosemirror-state';
 import {
   CellSelection,
   deleteTable,
@@ -42,7 +36,6 @@ import {
   createControlsDecorationSet,
   getSelectedColumn,
   getSelectedRow,
-  containsTableHeader,
   canInsertTable,
 } from '../utils';
 
@@ -237,19 +230,6 @@ export class TableState {
   }
 
   isRequiredToAddHeader = (): boolean => this.isHeaderRowRequired;
-
-  addHeaderToTableNodes = (slice: PmNode, selectionStart: number): void => {
-    const { table } = this.view.state.schema.nodes;
-    slice.content.forEach((node: PmNode, offset: number) => {
-      if (node.type === table && !containsTableHeader(this.view.state, node)) {
-        const { state, dispatch } = this.view;
-        const { tr, doc } = state;
-        const $anchor = doc.resolve(selectionStart + offset);
-        dispatch(tr.setSelection(new TextSelection($anchor)));
-        this.convertFirstRowToHeader();
-      }
-    });
-  };
 
   setTableLayout = (layout: TableLayout): boolean => {
     const tableNode = findTable(this.view.state.selection);
