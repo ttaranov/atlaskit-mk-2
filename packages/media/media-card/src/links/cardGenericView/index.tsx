@@ -2,10 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { CardDimensions, CardAppearance } from '../../index';
 
-import { BlockResolvedView, BlockErroredView } from '@atlaskit/smart-card';
-import { getCardMinWidth, getCardMaxWidth } from '../../utils/cardDimensions';
+import {
+  BlockResolvingView,
+  BlockResolvedView,
+  BlockErroredView,
+} from '@atlaskit/smart-card';
 import { CardAction } from '../../actions';
-import CardDetails from './CardDetails';
 import { defaultLinkCardAppearance } from '../card';
 
 export interface LinkCardGenericViewProps {
@@ -38,60 +40,39 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
     return appearance === 'horizontal';
   }
 
-  private renderIcon() {
-    const { iconUrl, isLoading } = this.props;
-
-    if (isLoading) {
-      return undefined;
-    }
-
-    return <LinkIcon src={iconUrl} />;
-  }
-
-  renderPreview() {
-    const { isHorizontal } = this;
-    const { isLoading, thumbnailUrl } = this.props;
-
-    if (isHorizontal) {
-      return null;
-    }
-
-    return (
-      <CardPreview
-        key="preview"
-        isPlaceholder={isLoading}
-        url={thumbnailUrl || ''}
-      />
-    );
-  }
-
-  renderDetails() {
-    const { isHorizontal } = this;
-    const { isLoading, title, description, thumbnailUrl } = this.props;
-    return (
-      <CardDetails
-        isPlaceholder={isLoading}
-        isThumbnailVisible={isHorizontal}
-        title={title}
-        description={description}
-        thumbnail={isHorizontal ? thumbnailUrl : undefined}
-      />
-    );
-  }
-
   render() {
-    const { isLoading, site, linkUrl, appearance, errorMessage } = this.props;
+    const { isHorizontal } = this;
+    const {
+      isLoading,
+      linkUrl,
+      site,
+      iconUrl,
+      title,
+      description,
+      thumbnailUrl,
+      appearance,
+      errorMessage,
+    } = this.props;
 
     if (errorMessage) {
       return <BlockErroredView message="We stumbled a bit here" />;
     }
 
+    if (isLoading) {
+      return <BlockResolvingView />;
+    }
+
     return (
-      <ResolvedView
+      <BlockResolvedView
         context={{
-          text: site || linkUrl,
-          icon: this.renderIcon(),
+          text: site || linkUrl || '',
+          icon: iconUrl,
         }}
+        title={title ? { text: title } : undefined}
+        description={description ? { text: description } : undefined}
+        preview={!isHorizontal ? thumbnailUrl : undefined}
+        thumbnail={isHorizontal ? thumbnailUrl : undefined}
+        onClick={() => window.open(linkUrl)}
       />
     );
   }
