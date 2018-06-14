@@ -231,7 +231,7 @@ export class QuickSearch extends Component<Props, State> {
    * Down - Select next result
    * Enter - Submit selected result
    */
-  handleSearchKeyDown = (event: Event) => {
+  handleSearchKeyDown = (event: Event | KeyboardEvent) => {
     const { firePrivateAnalyticsEvent } = this.props;
     this.props.onSearchKeyDown(event);
 

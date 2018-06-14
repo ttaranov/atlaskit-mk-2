@@ -253,6 +253,7 @@ export default class DropdownMenuStateless extends Component<
     if (
       triggerContainer &&
       triggerContainer.contains(target) &&
+      // $FlowFixMe
       target.disabled !== true
     ) {
       const { isOpen } = this.props;
