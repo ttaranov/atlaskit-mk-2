@@ -1,28 +1,7 @@
 # @atlaskit/progress-tracker
 
 ## 3.1.0
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/page@7.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/page@7.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/page@7.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/page@7.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/page@7.1.0
   - @atlaskit/docs@4.1.0
   - @atlaskit/theme@4.0.2

@@ -1,28 +1,7 @@
 # @atlaskit/media-image
 
 ## 5.0.8
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/field-text@6.0.2
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/field-text@6.0.2
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/field-text@6.0.2
-- [none] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/field-text@6.0.2
-- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/media-core@19.1.1
   - @atlaskit/media-test-helpers@14.0.1
   - @atlaskit/field-text@6.0.2

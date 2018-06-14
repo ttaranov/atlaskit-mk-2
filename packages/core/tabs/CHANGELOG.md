@@ -1,32 +1,7 @@
 # @atlaskit/tabs
 
 ## 7.1.0
-
-
-
-
-
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/spinner@7.0.0
   - @atlaskit/tooltip@10.2.0
   - @atlaskit/docs@4.1.0

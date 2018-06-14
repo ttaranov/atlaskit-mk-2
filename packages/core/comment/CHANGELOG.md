@@ -1,64 +1,8 @@
 # @atlaskit/comment
 
 ## 4.1.0
-
-
-
-
-
-
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/editor-core@73.5.0
-- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/editor-core@73.5.0
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/editor-core@73.5.0
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/editor-core@73.5.0
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/editor-core@73.5.0
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
-  - @atlaskit/editor-core@73.5.0
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/button@8.1.0
-
-## 4.0.1
-- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
-- [none] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
-  - @atlaskit/icon@12.0.1
-  - @atlaskit/button@8.0.1
-  - @atlaskit/theme@4.0.1
-  - @atlaskit/lozenge@5.0.1
-  - @atlaskit/docs@4.0.1
-  - @atlaskit/avatar@11.0.1
 
 ## 4.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
@@ -76,18 +20,9 @@
   - @atlaskit/editor-core@72.2.2
 
 ## 3.1.8
-
-
-
-
 - [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
   - @atlaskit/editor-core@72.0.0
-- [none] Updated dependencies [714ab32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/714ab32)
-  - @atlaskit/editor-core@72.0.0
-- [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
-  - @atlaskit/editor-core@72.0.0
-- [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
-  - @atlaskit/editor-core@72.0.0
+
 
 ## 3.1.7
 - [patch] Remove button for Edited and replace it by a span [ad3cd34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad3cd34)
