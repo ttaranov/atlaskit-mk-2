@@ -13,7 +13,6 @@ import WithPluginState from '../../../../../ui/WithPluginState';
 export interface Props {
   node: PmNode;
   macroProvider?: MacroProvider;
-  onClick: (event: React.SyntheticEvent<any>) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   onSelectExtension: () => void;
   children?: React.ReactNode;
@@ -24,7 +23,6 @@ export default class Extension extends Component<Props, any> {
   render() {
     const {
       node,
-      onClick,
       handleContentDOMRef,
       onSelectExtension,
       children,
@@ -44,7 +42,6 @@ export default class Extension extends Component<Props, any> {
           return (
             <Wrapper
               data-layout={node.attrs.layout}
-              onClick={onClick}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
                 width: calcExtensionWidth(node.attrs.layout, width),

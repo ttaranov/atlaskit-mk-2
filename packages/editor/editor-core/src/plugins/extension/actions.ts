@@ -18,22 +18,6 @@ import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
 
-export const setExtensionElement = (element: HTMLElement | null) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const pluginState = pluginKey.getState(state);
-  const tr = state.tr.setMeta(pluginKey, {
-    ...pluginState,
-    element,
-  });
-  if (!element) {
-    tr.setSelection(TextSelection.create(state.doc, state.selection.$from.pos));
-  }
-  dispatch(tr);
-  return true;
-};
-
 export const updateExtensionLayout = layout => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
@@ -65,12 +49,10 @@ export const updateExtensionLayout = layout => (
 
   const pluginState = pluginKey.getState(state);
 
-  tr
-    .setNodeMarkup(extPosition, undefined, {
-      ...extNode!.attrs,
-      layout,
-    })
-    .setMeta(pluginKey, { ...pluginState, layout });
+  tr.setNodeMarkup(extPosition, undefined, {
+    ...extNode!.attrs,
+    layout,
+  }).setMeta(pluginKey, { ...pluginState, layout });
 
   dispatch(tr);
 

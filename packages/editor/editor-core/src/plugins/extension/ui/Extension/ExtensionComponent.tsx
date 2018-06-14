@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
-import { selectParentNodeOfType } from 'prosemirror-utils';
+import {
+  selectParentNodeOfType,
+  findParentNodeOfType,
+} from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
@@ -67,7 +70,6 @@ export default class ExtensionComponent extends Component<Props, State> {
           <Extension
             node={node}
             macroProvider={macroProvider}
-            onClick={this.selectExtension}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
             view={editorView}
@@ -77,11 +79,7 @@ export default class ExtensionComponent extends Component<Props, State> {
         );
       case 'inlineExtension':
         return (
-          <InlineExtension
-            node={node}
-            macroProvider={macroProvider}
-            onClick={this.selectExtension}
-          >
+          <InlineExtension node={node} macroProvider={macroProvider}>
             {extensionHandlerResult}
           </InlineExtension>
         );
@@ -96,20 +94,25 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   };
 
-  private selectExtension = (event: React.SyntheticEvent<any>) => {
-    if (event.nativeEvent.defaultPrevented) {
-      return;
-    }
-    event.nativeEvent.preventDefault();
-    const { state, dispatch } = this.props.editorView;
-    this.props.setExtensionElement(event.currentTarget)(state, dispatch);
-  };
-
   private handleSelectExtension = () => {
-    const { state, dispatch } = this.props.editorView;
-    dispatch(
-      selectParentNodeOfType(state.schema.nodes.bodiedExtension)(state.tr),
-    );
+    const {
+      state,
+      state: { selection, doc },
+      dispatch,
+    } = this.props.editorView;
+    let { tr } = state;
+    const extnWithContent = findParentNodeOfType(
+      state.schema.nodes.bodiedExtension,
+    )(selection);
+
+    if (extnWithContent) {
+      tr = selectParentNodeOfType([state.schema.nodes.bodiedExtension])(
+        state.tr,
+      );
+    } else {
+      tr = tr.setSelection(NodeSelection.create(doc, selection.$from.pos - 1));
+    }
+    dispatch(tr);
   };
 
   private tryExtensionHandler() {
