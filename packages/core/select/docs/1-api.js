@@ -1,5 +1,72 @@
 // @flow
+import { code } from '@atlaskit/docs';
 import md from './docs-util/md';
+
+const onChange = `onChange = (newValue, actionMeta) => console.log(actionMeta);
+// possible values:
+{
+  removedValue?: ValueType,
+  action: 'select-option'
+    | 'deselect-option'
+    | 'remove-value'
+    | 'pop-value'
+    | 'set-value'
+    | 'clear'
+    | 'create-option';
+}`;
+
+const onInputChange = `
+onInputChange = (newValue, actionMeta) => console.log(actionMeta);
+// possible values:
+{
+  action: 'set-value' | 'input-change' | 'input-blur' | 'menu-close';
+}
+`;
+
+const controlledPropExample = `<Select
+  value={this.state.value}
+  onChange={value => this.setState({ value })}
+  inputValue={this.state.inputValue}
+  onInputChange={inputValue => this.setState({ inputValue })}
+  menuIsOpen={this.state.menuIsOpen}
+  onMenuOpen={() => this.setState({ menuIsOpen: true })}
+  onMenuClose={() => this.setState({ menuIsOpen: false })}
+/>`;
+
+const controlledDefaultPropExample = `<Select
+  defaultValue={{ label: 'Default Option', value: 'default-value' }}
+  defaultInputValue="Search Text"
+  defaultMenuIsOpen={true}
+/>
+`;
+
+const customOptionComponentExample = `components={{
+  Option: ({ children, innerProps }) => (
+    <div className="custom-option" {...innerProps}>
+      {children}
+    </div>
+  )
+}}`;
+
+const customStyleExample = `styles={{
+  control: (base) => ({ ...base, backgroundColor: 'white' })
+}}`;
+
+const createFilterConfigShape = `{
+  ignoreCase?: boolean,
+  ignoreAccents?: boolean,
+  stringify?: Object => string,
+  trim?: boolean,
+  matchFrom?: 'any' | 'start'
+}`;
+
+const createFilterDefaultConfig = `{
+  ignoreCase: true,
+  ignoreAccents: true,
+  stringify: option => option.label + " " + option.value
+  trim: true,
+  matchFrom: 'any'
+}`;
 
 export default md`
   ## Contents
@@ -34,46 +101,24 @@ export default md`
   You can use none, any, or all of these depending on your requirements.
   The props have associated events that are called when the value should change. Here's an example implementation of all three:
 
-  ~~~
-    <Select
-      value={this.state.value}
-      onChange={value => this.setState({ value })}
-      inputValue={this.state.inputValue}
-      onInputChange={inputValue => this.setState({ inputValue })}
-      menuIsOpen={this.state.menuIsOpen}
-      onMenuOpen={() => this.setState({ menuIsOpen: true })}
-      onMenuClose={() => this.setState({ menuIsOpen: false })}
-    />
-  ~~~
+  ${code`${controlledPropExample}`}
 
   If you don't use the controlled props, @atlaskit/select has props that let you default their value when it mounts:
 
-  ~~~
-  <Select
-    defaultValue={{ label: 'Default Option', value: 'default-value' }}
-    defaultInputValue="Search Text"
-    defaultMenuIsOpen={true}
-  />
-  ~~~
+  ${code`${controlledDefaultPropExample}`}
 
   We enable this by wrapping the select in a stateManager that uses the above specified prop values if they exist, otherwise it defers to internally managed state values.
 
   ## Components API
 
   In single-select and multi-select, we've had several issues opened as a result of users wanting to customise
-  the appearance or functionality of the exported select in various ways. @atlaskit/select opens up the api
+  the appearance or functionality of the exported select in various ways. @atlaskit/select opens up the API
   to allow customisation and configuration of any / every part of the select by exposing a new components prop.
 
   For example, to render a custom Option component:
 
-  components={{
-  Option: ({ children, innerProps }) => (
+  ${code`${customOptionComponentExample}`}
 
-  <div className="custom-option" {...innerProps}>
-  {children}
-  </div>
-  )
-  }}
 
   All components are passed a set of common props. The most important to understand are:
 
@@ -92,17 +137,13 @@ export default md`
 
   For example, to give the control a white background:
 
-  ~~~
-  styles={{
-    control: (base) => ({ ...base, backgroundColor: 'white' })
-  }}
-  ~~~
+  ${code`${customStyleExample}`}
 
   See the [Styles Documentation](###ADDURL) for more details and examples.
 
   ## Custom Data Structure
 
-  @atlaskit/select enforces as little opinion about the shape of your options as possible. With the combination of custom components api, and the styling api,
+  @atlaskit/select enforces as little opinion about the shape of your options as possible. With the combination of custom components API, and the styling API,
   your options can really take whatever shape you like. Of course by default, **assumptions** are made about how to render and filter options and values, however @atlaskit/select exposes
   the following methods to allow you to configure this as you choose.
 
@@ -110,9 +151,7 @@ export default md`
 
   The \`getOptionValue\` prop takes the following shape:
 
-  ~~~
-  (option) => string
-  ~~~
+  ${code`(option: OptionType) => string`}
 
   The returned string value is what is internally used within react-select to validate the following:
 
@@ -125,9 +164,7 @@ export default md`
 
   The \`getOptionLabel\` prop takes the following shape:
 
-  ~~~
-  (option) => string
-  ~~~
+  ${code`(option) => string`}
 
   The returned string value is the string that's rendered:
 
@@ -140,19 +177,15 @@ export default md`
 
   The \`formatOptionLabel\` prop takes the following shape:
 
-  ~~~
-  (option, { context, inputValue, selectedValue}) => Node
-  ~~~
+  ${code`(option, { context, inputValue, selectedValue}) => Node`}
 
-  The returned value, is rendered as the label of the value/s rendered in the control.
+  The returned Node is rendered as the label of the value/s rendered in the control.
 
   ## isOptionDisabled
 
   By default @atlaskit/select looks for a isDisabled property your passed in options. However as is the case with all the methods mentioned above, @atlaskit/select exposes a 'isOptionDisabled' prop that allows you to override this inbuilt logic. This takes the following shape:
 
-  ~~~
-  (option: OptionType) => boolean
-  ~~~
+  ${code`(option: OptionType) => boolean`}
 
   ## isOptionSelected
 
@@ -162,9 +195,7 @@ export default md`
 
   However if you pass in a function of the following shape:
 
-  ~~~
-  (option: {[string]: any}, options Array<{[string]: any}>) => boolean
-  ~~~
+  ${code`(option: {[string]: any}, options Array<{[string]: any}>) => boolean`}
 
   it will override the default logic specified.
 
@@ -172,67 +203,30 @@ export default md`
 
   The onChange and onInputChange props are now passed a second argument, which contains meta about why the event was called. For example:
 
-  ~~~
-  onChange = (newValue, actionMeta) => console.log(actionMeta);
-  // possible values:
-  {
-    removedValue?: ValueType,
-    action: 'select-option' |
-    'deselect-option' |
-    'remove-value' |
-    'pop-value' |
-    'set-value' |
-    'clear' |
-    'create-option';
-  }
-  ~~~
+  ${code`${onChange}`}
 
   additionally, the removedValue is conditionally added to the ActionMeta, if the action is of type 'remove-value' or 'pop-value'
 
   The new onInputChange prop also passes actionMeta:
 
-  ~~~
-  onInputChange = (newValue, actionMeta) => console.log(actionMeta);
-  // possible values:
-  {
-    action: 'set-value' | 'input-change' | 'input-blur' | 'menu-close';
-  }
-  ~~~
+  ${code`${onInputChange}`}
 
   ## Custom Filter
 
   @atlaskit/select exposes a **filterOption** prop that allows you to configure how options in your select get filtered down by a search value.
   This takes the following shape:
 
-  ~~~
-  (OptionType, string) => boolean
-  ~~~
+  ${code`(option: OptionType, inputValue: string) => boolean`}
 
   Additionally, @atlaskit/select also exports a \`createFilter\` closure which takes in a configuration object of the following shape:
 
-  ~~~
-  {
-    ignoreCase?: boolean,
-    ignoreAccents?: boolean,
-    stringify?: Object => string,
-    trim?: boolean,
-    matchFrom?: 'any' | 'start'
-  }
-  ~~~
+  ${code`${createFilterConfigShape}`}
 
   and returns a function of the shape expected by the filterOption prop. By default our filterOption prop value is the function returned from an invocation of the createFilter without a config object, the default config object used internally is as follows:
 
-  ~~~
-  {
-    ignoreCase: true,
-    ignoreAccents: true,
-    stringify: option => option.label + " " + option.value
-    trim: true,
-    matchFrom: 'any'
-  }
-  ~~~
+  ${code`${createFilterDefaultConfig}`}
 
-  The goal here is to allow for varying levels of configuration of the core filtration logic used within a select instance. We recognise that you may not want to replace all of the filtration logic put have in place by default, and by invoking the createFilter export with your desired config, you should be able to pick and choose filtration decisions that best suit you, without having to rewrite the logic from scratch. If you _do_ want to do this however, supplying a filterOption function of the specified shape is always a viable option.
+  The goal here is to allow for varying levels of configuration of the core filtering logic used within a select instance. We recognise that you may not want to replace all of the filtering logic put have in place by default, and by invoking the createFilter export with your desired config, you should be able to pick and choose filtering decisions that best suit you, without having to rewrite the logic from scratch. If you _do_ want to do this however, supplying a filterOption function of the specified shape is always a viable option.
 
   For more comprehensive documentation and prop specification, please see the [react-select.v2 docs](https://deploy-preview-2289--react-select.netlify.com/)
 `;

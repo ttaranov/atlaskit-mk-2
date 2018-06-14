@@ -1,17 +1,38 @@
 // @flow
 import React from 'react';
-import { Example } from '@atlaskit/docs';
+import { Example, code } from '@atlaskit/docs';
 import md from './docs-util/md';
 import PropChanges from './docs-util/propChanges';
 import { propChanges } from './docs-util/propChangeData';
 
+const itemShape = `Array<{
+  heading: string
+  item: Array<{
+    content?: Node,
+    description?: string,
+    label?: string,
+    tooltipDescription?: string,
+    tooltipPosition?: 'top' | 'bottom' | 'left',
+    value?: string | number,
+    filterValues?: Array<string>,
+    isDisabled?: boolean,
+    isSelected?: boolean,
+    elemBefore?: Node,
+  }>
+}>`;
+
+const optionShape = `Array<{
+  [any]: string,
+  options?: Array<{[any]: string}>
+}>`;
+
 export default md`
   **@atlaskit/select** aims to align the varying use cases for the previous single-select and multi-select packages
-  into one package. In this guide we'll cover the differences that you need to be aware of in **@atlaskit/select**
+  into one package. This guide will cover the differences that you need to be aware of in **@atlaskit/select**
   for you to update from **@atlaskit/multi-select** and **@atlaskit/single-select**
 
   ## Contents
-  * [Prop Upgrade Table](#prop-upgrade-table)
+  * [Prop upgrade table](#prop-upgrade-table)
   * [Validation](#validation)
   * [Options](#options)
     * [elemBefore](#elembefore)
@@ -19,13 +40,14 @@ export default md`
     * [filterValues](#filtervalues)
     * [description](#description)
 
-  ## Prop Upgrade Table:
+  ## Prop upgrade table:
+
   ${<PropChanges data={propChanges} />}
 
   ## Validation
 
   We no longer support the \`invalidMessage\`, \`isInvalid\` and \`required\` props.
-  Validation messages are now a concern of the [@atlaskit/forms](/packages/core/form) package.
+  Validation messages are now a concern of the [@atlaskit/form](/packages/core/form) package.
   We do however, provide a validateState prop, which takes a string value of either \`success\` or \`error\` which augments the border of the trigger.
   See the example below:
 
@@ -41,33 +63,13 @@ export default md`
   We no longer enforce opinions on the shape of your passed in options (previously named items in single and multi select).
   Previously options had the following shape:
 
-  ~~~
-    Array<{
-      heading: string
-      item: Array<{
-        content?: Node,
-        description?: string,
-        label?: string,
-        tooltipDescription?: string,
-        tooltipPosition?: 'top' | 'bottom' | 'left',
-        value?: string | number,
-        filterValues?: Array<string>,
-        isDisabled?: boolean,
-        isSelected?: boolean,
-        elemBefore?: Node,
-      }>
-  }>
-  ~~~
+  ${code`${itemShape}`}
 
   We've simplified this to the following:
-  ~~~
-  Array<{
-    [any]: string,
-    options?: Array<{[any]: string}>
-  }>
-  ~~~
 
-  By default, @atlaskit/select form very few opinions about the shape of your passed in options.
+  ${code`${optionShape}`}
+
+  By default, @atlaskit/select forms very few opinions about the shape of your passed in options.
   The only attribute @atlaskit/select really forces any opinions on, is whether or not your option object has an option property of its own.
   This is used to identify whether or not a group hierarchy has been used, so that @atlaskit/select can augment our internal options map and render groups accordingly.
   Otherwise, by default @atlaskit/select will filter based on the \`value\` property and render the specified \`label\` value.
@@ -81,9 +83,7 @@ export default md`
   While elemBefore is no longer an explicitly supported property on passed in options,
   @atlaskit/select exposes a formatOptionLabel method of the following shape
 
-  ~~~
-  (option, { context, inputValue, selectedValue }) => Node
-  ~~~
+  ${code`(option, { context, inputValue, selectedValue }) => Node`}
 
   Passing in a formatOptionLabel prop that takes option data to render an element before the label text would look like this:
 
@@ -115,17 +115,17 @@ export default md`
 
   ### filterValues
   Previously @atlaskit/single-select and @atlaskit/multi-select items optionally contained a filterValues prop with the following shape:
-  ~~~
-  filterValues: Array<string>
-  ~~~
+
+  ${code`filterValues: Array<string>`}
+
   The intention behind this was to allow you to pass through a series of string values through which
-  the internal filtration logic would be able to reduce search results on.
+  the internal filtering logic would be able to reduce search results on.
 
   @atlaskit/select surfaces a variety of configurations for customising how
   options get filtered, that mean that this prop is no longer necessary.
 
   For a more detailed explanation of these configurations,
-  please see the 'custom filtration' section of the [api page](/packages/core/select/docs/api)
+  please see the 'Custom Filter' section of the [api page](/packages/core/select/docs/api)
 
   If you do however want to use this pattern, below is how you could enable that in @atlaskit/select.
 
