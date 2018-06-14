@@ -3,10 +3,7 @@
 import React, { Component, type ComponentType } from 'react';
 import { Transition } from 'react-transition-group';
 
-import {
-  transitionDurationMs,
-  transitionTimingFunction,
-} from '../../constants';
+import { transitionDurationMs, transitionTimingFunction } from '../constants';
 
 // Transitions
 // ------------------------------
