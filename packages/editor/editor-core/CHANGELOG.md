@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.7.3
+- [patch] ED-4840: bump pm-utils to 0.5.1 [37992bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37992bf)
+- [none] Updated dependencies [37992bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37992bf)
+
 ## 73.7.2
 - [patch] ED-4438, text from google docs should not be pasted as inline code. [2a0fd85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0fd85)
 - [patch] Updated dependencies [2a0fd85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0fd85)
