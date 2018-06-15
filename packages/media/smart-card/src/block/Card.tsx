@@ -16,6 +16,7 @@ import { minWidth, maxWidth } from './dimensions';
 const memoizeExtractPropsFromJSONLD = memoize(extractPropsFromJSONLD);
 
 interface CardContentProps {
+  url: string;
   state: ObjectState;
   reload: () => void;
   onClick?: () => void;
@@ -44,8 +45,10 @@ class CardContent extends React.Component<CardContentProps> {
     }
   };
 
-  handleAuthorise = (service: AuthService) => {
-    const { reload } = this.props;
+  handleAuthorise = () => {
+    const { reload, state } = this.props;
+    // TODO: figure out how to support multiple services
+    const service = state.services[0];
     auth(service.startAuthUrl).then(() => reload(), () => reload());
   };
 
@@ -54,65 +57,60 @@ class CardContent extends React.Component<CardContentProps> {
     reload();
   };
 
-  renderInTheCollapsedFrame(children: React.ReactNode) {
-    return (
-      <CollapsedFrame
-        minWidth={minWidth}
-        maxWidth={maxWidth}
-        onClick={this.handleFrameClick}
-      >
-        {children}
-      </CollapsedFrame>
-    );
-  }
-
   renderResolvingState() {
-    return this.renderInTheCollapsedFrame(<ResolvingView />);
+    return <ResolvingView onClick={this.handleFrameClick} />;
   }
 
   renderUnauthorisedState() {
-    const { state } = this.props;
-    // TODO: figure out how to support multiple services
-    const service = state.services[0];
-    return this.renderInTheCollapsedFrame(
+    const { url } = this.props;
+    return (
       <UnauthorisedView
         icon={this.collapsedIcon}
-        service={service ? service.name : ''}
-        onAuthorise={service ? () => this.handleAuthorise(service) : undefined}
-      />,
+        url={url}
+        onClick={this.handleFrameClick}
+        onAuthorise={this.handleAuthorise}
+      />
     );
   }
 
   renderForbiddenState() {
-    const { state } = this.props;
-    // TODO: figure out how to support multiple services
-    const service = state.services[0];
-    return this.renderInTheCollapsedFrame(
+    const { url } = this.props;
+    return (
       <ForbiddenView
         icon={this.collapsedIcon}
-        onAuthorise={service ? () => this.handleAuthorise(service) : undefined}
-      />,
+        url={url}
+        onClick={this.handleFrameClick}
+        onAuthorise={this.handleAuthorise}
+      />
     );
   }
 
   renderNotFoundState() {
-    return this.renderInTheCollapsedFrame(
-      <ErroredView message="We couldn't find this link" />,
+    const { url } = this.props;
+    return (
+      <ErroredView
+        url={url}
+        message="We couldn't find this link"
+        onClick={this.handleFrameClick}
+      />
     );
   }
 
   renderErroredState() {
-    return this.renderInTheCollapsedFrame(
+    const { url } = this.props;
+    return (
       <ErroredView
+        url={url}
         message="We couldn't load this link"
+        onClick={this.handleFrameClick}
         onRetry={this.handleErrorRetry}
-      />,
+      />
     );
   }
 
   renderResolvedState() {
     const props = this.extractViewProps();
-    return <ResolvedView {...props} />;
+    return <ResolvedView {...props} onClick={this.handleFrameClick} />;
   }
 
   render() {
@@ -152,7 +150,9 @@ export function Card(props: CardProps) {
       placeholder={<ResolvingView />}
       content={
         <WithObject client={client} url={url}>
-          {({ state, reload }) => <CardContent state={state} reload={reload} />}
+          {({ state, reload }) => (
+            <CardContent url={url} state={state} reload={reload} />
+          )}
         </WithObject>
       }
     />
