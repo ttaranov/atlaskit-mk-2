@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardDimensions, CardAppearance } from '../../index';
+import { CardAppearance } from '../../index';
 
 import {
   BlockResolvingView,
   BlockResolvedView,
   BlockErroredView,
 } from '@atlaskit/smart-card';
-import { CardAction } from '../../actions';
 import { defaultLinkCardAppearance } from '../card';
 
 export interface LinkCardGenericViewProps {
@@ -19,12 +18,10 @@ export interface LinkCardGenericViewProps {
   iconUrl?: string;
 
   appearance?: CardAppearance;
-  dimensions?: CardDimensions;
 
   isLoading?: boolean;
   errorMessage?: string;
   onRetry?: () => void;
-  actions?: Array<CardAction>;
 }
 
 export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
@@ -35,13 +32,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
     appearance: defaultLinkCardAppearance,
   };
 
-  private get isHorizontal() {
-    const { appearance } = this.props;
-    return appearance === 'horizontal';
-  }
-
   render() {
-    const { isHorizontal } = this;
     const {
       isLoading,
       linkUrl,
@@ -52,15 +43,20 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
       thumbnailUrl,
       appearance,
       errorMessage,
+      onRetry,
     } = this.props;
 
     if (errorMessage) {
-      return <BlockErroredView message="We stumbled a bit here" />;
+      return (
+        <BlockErroredView message="We stumbled a bit here" onRetry={onRetry} />
+      );
     }
 
     if (isLoading) {
       return <BlockResolvingView />;
     }
+
+    const isHorizontal = appearance === 'horizontal';
 
     return (
       <BlockResolvedView

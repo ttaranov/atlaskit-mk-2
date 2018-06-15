@@ -123,7 +123,7 @@ function getActions(
       handler: actionCallbackHandlers => {
         if (onActionClick) {
           onActionClick(oldAction, {
-            progress: actionCallbackHandlers.progress,
+            progress: actionCallbackHandlers.pending,
             success: (message?: string) =>
               actionCallbackHandlers.success(message),
             failure: (
