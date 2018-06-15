@@ -2,8 +2,8 @@ import * as React from 'react';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import Button from '@atlaskit/button';
-import { IconImage } from './IconImage';
-import { LinkIcon } from './LinkIcon';
+import { ImageIcon } from '../ImageIcon';
+import LinkGlyph from '@atlaskit/icon/glyph/link';
 import { minWidth, maxWidth } from '../dimensions';
 import { ExpandedFrame } from '../ExpandedFrame';
 import AlertView from './AlertView';
@@ -259,7 +259,7 @@ export class ResolvedView extends React.Component<
     return (
       <IconWrapper>
         <Tooltip content={icon.tooltip}>
-          <IconImage src={icon.url} size={24} />
+          <ImageIcon src={icon.url} size={24} />
         </Tooltip>
       </IconWrapper>
     );
@@ -382,7 +382,12 @@ export class ResolvedView extends React.Component<
         minWidth={minWidth}
         maxWidth={maxWidth}
         href={link}
-        icon={<LinkIcon src={context && context.icon} />}
+        icon={
+          <ImageIcon
+            src={context && context.icon}
+            default={<LinkGlyph label="icon" size="small" />}
+          />
+        }
         text={context && context.text}
         onClick={onClick}
       >
@@ -400,18 +405,22 @@ export class ResolvedView extends React.Component<
             <Tooltip content={title ? title.tooltip : undefined}>
               <Title>{title ? title.text : undefined}</Title>
             </Tooltip>
-            {byline && (
-              <Tooltip content={byline ? byline.tooltip : undefined}>
-                <Byline>{byline ? byline.text : undefined}</Byline>
-              </Tooltip>
-            )}
-            {description && (
-              <Tooltip content={description ? description.tooltip : undefined}>
-                <Description>
-                  {description ? description.text : undefined}
-                </Description>
-              </Tooltip>
-            )}
+            {byline &&
+              byline.text && (
+                <Tooltip content={byline ? byline.tooltip : undefined}>
+                  <Byline>{byline ? byline.text : undefined}</Byline>
+                </Tooltip>
+              )}
+            {description &&
+              description.text && (
+                <Tooltip
+                  content={description ? description.tooltip : undefined}
+                >
+                  <Description>
+                    {description ? description.text : undefined}
+                  </Description>
+                </Tooltip>
+              )}
             <Widgets details={details} />
             {this.renderUsers()}
             {this.renderActions()}
