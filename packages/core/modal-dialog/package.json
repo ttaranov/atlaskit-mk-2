@@ -23,11 +23,9 @@
     "@atlaskit/icon": "^12.1.1",
     "@atlaskit/layer-manager": "^4.1.1",
     "@atlaskit/theme": "^4.0.3",
-    "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
-    "react-transition-group": "^2.2.1",
-    "tabbable": "^1.1.0"
+    "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
     "react": "^16.3.0",
