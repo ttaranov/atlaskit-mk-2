@@ -1,5 +1,13 @@
 # @atlaskit/layer-manager
 
+## 4.2.0
+- [minor] Deprecates the ability to pass a function to the autoFocus prop. Changes implementation of FocusLock to use [react-focus-lock](https://github.com/theKashey/react-focus-lock). [5b1ab0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ab0b)
+- [minor] Deprecates ability to pass function to autoFocus prop in FocusLock. Implementation of FocusLock based on react-focus-lock. [de9690b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de9690b)
+- [none] Updated dependencies [5b1ab0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ab0b)
+  - @atlaskit/modal-dialog@5.2.0
+- [none] Updated dependencies [de9690b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de9690b)
+  - @atlaskit/modal-dialog@5.2.0
+
 ## 4.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
