@@ -15,7 +15,7 @@ const createDefaultGlob = () => createGlob('packages/**');
 const createWorkspacesGlob = (
   workspaces /*: Array<{ dir: string }> */,
   projectRoot /*: string */,
-) =>
+) /*: string[] */ =>
   workspaces.reduce(
     (acc, ws) => acc.concat(...createGlob(path.relative(projectRoot, ws.dir))),
     [],

@@ -1,34 +1,30 @@
 // @flow
 
 import React from 'react';
+import { Field } from '@atlaskit/form';
 import { cities } from './common/data';
 import Select from '../src';
-import SelectWrapper from '../src/SelectWrapper'; // TEMP: waiting for @atlaskit/form support
 
 const errorMsg = 'This field is required.';
-const successMsg = 'Great job selecting an option!';
 
 const ValidationExample = () => (
   <div>
-    <SelectWrapper
-      id="error"
-      validationState="error"
-      validationMessage={errorMsg}
-    >
+    <Field label="Failed Select" invalidMessage={errorMsg} isInvalid>
       <Select options={cities} placeholder="Choose a City" />
-    </SelectWrapper>
+    </Field>
     <hr style={{ border: 0, margin: '1em 0' }} />
-    <SelectWrapper
+    <Field
+      label="Successful Select"
+      helperText="This select is successful"
       id="success"
-      validationState="success"
-      validationMessage={successMsg}
+      isInvalid={false}
     >
       <Select
         options={cities}
         defaultValue={cities[0]}
         placeholder="Choose a City"
       />
-    </SelectWrapper>
+    </Field>
   </div>
 );
 

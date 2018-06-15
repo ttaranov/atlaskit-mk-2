@@ -37,6 +37,7 @@ type SharedGroupTypeProps = {
 
 export type GroupProps = SharedGroupTypeProps & {
   hasSeparator: boolean,
+  title?: string,
 };
 
 export type NestedProps = SharedGroupTypeProps & {

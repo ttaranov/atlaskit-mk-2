@@ -5,15 +5,11 @@ import {
   ConfluenceQuickSearchContainer,
   Props,
 } from '../src/components/confluence/ConfluenceQuickSearchContainer';
-import {
-  ResultType,
-  Result,
-  PersonResult,
-  ContentType,
-} from '../src/model/Result';
+import { Result, PersonResult } from '../src/model/Result';
 import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
 import { Scope } from '../src/api/CrossProductSearchClient';
 import SearchError from '../src/components/SearchError';
+import * as searchResultsUtil from '../src/components/SearchResultsUtil';
 import {
   delay,
   makeConfluenceObjectResult,
@@ -34,7 +30,7 @@ import { noResultsConfluenceClient } from './mocks/_mockConfluenceClient';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
-  const onSearchFn = quicksearch.prop('onSearch') as Function;
+  const onSearchFn: Function = quicksearch.prop('onSearch');
   onSearchFn(query);
   wrapper.update();
 }
@@ -170,6 +166,22 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(group.children()).toHaveLength(1);
   });
 
+  it('should redirect to confluence advanced search on search submit', async () => {
+    const wrapper = render();
+    searchFor('query', wrapper);
+
+    const onSearchSubmit: Function = wrapper
+      .find(GlobalQuickSearch)
+      .prop('onSearchSubmit');
+
+    const mockRedirect = jest
+      .spyOn(searchResultsUtil, 'redirectToConfluenceAdvancedSearch')
+      .mockImplementation(() => {});
+
+    onSearchSubmit();
+    expect(mockRedirect).toHaveBeenCalledWith('query');
+  });
+
   it('should render object results', async () => {
     const wrapper = render({
       crossProductSearchClient: singleResultCrossProductSearchClient(
@@ -214,7 +226,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     await waitForRender(wrapper);
 
     const group = findGroup(Group.People, wrapper);
-    expect(group.children()).toHaveLength(2); // result + search people item
+    expect(group.children()).toHaveLength(1);
   });
 
   it('should perform searches in parallel', async () => {

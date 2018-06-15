@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 4.5.0
+- [minor] Add advanced search links to Confluence [4c0be2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0be2d)
+
+- [minor] Updated dependencies [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
+  - @atlaskit/quick-search@2.2.0
+
 ## 4.4.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

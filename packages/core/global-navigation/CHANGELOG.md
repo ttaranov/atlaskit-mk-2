@@ -1,5 +1,9 @@
 # @atlaskit/global-navigation
 
+## 0.1.2
+- [patch] Updated dependencies [7200aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7200aa4)
+  - @atlaskit/navigation-next@0.3.2
+
 ## 0.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [patch] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

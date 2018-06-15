@@ -35,6 +35,22 @@ const overrideSafariDisabledStyles = `
   -webkit-opacity: 1;
 `;
 
+const getMinimumRowsHeight = ({ minimumRows }) =>
+  `min-height: ${20 * minimumRows}px;`;
+
+const getResizeStyles = ({ enableResize }) => {
+  if (!enableResize) {
+    return `resize: none;`;
+  }
+  if (enableResize === 'horizontal') {
+    return `resize: horizontal;`;
+  }
+  if (enableResize === 'vertical') {
+    return `resize: vertical;`;
+  }
+  return null;
+};
+
 const TextArea = styled.textarea`
   background: transparent;
   padding: 0;
@@ -53,21 +69,16 @@ const TextArea = styled.textarea`
     ${overrideSafariDisabledStyles};
   }
 
-  ${({ minimumRows }) =>
-    css`
-      min-height: ${20 * minimumRows}px;
-    `} ${({ enableResize }) =>
-    enableResize
-      ? ''
-      : css`
-          resize: none;
-        `} &::-ms-clear {
+  ${getMinimumRowsHeight} ${getResizeStyles}
+
+  &::-ms-clear {
     display: none;
   }
 
   &:invalid {
     box-shadow: none;
   }
+
   ${getPlaceholderStyle(getPlaceholderColor)};
 `;
 

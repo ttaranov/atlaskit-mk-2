@@ -52,6 +52,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
   endListener = (node: ?HTMLElement, done: Function) => {
     const executeCallback = (event: AnimationEvent) => {
       // ignore animation events on the glyph
+      // $FlowFixMe
       if (event.target.tagName === 'svg') {
         return false;
       }
