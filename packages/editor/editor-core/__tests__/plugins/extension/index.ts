@@ -15,7 +15,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { NodeSelection } from 'prosemirror-state';
 import {
-  setExtensionElement,
   editExtension,
   removeExtension,
   updateExtensionLayout,

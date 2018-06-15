@@ -47,7 +47,6 @@ export default class Extension extends Component<Props, any> {
         editorView={editorView}
         node={node}
         macroProvider={macroProvider}
-        setExtensionElement={setExtensionElement}
         handleContentDOMRef={handleContentDOMRef}
         extensionHandlers={extensionHandlers}
       />
