@@ -174,6 +174,7 @@ describe('editor/plugins/collab-edit', () => {
           {
             sessionId: 'test',
             lastActive: 1,
+            name: 'Foo',
             avatar: 'avatar.png',
           },
         ],
@@ -209,6 +210,7 @@ describe('editor/plugins/collab-edit', () => {
           {
             sessionId: 'test',
             lastActive: 1,
+            name: 'Foo',
             avatar: 'avatar.png',
           },
         ],
