@@ -3,12 +3,7 @@
 import React, { Component, Fragment } from 'react';
 import Lorem from 'react-lorem-component';
 
-import {
-  Spotlight,
-  SpotlightManager,
-  SpotlightPulse,
-  SpotlightTarget,
-} from '../src';
+import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
 import { HighlightGroup, Highlight } from './styled';
 
 type State = {

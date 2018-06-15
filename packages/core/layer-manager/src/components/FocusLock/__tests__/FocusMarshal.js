@@ -2,8 +2,6 @@
 
 import FocusMarshal from '../FocusMarshal';
 
-const body: HTMLElement = (document.body: any);
-
 const createBoundary = () => {
   const div = document.createElement('div');
   div.appendChild(createButton());
