@@ -1,5 +1,18 @@
 # @atlaskit/navigation
 
+## 32.2.0
+- [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
+- [none] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
+  - @atlaskit/quick-search@2.3.0
+  - @atlaskit/page@7.2.0
+  - @atlaskit/tooltip@10.3.0
+  - @atlaskit/single-select@5.2.0
+  - @atlaskit/button@8.2.0
+  - @atlaskit/checkbox@3.1.0
+  - @atlaskit/icon@12.2.0
+  - @atlaskit/dropdown-menu@5.1.0
+  - @atlaskit/avatar@11.2.0
+
 ## 32.1.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

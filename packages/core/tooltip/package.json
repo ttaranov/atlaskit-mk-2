@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "10.2.1",
+  "version": "10.3.0",
   "description": "A React Component for displaying Tooltips",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -29,9 +29,9 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.1.2",
+    "@atlaskit/button": "^8.2.0",
     "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/icon": "^12.1.2",
+    "@atlaskit/icon": "^12.2.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
