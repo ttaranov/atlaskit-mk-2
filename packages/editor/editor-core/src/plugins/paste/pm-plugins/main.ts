@@ -250,6 +250,15 @@ export function createPlugin(
         slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
         return slice;
       },
+      transformPastedHTML(html) {
+        // Fix for issue ED-4438
+        // text from google docs should not be pasted as inline code
+        if (html.indexOf('id="docs-internal-guid-') >= 0) {
+          html = html.replace(/white-space:pre/g, '');
+          html = html.replace(/white-space:pre-wrap/g, '');
+        }
+        return html;
+      },
     },
   });
 }
