@@ -1,17 +1,14 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import searchResults, { Props } from '../src/components/home/HomeSearchResults';
-import {
-  ResultItemGroup,
-  PersonResult,
-  ResultBase,
-} from '@atlaskit/quick-search';
+import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   ObjectResultWithAnalytics,
   PersonResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
+import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
 import {
   makeJiraObjectResult,
   makeConfluenceObjectResult,
@@ -135,7 +132,9 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.Jira, wrapper);
 
     expect(group.prop('title')).toEqual('Jira issues');
-    expect(group.find(ResultBase).prop('resultId')).toEqual('search_jira');
+    expect(group.find(AdvancedSearchResult).prop('resultId')).toEqual(
+      'search_jira',
+    );
   });
 
   it('should render a confluence result item to search confluence', () => {
@@ -148,7 +147,7 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.Confluence, wrapper);
 
     expect(group.prop('title')).toEqual('Confluence pages and blogs');
-    expect(group.find(ResultBase).prop('resultId')).toEqual(
+    expect(group.find(AdvancedSearchResult).prop('resultId')).toEqual(
       'search_confluence',
     );
   });
@@ -163,7 +162,9 @@ describe('HomeSearchResults', () => {
     const group = findGroup(Group.People, wrapper);
 
     expect(group.prop('title')).toEqual('People');
-    expect(group.find(ResultBase).prop('resultId')).toEqual('search_people');
+    expect(group.find(AdvancedSearchResult).prop('resultId')).toEqual(
+      'search_people',
+    );
   });
 
   it('should not render recent results group when there are no recent results', () => {
@@ -202,7 +203,7 @@ describe('HomeSearchResults', () => {
     ['search_jira', 'search_confluence', 'search_people'].forEach(resultId => {
       expect(
         wrapper
-          .find(ResultBase)
+          .find(AdvancedSearchResult)
           .findWhere(wrapper => wrapper.prop('resultId') === resultId)
           .exists(),
       ).toBe(true);

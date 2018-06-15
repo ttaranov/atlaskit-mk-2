@@ -46,7 +46,11 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   }
 
   cancelProgress = () => {
-    const { node: { attrs: { __key } } } = this.props;
+    const {
+      node: {
+        attrs: { __key },
+      },
+    } = this.props;
     this.pluginState.removeNodeById(__key);
   };
 
