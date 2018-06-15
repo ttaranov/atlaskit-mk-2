@@ -62,10 +62,6 @@
 - [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
   - @atlaskit/select@3.0.0
 
-## 1.1.2
-
-## 1.1.1
-
 ## 1.1.0
 - [minor] Improve accessibility. Use AkButton for the Chevrons. [8ec5a94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec5a94)
 
@@ -92,8 +88,6 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 0.5.0
-
-
 - [minor] Add accessibility features; introduce Row's itemId prop [2e0807f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0807f)
 
 ## 0.4.0

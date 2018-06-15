@@ -15,7 +15,6 @@
   - @atlaskit/theme@4.0.2
   - @atlaskit/button@8.1.0
 
-
 ## 2.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
@@ -39,8 +38,6 @@
   - @atlaskit/spinner@5.0.2
   - @atlaskit/docs@3.0.4
 
-## 1.1.1
-
 ## 1.1.0
 - [patch] Remove null as we allowed void values [7ab743b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ab743b)
 - [patch] Update empty state and button to have consistent types [f0da143](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0da143)
@@ -63,10 +60,6 @@
 
 ## 0.1.3
 - [patch] Color of the description changed to N800 [ebf65be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf65be)
-
-## 0.1.2
-
-## 0.1.1
 
 ## 0.1.0
 - [patch] Updates dependency on docs/ to ^1.0.1 [36c7ef8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c7ef8)

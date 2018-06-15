@@ -162,13 +162,11 @@
 ## 5.4.2 (2017-10-03)
 * bug fix; improve button performance ([1bbf0d1](https://bitbucket.org/atlassian/atlaskit/commits/1bbf0d1))
 
-
 ## 5.4.1 (2017-09-27)
 * bug fix; button will truncate if wider than its parent (issues closed: ak-3332) ([a701ea1](https://bitbucket.org/atlassian/atlaskit/commits/a701ea1))
 
 ## 5.4.0 (2017-09-22)
 * feature; buttons no longer prevent text selection (issues closed: ak-3270) ([9ab343b](https://bitbucket.org/atlassian/atlaskit/commits/9ab343b))
-
 
 ## 5.3.0 (2017-09-18)
 * feature; support new Help button appearance (issues closed: ak-3535) ([69728ed](https://bitbucket.org/atlassian/atlaskit/commits/69728ed))
@@ -197,14 +195,12 @@
 * breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
 * feature; implement dark mode ([d959bb1](https://bitbucket.org/atlassian/atlaskit/commits/d959bb1))
 
-
 ## 4.0.0 (2017-08-11)
 * bug fix; button: fix focus box shadow ([9746e73](https://bitbucket.org/atlassian/atlaskit/commits/9746e73))
 * bug fix; button: fix dark link color - default / hover / active ([7b85a29](https://bitbucket.org/atlassian/atlaskit/commits/7b85a29))
 * breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
 * breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
 * feature; implement dark mode ([d959bb1](https://bitbucket.org/atlassian/atlaskit/commits/d959bb1))
-
 
 ## 3.6.0 (2017-08-09)
 * feature; export ButtonGroup from button package (issues closed: ak-2382) ([61682c6](https://bitbucket.org/atlassian/atlaskit/commits/61682c6))
