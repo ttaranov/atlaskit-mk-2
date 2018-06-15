@@ -1,5 +1,9 @@
 # @atlaskit/modal-dialog
 
+## 5.2.1
+- [patch] Removes tabbable and focusin dependencies [274e773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/274e773)
+- [none] Updated dependencies [274e773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/274e773)
+
 ## 5.2.0
 - [minor] Deprecates the ability to pass a function to the autoFocus prop. Changes implementation of FocusLock to use [react-focus-lock](https://github.com/theKashey/react-focus-lock). [5b1ab0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ab0b)
 
