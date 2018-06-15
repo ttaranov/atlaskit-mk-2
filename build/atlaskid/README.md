@@ -65,7 +65,9 @@ There are some helpers scripts that can be run here:
     ```
     micros stack:delete atlaskit-atlaskid--stg-west--v15--2018-06-08-21-03-utc--8u5hm5e74oq028i5 -e stg-west -v
     ```
-    In the future we might add this to the deploy script
+    In the future we might add this to the deploy script.
+    **Edit**: It now looks like zombie stacks can be quite common and won't always show up in the "other" section
+    If, after deployment you still see requests hitting the old server (you'll know because it will still be paused and have history) just run the delete command above but for the rollback stack (from the first command).
 
 # atlaskit-atlaskid.sd.yml
 
