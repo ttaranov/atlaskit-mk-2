@@ -13,7 +13,7 @@ type Props = {
   /**
     Boolean indicating whether to focus on the first tabbable element inside the focus lock.
   */
-  autoFocus: AutoFocus,
+  autoFocus: boolean | (() => HTMLElement | null),
   /**
     Content inside the focus lock.
   */
