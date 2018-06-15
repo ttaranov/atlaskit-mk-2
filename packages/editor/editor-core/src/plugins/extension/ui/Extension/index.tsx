@@ -7,7 +7,6 @@ import {
   WithProviders,
   ExtensionHandlers,
 } from '@atlaskit/editor-common';
-import { setExtensionElement } from '../../actions';
 import ExtensionComponent from './ExtensionComponent';
 
 export interface Props {
