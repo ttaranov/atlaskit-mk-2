@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Provider, BlockCard } from '../src';
-import '../src/mocks';
+import '../mocks';
 
 const URL_A = 'private-happy';
 const URL_B = 'private-happy-b';
