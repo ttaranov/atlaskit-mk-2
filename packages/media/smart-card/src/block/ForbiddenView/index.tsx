@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { colors } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
-import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
+import { colors } from '@atlaskit/theme';
+import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
+import { CollapsedFrame } from '../CollapsedFrame';
+import { minWidth, maxWidth } from '../dimensions';
 import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescriptionLayout';
+import { IconBackground } from './styled';
 
 export interface ForbiddenViewProps {
   icon?: string;
+  url: string;
+  onClick?: () => void;
   onAuthorise?: () => void;
 }
 
@@ -19,31 +24,37 @@ export class ForbiddenView extends React.Component<ForbiddenViewProps> {
     }
   };
 
-  renderRight() {
-    const { onAuthorise } = this.props;
-    if (!onAuthorise) {
-      return null;
-    }
-    return (
-      <Button
-        appearance="subtle"
-        iconBefore={
-          <ShortcutIcon label="open" size="small" primaryColor={colors.N500} />
-        }
-        onClick={this.handleAuthorise as () => void}
-      />
-    );
-  }
-
   render() {
-    const { icon } = this.props;
+    const { icon, url, onClick, onAuthorise } = this.props;
     return (
-      <CollapsedIconTitleDescriptionLayout
-        icon={icon}
-        title="You don't have permission to view this"
-        description="Request access or try another account to see this preview"
-        right={this.renderRight()}
-      />
+      <CollapsedFrame minWidth={minWidth} maxWidth={maxWidth} onClick={onClick}>
+        <CollapsedIconTitleDescriptionLayout
+          icon={
+            <IconBackground>
+              <LockFilledIcon
+                label="forbidden"
+                size="medium"
+                primaryColor={colors.N0}
+              />
+            </IconBackground>
+          }
+          title={url}
+          description={
+            <>
+              You don't have permission to view this.{' '}
+              {onAuthorise && (
+                <Button
+                  appearance="link"
+                  spacing="none"
+                  onClick={this.handleAuthorise as () => void}
+                >
+                  Try another account
+                </Button>
+              )}
+            </>
+          }
+        />
+      </CollapsedFrame>
     );
   }
 }

@@ -1,14 +1,16 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
 import { colors } from '@atlaskit/theme';
-import { SingleLineLayout } from '../SingleLineLayout';
+import { CollapsedFrame } from '../CollapsedFrame';
+import { minWidth, maxWidth } from '../dimensions';
+import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescriptionLayout';
 
 export interface ErroredViewProps {
+  url: string;
   message: string;
+  onClick?: () => void;
   onRetry?: () => void;
-  onDismis?: () => void;
 }
 
 export class ErroredView extends React.Component<ErroredViewProps> {
@@ -21,59 +23,35 @@ export class ErroredView extends React.Component<ErroredViewProps> {
     }
   };
 
-  handleDismis = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const { onDismis } = this.props;
-    if (onDismis) {
-      onDismis();
-    }
-  };
-
-  renderLeft() {
-    return (
-      <WarningIcon label="error" size="small" primaryColor={colors.Y300} />
-    );
-  }
-
-  renderMiddle() {
-    const { message } = this.props;
-    return message;
-  }
-
-  renderRight() {
-    const { onRetry, onDismis } = this.props;
-    return (
-      <>
-        {onRetry && (
-          <Button appearance="link" onClick={this.handleRetry as () => void}>
-            Try again
-          </Button>
-        )}
-        {onDismis && (
-          <Button
-            appearance="subtle"
-            iconBefore={
-              <CrossIcon
-                label="dismis"
-                size="small"
-                primaryColor={colors.N500}
-              />
-            }
-            onClick={this.handleDismis as () => void}
-          />
-        )}
-      </>
-    );
-  }
-
   render() {
+    const { url, message, onClick, onRetry } = this.props;
     return (
-      <SingleLineLayout
-        left={this.renderLeft()}
-        middle={this.renderMiddle()}
-        right={this.renderRight()}
-      />
+      <CollapsedFrame minWidth={minWidth} maxWidth={maxWidth} onClick={onClick}>
+        <CollapsedIconTitleDescriptionLayout
+          icon={
+            <WarningIcon
+              label="error"
+              size="medium"
+              primaryColor={colors.Y300}
+            />
+          }
+          title={url}
+          description={
+            <>
+              {message}{' '}
+              {onRetry && (
+                <Button
+                  appearance="link"
+                  spacing="none"
+                  onClick={this.handleRetry as () => void}
+                >
+                  Try again
+                </Button>
+              )}
+            </>
+          }
+        />
+      </CollapsedFrame>
     );
   }
 }

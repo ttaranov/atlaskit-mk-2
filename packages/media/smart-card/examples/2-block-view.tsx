@@ -1,65 +1,54 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { CollapsedFrame } from '../src/block/CollapsedFrame';
 import { ResolvingView } from '../src/block/ResolvingView';
 import { ErroredView as CollapsedErroredView } from '../src/block/ErroredView';
 import { UnauthorisedView } from '../src/block/UnauthorisedView';
 import { ForbiddenView } from '../src/block/ForbiddenView';
 import { ResolvedView } from '../src/block/ResolvedView';
 
-const CARD_WIDTH_MAX = 400;
-const DROPBOX_ICON =
+const url = 'https://www.dropbox.com/';
+const icon =
   'https://aem.dropbox.com/cms/content/dam/dropbox/www/en-us/branding/app-dropbox-windows@2x.png';
 
 const log = (name: string) => () => console.log(name);
-
-const CollapsedFrameWithDetails = ({
-  children,
-}: {
-  children?: React.ReactNode;
-}) => (
-  <CollapsedFrame maxWidth={CARD_WIDTH_MAX} onClick={log('Open')}>
-    {children}
-  </CollapsedFrame>
-);
+const onClick = log('Open');
 
 export default () => (
   <Page>
     <Grid>
       <GridColumn>
         <h4>Loading</h4>
-        <CollapsedFrameWithDetails>
-          <ResolvingView />
-        </CollapsedFrameWithDetails>
+        <ResolvingView onClick={onClick} />
 
         <h4>Errored</h4>
-        <CollapsedFrameWithDetails>
-          <CollapsedErroredView
-            message="We stumbled a bit here"
-            onRetry={log('Retry')}
-            onDismis={log('Dismis')}
-          />
-        </CollapsedFrameWithDetails>
+        <CollapsedErroredView
+          url={url}
+          message="We stumbled a bit here."
+          onClick={onClick}
+          onRetry={log('Retry')}
+        />
 
-        <h4>Unauthenticated</h4>
-        <CollapsedFrameWithDetails>
-          <UnauthorisedView
-            icon={DROPBOX_ICON}
-            service="Dropbox"
-            onAuthorise={log('Authorise')}
-          />
-        </CollapsedFrameWithDetails>
+        <h4>Unauthorised</h4>
+        <UnauthorisedView
+          icon={icon}
+          url={url}
+          onClick={onClick}
+          onAuthorise={log('Authorise')}
+        />
 
         <h4>Forbidden</h4>
-        <CollapsedFrameWithDetails>
-          <ForbiddenView icon={DROPBOX_ICON} onAuthorise={log('Authorise')} />
-        </CollapsedFrameWithDetails>
+        <ForbiddenView
+          icon={icon}
+          url={url}
+          onClick={onClick}
+          onAuthorise={log('Authorise')}
+        />
 
         <h4>Resolved</h4>
         <ResolvedView
           context={{
             text: 'Dropbox',
-            icon: DROPBOX_ICON,
+            icon: icon,
           }}
           title={{ text: 'foo bar' }}
           byline={{ text: 'foo bar' }}
@@ -69,7 +58,7 @@ export default () => (
         <ResolvedView
           context={{
             text: 'Dropbox',
-            icon: DROPBOX_ICON,
+            icon: icon,
           }}
           user={{
             name: 'Foo bar',

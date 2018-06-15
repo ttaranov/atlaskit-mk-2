@@ -3,11 +3,6 @@ import { HTMLAttributes, ComponentClass } from 'react';
 import { colors } from '@atlaskit/theme';
 import { ellipsis } from '@atlaskit/media-ui';
 
-export const Icon: ComponentClass<{ src?: string }> = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
 export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${colors.N800};
   font-size: 14px;
