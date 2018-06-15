@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
-import {
-  selectParentNodeOfType,
-  findParentNodeOfType,
-  findSelectedNodeOfType,
-} from 'prosemirror-utils';
+import { selectParentNodeOfType } from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
@@ -18,9 +13,6 @@ export interface Props {
   editorView: EditorView;
   macroProvider?: Promise<MacroProvider>;
   node: PMNode;
-  setExtensionElement: (
-    element: HTMLElement | null,
-  ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   extensionHandlers: ExtensionHandlers;
 }
