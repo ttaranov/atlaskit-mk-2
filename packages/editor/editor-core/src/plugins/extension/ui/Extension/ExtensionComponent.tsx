@@ -6,11 +6,13 @@ import { Node as PMNode } from 'prosemirror-model';
 import {
   selectParentNodeOfType,
   findParentNodeOfType,
+  findSelectedNodeOfType,
 } from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import { ExtensionHandlers } from '@atlaskit/editor-common';
+import { setNodeSelection } from '../../../../utils';
 
 export interface Props {
   editorView: EditorView;
@@ -94,25 +96,20 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   };
 
-  private handleSelectExtension = () => {
+  private handleSelectExtension = hasBody => {
     const {
       state,
-      state: { selection, doc },
+      state: { selection, schema },
       dispatch,
     } = this.props.editorView;
     let { tr } = state;
-    const extnWithContent = findParentNodeOfType(
-      state.schema.nodes.bodiedExtension,
-    )(selection);
 
-    if (extnWithContent) {
-      tr = selectParentNodeOfType([state.schema.nodes.bodiedExtension])(
-        state.tr,
-      );
+    if (hasBody) {
+      tr = selectParentNodeOfType([schema.nodes.bodiedExtension])(state.tr);
+      dispatch(tr);
     } else {
-      tr = tr.setSelection(NodeSelection.create(doc, selection.$from.pos - 1));
+      setNodeSelection(this.props.editorView, selection.$from.pos - 1);
     }
-    dispatch(tr);
   };
 
   private tryExtensionHandler() {

@@ -50,7 +50,7 @@ export default class Extension extends Component<Props, any> {
               <Overlay className="extension-overlay" />
               <Header
                 contentEditable={false}
-                onClick={onSelectExtension}
+                onClick={onSelectExtension.bind(null, hasBody)}
                 className={hasChildren ? 'with-children' : ''}
               >
                 {children ? children : <ExtensionLozenge node={node} />}

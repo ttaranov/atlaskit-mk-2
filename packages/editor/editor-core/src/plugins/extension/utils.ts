@@ -3,24 +3,37 @@ import { EditorState, NodeSelection } from 'prosemirror-state';
 import {
   findParentNodeOfType,
   findSelectedNodeOfType,
+  isNodeSelection,
 } from 'prosemirror-utils';
 
-export const getExtensionNode = (state: EditorState): PmNode | undefined => {
-  const { selection, schema } = state;
-  const { extension, inlineExtension, bodiedExtension } = schema.nodes;
-
-  if (selection instanceof NodeSelection) {
-    const selectedNode = findSelectedNodeOfType([
-      extension,
-      inlineExtension,
-      bodiedExtension,
-    ])(selection);
-    if (selectedNode) {
-      return selectedNode.node;
+type ExtensionNode =
+  | {
+      node: PmNode;
+      pos: number;
     }
+  | undefined;
+
+export const getExtensionNode = (state: EditorState): ExtensionNode => {
+  const { selection } = state;
+  const { extension, inlineExtension, bodiedExtension } = state.schema.nodes;
+
+  let selectedExtNode = findParentNodeOfType([
+    extension,
+    inlineExtension,
+    bodiedExtension,
+  ])(selection);
+
+  if (
+    isNodeSelection(selection) &&
+    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])(
+      selection,
+    )
+  ) {
+    selectedExtNode = {
+      node: (selection as NodeSelection).node,
+      pos: selection.$from.pos,
+    };
   }
-  const parent = findParentNodeOfType(bodiedExtension)(selection);
-  if (parent) {
-    return parent.node;
-  }
+
+  return selectedExtNode;
 };

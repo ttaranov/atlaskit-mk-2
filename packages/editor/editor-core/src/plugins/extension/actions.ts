@@ -1,9 +1,4 @@
-import {
-  EditorState,
-  Transaction,
-  NodeSelection,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
@@ -73,7 +68,7 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
       if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
         dispatch(selectParentNodeOfType(bodiedExtension)(tr));
       }
-      insertMacroFromMacroBrowser(macroProvider, node)(view);
+      insertMacroFromMacroBrowser(macroProvider, node.node)(view);
       return true;
     }
   }
