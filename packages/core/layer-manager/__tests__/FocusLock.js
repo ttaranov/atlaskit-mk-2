@@ -34,6 +34,17 @@ it('should focus button', () => {
   expect(textContent(document.activeElement)).toBe('Button 1');
 });
 
+it('should focus what is returned by the function', () => {
+  const ref = React.createRef();
+  mount(
+    <FocusLock autoFocus={() => ref.current}>
+      <button>Button 1</button>
+      <button ref={ref}>Button 2</button>
+    </FocusLock>,
+  );
+  expect(textContent(document.activeElement)).toBe('Button 2');
+});
+
 it('should focus in last rendered lock', () => {
   mount(
     <div>

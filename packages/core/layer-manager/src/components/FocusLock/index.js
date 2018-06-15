@@ -11,20 +11,15 @@ type Props = {
   */
   ariaHiddenNode?: HTMLElement,
   /**
-    Boolean OR Function indicating which element to focus when the component
-    initialises (mounts or becomes enabled):
-    - undefined sets the focus on the boundary itself
-    - FALSE assumes the user has set autoFocus on another element within the boundary
-    - TRUE will automatically find the first "tabbable" element within the boundary
-    - Providing a function should return the element you want to focus
+    Boolean indicating whether to focus on the first tabbable element inside the focus lock.
   */
   autoFocus: AutoFocus,
   /**
-    Accepts a single child
+    Content inside the focus lock.
   */
   children?: Node,
   /**
-    Toggle focus management outside of mount/unmount lifecycle methods
+    Whether the focus lock is active or not.
   */
   enabled: boolean,
 };
@@ -44,11 +39,11 @@ export default class FocusLock extends Component<Props> {
   };
 
   componentDidMount() {
-    const { enabled } = this.props;
+    const { enabled, autoFocus } = this.props;
 
     if (typeof autoFocus === 'function') {
       console.warn(
-        '@atlaskit/layer-manager warning: passing a function as autoFocus in FocusLock is deprecated. Please see...',
+        '@atlaskit/layer-manager: Passing a function as autoFocus in FocusLock is deprecated. Please see "Auto focusing an element" in https://atlaskit.atlassian.com/packages/core/layer-manager',
       );
     }
 
