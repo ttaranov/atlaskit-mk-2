@@ -93,9 +93,8 @@ export default class FocusLock extends Component<Props> {
 
   render() {
     const { enabled, autoFocus } = this.props;
-    const shouldAutoFocus = typeof autoFocus === 'boolean' && autoFocus;
     return (
-      <FocusTrap disabled={!enabled} autoFocus={shouldAutoFocus}>
+      <FocusTrap disabled={!enabled} autoFocus={!!autoFocus} returnFocus>
         {this.props.children}
       </FocusTrap>
     );

@@ -259,20 +259,20 @@ class Modal extends Component<Props, State> {
         onExit={this.handleExit}
         scrollDistance={scrollDistance}
       >
-        <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
-        <Positioner
-          {...transitionProps}
-          customTransition={customTransition}
-          onClick={this.handleOverlayClick}
-          onEntered={this.handleEntered}
-          onExited={onCloseComplete}
-          scrollBehavior={scrollBehavior}
-          widthName={widthName}
-          widthValue={widthValue}
+        <FocusLock
+          enabled={stackIndex === 0 && !isExiting}
+          autoFocus={autoFocus}
         >
-          <FocusLock
-            enabled={stackIndex === 0 && !isExiting}
-            autoFocus={autoFocus}
+          <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
+          <Positioner
+            {...transitionProps}
+            customTransition={customTransition}
+            onClick={this.handleOverlayClick}
+            onEntered={this.handleEntered}
+            onExited={onCloseComplete}
+            scrollBehavior={scrollBehavior}
+            widthName={widthName}
+            widthValue={widthValue}
           >
             <Dialog
               heightValue={height}
@@ -299,8 +299,8 @@ class Modal extends Component<Props, State> {
                 {children}
               </Content>
             </Dialog>
-          </FocusLock>
-        </Positioner>
+          </Positioner>
+        </FocusLock>
       </FillScreen>
     );
   }

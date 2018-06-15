@@ -39,7 +39,7 @@ export default class ModalDemo extends Component<
             Function returns a ref
           </Button>
           <Button onClick={() => this.open('autoFocus')}>
-            autofocus as false
+            using autoFocus attribute
           </Button>
         </ButtonGroup>
 
