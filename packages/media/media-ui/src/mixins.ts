@@ -5,19 +5,6 @@ import {
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 
-export const cardTitle = `
-  color: ${akColorN900};
-  font-size: 16px;
-  font-weight: 500;
-  line-height: ${20 / 16};
-`;
-
-export const cardDescription = `
-  color: ${akColorN300};
-  font-size: 12px;
-  line-height: ${16 / 12};
-`;
-
 export const ellipsis = (maxWidth: string | number = '100%') => {
   const unit = typeof maxWidth === 'number' ? 'px' : '';
 
