@@ -29,7 +29,15 @@ module.exports = function createWebpackConfig(
     noMinimize?: boolean,
     report?: boolean,
   }*/,
-) {
+) /*: {
+  entry: {},
+  output: {},
+  devtool: boolean | string,
+  module: {},
+  resolve: {},
+  resolveLoader: {},
+  plugins: any[],
+}*/ {
   return {
     entry: {
       main:

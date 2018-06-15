@@ -1,7 +1,7 @@
 // @flow
 
 export const cities: Array<{ label: string, value: any }> = [
-  { label: 'Adelaide', value: 'adelaide' },
+  { label: 'Adelaide', value: 'adelaide', extra: 'extra' },
   { label: 'Brisbane', value: 'brisbane' },
   { label: 'Canberra', value: 'canberra' },
   { label: 'Darwin', value: 'darwin' },

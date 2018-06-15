@@ -55,18 +55,21 @@ type State = {
   isHover: boolean,
 };
 
+export const defaultProps = {
+  appearance: 'default',
+  isDisabled: false,
+  isSelected: false,
+  isLoading: false,
+  spacing: 'default',
+  type: 'button',
+  shouldFitContainer: false,
+  autoFocus: false,
+};
+
 class Button extends Component<ButtonProps, State> {
   button: HTMLElement;
 
-  static defaultProps = {
-    appearance: 'default',
-    isDisabled: false,
-    isSelected: false,
-    isLoading: false,
-    spacing: 'default',
-    type: 'button',
-    shouldFitContainer: false,
-  };
+  static defaultProps = defaultProps;
 
   state = {
     isActive: false,

@@ -69,9 +69,11 @@ describe('RowControls', () => {
         for (let i = 1; i < row; i++) {
           rows.push(tr(tdEmpty));
         }
-        const { editorView, plugin, pluginState: { tableElement } } = editor(
-          doc(p('text'), table()(...rows)),
-        );
+        const {
+          editorView,
+          plugin,
+          pluginState: { tableElement },
+        } = editor(doc(p('text'), table()(...rows)));
         const floatingControls = mount(
           <TableFloatingControls
             tableElement={tableElement}
@@ -202,7 +204,11 @@ describe('RowControls', () => {
 
   describe('DeleteRowButton', () => {
     it('does not render a delete button with no selection', () => {
-      const { plugin, editorView, pluginState: { tableElement } } = editor(
+      const {
+        plugin,
+        editorView,
+        pluginState: { tableElement },
+      } = editor(
         doc(
           table()(
             tr(thEmpty, td({})(p()), thEmpty),
@@ -276,7 +282,11 @@ describe('RowControls', () => {
   });
 
   it('calls remove on clicking the remove button', () => {
-    const { plugin, editorView, pluginState: { tableElement } } = editor(
+    const {
+      plugin,
+      editorView,
+      pluginState: { tableElement },
+    } = editor(
       doc(
         table()(
           tr(thEmpty, td({})(p()), thEmpty),

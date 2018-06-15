@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 3.1.0
+- [minor] Textareas can be set to resize in only a single direction now [954d4b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/954d4b0)
+
 ## 3.0.4
 - [patch] Fixed disabled field colour in Safari [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
 - [none] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)

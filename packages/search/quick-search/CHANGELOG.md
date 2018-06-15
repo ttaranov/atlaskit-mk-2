@@ -1,5 +1,9 @@
 # @atlaskit/quick-search
 
+## 2.2.0
+- [minor] onSearchSubmit prop also triggers on Shift+Enter [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
+- [none] Updated dependencies [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
+
 ## 2.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
