@@ -22,6 +22,10 @@ type Props = {
     Whether the focus lock is active or not.
   */
   enabled: boolean,
+  /**
+    Whether to return the focus to the previous active element.
+  */
+  returnFocus: boolean,
 };
 
 /* eslint-disable react/sort-comp */
@@ -36,6 +40,7 @@ export default class FocusLock extends Component<Props> {
   static defaultProps = {
     autoFocus: true,
     enabled: true,
+    returnFocus: true,
   };
 
   componentDidMount() {
@@ -92,9 +97,13 @@ export default class FocusLock extends Component<Props> {
   };
 
   render() {
-    const { enabled, autoFocus } = this.props;
+    const { enabled, autoFocus, returnFocus } = this.props;
     return (
-      <FocusTrap disabled={!enabled} autoFocus={!!autoFocus} returnFocus>
+      <FocusTrap
+        disabled={!enabled}
+        autoFocus={!!autoFocus}
+        returnFocus={returnFocus}
+      >
         {this.props.children}
       </FocusTrap>
     );
