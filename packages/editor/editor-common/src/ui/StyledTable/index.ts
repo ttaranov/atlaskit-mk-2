@@ -38,7 +38,7 @@ const tableSharedStyle = `
         font-weight: normal;
       }
       th, td {
-        min-width: 3em;
+        min-width: 128px;
         height: 3em;
         vertical-align: top;
         border: 1px solid ${akEditorTableBorder};

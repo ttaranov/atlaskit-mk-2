@@ -51,7 +51,7 @@ const tablesPlugin: EditorPlugin = {
         rank: 910,
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
-            ? columnResizing({ handleWidth: 6 })
+            ? columnResizing({ handleWidth: 6, cellMinWidth: 128 })
             : undefined,
       },
       {
