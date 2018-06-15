@@ -108,8 +108,6 @@
 
 ## 3.1.0 (2017-07-17)
 * fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
-
-## 3.1.0 (2017-07-17)
 * feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 
 ## 3.0.0 (2017-06-08)

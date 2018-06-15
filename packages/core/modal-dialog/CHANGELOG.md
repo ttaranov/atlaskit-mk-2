@@ -193,7 +193,7 @@
 * feature; animated entry/exit of modal dialog ([e721aaa](https://bitbucket.org/atlassian/atlaskit/commits/e721aaa))
 
 ## 2.0.0 (2017-05-05)
-* witch modal styling to styled-components ([f9510b4](https://bitbucket.org/atlassian/atlaskit/commits/f9510b4))
+* switch modal styling to styled-components ([f9510b4](https://bitbucket.org/atlassian/atlaskit/commits/f9510b4))
 * breaking; Modal dialog now has a peerDependency on the styled-components package.
 * ISSUES CLOSED: AK-2290
 
