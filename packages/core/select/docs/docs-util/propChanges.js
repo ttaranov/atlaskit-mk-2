@@ -84,9 +84,13 @@ type State = {
   packageFilter: string,
 };
 
+const stringAllOptions: Array<string> = allOptions.map(
+  (opt: { value: string }): string => opt.value,
+);
+
 export default class PropChanges extends Component<Prop, State> {
   state = {
-    selectedOptions: allOptions.map(opt => opt.value),
+    selectedOptions: stringAllOptions,
     filterValue: filterOptions[0].value,
     packageFilter: 'all',
   };
