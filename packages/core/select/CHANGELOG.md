@@ -55,6 +55,7 @@
   - selectValue now filters items based on getOptionValue method.
   - Added `createOptionPosition` prop for Creatable select, which allows the user to specify whether the createOption element displays as the first or last option in the menu.
   - Added touch handling logic to detect user intent to scroll the page when interacting with the select control.
+
 ## 3.0.2
 - [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
   - @atlaskit/icon@11.3.0
@@ -82,8 +83,6 @@
 ## 2.0.2
 - [patch] Release to align @atlaskit/select styles and theme with ADG3 guideline.  [7468739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7468739)
 
-## 2.0.1
-
 ## 2.0.0
 - [major] Classname prop added, if this is given a value we surface logical semantic classes prefixed with the supplied value to enable styling via css otherwise a generated hash value is used.W e also now export icon components from the components object to facilitate easier customisation.  Previously this behaviour was enforced, and classes were given semantic values and prefixed with ‘react-select’ by default (i.e. react-select__dropdown-indicator) . See the following commit for details  https://github.com/JedWatson/react-select/commit/109d1aadb585cc5fd113d03309d80bd59b5eaf9b Also in this release, IE 11 display bugfix for centre alligned elements in a flex parent, fix for react15 compatibility, fix for bug where long tail values were not being truncated properly in the control [8d19b24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d19b24)
 
@@ -97,7 +96,6 @@
 - [minor] @atlaskit/select now exports the createFilter [df7d845](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df7d845)
 
 ## 1.1.1
-
 - [patch] Re-export some exports from react-select for use in other packages. [eda9906](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eda9906)
 
 ## 1.1.0
@@ -125,7 +123,6 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 0.1.4
-
 - [patch] misc updates to select package [bd000c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd000c7)
 
 ## 0.1.3

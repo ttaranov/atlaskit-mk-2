@@ -48,8 +48,6 @@
   - @atlaskit/media-test-helpers@13.0.1
 
 ## 7.1.2
-
-
 - [patch] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
   - @atlaskit/media-test-helpers@13.0.0
 - [patch] Updated dependencies [9041d71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9041d71)
@@ -75,36 +73,17 @@
 ## 7.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
-## 6.0.7
-
 ## 6.0.6
-
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
-
-## 6.0.5
-
-## 6.0.4
-
-## 6.0.3
-
-## 6.0.2
-
-## 6.0.1
-
-## 6.0.0
 
 ## 5.4.3
 - [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
-
-## 5.4.2
 
 ## 5.4.1
 - [patch] Clean up avatar picker dependencies, update readme [a98a141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a98a141)
 
 ## 5.4.0
 - [minor] implement loading state in media-avatar-picker [13f9d50](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13f9d50)
-
-## 5.3.1
 
 ## 5.3.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
@@ -121,71 +100,38 @@
 ## 5.0.2
 - [patch] updated the repository url to https://bitbucket.org/atlassian/atlaskit-mk-2 [1e57e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e57e5a)
 
-## 5.0.1
-
-## 5.0.0
-
 ## 4.6.0
-
 - [minor] [MSW-338] feat - ability to remove [9905003](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9905003)
-
-## 4.5.1
 
 ## 4.5.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
-
-## 4.4.4
 
 ## 4.4.3
 - [patch] Fix console error when running under a React 16 environment. [36d5c0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36d5c0d)
 
 ## 4.4.2
-
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
 
-## 4.4.1
-
 ## 4.4.0
-
 - [minor] update avatar picker to latest design specs, add snapshot tests [bb4b25d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb4b25d)
 
 ## 4.3.11
 - [patch] apply prettier to avatar picker source to reduce noise on future PRs [cc618e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc618e4)
 
-## 4.3.10
-
-## 4.3.9
-
-## 4.3.8
-
 ## 4.3.7
 - [patch] Ensure avatar picker with source submits default image [f8c957f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f8c957f)
-
-## 4.3.6
 
 ## 4.3.5
 - [patch] apply pretty printing to avatar picker src [fb77dce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb77dce)
 
-## 4.3.4
-
-## 4.3.3
-
-## 4.3.2
-
 ## 4.3.1
 - [patch] fix onClick events not firing in media-avatar-picker dialog [cb54328](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb54328)
-
-## 4.3.0
 
 ## 4.2.0
 - [minor] [MSW-339] customise avatar picker dialog labels [c9686ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9686ad)
 
-## 4.1.2
-
 ## 4.1.1
 - [patch] fix broken syntax in avatar example [c7cc95d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7cc95d)
-
-## 4.1.0
 
 ## 4.0.1
 - [patch] expose Avatar type, fix broken example deps [f3f4bec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f4bec)
@@ -193,23 +139,9 @@
 ## 4.0.0
 - [major] fix selection of predefined avatars. breaking changes, reduced public interface to only expose AvatarPickerDialog. [f76449f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76449f)
 
-## 3.3.9
-
-## 3.3.8
-
-## 3.3.7
-
-## 3.3.6
-
 ## 3.3.5
-
-
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
-
-## 3.3.4
-
-## 3.3.3
 
 ## 3.3.2
 - [patch] Dont render AvatarList when image is selected [25c2253](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25c2253)
@@ -227,85 +159,43 @@
 - [minor] Upgrade Media Editor packages [193c8a0](193c8a0)
 
 ## 3.1.0 (2017-11-16)
-
 * feature; contrain media-avatar-picker panning and zooming ([be3a131](https://bitbucket.org/atlassian/atlaskit/commits/be3a131))
+
 ## 3.0.1 (2017-09-18)
-
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))
+
 ## 3.0.0 (2017-09-11)
-
 * bug fix; ensures boolean value for hasRenderedImage variable ([a9d53e2](https://bitbucket.org/atlassian/atlaskit/commits/a9d53e2))
-
 * bug fix; renames AvatarPickerDialog props and adds more descriptive variable names and comment ([f323500](https://bitbucket.org/atlassian/atlaskit/commits/f323500))
 * breaking; new required props for AvatarPickerDialog and ImageNavigator ([f119bfe](https://bitbucket.org/atlassian/atlaskit/commits/f119bfe))
 * breaking; adds onSaveAvatar, onSaveImage and onCancel props to AvatarPickerDialog ([f119bfe](https://bitbucket.org/atlassian/atlaskit/commits/f119bfe))
 
-
 ## 2.3.0 (2017-08-11)
-
 * feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
-## 2.2.4 (2017-08-03)
 
+## 2.2.4 (2017-08-03)
 * bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
 
 ## 2.2.3 (2017-08-01)
-
 * bug fix; bumping media-core ([6488cfc](https://bitbucket.org/atlassian/atlaskit/commits/6488cfc))
 
-
-
-
-## 2.2.2 (2017-07-25)
-
 ## 2.2.1 (2017-07-21)
-
-
 * fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 * fix; remove SC from peerDependencies to dependencies ([568161b](https://bitbucket.org/atlassian/atlaskit/commits/568161b))
 
 ## 2.2.0 (2017-07-10)
-
-
 * feature; use [@atlaskit](https://github.com/atlaskit)/slider instead of the one from [@atlaskit](https://github.com/atlaskit)/media-avatar-picker ([10aee5d](https://bitbucket.org/atlassian/atlaskit/commits/10aee5d))
 
 ## 2.1.0 (2017-06-08)
-
-
 * fix; remove media-test-helpers from avatar-picker src ([1c80d71](https://bitbucket.org/atlassian/atlaskit/commits/1c80d71))
-
-
 * feature; add image uploader feature to avatar-picker ([d159185](https://bitbucket.org/atlassian/atlaskit/commits/d159185))
 * feature; allow drag files into avatar-picker uploader ([0b5503f](https://bitbucket.org/atlassian/atlaskit/commits/0b5503f))
 
 ## 2.0.2 (2017-04-27)
-
-
 * fix; update legal copy to be more clear. Not all modules include ADG license. ([f3a945e](https://bitbucket.org/atlassian/atlaskit/commits/f3a945e))
 
 ## 2.0.1 (2017-04-26)
-
-
 * fix; update legal copy and fix broken links for component README on npm. New contribution and ([0b3e454](https://bitbucket.org/atlassian/atlaskit/commits/0b3e454))
 
 ## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-## 1.0.0 (2017-04-19)
-
-
 * feature; add export functionality to ImageNavigator component ([7c08a4e](https://bitbucket.org/atlassian/atlaskit/commits/7c08a4e))

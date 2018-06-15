@@ -20,7 +20,6 @@
   - @atlaskit/analytics-next@2.1.7
   - @atlaskit/button@8.1.0
 
-
 ## 4.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
@@ -54,7 +53,6 @@
   - @atlaskit/docs@3.0.4
 
 ## 3.0.3
-
 - [patch] Fix race condition in layer manager's portal where portalled contents would still display after unmounting if they were quickly mounted and then unmounted [23ef141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23ef141)
 
 ## 3.0.2
@@ -111,20 +109,9 @@
 ## 2.5.5
 - [patch] AK-4064 ensure unmountComponentAtNode is called for components rendered via ReactDOM.render [e3153c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3153c3)
 
-## 2.5.4
-
-## 2.5.3
-
-## 2.5.2
-
-## 2.5.1
-
 ## 2.5.0
 - [minor] support context via HOC from layer-manager [333a8de](333a8de)
 
-## 2.4.1
-
 ## 2.4.0 (2017-11-14)
-
 * add flow types
 * feature; add support for flags ([a451a73](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a451a73))

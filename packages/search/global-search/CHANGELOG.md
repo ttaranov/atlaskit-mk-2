@@ -95,16 +95,8 @@
   - @atlaskit/util-service-support@2.0.7
   - @atlaskit/analytics@3.0.1
 
-## 3.1.1
-
-## 3.1.0
-
-## 3.0.5
-
 ## 3.0.4
 - [patch] Link to people search includes query [6d2e946](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d2e946)
-
-## 3.0.3
 
 ## 3.0.2
 - [patch] Rename EmptyState component to NoResults [cb73105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73105)
@@ -129,8 +121,6 @@
 
 ## 1.7.0
 - [minor] Show empty state when no results were found at all [398901a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/398901a)
-
-## 1.6.0
 
 ## 1.5.0
 - [minor] Show error state when searches fail [4fbbb29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fbbb29)
