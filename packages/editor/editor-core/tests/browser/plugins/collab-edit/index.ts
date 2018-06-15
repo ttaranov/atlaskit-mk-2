@@ -168,6 +168,17 @@ describe('editor/plugins/collab-edit', () => {
       const { editorView, providerPromise } = setupEditor();
       const provider = await providerPromise;
 
+      provider.emit('presence', {
+        left: [],
+        joined: [
+          {
+            sessionId: 'test',
+            lastActive: 1,
+            avatar: 'avatar.png',
+          },
+        ],
+      });
+
       provider.emit('telepointer', {
         type: 'telepointer',
         selection: {
@@ -191,6 +202,17 @@ describe('editor/plugins/collab-edit', () => {
     it('should place cursor ', async () => {
       const { editorView, providerPromise } = setupEditor();
       const provider = await providerPromise;
+
+      provider.emit('presence', {
+        left: [],
+        joined: [
+          {
+            sessionId: 'test',
+            lastActive: 1,
+            avatar: 'avatar.png',
+          },
+        ],
+      });
 
       provider.emit('telepointer', {
         type: 'telepointer',
