@@ -56,7 +56,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
       return <BlockResolvingView />;
     }
 
-    const isHorizontal = appearance === 'horizontal';
+    const isSquare = appearance === 'square';
 
     return (
       <BlockResolvedView
@@ -66,8 +66,8 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
         }}
         title={title ? { text: title } : undefined}
         description={description ? { text: description } : undefined}
-        preview={!isHorizontal ? thumbnailUrl : undefined}
-        thumbnail={isHorizontal ? thumbnailUrl : undefined}
+        preview={isSquare ? thumbnailUrl : undefined}
+        thumbnail={!isSquare ? thumbnailUrl : undefined}
         onClick={() => window.open(linkUrl)}
       />
     );
