@@ -34,7 +34,7 @@ import { CellSelection } from 'prosemirror-tables';
 import InsertColumnButton from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
 
 const selectColumns = columnIdxs => tr => {
-  const cells: { pos: number; node: Node }[] = columnIdxs.reduce(
+  const cells: { pos: number; start: number; node: Node }[] = columnIdxs.reduce(
     (acc, colIdx) => {
       const colCells = getCellsInColumn(colIdx)(tr.selection);
       return colCells ? acc.concat(colCells) : acc;
@@ -43,8 +43,8 @@ const selectColumns = columnIdxs => tr => {
   );
 
   if (cells) {
-    const $anchor = tr.doc.resolve(cells[0].pos - 1);
-    const $head = tr.doc.resolve(cells[cells.length - 1].pos - 1);
+    const $anchor = tr.doc.resolve(cells[0].pos);
+    const $head = tr.doc.resolve(cells[cells.length - 1].pos);
     return tr.setSelection(new CellSelection($anchor, $head));
   }
 };

@@ -15,7 +15,7 @@ export const createHoverDecorationSet = (
       classes.push('danger');
     }
 
-    return Decoration.node(cell.pos - 1, cell.pos + cell.node.nodeSize - 1, {
+    return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {
       class: classes.join(' '),
     });
   });
@@ -28,11 +28,10 @@ export const createControlsDecorationSet = (
 ): DecorationSet => {
   const pluginState = tablePluginKey.getState(editorView.state);
   const { tableNode } = pluginState;
-  const { pos: start } = findTable(editorView.state.selection)!;
-  const before = start - 1;
+  const { pos } = findTable(editorView.state.selection)!;
 
   return DecorationSet.create(editorView.state.doc, [
-    Decoration.node(before, before + tableNode.nodeSize, {
+    Decoration.node(pos, pos + tableNode.nodeSize, {
       class: `with-controls`,
     }),
   ]);

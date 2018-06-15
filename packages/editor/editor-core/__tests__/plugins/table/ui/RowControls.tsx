@@ -41,14 +41,17 @@ import DeleteRowButton from '../../../../src/plugins/table/ui/TableFloatingContr
 import InsertRowButton from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls/InsertRowButton';
 
 const selectRows = rowIdxs => tr => {
-  const cells: { pos: number; node: Node }[] = rowIdxs.reduce((acc, rowIdx) => {
-    const rowCells = getCellsInRow(rowIdx)(tr.selection);
-    return rowCells ? acc.concat(rowCells) : acc;
-  }, []);
+  const cells: { pos: number; start: number; node: Node }[] = rowIdxs.reduce(
+    (acc, rowIdx) => {
+      const rowCells = getCellsInRow(rowIdx)(tr.selection);
+      return rowCells ? acc.concat(rowCells) : acc;
+    },
+    [],
+  );
 
   if (cells) {
-    const $anchor = tr.doc.resolve(cells[0].pos - 1);
-    const $head = tr.doc.resolve(cells[cells.length - 1].pos - 1);
+    const $anchor = tr.doc.resolve(cells[0].pos);
+    const $head = tr.doc.resolve(cells[cells.length - 1].pos);
     return tr.setSelection(new CellSelection($anchor, $head));
   }
 };

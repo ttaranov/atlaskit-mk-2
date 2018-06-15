@@ -190,7 +190,9 @@ export class TableState {
     const domAtPos = this.view.domAtPos.bind(this.view);
 
     const parent = findParentDomRefOfType(table, domAtPos)(selection);
-    const tableElement = parent ? parent.parentNode : undefined;
+    const tableElement = parent
+      ? (parent as HTMLElement).querySelector('table')
+      : undefined;
     if (tableElement !== this.tableElement) {
       this.tableElement = tableElement as HTMLElement;
     }
@@ -245,7 +247,7 @@ export class TableState {
     const { schema, tr } = this.view.state;
 
     this.view.dispatch(
-      tr.setNodeMarkup(tableNode.pos - 1, schema.nodes.table, {
+      tr.setNodeMarkup(tableNode.pos, schema.nodes.table, {
         ...tableNode.node.attrs,
         layout,
       }),
@@ -305,7 +307,7 @@ export class TableState {
   private moveCursorTo(pos: number): void {
     const table = findTable(this.view.state.selection);
     if (table) {
-      this.moveCursorInsideTableTo(pos + table.pos);
+      this.moveCursorInsideTableTo(pos + table.start);
     }
   }
 }
@@ -406,7 +408,7 @@ export const createPlugin = (
           ) as HTMLTableRowElement;
           const rowIndex = rowElement && rowElement.rowIndex;
           const cellIndex = map.width * rowIndex + colIndex;
-          const posInTable = map.map[cellIndex + 1] - 1;
+          const posInTable = map.map[cellIndex + 1];
 
           const {
             dispatch,

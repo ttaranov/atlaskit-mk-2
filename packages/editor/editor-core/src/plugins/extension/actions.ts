@@ -59,7 +59,7 @@ export const updateExtensionLayout = layout => (
     extPosition = selectedNode.pos;
     extNode = selectedNode.node;
   } else {
-    extPosition = parentExtNode!.pos - 1;
+    extPosition = parentExtNode!.pos;
     extNode = parentExtNode!.node;
   }
 
