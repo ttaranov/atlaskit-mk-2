@@ -1,5 +1,13 @@
 # @atlaskit/tooltip
 
+## 10.2.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/layer-manager@4.2.1
+  - @atlaskit/icon@12.1.2
+
 ## 10.2.0
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/layer-manager@4.1.0

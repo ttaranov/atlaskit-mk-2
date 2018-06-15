@@ -1,5 +1,15 @@
 # @atlaskit/onboarding
 
+## 4.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/layer-manager@4.2.1
+  - @atlaskit/icon@12.1.2
+
 ## 4.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

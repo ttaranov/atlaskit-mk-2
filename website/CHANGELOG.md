@@ -1,5 +1,33 @@
 # @atlaskit/website
 
+## 2.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/media-card@29.1.2
+  - @atlaskit/media-filmstrip@9.0.3
+  - @atlaskit/media-test-helpers@14.0.3
+  - @atlaskit/media-core@19.1.3
+  - @atlaskit/css-reset@2.0.6
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/inline-dialog@7.1.2
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/single-select@5.1.2
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/page@7.1.1
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/tag@5.0.4
+  - @atlaskit/tag-group@5.1.1
+  - @atlaskit/lozenge@5.0.4
+  - @atlaskit/code@5.0.4
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/logo@8.1.2
+  - @atlaskit/flag@8.1.1
+  - @atlaskit/dynamic-table@9.1.2
+  - @atlaskit/navigation@32.1.1
+  - @atlaskit/layer-manager@4.2.1
+  - @atlaskit/icon@12.1.2
+
 ## 2.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

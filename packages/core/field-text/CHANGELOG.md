@@ -1,5 +1,12 @@
 # @atlaskit/field-text
 
+## 6.0.4
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+
 ## 6.0.3
 - [patch] Fixed disabled field colour in Safari [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
 - [none] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)

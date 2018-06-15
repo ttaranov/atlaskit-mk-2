@@ -1,5 +1,16 @@
 # @atlaskit/task-decision
 
+## 7.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/renderer@18.1.2
+  - @atlaskit/editor-common@11.2.1
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/icon@12.1.2
+
 ## 7.1.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/renderer@18.1.0

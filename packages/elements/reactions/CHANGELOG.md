@@ -1,5 +1,16 @@
 # @atlaskit/reactions
 
+## 12.1.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/emoji@35.1.1
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/icon@12.1.2
+
 ## 12.1.2
 - [patch] FS-1993 fix reactions flaky test [54c5a7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54c5a7a)
 

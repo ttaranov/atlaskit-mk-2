@@ -1,5 +1,19 @@
 # @atlaskit/datetime-picker
 
+## 5.2.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/select@4.2.3
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/field-range@4.0.3
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/calendar@6.1.2
+  - @atlaskit/icon@12.1.2
+
 ## 5.2.0
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/modal-dialog@5.1.0

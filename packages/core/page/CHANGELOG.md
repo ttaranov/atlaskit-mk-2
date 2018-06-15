@@ -1,5 +1,11 @@
 # @atlaskit/page
 
+## 7.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/toggle@4.0.3
+  - @atlaskit/navigation@32.1.1
+
 ## 7.1.0
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/navigation@32.1.0

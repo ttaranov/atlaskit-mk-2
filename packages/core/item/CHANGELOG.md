@@ -1,5 +1,13 @@
 # @atlaskit/item
 
+## 7.0.5
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/lozenge@5.0.4
+  - @atlaskit/icon@12.1.2
+
 ## 7.0.4
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

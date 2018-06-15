@@ -1,5 +1,14 @@
 # @atlaskit/global-navigation
 
+## 0.1.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [patch] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/onboarding@4.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/navigation-next@0.3.3
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
 ## 0.1.2
 - [patch] Updated dependencies [7200aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7200aa4)
   - @atlaskit/navigation-next@0.3.2

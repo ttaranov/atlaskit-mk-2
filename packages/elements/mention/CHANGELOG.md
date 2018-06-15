@@ -1,5 +1,13 @@
 # @atlaskit/mention
 
+## 13.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/lozenge@5.0.4
+  - @atlaskit/icon@12.1.2
+
 ## 13.1.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/util-data-test@9.1.11

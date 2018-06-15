@@ -1,5 +1,13 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/editor-core@73.7.5
+  - @atlaskit/editor-test-helpers@4.1.2
+  - @atlaskit/editor-common@11.2.1
+
 ## 4.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

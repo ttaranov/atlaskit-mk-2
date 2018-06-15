@@ -1,5 +1,17 @@
 # @atlaskit/droplist
 
+## 6.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/item@7.0.5
+  - @atlaskit/icon@12.1.2
+
 ## 6.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

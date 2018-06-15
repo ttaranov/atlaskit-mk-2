@@ -1,5 +1,17 @@
 # @atlaskit/global-search
 
+## 4.5.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/field-text-area@3.1.1
+  - @atlaskit/button@8.1.2
+  - @atlaskit/page@7.1.1
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/flag@8.1.1
+  - @atlaskit/navigation@32.1.1
+  - @atlaskit/icon@12.1.2
+
 ## 4.5.0
 - [minor] Add advanced search links to Confluence [4c0be2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0be2d)
 

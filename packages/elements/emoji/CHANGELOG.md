@@ -1,4 +1,18 @@
 # @atlaskit/emoji
+
+## 35.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/media-picker@8.1.2
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/media-core@19.1.3
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/icon@12.1.2
 ## 35.1.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/util-data-test@9.1.11

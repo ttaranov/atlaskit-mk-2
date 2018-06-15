@@ -1,5 +1,12 @@
 # @atlaskit/field-text-area
 
+## 3.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+
 ## 3.1.0
 - [minor] Textareas can be set to resize in only a single direction now [954d4b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/954d4b0)
 

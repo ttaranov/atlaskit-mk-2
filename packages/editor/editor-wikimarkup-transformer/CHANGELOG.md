@@ -1,5 +1,16 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/editor-json-transformer@3.1.2
+  - @atlaskit/renderer@18.1.2
+  - @atlaskit/editor-core@73.7.5
+  - @atlaskit/editor-test-helpers@4.1.2
+  - @atlaskit/editor-common@11.2.1
+  - @atlaskit/theme@4.0.4
+
 ## 1.1.0
 - [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
   - @atlaskit/editor-core@73.5.0

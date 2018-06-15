@@ -1,5 +1,40 @@
 # @atlaskit/editor-core
 
+## 73.7.5
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/media-card@29.1.2
+  - @atlaskit/media-picker@8.1.2
+  - @atlaskit/emoji@35.1.1
+  - @atlaskit/util-data-test@9.1.13
+  - @atlaskit/task-decision@7.1.1
+  - @atlaskit/mention@13.1.1
+  - @atlaskit/editor-json-transformer@3.1.2
+  - @atlaskit/editor-bitbucket-transformer@3.2.2
+  - @atlaskit/media-filmstrip@9.0.3
+  - @atlaskit/renderer@18.1.2
+  - @atlaskit/editor-test-helpers@4.1.2
+  - @atlaskit/editor-markdown-transformer@1.2.2
+  - @atlaskit/editor-common@11.2.1
+  - @atlaskit/media-test-helpers@14.0.3
+  - @atlaskit/media-core@19.1.3
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/select@4.2.3
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/lozenge@5.0.4
+  - @atlaskit/code@5.0.4
+  - @atlaskit/size-detector@4.1.2
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/logo@8.1.2
+  - @atlaskit/calendar@6.1.2
+  - @atlaskit/layer-manager@4.2.1
+  - @atlaskit/item@7.0.5
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/droplist@6.1.2
+
 ## 73.7.4
 - [patch] ED-4654 add minimum 128px column width to tables [6ee43d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ee43d8)
 - [none] Updated dependencies [6ee43d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ee43d8)

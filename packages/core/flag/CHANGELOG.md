@@ -1,5 +1,15 @@
 # @atlaskit/flag
 
+## 8.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/field-radio-group@3.0.4
+  - @atlaskit/layer-manager@4.2.1
+  - @atlaskit/icon@12.1.2
+
 ## 8.1.0
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/spinner@7.0.0

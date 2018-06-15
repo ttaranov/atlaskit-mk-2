@@ -1,5 +1,16 @@
 # @atlaskit/select
 
+## 4.2.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [patch] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/checkbox@3.0.6
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/form@2.1.2
+
 ## 4.2.2
 - [patch] Added upgrade guide, updated atlaskit/docs dep on react-markings to expose md parser customisations [aef4aea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aef4aea)
 - [none] Updated dependencies [aef4aea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aef4aea)

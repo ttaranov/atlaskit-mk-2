@@ -1,5 +1,23 @@
 # @atlaskit/navigation
 
+## 32.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/single-select@5.1.2
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/toggle@4.0.3
+  - @atlaskit/page@7.1.1
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/size-detector@4.1.2
+  - @atlaskit/polyfills@2.0.4
+  - @atlaskit/logo@8.1.2
+  - @atlaskit/checkbox@3.0.6
+  - @atlaskit/item@7.0.5
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
 ## 32.1.0
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
   - @atlaskit/single-select@5.1.0

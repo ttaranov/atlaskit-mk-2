@@ -1,5 +1,13 @@
 # @atlaskit/button
 
+## 8.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [patch] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/checkbox@3.0.6
+  - @atlaskit/icon@12.1.2
+
 ## 8.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [patch] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
