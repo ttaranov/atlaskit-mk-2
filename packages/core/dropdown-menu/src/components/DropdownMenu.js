@@ -33,7 +33,6 @@ export default class DropdownMenu extends Component<
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
-    triggerButtonProps: {},
     triggerType: 'default',
   };
 

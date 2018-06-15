@@ -68,9 +68,10 @@ if (CHANGED_PACKAGES) {
 
 // If the INTEGRATION_TESTS flag is set we need to
 if (INTEGRATION_TESTS) {
-  config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
+  const testPathIgnorePatterns /*: string[] */ = config.testPathIgnorePatterns.filter(
     pattern => pattern !== '/__tests__\\/integration/',
   );
+  config.testPathIgnorePatterns = testPathIgnorePatterns;
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
   if (CHANGED_PACKAGES) {
     const changedPackages = JSON.parse(CHANGED_PACKAGES);

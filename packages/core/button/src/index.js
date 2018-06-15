@@ -1,5 +1,5 @@
 // @flow
-export { default } from './components/Button';
+export { default, defaultProps } from './components/Button';
 export type {
   ButtonAppearances,
   ButtonProps,
