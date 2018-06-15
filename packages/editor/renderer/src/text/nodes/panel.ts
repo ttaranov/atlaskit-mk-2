@@ -1,9 +1,14 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { reduceTree } from '../utils';
-import { ReducedNode } from './';
+import { reduce, NodeReducer } from './';
 
-export default function panel(node: PMNode, schema: Schema): ReducedNode {
-  return {
-    content: reduceTree(node.content, schema),
-  };
-}
+const panel: NodeReducer = (node: PMNode, schema: Schema) => {
+  const result: string[] = [];
+
+  node.forEach(n => {
+    result.push(reduce(n, schema));
+  });
+
+  return result.join('\n');
+};
+
+export default panel;

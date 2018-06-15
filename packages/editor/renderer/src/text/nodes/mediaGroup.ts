@@ -1,7 +1,7 @@
 import { Node as PMNode } from 'prosemirror-model';
-import { ReducedNode } from './';
+import { NodeReducer } from './';
 
-export default function mediaGroup(node: PMNode): ReducedNode {
+const mediaGroup: NodeReducer = (node: PMNode) => {
   // count children which are media files
   // ignore card links
   let childMediaFilesCount = 0;
@@ -12,12 +12,12 @@ export default function mediaGroup(node: PMNode): ReducedNode {
     }
   });
 
-  const reducedNode: ReducedNode = {};
-
   if (childMediaFilesCount) {
     const postfix = childMediaFilesCount > 1 ? 'Files' : 'File';
-    reducedNode.text = `📎 ${childMediaFilesCount} ${postfix}`;
+    return `📎 ${childMediaFilesCount} ${postfix}`;
   }
 
-  return reducedNode;
-}
+  return '';
+};
+
+export default mediaGroup;
