@@ -23,13 +23,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^8.1.2",
-    "@atlaskit/icon": "^12.1.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bytes": "^2.4.33",
     "babel-runtime": "^6.26.0",
     "bytes": "^2.4.0",
-    "react-render-image": "^1.1.2",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
