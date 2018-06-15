@@ -51,6 +51,6 @@ export default function ExtensionNodeView(
     return new ExtensionNode(node, view, getPos, portalProviderAPI, {
       providerFactory,
       extensionHandlers,
-    });
+    }).init();
   };
 }

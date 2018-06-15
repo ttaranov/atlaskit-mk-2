@@ -115,7 +115,7 @@ describe('table plugin', () => {
         view: editorView,
         portalProviderAPI,
         getPos: () => 1,
-      });
+      }).init();
 
       // we expect to have a contentDOM after instanciating the NodeView so that
       // ProseMirror will render the node's children into the element

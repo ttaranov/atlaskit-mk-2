@@ -53,5 +53,5 @@ export const decisionItemNodeView = (portalProviderAPI: PortalProviderAPI) => (
   view: any,
   getPos: () => number,
 ): NodeView => {
-  return new Decision(node, view, getPos, portalProviderAPI);
+  return new Decision(node, view, getPos, portalProviderAPI).init();
 };
