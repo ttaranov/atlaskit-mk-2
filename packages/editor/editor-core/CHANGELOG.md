@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 73.7.4
+- [patch] ED-4654 add minimum 128px column width to tables [6ee43d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ee43d8)
+- [none] Updated dependencies [6ee43d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ee43d8)
+  - @atlaskit/editor-common@11.2.0
+
 ## 73.7.3
 - [patch] ED-4840: bump pm-utils to 0.5.1 [37992bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37992bf)
 - [none] Updated dependencies [37992bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37992bf)
