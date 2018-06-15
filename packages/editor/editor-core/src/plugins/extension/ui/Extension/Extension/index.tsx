@@ -20,6 +20,8 @@ export interface Props {
   view: EditorView;
 }
 
+/** test PR, more changes */
+
 export default class Extension extends Component<Props, any> {
   render() {
     const {
