@@ -136,8 +136,10 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     const searchPeoplePromise = this.searchPeople(query);
 
     // trigger error analytics when a search fails
-    confXpSearchPromise.catch(this.handleSearchErrorAnalytics('confluence'));
-    searchPeoplePromise.catch(this.handleSearchErrorAnalytics('people'));
+    confXpSearchPromise.catch(
+      this.handleSearchErrorAnalytics('xpsearch-confluence'),
+    );
+    searchPeoplePromise.catch(this.handleSearchErrorAnalytics('search-people'));
 
     /*
     * Handle error state
@@ -172,15 +174,33 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   handleMount = async () => {
+    this.setState({
+      isLoading: true,
+    });
+
     const recentItemsPromise = this.props.confluenceClient.getRecentItems();
     const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces();
     const recentPeoplePromise = this.props.peopleSearchClient.getRecentPeople();
 
-    this.setState({
-      recentlyViewedPages: await recentItemsPromise,
-      recentlyViewedSpaces: await recentSpacesPromise,
-      recentlyInteractedPeople: await recentPeoplePromise,
-    });
+    recentItemsPromise.catch(
+      this.handleSearchErrorAnalytics('recent-confluence-items'),
+    );
+    recentSpacesPromise.catch(
+      this.handleSearchErrorAnalytics('recent-confluence-spaces'),
+    );
+    recentPeoplePromise.catch(this.handleSearchErrorAnalytics('recent-people'));
+
+    try {
+      this.setState({
+        recentlyViewedPages: await recentItemsPromise,
+        recentlyViewedSpaces: await recentSpacesPromise,
+        recentlyInteractedPeople: await recentPeoplePromise,
+      });
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
+    }
   };
 
   retrySearch = () => {
