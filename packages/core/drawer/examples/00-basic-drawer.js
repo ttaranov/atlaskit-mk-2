@@ -22,7 +22,6 @@ export default class DrawersExample extends Component<Object, State> {
     });
 
   render() {
-    console.log(this.state.isDrawerOpen);
     return (
       <Fragment>
         <Drawer

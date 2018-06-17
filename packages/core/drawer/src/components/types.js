@@ -9,4 +9,5 @@ export type DrawerProps = DrawerWrapperProps & {
   icon?: ComponentType<*>,
   onClose?: any => void,
   onKeyDown?: (SyntheticKeyboardEvent<*>) => void,
+  isOpen: boolean,
 };

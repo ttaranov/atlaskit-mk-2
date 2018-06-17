@@ -41,7 +41,7 @@ const Wrapper = ({ width = 'narrow', ...props }: DrawerWrapperProps) => {
 // Content
 // ------------------------------
 
-const Content = props => <div css={{ flex: 1 }} {...props} />;
+const Content = props => <div css={{ flex: 1, paddingTop: 24 }} {...props} />;
 
 // Sidebar / Icons etc.
 // ------------------------------
@@ -68,7 +68,7 @@ const Sidebar = props => {
 
 type IconWrapperProps = { onClick?: Event => void };
 const IconWrapper = (props: IconWrapperProps) => (
-  <div
+  <button
     css={{
       alignItems: 'center',
       background: 0,
@@ -90,6 +90,7 @@ const IconWrapper = (props: IconWrapperProps) => (
       },
       '&:active': {
         backgroundColor: props.onClick ? colors.B50 : null,
+        outline: 0,
       },
     }}
     {...props}
@@ -99,14 +100,12 @@ const IconWrapper = (props: IconWrapperProps) => (
 export default class DrawerPrimitive extends Component<DrawerProps> {
   render() {
     const { children, icon: Icon, onClose, ...props } = this.props;
-    console.log(this.props);
 
     return (
       <Slide component={Wrapper} {...props}>
         <Sidebar>
-          <IconWrapper>{Icon ? <Icon size="large" /> : null}</IconWrapper>
           <IconWrapper onClick={onClose}>
-            <ArrowLeft />
+            {Icon ? <Icon size="large" /> : <ArrowLeft />}
           </IconWrapper>
         </Sidebar>
         <Content>{children}</Content>
