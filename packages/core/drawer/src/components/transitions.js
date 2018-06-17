@@ -47,7 +47,6 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       transitionProps,
       ...props
     } = this.props;
-    console.log(this.props.isOpen);
     const timeout = { enter: 0, exit: transitionDurationMs };
 
     return (
@@ -87,7 +86,7 @@ export const Slide = ({ onExited, ...props }: TransitionProps) => (
     }}
     transitionStyles={{
       entered: { transform: 'translate3d(0,0,0)' },
-      exiting: { transform: 'translate3d(-100%,0,0)' },
+      exited: { transform: 'translate3d(-100%,0,0)' },
     }}
     {...props}
   />
