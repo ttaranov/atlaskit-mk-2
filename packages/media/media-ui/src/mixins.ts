@@ -1,9 +1,5 @@
 import { keyframes } from 'styled-components';
-import {
-  akColorN900,
-  akColorN300,
-  akBorderRadius,
-} from '@atlaskit/util-shared-styles';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export const ellipsis = (maxWidth: string | number = '100%') => {
   const unit = typeof maxWidth === 'number' ? 'px' : '';
