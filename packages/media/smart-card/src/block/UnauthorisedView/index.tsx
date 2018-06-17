@@ -34,6 +34,7 @@ export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
             onAuthorise && (
               <Button
                 appearance="subtle"
+                spacing="none"
                 onClick={this.handleAuthorise as () => void}
               >
                 Connect
