@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 8.2.1
+- [patch] Fixed interactions for isLoading state. Now prevents interactions (click, hover, keyboard submit) while loading [4605f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4605f44)
+- [none] Updated dependencies [4605f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4605f44)
+
 ## 8.2.0
 - [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
 - [patch] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
