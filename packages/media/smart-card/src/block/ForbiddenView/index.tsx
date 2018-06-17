@@ -8,7 +8,6 @@ import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescri
 import { IconBackground } from './styled';
 
 export interface ForbiddenViewProps {
-  icon?: string;
   url: string;
   onClick?: () => void;
   onAuthorise?: () => void;
@@ -25,7 +24,7 @@ export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   };
 
   render() {
-    const { icon, url, onClick, onAuthorise } = this.props;
+    const { url, onClick, onAuthorise } = this.props;
     return (
       <CollapsedFrame minWidth={minWidth} maxWidth={maxWidth} onClick={onClick}>
         <CollapsedIconTitleDescriptionLayout
