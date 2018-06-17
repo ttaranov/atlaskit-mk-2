@@ -76,7 +76,7 @@ if (INTEGRATION_TESTS || VISUAL_REGRESSION) {
   const testPattern = process.env.VISUAL_REGRESSION
     ? 'visual-regression'
     : 'integration';
-  config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
+  config.testPathIgnorePatterns /*: string[] */ = config.testPathIgnorePatterns.filter(
     pattern => pattern !== `/__tests__\\/${testPattern}/`,
   );
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run

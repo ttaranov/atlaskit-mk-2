@@ -1,5 +1,33 @@
 # @atlaskit/datetime-picker
 
+## 5.2.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/select@4.2.3
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/field-range@4.0.3
+  - @atlaskit/layer@4.0.3
+  - @atlaskit/calendar@6.1.2
+  - @atlaskit/icon@12.1.2
+
+## 5.2.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/select@4.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/calendar@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/layer@4.0.1
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/field-range@4.0.2
+  - @atlaskit/field-base@10.1.0
+  - @atlaskit/button@8.1.0
+
 ## 5.1.0
 - [minor] Fixed DatetimePicker not clearing input on ESC  [c58f3db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c58f3db)
 
@@ -74,8 +102,6 @@
 ## 3.1.0
 - [minor] Add dateFormat prop to customise the display format of dates [3daced9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3daced9)
 
-## 3.0.6
-
 ## 3.0.5
 - [patch] Fixed subtle appearance on focus [2b1e018](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b1e018)
 
@@ -91,25 +117,14 @@
 ## 3.0.1
 - [patch] Added isInvalid prop to DateTimePicker DatePicker & TimePicker [101c306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/101c306)
 
-## 3.0.0
-
 ## 2.0.6
 - [patch] Added timeIsEditable prop to enable user created times [4695e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4695e5d)
 
-## 2.0.5
-
-## 2.0.4
-
 ## 2.0.3
-
-
-
 - [patch] Change pickers to use fixed positioning and scroll lock to allow them to break out of modals. [d4981fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4981fe)
 
 ## 2.0.2
 - [patch] Fix datetime picker without a value and defaultValue not working [a88aee0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a88aee0)
-
-## 2.0.1
 
 ## 2.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
@@ -134,10 +149,7 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 0.6.0
-
 - [minor] Make all internal state able to be controlled or uncontrolled obviating the need for the usage of stateless components. [3d81d42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d81d42)
-
-## 0.5.1
 
 ## 0.5.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
@@ -146,39 +158,25 @@
 - [minor] datetime picker will take full width if width is not passes [7a9add1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a9add1)
 
 ## 0.3.3
-
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
 
 ## 0.3.2
 - [patch] calling onchange on hook when datepickers is set to empty state [9e288cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e288cc)
 
-## 0.3.1
-
 ## 0.3.0
 - [minor] add autoFocus prop to DateTimePicker [c8de434](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8de434)
-
-## 0.2.2
-
-## 0.2.1
 
 ## 0.2.0
 - [minor] DateTimePicker is now controlled. [1318f4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1318f4e)
 - [minor] Add DateTimePickerStateless component. Fix issue where DateTimePicker tries to call selectField on the dualPicker, which didn't exist. Add ability to have a controlled DateTimePicker. [4bd0167](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4bd0167)
 - [minor] Add DateTimePickerStateless and refactor DateTimePicker to use that internally, and expose DateTimePickerStateless as public API. [bbbadf5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbbadf5)
 
-## 0.1.3
-
 ## 0.1.2
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
-- [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
-
-## 0.1.1
 
 ## 0.1.0
 - [minor] Added TimePicker and DateTimePicker. Improved docs and examples. [4b49f4d](4b49f4d)
 
 ## 0.0.5
 - [patch] Use correct dependencies  [7b178b1](7b178b1)
-- [patch] Use correct dependencies  [7b178b1](7b178b1)
-- [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)
 - [patch] Adding responsive behavior to the editor. [e0d9867](e0d9867)

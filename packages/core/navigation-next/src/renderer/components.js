@@ -147,9 +147,11 @@ const Group = ({
   hasSeparator,
   isRootLevel,
   items,
+  title,
 }: GroupProps) =>
   items.length ? (
     <div css={isRootLevel ? rootLevelGroupStyles : null}>
+      {title ? <Title text={title} /> : null}
       <ItemsRenderer items={items} customComponents={customComponents} />
       {hasSeparator && <Separator />}
     </div>

@@ -12,10 +12,10 @@ import {
   tableInsertColumnButtonSize,
   tableDeleteColumnButtonSize,
   tableBorderRadiusSize,
-  tableBorderColor,
   tableBorderSelectedColor,
   tableToolbarSize,
   tableBorderDeleteColor,
+  tableBorderColor,
 } from '../../styles';
 
 export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -30,7 +30,7 @@ export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
 export const ColumnInner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
-  & > div:last-child > button {
+  & > div.last > button {
     border-top-right-radius: ${tableBorderRadiusSize}px;
   }
 `;
@@ -51,7 +51,6 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
 )`
   border-right: 1px solid ${tableBorderColor};
   border-bottom: none;
-  border-radius: 0;
   height: ${tableToolbarSize - 1}px;
   width: 100%;
 

@@ -3,14 +3,14 @@ import {
   CrossProductSearchClient,
 } from '../../src/api/CrossProductSearchClient';
 import { Result } from '../../src/model/Result';
-import { makeResult } from '../_test-util';
+import { makeJiraObjectResult } from '../_test-util';
 
 export function makeSingleResultCrossProductSearchResponse(
   scope: Scope,
   result?: Result,
 ): Map<Scope, Result[]> {
   const response = new Map();
-  response.set(scope, [result || makeResult()]);
+  response.set(scope, [result || makeJiraObjectResult()]);
   return response;
 }
 

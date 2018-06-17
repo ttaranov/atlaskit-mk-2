@@ -66,7 +66,7 @@ export const rows = [
 
 export const row = rows[0];
 
-export const rowsWithKeys = rows.map((tRow, rowIndex) => {
+export const rowsWithKeys: Array<Object> = rows.map((tRow, rowIndex) => {
   return {
     key: `${rowIndex}`,
     ...tRow,

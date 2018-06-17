@@ -11,7 +11,7 @@ export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
 
-const CONTROLLER_PADDING = 66;
+const CONTROLLER_PADDING = 80;
 
 const tableSharedStyle = `
   {
@@ -38,7 +38,7 @@ const tableSharedStyle = `
         font-weight: normal;
       }
       th, td {
-        min-width: 3em;
+        min-width: 128px;
         height: 3em;
         vertical-align: top;
         border: 1px solid ${akEditorTableBorder};

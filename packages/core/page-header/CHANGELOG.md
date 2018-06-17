@@ -1,5 +1,34 @@
 # @atlaskit/page-header
 
+## 5.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/single-select@5.1.2
+  - @atlaskit/input@3.0.2
+  - @atlaskit/inline-edit@6.1.3
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/page@7.1.1
+
+## 5.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/single-select@5.1.1
+  - @atlaskit/inline-edit@6.1.2
+  - @atlaskit/button@8.1.1
+  - @atlaskit/breadcrumbs@5.1.1
+  - @atlaskit/docs@4.1.1
+
+## 5.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/single-select@5.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/breadcrumbs@5.1.0
+  - @atlaskit/inline-edit@6.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/button@8.1.0
+
 ## 5.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
@@ -46,8 +75,6 @@
 ## 3.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
-## 2.4.2
-
 ## 2.4.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 
@@ -70,21 +97,8 @@
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
 ## 2.0.7
-
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
-
-## 2.0.6
-
-## 2.0.5
-
-## 2.0.4
-
-## 2.0.3
-
-## 2.0.2
 
 ## 2.0.1
 - [patch] Migrated page-header to mk2. Fixed breadcrumbs main entry point [51bf0c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51bf0c7)
 - [patch] Migrated page-header to mk2. Fixed breadcrumbs main entry point [51bf0c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51bf0c7)
-
-## 1.0.0

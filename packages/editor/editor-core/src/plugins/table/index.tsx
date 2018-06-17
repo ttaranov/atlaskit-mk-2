@@ -14,7 +14,6 @@ import { createTableNode } from './utils';
 import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
-import tableNumberColumnPlugin from './pm-plugins/number-column-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
@@ -52,7 +51,7 @@ const tablesPlugin: EditorPlugin = {
         rank: 910,
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
-            ? columnResizing({ handleWidth: 6 })
+            ? columnResizing({ handleWidth: 6, cellMinWidth: 128 })
             : undefined,
       },
       {
@@ -67,13 +66,6 @@ const tablesPlugin: EditorPlugin = {
       { rank: 905, plugin: () => keymapPlugin() },
       { rank: 930, plugin: () => tableEditing() },
       { rank: 940, plugin: () => hoverSelectionPlugin },
-      {
-        rank: 920,
-        plugin: ({ props: { allowTables } }) =>
-          pluginConfig(allowTables).allowNumberColumn
-            ? tableNumberColumnPlugin
-            : undefined,
-      },
     ];
   },
 

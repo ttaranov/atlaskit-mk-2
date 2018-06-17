@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Droplist, { Group } from '@atlaskit/droplist';
-import Button from '@atlaskit/button';
+import Button, { defaultProps as defaultButtonProps } from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Tooltip from '@atlaskit/tooltip';
@@ -106,6 +106,7 @@ describe('dropdown menu', () => {
 
     it('should pass through triggerButtonProps to the trigger for triggerType=button', () => {
       const triggerProps = {
+        ...defaultButtonProps,
         appearance: 'subtle',
         id: 'button-123',
         theme: 'dark',
@@ -125,6 +126,7 @@ describe('dropdown menu', () => {
 
     it('should render provided iconAfter in trigger instead of default expand icon if provided', () => {
       const triggerProps = {
+        ...defaultButtonProps,
         iconAfter: <MoreIcon label="more" />,
       };
       const menu = mount(
@@ -142,6 +144,7 @@ describe('dropdown menu', () => {
 
     it('should render provided iconBefore in trigger instead of default expand icon if provided', () => {
       const triggerProps = {
+        ...defaultButtonProps,
         iconBefore: <MoreIcon label="more" />,
       };
       const menu = mount(

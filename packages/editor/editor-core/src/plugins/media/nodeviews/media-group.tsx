@@ -2,10 +2,11 @@ import * as assert from 'assert';
 import * as React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
+import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
-import { Node as PMNode } from 'prosemirror-model';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
@@ -62,10 +63,20 @@ export default class MediaGroupNode extends Component<
   shouldComponentUpdate(nextProps, nextState) {
     const children = this.getMediaNodesIds(this.props.children);
     const nextChildren = this.getMediaNodesIds(nextProps.children);
+
+    let tempMediaId = this.props.node.firstChild!.attrs.__key;
+    const firstItemState = this.mediaPluginState.getMediaNodeState(tempMediaId);
+    const hasCustomMediaPicker = !!this.mediaPluginState.getMediaOptions()
+      .customMediaPicker;
+
+    // Need this for mobile bridge. Re-render if there's no `thumbnail`
+    if (hasCustomMediaPicker && firstItemState && !firstItemState.thumbnail) {
+      return true;
+    }
+
     if (
       children.length === nextChildren.length &&
-      this.props.node.firstChild!.attrs.__key ===
-        nextProps.node.firstChild!.attrs.__key &&
+      tempMediaId === nextProps.node.firstChild!.attrs.__key &&
       this.state.offset === nextState.offset
     ) {
       return false;

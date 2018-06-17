@@ -46,12 +46,18 @@ export class PanelState {
 
   changePanelType(view: EditorView, { panelType }: PanelType) {
     analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
-    const { state: { tr, schema }, dispatch } = view;
+    const {
+      state: { tr, schema },
+      dispatch,
+    } = view;
     dispatch(setParentNodeMarkup(schema.nodes.panel, null, { panelType })(tr));
   }
 
   removePanel(view: EditorView) {
-    const { state: { tr, schema }, dispatch } = view;
+    const {
+      state: { tr, schema },
+      dispatch,
+    } = view;
     dispatch(removeParentNodeOfType(schema.nodes.panel)(tr));
   }
 
@@ -81,7 +87,14 @@ export class PanelState {
   }
 
   private getActivePanel(): Node | undefined {
-    const { state: { selection, schema: { nodes: { panel } } } } = this;
+    const {
+      state: {
+        selection,
+        schema: {
+          nodes: { panel },
+        },
+      },
+    } = this;
     const parent = findParentNodeOfType(panel)(selection);
     if (parent) {
       return parent.node;
@@ -89,17 +102,17 @@ export class PanelState {
   }
 
   private getDomElement(domAtPos: DomAtPos): HTMLElement | null {
-    const { state: { selection, schema: { nodes: { panel } } } } = this;
-    let node = findParentDomRefOfType(panel, domAtPos)(
+    const {
+      state: {
+        selection,
+        schema: {
+          nodes: { panel },
+        },
+      },
+    } = this;
+    return findParentDomRefOfType(panel, domAtPos)(
       selection,
     ) as HTMLElement | null;
-    if (node) {
-      // getting panel nodeView wrapper
-      while (node && !node.attributes['data-panel-type']) {
-        node = node.parentElement;
-      }
-    }
-    return node;
   }
 }
 

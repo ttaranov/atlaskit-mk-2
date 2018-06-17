@@ -1,13 +1,68 @@
-import { Result, ResultType, AnalyticsType } from '../src/model/Result';
+import {
+  AnalyticsType,
+  ResultType,
+  JiraObjectResult,
+  ConfluenceObjectResult,
+  ContentType,
+  ContainerResult,
+  PersonResult,
+} from '../src/model/Result';
 
-export function makeResult(partial?: Partial<Result>): Result {
+function buildMockSearchResultProperties() {
   return {
     resultId: '' + Math.random(),
     name: 'name',
-    resultType: ResultType.Object,
-    analyticsType: AnalyticsType.ResultJira,
     avatarUrl: 'avatarUrl',
     href: 'href',
+  };
+}
+
+export function makeJiraObjectResult(
+  partial?: Partial<JiraObjectResult>,
+): JiraObjectResult {
+  return {
+    analyticsType: AnalyticsType.ResultJira,
+    resultType: ResultType.JiraObjectResult,
+    objectKey: 'objectKey',
+    containerName: 'containerName',
+    ...buildMockSearchResultProperties(),
+    ...partial,
+  };
+}
+
+export function makeConfluenceObjectResult(
+  partial?: Partial<ConfluenceObjectResult>,
+): ConfluenceObjectResult {
+  return {
+    analyticsType: AnalyticsType.ResultConfluence,
+    resultType: ResultType.ConfluenceObjectResult,
+    containerName: 'containerName',
+    contentType: ContentType.ConfluencePage,
+    ...buildMockSearchResultProperties(),
+    ...partial,
+  };
+}
+
+export function makeConfluenceContainerResult(
+  partial?: Partial<ContainerResult>,
+): ContainerResult {
+  return {
+    analyticsType: AnalyticsType.ResultConfluence,
+    resultType: ResultType.GenericContainerResult,
+    ...buildMockSearchResultProperties(),
+    ...partial,
+  };
+}
+
+export function makePersonResult(
+  partial?: Partial<PersonResult>,
+): PersonResult {
+  return {
+    mentionName: 'mentionName',
+    presenceMessage: 'presenceMessage',
+    analyticsType: AnalyticsType.ResultPerson,
+    resultType: ResultType.PersonResult,
+    ...buildMockSearchResultProperties(),
     ...partial,
   };
 }

@@ -21,8 +21,12 @@ import { getCellsInTable, selectColumn } from 'prosemirror-utils';
 import { CellSelection } from 'prosemirror-tables';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 
-const selectCell = (cell: { node: ProsemirrorNode; pos: number }) => tr => {
-  const $anchor = tr.doc.resolve(cell.pos - 1);
+const selectCell = (cell: {
+  pos: number;
+  start: number;
+  node: ProsemirrorNode;
+}) => tr => {
+  const $anchor = tr.doc.resolve(cell.pos);
   return tr.setSelection(new CellSelection($anchor, $anchor));
 };
 

@@ -1,5 +1,41 @@
 # @atlaskit/global-navigation
 
+## 0.1.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [patch] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/onboarding@4.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/navigation-next@0.3.3
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
+## 0.1.2
+- [patch] Updated dependencies [7200aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7200aa4)
+  - @atlaskit/navigation-next@0.3.2
+
+## 0.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [patch] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/onboarding@4.1.1
+  - @atlaskit/navigation-next@0.3.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/blanket@6.0.3
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
+## 0.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/navigation-next@0.3.0
+  - @atlaskit/dropdown-menu@5.0.2
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/blanket@6.0.2
+
 ## 0.0.10
 - [patch] Updated dependencies [ba0ba79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba0ba79)
   - @atlaskit/navigation-next@0.2.2
@@ -46,7 +82,6 @@
 - [patch] Rename props to be in sync with navigation-next package [1fde1da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1fde1da)
 
 ## 0.0.2
-
 - [patch] Add global-navigation package [41a4d1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41a4d1c)
 - [patch] Updated dependencies [7c99742](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c99742)
   - @atlaskit/navigation-next@0.0.7

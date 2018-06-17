@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import searchResults, { Props } from '../src/components/home/HomeSearchResults';
-import {
-  ResultItemGroup,
-  PersonResult,
-  ResultBase,
-} from '@atlaskit/quick-search';
-import { ResultType, Result } from '../src/model/Result';
+import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   ObjectResultWithAnalytics,
   PersonResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
-import { makeResult } from './_test-util';
+import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
+import {
+  makeJiraObjectResult,
+  makeConfluenceObjectResult,
+  makePersonResult,
+} from './_test-util';
 
 enum Group {
   Recent = 'recent',
@@ -48,7 +48,7 @@ describe('HomeSearchResults', () => {
   it('should render recently viewed items when no query is entered', () => {
     const props = {
       query: '',
-      recentlyViewedItems: [makeResult()],
+      recentlyViewedItems: [makeJiraObjectResult()],
     };
 
     const wrapper = render(props);
@@ -61,7 +61,7 @@ describe('HomeSearchResults', () => {
   it('should only show the recently viewed group when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
-      recentlyViewedItems: [makeResult()],
+      recentlyViewedItems: [makeJiraObjectResult()],
     };
 
     const wrapper = render(props);
@@ -73,7 +73,7 @@ describe('HomeSearchResults', () => {
   it('should render recent results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      recentResults: [makeResult({ name: 'name' })],
+      recentResults: [makeJiraObjectResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -86,7 +86,7 @@ describe('HomeSearchResults', () => {
   it('should render jira results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      jiraResults: [makeResult({ name: 'name' })],
+      jiraResults: [makeJiraObjectResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
@@ -99,7 +99,7 @@ describe('HomeSearchResults', () => {
   it('should render confluence results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [makeResult({ name: 'name' })],
+      confluenceResults: [makeConfluenceObjectResult()],
     };
 
     const wrapper = render(props);
@@ -112,9 +112,7 @@ describe('HomeSearchResults', () => {
   it('should render people results when there are results', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [
-        makeResult({ resultType: ResultType.Person, name: 'name' }),
-      ],
+      peopleResults: [makePersonResult()],
     };
 
     const wrapper = render(props);
@@ -127,27 +125,29 @@ describe('HomeSearchResults', () => {
   it('should render a jira result item to search jira', () => {
     const props: Partial<Props> = {
       query: 'na',
-      jiraResults: [makeResult()],
+      jiraResults: [makeJiraObjectResult()],
     };
 
     const wrapper = render(props);
     const group = findGroup(Group.Jira, wrapper);
 
     expect(group.prop('title')).toEqual('Jira issues');
-    expect(group.find(ResultBase).prop('resultId')).toEqual('search_jira');
+    expect(group.find(AdvancedSearchResult).prop('resultId')).toEqual(
+      'search_jira',
+    );
   });
 
   it('should render a confluence result item to search confluence', () => {
     const props: Partial<Props> = {
       query: 'na',
-      confluenceResults: [makeResult()],
+      confluenceResults: [makeConfluenceObjectResult()],
     };
 
     const wrapper = render(props);
     const group = findGroup(Group.Confluence, wrapper);
 
     expect(group.prop('title')).toEqual('Confluence pages and blogs');
-    expect(group.find(ResultBase).prop('resultId')).toEqual(
+    expect(group.find(AdvancedSearchResult).prop('resultId')).toEqual(
       'search_confluence',
     );
   });
@@ -155,14 +155,16 @@ describe('HomeSearchResults', () => {
   it('should render a people result item to search people', () => {
     const props: Partial<Props> = {
       query: 'na',
-      peopleResults: [makeResult({ resultType: ResultType.Person })],
+      peopleResults: [makePersonResult()],
     };
 
     const wrapper = render(props);
     const group = findGroup(Group.People, wrapper);
 
     expect(group.prop('title')).toEqual('People');
-    expect(group.find(ResultBase).prop('resultId')).toEqual('search_people');
+    expect(group.find(AdvancedSearchResult).prop('resultId')).toEqual(
+      'search_people',
+    );
   });
 
   it('should not render recent results group when there are no recent results', () => {
@@ -201,7 +203,7 @@ describe('HomeSearchResults', () => {
     ['search_jira', 'search_confluence', 'search_people'].forEach(resultId => {
       expect(
         wrapper
-          .find(ResultBase)
+          .find(AdvancedSearchResult)
           .findWhere(wrapper => wrapper.prop('resultId') === resultId)
           .exists(),
       ).toBe(true);
