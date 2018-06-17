@@ -136,6 +136,9 @@ export default function getButtonStyles(props: Object) {
     cursor = 'not-allowed';
   }
 
+  // Loading
+  const isLoadingStyles = p => (p.isLoading ? 'pointer-events: none;' : null);
+
   // Fit to parent width
   if (props.fit) {
     width = '100%';
@@ -172,5 +175,6 @@ export default function getButtonStyles(props: Object) {
       margin: 0;
       padding: 0;
     }
+    ${isLoadingStyles};
   `;
 }
