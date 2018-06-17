@@ -67,7 +67,6 @@ if (CHANGED_PACKAGES) {
   const changedPackagesTestGlobs = changedPackages.map(
     pkgPath => `${__dirname}/${pkgPath}/**/__tests__/**/*.(js|tsx|ts)`,
   );
-
   config.testMatch = changedPackagesTestGlobs;
 }
 
@@ -76,9 +75,10 @@ if (INTEGRATION_TESTS || VISUAL_REGRESSION) {
   const testPattern = process.env.VISUAL_REGRESSION
     ? 'visual-regression'
     : 'integration';
-  config.testPathIgnorePatterns /*: string[] */ = config.testPathIgnorePatterns.filter(
+  const testPathIgnorePatterns /*: string[] */ = config.testPathIgnorePatterns.filter(
     pattern => pattern !== `/__tests__\\/${testPattern}/`,
   );
+  config.testPathIgnorePatterns = testPathIgnorePatterns;
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
   if (CHANGED_PACKAGES) {
     const changedPackages = JSON.parse(CHANGED_PACKAGES);
