@@ -178,13 +178,11 @@ export default class DatePicker extends Component<Props, State> {
   };
 
   onSelectFocus = (e: SyntheticFocusEvent<>) => {
-    this.setState({ isOpen: true });
     this.props.onFocus(e);
   };
 
   onSelectInput = (e: Event) => {
     let value = e.target.value;
-    //const validForSelected = value.trim().match(/(\d{1,2})[- /.](\d{\d){1,2}})?\s*(a|p)?/i)
     if (value) {
       const parsed = parse(value);
       // Only try to set the date if we have month & day
@@ -213,15 +211,12 @@ export default class DatePicker extends Component<Props, State> {
       } else if (dir === 'down' || dir === 'up') {
         this.setState({ isOpen: true });
       }
-      // Escape closes the calendar & resets the value back to the last selected
     } else if (key === 'Escape') {
-      if (this.state.isOpen) {
-        this.triggerChange(this.state.selectedValue);
-        this.setState({ isOpen: false });
-      } else {
-        this.setState({ selectedValue: '' });
-        this.triggerChange('');
-      }
+      this.setState({ isOpen: false });
+    } else if (key === 'Backspace') {
+      this.setState({ selectedValue: '' });
+      this.triggerChange('');
+      console.log('Backspace');
     } else if (key === 'Enter' || key === 'Tab') {
       this.triggerChange(view);
       this.setState({ isOpen: false, selectedValue: this.state.value });
