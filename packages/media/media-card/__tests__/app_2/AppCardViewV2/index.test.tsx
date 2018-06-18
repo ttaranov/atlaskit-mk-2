@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { AppCardView as OldAppCardView } from '../../../src/app';
-import { BlockResolvedView } from '@atlaskit/smart-card';
+import { BlockCard } from '@atlaskit/media-ui';
 import { AppCardView, AppCardModel } from '../../../src/app_2/AppCardViewV2';
 
 const exampleURL = 'https://www.example.com/test-image.png';
@@ -14,14 +14,14 @@ const modelWithTitle = {
 
 function convertModel(model: AppCardModel) {
   const element = shallow(<AppCardView newDesign={true} model={model} />);
-  return element.find(BlockResolvedView).props();
+  return element.find(BlockCard.ResolvedView).props();
 }
 
 describe('AppCardViewV2', () => {
   it('should not render the old design by default', () => {
     const element = shallow(<AppCardView model={modelWithTitle} />);
     expect(element.find(OldAppCardView)).toHaveLength(1);
-    expect(element.find(BlockResolvedView)).toHaveLength(0);
+    expect(element.find(BlockCard.ResolvedView)).toHaveLength(0);
   });
 
   it('should not render the old design when newDesign=false', () => {
@@ -29,7 +29,7 @@ describe('AppCardViewV2', () => {
       <AppCardView newDesign={false} model={modelWithTitle} />,
     );
     expect(element.find(OldAppCardView)).toHaveLength(1);
-    expect(element.find(BlockResolvedView)).toHaveLength(0);
+    expect(element.find(BlockCard.ResolvedView)).toHaveLength(0);
   });
 
   it('should render the new design when newDesign=true', () => {
@@ -37,7 +37,7 @@ describe('AppCardViewV2', () => {
       <AppCardView newDesign={true} model={modelWithTitle} />,
     );
     expect(element.find(OldAppCardView)).toHaveLength(0);
-    expect(element.find(BlockResolvedView)).toHaveLength(1);
+    expect(element.find(BlockCard.ResolvedView)).toHaveLength(1);
   });
 
   it('should not convert context when context is missing', () => {
