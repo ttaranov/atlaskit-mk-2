@@ -4,7 +4,6 @@ import {
   MediaSingleLayout,
   acNameToEmoji,
   acShortcutToEmoji,
-  parseDate,
   tableBackgroundColorNames,
   akEditorFullPageMaxWidth,
   akEditorTableNumberColumnWidth,
@@ -381,10 +380,9 @@ function converter(
           return convertTable(schema, node as HTMLTableElement);
         }
       case 'TIME':
-        const iso = node.getAttribute('datetime');
-        if (iso) {
-          const date = parseDate(iso);
-          const timestamp = date.valueOf();
+        const dateStr = node.getAttribute('datetime');
+        if (dateStr) {
+          let timestamp = Date.parse(dateStr);
           return schema.nodes.date.create({ timestamp });
         }
         return unsupportedInline;

@@ -3,7 +3,7 @@ import {
   getEmojiAcName,
   hexToRgb,
   MediaSingleAttributes,
-  timestampToIso,
+  timestampToIsoFormat,
   tableBackgroundColorPalette,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
@@ -514,7 +514,7 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = doc.createElement('time');
     const { timestamp } = node.attrs;
     if (timestamp) {
-      elem.setAttribute('datetime', timestampToIso(timestamp));
+      elem.setAttribute('datetime', timestampToIsoFormat(timestamp));
     }
     return elem;
   }
