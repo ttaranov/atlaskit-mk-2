@@ -3,7 +3,7 @@ import {
   akEditorWideLayoutWidth,
 } from '../../styles';
 
-/** To match the styles from tables full-width */
+/** Full page padding, TODO: unify the padding values */
 const FULL_PAGE_PADDING = 66;
 
 export const calcExtensionWidth = (layout, containerWidth: number) => {

@@ -17,23 +17,19 @@ export const getExtensionNode = (state: EditorState): ExtensionNode => {
   const { selection } = state;
   const { extension, inlineExtension, bodiedExtension } = state.schema.nodes;
 
-  let selectedExtNode = findParentNodeOfType([
-    extension,
-    inlineExtension,
-    bodiedExtension,
-  ])(selection);
-
   if (
     isNodeSelection(selection) &&
     findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])(
       selection,
     )
   ) {
-    selectedExtNode = {
+    return {
       node: (selection as NodeSelection).node,
       pos: selection.$from.pos,
     };
   }
 
-  return selectedExtNode;
+  return findParentNodeOfType([extension, inlineExtension, bodiedExtension])(
+    selection,
+  );
 };

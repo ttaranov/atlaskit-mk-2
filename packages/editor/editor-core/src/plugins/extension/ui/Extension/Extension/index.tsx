@@ -20,14 +20,13 @@ export interface Props {
 }
 
 export default class Extension extends Component<Props, any> {
+  private onSelectExtension = () => {
+    const { onSelectExtension, node } = this.props;
+    onSelectExtension(node.type.name === 'bodiedExtension');
+  };
+
   render() {
-    const {
-      node,
-      handleContentDOMRef,
-      onSelectExtension,
-      children,
-      view,
-    } = this.props;
+    const { node, handleContentDOMRef, children, view } = this.props;
 
     const hasBody = node.type.name === 'bodiedExtension';
     const hasChildren = !!children;
@@ -50,7 +49,7 @@ export default class Extension extends Component<Props, any> {
               <Overlay className="extension-overlay" />
               <Header
                 contentEditable={false}
-                onClick={onSelectExtension.bind(null, hasBody)}
+                onClick={this.onSelectExtension}
                 className={hasChildren ? 'with-children' : ''}
               >
                 {children ? children : <ExtensionLozenge node={node} />}
