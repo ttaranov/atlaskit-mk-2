@@ -3,7 +3,12 @@ import {
   CrossProductSearchClient,
 } from '../../src/api/CrossProductSearchClient';
 import { Result } from '../../src/model/Result';
-import { makeJiraObjectResult } from '../_test-util';
+import {
+  makeJiraObjectResult,
+  makeConfluenceObjectResult,
+  makeConfluenceContainerResult,
+} from '../_test-util';
+import { ConfluenceClient } from '../../src/api/ConfluenceClient';
 
 export function makeSingleResultCrossProductSearchResponse(
   scope: Scope,

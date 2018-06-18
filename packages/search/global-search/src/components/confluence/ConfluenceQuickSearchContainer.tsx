@@ -82,18 +82,46 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     redirectToConfluenceAdvancedSearch(query);
   };
 
+  async searchQuickNav(query: string): Promise<Result[]> {
+    const results = await this.props.confluenceClient.getQuickNavSearchResults(
+      query,
+      this.state.searchSessionId,
+    );
+
+    if (this.state.query === query) {
+      this.setState({
+        objectResults: results,
+      });
+    }
+
+    return results;
+  }
+
   async searchCrossProductConfluence(
     query: string,
   ): Promise<Map<Scope, Result[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace],
+      [
+        /* 
+        TEMPORARILY DISABLED: XPSRCH-861 
+        ----------------------------------
+        Scope.ConfluencePageBlogAttachment,
+        */
+
+        Scope.ConfluenceSpace,
+      ],
     );
 
     if (this.state.query === query) {
       this.setState({
-        objectResults: results.get(Scope.ConfluencePageBlogAttachment) || [],
+        /* 
+        TEMPORARILY DISABLED: XPSRCH-861 
+        ----------------------------------
+        // objectResults: results.get(Scope.ConfluencePageBlogAttachment) || [],
+        */
+
         spaceResults: results.get(Scope.ConfluenceSpace) || [],
       });
     }
@@ -132,10 +160,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   doSearch = async (query: string) => {
+    const quickNavPromise = this.searchQuickNav(query);
     const confXpSearchPromise = this.searchCrossProductConfluence(query);
     const searchPeoplePromise = this.searchPeople(query);
 
     // trigger error analytics when a search fails
+    quickNavPromise.catch(
+      this.handleSearchErrorAnalytics('confluence.quicknav'),
+    );
     confXpSearchPromise.catch(
       this.handleSearchErrorAnalytics('xpsearch-confluence'),
     );
@@ -146,7 +178,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     */
     (async () => {
       try {
-        await confXpSearchPromise;
+        await quickNavPromise;
         this.setState({
           isError: false,
         });
@@ -164,7 +196,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           isLoading: true,
         });
 
-        await settlePromises([confXpSearchPromise, searchPeoplePromise]);
+        await settlePromises([
+          quickNavPromise,
+          confXpSearchPromise,
+          searchPeoplePromise,
+        ]);
       } finally {
         this.setState({
           isLoading: false,

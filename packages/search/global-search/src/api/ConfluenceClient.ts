@@ -14,10 +14,15 @@ import {
 
 const RECENT_PAGES_PATH: string = 'rest/recentlyviewed/1.0/recent';
 const RECENT_SPACE_PATH: string = 'rest/recentlyviewed/1.0/recent/spaces';
+const QUICK_NAV_PATH: string = 'rest/quicknav/1/search';
 
 export interface ConfluenceClient {
   getRecentItems(): Promise<Result[]>;
   getRecentSpaces(): Promise<Result[]>;
+  getQuickNavSearchResults(
+    query: string,
+    searchSessionId: string,
+  ): Promise<Result[]>;
 }
 
 export type ConfluenceContentType = 'blogpost' | 'page';
@@ -41,6 +46,18 @@ export interface RecentSpace {
   name: string;
 }
 
+export interface QuickNavResponse {
+  contentNameMatches: QuickNavResult[][];
+}
+
+export interface QuickNavResult {
+  className: string;
+  href: string;
+  name: string;
+  id?: string; // null for spaces
+  space?: string; // null for spaces
+}
+
 export default class ConfluenceClientImpl implements ConfluenceClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
@@ -50,6 +67,20 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
+  }
+
+  public async getQuickNavSearchResults(
+    query: string,
+    searchSessionId: string,
+  ): Promise<Result[]> {
+    const quickNavResponse = await this.createQuickNavRequestPromise(query);
+    const baseUrl = this.serviceConfig.url;
+
+    return quickNavResultsToResults(
+      quickNavResponse.contentNameMatches,
+      baseUrl,
+      searchSessionId,
+    );
   }
 
   public async getRecentItems(): Promise<Result[]> {
@@ -72,6 +103,19 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     return recentSpaces.map(recentSpace =>
       recentSpaceToResult(recentSpace, baseUrl),
     );
+  }
+
+  private createQuickNavRequestPromise(
+    query: string,
+  ): Promise<QuickNavResponse> {
+    const options: RequestServiceOptions = {
+      path: QUICK_NAV_PATH,
+      queryParams: {
+        query: query,
+      },
+    };
+
+    return utils.requestService(this.serviceConfig, options);
   }
 
   private createRecentRequestPromise<T>(path: string): Promise<Array<T>> {
@@ -111,4 +155,70 @@ function recentSpaceToResult(
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.GenericContainerResult,
   } as ContainerResult;
+}
+
+function quickNavResultToObjectResult(
+  quickNavResult: QuickNavResult,
+  contentType: ContentType,
+  baseUrl: string,
+  searchSessionId: string,
+): ConfluenceObjectResult {
+  return {
+    name: quickNavResult.name,
+    href: `${baseUrl}${quickNavResult.href}?searchSessionId=${searchSessionId}`,
+    resultId: quickNavResult.id!, // never null for pages, blogs & attachments
+    contentType: contentType,
+    containerName: quickNavResult.space!, // never null for pages, blogs & attachments
+    analyticsType: AnalyticsType.ResultConfluence,
+    resultType: ResultType.ConfluenceObjectResult,
+  };
+}
+
+function quickNavResultsToResults(
+  quickNavResultGroups: QuickNavResult[][],
+  baseUrl: string,
+  searchSessionId: string,
+): Result[] {
+  // quick nav responds with more than just attachments, pages and blogs, but that's all
+  // but they're ordered, so let's preserve that.
+  const results: ConfluenceObjectResult[] = [];
+
+  // loop over each group, and each element inside the group and
+  // map it to the correct object.
+  quickNavResultGroups.forEach((quickNavResults: QuickNavResult[]) => {
+    quickNavResults.forEach((result: QuickNavResult) => {
+      if (result.className.startsWith('content-type-attachment')) {
+        results.push(
+          quickNavResultToObjectResult(
+            result,
+            ContentType.ConfluenceAttachment,
+            baseUrl,
+            searchSessionId,
+          ),
+        );
+      } else if (result.className === 'content-type-blogpost') {
+        results.push(
+          quickNavResultToObjectResult(
+            result,
+            ContentType.ConfluenceBlogpost,
+            baseUrl,
+            searchSessionId,
+          ),
+        );
+      } else if (result.className === 'content-type-page') {
+        results.push(
+          quickNavResultToObjectResult(
+            result,
+            ContentType.ConfluencePage,
+            baseUrl,
+            searchSessionId,
+          ),
+        );
+      }
+    });
+  });
+
+  // NB: it appears that the QuickNav endpoint only returns 6 blogs/pages and 2 attachments
+  // which is convenient.
+  return results;
 }
