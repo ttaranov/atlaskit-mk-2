@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 73.7.6
+- [patch] Add name field to make getInitial happy [e267dc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e267dc7)
+- [patch] Update telepointer test cases [2644031](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2644031)
+- [patch] Ghost telepointer fix by checking participants [eee943d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee943d)
+- [none] Updated dependencies [e267dc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e267dc7)
+- [none] Updated dependencies [2644031](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2644031)
+- [none] Updated dependencies [eee943d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee943d)
+
 ## 73.7.5
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
