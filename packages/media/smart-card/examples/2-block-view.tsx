@@ -38,7 +38,6 @@ export default () => (
 
         <h4>Forbidden</h4>
         <ForbiddenView
-          icon={icon}
           url={url}
           onClick={onClick}
           onAuthorise={log('Authorise')}

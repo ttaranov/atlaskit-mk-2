@@ -32,6 +32,10 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
     appearance: defaultLinkCardAppearance,
   };
 
+  handleClick = () => {
+    window.open(this.props.linkUrl);
+  };
+
   render() {
     const {
       isLoading,
@@ -48,12 +52,17 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
 
     if (errorMessage) {
       return (
-        <BlockErroredView message="We stumbled a bit here" onRetry={onRetry} />
+        <BlockErroredView
+          url={linkUrl || ''}
+          message="We stumbled a bit here"
+          onClick={this.handleClick}
+          onRetry={onRetry}
+        />
       );
     }
 
     if (isLoading) {
-      return <BlockResolvingView />;
+      return <BlockResolvingView onClick={this.handleClick} />;
     }
 
     const isSquare = appearance === 'square';
@@ -68,7 +77,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
         description={description ? { text: description } : undefined}
         preview={isSquare ? thumbnailUrl : undefined}
         thumbnail={!isSquare ? thumbnailUrl : undefined}
-        onClick={() => window.open(linkUrl)}
+        onClick={this.handleClick}
       />
     );
   }

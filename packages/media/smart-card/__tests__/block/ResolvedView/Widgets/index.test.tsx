@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
-import { IconImage } from '../../../../src/block/ResolvedView/IconImage';
+import { ImageIcon } from '../../../../src/block/ImageIcon';
 import Widgets from '../../../../src/block/ResolvedView/Widgets';
 import {
   WidgetDetails,
@@ -45,7 +45,7 @@ describe('Widgets', () => {
         ]}
       />,
     );
-    const icon = element.find(IconImage);
+    const icon = element.find(ImageIcon);
     expect(icon).toHaveLength(1);
     expect(icon.props()).toEqual(
       expect.objectContaining({
@@ -123,7 +123,7 @@ describe('Widgets', () => {
 
     const details = element.find(WidgetDetails).children();
     expect(details.at(0).type()).toEqual(Title);
-    expect(details.at(1).type()).toEqual(IconImage);
+    expect(details.at(1).type()).toEqual(ImageIcon);
     expect(details.at(2).type()).toEqual(Badge);
     expect(details.at(3).type()).toEqual(Lozenge);
     expect(details.at(4).type()).toEqual(Text);
@@ -167,7 +167,9 @@ describe('Widgets', () => {
     expect(
       widgets
         .at(1)
-        .contains(<IconImage src="https://www.example.com/foobar.jpg" />),
+        .contains(
+          <ImageIcon src="https://www.example.com/foobar.jpg" size={16} />,
+        ),
     ).toBeTruthy();
 
     expect(

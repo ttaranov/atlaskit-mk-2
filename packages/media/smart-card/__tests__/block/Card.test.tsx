@@ -197,12 +197,14 @@ describe('Card', () => {
       .toPromise();
 
     wrapper.update();
-    expect(wrapper.find(ResolvedView).props()).toEqual({
-      title: { text: 'The best of EAC' },
-      description: {
-        text:
-          'The most popular voted pages and posts from EAC as voted for all time.',
-      },
-    });
+    expect(wrapper.find(ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        title: { text: 'The best of EAC' },
+        description: {
+          text:
+            'The most popular voted pages and posts from EAC as voted for all time.',
+        },
+      }),
+    );
   });
 });
