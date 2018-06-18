@@ -1,12 +1,11 @@
+import * as React from 'react';
+import { Component, ReactElement } from 'react';
+import styled from 'styled-components';
 import {
   MediaSingle as UIMediaSingle,
   MediaSingleLayout,
 } from '@atlaskit/editor-common';
-import * as React from 'react';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { Component, ReactElement, Provider } from 'react';
-import styled from 'styled-components';
+import { BreakoutConsumer } from '../';
 
 export interface Props {
   children: ReactElement<any>;
@@ -20,9 +19,6 @@ export interface State {
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
-
-const { Provider, Consumer } = React.createContext(0);
-export { Provider as BreakoutProvider };
 
 const ExtendedUIMediaSingle = styled(UIMediaSingle)`
   ${({ layout }) =>
@@ -81,7 +77,7 @@ export default class MediaSingle extends Component<
     }
 
     return (
-      <Consumer>
+      <BreakoutConsumer>
         {containerWidth => (
           <ExtendedUIMediaSingle
             layout={props.layout}
@@ -92,7 +88,7 @@ export default class MediaSingle extends Component<
             {media}
           </ExtendedUIMediaSingle>
         )}
-      </Consumer>
+      </BreakoutConsumer>
     );
   }
 }

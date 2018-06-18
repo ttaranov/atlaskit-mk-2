@@ -22,7 +22,7 @@ import InlineExtension, {
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
-import MediaSingle, { BreakoutProvider } from './mediaSingle';
+import MediaSingle from './mediaSingle';
 import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
@@ -252,5 +252,4 @@ export {
   TableHeader,
   TableRow,
   UnknownBlock,
-  BreakoutProvider,
 };
