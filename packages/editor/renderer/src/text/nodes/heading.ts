@@ -1,12 +1,14 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { reduceTree } from '../utils';
-import { ReducedNode } from './';
+import { NodeReducer, reduce } from './';
 
-export default function heading(node: PMNode, schema: Schema): ReducedNode {
-  if (node.childCount) {
-    return {
-      content: reduceTree(node.content, schema),
-    };
-  }
-  return {};
-}
+const heading: NodeReducer = (node: PMNode, schema: Schema) => {
+  const result: string[] = [];
+
+  node.forEach(n => {
+    result.push(reduce(n, schema));
+  });
+
+  return result.join('');
+};
+
+export default heading;
