@@ -5,31 +5,34 @@ import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
 
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+
+import type { NavItem } from '../../config/types';
 import type { GlobalNavigationProps } from './types';
 
 class GlobalNavigation extends Component<GlobalNavigationProps> {
   static defaultProps = {};
 
   constructNavItems = () => {
-    const config = generateProductConfig(this.props);
+    const productConfig = generateProductConfig(this.props);
     const defaultConfig = generateDefaultConfig();
 
-    const navItems = Object.keys(config).map(item => ({
-      ...(config[item]
+    const navItems: Array<NavItem> = Object.keys(productConfig).map(item => ({
+      ...(productConfig[item]
         ? {
             ...defaultConfig[item],
-            ...config[item],
+            ...productConfig[item],
           }
         : null),
     }));
 
+    console.log(navItems);
     return {
       primaryItems: navItems
-        .filter(item => item.section === 'primary')
-        .sort((item1, item2) => item1.rank - item2.rank),
+        .filter(({ section }) => section === 'primary')
+        .sort(({ rank: rank1 }, { rank: rank2 }) => rank1 - rank2),
       secondaryItems: navItems
-        .filter(item => item.section === 'secondary')
-        .sort((item1, item2) => item1.rank - item2.rank),
+        .filter(({ section }) => section === 'secondary')
+        .sort(({ rank: rank1 }, { rank: rank2 }) => rank1 - rank2),
     };
   };
 

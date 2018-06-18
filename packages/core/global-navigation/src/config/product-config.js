@@ -6,6 +6,7 @@ import Avatar from '@atlaskit/avatar';
 import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import Dropdown from '@atlaskit/dropdown-menu';
 import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
+import type { ProductConfigShape } from './types';
 
 const isNotEmpty = obj => {
   const values = Object.values(obj);
@@ -111,7 +112,9 @@ function profileConfigFactory(
   };
 }
 
-export default function generateProductConfig(props: GlobalNavigationProps) {
+export default function generateProductConfig(
+  props: GlobalNavigationProps,
+): ProductConfigShape {
   const {
     onProductClick,
     productTooltip,

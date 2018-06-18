@@ -6,19 +6,21 @@ import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 
-export default function generateDefaultConfig() {
+import type { DefaultConfigShape } from './types';
+
+export default function generateDefaultConfig(): DefaultConfigShape {
   return {
     product: {
       label: 'Atlassian',
-      section: 'primary',
       rank: 1,
+      section: 'primary',
       tooltip: 'Atlassian',
     },
     yourWork: {
       icon: TrayIcon,
       label: 'Your Work',
-      section: 'primary',
       rank: 2,
+      section: 'primary',
       tooltip: 'Your Work',
     },
     search: {
