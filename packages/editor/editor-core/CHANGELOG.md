@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 73.7.7
+- [patch] Fixing extension select and refactor [eca44eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eca44eb)
+- [none] Updated dependencies [eca44eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eca44eb)
+  - @atlaskit/editor-common@11.2.2
+
 ## 73.7.6
 - [patch] Add name field to make getInitial happy [e267dc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e267dc7)
 - [patch] Update telepointer test cases [2644031](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2644031)
