@@ -63,25 +63,20 @@ pipelines:
         - step:
             name: Browser Unit Testing - Karma
             script:
-              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- source ./build-setup.sh 
-              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- bolt install --pure-lockfile
+              - source ./build-setup.sh 
+              - bolt install --pure-lockfile
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-            caches:
-              - node
-        - step:
-            name: Browser Snapshot Integration Testing (Only Editor) - Webdriver
-            script:
-              - OVERRIDE_TEST_IGNORE='(!editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- source ./build-setup.sh
-              - OVERRIDE_TEST_IGNORE='(!editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- bolt install --pure-lockfile
-              - OVERRIDE_TEST_IGNORE='(!editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
             caches:
               - node
         - step:
             name: Browser Integration Testing - Webdriver
             script:
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- source ./build-setup.sh
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- bolt install --pure-lockfile
-              - OVERRIDE_TEST_IGNORE='(editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - echo "Running Webdriver tests for packages other then Editor..."
+              - OVERRIDE_TEST_IGNORE='(editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
+              - echo "Running Webdriver tests using snapshot for Editor packages..."
+              - OVERRIDE_TEST_IGNORE='(!editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
             caches:
               - node
         - step:
