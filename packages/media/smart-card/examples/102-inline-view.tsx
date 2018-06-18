@@ -3,6 +3,7 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { LinkView } from '../src/inline/LinkView';
 import { ResolvedView } from '../src/inline/ResolvedView';
 import { ResolvingView } from '../src/inline/ResolvingView';
+import { AuthErrorView } from '../src/inline/AuthErrorView';
 
 interface Lozenge {
   text: string;
@@ -44,6 +45,21 @@ export default () => (
         vestibulum tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet
         interdum, nunc mauris bibendum mauris, in consequat mi est vitae mauris.
         Phasellus dictum sollicitudin nunc in gravida.
+        <h4>Auth Error View</h4>
+        Qui proident do ipsum elit eu commodo ex. Eiusmod reprehenderit occaecat
+        ipsum laboris. Velit incididunt esse eu ipsum et laboris eiusmod magna
+        irure adipisicing adipisicing eiusmod ex veniam. Sunt velit et pariatur
+        amet et magna sunt ea id eu ullamco laboris.
+        <AuthErrorView
+          url={url}
+          onTryAgain={() => {
+            alert('Trying hard!');
+          }}
+        />
+        mollit nulla laboris est occaecat commodo veniam sit duis eiusmod.
+        Officia reprehenderit do ut reprehenderit incididunt laborum Lorem enim
+        irure consectetur pariatur dolor. Duis irure voluptate aute consequat
+        ullamco nostrud officia eiusmod non veniam do dolor non in.
         <h4>ResolvedView</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
         ex, vel molestie arcu. Phasellus commodo this is{' '}
