@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/input",
   "version": "3.0.2",
-  "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+  "description": "Internal component to render a simple HTML input element.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
