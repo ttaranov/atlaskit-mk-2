@@ -17,8 +17,6 @@ import { HyperlinkState } from '../../pm-plugins/main';
 import { normalizeUrl } from '../../utils';
 import RecentSearch from '../RecentSearch';
 
-const TEXT_NODE = 3;
-
 export interface Props {
   pluginState: HyperlinkState;
   editorView: EditorView;
@@ -138,6 +136,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     let node;
     const { empty, $from, $to } = state.selection;
     const { link } = state.schema.marks;
+
+    // if there's a text selection, try to grab the first link in the selection
+    // and attach to that
     if (!empty && !this.posHasMark($from, link)) {
       for (let i = $from.pos; i <= $to.pos; i++) {
         if (this.posHasMark(state.doc.resolve(i), link)) {
@@ -150,9 +151,11 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       // Since putting cursor at the end of the link doesn't show the popup so it's safe
       node = editorView.domAtPos(state.selection.$from.pos).node;
     }
+
     const activeElement = node as HTMLElement;
-    return activeElement.nodeType === TEXT_NODE
-      ? (activeElement.parentElement as HTMLElement)
+
+    return activeElement.nodeType === Node.TEXT_NODE
+      ? (activeElement.parentNode as HTMLElement)
       : activeElement;
   }
 

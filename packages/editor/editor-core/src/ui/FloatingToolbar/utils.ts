@@ -8,7 +8,9 @@ export const getOffsetParent = (
     ? (popupsMountPoint.offsetParent as HTMLElement)
     : (editorViewDom.offsetParent as HTMLElement);
 export const getNearestNonTextNode = (node: Node) =>
-  node.nodeType === Node.TEXT_NODE ? node.parentElement : (node as HTMLElement);
+  node.nodeType === Node.TEXT_NODE
+    ? (node.parentNode as HTMLElement)
+    : (node as HTMLElement);
 
 /**
  * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
