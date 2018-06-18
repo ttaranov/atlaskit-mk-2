@@ -411,6 +411,63 @@ describe('Context', () => {
         });
       });
     });
+
+    it('should find the file with temp and public id', () => {
+      const context = createFakeContext();
+      const deferredFileId = Promise.resolve('file-id-1');
+      const getFile = jest.fn().mockImplementation(id => {
+        if (id === 'file-id-1') {
+          return Promise.resolve({
+            data: {
+              processingStatus: 'succeeded',
+              id: 'file-id-1',
+              name: 'file-one',
+              size: 1,
+            },
+          });
+        } else {
+          return Promise.reject();
+        }
+      });
+      const next = jest.fn();
+      const file = {
+        content: new Blob(),
+      };
+      (context as any).mediaStore = { getFile };
+      uploadFileMock.mockImplementation((_, __, callbacks) => {
+        callbacks.onProgress(0.1);
+        return { deferredFileId };
+      });
+
+      return new Promise(resolve => {
+        context.uploadFile(file).subscribe({
+          next,
+          complete() {
+            const publicId = next.mock.calls[2][0].id;
+
+            context.getFile('some-uuid').subscribe({
+              next(tempIdState) {
+                context.getFile(publicId).subscribe({
+                  next(publicIdState) {
+                    expect(tempIdState).toEqual({
+                      id: 'file-id-1',
+                      status: 'processed',
+                      name: 'file-one',
+                      size: 1,
+                      artifacts: undefined,
+                      mediaType: undefined,
+                      binaryUrl: '/file/file-id-1/binary',
+                    });
+                    expect(tempIdState).toEqual(publicIdState);
+                    resolve();
+                  },
+                });
+              },
+            });
+          },
+        });
+      });
+    });
   });
 
   describe('.uploadFile()', () => {

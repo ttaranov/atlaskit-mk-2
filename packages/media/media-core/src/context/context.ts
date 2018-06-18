@@ -108,7 +108,7 @@ class ContextImpl implements Context {
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
-    // TODO: check if the key exists within the temporary ids
+
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = this.createDownloadFileStream(
