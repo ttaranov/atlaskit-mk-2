@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Provider, BlockCard } from '../src';
+import { Provider, Card } from '../src';
 
 export default () => (
   <Provider>
@@ -8,7 +8,7 @@ export default () => (
       <div
         style={{ height: '3000px', display: 'flex', alignItems: 'flex-start' }}
       />
-      <BlockCard url="https://trello.com/b/8B5zyiSn/test-smart-card-board" />
+      <Card url="https://trello.com/b/8B5zyiSn/test-smart-card-board" />
     </div>
   </Provider>
 );

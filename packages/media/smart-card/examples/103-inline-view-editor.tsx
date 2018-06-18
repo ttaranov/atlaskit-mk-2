@@ -11,7 +11,7 @@ import 'brace/theme/tomorrow';
 import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
 
-import { ResolvedView, ResolvedViewProps } from '../src/inline/ResolvedView';
+import { InlineCard } from '@atlaskit/media-ui';
 
 const firstHalfText = `
 Yeah they wishin' and wishin' and wishin' and wishin'
@@ -58,7 +58,7 @@ export interface ExampleProps {}
 
 export interface ExampleState {
   text: string;
-  json: ResolvedViewProps;
+  json: InlineCard.ResolvedView;
   error?: string;
   messageWidth: number;
 }
@@ -113,7 +113,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
             />
             {error && <InlineMessage type="error" title={error} />}
             <br />
-            <ResolvedView {...json as any} onClick={() => {}} />
+            <InlineCard.ResolvedView {...json as any} onClick={() => {}} />
             <br />
             <FieldRange
               label="Message width (px)"
@@ -126,7 +126,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
             />
             <Message width={messageWidth}>
               {firstHalfText}
-              <ResolvedView {...json as any} />
+              <InlineCard.ResolvedView {...json as any} />
               {secondHalfText}
             </Message>
           </GridColumn>
