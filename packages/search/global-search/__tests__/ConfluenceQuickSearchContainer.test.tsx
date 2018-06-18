@@ -120,50 +120,75 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 
-  it('should render recently viewed pages on mount', async () => {
-    const mockConfluenceClient = {
-      getRecentItems() {
-        return Promise.resolve([makeConfluenceObjectResult()]);
-      },
-      getRecentSpaces() {
-        return Promise.resolve([]);
-      },
-    };
+  describe('Pre-query state', () => {
+    it('should render recently viewed pages', async () => {
+      const mockConfluenceClient = {
+        getRecentItems() {
+          return Promise.resolve([makeConfluenceObjectResult()]);
+        },
+        getRecentSpaces() {
+          return Promise.resolve([]);
+        },
+      };
 
-    const wrapper = render({
-      confluenceClient: mockConfluenceClient,
+      const wrapper = render({
+        confluenceClient: mockConfluenceClient,
+      });
+
+      const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+      onMount();
+
+      await waitForRender(wrapper);
+
+      const group = findGroup(Group.Objects, wrapper);
+      expect(group.children()).toHaveLength(1);
     });
 
-    const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
-    onMount();
+    it('should render recently viewed spaces', async () => {
+      const mockConfluenceClient = {
+        getRecentItems() {
+          return Promise.resolve([]);
+        },
+        getRecentSpaces() {
+          return Promise.resolve([makeConfluenceContainerResult()]);
+        },
+      };
 
-    await waitForRender(wrapper);
+      const wrapper = render({
+        confluenceClient: mockConfluenceClient,
+      });
 
-    const group = findGroup(Group.Objects, wrapper);
-    expect(group.children()).toHaveLength(1);
-  });
+      const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+      onMount();
 
-  it('should render recently viewed spaces on mount', async () => {
-    const mockConfluenceClient = {
-      getRecentItems() {
-        return Promise.resolve([]);
-      },
-      getRecentSpaces() {
-        return Promise.resolve([makeConfluenceContainerResult()]);
-      },
-    };
+      await waitForRender(wrapper);
 
-    const wrapper = render({
-      confluenceClient: mockConfluenceClient,
+      const group = findGroup(Group.Spaces, wrapper);
+      expect(group.children()).toHaveLength(1);
     });
 
-    const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
-    onMount();
+    it('should render recent people', async () => {
+      const mockPeopleSearchClient = {
+        search() {
+          return Promise.resolve([]);
+        },
+        getRecentPeople() {
+          return Promise.resolve([makePersonResult()]);
+        },
+      };
 
-    await waitForRender(wrapper);
+      const wrapper = render({
+        peopleSearchClient: mockPeopleSearchClient,
+      });
 
-    const group = findGroup(Group.Spaces, wrapper);
-    expect(group.children()).toHaveLength(1);
+      const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+      onMount();
+
+      await waitForRender(wrapper);
+
+      const group = findGroup(Group.People, wrapper);
+      expect(group.children()).toHaveLength(1);
+    });
   });
 
   it('should redirect to confluence advanced search on search submit', async () => {
@@ -331,7 +356,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   });
 
   describe('Analytics', () => {
-    it('should log when a request fails', async () => {
+    it('should log when a search request fails', async () => {
       const firePrivateAnalyticsEventMock = jest.fn();
 
       const wrapper = render({
@@ -354,7 +379,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         {
           name: 'TypeError',
           message: 'failed',
-          source: 'people',
+          source: 'search-people',
         },
       );
     });

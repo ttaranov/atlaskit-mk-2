@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.5.2
+- [patch] Minor polish [4d3eabc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d3eabc)
+
 ## 4.5.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

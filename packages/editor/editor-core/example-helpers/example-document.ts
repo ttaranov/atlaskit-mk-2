@@ -1,7 +1,6 @@
 import { emoji } from '@atlaskit/util-data-test';
 
 const emojiTestData = emoji.testData;
-const emojiStoryData = emoji.storyData;
 
 const toEmojiAttrs = emoji => {
   const { shortName, id, fallback } = emoji;
@@ -12,20 +11,10 @@ const toEmojiAttrs = emoji => {
   };
 };
 
-const toEmojiId = emoji => {
-  const { shortName, id, fallback } = emoji;
-  return { shortName, id, fallback };
-};
+const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
+const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
 
-export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
-export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
-
-export const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
-export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
-
-export const lorem = emojiStoryData.lorem;
-
-export const document = {
+export const exampleDocument = {
   type: 'doc',
   version: 1,
   content: [
@@ -99,45 +88,6 @@ export const document = {
             },
           ],
         },
-        {
-          type: 'text',
-          text: ' and action mark',
-          marks: [
-            {
-              type: 'action',
-              attrs: {
-                key: 'test-action-key',
-                title: 'test action mark',
-                target: {
-                  receiver: 'some-receiver',
-                  key: 'some-key',
-                },
-                parameters: {
-                  test: 20,
-                },
-              },
-            },
-          ],
-        },
-        {
-          type: 'text',
-          text: ' and invalid action mark',
-          marks: [
-            {
-              type: 'action',
-              attrs: {
-                key: 'test-action-key',
-                title: 'test action mark',
-                target: {
-                  receiver: 'some-receiver',
-                },
-                parameters: {
-                  test: 30,
-                },
-              },
-            },
-          ],
-        },
       ],
     },
     {
@@ -176,11 +126,6 @@ export const document = {
         {
           type: 'text',
           text: '. What are yours?',
-          marks: [
-            {
-              type: 'unkown mark',
-            },
-          ],
         },
       ],
     },
@@ -201,89 +146,6 @@ export const document = {
         {
           type: 'text',
           text: ' :D',
-          marks: [
-            {
-              type: 'unknown mark',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'This is a ',
-        },
-        {
-          type: 'mention',
-          attrs: {
-            text: '@mention',
-            id: '2',
-          },
-        },
-        {
-          type: 'text',
-          text: '. And this is a broken ',
-        },
-        {
-          type: 'mention',
-          attrs: {
-            textxtx: '@mention',
-            id: 'mention',
-          },
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'Mention with restricted access',
-        },
-        {
-          type: 'mention',
-          attrs: {
-            id: '1',
-            accessLevel: 'APPLICATION',
-          },
-          text: '@oscar',
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'Mentions with generic ids',
-        },
-        {
-          type: 'mention',
-          attrs: {
-            id: 'here',
-            accessLevel: 'CONTAINER',
-          },
-          text: '@here',
-        },
-        {
-          type: 'mention',
-          attrs: {
-            id: 'all',
-            accessLevel: 'CONTAINER',
-          },
-          text: '@all',
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'This is  a   text    with	multiple		spaces 			and				tabs.',
         },
       ],
     },
@@ -387,94 +249,6 @@ export const document = {
           marks: [
             {
               type: 'code',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'unknown type',
-          attrs: {
-            text: 'fallback text in node.attrs.text',
-          },
-        },
-        {
-          type: 'hardBreak',
-        },
-        {
-          type: 'unknown type 2',
-          text: 'fallback text in node.text',
-        },
-        {
-          type: 'hardBreak',
-        },
-        {
-          type: 'very unknown',
-        },
-      ],
-    },
-    {
-      type: 'some block unknown type',
-      content: [
-        {
-          type: 'text',
-          text: 'This is text content inside unknown block',
-        },
-      ],
-    },
-    {
-      type: 'some block unknown type with content and text',
-      content: [
-        {
-          type: 'text',
-          text: 'This is also a piece of text inside unknown block',
-        },
-      ],
-      text: 'ERROR: This text should be ignored!',
-    },
-    {
-      type: 'unknown_table',
-      content: [
-        {
-          type: 'unknown_row2',
-          content: [
-            {
-              type: 'unknown_cell',
-              content: [
-                {
-                  type: 'text',
-                  text: 'Madness?',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: 'unknown_row2',
-          content: [
-            {
-              type: 'unknown_cell3',
-              content: [
-                {
-                  type: 'text',
-                  text: 'This is',
-                },
-              ],
-            },
-            {
-              type: 'unknown_cell4',
-              content: [
-                {
-                  type: 'sparta-node',
-                  attrs: {
-                    textUrl: 'https://en.wikipedia.org/wiki/Sparta',
-                  },
-                  text: 'Sparta!',
-                },
-              ],
             },
           ],
         },
@@ -686,40 +460,6 @@ System.out.println("There are " + count + " values >= 5");`,
           attrs: {
             type: 'file',
             id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
-            collection: 'MediaServicesSample',
-          },
-        },
-      ],
-    },
-    {
-      type: 'mediaGroup',
-      content: [
-        {
-          type: 'media',
-          attrs: {
-            type: 'link',
-            id: '410f38f7-ce31-4527-a69d-740e958bf1d1',
-            collection: 'MediaServicesSample',
-          },
-        },
-      ],
-    },
-    {
-      type: 'mediaGroup',
-      content: [
-        {
-          type: 'media',
-          attrs: {
-            type: 'link',
-            id: '15a9fb95-2d72-4d28-b338-00fd6bea121b',
-            collection: 'MediaServicesSample',
-          },
-        },
-        {
-          type: 'media',
-          attrs: {
-            type: 'link',
-            id: '410f38f7-ce31-4527-a69d-740e958bf1d1',
             collection: 'MediaServicesSample',
           },
         },
@@ -1018,211 +758,6 @@ System.out.println("There are " + count + " values >= 5");`,
       type: 'rule',
     },
     {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text:
-            'Do not use this image node; it may be removed at any time without notice.',
-        },
-        {
-          type: 'image',
-          attrs: {
-            src:
-              'https://www.google.com.au/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-            alt: 'Google Logo',
-            title: 'Google!',
-          },
-        },
-      ],
-    },
-    {
-      type: 'applicationCard',
-      text: 'applicationCard',
-      attrs: {
-        text: 'applicationCard',
-        background: {
-          url: 'http://atlassian.com',
-        },
-        link: {
-          url: 'http://atlassian.com',
-        },
-        title: {
-          text: 'Sascha Reuter commented on a file: Desktop sidebar states.png',
-        },
-        user: {
-          icon: {
-            url:
-              'https://extranet.atlassian.com/download/attachments/2246873520/sreuter-57703-pp-1530510_4271148635152_5186589029777108540_n.jpg',
-            label: 'Sascha Reuter',
-          },
-        },
-        preview: {
-          url:
-            'https://image.ibb.co/ghKzoF/1a99566b0c8e0589ca327bb1efe0be5ca1419aa8.png',
-        },
-        description: {
-          title: 'Can haz description',
-          text:
-            '\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius mattis massa, quis ornare orci. Integer congue\nrutrum velit, quis euismod eros condimentum quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris\nlobortis nibh id odio egestas luctus. Nunc nulla lacus, congue eu nibh non, imperdiet varius lacus. Nulla sagittis\nmagna et tincidunt volutpat. Nunc augue lorem, eleifend et tempor ut, malesuada ac lorem. Praesent quis feugiat eros,\net vehicula nibh. Maecenas vehicula commodo nisi, at rutrum ipsum posuere sit amet. Integer sit amet nisl sed ligula\nconsectetur feugiat non at ligula. Cras dignissim suscipit magna at mattis. Maecenas ante leo, feugiat vestibulum velit\na, commodo finibus velit. Maecenas interdum ullamcorper velit non suscipit. Proin tempor, magna vitae dapibus laoreet,\nquam dui convallis lectus, in vestibulum arcu eros eu velit. Quisque vel dolor enim.\n',
-        },
-        details: [
-          {
-            icon: {
-              url:
-                'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
-              label: 'Issue type',
-            },
-            text: 'Story',
-          },
-          {
-            badge: {
-              value: 101,
-              max: 99,
-              appearance: 'important',
-            },
-          },
-          {
-            lozenge: {
-              text: 'In Progress',
-              appearance: 'inprogress',
-            },
-          },
-          {
-            title: 'Watchers',
-            users: [
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
-                  label: 'James Newell',
-                },
-              },
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
-                  label: 'Jon Blower',
-                },
-              },
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
-                  label: 'Scott Simpson',
-                },
-              },
-            ],
-          },
-          {
-            icon: {
-              url:
-                'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
-              label: 'Issue type',
-            },
-            text: 'Story',
-          },
-          {
-            badge: {
-              value: 101,
-              max: 99,
-              appearance: 'important',
-            },
-          },
-          {
-            lozenge: {
-              text: 'In Progress',
-              appearance: 'inprogress',
-            },
-          },
-          {
-            title: 'Watchers',
-            users: [
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
-                  label: 'James Newell',
-                },
-              },
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
-                  label: 'Jon Blower',
-                },
-              },
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
-                  label: 'Scott Simpson',
-                },
-              },
-            ],
-          },
-          {
-            icon: {
-              url:
-                'http://www.fellowshipgw.com/wp-content/themes/lenexabaptist/images/icon-story-gray.png',
-              label: 'Issue type',
-            },
-            text: 'Story',
-          },
-          {
-            badge: {
-              value: 101,
-              max: 99,
-              appearance: 'important',
-            },
-          },
-          {
-            lozenge: {
-              text: 'In Progress',
-              appearance: 'inprogress',
-            },
-          },
-          {
-            title: 'Watchers',
-            users: [
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/3189817539/user-avatar',
-                  label: 'James Newell',
-                },
-              },
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/2928873907/user-avatar',
-                  label: 'Jon Blower',
-                },
-              },
-              {
-                icon: {
-                  url:
-                    'https://extranet.atlassian.com/download/attachments/2491694727/user-avatar',
-                  label: 'Scott Simpson',
-                },
-              },
-            ],
-          },
-        ],
-        context: {
-          text: 'Design Home / ... / Media Cards Design',
-          icon: {
-            url:
-              'https://image.ibb.co/jSrC8F/f4b5e33d6b1d36556114a18b594768f41f32673e.png',
-            label: 'foobar',
-          },
-          link: {
-            url: 'https://confluence.atlassian.com/',
-          },
-        },
-      },
-    },
-    {
       type: 'decisionList',
       attrs: {
         localId: 'empty-list-should-not-render',
@@ -1465,12 +1000,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'header',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1482,12 +1012,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'header',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1506,12 +1031,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'cell',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1520,12 +1040,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'cell',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1534,12 +1049,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'cell',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1553,12 +1063,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'cell',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1567,12 +1072,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'cell',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },
@@ -1581,12 +1081,7 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'cell',
-                    },
-                  ],
+                  content: [],
                 },
               ],
             },

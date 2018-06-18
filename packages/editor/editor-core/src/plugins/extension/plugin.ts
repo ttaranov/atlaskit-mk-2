@@ -1,54 +1,25 @@
 import {
   Plugin,
   PluginKey,
-  NodeSelection,
-  EditorState,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
-import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
+import { ProviderFactory, ExtensionHandlers, ExtensionLayout } from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { PortalProviderAPI } from '../../ui/PortalProvider';
 import ExtensionNodeView from './nodeviews/extension';
-import {
-  findParentNodeOfType,
-  findDomRefAtPos,
-  findSelectedNodeOfType,
-  isNodeSelection,
-} from 'prosemirror-utils';
+import { findDomRefAtPos, findSelectedNodeOfType } from 'prosemirror-utils';
 import { closestElement } from '../../utils';
+import { getExtensionNode } from './utils';
 
 export const pluginKey = new PluginKey('extensionPlugin');
 
 export type ExtensionState = {
   element: HTMLElement | null;
-};
-
-const getSelectedExtNode = (
-  state: EditorState,
-): { node: PMNode; pos: number; start: number } | undefined => {
-  const { extension, inlineExtension, bodiedExtension } = state.schema.nodes;
-
-  let selectedExtNode = findParentNodeOfType([
-    extension,
-    inlineExtension,
-    bodiedExtension,
-  ])(state.selection);
-
-  if (
-    isNodeSelection(state.selection) &&
-    findSelectedNodeOfType([extension, bodiedExtension, inlineExtension])(
-      state.selection,
-    )
-  ) {
-    selectedExtNode = {
-      node: (state.selection as NodeSelection).node,
-      pos: state.selection.$from.pos,
-      start: state.selection.$from.pos + 1,
-    };
-  }
-
-  return selectedExtNode;
+  layout: ExtensionLayout;
+  node: PMNode;
+  allowBreakout: boolean;
+  stickToolbarToBottom: boolean;
 };
 
 export default (
@@ -100,7 +71,7 @@ export default (
           } = view;
 
           /** this fetches the selected extn node, either by keyboard selection or click for all types of extns */
-          const selectedExtNode = getSelectedExtNode(state);
+          const selectedExtNode = getExtensionNode(state);
           const selectedExtDomNode =
             selectedExtNode &&
             (findDomRefAtPos(selectedExtNode.pos, domAtPos) as HTMLElement);

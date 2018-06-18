@@ -1,4 +1,9 @@
 # @atlaskit/onboarding
+
+## 4.1.3
+- [patch] Adds autoFocus prop to FocusLock. Fixes scrolling bug in onboarding. [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
+- [none] Updated dependencies [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
+  - @atlaskit/layer-manager@4.3.0
 - Fixes scrolling problem when multiple spotlights are off-screen.
 
 ## 4.1.2

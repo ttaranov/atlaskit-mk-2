@@ -26,11 +26,12 @@ const renderSpacesGroup = (title: string, results: Result[], query: string) =>
     </ResultItemGroup>
   ) : null;
 
-const renderPeopleGroup = (title: string, results: Result[], query: string) => (
-  <ResultItemGroup title={title} key="people">
-    {renderResults(results)}
-  </ResultItemGroup>
-);
+const renderPeopleGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="people">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
 export const renderSearchConfluenceItem = (query: string, text: string) =>
   searchConfluenceItem({
