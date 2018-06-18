@@ -129,6 +129,8 @@ class ExampleNavigation extends Component {
     const { error } = this.state;
     const example = examples && examples.children.find(e => e.id === exampleId);
 
+    console.log(error);
+
     return (
       <Nav>
         <NavSection style={{ marginLeft: 8 }}>
