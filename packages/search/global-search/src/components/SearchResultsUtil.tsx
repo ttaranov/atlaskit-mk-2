@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import {
+  ObjetResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
@@ -16,7 +17,6 @@ import {
   ContentType,
 } from '../model/Result';
 import AdvancedSearchResult from './AdvancedSearchResult';
-import ObjectResultComponent from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   DEFUALT_GAS_CHANNEL,

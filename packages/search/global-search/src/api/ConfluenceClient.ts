@@ -32,6 +32,7 @@ export interface RecentPage {
   title: string;
   type: string;
   url: string;
+  iconClass: string;
 }
 
 export interface RecentSpace {
@@ -96,6 +97,7 @@ function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.ConfluenceObjectResult,
     contentType: `confluence-${recentPage.contentType}` as ContentType,
+    iconClass: recentPage.iconClass,
   } as ConfluenceObjectResult;
 }
 
