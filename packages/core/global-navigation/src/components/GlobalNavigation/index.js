@@ -25,7 +25,6 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
         : null),
     }));
 
-    console.log(navItems);
     return {
       primaryItems: navItems
         .filter(({ section }) => section === 'primary')
