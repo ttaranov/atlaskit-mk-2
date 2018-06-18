@@ -1,42 +1,58 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-
-export type PortalProviderAPI = {
-  render: (children: React.ReactChild, container: HTMLElement) => void;
-  destroy: (container: HTMLElement) => void;
-};
+import { EventDispatcher } from '../../event-dispatcher';
 
 export type PortalProviderProps = {
   render: (portalProviderAPI: PortalProviderAPI) => React.ReactChild | null;
 };
 
-export type PortalProviderState = {
+export type PortalRendererState = {
   portals: Map<HTMLElement, React.ReactChild>;
 };
 
-export class PortalProvider extends React.Component<
-  PortalProviderProps,
-  PortalProviderState
-> {
-  state = { portals: new Map() };
+export class PortalProviderAPI extends EventDispatcher {
+  portals = new Map();
 
-  private portalProviderAPI: PortalProviderAPI = {
-    render: (children, container) =>
-      this.setState(state => ({
-        portals: state.portals.set(container, children),
-      })),
-    destroy: container =>
-      this.setState(state => {
-        state.portals.delete(container);
-        return { portals: state.portals };
-      }),
-  };
+  render(children: React.ReactChild, container: HTMLElement) {
+    this.portals.set(container, children);
+    this.emit('update', this.portals);
+  }
+
+  remove(container: HTMLElement) {
+    this.portals.delete(container);
+    this.emit('update', this.portals);
+  }
+}
+
+export class PortalProvider extends React.Component<PortalProviderProps> {
+  portalProviderAPI: PortalProviderAPI;
+
+  constructor(props) {
+    super(props);
+    this.portalProviderAPI = new PortalProviderAPI();
+  }
+
+  render() {
+    return this.props.render(this.portalProviderAPI);
+  }
+}
+
+export class PortalRenderer extends React.Component<
+  { portalProviderAPI: PortalProviderAPI },
+  PortalRendererState
+> {
+  constructor(props) {
+    super(props);
+    props.portalProviderAPI.on('update', this.handleUpdate);
+    this.state = { portals: new Map() };
+  }
+
+  handleUpdate = portals => this.setState({ portals });
 
   render() {
     const { portals } = this.state;
     return (
       <>
-        {this.props.render(this.portalProviderAPI)}
         {Array.from(portals.entries()).map(([container, children]) =>
           createPortal(children, container),
         )}

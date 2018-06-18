@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { shallow, mount, ShallowWrapper } from 'enzyme';
 import GlobalQuickSearch from '../src/components/GlobalQuickSearchWrapper';
+import { mount } from 'enzyme';
 import { HomeQuickSearchContainer } from '../src/components/home/HomeQuickSearchContainer';
 import { ConfluenceQuickSearchContainer } from '../src/components/confluence/ConfluenceQuickSearchContainer';
 
@@ -18,8 +18,16 @@ it('should render the confluence container with context confluence', () => {
   expect(wrapper.find(ConfluenceQuickSearchContainer).exists()).toBe(true);
 });
 
+const MyLinkComponent = class extends React.Component<{
+  className: string;
+  children: React.ReactNode;
+}> {
+  render() {
+    return <div />;
+  }
+};
+
 it('should pass through the linkComponent prop', () => {
-  const MyLinkComponent = () => <div />;
   const wrapper = mount(
     <GlobalQuickSearch
       cloudId="123"

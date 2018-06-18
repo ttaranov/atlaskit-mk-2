@@ -38,6 +38,7 @@ import {
   subsup,
   textColor,
   text,
+  inlineCard,
 } from './schema-builder';
 
 export const createText: Function = txt => schema => text(txt, schema);
@@ -76,13 +77,18 @@ export const pmNodeFactory: object = {
   mediaGroup,
   media,
   extension: content =>
-    extension({ extensionKey: '123', extensionType: 'blockExtension' })(
-      content,
-    ),
+    extension({
+      extensionKey: '123',
+      extensionType: 'blockExtension',
+      layout: 'default',
+    })(content),
   bodiedExtension: content =>
-    bodiedExtension({ extensionKey: '123', extensionType: 'bodiedExtension' })(
-      content,
-    ),
+    bodiedExtension({ 
+      extensionKey: '123', 
+      extensionType: 'bodiedExtension',
+      layout: 'default', })(content),
+  inlineCard: () =>
+    inlineCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
 };
 
 export const pmNodeBuilder: object = {
@@ -149,6 +155,9 @@ export const pmNodeBuilder: object = {
     text: 'fake card',
     title: { text: 'fake card title' },
   })(),
+  inlineCard: inlineCard({
+    url: 'https://product-fabric.atlassian.net/browse/ED-1',
+  }),
 };
 
 export const pmMarkBuilder: object = {

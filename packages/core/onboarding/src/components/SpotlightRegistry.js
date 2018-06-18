@@ -13,6 +13,7 @@ export default class SpotlightRegistry extends Container<State> {
     stored: {},
     mounted: [],
   };
+  activeElement: HTMLElement | null = null;
 
   // ==============================
   // ADD & REMOVE
@@ -46,12 +47,23 @@ export default class SpotlightRegistry extends Container<State> {
   // ==============================
 
   mount(node: HTMLElement) {
+    if (this.state.mounted.length === 0) {
+      this.activeElement = document.activeElement;
+    }
     const mounted = this.state.mounted.slice(0);
     mounted.push(node);
     this.setState({ mounted });
   }
   unmount(node: HTMLElement) {
     const mounted = this.state.mounted.slice(0).filter(i => node !== i);
+    if (mounted.length === 0) {
+      setTimeout(() => {
+        if (this.activeElement) {
+          this.activeElement.focus();
+          this.activeElement = null;
+        }
+      }, 0);
+    }
     this.setState({ mounted });
   }
   hasMounted() {

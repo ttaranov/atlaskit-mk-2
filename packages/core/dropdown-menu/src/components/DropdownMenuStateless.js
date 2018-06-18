@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
 import Button from '@atlaskit/button';
@@ -52,7 +52,6 @@ export default class DropdownMenuStateless extends Component<
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
-    triggerButtonProps: {},
     triggerType: 'default',
   };
 
@@ -254,6 +253,7 @@ export default class DropdownMenuStateless extends Component<
     if (
       triggerContainer &&
       triggerContainer.contains(target) &&
+      // $FlowFixMe
       target.disabled !== true
     ) {
       const { isOpen } = this.props;
@@ -336,7 +336,7 @@ export default class DropdownMenuStateless extends Component<
     );
   };
 
-  renderItems = (items: DeprecatedItem[]) =>
+  renderItems = (items: DeprecatedItem[]): Node[] =>
     items.map((item: DeprecatedItem, itemIndex: number) => (
       <Item
         {...item}
@@ -349,7 +349,7 @@ export default class DropdownMenuStateless extends Component<
       </Item>
     ));
 
-  renderGroups = (groups: DeprecatedItemGroup[]) =>
+  renderGroups = (groups: DeprecatedItemGroup[]): Node[] =>
     groups.map((group, groupIndex) => (
       <Group
         heading={group.heading}

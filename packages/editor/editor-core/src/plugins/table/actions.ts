@@ -8,18 +8,19 @@ import {
   getCellsInTable,
   addColumnAt,
   addRowAt,
+  selectRow,
 } from 'prosemirror-utils';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
-import { stateKey as tablePluginKey } from './pm-plugins/main';
 import {
   createHoverDecorationSet,
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
+  containsTable,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
-import { Node } from 'prosemirror-model';
+import { Node, Slice, Fragment, Schema } from 'prosemirror-model';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
@@ -135,32 +136,19 @@ export const toggleHeaderRow: Command = (
   const { tr } = state;
   const map = TableMap.get(table.node);
   const { tableHeader, tableCell } = state.schema.nodes;
-  const { isNumberColumnEnabled } = table.node.attrs;
   const isHeaderRowEnabled = checkIfHeaderRowEnabled(state);
   const isHeaderColumnEnabled = checkIfHeaderColumnEnabled(state);
   const type = isHeaderRowEnabled ? tableCell : tableHeader;
 
   for (let column = 0; column < table.node.child(0).childCount; column++) {
     // skip header column
-    if (
-      isHeaderColumnEnabled &&
-      ((isNumberColumnEnabled && column === 1) ||
-        (!isNumberColumnEnabled && column === 0))
-    ) {
+    if (isHeaderColumnEnabled && column === 0) {
       continue;
     }
-    const from = tr.mapping.map(table.pos + map.map[column]);
+    const from = tr.mapping.map(table.start + map.map[column]);
     const cell = table.node.child(0).child(column);
-    // empty first cell of the number column when converting to header row (remove "1")
-    if (!isHeaderRowEnabled && isNumberColumnEnabled && column === 0) {
-      tr.replaceWith(
-        from,
-        from + cell.nodeSize,
-        tableHeader.createAndFill(cell.attrs)!,
-      );
-    } else {
-      tr.setNodeMarkup(from, type, cell.attrs);
-    }
+
+    tr.setNodeMarkup(from, type, cell.attrs);
   }
   dispatch(tr);
   return true;
@@ -182,10 +170,10 @@ export const toggleHeaderColumn: Command = (
   // skip header row
   const startIndex = checkIfHeaderRowEnabled(state) ? 1 : 0;
   for (let row = startIndex; row < table.node.childCount; row++) {
-    const column = table.node.attrs.isNumberColumnEnabled ? 1 : 0;
+    const column = 0;
     const cell = table.node.child(row).child(column);
     tr.setNodeMarkup(
-      table.pos + map.map[column + row * map.width],
+      table.start + map.map[column + row * map.width],
       type,
       cell.attrs,
     );
@@ -199,51 +187,13 @@ export const toggleNumberColumn: Command = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { tr } = state;
-  const { tableNode } = tablePluginKey.getState(state);
-  const map = TableMap.get(tableNode);
-  const { pos: start } = findTable(state.selection)!;
+  const { node, pos } = findTable(state.selection)!;
 
-  if (tableNode.attrs.isNumberColumnEnabled) {
-    // delete existing number column
-    const mapStart = tr.mapping.maps.length;
-    for (let i = 0, count = tableNode.childCount; i < count; i++) {
-      const cell = tableNode.child(i).child(0);
-      const pos = map.positionAt(i, 0, tableNode);
-      const from = tr.mapping.slice(mapStart).map(start + pos);
-      tr.delete(from, from + cell.nodeSize);
-    }
-    tr.setNodeMarkup(start - 1, state.schema.nodes.table, {
-      ...tableNode.attrs,
-      isNumberColumnEnabled: false,
-    });
-    dispatch(tr);
-  } else {
-    // insert number column
-    let index = 1;
-    let inserted = false;
-    const { tableHeader, tableCell, paragraph } = state.schema.nodes;
-    const isHeaderRowEnabled = checkIfHeaderRowEnabled(state);
-    for (let i = 0, count = tableNode.childCount; i < count; i++) {
-      const cell = tableNode.child(i).child(0);
-      const from = map.positionAt(i, 0, tableNode);
-      const content =
-        cell.type === tableHeader && i === 0
-          ? null
-          : paragraph.createChecked({}, state.schema.text(`${index++}`));
-      const type = isHeaderRowEnabled && i === 0 ? tableHeader : tableCell;
-      if (content) {
-        inserted = true;
-      }
-      tr.insert(tr.mapping.map(start + from), type.create({}, content!));
-    }
-    if (inserted) {
-      tr.setNodeMarkup(start - 1, state.schema.nodes.table, {
-        ...tableNode.attrs,
-        isNumberColumnEnabled: true,
-      });
-      dispatch(tr);
-    }
-  }
+  tr.setNodeMarkup(pos, state.schema.nodes.table, {
+    ...node.attrs,
+    isNumberColumnEnabled: !node.attrs.isNumberColumnEnabled,
+  });
+  dispatch(tr);
   return true;
 };
 
@@ -288,7 +238,7 @@ export const insertColumn = (column: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created column
   const pos = TableMap.get(table.node).positionAt(0, column, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
   analyticsService.trackEvent('atlassian.editor.format.table.column.button');
   return true;
 };
@@ -297,11 +247,73 @@ export const insertRow = (row: number): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
+  resetHoverSelection(state, dispatch);
+
   const tr = addRowAt(row)(state.tr);
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.pos + pos))));
+  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
+  return true;
+};
+
+export function transformSliceToAddTableHeaders(
+  slice: Slice,
+  schema: Schema,
+): Slice {
+  if (!containsTable(schema, slice)) {
+    return slice;
+  }
+
+  const nodes: Node[] = [];
+
+  const { table, tableHeader, tableRow } = schema.nodes;
+
+  // walk the slice content
+  slice.content.forEach((node, _offset, _index) => {
+    if (node.type === table) {
+      const rows: Node[] = [];
+
+      node.forEach((oldRow, _, rowIdx) => {
+        if (rowIdx === 0) {
+          // if it's the first row, make everything a header cell
+          const headerCols: Node[] = [];
+          oldRow.forEach((oldCol, _a, _b) => {
+            headerCols.push(
+              tableHeader.createChecked(
+                oldCol.attrs,
+                oldCol.content,
+                oldCol.marks,
+              ),
+            );
+          });
+
+          // construct a new row that holds the header cells
+          rows.push(
+            tableRow.createChecked(oldRow.attrs, headerCols, oldRow.marks),
+          );
+        } else {
+          // keep remainder of table unmodified
+          rows.push(oldRow);
+        }
+      });
+
+      nodes.push(table.createChecked(node.attrs, rows, node.marks));
+    } else {
+      // node wasn't a table, keep unmodified
+      nodes.push(node);
+    }
+  });
+
+  return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
+}
+
+export const selectRowClearHover = (row: number): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  resetHoverSelection(state, dispatch);
+  dispatch(selectRow(row)(state.tr));
   return true;
 };

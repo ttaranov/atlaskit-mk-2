@@ -86,7 +86,7 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
     });
   };
 
-  renderContainerItems = () => {
+  renderContainerItems = (): Array<Draggable> => {
     return this.state.items.map((item: Item, index) => (
       <Draggable draggableId={item.id} index={index} key={item.id}>
         {(provided, snapshot) => (

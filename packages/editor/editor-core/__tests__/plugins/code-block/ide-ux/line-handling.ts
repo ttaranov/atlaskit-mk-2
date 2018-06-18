@@ -21,9 +21,9 @@ describe('IDE UX - Line Handling', () => {
 
   describe('#getStartOfCurrentLine', () => {
     it('should return empty string when the cursor is at the start of the code block', () => {
-      const { editorView: { state } } = getState(
-        doc(p('before'), code_block()('{<>}hello world')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(p('before'), code_block()('{<>}hello world')));
       expect(getStartOfCurrentLine(state)).toEqual({
         pos: 9,
         text: '',
@@ -31,9 +31,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the text from the start to the cursor when no previous newline', () => {
-      const { editorView: { state } } = getState(
-        doc(p('before'), code_block()('hello world{<>}')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(p('before'), code_block()('hello world{<>}')));
       expect(getStartOfCurrentLine(state)).toEqual({
         pos: 9,
         text: 'hello world',
@@ -41,9 +41,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the text from the start to the previous newline', () => {
-      const { editorView: { state } } = getState(
-        doc(p('before'), code_block()('hello\nworld{<>}')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(p('before'), code_block()('hello\nworld{<>}')));
       expect(getStartOfCurrentLine(state)).toEqual({
         pos: 15,
         text: 'world',
@@ -53,9 +53,9 @@ describe('IDE UX - Line Handling', () => {
 
   describe('#getEndOfCurrentLine', () => {
     it('should return empty string when the cursor is at the end of the code block', () => {
-      const { editorView: { state } } = getState(
-        doc(p('before'), code_block()('hello world{<>}')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(p('before'), code_block()('hello world{<>}')));
       expect(getEndOfCurrentLine(state)).toEqual({
         pos: 20,
         text: '',
@@ -63,9 +63,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the text from the cursor to the end when no successive newline', () => {
-      const { editorView: { state } } = getState(
-        doc(p('before'), code_block()('hello{<>}world')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(p('before'), code_block()('hello{<>}world')));
       expect(getEndOfCurrentLine(state)).toEqual({
         pos: 19,
         text: 'world',
@@ -73,9 +73,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the text from the cursor to the next newline', () => {
-      const { editorView: { state } } = getState(
-        doc(p('before'), code_block()('{<>}hello\nworld\n')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(p('before'), code_block()('{<>}hello\nworld\n')));
       expect(getEndOfCurrentLine(state)).toEqual({
         pos: 14,
         text: 'hello',
@@ -85,9 +85,9 @@ describe('IDE UX - Line Handling', () => {
 
   describe('#getLinesFromSelection', () => {
     it('should return the current line when cursor selection is in the middle of the line', () => {
-      const { editorView: { state } } = getState(
-        doc(code_block()('start\nmid{<>}dle\nend')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(code_block()('start\nmid{<>}dle\nend')));
       expect(getLinesFromSelection(state)).toEqual({
         text: 'middle',
         start: 7,
@@ -96,9 +96,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the current line when cursor selection is at the start of the line', () => {
-      const { editorView: { state } } = getState(
-        doc(code_block()('start\n{<>}middle\nend')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(code_block()('start\n{<>}middle\nend')));
       expect(getLinesFromSelection(state)).toEqual({
         text: 'middle',
         start: 7,
@@ -107,9 +107,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the current line when cursor selection is at the end of the line', () => {
-      const { editorView: { state } } = getState(
-        doc(code_block()('start\nmiddle{<>}\nend')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(code_block()('start\nmiddle{<>}\nend')));
       expect(getLinesFromSelection(state)).toEqual({
         text: 'middle',
         start: 7,
@@ -118,9 +118,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the neighbouring lines when selection only wraps a newline', () => {
-      const { editorView: { state } } = getState(
-        doc(code_block()('start{<}\n{>}middle\nend')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(code_block()('start{<}\n{>}middle\nend')));
       expect(getLinesFromSelection(state)).toEqual({
         text: 'start\nmiddle',
         start: 1,
@@ -129,9 +129,9 @@ describe('IDE UX - Line Handling', () => {
     });
 
     it('should return the lines when selection is across multiple lines', () => {
-      const { editorView: { state } } = getState(
-        doc(code_block()('start{<}\nmiddle\ne{>}nd')),
-      );
+      const {
+        editorView: { state },
+      } = getState(doc(code_block()('start{<}\nmiddle\ne{>}nd')));
       expect(getLinesFromSelection(state)).toEqual({
         text: 'start\nmiddle\nend',
         start: 1,
@@ -204,6 +204,13 @@ describe('IDE UX - Line Handling', () => {
       expect(getLineInfo('\t\t\thello world')).toEqual(
         expect.objectContaining({
           indentText: '\t\t\t',
+        }),
+      );
+    });
+    it('should set `indentText` to an empty string when no indentation', () => {
+      expect(getLineInfo('hello world')).toEqual(
+        expect.objectContaining({
+          indentText: '',
         }),
       );
     });

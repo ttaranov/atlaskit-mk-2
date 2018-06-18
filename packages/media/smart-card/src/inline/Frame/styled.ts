@@ -44,11 +44,11 @@ const isSelected = ({ isSelected }: WrapperProps) => {
 export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & WrapperProps
 > = styled.span`
-  ${isInteractive} ${isSelected} display: inline-flex;
-  align-items: center;
-  margin: 2px;
-  padding: 2px;
+  color: ${colors.N300};
+  line-height: ${16 / 14};
+  margin: 2px 2px 2px 0;
+  padding: 2px 2px 2px 2px;
   border-radius: ${akBorderRadius};
   user-select: none;
-  vertical-align: middle;
+  ${isInteractive} ${isSelected};
 `;

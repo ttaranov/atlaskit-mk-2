@@ -6,3 +6,4 @@ packages/core/icon/glyph
 packages/core/icon/utils
 packages/core/layer/popper
 packages/media/media-editor/src/engine/core/binaries/mediaEditor.js
+packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__

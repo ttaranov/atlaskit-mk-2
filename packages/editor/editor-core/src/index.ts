@@ -83,3 +83,4 @@ export {
 export {
   PluginConfig as TablePluginConfig,
 } from './plugins/table/pm-plugins/main';
+export { CardProvider } from './plugins/card';

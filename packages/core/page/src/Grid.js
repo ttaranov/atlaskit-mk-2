@@ -1,6 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { ThemeProvider, withTheme } from 'styled-components';
+import {
+  ThemeProvider,
+  withTheme,
+  type ThemeProviderProps,
+} from 'styled-components';
 
 import { defaultGridColumns } from './internal/vars';
 import Grid from './internal/GridElement';
@@ -9,7 +13,7 @@ type Props = {
   children?: any,
   spacing?: 'cosy' | 'comfortable' | 'compact',
   layout?: 'fixed' | 'fuild',
-};
+} & ThemeProviderProps;
 
 export default withTheme(
   class AkGrid extends Component<Props, void> {

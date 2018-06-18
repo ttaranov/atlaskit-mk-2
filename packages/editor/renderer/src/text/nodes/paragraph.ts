@@ -1,12 +1,21 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { reduceTree } from '../utils';
-import { ReducedNode } from './';
+import { reduce, NodeReducer } from './';
 
-export default function paragraph(node: PMNode, schema: Schema): ReducedNode {
-  if (node.childCount) {
-    return {
-      content: reduceTree(node.content, schema),
-    };
-  }
-  return {};
-}
+const paragraph: NodeReducer = (node: PMNode, schema: Schema) => {
+  const result: string[] = [];
+  let previousNodeType = '';
+
+  node.forEach(n => {
+    const text = reduce(n, schema);
+    if (previousNodeType === 'mention' && !text.startsWith(' ')) {
+      result.push(` ${text}`);
+    } else {
+      result.push(text);
+    }
+    previousNodeType = n.type.name;
+  });
+
+  return result.join('').trim();
+};
+
+export default paragraph;

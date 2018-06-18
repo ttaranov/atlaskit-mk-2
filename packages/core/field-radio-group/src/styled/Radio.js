@@ -35,9 +35,11 @@ export const Label = styled.label`
 `;
 
 type IconWrapperProps = {
+  isActive: boolean,
   isSelected: boolean,
   isDisabled: boolean,
   isFocused: boolean,
+  isInvalid: boolean,
 };
 
 const borderColor = themed({ light: colors.N40, dark: colors.DN80 });

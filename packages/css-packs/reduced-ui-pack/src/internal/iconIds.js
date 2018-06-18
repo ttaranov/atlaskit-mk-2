@@ -1,5 +1,5 @@
 // @flow
-const iconIds = [
+const iconIds: Array<string> = [
   'activity',
   'add-circle',
   'add-item',

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { type Node } from 'react';
 import type { GroupType, ItemType } from '../types';
 
 const renderOptions = (items: Array<ItemType>) => {
@@ -16,7 +16,7 @@ const renderOptions = (items: Array<ItemType>) => {
   ));
 };
 
-const renderOptGroups = (groups: Array<GroupType>) =>
+const renderOptGroups = (groups: Array<GroupType>): Array<Node> =>
   groups.map((group, groupIndex) => (
     <optgroup
       key={groupIndex} // eslint-disable-line react/no-array-index-key

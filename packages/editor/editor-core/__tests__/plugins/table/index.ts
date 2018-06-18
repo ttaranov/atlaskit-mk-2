@@ -32,7 +32,6 @@ import { setNodeSelection } from '../../../src/utils';
 import {
   toggleHeaderRow,
   toggleHeaderColumn,
-  toggleNumberColumn,
   insertColumn,
   insertRow,
 } from '../../../src/plugins/table/actions';
@@ -690,33 +689,6 @@ describe('table plugin', () => {
           editorView.destroy();
         });
       });
-
-      describe('when number column is enabled', () => {
-        it('it should empty the first cell, start numbering from 2nd row and convert first row to a header row', () => {
-          const { editorView } = editor(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-                tr(td()(p('3')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          toggleHeaderRow(editorView.state, editorView.dispatch);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(thEmpty, thEmpty, thEmpty),
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          editorView.destroy();
-        });
-      });
     });
 
     describe('when header row is enabled', () => {
@@ -742,60 +714,6 @@ describe('table plugin', () => {
           toggleHeaderRow(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(p('text'), table()(tr(thEmpty, tdEmpty), tr(thEmpty, tdEmpty))),
-          );
-          editorView.destroy();
-        });
-      });
-
-      describe('when number column is enabled', () => {
-        it('it should start numbering from 1st row and convert first row to a normal row', () => {
-          const { editorView } = editor(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(thEmpty, thEmpty, thEmpty),
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          toggleHeaderRow(editorView.state, editorView.dispatch);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-                tr(td()(p('3')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          editorView.destroy();
-        });
-      });
-
-      describe('when number column and header column are enabled', () => {
-        it('it should start numbering from 1st row and convert first row to a normal row, keeping 2nd cell of the 1st row as header', () => {
-          const { editorView } = editor(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(thEmpty, thEmpty, thEmpty),
-                tr(td()(p('1')), thEmpty, tdEmpty),
-                tr(td()(p('2')), thEmpty, tdEmpty),
-              ),
-            ),
-          );
-          toggleHeaderRow(editorView.state, editorView.dispatch);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), thEmpty, tdEmpty),
-                tr(td()(p('2')), thEmpty, tdEmpty),
-                tr(td()(p('3')), thEmpty, tdEmpty),
-              ),
-            ),
           );
           editorView.destroy();
         });
@@ -829,31 +747,6 @@ describe('table plugin', () => {
           editorView.destroy();
         });
       });
-
-      describe('when number column is enabled', () => {
-        it('it should convert second column to a header column', () => {
-          const { editorView } = editor(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          toggleHeaderColumn(editorView.state, editorView.dispatch);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), thEmpty, tdEmpty),
-                tr(td()(p('2')), thEmpty, tdEmpty),
-              ),
-            ),
-          );
-          editorView.destroy();
-        });
-      });
     });
 
     describe('when header column is enabled', () => {
@@ -876,98 +769,6 @@ describe('table plugin', () => {
           toggleHeaderColumn(editorView.state, editorView.dispatch);
           expect(editorView.state.doc).toEqualDocument(
             doc(p('text'), table()(tr(thEmpty, thEmpty), tr(tdEmpty, tdEmpty))),
-          );
-          editorView.destroy();
-        });
-      });
-
-      describe('when number column is enabled', () => {
-        it('it should convert second column to a normal column', () => {
-          const { editorView } = editor(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), thEmpty, tdEmpty),
-                tr(td()(p('2')), thEmpty, tdEmpty),
-              ),
-            ),
-          );
-          toggleHeaderColumn(editorView.state, editorView.dispatch);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          editorView.destroy();
-        });
-      });
-    });
-  });
-
-  describe('toggleNumberColumn()', () => {
-    describe('when number column is disabled', () => {
-      it('it should add number column before the first existing column', () => {
-        const { editorView } = editor(
-          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
-        );
-        toggleNumberColumn(editorView.state, editorView.dispatch);
-        expect(editorView.state.doc).toEqualDocument(
-          doc(
-            p('text'),
-            table({ isNumberColumnEnabled: true })(
-              tr(td()(p('1')), tdEmpty, tdEmpty),
-              tr(td()(p('2')), tdEmpty, tdEmpty),
-            ),
-          ),
-        );
-        editorView.destroy();
-      });
-    });
-
-    describe('when number column is enabled', () => {
-      it('it should remove number column', () => {
-        const { editorView } = editor(
-          doc(
-            p('text'),
-            table({ isNumberColumnEnabled: true })(
-              tr(td()(p('1')), tdEmpty, tdEmpty),
-              tr(td()(p('2')), tdEmpty, tdEmpty),
-            ),
-          ),
-        );
-        toggleNumberColumn(editorView.state, editorView.dispatch);
-        expect(editorView.state.doc).toEqualDocument(
-          doc(p('text'), table()(tr(tdEmpty, tdEmpty), tr(tdEmpty, tdEmpty))),
-        );
-        editorView.destroy();
-      });
-
-      describe('when adding a new row', () => {
-        it('it should reset numbers', () => {
-          const { editorView, plugin } = editor(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-              ),
-            ),
-          );
-          plugin.props.handleDOMEvents!.focus(editorView, event);
-          insertRow(1)(editorView.state, editorView.dispatch);
-          expect(editorView.state.doc).toEqualDocument(
-            doc(
-              p('text'),
-              table({ isNumberColumnEnabled: true })(
-                tr(td()(p('1')), tdEmpty, tdEmpty),
-                tr(td()(p('2')), tdEmpty, tdEmpty),
-                tr(td()(p('3')), tdEmpty, tdEmpty),
-              ),
-            ),
           );
           editorView.destroy();
         });
