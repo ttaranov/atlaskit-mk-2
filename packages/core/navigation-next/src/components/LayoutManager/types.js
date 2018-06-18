@@ -13,5 +13,3 @@ export type WrappedLayoutManagerProps = {
 export type LayoutManagerProps = WrappedLayoutManagerProps & {
   navigation: Object,
 };
-
-export type DrawerGatewayProps = { innerRef: (?HTMLElement) => void };

@@ -17,17 +17,9 @@ import {
   PageWrapper,
   ProductNavWrapper,
 } from './primitives';
-import type {
-  DrawerGatewayProps,
-  LayoutManagerProps,
-  WrappedLayoutManagerProps,
-} from './types';
+import type { LayoutManagerProps, WrappedLayoutManagerProps } from './types';
 
 import { GLOBAL_NAV_WIDTH } from '../../common/constants';
-
-const DrawerGateway = ({ innerRef, ...props }: DrawerGatewayProps) => (
-  <div ref={innerRef} {...props} />
-);
 
 class LayoutManager extends Component<LayoutManagerProps> {
   productNavRef: HTMLElement;
@@ -186,7 +178,6 @@ class LayoutManager extends Component<LayoutManagerProps> {
             {this.pageRenderFn}
           </ResizeTransition>
         </LayoutContainer>
-        <DrawerGateway innerRef={navigation.getDrawerGateway} />
       </Fragment>
     );
   }
