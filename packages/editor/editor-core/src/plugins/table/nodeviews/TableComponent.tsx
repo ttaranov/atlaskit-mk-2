@@ -18,7 +18,7 @@ import { Props } from './table';
 import { containsHeaderRow } from '../utils';
 
 export interface ComponentProps extends Props {
-  onComponentUpdate?: () => void;
+  onComponentUpdate: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 }
 
@@ -147,10 +147,7 @@ class TableComponent extends React.Component<ComponentProps> {
 
   componentDidUpdate() {
     const { onComponentUpdate } = this.props;
-    if (onComponentUpdate) {
-      onComponentUpdate();
-    }
-
+    onComponentUpdate();
     this.updateShadows();
   }
 

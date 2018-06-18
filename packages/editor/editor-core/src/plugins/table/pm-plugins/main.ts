@@ -363,7 +363,7 @@ export const createPlugin = (
             eventDispatcher,
             portalProviderAPI,
             getPos,
-          });
+          }).init();
         },
       },
       handleClick(view: EditorView, pos: number, event) {
