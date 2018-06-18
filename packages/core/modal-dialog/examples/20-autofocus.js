@@ -39,7 +39,7 @@ export default class ModalDemo extends Component<
             Function returns a ref
           </Button>
           <Button onClick={() => this.open('autoFocus')}>
-            autofocus as false
+            using autoFocus attribute
           </Button>
         </ButtonGroup>
 
@@ -60,7 +60,7 @@ export default class ModalDemo extends Component<
           </StubDialog>
         )}
         {isOpen === 'autoFocus' && (
-          <StubDialog autoFocus={false} heading="input has autoFocus">
+          <StubDialog heading="input has autoFocus">
             <p>The textbox should be focused</p>
             <input autoFocus type="text" />
           </StubDialog>

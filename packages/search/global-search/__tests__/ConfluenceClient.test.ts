@@ -1,11 +1,13 @@
 import ConfluenceClient, {
   RecentPage,
   RecentSpace,
+  ConfluenceContentType,
 } from '../src/api/ConfluenceClient';
 import {
-  ResultType,
-  ResultContentType,
   AnalyticsType,
+  ResultType,
+  ContentType,
+  ContainerResult,
 } from '../src/model/Result';
 
 import 'whatwg-fetch';
@@ -14,7 +16,7 @@ import * as fetchMock from 'fetch-mock';
 const DUMMY_CONFLUENCE_HOST = 'http://localhost';
 const DUMMY_CLOUD_ID = '123';
 
-function buildMockPage(type: ResultContentType): RecentPage {
+function buildMockPage(type: ConfluenceContentType): RecentPage {
   return {
     available: true,
     contentType: type,
@@ -63,8 +65,8 @@ describe('ConfluenceClient', () => {
   describe('getRecentItems', () => {
     it('should return confluence items', async () => {
       const pages: RecentPage[] = [
-        buildMockPage(ResultContentType.Page),
-        buildMockPage(ResultContentType.Blogpost),
+        buildMockPage('page'),
+        buildMockPage('blogpost'),
       ];
 
       mockRecentlyViewedPages(pages);
@@ -74,21 +76,21 @@ describe('ConfluenceClient', () => {
       expect(result).toEqual([
         {
           resultId: pages[0].id,
-          resultType: ResultType.Object,
           name: pages[0].title,
           href: `${DUMMY_CONFLUENCE_HOST}${pages[0].url}`,
           containerName: pages[0].space,
-          contentType: pages[0].contentType,
           analyticsType: AnalyticsType.RecentConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluencePage,
         },
         {
           resultId: pages[1].id,
-          resultType: ResultType.Object,
           name: pages[1].title,
           href: `${DUMMY_CONFLUENCE_HOST}${pages[1].url}`,
           containerName: pages[1].space,
-          contentType: pages[1].contentType,
           analyticsType: AnalyticsType.RecentConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluenceBlogpost,
         },
       ]);
     });
@@ -108,24 +110,26 @@ describe('ConfluenceClient', () => {
 
       const result = await confluenceClient.getRecentSpaces();
 
-      expect(result).toEqual([
+      const expectedResults: ContainerResult[] = [
         {
           resultId: MOCK_SPACE.id,
-          resultType: ResultType.Container,
           name: MOCK_SPACE.name,
           href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
+          resultType: ResultType.GenericContainerResult,
         },
         {
           resultId: MOCK_SPACE.id,
-          resultType: ResultType.Container,
           name: MOCK_SPACE.name,
           href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
+          resultType: ResultType.GenericContainerResult,
         },
-      ]);
+      ];
+
+      expect(result).toEqual(expectedResults);
     });
 
     it('should not break if no spaces are returned', async () => {

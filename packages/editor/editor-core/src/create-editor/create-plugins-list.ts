@@ -39,6 +39,7 @@ import {
   quickInsertPlugin,
   gapCursorPlugin,
   inlineActionPlugin,
+  cardPlugin,
 } from '../plugins';
 
 /**
@@ -185,6 +186,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowGapCursor) {
     plugins.push(gapCursorPlugin);
+  }
+
+  if (props.UNSAFE_cards) {
+    plugins.push(cardPlugin);
   }
 
   // UI only plugins

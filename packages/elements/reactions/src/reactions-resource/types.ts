@@ -10,17 +10,17 @@ export enum ReactionStatus {
 }
 
 export interface ReactionsReadyState {
-  status: ReactionStatus.ready;
-  reactions: ReactionSummary[];
+  readonly status: ReactionStatus.ready;
+  readonly reactions: ReactionSummary[];
 }
 
 export type ReactionsLoading = {
-  status: ReactionStatus.loading;
+  readonly status: ReactionStatus.loading;
 };
 
 export type ReactionsError = {
-  status: ReactionStatus.error;
-  message: string;
+  readonly status: ReactionStatus.error;
+  readonly message: string;
 };
 
 export interface ReactionSummary {

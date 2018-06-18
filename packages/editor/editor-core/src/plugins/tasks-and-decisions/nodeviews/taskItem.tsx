@@ -83,6 +83,6 @@ export function taskItemNodeViewFactory(
     return new Task(node, view, getPos, portalProviderAPI, {
       analyticsDelegateContext,
       providerFactory,
-    });
+    }).init();
   };
 }

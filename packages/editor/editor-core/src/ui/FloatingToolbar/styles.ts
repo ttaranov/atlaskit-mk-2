@@ -4,7 +4,7 @@ import { akColorN0, akBorderRadius } from '@atlaskit/util-shared-styles';
 import { dropShadow } from '../styles';
 
 export const Container: ComponentClass<
-  HTMLAttributes<{}> & { height?: number }
+  HTMLAttributes<{}> & { height?: number; innerRef?: (instance: any) => void }
 > = styled.div`
   border-radius: ${akBorderRadius};
   ${dropShadow} display: flex;

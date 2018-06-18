@@ -6,7 +6,7 @@ import Modal from '../src';
 
 const appearances = ['warning', 'danger'];
 
-export default class ExampleBasic extends PureComponent<
+export default class ExampleAppearance extends PureComponent<
   {},
   { isOpen: string | null },
 > {
@@ -26,12 +26,15 @@ export default class ExampleBasic extends PureComponent<
       <div>
         <ButtonGroup>
           {appearances.map(name => (
-            <Button onClick={() => this.open(name)}>Open: {name}</Button>
+            <Button key={`${name}-trigger`} onClick={() => this.open(name)}>
+              Open: {name}
+            </Button>
           ))}
         </ButtonGroup>
 
         {appearances.filter(a => a === isOpen).map(name => (
           <Modal
+            key="active-modal"
             actions={actions}
             appearance={name}
             onClose={this.close}

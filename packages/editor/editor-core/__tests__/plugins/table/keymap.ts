@@ -269,7 +269,12 @@ describe('table keymap', () => {
       });
 
       const backspace = (view: EditorView) => {
-        const { state: { tr, selection: { $head } } } = view;
+        const {
+          state: {
+            tr,
+            selection: { $head },
+          },
+        } = view;
         view.dispatch(tr.delete($head.pos - 1, $head.pos));
       };
 
@@ -382,9 +387,9 @@ describe('table keymap', () => {
             true,
           );
           const { selection } = editorView.state;
-          const { pos } = findTable(selection)!;
+          const { start } = findTable(selection)!;
           const cursorPos =
-            selection.$head.pos - selection.$head.parentOffset + pos!;
+            selection.$head.pos - selection.$head.parentOffset + start!;
           sendKeyToPm(editorView, 'Backspace');
           const rows: any = [];
           for (let i = 0; i < 3; i++) {
@@ -421,9 +426,9 @@ describe('table keymap', () => {
             true,
           );
           const { selection } = editorView.state;
-          const { pos } = findTable(selection)!;
+          const { start } = findTable(selection)!;
           const cursorPos =
-            selection.$head.pos - selection.$head.parentOffset + pos;
+            selection.$head.pos - selection.$head.parentOffset + start;
           sendKeyToPm(editorView, 'Backspace');
           const columns: any = [];
           for (let i = 0; i < 3; i++) {

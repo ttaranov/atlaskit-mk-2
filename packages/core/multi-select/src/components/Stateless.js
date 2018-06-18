@@ -209,7 +209,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     }
   };
 
-  onOpenChange = (attrs: { event: SyntheticEvent<any> }) => {
+  onOpenChange = (attrs: { event: SyntheticEvent<any>, isOpen?: boolean }) => {
     const target = attrs.event.currentTarget;
     // eslint-disable-next-line react/no-find-dom-node
     const tagGroup = ReactDOM.findDOMNode(this.tagGroup);

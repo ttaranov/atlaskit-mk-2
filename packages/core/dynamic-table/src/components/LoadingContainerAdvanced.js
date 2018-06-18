@@ -132,6 +132,7 @@ export default class LoadingContainerAdvanced extends Component<Props, {}> {
     const { isLoading, contentsOpacity } = this.props;
     if (
       targetNode &&
+      // $FlowFixMe
       targetNode.style &&
       typeof targetNode.style === 'object'
     ) {

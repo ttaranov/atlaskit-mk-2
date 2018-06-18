@@ -1,18 +1,10 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
-import { browser } from '@atlaskit/editor-common';
+import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { stateKey } from '../pm-plugins/main';
 import { pluginKey as hoverSelectionPluginKey } from '../pm-plugins/hover-selection-plugin';
-import {
-  hoverColumns,
-  hoverTable,
-  hoverRows,
-  resetHoverSelection,
-  insertColumn,
-  insertRow,
-} from '../actions';
 
 import { pluginKey as widthPluginKey } from '../../width';
 
@@ -23,6 +15,7 @@ const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
 
 import { Props } from './table';
+import { containsHeaderRow } from '../utils';
 
 export interface ComponentProps extends Props {
   onComponentUpdate: () => void;
@@ -30,6 +23,8 @@ export interface ComponentProps extends Props {
 }
 
 class TableComponent extends React.Component<ComponentProps> {
+  state: { scroll: number } = { scroll: 0 };
+
   private wrapper: HTMLDivElement | null;
   private table: HTMLTableElement | null;
 
@@ -38,6 +33,16 @@ class TableComponent extends React.Component<ComponentProps> {
 
   constructor(props) {
     super(props);
+
+    // Disable inline table editing and resizing controls in Firefox
+    // https://github.com/ProseMirror/prosemirror/issues/432
+    if ('execCommand' in document) {
+      ['enableObjectResizing', 'enableInlineTableEditing'].forEach(cmd => {
+        if (document.queryCommandSupported(cmd)) {
+          document.execCommand(cmd, false, 'false');
+        }
+      });
+    }
   }
 
   componentDidMount() {
@@ -96,20 +101,20 @@ class TableComponent extends React.Component<ComponentProps> {
                 width: calcTableWidth(node.attrs.layout, containerWidth),
               }}
               className="table-container"
+              data-number-column={node.attrs.isNumberColumnEnabled}
               data-layout={node.attrs.layout}
             >
               <div className="table-row-controls-wrapper">
                 <TableFloatingControls
                   editorView={view}
-                  tableElement={pluginState.tableElement}
+                  tableElement={this.table || undefined}
+                  tableActive={this.table === pluginState.tableElement}
                   isTableHovered={isTableHovered}
-                  hoverTable={hoverTable}
-                  hoverRows={hoverRows}
-                  resetHoverSelection={resetHoverSelection}
-                  insertColumn={insertColumn}
-                  insertRow={insertRow}
                   remove={pluginState.remove}
                   isTableInDanger={isTableInDanger}
+                  isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
+                  hasHeaderRow={containsHeaderRow(view.state, node)}
+                  scroll={this.state.scroll}
                 />
               </div>
               <div
@@ -127,10 +132,7 @@ class TableComponent extends React.Component<ComponentProps> {
                     editorView={view}
                     tableElement={pluginState.tableElement}
                     isTableHovered={isTableHovered}
-                    insertColumn={insertColumn}
                     remove={pluginState.remove}
-                    hoverColumns={hoverColumns!}
-                    resetHoverSelection={resetHoverSelection!}
                     isTableInDanger={isTableInDanger}
                   />
                 </div>
@@ -146,44 +148,76 @@ class TableComponent extends React.Component<ComponentProps> {
   componentDidUpdate() {
     const { onComponentUpdate } = this.props;
     onComponentUpdate();
+    this.updateShadows();
   }
 
   private handleScroll = (event: Event) => {
-    if (
-      !this.wrapper ||
-      event.target !== this.wrapper ||
-      !this.table ||
-      !this.leftShadow ||
-      !this.rightShadow
-    ) {
+    if (!this.wrapper || event.target !== this.wrapper) {
       return;
     }
 
-    const { scrollLeft, offsetWidth } = event.target as HTMLElement;
-    const tableOffsetWidth = this.table.offsetWidth;
+    this.updateShadows();
 
-    const diff = tableOffsetWidth - offsetWidth;
-    const scrollDiff = scrollLeft - diff > 0 ? scrollLeft - diff : 0;
-    const width = diff
-      ? Math.min(SHADOW_MAX_WIDTH, SHADOW_MAX_WIDTH - scrollDiff + 2)
-      : 0;
-
-    const paddingLeft = getComputedStyle(this.wrapper.parentElement!)
-      .paddingLeft;
-    const paddingLeftPx = paddingLeft
-      ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
-      : 0;
-
-    this.leftShadow.style.left = `${paddingLeftPx}px`;
-    this.leftShadow.style.width = `${Math.min(scrollLeft, SHADOW_MAX_WIDTH)}px`;
-    this.rightShadow.style.left = `${offsetWidth -
-      width -
-      scrollDiff +
-      paddingLeftPx}px`;
-    this.rightShadow.style.width = `${width}px`;
+    this.setState({ scroll: this.wrapper.scrollLeft });
   };
+
+  private updateShadows() {
+    if (!this.wrapper || !this.table || !this.leftShadow || !this.rightShadow) {
+      return;
+    }
+
+    updateShadows(
+      this.wrapper,
+      this.table,
+      this.leftShadow,
+      this.rightShadow,
+      stateKey.getState(this.props.view.state).tableActive,
+    );
+  }
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
 }
+
+export const updateShadows = (
+  wrapper,
+  table,
+  leftShadow,
+  rightShadow,
+  tableActive: boolean,
+) => {
+  const { scrollLeft, offsetWidth } = wrapper as HTMLElement;
+  const tableOffsetWidth = table.offsetWidth;
+
+  const diff = tableOffsetWidth - offsetWidth;
+  const scrollDiff = scrollLeft - diff > 0 ? scrollLeft - diff : 0;
+  const width = diff
+    ? Math.min(SHADOW_MAX_WIDTH, SHADOW_MAX_WIDTH - scrollDiff + 2)
+    : 0;
+
+  const paddingLeft = getComputedStyle(wrapper.parentElement!).paddingLeft;
+  const paddingLeftPx = paddingLeft
+    ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
+    : 0;
+
+  leftShadow.style.left = `${paddingLeftPx + 1}px`;
+  leftShadow.style.width = `${Math.min(scrollLeft, SHADOW_MAX_WIDTH)}px`;
+
+  rightShadow.style.left = `${offsetWidth -
+    (diff ? width : SHADOW_MAX_WIDTH) -
+    scrollDiff +
+    paddingLeftPx}px`;
+
+  const rightDiff =
+    diff - scrollLeft - 1 + (tableActive ? akEditorTableToolbarSize : 0);
+  const rightWidth = rightDiff > 0 ? Math.min(rightDiff, SHADOW_MAX_WIDTH) : 0;
+  rightShadow.style.width = `${rightWidth}px`;
+
+  // fix shadow height
+  const height =
+    table.offsetHeight + (tableActive ? akEditorTableToolbarSize : 0) - 1;
+
+  leftShadow.style.height = `${height}px`;
+  rightShadow.style.height = `${height}px`;
+};
 
 export default TableComponent;

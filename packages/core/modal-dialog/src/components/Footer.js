@@ -49,7 +49,7 @@ export default class ModalFooter extends Component<Props, {}> {
                 const variant = idx ? 'subtle' : appearance || 'primary';
                 return (
                   <ActionItem key={text || idx}>
-                    <Button appearance={variant} autoFocus={!idx} {...rest}>
+                    <Button appearance={variant} {...rest}>
                       {text}
                     </Button>
                   </ActionItem>
