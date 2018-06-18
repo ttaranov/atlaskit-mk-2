@@ -5,6 +5,7 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Flag from '../src';
+import FlagWithAnalytics from '../src/components/Flag/index';
 import Container, {
   Description,
   DismissButton,
@@ -217,5 +218,23 @@ describe('Flag', () => {
         expect(spy).not.toHaveBeenCalled();
       });
     });
+  });
+});
+describe('FlagWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<FlagWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

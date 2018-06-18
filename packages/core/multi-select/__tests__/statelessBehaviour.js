@@ -6,6 +6,8 @@ import { MultiSelectStateless } from '../src';
 
 import { name } from '../package.json';
 
+import MultiSelectStatelessWithAnalytics from '../src/components/Stateless';
+
 describe(`${name} - stateless`, () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
@@ -30,5 +32,23 @@ describe(`${name} - stateless`, () => {
         expect(document.activeElement).toBe(input.instance());
       });
     });
+  });
+});
+describe('MultiSelectStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<MultiSelectStatelessWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

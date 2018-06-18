@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import Tabs, { TabContent, TabItem } from '../src';
+import TabsWithAnalytics from '../src/components/Tabs';
 import type {
   TabContentComponentProvided,
   TabItemComponentProvided,
@@ -257,5 +258,23 @@ describe(name, () => {
         });
       });
     });
+  });
+});
+describe('TabsWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<TabsWithAnalytics tabs={tabs} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

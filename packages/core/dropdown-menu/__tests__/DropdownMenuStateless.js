@@ -5,6 +5,7 @@ import { shallow, mount } from 'enzyme';
 import Droplist from '@atlaskit/droplist';
 
 import { DropdownMenuStateless } from '../src';
+import DropdownMenuStatelessWithAnalytics from '../src/components/DropdownMenuStateless';
 import DropdownItemFocusManager from '../src/components/context/DropdownItemFocusManager';
 
 describe('dropdown menu - DropdownMenuStateless', () => {
@@ -87,5 +88,23 @@ describe('dropdown menu - DropdownMenuStateless', () => {
       });
       expect(spy).toHaveBeenCalledTimes(0);
     });
+  });
+});
+describe('DropdownMenuStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DropdownMenuStatelessWithAnalytics isOpen />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

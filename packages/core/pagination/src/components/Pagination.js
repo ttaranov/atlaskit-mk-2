@@ -1,6 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { type i18nShape, defaultI18n } from '../internal/props';
 import { Container, Ellipsis, ButtonActive } from '../styled';
@@ -27,7 +37,7 @@ type State = {
   current: number,
 };
 
-export default class Pagination extends Component<Props, State> {
+export class Pagination extends Component<Props, State> {
   static defaultProps = {
     defaultValue: 1,
     i18n: defaultI18n,
@@ -106,3 +116,23 @@ export default class Pagination extends Component<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'pagination',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'pagination',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Pagination),
+);

@@ -1,8 +1,17 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import Container, {
   Description,
   DismissButton,
@@ -22,7 +31,7 @@ type State = {
   isExpanded: boolean,
 };
 
-export default class Flag extends Component<FlagProps, State> {
+export class Flag extends Component<FlagProps, State> {
   props: FlagProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -148,3 +157,63 @@ export default class Flag extends Component<FlagProps, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'flag',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'flag',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onDismissed: createAndFireEventOnAtlaskit({
+      action: 'dismissed',
+      actionSubject: 'flag',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'flag',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onMouseOut: createAndFireEventOnAtlaskit({
+      action: 'unhovered',
+      actionSubject: 'flag',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onMouseOver: createAndFireEventOnAtlaskit({
+      action: 'hovered',
+      actionSubject: 'flag',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Flag),
+);

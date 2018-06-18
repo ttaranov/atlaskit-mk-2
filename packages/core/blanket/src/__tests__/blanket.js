@@ -5,6 +5,8 @@ import { mount } from 'enzyme';
 import Blanket from '../../src';
 import { opacity } from '../../src/styled';
 
+import BlanketWithAnalytics from '../Blanket';
+
 describe('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {
@@ -55,5 +57,23 @@ describe('ak-blanket', () => {
         expect(spy).toHaveBeenCalledTimes(1);
       });
     });
+  });
+});
+describe('BlanketWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<BlanketWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

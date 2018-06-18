@@ -1,7 +1,16 @@
 // @flow
 import React, { Component } from 'react';
 import type { Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
 import AvatarImage from './AvatarImage';
@@ -156,6 +165,19 @@ class Avatar extends Component<AvatarPropTypes> {
   }
 }
 
+const AvatarWithoutAnalytics = mapProps({
+  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
+  isInteractive: props =>
+    Boolean(
+      (typeof props.enableTooltip !== 'undefined'
+        ? props.enableTooltip
+        : Avatar.defaultProps.enableTooltip) && props.name,
+    ), // 2
+})(withPseudoState(Avatar));
+
+export { AvatarWithoutAnalytics as Avatar };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 /**
  *  1. Higher order components seem to ignore default properties. Mapping
  *     `appearance` explicity here circumvents the issue.
@@ -166,12 +188,20 @@ class Avatar extends Component<AvatarPropTypes> {
  *     - isFocus
  *     - isHover
  */
-export default mapProps({
-  appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
-  isInteractive: props =>
-    Boolean(
-      (typeof props.enableTooltip !== 'undefined'
-        ? props.enableTooltip
-        : Avatar.defaultProps.enableTooltip) && props.name,
-    ), // 2
-})(withPseudoState(Avatar)); // 3
+export default withAnalyticsContext({
+  componentName: 'avatar',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'avatar',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(AvatarWithoutAnalytics),
+); // 3

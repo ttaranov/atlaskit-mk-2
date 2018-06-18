@@ -1,9 +1,19 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
 import PropTypes from 'prop-types';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import {
   After,
@@ -46,7 +56,7 @@ type State = {
   isPressed: boolean,
 };
 
-export default class Item extends PureComponent<Props, State> {
+export class Item extends PureComponent<Props, State> {
   static defaultProps = {
     appearance: 'default',
     children: null,
@@ -175,3 +185,23 @@ export default class Item extends PureComponent<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'droplist-item',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onActivate: createAndFireEventOnAtlaskit({
+      action: 'activated',
+      actionSubject: 'droplist-item',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Item),
+);

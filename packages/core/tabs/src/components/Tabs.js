@@ -1,6 +1,15 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import TabsNavigation from './TabsNavigation';
 import DefaultTabContent from './TabContent';
 import DefaultTabItem from './TabItem';
@@ -27,7 +36,7 @@ const defaultComponents = {
   Item: DefaultTabItem,
 };
 
-export default class Tabs extends Component<TabsProps, TabsState> {
+export class Tabs extends Component<TabsProps, TabsState> {
   static defaultProps = {
     components: {},
   };
@@ -114,3 +123,23 @@ export default class Tabs extends Component<TabsProps, TabsState> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'tabs',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onSelect: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'tabs',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Tabs),
+);

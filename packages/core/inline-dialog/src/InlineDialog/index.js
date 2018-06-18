@@ -2,8 +2,17 @@
 
 import React, { Component, type Node as NodeType } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import { gridSize } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { Container } from './styled';
 import type { PositionType, FlipPositionsType } from '../types';
 
@@ -41,8 +50,7 @@ type Props = {
   shouldFlip?: boolean | Array<FlipPositionsType>,
 };
 
-// TODO: expose applicable props from Layer and pull in here
-export default class InlineDialog extends Component<Props, {}> {
+export class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
     isOpen: false,
     onContentBlur: () => {},
@@ -120,3 +128,54 @@ export default class InlineDialog extends Component<Props, {}> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+// TODO: expose applicable props from Layer and pull in here
+export default withAnalyticsContext({
+  componentName: 'inline-dialog',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onContentBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'inline-dialog',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onContentClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'inline-dialog',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onContentFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'inline-dialog',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onClose: createAndFireEventOnAtlaskit({
+      action: 'closed',
+      actionSubject: 'inline-dialog',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(InlineDialog),
+);

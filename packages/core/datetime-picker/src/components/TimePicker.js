@@ -1,3 +1,8 @@
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 // @flow
 
 import Select, {
@@ -9,6 +14,11 @@ import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
 import { colors } from '@atlaskit/theme';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import {
   ClearIndicator,
@@ -95,7 +105,7 @@ const menuStyles = {
   overflowY: 'auto',
 };
 
-export default class TimePicker extends Component<Props, State> {
+export class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
@@ -289,3 +299,23 @@ export default class TimePicker extends Component<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'time-picker',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'time-picker',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(TimePicker),
+);

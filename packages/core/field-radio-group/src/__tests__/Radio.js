@@ -6,6 +6,8 @@ import AkRadio from '../../src/Radio';
 import Radio from '../../src/RadioBase';
 import { name } from '../../package.json';
 
+import AkRadioWithAnalytics from '../Radio';
+
 describe(name, () => {
   describe('Radio', () => {
     describe('exports', () => {
@@ -81,5 +83,24 @@ describe(name, () => {
         expectPropReflectedToInput('value', 'value', 'value-val');
       });
     });
+  });
+});
+describe('AkRadioWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    const props = { [prop]: val };
+    mount(<AkRadioWithAnalytics onChange={() => {}} {...props} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

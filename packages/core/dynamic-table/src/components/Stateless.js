@@ -1,6 +1,16 @@
 // @flow
 import React, { Component, type Component as ComponentType } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Pagination from '@atlaskit/pagination';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
 import {
@@ -42,7 +52,7 @@ type State = {
   isRanking: boolean,
 };
 
-export default class DynamicTable extends Component<Props, State> {
+export class DynamicTable extends Component<Props, State> {
   tableBody: ?ComponentType<any, any>;
 
   state = {
@@ -233,3 +243,33 @@ export default class DynamicTable extends Component<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'dynamic-table',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onSort: createAndFireEventOnAtlaskit({
+      action: 'sorted',
+      actionSubject: 'dynamic-table',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onRankEnd: createAndFireEventOnAtlaskit({
+      action: 'ranked',
+      actionSubject: 'dynamic-table',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(DynamicTable),
+);

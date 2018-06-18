@@ -9,6 +9,8 @@ import Checkbox, { CheckboxStateless, CheckboxGroup } from '../';
 import { HiddenCheckbox } from '../../src/styled/Checkbox';
 import { name } from '../../package.json';
 
+import CheckboxStatelessWithAnalytics from '../CheckboxStateless';
+
 describe(name, () => {
   describe('<CheckboxStateless />', () => {
     const mountStatelessCheckbox = (overridingProps: any) =>
@@ -105,5 +107,32 @@ describe(name, () => {
       );
       expect(cb.find(Checkbox).length).toBe(4);
     });
+  });
+});
+describe('CheckboxStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <CheckboxStatelessWithAnalytics
+        label=""
+        isChecked
+        onChange={() => {}}
+        name="stub"
+        value="stub value"
+        {...overridingProps}
+      />,
+    );
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

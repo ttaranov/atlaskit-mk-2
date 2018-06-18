@@ -1,9 +1,18 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
 import Content from '../styled/Content';
@@ -136,8 +145,7 @@ type State = {
   droplistWidth?: number,
 };
 
-// $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
-export default class StatelessSelect extends PureComponent<Props, State> {
+export class StatelessSelect extends PureComponent<Props, State> {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
   inputNode: HTMLElement | null;
@@ -670,3 +678,44 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+// $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
+export default withAnalyticsContext({
+  componentName: 'single-select',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onFilterChange: createAndFireEventOnAtlaskit({
+      action: 'filtered',
+      actionSubject: 'single-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onSelected: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'single-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'single-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(StatelessSelect),
+);

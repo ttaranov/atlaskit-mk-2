@@ -8,6 +8,8 @@ import FieldBase, { Label } from '@atlaskit/field-base';
 import InlineEditStateless from '../../src/InlineEditStateless';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
 
+import InlineEditStatelessWithAnalytics from '../InlineEditStateless';
+
 const noop = () => {};
 const Input = props => <input {...props} onChange={noop} />;
 
@@ -322,5 +324,29 @@ describe('@atlaskit/inline-edit', () => {
         '100%',
       );
     });
+  });
+});
+describe('InlineEditStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    const readView = <span>read</span>;
+    mount(
+      <InlineEditStatelessWithAnalytics
+        {...defaultProps}
+        readView={readView}
+      />,
+    );
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

@@ -6,6 +6,8 @@ import Base from '@atlaskit/field-base';
 import FieldText, { FieldTextStateless } from '../../src';
 import Input from '../../src/styled/Input';
 
+import FieldTextStatelessWithAnalytics from '../FieldTextStateless';
+
 describe('FieldTextStateless', () => {
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
   const animStub = window.cancelAnimationFrame;
@@ -210,5 +212,23 @@ describe('FieldTextStateless', () => {
       wrapper.instance().focus();
       expect(focusSpy).toHaveBeenCalledTimes(1);
     });
+  });
+});
+describe('FieldTextStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<FieldTextStatelessWithAnalytics label="" />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

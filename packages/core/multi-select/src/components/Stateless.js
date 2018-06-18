@@ -2,9 +2,20 @@
 import React, { PureComponent, type Node } from 'react';
 import ReactDOM from 'react-dom';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+
 import Droplist from '@atlaskit/droplist';
 import { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { SelectWrapper } from '../styled/Stateless';
 import Trigger from './Trigger';
@@ -130,7 +141,7 @@ type State = {
   groupedItems: Array<GroupType>,
 };
 
-export default class StatelessMultiSelect extends PureComponent<Props, State> {
+export class StatelessMultiSelect extends PureComponent<Props, State> {
   inputNode: HTMLElement | null;
   tagGroup: HTMLElement | null;
   static defaultProps = {
@@ -568,3 +579,53 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'multi-select',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onFilterChange: createAndFireEventOnAtlaskit({
+      action: 'filtered',
+      actionSubject: 'multi-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onNewItemCreated: createAndFireEventOnAtlaskit({
+      action: 'created',
+      actionSubject: 'multi-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onSelected: createAndFireEventOnAtlaskit({
+      action: 'selected',
+      actionSubject: 'multi-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'opened',
+      actionSubject: 'multi-select',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(StatelessMultiSelect),
+);

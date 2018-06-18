@@ -1,14 +1,20 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-export default class FieldTextStateless extends Component<
-  FieldTextProps,
-  void,
-> {
+export class FieldTextStateless extends Component<FieldTextProps, void> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -83,3 +89,73 @@ export default class FieldTextStateless extends Component<
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'field-text',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'field-text',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'field-text',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'field-text',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keyDowned',
+      actionSubject: 'field-text',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onKeyPress: createAndFireEventOnAtlaskit({
+      action: 'keyPressed',
+      actionSubject: 'field-text',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onKeyUp: createAndFireEventOnAtlaskit({
+      action: 'keyUpped',
+      actionSubject: 'field-text',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(FieldTextStateless),
+);

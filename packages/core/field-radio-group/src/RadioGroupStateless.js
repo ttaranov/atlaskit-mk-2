@@ -1,7 +1,16 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Radio from './Radio';
 import type { RadioGroupStatelessPropTypes, ItemsPropType } from './types';
 
@@ -11,7 +20,7 @@ type DefaultPropsTypes = {
   label: string,
 };
 
-export default class FieldRadioGroupStateless extends Component<
+export class FieldRadioGroupStateless extends Component<
   RadioGroupStatelessPropTypes,
   void,
 > {
@@ -59,3 +68,23 @@ export default class FieldRadioGroupStateless extends Component<
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'field-radio-group',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onRadioChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'field-radio-group',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(FieldRadioGroupStateless),
+);

@@ -6,6 +6,8 @@ import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import { ToggleStateless as Toggle } from '../../src';
 import { Input } from '../../src/styled';
 
+import ToggleStatelessWithAnalytics from '../ToggleStateless';
+
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 describe('Toggle', () => {
@@ -67,5 +69,23 @@ describe('Toggle', () => {
         expect(spy).not.toHaveBeenCalled();
       });
     });
+  });
+});
+describe('ToggleStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<ToggleStatelessWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

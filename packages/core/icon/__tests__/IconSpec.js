@@ -5,7 +5,7 @@ import { mount, render } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import { name } from '../package.json';
 import Icon, { size } from '../src';
-import { IconWrapper } from '../src/components/Icon';
+import IconWithAnalytics, { IconWrapper } from '../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -197,5 +197,24 @@ describe(name, () => {
         expect(handler.mock.calls.length).toBe(1);
       });
     });
+  });
+});
+describe('IconWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    const customGlyphJsx = () => <svg id={id} />;
+    mount(<IconWithAnalytics glyph={customGlyphJsx} label="" />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

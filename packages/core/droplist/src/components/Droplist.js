@@ -2,10 +2,19 @@
 
 import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
 import { ThemeProvider } from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import Wrapper, {
   Content,
   SpinnerContainer,
@@ -54,7 +63,7 @@ type Props = {
   trigger?: Node,
 };
 
-export default class Droplist extends Component<Props, void> {
+export class Droplist extends Component<Props, void> {
   static defaultProps = {
     appearance: 'default',
     boundariesElement: 'viewport',
@@ -216,3 +225,23 @@ export default class Droplist extends Component<Props, void> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'droplist',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'droplist',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Droplist),
+);

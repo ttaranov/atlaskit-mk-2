@@ -1,7 +1,16 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Button from '../styled/Button';
 import Separator from '../styled/Separator';
@@ -34,7 +43,7 @@ type State = {
   hasOverflow: boolean,
 };
 
-export default class BreadcrumbsItem extends Component<Props, State> {
+export class BreadcrumbsItem extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   button: ?HTMLButtonElement;
 
@@ -112,6 +121,11 @@ export default class BreadcrumbsItem extends Component<Props, State> {
           this.button = el;
         }}
         component={component}
+        analyticsContext={{
+          componentName: 'breadcrumbs-item',
+          packageName: packageName,
+          packageVersion: packageVersion,
+        }}
       >
         {text}
       </Button>
@@ -138,3 +152,17 @@ export default class BreadcrumbsItem extends Component<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsEvents({
+  onClick: createAndFireEventOnAtlaskit({
+    action: 'clicked',
+    actionSubject: 'breadcrumbs-item',
+
+    attributes: {
+      packageName: packageName,
+      packageVersion: packageVersion,
+    },
+  }),
+})(BreadcrumbsItem);

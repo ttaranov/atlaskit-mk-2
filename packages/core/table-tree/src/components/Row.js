@@ -1,5 +1,14 @@
 // @flow
 import React, { Component, type Element, type ChildrenArray } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { TreeRowContainer } from '../styled';
 import Chevron from './Chevron';
 import Cell from './Cell';
@@ -43,7 +52,7 @@ type Props = {
   items?: LoadableItems,
 };
 
-export default class Row extends Component<Props> {
+export class Row extends Component<Props> {
   componentDidUpdate(prevProps: Props) {
     const isExpandChanged =
       Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);
@@ -105,3 +114,33 @@ export default class Row extends Component<Props> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'table-tree',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onExpand: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'table-tree',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onCollapse: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'table-tree',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Row),
+);

@@ -1,3 +1,8 @@
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 // @flow
 import '@atlaskit/polyfills/object-assign';
 import React, {
@@ -8,6 +13,10 @@ import React, {
   type ElementRef,
 } from 'react';
 import { getTheme } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -132,7 +141,7 @@ type State = {
   resizeDelta: number,
 };
 
-export default class Navigation extends PureComponent<Props, State> {
+export class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -433,3 +442,53 @@ export default class Navigation extends PureComponent<Props, State> {
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'navigation',
+  packageName: packageName,
+  packageVersion: packageVersion,
+})(
+  withAnalyticsEvents({
+    onResize: createAndFireEventOnAtlaskit({
+      action: 'resized',
+      actionSubject: 'navigation',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onResizeStart: createAndFireEventOnAtlaskit({
+      action: 'resizeStarted',
+      actionSubject: 'navigation',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onToggleStart: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'navigation',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+
+    onToggleEnd: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'navigation',
+
+      attributes: {
+        packageName: packageName,
+        packageVersion: packageVersion,
+      },
+    }),
+  })(Navigation),
+);

@@ -1,9 +1,12 @@
 // @flow
+import { mount } from 'enzyme';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 import { name } from '../package.json';
 import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+
+import SpotlightWithAnalytics from '../src/components/Spotlight';
 
 function render(jsx) {
   return ReactDOMServer.renderToStaticMarkup(jsx);
@@ -112,5 +115,23 @@ describe(name, () => {
         </div>,
       );
     });
+  });
+});
+describe('SpotlightWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<SpotlightWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });
