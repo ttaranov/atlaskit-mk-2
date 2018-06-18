@@ -1,4 +1,5 @@
 # @atlaskit/onboarding
+- Fixes scrolling problem when multiple spotlights are off-screen.
 
 ## 4.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
