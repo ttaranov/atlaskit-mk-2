@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { Provider, BlockCard } from '../src';
+import { Provider, Card } from '../src';
 import '../mocks';
 
 const URL_A = 'private-happy';
@@ -19,11 +19,11 @@ export default () => (
             </small>
           </p>
           <br />
-          <BlockCard url={URL_A} />
+          <Card url={URL_A} />
           <br />
-          <BlockCard url={URL_A} />
+          <Card url={URL_A} />
           <br />
-          <BlockCard url={URL_A} />
+          <Card url={URL_A} />
         </GridColumn>
       </Grid>
       <br />
@@ -38,11 +38,11 @@ export default () => (
             </small>
           </p>
           <br />
-          <BlockCard url={URL_A} />
+          <Card url={URL_A} />
           <br />
-          <BlockCard url={URL_B} />
+          <Card url={URL_B} />
           <br />
-          <BlockCard url={URL_C} />
+          <Card url={URL_C} />
         </GridColumn>
       </Grid>
       <br />
@@ -56,11 +56,11 @@ export default () => (
             </small>
           </p>
           <br />
-          <BlockCard url="" />
+          <Card url="" />
           <br />
-          <BlockCard url="" />
+          <Card url="" />
           <br />
-          <BlockCard url="" />
+          <Card url="" />
         </GridColumn>
       </Grid>
     </Page>

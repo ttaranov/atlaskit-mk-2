@@ -6,12 +6,9 @@ import 'brace/mode/json';
 import 'brace/theme/tomorrow';
 import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
-import {
-  Provider,
-  BlockResolvedView,
-  BlockResolvedViewProps,
-  extractBlockPropsFromJSONLD,
-} from '../src';
+import { Provider } from '../src';
+import { extractBlockPropsFromJSONLD } from '../src/extractBlockPropsFromJSONLD';
+import { BlockCard } from '@atlaskit/media-ui';
 
 const defaultText = `{
   "@type": "Document",
@@ -30,7 +27,7 @@ export interface ExampleProps {}
 
 export interface ExampleState {
   text: string;
-  props: BlockResolvedViewProps;
+  props: BlockCard.ResolvedViewProps;
   error?: string;
 }
 
@@ -63,7 +60,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
         <Page>
           <Grid>
             <GridColumn>
-              <BlockResolvedView {...props as any} />
+              <BlockCard.ResolvedView {...props as any} />
               <br />
               <br />
               <AceEditor

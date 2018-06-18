@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
-import { Provider, BlockCard } from '../src';
+import { Provider, Card } from '../src';
 import '../mocks';
 
 const params =
@@ -53,7 +53,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <br />
-              <BlockCard url={url} />
+              <Card url={url} />
             </GridColumn>
           </Grid>
         </Page>

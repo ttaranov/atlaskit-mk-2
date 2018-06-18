@@ -2,11 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { CardAppearance } from '../../index';
 
-import {
-  BlockResolvingView,
-  BlockResolvedView,
-  BlockErroredView,
-} from '@atlaskit/smart-card';
+import { BlockCard } from '@atlaskit/media-ui';
 import { defaultLinkCardAppearance } from '../card';
 
 export interface LinkCardGenericViewProps {
@@ -52,7 +48,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
 
     if (errorMessage) {
       return (
-        <BlockErroredView
+        <BlockCard.ErroredView
           url={linkUrl || ''}
           message="We stumbled a bit here"
           onClick={this.handleClick}
@@ -62,13 +58,13 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
     }
 
     if (isLoading) {
-      return <BlockResolvingView onClick={this.handleClick} />;
+      return <BlockCard.ResolvingView onClick={this.handleClick} />;
     }
 
     const isSquare = appearance === 'square';
 
     return (
-      <BlockResolvedView
+      <BlockCard.ResolvedView
         context={{
           text: site || linkUrl || '',
           icon: iconUrl,
