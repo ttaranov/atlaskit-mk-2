@@ -2,16 +2,14 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 import LazyRender from 'react-lazily-render';
 import { auth } from '@atlassian/outbound-auth-flow-client';
-import { ObjectState, AuthService, Client } from '../Client';
+import { ObjectState, Client } from '../Client';
 import { WithObject } from '../WithObject';
 import { extractPropsFromJSONLD } from './extractPropsFromJSONLD';
-import { CollapsedFrame } from './CollapsedFrame';
 import { ResolvingView } from './ResolvingView';
 import { ResolvedView } from './ResolvedView';
 import { UnauthorisedView } from './UnauthorisedView';
 import { ForbiddenView } from './ForbiddenView';
 import { ErroredView } from './ErroredView';
-import { minWidth, maxWidth } from './dimensions';
 
 const memoizeExtractPropsFromJSONLD = memoize(extractPropsFromJSONLD);
 
@@ -77,7 +75,6 @@ class CardContent extends React.Component<CardContentProps> {
     const { url } = this.props;
     return (
       <ForbiddenView
-        icon={this.collapsedIcon}
         url={url}
         onClick={this.handleFrameClick}
         onAuthorise={this.handleAuthorise}

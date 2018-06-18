@@ -3,7 +3,7 @@ import { shallow, mount, ReactWrapper } from 'enzyme';
 import Button from '@atlaskit/button';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import { ResolvedView } from '../../../src/block/ResolvedView';
-import { IconImage } from '../../../src/block/ResolvedView/IconImage';
+import { ImageIcon } from '../../../src/block/ImageIcon';
 import {
   Title,
   Byline,
@@ -133,19 +133,19 @@ describe('ResolvedView', () => {
 
   it('should render the icon when there is an icon and no user', () => {
     const element = shallow(<ResolvedView icon={icon} />);
-    expect(element.find(IconImage)).toHaveLength(1);
+    expect(element.find(ImageIcon)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
   });
 
   it('should render the icon when there is an icon and a user', () => {
     const element = shallow(<ResolvedView icon={icon} user={user} />);
-    expect(element.find(IconImage)).toHaveLength(1);
+    expect(element.find(ImageIcon)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
   });
 
   it('should render the user when there is a user and no icon', () => {
     const element = shallow(<ResolvedView user={user} />);
-    expect(element.find(IconImage)).toHaveLength(0);
+    expect(element.find(ImageIcon)).toHaveLength(0);
     expect(element.find(Avatar)).toHaveLength(1);
   });
 
