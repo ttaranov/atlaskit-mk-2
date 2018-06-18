@@ -816,5 +816,7 @@ describe('Renderer - TextSerializer', () => {
         },
       ],
     };
+
+    expect(render(doc)).to.equal('<> This is a decision');
   });
 });
