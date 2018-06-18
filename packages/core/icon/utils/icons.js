@@ -208,26 +208,6 @@ import FileTypes24File24SourceCodeIcon from '../glyph/file-types/24/file-24-sour
 import FileTypes24File24SpreadsheetIcon from '../glyph/file-types/24/file-24-spreadsheet';
 import FileTypes24File24VideoIcon from '../glyph/file-types/24/file-24-video';
 import FileTypes24File24WordDocumentIcon from '../glyph/file-types/24/file-24-word-document';
-import FileTypes48File48ArchiveIcon from '../glyph/file-types/48/file-48-archive';
-import FileTypes48File48AudioIcon from '../glyph/file-types/48/file-48-audio';
-import FileTypes48File48DocumentIcon from '../glyph/file-types/48/file-48-document';
-import FileTypes48File48ExcelSpreadsheetIcon from '../glyph/file-types/48/file-48-excel-spreadsheet';
-import FileTypes48File48ExecutableIcon from '../glyph/file-types/48/file-48-executable';
-import FileTypes48File48FolderIcon from '../glyph/file-types/48/file-48-folder';
-import FileTypes48File48GenericIcon from '../glyph/file-types/48/file-48-generic';
-import FileTypes48File48GifIcon from '../glyph/file-types/48/file-48-gif';
-import FileTypes48File48GoogleDocIcon from '../glyph/file-types/48/file-48-google-doc';
-import FileTypes48File48GoogleFormIcon from '../glyph/file-types/48/file-48-google-form';
-import FileTypes48File48GoogleSheetIcon from '../glyph/file-types/48/file-48-google-sheet';
-import FileTypes48File48GoogleSlideIcon from '../glyph/file-types/48/file-48-google-slide';
-import FileTypes48File48ImageIcon from '../glyph/file-types/48/file-48-image';
-import FileTypes48File48PdfDocumentIcon from '../glyph/file-types/48/file-48-pdf-document';
-import FileTypes48File48PowerpointPresentationIcon from '../glyph/file-types/48/file-48-powerpoint-presentation';
-import FileTypes48File48SketchIcon from '../glyph/file-types/48/file-48-sketch';
-import FileTypes48File48SourceCodeIcon from '../glyph/file-types/48/file-48-source-code';
-import FileTypes48File48SpreadsheetIcon from '../glyph/file-types/48/file-48-spreadsheet';
-import FileTypes48File48VideoIcon from '../glyph/file-types/48/file-48-video';
-import FileTypes48File48WordDocumentIcon from '../glyph/file-types/48/file-48-word-document';
 import FileIcon from '../glyph/file';
 import FilterIcon from '../glyph/filter';
 import FlagFilledIcon from '../glyph/flag-filled';
@@ -345,6 +325,7 @@ import Objects16Object16SubtaskIcon from '../glyph/objects/16/object-16-subtask'
 import Objects16Object16TaskIcon from '../glyph/objects/16/object-16-task';
 import Objects24Object24BlogIcon from '../glyph/objects/24/object-24-blog';
 import Objects24Object24BranchIcon from '../glyph/objects/24/object-24-branch';
+import Objects24Object24BugIcon from '../glyph/objects/24/object-24-bug';
 import Objects24Object24CalendarIcon from '../glyph/objects/24/object-24-calendar';
 import Objects24Object24ChangesIcon from '../glyph/objects/24/object-24-changes';
 import Objects24Object24CodeIcon from '../glyph/objects/24/object-24-code';
@@ -1632,126 +1613,6 @@ export default {
     componentName: 'FileTypes24File24WordDocumentIcon',
     package: '@atlaskit/icon/glyph/file-types/24/file-24-word-document',
   },
-  'file-types/48/file-48-archive': {
-    keywords: ['file-types/48/file-48-archive', 'filetypes48file48archive'],
-    component: FileTypes48File48ArchiveIcon,
-    componentName: 'FileTypes48File48ArchiveIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-archive',
-  },
-  'file-types/48/file-48-audio': {
-    keywords: ['file-types/48/file-48-audio', 'filetypes48file48audio'],
-    component: FileTypes48File48AudioIcon,
-    componentName: 'FileTypes48File48AudioIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-audio',
-  },
-  'file-types/48/file-48-document': {
-    keywords: ['file-types/48/file-48-document', 'filetypes48file48document'],
-    component: FileTypes48File48DocumentIcon,
-    componentName: 'FileTypes48File48DocumentIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-document',
-  },
-  'file-types/48/file-48-excel-spreadsheet': {
-    keywords: ['file-types/48/file-48-excel-spreadsheet', 'filetypes48file48excelspreadsheet'],
-    component: FileTypes48File48ExcelSpreadsheetIcon,
-    componentName: 'FileTypes48File48ExcelSpreadsheetIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-excel-spreadsheet',
-  },
-  'file-types/48/file-48-executable': {
-    keywords: ['file-types/48/file-48-executable', 'filetypes48file48executable'],
-    component: FileTypes48File48ExecutableIcon,
-    componentName: 'FileTypes48File48ExecutableIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-executable',
-  },
-  'file-types/48/file-48-folder': {
-    keywords: ['file-types/48/file-48-folder', 'filetypes48file48folder'],
-    component: FileTypes48File48FolderIcon,
-    componentName: 'FileTypes48File48FolderIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-folder',
-  },
-  'file-types/48/file-48-generic': {
-    keywords: ['file-types/48/file-48-generic', 'filetypes48file48generic'],
-    component: FileTypes48File48GenericIcon,
-    componentName: 'FileTypes48File48GenericIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-generic',
-  },
-  'file-types/48/file-48-gif': {
-    keywords: ['file-types/48/file-48-gif', 'filetypes48file48gif'],
-    component: FileTypes48File48GifIcon,
-    componentName: 'FileTypes48File48GifIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-gif',
-  },
-  'file-types/48/file-48-google-doc': {
-    keywords: ['file-types/48/file-48-google-doc', 'filetypes48file48googledoc'],
-    component: FileTypes48File48GoogleDocIcon,
-    componentName: 'FileTypes48File48GoogleDocIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-google-doc',
-  },
-  'file-types/48/file-48-google-form': {
-    keywords: ['file-types/48/file-48-google-form', 'filetypes48file48googleform'],
-    component: FileTypes48File48GoogleFormIcon,
-    componentName: 'FileTypes48File48GoogleFormIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-google-form',
-  },
-  'file-types/48/file-48-google-sheet': {
-    keywords: ['file-types/48/file-48-google-sheet', 'filetypes48file48googlesheet'],
-    component: FileTypes48File48GoogleSheetIcon,
-    componentName: 'FileTypes48File48GoogleSheetIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-google-sheet',
-  },
-  'file-types/48/file-48-google-slide': {
-    keywords: ['file-types/48/file-48-google-slide', 'filetypes48file48googleslide'],
-    component: FileTypes48File48GoogleSlideIcon,
-    componentName: 'FileTypes48File48GoogleSlideIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-google-slide',
-  },
-  'file-types/48/file-48-image': {
-    keywords: ['file-types/48/file-48-image', 'filetypes48file48image'],
-    component: FileTypes48File48ImageIcon,
-    componentName: 'FileTypes48File48ImageIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-image',
-  },
-  'file-types/48/file-48-pdf-document': {
-    keywords: ['file-types/48/file-48-pdf-document', 'filetypes48file48pdfdocument'],
-    component: FileTypes48File48PdfDocumentIcon,
-    componentName: 'FileTypes48File48PdfDocumentIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-pdf-document',
-  },
-  'file-types/48/file-48-powerpoint-presentation': {
-    keywords: ['file-types/48/file-48-powerpoint-presentation', 'filetypes48file48powerpointpresentation'],
-    component: FileTypes48File48PowerpointPresentationIcon,
-    componentName: 'FileTypes48File48PowerpointPresentationIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-powerpoint-presentation',
-  },
-  'file-types/48/file-48-sketch': {
-    keywords: ['file-types/48/file-48-sketch', 'filetypes48file48sketch'],
-    component: FileTypes48File48SketchIcon,
-    componentName: 'FileTypes48File48SketchIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-sketch',
-  },
-  'file-types/48/file-48-source-code': {
-    keywords: ['file-types/48/file-48-source-code', 'filetypes48file48sourcecode'],
-    component: FileTypes48File48SourceCodeIcon,
-    componentName: 'FileTypes48File48SourceCodeIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-source-code',
-  },
-  'file-types/48/file-48-spreadsheet': {
-    keywords: ['file-types/48/file-48-spreadsheet', 'filetypes48file48spreadsheet'],
-    component: FileTypes48File48SpreadsheetIcon,
-    componentName: 'FileTypes48File48SpreadsheetIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-spreadsheet',
-  },
-  'file-types/48/file-48-video': {
-    keywords: ['file-types/48/file-48-video', 'filetypes48file48video'],
-    component: FileTypes48File48VideoIcon,
-    componentName: 'FileTypes48File48VideoIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-video',
-  },
-  'file-types/48/file-48-word-document': {
-    keywords: ['file-types/48/file-48-word-document', 'filetypes48file48worddocument'],
-    component: FileTypes48File48WordDocumentIcon,
-    componentName: 'FileTypes48File48WordDocumentIcon',
-    package: '@atlaskit/icon/glyph/file-types/48/file-48-word-document',
-  },
   file: {
     keywords: ['file', 'document', 'paper', 'page', 'sheet'],
     component: FileIcon,
@@ -2453,6 +2314,12 @@ export default {
     component: Objects24Object24BranchIcon,
     componentName: 'Objects24Object24BranchIcon',
     package: '@atlaskit/icon/glyph/objects/24/object-24-branch',
+  },
+  'objects/24/object-24-bug': {
+    keywords: ['objects/24/object-24-bug', 'objects24object24bug'],
+    component: Objects24Object24BugIcon,
+    componentName: 'Objects24Object24BugIcon',
+    package: '@atlaskit/icon/glyph/objects/24/object-24-bug',
   },
   'objects/24/object-24-calendar': {
     keywords: ['objects/24/object-24-calendar', 'objects24object24calendar'],

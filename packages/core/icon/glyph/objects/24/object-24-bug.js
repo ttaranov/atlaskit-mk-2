@@ -16,7 +16,7 @@ var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var FileTypes48File48ExcelSpreadsheetIcon = function FileTypes48File48ExcelSpreadsheetIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="50" height="64" viewBox="0 0 50 64" focusable="false" role="presentation"><g fill-rule="evenodd"><path fill="#FFF" stroke="#091E42" stroke-opacity=".08" d="M4 .5h29.448a3.5 3.5 0 0 1 2.469 1.019l12.552 12.488a3.5 3.5 0 0 1 1.031 2.48V60a3.5 3.5 0 0 1-3.5 3.5H4A3.5 3.5 0 0 1 .5 60V4A3.5 3.5 0 0 1 4 .5z"/><use fill="#007442"/></g></svg>' }, props));
+var Objects24Object24BugIcon = function Objects24Object24BugIcon(props) {
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M3 0h18a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3zm9 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/></svg>' }, props));
 };
-exports.default = FileTypes48File48ExcelSpreadsheetIcon;
+exports.default = Objects24Object24BugIcon;
