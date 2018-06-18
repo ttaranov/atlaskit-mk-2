@@ -18,7 +18,7 @@ export interface Attributes {
 export const emoji: NodeSpec = {
   inline: true,
   group: 'inline',
-  selectable: false,
+  selectable: true,
   attrs: {
     shortName: { default: '' },
     id: { default: '' },
