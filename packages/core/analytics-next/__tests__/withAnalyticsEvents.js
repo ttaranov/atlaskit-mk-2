@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import {
   UIAnalyticsEvent,
+  AnalyticsListener,
+  AnalyticsContext,
   withAnalyticsEvents,
   type WithAnalyticsEventsProps,
 } from '../src';
@@ -45,7 +47,9 @@ it('should have descriptive displayName', () => {
 
 it('should pass a createAnalyticsEvent function prop to the inner component', () => {
   const ButtonWithAnalytics = withAnalyticsEvents()(Button);
-  const wrapper = shallow(<ButtonWithAnalytics>Hello</ButtonWithAnalytics>);
+  const wrapper = shallow(
+    <ButtonWithAnalytics>Hello</ButtonWithAnalytics>,
+  ).dive();
 
   expect(typeof wrapper.find(Button).prop('createAnalyticsEvent')).toBe(
     'function',
@@ -81,23 +85,21 @@ describe('createAnalyticsEvent function prop', () => {
 
     const ButtonWithAnalytics = withAnalyticsEvents()(ButtonWithCreate);
     const wrapper = mount(
-      <ButtonWithAnalytics
-        onClick={(e, buttonAnalyticsEvent) => {
-          analyticsEvent = buttonAnalyticsEvent;
-        }}
-      >
-        Hello
-      </ButtonWithAnalytics>,
-      {
-        context: {
-          getAtlaskitAnalyticsContext: () => [
-            { a: 'b' },
-            { c: 'd' },
-            { a: 'e' },
-          ],
-          getAtlaskitAnalyticsEventHandlers: () => [eventHandler],
-        },
-      },
+      <AnalyticsListener onEvent={eventHandler}>
+        <AnalyticsContext data={{ a: 'b' }}>
+          <AnalyticsContext data={{ c: 'd' }}>
+            <AnalyticsContext data={{ a: 'e' }}>
+              <ButtonWithAnalytics
+                onClick={(e, buttonAnalyticsEvent) => {
+                  analyticsEvent = buttonAnalyticsEvent;
+                }}
+              >
+                Hello
+              </ButtonWithAnalytics>
+            </AnalyticsContext>
+          </AnalyticsContext>
+        </AnalyticsContext>
+      </AnalyticsListener>,
     );
 
     wrapper.find('ButtonWithCreate').simulate('click');
@@ -109,7 +111,6 @@ describe('createAnalyticsEvent function prop', () => {
         { c: 'd' },
         { a: 'e' },
       ]);
-      expect(analyticsEvent.handlers).toEqual([eventHandler]);
     }
   });
 });
@@ -266,4 +267,17 @@ describe('create event map', () => {
     expect(wrapper.text()).toBe('1');
     expect(instance.renderCount).toBe(4);
   });
+});
+
+it('should forward the ref of inner component', () => {
+  const spy = jest.fn();
+  const ButtonWithAnalytics = withAnalyticsEvents()(ButtonWithCreate);
+  mount(
+    <div>
+      <ButtonWithAnalytics ref={spy}>Hello</ButtonWithAnalytics>
+    </div>,
+  );
+  expect(spy).toHaveBeenCalled();
+  const [ref] = spy.mock.calls[0];
+  expect(ref).toBeInstanceOf(ButtonWithCreate);
 });
