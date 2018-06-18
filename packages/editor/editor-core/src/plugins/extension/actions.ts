@@ -1,9 +1,4 @@
-import {
-  EditorState,
-  Transaction,
-  NodeSelection,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
@@ -17,22 +12,6 @@ import {
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
-
-export const setExtensionElement = (element: HTMLElement | null) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const pluginState = pluginKey.getState(state);
-  const tr = state.tr.setMeta(pluginKey, {
-    ...pluginState,
-    element,
-  });
-  if (!element) {
-    tr.setSelection(TextSelection.create(state.doc, state.selection.$from.pos));
-  }
-  dispatch(tr);
-  return true;
-};
 
 export const updateExtensionLayout = layout => (
   state: EditorState,
@@ -65,12 +44,10 @@ export const updateExtensionLayout = layout => (
 
   const pluginState = pluginKey.getState(state);
 
-  tr
-    .setNodeMarkup(extPosition, undefined, {
-      ...extNode!.attrs,
-      layout,
-    })
-    .setMeta(pluginKey, { ...pluginState, layout });
+  tr.setNodeMarkup(extPosition, undefined, {
+    ...extNode!.attrs,
+    layout,
+  }).setMeta(pluginKey, { ...pluginState, layout });
 
   dispatch(tr);
 
@@ -91,7 +68,7 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
       if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
         dispatch(selectParentNodeOfType(bodiedExtension)(tr));
       }
-      insertMacroFromMacroBrowser(macroProvider, node)(view);
+      insertMacroFromMacroBrowser(macroProvider, node.node)(view);
       return true;
     }
   }
