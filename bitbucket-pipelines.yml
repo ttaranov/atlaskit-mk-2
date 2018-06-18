@@ -63,17 +63,25 @@ pipelines:
         - step:
             name: Browser Unit Testing - Karma
             script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+              - (node build/ci-scripts/run.tool.if.changed.js browserstack && node build/ci-scripts/run.if.package.changed.js) -- source ./build-setup.sh
+              - (node build/ci-scripts/run.tool.if.changed.js browserstack && node build/ci-scripts/run.if.package.changed.js) -- bolt install --pure-lockfile
+              - (node build/ci-scripts/run.tool.if.changed.js browserstack && node build/ci-scripts/run.if.package.changed.js) -- yarn test:browser:browserstack
+            caches:
+              - node
+        - step:
+            name: Browser Snapshot Integration Testing (Only Editor) - Webdriver
+            script:
+              - OVERRIDE_TEST_IGNORE='(!editor)' (node build/ci-scripts/run.tool.if.changed.js webdriver && node build/ci-scripts/run.if.package.changed.js)-- source ./build-setup.sh
+              - OVERRIDE_TEST_IGNORE='(!editor)' (node build/ci-scripts/run.tool.if.changed.js webdriver && node build/ci-scripts/run.if.package.changed.js) -- bolt install --pure-lockfile
+              - OVERRIDE_TEST_IGNORE='(!editor)' (node build/ci-scripts/run.tool.if.changed.js webdriver && node build/ci-scripts/run.if.package.changed.js) -- yarn test:webdriver:browserstack:changed 
             caches:
               - node
         - step:
             name: Browser Integration Testing - Webdriver
             script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
+              - (node build/ci-scripts/run.tool.if.changed.js webdriver && node build/ci-scripts/run.if.package.changed.js)-- source ./build-setup.sh
+              - (node build/ci-scripts/run.tool.if.changed.js webdriver && node build/ci-scripts/run.if.package.changed.js) -- bolt install --pure-lockfile
+              - OVERRIDE_TEST_IGNORE='(editor)' (node build/ci-scripts/run.tool.if.changed.js webdriver && node build/ci-scripts/run.if.package.changed.js) -- yarn test:webdriver:browserstack:changed 
             caches:
               - node
         - step:
