@@ -14,7 +14,7 @@ export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 `;
 
 export const LeftWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  /* FIXME: top padding dependent on content*/
+  /* FIXME: top padding dependent on content */
   display: flex;
   align-items: flex-start;
   justify-content: center;
