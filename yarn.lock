@@ -5485,7 +5485,7 @@ execall@^1.0.0:
   dependencies:
     clone-regexp "^1.0.0"
 
-exenv@^1.2.2:
+exenv@^1.2.1, exenv@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
 
@@ -5959,9 +5959,9 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@^0.67.0:
-  version "0.67.1"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.67.1.tgz#eabb7197cce870ac9442cfd04251c7ddc30377db"
+flow-bin@^0.74.0:
+  version "0.74.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.74.0.tgz#8017bb00efb37cbe8d81fbb7f464038bde06adc9"
 
 flow-copy-source@^1.3.0:
   version "1.3.0"
@@ -5987,6 +5987,10 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.4"
+
+focus-lock@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/focus-lock/-/focus-lock-0.3.0.tgz#cd9f9ecb279cb0f09b306b5ae713e6dd58fd15ed"
 
 focus-trap@^2.4.5:
   version "2.4.6"
@@ -8528,7 +8532,7 @@ known-css-properties@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/known-css-properties/-/known-css-properties-0.5.0.tgz#6ff66943ed4a5b55657ee095779a91f4536f8084"
 
-landkid@^0.2.6:
+landkid@^0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/landkid/-/landkid-0.2.7.tgz#622e80db154dd6129a4f766c71332b688f87a317"
   dependencies:
@@ -9402,7 +9406,7 @@ meow@^5.0.0:
     trim-newlines "^2.0.0"
     yargs-parser "^10.0.0"
 
-"meow@github:sindresorhus/meow#43401c3":
+meow@sindresorhus/meow#43401c3:
   version "3.6.0"
   resolved "https://codeload.github.com/sindresorhus/meow/tar.gz/43401c39ee442db308288f50d6f213cd0e6e602c"
   dependencies:
@@ -11449,7 +11453,7 @@ prop-types@15.5.10:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
 
-prop-types@^15.5.0, prop-types@^15.5.1, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.1, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -11563,9 +11567,9 @@ prosemirror-transform@^1.0.0:
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.4.3:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.4.4.tgz#31f44d6910ce18bdead1888f578820d52309a907"
+prosemirror-utils@^0.5.1:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.5.3.tgz#6e1a70d718ccdd72f5081cce21ab7b82a7040765"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.3.0:
   version "1.3.1"
@@ -11961,6 +11965,14 @@ react-emotion@^9.0.2:
     babel-plugin-emotion "^9.2.0"
     create-emotion-styled "^9.2.3"
 
+react-focus-lock@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/react-focus-lock/-/react-focus-lock-1.11.1.tgz#6e8a1bdef14f0f04673a26e27b415e3d671f2762"
+  dependencies:
+    focus-lock "^0.3.0"
+    prop-types "^15.0.0"
+    react-side-effect "^1.1.3"
+
 react-ga@^2.3.5:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.5.3.tgz#0f447c73664c069a5fc341f6f431262e3d4c23c4"
@@ -12027,7 +12039,7 @@ react-markdown@^2.5.0:
     commonmark-react-renderer "^4.3.4"
     prop-types "^15.5.1"
 
-react-markings@^1.1.7, react-markings@^1.2.0:
+react-markings@^1.2.0, react-markings@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-markings/-/react-markings-1.3.0.tgz#7bb6826013bfc4fb37dc511a8ba2e578d9b4c284"
   dependencies:
@@ -12125,6 +12137,13 @@ react-select@^2.0.0-beta.6:
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
+
+react-side-effect@^1.1.3:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-1.1.5.tgz#f26059e50ed9c626d91d661b9f3c8bb38cd0ff2d"
+  dependencies:
+    exenv "^1.2.1"
+    shallowequal "^1.0.1"
 
 react-syntax-highlighter@^6.0.2:
   version "6.1.2"
@@ -13210,6 +13229,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+shallowequal@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.0.2.tgz#1561dbdefb8c01408100319085764da3fcf83f8f"
 
 shebang-command@^1.2.0:
   version "1.2.0"
