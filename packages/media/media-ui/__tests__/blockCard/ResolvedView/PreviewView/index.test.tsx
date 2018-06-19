@@ -6,7 +6,7 @@ import {
   LoadingView,
   NoImageView,
   LoadedView,
-} from '../../../../src/blockCard/ResolvedView/PreviewView';
+} from '../../../../src/BlockCard/ResolvedView/PreviewView';
 
 const exampleURL = 'https://placekitten.com/g/200/300';
 

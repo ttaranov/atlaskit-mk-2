@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { ExpandedFrame } from '../../../src/blockCard/ExpandedFrame';
+import { ExpandedFrame } from '../../../src/BlockCard/ExpandedFrame';
 import {
   Wrapper,
   LinkWrapper,
   IconWrapper,
   TextWrapper,
-} from '../../../src/blockCard/ExpandedFrame/styled';
+} from '../../../src/BlockCard/ExpandedFrame/styled';
 
 describe('ExpandedFrame', () => {
   it('should render as a link when there is a href', () => {

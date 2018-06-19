@@ -1,10 +1,12 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { ResolvingView } from '../src/blockCard/ResolvingView';
-import { ErroredView as CollapsedErroredView } from '../src/blockCard/ErroredView';
-import { UnauthorisedView } from '../src/blockCard/UnauthorisedView';
-import { ForbiddenView } from '../src/blockCard/ForbiddenView';
-import { ResolvedView } from '../src/blockCard/ResolvedView';
+import {
+  ResolvingView,
+  ErroredView,
+  UnauthorisedView,
+  ForbiddenView,
+  ResolvedView,
+} from '../src/BlockCard';
 
 const url = 'https://www.dropbox.com/';
 const icon =
@@ -21,7 +23,7 @@ export default () => (
         <ResolvingView onClick={onClick} />
 
         <h4>Errored</h4>
-        <CollapsedErroredView
+        <ErroredView
           url={url}
           message="We stumbled a bit here."
           onClick={onClick}
