@@ -29,10 +29,12 @@ import searchGiphy from '../popup/middleware/searchGiphy';
 import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
 import { PopupUploadEventEmitter } from '../components/popup';
+import { UploadParams } from '../domain/config';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
   context: Context,
+  uploadParams: UploadParams,
   useNewUploadService?: boolean,
 ): Store<State> => {
   const { userAuthProvider, serviceHost, authProvider } = context.config;
@@ -55,6 +57,7 @@ export default (
       userAuthProvider,
       context,
       useNewUploadService,
+      uploadParams,
     } as Partial<State>,
     composeWithDevTools(
       applyMiddleware(

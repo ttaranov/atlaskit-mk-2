@@ -37,6 +37,9 @@ export function storyMediaProviderFactory(
   const collection = collectionName || defaultCollectionName;
 
   return Promise.resolve<MediaProvider>({
+    featureFlags: {
+      useNewUploadService: true,
+    },
     stateManager,
     uploadParams: { collection },
     viewContext: Promise.resolve<Context>(

@@ -67,12 +67,16 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     super(anlyticsContext);
 
     this.analyticsContext.trackEvent(new MPPopupLoaded());
-    this.store = createStore(this, context, useNewUploadService);
-
     this.uploadParams = {
       ...defaultUploadParams,
       ...uploadParams,
     };
+    this.store = createStore(
+      this,
+      context,
+      this.uploadParams,
+      useNewUploadService,
+    );
 
     const popup = this.renderPopup();
 

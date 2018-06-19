@@ -38,6 +38,7 @@ export interface State {
   readonly context: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
+  readonly uploadParams: UploadParams;
 
   readonly onCancelUpload: CancelUploadHandler;
   readonly useNewUploadService?: boolean;

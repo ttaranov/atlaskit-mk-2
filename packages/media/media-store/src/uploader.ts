@@ -45,9 +45,23 @@ export const uploadFile = (
   callbacks?: UploadFileCallbacks,
 ): UploadFileResult => {
   const { content, collection, name, mimeType } = file;
+  const occurrenceKey = uuid.v4();
   const store = new MediaStore(config);
+  const deferredUploadId = store
+    .createUpload()
+    .then(response => response.data[0].id);
+  let offset = 0;
+  const processingFunction = async (chunks: Chunk[]) => {
+    await store.appendChunksToUpload(await deferredUploadId, {
+      chunks: hashedChunks(chunks),
+      offset,
+    });
+    offset += chunks.length;
+  };
 
-  const { response: deferredChunks, cancel } = chunkinator(
+  const deferredEmptyFile = store.createFile({ collection, occurrenceKey });
+
+  const { response, cancel } = chunkinator(
     content,
     {
       hashingFunction,
@@ -58,6 +72,7 @@ export const uploadFile = (
       uploadingFunction: createUploadingFunction(store),
       probingFunction: createProbingFunction(store),
       processingBatchSize: 1000,
+      processingFunction,
     },
     {
       onProgress(progress: number) {
@@ -68,30 +83,26 @@ export const uploadFile = (
     },
   );
 
-  const deferredFileId = deferredChunks
-    .then(async probedChunks => {
-      const uploadId = (await store.createUpload()).data[0].id;
-      return { uploadId, probedChunks };
-    })
-    .then(async ({ uploadId, probedChunks }) => {
-      await store.appendChunksToUpload(uploadId, {
-        chunks: hashedChunks(probedChunks),
-      });
+  const fileId = Promise.all([
+    deferredUploadId,
+    deferredEmptyFile,
+    response,
+  ]).then(([uploadId, emptyFile]) => {
+    const fileId = emptyFile.data.id;
 
-      return uploadId;
-    })
-    .then(uploadId => {
-      return store.createFileFromUpload(
+    return store
+      .createFileFromUpload(
         { uploadId, name, mimeType },
         {
-          occurrenceKey: uuid.v4(),
+          occurrenceKey,
           collection,
+          replaceFileId: fileId,
         },
-      );
-    })
-    .then(resp => resp.data.id);
+      )
+      .then(() => fileId);
+  });
 
-  return { deferredFileId, cancel };
+  return { deferredFileId: fileId, cancel };
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);
