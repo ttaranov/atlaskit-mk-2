@@ -185,7 +185,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `${DUMMY_CONFLUENCE_HOST}/href?searchSessionId=123`,
+          href: `/href?searchSessionId=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -194,7 +194,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `${DUMMY_CONFLUENCE_HOST}/href?searchSessionId=123`,
+          href: `/href?searchSessionId=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -203,7 +203,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `${DUMMY_CONFLUENCE_HOST}/href?searchSessionId=123`,
+          href: `/href?searchSessionId=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -225,6 +225,35 @@ describe('ConfluenceClient', () => {
       );
 
       expect(results).toEqual([]);
+    });
+
+    it('should format hrefs correctly when they already have query params', async () => {
+      const mockResult = mockQuickNavResult(ATTACHMENT_CLASSNAME);
+
+      // change the href to include a query param
+      mockResult.href = `${mockResult.href}?test=abc`;
+      const mockResults = [[mockResult]];
+
+      mockQuickNavSearch(mockResults);
+
+      const results = await confluenceClient.getQuickNavSearchResults(
+        'abc',
+        '123',
+      );
+
+      const expectedResults: ConfluenceObjectResult[] = [
+        {
+          resultId: '123',
+          name: 'name',
+          href: `/href?test=abc&searchSessionId=123`,
+          containerName: 'space',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluenceAttachment,
+        },
+      ];
+
+      expect(results).toEqual(expectedResults);
     });
   });
 });

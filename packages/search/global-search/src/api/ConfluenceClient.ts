@@ -11,6 +11,7 @@ import {
   utils,
   ServiceConfig,
 } from '@atlaskit/util-service-support';
+import * as URI from 'urijs';
 
 const RECENT_PAGES_PATH: string = 'rest/recentlyviewed/1.0/recent';
 const RECENT_SPACE_PATH: string = 'rest/recentlyviewed/1.0/recent/spaces';
@@ -160,12 +161,15 @@ function recentSpaceToResult(
 function quickNavResultToObjectResult(
   quickNavResult: QuickNavResult,
   contentType: ContentType,
-  baseUrl: string,
   searchSessionId: string,
 ): ConfluenceObjectResult {
+  // add searchSessionId
+  const href = new URI(quickNavResult.href);
+  href.addQuery('searchSessionId', searchSessionId);
+
   return {
     name: quickNavResult.name,
-    href: `${baseUrl}${quickNavResult.href}?searchSessionId=${searchSessionId}`,
+    href: href.toString(),
     resultId: quickNavResult.id!, // never null for pages, blogs & attachments
     contentType: contentType,
     containerName: quickNavResult.space!, // never null for pages, blogs & attachments
@@ -192,7 +196,6 @@ function quickNavResultsToResults(
           quickNavResultToObjectResult(
             result,
             ContentType.ConfluenceAttachment,
-            baseUrl,
             searchSessionId,
           ),
         );
@@ -201,7 +204,6 @@ function quickNavResultsToResults(
           quickNavResultToObjectResult(
             result,
             ContentType.ConfluenceBlogpost,
-            baseUrl,
             searchSessionId,
           ),
         );
@@ -210,7 +212,6 @@ function quickNavResultsToResults(
           quickNavResultToObjectResult(
             result,
             ContentType.ConfluencePage,
-            baseUrl,
             searchSessionId,
           ),
         );
