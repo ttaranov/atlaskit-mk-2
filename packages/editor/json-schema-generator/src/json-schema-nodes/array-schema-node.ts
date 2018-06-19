@@ -21,8 +21,10 @@ export default class ArraySchemaNode extends SchemaNodeWithValidators<
     this.items = Array.isArray(items) ? items : [items];
   }
 
-  push(items: SchemaNode | Array<SchemaNode>) {
-    this.items = this.items.concat(items);
+  push(items: SchemaNode | Array<SchemaNode> | undefined) {
+    if (items) {
+      this.items = this.items.concat(items);
+    }
   }
 
   toJSON(): object {
