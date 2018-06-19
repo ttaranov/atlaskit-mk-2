@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/input",
   "version": "3.0.2",
-  "description": "Internal component to render a simple HTML input element.",
+  "description": "Internal component to render a simple HTML input element.It is used in inline-edit and in field-base to create field-text",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -30,6 +30,9 @@
     "@atlaskit/field-base": "^10.1.2",
     "@atlaskit/docs": "^4.1.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+  },
+  "atlaskit": {
+    "internal": true
   },
   "keywords": [
     "atlaskit",
