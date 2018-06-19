@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 11.2.4
+- [patch] ED-4713 Add stage 0 support in json-schema-generator [cce275f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cce275f)
+- [none] Updated dependencies [cce275f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cce275f)
+  - @atlaskit/json-schema-generator@1.0.1
+
 ## 11.2.3
 - [patch] ED-4489 Fix can't submit with enter using Korean and Japanese IME [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
 - [none] Updated dependencies [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
