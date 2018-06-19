@@ -73,10 +73,7 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - echo "Running Webdriver tests for packages other then Editor..."
-              - OVERRIDE_TEST_IGNORE='(editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
-              - echo "Running Webdriver tests using snapshot for Editor packages..."
-              - OVERRIDE_TEST_IGNORE='(!editor)' node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
             caches:
               - node
         - step:
