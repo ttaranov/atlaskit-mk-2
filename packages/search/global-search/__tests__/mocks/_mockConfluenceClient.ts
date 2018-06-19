@@ -7,7 +7,7 @@ const EMPTY_PROMISE = () => Promise.resolve([]);
 export const noResultsConfluenceClient: ConfluenceClient = {
   getRecentItems: EMPTY_PROMISE,
   getRecentSpaces: EMPTY_PROMISE,
-  getQuickNavSearchResults: EMPTY_PROMISE,
+  searchQuickNav: EMPTY_PROMISE,
 };
 
 export const makeConfluenceClient = (
@@ -27,7 +27,7 @@ export function makeSingleResultQuickNavSearchResponse(
 
 export const singleResultQuickNav = (result?: Result): ConfluenceClient => {
   return makeConfluenceClient({
-    getQuickNavSearchResults(query: string) {
+    searchQuickNav(query: string) {
       return Promise.resolve([result || makeConfluenceObjectResult()]);
     },
   });
@@ -35,7 +35,7 @@ export const singleResultQuickNav = (result?: Result): ConfluenceClient => {
 
 export const errorConfluenceQuickNavSearch: ConfluenceClient = makeConfluenceClient(
   {
-    getQuickNavSearchResults(query: string) {
+    searchQuickNav(query: string) {
       return Promise.reject('error');
     },
   },

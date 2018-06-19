@@ -20,10 +20,7 @@ const QUICK_NAV_PATH: string = 'rest/quicknav/1/search';
 export interface ConfluenceClient {
   getRecentItems(): Promise<Result[]>;
   getRecentSpaces(): Promise<Result[]>;
-  getQuickNavSearchResults(
-    query: string,
-    searchSessionId: string,
-  ): Promise<Result[]>;
+  searchQuickNav(query: string, searchSessionId: string): Promise<Result[]>;
 }
 
 export type ConfluenceContentType = 'blogpost' | 'page';
@@ -70,7 +67,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     this.cloudId = cloudId;
   }
 
-  public async getQuickNavSearchResults(
+  public async searchQuickNav(
     query: string,
     searchSessionId: string,
   ): Promise<Result[]> {

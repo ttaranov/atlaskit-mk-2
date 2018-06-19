@@ -164,7 +164,7 @@ describe('ConfluenceClient', () => {
     });
   });
 
-  describe('getQuickNavSearchResults', () => {
+  describe('searchQuickNav', () => {
     it('should return correct confluence results', async () => {
       const mockResults = [
         [
@@ -176,10 +176,7 @@ describe('ConfluenceClient', () => {
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.getQuickNavSearchResults(
-        'abc',
-        '123',
-      );
+      const results = await confluenceClient.searchQuickNav('abc', '123');
 
       const expectedResults: ConfluenceObjectResult[] = [
         {
@@ -219,10 +216,7 @@ describe('ConfluenceClient', () => {
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.getQuickNavSearchResults(
-        'abc',
-        '123',
-      );
+      const results = await confluenceClient.searchQuickNav('abc', '123');
 
       expect(results).toEqual([]);
     });
@@ -236,10 +230,7 @@ describe('ConfluenceClient', () => {
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.getQuickNavSearchResults(
-        'abc',
-        '123',
-      );
+      const results = await confluenceClient.searchQuickNav('abc', '123');
 
       const expectedResults: ConfluenceObjectResult[] = [
         {

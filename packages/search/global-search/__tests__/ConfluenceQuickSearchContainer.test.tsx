@@ -333,7 +333,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
     const wrapper = render({
       confluenceClient: makeConfluenceClient({
-        getQuickNavSearchResults: confluenceQuickNavSearchMock,
+        searchQuickNav: confluenceQuickNavSearchMock,
       }),
     });
 
@@ -394,7 +394,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
       const wrapper = render({
         confluenceClient: makeConfluenceClient({
-          getQuickNavSearchResults: searchMock,
+          searchQuickNav: searchMock,
         }),
       });
 

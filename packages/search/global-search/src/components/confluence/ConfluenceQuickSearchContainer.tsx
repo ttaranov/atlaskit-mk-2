@@ -83,7 +83,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   async searchQuickNav(query: string): Promise<Result[]> {
-    const results = await this.props.confluenceClient.getQuickNavSearchResults(
+    const results = await this.props.confluenceClient.searchQuickNav(
       query,
       this.state.searchSessionId,
     );
