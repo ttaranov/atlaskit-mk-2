@@ -256,24 +256,23 @@ class ContextImpl implements Context {
     // TODO: we can't get the size from a file when is string, make media-store + Chunkinator to pass this info?
     const size = file.content instanceof Blob ? file.content.size : 0;
     const tempFileId = uuid.v4();
-    const fileStream = Observable.create(
-      async (observer: Observer<FileState>) => {
-        try {
-          const name = file.name || '';
-          // TODO send local preview
-          const { deferredFileId } = uploadFile(file, this.apiConfig, {
-            onProgress: progress => {
-              observer.next({
-                id: tempFileId,
-                progress,
-                status: 'uploading',
-                name,
-                size,
-              });
-            },
-          });
+    const fileStream = new Observable<FileState>(observer => {
+      try {
+        const name = file.name || '';
+        // TODO send local preview
+        const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
+          onProgress: progress => {
+            observer.next({
+              id: tempFileId,
+              progress,
+              status: 'uploading',
+              name,
+              size,
+            });
+          },
+        });
 
-          id = await deferredFileId;
+        deferredFileId.then(id => {
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
           // TODO: add test for this case
           this.fileStreamsCache.set(id, fileStream);
@@ -285,13 +284,20 @@ class ContextImpl implements Context {
             size,
           });
           observer.complete();
-        } catch (e) {
-          observer.error(e);
-        }
-      },
-    )
+        });
+        // return cancel;
+        // return () => {
+        //   console.log('cancel cleanup');
+        //   cancel();
+        // }
+      } catch (e) {
+        observer.error(e);
+        return () => {};
+      }
+    })
       .concat(Observable.defer(() => this.createDownloadFileStream(id)))
       .publishReplay(1);
+    // .refCount()
 
     this.fileStreamsCache.set(tempFileId, fileStream);
     // Start hot observable

@@ -90,18 +90,20 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
-      // TODO: pass cancel from the observer
-      const { deferredFileId, cancel } = this.context.uploadFile(
-        uploadableFile,
-        {
-          onProgress: this.onFileProgress.bind(this, cancellableFileUpload),
+      // TODO: Can we just "unsubscribe" ?
+      // TODO: remove this
+      // TODO: test this still works
+      const subscription = this.context.uploadFile(uploadableFile).subscribe({
+        next() {
+          this.onFileProgress.bind(this, cancellableFileUpload);
         },
-      );
-      cancellableFileUpload.cancel = cancel;
-      deferredFileId.then(
-        this.onFileSuccess.bind(this, cancellableFileUpload),
-        this.onFileError.bind(this, mediaFile, 'upload_fail'),
-      );
+        complete() {
+          this.onFileSuccess.bind(this, cancellableFileUpload);
+          this.onFileError.bind(this, mediaFile, 'upload_fail');
+        },
+      });
+
+      cancellableFileUpload.cancel = subscription.unsubscribe;
     });
   }
 
