@@ -1,10 +1,11 @@
 import * as React from 'react';
 import LazyRender from 'react-lazily-render';
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { auth } from '@atlassian/outbound-auth-flow-client';
 import { ObjectState, Client } from '../Client';
 import { WithObject } from '../WithObject';
 import { extractBlockPropsFromJSONLD } from '../extractBlockPropsFromJSONLD';
+import { extractInlinePropsFromJSONLD } from '../extractInlinePropsFromJSONLD';
 
 export type CardAppearance = 'inline' | 'block';
 
@@ -17,17 +18,15 @@ interface CardContentProps {
 }
 
 class CardContent extends React.Component<CardContentProps> {
-  extractViewProps() {
-    const { state } = this.props;
-    return extractBlockPropsFromJSONLD(state.data || {});
-  }
-
+  // TODO: do we need to extract values differently per view?
   get collapsedIcon() {
-    const props = this.extractViewProps();
-    return (
-      (props && props.icon && props.icon.url) ||
-      (props && props.context && props.context.icon)
-    );
+    const { state } = this.props;
+    const data = state.data || {};
+    if (data.generator && data.generator.icon) {
+      return data.generator.icon;
+    } else {
+      return undefined;
+    }
   }
 
   handleFrameClick = () => {
@@ -51,11 +50,11 @@ class CardContent extends React.Component<CardContentProps> {
     reload();
   };
 
-  renderResolvingState() {
+  renderBlockResolvingState() {
     return <BlockCard.ResolvingView onClick={this.handleFrameClick} />;
   }
 
-  renderUnauthorisedState() {
+  renderBlockUnauthorisedState() {
     const { url } = this.props;
     return (
       <BlockCard.UnauthorisedView
@@ -67,7 +66,7 @@ class CardContent extends React.Component<CardContentProps> {
     );
   }
 
-  renderForbiddenState() {
+  renderBlockForbiddenState() {
     const { url } = this.props;
     return (
       <BlockCard.ForbiddenView
@@ -78,7 +77,7 @@ class CardContent extends React.Component<CardContentProps> {
     );
   }
 
-  renderNotFoundState() {
+  renderBlockNotFoundState() {
     const { url } = this.props;
     return (
       <BlockCard.ErroredView
@@ -89,7 +88,7 @@ class CardContent extends React.Component<CardContentProps> {
     );
   }
 
-  renderErroredState() {
+  renderBlockErroredState() {
     const { url } = this.props;
     return (
       <BlockCard.ErroredView
@@ -101,33 +100,97 @@ class CardContent extends React.Component<CardContentProps> {
     );
   }
 
-  renderResolvedState() {
-    const props = this.extractViewProps();
+  renderBlockResolvedState() {
+    const { state } = this.props;
+    const props = extractBlockPropsFromJSONLD(state.data || {});
     return (
       <BlockCard.ResolvedView {...props} onClick={this.handleFrameClick} />
     );
   }
 
-  render() {
+  renderBlockCard() {
     const { state } = this.props;
     switch (state.status) {
       case 'resolving':
-        return this.renderResolvingState();
+        return this.renderBlockResolvingState();
 
       case 'resolved':
-        return this.renderResolvedState();
+        return this.renderBlockResolvedState();
 
       case 'unauthorised':
-        return this.renderUnauthorisedState();
+        return this.renderBlockUnauthorisedState();
 
       case 'forbidden':
-        return this.renderForbiddenState();
+        return this.renderBlockForbiddenState();
 
       case 'not-found':
-        return this.renderNotFoundState();
+        return this.renderBlockNotFoundState();
 
       case 'errored':
-        return this.renderErroredState();
+        return this.renderBlockErroredState();
+    }
+  }
+
+  renderInlineResolvingState() {
+    const { url } = this.props;
+    return <InlineCard.LinkView text={url} onClick={this.handleFrameClick} />;
+  }
+
+  renderInlineResolvedState() {
+    const { state } = this.props;
+    const props = extractInlinePropsFromJSONLD(state.data || {});
+    return (
+      <InlineCard.ResolvedView {...props} onClick={this.handleFrameClick} />
+    );
+  }
+
+  renderInlineUnauthorisedState() {
+    return null;
+  }
+
+  renderInlineForbiddenState() {
+    return null;
+  }
+
+  renderInlineNotFoundState() {
+    return null;
+  }
+
+  renderInlineErroredState() {
+    const { url } = this.props;
+    return <InlineCard.LinkView text={url} />;
+  }
+
+  renderInlineCard() {
+    const { state } = this.props;
+    switch (state.status) {
+      case 'resolving':
+        return this.renderInlineResolvingState();
+
+      case 'resolved':
+        return this.renderInlineResolvedState();
+
+      case 'unauthorised':
+        return this.renderInlineUnauthorisedState();
+
+      case 'forbidden':
+        return this.renderInlineForbiddenState();
+
+      case 'not-found':
+        return this.renderInlineNotFoundState();
+
+      case 'errored':
+        return this.renderInlineErroredState();
+    }
+  }
+
+  render() {
+    const { appearance } = this.props;
+    switch (appearance) {
+      case 'inline':
+        return this.renderInlineCard();
+      default:
+        return this.renderBlockCard();
     }
   }
 }

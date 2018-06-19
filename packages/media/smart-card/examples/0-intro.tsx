@@ -3,6 +3,7 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
 import { Provider, Card } from '../src';
 import '../mocks';
+import { CardAppearance } from '../src/Card';
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -16,11 +17,13 @@ const defaultURL = param
 export interface ExampleProps {}
 
 export interface ExampleState {
+  appearance: CardAppearance;
   url: string;
 }
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
+    appearance: 'block',
     url: defaultURL,
   };
 
@@ -28,8 +31,14 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     this.setState({ url: event.target.value });
   };
 
+  handleAppearanceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({
+      appearance: event.currentTarget.value === 'block' ? 'block' : 'inline',
+    });
+  };
+
   render() {
-    const { url } = this.state;
+    const { appearance, url } = this.state;
     return (
       <Provider>
         <Page>
@@ -42,6 +51,10 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 value={url}
                 onChange={this.handleUrlChange}
               />
+              <select value={appearance} onChange={this.handleAppearanceChange}>
+                <option>block</option>
+                <option>inline</option>
+              </select>
               <br />
               <small>
                 Try entering <code>public-happy</code>,{' '}
@@ -53,7 +66,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <br />
-              <Card url={url} />
+              <Card appearance={appearance} url={url} />
             </GridColumn>
           </Grid>
         </Page>
