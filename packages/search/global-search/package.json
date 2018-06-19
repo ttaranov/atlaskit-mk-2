@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "4.5.2",
+  "version": "4.5.4",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -38,6 +38,7 @@
     "lodash.debounce": "^4.0.8",
     "memoize-one": "^3.0.1",
     "tslib": "^1.8.0",
+    "urijs": "^1.19.1",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {

@@ -2,6 +2,7 @@
 import 'jest-styled-components';
 import snakeCase from 'snake-case';
 import { toMatchSnapshot } from 'jest-snapshot';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 
 let consoleError;
 let consoleWarn;
@@ -296,4 +297,31 @@ if (process.env.CI) {
     console.warn = consoleWarn;
     console.log = consoleLog;
   });
+}
+
+// set up for visual regression
+if (process.env.VISUAL_REGRESSION) {
+  const puppeteer = require('puppeteer');
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+
+  beforeAll(async () => {
+    global.browser = await puppeteer.launch({
+      // run test in headless mode
+      headless: true,
+      slowMo: 100,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+    global.page = await global.browser.newPage();
+  }, jasmine.DEFAULT_TIMEOUT_INTERVAL);
+
+  afterAll(async () => {
+    await global.browser.close();
+  });
+
+  const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
+    customDiffConfig: { threshold: 0.2 },
+    noColors: true,
+  });
+
+  expect.extend({ toMatchProdImageSnapshot });
 }

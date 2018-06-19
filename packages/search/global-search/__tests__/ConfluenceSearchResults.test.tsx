@@ -84,7 +84,7 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.People, wrapper);
 
-    expect(group.prop('title')).toEqual('People');
+    expect(group.prop('title')).toEqual('Recently worked with');
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
   });
 

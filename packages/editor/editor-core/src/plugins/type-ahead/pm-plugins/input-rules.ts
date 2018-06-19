@@ -28,9 +28,9 @@ export function inputRulePlugin(
     const mark = schema.mark('typeAheadQuery', { trigger: match[0] });
     const { tr } = state;
 
-    analyticsService.trackEvent(
-      'atlassian.fabric.mention.picker.trigger.shortcut',
-    );
+    analyticsService.trackEvent('atlassian.editor.typeahead.trigger', {
+      trigger: match[0],
+    });
 
     return tr.replaceSelectionWith(schema.text(match[0], [mark]), false);
   });

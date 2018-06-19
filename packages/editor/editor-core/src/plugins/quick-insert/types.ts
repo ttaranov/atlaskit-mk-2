@@ -5,7 +5,7 @@ import { TypeAheadItem } from '../type-ahead/types';
 export type QuickInsertItem = TypeAheadItem & {
   keywords?: Array<string>;
   action: (
-    replaceWith: (node?: Node) => boolean,
+    insert: (node?: Node, prependSpace?: boolean) => boolean,
     state: EditorState,
   ) => boolean;
 };

@@ -12,7 +12,7 @@ export function indent(state: EditorState, dispatch) {
   forEachLine(text, (line, offset) => {
     const { indentText, indentToken } = getLineInfo(line);
     const indentToAdd = indentToken.token.repeat(
-      indentToken.size - indentText.length % indentToken.size ||
+      indentToken.size - (indentText.length % indentToken.size) ||
         indentToken.size,
     );
     tr.insertText(indentToAdd, tr.mapping.map(start + offset, -1));
@@ -50,7 +50,7 @@ export function insertIndent(state: EditorState, dispatch) {
   const { text: textAtStartOfLine } = getStartOfCurrentLine(state);
   const { indentToken } = getLineInfo(textAtStartOfLine);
   const indentToAdd = indentToken.token.repeat(
-    indentToken.size - textAtStartOfLine.length % indentToken.size ||
+    indentToken.size - (textAtStartOfLine.length % indentToken.size) ||
       indentToken.size,
   );
   dispatch(state.tr.insertText(indentToAdd));

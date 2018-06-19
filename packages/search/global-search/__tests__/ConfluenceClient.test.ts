@@ -2,12 +2,15 @@ import ConfluenceClient, {
   RecentPage,
   RecentSpace,
   ConfluenceContentType,
+  QuickNavResponse,
+  QuickNavResult,
 } from '../src/api/ConfluenceClient';
 import {
   AnalyticsType,
   ResultType,
   ContentType,
   ContainerResult,
+  ConfluenceObjectResult,
 } from '../src/model/Result';
 
 import 'whatwg-fetch';
@@ -15,6 +18,10 @@ import * as fetchMock from 'fetch-mock';
 
 const DUMMY_CONFLUENCE_HOST = 'http://localhost';
 const DUMMY_CLOUD_ID = '123';
+const PAGE_CLASSNAME = 'content-type-page';
+const BLOG_CLASSNAME = 'content-type-blogpost';
+const ATTACHMENT_CLASSNAME = 'content-type-attachment-image';
+const SPACE_CLASSNAME = 'content-type-space';
 
 function buildMockPage(type: ConfluenceContentType): RecentPage {
   return {
@@ -37,6 +44,18 @@ const MOCK_SPACE = {
   name: 'Search & Smarts',
 };
 
+const MOCK_QUICKNAV_RESULT_BASE = {
+  href: '/href',
+  name: 'name',
+  id: '123',
+  space: 'space',
+};
+
+const mockQuickNavResult = (className: string) => ({
+  className: className,
+  ...MOCK_QUICKNAV_RESULT_BASE,
+});
+
 function mockRecentlyViewedPages(pages: RecentPage[]) {
   fetchMock.get('begin:http://localhost/rest/recentlyviewed/1.0/recent', pages);
 }
@@ -46,6 +65,12 @@ function mockRecentlyViewedSpaces(spaces: RecentSpace[]) {
     'begin:http://localhost/rest/recentlyviewed/1.0/recent/spaces',
     spaces,
   );
+}
+
+function mockQuickNavSearch(results: QuickNavResult[][]) {
+  fetchMock.get('begin:http://localhost/rest/quicknav/1', {
+    contentNameMatches: results,
+  } as QuickNavResponse);
 }
 
 describe('ConfluenceClient', () => {
@@ -136,6 +161,90 @@ describe('ConfluenceClient', () => {
       mockRecentlyViewedSpaces([]);
       const result = await confluenceClient.getRecentSpaces();
       expect(result).toEqual([]);
+    });
+  });
+
+  describe('searchQuickNav', () => {
+    it('should return correct confluence results', async () => {
+      const mockResults = [
+        [
+          mockQuickNavResult(BLOG_CLASSNAME),
+          mockQuickNavResult(PAGE_CLASSNAME),
+        ],
+        [mockQuickNavResult(ATTACHMENT_CLASSNAME)],
+      ];
+
+      mockQuickNavSearch(mockResults);
+
+      const results = await confluenceClient.searchQuickNav('abc', '123');
+
+      const expectedResults: ConfluenceObjectResult[] = [
+        {
+          resultId: '123',
+          name: 'name',
+          href: `/href?search_id=123`,
+          containerName: 'space',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluenceBlogpost,
+        },
+        {
+          resultId: '123',
+          name: 'name',
+          href: `/href?search_id=123`,
+          containerName: 'space',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluencePage,
+        },
+        {
+          resultId: '123',
+          name: 'name',
+          href: `/href?search_id=123`,
+          containerName: 'space',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluenceAttachment,
+        },
+      ];
+
+      expect(results).toEqual(expectedResults);
+    });
+
+    it('should filter out non page, attachment, etc. results', async () => {
+      const mockResults = [[mockQuickNavResult(SPACE_CLASSNAME)]];
+
+      mockQuickNavSearch(mockResults);
+
+      const results = await confluenceClient.searchQuickNav('abc', '123');
+
+      expect(results).toEqual([]);
+    });
+
+    it('should format hrefs correctly when they already have query params', async () => {
+      const mockResult = mockQuickNavResult(ATTACHMENT_CLASSNAME);
+
+      // change the href to include a query param
+      mockResult.href = `${mockResult.href}?test=abc`;
+      const mockResults = [[mockResult]];
+
+      mockQuickNavSearch(mockResults);
+
+      const results = await confluenceClient.searchQuickNav('abc', '123');
+
+      const expectedResults: ConfluenceObjectResult[] = [
+        {
+          resultId: '123',
+          name: 'name',
+          href: `/href?test=abc&search_id=123`,
+          containerName: 'space',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluenceAttachment,
+        },
+      ];
+
+      expect(results).toEqual(expectedResults);
     });
   });
 });

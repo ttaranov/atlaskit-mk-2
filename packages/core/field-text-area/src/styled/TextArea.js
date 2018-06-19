@@ -69,8 +69,7 @@ const TextArea = styled.textarea`
     ${overrideSafariDisabledStyles};
   }
 
-  ${getMinimumRowsHeight}
-  ${getResizeStyles}
+  ${getMinimumRowsHeight} ${getResizeStyles}
 
   &::-ms-clear {
     display: none;

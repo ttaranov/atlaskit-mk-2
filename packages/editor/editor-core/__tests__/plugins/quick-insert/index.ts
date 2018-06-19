@@ -14,7 +14,7 @@ describe('Quick Insert', () => {
     createEditor({
       doc,
       editorProps: {
-        UNSAFE_allowQuickInsert: true,
+        quickInsert: true,
         allowPanel: true,
         allowCodeBlocks: true,
       },
