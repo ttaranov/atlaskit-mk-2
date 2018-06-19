@@ -16,7 +16,7 @@ type ItemShape = {
   icon?: ComponentType<*>,
 };
 
-type DropdownItem = ?{
+type DropdownItem = {
   tooltip?: string,
   label?: string,
   icon?: ComponentType<*>,

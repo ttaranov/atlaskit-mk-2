@@ -25,7 +25,6 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
         : null),
     }));
 
-    console.log(navItems);
     return {
       primaryItems: navItems
         .filter(({ section }) => section === 'primary')
@@ -37,6 +36,7 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
   };
 
   render() {
+    // TODO: Look into memoizing this to avoid memory bloat
     const { primaryItems, secondaryItems } = this.constructNavItems();
 
     return (
