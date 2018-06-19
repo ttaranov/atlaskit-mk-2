@@ -1,6 +1,5 @@
 // @flow
 
-import { type ElementRef } from 'react';
 import { Container } from 'unstated';
 
 import type {
@@ -15,7 +14,6 @@ import type {
 import { PRODUCT_NAV_WIDTH } from '../common/constants';
 
 const defaultState = {
-  activeDrawer: null,
   isHinting: false,
   isPeeking: false,
   isResizing: false,
@@ -30,7 +28,6 @@ type Resize = {
 
 export default class NavigationState extends Container<NavigationStateShape>
   implements NavigationStateInterface {
-  drawerGateway: HTMLElement;
   getCache: ?NavigationStateCacheGetter;
   setCache: ?NavigationStateCacheSetter;
 
@@ -110,53 +107,5 @@ export default class NavigationState extends Container<NavigationStateShape>
   togglePeek = () => {
     const toggle = this.state.isPeeking ? this.unPeek : this.peek;
     toggle();
-  };
-
-  // ==============================
-  // DRAWERS
-  // ==============================
-
-  getDrawerGateway = (ref: ElementRef<*>) => {
-    // HACK
-    // trigger a re-render when the gateway ref is first resolved to
-    // ensure any active drawers are shown immediately to the user.
-    if (ref !== this.drawerGateway && this.state.activeDrawer) this.setState();
-    this.drawerGateway = ref;
-  };
-
-  openDrawer = (key: string) => {
-    this.storeState({ activeDrawer: key });
-  };
-
-  closeActiveDrawer = () => {
-    this.storeState({ activeDrawer: null });
-  };
-
-  openCreateDrawer = () => {
-    this.openDrawer('create');
-  };
-  closeCreateDrawer = () => {
-    this.closeActiveDrawer();
-  };
-
-  openSearchDrawer = () => {
-    this.openDrawer('search');
-  };
-  closeSearchDrawer = () => {
-    this.closeActiveDrawer();
-  };
-
-  openNotificationDrawer = () => {
-    this.openDrawer('notification');
-  };
-  closeNotificationDrawer = () => {
-    this.closeActiveDrawer();
-  };
-
-  openPeopleDrawer = () => {
-    this.openDrawer('people');
-  };
-  closePeopleDrawer = () => {
-    this.closeActiveDrawer();
   };
 }

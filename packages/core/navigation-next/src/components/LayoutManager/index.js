@@ -1,6 +1,5 @@
 // @flow
 
-import PropTypes from 'prop-types';
 import React, { Component, Fragment, type ElementRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 
@@ -24,13 +23,6 @@ import { GLOBAL_NAV_WIDTH } from '../../common/constants';
 class LayoutManager extends Component<LayoutManagerProps> {
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
-  static childContextTypes = {
-    defaultDrawerIcon: PropTypes.func,
-  };
-
-  getChildContext() {
-    return { defaultDrawerIcon: this.props.defaultDrawerIcon };
-  }
 
   renderGlobalNav(activeTransition) {
     const { navigation, globalNavigation: GlobalNavigation } = this.props;
