@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 18.2.1
+- [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+- [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+  - @atlaskit/editor-common@11.2.5
+
 ## 18.2.0
 - [minor] Refactor text serializer a bit and adds in table support [7393dc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7393dc3)
 - [none] Updated dependencies [7393dc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7393dc3)

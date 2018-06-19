@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 11.2.5
+- [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+- [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+
 ## 11.2.4
 - [patch] ED-4713 Add stage 0 support in json-schema-generator [cce275f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cce275f)
 - [none] Updated dependencies [cce275f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cce275f)
