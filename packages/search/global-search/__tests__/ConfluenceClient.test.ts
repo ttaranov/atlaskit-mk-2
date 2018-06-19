@@ -182,7 +182,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `/href?searchSessionId=123`,
+          href: `/href?search_id=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -191,7 +191,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `/href?searchSessionId=123`,
+          href: `/href?search_id=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -200,7 +200,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `/href?searchSessionId=123`,
+          href: `/href?search_id=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -236,7 +236,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: '123',
           name: 'name',
-          href: `/href?test=abc&searchSessionId=123`,
+          href: `/href?test=abc&search_id=123`,
           containerName: 'space',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
