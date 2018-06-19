@@ -6,10 +6,10 @@ import { checkIfNumberColumnEnabled } from '../../utils';
 const TABLE_PADDING = 10;
 
 export const getLineMarkerWidth = (
-  tableElement: HTMLElement,
+  tableRef: HTMLElement,
   scroll: number,
 ): number => {
-  const { parentElement, offsetWidth } = tableElement;
+  const { parentElement, offsetWidth } = tableRef;
   const diff = offsetWidth - parentElement!.offsetWidth;
   const scrollDiff = scroll - diff > 0 ? scroll - diff : 0;
 
