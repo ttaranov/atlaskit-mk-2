@@ -9,7 +9,7 @@ import {
   selectionCell,
   TableMap,
 } from 'prosemirror-tables';
-import { Node, Slice, Schema } from 'prosemirror-model';
+import { Node, Slice, Schema, Fragment } from 'prosemirror-model';
 import {
   findTable,
   getCellsInColumn,
@@ -289,6 +289,33 @@ export function transformSliceToAddTableHeaders(
     }
     return maybeTable;
   });
+}
+
+export function transformSliceToRemoveNumberColumn(
+  slice: Slice,
+  schema: Schema,
+): Slice {
+  const nodes: Node[] = [];
+  const { table, tableRow } = schema.nodes;
+  slice.content.forEach((node, _offset, _index) => {
+    if (node.type === table) {
+      const rows: Node[] = [];
+      node.forEach((oldRow) => {
+        const cells: any[] = [];
+        for (let i = 0;i < oldRow.childCount;i++) {
+          if (!oldRow.child(i).attrs.__isNumberCell) {
+            cells.push(oldRow.child(i));
+          }
+        }
+        rows.push(tableRow.createChecked(oldRow.attrs, cells, oldRow.marks));
+        return oldRow;
+      });
+      nodes.push(table.createChecked(node.attrs, rows, node.marks));
+    } else {
+      nodes.push(node);
+    }
+  });
+  return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
 }
 
 export const deleteTable: Command = (

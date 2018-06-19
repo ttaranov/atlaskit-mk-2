@@ -16,7 +16,12 @@ import {
   akFontSizeDefault,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import { tableSharedStyle } from '@atlaskit/editor-common';
+import {
+  tableSharedStyle,
+  akEditorTableToolbar,
+  akEditorTableBorder,
+  akEditorTableNumberColumnWidth
+} from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
@@ -250,6 +255,16 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     table {
       margin-left: 0;
       margin-right: 0;
+      table-layout: auto;
+    }
+    .numbered-cell {
+      min-width: 0;
+      text-align: center;
+      width: ${akEditorTableNumberColumnWidth}px;
+      background-color: ${akEditorTableToolbar};
+    }
+    .numbered-cell:not(:last-of-type) {
+      border-bottom: 1px solid ${akEditorTableBorder};
     }
   }
 

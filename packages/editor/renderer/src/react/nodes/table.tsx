@@ -1,28 +1,47 @@
 import * as React from 'react';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import { BreakoutConsumer } from '../';
+import { ReactElement } from '../../../../editor-core/src/types';
 
 const Table = props => {
-  const colgroup = props.columnWidths ? (
-    <colgroup>
-      {props.columnWidths.map((colWidth, idx) => {
-        const style = colWidth ? { width: `${colWidth}px` } : {};
-        return <col key={idx} style={style} />;
-      })}
-    </colgroup>
-  ) : null;
+  const { isNumberColumnEnabled, columnWidths, children, layout } = props;
 
+  let colgroup;
+  if (columnWidths && columnWidths.length > 0) {
+    const cols: ReactElement[] = [];
+    if (isNumberColumnEnabled) {
+      cols.push(<col key={-1} style={{ width: 0 }} />);
+    }
+    {
+      columnWidths.forEach((colWidth, idx) => {
+        cols.push(<col key={idx} style={{ width: `${colWidth}px` }} />);
+      })
+    }
+    colgroup = <colgroup>{cols}</colgroup>;
+  }
+
+  let tableRows
+  if (children && children.length > 0) {
+    tableRows = children.map((row, index) => {
+      return React.cloneElement(
+        row as React.ReactElement<any>,
+        { isNumberColumnEnabled: isNumberColumnEnabled, index }
+      );
+    });
+  }
   return (
     <BreakoutConsumer>
       {containerWidth => (
         <div
           className="table-container"
-          data-layout={props.layout}
-          style={{ width: calcTableWidth(props.layout, containerWidth, false) }}
+          data-layout={layout}
+          style={{
+            width: calcTableWidth(layout, containerWidth, false)
+          }}
         >
-          <table>
+          <table data-number-column={isNumberColumnEnabled}>
             {colgroup}
-            <tbody>{props.children}</tbody>
+            <tbody>{tableRows}</tbody>
           </table>
         </div>
       )}

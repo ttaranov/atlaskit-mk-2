@@ -7,6 +7,7 @@ import {
   TableCell,
   TableRow,
 } from '../../interfaces';
+import { toJSONTableCell } from '@atlaskit/editor-common';
 
 /**
  * Return the cell type based on the delimeter

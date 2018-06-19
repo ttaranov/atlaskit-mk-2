@@ -14,6 +14,7 @@ Object {
           "content": Array [
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -65,6 +66,7 @@ Object {
           "content": Array [
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -85,6 +87,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -105,6 +108,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -130,6 +134,7 @@ Object {
           "content": Array [
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -150,6 +155,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -170,6 +176,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -195,6 +202,7 @@ Object {
           "content": Array [
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -215,6 +223,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -235,6 +244,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -281,6 +291,7 @@ Object {
           "content": Array [
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -301,6 +312,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -326,6 +338,7 @@ Object {
           "content": Array [
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,
@@ -346,6 +359,7 @@ Object {
             },
             Object {
               "attrs": Object {
+                "__isNumberCell": null,
                 "background": null,
                 "colspan": 1,
                 "colwidth": null,

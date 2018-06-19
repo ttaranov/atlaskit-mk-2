@@ -27,7 +27,10 @@ import { transformSliceToRemoveOpenTable } from '../../table/utils';
 
 // @ts-ignore
 import { handlePaste as handlePasteTable } from 'prosemirror-tables';
-import { transformSliceToAddTableHeaders } from '../../table/actions';
+import {
+  transformSliceToAddTableHeaders,
+  transformSliceToRemoveNumberColumn
+} from '../../table/actions';
 import {
   handlePasteIntoTaskAndDecision,
   handlePasteAsPlainText,
@@ -141,6 +144,7 @@ export function createPlugin(
               slice = transformSliceToAddTableHeaders(slice, state.schema);
             }
           }
+          slice = transformSliceToRemoveNumberColumn(slice, view.state.schema);
 
           // get prosemirror-tables to handle pasting tables if it can
           // otherwise, just the replace the selection with the content

@@ -36,6 +36,7 @@ const getCellAttrs = (dom: HTMLElement) => {
     rowspan: Number(dom.getAttribute('rowspan') || 1),
     colwidth: width && width.length === colspan ? width : null,
     background: dom.style.backgroundColor || null,
+    __isNumberCell: dom.getAttribute('data-is-number-cell'),
   };
 };
 
@@ -254,6 +255,7 @@ const cellAttrs = {
   rowspan: { default: 1 },
   colwidth: { default: null },
   background: { default: null },
+  __isNumberCell: { default: null }
 };
 
 export const tableCell = {
@@ -274,7 +276,9 @@ export const tableCell = {
 };
 
 export const toJSONTableCell = (node: PmNode) => ({
-  attrs: Object.keys(node.attrs).reduce((obj, key) => {
+  attrs: Object.keys(node.attrs)
+  .filter(key => !key.startsWith('__'))
+  .reduce((obj, key) => {
     if (cellAttrs[key].default !== node.attrs[key]) {
       obj[key] = node.attrs[key];
     }
