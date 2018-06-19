@@ -169,7 +169,7 @@ function quickNavResultToObjectResult(
 ): ConfluenceObjectResult {
   // add searchSessionId
   const href = new URI(quickNavResult.href);
-  href.addQuery('searchSessionId', searchSessionId);
+  href.addQuery('search_id', searchSessionId);
 
   return {
     name: quickNavResult.name,
