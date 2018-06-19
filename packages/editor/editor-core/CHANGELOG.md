@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.7.12
+- [patch] ED-4899 fix finding parent node for popups (specifically hyperlink) in IE11 [b801e42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b801e42)
+- [none] Updated dependencies [b801e42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b801e42)
+
 ## 73.7.11
 - [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
 - [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
