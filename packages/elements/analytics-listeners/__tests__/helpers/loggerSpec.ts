@@ -1,5 +1,5 @@
 import * as cases from 'jest-in-case';
-import Logger, { LOG_LEVEL } from '../logger';
+import Logger, { LOG_LEVEL } from '../../src/helpers/logger';
 
 declare const global: any;
 
