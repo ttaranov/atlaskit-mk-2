@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Wrapper } from '../../../src/inlineCard/Frame/styled';
+import { Wrapper } from '../../../src/InlineCard/Frame/styled';
 
 describe('Wrapper', () => {
   test('it should have interactive styles', () => {

@@ -19,7 +19,7 @@ jest.mock('react-transition-group/Transition', () => {
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import Transition from '../../../src/blockCard/ResolvedView/Transition';
+import Transition from '../../../src/BlockCard/ResolvedView/Transition';
 import { __setStatus__ } from 'react-transition-group/Transition';
 
 const ExampleComponent = () => null;
