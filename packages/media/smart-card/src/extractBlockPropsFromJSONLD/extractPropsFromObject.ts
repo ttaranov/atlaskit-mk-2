@@ -1,6 +1,10 @@
 import { BlockCard } from '@atlaskit/media-ui';
 
 export function extractPropsFromObject(json: any): BlockCard.ResolvedViewProps {
+  if (!json) {
+    throw new Error('smart-card: data is not parsable JSON-LD.');
+  }
+
   const props: BlockCard.ResolvedViewProps = {
     title: {
       text: typeof json.name === 'string' ? json.name : '',
@@ -9,10 +13,6 @@ export function extractPropsFromObject(json: any): BlockCard.ResolvedViewProps {
       text: typeof json.summary === 'string' ? json.summary : '',
     },
   };
-
-  if (!json) {
-    return props;
-  }
 
   if (json.url) {
     props.link = String(json.url);
