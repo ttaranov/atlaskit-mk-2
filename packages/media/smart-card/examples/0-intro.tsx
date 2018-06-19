@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
+import { Field } from '@atlaskit/form';
+import Select from '@atlaskit/select';
 import TextField from '@atlaskit/field-text';
 import { Provider, Card } from '../src';
 import '../mocks';
-import { CardAppearance } from '../src/Card';
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -17,13 +18,13 @@ const defaultURL = param
 export interface ExampleProps {}
 
 export interface ExampleState {
-  appearance: CardAppearance;
+  appearance: { label: string; value: string };
   url: string;
 }
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
-    appearance: 'block',
+    appearance: { label: 'Block', value: 'block' },
     url: defaultURL,
   };
 
@@ -31,9 +32,9 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     this.setState({ url: event.target.value });
   };
 
-  handleAppearanceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  handleAppearanceChange = option => {
     this.setState({
-      appearance: event.currentTarget.value === 'block' ? 'block' : 'inline',
+      appearance: option,
     });
   };
 
@@ -44,6 +45,16 @@ class Example extends React.Component<ExampleProps, ExampleState> {
         <Page>
           <Grid>
             <GridColumn>
+              <Field label="Appearance">
+                <Select
+                  options={[
+                    { label: 'Block', value: 'block' },
+                    { label: 'Inline', value: 'inline' },
+                  ]}
+                  value={appearance}
+                  onChange={this.handleAppearanceChange}
+                />
+              </Field>
               <TextField
                 autoFocus={true}
                 label="URL"
@@ -51,22 +62,15 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 value={url}
                 onChange={this.handleUrlChange}
               />
-              <select value={appearance} onChange={this.handleAppearanceChange}>
-                <option>block</option>
-                <option>inline</option>
-              </select>
-              <br />
-              <small>
-                Try entering <code>public-happy</code>,{' '}
-                <code>private-happy</code>, <code>private-forbidden</code>,{' '}
-                <code>not-found</code> or <code>error</code> as the URL
-              </small>
             </GridColumn>
           </Grid>
           <Grid>
             <GridColumn>
               <br />
-              <Card appearance={appearance} url={url} />
+              <Card
+                appearance={appearance.value === 'block' ? 'block' : 'inline'}
+                url={url}
+              />
             </GridColumn>
           </Grid>
         </Page>

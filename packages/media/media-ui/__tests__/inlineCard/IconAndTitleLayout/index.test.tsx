@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { IconAndTitleLayout } from '../../../src/inlineCard/IconAndTitleLayout/index';
+import { IconAndTitleLayout } from '../../../src/InlineCard/IconAndTitleLayout/index';
 import {
   IconWrapper,
   OtherWrapper,
-} from '../../../src/inlineCard/IconAndTitleLayout/styled';
+} from '../../../src/InlineCard/IconAndTitleLayout/styled';
 
 describe('IconAndTitleLayout', () => {
   it('should render the text', () => {

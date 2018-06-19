@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Frame } from '../../../src/inlineCard/Frame';
+import { Frame } from '../../../src/InlineCard/Frame';
 
 describe('Frame', () => {
   it('should not render interactive props when the frame is not clickable', () => {

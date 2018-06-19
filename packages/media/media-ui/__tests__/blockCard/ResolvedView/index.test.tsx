@@ -2,17 +2,17 @@ import * as React from 'react';
 import { shallow, mount, ReactWrapper } from 'enzyme';
 import Button from '@atlaskit/button';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
-import { ResolvedView, Action } from '../../../src/blockCard/ResolvedView';
-import { ImageIcon } from '../../../src/blockCard/ImageIcon';
+import { ResolvedView, Action } from '../../../src/BlockCard/ResolvedView';
+import { ImageIcon } from '../../../src/BlockCard/ImageIcon';
 import {
   Title,
   Byline,
   Description,
   Thumbnail,
   ActionsWrapper,
-} from '../../../src/blockCard/ResolvedView/styled';
-import { PreviewView } from '../../../src/blockCard/ResolvedView/PreviewView';
-import AlertView from '../../../src/blockCard/ResolvedView/AlertView';
+} from '../../../src/BlockCard/ResolvedView/styled';
+import { PreviewView } from '../../../src/BlockCard/ResolvedView/PreviewView';
+import AlertView from '../../../src/BlockCard/ResolvedView/AlertView';
 
 function getActionButtons(element: ReactWrapper) {
   return element.find(ActionsWrapper).find(Button);

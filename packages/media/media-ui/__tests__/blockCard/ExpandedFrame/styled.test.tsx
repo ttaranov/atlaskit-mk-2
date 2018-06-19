@@ -6,7 +6,7 @@ import {
   LinkWrapper,
   IconWrapper,
   TextWrapper,
-} from '../../../src/blockCard/ExpandedFrame/styled';
+} from '../../../src/BlockCard/ExpandedFrame/styled';
 
 describe('Wrapper', () => {
   it('should render with minWidth when there is a minWidth', () => {

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { LinkView } from '../src/inlineCard/LinkView';
-import { ResolvedView } from '../src/inlineCard/ResolvedView';
-import { ResolvingView } from '../src/inlineCard/ResolvingView';
+import { LinkView, ResolvedView, ResolvingView } from '../src/InlineCard';
 
 interface Lozenge {
   text: string;
