@@ -31,7 +31,11 @@ const DrawerContent = ({
 }) => (
   <div>
     <h1>
-      <code>{`${drawerText[0].toUpperCase()}${drawerText.slice(1)}`}</code>
+      <code
+        css={{
+          textTransform: 'capitalize',
+        }}
+      >{`${drawerText[0].toUpperCase()}${drawerText.slice(1)}`}</code>
     </h1>
     <button
       onClick={closeDrawer}
