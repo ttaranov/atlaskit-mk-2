@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.8.1
+- [patch] ED-4744, ED-4749: autoinserts break other inline marks. [34b660c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b660c)
+- [none] Updated dependencies [34b660c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b660c)
+
 ## 73.8.0
 - [minor] Design updates for /QuickInsert™️ menu [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
 - [none] Updated dependencies [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
