@@ -1,6 +1,7 @@
 // @flow
 import styled, { css } from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import type { AvatarClickType } from '../types';
 
 const activeBackgroundColor = themed({
   light: colors.B50,
@@ -15,7 +16,15 @@ const focusBorderColor = themed({
   dark: colors.B75,
 });
 
-// $FlowFixMe - add types for arguments
+type getBackgroundColorType = {|
+  backgroundColor?: string,
+  href?: string,
+  isActive?: boolean,
+  isHover?: boolean,
+  isSelected?: boolean,
+  onClick?: AvatarClickType,
+|};
+
 export function getBackgroundColor({
   backgroundColor,
   href,
@@ -23,7 +32,7 @@ export function getBackgroundColor({
   isHover,
   isSelected,
   onClick,
-}) {
+}: getBackgroundColorType) {
   const isInteractive = href || onClick;
 
   let themedBackgroundColor = backgroundColor || colors.background;
@@ -41,8 +50,21 @@ export function getBackgroundColor({
   return themedBackgroundColor;
 }
 
-// $FlowFixMe - add types for arguments
-export function getStyles({ href, isActive, isDisabled, isFocus, onClick }) {
+type getStylesType = {|
+  href?: string,
+  isActive?: boolean,
+  isDisabled?: boolean,
+  isFocus?: boolean,
+  onClick?: AvatarClickType,
+|};
+
+export function getStyles({
+  href,
+  isActive,
+  isDisabled,
+  isFocus,
+  onClick,
+}: getStylesType) {
   const isInteractive = href || onClick;
 
   let borderColor = 'transparent';

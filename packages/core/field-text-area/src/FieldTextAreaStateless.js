@@ -99,7 +99,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
 
     return (
       <div>
-        {/* // $FlowFixMe TEMPORARY */}
+        {/* // $FlowFixMe - Label signature interpreted incorrectly */}
         <Label
           htmlFor={id}
           isDisabled={disabled}

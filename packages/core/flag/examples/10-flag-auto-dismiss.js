@@ -45,7 +45,7 @@ export default class AutoDismissExample extends Component<void, State> {
   render() {
     return (
       <div>
-        {/* // $FlowFixMe TEMPORARY */}
+        {/* // $FlowFixMe - cannot perform arithmetic operation */}
         <p style={{ padding: `${gridSize * 2}px` }}>
           <Button appearance="primary" onClick={this.addFlag}>
             Add another Flag

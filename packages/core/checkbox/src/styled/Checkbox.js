@@ -24,7 +24,7 @@ type LabelProps = {
 export const Label = styled.label`
   display: ${({ isFullWidth }) => (isFullWidth ? 'block' : 'inline-block')};
   color: ${(props: LabelProps): string =>
-    // $FlowFixMe TEMPORARY
+    // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
   ${({ isDisabled }: LabelProps) =>
     isDisabled
@@ -88,7 +88,6 @@ const getTickColor = props => {
   } else if (!isChecked) {
     color = themed({ light: 'transparent', dark: 'transparent' });
   }
-  // $FlowFixMe TEMPORARY
   return color(rest);
 };
 
@@ -109,7 +108,6 @@ const getBoxColor = props => {
   } else if (isChecked) {
     color = themed({ light: colors.B400, dark: colors.B400 });
   }
-  // $FlowFixMe TEMPORARY
   return color(rest);
 };
 

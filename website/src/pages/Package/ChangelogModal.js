@@ -26,9 +26,6 @@ const ModalBody = styled.div`
   padding-bottom: ${math.multiply(gridSize, 2)}px;
 `;
 
-// This seems to be an issue with styledComponent flow type compatibility
-// intersection type incompatible with expected param type of React.Component.
-// $FlowFixMe:
 const ModalHeader = styled(OgModalHeader)`
   margin-left: 20px;
   margin-right: 20px;

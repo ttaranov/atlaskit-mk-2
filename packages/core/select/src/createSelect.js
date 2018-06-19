@@ -227,7 +227,6 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       }
     };
     render() {
-      // $FlowFixMe: `validationState` is passed in from a parent validation component
       const {
         styles,
         validationState,
