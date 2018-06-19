@@ -20,7 +20,6 @@ type Props = {
   isLoading?: boolean,
   spinnerSize?: SpinnerSizeType,
   contentsOpacity: number,
-  // eslint-disable-next-line
   targetRef?: Function,
 };
 
