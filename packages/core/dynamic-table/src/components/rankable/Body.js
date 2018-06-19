@@ -40,7 +40,10 @@ const computeRankDestination = (
   result: DropResult,
   pageRows: RowType[],
 ): RankEndLocation | void => {
-  const { source: { index: sourceIndex }, destination } = result;
+  const {
+    source: { index: sourceIndex },
+    destination,
+  } = result;
   if (destination) {
     const { index } = destination;
 
@@ -67,7 +70,10 @@ export class RankableBody extends Component<Props, {}> {
   };
 
   onDragStart = (dragStart: DragStart) => {
-    const { draggableId: key, source: { index } } = dragStart;
+    const {
+      draggableId: key,
+      source: { index },
+    } = dragStart;
     const rankStartProps = {
       index,
       key,
@@ -78,7 +84,10 @@ export class RankableBody extends Component<Props, {}> {
 
   onDragEnd = (result: DropResult) => {
     const { pageRows, onRankEnd } = this.props;
-    const { draggableId: sourceKey, source: { index: sourceIndex } } = result;
+    const {
+      draggableId: sourceKey,
+      source: { index: sourceIndex },
+    } = result;
     const destination = computeRankDestination(result, pageRows);
 
     const rankEndProps = {
@@ -116,6 +125,7 @@ export class RankableBody extends Component<Props, {}> {
               innerRef={this.innerRef(provided.innerRef)}
               isRanking={isRanking}
               style={inlineStyle}
+              {...provided.droppableProps}
             >
               {pageRows.map((row, rowIndex) => (
                 <TableRow

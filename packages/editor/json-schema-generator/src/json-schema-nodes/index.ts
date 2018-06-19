@@ -16,7 +16,7 @@ export default class JSONSchemaNode {
   version: JSONSchemaVersion;
   description: string;
   root: string;
-  definitions: Map<string, SchemaNode> = new Map();
+  definitions: Map<string, { node: SchemaNode; used: boolean }> = new Map();
 
   constructor(version: JSONSchemaVersion, description: string, root: string) {
     this.version = version;
@@ -25,21 +25,37 @@ export default class JSONSchemaNode {
   }
 
   addDefinition(name: string, definition: SchemaNode) {
-    this.definitions.set(name, definition);
+    this.definitions.set(name, { node: definition, used: false });
   }
 
   hasDefinition(name: string) {
     return this.definitions.has(name);
   }
 
+  private updateUsed(name: string, value: boolean) {
+    if (this.definitions.has(name)) {
+      const def = this.definitions.get(name)!;
+      def.used = value;
+    }
+  }
+
+  markAsUsed(name: string) {
+    this.updateUsed(name, true);
+  }
+
+  markAsUnused(name: string) {
+    this.updateUsed(name, false);
+  }
+
   toJSON() {
     if (!this.definitions.has(this.root)) {
       throw new Error(`${this.root} not found in the added definitions`);
     }
-    const definitions = {} as any;
-    // TODO: Fix any
-    for (const [k, v] of (this as any).definitions) {
-      definitions[k] = v;
+    const definitions = {};
+    for (const [k, { node, used }] of this.definitions) {
+      if (used) {
+        definitions[k] = node;
+      }
     }
 
     return {

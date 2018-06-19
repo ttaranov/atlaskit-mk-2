@@ -1,5 +1,25 @@
 # @atlaskit/layer-manager
 
+## 4.3.1
+- [patch] Replaces implementation of ScrollLock with [react-scrolllock](https://github.com/jossmac/react-scrolllock). Deprecates ScrollLock export in @atlaskit/layer-manager. [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
+- [none] Updated dependencies [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
+  - @atlaskit/onboarding@4.1.4
+  - @atlaskit/modal-dialog@5.2.4
+
+## 4.3.0
+- [minor] Adds autoFocus prop to FocusLock. Fixes scrolling bug in onboarding. [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
+- [none] Updated dependencies [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
+  - @atlaskit/onboarding@4.1.3
+
+## 4.2.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/onboarding@4.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/icon@12.1.2
+
 ## 4.2.0
 - [minor] Deprecates the ability to pass a function to the autoFocus prop. Changes implementation of FocusLock to use [react-focus-lock](https://github.com/theKashey/react-focus-lock). [5b1ab0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ab0b)
 - [minor] Deprecates ability to pass function to autoFocus prop in FocusLock. Implementation of FocusLock based on react-focus-lock. [de9690b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de9690b)
@@ -27,7 +47,6 @@
   - @atlaskit/docs@4.1.0
   - @atlaskit/analytics-next@2.1.7
   - @atlaskit/button@8.1.0
-
 
 ## 4.0.1
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
@@ -62,7 +81,6 @@
   - @atlaskit/docs@3.0.4
 
 ## 3.0.3
-
 - [patch] Fix race condition in layer manager's portal where portalled contents would still display after unmounting if they were quickly mounted and then unmounted [23ef141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23ef141)
 
 ## 3.0.2
@@ -119,20 +137,9 @@
 ## 2.5.5
 - [patch] AK-4064 ensure unmountComponentAtNode is called for components rendered via ReactDOM.render [e3153c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3153c3)
 
-## 2.5.4
-
-## 2.5.3
-
-## 2.5.2
-
-## 2.5.1
-
 ## 2.5.0
 - [minor] support context via HOC from layer-manager [333a8de](333a8de)
 
-## 2.4.1
-
 ## 2.4.0 (2017-11-14)
-
 * add flow types
 * feature; add support for flags ([a451a73](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a451a73))

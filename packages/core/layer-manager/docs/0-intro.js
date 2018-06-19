@@ -1,6 +1,19 @@
 // @flow
 import React from 'react';
 import { code, md, Example, Props } from '@atlaskit/docs';
+import { colors } from '@atlaskit/theme';
+
+const Warning = p => (
+  <div
+    style={{
+      backgroundColor: colors.R75,
+      boxShadow: `-4px 0 0 ${colors.R200}`,
+      marginBottom: '1.4em',
+      padding: '1em 1.2em',
+    }}
+    {...p}
+  />
+);
 
 export default md`
   ## Why?
@@ -77,19 +90,37 @@ const App = () => (
   This technique is described in [this section](https://reactjs.org/docs/refs-and-the-dom.html#adding-a-ref-to-a-dom-element)
   of the React documentation.
 
+  ## Scroll Lock
+
+  Component used to lock scroll positioning.
+
+  ${(
+    <React.Fragment>
+      <Warning>
+        <p>
+          <strong>ScrollLock is deprecated.</strong>
+        </p>
+        <p>
+          Please use{' '}
+          <a href="https://github.com/jossmac/react-scrolllock">
+            react-scrolllock
+          </a>{' '}
+          instead.
+        </p>
+      </Warning>
+      <Example
+        Component={require('../examples/1-scroll-lock').default}
+        source={require('!!raw-loader!../examples/1-scroll-lock')}
+        title="Scroll Lock - DEPRECATED"
+      />
+    </React.Fragment>
+  )}
+
   ## Other Helpers
 
   There are a few patterns that are common among the supported packages, and have
   been abstracted into discrete components. While primarily for use internally,
   they're available as named exports from \`@atlaskit/layer-manager\`.
-
-  ${(
-    <Example
-      Component={require('../examples/1-scroll-lock').default}
-      source={require('!!raw-loader!../examples/1-scroll-lock')}
-      title="Scroll Lock"
-    />
-  )}
 
   ${(
     <Example

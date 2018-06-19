@@ -75,6 +75,19 @@ describe('ConfluenceSearchResults', () => {
     expect(group.children()).toHaveLength(1);
   });
 
+  it('should render recently interacted people results when no query is entered', () => {
+    const props: Partial<Props> = {
+      query: '',
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.People, wrapper);
+
+    expect(group.prop('title')).toEqual('Recently worked with');
+    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+  });
+
   it('should render links to advanced search when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
@@ -153,6 +166,19 @@ describe('ConfluenceSearchResults', () => {
 
     expect(group.prop('title')).toEqual('People');
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+  });
+
+  it('should not render people results when there are no results in the group', () => {
+    const props: Partial<Props> = {
+      query: 'na',
+      objectResults: [makeConfluenceObjectResult()],
+      peopleResults: [],
+    };
+
+    const wrapper = render(props);
+    const group = findGroup(Group.People, wrapper);
+
+    expect(group.exists()).toEqual(false);
   });
 
   it('should render search error when there is an error', () => {

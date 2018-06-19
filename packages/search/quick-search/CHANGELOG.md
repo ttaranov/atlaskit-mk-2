@@ -1,5 +1,12 @@
 # @atlaskit/quick-search
 
+## 2.3.0
+- [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
+- [none] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
+  - @atlaskit/navigation@32.2.0
+  - @atlaskit/icon@12.2.0
+  - @atlaskit/avatar@11.2.0
+
 ## 2.2.0
 - [minor] onSearchSubmit prop also triggers on Shift+Enter [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
 - [none] Updated dependencies [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)

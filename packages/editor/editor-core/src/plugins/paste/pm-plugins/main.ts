@@ -225,7 +225,7 @@ export function createPlugin(
           // row of content we see, if required
           if (!hasParentNodeOfType([table, tableCell])(view.state.selection)) {
             const tableState = tableStateKey.getState(view.state);
-            if (tableState && tableState.isRequiredToAddHeader()) {
+            if (tableState && tableState.pluginConfig.isHeaderRowRequired) {
               slice = transformSliceToAddTableHeaders(slice, view.state.schema);
             }
           }

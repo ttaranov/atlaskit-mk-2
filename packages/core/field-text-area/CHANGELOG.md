@@ -1,5 +1,12 @@
 # @atlaskit/field-text-area
 
+## 3.1.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+
 ## 3.1.0
 - [minor] Textareas can be set to resize in only a single direction now [954d4b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/954d4b0)
 
@@ -8,32 +15,7 @@
 - [none] Updated dependencies [b9f0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9f0068)
 
 ## 3.0.3
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-base@10.1.0
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-base@10.1.0
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-base@10.1.0
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-base@10.1.0
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/docs@4.1.0
   - @atlaskit/theme@4.0.2
   - @atlaskit/field-base@10.1.0
@@ -69,10 +51,7 @@
   - @atlaskit/theme@3.2.2
   - @atlaskit/docs@3.0.4
 
-## 2.0.3
-
 ## 2.0.2
-
 - [patch] Form package developer preview release [9b28847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b28847)
 
 ## 2.0.1
@@ -115,17 +94,14 @@
 - [patch] Migrated package to atlaskit-mk-2 [a1950a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1950a9)
 
 ## 1.0.3 (2017-11-21)
-
 * bug fix; bumping internal dependencies to latest major versions ([aeebf29](https://bitbucket.org/atlassian/atlaskit/commits/aeebf29))
-## 1.0.2 (2017-10-27)
 
+## 1.0.2 (2017-10-27)
 * bug fix; rebuild stories ([7aa7337](https://bitbucket.org/atlassian/atlaskit/commits/7aa7337))
 
-
 ## 1.0.1 (2017-10-22)
-
 * bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
-## 1.0.0 (2017-10-20)
 
+## 1.0.0 (2017-10-20)
 * breaking; Random break to bump to v1 ([d5ebc2e](https://bitbucket.org/atlassian/atlaskit/commits/d5ebc2e))
 * breaking; update references to field-text ([d5ebc2e](https://bitbucket.org/atlassian/atlaskit/commits/d5ebc2e))

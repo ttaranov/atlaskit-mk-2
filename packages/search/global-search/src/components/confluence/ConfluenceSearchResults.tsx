@@ -26,11 +26,12 @@ const renderSpacesGroup = (title: string, results: Result[], query: string) =>
     </ResultItemGroup>
   ) : null;
 
-const renderPeopleGroup = (title: string, results: Result[], query: string) => (
-  <ResultItemGroup title={title} key="people">
-    {renderResults(results)}
-  </ResultItemGroup>
-);
+const renderPeopleGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="people">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
 export const renderSearchConfluenceItem = (query: string, text: string) =>
   searchConfluenceItem({
@@ -103,6 +104,7 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    // TODO: insert error state here if the recent results are empty.
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
@@ -110,7 +112,11 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup('People', take(recentlyInteractedPeople, 3), query),
+      renderPeopleGroup(
+        'Recently worked with',
+        take(recentlyInteractedPeople, 3),
+        query,
+      ),
       renderAdvancedSearchGroup(query),
     ];
   }

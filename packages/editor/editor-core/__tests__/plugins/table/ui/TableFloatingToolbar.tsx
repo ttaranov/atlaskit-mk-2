@@ -1,15 +1,8 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import {
-  TableState,
-  stateKey,
-  PermittedLayoutsDescriptor,
-} from '../../../../src/plugins/table/pm-plugins/main';
-import ToolbarButton from '../../../../src/ui/ToolbarButton';
-import TableFloatingToolbar from '../../../../src/plugins/table/ui/TableFloatingToolbar';
-import { Toolbar } from '../../../../src/plugins/table/ui/TableFloatingToolbar';
-
+import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import {
   doc,
   p,
@@ -18,18 +11,25 @@ import {
   tr,
   tdEmpty,
   tdCursor,
+  bodiedExtension,
+  bodiedExtensionData,
 } from '@atlaskit/editor-test-helpers';
-import tablesPlugin from '../../../../src/plugins/table';
 
-import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
-import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
-
+import {
+  TablePluginState,
+  stateKey,
+  PermittedLayoutsDescriptor,
+} from '../../../../src/plugins/table/pm-plugins/main';
+import ToolbarButton from '../../../../src/ui/ToolbarButton';
+import TableFloatingToolbar from '../../../../src/plugins/table/ui/TableFloatingToolbar';
+import { Toolbar } from '../../../../src/plugins/table/ui/TableFloatingToolbar';
+import { tablesPlugin, extensionPlugin } from '../../../../src/plugins';
 describe('TableFloatingToolbar', () => {
   let trackEvent;
   const editor = (doc: any) =>
-    createEditor<TableState>({
+    createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin, extensionPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -37,9 +37,9 @@ describe('TableFloatingToolbar', () => {
     });
 
   const editorFullPage = (doc: any) =>
-    createEditor<TableState>({
+    createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin, extensionPlugin],
       editorProps: {
         appearance: 'full-page',
         allowTables: {
@@ -54,13 +54,13 @@ describe('TableFloatingToolbar', () => {
     trackEvent = jest.fn();
   });
 
-  describe('when tableElement is undefined', () => {
+  describe('when tableRef is undefined', () => {
     it('should not render toolbar', () => {
       const { editorView } = editor(
         doc(p('text'), table()(tr(tdEmpty, tdEmpty, tdEmpty))),
       );
       const floatingToolbar = shallow(
-        <TableFloatingToolbar editorView={editorView} tableActive={true} />,
+        <TableFloatingToolbar editorView={editorView} pluginConfig={{}} />,
       );
       expect(floatingToolbar.find(Toolbar).length).toEqual(0);
     });
@@ -73,32 +73,12 @@ describe('TableFloatingToolbar', () => {
       );
       const floatingToolbar = mount(
         <TableFloatingToolbar
-          tableElement={document.createElement('table')}
+          tableRef={document.createElement('table')}
           editorView={editorView}
-          tableActive={true}
+          pluginConfig={{}}
         />,
       );
       expect(floatingToolbar.find(RemoveIcon).length).toEqual(1);
-      floatingToolbar.unmount();
-    });
-
-    it('should call removeTable() on click', () => {
-      const { editorView } = editor(
-        doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-      const removeTable = jest.fn();
-      const floatingToolbar = shallow(
-        <TableFloatingToolbar
-          tableElement={document.createElement('table')}
-          editorView={editorView}
-          tableActive={true}
-          removeTable={removeTable}
-        />,
-      );
-
-      const button = floatingToolbar.find('[title="Remove table"]').first();
-      button.simulate('click');
-      expect(removeTable as any).toHaveBeenCalledTimes(1);
       floatingToolbar.unmount();
     });
   });
@@ -121,10 +101,11 @@ describe('TableFloatingToolbar', () => {
 
         const floatingToolbar = mount(
           <TableFloatingToolbar
-            tableElement={document.createElement('table')}
+            tableRef={document.createElement('table')}
             editorView={editorView}
-            tableActive={true}
-            permittedLayouts={desc as PermittedLayoutsDescriptor}
+            pluginConfig={{
+              permittedLayouts: desc as PermittedLayoutsDescriptor,
+            }}
           />,
         );
 
@@ -145,16 +126,21 @@ describe('TableFloatingToolbar', () => {
 
       it('should disable buttons when inside an unsupported layout', () => {
         const { editorView } = editorFullPage(
-          doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
+          doc(
+            p('text'),
+            bodiedExtension(bodiedExtensionData[0].attrs)(
+              table()(tr(tdCursor, tdEmpty, tdEmpty)),
+            ),
+          ),
         );
 
         const floatingToolbar = mount(
           <TableFloatingToolbar
-            tableElement={document.createElement('table')}
+            tableRef={document.createElement('table')}
             editorView={editorView}
-            tableActive={true}
-            permittedLayouts={desc as PermittedLayoutsDescriptor}
-            isLayoutSupported={() => false}
+            pluginConfig={{
+              permittedLayouts: desc as PermittedLayoutsDescriptor,
+            }}
           />,
         );
 
@@ -176,9 +162,9 @@ describe('TableFloatingToolbar', () => {
 
       const floatingToolbar = mount(
         <TableFloatingToolbar
-          tableElement={document.createElement('table')}
+          tableRef={document.createElement('table')}
           editorView={editorView}
-          tableActive={true}
+          pluginConfig={{}}
         />,
       );
 
@@ -190,16 +176,17 @@ describe('TableFloatingToolbar', () => {
     });
 
     it('selects the correct layout button based on the tableLayout prop', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p('text'), table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
 
       const floatingToolbar = mount(
         <TableFloatingToolbar
-          tableElement={pluginState.tableElement}
+          tableRef={document.createElement('table')}
           editorView={editorView}
-          tableActive={true}
-          permittedLayouts={['default', 'full-width']}
+          pluginConfig={{
+            permittedLayouts: ['default', 'full-width'],
+          }}
           tableLayout="default"
         />,
       );

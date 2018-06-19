@@ -7,7 +7,7 @@ import { EditorState } from 'prosemirror-state';
 
 export interface Props {
   state: EditorState;
-  tableElement: HTMLElement;
+  tableRef: HTMLElement;
   tableActive?: boolean;
   isTableHovered?: boolean;
   hoverRows: (rows: number[], danger?: boolean) => void;
@@ -23,7 +23,7 @@ export interface Props {
 export default class NumberColumn extends Component<Props, any> {
   render() {
     const {
-      tableElement,
+      tableRef,
       isTableHovered,
       state,
       hasHeaderRow,
@@ -35,7 +35,7 @@ export default class NumberColumn extends Component<Props, any> {
       selectRow,
     } = this.props;
 
-    const tbody = tableElement.querySelector('tbody');
+    const tbody = tableRef.querySelector('tbody');
     if (!tbody) {
       return null;
     }

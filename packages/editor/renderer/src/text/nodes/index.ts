@@ -13,11 +13,13 @@ import rule from './rule';
 import table from './table';
 import unknown from './unknown';
 
-export interface ReducedNode {
-  content?: ReducedNode[];
-  text?: string;
-}
-export type NodeReducer = (node: PMNode, schema?: Schema) => ReducedNode;
+export type NodeReducer = (node: PMNode, schema: Schema) => string;
+
+export const reduce: NodeReducer = (node: PMNode, schema: Schema) => {
+  const reducer =
+    nodeToReducerMapping[node.type.name] || nodeToReducerMapping.unknown;
+  return reducer(node, schema);
+};
 
 export const nodeToReducerMapping: { [key: string]: NodeReducer } = {
   applicationCard,

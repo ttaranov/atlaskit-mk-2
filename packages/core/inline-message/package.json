@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "A React component for displaying a clickable message which triggers an inline dialog",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,10 +18,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^8.1.1",
-    "@atlaskit/icon": "^12.1.1",
-    "@atlaskit/inline-dialog": "^7.1.1",
-    "@atlaskit/theme": "^4.0.3"
+    "@atlaskit/button": "^8.1.2",
+    "@atlaskit/icon": "^12.1.2",
+    "@atlaskit/inline-dialog": "^7.1.2",
+    "@atlaskit/theme": "^4.0.4"
   },
   "peerDependencies": {
     "react": "^16.3.0",

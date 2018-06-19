@@ -127,6 +127,17 @@ describe('ak-button/default-behaviour', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
+  it('should not call onClick handler when button is clicked while loading', () => {
+    const spy = jest.fn();
+    const wrapper = mount(
+      <Button isLoading onClick={spy}>
+        button
+      </Button>,
+    );
+    wrapper.find('button').simulate('click');
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+
   it('should pass analytics event as last argument to onClick handler', () => {
     const spy = jest.fn();
     const wrapper = mount(<Button onClick={spy}>button</Button>);

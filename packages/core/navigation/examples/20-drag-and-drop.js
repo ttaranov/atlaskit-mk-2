@@ -97,7 +97,6 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
               text={item.content}
               dnd={provided}
             />
-            {provided.placeholder}
           </div>
         )}
       </Draggable>
@@ -112,8 +111,11 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
         onDragEnd={this.onDragEnd}
       >
         <Droppable droppableId="list">
-          {dropProvided => (
-            <div ref={dropProvided.innerRef}>{containerItems}</div>
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {containerItems}
+              {provided.placeholder}
+            </div>
           )}
         </Droppable>
       </DragDropContext>

@@ -6,11 +6,16 @@ export const pluginKey = new PluginKey('tableHoverSelectionPlugin');
 export type State = {
   decorationSet: DecorationSet;
   isTableHovered: boolean;
+  isTableInDanger: boolean;
 };
 
 const plugin = new Plugin({
   state: {
-    init: () => ({ decorationSet: DecorationSet.empty, isTableHovered: false }),
+    init: () => ({
+      decorationSet: DecorationSet.empty,
+      isTableHovered: false,
+      isTableInDanger: false,
+    }),
 
     apply(tr, state: State): State {
       const meta = tr.getMeta(pluginKey);

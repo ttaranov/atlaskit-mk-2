@@ -159,3 +159,36 @@ export const fixCursorAlignment = (view: EditorView) => {
   gapCursorRef.style.marginTop = `${marginTop}px`;
   gapCursorRef.style.width = `${breakoutWidth || width}px`;
 };
+
+export const isIgnoredClick = (elem: HTMLElement) => {
+  if (elem.nodeName === 'BUTTON') {
+    return true;
+  }
+
+  // check if target node has a parent table node
+  let tableWrap;
+  let node = elem;
+  while (node) {
+    if (
+      node.className &&
+      (node.getAttribute('class') || '').indexOf('table-container') > -1
+    ) {
+      tableWrap = node;
+      break;
+    }
+    node = node.parentNode as HTMLElement;
+  }
+
+  if (tableWrap) {
+    const rowControls = tableWrap.querySelector('.table-row-controls-wrapper');
+    const columnControls = tableWrap.querySelector(
+      '.table-column-controls-wrapper',
+    );
+    return (
+      (rowControls && rowControls.contains(elem)) ||
+      (columnControls && columnControls.contains(elem))
+    );
+  }
+
+  return false;
+};

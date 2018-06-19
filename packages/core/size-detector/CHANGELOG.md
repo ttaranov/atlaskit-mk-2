@@ -1,5 +1,9 @@
 # @atlaskit/size-detector
 
+## 4.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+
 ## 4.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -48,21 +52,17 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 2.1.1
-
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
 
 ## 2.1.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
-
-## 2.0.4
 
 ## 2.0.3
 - [patch] Minor adjustment to size-detector to satisfy migration requirements [a5fb97d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5fb97d)
 - [patch] migrated to atlaskit-mk-2 [c606eb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c606eb2)
 
 ## 2.0.2 (2017-10-22)
-
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
-## 2.0.1 (2017-10-03)
 
+## 2.0.1 (2017-10-03)
 * bug fix; Fix incorrect propType declaration ([46d1f50](https://bitbucket.org/atlassian/atlaskit/commits/46d1f50))

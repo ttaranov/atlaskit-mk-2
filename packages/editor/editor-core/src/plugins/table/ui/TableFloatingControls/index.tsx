@@ -10,6 +10,7 @@ import {
   selectRowClearHover,
   hoverRows,
   insertRow,
+  deleteSelectedRows,
 } from '../../actions';
 
 export interface State {
@@ -19,10 +20,9 @@ export interface State {
 
 export interface Props {
   editorView: EditorView;
-  tableElement?: HTMLElement;
+  tableRef?: HTMLElement;
   tableActive?: boolean;
   isTableHovered?: boolean;
-  remove?: () => void;
   isTableInDanger?: boolean;
   scroll?: number;
 
@@ -43,8 +43,7 @@ export default class TableFloatingControls extends Component<Props, State> {
   render() {
     const {
       editorView,
-      tableElement,
-      remove,
+      tableRef,
       isTableHovered,
       isTableInDanger,
       isNumberColumnEnabled,
@@ -52,7 +51,7 @@ export default class TableFloatingControls extends Component<Props, State> {
       hasHeaderRow,
     } = this.props;
 
-    if (!tableElement) {
+    if (!tableRef) {
       return null;
     }
 
@@ -63,7 +62,7 @@ export default class TableFloatingControls extends Component<Props, State> {
             state={editorView.state}
             hoverRows={this.hoverRows}
             resetHoverSelection={this.resetHoverSelection}
-            tableElement={tableElement}
+            tableRef={tableRef}
             tableActive={tableActive}
             dangerRows={this.state.dangerRows}
             hoveredRows={this.state.hoveredRows}
@@ -76,16 +75,16 @@ export default class TableFloatingControls extends Component<Props, State> {
         ) : null}
         <CornerControls
           editorView={editorView}
-          tableElement={tableElement}
+          tableRef={tableRef}
           resetHoverSelection={this.resetHoverSelection}
           scroll={this.props.scroll}
           isTableInDanger={isTableInDanger}
         />
         <RowControls
           editorView={editorView}
-          tableElement={tableElement}
+          tableRef={tableRef}
           isTableHovered={isTableHovered!}
-          remove={remove!}
+          deleteSelectedRows={this.deleteSelectedRows}
           hoverRows={this.hoverRows}
           dangerRows={this.state.dangerRows}
           hoveredRows={this.state.hoveredRows}
@@ -121,7 +120,13 @@ export default class TableFloatingControls extends Component<Props, State> {
     hoverRows(rows, danger)(state, dispatch);
   };
 
-  handleMouseDown = event => {
+  private deleteSelectedRows = () => {
+    const { state, dispatch } = this.props.editorView;
+    deleteSelectedRows(state, dispatch);
+    this.resetHoverSelection();
+  };
+
+  private handleMouseDown = event => {
     event.preventDefault();
   };
 }

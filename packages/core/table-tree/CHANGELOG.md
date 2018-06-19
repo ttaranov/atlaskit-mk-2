@@ -1,5 +1,14 @@
 # @atlaskit/table-tree
 
+## 3.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/select@4.2.3
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/icon@12.1.2
+
 ## 3.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -62,10 +71,6 @@
 - [patch] Updated dependencies [d05b9e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d05b9e5)
   - @atlaskit/select@3.0.0
 
-## 1.1.2
-
-## 1.1.1
-
 ## 1.1.0
 - [minor] Improve accessibility. Use AkButton for the Chevrons. [8ec5a94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec5a94)
 
@@ -92,8 +97,6 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 0.5.0
-
-
 - [minor] Add accessibility features; introduce Row's itemId prop [2e0807f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0807f)
 
 ## 0.4.0

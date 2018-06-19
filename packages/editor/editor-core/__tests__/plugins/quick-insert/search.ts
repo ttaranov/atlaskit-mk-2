@@ -33,4 +33,8 @@ describe('Quick Insert Search', () => {
   it('should take into account order of characters', () => {
     expect(find('ble', items)).toEqual(['Table', 'Block quote']);
   });
+
+  it('should not match string when character repeats more times than in original string', () => {
+    expect(find('//', ['/'])).toEqual([]);
+  });
 });

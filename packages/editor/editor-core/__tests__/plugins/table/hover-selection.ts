@@ -1,5 +1,10 @@
+import { DecorationSet, EditorView } from 'prosemirror-view';
 import {
-  createEvent,
+  getCellsInColumn,
+  getCellsInRow,
+  getCellsInTable,
+} from 'prosemirror-utils';
+import {
   doc,
   p,
   createEditor,
@@ -8,30 +13,23 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import { DecorationSet, EditorView } from 'prosemirror-view';
+
 import {
   resetHoverSelection,
   hoverColumns,
   hoverRows,
   hoverTable,
 } from '../../../src/plugins/table/actions';
-import {
-  getCellsInColumn,
-  getCellsInRow,
-  getCellsInTable,
-} from 'prosemirror-utils';
 import { pluginKey as hoverPluginKey } from '../../../src/plugins/table/pm-plugins/hover-selection-plugin';
 import {
-  TableState,
+  TablePluginState,
   stateKey as tablePluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 import tablesPlugin from '../../../src/plugins/table';
 
 describe('table hover selection plugin', () => {
-  const event = createEvent('event');
-
   const editor = (doc: any) =>
-    createEditor<TableState>({
+    createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
       pluginKey: tablePluginKey,
@@ -51,7 +49,7 @@ describe('table hover selection plugin', () => {
       [0, 1, 2].forEach(column => {
         describe(`when called with ${column}`, () => {
           it(`should create a hover selection of ${column} column`, () => {
-            const { plugin, editorView } = editor(
+            const { editorView } = editor(
               doc(
                 p('text'),
                 table()(
@@ -60,7 +58,7 @@ describe('table hover selection plugin', () => {
                 ),
               ),
             );
-            plugin.props.handleDOMEvents!.focus(editorView, event);
+
             hoverColumns([column])(editorView.state, editorView.dispatch);
             const decos = getTableDecorations(
               editorView,
@@ -73,7 +71,7 @@ describe('table hover selection plugin', () => {
         });
 
         it(`can apply the danger class to the decoration`, () => {
-          const { plugin, editorView } = editor(
+          const { editorView } = editor(
             doc(
               p('text'),
               table()(
@@ -82,7 +80,7 @@ describe('table hover selection plugin', () => {
               ),
             ),
           );
-          plugin.props.handleDOMEvents!.focus(editorView, event);
+
           hoverColumns([column], true)(editorView.state, editorView.dispatch);
 
           const decos = getTableDecorations(
@@ -100,7 +98,7 @@ describe('table hover selection plugin', () => {
     });
 
     describe('can create a hover selection over multiple columns', () => {
-      const { plugin, editorView } = editor(
+      const { editorView } = editor(
         doc(
           p('text'),
           table()(
@@ -109,7 +107,7 @@ describe('table hover selection plugin', () => {
           ),
         ),
       );
-      plugin.props.handleDOMEvents!.focus(editorView, event);
+
       hoverColumns([0, 1])(editorView.state, editorView.dispatch);
       const cells = getCellsInColumn(0)(editorView.state.selection)!.concat(
         getCellsInColumn(1)(editorView.state.selection)!,
@@ -124,7 +122,7 @@ describe('table hover selection plugin', () => {
       [0, 1, 2].forEach(row => {
         describe(`when called with ${row}`, () => {
           it(`should create a hover selection of ${row} row`, () => {
-            const { plugin, editorView } = editor(
+            const { editorView } = editor(
               doc(
                 p('text'),
                 table()(
@@ -134,7 +132,7 @@ describe('table hover selection plugin', () => {
                 ),
               ),
             );
-            plugin.props.handleDOMEvents!.focus(editorView, event);
+
             hoverRows([row])(editorView.state, editorView.dispatch);
             expect(
               getTableDecorations(
@@ -145,7 +143,7 @@ describe('table hover selection plugin', () => {
           });
 
           it(`can apply the danger class to the decoration`, () => {
-            const { plugin, editorView } = editor(
+            const { editorView } = editor(
               doc(
                 p('text'),
                 table()(
@@ -155,7 +153,7 @@ describe('table hover selection plugin', () => {
                 ),
               ),
             );
-            plugin.props.handleDOMEvents!.focus(editorView, event);
+
             hoverRows([row], true)(editorView.state, editorView.dispatch);
             const cells = getCellsInRow(row)(editorView.state.selection)!;
             const decos = getTableDecorations(editorView, cells);
@@ -171,7 +169,7 @@ describe('table hover selection plugin', () => {
     });
 
     describe('can create a hover selection over multiple rows', () => {
-      const { plugin, editorView } = editor(
+      const { editorView } = editor(
         doc(
           p('text'),
           table()(
@@ -180,7 +178,7 @@ describe('table hover selection plugin', () => {
           ),
         ),
       );
-      plugin.props.handleDOMEvents!.focus(editorView, event);
+
       hoverRows([0, 1])(editorView.state, editorView.dispatch);
       const cells = getCellsInRow(0)(editorView.state.selection)!.concat(
         getCellsInRow(1)(editorView.state.selection)!,
@@ -193,7 +191,7 @@ describe('table hover selection plugin', () => {
   describe('hovertable()', () => {
     describe('when table has 3 rows', () => {
       it('should create a hover selection of the whole table', () => {
-        const { plugin, editorView } = editor(
+        const { editorView } = editor(
           doc(
             p('text'),
             table()(
@@ -203,7 +201,7 @@ describe('table hover selection plugin', () => {
             ),
           ),
         );
-        plugin.props.handleDOMEvents!.focus(editorView, event);
+
         hoverTable()(editorView.state, editorView.dispatch);
 
         // selection should span all 6 cells
