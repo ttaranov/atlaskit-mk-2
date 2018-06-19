@@ -1,5 +1,10 @@
 # @atlaskit/conversation
 
+## 8.2.3
+- [patch] Updated dependencies [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+  - @atlaskit/editor-core@73.8.0
+  - @atlaskit/editor-common@11.2.6
+
 ## 8.2.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

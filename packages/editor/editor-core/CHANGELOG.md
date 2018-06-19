@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 73.8.0
+- [minor] Design updates for /QuickInsert™️ menu [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+- [none] Updated dependencies [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+  - @atlaskit/editor-common@11.2.6
+
 ## 73.7.12
 - [patch] ED-4899 fix finding parent node for popups (specifically hyperlink) in IE11 [b801e42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b801e42)
 - [none] Updated dependencies [b801e42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b801e42)
