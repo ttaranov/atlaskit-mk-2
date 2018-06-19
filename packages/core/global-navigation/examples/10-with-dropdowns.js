@@ -4,7 +4,7 @@ import React from 'react';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 
-import GlobalNavigation from '../src/components/GlobalNavigation';
+import GlobalNavigation from '../src';
 
 const ExampleDropdown = () => (
   <DropdownItemGroup title="Heading">

@@ -10,7 +10,7 @@ import {
   NavigationSubscriber,
 } from '@atlaskit/navigation-next';
 
-import GlobalNavigation from '../src/components/GlobalNavigation';
+import GlobalNavigation from '../src';
 import Drawer from '../src/components/Drawer';
 
 type State = {

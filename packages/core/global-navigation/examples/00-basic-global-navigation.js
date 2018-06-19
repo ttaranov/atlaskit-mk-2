@@ -5,7 +5,7 @@ import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 
-import GlobalNavigation from '../src/components/GlobalNavigation';
+import GlobalNavigation from '../src';
 
 // TODO: make onClicks targets show up on page instead of console.logs
 const Global = () => (
