@@ -21,7 +21,7 @@ describe('headings should work', () => {
     toggle = jest.fn();
     bridge.editorView = {};
     bridge.blockState = {};
-    bridge.blockState.toggleBlockType = toggle;
+    bridge.blockState.setBlockType = toggle;
   });
 
   afterEach(() => {

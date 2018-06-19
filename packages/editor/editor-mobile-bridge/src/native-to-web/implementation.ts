@@ -115,7 +115,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   onBlockSelected(blockType: string) {
     if (this.blockState && this.editorView) {
-      this.blockState.toggleBlockType(blockType, this.editorView);
+      this.blockState.setBlockType(blockType, this.editorView);
     }
   }
 
