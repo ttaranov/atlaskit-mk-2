@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Objects24CalendarIcon from '@atlaskit/icon/glyph/objects/24/calendar';
-import { colors } from '@atlaskit/theme';
+import EditorDateIcon from '@atlaskit/icon/glyph/editor/date';
 import { date } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
@@ -54,10 +53,8 @@ const datePlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Date',
-        keywords: ['time'],
-        icon: () => (
-          <Objects24CalendarIcon label="Date" primaryColor={colors.R300} />
-        ),
+        keywords: ['time', '/'],
+        icon: () => <EditorDateIcon label="Date" />,
         action(insert, state) {
           return insert(
             state.schema.nodes.date.createChecked({ timestamp: Date.now() }),
