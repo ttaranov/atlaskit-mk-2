@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.5.3
+- [patch] Changing the backend from XPSearch Aggregator to the existing Quick Nav API [9706af3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9706af3)
+
 ## 4.5.2
 - [patch] Minor polish [4d3eabc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d3eabc)
 
