@@ -11,7 +11,7 @@ import {
   NavigationSubscriber,
 } from '@atlaskit/navigation-next';
 
-import GlobalNavigation from '../src/components/GlobalNavigation';
+import GlobalNavigation from '../src';
 
 type State = {
   isCreateModalOpen: boolean,
