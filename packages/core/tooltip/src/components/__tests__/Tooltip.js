@@ -404,6 +404,7 @@ describe('Tooltip', () => {
 
     it('should not render a tooltip if no content prop provided', () => {
       const wrapper = shallow(
+        // Need to investigate if the test is required as Flow is complaining if no content is passed
         // $FlowFixMe - we are deliberately excluding content to demonstrate what happens
         <Tooltip>
           <div>foo</div>
@@ -533,7 +534,7 @@ describe('Tooltip', () => {
       const tooltip = getPortalContents(wrapper);
 
       expect(tooltip).toMatchSnapshot();
-      // $FlowFixMe - jest-styled-components
+      // $FlowFixMe - https://github.com/facebook/flow/issues/396
       expect(tooltip).toHaveStyleRule('overflow-wrap', 'break-word');
     });
 
@@ -553,7 +554,7 @@ describe('Tooltip', () => {
       wrapper.update();
 
       const tooltip = getPortalContents(wrapper);
-      // $FlowFixMe - no flow support for jest-styled-components
+      // $FlowFixMe - https://github.com/facebook/flow/issues/396
       expect(tooltip.find('span')).toHaveStyleRule('background', 'pink');
       expect(tooltip).toMatchSnapshot();
     });

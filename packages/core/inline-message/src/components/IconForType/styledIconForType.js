@@ -12,7 +12,7 @@ type Props = {
 
 type themedType = (appearance: Props) => (string: string) => string;
 
-// $FlowFixMe TEMPORARY
+// $FlowFixMe - theme is not found in props
 const getBaseColor: themedType = themed('appearance', {
   connectivity: { light: colors.B400, dark: colors.B100 },
   confirmation: { light: colors.G300, dark: colors.G300 },
@@ -21,7 +21,7 @@ const getBaseColor: themedType = themed('appearance', {
   error: { light: colors.R400, dark: colors.R400 },
 });
 
-// $FlowFixMe TEMPORARY
+// $FlowFixMe - theme is not found in props
 const getHoverColor: themedType = themed('appearance', {
   connectivity: { light: colors.B300, dark: colors.B75 },
   confirmation: { light: colors.G200, dark: colors.G200 },

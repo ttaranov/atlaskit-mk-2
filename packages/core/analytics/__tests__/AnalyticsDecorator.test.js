@@ -40,18 +40,6 @@ describe('AnalyticsDecorator', () => {
     expect(component).not.toBe(undefined);
   });
 
-  it('should not create a component with multiple children', () => {
-    expect(() => {
-      shallow(
-        // $FlowFixMe
-        <AnalyticsDecorator onEvent={() => {}}>
-          <div />
-          <div />
-        </AnalyticsDecorator>,
-      );
-    }).toThrow();
-  });
-
   it('should extend eventData for analytics events', () => {
     const spy = jest.fn();
     const listener = mount(

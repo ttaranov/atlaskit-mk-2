@@ -35,7 +35,7 @@ export const Action = styled.div`
   }
 `;
 
-// $FlowFixMe TEMPORARY
+// $FlowFixMe - theme is not found in props
 const height = `${gridSize * 3 / parseInt(fontSize, 10)}em`;
 export const Button = styled.button`
   align-items: baseline;
@@ -55,7 +55,7 @@ export const Button = styled.button`
   outline: 0;
   padding: 0
     ${p =>
-      // $FlowFixMe TEMPORARY
+      // $FlowFixMe - theme is not found in props
       p.appearance === 'normal' ? 0 : gridSize(p)}px;
   text-align: center;
   text-decoration: none;

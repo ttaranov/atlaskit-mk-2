@@ -62,7 +62,6 @@ const LogWrapper = styled.div`
     display: none;
   }
 `;
-// $FlowFixMe TEMPORARY
 const Button = styled(Btn)`
   position: absolute;
   right: 0;
