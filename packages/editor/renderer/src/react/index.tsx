@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { ComponentClass } from 'react';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { ComponentClass, Consumer, Provider } from 'react';
 
 import { Fragment, Mark, Node, Schema } from 'prosemirror-model';
 
@@ -12,7 +14,6 @@ import {
   TextWrapper,
   isEmojiDoc,
   toReact,
-  BreakoutProvider,
 } from './nodes';
 
 import { toReact as markToReact } from './marks';
@@ -26,8 +27,6 @@ import {
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
 import { bigEmojiHeight } from '../utils';
-
-export { BreakoutProvider };
 
 export interface RendererContext {
   objectAri?: string;
@@ -255,3 +254,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return new ReactSerializer({ providers, eventHandlers, extensionHandlers });
   }
 }
+
+const { Provider, Consumer } = React.createContext(0);
+export { Provider as BreakoutProvider, Consumer as BreakoutConsumer };

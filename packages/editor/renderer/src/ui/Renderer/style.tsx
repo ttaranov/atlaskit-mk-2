@@ -1,4 +1,6 @@
 import { HTMLAttributes, ComponentClass } from 'react';
+import styled from 'styled-components';
+
 import {
   akColorB300,
   akColorB400,
@@ -11,8 +13,7 @@ import {
   akFontFamily,
   akFontSizeDefault,
 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
-
+import { tableSharedStyle } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
@@ -222,6 +223,14 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & .wrap-right + .wrap-left {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  ${tableSharedStyle} & .table-container {
+    transition: all 0.1s linear;
+    table {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   /*
