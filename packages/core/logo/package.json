@@ -29,8 +29,10 @@
   "devDependencies": {
     "@atlaskit/button": "^8.1.2",
     "@atlaskit/docs": "^4.1.1",
+    "@atlaskit/select": "^4.3.0",
     "@atlaskit/field-radio-group": "^3.0.4",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "@atlaskit/code": "^5.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }
