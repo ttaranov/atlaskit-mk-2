@@ -208,7 +208,8 @@ export default class DateTimePicker extends Component<Props, State> {
     zoneValue: string,
   }) {
     this.setState({ dateValue, timeValue, zoneValue });
-    if (dateValue && timeValue) {
+
+    if (dateValue || timeValue) {
       const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
       this.setState({ value });
       this.props.onChange(value);

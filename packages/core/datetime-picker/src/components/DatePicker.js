@@ -178,6 +178,7 @@ export default class DatePicker extends Component<Props, State> {
   };
 
   onSelectFocus = (e: SyntheticFocusEvent<>) => {
+    this.setState({ isOpen: true });
     this.props.onFocus(e);
   };
 
@@ -216,10 +217,9 @@ export default class DatePicker extends Component<Props, State> {
     } else if (key === 'Backspace') {
       this.setState({ selectedValue: '' });
       this.triggerChange('');
-      console.log('Backspace');
     } else if (key === 'Enter' || key === 'Tab') {
       this.triggerChange(view);
-      this.setState({ isOpen: false, selectedValue: this.state.value });
+      this.setState({ isOpen: false, selectedValue: view });
     }
   };
 
@@ -265,7 +265,7 @@ export default class DatePicker extends Component<Props, State> {
       dateFormat,
       placeholder,
     } = this.props;
-    const { value, view } = this.getState();
+    const { value, view, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon
@@ -309,7 +309,8 @@ export default class DatePicker extends Component<Props, State> {
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          escapeClearsValue
+          menuIsOpen={isOpen}
+          openMenuOnFocus
           closeMenuOnSelect
           autoFocus={autoFocus}
           instanceId={id}
