@@ -16,6 +16,12 @@ async function takeScreenShot(page /*:any*/, url /*:string*/) {
   return page.screenshot();
 }
 
+async function takeElementScreenShot(page /*:any*/, selector /*string*/) {
+  console.log(selector);
+  let element = await page.$(selector);
+  return element.screenshot();
+}
+
 //function to check if image snapshot dir exists and delete it
 function removeOldProdSnapshots(snapshotDir /*: string */) {
   if (process.env.PROD === 'true' && fs.existsSync(snapshotDir)) {
@@ -60,5 +66,6 @@ module.exports = {
   getExamplesFor,
   removeOldProdSnapshots,
   takeScreenShot,
+  takeElementScreenShot,
   getExampleUrl,
 };
