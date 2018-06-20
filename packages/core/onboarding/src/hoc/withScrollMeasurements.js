@@ -146,9 +146,15 @@ export default function withScrollMeasurements(
         scrollParent.scrollTop += offsetY;
       }
 
-      // get adjusted measurements after scrolling
+      // ensure positioning of cloned node is static
+      const cloned = node.cloneNode(true);
+      const staticStyle = cloned
+        .getAttribute('style')
+        .replace(/position: (.*);/, 'position: static;');
+      cloned.setAttribute('style', staticStyle);
+
       this.setState({
-        clone: node.outerHTML,
+        clone: cloned.outerHTML,
         rect: { height, left, top, width },
         scrollY: getScrollY(),
       });
