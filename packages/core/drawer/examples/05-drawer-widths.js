@@ -9,7 +9,7 @@ type State = {
   isDrawerOpen: boolean,
   width: Widths,
 };
-export default class DrawersExample extends Component<Object, State> {
+export default class DrawersExample extends Component<{}, State> {
   state = {
     isDrawerOpen: false,
     width: 'narrow',

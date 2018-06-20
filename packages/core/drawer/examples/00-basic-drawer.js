@@ -7,7 +7,7 @@ import Drawer from '../src';
 type State = {
   isDrawerOpen: boolean,
 };
-export default class DrawersExample extends Component<Object, State> {
+export default class DrawersExample extends Component<{}, State> {
   state = {
     isDrawerOpen: false,
   };
