@@ -35,7 +35,7 @@ class CardContent extends React.Component<CardContentProps> {
   }
 
   handleFrameClick = () => {
-    const { url, onClick } = this.props;
+    const { onClick } = this.props;
     if (onClick) {
       onClick();
     } else {

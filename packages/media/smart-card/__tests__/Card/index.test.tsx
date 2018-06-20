@@ -6,6 +6,7 @@ jest.mock('react-lazily-render', () => {
 
 import * as React from 'react';
 import { Observable } from 'rxjs/Observable';
+import { takeWhile } from 'rxjs/operators';
 import { mount } from 'enzyme';
 import { Client, ObjectState, ObjectStatus } from '../../src/Client';
 import { BlockCard } from '@atlaskit/media-ui';
@@ -65,7 +66,7 @@ describe('Card', () => {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .takeWhile(state => state.status !== 'errored')
+        .pipe(takeWhile(state => state.status !== 'errored'))
         .toPromise();
     } catch (error) {
       wrapper.update();
@@ -83,7 +84,7 @@ describe('Card', () => {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .takeWhile(state => state.status !== 'not-found')
+        .pipe(takeWhile(state => state.status !== 'not-found'))
         .toPromise();
     } catch (error) {
       wrapper.update();
@@ -101,7 +102,7 @@ describe('Card', () => {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .takeWhile(state => state.status !== 'forbidden')
+        .pipe(takeWhile(state => state.status !== 'forbidden'))
         .toPromise();
     } catch (error) {
       wrapper.update();
@@ -119,7 +120,7 @@ describe('Card', () => {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .takeWhile(state => state.status !== 'unauthorised')
+        .pipe(takeWhile(state => state.status !== 'unauthorised'))
         .toPromise();
     } catch (error) {
       wrapper.update();
@@ -136,7 +137,7 @@ describe('Card', () => {
     // wait for the data to be loaded
     await client
       .get('https://www.atlassian.com/')
-      .takeWhile(isNotResolved)
+      .pipe(takeWhile(isNotResolved))
       .toPromise();
 
     wrapper.update();
@@ -152,7 +153,7 @@ describe('Card', () => {
     // wait for the data to be loaded
     await client
       .get('https://www.atlassian.com/')
-      .takeWhile(isNotResolved)
+      .pipe(takeWhile(isNotResolved))
       .toPromise();
 
     wrapper.update();
@@ -168,7 +169,7 @@ describe('Card', () => {
     // wait for the data to be loaded
     await client
       .get('https://www.google.com/')
-      .takeWhile(isNotResolved)
+      .pipe(takeWhile(isNotResolved))
       .toPromise();
 
     // expect it to have finished loading again
@@ -189,7 +190,7 @@ describe('Card', () => {
     // wait for the data to be loaded
     await client
       .get('https://www.atlassian.com/')
-      .takeWhile(isNotResolved)
+      .pipe(takeWhile(isNotResolved))
       .toPromise();
 
     wrapper.update();
