@@ -44,6 +44,7 @@ const editorTeam = [
   'agnes',
   'vsutrave',
   'ahixon_atlassian',
+  'wangjerome',
 ];
 const elementsTeam = [
   'sguillope',
@@ -68,6 +69,7 @@ const mediaTeam = [
   'vvvlasov',
   'dklinnert',
   'iloire-atlassian',
+  'ivandemchenko',
 ];
 const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
 const kitkatTeam = [
