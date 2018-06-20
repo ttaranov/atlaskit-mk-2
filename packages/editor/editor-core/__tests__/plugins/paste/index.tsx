@@ -4,7 +4,6 @@ import {
   em,
   doc,
   p,
-  code,
   mediaGroup,
   media,
   mediaSingle,
@@ -191,15 +190,6 @@ describe('paste plugins', () => {
         );
       });
 
-      it('should remove ` if code mark is pasted immediately after it', () => {
-        const { editorView } = editor(doc(p('`{<>}')));
-        dispatchPasteEvent(editorView, {
-          plain: 'hello',
-          html: '<pre>hello</pre>',
-        });
-        expect(editorView.state.doc).toEqualDocument(doc(p(code('hello'))));
-      });
-
       it('should not create code block for whitespace pre-wrap css', () => {
         const { editorView } = editor(doc(p('{<>}')));
         const href = 'http://example.com/__text__/something';
@@ -280,17 +270,6 @@ describe('paste plugins', () => {
       );
     });
 
-    it('should create code mark for single lines of code copied', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        plain: 'code single line',
-        html: '<pre>code single line</pre>',
-      });
-      expect(editorView.state.doc).toEqualDocument(
-        doc(p(code('code single line'))),
-      );
-    });
-
     it('should move selection out of code mark if new code mark is created by pasting', () => {
       const { editorView } = editor(doc(p('{<>}')));
       dispatchPasteEvent(editorView, {
@@ -298,42 +277,6 @@ describe('paste plugins', () => {
         html: '<pre>code single line</pre>',
       });
       expect(editorView.state.storedMarks!.length).toEqual(0);
-    });
-
-    it('should not move selection out of code mark if text is pasted inside existing code mark', () => {
-      const { editorView } = editor(doc(p(code('code {<>} code'))));
-      dispatchPasteEvent(editorView, {
-        plain: 'code single line',
-        html: '<pre>code single line</pre>',
-      });
-      expect(editorView.state.storedMarks).toEqual(null);
-      expect(editorView.state.selection.$to.marks().length).toEqual(1);
-    });
-
-    it('should create code block for font-family monospace css', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><div style="font-family: Menlo, Monaco, 'Courier New', monospace;white-space: pre;">Code :D</div>`,
-      });
-      expect(editorView.state.doc).toEqualDocument(
-        doc(code_block()('Code :D')),
-      );
-    });
-
-    it('should create code block for whitespace pre css', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><div style="white-space: pre;">Hello</div>`,
-      });
-      expect(editorView.state.doc).toEqualDocument(doc(code_block()('Hello')));
-    });
-
-    it('should not create code block for whitespace pre-wrap css', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><div style="white-space: pre-wrap;">Hello</div>`,
-      });
-      expect(editorView.state.doc).toEqualDocument(doc(p('Hello')));
     });
 
     it('should not handle events with Files type', () => {
