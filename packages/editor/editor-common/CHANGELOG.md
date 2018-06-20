@@ -1,5 +1,16 @@
 # @atlaskit/editor-common
 
+## 11.2.8
+
+
+
+- [patch] Updated dependencies [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+  - @atlaskit/media-card@29.1.3
+- [patch] Updated dependencies [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+  - @atlaskit/media-card@29.1.3
+- [patch] Updated dependencies [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+  - @atlaskit/media-card@29.1.3
+
 ## 11.2.7
 - [patch] ED-4848: make wide table mode responsive [862ea96](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/862ea96)
 - [none] Updated dependencies [862ea96](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/862ea96)

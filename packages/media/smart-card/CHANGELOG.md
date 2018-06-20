@@ -1,5 +1,10 @@
 # @atlaskit/smart-card
 
+## 5.3.0
+- [minor] Error view for inline smart card [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+- [minor] Implemented auth error view for the inline card [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+- [minor] Implemented auth error view for inline SC [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+
 ## 5.2.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
