@@ -23,17 +23,14 @@ export default md`
 
   Above is a basic example of how to use tooltip.
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/position').default}
-        source={require('!!raw-loader!../examples/position')}
-        title="Position"
-        componentProps={{ test: true }}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/position').default}
+      source={require('!!raw-loader!../examples/position')}
+      title="Position"
+      componentProps={{ test: true }}
+    />
+  )}
 
   Tooltips have four standard positions available; "top", "right", "bottom", and "left".
   Each standard position center-aligns itself along the appropriate axis and appears outside the target element.
