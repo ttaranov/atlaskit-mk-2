@@ -78,8 +78,6 @@ export function createPlugin(
           return true;
         }
 
-        slice = removeLayoutsIfSelectionIsInLayout(slice, view.state);
-
         const { $to, $from } = view.state.selection;
 
         // In case of SHIFT+CMD+V ("Paste and Match Style") we don't want to run the usual
