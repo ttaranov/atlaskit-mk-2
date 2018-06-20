@@ -4,14 +4,20 @@ import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import Tree from '../../src/index';
 import { treeWithThreeLeaves } from '../../mockdata/treeWithThreeLeaves';
+import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
 
 configure({ adapter: new Adapter() });
 
 describe('@atlaskit/tree - Tree', () => {
+  const mockRender = jest.fn();
+  mockRender.mockReturnValue(<span />);
+
+  beforeEach(() => {
+    mockRender.mockClear();
+  });
+
   describe('#render', () => {
     it('renders a flat list using renderItem', () => {
-      const mockRender = jest.fn();
-      mockRender.mockReturnValue(<span />);
       mount(<Tree tree={treeWithThreeLeaves} renderItem={mockRender} />);
       expect(mockRender).toHaveBeenCalledTimes(3);
       expect(mockRender).toBeCalledWith({
@@ -41,8 +47,6 @@ describe('@atlaskit/tree - Tree', () => {
     });
 
     it('re-renders only the items which have been changed', () => {
-      const mockRender = jest.fn();
-      mockRender.mockReturnValue(<span />);
       const wrapper = mount(
         <Tree tree={treeWithThreeLeaves} renderItem={mockRender} />,
       );
@@ -72,8 +76,6 @@ describe('@atlaskit/tree - Tree', () => {
 
   describe('#onExpand', () => {
     it('calls with the right item', () => {
-      const mockRender = jest.fn();
-      mockRender.mockReturnValue(<span />);
       const mockOnExpand = jest.fn();
       const firstItem = treeWithThreeLeaves.items['1-1'];
       mount(
@@ -91,8 +93,6 @@ describe('@atlaskit/tree - Tree', () => {
 
   describe('#onCollapse', () => {
     it('calls with the right item', () => {
-      const mockRender = jest.fn();
-      mockRender.mockReturnValue(<span />);
       const mockOnCollapse = jest.fn();
       const firstItem = treeWithThreeLeaves.items['1-1'];
       mount(
@@ -105,6 +105,60 @@ describe('@atlaskit/tree - Tree', () => {
       mockRender.mock.calls[0][0].onCollapse(firstItem);
       expect(mockOnCollapse).toHaveBeenCalledTimes(1);
       expect(mockOnCollapse).toBeCalledWith(firstItem, [0]);
+    });
+  });
+
+  describe('#onDragEnd', () => {
+    it('calls props.onDragEnd when drag ends successfully', () => {
+      const mockOnDragEnd = jest.fn();
+      const dropResult: DropResult = {
+        draggableId: '1-1',
+        type: 'any',
+        source: {
+          droppableId: 'list',
+          index: 1,
+        },
+        destination: {
+          droppableId: 'list',
+          index: 4,
+        },
+        reason: 'DROP',
+      };
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragEnd={mockOnDragEnd}
+        />,
+      ).instance();
+      instance.onDragEnd(dropResult);
+      expect(mockOnDragEnd).toHaveBeenCalledTimes(1);
+      expect(mockOnDragEnd).toBeCalledWith(
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2', index: 1 },
+      );
+    });
+
+    it('does not call props.onDragEnd if destination is undefined', () => {
+      const mockOnDragEnd = jest.fn();
+      const dropResult: DropResult = {
+        draggableId: '1-1',
+        type: 'any',
+        source: {
+          droppableId: 'list',
+          index: 4,
+        },
+        reason: 'DROP',
+      };
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragEnd={mockOnDragEnd}
+        />,
+      ).instance();
+      instance.onDragEnd(dropResult);
+      expect(mockOnDragEnd).toHaveBeenCalledTimes(0);
     });
   });
 });

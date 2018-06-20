@@ -4,7 +4,8 @@ import {
   Draggable,
   Droppable,
   DragDropContext,
-  DropResult,
+  type DropResult,
+  type DragUpdate,
 } from 'react-beautiful-dnd';
 import type { DragPosition, Props } from './Tree-types';
 import { noop } from '../utils/handy';
@@ -29,6 +30,10 @@ export default class Tree extends Component<Props> {
 
   onDragEnd = (result: DropResult) => {
     const { tree, onDragEnd } = this.props;
+
+    if (!result.destination) {
+      return;
+    }
 
     const source = result.source;
     const destination = result.destination;
