@@ -415,17 +415,17 @@ describe('paste plugins', () => {
   });
 
   describe('paste bodiedExtension inside another bodiedExtension', () => {
-    it('should remove bodiedExtension from the pasted content', () => {
+    it('should remove bodiedExtension from the pasted content, paste only content', () => {
       const attrs = {
         extensionType: 'com.atlassian.confluence.macro.core',
         extensionKey: 'expand',
       };
       const { editorView } = editor(doc(bodiedExtension(attrs)(p('{<>}'))));
       dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><p data-pm-context="[]">text</p><div data-node-type="bodied-extension" data-extension-type="com.atlassian.confluence.macro.core" data-extension-key="expand" data-parameters="{&quot;macroMetadata&quot;:{&quot;macroId&quot;:{&quot;value&quot;:1521116439714},&quot;schemaVersion&quot;:{&quot;value&quot;:&quot;2&quot;},&quot;placeholder&quot;:[{&quot;data&quot;:{&quot;url&quot;:&quot;//pug.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2V4cGFuZH0&amp;locale=en_GB&amp;version=2&quot;},&quot;type&quot;:&quot;image&quot;}]}}"><p>text</p></div>`,
+        html: `<meta charset='utf-8'><p data-pm-context="[]">text</p><div data-node-type="bodied-extension" data-extension-type="com.atlassian.confluence.macro.core" data-extension-key="expand" data-parameters="{&quot;macroMetadata&quot;:{&quot;macroId&quot;:{&quot;value&quot;:1521116439714},&quot;schemaVersion&quot;:{&quot;value&quot;:&quot;2&quot;},&quot;placeholder&quot;:[{&quot;data&quot;:{&quot;url&quot;:&quot;//pug.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2V4cGFuZH0&amp;locale=en_GB&amp;version=2&quot;},&quot;type&quot;:&quot;image&quot;}]}}"><p>content</p></div>`,
       });
       expect(editorView.state.doc).toEqualDocument(
-        doc(bodiedExtension(attrs)(p('text'))),
+        doc(bodiedExtension(attrs)(p('text'), p('content'))),
       );
     });
   });

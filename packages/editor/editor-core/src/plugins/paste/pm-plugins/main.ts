@@ -17,16 +17,12 @@ import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
 import { isSingleLine, escapeLinks, isPastedFromWord } from '../util';
-import {
-  removeBodiedExtensionsIfSelectionIsInBodiedExtension,
-  removeBodiedExtensionWrapper,
-} from '../../extension/actions';
+import { transformSliceToRemoveOpenBodiedExtension } from '../../extension/actions';
 import {
   removeLayoutsIfSelectionIsInLayout,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
-import { hasOpenEnd } from '../../../utils';
 import { closeHistory } from 'prosemirror-history';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
@@ -83,13 +79,6 @@ export function createPlugin(
         }
 
         slice = removeLayoutsIfSelectionIsInLayout(slice, view.state);
-        // currently bodiedExtension -> bodiedExtension nesting is restricted in schema, but PM does wraps nested bodiedExtension node with a table to workaround the restriction.
-        // that allows us to have infinite nesting: bodiedExtension -> table -> bodiedExtension
-        // this function makes sure we prevent that weirdness
-        slice = removeBodiedExtensionsIfSelectionIsInBodiedExtension(
-          slice,
-          view.state,
-        );
 
         const { $to, $from } = view.state.selection;
 
@@ -142,15 +131,6 @@ export function createPlugin(
         if (text && selectedNode.type === schema.nodes.codeBlock) {
           view.dispatch(closeHistory(view.state.tr).insertText(text));
           return true;
-        }
-
-        /** If a partial paste of bodied extension, paste only text */
-        if (
-          node &&
-          node.type === schema.nodes.bodiedExtension &&
-          hasOpenEnd(slice)
-        ) {
-          slice = removeBodiedExtensionWrapper(view.state, slice);
         }
 
         if (
@@ -260,6 +240,9 @@ export function createPlugin(
       transformPasted(slice) {
         // We do this separately so it also applies to drag/drop events
         slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
+
+        /** If a partial paste of bodied extension, paste only text */
+        slice = transformSliceToRemoveOpenBodiedExtension(slice, schema);
         return slice;
       },
       transformPastedHTML(html) {
