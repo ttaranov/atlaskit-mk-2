@@ -20,7 +20,7 @@ const tableRow: NodeEncoder = (node: PMNode): string => {
     result.push(tableCell(n));
   });
 
-  return `${separator} ${result.join(` ${separator} `)} ${separator}`;
+  return `${separator}${result.join(`${separator}`)}${separator}`;
 };
 
 const tableCell: NodeEncoder = (node: PMNode): string => {
