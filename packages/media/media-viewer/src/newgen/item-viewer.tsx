@@ -5,7 +5,7 @@ import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
-import { PDFViewer } from './viewers/pdf';
+import { DocViewer } from './viewers/doc';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
@@ -15,6 +15,7 @@ export type Props = {
   readonly context: Context;
   readonly featureFlags?: MediaViewerFeatureFlags;
   readonly showControls?: () => void;
+  readonly onClose?: () => void;
 };
 
 export type State = {
@@ -43,7 +44,13 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context, identifier, featureFlags, showControls } = this.props;
+    const {
+      context,
+      identifier,
+      featureFlags,
+      showControls,
+      onClose,
+    } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
@@ -54,6 +61,7 @@ export class ItemViewer extends React.Component<Props, State> {
           context,
           item: itemUnwrapped,
           collectionName: identifier.collectionName,
+          onClose,
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
@@ -69,7 +77,7 @@ export class ItemViewer extends React.Component<Props, State> {
               />
             );
           case 'doc':
-            return <PDFViewer {...viewerProps} />;
+            return <DocViewer {...viewerProps} />;
           default:
             return <ErrorMessage>This file is unsupported</ErrorMessage>;
         }

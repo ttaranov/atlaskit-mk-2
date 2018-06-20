@@ -5,6 +5,7 @@ import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
 import { Popup } from '@atlaskit/editor-common';
 import { TypeAheadItemsList } from './TypeAheadItemsList';
 import { selectByIndex } from '../commands/select-item';
+import { setCurrentIndex } from '../commands/set-current-index';
 import { TypeAheadItem } from '../types';
 
 export const TypeAheadContent: React.ComponentClass<
@@ -17,7 +18,8 @@ export const TypeAheadContent: React.ComponentClass<
   z-index: 200;
   min-width: 250px;
   max-height: 264px; /* 48px(item height) * 5.5(visible items) = 264 */
-  overflow-y: scroll;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   position: relative;
 `;
 
@@ -64,6 +66,9 @@ export function TypeAhead({
           <TypeAheadItemsList
             insertByIndex={index =>
               selectByIndex(index)(editorView.state, editorView.dispatch)
+            }
+            setCurrentIndex={index =>
+              setCurrentIndex(index)(editorView.state, editorView.dispatch)
             }
             items={items}
             currentIndex={currentIndex}

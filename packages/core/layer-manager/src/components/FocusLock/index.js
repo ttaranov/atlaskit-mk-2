@@ -1,14 +1,8 @@
 // @flow
 
-import { Component, type Element as ReactElement } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
-
-import FocusMarshal, {
-  type AutoFocus,
-  type Boundary,
-  type TeardownOptions,
-} from './FocusMarshal';
+import FocusTrap from 'react-focus-lock';
 
 type Props = {
   /**
@@ -17,67 +11,70 @@ type Props = {
   */
   ariaHiddenNode?: HTMLElement,
   /**
-    Boolean OR Function indicating which element to focus when the component
-    initialises (mounts or becomes enabled):
-    - undefined sets the focus on the boundary itself
-    - FALSE assumes the user has set autoFocus on another element within the boundary
-    - TRUE will automatically find the first "tabbable" element within the boundary
-    - Providing a function should return the element you want to focus
+    Boolean indicating whether to focus on the first tabbable element inside the focus lock.
   */
-  autoFocus?: AutoFocus,
+  autoFocus: boolean | (() => HTMLElement | null),
   /**
-    Accepts a single child
+    Content inside the focus lock.
   */
-  children?: ReactElement<*>,
+  children?: Node,
   /**
-    Toggle focus management outside of mount/unmount lifecycle methods
+    Whether the focus lock is active or not.
   */
-  enabled?: boolean,
+  enabled: boolean,
+  /**
+    Whether to return the focus to the previous active element.
+  */
+  returnFocus: boolean,
 };
-
-// global focus marshal
-const marshal = new FocusMarshal();
 
 /* eslint-disable react/sort-comp */
 export default class FocusLock extends Component<Props> {
   ariaHiddenNode: HTMLElement;
-  boundary: Boundary;
   initFromProps: boolean = false;
   teardownFromProps: boolean = false;
   static contextTypes = {
     /** available when invoked within @atlaskit/layer-manager */
     ariaHiddenNode: PropTypes.object,
   };
+  static defaultProps = {
+    autoFocus: true,
+    enabled: true,
+    returnFocus: true,
+  };
 
   componentDidMount() {
-    const { enabled } = this.props;
+    const { enabled, autoFocus } = this.props;
 
-    if (enabled || enabled === undefined) {
+    if (typeof autoFocus === 'function') {
+      console.warn(
+        '@atlaskit/layer-manager: Passing a function as autoFocus in FocusLock is deprecated. Please see "Auto focusing an element" in https://atlaskit.atlassian.com/packages/core/layer-manager',
+      );
+    }
+
+    if (enabled) {
       this.initialise();
     }
   }
   componentWillUnmount() {
     if (!this.initFromProps && !this.teardownFromProps) {
-      this.teardown({ shouldRestoreFocus: true });
+      this.teardown();
     }
   }
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.enabled && nextProps.enabled !== this.props.enabled) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.enabled && this.props.enabled !== prevProps.enabled) {
       this.initFromProps = true;
       this.initialise();
     }
 
-    if (!nextProps.enabled && nextProps.enabled !== this.props.enabled) {
+    if (!this.props.enabled && this.props.enabled !== prevProps.enabled) {
       this.teardownFromProps = true;
-      this.teardown({ shouldRestoreFocus: true });
+      this.teardown();
     }
   }
 
   initialise = () => {
     const { autoFocus } = this.props;
-
-    this.getBoundary();
-
     // set the element to hide from assistive technology
     this.ariaHiddenNode =
       this.props.ariaHiddenNode || this.context.ariaHiddenNode;
@@ -86,29 +83,29 @@ export default class FocusLock extends Component<Props> {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.setAttribute('aria-hidden', '');
     }
-
-    // register the boundary
-    marshal.register({ autoFocus, boundary: this.boundary });
+    if (typeof autoFocus === 'function') {
+      const elem = autoFocus();
+      if (elem && elem.focus) {
+        elem.focus();
+      }
+    }
   };
-  teardown = (options: TeardownOptions) => {
+  teardown = () => {
     if (this.ariaHiddenNode) {
       this.ariaHiddenNode.removeAttribute('aria-hidden');
     }
-
-    marshal.unregister(options);
   };
-  getBoundary() {
-    // eslint-disable-next-line react/no-find-dom-node
-    const boundary = findDOMNode(this);
-
-    // findDOMNode's return type is `Element | Text | null`
-    // This check keeps flow happy
-    if (boundary instanceof HTMLElement) {
-      this.boundary = boundary;
-    }
-  }
 
   render() {
-    return this.props.children;
+    const { enabled, autoFocus, returnFocus } = this.props;
+    return (
+      <FocusTrap
+        disabled={!enabled}
+        autoFocus={!!autoFocus}
+        returnFocus={returnFocus}
+      >
+        {this.props.children}
+      </FocusTrap>
+    );
   }
 }

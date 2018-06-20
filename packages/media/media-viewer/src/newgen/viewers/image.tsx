@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
-import { Outcome } from '../domain';
+import { Outcome, ZoomLevel } from '../domain';
 import { Img, ErrorMessage, ImageWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
+import { closeOnDirectClick } from '../utils/closeOnDirectClick';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -13,15 +14,17 @@ export type ImageViewerProps = {
   context: Context;
   item: FileItem;
   collectionName?: string;
+  onClose?: () => void;
 };
 
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
-  zoomLevel: number;
+  zoomLevel: ZoomLevel;
 };
+
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
-  zoomLevel: 1,
+  zoomLevel: new ZoomLevel(),
 };
 
 export class ImageViewer extends React.Component<
@@ -50,21 +53,25 @@ export class ImageViewer extends React.Component<
   };
 
   renderImage(src: string) {
+    const { onClose } = this.props;
     const { zoomLevel } = this.state;
     // We need to set new border value every time the zoom changes
     // to force a re layout in Chrome.
     // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
-    const border = `${zoomLevel / 100}px solid transparent`;
+    const border = `${zoomLevel.value / 100}px solid transparent`;
     // We use style attr instead of SC prop for perf reasons
     const imgStyle = {
-      transform: `scale(${zoomLevel})`,
+      transform: `scale(${zoomLevel.value})`,
       border,
     };
 
     return (
-      <ImageWrapper>
+      <ImageWrapper onClick={closeOnDirectClick(onClose)}>
         <Img src={src} style={imgStyle} />
-        <ZoomControls zoomLevel={zoomLevel} onChange={this.onZoomChange} />
+        <ZoomControls
+          zoomLevel={this.state.zoomLevel}
+          onChange={this.onZoomChange}
+        />
       </ImageWrapper>
     );
   }

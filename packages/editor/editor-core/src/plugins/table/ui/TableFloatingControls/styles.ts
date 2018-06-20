@@ -16,13 +16,7 @@ export const toolbarSize = 11;
 
 export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
-
-  .ProseMirror.table-resizing & {
-    display: none;
-  }
-  .ProseMirror.table-resizing .with-controls & {
-    display: block;
-  }
+  display: block;
 `;
 
 export const HeaderButtonDefault: ComponentClass<
@@ -53,7 +47,7 @@ export const InsertButtonDefault: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: absolute;
-  z-index: 20;
+  z-index: 1;
   display: none;
   width: 20px;
   height: 20px;

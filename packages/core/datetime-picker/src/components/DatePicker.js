@@ -69,6 +69,8 @@ type Props = {
 type State = {
   isOpen: boolean,
   value: string,
+  /** Value to be shown in the calendar as selected.  */
+  selectedValue: string,
   view: string,
 };
 
@@ -149,6 +151,7 @@ export default class DatePicker extends Component<Props, State> {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
     view: '',
+    selectedValue: this.props.value || this.props.defaultValue,
   };
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -166,7 +169,7 @@ export default class DatePicker extends Component<Props, State> {
 
   onCalendarSelect = ({ iso: value }: { iso: string }) => {
     this.triggerChange(value);
-    this.setState({ isOpen: false });
+    this.setState({ isOpen: false, selectedValue: value });
   };
 
   onInputClick = () => {
@@ -185,8 +188,10 @@ export default class DatePicker extends Component<Props, State> {
 
   onSelectInput = (e: Event) => {
     let value = e.target.value;
+    //const validForSelected = value.trim().match(/(\d{1,2})[- /.](\d{\d){1,2}})?\s*(a|p)?/i)
     if (value) {
       const parsed = parse(value);
+      // Only try to set the date if we have month & day
       if (isValid(parsed)) {
         value = format(parsed, 'YYYY-MM-DD');
         this.triggerChange(value);
@@ -198,7 +203,7 @@ export default class DatePicker extends Component<Props, State> {
   onSelectKeyDown = (e: Event) => {
     const { key } = e;
     const dir = arrowKeys[key];
-    const { isOpen, view } = this.getState();
+    const { view } = this.getState();
 
     if (dir) {
       // Calendar will not exist if it's not open and this also doubles as a
@@ -212,15 +217,18 @@ export default class DatePicker extends Component<Props, State> {
       } else if (dir === 'down' || dir === 'up') {
         this.setState({ isOpen: true });
       }
+      // Escape closes the calendar & resets the value back to the last selected
     } else if (key === 'Escape') {
-      if (isOpen) {
+      if (this.state.isOpen) {
+        this.triggerChange(this.state.selectedValue);
         this.setState({ isOpen: false });
       } else {
+        this.setState({ selectedValue: '' });
         this.triggerChange('');
       }
     } else if (key === 'Enter' || key === 'Tab') {
       this.triggerChange(view);
-      this.setState({ isOpen: false });
+      this.setState({ isOpen: false, selectedValue: this.state.value });
     }
   };
 
@@ -267,7 +275,7 @@ export default class DatePicker extends Component<Props, State> {
       dateFormat,
       placeholder,
     } = this.props;
-    const { isOpen, value, view } = this.getState();
+    const { value, view } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon
@@ -283,7 +291,7 @@ export default class DatePicker extends Component<Props, State> {
           onSelect={this.onCalendarSelect}
           // $FlowFixMe
           ref={this.refCalendar}
-          selected={[value]}
+          selected={[this.state.selectedValue]}
           innerProps={menuInnerProps}
         />
       </StyledMenu>
@@ -311,10 +319,11 @@ export default class DatePicker extends Component<Props, State> {
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
+          escapeClearsValue
+          closeMenuOnSelect
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isOpen && !isDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
           components={{

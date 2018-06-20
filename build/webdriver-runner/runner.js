@@ -30,7 +30,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeEach(async function() {
+    beforeAll(async function() {
       for (let client of clients) {
         if (client) {
           const browserName /*: string */ =
@@ -119,9 +119,6 @@ function setLocalClients() {
         args: ['--headless', '--disable-gpu'],
       },
     },
-    safari: {
-      browserName: 'safari',
-    },
     firefox: {
       browserName: 'firefox',
       'moz:firefoxOptions': {
@@ -151,7 +148,7 @@ function setBrowserStackClients() {
       os: 'Windows',
       os_version: '10',
       browserName: 'firefox',
-      browser_version: '59',
+      browser_version: '60',
       resolution: '1440x900',
     },
     ie: {
@@ -186,6 +183,7 @@ function setBrowserStackClients() {
     const option = {
       desiredCapabilities: {
         os: launchers[key].os,
+        os_version: launchers[key].os_version,
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
         project: 'Atlaskit MK2',

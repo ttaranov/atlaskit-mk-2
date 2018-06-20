@@ -23,3 +23,4 @@ export * from './providers';
 export * from './services';
 export * from './utils';
 export * from './error';
+export * from './fileState';

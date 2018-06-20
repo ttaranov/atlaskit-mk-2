@@ -1,4 +1,4 @@
-# @atlaskit/polyfills
+# Polyfills
 
 **This module has been deprecated**
 
@@ -16,15 +16,14 @@ The supported browser-list most Atlassian products use is:
   "last 2 ChromeAndroid version"
 ```
 
-
 This package contains @atlaskit/polyfills for native methods which are unsupported by some of the browsers that we target.
-
-## Try it out
-
-Interact with a [live demo of the @atlaskit/polyfills component](https://atlaskit.atlassian.com).
 
 ## Installation
 
 ```sh
-npm install @atlaskit/polyfills
+yarn add @atlaskit/polyfills
 ```
+
+## Usage
+
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/polyfills).

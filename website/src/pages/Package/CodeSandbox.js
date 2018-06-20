@@ -52,6 +52,8 @@ const cssLoaderExceptions = (pkgJSONName, groupId, packageId) => [
   ],
 ];
 
+const tsMatch = /.+(\.ts|\.tsx)/;
+
 export default class CodeSandbox extends Component<{}, {}> {
   state = { parameters: '' };
 
@@ -72,6 +74,8 @@ export default class CodeSandbox extends Component<{}, {}> {
       .slice(0, -1)
       .join('-');
 
+    if (tsMatch.test(example.id)) return null;
+
     return (
       <CodeSandboxer
         examplePath={getExamplePath(groupId, packageId, example.id)}
@@ -91,6 +95,11 @@ export default class CodeSandbox extends Component<{}, {}> {
         ]}
         dependencies={{
           '@atlaskit/css-reset': 'latest',
+          'styled-components':
+            pkgJSON.peerDependencies &&
+            pkgJSON.peerDependencies['styled-components']
+              ? pkgJSON.peerDependencies['styled-components']
+              : 'latest',
           [pkgJSON.name]: pkgJSON.version,
         }}
         providedFiles={baseFiles(groupId, packageId, example.id)}

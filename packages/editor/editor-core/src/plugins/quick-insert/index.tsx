@@ -1,4 +1,5 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
+import { analyticsService } from '../../analytics';
 import { EditorPlugin } from '../../types';
 import { QuickInsertItem } from './types';
 import { find } from './search';
@@ -22,13 +23,18 @@ const quickInsertPlugin: EditorPlugin = {
     typeAhead: {
       trigger: '/',
       getItems: (query, state) => {
+        analyticsService.trackEvent('atlassian.editor.quickinsert.query');
         const quickInsertItems = pluginKey.getState(state);
         return Promise.resolve(
           find(query, quickInsertItems, getItemSearchString),
         );
       },
-      selectItem: (state, item, insert) =>
-        (item as QuickInsertItem).action(insert, state),
+      selectItem: (state, item, insert) => {
+        analyticsService.trackEvent('atlassian.editor.quickinsert.select', {
+          item: item.title,
+        });
+        return (item as QuickInsertItem).action(insert, state);
+      },
     },
   },
 };

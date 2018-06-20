@@ -1,14 +1,19 @@
 import CrossProductSearchClient, {
-  SearchItem,
   CrossProductSearchResponse,
   Scope,
   removeHighlightTags,
-  getConfluenceAvatarUrl,
   ConfluenceItem,
 } from '../src/api/CrossProductSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
-import { ResultType, AnalyticsType } from '../src/model/Result';
+import {
+  AnalyticsType,
+  ConfluenceObjectResult,
+  ResultType,
+  ContentType,
+  ContainerResult,
+  JiraObjectResult,
+} from '../src/model/Result';
 
 function apiWillReturn(state: CrossProductSearchResponse) {
   const opts = {
@@ -56,14 +61,16 @@ describe('CrossProductSearchClient', () => {
       ]);
       expect(result.get(Scope.ConfluencePageBlog)).toHaveLength(1);
 
-      const item = result.get(Scope.ConfluencePageBlog)[0];
-      expect(item.resultType).toEqual(ResultType.Object);
+      const item = result.get(
+        Scope.ConfluencePageBlog,
+      )[0] as ConfluenceObjectResult;
       expect(item.resultId).toEqual('search-/url');
       expect(item.name).toEqual('page name');
       expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
-      expect(item.contentType).toEqual('page');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
+      expect(item.resultType).toEqual(ResultType.ConfluenceObjectResult);
+      expect(item.contentType).toEqual(ContentType.ConfluencePage);
     });
 
     it('should return confluence spaces', async () => {
@@ -94,13 +101,13 @@ describe('CrossProductSearchClient', () => {
       ]);
       expect(result.get(Scope.ConfluenceSpace)).toHaveLength(1);
 
-      const item = result.get(Scope.ConfluenceSpace)[0];
-      expect(item.resultType).toEqual(ResultType.Container);
+      const item = result.get(Scope.ConfluenceSpace)[0] as ContainerResult;
       expect(item.resultId).toEqual('search-/displayUrl');
       expect(item.avatarUrl).toEqual('baseUrl/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
       expect(item.href).toEqual('baseUrl/displayUrl');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
+      expect(item.resultType).toEqual(ResultType.GenericContainerResult);
     });
 
     it('should parse the highlight tags from the title', () => {
@@ -143,14 +150,14 @@ describe('CrossProductSearchClient', () => {
       ]);
       expect(result.get(Scope.JiraIssue)).toHaveLength(1);
 
-      const item = result.get(Scope.JiraIssue)[0];
-      expect(item.resultType).toEqual(ResultType.Object);
+      const item = result.get(Scope.JiraIssue)[0] as JiraObjectResult;
       expect(item.name).toEqual('summary');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
       expect(item.containerName).toEqual('projectName');
       expect(item.objectKey).toEqual('key-1');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultJira);
+      expect(item.resultType).toEqual(ResultType.JiraObjectResult);
     });
   });
 
@@ -205,7 +212,7 @@ describe('CrossProductSearchClient', () => {
 
     expect(body.query).toEqual('query');
     expect(body.cloudId).toEqual('123');
-    expect(body.limit).toEqual(5);
+    expect(body.limit).toEqual(10);
     expect(body.scopes).toEqual(
       expect.arrayContaining(['jira.issue', 'confluence.page,blogpost']),
     );

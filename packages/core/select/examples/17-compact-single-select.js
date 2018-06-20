@@ -2,7 +2,7 @@
 import React from 'react';
 import Select from '../src';
 
-const SingleExample = () => (
+const CompactSingleExample = () => (
   <Select
     className="compact-select"
     classNamePrefix="react-select"
@@ -22,4 +22,4 @@ const SingleExample = () => (
   />
 );
 
-export default SingleExample;
+export default CompactSingleExample;

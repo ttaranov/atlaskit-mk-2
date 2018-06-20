@@ -24,7 +24,7 @@ This not only gives consumers an insight to a component's API and functionality,
 
 Versions do matter. If we release something at 1.0 and say we follow Semver, it tells consumers that this API is ready for prime time. If we realise we made some mistakes and have to reiterate them, it may cause some breaking changes. Using dev releases here gives us a grace period where we can harden a component while a consumer uses it. We will always have early adopters and later adopters. Let's leverage the former to help the latter.
 
-*A version should specifically outlines the overall stability of the component and where it's at in its greater evolutionary lifecycle.*
+*A version should specifically outline the overall stability of the component and where it's at in its greater evolutionary lifecycle.*
 
 ### Striking a balance
 
@@ -46,6 +46,7 @@ Some examples of what would fall under the abstract semver umbrella:
   - Icon sizes changing.
   - Changes in CSS that can affect layout outside of a component. For example, changing display property from flex to block and vice-versa.
   - Upgrade peer dependencies.
+  - You've made a visual change in a component that could affect someone using the public API. Box sizing could affect positioning, or child content. The value of a predefined prop like `size="xlarge"` could fall into this. These are addressed on a component-by-component basis.
 2. **MINOR** version when
   - Anything that has a leading underscore.
   - Anything inside render(). This includes elements, attributes and classes. For example, add / removing attributes or changing text content. Some integration tests may be relying on this, but it's still not a breaking change. It won't break you in production if you're using caret versions from NPM. It'll break your tests, but you'll update those prior to releasing anything. *We'll do our best to notify products of changes like this.*
@@ -58,78 +59,6 @@ Some examples of what would fall under the abstract semver umbrella:
   - Add tests or examples
   - Update examples
   - Update internal documentation
-
-## Hotfix process (patching older versions)
-
-Hotfix releases are possible but should be avoided where **at all possible**. They introduce lots of room for mistakes and create a manual maintenance problem that we'd like to avoid.
-
-> **All hotfixes must be approved by either the build team or that Atlaskit architect**
-
-**Process**
-
-1. Checkout the commit or tag you are branching from and create a new branch from there. e.g.
-
-```
-git checkout @atlaskit/avatar@1.1.0               # you will be in a detached head state
-git checkout -b hotfix/avatar-hotifx-for-stride   # create the new branch
-```
-
-2. Ensure that your workspace is completely clean (this ensures any testing isn't affected by changes on your local machine).
-
-```
-git clean -dfx    # removes all untracked files and directories
-```
-
-3. Perform normal `bolt install`
-
-```
-bolt install
-```
-
-4. Apply manual changes and test **thoroughly**. It is extremely important that this is done correcly. How you test will depend on exactly what you are fixing, but in general building the package you are changing and `yarn link`'ing it will be useful.
-
-5. Once you are completely satisfied that the change is correct, manually change its version. It's best to give it a very descriptive version that is easy to verify and know that it is a hotfix. It is common to add a number to the end in case you need to do more fixes (it is bad, but this is a very error-prone operation).
-
-```
-"name": "@atlaskit/avatar"
-"version": "1.1.0-hotfix-patched-proptypes.1"
-```
-
-6. Commit the work to your branch with a git tag and descriptive message (no changeset required). The `-m` flag is very important here as `git push --follow-tags` behaves strangely depending on if this is present.
-
-```
-git commit -m "Hotfix for avatar to expose forgotten proptypes in version 1.1.0"
-git tag @atlaskit/avatar@1.1.0-hotfix-patched-proptypes.1 -m "@atlaskit/avatar@1.1.0-hotfix-patched-proptypes.1"
-```
-
-7. Ensure that **all** steps towards building said package are completed. Again, this will depend on the specific package being patched. The easiest way to do this is to look at the `build` script in the root `package.json` and follow all the things happening there and manually run all the ones pertinent to your package.
-
-8. Manually triple check that the built `dist` looks correct. Compare it to a previous version on `npmcdn` (i.e `https://npmcdn.com/@atlaskit/avatar@1.1.0/dist/). Does it have the right directories, files, etc, do the exports looks right.
-
-9. Ensure that you are logged in as the `atlaskit` npm user (get these credentials from lastpass if requried).
-
-```
-npm whoami
-```
-
-10. Run `npm publish` in the packages directory. The `--tag` argument is passed to make sure npm doesnt mark this release as `latest`, which is does by default.
-
-```
-cd packages/core/avatar
-npm publish --tag="hotfix"
-```
-
-11. Confirm that we definitely haven't changed the `latest` tag
-
-```
-npm info @atlaskit/avatar version # confirm this is not the one we've just published.
-```
-
-12. Push the branch with tags up for future reference.
-
-```
-git push --follow-tags
-```
 
 ## Flow and our public API
 

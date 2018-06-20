@@ -12,7 +12,6 @@ import {
 import { ProviderFactory } from '@atlaskit/editor-common';
 
 import { stateKey as blockTypePluginKey } from '../../../../src/plugins/block-type/pm-plugins/main';
-import tableCommands from '../../../../src/plugins/table/commands';
 import DropdownMenu from '../../../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../../../src/plugins/insert-block/ui/ToolbarInsertBlock';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
@@ -57,7 +56,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         tableSupported={true}
-        tableHidden={false}
         editorView={editorView}
         availableWrapperBlockTypes={pluginState.availableWrapperBlockTypes}
         isDisabled={true}
@@ -293,20 +291,16 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         tableSupported={true}
-        tableHidden={false}
         editorView={editorView}
         buttons={0}
         isReducedSpacing={false}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    const spy = jest.fn();
-    tableCommands.createTable = () => spy;
     const tableButton = toolbarOption
       .find(Item)
       .filterWhere(n => n.text().indexOf('Table') >= 0);
     tableButton.simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.table.button',
     );
@@ -394,7 +388,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       const toolbarOption = mount(
         <ToolbarInsertBlock
           tableSupported={true}
-          tableHidden={false}
           editorView={editorView}
           buttons={0}
           isReducedSpacing={false}

@@ -1,5 +1,74 @@
 # @atlaskit/global-search
 
+## 4.5.4
+- [patch] Fixes a bug with search analytics attribution. [4aadd7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aadd7a)
+
+## 4.5.3
+- [patch] Changing the backend from XPSearch Aggregator to the existing Quick Nav API [9706af3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9706af3)
+
+## 4.5.2
+- [patch] Minor polish [4d3eabc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d3eabc)
+
+## 4.5.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/field-text-area@3.1.1
+  - @atlaskit/button@8.1.2
+  - @atlaskit/page@7.1.1
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/flag@8.1.1
+  - @atlaskit/navigation@32.1.1
+  - @atlaskit/icon@12.1.2
+
+## 4.5.0
+- [minor] Add advanced search links to Confluence [4c0be2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0be2d)
+
+- [minor] Updated dependencies [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
+  - @atlaskit/quick-search@2.2.0
+
+## 4.4.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/quick-search@2.1.1
+  - @atlaskit/util-service-support@2.0.11
+  - @atlaskit/analytics-gas-types@2.1.3
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/analytics-next@2.1.8
+  - @atlaskit/button@8.1.1
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+  - @atlaskit/analytics@3.0.5
+
+## 4.4.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/navigation@32.1.0
+  - @atlaskit/quick-search@2.1.0
+  - @atlaskit/page@7.1.0
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/avatar@11.1.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/util-service-support@2.0.10
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/field-text-area@3.0.3
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/analytics@3.0.4
+  - @atlaskit/flag@8.1.0
+  - @atlaskit/button@8.1.0
+
+## 4.3.0
+- [minor] Show more recent results [25d5dd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d5dd8)
+
+## 4.2.0
+- [minor] Support for feedback button [0538c52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0538c52)
+
+## 4.1.0
+- [minor] Minor UI tweaks. [800f2bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/800f2bb)
+
 ## 4.0.0
 - [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
 - [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
@@ -53,16 +122,8 @@
   - @atlaskit/util-service-support@2.0.7
   - @atlaskit/analytics@3.0.1
 
-## 3.1.1
-
-## 3.1.0
-
-## 3.0.5
-
 ## 3.0.4
 - [patch] Link to people search includes query [6d2e946](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d2e946)
-
-## 3.0.3
 
 ## 3.0.2
 - [patch] Rename EmptyState component to NoResults [cb73105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73105)
@@ -87,8 +148,6 @@
 
 ## 1.7.0
 - [minor] Show empty state when no results were found at all [398901a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/398901a)
-
-## 1.6.0
 
 ## 1.5.0
 - [minor] Show error state when searches fail [4fbbb29](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fbbb29)

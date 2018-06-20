@@ -2,8 +2,10 @@
 /* eslint-disable no-console */
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
+const VISUAL_REGRESSION = process.env.VISUAL_REGRESSION;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
 const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE;
+const PROD = process.env.PROD;
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = process.env.STEP_IDX;
 const STEPS = process.env.STEPS;
@@ -31,19 +33,22 @@ const config = {
     '/__tests__\\/.*?\\/_.*?',
     // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
     '/__tests__\\/integration/',
+    // ignore tests under __tests__/vr (we override this if the VISUAL_REGRESSION flag is set)
+    '/__tests__\\/visual-regression/',
   ],
   modulePathIgnorePatterns: ['./node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
   transform: {
-    '^.+\\.js$': 'babel-jest',
     '^.+\\.tsx?$': 'ts-jest/preprocessor',
+    '^.+\\.js$': 'babel-jest',
   },
   globals: {
     'ts-jest': {
       tsConfigFile: './tsconfig.fabric.json',
       skipBabel: true,
     },
+    __BASEURL__: 'http://localhost:9000',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleNameMapper: {
@@ -62,25 +67,28 @@ if (CHANGED_PACKAGES) {
   const changedPackagesTestGlobs = changedPackages.map(
     pkgPath => `${__dirname}/${pkgPath}/**/__tests__/**/*.(js|tsx|ts)`,
   );
-
   config.testMatch = changedPackagesTestGlobs;
 }
 
-// If the INTEGRATION_TESTS flag is set we need to
-if (INTEGRATION_TESTS) {
-  config.testPathIgnorePatterns = config.testPathIgnorePatterns.filter(
-    pattern => pattern !== '/__tests__\\/integration/',
+// If the INTEGRATION_TESTS / VISUAL_REGRESSION flag is set we need to
+if (INTEGRATION_TESTS || VISUAL_REGRESSION) {
+  const testPattern = process.env.VISUAL_REGRESSION
+    ? 'visual-regression'
+    : 'integration';
+  const testPathIgnorePatterns /*: string[] */ = config.testPathIgnorePatterns.filter(
+    pattern => pattern !== `/__tests__\\/${testPattern}/`,
   );
+  config.testPathIgnorePatterns = testPathIgnorePatterns;
   // If the CHANGED_PACKAGES variable is set, only integration tests from changed packages will run
   if (CHANGED_PACKAGES) {
     const changedPackages = JSON.parse(CHANGED_PACKAGES);
     const changedPackagesTestGlobs = changedPackages.map(
       pkgPath =>
-        `${__dirname}/${pkgPath}/**/__tests__/integration/**/*.(js|tsx|ts)`,
+        `${__dirname}/${pkgPath}/**/__tests__/${testPattern}/**/*.(js|tsx|ts)`,
     );
     config.testMatch = changedPackagesTestGlobs;
   } else {
-    config.testMatch = ['**/__tests__/integration/**/*.(js|tsx|ts)'];
+    config.testMatch = [`**/__tests__/${testPattern}/**/*.(js|tsx|ts)`];
   }
 }
 
@@ -117,6 +125,10 @@ if (config.testMatch.length === 0) {
   if (process.stdout.isTTY) {
     console.log('No packages were changed, so no tests should be run.');
   }
+}
+
+if (PROD) {
+  config.globals.__BASEURL__ = 'https://atlaskit.atlassian.com';
 }
 
 module.exports = config;

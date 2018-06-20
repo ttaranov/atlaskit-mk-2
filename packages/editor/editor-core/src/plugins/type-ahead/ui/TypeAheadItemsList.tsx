@@ -18,6 +18,11 @@ const itemTheme = {
       default: () => 12,
     },
     borderRadius: () => 0,
+    hover: {
+      background: colors.transparent,
+      text: colors.text,
+      secondaryText: colors.N200,
+    },
     selected: {
       background: themed({ light: colors.N20, dark: colors.DN70 }),
       text: themed({ light: colors.N800, dark: colors.DN600 }),
@@ -30,6 +35,7 @@ export type TypeAheadItemsListProps = {
   items?: Array<TypeAheadItem>;
   currentIndex: number;
   insertByIndex: (index: number) => void;
+  setCurrentIndex: (index: number) => void;
 };
 
 export function scrollIntoViewIfNeeded(element: HTMLElement) {
@@ -43,7 +49,9 @@ export function scrollIntoViewIfNeeded(element: HTMLElement) {
   const direction =
     offsetTop + offsetHeight > offsetParentHeight + scrollTop
       ? 1
-      : scrollTop > offsetTop ? -1 : 0;
+      : scrollTop > offsetTop
+        ? -1
+        : 0;
 
   if (direction !== 0) {
     offsetParent.scrollTop =
@@ -57,6 +65,7 @@ export function TypeAheadItemsList({
   items,
   currentIndex,
   insertByIndex,
+  setCurrentIndex,
 }: TypeAheadItemsListProps) {
   if (!Array.isArray(items)) {
     return null;
@@ -69,6 +78,7 @@ export function TypeAheadItemsList({
           <Item
             key={item.title}
             onClick={() => insertByIndex(index)}
+            onMouseMove={() => setCurrentIndex(index)}
             elemBefore={item.icon ? item.icon() : null}
             isSelected={index === currentIndex}
             ref={

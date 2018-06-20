@@ -11,6 +11,7 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
+  cardProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -122,9 +123,10 @@ export class ExampleEditor extends React.Component<Props, State> {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-            UNSAFE_allowQuickInsert={true}
+            quickInsert={true}
+            delegateAnalyticsEvent={(...args) => console.log(args)}
             allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
+            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
             allowLists={true}
             allowTextColor={true}
             allowTables={{
@@ -140,12 +142,17 @@ export class ExampleEditor extends React.Component<Props, State> {
             allowJiraIssue={true}
             allowUnsupportedContent={true}
             allowPanel={true}
-            allowExtension={true}
+            allowExtension={{
+              allowBreakout: true,
+            }}
             allowRule={true}
             allowDate={true}
             UNSAFE_allowLayouts={true}
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
+            UNSAFE_cards={{
+              provider: Promise.resolve(cardProvider),
+            }}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."

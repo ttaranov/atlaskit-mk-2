@@ -1,10 +1,12 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { reduceTree } from '../utils';
-import { ReducedNode } from './';
+import { NodeReducer, reduce } from './';
 
-export default function blockquote(node: PMNode, schema: Schema): ReducedNode {
-  return {
-    content: reduceTree(node.content, schema),
-    text: '> ',
-  };
-}
+const blockquote: NodeReducer = (node: PMNode, schema: Schema) => {
+  const result: string[] = [];
+  node.content.forEach(n => {
+    result.push(reduce(n, schema));
+  });
+  return `> ${result.join('')}`;
+};
+
+export default blockquote;

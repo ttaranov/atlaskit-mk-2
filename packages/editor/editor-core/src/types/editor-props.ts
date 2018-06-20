@@ -26,6 +26,8 @@ import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit';
+import { CodeBlockOptions } from '../plugins/code-block';
+import { CardProvider, CardOptions } from '../plugins/card';
 
 export type EditorAppearance =
   | 'message'
@@ -46,6 +48,11 @@ export type InsertMenuCustomItem = {
   onClick: (editorActions: EditorActions) => void;
 };
 
+export interface ExtensionConfig {
+  stickToolbarToBottom?: boolean;
+  allowBreakout?: boolean;
+}
+
 export interface EditorProps {
   appearance?: EditorAppearance;
   // Legacy analytics support
@@ -62,7 +69,7 @@ export interface EditorProps {
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
-  allowCodeBlocks?: boolean;
+  allowCodeBlocks?: boolean | CodeBlockOptions;
   allowLists?: boolean;
   allowTextColor?: boolean;
   allowTables?: boolean | TablesPluginConfig;
@@ -70,7 +77,7 @@ export interface EditorProps {
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
-  allowExtension?: boolean;
+  allowExtension?: boolean | ExtensionConfig;
   allowConfluenceInlineComment?: boolean;
   allowPlaceholderCursor?: boolean;
   allowTemplatePlaceholders?: boolean | PlaceholderTextOptions;
@@ -81,8 +88,9 @@ export interface EditorProps {
   // Temporary flag to enable layouts while it's under development
   UNSAFE_allowLayouts?: boolean;
 
-  // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
-  UNSAFE_allowQuickInsert?: boolean;
+  quickInsert?: boolean;
+
+  UNSAFE_cards?: CardOptions;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
@@ -102,6 +110,8 @@ export interface EditorProps {
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
   macroProvider?: Promise<MacroProvider>;
+  cardProvider?: Promise<CardProvider>;
+
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 

@@ -8,7 +8,6 @@ import React, {
   type Element,
   type ComponentType,
 } from 'react';
-import renamePropsWithWarning from 'react-deprecate';
 
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
@@ -23,7 +22,7 @@ type Props = {
   children: Element<*>,
   /** The content of the tooltip */
   content: Node,
-  /** Extend `TooltipPrimitive` to create you own tooptip and pass it as component */
+  /** Extend `TooltipPrimitive` to create your own tooptip and pass it as component */
   component: ComponentType<{ innerRef: HTMLElement => void }>,
   /** Time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300. */
   delay: number,
@@ -70,7 +69,7 @@ function getInitialState(props): State {
 }
 
 /* eslint-disable react/sort-comp */
-class Tooltip extends Component<Props, State> {
+export default class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
@@ -241,10 +240,4 @@ class Tooltip extends Component<Props, State> {
   }
 }
 
-export { Tooltip as TooltipBase };
-
 export type TooltipType = Tooltip;
-
-export default renamePropsWithWarning(Tooltip, {
-  description: 'content',
-});

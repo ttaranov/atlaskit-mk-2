@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { tableEditing, columnResizing } from 'prosemirror-tables';
+import { createTable } from 'prosemirror-utils';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
 import {
   table,
@@ -10,12 +11,12 @@ import {
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import TableFloatingToolbar from './ui/TableFloatingToolbar';
-import { createTableNode } from './utils';
 import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
-import tableNumberColumnPlugin from './pm-plugins/number-column-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
+
+export const CELL_MIN_WIDTH = 128;
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
@@ -34,9 +35,15 @@ const tablesPlugin: EditorPlugin = {
     return [
       {
         rank: 900,
-        plugin: ({ props: { allowTables }, eventDispatcher, dispatch }) => {
+        plugin: ({
+          props: { allowTables },
+          eventDispatcher,
+          dispatch,
+          portalProviderAPI,
+        }) => {
           return createPlugin(
             dispatch,
+            portalProviderAPI,
             eventDispatcher,
             pluginConfig(allowTables),
           );
@@ -46,7 +53,7 @@ const tablesPlugin: EditorPlugin = {
         rank: 910,
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
-            ? columnResizing({ handleWidth: 6 })
+            ? columnResizing({ handleWidth: 6, cellMinWidth: CELL_MIN_WIDTH })
             : undefined,
       },
       {
@@ -61,13 +68,6 @@ const tablesPlugin: EditorPlugin = {
       { rank: 905, plugin: () => keymapPlugin() },
       { rank: 930, plugin: () => tableEditing() },
       { rank: 940, plugin: () => hoverSelectionPlugin },
-      {
-        rank: 920,
-        plugin: ({ props: { allowTables } }) =>
-          pluginConfig(allowTables).allowNumberColumn
-            ? tableNumberColumnPlugin
-            : undefined,
-      },
     ];
   },
 
@@ -80,20 +80,13 @@ const tablesPlugin: EditorPlugin = {
             editorView={editorView}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
-            tableElement={tablesState.tableElement}
-            tableActive={tablesState.tableActive}
-            cellSelection={tablesState.cellSelection}
-            removeTable={tablesState.removeTable}
-            tableLayout={tablesState.tableLayout}
-            updateLayout={tablesState.setTableLayout}
-            isLayoutSupported={tablesState.isLayoutSupported}
-            allowMergeCells={tablesState.allowMergeCells}
-            allowNumberColumn={tablesState.allowNumberColumn}
-            allowBackgroundColor={tablesState.allowBackgroundColor}
-            allowHeaderRow={tablesState.allowHeaderRow}
-            allowHeaderColumn={tablesState.allowHeaderColumn}
-            stickToolbarToBottom={tablesState.stickToolbarToBottom}
-            permittedLayouts={tablesState.permittedLayouts}
+            pluginConfig={tablesState.pluginConfig}
+            tableRef={tablesState.tableRef}
+            tableLayout={
+              tablesState.tableNode
+                ? tablesState.tableNode.attrs.layout
+                : undefined
+            }
           />
         )}
       />
@@ -106,7 +99,7 @@ const tablesPlugin: EditorPlugin = {
         title: 'Table',
         icon: () => <TableIcon label="Table" />,
         action(insert, state) {
-          return insert(createTableNode(3, 3, state.schema));
+          return insert(createTable(state.schema));
         },
       },
     ],

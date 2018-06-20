@@ -26,6 +26,7 @@ export const ACTIONS = {
   SELECT_PREV: 'SELECT_PREV',
   SELECT_NEXT: 'SELECT_NEXT',
   SELECT_CURRENT: 'SELECT_CURRENT',
+  SET_CURRENT_INDEX: 'SET_CURRENT_INDEX',
   ITEMS_LIST_UPDATED: 'ITEMS_LIST_UPDATED',
 };
 
@@ -51,9 +52,18 @@ export function createPlugin(dispatch: Dispatch, typeAhead): Plugin {
       },
 
       apply(tr, pluginState, oldState, state) {
-        const action = (tr.getMeta(pluginKey) || {}).action;
+        const meta = tr.getMeta(pluginKey) || {};
+        const { action, params } = meta;
 
         switch (action) {
+          case ACTIONS.SET_CURRENT_INDEX:
+            return setCurrentItemIndex({
+              dispatch,
+              pluginState,
+              tr,
+              params,
+            });
+
           case ACTIONS.SELECT_PREV:
             return selectPrevActionHandler({ dispatch, pluginState, tr });
 
@@ -130,6 +140,9 @@ export type ActionHandlerParams = {
   dispatch: Dispatch;
   pluginState: PluginState;
   tr: Transaction;
+  params?: {
+    currentIndex?: number;
+  };
 };
 
 export function createItemsLoader(
@@ -218,6 +231,27 @@ export function defaultActionHandler({
     items: typeAheadItems as Array<TypeAheadItem>,
     itemsLoader: itemsLoader,
     currentIndex: pluginState.currentIndex,
+  };
+
+  dispatch(pluginKey, newPluginState);
+  return newPluginState;
+}
+
+export function setCurrentItemIndex({
+  dispatch,
+  pluginState,
+  params,
+}: ActionHandlerParams) {
+  if (!params) {
+    return pluginState;
+  }
+
+  const newPluginState = {
+    ...pluginState,
+    currentIndex:
+      params.currentIndex || params.currentIndex === 0
+        ? params.currentIndex
+        : pluginState.currentIndex,
   };
 
   dispatch(pluginKey, newPluginState);

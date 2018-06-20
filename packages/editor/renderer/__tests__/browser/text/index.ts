@@ -553,19 +553,98 @@ describe('Renderer - TextSerializer', () => {
     expect(render(doc)).to.equal('information');
   });
 
-  it('should render tables', () => {
+  it('should render content in the table', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
         {
           type: 'table',
-          content: [],
+          content: [
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableHeader',
+                  attrs: {
+                    colspan: 2,
+                    colwidth: [233, 100],
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'header',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableHeader',
+                  attrs: {
+                    background: '#DEEBFF',
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'header',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableCell',
+                  attrs: {
+                    colspan: 1,
+                    rowspan: 1,
+                    background: null,
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'cell',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableCell',
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'cell',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
     };
 
-    expect(render(doc)).to.equal('{table}');
+    expect(render(doc)).to.equal('|header|header|\n|cell|cell|');
   });
 
   it('should ignore empty paragraphs', () => {
