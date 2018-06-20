@@ -1,3 +1,8 @@
+export function isPastedFromWord(event: ClipboardEvent): boolean {
+  const html = event.clipboardData.getData('text/html');
+  return !!html && html.indexOf('urn:schemas-microsoft-com:office:office') >= 0;
+}
+
 export const isSingleLine = (text: string): boolean => {
   return !!text && text.trim().split('\n').length === 1;
 };
