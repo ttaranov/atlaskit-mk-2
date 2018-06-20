@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 18.2.4
+- [patch] ED-4741, adding support for date node in renderer. [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
+- [none] Updated dependencies [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
+  - @atlaskit/editor-common@11.2.9
+
 ## 18.2.3
 
 
