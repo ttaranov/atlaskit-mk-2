@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.5.5
+- [patch] Fix spaceName attribute coming back from the quick nav API [1c91e59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c91e59)
+
 ## 4.5.4
 - [patch] Fixes a bug with search analytics attribution. [4aadd7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aadd7a)
 
