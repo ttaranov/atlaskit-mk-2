@@ -2,6 +2,7 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { LinkView, ResolvedView, ResolvingView } from '../src/InlineCard';
 import { AuthErrorView } from '../src/inline/AuthErrorView';
+import { NoPermissionsView } from '../src/inline/NoPermissionsView';
 
 interface Lozenge {
   text: string;
@@ -59,6 +60,21 @@ export default () => (
         Officia reprehenderit do ut reprehenderit incididunt laborum Lorem enim
         irure consectetur pariatur dolor. Duis irure voluptate aute consequat
         ullamco nostrud officia eiusmod non veniam do dolor non in.
+        <h4>No Permissions View</h4>
+        Reprehenderit non occaecat do non esse irure aute aliqua minim
+        exercitation. Sit nisi tempor voluptate
+        <NoPermissionsView
+          url={url}
+          onClick={() => {
+            alert("Clicking me won't fix the permissions...");
+          }}
+          onRetry={() => {
+            alert('Okay, what else have we got...');
+          }}
+        />{' '}
+        cillum aute reprehenderit officia quis irure quis. Do nostrud est sit
+        aute exercitation ut sit. Exercitation tempor laborum culpa ullamco
+        ullamco in laboris.
         <h4>ResolvedView</h4>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
         ex, vel molestie arcu. Phasellus commodo this is{' '}
