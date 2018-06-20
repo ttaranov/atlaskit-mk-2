@@ -1,11 +1,22 @@
 // @flow
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
 import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
 
 type State = {
   active: boolean,
 };
+
+const RelativeDiv = styled.div`
+  position: relative;
+  width: 200px;
+  height: 200px;
+  top: 100px;
+  left: 100px;
+  border-radius: 3px;
+  background-color: grey;
+`;
 
 export default class SpotlightRelativeTarget extends Component<Object, State> {
   state: State = { active: false };
@@ -24,17 +35,7 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
             </button>
           </div>
           <SpotlightTarget name="box">
-            <div
-              style={{
-                position: 'relative',
-                width: '200px',
-                height: '200px',
-                top: '100px',
-                left: '100px',
-                borderRadius: '3px',
-                backgroundColor: 'grey',
-              }}
-            />
+            <RelativeDiv />
           </SpotlightTarget>
         </div>
 

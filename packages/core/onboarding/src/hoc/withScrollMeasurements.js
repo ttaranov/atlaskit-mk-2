@@ -70,9 +70,7 @@ function updateAttribute(
   update: string => string,
 ) {
   const current = node.getAttribute(attribute);
-  if (current) {
-    node.setAttribute(attribute, update(current));
-  }
+  node.setAttribute(attribute, update(current || ''));
   return node;
 }
 
@@ -159,8 +157,13 @@ export default function withScrollMeasurements(
       }
 
       // ensure positioning of cloned node is static
-      const clonedNode = updateAttribute(node.cloneNode(true), 'style', style =>
-        style.replace(/position: (.*);/, 'position: static;'),
+      const clonedNode = updateAttribute(
+        node.cloneNode(true),
+        'style',
+        style =>
+          style.indexOf('position') > -1
+            ? style.replace(/position: (.*);/, 'position: static;')
+            : `${style} position: static;`,
       );
 
       this.setState({
