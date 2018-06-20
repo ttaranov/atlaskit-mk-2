@@ -81,6 +81,12 @@ export default class Page {
       .then(obj => obj.value);
   }
 
+  count(selector) {
+    return this.$$(selector).then(function(result) {
+      return result.value.length;
+    });
+  }
+
   type(selector, text) {
     return this.browser.addValue(selector, text);
   }

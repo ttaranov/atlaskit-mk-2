@@ -25,14 +25,14 @@ export class PopupSimplePage {
   }
 
   async getRecentUploadCards(): Promise<RecentUploadCard[]> {
-    const selector = '.e2e-recent-upload-card .title .ellipsed-text';
+    const selector = '.e2e-recent-upload-card';
     const results = await this.page.getHTML(selector);
-
     return results.map(html => {
       const div = document.createElement('div');
       div.innerHTML = html.trim();
+      const element = div.querySelector('.title .ellipsed-text');
       return {
-        filename: div.firstChild.textContent,
+        filename: element && element.textContent,
       };
     });
   }
