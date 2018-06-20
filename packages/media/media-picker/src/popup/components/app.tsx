@@ -101,7 +101,7 @@ export class App extends Component<AppProps, AppState> {
       uploadParams,
     } = props;
 
-    const { userAuthProvider } = context.config;
+    const { userAuthProvider, authProvider } = context.config;
 
     if (!userAuthProvider) {
       throw new Error('userAuthProvider must be provided in the context');
@@ -118,6 +118,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpContext = ContextFactory.create({
       serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
+      // authProvider
     });
 
     this.mpBrowser = MediaPicker('browser', this.mpContext, {

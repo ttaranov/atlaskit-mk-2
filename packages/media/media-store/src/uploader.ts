@@ -39,6 +39,20 @@ const createUploadingFunction = (store: MediaStore) => {
   return (chunk: Chunk) => store.uploadChunk(chunk.hash, chunk.blob);
 };
 
+const createProcessingFunction = (
+  store: MediaStore,
+  deferredUploadId: Promise<string>,
+) => {
+  let offset = 0;
+  return async (chunks: Chunk[]) => {
+    await store.appendChunksToUpload(await deferredUploadId, {
+      chunks: hashedChunks(chunks),
+      offset,
+    });
+    offset += chunks.length;
+  };
+};
+
 export const uploadFile = (
   file: UploadableFile,
   config: MediaApiConfig,
@@ -50,17 +64,7 @@ export const uploadFile = (
   const deferredUploadId = store
     .createUpload()
     .then(response => response.data[0].id);
-  let offset = 0;
-  const processingFunction = async (chunks: Chunk[]) => {
-    await store.appendChunksToUpload(await deferredUploadId, {
-      chunks: hashedChunks(chunks),
-      offset,
-    });
-    offset += chunks.length;
-  };
-
   const deferredEmptyFile = store.createFile({ collection, occurrenceKey });
-
   const { response, cancel } = chunkinator(
     content,
     {
@@ -72,7 +76,7 @@ export const uploadFile = (
       uploadingFunction: createUploadingFunction(store),
       probingFunction: createProbingFunction(store),
       processingBatchSize: 1000,
-      processingFunction,
+      processingFunction: createProcessingFunction(store, deferredUploadId),
     },
     {
       onProgress(progress: number) {

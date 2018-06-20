@@ -115,6 +115,7 @@ export class MediaStore {
   createFile(
     params: MediaStoreCreateFileParams = {},
   ): Promise<MediaStoreResponse<EmptyFile>> {
+    console.log('createFile');
     return this.request('/file', {
       method: 'POST',
       headers: {

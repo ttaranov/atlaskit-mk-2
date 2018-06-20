@@ -103,6 +103,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       container: document.body,
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
+        // collection: defaultCollectionName
       },
       useNewUploadService,
     });

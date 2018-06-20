@@ -51,6 +51,7 @@ export const mediaPickerAuthProvider = (authEnvironment: string = 'asap') => (
 ) => {
   const collectionName =
     (context && context.collectionName) || 'MediaServicesSample';
+  // const collectionName = 'MediaServicesSample';
   authEnvironment = authEnvironment === 'asap' ? 'asap' : '';
   const cacheKey = `${collectionName}:${authEnvironment}`;
 
