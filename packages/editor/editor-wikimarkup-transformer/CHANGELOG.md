@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.1.3
+- [patch] Remove the additional rows when encode code block from ADF to wikiMarkup [7b81171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b81171)
+
 ## 1.1.2
 - [patch] remove the additional whitespace in encoder [3a28d31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a28d31)
 
