@@ -1,4 +1,4 @@
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import mock, { once } from 'xhr-mock';
 import { Client, ClientOptions } from '../../src/Client';
 
@@ -16,7 +16,7 @@ const generator = {
 
 const name = 'My Page';
 
-function createClient(options) {
+function createClient(options?: ClientOptions) {
   return new Client(options);
 }
 
