@@ -44,6 +44,7 @@ export default class DrawersExample extends Component<{}, State> {
         {this.widths.map(width => (
           <Button
             onClick={this.openDrawer(width)}
+            type="button"
             key={width}
             css={{
               marginRight: '1rem',

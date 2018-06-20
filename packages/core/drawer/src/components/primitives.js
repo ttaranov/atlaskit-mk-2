@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { colors, layers } from '@atlaskit/theme';
+import { colors, layers, gridSize } from '@atlaskit/theme';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 
 import { Slide } from './transitions';
@@ -12,8 +12,8 @@ import type { DrawerProps, DrawerWrapperProps } from './types';
 
 const widths = {
   full: '100vw',
-  narrow: 45 * 8,
-  wide: 75 * 8,
+  narrow: 45 * gridSize(),
+  wide: 75 * gridSize(),
 };
 
 // Wrapper
@@ -41,7 +41,9 @@ const Wrapper = ({ width = 'narrow', ...props }: DrawerWrapperProps) => {
 // Content
 // ------------------------------
 
-const Content = props => <div css={{ flex: 1, paddingTop: 24 }} {...props} />;
+const Content = props => (
+  <div css={{ flex: 1, paddingTop: 3 * gridSize() }} {...props} />
+);
 
 // Sidebar / Icons etc.
 // ------------------------------
@@ -57,9 +59,9 @@ const Sidebar = props => {
         flexShrink: 0,
         flexDirection: 'column',
         height: '100vh',
-        paddingBottom: 16,
-        paddingTop: 24,
-        width: 64,
+        paddingBottom: 2 * gridSize(),
+        paddingTop: 3 * gridSize(),
+        width: 8 * gridSize(),
       }}
       {...props}
     />
@@ -69,6 +71,7 @@ const Sidebar = props => {
 type IconWrapperProps = { onClick?: Event => void };
 const IconWrapper = (props: IconWrapperProps) => (
   <button
+    type="button"
     css={{
       alignItems: 'center',
       background: 0,
@@ -78,12 +81,12 @@ const IconWrapper = (props: IconWrapperProps) => (
       cursor: props.onClick ? 'pointer' : null,
       display: 'flex',
       fontSize: 'inherit',
-      height: 40,
+      height: 5 * gridSize(),
       justifyContent: 'center',
       lineHeight: 1,
-      marginBottom: 16,
+      marginBottom: 2 * gridSize(),
       padding: 0,
-      width: 40,
+      width: 5 * gridSize(),
 
       '&:hover': {
         backgroundColor: props.onClick ? colors.N30A : null,

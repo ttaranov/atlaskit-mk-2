@@ -5,11 +5,7 @@ import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Modal from '@atlaskit/modal-dialog';
 import Drawer from '@atlaskit/drawer';
 import Lorem from 'react-lorem-component';
-import {
-  LayoutManager,
-  NavigationProvider,
-  NavigationSubscriber,
-} from '@atlaskit/navigation-next';
+import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src';
 
@@ -39,6 +35,7 @@ const DrawerContent = ({
     </h1>
     <button
       onClick={closeDrawer}
+      type="button"
       css={{
         marginTop: '3rem',
       }}

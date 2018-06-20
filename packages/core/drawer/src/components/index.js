@@ -12,21 +12,14 @@ import type { DrawerProps } from './types';
 const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
 
 class Drawer extends Component<DrawerProps> {
-  portalContainer = document.createElement('div');
   body = document.querySelector('body');
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    if (this.body) {
-      this.body.appendChild(this.portalContainer);
-    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-    if (this.body) {
-      this.body.removeChild(this.portalContainer);
-    }
   }
 
   handleClose = event => {
@@ -49,6 +42,9 @@ class Drawer extends Component<DrawerProps> {
   };
 
   render() {
+    if (!this.body) {
+      return null;
+    }
     const { isOpen, ...props } = this.props;
     return createPortal(
       <TransitionGroup component={OnlyChild}>
@@ -60,7 +56,7 @@ class Drawer extends Component<DrawerProps> {
           <DrawerPrimitive in={isOpen} {...props} />
         </Fragment>
       </TransitionGroup>,
-      this.portalContainer,
+      this.body,
     );
   }
 }

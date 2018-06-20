@@ -32,7 +32,9 @@ export default class DrawersExample extends Component<{}, State> {
         >
           <code>Drawer contents</code>
         </Drawer>
-        <Button onClick={this.openDrawer}>Open drawer</Button>
+        <Button type="button" onClick={this.openDrawer}>
+          Open drawer
+        </Button>
       </Fragment>
     );
   }
