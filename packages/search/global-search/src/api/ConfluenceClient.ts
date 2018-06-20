@@ -27,8 +27,8 @@ type ValidQuickNavResultClassName =
   | 'content-type-blogpost';
 
 export interface ConfluenceClient {
-  getRecentItems(): Promise<Result[]>;
-  getRecentSpaces(): Promise<Result[]>;
+  getRecentItems(searchSessionId: string): Promise<Result[]>;
+  getRecentSpaces(searchSessionId: string): Promise<Result[]>;
   searchQuickNav(query: string, searchSessionId: string): Promise<Result[]>;
 }
 
@@ -88,25 +88,25 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     );
   }
 
-  public async getRecentItems(): Promise<Result[]> {
+  public async getRecentItems(searchSessionId: string): Promise<Result[]> {
     const recentPages = await this.createRecentRequestPromise<RecentPage>(
       RECENT_PAGES_PATH,
     );
     const baseUrl = this.serviceConfig.url;
 
     return recentPages.map(recentPage =>
-      recentPageToResult(recentPage, baseUrl),
+      recentPageToResult(recentPage, baseUrl, searchSessionId),
     );
   }
 
-  public async getRecentSpaces(): Promise<Result[]> {
+  public async getRecentSpaces(searchSessionId: string): Promise<Result[]> {
     const recentSpaces = await this.createRecentRequestPromise<RecentSpace>(
       RECENT_SPACE_PATH,
     );
     const baseUrl = this.serviceConfig.url;
 
     return recentSpaces.map(recentSpace =>
-      recentSpaceToResult(recentSpace, baseUrl),
+      recentSpaceToResult(recentSpace, baseUrl, searchSessionId),
     );
   }
 
@@ -136,11 +136,19 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   }
 }
 
-function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
+function recentPageToResult(
+  recentPage: RecentPage,
+  baseUrl: string,
+  searchSessionId: string,
+): Result {
+  // add searchSessionId safely
+  const href = new URI(`${baseUrl}${recentPage.url}`);
+  href.addQuery('search_id', searchSessionId);
+
   return {
     resultId: recentPage.id,
     name: recentPage.title,
-    href: `${baseUrl}${recentPage.url}`,
+    href: href.toString(),
     containerName: recentPage.space,
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.ConfluenceObjectResult,
@@ -151,11 +159,14 @@ function recentPageToResult(recentPage: RecentPage, baseUrl: string): Result {
 function recentSpaceToResult(
   recentSpace: RecentSpace,
   baseUrl: string,
+  searchSessionId: string,
 ): Result {
   return {
     resultId: recentSpace.id,
     name: recentSpace.name,
-    href: `${baseUrl}/spaces/${recentSpace.key}/overview`,
+    href: `${baseUrl}/spaces/${
+      recentSpace.key
+    }/overview?search_id=${searchSessionId}`,
     avatarUrl: recentSpace.icon,
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.GenericContainerResult,
