@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 18.2.2
+- [patch] Adds in proper task and decision support for text representation [e59b749](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e59b749)
+- [none] Updated dependencies [e59b749](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e59b749)
+
 ## 18.2.1
 - [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
 - [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
