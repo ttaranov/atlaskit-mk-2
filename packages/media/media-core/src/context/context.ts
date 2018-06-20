@@ -260,7 +260,6 @@ class ContextImpl implements Context {
     controller?: UploadController,
   ): Observable<FileState> {
     let id: string;
-    // TODO: we can't get the size from a file when is string, make media-store + Chunkinator to pass this info?
     const size = file.content instanceof Blob ? file.content.size : 0;
     const tempFileId = uuid.v4();
     const fileStream = new Observable<FileState>(observer => {
@@ -285,7 +284,6 @@ class ContextImpl implements Context {
 
         deferredFileId.then(id => {
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
-          // TODO: add test for this case
           this.fileStreamsCache.set(id, fileStream);
           observer.next({
             id,
@@ -296,14 +294,8 @@ class ContextImpl implements Context {
           });
           observer.complete();
         });
-        // return cancel;
-        // return () => {
-        //   console.log('cancel cleanup');
-        //   cancel();
-        // }
       } catch (e) {
         observer.error(e);
-        // return () => {};
       }
     })
       .concat(Observable.defer(() => this.createDownloadFileStream(id)))
@@ -312,7 +304,6 @@ class ContextImpl implements Context {
     // .refCount()
 
     this.fileStreamsCache.set(tempFileId, fileStream);
-    // Start hot observable
     fileStream.connect();
 
     return fileStream;

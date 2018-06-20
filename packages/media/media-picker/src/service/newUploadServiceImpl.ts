@@ -91,7 +91,6 @@ export class NewUploadServiceImpl implements UploadService {
         mimeType: file.type,
       };
       // TODO: remove "this" bind
-      // TODO: test this still works
       const controller = new UploadController();
       this.context.uploadFile(uploadableFile, controller).subscribe({
         next() {
