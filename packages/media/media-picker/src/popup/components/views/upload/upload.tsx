@@ -250,7 +250,6 @@ export class StatelessUploadView extends Component<
       onEditRemoteImage,
     } = this.props;
     const { items } = recents;
-
     const selectedRecentFiles = selectedItems
       .filter(item => item.serviceName === 'recent_files')
       .map(item => item.id);
@@ -289,7 +288,7 @@ export class StatelessUploadView extends Component<
       }
     };
 
-    return items.map(item => {
+    return items.filter(item => item.details.size > 0).map(item => {
       const { id, occurrenceKey } = item;
       const selected = selectedRecentFiles.indexOf(id) > -1;
 
