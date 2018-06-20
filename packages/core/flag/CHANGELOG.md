@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 8.1.2
+- [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+- [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+  - @atlaskit/button@8.2.2
+  - @atlaskit/spinner@7.1.1
+  - @atlaskit/field-radio-group@3.1.2
+  - @atlaskit/icon@12.3.1
+
 ## 8.1.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

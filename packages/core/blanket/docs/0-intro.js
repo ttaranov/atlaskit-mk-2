@@ -19,27 +19,21 @@ import Blanket from '@atlaskit/blanket';
   shown or hidden with its parent element.
 
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/00-basic-usage').default}
-        title="Basic"
-        source={require('!!raw-loader!../examples/00-basic-usage')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/01-click-through').default}
-        title="With click through enabled"
-        source={require('!!raw-loader!../examples/01-click-through')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/01-click-through').default}
+      title="With click through enabled"
+      source={require('!!raw-loader!../examples/01-click-through')}
+    />
+  )}
 
 
   ${(

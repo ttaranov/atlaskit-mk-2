@@ -87,11 +87,11 @@ describe(name, () => {
       <PageHeader truncateTitle>Long heading text</PageHeader>,
     );
 
-    //$FlowFixMe
+    // $FlowFixMe
     expect(wrapper.find('h1')).toHaveStyleRule('overflow-x', 'hidden');
-    //$FlowFixMe
+    // $FlowFixMe
     expect(wrapper.find('h1')).toHaveStyleRule('white-space', 'nowrap');
-    //$FlowFixMe
+    // $FlowFixMe
     expect(wrapper.find('h1')).toHaveStyleRule('text-overflow', 'ellipsis');
   });
 });

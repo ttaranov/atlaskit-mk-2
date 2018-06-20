@@ -19,38 +19,29 @@ import RadioGroup, { AkFieldRadioGroup, AkRadio } from '@atlaskit/field-radio-gr
 AkRadio component to render. Both stateful and stateless
   maintain the state of their children AkRadio components.
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/00-basic-usage').default}
-        title="Basic"
-        source={require('!!raw-loader!../examples/00-basic-usage')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/01-stateless-example').default}
-        title="Stateless Checkbox"
-        source={require('!!raw-loader!../examples/01-stateless-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/01-stateless-example').default}
+      title="Stateless Checkbox"
+      source={require('!!raw-loader!../examples/01-stateless-example')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/02-form-example').default}
-        title="With a Form"
-        source={require('!!raw-loader!../examples/02-form-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/02-form-example').default}
+      title="With a Form"
+      source={require('!!raw-loader!../examples/02-form-example')}
+    />
+  )}
 
   ${(
     <Props

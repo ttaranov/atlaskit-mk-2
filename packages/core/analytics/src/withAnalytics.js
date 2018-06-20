@@ -38,7 +38,6 @@ const withAnalytics = (
 ) =>
   class WithAnalytics extends Component<AnalyticsProps, {}> {
     props: AnalyticsProps;
-    // $FlowFixMe - type ComponentType does have property displayName. Unsure why this fails.
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
       WrappedComponent.name})`;
 

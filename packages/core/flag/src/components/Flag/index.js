@@ -84,7 +84,7 @@ export default class Flag extends Component<FlagProps, State> {
       <DismissButton
         appearance={appearance}
         aria-expanded={this.state.isExpanded}
-        // $FlowFixMe TEMPORARY
+        // $FlowFixMe - theme is not found in props
         focusRingColor={flagFocusRingColor(this.props)}
         onClick={buttonAction}
         type="button"
