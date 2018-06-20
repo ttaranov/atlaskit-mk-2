@@ -104,38 +104,40 @@ export default class Tag extends Component<Props, State> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      appearance,
     };
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
-      <Appearance props={styled} theme={theme}>
-        {styleProps => (
-          <Container {...styleProps} onAnimationEnd={onAnimationEnd}>
-            <Chrome
-              {...styleProps}
-              isLink={!!href}
-              onFocusChange={this.handleFocusChange}
-            >
-              {elemBefore ? <Before>{elemBefore}</Before> : null}
-              <Content
-                linkComponent={linkComponent}
+      <Appearance props={appearance} theme={theme}>
+        {merged => {
+          const styleProps = { ...styled, ...merged };
+          return (
+            <Container {...styleProps} onAnimationEnd={onAnimationEnd}>
+              <Chrome
                 {...styleProps}
-                href={href}
+                isLink={!!href}
+                onFocusChange={this.handleFocusChange}
               >
-                {text}
-              </Content>
-              {isRemovable ? (
-                <RemoveButton
+                {elemBefore ? <Before>{elemBefore}</Before> : null}
+                <Content
+                  linkComponent={linkComponent}
                   {...styleProps}
-                  onHoverChange={this.handleHoverChange}
-                  onRemoveAction={this.handleRemoveRequest}
-                  removeText={removeButtonText}
-                />
-              ) : null}
-            </Chrome>
-          </Container>
-        )}
+                  href={href}
+                >
+                  {text}
+                </Content>
+                {isRemovable ? (
+                  <RemoveButton
+                    {...styleProps}
+                    onHoverChange={this.handleHoverChange}
+                    onRemoveAction={this.handleRemoveRequest}
+                    removeText={removeButtonText}
+                  />
+                ) : null}
+              </Chrome>
+            </Container>
+          );
+        }}
       </Appearance>
     );
   }

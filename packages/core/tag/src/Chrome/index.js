@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
 import { Span } from './styled';
-import type { TagColor } from '../types';
 
 type Props = {
   children: Node,
@@ -12,7 +11,6 @@ type Props = {
   isRounded?: boolean,
   markedForRemoval: boolean,
   onFocusChange: (focused: boolean) => mixed,
-  appearance: TagColor,
 };
 
 export default class Chrome extends PureComponent<Props> {
@@ -44,7 +42,7 @@ export default class Chrome extends PureComponent<Props> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      appearance,
+      // appearance,
     } = this.props;
 
     const props = {
@@ -60,7 +58,6 @@ export default class Chrome extends PureComponent<Props> {
       onFocus: this.handleFocus,
       onKeyPress: this.handleKeyPress,
       tabIndex: -1,
-      appearance,
       role: '',
     };
 
