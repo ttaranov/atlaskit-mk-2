@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.1.3
+- [patch] Better toolbar UX for MediaViewer NG [66abc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66abc9a)
+
 ## 15.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
