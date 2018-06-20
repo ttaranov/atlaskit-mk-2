@@ -116,7 +116,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     const options: RequestServiceOptions = {
       path: QUICK_NAV_PATH,
       queryParams: {
-        query: query,
+        query: query.trim(),
       },
     };
 
