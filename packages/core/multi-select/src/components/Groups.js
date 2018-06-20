@@ -29,10 +29,7 @@ const renderItems = ({
           handleItemSelect(item, attrs);
         }}
       >
-        {
-          // $FlowFixMe there's definitely an item here, flow is complaining because it can't guarantee it, despite the previous length check
-          item.content
-        }
+        {item.content}
       </Item>
     ));
   }

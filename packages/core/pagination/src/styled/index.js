@@ -6,7 +6,7 @@ export const Container = styled.div`
   display: flex;
   width: 100%;
 `;
-// $FlowFixMe TEMPORARY
+
 export const ButtonActive = styled(Button)`
   color: #000 !important; /* @todo: until Button supports not faded disabled state */
   font-weight: bold;

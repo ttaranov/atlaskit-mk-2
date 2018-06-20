@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.1.2
+- [patch] remove the additional whitespace in encoder [3a28d31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a28d31)
+
 ## 1.1.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

@@ -241,7 +241,7 @@ function generateRandomQuickNavItem(className: string) {
     className: className,
     name: faker.company.catchPhrase(),
     href: faker.internet.url(),
-    space: faker.company.companyName(),
+    spaceName: faker.company.companyName(),
     id: faker.random.uuid(),
   };
 }
