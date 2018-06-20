@@ -1,5 +1,9 @@
 # @atlaskit/checkbox
 
+## 3.1.1
+- [patch] update to active box color of checkbox to b50 to inline with ADG3 guideline [21073ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21073ca)
+- [none] Updated dependencies [21073ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21073ca)
+
 ## 3.1.0
 - [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
 - [none] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
