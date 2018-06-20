@@ -6,9 +6,7 @@ import 'brace/mode/json';
 import 'brace/theme/tomorrow';
 import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
-import { Provider } from '../src';
-import { extractBlockPropsFromJSONLD } from '../src/extractBlockPropsFromJSONLD';
-import { BlockCard } from '@atlaskit/media-ui';
+import { Provider, Card } from '../src';
 
 const defaultText = `{
   "@type": "Document",
@@ -21,28 +19,26 @@ const defaultText = `{
   "summary": "Today is a big day for Atlassian – we have entered into an agreement to buy Trello. (boom)"
 }`;
 
-const defaultJSON = extractBlockPropsFromJSONLD(JSON.parse(defaultText));
-
 export interface ExampleProps {}
 
 export interface ExampleState {
   text: string;
-  props: BlockCard.ResolvedViewProps;
+  json: any;
   error?: string;
 }
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
     text: defaultText,
-    props: defaultJSON,
+    json: JSON.parse(defaultText),
   };
 
   handleChange = (text: string) => {
     try {
-      const props = extractBlockPropsFromJSONLD(JSON.parse(text));
+      const json = JSON.parse(text);
       this.setState({
         text,
-        props,
+        json,
         error: undefined,
       });
     } catch (err) {
@@ -54,14 +50,33 @@ class Example extends React.Component<ExampleProps, ExampleState> {
   };
 
   render() {
-    const { text, props, error } = this.state;
+    const { text, json, error } = this.state;
     return (
       <Provider>
         <Page>
           <Grid>
             <GridColumn>
-              <BlockCard.ResolvedView {...props as any} />
+              <h6>
+                <code>appearance="block"</code>
+              </h6>
               <br />
+              <Card appearance="block" data={json} />
+              <br />
+              <h6>
+                <code>appearance="inline"</code>
+              </h6>
+              <br />
+              Bowsprit scallywag weigh anchor Davy Jones' Locker warp ballast
+              scurvy nipper brigantine Jolly Roger wench sloop Shiver me timbers
+              rope's end chandler. Admiral of the Black cackle fruit deck{' '}
+              <Card appearance="inline" data={json} /> wench bounty rope's end
+              bilge water scourge of the seven seas hardtack come about
+              execution dock Nelsons folly handsomely rigging splice the main
+              brace.
+              <br />
+              <h6>
+                <code>JSON-LD</code>
+              </h6>
               <br />
               <AceEditor
                 focus={true}

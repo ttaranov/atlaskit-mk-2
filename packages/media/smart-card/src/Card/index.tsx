@@ -11,13 +11,18 @@ export type CardAppearance = 'inline' | 'block';
 
 interface CardContentProps {
   appearance: CardAppearance;
-  url: string;
   state: ObjectState;
   reload: () => void;
   onClick?: () => void;
 }
 
 class CardContent extends React.Component<CardContentProps> {
+  get url() {
+    const { state } = this.props;
+    const data = state.data || {};
+    return data.url;
+  }
+
   // TODO: do we need to extract values differently per view?
   get collapsedIcon() {
     const { state } = this.props;
@@ -34,7 +39,7 @@ class CardContent extends React.Component<CardContentProps> {
     if (onClick) {
       onClick();
     } else {
-      window.open(url);
+      window.open(this.url);
     }
   };
 
@@ -51,34 +56,36 @@ class CardContent extends React.Component<CardContentProps> {
   };
 
   renderBlockResolvingState() {
-    return <BlockCard.ResolvingView onClick={this.handleFrameClick} />;
+    return (
+      <BlockCard.ResolvingView onClick={this.url && this.handleFrameClick} />
+    );
   }
 
   renderBlockUnauthorisedState() {
-    const { url } = this.props;
+    const { url } = this;
     return (
       <BlockCard.UnauthorisedView
         icon={this.collapsedIcon}
         url={url}
-        onClick={this.handleFrameClick}
+        onClick={this.url && this.handleFrameClick}
         onAuthorise={this.handleAuthorise}
       />
     );
   }
 
   renderBlockForbiddenState() {
-    const { url } = this.props;
+    const { url } = this;
     return (
       <BlockCard.ForbiddenView
         url={url}
-        onClick={this.handleFrameClick}
+        onClick={this.url && this.handleFrameClick}
         onAuthorise={this.handleAuthorise}
       />
     );
   }
 
   renderBlockNotFoundState() {
-    const { url } = this.props;
+    const { url } = this;
     return (
       <BlockCard.ErroredView
         url={url}
@@ -89,12 +96,12 @@ class CardContent extends React.Component<CardContentProps> {
   }
 
   renderBlockErroredState() {
-    const { url } = this.props;
+    const { url } = this;
     return (
       <BlockCard.ErroredView
         url={url}
         message="We couldn't load this link"
-        onClick={this.handleFrameClick}
+        onClick={this.url && this.handleFrameClick}
         onRetry={this.handleErrorRetry}
       />
     );
@@ -104,7 +111,10 @@ class CardContent extends React.Component<CardContentProps> {
     const { state } = this.props;
     const props = extractBlockPropsFromJSONLD(state.data || {});
     return (
-      <BlockCard.ResolvedView {...props} onClick={this.handleFrameClick} />
+      <BlockCard.ResolvedView
+        {...props}
+        onClick={this.url && this.handleFrameClick}
+      />
     );
   }
 
@@ -132,15 +142,23 @@ class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineResolvingState() {
-    const { url } = this.props;
-    return <InlineCard.LinkView text={url} onClick={this.handleFrameClick} />;
+    const { url } = this;
+    return (
+      <InlineCard.LinkView
+        text={url}
+        onClick={this.url && this.handleFrameClick}
+      />
+    );
   }
 
   renderInlineResolvedState() {
     const { state } = this.props;
     const props = extractInlinePropsFromJSONLD(state.data || {});
     return (
-      <InlineCard.ResolvedView {...props} onClick={this.handleFrameClick} />
+      <InlineCard.ResolvedView
+        {...props}
+        onClick={this.url && this.handleFrameClick}
+      />
     );
   }
 
@@ -157,7 +175,7 @@ class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineErroredState() {
-    const { url } = this.props;
+    const { url } = this;
     return <InlineCard.LinkView text={url} />;
   }
 
@@ -196,14 +214,35 @@ class CardContent extends React.Component<CardContentProps> {
 }
 
 export interface CardProps {
-  client?: Client;
-  url: string;
   appearance?: CardAppearance;
+  url?: string;
+  data?: any;
+  client?: Client;
 }
 
 export class Card extends React.PureComponent<CardProps> {
   render() {
-    const { client, appearance = 'block', url } = this.props;
+    const { appearance = 'block', url, data, client } = this.props;
+
+    if (Boolean(data)) {
+      return (
+        <CardContent
+          appearance={appearance}
+          state={{
+            status: 'resolved',
+            services: [],
+            data: {
+              url,
+              ...data,
+            },
+          }}
+          reload={() => {
+            /* do nothing */
+          }}
+        />
+      );
+    }
+
     return (
       <LazyRender
         offset={100}
@@ -213,8 +252,13 @@ export class Card extends React.PureComponent<CardProps> {
             {({ state, reload }) => (
               <CardContent
                 appearance={appearance}
-                url={url}
-                state={state}
+                state={{
+                  ...state,
+                  data: {
+                    url,
+                    ...state.data,
+                  },
+                }}
                 reload={reload}
               />
             )}
