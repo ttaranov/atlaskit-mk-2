@@ -1,6 +1,9 @@
 //@flow
 import * as React from 'react';
-import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import {
+  type DraggableProvided,
+  type DraggableStateSnapshot,
+} from 'react-beautiful-dnd';
 import type { ItemId, Path, TreeItem } from '../types';
 import type { RenderItemParams } from './Tree-types';
 

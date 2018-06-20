@@ -43,10 +43,10 @@ export const flattenTree = (tree: TreeData, path: Path = []): FlattenedItem[] =>
 /*
   Constructs a new FlattenedItem
  */
-const createFlattenedItem = function(
+const createFlattenedItem = (
   item: TreeItem,
   currentPath: Path,
-): FlattenedItem {
+): FlattenedItem => {
   return {
     item,
     path: currentPath,
@@ -56,11 +56,7 @@ const createFlattenedItem = function(
 /*
   Flatten the children of the given subtree
 */
-const flattenChildren = function(
-  tree: TreeData,
-  item: TreeItem,
-  currentPath: Path,
-) {
+const flattenChildren = (tree: TreeData, item: TreeItem, currentPath: Path) => {
   return item.isExpanded
     ? flattenTree({ rootId: item.id, items: tree.items }, currentPath)
     : [];

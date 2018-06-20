@@ -1,10 +1,12 @@
-// @flow
+//@flow
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
+import { type DropResult, type DragUpdate } from 'react-beautiful-dnd';
 import Tree from '../../src/index';
 import { treeWithThreeLeaves } from '../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
+import { complexTree } from '../../mockdata/complexTree';
 
 configure({ adapter: new Adapter() });
 
@@ -148,6 +150,7 @@ describe('@atlaskit/tree - Tree', () => {
           droppableId: 'list',
           index: 4,
         },
+        destination: undefined,
         reason: 'DROP',
       };
       const instance = mount(
@@ -159,6 +162,48 @@ describe('@atlaskit/tree - Tree', () => {
       ).instance();
       instance.onDragEnd(dropResult);
       expect(mockOnDragEnd).toHaveBeenCalledTimes(0);
+    });
+
+    describe('#onDragUpdate', () => {
+      it('should set offset 0 if not necessary', () => {
+        const dropUpdate: DragUpdate = {
+          draggableId: '1-1',
+          type: 'any',
+          source: {
+            droppableId: 'list',
+            index: 4,
+          },
+          destination: {
+            droppableId: 'list',
+            index: 4,
+          },
+        };
+        const instance = mount(
+          <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
+        ).instance();
+        instance.onDragUpdate(dropUpdate);
+        expect(instance.state.dropAnimationOffset).toBe(0);
+      });
+
+      it('should set offset 35 if the last displaced item is on the different level as the dragged item will be', () => {
+        const dropUpdate: DragUpdate = {
+          draggableId: '1-1',
+          type: 'any',
+          source: {
+            droppableId: 'list',
+            index: 1,
+          },
+          destination: {
+            droppableId: 'list',
+            index: 2,
+          },
+        };
+        const instance = mount(
+          <Tree tree={complexTree} renderItem={mockRender} />,
+        ).instance();
+        instance.onDragUpdate(dropUpdate);
+        expect(instance.state.dropAnimationOffset).toBe(35);
+      });
     });
   });
 });

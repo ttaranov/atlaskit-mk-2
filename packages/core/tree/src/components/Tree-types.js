@@ -1,6 +1,9 @@
 // @flow
 import * as React from 'react';
-import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import {
+  type DraggableProvided,
+  type DraggableStateSnapshot,
+} from 'react-beautiful-dnd';
 import type { TreeItem, TreeData, Path, ItemId } from '../types';
 
 export type DragPosition = {|
@@ -27,4 +30,9 @@ export type Props = {|
     destinationPosition: DragPosition,
   ) => void,
   renderItem: RenderItemParams => React.Node,
+  paddingPerLevel: number,
+|};
+
+export type State = {|
+  dropAnimationOffset: number,
 |};
