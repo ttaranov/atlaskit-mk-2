@@ -1,7 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ADF => WikiMarkup - CodeBlock should convert codeBlock node 1`] = `
-"{code:javascript}
-const i = 0;
-{code}"
-`;
+exports[`ADF => WikiMarkup - CodeBlock should convert codeBlock node 1`] = `"{code:javascript}const i = 0;{code}"`;

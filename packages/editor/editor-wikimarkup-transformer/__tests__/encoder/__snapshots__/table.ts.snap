@@ -7,16 +7,8 @@ exports[`ADF => WikiMarkup - Table should convert Table node 1`] = `
 `;
 
 exports[`ADF => WikiMarkup - Table should convert Table node with codeBlock in the cell 1`] = `
-"|{code:javascript}
-const i = 0;
-{code}|{code:javascript}
-const i = 0;
-{code}|
-|{code:javascript}
-const i = 0;
-{code}|{code:javascript}
-const i = 0;
-{code}|"
+"|{code:javascript}const i = 0;{code}|{code:javascript}const i = 0;{code}|
+|{code:javascript}const i = 0;{code}|{code:javascript}const i = 0;{code}|"
 `;
 
 exports[`ADF => WikiMarkup - Table should convert Table node with list and paragraph in the cell 1`] = `
