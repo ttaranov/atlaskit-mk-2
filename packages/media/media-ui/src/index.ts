@@ -1,4 +1,4 @@
-import * as BlockCard from './blockCard';
+import * as BlockCard from './BlockCard';
 import * as InlineCard from './InlineCard';
 
 export { Ellipsify, EllipsifyProps } from './ellipsify';

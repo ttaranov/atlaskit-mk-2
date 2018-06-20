@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import mock, { once } from 'xhr-mock';
-import { Client } from '../../src/Client';
+import { Client, ClientOptions } from '../../src/Client';
 
 const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
@@ -16,8 +16,8 @@ const generator = {
 
 const name = 'My Page';
 
-function createClient() {
-  return new Client();
+function createClient(options) {
+  return new Client(options);
 }
 
 const nth = (n: number) => <T>(source: Observable<T>) =>
@@ -61,6 +61,29 @@ function resolved() {
   );
 }
 
+function errored() {
+  mock.post(RESOLVE_URL, {
+    status: 500,
+  });
+}
+
+function notfound() {
+  mock.post(
+    RESOLVE_URL,
+    once({
+      status: 200,
+      body: JSON.stringify({
+        meta: {
+          visibility: 'not_found',
+          access: 'granted',
+          auth,
+          definitionId,
+        },
+      }),
+    }),
+  );
+}
+
 describe('Client', () => {
   beforeEach(() => mock.setup());
   afterEach(() => mock.teardown());
@@ -76,20 +99,7 @@ describe('Client', () => {
   });
 
   it('should be not-found when the object cannot be found', async () => {
-    mock.post(
-      RESOLVE_URL,
-      once({
-        status: 200,
-        body: JSON.stringify({
-          meta: {
-            visibility: 'not_found',
-            access: 'granted',
-            auth,
-            definitionId,
-          },
-        }),
-      }),
-    );
+    notfound();
 
     const state = await createClient()
       .get(OBJECT_URL)
@@ -181,9 +191,7 @@ describe('Client', () => {
   });
 
   it('should be errored when the object cannot be retrieved', async () => {
-    mock.post(RESOLVE_URL, {
-      status: 500,
-    });
+    errored();
 
     const state = await createClient()
       .get(OBJECT_URL)
@@ -295,5 +303,91 @@ describe('Client', () => {
           done();
         }
       });
+  });
+
+  it('should be resolved from the provider when a resolver is provided and the resolver resolves first', async () => {
+    resolved();
+    const state = await createClient({
+      TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
+    })
+      .get(OBJECT_URL)
+      .pipe(nth(2))
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'From resolver',
+      }),
+    );
+  });
+
+  it('should be resolved from the provider when a resolver is provided and the ORS errored', async () => {
+    errored();
+    const state = await createClient({
+      TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
+    })
+      .get(OBJECT_URL)
+      .pipe(nth(2))
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'From resolver',
+      }),
+    );
+  });
+
+  it('should be resolved from the provider when a resolver is provided and the ORS was not-found', async () => {
+    notfound();
+    const state = await createClient({
+      TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
+    })
+      .get(OBJECT_URL)
+      .pipe(nth(2))
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'From resolver',
+      }),
+    );
+  });
+
+  it('should be resolved from the ORS when a resolver is provided and the resolver does not resolve first', async () => {
+    resolved();
+    const resolver = () =>
+      new Promise(resolve =>
+        setTimeout(() => resolve({ name: 'From resolver' }), 100),
+      );
+    const state = await createClient({ TEMPORARY_resolver: resolver })
+      .get(OBJECT_URL)
+      .pipe(nth(2))
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'My Page',
+      }),
+    );
+  });
+
+  it('should be resolved from the ORS when a resolver is provided and the resolver is errored', async () => {
+    resolved();
+    const resolver = () => Promise.reject();
+    const state = await createClient({ TEMPORARY_resolver: resolver })
+      .get(OBJECT_URL)
+      .pipe(nth(2))
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'My Page',
+      }),
+    );
   });
 });
