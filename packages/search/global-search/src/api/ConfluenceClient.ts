@@ -62,7 +62,7 @@ export interface QuickNavResult {
   href: string;
   name: string;
   id?: string; // null for spaces
-  space?: string; // null for spaces
+  spaceName?: string; // null for spaces
 }
 
 export default class ConfluenceClientImpl implements ConfluenceClient {
@@ -176,7 +176,7 @@ function quickNavResultToObjectResult(
     href: href.toString(),
     resultId: quickNavResult.id!, // never null for pages, blogs & attachments
     contentType: contentType,
-    containerName: quickNavResult.space!, // never null for pages, blogs & attachments
+    containerName: quickNavResult.spaceName!, // never null for pages, blogs & attachments
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.ConfluenceObjectResult,
   };
