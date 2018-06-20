@@ -1,5 +1,15 @@
 # @atlaskit/modal-dialog
 
+## 5.2.5
+- [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+- [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+  - @atlaskit/inline-dialog@7.1.3
+  - @atlaskit/button@8.2.2
+  - @atlaskit/checkbox@3.1.2
+  - @atlaskit/field-radio-group@3.1.2
+  - @atlaskit/icon@12.3.1
+  - @atlaskit/avatar@11.2.1
+
 ## 5.2.4
 - [patch] Replaces implementation of ScrollLock with [react-scrolllock](https://github.com/jossmac/react-scrolllock). Deprecates ScrollLock export in @atlaskit/layer-manager. [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
 - [none] Updated dependencies [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)

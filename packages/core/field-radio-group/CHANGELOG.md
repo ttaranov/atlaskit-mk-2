@@ -1,5 +1,11 @@
 # @atlaskit/field-radio-group
 
+## 3.1.2
+- [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+- [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+  - @atlaskit/button@8.2.2
+  - @atlaskit/icon@12.3.1
+
 ## 3.1.1
 - [patch] Update active circleColor to inline with ADG-3 guideline [cf42f7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf42f7d)
 - [none] Updated dependencies [cf42f7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf42f7d)

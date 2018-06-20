@@ -1,5 +1,13 @@
 # @atlaskit/inline-dialog
 
+## 7.1.3
+- [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+- [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+  - @atlaskit/select@4.3.1
+  - @atlaskit/single-select@5.2.1
+  - @atlaskit/button@8.2.2
+  - @atlaskit/icon@12.3.1
+
 ## 7.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
