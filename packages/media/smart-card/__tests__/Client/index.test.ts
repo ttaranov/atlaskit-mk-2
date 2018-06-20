@@ -377,7 +377,7 @@ describe('Client', () => {
 
   it('should be resolved from the ORS when a resolver is provided and the resolver is errored', async () => {
     resolved();
-    const resolver = () => Promise.reject();
+    const resolver = () => Promise.reject(new Error('😵'));
     const state = await createClient({ TEMPORARY_resolver: resolver })
       .get(OBJECT_URL)
       .pipe(nth(2))
