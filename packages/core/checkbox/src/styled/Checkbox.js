@@ -100,7 +100,7 @@ const getBoxColor = props => {
   if (isDisabled) {
     color = themed({ light: colors.N20, dark: colors.DN10 });
   } else if (isActive) {
-    color = themed({ light: colors.B75, dark: colors.B200 });
+    color = themed({ light: colors.B50, dark: colors.B200 });
   } else if (isHovered && isChecked) {
     color = themed({ light: colors.B300, dark: colors.B75 });
   } else if (isHovered) {
