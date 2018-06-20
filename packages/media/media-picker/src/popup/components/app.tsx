@@ -46,14 +46,12 @@ import {
   UploadErrorEventPayload,
 } from '../../domain/uploadEvent';
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
-import { UploadParams } from '../../domain/config';
 
 export interface AppStateProps {
   readonly selectedServiceName: ServiceName;
   readonly isVisible: boolean;
   readonly useNewUploadService?: boolean;
   readonly context: Context;
-  readonly uploadParams: UploadParams;
 }
 
 export interface AppDispatchProps {
@@ -98,10 +96,9 @@ export class App extends Component<AppProps, AppState> {
       onUploadEnd,
       onUploadError,
       context,
-      uploadParams,
     } = props;
 
-    const { userAuthProvider, authProvider } = context.config;
+    const { userAuthProvider } = context.config;
 
     if (!userAuthProvider) {
       throw new Error('userAuthProvider must be provided in the context');
@@ -111,14 +108,15 @@ export class App extends Component<AppProps, AppState> {
     };
 
     const defaultConfig = {
-      uploadParams,
+      uploadParams: {
+        collection: RECENTS_COLLECTION,
+      },
     };
 
     // We can't just use the given context since the Cards in the recents view needs a different authProvider
     this.mpContext = ContextFactory.create({
       serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
-      // authProvider
     });
 
     this.mpBrowser = MediaPicker('browser', this.mpContext, {
@@ -237,13 +235,11 @@ const mapStateToProps = ({
   view,
   context,
   useNewUploadService,
-  uploadParams,
 }: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
   useNewUploadService,
   context,
-  uploadParams,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
