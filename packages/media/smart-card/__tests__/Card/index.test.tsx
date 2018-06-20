@@ -216,6 +216,32 @@ describe('Card', () => {
     );
   });
 
+  it('should render the inline view with props when the appearance is inline and the object is resolving', async () => {
+    const client = createClient('resolved');
+    const wrapper = mount(
+      <Card
+        appearance="inline"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+    wrapper.update();
+    expect(wrapper.find(InlineCard.LinkView)).toHaveLength(1);
+  });
+
+  it('should render the block view with props when the appearance is inline and the object is resolving', async () => {
+    const client = createClient('resolved');
+    const wrapper = mount(
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ResolvingView)).toHaveLength(1);
+  });
+
   it('should render the inline view with props when the appearance is inline', async () => {
     const wrapper = mount(
       <Card appearance="inline" data={{ name: 'foobar' }} />,
