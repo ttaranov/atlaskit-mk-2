@@ -90,11 +90,15 @@ export const calcTableWidth = (
             (addControllerPadding ? CONTROLLER_PADDING : 0)}px`
         : '100%';
     case 'wide':
-      const targetWidth =
-        containerWidth - (addControllerPadding ? CONTROLLER_PADDING : 0);
-      return targetWidth < akEditorWideLayoutWidth
-        ? `${targetWidth}px`
-        : `${akEditorWideLayoutWidth}px`;
+      if (containerWidth) {
+        const targetWidth =
+          containerWidth - (addControllerPadding ? CONTROLLER_PADDING : 0);
+        return targetWidth < akEditorWideLayoutWidth
+          ? `${targetWidth}px`
+          : `${akEditorWideLayoutWidth}px`;
+      } else {
+        return '100%';
+      }
     default:
       return 'inherit';
   }
