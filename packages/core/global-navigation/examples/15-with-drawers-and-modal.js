@@ -157,11 +157,9 @@ class GlobalNavWithDrawers extends Component<Object, State> {
 export default () => (
   <NavigationProvider>
     <NavigationSubscriber>
-      {navigation => (
+      {() => (
         <LayoutManager
-          globalNavigation={props => (
-            <GlobalNavWithDrawers {...props} navigation={navigation} />
-          )}
+          globalNavigation={props => <GlobalNavWithDrawers {...props} />}
           productRootNavigation={() => null}
           productContainerNavigation={() => null}
         >
