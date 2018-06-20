@@ -12,6 +12,7 @@ import {
   UploadableFile,
   ContextConfig,
   MediaApiConfig,
+  UploadController,
 } from '@atlaskit/media-store';
 
 import {
@@ -74,7 +75,10 @@ export interface Context {
   refreshCollection(collectionName: string, pageSize: number): void;
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-  uploadFile(file: UploadableFile): Observable<FileState>;
+  uploadFile(
+    file: UploadableFile,
+    controller?: UploadController,
+  ): Observable<FileState>;
 
   readonly config: ContextConfig;
 }
@@ -251,7 +255,10 @@ class ContextImpl implements Context {
     return linkService.addLinkItem(url, collectionName, metadata);
   }
 
-  uploadFile(file: UploadableFile): Observable<FileState> {
+  uploadFile(
+    file: UploadableFile,
+    controller?: UploadController,
+  ): Observable<FileState> {
     let id: string;
     // TODO: we can't get the size from a file when is string, make media-store + Chunkinator to pass this info?
     const size = file.content instanceof Blob ? file.content.size : 0;
@@ -271,6 +278,10 @@ class ContextImpl implements Context {
             });
           },
         });
+
+        if (controller) {
+          controller.setCancel(cancel);
+        }
 
         deferredFileId.then(id => {
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
@@ -292,11 +303,12 @@ class ContextImpl implements Context {
         // }
       } catch (e) {
         observer.error(e);
-        return () => {};
+        // return () => {};
       }
     })
       .concat(Observable.defer(() => this.createDownloadFileStream(id)))
       .publishReplay(1);
+    // TODO: Should we use refCount or not?
     // .refCount()
 
     this.fileStreamsCache.set(tempFileId, fileStream);

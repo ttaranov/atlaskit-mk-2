@@ -5,11 +5,10 @@ import {
   defaultCollectionName,
   mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
-import { ContextFactory } from '../src';
+import { ContextFactory, UploadController } from '../src';
 import { FilesWrapper, FileWrapper } from '../example-helpers/styled';
 import { Observable } from 'rxjs/Observable';
 import { FileState } from '../src/fileState';
-import { Subscription } from 'rxjs/Subscription';
 
 export interface ComponentProps {}
 export interface ComponentState {
@@ -23,7 +22,7 @@ const mediaContext = ContextFactory.create({
 
 class Example extends Component<ComponentProps, ComponentState> {
   fileStreams: Observable<FileState>[];
-  uploadingFileSubscription?: Subscription;
+  uploadController?: UploadController;
 
   constructor(props: ComponentProps) {
     super(props);
@@ -46,19 +45,22 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0];
-    const stream = mediaContext.uploadFile({
+    const uplodableFile = {
       content: file,
       name: file.name,
       collection: defaultCollectionName,
-    });
+    };
+    const uploadController = new UploadController();
+    const stream = mediaContext.uploadFile(uplodableFile, uploadController);
 
+    this.uploadController = uploadController;
     this.addStream(stream);
   };
 
   addStream = (stream: Observable<FileState>) => {
     const streamId = new Date().getTime();
 
-    const subscription = stream.subscribe({
+    stream.subscribe({
       next: this.onFileUpdate(streamId),
       complete() {
         console.log('stream complete');
@@ -67,8 +69,6 @@ class Example extends Component<ComponentProps, ComponentState> {
         console.log('stream error', error);
       },
     });
-
-    this.uploadingFileSubscription = subscription;
 
     this.fileStreams.push(stream);
   };
@@ -103,9 +103,8 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   cancelUpload = () => {
-    if (this.uploadingFileSubscription) {
-      console.log('unsubscribe');
-      this.uploadingFileSubscription.unsubscribe();
+    if (this.uploadController) {
+      this.uploadController.cancel();
     }
   };
 

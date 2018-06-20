@@ -5,7 +5,7 @@ import {
   MediaType,
   FileItem,
 } from '@atlaskit/media-core';
-import { MediaStore } from '@atlaskit/media-store';
+import { MediaStore, UploadController } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
@@ -90,10 +90,10 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
-      // TODO: Can we just "unsubscribe" ?
-      // TODO: remove this
+      // TODO: remove "this" bind
       // TODO: test this still works
-      const subscription = this.context.uploadFile(uploadableFile).subscribe({
+      const controller = new UploadController();
+      this.context.uploadFile(uploadableFile, controller).subscribe({
         next() {
           this.onFileProgress.bind(this, cancellableFileUpload);
         },
@@ -103,7 +103,7 @@ export class NewUploadServiceImpl implements UploadService {
         },
       });
 
-      cancellableFileUpload.cancel = subscription.unsubscribe;
+      cancellableFileUpload.cancel = controller.cancel;
     });
   }
 
