@@ -64,6 +64,18 @@ function getScrollY(node = window) {
   return scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
 }
 
+function updateAttribute(
+  node: HTMLElement,
+  attribute: string,
+  update: string => string,
+) {
+  const current = node.getAttribute(attribute);
+  if (current) {
+    node.setAttribute(attribute, update(current));
+  }
+  return node;
+}
+
 export default function withScrollMeasurements(
   WrappedComponent: ComponentType<*>,
 ) {
@@ -147,14 +159,12 @@ export default function withScrollMeasurements(
       }
 
       // ensure positioning of cloned node is static
-      const cloned = node.cloneNode(true);
-      const staticStyle = cloned
-        .getAttribute('style')
-        .replace(/position: (.*);/, 'position: static;');
-      cloned.setAttribute('style', staticStyle);
+      const clonedNode = updateAttribute(node.cloneNode(true), 'style', style =>
+        style.replace(/position: (.*);/, 'position: static;'),
+      );
 
       this.setState({
-        clone: cloned.outerHTML,
+        clone: clonedNode.outerHTML,
         rect: { height, left, top, width },
         scrollY: getScrollY(),
       });

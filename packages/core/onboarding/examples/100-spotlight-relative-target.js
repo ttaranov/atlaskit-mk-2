@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import Lorem from 'react-lorem-component';
 
 import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
 
@@ -19,6 +18,11 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
             backgroundColor: 'lightblue',
           }}
         >
+          <div style={{ textAlign: 'center', paddingTop: '2em' }}>
+            <button onClick={() => this.setState({ active: true })}>
+              Spotlight grey box
+            </button>
+          </div>
           <SpotlightTarget name="box">
             <div
               style={{
@@ -34,12 +38,6 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
           </SpotlightTarget>
         </div>
 
-        <div style={{ textAlign: 'center', padding: '3em' }}>
-          <button onClick={() => this.setState({ active: true })}>
-            Spotlight grey box
-          </button>
-        </div>
-
         {active && (
           <Spotlight
             actions={[
@@ -53,7 +51,8 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
             key="box"
             target="box"
           >
-            <Lorem count={1} />
+            Despite the target being relatively positioned, the spotlight is
+            shown in the correct place.
           </Spotlight>
         )}
       </SpotlightManager>
