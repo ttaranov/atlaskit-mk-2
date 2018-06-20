@@ -1,15 +1,15 @@
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
 import {
-  switchMap,
+  mergeMap,
   map,
   catchError,
   startWith,
   refCount,
   publishReplay,
 } from 'rxjs/operators';
-import { Command } from './Command';
+import { Command, ObjectState, AuthService } from './types';
 import { fetch } from './fetch';
 
 // @see https://product-fabric.atlassian.net/wiki/spaces/CS/pages/279347271/Object+Provider
@@ -27,27 +27,6 @@ interface ResolveResponse {
   data?: {
     [name: string]: any;
   };
-}
-
-export type ObjectStatus =
-  | 'resolving'
-  | 'not-found'
-  | 'resolved'
-  | 'unauthorised'
-  | 'forbidden'
-  | 'errored';
-
-export interface AuthService {
-  id: string;
-  name: string;
-  startAuthUrl: string;
-}
-
-export interface ObjectState {
-  status: ObjectStatus;
-  provider?: string;
-  services: AuthService[];
-  data?: { [name: string]: any };
 }
 
 function convertAuthToService(auth: {
@@ -68,7 +47,10 @@ export class Options {
   $commands: Subject<Command>;
 }
 
-export function createObjectStateObservable(url: string, options: Options) {
+export function createObjectResolverServiceObservable(
+  url: string,
+  options: Options,
+) {
   const { serviceUrl, objectUrl, $commands } = options;
 
   let provider: string | undefined;
@@ -77,7 +59,7 @@ export function createObjectStateObservable(url: string, options: Options) {
     startWith({
       type: 'init',
     }),
-    switchMap((cmd: Command) => {
+    mergeMap((cmd: Command) => {
       // ignore reloads for other providers
       if (cmd.type === 'reload' && cmd.provider !== provider) {
         return Observable.empty();

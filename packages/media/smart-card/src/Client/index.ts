@@ -1,41 +1,64 @@
-import { Subject, Observable } from 'rxjs';
-import { Command } from './Command';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import {
-  createObjectStateObservable,
+  Command,
   ObjectState,
   ObjectStatus,
   AuthService,
-} from './createObjectStateObservable';
+  TemporaryResolver,
+} from './types';
+import { race } from './race';
+import { createObjectResolverServiceObservable } from './createObjectResolverServiceObservable';
+import { createTemporaryResolverObservable } from './createTemporaryResolverObservable';
 
 // TODO: add some form of caching so that urls not currently loaded will still be fast
 
 export interface ClientOptions {
   serviceUrl?: string;
+  temporaryResolver?: TemporaryResolver;
 }
 
 export class Client {
-  static SERVICE_URL = 'https://api-private.stg.atlassian.com/object-resolver';
+  static SERVICE_URL = 'https://api-private.stg.atlassian.com/object-resolver'; // TODO: use prod URL here
 
   private readonly serviceUrl: string;
+  private readonly temporaryResolver?: TemporaryResolver;
   private readonly pool: Map<string, Observable<ObjectState>> = new Map();
   private readonly $commands: Subject<Command> = new Subject();
 
   constructor(options: ClientOptions = {}) {
     const { serviceUrl = Client.SERVICE_URL } = options;
     this.serviceUrl = serviceUrl;
+    this.temporaryResolver = options.temporaryResolver;
+  }
+
+  private createObservable(url: string): Observable<ObjectState> {
+    const temporaryResolver = this.temporaryResolver;
+    if (temporaryResolver) {
+      return race(
+        createTemporaryResolverObservable(url, temporaryResolver),
+        createObjectResolverServiceObservable(url, {
+          serviceUrl: this.serviceUrl,
+          objectUrl: url,
+          $commands: this.$commands,
+        }),
+      );
+    } else {
+      return createObjectResolverServiceObservable(url, {
+        serviceUrl: this.serviceUrl,
+        objectUrl: url,
+        $commands: this.$commands,
+      });
+    }
   }
 
   get(url: string): Observable<ObjectState> {
     return new Observable<ObjectState>(observer => {
       let observable = this.pool.get(url);
       if (!observable) {
-        observable = createObjectStateObservable(url, {
-          serviceUrl: this.serviceUrl,
-          objectUrl: url,
-          $commands: this.$commands,
-        });
+        observable = this.createObservable(url);
+        this.pool.set(url, observable);
       }
-      this.pool.set(url, observable);
       const subscription = observable.subscribe(state => observer.next(state));
       return () => {
         this.pool.delete(url);
