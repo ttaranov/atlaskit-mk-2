@@ -1,14 +1,19 @@
 import {
   Result,
   ResultType,
-  ResultContentType,
   AnalyticsType,
+  ContainerResult,
+  JiraObjectResult,
+  ConfluenceObjectResult,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
+
+export type ConfluenceItemContentType = 'page' | 'blogpost';
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
@@ -39,7 +44,7 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
-    type: ResultContentType;
+    type: ConfluenceItemContentType;
   };
   container: {
     title: string; // this is unhighlighted
@@ -175,43 +180,40 @@ function mapItemToResult(
 function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
-): Result {
-  const result: Result = {
-    resultType: ResultType.Object,
-    resultId: 'search-' + item.url,
+): ConfluenceObjectResult {
+  return {
+    resultId: `search-${item.url}`,
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
+    contentType: `confluence-${item.content!.type}` as ContentType,
+    resultType: ResultType.ConfluenceObjectResult,
   };
-
-  if (item.content && item.content.type) {
-    result.contentType = item.content.type as ResultContentType;
-  }
-
-  return result;
 }
 
-function mapJiraItemToResult(item: JiraItem): Result {
+function mapJiraItemToResult(item: JiraItem): JiraObjectResult {
   return {
-    resultType: ResultType.Object,
-    resultId: 'search-' + item.key,
+    resultId: `search- + ${item.key}`,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
-    href: '/browse/' + item.key,
+    href: `/browse/${item.key}`,
     containerName: item.fields.project.name,
     objectKey: item.key,
     analyticsType: AnalyticsType.ResultJira,
+    resultType: ResultType.JiraObjectResult,
   };
 }
 
-function mapConfluenceItemToResultSpace(spaceItem: ConfluenceItem): Result {
+function mapConfluenceItemToResultSpace(
+  spaceItem: ConfluenceItem,
+): ContainerResult {
   return {
-    resultType: ResultType.Container,
-    resultId: 'search-' + spaceItem.container.displayUrl,
+    resultId: `search-${spaceItem.container.displayUrl}`,
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
     analyticsType: AnalyticsType.ResultConfluence,
+    resultType: ResultType.GenericContainerResult,
   };
 }

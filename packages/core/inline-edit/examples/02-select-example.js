@@ -43,7 +43,6 @@ export default class SelectExample extends Component<void, State> {
   renderEditView = () => (
     <MultiSelect
       defaultSelected={MultiSelectItems}
-      // $FlowFixMe TEMPORARY
       items={MultiSelectItems}
       isDefaultOpen
       shouldFitContainer

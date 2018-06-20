@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { PortalProvider } from '../../src/ui/PortalProvider';
+import { PortalProvider, PortalRenderer } from '../../src/ui/PortalProvider';
 
 const Component = () => <div>My component</div>;
 
@@ -23,7 +23,7 @@ describe('PortalProvider', () => {
       <PortalProvider
         render={api => {
           portalProviderAPI = api;
-          return null;
+          return <PortalRenderer portalProviderAPI={api} />;
         }}
       />,
     );
@@ -40,7 +40,7 @@ describe('PortalProvider', () => {
       <PortalProvider
         render={api => {
           portalProviderAPI = api;
-          return null;
+          return <PortalRenderer portalProviderAPI={api} />;
         }}
       />,
     );
@@ -57,7 +57,7 @@ describe('PortalProvider', () => {
       <PortalProvider
         render={api => {
           portalProviderAPI = api;
-          return null;
+          return <PortalRenderer portalProviderAPI={api} />;
         }}
       />,
     );
@@ -65,7 +65,7 @@ describe('PortalProvider', () => {
     portalProviderAPI.render(<Component />, place);
     wrapper.update();
 
-    portalProviderAPI.destroy(place);
+    portalProviderAPI.remove(place);
     wrapper.update();
 
     expect(wrapper.find(Component).length).toBe(0);

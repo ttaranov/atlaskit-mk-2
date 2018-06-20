@@ -1,7 +1,0 @@
-{
-  "extends": "../../src/json-schema/tsconfig",
-  "compilerOptions": {
-    "outDir": "../../dist/json-schema-cli",
-    "sourceMap": false
-  }
-}

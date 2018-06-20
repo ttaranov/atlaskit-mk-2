@@ -1,5 +1,15 @@
 # @atlaskit/analytics-listeners
 
+## 2.0.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+
+## 2.0.1
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-gas-types@2.1.2
+  - @atlaskit/analytics-next@2.1.7
+
 ## 2.0.0
 - [major] client parameter changed to a Promise in the listeners given Confluence gets the AnalyticsWebClient instance asynchronously [628e427](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/628e427)
 
@@ -14,7 +24,6 @@
   - @atlaskit/analytics-gas-types@2.1.1
 
 ## 1.1.0
-
 - [minor] Add listener for events fired by core atlaskit components [bcc7d8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcc7d8f)
 - [patch] Updated dependencies [9be1db0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9be1db0)
   - @atlaskit/analytics-gas-types@2.1.0

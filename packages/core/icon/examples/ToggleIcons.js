@@ -1,11 +1,13 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { colors } from '@atlaskit/theme';
 import components from '../utils/icons';
 
 const twoColorIcons = ['checkbox', 'radio'];
 
-const toggleableIcons = Object.keys(components)
+const toggleableIcons: Array<[string, ComponentType<any>]> = Object.keys(
+  components,
+)
   .filter(key => twoColorIcons.indexOf(key) !== -1)
   .map(key => [key, components[key].component]);
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { emoji, emojiQuery, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, emojiPluginKey } from './pm-plugins/main';
@@ -96,6 +97,20 @@ const emojiPlugin: EditorPlugin = {
         renderNode={renderNode}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Emoji',
+        icon: () => <EmojiIcon label="Emoji" />,
+        action(insert, state) {
+          const mark = state.schema.mark('emojiQuery');
+          const emojiText = state.schema.text(':', [mark]);
+          return insert(emojiText);
+        },
+      },
+    ],
   },
 };
 

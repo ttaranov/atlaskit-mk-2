@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-navigation",
-  "version": "0.0.9",
+  "version": "2.0.0",
   "description": "Global navigation component for Atlassian",
   "main": "dist/cjs/index.js",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -11,26 +11,28 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^11.0.1",
-    "@atlaskit/blanket": "^6.0.1",
-    "@atlaskit/docs": "^4.0.1",
-    "@atlaskit/icon": "^12.0.1",
-    "@atlaskit/navigation-next": "^0.2.1",
-    "@atlaskit/theme": "^4.0.1",
+    "@atlaskit/avatar": "^11.1.1",
+    "@atlaskit/badge": "^8.0.3",
+    "@atlaskit/blanket": "^6.0.3",
+    "@atlaskit/docs": "^4.1.1",
+    "@atlaskit/drawer": "^0.1.0",
+    "@atlaskit/dropdown-menu": "^5.0.4",
+    "@atlaskit/icon": "^12.1.2",
+    "@atlaskit/navigation-next": "^1.0.0",
+    "@atlaskit/theme": "^4.0.4",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
     "react-dom": "^16.3.0",
-    "react-transition-group": "^2.2.1",
-    "unstated": "^1.2.0"
+    "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@atlaskit/dropdown-menu": "^5.0.1",
-    "@atlaskit/onboarding": "^4.0.1",
+    "@atlaskit/modal-dialog": "^5.2.2",
+    "@atlaskit/onboarding": "^4.1.2",
     "react-lorem-component": "^0.12.2"
   }
 }

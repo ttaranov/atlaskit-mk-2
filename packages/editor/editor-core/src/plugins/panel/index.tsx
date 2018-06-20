@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { panel } from '@atlaskit/editor-common';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
+import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, stateKey } from './pm-plugins/main';
 import PanelEdit from './ui/PanelEdit';

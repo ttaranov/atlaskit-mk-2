@@ -7,6 +7,7 @@ import {
   CellAttributes,
   LinkAttributes,
   TableAttributes,
+  CardAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -343,12 +344,14 @@ export const extension = (attrs: {
   extensionType: string;
   parameters?: object;
   text?: string;
+  layout?: string;
 }) => nodeFactory(sampleSchema.nodes.extension, attrs);
 export const bodiedExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
   text?: string;
+  layout?: string;
 }) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
 export const date = (attrs: { timestamp: string | number }) =>
   nodeFactory(sampleSchema.nodes.date, attrs)();
@@ -366,6 +369,8 @@ export const layoutSection = (
   attrs: { layoutType: string } = { layoutType: 'two-equal' },
 ) => nodeFactory(sampleSchema.nodes.layoutSection, attrs);
 export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
+export const inlineCard = (attrs: CardAttributes) =>
+  nodeFactory(sampleSchema.nodes.inlineCard, attrs);
 
 //
 // Marks

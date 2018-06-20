@@ -25,7 +25,6 @@ import {
   JSONNode,
 } from '@atlaskit/editor-json-transformer';
 import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
-import { stateKey as tableStateKey } from '../plugins/table/pm-plugins/main';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { GapCursorSelection, Side } from '../plugins/gap-cursor/selection';
 
@@ -709,8 +708,8 @@ export const isEmptyNode = (schema: Schema) => {
 };
 
 export const isTableCell = (state: EditorState) => {
-  const pluginState = tableStateKey.getState(state);
-  return !!(pluginState && pluginState.tableNode);
+  const { tableCell, tableHeader } = state.schema.nodes;
+  return hasParentNodeOfType([tableCell, tableHeader])(state.selection);
 };
 
 export const isElementInTableCell = (

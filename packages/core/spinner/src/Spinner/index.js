@@ -20,7 +20,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
     isCompleting: false,
     invertColor: false,
     onComplete: () => {},
-    size: 'small',
+    size: 'medium',
   };
 
   transitionNode: ?HTMLElement;
@@ -52,6 +52,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
   endListener = (node: ?HTMLElement, done: Function) => {
     const executeCallback = (event: AnimationEvent) => {
       // ignore animation events on the glyph
+      // $FlowFixMe - tagName does not exist in event.target
       if (event.target.tagName === 'svg') {
         return false;
       }

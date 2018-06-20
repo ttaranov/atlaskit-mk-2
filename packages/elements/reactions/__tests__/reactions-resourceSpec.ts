@@ -366,8 +366,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       expect(reaction.reacted).toEqual(true);
     });
 
-    // Skip for now. This is flaky. See issue FS-1993
-    it.skip('should not override multiple optimistic add', done => {
+    it('should not override multiple optimistic add', done => {
       const reactionsProvider = new ReactionsResource({ baseUrl });
 
       let callCount = 0;
@@ -493,6 +492,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         thumbsupId.id!,
       );
 
+      expect(handler).toHaveBeenCalledTimes(2);
       expect(getReactionsForEmojiAtNthCall(thumbsupId, 1).count).toEqual(6);
 
       const toggleSmiley = reactionsProvider.toggleReaction(
@@ -501,23 +501,24 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         smileyId.id!,
       );
 
+      expect(handler).toHaveBeenCalledTimes(3);
       expect(getReactionsForEmojiAtNthCall(thumbsupId, 2).count).toEqual(6);
       expect(getReactionsForEmojiAtNthCall(smileyId, 2).count).toEqual(1);
 
       toggleGrinning.then(() => {
-        expect(getReactionsForEmojiAtNthCall(thumbsupId, 3).count).toEqual(6);
-        expect(getReactionsForEmojiAtNthCall(smileyId, 3).count).toEqual(1);
+        expect(handler).toHaveBeenCalledTimes(3);
 
-        toggleSmiley.then(() => {
-          expect(getReactionsForEmojiAtNthCall(thumbsupId, 4).count).toEqual(6);
-          expect(getReactionsForEmojiAtNthCall(smileyId, 4).count).toEqual(1);
-
-          done();
-        });
+        toggleSmiley
+          .then(() => {
+            expect(getReactionsForEmojiAtNthCall(thumbsupId, 3).count).toEqual(
+              6,
+            );
+            expect(getReactionsForEmojiAtNthCall(smileyId, 3).count).toEqual(1);
+          })
+          .then(done, done);
 
         jest.runTimersToTime(150);
       });
-
       jest.runTimersToTime(150);
     });
 
@@ -622,7 +623,12 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         expect(spy).toHaveBeenCalledWith(
           reaction.containerAri,
           reaction.ari,
-          reactionsState,
+          expect.objectContaining({
+            ...reactionsState,
+            reactions: expect.arrayContaining([
+              expect.objectContaining(reactionsState.reactions[0]),
+            ]),
+          }),
         );
         spy.mockRestore();
       });
@@ -659,7 +665,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         },
         matcher: 'end:reactions',
         response: new Promise(resolve => {
-          setTimeout(() => resolve(fetchAddReaction()), 100);
+          setTimeout(() => resolve(fetchAddReaction()), 200);
         }),
       });
 

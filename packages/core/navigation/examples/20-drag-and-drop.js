@@ -86,7 +86,7 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
     });
   };
 
-  renderContainerItems = () => {
+  renderContainerItems = (): Array<Draggable> => {
     return this.state.items.map((item: Item, index) => (
       <Draggable draggableId={item.id} index={index} key={item.id}>
         {(provided, snapshot) => (
@@ -97,7 +97,6 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
               text={item.content}
               dnd={provided}
             />
-            {provided.placeholder}
           </div>
         )}
       </Draggable>
@@ -112,8 +111,11 @@ export default class NavigationWithDragAndDrop extends Component<void, State> {
         onDragEnd={this.onDragEnd}
       >
         <Droppable droppableId="list">
-          {dropProvided => (
-            <div ref={dropProvided.innerRef}>{containerItems}</div>
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {containerItems}
+              {provided.placeholder}
+            </div>
           )}
         </Droppable>
       </DragDropContext>

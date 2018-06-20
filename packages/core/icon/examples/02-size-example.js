@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Element } from 'react';
 import styled from 'styled-components';
 import Btn, { ButtonGroup } from '@atlaskit/button';
 
@@ -58,7 +58,7 @@ class IconSizeExample extends Component<{}, { size: sizeOpts }> {
 
   updateSize = (s: sizeOpts) => this.setState({ size: s });
 
-  renderButtons = () =>
+  renderButtons = (): Array<Element<typeof Button>> =>
     sizes.map(s => (
       <Button
         isSelected={s === this.state.size}

@@ -20,7 +20,6 @@ import {
 
 export const RowContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: ${tableToolbarSize}px;
-  box-sizing: border-box;
   display: none;
 
   .ProseMirror .with-controls & {
@@ -31,7 +30,7 @@ export const RowContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const RowInner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
-  & > div:last-child > button {
+  & > div.table-row.last > button {
     border-bottom-left-radius: ${tableBorderRadiusSize}px;
   }
 `;
@@ -41,30 +40,46 @@ export const RowControlsButtonWrap: ComponentClass<
 > = styled.div`
   position: relative;
   margin-top: -1px;
+
+  &.scrolling {
+    z-index: 1;
+  }
+
   &:hover,
   &.active {
-    z-index: 1;
+    z-index: 2;
   }
 `;
 
 export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
   HeaderButtonDefault,
 )`
-  border-right: none;
+  border-right-width: 0;
   border-bottom: 1px solid ${tableBorderColor};
   border-radius: 0;
   height: 100%;
+
   width: ${tableToolbarSize - 1}px;
+
+  .scrolling & {
+    border-right: 1px solid ${tableBorderColor};
+  }
+
+  .table-container[data-number-column='true'] & {
+    width: ${tableToolbarSize}px;
+    border-right: 0 none;
+  }
 
   &:hover,
   .active > &,
   .tableHovered & {
     border-right: 1px solid ${tableBorderSelectedColor};
-    width: ${tableToolbarSize}px;
+    border-bottom: 1px solid ${tableBorderSelectedColor};
   }
 
   .danger > & {
     border-right: 1px solid ${tableBorderDeleteColor};
+    border-bottom: 1px solid ${tableBorderDeleteColor};
   }
 `;
 
@@ -76,7 +91,7 @@ export const InsertRowButtonWrap: ComponentClass<
   left: -${tableInsertColumnButtonSize}px;
   height: ${tableInsertColumnButtonSize}px;
   width: ${tableInsertColumnButtonSize}px;
-  z-index: 2;
+
   cursor: pointer;
   &:hover > div {
     display: flex;
@@ -91,7 +106,6 @@ export const DeleteRowButtonWrap: ComponentClass<
   left: -${tableDeleteColumnButtonSize + 6}px;
   height: ${tableDeleteColumnButtonSize}px;
   width: ${tableDeleteColumnButtonSize}px;
-  z-index: 2;
   cursor: pointer;
   & > div {
     display: flex;

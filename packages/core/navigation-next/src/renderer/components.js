@@ -60,9 +60,15 @@ const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
   const ViewSubscriber = goTo.match(/^root\//)
     ? RootViewSubscriber
     : ContainerViewSubscriber;
+
+  const handleClick = (e, view) => {
+    e.preventDefault();
+    view.setView(goTo);
+  };
+
   return (
     <ViewSubscriber>
-      {view => <Item onClick={() => view.setView(goTo)} {...props} />}
+      {view => <Item onClick={e => handleClick(e, view)} {...props} />}
     </ViewSubscriber>
   );
 };
@@ -141,9 +147,11 @@ const Group = ({
   hasSeparator,
   isRootLevel,
   items,
+  title,
 }: GroupProps) =>
   items.length ? (
     <div css={isRootLevel ? rootLevelGroupStyles : null}>
+      {title ? <Title text={title} /> : null}
       <ItemsRenderer items={items} customComponents={customComponents} />
       {hasSeparator && <Separator />}
     </div>

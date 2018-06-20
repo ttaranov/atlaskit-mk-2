@@ -93,7 +93,7 @@ export default class InlineDialog extends Component<Props, {}> {
     // on (top or bottom aligned would move left/right) and the second is on the
     // perpendicular axis (how far 'away' you are from the target) both are measured
     // in pixels
-    // $FlowFixMe TEMPORARY
+    // $FlowFixMe - no arguments are expected by function
     const dialogOffset = `0 ${gridSize(this.props)}`;
 
     const layerContent = isOpen ? (

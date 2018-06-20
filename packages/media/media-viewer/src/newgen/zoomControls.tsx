@@ -3,64 +3,54 @@ import { Component } from 'react';
 import Button from '@atlaskit/button';
 import ZoomOutIcon from '@atlaskit/icon/glyph/media-services/zoom-out';
 import ZoomInIcon from '@atlaskit/icon/glyph/media-services/zoom-in';
+import { ZoomLevel } from './domain';
 import {
   ZoomWrapper,
   ZoomControlsWrapper,
   hideControlsClassName,
-  ZoomLevel,
+  ZoomLevelIndicator,
 } from './styled';
 
-export type ZoomDirection = 'out' | 'in';
-
 export interface ZoomControlsProps {
-  onChange: (newZoom: number) => void;
-  zoom: number;
+  onChange: (newZoomLevel: ZoomLevel) => void;
+  zoomLevel: ZoomLevel;
 }
 
-const zoomValues = [20, 50, 100, 200, 500];
-
 export class ZoomControls extends Component<ZoomControlsProps, {}> {
-  zoom = (direction: ZoomDirection) => () => {
-    const { onChange } = this.props;
-    const newZoom = this.getNewZoomValue(direction);
-    if (newZoom) {
-      onChange(newZoom);
+  zoomIn = () => {
+    const { onChange, zoomLevel } = this.props;
+    if (zoomLevel.canZoomIn) {
+      onChange(zoomLevel.zoomIn());
     }
   };
 
-  get canZoomOut(): boolean {
-    return this.getNewZoomValue('out') !== undefined;
-  }
-
-  get canZoomIn(): boolean {
-    return this.getNewZoomValue('in') !== undefined;
-  }
+  zoomOut = () => {
+    const { onChange, zoomLevel } = this.props;
+    if (zoomLevel.canZoomOut) {
+      onChange(zoomLevel.zoomOut());
+    }
+  };
 
   render() {
-    const { canZoomOut, canZoomIn } = this;
-    const { zoom } = this.props;
+    const { zoomLevel } = this.props;
     return (
       <ZoomWrapper className={hideControlsClassName}>
         <ZoomControlsWrapper>
           <Button
-            isDisabled={!canZoomOut}
-            onClick={this.zoom('out')}
-            iconBefore={<ZoomOutIcon primaryColor="white" label="zoom out" />}
+            appearance="toolbar"
+            isDisabled={!zoomLevel.canZoomOut}
+            onClick={this.zoomOut}
+            iconBefore={<ZoomOutIcon label="zoom out" />}
           />
           <Button
-            isDisabled={!canZoomIn}
-            onClick={this.zoom('in')}
-            iconBefore={<ZoomInIcon primaryColor="white" label="zoom in" />}
+            appearance="toolbar"
+            isDisabled={!zoomLevel.canZoomIn}
+            onClick={this.zoomIn}
+            iconBefore={<ZoomInIcon label="zoom in" />}
           />
         </ZoomControlsWrapper>
-        <ZoomLevel>{zoom} %</ZoomLevel>
+        <ZoomLevelIndicator>{zoomLevel.asPercentage}</ZoomLevelIndicator>
       </ZoomWrapper>
     );
-  }
-
-  private getNewZoomValue(direction: ZoomDirection): number | undefined {
-    const { zoom } = this.props;
-    const index = zoomValues.indexOf(zoom);
-    return direction === 'out' ? zoomValues[index - 1] : zoomValues[index + 1];
   }
 }

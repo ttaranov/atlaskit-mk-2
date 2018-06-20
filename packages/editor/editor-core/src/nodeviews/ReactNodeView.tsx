@@ -24,18 +24,28 @@ export default class ReactNodeView implements NodeView {
     view: EditorView,
     getPos: getPosHandler,
     portalProviderAPI: PortalProviderAPI,
-    props: ReactComponentProps = {},
+    reactComponentProps: ReactComponentProps = {},
     reactComponent?: React.ComponentType<any>,
   ) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.portalProviderAPI = portalProviderAPI;
-    this.reactComponentProps = props;
+    this.reactComponentProps = reactComponentProps;
     this.reactComponent = reactComponent;
+  }
 
+  /**
+   * This method exists to move initialization logic out of the constructor,
+   * so object can be initialized properly before calling render first time.
+   *
+   * Example:
+   * Instnace properties get added to an object only after super call in constructor,
+   * which leads to some methods being undefined during the first render.
+   */
+  init() {
     this.domRef = this.getDomRef();
-    this.setDomAttrs(node);
+    this.setDomAttrs(this.node);
 
     const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM() || {
       dom: undefined,
@@ -51,11 +61,13 @@ export default class ReactNodeView implements NodeView {
     // @see ED-3790
     // something gets messed up during mutation processing inside of a nodeView if DOM structure has nested plain "div"s,
     // it doesn't see the difference between them and it kills the nodeView
-    this.domRef.className = `${node.type.name}View-content-wrap`;
+    this.domRef.className = `${this.node.type.name}View-content-wrap`;
 
     this.renderReactComponent(
       this.render(this.reactComponentProps, this.handleRef),
     );
+
+    return this;
   }
 
   private renderReactComponent(component: React.ReactElement<any> | null) {
@@ -141,7 +153,7 @@ export default class ReactNodeView implements NodeView {
       return;
     }
 
-    this.portalProviderAPI.destroy(this.domRef);
+    this.portalProviderAPI.remove(this.domRef);
     this.domRef = undefined;
     this.contentDOM = undefined;
   }
@@ -159,6 +171,6 @@ export default class ReactNodeView implements NodeView {
         portalProviderAPI,
         props,
         component,
-      );
+      ).init();
   }
 }

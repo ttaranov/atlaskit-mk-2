@@ -24,7 +24,7 @@ type LabelProps = {
 export const Label = styled.label`
   display: ${({ isFullWidth }) => (isFullWidth ? 'block' : 'inline-block')};
   color: ${(props: LabelProps): string =>
-    // $FlowFixMe TEMPORARY
+    // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
   ${({ isDisabled }: LabelProps) =>
     isDisabled
@@ -35,9 +35,11 @@ export const Label = styled.label`
 `;
 
 type IconWrapperProps = {
+  isActive: boolean,
   isChecked: boolean,
   isDisabled: boolean,
   isFocused: boolean,
+  isInvalid: boolean,
 };
 
 const borderColor = themed({ light: colors.N40, dark: colors.DN80 });
@@ -86,7 +88,6 @@ const getTickColor = props => {
   } else if (!isChecked) {
     color = themed({ light: 'transparent', dark: 'transparent' });
   }
-  // $FlowFixMe TEMPORARY
   return color(rest);
 };
 
@@ -99,7 +100,7 @@ const getBoxColor = props => {
   if (isDisabled) {
     color = themed({ light: colors.N20, dark: colors.DN10 });
   } else if (isActive) {
-    color = themed({ light: colors.B75, dark: colors.B200 });
+    color = themed({ light: colors.B50, dark: colors.B200 });
   } else if (isHovered && isChecked) {
     color = themed({ light: colors.B300, dark: colors.B75 });
   } else if (isHovered) {
@@ -107,7 +108,6 @@ const getBoxColor = props => {
   } else if (isChecked) {
     color = themed({ light: colors.B400, dark: colors.B400 });
   }
-  // $FlowFixMe TEMPORARY
   return color(rest);
 };
 

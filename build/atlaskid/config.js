@@ -26,7 +26,7 @@ const atlaskitTeam = [
   'pete_gleeson',
   'mgardiner_atlas',
   'padmaia',
-  'isriharsha',
+  'isriharsha', // Navteam
 ];
 const editorTeam = [
   'imsysoev',
@@ -44,6 +44,7 @@ const editorTeam = [
   'agnes',
   'vsutrave',
   'ahixon_atlassian',
+  'wangjerome',
 ];
 const elementsTeam = [
   'sguillope',
@@ -68,6 +69,7 @@ const mediaTeam = [
   'vvvlasov',
   'dklinnert',
   'iloire-atlassian',
+  'ivandemchenko',
 ];
 const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
 const kitkatTeam = [
@@ -98,12 +100,20 @@ module.exports = {
     botPassword: botPassword,
     repoOwner: repoOwner,
     repoName: repoName,
-    usersAllowedToApprove: usersAllowedToApprove,
+    repoUuid: '{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}',
   },
   ciConfig: {
     botUsername: botUsername,
     botPassword: botPassword,
     repoOwner: repoOwner,
     repoName: repoName,
+  },
+  prSettings: {
+    requiredApprovals: 1,
+    canApproveOwnPullRequest: false,
+    requireClosedTasks: true,
+    requireGreenBuild: true,
+    allowLandWhenAble: true,
+    usersAllowedToApprove: usersAllowedToApprove,
   },
 };

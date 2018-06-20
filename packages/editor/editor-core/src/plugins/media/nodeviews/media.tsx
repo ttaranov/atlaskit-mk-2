@@ -26,8 +26,6 @@ export interface MediaNodeProps extends ReactNodeProps {
   ) => void;
 }
 
-const getId = (props: MediaNodeProps) => props.node.attrs.__key;
-
 export default class MediaNode extends Component<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
 
@@ -47,17 +45,12 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
     this.pluginState.handleMediaNodeUnmount(node);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (
-      getId(nextProps) !== getId(this.props) ||
-      nextProps.selected !== this.props.selected ||
-      this.props.progress !== nextProps.progress ||
-      this.props.node.attrs.width !== nextProps.node.attrs.width
-    );
-  }
-
   cancelProgress = () => {
-    const { node: { attrs: { __key } } } = this.props;
+    const {
+      node: {
+        attrs: { __key },
+      },
+    } = this.props;
     this.pluginState.removeNodeById(__key);
   };
 

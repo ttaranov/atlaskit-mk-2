@@ -52,6 +52,8 @@ const cssLoaderExceptions = (pkgJSONName, groupId, packageId) => [
   ],
 ];
 
+const tsMatch = /.+(\.ts|\.tsx)/;
+
 export default class CodeSandbox extends Component<{}, {}> {
   state = { parameters: '' };
 
@@ -71,6 +73,8 @@ export default class CodeSandbox extends Component<{}, {}> {
       .split('.')
       .slice(0, -1)
       .join('-');
+
+    if (tsMatch.test(example.id)) return null;
 
     return (
       <CodeSandboxer
