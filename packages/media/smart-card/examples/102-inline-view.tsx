@@ -52,7 +52,8 @@ export default () => (
         amet et magna sunt ea id eu ullamco laboris.
         <AuthErrorView
           url={url}
-          onTryAgain={() => {
+          onClick={() => {}}
+          onRetry={() => {
             alert('Trying hard!');
           }}
         />

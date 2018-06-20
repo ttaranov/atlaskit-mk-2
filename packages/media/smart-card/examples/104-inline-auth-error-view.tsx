@@ -30,7 +30,8 @@ class Example extends React.Component {
           <GridColumn>
             <AuthErrorView
               url={this.state.url}
-              onTryAgain={() => alert('Trying hard...')}
+              onClick={() => alert('This will have zero effect...')}
+              onRetry={() => alert('Trying hard...')}
             />
             <hr />
           </GridColumn>
@@ -42,7 +43,8 @@ class Example extends React.Component {
               in finibus augue. Etiam ut leo justo. Proin consequat lacus id leo{' '}
               <AuthErrorView
                 url={this.state.url}
-                onTryAgain={() => alert('Trying hard...')}
+                onClick={() => alert('This will have zero effect...')}
+                onRetry={() => alert('Trying hard...')}
               />{' '}
               volutpat ornare sodales nec purus. Curabitur tempor lacinia
               auctor. Proin commodo quis nisi at rutrum. In hac habitasse platea

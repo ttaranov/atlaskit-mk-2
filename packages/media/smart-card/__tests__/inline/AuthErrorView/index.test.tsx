@@ -9,14 +9,25 @@ const trunkatedURL = truncateUrlForErrorView(URL);
 
 describe('Unauth view', () => {
   it('should render the trancated url', () => {
-    const element = mount(<AuthErrorView url={URL} onTryAgain={() => {}} />);
+    const element = mount(<AuthErrorView url={URL} onRetry={() => {}} />);
     expect(element.text()).toContain(trunkatedURL);
   });
 
   it('should do click if try again clicked', () => {
-    const onClick = jest.fn();
-    const element = mount(<AuthErrorView url={URL} onTryAgain={onClick} />);
+    const onRetrySpy = jest.fn();
+    const element = mount(<AuthErrorView url={URL} onRetry={onRetrySpy} />);
     element.find('button').simulate('click');
-    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onRetrySpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not call onClick if onRetry was triggered', () => {
+    const onClickSpy = jest.fn();
+    const onRetrySpy = jest.fn();
+    const element = mount(
+      <AuthErrorView url={URL} onRetry={onRetrySpy} onClick={onClickSpy} />,
+    );
+    element.find('button').simulate('click');
+    expect(onRetrySpy).toHaveBeenCalledTimes(1);
+    expect(onClickSpy).not.toHaveBeenCalled();
   });
 });
