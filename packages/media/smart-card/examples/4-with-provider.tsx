@@ -4,8 +4,7 @@ import { Provider, Card, Client } from '../src';
 import '../mocks';
 
 const clientWithProvider = new Client({
-  temporaryResolver: (url: string) =>
-    console.log('resolver', url) ||
+  TEMPORARY_resolver: (url: string) =>
     Promise.resolve(
       url === 'public-happy'
         ? {

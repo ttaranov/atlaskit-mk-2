@@ -15,7 +15,7 @@ import { createTemporaryResolverObservable } from './createTemporaryResolverObse
 
 export interface ClientOptions {
   serviceUrl?: string;
-  temporaryResolver?: TemporaryResolver;
+  TEMPORARY_resolver?: TemporaryResolver;
 }
 
 export class Client {
@@ -29,7 +29,7 @@ export class Client {
   constructor(options: ClientOptions = {}) {
     const { serviceUrl = Client.SERVICE_URL } = options;
     this.serviceUrl = serviceUrl;
-    this.temporaryResolver = options.temporaryResolver;
+    this.temporaryResolver = options.TEMPORARY_resolver;
   }
 
   private createObservable(url: string): Observable<ObjectState> {

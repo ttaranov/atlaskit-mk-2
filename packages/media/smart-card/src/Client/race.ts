@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs/Observable';
 import { ObjectState } from './types';
 
-// this is very hacky bur used because rxjs' race() won't work with never ending observables and intermediate values
+// this is very hacky but used because rxjs' race() won't work with never ending observables and intermediate values
 export function race(
   a: Observable<ObjectState>,
   b: Observable<ObjectState>,
 ): Observable<ObjectState> {
   return Observable.create(observer => {
-    let winner: 'a' | 'b' | undefined = undefined;
+    let winner: 'a' | 'b' | undefined;
     let errorCount = 0;
 
     const subscriptionA = a.subscribe(state => {
@@ -47,7 +47,6 @@ export function race(
       ) {
         winner = 'b';
       }
-      console.log('state', state);
       observer.next(state);
     });
 
