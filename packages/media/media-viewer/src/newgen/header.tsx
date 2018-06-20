@@ -126,14 +126,20 @@ export default class Header extends React.Component<Props, State> {
 
   private renderDownload = () => {
     const { item } = this.state;
-    const icon = <DownloadIcon label="download" />;
+    const icon = <DownloadIcon label="Download" />;
     if (item.status !== 'SUCCESSFUL') {
       return (
-        <Button appearance="toolbar" isDisabled={true} iconBefore={icon} />
+        <Button
+          label="Download"
+          appearance="toolbar"
+          isDisabled={true}
+          iconBefore={icon}
+        />
       );
     } else {
       return (
         <Button
+          label="Download"
           appearance="toolbar"
           onClick={this.downloadItem(item.data)}
           iconBefore={icon}
