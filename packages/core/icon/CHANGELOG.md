@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 12.3.0
+- [minor] Object icons color updated and adding file types icons [c49ce0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c49ce0b)
+- [none] Updated dependencies [c49ce0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c49ce0b)
+
 ## 12.2.0
 - [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
 - [none] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
