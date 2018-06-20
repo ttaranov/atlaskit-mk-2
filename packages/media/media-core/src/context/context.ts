@@ -260,7 +260,9 @@ class ContextImpl implements Context {
     controller?: UploadController,
   ): Observable<FileState> {
     let id: string;
+    // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
+    // TODO [MSW-678]: remove when id upfront is exposed
     const tempFileId = uuid.v4();
     const fileStream = new Observable<FileState>(observer => {
       try {
