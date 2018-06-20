@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { takeWhile } from 'rxjs/operators';
 import { mount } from 'enzyme';
 import { Client, ObjectState, ObjectStatus } from '../../src/Client';
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { Card } from '../../src/Card';
 
 function isNotResolved(state: ObjectState) {
@@ -201,6 +201,43 @@ describe('Card', () => {
           text:
             'The most popular voted pages and posts from EAC as voted for all time.',
         },
+      }),
+    );
+  });
+
+  it('should render the resolved view when data is provided', async () => {
+    const wrapper = mount(<Card data={{ name: 'foobar' }} />);
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
+    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        title: { text: 'foobar' },
+      }),
+    );
+  });
+
+  it('should render the inline view with props when the appearance is inline', async () => {
+    const wrapper = mount(
+      <Card appearance="inline" data={{ name: 'foobar' }} />,
+    );
+    wrapper.update();
+    expect(wrapper.find(InlineCard.ResolvedView)).toHaveLength(1);
+    expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        title: 'foobar',
+      }),
+    );
+  });
+
+  it('should render the block view with props when the appearance is block', async () => {
+    const wrapper = mount(
+      <Card appearance="block" data={{ name: 'foobar' }} />,
+    );
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
+    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        title: { text: 'foobar' },
       }),
     );
   });
