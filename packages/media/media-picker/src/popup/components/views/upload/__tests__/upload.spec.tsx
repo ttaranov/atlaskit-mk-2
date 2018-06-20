@@ -87,6 +87,13 @@ describe('<StatelessUploadView />', () => {
       />
     );
   };
+  const recentItem = {
+    type: 'file',
+    id: 'some-file-id',
+    insertedAt: 0,
+    occurrenceKey: 'some-occurrence-key',
+    details: { name: 'some-file-name', size: 1000 },
+  };
 
   it('should render the loading state when "isLoading" is true', () => {
     const component = shallow(getUploadViewElement(true));
@@ -104,13 +111,6 @@ describe('<StatelessUploadView />', () => {
   });
 
   it('should render cards and dropzone when there are recent items', () => {
-    const recentItem = {
-      type: 'file',
-      id: 'some-file-id',
-      insertedAt: 0,
-      occurrenceKey: 'some-occurrence-key',
-      details: { name: 'some-file-name', size: 1000 },
-    };
     const recentItems = [recentItem, recentItem, recentItem];
 
     const component = shallow(getUploadViewElement(false, recentItems));
@@ -120,6 +120,23 @@ describe('<StatelessUploadView />', () => {
     expect(component.find(Dropzone).props().isEmpty).toEqual(false);
 
     expect(component.find(Card)).toHaveLength(3);
+  });
+
+  it('should not render empty files', () => {
+    const emptyItem = {
+      ...recentItem,
+      details: {
+        name: '',
+        size: 0,
+      },
+    };
+    const recentItems = [recentItem, emptyItem, recentItem];
+    const component = shallow(getUploadViewElement(false, recentItems));
+
+    expect(component.find(Wrapper)).toHaveLength(1);
+    expect(component.find(Dropzone)).toHaveLength(1);
+    expect(component.find(Dropzone).props().isEmpty).toEqual(false);
+    expect(component.find(Card)).toHaveLength(2);
   });
 
   it('should render currently uploading items', () => {
