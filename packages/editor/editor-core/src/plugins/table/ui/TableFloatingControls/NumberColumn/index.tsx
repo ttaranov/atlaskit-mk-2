@@ -16,7 +16,6 @@ export interface Props {
   resetHoverSelection: () => void;
   selectRow: (row: number) => void;
   hasHeaderRow?: boolean;
-  scroll?: number;
   isTableInDanger?: boolean;
 }
 
@@ -28,7 +27,6 @@ export default class NumberColumn extends Component<Props, any> {
       state,
       hasHeaderRow,
       isTableInDanger,
-      scroll,
       tableActive,
       hoverRows,
       resetHoverSelection,
@@ -66,12 +64,6 @@ export default class NumberColumn extends Component<Props, any> {
         </NumberedRow>,
       );
     }
-    return (
-      <NumberColumnContainer
-        className={scroll && scroll > 0 ? 'scrolling' : undefined}
-      >
-        {numberRows}
-      </NumberColumnContainer>
-    );
+    return <NumberColumnContainer>{numberRows}</NumberColumnContainer>;
   }
 }

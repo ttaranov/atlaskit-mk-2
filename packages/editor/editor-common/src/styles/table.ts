@@ -14,7 +14,7 @@ export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
 
-const CONTROLLER_PADDING = 64;
+const CONTROLLER_PADDING = 74;
 
 const tableSharedStyle = css`
   .table-container {
@@ -23,7 +23,7 @@ const tableSharedStyle = css`
     box-sizing: border-box;
   }
   .table-container[data-number-column='true'] {
-    padding-left: ${akEditorTableNumberColumnWidth + 1}px;
+    padding-left: ${akEditorTableNumberColumnWidth - 1}px;
   }
   .table-container[data-layout='full-width'],
   .table-container[data-layout='wide'] {

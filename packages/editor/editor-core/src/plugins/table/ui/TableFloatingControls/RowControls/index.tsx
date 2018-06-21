@@ -81,7 +81,6 @@ export default class RowControls extends Component<Props, any> {
       editorView: { state },
       isTableHovered,
       isTableInDanger,
-      scroll,
     } = this.props;
 
     if (
@@ -100,10 +99,6 @@ export default class RowControls extends Component<Props, any> {
     // create a class-based selector instead
     if (i === len - 1) {
       classNames.push('last');
-    }
-
-    if (scroll && scroll > 0) {
-      classNames.push('scrolling');
     }
 
     return classNames;
