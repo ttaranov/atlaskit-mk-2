@@ -1,5 +1,9 @@
 # @atlaskit/conversation
 
+## 8.2.4
+- [patch] Updated dependencies [8efe0af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8efe0af)
+  - @atlaskit/comment@5.0.0
+
 ## 8.2.3
 - [patch] Updated dependencies [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
   - @atlaskit/editor-core@73.8.0
