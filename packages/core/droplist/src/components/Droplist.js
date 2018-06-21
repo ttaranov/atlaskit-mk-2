@@ -52,6 +52,8 @@ type Props = {
   maxHeight?: number,
   /** Content which will trigger the drop list to open and close. */
   trigger?: Node,
+  /** Callback to know when the list is first correctly positioned within it's Layer */
+  onPositioned?: Function,
 };
 
 export default class Droplist extends Component<Props, void> {
@@ -70,6 +72,7 @@ export default class Droplist extends Component<Props, void> {
     shouldFitContainer: false,
     shouldFlip: true,
     trigger: null,
+    onPositioned: () => {},
   };
 
   static childContextTypes = {
@@ -176,6 +179,7 @@ export default class Droplist extends Component<Props, void> {
       shouldFitContainer,
       shouldFlip,
       trigger,
+      onPositioned,
     } = this.props;
 
     const layerContent = isOpen ? (
@@ -207,6 +211,7 @@ export default class Droplist extends Component<Props, void> {
           // $FlowFixMe
           position={position}
           isAlwaysFixed={isOpen && isMenuFixed}
+          onPositioned={onPositioned}
         >
           <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
             {trigger}

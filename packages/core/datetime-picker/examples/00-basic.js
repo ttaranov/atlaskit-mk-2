@@ -60,6 +60,12 @@ class Controlled extends Component<Props, State> {
     });
   };
 
+  onFocus = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
   render() {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -122,8 +128,8 @@ export default () => {
             id="timepicker-2"
             value={value}
             onChange={onValueChange}
-            isOpen={isOpen}
             onBlur={onBlur}
+            isOpen={isOpen}
           />
         )}
       </Controlled>

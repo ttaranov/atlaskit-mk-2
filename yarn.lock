@@ -11281,7 +11281,7 @@ prosemirror-utils@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.5.3.tgz#6e1a70d718ccdd72f5081cce21ab7b82a7040765"
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.3.2:
+prosemirror-view@^1.0.0, prosemirror-view@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.3.3.tgz#1fd6e4bad74c42b8f083558824c6c09330b1edd6"
   dependencies:

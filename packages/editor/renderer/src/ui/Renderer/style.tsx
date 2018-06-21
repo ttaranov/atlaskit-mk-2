@@ -8,10 +8,13 @@ import {
   akColorN40,
   akColorN300,
   akColorN30A,
+  akColorR50,
+  akColorR500,
   akGridSizeUnitless,
   akTypographyMixins,
   akFontFamily,
   akFontSizeDefault,
+  akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 import { tableSharedStyle } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
@@ -73,6 +76,21 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     font-weight: 400;
     white-space: pre-wrap;
     word-wrap: break-word;
+  }
+
+  & span.date-node {
+    background: ${akColorN30A};
+    border-radius: ${akBorderRadius};
+    color: ${akColorN800};
+    padding: 2px 4px;
+    margin: 0 1px;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+
+  & span.date-node-highlighted {
+    background: ${akColorR50};
+    color: ${akColorR500};
   }
 
   & ul {

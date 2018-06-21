@@ -30,6 +30,12 @@ const selectedItem: MediaViewerItem = {
   occurrenceKey: 'testOccurrenceKey',
 };
 
+const invalidItem: MediaViewerItem = {
+  type: 'file',
+  id: 'invalid-id',
+  occurrenceKey: 'invalid-key',
+};
+
 export type State = {
   selectedItem?: MediaViewerItem;
   dataSource?: MediaViewerDataSource;
@@ -44,12 +50,23 @@ export default class Example extends React.Component<{}, State> {
         <Button
           onClick={() =>
             this.setState({
-              selectedItem: selectedItem,
+              selectedItem,
               dataSource: { list: [imageIdentifier, wideImageIdentifier] },
             })
           }
         >
           Selected item not found in the list
+        </Button>
+
+        <Button
+          onClick={() =>
+            this.setState({
+              selectedItem: invalidItem,
+              dataSource: { list: [invalidItem] },
+            })
+          }
+        >
+          Invalid ID
         </Button>
 
         {this.state.selectedItem &&
