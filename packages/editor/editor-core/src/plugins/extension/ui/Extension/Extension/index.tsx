@@ -13,23 +13,20 @@ import WithPluginState from '../../../../../ui/WithPluginState';
 export interface Props {
   node: PmNode;
   macroProvider?: MacroProvider;
-  onClick: (event: React.SyntheticEvent<any>) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
-  onSelectExtension: () => void;
+  onSelectExtension: (hasBody) => void;
   children?: React.ReactNode;
   view: EditorView;
 }
 
 export default class Extension extends Component<Props, any> {
+  private onSelectExtension = () => {
+    const { onSelectExtension, node } = this.props;
+    onSelectExtension(node.type.name === 'bodiedExtension');
+  };
+
   render() {
-    const {
-      node,
-      onClick,
-      handleContentDOMRef,
-      onSelectExtension,
-      children,
-      view,
-    } = this.props;
+    const { node, handleContentDOMRef, children, view } = this.props;
 
     const hasBody = node.type.name === 'bodiedExtension';
     const hasChildren = !!children;
@@ -44,7 +41,6 @@ export default class Extension extends Component<Props, any> {
           return (
             <Wrapper
               data-layout={node.attrs.layout}
-              onClick={onClick}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
                 width: calcExtensionWidth(node.attrs.layout, width),
@@ -53,7 +49,7 @@ export default class Extension extends Component<Props, any> {
               <Overlay className="extension-overlay" />
               <Header
                 contentEditable={false}
-                onClick={onSelectExtension}
+                onClick={this.onSelectExtension}
                 className={hasChildren ? 'with-children' : ''}
               >
                 {children ? children : <ExtensionLozenge node={node} />}

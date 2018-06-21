@@ -50,3 +50,11 @@ export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
 export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;
+
+export {
+  tableSharedStyle,
+  tableMarginTop,
+  tableMarginBottom,
+  tableMarginSides,
+  calcTableWidth,
+} from './table';

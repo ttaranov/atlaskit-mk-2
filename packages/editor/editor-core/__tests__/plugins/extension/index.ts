@@ -15,7 +15,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { NodeSelection } from 'prosemirror-state';
 import {
-  setExtensionElement,
   editExtension,
   removeExtension,
   updateExtensionLayout,
@@ -58,30 +57,6 @@ describe('extension', () => {
   });
 
   describe('actions', () => {
-    describe('setExtensionElement', () => {
-      it('should set "element" prop in plugin state to a DOM node', () => {
-        const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
-        );
-        const elementContainer = document.createElement('div');
-        elementContainer.className = 'extension-container';
-        const element = document.createElement('span');
-        elementContainer.appendChild(element);
-        document.body.appendChild(elementContainer);
-        const result = setExtensionElement(element)(
-          editorView.state,
-          editorView.dispatch,
-        );
-
-        const pluginState = pluginKey.getState(editorView.state);
-        expect(pluginState.element).toEqual(
-          document.getElementsByClassName('extension-container')[0],
-        );
-        expect(result).toBe(true);
-        document.body.removeChild(elementContainer);
-      });
-    });
-
     describe('editExtension', () => {
       it('should return false if macroProvider is not available', () => {
         const { editorView } = editor(
@@ -155,9 +130,6 @@ describe('extension', () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        const element = document.createElement('span');
-        document.body.appendChild(element);
-        setExtensionElement(element)(editorView.state, editorView.dispatch);
 
         expect(removeExtension(editorView.state, editorView.dispatch)).toBe(
           true,
@@ -185,7 +157,9 @@ describe('extension', () => {
       const { editorView } = editor(
         doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
       );
-      const { state: { schema, selection } } = editorView;
+      const {
+        state: { schema, selection },
+      } = editorView;
       const nodeInitial = findParentNodeOfType(schema.nodes.bodiedExtension)(
         selection,
       )!.node;
@@ -258,7 +232,9 @@ describe('extension', () => {
         ),
       );
 
-      const { state: { schema } } = editorView;
+      const {
+        state: { schema },
+      } = editorView;
 
       const getExtension = editorView.dom.getElementsByClassName(
         'extension-container',

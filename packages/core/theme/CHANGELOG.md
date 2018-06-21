@@ -1,24 +1,18 @@
 # @atlaskit/theme
 
+## 4.0.4
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/button@8.1.2
+
+## 4.0.3
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 4.0.2
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/docs@4.1.0
   - @atlaskit/button@8.1.0
 
@@ -77,45 +71,28 @@
 ## 2.3.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
-## 2.2.9
-
-## 2.2.8
-
-## 2.2.7
-
-## 2.2.6
-
-## 2.2.5
-
 ## 2.2.4
 - [patch] moved theme to new atlaskit repo [a25b940](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a25b940)
 - [patch] moved theme to new atlaskit repo [a25b940](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a25b940)
 
 ## 2.2.3 (2017-10-27)
-
 * bug fix; triggering storybooks ([87e7247](https://bitbucket.org/atlassian/atlaskit/commits/87e7247))
 * bug fix; removed unused dependency on util-shared-styles from the Theme component ([253d8fc](https://bitbucket.org/atlassian/atlaskit/commits/253d8fc))
 
 ## 2.2.2 (2017-10-26)
-
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
 
 ## 2.2.1 (2017-10-22)
-
 * bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
 
 ## 2.2.0 (2017-09-27)
-
 * feature; export "layers" from theme ([15aebe6](https://bitbucket.org/atlassian/atlaskit/commits/15aebe6))
 
 ## 2.1.0 (2017-09-13)
-
 * feature; [@atlaskit](https://github.com/atlaskit)/theme now has a named getTheme() function export ([b727679](https://bitbucket.org/atlassian/atlaskit/commits/b727679))
 
 ## 2.0.1 (2017-08-11)
-
 * bug fix; Add placeholder color to theme ([ba023fb](https://bitbucket.org/atlassian/atlaskit/commits/ba023fb))
 
 ## 2.0.0
-
-Initial Release
+* Initial Release

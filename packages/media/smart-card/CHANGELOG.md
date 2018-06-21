@@ -1,76 +1,27 @@
 # @atlaskit/smart-card
 
+## 5.3.0
+- [minor] Error view for inline smart card [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+- [minor] Implemented auth error view for the inline card [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+- [minor] Implemented auth error view for inline SC [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+
+## 5.2.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/media-ui@3.1.1
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/lozenge@5.0.3
+  - @atlaskit/inline-message@5.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/button@8.1.1
+  - @atlaskit/badge@8.0.3
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 5.2.0
-
-
-
-
-
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/page@7.1.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/inline-message@5.1.0
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/page@7.1.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/inline-message@5.1.0
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/page@7.1.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/inline-message@5.1.0
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/page@7.1.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/inline-message@5.1.0
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/spinner@7.0.0
   - @atlaskit/page@7.1.0
   - @atlaskit/tooltip@10.2.0

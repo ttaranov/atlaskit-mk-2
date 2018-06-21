@@ -1,6 +1,6 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 import { ExtensionContent } from './doc';
-export type Layout = 'default' | 'wide' | 'full-width';
+export type ExtensionLayout = 'default' | 'wide' | 'full-width';
 /**
  * @name bodiedExtension_node
  */
@@ -17,7 +17,7 @@ export interface Definition {
     extensionType: string;
     parameters?: object;
     text?: string;
-    layout?: Layout;
+    layout?: ExtensionLayout;
   };
   content: ExtensionContent;
 }

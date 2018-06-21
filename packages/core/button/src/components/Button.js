@@ -55,18 +55,21 @@ type State = {
   isHover: boolean,
 };
 
+export const defaultProps = {
+  appearance: 'default',
+  isDisabled: false,
+  isSelected: false,
+  isLoading: false,
+  spacing: 'default',
+  type: 'button',
+  shouldFitContainer: false,
+  autoFocus: false,
+};
+
 class Button extends Component<ButtonProps, State> {
   button: HTMLElement;
 
-  static defaultProps = {
-    appearance: 'default',
-    isDisabled: false,
-    isSelected: false,
-    isLoading: false,
-    spacing: 'default',
-    type: 'button',
-    shouldFitContainer: false,
-  };
+  static defaultProps = defaultProps;
 
   state = {
     isActive: false,
@@ -87,6 +90,8 @@ class Button extends Component<ButtonProps, State> {
   }
 
   customComponent = null;
+
+  isInteractive = () => !this.props.isDisabled && !this.props.isLoading;
 
   onMouseEnter = () => {
     this.setState({ isHover: true });
@@ -117,7 +122,7 @@ class Button extends Component<ButtonProps, State> {
 
   /* Swallow click events when the button is disabled to prevent inner child clicks bubbling up */
   onInnerClick = (e: Event) => {
-    if (this.props.isDisabled) {
+    if (!this.isInteractive()) {
       e.stopPropagation();
     }
     return true;

@@ -37,16 +37,13 @@ import Flag, { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
     />
   )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/12-flag-group').default}
-        title="Flag Component"
-        source={require('!!raw-loader!../examples/12-flag-group')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/12-flag-group').default}
+      title="Flag Component"
+      source={require('!!raw-loader!../examples/12-flag-group')}
+    />
+  )}
 
   ${(
     <Props

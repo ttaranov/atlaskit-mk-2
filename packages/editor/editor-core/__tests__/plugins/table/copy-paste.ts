@@ -1,5 +1,5 @@
 import {
-  TableState,
+  TablePluginState,
   stateKey as tablePluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 import {
@@ -20,15 +20,20 @@ import { __serializeForClipboard } from 'prosemirror-view';
 import { getCellsInTable, selectColumn } from 'prosemirror-utils';
 import { CellSelection } from 'prosemirror-tables';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
 
-const selectCell = (cell: { node: ProsemirrorNode; pos: number }) => tr => {
-  const $anchor = tr.doc.resolve(cell.pos - 1);
+const selectCell = (cell: {
+  pos: number;
+  start: number;
+  node: ProsemirrorNode;
+}) => tr => {
+  const $anchor = tr.doc.resolve(cell.pos);
   return tr.setSelection(new CellSelection($anchor, $anchor));
 };
 
 describe('table plugin', () => {
   const editor = (doc: any, trackEvent = () => {}) =>
-    createEditor<TableState>({
+    createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
       editorProps: {
@@ -92,10 +97,13 @@ describe('table plugin', () => {
       });
 
       it('copies one column onto another', () => {
-        const { editorView } = editor(
+        const {
+          editorView,
+          refs: { nextPos },
+        } = editor(
           doc(
             table()(
-              tr(th()(p('{<>}1')), th()(p('2')), th()(p('3'))),
+              tr(th()(p('{<>}1')), th()(p('2')), th()(p('3{nextPos}'))),
               tr(td()(p('4')), td()(p('5')), td()(p('6'))),
               tr(td()(p('7')), td()(p('8')), td()(p('9'))),
             ),
@@ -113,9 +121,10 @@ describe('table plugin', () => {
           state.selection.content(),
         );
 
-        // select the third row as our selection
+        // move cursor to the 3rd column
+        const $pos = state.doc.resolve(nextPos);
         state = state.apply(
-          selectCell(getCellsInTable(state.selection)![2])(state.tr),
+          state.tr.setSelection(new TextSelection($pos, $pos)),
         );
 
         // apply local state to view before paste

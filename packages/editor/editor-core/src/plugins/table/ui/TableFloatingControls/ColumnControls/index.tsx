@@ -17,13 +17,13 @@ import {
   resetHoverSelection,
   hoverColumns,
   insertColumn,
+  deleteSelectedColumns,
 } from '../../../actions';
 
 export interface Props {
   editorView: EditorView;
-  tableElement?: HTMLElement;
+  tableRef?: HTMLElement;
   isTableHovered: boolean;
-  remove: () => void;
   isTableInDanger?: boolean;
 }
 
@@ -47,7 +47,7 @@ export default class ColumnControls extends Component<Props, any> {
           left:
             offsetWidth + selectionWidth / 2 - tableDeleteColumnButtonSize / 2,
         }}
-        onClick={() => this.deleteColumns(selectedColIdxs)}
+        onClick={this.deleteColumns}
         onMouseEnter={() => this.hoverColumns(selectedColIdxs, true)}
         onMouseLeave={() => this.hoverColumns(selectedColIdxs)}
       />
@@ -98,18 +98,21 @@ export default class ColumnControls extends Component<Props, any> {
   }
 
   render() {
-    const { editorView: { state }, tableElement } = this.props;
-    if (!tableElement) {
+    const {
+      editorView: { state },
+      tableRef,
+    } = this.props;
+    if (!tableRef) {
       return null;
     }
-    const tr = tableElement.querySelector('tr');
+    const tr = tableRef.querySelector('tr');
     if (!tr) {
       return null;
     }
 
     const cols = tr.children;
     const nodes: any = [];
-    const tableHeight = tableElement.offsetHeight;
+    const tableHeight = tableRef.offsetHeight;
 
     let prevColWidths = 0;
 
@@ -169,10 +172,11 @@ export default class ColumnControls extends Component<Props, any> {
     event.preventDefault();
   };
 
-  private deleteColumns(cols: number[]) {
-    this.props.remove();
+  private deleteColumns = () => {
+    const { state, dispatch } = this.props.editorView;
+    deleteSelectedColumns(state, dispatch);
     this.resetHoverSelection();
-  }
+  };
 
   private selectColumn = (column: number) => {
     const { state, dispatch } = this.props.editorView;

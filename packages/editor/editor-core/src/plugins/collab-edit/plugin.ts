@@ -208,7 +208,7 @@ export class PluginState {
 
     if (telepointerData) {
       const { sessionId } = telepointerData;
-      if (sessionId && sessionId !== sid) {
+      if (participants.get(sessionId) && sessionId !== sid) {
         const oldPointers = findPointers(
           telepointerData.sessionId,
           decorationSet,
@@ -250,7 +250,12 @@ export class PluginState {
             const step = tr.steps.filter(isReplaceStep)[0];
             if (step) {
               const { sessionId } = spec.pointer;
-              const { slice: { content: { size } }, from } = step as any;
+              const {
+                slice: {
+                  content: { size },
+                },
+                from,
+              } = step as any;
               const pos = getValidPos(
                 tr,
                 size

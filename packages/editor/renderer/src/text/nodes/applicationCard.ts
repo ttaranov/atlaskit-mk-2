@@ -1,11 +1,8 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
-import { ReducedNode } from './';
+import { Node as PMNode } from 'prosemirror-model';
+import { NodeReducer } from './';
 
-export default function applicationCard(
-  node: PMNode,
-  schema: Schema,
-): ReducedNode {
-  return {
-    text: `${node.attrs.text || node.attrs.title.text}`,
-  };
-}
+const applicationCard: NodeReducer = (node: PMNode) => {
+  return `${node.attrs.text || node.attrs.title.text}`;
+};
+
+export default applicationCard;

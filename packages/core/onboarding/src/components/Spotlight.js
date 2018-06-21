@@ -181,12 +181,10 @@ class Spotlight extends Component<Props> {
     // build the dialog before passing it to Layer
     const dialog = (
       <ThemeProvider theme={getSpotlightTheme}>
-        <FocusLock enabled={transitionIn} autoFocus>
+        <FocusLock enabled={transitionIn} returnFocus={false}>
           <Dialog width={dialogWidth} tabIndex="-1">
             {headerElement}
-            {/* // $FlowFixMe TEMPORARY */}
             <DialogBody>
-              {/* // $FlowFixMe TEMPORARY */}
               {heading && <Heading>{heading}</Heading>}
               {children}
             </DialogBody>

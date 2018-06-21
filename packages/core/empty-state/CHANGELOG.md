@@ -1,32 +1,22 @@
 # @atlaskit/empty-state
 
+## 2.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/spinner@7.0.2
+
+## 2.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 2.1.0
-
-
-
-
-
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/spinner@7.0.0
   - @atlaskit/docs@4.1.0
   - @atlaskit/theme@4.0.2
@@ -55,8 +45,6 @@
   - @atlaskit/spinner@5.0.2
   - @atlaskit/docs@3.0.4
 
-## 1.1.1
-
 ## 1.1.0
 - [patch] Remove null as we allowed void values [7ab743b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ab743b)
 - [patch] Update empty state and button to have consistent types [f0da143](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0da143)
@@ -79,10 +67,6 @@
 
 ## 0.1.3
 - [patch] Color of the description changed to N800 [ebf65be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf65be)
-
-## 0.1.2
-
-## 0.1.1
 
 ## 0.1.0
 - [patch] Updates dependency on docs/ to ^1.0.1 [36c7ef8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c7ef8)

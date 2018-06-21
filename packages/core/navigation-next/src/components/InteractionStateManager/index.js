@@ -15,7 +15,7 @@ export default class InteractionStateManager extends Component<
 
   onMouseDown = (e: Event) => {
     e.preventDefault();
-    this.setState({ isActive: true });
+    this.setState({ isActive: true, isHover: false });
   };
 
   onMouseUp = () => this.setState({ isActive: false });

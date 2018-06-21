@@ -9,7 +9,5 @@ export const codeBlock: NodeEncoder = (node: PMNode): string => {
     result += inlines(n);
   });
 
-  return `{code:${node.attrs.language}}
-${result}
-{code}`;
+  return `{code:${node.attrs.language}}${result}{code}`;
 };

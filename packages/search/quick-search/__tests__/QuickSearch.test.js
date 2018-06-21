@@ -326,6 +326,14 @@ describe('<QuickSearch />', () => {
       expect(isInputFocused(searchInput)).toBe(true);
     });
 
+    it('should run the onSearchSubmit callback prop on Shift+ENTER keystroke (even when an item is selected)', () => {
+      wrapper.setProps({ selectedResultId: '1' });
+      searchInput.simulate('keydown', { key: 'Enter', shiftKey: true });
+      wrapper.update();
+      expect(onSearchSubmitSpy).toHaveBeenCalledTimes(1);
+      expect(isInputFocused(searchInput)).toBe(true);
+    });
+
     it("should run the onClick callback with the result's data on ENTER keystroke (when an item is selected)", () => {
       wrapper.setProps({ selectedResultId: '1' });
       searchInput.simulate('keydown', { key: 'Enter' });

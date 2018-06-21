@@ -17,7 +17,7 @@ export function distance(str1, str2) {
         }
 
         return {
-          offset: indexInStr2,
+          offset: indexInStr2 + 1,
           dist:
             acc.dist +
             (index !== indexInStr2 ? Math.abs(index - indexInStr2) : 0),

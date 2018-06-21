@@ -113,3 +113,7 @@ export type GenericItemTheme = {
   dragging?: GenericItemState,
   disabled?: GenericItemState,
 };
+
+export type AnyTheme = ItemTheme | GenericItemTheme;
+
+export type ThemeMap = { [string]: AnyTheme };

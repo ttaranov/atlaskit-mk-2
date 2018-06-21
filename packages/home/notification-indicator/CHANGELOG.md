@@ -1,28 +1,19 @@
 # @atlaskit/notification-indicator
 
+## 3.0.5
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/notification-log-client@2.0.8
+
+## 3.0.4
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/notification-log-client@2.0.7
+  - @atlaskit/badge@8.0.3
+  - @atlaskit/docs@4.1.1
+
 ## 3.0.3
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/notification-log-client@2.0.6
-  - @atlaskit/badge@8.0.2
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/notification-log-client@2.0.6
-  - @atlaskit/badge@8.0.2
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/notification-log-client@2.0.6
-  - @atlaskit/badge@8.0.2
-- [none] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/notification-log-client@2.0.6
-  - @atlaskit/badge@8.0.2
-- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/docs@4.1.0
   - @atlaskit/notification-log-client@2.0.6
   - @atlaskit/badge@8.0.2
@@ -50,5 +41,3 @@
 
 ## 2.0.0
 - [major] Added notification-log-client and notification-indicator into Atlaskit. Please refer to docs and examples for their usages. [ac98216](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac98216)
-
-## 1.0.0

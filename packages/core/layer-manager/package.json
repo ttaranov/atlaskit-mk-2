@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer-manager",
-  "version": "4.1.0",
+  "version": "4.3.1",
   "description": "A React Component for managing layers",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,10 +17,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
-    "react-transition-group": "^2.2.1",
-    "tabbable": "^1.1.0"
+    "react-focus-lock": "^1.11.1",
+    "react-scrolllock": "^3.0.1",
+    "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
     "react": "^16.3.0",
@@ -28,14 +28,16 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/analytics-next": "^2.1.7",
-    "@atlaskit/button": "^8.1.0",
-    "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/icon": "^12.1.0",
-    "@atlaskit/modal-dialog": "^5.1.0",
-    "@atlaskit/onboarding": "^4.1.0",
-    "@atlaskit/tooltip": "^10.2.0",
-    "@atlaskit/webdriver-runner": "^0.0.3"
+    "@atlaskit/analytics-next": "^2.1.8",
+    "@atlaskit/button": "^8.1.2",
+    "@atlaskit/docs": "^4.1.1",
+    "@atlaskit/icon": "^12.1.2",
+    "@atlaskit/modal-dialog": "^5.2.4",
+    "@atlaskit/onboarding": "^4.1.4",
+    "@atlaskit/theme": "^4.0.4",
+    "@atlaskit/tooltip": "^10.2.1",
+    "@atlaskit/webdriver-runner": "^0.0.3",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

@@ -1,48 +1,29 @@
 # @atlaskit/quick-search
 
+## 2.3.0
+- [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
+- [none] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
+  - @atlaskit/navigation@32.2.0
+  - @atlaskit/icon@12.2.0
+  - @atlaskit/avatar@11.2.0
+
+## 2.2.0
+- [minor] onSearchSubmit prop also triggers on Shift+Enter [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
+- [none] Updated dependencies [745b283](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/745b283)
+
+## 2.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/item@7.0.4
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/field-base@10.1.1
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+  - @atlaskit/analytics@3.0.5
+
 ## 2.1.0
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/navigation@32.1.0
-  - @atlaskit/item@7.0.3
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/analytics@3.0.4
-  - @atlaskit/field-base@10.1.0
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/navigation@32.1.0
-  - @atlaskit/item@7.0.3
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/analytics@3.0.4
-  - @atlaskit/field-base@10.1.0
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/navigation@32.1.0
-  - @atlaskit/item@7.0.3
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/analytics@3.0.4
-  - @atlaskit/field-base@10.1.0
-- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/navigation@32.1.0
-  - @atlaskit/item@7.0.3
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/analytics@3.0.4
-  - @atlaskit/field-base@10.1.0
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/navigation@32.1.0
   - @atlaskit/item@7.0.3
   - @atlaskit/avatar@11.1.0

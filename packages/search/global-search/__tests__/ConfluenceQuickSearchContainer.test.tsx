@@ -5,15 +5,11 @@ import {
   ConfluenceQuickSearchContainer,
   Props,
 } from '../src/components/confluence/ConfluenceQuickSearchContainer';
-import {
-  ResultType,
-  Result,
-  PersonResult,
-  ContentType,
-} from '../src/model/Result';
+import { Result, PersonResult } from '../src/model/Result';
 import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
 import { Scope } from '../src/api/CrossProductSearchClient';
 import SearchError from '../src/components/SearchError';
+import * as searchResultsUtil from '../src/components/SearchResultsUtil';
 import {
   delay,
   makeConfluenceObjectResult,
@@ -22,7 +18,6 @@ import {
 } from './_test-util';
 import {
   noResultsCrossProductSearchClient,
-  errorCrossProductSearchClient,
   singleResultCrossProductSearchClient,
   makeSingleResultCrossProductSearchResponse,
 } from './mocks/_mockCrossProductSearchClient';
@@ -30,11 +25,17 @@ import {
   noResultsPeopleSearchClient,
   errorPeopleSearchClient,
 } from './mocks/_mockPeopleSearchClient';
-import { noResultsConfluenceClient } from './mocks/_mockConfluenceClient';
+import {
+  noResultsConfluenceClient,
+  makeSingleResultQuickNavSearchResponse,
+  singleResultQuickNav,
+  errorConfluenceQuickNavSearch,
+  makeConfluenceClient,
+} from './mocks/_mockConfluenceClient';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
-  const onSearchFn = quicksearch.prop('onSearch') as Function;
+  const onSearchFn: Function = quicksearch.prop('onSearch');
   onSearchFn(query);
   wrapper.update();
 }
@@ -124,57 +125,90 @@ describe('ConfluenceQuickSearchContainer', () => {
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 
-  it('should render recently viewed pages on mount', async () => {
-    const mockConfluenceClient = {
-      getRecentItems() {
-        return Promise.resolve([makeConfluenceObjectResult()]);
-      },
-      getRecentSpaces() {
-        return Promise.resolve([]);
-      },
-    };
+  describe('Pre-query state', () => {
+    it('should render recently viewed pages', async () => {
+      const mockConfluenceClient = makeConfluenceClient({
+        getRecentItems() {
+          return Promise.resolve([makeConfluenceObjectResult()]);
+        },
+      });
 
-    const wrapper = render({
-      confluenceClient: mockConfluenceClient,
+      const wrapper = render({
+        confluenceClient: mockConfluenceClient,
+      });
+
+      const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+      onMount();
+
+      await waitForRender(wrapper);
+
+      const group = findGroup(Group.Objects, wrapper);
+      expect(group.children()).toHaveLength(1);
     });
 
-    const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
-    onMount();
+    it('should render recently viewed spaces', async () => {
+      const mockConfluenceClient = makeConfluenceClient({
+        getRecentSpaces() {
+          return Promise.resolve([makeConfluenceContainerResult()]);
+        },
+      });
 
-    await waitForRender(wrapper);
+      const wrapper = render({
+        confluenceClient: mockConfluenceClient,
+      });
 
-    const group = findGroup(Group.Objects, wrapper);
-    expect(group.children()).toHaveLength(1);
+      const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+      onMount();
+
+      await waitForRender(wrapper);
+
+      const group = findGroup(Group.Spaces, wrapper);
+      expect(group.children()).toHaveLength(1);
+    });
+
+    it('should render recent people', async () => {
+      const mockPeopleSearchClient = {
+        search() {
+          return Promise.resolve([]);
+        },
+        getRecentPeople() {
+          return Promise.resolve([makePersonResult()]);
+        },
+      };
+
+      const wrapper = render({
+        peopleSearchClient: mockPeopleSearchClient,
+      });
+
+      const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+      onMount();
+
+      await waitForRender(wrapper);
+
+      const group = findGroup(Group.People, wrapper);
+      expect(group.children()).toHaveLength(1);
+    });
   });
 
-  it('should render recently viewed spaces on mount', async () => {
-    const mockConfluenceClient = {
-      getRecentItems() {
-        return Promise.resolve([]);
-      },
-      getRecentSpaces() {
-        return Promise.resolve([makeConfluenceContainerResult()]);
-      },
-    };
+  it('should redirect to confluence advanced search on search submit', async () => {
+    const wrapper = render();
+    searchFor('query', wrapper);
 
-    const wrapper = render({
-      confluenceClient: mockConfluenceClient,
-    });
+    const onSearchSubmit: Function = wrapper
+      .find(GlobalQuickSearch)
+      .prop('onSearchSubmit');
 
-    const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
-    onMount();
+    const mockRedirect = jest
+      .spyOn(searchResultsUtil, 'redirectToConfluenceAdvancedSearch')
+      .mockImplementation(() => {});
 
-    await waitForRender(wrapper);
-
-    const group = findGroup(Group.Spaces, wrapper);
-    expect(group.children()).toHaveLength(1);
+    onSearchSubmit();
+    expect(mockRedirect).toHaveBeenCalledWith('query');
   });
 
   it('should render object results', async () => {
     const wrapper = render({
-      crossProductSearchClient: singleResultCrossProductSearchClient(
-        Scope.ConfluencePageBlogAttachment,
-      ),
+      confluenceClient: singleResultQuickNav(),
     });
 
     searchFor('query', wrapper);
@@ -214,16 +248,17 @@ describe('ConfluenceQuickSearchContainer', () => {
     await waitForRender(wrapper);
 
     const group = findGroup(Group.People, wrapper);
-    expect(group.children()).toHaveLength(2); // result + search people item
+    expect(group.children()).toHaveLength(1);
   });
 
   it('should perform searches in parallel', async () => {
     /*
      1. Delay people search by 5ms
      2. Delay cross product search by 5ms
-     3. Search
-     4. Wait for 6ms (less than time for both searches combined)
-     5. Make sure search results appeared in time
+     3. Delay confluence search by 5ms
+     4. Search
+     5. Wait for 6ms (less than time for all searches combined)
+     6. Make sure search results appeared in time
     */
 
     function searchPeople(query: string): Promise<PersonResult[]> {
@@ -236,8 +271,8 @@ describe('ConfluenceQuickSearchContainer', () => {
       return delay(
         5,
         makeSingleResultCrossProductSearchResponse(
-          Scope.ConfluencePageBlogAttachment,
-          makePersonResult(),
+          Scope.ConfluenceSpace,
+          makeConfluenceContainerResult(),
         ),
       );
     }
@@ -256,14 +291,17 @@ describe('ConfluenceQuickSearchContainer', () => {
     const wrapper = render({
       crossProductSearchClient: mockCrossProductSearchClient,
       peopleSearchClient: mockPeopleSearchClient,
+      confluenceClient: singleResultQuickNav(),
     });
 
     searchFor('once', wrapper);
     await waitForRender(wrapper, 6);
 
     const objectResults = findGroup(Group.Objects, wrapper).children();
+    const containerResults = findGroup(Group.Spaces, wrapper).children();
     const peopleResults = findGroup(Group.People, wrapper).children();
 
+    expect(containerResults).not.toHaveLength(0);
     expect(objectResults).not.toHaveLength(0);
     expect(peopleResults).not.toHaveLength(0);
   });
@@ -276,38 +314,27 @@ describe('ConfluenceQuickSearchContainer', () => {
       4. Wait until the delayed result has arrived
       5. Make sure the fast result is displayed and not the delayed result
     */
-
-    function searchDelayed(query: string): Promise<Map<Scope, Result[]>> {
-      const response = makeSingleResultCrossProductSearchResponse(
-        Scope.ConfluencePageBlogAttachment,
-        makeConfluenceObjectResult(),
-      );
-
-      return delay(5, response);
+    function searchQuickNavDelayed(query: string): Promise<Result[]> {
+      return delay(5, makeSingleResultQuickNavSearchResponse());
     }
 
-    function searchCurrent(query: string): Promise<Map<Scope, Result[]>> {
-      const response = makeSingleResultCrossProductSearchResponse(
-        Scope.ConfluencePageBlogAttachment,
+    function searchQuickNavCurrent(query: string): Promise<Result[]> {
+      return Promise.resolve([
         makeConfluenceObjectResult({
           name: 'current result',
         }),
-      );
-
-      return Promise.resolve(response);
+      ]);
     }
 
-    const searchMock = jest
+    const confluenceQuickNavSearchMock = jest
       .fn()
-      .mockImplementationOnce(searchDelayed)
-      .mockImplementationOnce(searchCurrent);
-
-    const mockSearchClient = {
-      search: searchMock,
-    };
+      .mockImplementationOnce(searchQuickNavDelayed)
+      .mockImplementationOnce(searchQuickNavCurrent);
 
     const wrapper = render({
-      crossProductSearchClient: mockSearchClient,
+      confluenceClient: makeConfluenceClient({
+        searchQuickNav: confluenceQuickNavSearchMock,
+      }),
     });
 
     searchFor('once - this will return the delayed result', wrapper);
@@ -319,7 +346,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   });
 
   describe('Analytics', () => {
-    it('should log when a request fails', async () => {
+    it('should log when a search request fails', async () => {
       const firePrivateAnalyticsEventMock = jest.fn();
 
       const wrapper = render({
@@ -342,16 +369,16 @@ describe('ConfluenceQuickSearchContainer', () => {
         {
           name: 'TypeError',
           message: 'failed',
-          source: 'people',
+          source: 'search-people',
         },
       );
     });
   });
 
   describe('Error handling', () => {
-    it('should show error state when xpsearch fails', async () => {
+    it('should show error state when confluence quick nav search fails', async () => {
       const wrapper = render({
-        crossProductSearchClient: errorCrossProductSearchClient,
+        confluenceClient: errorConfluenceQuickNavSearch,
       });
 
       searchFor('dav', wrapper);
@@ -365,12 +392,10 @@ describe('ConfluenceQuickSearchContainer', () => {
         .mockImplementationOnce((query: string) => Promise.reject('error'))
         .mockImplementationOnce((query: string) => Promise.resolve(new Map()));
 
-      const mockSearchClient = {
-        search: searchMock,
-      };
-
       const wrapper = render({
-        crossProductSearchClient: mockSearchClient,
+        confluenceClient: makeConfluenceClient({
+          searchQuickNav: searchMock,
+        }),
       });
 
       searchFor('error state', wrapper);

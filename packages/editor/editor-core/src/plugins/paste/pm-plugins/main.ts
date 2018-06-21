@@ -225,7 +225,7 @@ export function createPlugin(
           // row of content we see, if required
           if (!hasParentNodeOfType([table, tableCell])(view.state.selection)) {
             const tableState = tableStateKey.getState(view.state);
-            if (tableState && tableState.isRequiredToAddHeader()) {
+            if (tableState && tableState.pluginConfig.isHeaderRowRequired) {
               slice = transformSliceToAddTableHeaders(slice, view.state.schema);
             }
           }
@@ -249,6 +249,15 @@ export function createPlugin(
         // We do this separately so it also applies to drag/drop events
         slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
         return slice;
+      },
+      transformPastedHTML(html) {
+        // Fix for issue ED-4438
+        // text from google docs should not be pasted as inline code
+        if (html.indexOf('id="docs-internal-guid-') >= 0) {
+          html = html.replace(/white-space:pre/g, '');
+          html = html.replace(/white-space:pre-wrap/g, '');
+        }
+        return html;
       },
     },
   });

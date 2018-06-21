@@ -21,12 +21,14 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
+import TipIcon from '@atlaskit/icon/glyph/editor/hint';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 const panelColor = {
   info: akColorB50,
   note: akColorP50,
+  tip: akColorG50,
   success: akColorG50,
   warning: akColorY50,
   error: akColorR50,
@@ -35,6 +37,7 @@ const panelColor = {
 const iconColor = {
   info: akColorB400,
   note: akColorP400,
+  tip: akColorG400,
   success: akColorG400,
   warning: akColorY400,
   error: akColorR400,
@@ -44,6 +47,7 @@ const panelIcons = {
   info: InfoIcon,
   success: SuccessIcon,
   note: NoteIcon,
+  tip: TipIcon,
   warning: WarningIcon,
   error: ErrorIcon,
 };
@@ -131,5 +135,5 @@ export const panelNodeView = (portalProviderAPI: PortalProviderAPI) => (
   view: any,
   getPos: () => number,
 ): NodeView => {
-  return new Panel(node, view, getPos, portalProviderAPI);
+  return new Panel(node, view, getPos, portalProviderAPI).init();
 };

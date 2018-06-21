@@ -1,44 +1,27 @@
 # @atlaskit/nps
 
+## 3.0.4
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/field-text-area@3.1.1
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/checkbox@3.0.6
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
+## 3.0.3
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/checkbox@3.0.5
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 3.0.2
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/checkbox@3.0.4
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-text-area@3.0.3
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/checkbox@3.0.4
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-text-area@3.0.3
-  - @atlaskit/button@8.1.0
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/checkbox@3.0.4
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-text-area@3.0.3
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/checkbox@3.0.4
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/theme@4.0.2
-  - @atlaskit/field-text-area@3.0.3
-  - @atlaskit/button@8.1.0
-- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/dropdown-menu@5.0.2
   - @atlaskit/icon@12.1.0
   - @atlaskit/checkbox@3.0.4
@@ -78,8 +61,6 @@
   - @atlaskit/button@7.2.5
   - @atlaskit/theme@3.2.2
   - @atlaskit/docs@3.0.4
-
-## 2.0.1
 
 ## 2.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)

@@ -6,13 +6,14 @@ import {
   makeCrossProductSearchData,
   makeConfluenceRecentPagesData,
   makeConfluenceRecentSpacesData,
+  makeQuickNavSearchData,
 } from '../example-helpers/mockData';
-import { Scope } from '../src/api/CrossProductSearchClient';
 
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
 const confluenceRecentSpacesResponse = makeConfluenceRecentSpacesData();
 const queryMockSearch = makeCrossProductSearchData();
+const queryMockQuickNav = makeQuickNavSearchData();
 const queryPeopleSearch = makePeopleSearchData();
 
 function delay<T>(millis: number, value?: T): Promise<T> {
@@ -44,6 +45,15 @@ function mockCrossProductSearchApi() {
   });
 }
 
+function mockQuickNavApi() {
+  fetchMock.mock(new RegExp('/quicknav/1'), async request => {
+    const query = request.url.split('query=')[1];
+    const results = queryMockQuickNav(query);
+
+    return delay(650, results);
+  });
+}
+
 function mockPeopleApi() {
   fetchMock.post(new RegExp('/graphql'), async request => {
     const body = await request.json();
@@ -59,6 +69,7 @@ export function setupMocks() {
   mockCrossProductSearchApi();
   mockPeopleApi();
   mockConfluenceRecentApi();
+  mockQuickNavApi();
 }
 
 export function teardownMocks() {

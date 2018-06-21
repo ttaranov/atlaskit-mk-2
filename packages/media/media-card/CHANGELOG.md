@@ -1,88 +1,53 @@
 # @atlaskit/media-image
 
+## 29.1.3
+
+
+
+- [patch] Updated dependencies [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+  - @atlaskit/smart-card@5.3.0
+- [patch] Updated dependencies [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+  - @atlaskit/smart-card@5.3.0
+- [patch] Updated dependencies [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+  - @atlaskit/smart-card@5.3.0
+
+## 29.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/media-ui@3.1.2
+  - @atlaskit/media-test-helpers@14.0.3
+  - @atlaskit/media-core@19.1.3
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/toggle@4.0.3
+  - @atlaskit/lozenge@5.0.4
+  - @atlaskit/field-range@4.0.3
+  - @atlaskit/spinner@7.0.2
+  - @atlaskit/field-radio-group@3.0.4
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
+## 29.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/smart-card@5.2.1
+  - @atlaskit/media-ui@3.1.1
+  - @atlaskit/media-test-helpers@14.0.2
+  - @atlaskit/media-core@19.1.2
+  - @atlaskit/spinner@7.0.1
+  - @atlaskit/lozenge@5.0.3
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/analytics-next@2.1.8
+  - @atlaskit/field-radio-group@3.0.3
+  - @atlaskit/dropdown-menu@5.0.3
+  - @atlaskit/button@8.1.1
+  - @atlaskit/badge@8.0.3
+  - @atlaskit/avatar@11.1.1
+  - @atlaskit/docs@4.1.1
+
 ## 29.1.0
-
-
-
-
-
 - [patch] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/smart-card@5.2.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/field-radio-group@3.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/analytics-next@2.1.7
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/smart-card@5.2.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/field-radio-group@3.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/analytics-next@2.1.7
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/smart-card@5.2.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/field-radio-group@3.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/analytics-next@2.1.7
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/spinner@7.0.0
-  - @atlaskit/smart-card@5.2.0
-  - @atlaskit/tooltip@10.2.0
-  - @atlaskit/dropdown-menu@5.0.2
-  - @atlaskit/avatar@11.1.0
-  - @atlaskit/icon@12.1.0
-  - @atlaskit/media-ui@3.1.0
-  - @atlaskit/toggle@4.0.2
-  - @atlaskit/field-radio-group@3.0.2
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/media-core@19.1.1
-  - @atlaskit/media-test-helpers@14.0.1
-  - @atlaskit/lozenge@5.0.2
-  - @atlaskit/field-text@6.0.2
-  - @atlaskit/field-range@4.0.2
-  - @atlaskit/badge@8.0.2
-  - @atlaskit/analytics-next@2.1.7
-  - @atlaskit/button@8.1.0
-- [minor] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/spinner@7.0.0
   - @atlaskit/smart-card@5.2.0
   - @atlaskit/tooltip@10.2.0
@@ -103,14 +68,7 @@
   - @atlaskit/button@8.1.0
 
 ## 29.0.3
-
-
-
 - [patch] Updated dependencies [2de7ce7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2de7ce7)
-  - @atlaskit/smart-card@5.1.1
-- [patch] Updated dependencies [97efb49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97efb49)
-  - @atlaskit/smart-card@5.1.1
-- [patch] Updated dependencies [f86d117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86d117)
   - @atlaskit/smart-card@5.1.1
 
 ## 29.0.2
@@ -168,8 +126,6 @@
   - @atlaskit/media-test-helpers@13.0.1
 
 ## 28.0.0
-
-
 - [major] Updated dependencies [84f6f91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84f6f91)
   - @atlaskit/media-test-helpers@13.0.0
   - @atlaskit/media-core@18.1.0
@@ -208,8 +164,6 @@
 - [patch] Updated dependencies [b36c763](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b36c763)
   - @atlaskit/media-ui@2.1.0
 
-## 27.1.1
-
 ## 27.1.0
 - [minor] Added "disableOverlay" prop to Card and CardView public API [533d085](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533d085)
 
@@ -223,10 +177,6 @@
 ## 27.0.2
 - [patch] remove polished dependency [0e54c69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e54c69)
 
-## 27.0.1
-
-## 27.0.0
-
 ## 26.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
 
@@ -236,18 +186,11 @@
 ## 25.2.0
 - [minor] use local preview in MediaCard when available [b33788b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b33788b)
 
-## 25.1.8
-
-## 25.1.7
-
 ## 25.1.6
 - [patch] Fix typo and potential memory leak [6ecc601](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ecc601)
 
 ## 25.1.5
-
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
-
-## 25.1.4
 
 ## 25.1.3
 - [patch] Fix/revert TS TDs in analytics-next [1284d32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1284d32)
@@ -255,15 +198,9 @@
 ## 25.1.2
 - [patch] ED-4030 Don't reload Image cards again after upload is done [9aff937](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aff937)
 
-## 25.1.1
-
 ## 25.1.0
 - [minor] Add analytics events for click and show actions of media-card [031d5da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/031d5da)
 - [minor] Add analytics events for click and show actions of media-card [b361185](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b361185)
-
-## 25.0.2
-
-## 25.0.1
 
 ## 25.0.0
 - [major] icons are now assignable to card actions, which will cause media cards to render upto 2 icon buttons, or a dropdown menu if more than 2 actions are set [649871c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/649871c)
@@ -274,15 +211,11 @@
 ## 24.1.5
 - [patch] Remove TS types that requires styled-components v3 [836e53b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/836e53b)
 
-## 24.1.4
-
 ## 24.1.3
 - [patch] Add key as an optional parameter to applicationCard actions [28be081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28be081)
 
 ## 24.1.2
 - [patch] fix issues with ellipsing of new smart-card designs [ec2bed9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec2bed9)
-
-## 24.1.1
 
 ## 24.1.0
 - [minor] Update styled-components dependency to support versions 1.4.6 - 3 [ceccf30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceccf30)
@@ -301,15 +234,9 @@
 - [patch] fixed issue where clicking on smart-card try-again and cancel links would trigger onClick [1e575b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e575b3)
 
 ## 24.0.2
-
 - [patch] added missing smart-card action states [3f7536e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f7536e)
 
-## 24.0.1
-
-## 24.0.0
-
 ## 23.2.2
-
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
 
 ## 23.2.1
@@ -318,17 +245,11 @@
 ## 23.2.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
-## 23.1.2
-
 ## 23.1.1
-
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
 
 ## 23.1.0
-
 - [minor] Added new AppCardView v1.5 designs behind a feature flag. [92bc6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92bc6c8)
-
-## 23.0.3
 
 ## 23.0.2
 - [patch] Make Card to work with pixel units [dedba4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dedba4f)
@@ -340,8 +261,6 @@
 ## 23.0.0
 - [major] Bump media-core peer dependency to next major versoin (12) [0a84f90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a84f90)
 
-## 22.4.3
-
 ## 22.4.2
 - [patch] fix z-index issue for app cards [d2e05ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2e05ae)
 
@@ -350,8 +269,6 @@
 
 ## 22.4.0
 - [minor] make Card and CardView to work properly when percetanges are passed as dimensions [3178808](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3178808)
-
-## 22.3.1
 
 ## 22.3.0
 - [minor] Update signature onClick event on filmstrip (renderer) [30bdfcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bdfcc)
@@ -368,29 +285,21 @@
 ## 22.2.5
 - [patch] Fixed hover state for link media-cards in renderer [05ae05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/05ae05d)
 
-## 22.2.4
-
 ## 22.2.3
 - [patch] Bumping dependency on docs (from a failed build) [6949056](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6949056)
-
-## 22.2.2
 
 ## 22.2.1
 - [patch] Migrated to the new repo and updated dependencies [f76434e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f76434e)
 
 ## 2.1.1 (2017-09-18)
-
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))
 
 ## 2.1.0 (2017-08-11)
-
 * feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
 
 ## 2.0.1 (2017-07-25)
-
 * fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 
 ## 1.0.0 (2017-06-07)
-
 * feature; fix imgSrc property ([d2274ce](https://bitbucket.org/atlassian/atlaskit/commits/d2274ce))
 * feature; mediaImage component skeleton ([5dd2f84](https://bitbucket.org/atlassian/atlaskit/commits/5dd2f84))

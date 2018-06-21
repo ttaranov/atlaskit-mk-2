@@ -88,8 +88,7 @@ export interface EditorProps {
   // Temporary flag to enable layouts while it's under development
   UNSAFE_allowLayouts?: boolean;
 
-  // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
-  UNSAFE_allowQuickInsert?: boolean;
+  quickInsert?: boolean;
 
   UNSAFE_cards?: CardOptions;
 
