@@ -1,5 +1,10 @@
 # @atlaskit/global-search
 
+## 4.5.6
+- [patch] Minor bugfixes and UI tweaks. [80899e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80899e1)
+- [none] Updated dependencies [80899e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80899e1)
+  - @atlaskit/quick-search@2.3.1
+
 ## 4.5.5
 - [patch] Fix spaceName attribute coming back from the quick nav API [1c91e59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c91e59)
 
