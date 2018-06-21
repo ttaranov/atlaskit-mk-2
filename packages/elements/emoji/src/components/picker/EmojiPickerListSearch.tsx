@@ -67,7 +67,8 @@ export default class EmojiPickerListSearch extends PureComponent<Props, {}> {
 
   private handleInputRef = input => {
     if (input) {
-      input.focus();
+      // Defer focus so
+      setTimeout(() => input.focus());
     }
   };
 }
