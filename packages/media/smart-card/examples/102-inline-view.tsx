@@ -4,7 +4,7 @@ import { LinkView } from '../src/inline/LinkView';
 import { ResolvedView } from '../src/inline/ResolvedView';
 import { ResolvingView } from '../src/inline/ResolvingView';
 import { AuthErrorView } from '../src/inline/AuthErrorView';
-import { NoPermissionsView } from '../src/inline/NoPermissionsView';
+import { ForbiddenView } from '../src/inline/ForbiddenView';
 
 interface Lozenge {
   text: string;
@@ -65,7 +65,7 @@ export default () => (
         <h4>No Permissions View</h4>
         Reprehenderit non occaecat do non esse irure aute aliqua minim
         exercitation. Sit nisi tempor voluptate
-        <NoPermissionsView
+        <ForbiddenView
           url={url}
           onClick={() => {
             alert("Clicking me won't fix the permissions...");
