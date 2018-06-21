@@ -11234,9 +11234,9 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.0.1:
     prosemirror-state "^1.0.0"
     w3c-keyname "^1.1.8"
 
-prosemirror-markdown@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.0.3.tgz#e4d847fde4c467d5febe2404c2a475eb94c7ebf7"
+prosemirror-markdown@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.1.0.tgz#528cdb249fbcfe4b410a6822a2e4b7e585662c38"
   dependencies:
     markdown-it "^6.0.4"
     prosemirror-model "^1.0.0"

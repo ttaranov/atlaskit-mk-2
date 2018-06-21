@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { Schema, Slice } from 'prosemirror-model';
+import { Schema, Slice, Node } from 'prosemirror-model';
 import {
   EditorState,
   Plugin,
@@ -44,11 +44,14 @@ export function createPlugin(
   let atlassianMarkDownParser: MarkdownTransformer;
 
   const md = MarkdownIt('zero', { html: false });
+
   md.enable([
     // Process html entity - &#123;, &#xAF;, &quot;, ...
     'entity',
     // Process escaped chars and hardbreaks
     'escape',
+
+    'newline',
   ]);
 
   // enable modified version of linkify plugin
@@ -186,7 +189,7 @@ export function createPlugin(
               const { $to: newSel } = tr.selection;
               tr = tr.insert(
                 newSel.end(newSel.depth - 1),
-                paragraph.createAndFill()!,
+                paragraph.createAndFill() as Node,
               );
             }
             tr = tr.setSelection(
