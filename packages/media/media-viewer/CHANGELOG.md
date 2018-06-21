@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.1.4
+- [patch] MSW-774 : adjust zoom levels [a6369ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6369ce)
+
 ## 15.1.3
 - [patch] Better toolbar UX for MediaViewer NG [66abc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66abc9a)
 
