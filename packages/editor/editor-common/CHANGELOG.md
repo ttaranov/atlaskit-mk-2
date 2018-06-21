@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 11.3.1
+- [patch] ED-4924: fix table control styles [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+- [none] Updated dependencies [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+
 ## 11.3.0
 - [minor] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
 - [none] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
