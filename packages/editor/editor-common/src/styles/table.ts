@@ -50,7 +50,6 @@ const tableSharedStyle = css`
       }
       th td {
         background-color: white;
-        font-weight: normal;
       }
       th,
       td {
@@ -71,8 +70,10 @@ const tableSharedStyle = css`
       }
       th {
         background-color: ${akEditorTableToolbar};
-        font-weight: bold;
         text-align: left;
+        p {
+          font-weight: bold;
+        }
       }
     }
   }
