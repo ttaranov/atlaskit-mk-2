@@ -30,7 +30,18 @@ export type MediaViewerFeatureFlags = {
 };
 
 export class ZoomLevel {
-  private static readonly ZOOM_LEVELS = [0.2, 0.5, 1, 2, 5];
+  private static readonly ZOOM_LEVELS = [
+    0.06,
+    0.12,
+    0.24,
+    0.48,
+    1,
+    1.5,
+    2,
+    4,
+    6,
+    8,
+  ];
   public static readonly MIN = ZoomLevel.ZOOM_LEVELS[0];
   public static readonly MAX = ZoomLevel.ZOOM_LEVELS.slice(-1)[0];
 
