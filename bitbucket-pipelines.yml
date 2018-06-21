@@ -61,19 +61,12 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Unit Testing - Karma
-            script:
-              - source ./build-setup.sh 
-              - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-            caches:
-              - node
-        - step:
-            name: Browser Integration Testing - Webdriver
+            name: Browser Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
+              - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
             caches:
               - node
         - step:
