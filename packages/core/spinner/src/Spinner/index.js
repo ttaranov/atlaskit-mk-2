@@ -11,6 +11,7 @@ import type { SpinnerProps, SpinnerState } from '../types';
 
 const Outer = styled.div`
   display: inline-block;
+  vertical-align: middle;
 `;
 Outer.displayName = 'Outer';
 
