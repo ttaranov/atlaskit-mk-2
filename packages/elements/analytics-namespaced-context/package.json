@@ -1,0 +1,44 @@
+{
+  "name": "@atlaskit/analytics-namespaced-context",
+  "version": "1.0.0",
+  "description": "Provides a namespace for AnalyticsContext data (@atlaskit/analytics-next)",
+  "config": {
+    "access": "public"
+  },
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@atlaskit/analytics-gas-types": "^2.1.3",
+    "@atlaskit/analytics-next": "^2.1.8",
+    "tslib": "^1.8.0"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0"
+  },  
+  "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    "Eduardo S"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^4.1.1"
+  },
+  "atlaskit": {
+    "internal": true
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
+}
