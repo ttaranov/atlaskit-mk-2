@@ -40,9 +40,13 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     outline: none;
   }
 
-  .ProseMirror p,
-  .ProseMirror .code {
+  .ProseMirror p {
     ${defaultEditorFontStyles};
+  }
+
+  .ProseMirror span.code {
+    font-size: 12px;
+    font-weight: normal;
   }
 
   .ProseMirror .placeholder-decoration {
