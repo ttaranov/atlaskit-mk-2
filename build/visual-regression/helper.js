@@ -17,7 +17,6 @@ async function takeScreenShot(page /*:any*/, url /*:string*/) {
 }
 
 async function takeElementScreenShot(page /*:any*/, selector /*string*/) {
-  console.log(selector);
   let element = await page.$(selector);
   return element.screenshot();
 }
