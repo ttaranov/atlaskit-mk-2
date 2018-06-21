@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 73.8.6
+- [patch] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/renderer@18.2.5
+  - @atlaskit/task-decision@7.1.2
+  - @atlaskit/editor-common@11.3.0
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-markdown-transformer@1.2.4
+  - @atlaskit/editor-json-transformer@3.1.3
+  - @atlaskit/editor-bitbucket-transformer@3.2.4
+
 ## 73.8.5
 - [patch] Bump prosemirror-markdown to 1.1.0 and treat new lines when pasting as <br> [5c28782](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c28782)
 - [none] Updated dependencies [5c28782](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c28782)

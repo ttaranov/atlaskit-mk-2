@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 11.3.0
+- [minor] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [none] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-json-transformer@3.1.3
+
 ## 11.2.11
 - [patch] Removing unnecessary throw of error [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
 - [none] Updated dependencies [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)

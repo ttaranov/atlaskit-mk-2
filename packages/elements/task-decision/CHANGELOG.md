@@ -1,5 +1,10 @@
 # @atlaskit/task-decision
 
+## 7.1.2
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/renderer@18.2.5
+  - @atlaskit/editor-common@11.3.0
+
 ## 7.1.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
