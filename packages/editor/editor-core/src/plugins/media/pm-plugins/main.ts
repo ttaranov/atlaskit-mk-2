@@ -782,6 +782,9 @@ export class MediaPluginState {
       __fileMimeType: fileMimeType,
     });
 
+    //Ensure JIRA display type is set
+    newNode.attrs.__displayType = mediaNode.attrs.__displayType;
+
     // replace the old node with a new one
     const nodePos = getPos();
     const tr = view.state.tr.replaceWith(
