@@ -18,7 +18,9 @@ import { hasParentNodeOfType } from 'prosemirror-utils';
 
 const isLayoutSupported = (state, selectedExtNode) => {
   const {
-    schema: { nodes: { bodiedExtension, extension, layoutSection, table } },
+    schema: {
+      nodes: { bodiedExtension, extension, layoutSection, table },
+    },
     selection,
   } = state;
 

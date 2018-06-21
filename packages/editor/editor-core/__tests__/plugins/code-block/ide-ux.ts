@@ -17,7 +17,10 @@ describe('IDE UX plugin', () => {
   describe('Select-All', () => {
     describe('when cursor inside code-block', () => {
       it('should select all text inside code-block when Cmd+A pressed', () => {
-        const { editorView, refs: { start, end } } = editor(
+        const {
+          editorView,
+          refs: { start, end },
+        } = editor(
           doc(p('start'), code_block()('{start}mid{<>}dle{end}'), p('end')),
         );
         sendKeyToPm(editorView, 'Mod-a');
@@ -28,7 +31,10 @@ describe('IDE UX plugin', () => {
     });
     describe('when selection inside code-block', () => {
       it('should select all text inside code-block when Cmd+A pressed', () => {
-        const { editorView, refs: { start, end } } = editor(
+        const {
+          editorView,
+          refs: { start, end },
+        } = editor(
           doc(p('start'), code_block()('{start}{<}mid{>}dle{end}'), p('end')),
         );
         sendKeyToPm(editorView, 'Mod-a');
