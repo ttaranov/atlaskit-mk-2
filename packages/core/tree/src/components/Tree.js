@@ -8,6 +8,7 @@ import {
   type DragUpdate,
   type DraggableProvided,
   type DraggableStateSnapshot,
+  type NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import type { DragPosition, Props, State } from './Tree-types';
 import { noop } from '../utils/handy';
@@ -19,6 +20,10 @@ import {
 } from '../utils/tree';
 import type { FlattenedItem, FlattenedTree, Path } from '../types';
 import TreeItem from './TreeItem';
+import {
+  type TreeDraggableProvided,
+  type TreeDroppingStyle,
+} from './TreeItem-types';
 
 export default class Tree extends Component<Props, State> {
   static defaultProps = {
@@ -72,6 +77,10 @@ export default class Tree extends Component<Props, State> {
   onDragUpdate = (update: DragUpdate) => {
     const { tree, paddingPerLevel } = this.props;
 
+    if (!update.destination) {
+      return;
+    }
+
     const source = update.source;
     const destination = update.destination;
 
@@ -100,20 +109,35 @@ export default class Tree extends Component<Props, State> {
   patchDndProvided = (
     provided: DraggableProvided,
     snapshot: DraggableStateSnapshot,
-  ): DraggableProvided => {
+  ): TreeDraggableProvided => {
     const { dropAnimationOffset } = this.state;
 
-    const finalProvided: DraggableProvided = !snapshot.isDropAnimating
+    if (!provided.draggableProps.style || !provided.draggableProps.style.left) {
+      return provided;
+    }
+
+    const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
+    const finalStyle: TreeDroppingStyle = {
+      position: provided.draggableProps.style.position,
+      width: provided.draggableProps.style.width,
+      height: provided.draggableProps.style.height,
+      boxSizing: provided.draggableProps.style.boxSizing,
+      top: provided.draggableProps.style.top,
+      margin: provided.draggableProps.style.margin,
+      transform: provided.draggableProps.style.transform,
+      zIndex: provided.draggableProps.style.zIndex,
+      pointerEvents: provided.draggableProps.style.pointerEvents,
+      // overwrite
+      left: finalLeft,
+      transition: 'left 0.277s ease-out',
+    };
+    const finalProvided: TreeDraggableProvided = !snapshot.isDropAnimating
       ? provided
       : {
           ...provided,
           draggableProps: {
             ...provided.draggableProps,
-            style: {
-              ...provided.draggableProps.style,
-              transition: 'left 0.277s ease-out',
-              left: provided.draggableProps.style.left + dropAnimationOffset,
-            },
+            style: finalStyle,
           },
         };
     return finalProvided;
@@ -131,7 +155,10 @@ export default class Tree extends Component<Props, State> {
         key={flatItem.item.id}
       >
         {(provided, snapshot) => {
-          const finalProvided = this.patchDndProvided(provided, snapshot);
+          const finalProvided: TreeDraggableProvided = this.patchDndProvided(
+            provided,
+            snapshot,
+          );
           return (
             <Fragment>
               <TreeItem
