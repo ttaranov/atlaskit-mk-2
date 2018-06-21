@@ -284,8 +284,6 @@ class ContextImpl implements Context {
           controller.setCancel(cancel);
         }
 
-        console.log('deferredFileId')
-
         deferredFileId.then(id => {
           fileId = id;
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
