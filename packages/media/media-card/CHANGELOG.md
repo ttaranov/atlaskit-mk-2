@@ -1,5 +1,11 @@
 # @atlaskit/media-image
 
+## 29.1.4
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/smart-card@5.3.1
+  - @atlaskit/button@8.2.3
+
 ## 29.1.3
 
 

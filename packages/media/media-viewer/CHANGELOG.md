@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 15.1.5
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/button@8.2.3
+
 ## 15.1.4
 - [patch] MSW-774 : adjust zoom levels [a6369ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6369ce)
 
