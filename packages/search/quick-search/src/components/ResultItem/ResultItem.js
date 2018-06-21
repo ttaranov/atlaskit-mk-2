@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import type { Node, ComponentType } from 'react';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
-import { ResultItemSubText } from './styled';
 
 import {
   ResultItemAfter,
@@ -10,6 +9,7 @@ import {
   ResultItemCaption,
   ResultItemIcon,
   ResultItemTextAfter,
+  ResultItemSubText,
 } from './styled';
 
 const Item = withItemClick(withItemFocus(baseItem));
