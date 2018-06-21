@@ -11241,9 +11241,9 @@ prosemirror-markdown@1.1.0:
     markdown-it "^6.0.4"
     prosemirror-model "^1.0.0"
 
-prosemirror-model@1.4.0, prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.4.0.tgz#5172c635f62d7378451fcbfd27a580a633f02e2d"
+prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.5.0.tgz#4fa5498ed08eaabafec3e88ea2dcba149d5d458a"
   dependencies:
     orderedmap "^1.0.0"
 
