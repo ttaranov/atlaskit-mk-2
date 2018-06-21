@@ -109,7 +109,8 @@ export default class Popup extends PureComponent<Props, State> {
      */
 
     return (
-      (popup.offsetParent && !popup.offsetParent.contains(target!)) ||
+      (document.body.contains(target) &&
+        (popup.offsetParent && !popup.offsetParent.contains(target!))) ||
       (overflowScrollParent &&
         !overflowScrollParent.contains(popup.offsetParent))
     );
