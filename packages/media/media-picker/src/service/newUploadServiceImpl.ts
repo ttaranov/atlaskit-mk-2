@@ -62,6 +62,7 @@ export class NewUploadServiceImpl implements UploadService {
     if (files.length === 0) {
       return;
     }
+
     const creationDate = Date.now();
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
       mediaFile: {
@@ -90,19 +91,30 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
-      // TODO: remove "this" bind
       const controller = new UploadController();
+      let isFileSucceded = false;
+      console.log(4)
       this.context.uploadFile(uploadableFile, controller).subscribe({
-        next() {
-          this.onFileProgress.bind(this, cancellableFileUpload);
+        next: (state) => {
+          console.log(1)
+          if (state.status === 'uploading') {
+            this.onFileProgress(cancellableFileUpload, state.progress);
+          }
+
+          if (!isFileSucceded && (state.status === 'processing' || state.status === 'processed')) {
+            isFileSucceded = true;
+            this.onFileSuccess(cancellableFileUpload, state.id);
+          }
         },
-        complete() {
-          this.onFileSuccess.bind(this, cancellableFileUpload);
-          this.onFileError.bind(this, mediaFile, 'upload_fail');
-        },
+        error: (error) => {
+          this.onFileError(mediaFile, 'upload_fail', error);
+        }
       });
 
-      cancellableFileUpload.cancel = controller.cancel;
+      // cancellableFileUpload.cancel = controller.cancel;
+      cancellableFileUpload.cancel = () => {
+        console.log('canceeeel');
+      }
     });
   }
 
