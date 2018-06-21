@@ -253,11 +253,13 @@ describe('ConfluenceClient', () => {
 
     // quick nav's API sends pre-escaped content, different to what we normally expect
     // so testing that we remember to unescape it before passing it into the component.
-    it('should unescape html entities', async () => {
+    it('should unescape html entities in the name and spaceNames of results', async () => {
       const mockResult = mockQuickNavResult(PAGE_CLASSNAME);
 
       // Make the name include some entities, not intended to be comprehensive
-      mockResult.name = '&amp; &gt; &lt;';
+      mockResult.name = 'name &amp; &gt; &lt;';
+      mockResult.spaceName = 'spaceName &amp; &gt; &lt;';
+
       const mockResults = [[mockResult]];
 
       mockQuickNavSearch(mockResults);
@@ -267,9 +269,9 @@ describe('ConfluenceClient', () => {
       const expectedResults: ConfluenceObjectResult[] = [
         {
           resultId: '123',
-          name: '& > <',
+          name: 'name & > <',
           href: `/href?search_id=123`,
-          containerName: 'spaceName',
+          containerName: 'spaceName & > <',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
