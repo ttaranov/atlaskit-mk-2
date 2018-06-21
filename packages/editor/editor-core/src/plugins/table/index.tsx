@@ -15,6 +15,10 @@ import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
+import contextualMenu, {
+  pluginKey as contextualMenuPluginKey,
+} from './pm-plugins/contextual-menu-plugin';
+import FloatingContextualMenu from './ui/FloatingContextualMenu';
 
 export const CELL_MIN_WIDTH = 128;
 
@@ -67,27 +71,40 @@ const tablesPlugin: EditorPlugin = {
       // plugin as it is currently swallowing backspace events inside tables
       { rank: 905, plugin: () => keymapPlugin() },
       { rank: 930, plugin: () => tableEditing() },
-      { rank: 940, plugin: () => hoverSelectionPlugin },
+      { rank: 940, plugin: ({ dispatch }) => hoverSelectionPlugin(dispatch) },
+      { rank: 950, plugin: ({ dispatch }) => contextualMenu(dispatch) },
     ];
   },
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
     return (
       <WithPluginState
-        plugins={{ tablesState: stateKey }}
-        render={({ tablesState }) => (
-          <TableFloatingToolbar
-            editorView={editorView}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            pluginConfig={tablesState.pluginConfig}
-            tableRef={tablesState.tableRef}
-            tableLayout={
-              tablesState.tableNode
-                ? tablesState.tableNode.attrs.layout
-                : undefined
-            }
-          />
+        plugins={{
+          tablesState: stateKey,
+          contextualMenuState: contextualMenuPluginKey,
+        }}
+        render={({ tablesState, contextualMenuState }) => (
+          <>
+            <TableFloatingToolbar
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              pluginConfig={tablesState.pluginConfig}
+              tableRef={tablesState.tableRef}
+              tableLayout={
+                tablesState.tableNode
+                  ? tablesState.tableNode.attrs.layout
+                  : undefined
+              }
+            />
+            <FloatingContextualMenu
+              editorView={editorView}
+              targetCellRef={contextualMenuState.targetCellRef}
+              targetCellPosition={contextualMenuState.targetCellPosition}
+              isOpen={contextualMenuState.isOpen}
+              pluginConfig={tablesState.pluginConfig}
+            />
+          </>
         )}
       />
     );

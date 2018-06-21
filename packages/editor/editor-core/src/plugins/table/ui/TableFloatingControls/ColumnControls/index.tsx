@@ -22,13 +22,16 @@ import {
 
 export interface Props {
   editorView: EditorView;
+  dangerColumns?: number[];
   tableRef?: HTMLElement;
   isTableHovered: boolean;
   isTableInDanger?: boolean;
 }
 
 export default class ColumnControls extends Component<Props, any> {
-  state: { dangerColumns: number[] } = { dangerColumns: [] };
+  static defaultProps = {
+    dangerColumns: [],
+  };
 
   createDeleteColumnButton(
     selection: TableSelection,
@@ -84,7 +87,7 @@ export default class ColumnControls extends Component<Props, any> {
       classNames.push('active');
     }
 
-    if (this.state.dangerColumns.indexOf(i) !== -1 || isTableInDanger) {
+    if (this.props.dangerColumns!.indexOf(i) !== -1 || isTableInDanger) {
       classNames.push('danger');
     }
 
@@ -185,13 +188,11 @@ export default class ColumnControls extends Component<Props, any> {
 
   private hoverColumns = (columns: number[], danger?: boolean) => {
     const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerColumns: danger ? columns : [] });
     hoverColumns(columns, danger)(state, dispatch);
   };
 
   private resetHoverSelection = () => {
     const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerColumns: [] });
     resetHoverSelection(state, dispatch);
   };
 

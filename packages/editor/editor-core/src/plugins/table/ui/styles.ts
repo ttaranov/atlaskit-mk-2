@@ -11,6 +11,11 @@ import {
   akColorR50,
   akColorR300,
   akColorR75,
+  akColorN20A,
+  akBorderRadius,
+  akColorN60A,
+  akColorN30,
+  akColorN90,
 } from '@atlaskit/util-shared-styles';
 import {
   browser,
@@ -20,6 +25,7 @@ import {
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
 
+export const contextualMenuSize = 16;
 export const tableToolbarColor = akColorN20;
 export const tableBorderColor = akColorN50;
 export const tableFloatingControlsColor = akColorN20;
@@ -155,6 +161,63 @@ export const tableStyles = css`
 
   .ProseMirror.resize-cursor {
     cursor: col-resize;
+  }
+
+  /* =============== TABLE CONTEXTUAL MENU ================== */
+  .ProseMirror .dragging .ProseMirror-table-contextual-menu-trigger {
+    display: none;
+  }
+  .ProseMirror-table-contextual-menu-trigger {
+    > div {
+      background: ${akColorN20A};
+      border-radius: ${akBorderRadius};
+      display: flex;
+      height: ${contextualMenuSize}px;
+      flex-direction: column;
+    }
+    button {
+      flex-direction: column;
+      padding: 0;
+    }
+  }
+  .ProseMirror-table-contextual-submenu {
+    border-radius: ${akBorderRadius};
+    background: white;
+    box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+    display: none;
+    position: absolute;
+    width: 130px;
+    height: 64px;
+    top: 0;
+    left: 180px;
+    padding: 5px;
+
+    &.-open {
+      display: block;
+    }
+
+    > div {
+      padding: 0;
+    }
+  }
+  .ProseMirror-contextual-submenu-icon {
+    border: 1px solid ${akColorN30};
+    border-radius: ${akBorderRadius};
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    left: -10px;
+
+    &::after {
+      content: '›';
+      display: inline-block;
+      width: 1px;
+      position: relative;
+      left: 25px;
+      top: -3px;
+      color: ${akColorN90};
+    }
   }
 `;
 

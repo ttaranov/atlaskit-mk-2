@@ -93,10 +93,11 @@ class TableComponent extends React.Component<ComponentProps> {
         plugins={{
           containerWidth: widthPluginKey,
           pluginState: stateKey,
+          hoverSelectionState: hoverSelectionPluginKey,
         }}
         eventDispatcher={eventDispatcher}
         editorView={view}
-        render={({ containerWidth, pluginState }) => {
+        render={({ containerWidth, pluginState, hoverSelectionState }) => {
           const tableActive = this.table === pluginState.tableRef;
           const { scroll } = this.state;
           return (
@@ -124,6 +125,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
                   hasHeaderRow={containsHeaderRow(view.state, node)}
                   scroll={scroll}
+                  dangerRows={hoverSelectionState.dangerRows}
                 />
               </div>
               <div
@@ -139,6 +141,7 @@ class TableComponent extends React.Component<ComponentProps> {
                 <div className="table-column-controls-wrapper">
                   <ColumnControls
                     editorView={view}
+                    dangerColumns={hoverSelectionState.dangerColumns}
                     tableRef={pluginState.tableRef}
                     isTableHovered={isTableHovered}
                     isTableInDanger={isTableInDanger}

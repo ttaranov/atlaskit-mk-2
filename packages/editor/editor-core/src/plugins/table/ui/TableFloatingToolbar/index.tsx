@@ -4,12 +4,7 @@ import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 
-import {
-  Popup,
-  TableLayout,
-  tableBackgroundColorPalette,
-  tableBackgroundBorderColors,
-} from '@atlaskit/editor-common';
+import { Popup, TableLayout } from '@atlaskit/editor-common';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
@@ -17,8 +12,6 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 
 import { PluginConfig } from '../../pm-plugins/main';
 import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
-import AdvanceMenu from './AdvanceMenu';
-import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
 import { dropShadow } from '../../../../ui/styles';
 
@@ -151,14 +144,6 @@ export default class TableFloatingToolbar extends Component<Props, State> {
         ariaLabel="Table floating controls"
       >
         <Toolbar>
-          {allowBackgroundColor && (
-            <BackgroundColorMenu
-              editorView={editorView}
-              palette={tableBackgroundColorPalette}
-              mountPoint={popupsMountPoint}
-              borderColors={tableBackgroundBorderColors}
-            />
-          )}
           {(allowNumberColumn || allowHeaderRow || allowHeaderColumn) && (
             <DisplayOptionsMenu
               editorView={editorView}
@@ -166,13 +151,6 @@ export default class TableFloatingToolbar extends Component<Props, State> {
               allowNumberColumn={allowNumberColumn}
               allowHeaderRow={allowHeaderRow}
               allowHeaderColumn={allowHeaderColumn}
-            />
-          )}
-          {allowMergeCells && (
-            <AdvanceMenu
-              editorView={editorView}
-              mountPoint={popupsMountPoint}
-              allowMergeCells={allowMergeCells}
             />
           )}
           {(allowBackgroundColor ||

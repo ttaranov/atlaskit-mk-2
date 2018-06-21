@@ -53,6 +53,8 @@ export const resetHoverSelection: Command = (
   dispatch(
     state.tr.setMeta(hoverSelectionPluginKey, {
       decorationSet: DecorationSet.empty,
+      dangerColumns: [],
+      dangerRows: [],
       isTableHovered: false,
       isTableInDanger: false,
     }),
@@ -73,10 +75,12 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
       },
       [],
     );
-
+    const map = TableMap.get(table.node);
     dispatch(
       state.tr.setMeta(hoverSelectionPluginKey, {
         decorationSet: createHoverDecorationSet(cells, state, danger),
+        dangerColumns: danger ? columns : [],
+        isTableInDanger: map.width === columns.length ? true : false,
       }),
     );
     return true;
@@ -94,10 +98,12 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
       const rowCells = getCellsInRow(rowIdx)(state.selection);
       return rowCells ? acc.concat(rowCells) : acc;
     }, []);
-
+    const map = TableMap.get(table.node);
     dispatch(
       state.tr.setMeta(hoverSelectionPluginKey, {
         decorationSet: createHoverDecorationSet(cells, state, danger),
+        dangerRows: danger ? rows : [],
+        isTableInDanger: map.height === rows.length ? true : false,
       }),
     );
     return true;

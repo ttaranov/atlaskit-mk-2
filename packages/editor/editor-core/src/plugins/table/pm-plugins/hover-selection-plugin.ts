@@ -1,50 +1,62 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
+import { Dispatch } from '../../../event-dispatcher';
 import { resetHoverSelection } from '../actions';
 
 export const pluginKey = new PluginKey('tableHoverSelectionPlugin');
 
-export type State = {
+export type HoverSelectionState = {
   decorationSet: DecorationSet;
   isTableHovered: boolean;
   isTableInDanger: boolean;
+  dangerColumns: number[];
+  dangerRows: number[];
 };
 
-const plugin = new Plugin({
-  state: {
-    init: () => ({
-      decorationSet: DecorationSet.empty,
-      isTableHovered: false,
-      isTableInDanger: false,
-    }),
+const defaultState = {
+  decorationSet: DecorationSet.empty,
+  isTableHovered: false,
+  isTableInDanger: false,
+  dangerColumns: [],
+  dangerRows: [],
+};
 
-    apply(tr, state: State): State {
-      const meta = tr.getMeta(pluginKey);
+export const createPlugin = (dispatch: Dispatch) =>
+  new Plugin({
+    state: {
+      init: () => ({ ...defaultState }),
 
-      // @see: https://product-fabric.atlassian.net/browse/ED-3796
-      if (tr.docChanged) {
-        return { ...state, decorationSet: DecorationSet.empty };
-      }
+      apply(tr, pluginState: HoverSelectionState): HoverSelectionState {
+        const meta = tr.getMeta(pluginKey);
 
-      if (meta) {
-        return { ...state, ...meta };
-      }
+        // reset the selection whenever document is updated
+        if (tr.docChanged) {
+          const nextPluginState = { ...defaultState };
+          dispatch(pluginKey, nextPluginState);
+          return nextPluginState;
+        }
 
-      return state;
+        if (meta) {
+          const nextPluginState = { ...pluginState, ...meta };
+          dispatch(pluginKey, nextPluginState);
+          return nextPluginState;
+        }
+
+        return pluginState;
+      },
     },
-  },
-  key: pluginKey,
-  props: {
-    decorations: state => pluginKey.getState(state).decorationSet,
+    key: pluginKey,
+    props: {
+      decorations: state => pluginKey.getState(state).decorationSet,
 
-    handleClick: ({ state, dispatch }) => {
-      const { decorationSet } = pluginKey.getState(state);
-      if (decorationSet !== DecorationSet.empty) {
-        resetHoverSelection(state, dispatch);
-      }
-      return false;
+      handleClick: ({ state, dispatch }) => {
+        const { decorationSet } = pluginKey.getState(state);
+        if (decorationSet !== DecorationSet.empty) {
+          resetHoverSelection(state, dispatch);
+        }
+        return false;
+      },
     },
-  },
-});
+  });
 
-export default plugin;
+export default createPlugin;
