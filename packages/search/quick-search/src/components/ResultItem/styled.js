@@ -27,7 +27,8 @@ export const ResultItemCaption = styled.small`
   margin-left: ${gridSize() * 2}px;
 `;
 
-export const ResultItemSubText = styled.span`
+export const ResultItemSubText = styled.small`
+  font-size: 12px;
   color: ${colors.N200};
 `;
 
