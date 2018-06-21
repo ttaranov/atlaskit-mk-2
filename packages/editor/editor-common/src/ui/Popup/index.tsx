@@ -98,6 +98,24 @@ export default class Popup extends PureComponent<Props, State> {
     this.setState({ position });
   }
 
+  private cannotSetPopup(popup, target, overflowScrollParent) {
+    /**
+     * Check whether:
+     * 1. Popup's offset targets which means whether or not its possible to correctly position popup along with given target.
+     * 2. Popup is inside "overflow: scroll" container, but its offset parent isn't.
+     *
+     * Currently Popup isn't capable of position itself correctly in case 2,
+     * Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.
+     */
+
+    return (
+      (document.body.contains(target) &&
+        (popup.offsetParent && !popup.offsetParent.contains(target!))) ||
+      (overflowScrollParent &&
+        !overflowScrollParent.contains(popup.offsetParent))
+    );
+  }
+
   /**
    * Popup initialization.
    * Checks whether it's possible to position popup along given target, and if it's not throws an error.
@@ -106,19 +124,8 @@ export default class Popup extends PureComponent<Props, State> {
     const { target } = this.props;
     const overflowScrollParent = findOverflowScrollParent(popup);
 
-    if (popup.offsetParent && !popup.offsetParent.contains(target!)) {
-      throw new Error(
-        "Popup's offset parent doesn't contain target which means it's impossible to correctly position popup along with given target.",
-      );
-    }
-
-    if (
-      overflowScrollParent &&
-      !overflowScrollParent.contains(popup.offsetParent)
-    ) {
-      throw new Error(
-        'Popup is inside "overflow: scroll" container, but its offset parent isn\'t. Currently Popup isn\'t capable of position itself correctly in such case. Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.',
-      );
+    if (this.cannotSetPopup(popup, target, overflowScrollParent)) {
+      return;
     }
 
     this.setState({ popup, overflowScrollParent }, () => this.updatePosition());
