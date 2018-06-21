@@ -12,6 +12,7 @@ import {
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
+import * as URI from 'urijs';
 
 export type ConfluenceItemContentType = 'page' | 'blogpost';
 
@@ -164,7 +165,10 @@ function mapItemToResult(
       );
     }
     case Scope.ConfluenceSpace: {
-      return mapConfluenceItemToResultSpace(item as ConfluenceItem);
+      return mapConfluenceItemToResultSpace(
+        item as ConfluenceItem,
+        searchSessionId,
+      );
     }
     case Scope.JiraIssue: {
       return mapJiraItemToResult(item as JiraItem);
@@ -207,12 +211,17 @@ function mapJiraItemToResult(item: JiraItem): JiraObjectResult {
 
 function mapConfluenceItemToResultSpace(
   spaceItem: ConfluenceItem,
+  searchSessionId: string,
 ): ContainerResult {
+  // add searchSessionId
+  const href = new URI(`${spaceItem.baseUrl}${spaceItem.container.displayUrl}`);
+  href.addQuery('search_id', searchSessionId);
+
   return {
     resultId: `search-${spaceItem.container.displayUrl}`,
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
-    href: `${spaceItem.baseUrl}${spaceItem.container.displayUrl}`,
+    href: href.toString(),
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
   };
