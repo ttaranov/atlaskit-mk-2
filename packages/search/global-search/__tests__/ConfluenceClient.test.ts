@@ -250,5 +250,33 @@ describe('ConfluenceClient', () => {
 
       expect(results).toEqual(expectedResults);
     });
+
+    // quick nav's API sends pre-escaped content, different to what we normally expect
+    // so testing that we remember to unescape it before passing it into the component.
+    it('should unescape html entities', async () => {
+      const mockResult = mockQuickNavResult(PAGE_CLASSNAME);
+
+      // Make the name include some entities, not intended to be comprehensive
+      mockResult.name = '&amp; &gt; &lt;';
+      const mockResults = [[mockResult]];
+
+      mockQuickNavSearch(mockResults);
+
+      const results = await confluenceClient.searchQuickNav('abc', '123');
+
+      const expectedResults: ConfluenceObjectResult[] = [
+        {
+          resultId: '123',
+          name: '& > <',
+          href: `/href?search_id=123`,
+          containerName: 'spaceName',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluencePage,
+        },
+      ];
+
+      expect(results).toEqual(expectedResults);
+    });
   });
 });
