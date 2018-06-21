@@ -68,7 +68,6 @@ export default class TableFloatingControls extends Component<Props, State> {
             hoveredRows={this.state.hoveredRows}
             hasHeaderRow={hasHeaderRow}
             isTableHovered={isTableHovered}
-            scroll={this.props.scroll}
             isTableInDanger={isTableInDanger}
             selectRow={this.selectRow}
           />

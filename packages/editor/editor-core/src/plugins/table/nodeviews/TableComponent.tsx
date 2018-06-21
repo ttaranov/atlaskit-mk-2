@@ -98,6 +98,7 @@ class TableComponent extends React.Component<ComponentProps> {
         editorView={view}
         render={({ containerWidth, pluginState }) => {
           const tableActive = this.table === pluginState.tableRef;
+          const { scroll } = this.state;
           return (
             <div
               style={{
@@ -109,7 +110,11 @@ class TableComponent extends React.Component<ComponentProps> {
               data-number-column={node.attrs.isNumberColumnEnabled}
               data-layout={node.attrs.layout}
             >
-              <div className="table-row-controls-wrapper">
+              <div
+                className={`table-row-controls-wrapper ${
+                  scroll > 0 ? 'scrolling' : ''
+                }`}
+              >
                 <TableFloatingControls
                   editorView={view}
                   tableRef={this.table || undefined}
@@ -118,7 +123,7 @@ class TableComponent extends React.Component<ComponentProps> {
                   isTableInDanger={isTableInDanger}
                   isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
                   hasHeaderRow={containsHeaderRow(view.state, node)}
-                  scroll={this.state.scroll}
+                  scroll={scroll}
                 />
               </div>
               <div
