@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
+import { ResultItemSubText } from '../ResultItem/styled';
 
 import type { ResultType as Props } from './types';
 
@@ -48,6 +49,12 @@ export default class ResultBase extends PureComponent<Props> {
     });
   };
 
+  getSubtextComponent() {
+    return this.props.subText ? (
+      <ResultItemSubText>{this.props.subText}</ResultItemSubText>
+    ) : null;
+  }
+
   render() {
     const {
       caption,
@@ -74,7 +81,7 @@ export default class ResultBase extends PureComponent<Props> {
         onClick={this.handleClick}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={onMouseLeave}
-        subText={subText}
+        subText={this.getSubtextComponent()}
         text={text}
         textAfter={elemAfter}
         linkComponent={linkComponent}
