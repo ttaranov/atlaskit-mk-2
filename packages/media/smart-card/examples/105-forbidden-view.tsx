@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
-import { NoPermissionsView } from '../src/inline/NoPermissionsView';
+import { ForbiddenView } from '../src/inline/ForbiddenView';
 
 class Example extends React.Component {
   state = {
@@ -28,7 +28,7 @@ class Example extends React.Component {
         </Grid>
         <Grid>
           <GridColumn>
-            <NoPermissionsView
+            <ForbiddenView
               url={this.state.url}
               onClick={() => alert('This will have zero effect...')}
               onRetry={() => alert('Trying hard...')}
@@ -41,7 +41,7 @@ class Example extends React.Component {
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
               in finibus augue. Etiam ut leo justo. Proin consequat lacus id leo{' '}
-              <NoPermissionsView
+              <ForbiddenView
                 url={this.state.url}
                 onClick={() => alert('This will have zero effect...')}
                 onRetry={() => alert('Trying hard...')}

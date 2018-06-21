@@ -6,13 +6,13 @@ import Button from '@atlaskit/button';
 import { truncateUrlForErrorView } from '../utils';
 import { Frame } from '../Frame';
 
-export interface NoPermissionsViewProps {
+export interface ForbiddenViewProps {
   url: string;
   onClick?: () => void;
   onRetry?: () => void;
 }
 
-export class NoPermissionsView extends React.Component<NoPermissionsViewProps> {
+export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
