@@ -392,8 +392,7 @@ describe('Context', () => {
             });
             expect(next.mock.calls[1][0]).toEqual({
               id: 'file-id-1',
-              progress: 1,
-              status: 'uploading',
+              status: 'processing',
               name: '',
               size: 0,
             });
@@ -426,7 +425,7 @@ describe('Context', () => {
             },
           });
         } else {
-          return Promise.reject();
+          return Promise.reject('');
         }
       });
       const next = jest.fn();
@@ -474,7 +473,11 @@ describe('Context', () => {
     it('should call media-store uploadFile with given arguments', () => {
       const context = createFakeContext();
       const file: UploadableFile = {} as any;
-      uploadFileMock.mockReturnValue({ expectedResult: true });
+      const deferredFileId = Promise.resolve('file-id-1');
+      uploadFileMock.mockImplementation((_, __, callbacks) => {
+        callbacks.onProgress(0.1);
+        return { deferredFileId };
+      });
       return new Promise(resolve => {
         context.uploadFile(file).subscribe({
           next() {
@@ -484,6 +487,47 @@ describe('Context', () => {
               serviceHost: 'service-host',
               authProvider,
             });
+            resolve();
+          },
+        });
+      });
+    });
+
+    it('should pass collection name when creating the download stream', () => {
+      const context = createFakeContext();
+      const deferredFileId = Promise.resolve('file-id-1');
+      const getFile = jest.fn().mockReturnValue({
+        data: {
+          processingStatus: 'succeeded',
+          id: 'file-id-1',
+          name: 'file-one',
+          size: 1,
+        },
+      });
+      const createDownloadFileStream = jest.fn().mockReturnValue(
+        new Observable(observer => {
+          observer.complete();
+        }),
+      );
+      const file = {
+        content: new Blob(),
+        collection: 'some-collection',
+      };
+      (context as any).mediaStore = { getFile };
+      (context as any).createDownloadFileStream = createDownloadFileStream;
+      uploadFileMock.mockImplementation((_, __, callbacks) => {
+        callbacks.onProgress(0.1);
+        return { deferredFileId };
+      });
+
+      return new Promise(resolve => {
+        context.uploadFile(file).subscribe({
+          complete() {
+            expect(createDownloadFileStream).toHaveBeenCalledTimes(1);
+            expect(createDownloadFileStream).toBeCalledWith(
+              'file-id-1',
+              'some-collection',
+            );
             resolve();
           },
         });

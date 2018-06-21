@@ -259,7 +259,7 @@ class ContextImpl implements Context {
     file: UploadableFile,
     controller?: UploadController,
   ): Observable<FileState> {
-    let id: string;
+    let fileId: string;
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
     // TODO [MSW-678]: remove when id upfront is exposed
@@ -285,12 +285,12 @@ class ContextImpl implements Context {
         }
 
         deferredFileId.then(id => {
+          fileId = id;
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
           this.fileStreamsCache.set(id, fileStream);
           observer.next({
             id,
-            progress: 1,
-            status: 'uploading',
+            status: 'processing',
             name,
             size,
           });
@@ -300,7 +300,11 @@ class ContextImpl implements Context {
         observer.error(e);
       }
     })
-      .concat(Observable.defer(() => this.createDownloadFileStream(id)))
+      .concat(
+        Observable.defer(() =>
+          this.createDownloadFileStream(fileId, file.collection),
+        ),
+      )
       .publishReplay(1);
     // TODO: Should we use refCount or not?
     // .refCount()
