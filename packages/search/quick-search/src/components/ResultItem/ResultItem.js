@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import type { Node, ComponentType } from 'react';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
+import { ResultItemSubText } from './styled';
 
 import {
   ResultItemAfter,
@@ -73,6 +74,10 @@ class ResultItem extends PureComponent<Props> {
       <ResultItemCaption>{this.props.caption}</ResultItemCaption>
     ) : null;
 
+    const wrappedSubText = this.props.subText ? (
+      <ResultItemSubText>{this.props.subText}</ResultItemSubText>
+    ) : null;
+
     const interactiveWrapperProps = {
       onClick: this.props.onClick,
       onMouseEnter: this.props.onMouseEnter,
@@ -84,7 +89,7 @@ class ResultItem extends PureComponent<Props> {
       <Item
         elemBefore={icon}
         elemAfter={after}
-        description={this.props.subText}
+        description={wrappedSubText}
         isSelected={this.props.isSelected}
         isCompact={this.props.isCompact}
         target={this.props.target}
