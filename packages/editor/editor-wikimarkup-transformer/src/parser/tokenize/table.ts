@@ -4,7 +4,7 @@ import { TableBuilder } from '../builder/table-builder';
 import { parseString } from '../text';
 import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType } from './';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const TABLE_REGEXP = /^\s*[|]+(.*)/;
 const NEWLINE = /\r?\n/;
@@ -22,7 +22,7 @@ export function table(input: string, schema: Schema): Token {
       lineBuffer.push(line);
       index += line.length;
       // Finding the length of the line break
-      const length = parseWhitespace(input.substring(index), true);
+      const length = parseNewlineOnly(input.substring(index));
       if (length) {
         index += length;
       }
@@ -45,7 +45,7 @@ export function table(input: string, schema: Schema): Token {
     lineBuffer.push(line);
     index += line.length;
     // Finding the length of the line break
-    const lengthOfLineBreak = parseWhitespace(input.substring(index), true);
+    const lengthOfLineBreak = parseNewlineOnly(input.substring(index));
     if (lengthOfLineBreak) {
       index += lengthOfLineBreak;
     }
