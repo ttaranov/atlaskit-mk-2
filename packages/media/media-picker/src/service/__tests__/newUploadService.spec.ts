@@ -293,24 +293,28 @@ describe('UploadService', () => {
       );
       const fileConvertingCallback = jest.fn();
       uploadService.on('file-converting', fileConvertingCallback);
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
-          subscription.next({
-            status: 'processing',
-            id: 'public-file-id',
+      jest.spyOn(context, 'uploadFile').mockReturnValue(
+        new Observable(observer => {
+          setImmediate(() => {
+            observer.next({
+              status: 'processing',
+              id: 'public-file-id',
+            });
           });
-        },
-      });
+        }),
+      );
       uploadService.addFiles([file]);
-      expect(fileConvertingCallback).toHaveBeenCalledWith({
-        file: {
-          publicId: 'public-file-id',
-          id: expect.any(String),
-          creationDate: expect.any(Number),
-          name: 'some-filename',
-          size: 100,
-          type: 'video/mp4',
-        },
+      setImmediate(() => {
+        expect(fileConvertingCallback).toHaveBeenCalledWith({
+          file: {
+            publicId: 'public-file-id',
+            id: expect.any(String),
+            creationDate: expect.any(Number),
+            name: 'some-filename',
+            size: 100,
+            type: 'video/mp4',
+          },
+        });
       });
     });
 
@@ -391,14 +395,16 @@ describe('UploadService', () => {
       );
       const fileConvertedCallback = jest.fn();
       uploadService.on('file-converted', fileConvertedCallback);
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
-          subscription.next({
-            status: 'processing',
-            id: 'public-file-id',
+      jest.spyOn(context, 'uploadFile').mockReturnValue(
+        new Observable(observer => {
+          setImmediate(() => {
+            observer.next({
+              status: 'processing',
+              id: 'public-file-id',
+            });
           });
-        },
-      });
+        }),
+      );
       uploadService.addFiles([file]);
     });
 
@@ -698,13 +704,15 @@ describe('UploadService', () => {
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
 
-      jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
-          subscription.next({
-            status: 'processing',
+      jest.spyOn(context, 'uploadFile').mockReturnValue(
+        new Observable(observer => {
+          setImmediate(() => {
+            observer.next({
+              status: 'processing',
+            });
           });
-        },
-      });
+        }),
+      );
 
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
