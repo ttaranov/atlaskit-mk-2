@@ -23,7 +23,6 @@ const Global = () => (
       </button>
     )}
     loginHref="#login"
-    profileTooltip="test"
   />
 );
 
