@@ -6,7 +6,6 @@ import { analyticsService } from '../../../analytics';
 import keymapHandler from './keymap';
 import { transformToCodeAction } from '../commands/transform-to-code';
 import { isKeyMapBindingAllowed } from '../../../utils';
-import { pluginKey as extPluginKey } from '../../../plugins/extension/plugin';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
