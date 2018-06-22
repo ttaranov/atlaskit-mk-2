@@ -16,7 +16,7 @@ import { EditorAppearance } from '../../../types';
 import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
-import { isSingleLine, escapeLinks } from '../util';
+import { isSingleLine, escapeLinks, isPastedFromWord } from '../util';
 import {
   removeBodiedExtensionsIfSelectionIsInBodiedExtension,
   removeBodiedExtensionWrapper,
@@ -34,6 +34,7 @@ import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
 // @ts-ignore
 import { handlePaste as handlePasteTable } from 'prosemirror-tables';
 import { transformSliceToAddTableHeaders } from '../../table/actions';
+import { handlePasteIntoTaskAndDecision } from '../handlers';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -70,6 +71,14 @@ export function createPlugin(
 
         // Bail if copied content has files
         if (clipboard.isPastedFile(event)) {
+          if (!isPastedFromWord(event)) {
+            return true;
+          }
+          // Microsoft Office always copies an image to clipboard so we don't let the event reach media
+          event.stopPropagation();
+        }
+
+        if (handlePasteIntoTaskAndDecision(slice)(view.state, view.dispatch)) {
           return true;
         }
 
