@@ -9,7 +9,7 @@ export interface TextDefinition {
    * @minLength 1
    */
   text: string;
-  marks?: object;
+  marks?: Array<any>;
 }
 
 export const text: NodeSpec = {
