@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.1.7
+- [patch] MSW-776: allow selection of top and bottom of documents [d62c079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d62c079)
+
 ## 15.1.6
 - [patch] MSW-777: position navigation arrows differently, so that they no longer overlap the content area [0334e5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0334e5c)
 
