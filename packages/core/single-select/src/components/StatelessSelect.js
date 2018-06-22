@@ -1,9 +1,18 @@
 // @flow
 import React, { PureComponent, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
 import Content from '../styled/Content';
@@ -136,7 +145,7 @@ type State = {
   droplistWidth?: number,
 };
 
-export default class StatelessSelect extends PureComponent<Props, State> {
+class StatelessSelect extends PureComponent<Props, State> {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
   inputNode: HTMLElement | null;
@@ -669,3 +678,47 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
+
+export { StatelessSelect as StatelessSelectWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'singleSelect',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onFilterChange: createAndFireEventOnAtlaskit({
+      action: 'filtered',
+      actionSubject: 'singleSelect',
+
+      attributes: {
+        componentName: 'singleSelect',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onSelected: createAndFireEventOnAtlaskit({
+      action: 'selected',
+      actionSubject: 'singleSelect',
+
+      attributes: {
+        componentName: 'singleSelect',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'opened',
+      actionSubject: 'singleSelect',
+
+      attributes: {
+        componentName: 'singleSelect',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(StatelessSelect),
+);

@@ -1,3 +1,8 @@
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 // @flow
 import '@atlaskit/polyfills/object-assign';
 import React, {
@@ -8,6 +13,10 @@ import React, {
   type ElementRef,
 } from 'react';
 import { getTheme } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -132,7 +141,7 @@ type State = {
   resizeDelta: number,
 };
 
-export default class Navigation extends PureComponent<Props, State> {
+class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -433,3 +442,58 @@ export default class Navigation extends PureComponent<Props, State> {
     );
   }
 }
+
+export { Navigation as NavigationWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'navigation',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onResize: createAndFireEventOnAtlaskit({
+      action: 'resized',
+      actionSubject: 'navigation',
+
+      attributes: {
+        componentName: 'navigation',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onResizeStart: createAndFireEventOnAtlaskit({
+      action: 'resizeStarted',
+      actionSubject: 'navigation',
+
+      attributes: {
+        componentName: 'navigation',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onToggleStart: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'navigation',
+
+      attributes: {
+        componentName: 'navigation',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onToggleEnd: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'navigation',
+
+      attributes: {
+        componentName: 'navigation',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Navigation),
+);

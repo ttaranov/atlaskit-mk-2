@@ -1,6 +1,15 @@
 // @flow
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import TextArea from './styled/TextArea';
 
 type Props = {
@@ -52,9 +61,7 @@ type Props = {
   isValidationHidden?: boolean,
 };
 
-// We are using any as FieldTextArea passes props via spread
-// TODO: if there is no impact props should be passed explicitly from FieldTextArea
-export default class FieldTextAreaStateless extends Component<Props, void> {
+class FieldTextAreaStateless extends Component<Props, void> {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -140,3 +147,26 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
     );
   }
 }
+
+export { FieldTextAreaStateless as FieldTextAreaStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'textarea',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'field',
+
+      attributes: {
+        componentName: 'textarea',
+        type: 'textArea',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(FieldTextAreaStateless),
+);
