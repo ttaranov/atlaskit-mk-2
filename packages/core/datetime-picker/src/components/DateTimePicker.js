@@ -1,3 +1,8 @@
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 // @flow
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
@@ -6,6 +11,11 @@ import { borderRadius, colors } from '@atlaskit/theme';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
@@ -130,7 +140,7 @@ function formatDateTimeZoneIntoIso(
   return `${date}T${time}${zone}`;
 }
 
-export default class DateTimePicker extends Component<Props, State> {
+class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
@@ -293,3 +303,25 @@ export default class DateTimePicker extends Component<Props, State> {
     );
   }
 }
+
+export { DateTimePicker as DateTimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'dateTimePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'dateTimePicker',
+
+      attributes: {
+        componentName: 'dateTimePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(DateTimePicker),
+);
