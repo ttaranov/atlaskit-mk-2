@@ -4,7 +4,9 @@ import { mount, shallow } from 'enzyme';
 import Base from '@atlaskit/field-base';
 
 import Radio from '../../src/RadioBase';
-import AkFieldRadioGroup from '../../src/RadioGroupStateless';
+import AkFieldRadioGroupWithAnalytics, {
+  AkFieldRadioGroupWithoutAnalytics as AkFieldRadioGroup,
+} from '../../src/RadioGroupStateless';
 import { name } from '../../package.json';
 import type { ItemPropTypeSmart } from '../types';
 
@@ -160,5 +162,24 @@ describe(name, () => {
         expectRadioSelected(wrapper, 2);
       });
     });
+  });
+});
+
+describe('AkFieldRadioGroupWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<AkFieldRadioGroupWithAnalytics onRadioChange={() => {}} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });
