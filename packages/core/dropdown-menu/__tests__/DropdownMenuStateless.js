@@ -3,7 +3,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Droplist from '@atlaskit/droplist';
-
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import DropdownMenuStatelessWithAnalytics, {
   DropdownMenuStatelessWithoutAnalytics as DropdownMenuStateless,
 } from '../src/components/DropdownMenuStateless';
@@ -108,5 +111,14 @@ describe('DropdownMenuStatelessWithAnalytics', () => {
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
     /* eslint-enable no-console */
+  });
+  it('should override the existing analytics context of Droplist', () => {
+    const wrapper = mount(<DropdownMenuStatelessWithAnalytics />);
+
+    expect(wrapper.find(Droplist).prop('analyticsContext')).toEqual({
+      componentName: 'dropdownMenu',
+      package: packageName,
+      version: packageVersion,
+    });
   });
 });
