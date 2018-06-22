@@ -10,7 +10,9 @@ import type { ProductConfigShape } from './types';
 
 const isNotEmpty = obj => {
   const values = Object.values(obj);
-  return !!(values.length && values.reduce((acc, curr) => acc && !!curr, true));
+  return !!(
+    values.length && values.reduce((acc, curr) => acc || !!curr, false)
+  );
 };
 
 const generateDropDown = (
