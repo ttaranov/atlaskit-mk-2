@@ -20,6 +20,7 @@ export type GlobalNavigationProps = {
   productIcon?: ComponentType<*>,
   onProductClick?: () => void,
   productTooltip?: string,
+  productHref?: string,
 
   onCreateClick?: () => void,
   createTooltip?: string,
