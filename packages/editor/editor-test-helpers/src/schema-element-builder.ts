@@ -83,11 +83,10 @@ export const pmNodeFactory: object = {
       layout: 'default',
     })(content),
   bodiedExtension: content =>
-    bodiedExtension({
-      extensionKey: '123',
+    bodiedExtension({ 
+      extensionKey: '123', 
       extensionType: 'bodiedExtension',
-      layout: 'default',
-    })(content),
+      layout: 'default', })(content),
   inlineCard: () =>
     inlineCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
 };
