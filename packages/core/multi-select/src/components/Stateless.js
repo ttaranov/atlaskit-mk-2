@@ -153,6 +153,7 @@ class StatelessMultiSelect extends PureComponent<Props, State> {
     shouldFlip: true,
     isLoading: false,
     isOpen: false,
+    // $FlowFixMe
     items: [],
     label: '',
     loadingMessage: 'Receiving information',

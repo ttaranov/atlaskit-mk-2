@@ -381,11 +381,6 @@ describe(name, () => {
 
     describe('bundle', () => {
       it('has size export', () => expect(bundle.size).toEqual(size));
-
-      it('exports the Icon component', () => {
-        const { default: Icon } = bundle;
-        expect(new Icon({ label: 'My icon' })).toBeInstanceOf(Component);
-      });
     });
   });
 
