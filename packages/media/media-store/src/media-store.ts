@@ -19,6 +19,7 @@ import {
   RequestParams,
   RequestHeaders,
   mapResponseToVoid,
+  mapResponseToBlob,
 } from './utils/request';
 
 export class MediaStore {
@@ -161,6 +162,16 @@ export class MediaStore {
       params,
       auth,
     });
+  };
+
+  getImage = async (
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<Blob> => {
+    return this.request(`/file/${id}/image`, {
+      params,
+      authContext: { collectionName: params && params.collection },
+    }).then(mapResponseToBlob);
   };
 
   appendChunksToUpload(

@@ -34,6 +34,7 @@
     "@atlaskit/field-text": "^6.0.4",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/lozenge": "^5.0.4",
+    "@atlaskit/media-store": "^4.1.1",
     "@atlaskit/media-ui": "^3.1.2",
     "@atlaskit/smart-card": "^5.2.1",
     "@atlaskit/spinner": "^7.0.2",
