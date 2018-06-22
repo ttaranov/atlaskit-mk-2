@@ -74,10 +74,10 @@ export default class IosBridge implements NativeBridge {
   }
 
   updateListState(listState: string) {
-    if (window.webkit && window.webkit.messageHandler.listBridge) {
-      window.webkit.messageHandler.listBridge.postMessage({
+    if (window.webkit && window.webkit.messageHandlers.listBridge) {
+      window.webkit.messageHandlers.listBridge.postMessage({
         name: 'updateListState',
-        state: listState,
+        states: listState,
       });
     }
   }
