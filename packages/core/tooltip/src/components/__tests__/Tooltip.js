@@ -3,7 +3,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { shallow, mount, ReactWrapper } from 'enzyme';
-import Tooltip, { marshal } from '../Tooltip';
+import TooltipWithAnalytics, {
+  TooltipWithoutAnalytics as Tooltip,
+  marshal,
+} from '../Tooltip';
 import getPosition from '../utils/getPosition';
 
 // Variables starting with mock are executed before jest.mock's hoisting
@@ -558,5 +561,24 @@ describe('Tooltip', () => {
       expect(tooltip.find('span')).toHaveStyleRule('background', 'pink');
       expect(tooltip).toMatchSnapshot();
     });
+  });
+});
+
+describe('TooltipWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<TooltipWithAnalytics content="Tooltip content" />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

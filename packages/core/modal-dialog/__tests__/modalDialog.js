@@ -3,7 +3,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
-import ModalDialog from '../src';
+import ModalDialogWithAnalytics from '../src';
+import { ModalDialogWithoutAnalytics as ModalDialog } from '../src/components/Modal';
 import Content from '../src/components/Content';
 import { Body } from '../src/styled/Content';
 import {
@@ -227,5 +228,24 @@ describe('modal-dialog', () => {
         expect(wrapper.contains(node)).toBe(false);
       });
     });
+  });
+});
+
+describe('ModalDialogWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<ModalDialogWithAnalytics onClose={noop} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

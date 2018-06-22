@@ -4,7 +4,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { toClass } from 'recompose';
 
-import Item, { itemThemeNamespace } from '../src';
+import ItemWithAnalytics, { itemThemeNamespace } from '../src';
+import { ItemWithoutAnalytics as Item } from '../src/components/Item';
 import { name } from '../package.json';
 import { After, Before, Content, Description } from '../src/styled/ItemParts';
 
@@ -480,5 +481,30 @@ describe(`${name} - Item`, () => {
     it('should export a named itemThemeNamespace string', () => {
       expect(itemThemeNamespace).toBe('@atlaskit-shared-theme/item');
     });
+  });
+});
+
+describe('ItemWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    const MyLinkComponent = toClass(() => <span />);
+    mount(
+      <ItemWithAnalytics
+        href="//atlassian.com"
+        linkComponent={MyLinkComponent}
+      />,
+    );
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

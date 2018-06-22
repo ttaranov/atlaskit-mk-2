@@ -1,7 +1,16 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
@@ -11,7 +20,7 @@ type Props = {|
   innerRef?: (node: ?HTMLInputElement) => void,
 |};
 
-export default class FieldTextStateless extends Component<Props, void> {
+class FieldTextStateless extends Component<Props, void> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -89,3 +98,86 @@ export default class FieldTextStateless extends Component<Props, void> {
     );
   }
 }
+
+export { FieldTextStateless as FieldTextStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'fieldText',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'fieldText',
+
+      attributes: {
+        componentName: 'fieldText',
+        type: 'text',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'fieldText',
+
+      attributes: {
+        componentName: 'fieldText',
+        type: 'text',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'fieldText',
+
+      attributes: {
+        componentName: 'fieldText',
+        type: 'text',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onKeyDown: createAndFireEventOnAtlaskit({
+      action: 'keyDowned',
+      actionSubject: 'fieldText',
+
+      attributes: {
+        componentName: 'fieldText',
+        type: 'text',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onKeyPress: createAndFireEventOnAtlaskit({
+      action: 'keyPressed',
+      actionSubject: 'fieldText',
+
+      attributes: {
+        componentName: 'fieldText',
+        type: 'text',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onKeyUp: createAndFireEventOnAtlaskit({
+      action: 'keyUpped',
+      actionSubject: 'fieldText',
+
+      attributes: {
+        componentName: 'fieldText',
+        type: 'text',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(FieldTextStateless),
+);
