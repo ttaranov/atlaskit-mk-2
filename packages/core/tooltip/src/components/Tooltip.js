@@ -9,6 +9,16 @@ import React, {
   type ComponentType,
 } from 'react';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
@@ -68,8 +78,7 @@ function getInitialState(props): State {
   };
 }
 
-/* eslint-disable react/sort-comp */
-export default class Tooltip extends Component<Props, State> {
+class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
@@ -240,4 +249,37 @@ export default class Tooltip extends Component<Props, State> {
   }
 }
 
+export { Tooltip as TooltipWithoutAnalytics };
+
 export type TooltipType = Tooltip;
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'tooltip',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onMouseOver: createAndFireEventOnAtlaskit({
+      action: 'hovered',
+      actionSubject: 'tooltip',
+
+      attributes: {
+        componentName: 'tooltip',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onMouseOut: createAndFireEventOnAtlaskit({
+      action: 'unhovered',
+      actionSubject: 'tooltip',
+
+      attributes: {
+        componentName: 'tooltip',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Tooltip),
+);
