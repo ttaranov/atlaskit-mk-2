@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.8.12
+- [patch] Added support for blocks and lists [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+- [none] Updated dependencies [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+
 ## 73.8.11
 - [patch] Introduce regression tests for pasting content from 3rd-party vendors into the editor. `dispatchPasteEvent` now returns the event that was fired when successful, to allow consumers to tell whether it was modified by ProseMirror. (ED-3726) [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
 - [none] Updated dependencies [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
