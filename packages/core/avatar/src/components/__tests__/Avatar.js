@@ -2,7 +2,9 @@
 import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 import Tooltip from '@atlaskit/tooltip';
-import Avatar from '../Avatar';
+import AvatarWithAnalytics, {
+  AvatarWithoutAnalytics as Avatar,
+} from '../Avatar';
 import AvatarImage from '../AvatarImage';
 import Presence from '../Presence';
 import { getSize } from '../../styled/utils';
@@ -141,5 +143,24 @@ describe('Avatar', () => {
       expect(presence.exists()).toBe(true);
       expect(presence.find('.my-icon')).toHaveLength(1);
     });
+  });
+});
+
+describe('AvatarWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<AvatarWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });
