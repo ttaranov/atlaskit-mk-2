@@ -152,21 +152,25 @@ export const PDFWrapper = styled.div`
   right: 0;
 `;
 
-const ArrowWrapper = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
-
 export const Arrow = styled.span`
   cursor: pointer;
 `;
 
+const ArrowWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+`;
+
 export const LeftWrapper = styled(ArrowWrapper)`
   text-align: left;
+  left: 0;
 `;
 
 export const RightWrapper = styled(ArrowWrapper)`
   text-align: right;
+  right: 0;
 `;
 
 // header.tsx
