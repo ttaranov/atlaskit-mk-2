@@ -1,5 +1,9 @@
 # @atlaskit/quick-search
 
+## 2.3.2
+- [patch] Decreasing padding on items and fix analytics.' [0f73740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f73740)
+- [none] Updated dependencies [0f73740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f73740)
+
 ## 2.3.1
 - [patch] Minor bugfixes and UI tweaks. [80899e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80899e1)
 - [none] Updated dependencies [80899e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80899e1)
