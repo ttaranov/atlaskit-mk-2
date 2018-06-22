@@ -24,7 +24,7 @@ export const ResultItemAfterWrapper = styled.div`
 
 export const ResultItemCaption = styled.small`
   color: ${colors.N200};
-  margin-left: ${gridSize() * 2}px;
+  margin-left: ${gridSize()}px;
 `;
 
 export const ResultItemSubText = styled.small`
