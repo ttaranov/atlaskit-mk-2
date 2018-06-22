@@ -5,9 +5,7 @@ import {
   ContextFactory,
   FileItem,
   AuthProvider,
-  UploadFileCallbacks,
   MediaItemProvider,
-  UploadFileResult,
   ContextConfig,
   UploadableFile,
 } from '@atlaskit/media-core';

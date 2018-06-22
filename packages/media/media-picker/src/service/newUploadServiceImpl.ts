@@ -96,26 +96,23 @@ export class NewUploadServiceImpl implements UploadService {
         mimeType: file.type,
       };
       const controller = this.createUploadController();
-      let isFileSucceded = false;
+      const subscrition = this.context
+        .uploadFile(uploadableFile, controller)
+        .subscribe({
+          next: state => {
+            if (state.status === 'uploading') {
+              this.onFileProgress(cancellableFileUpload, state.progress);
+            }
 
-      this.context.uploadFile(uploadableFile, controller).subscribe({
-        next: state => {
-          if (state.status === 'uploading') {
-            this.onFileProgress(cancellableFileUpload, state.progress);
-          }
-
-          if (
-            !isFileSucceded &&
-            (state.status === 'processing' || state.status === 'processed')
-          ) {
-            isFileSucceded = true;
-            this.onFileSuccess(cancellableFileUpload, state.id);
-          }
-        },
-        error: error => {
-          this.onFileError(mediaFile, 'upload_fail', error);
-        },
-      });
+            if (state.status === 'processing') {
+              subscrition.unsubscribe();
+              this.onFileSuccess(cancellableFileUpload, state.id);
+            }
+          },
+          error: error => {
+            this.onFileError(mediaFile, 'upload_fail', error);
+          },
+        });
 
       cancellableFileUpload.cancel = controller.cancel;
     });
