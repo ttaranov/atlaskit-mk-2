@@ -28,6 +28,8 @@ import { FakeTextCursorSelection } from '../plugins/fake-text-cursor/cursor';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { GapCursorSelection, Side } from '../plugins/gap-cursor/selection';
 
+import { pluginKey } from '../../src/plugins/extension/plugin';
+
 export * from './document';
 export * from './action';
 
@@ -744,4 +746,12 @@ export function filterChildrenBetween(
     }
   });
   return results;
+}
+
+export function isKeyMapBindingAllowed(view) {
+  const pluginState = pluginKey.getState(view.state);
+  if (pluginState && pluginState.element) {
+    return false;
+  }
+  return true;
 }

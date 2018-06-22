@@ -279,6 +279,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     background: ${akEditorMentionSelected};
   }
 
+  .extension-container {
+    font-family: 'SFMono-Medium', 'SF Mono', 'Segoe UI Mono', 'Roboto Mono',
+      'Ubuntu Mono', Menlo, Courier, monospace;
+  }
+
   /* Make sure li selections wrap around markers */
   li.ProseMirror-selectednode {
     outline: none;

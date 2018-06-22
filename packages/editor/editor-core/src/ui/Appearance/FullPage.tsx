@@ -14,6 +14,11 @@ import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
+import WithPluginState from '../../ui/WithPluginState';
+import {
+  pluginKey,
+  ExtensionState,
+} from '../../../src/plugins/extension/plugin';
 
 const GUTTER_PADDING = 32;
 
@@ -200,17 +205,30 @@ export default class Editor extends React.Component<
     return (
       <FullPageEditorWrapper>
         <MainToolbar showKeyline={showKeyline}>
-          <Toolbar
-            editorView={editorView!}
-            editorActions={editorActions}
-            eventDispatcher={eventDispatcher!}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={primaryToolbarComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            popupsScrollableElement={popupsScrollableElement}
-            disabled={!!disabled}
+          <WithPluginState
+            plugins={{
+              extensionState: pluginKey,
+            }}
+            render={({ extensionState = {} as ExtensionState }) => {
+              let disableToolbar = false;
+              if (extensionState.node && extensionState.node.node) {
+                disableToolbar = true;
+              }
+              return (
+                <Toolbar
+                  editorView={editorView!}
+                  editorActions={editorActions}
+                  eventDispatcher={eventDispatcher!}
+                  providerFactory={providerFactory}
+                  appearance={this.appearance}
+                  items={primaryToolbarComponents}
+                  popupsMountPoint={popupsMountPoint}
+                  popupsBoundariesElement={popupsBoundariesElement}
+                  popupsScrollableElement={popupsScrollableElement}
+                  disabled={disableToolbar || !!disabled}
+                />
+              );
+            }}
           />
           <MainToolbarCustomComponentsSlot>
             <Avatars

@@ -5,6 +5,8 @@ import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../../analytics';
 import keymapHandler from './keymap';
 import { transformToCodeAction } from '../commands/transform-to-code';
+import { isKeyMapBindingAllowed } from '../../../utils';
+import { pluginKey as extPluginKey } from '../../../plugins/extension/plugin';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -360,6 +362,9 @@ export const plugin = new Plugin({
   },
   props: {
     handleKeyDown(view, event) {
+      if (!isKeyMapBindingAllowed(view)) {
+        return false;
+      }
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
