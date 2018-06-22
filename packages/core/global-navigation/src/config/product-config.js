@@ -1,5 +1,8 @@
 // @flow
-import React, { type ComponentType } from 'react';
+import React, {
+  type ComponentType,
+  type StatelessFunctionalComponent,
+} from 'react';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
@@ -41,8 +44,11 @@ const generateAvatar = profileIconUrl => () => (
     size="small"
   />
 );
-
-function configFactory(onClick, tooltip, otherConfig = {}) {
+type OtherConfig = {
+  href?: string,
+  badge?: ?StatelessFunctionalComponent<*>,
+};
+function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
   const { href } = otherConfig;
   const shouldNotRenderItem = !onClick && !href;
 
