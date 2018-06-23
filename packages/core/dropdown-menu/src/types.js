@@ -1,7 +1,6 @@
 // @flow
-
-import { type Element, type Node } from 'react';
-import { type ButtonProps } from '@atlaskit/button';
+import { type Element, type ElementConfig, type Node } from 'react';
+import { type ButtonComponentType } from '@atlaskit/button';
 
 export type ItemId = string;
 export type GroupId = string;
@@ -81,7 +80,7 @@ type DropdownMenuBaseProps = {
    * to easily get a button trigger. */
   trigger?: Node | string,
   /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
-  triggerButtonProps?: ButtonProps,
+  triggerButtonProps?: ElementConfig<ButtonComponentType>,
   /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows
    * you to supply your own trigger component. Setting this prop to `button` will render a
    * Button component with an 'expand' icon, and the `trigger` prop contents inside the

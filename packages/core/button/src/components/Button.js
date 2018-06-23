@@ -214,6 +214,7 @@ class Button extends Component<ButtonProps, State> {
 }
 
 export type ButtonType = Button;
+export type ButtonComponentType = typeof Button;
 export const ButtonBase = Button;
 
 export default withAnalyticsContext({
