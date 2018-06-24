@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, type Node, type ElementType } from 'react';
 import ReactDOM from 'react-dom';
 import AKTooltip from '@atlaskit/tooltip';
 import ItemWrapper from '../styled/BreadcrumbsItem';
@@ -27,7 +27,7 @@ type Props = {
   /** Provide a custom component to use instead of the default button.
    *  The custom component should accept a className prop so it can be styled
    *  and possibly all action handlers */
-  component?: string | (() => Node) | Node,
+  component?: ElementType,
 };
 
 type State = {
