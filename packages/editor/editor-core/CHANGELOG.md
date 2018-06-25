@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.8.13
+- [patch] ED-4736, fix size of font in inline code mark in editor core. [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
+- [patch] Updated dependencies [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
+
 ## 73.8.12
 - [patch] Added support for blocks and lists [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
 - [none] Updated dependencies [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
