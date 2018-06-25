@@ -9,23 +9,12 @@ import {
 import type { ItemId, Path, TreeItem } from '../types';
 import type { RenderItemParams } from './Tree-types';
 
-type ZIndex = number | string;
-
-export type TreeDroppingStyle = {|
-  position: 'fixed',
-  width: number,
-  height: number,
-  boxSizing: 'border-box',
-  top: number,
-  left: number,
-  margin: 0,
-  transform: ?string,
-  zIndex: ZIndex,
-  pointerEvents: 'none',
+export type TreeDraggingStyle = {|
+  ...DraggingStyle,
   transition: string,
 |};
 
-type TreeDraggableStyle = DraggingStyle | NotDraggingStyle | TreeDroppingStyle;
+type TreeDraggableStyle = NotDraggingStyle | TreeDraggingStyle;
 
 type TreeDraggableProps = {|
   // Props that can be spread onto the element directly

@@ -8,7 +8,6 @@ import {
   type DragUpdate,
   type DraggableProvided,
   type DraggableStateSnapshot,
-  type NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import type { DragPosition, Props, State } from './Tree-types';
 import { noop } from '../utils/handy';
@@ -22,7 +21,7 @@ import type { FlattenedItem, FlattenedTree, Path } from '../types';
 import TreeItem from './TreeItem';
 import {
   type TreeDraggableProvided,
-  type TreeDroppingStyle,
+  type TreeDraggingStyle,
 } from './TreeItem-types';
 
 export default class Tree extends Component<Props, State> {
@@ -112,34 +111,31 @@ export default class Tree extends Component<Props, State> {
   ): TreeDraggableProvided => {
     const { dropAnimationOffset } = this.state;
 
-    if (!provided.draggableProps.style || !provided.draggableProps.style.left) {
+    if (
+      !provided.draggableProps.style ||
+      !provided.draggableProps.style.left ||
+      !snapshot.isDropAnimating
+    ) {
+      // $FlowFixMe
       return provided;
     }
 
     const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
-    const finalStyle: TreeDroppingStyle = {
-      position: provided.draggableProps.style.position,
-      width: provided.draggableProps.style.width,
-      height: provided.draggableProps.style.height,
-      boxSizing: provided.draggableProps.style.boxSizing,
-      top: provided.draggableProps.style.top,
-      margin: provided.draggableProps.style.margin,
-      transform: provided.draggableProps.style.transform,
-      zIndex: provided.draggableProps.style.zIndex,
-      pointerEvents: provided.draggableProps.style.pointerEvents,
-      // overwrite
+    const finalStyle: TreeDraggingStyle = {
+      ...provided.draggableProps.style,
+      // overwrite left position
       left: finalLeft,
+      // animate so it doesn't jump
       transition: 'left 0.277s ease-out',
     };
-    const finalProvided: TreeDraggableProvided = !snapshot.isDropAnimating
-      ? provided
-      : {
-          ...provided,
-          draggableProps: {
-            ...provided.draggableProps,
-            style: finalStyle,
-          },
-        };
+    // $FlowFixMe
+    const finalProvided: TreeDraggableProvided = {
+      ...provided,
+      draggableProps: {
+        ...provided.draggableProps,
+        style: finalStyle,
+      },
+    };
     return finalProvided;
   };
 
