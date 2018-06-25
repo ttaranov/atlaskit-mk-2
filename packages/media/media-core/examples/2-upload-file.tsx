@@ -9,6 +9,7 @@ import { ContextFactory, UploadController } from '../src';
 import { FilesWrapper, FileWrapper } from '../example-helpers/styled';
 import { Observable } from 'rxjs/Observable';
 import { FileState } from '../src/fileState';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface ComponentProps {}
 export interface ComponentState {
@@ -23,6 +24,7 @@ const mediaContext = ContextFactory.create({
 class Example extends Component<ComponentProps, ComponentState> {
   fileStreams: Observable<FileState>[];
   uploadController?: UploadController;
+  subscription?: Subscription;
 
   constructor(props: ComponentProps) {
     super(props);
@@ -60,7 +62,7 @@ class Example extends Component<ComponentProps, ComponentState> {
   addStream = (stream: Observable<FileState>) => {
     const streamId = new Date().getTime();
 
-    stream.subscribe({
+    const subscription = stream.subscribe({
       next: this.onFileUpdate(streamId),
       complete() {
         console.log('stream complete');
@@ -69,6 +71,8 @@ class Example extends Component<ComponentProps, ComponentState> {
         console.log('stream error', error);
       },
     });
+
+    this.subscription = subscription;
 
     this.fileStreams.push(stream);
   };
@@ -108,10 +112,17 @@ class Example extends Component<ComponentProps, ComponentState> {
     }
   };
 
+  unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  };
+
   render() {
     return (
       <div>
         <input type="file" onChange={this.uploadFile} />
+        <button onClick={this.unsubscribe}>Unsubscribe</button>
         <button onClick={this.cancelUpload}>Cancel upload</button>
         <div>
           <h1>Files</h1>

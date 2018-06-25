@@ -5,9 +5,9 @@ describe('UploadController', () => {
     const controller = new UploadController();
     const cancel = jest.fn();
 
-    controller.setCancel(cancel);
+    controller.setAbort(cancel);
     expect(cancel).not.toBeCalled();
-    controller.cancel();
+    controller.abort();
     expect(cancel).toHaveBeenCalledTimes(1);
   });
 });
