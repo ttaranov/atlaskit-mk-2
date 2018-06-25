@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.8.14
+- [patch] ED-4909: fix overflow shadow rendering + visual resize performance on tables [69a8c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69a8c78)
+- [none] Updated dependencies [69a8c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69a8c78)
+
 ## 73.8.13
 - [patch] ED-4736, fix size of font in inline code mark in editor core. [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
 - [patch] Updated dependencies [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
