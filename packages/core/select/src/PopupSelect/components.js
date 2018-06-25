@@ -43,7 +43,7 @@ const Control = ({ innerProps: { innerRef, ...innerProps }, ...props }: *) => (
     <components.Control {...props} innerProps={innerProps} />
   </div>
 );
-export const DummyControl = props => (
+export const DummyControl = (props: *) => (
   <div
     css={{
       border: 0,

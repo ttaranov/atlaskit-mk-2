@@ -1,12 +1,22 @@
 // @flow
 
-import React, { PureComponent, type ComponentType, type Ref } from 'react';
+import React, {
+  PureComponent,
+  type ComponentType,
+  type Node,
+  type Ref,
+} from 'react';
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 import Avatar from '@atlaskit/avatar';
 
 const gridSize = gridSizeFn();
 
-const OptionElement = ({ isFocused, isSelected, ...props }) => {
+type ElementProps = {
+  isFocused: boolean,
+  isSelected: boolean,
+};
+
+const OptionElement = ({ isFocused, isSelected, ...props }: ElementProps) => {
   return (
     <div
       css={{
@@ -38,7 +48,7 @@ const OptionElement = ({ isFocused, isSelected, ...props }) => {
     />
   );
 };
-const ContentWrapper = props => (
+const ContentWrapper = (props: *) => (
   <div
     css={{
       display: 'flex',
@@ -49,7 +59,7 @@ const ContentWrapper = props => (
     {...props}
   />
 );
-const TextWrapper = props => (
+const TextWrapper = (props: *) => (
   <div
     css={{
       flex: '1 1 auto',
@@ -61,7 +71,7 @@ const TextWrapper = props => (
     {...props}
   />
 );
-const SubTextWrapper = props => (
+const SubTextWrapper = (props: *) => (
   <div
     css={{
       color: colors.N200,
