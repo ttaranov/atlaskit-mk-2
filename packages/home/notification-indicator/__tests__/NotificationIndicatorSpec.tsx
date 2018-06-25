@@ -250,7 +250,6 @@ describe('NotificationIndicator', () => {
     // ignore next visibilitychange until timer cycles
     notificationLogClient.setResponse(returnCount(6));
     triggerVisibilityChange();
-    await timeout(0);
     wrapper.update();
     expect(wrapper.state('count')).toEqual(5);
 

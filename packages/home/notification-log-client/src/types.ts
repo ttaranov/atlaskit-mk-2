@@ -6,6 +6,6 @@ export interface NotificationCountResponse {
 
 export interface NotificationLogProvider {
   countUnseenNotifications(
-    options: RequestServiceOptions,
+    options?: RequestServiceOptions,
   ): Promise<NotificationCountResponse>;
 }

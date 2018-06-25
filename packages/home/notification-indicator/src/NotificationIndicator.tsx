@@ -34,7 +34,7 @@ export interface Props {
 }
 
 export interface State {
-  count?: number;
+  count: number | null;
 }
 
 export default class NotificationIndicator extends Component<Props, State> {
@@ -51,7 +51,7 @@ export default class NotificationIndicator extends Component<Props, State> {
   };
 
   state: State = {
-    count: undefined
+    count: null,
   };
 
   async componentDidMount() {
@@ -91,17 +91,6 @@ export default class NotificationIndicator extends Component<Props, State> {
     }
   };
 
-  private onCountUpdating(event) {
-    const { onCountUpdating } = this.props;
-    if (onCountUpdating) {
-      const result = onCountUpdating(event);
-      if (result.skip) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   private shouldRefresh = () => {
     return !document.hidden || this.props.refreshOnHidden;
   };
@@ -127,20 +116,24 @@ export default class NotificationIndicator extends Component<Props, State> {
       source,
       visibilityChangesSinceTimer,
     };
-    const updatingResult = this.onCountUpdating(updatingEvent);
+    const updatingResult =
+      (this.props.onCountUpdating &&
+        this.props.onCountUpdating(updatingEvent)) ||
+      {};
     if (updatingResult.skip) {
       return;
     }
 
     try {
-      let count = updatingResult.countOverride;
-      if (!count) {
-        const response = await this.notificationLogProvider.countUnseenNotifications();
-        count = response.count;
-      }
+      const count =
+        updatingResult.countOverride ||
+        (await this.notificationLogProvider.countUnseenNotifications()).count;
 
       this.setState(state => {
-        if (this.props.onCountUpdated && state.count !== count) {
+        if (
+          this.props.onCountUpdated &&
+          (!state.count || state.count !== count)
+        ) {
           this.props.onCountUpdated({
             oldCount: state.count || 0,
             newCount: count,
@@ -162,8 +155,8 @@ export default class NotificationIndicator extends Component<Props, State> {
 
     const { appearance, max } = this.props;
 
-    return (
-      count && <Badge max={max} appearance={appearance} value={count} />
-    );
+    return count ? (
+      <Badge max={max} appearance={appearance} value={count} />
+    ) : null;
   }
 }
