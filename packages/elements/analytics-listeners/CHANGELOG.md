@@ -1,28 +1,15 @@
 # @atlaskit/analytics-listeners
 
+## 2.1.0
+- [patch] merge analytics-next context into GAS payload attributes in FabricElementsListener [5d25e8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d25e8b)
+- [minor] moved Atlaskit tests from src to __tests__ [1f78c33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f78c33)
+
+## 2.0.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+
 ## 2.0.1
-
-
-
-
-
 - [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/analytics-gas-types@2.1.2
-  - @atlaskit/analytics-next@2.1.7
-- [none] Updated dependencies [21373ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21373ab)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/analytics-gas-types@2.1.2
-  - @atlaskit/analytics-next@2.1.7
-- [none] Updated dependencies [179007a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/179007a)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/analytics-gas-types@2.1.2
-  - @atlaskit/analytics-next@2.1.7
-- [none] Updated dependencies [dda4ec8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4ec8)
-  - @atlaskit/docs@4.1.0
-  - @atlaskit/analytics-gas-types@2.1.2
-  - @atlaskit/analytics-next@2.1.7
-- [patch] Updated dependencies [27571e5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27571e5)
   - @atlaskit/docs@4.1.0
   - @atlaskit/analytics-gas-types@2.1.2
   - @atlaskit/analytics-next@2.1.7
@@ -41,7 +28,6 @@
   - @atlaskit/analytics-gas-types@2.1.1
 
 ## 1.1.0
-
 - [minor] Add listener for events fired by core atlaskit components [bcc7d8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcc7d8f)
 - [patch] Updated dependencies [9be1db0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9be1db0)
   - @atlaskit/analytics-gas-types@2.1.0

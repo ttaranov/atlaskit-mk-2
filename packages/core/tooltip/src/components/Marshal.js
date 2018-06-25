@@ -98,6 +98,7 @@ export default class TooltipMarshal {
       let parent = tooltip.wrapper.parentNode;
 
       while (parent) {
+        // $FlowFixMe - tagName does not exist in parent
         if (parent.tagName === 'BODY') {
           window.addEventListener('scroll', this.handleScroll);
           break;
@@ -121,6 +122,7 @@ export default class TooltipMarshal {
       let parent = tooltip.wrapper.parentNode;
 
       while (parent) {
+        // $FlowFixMe - tagName does not exist in parent
         if (parent.tagName === 'BODY') {
           window.removeEventListener('scroll', this.handleScroll);
           break;

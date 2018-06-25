@@ -70,7 +70,7 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList(props);
 
-  if (props.UNSAFE_allowQuickInsert) {
+  if (props.quickInsert) {
     plugins.push(quickInsertPlugin);
   }
 

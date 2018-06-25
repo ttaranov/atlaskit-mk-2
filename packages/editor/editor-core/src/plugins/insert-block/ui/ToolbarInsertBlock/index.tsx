@@ -39,7 +39,7 @@ import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
 import { MacroProvider } from '../../../macro/types';
-import tableCommands from '../../../table/commands';
+import { createTable } from '../../../table/actions';
 import { insertDate, openDatePicker } from '../../../date/actions';
 import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/actions';
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
@@ -52,7 +52,6 @@ export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
-  tableHidden?: boolean;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
   mentionsSupported?: boolean;
@@ -282,7 +281,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
 
   private createItems = () => {
     const {
-      tableHidden,
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
@@ -358,7 +356,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       items.push({
         content: 'Table',
         value: { name: 'table' },
-        isDisabled: tableHidden,
         tooltipDescription: tooltip(toggleTable),
         tooltipPosition: 'right',
         elemBefore: <TableIcon label="Insert table" />,
@@ -454,7 +451,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   @analyticsDecorator('atlassian.editor.format.table.button')
   private createTable = (): boolean => {
     const { editorView } = this.props;
-    tableCommands.createTable()(editorView.state, editorView.dispatch);
+    createTable(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -574,5 +571,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         }
     }
     this.setState({ isOpen: false });
+    if (!editorView.hasFocus()) {
+      editorView.focus();
+    }
   };
 }

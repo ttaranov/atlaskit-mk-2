@@ -10,6 +10,7 @@ import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
+import Date from './date';
 import Doc from './doc';
 import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
@@ -22,7 +23,7 @@ import InlineExtension, {
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
-import MediaSingle, { BreakoutProvider } from './mediaSingle';
+import MediaSingle from './mediaSingle';
 import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
@@ -44,6 +45,7 @@ export const nodeToReact = {
   blockquote: Blockquote,
   bulletList: BulletList,
   codeBlock: CodeBlock,
+  date: Date,
   decisionItem: DecisionItem,
   decisionList: DecisionList,
   doc: Doc,
@@ -223,6 +225,7 @@ export {
   BodiedExtensionProps,
   BulletList,
   CodeBlock,
+  Date,
   DecisionItem,
   DecisionItemProps,
   DecisionList,
@@ -252,5 +255,4 @@ export {
   TableHeader,
   TableRow,
   UnknownBlock,
-  BreakoutProvider,
 };

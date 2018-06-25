@@ -45,7 +45,7 @@ function positionToPopper(position?: PositionType) {
 /* Convert the autoFlip property into the array format that Popper expects.
  * The first item must not include the edge-position variation, or Popper will not understand it.
  */
-export function getFlipBehavior(props: Props) {
+export function getFlipBehavior(props: Props): ?Array<any> {
   return props.position && Array.isArray(props.autoFlip)
     ? [props.position.split(' ')[0]].concat(props.autoFlip)
     : null;

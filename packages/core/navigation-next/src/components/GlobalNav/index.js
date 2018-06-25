@@ -16,12 +16,7 @@ import {
 } from './primitives';
 import type { GlobalNavProps } from './types';
 
-const GlobalNav = ({
-  children, // drawers
-  primaryItems,
-  secondaryItems,
-  theme,
-}: GlobalNavProps) => {
+const GlobalNav = ({ primaryItems, secondaryItems, theme }: GlobalNavProps) => {
   const wrapperStyles = theme.mode.globalNav();
 
   return (
@@ -56,8 +51,6 @@ const GlobalNav = ({
           <GlobalItem {...props} key={props.label} size="small" />
         ))}
       </SecondaryItemsList>
-
-      {children}
     </div>
   );
 };

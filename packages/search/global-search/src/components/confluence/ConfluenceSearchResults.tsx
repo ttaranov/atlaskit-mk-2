@@ -26,18 +26,19 @@ const renderSpacesGroup = (title: string, results: Result[], query: string) =>
     </ResultItemGroup>
   ) : null;
 
-const renderPeopleGroup = (title: string, results: Result[], query: string) => (
-  <ResultItemGroup title={title} key="people">
-    {renderResults(results)}
-    {renderSearchPeopleItem(query)}
-  </ResultItemGroup>
-);
+const renderPeopleGroup = (title: string, results: Result[], query: string) =>
+  results.length > 0 ? (
+    <ResultItemGroup title={title} key="people">
+      {renderResults(results)}
+    </ResultItemGroup>
+  ) : null;
 
-export const renderSearchConfluenceItem = (query: string) =>
+export const renderSearchConfluenceItem = (query: string, text: string) =>
   searchConfluenceItem({
     query: query,
     icon: <SearchIcon size="medium" label="Advanced search" />,
-    text: 'Advanced search for more filter options',
+    text: text,
+    showKeyboardLozenge: true,
   });
 
 const renderSearchPeopleItem = (query: string) =>
@@ -50,10 +51,22 @@ const renderSearchPeopleItem = (query: string) =>
 const renderNoResults = (query: string) => [
   <NoResults key="no-results" />,
   <ResultItemGroup title="" key="advanced-search">
-    {renderSearchConfluenceItem(query)}
+    {renderSearchConfluenceItem(query, 'Advanced search with filters')}
     {renderSearchPeopleItem(query)}
   </ResultItemGroup>,
 ];
+
+const renderAdvancedSearchGroup = (query: string) => {
+  const text =
+    query.length === 0 ? 'Advanced search' : `Advanced search for "${query}"`;
+
+  return (
+    <ResultItemGroup key="advanced-search">
+      {renderSearchPeopleItem(query)}
+      {renderSearchConfluenceItem(query, text)}
+    </ResultItemGroup>
+  );
+};
 
 export interface Props {
   query: string;
@@ -91,6 +104,7 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    // TODO: insert error state here if the recent results are empty.
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
@@ -98,7 +112,12 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup('People', take(recentlyInteractedPeople, 3), query),
+      renderPeopleGroup(
+        'Recently worked with',
+        take(recentlyInteractedPeople, 3),
+        query,
+      ),
+      renderAdvancedSearchGroup(query),
     ];
   }
 
@@ -114,5 +133,6 @@ export default function searchResults(props: Props) {
     ),
     renderSpacesGroup('Spaces', take(spaceResults, 3), query),
     renderPeopleGroup('People', take(peopleResults, 3), query),
+    renderAdvancedSearchGroup(query),
   ];
 }

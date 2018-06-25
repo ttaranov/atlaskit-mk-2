@@ -1,6 +1,8 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
-import { ReducedNode } from './';
+import { Node as PMNode } from 'prosemirror-model';
+import { NodeReducer } from './';
 
-export default function paragraph(node: PMNode, schema: Schema): ReducedNode {
-  return {};
-}
+const rule: NodeReducer = (node: PMNode) => {
+  return '';
+};
+
+export default rule;

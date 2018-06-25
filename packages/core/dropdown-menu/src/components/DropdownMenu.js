@@ -33,8 +33,8 @@ export default class DropdownMenu extends Component<
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
-    triggerButtonProps: {},
     triggerType: 'default',
+    onPositioned: () => {},
   };
 
   state = {
@@ -110,6 +110,7 @@ export default class DropdownMenu extends Component<
       trigger,
       triggerButtonProps,
       triggerType,
+      onPositioned,
     } = this.props;
 
     return (
@@ -129,6 +130,7 @@ export default class DropdownMenu extends Component<
         trigger={trigger}
         triggerButtonProps={triggerButtonProps}
         triggerType={triggerType}
+        onPositioned={onPositioned}
       >
         {children}
       </StatelessMenu>

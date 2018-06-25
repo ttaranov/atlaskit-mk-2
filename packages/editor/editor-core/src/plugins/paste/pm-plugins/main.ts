@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { Schema, Slice } from 'prosemirror-model';
+import { Schema, Slice, Node } from 'prosemirror-model';
 import {
   EditorState,
   Plugin,
@@ -16,7 +16,7 @@ import { EditorAppearance } from '../../../types';
 import { runMacroAutoConvert } from '../../macro';
 import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
-import { isSingleLine, escapeLinks } from '../util';
+import { isSingleLine, escapeLinks, isPastedFromWord } from '../util';
 import {
   removeBodiedExtensionsIfSelectionIsInBodiedExtension,
   removeBodiedExtensionWrapper,
@@ -34,6 +34,7 @@ import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
 // @ts-ignore
 import { handlePaste as handlePasteTable } from 'prosemirror-tables';
 import { transformSliceToAddTableHeaders } from '../../table/actions';
+import { handlePasteIntoTaskAndDecision } from '../handlers';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -44,11 +45,14 @@ export function createPlugin(
   let atlassianMarkDownParser: MarkdownTransformer;
 
   const md = MarkdownIt('zero', { html: false });
+
   md.enable([
     // Process html entity - &#123;, &#xAF;, &quot;, ...
     'entity',
     // Process escaped chars and hardbreaks
     'escape',
+
+    'newline',
   ]);
 
   // enable modified version of linkify plugin
@@ -67,6 +71,14 @@ export function createPlugin(
 
         // Bail if copied content has files
         if (clipboard.isPastedFile(event)) {
+          if (!isPastedFromWord(event)) {
+            return true;
+          }
+          // Microsoft Office always copies an image to clipboard so we don't let the event reach media
+          event.stopPropagation();
+        }
+
+        if (handlePasteIntoTaskAndDecision(slice)(view.state, view.dispatch)) {
           return true;
         }
 
@@ -186,7 +198,7 @@ export function createPlugin(
               const { $to: newSel } = tr.selection;
               tr = tr.insert(
                 newSel.end(newSel.depth - 1),
-                paragraph.createAndFill()!,
+                paragraph.createAndFill() as Node,
               );
             }
             tr = tr.setSelection(
@@ -225,7 +237,7 @@ export function createPlugin(
           // row of content we see, if required
           if (!hasParentNodeOfType([table, tableCell])(view.state.selection)) {
             const tableState = tableStateKey.getState(view.state);
-            if (tableState && tableState.isRequiredToAddHeader()) {
+            if (tableState && tableState.pluginConfig.isHeaderRowRequired) {
               slice = transformSliceToAddTableHeaders(slice, view.state.schema);
             }
           }
@@ -249,6 +261,15 @@ export function createPlugin(
         // We do this separately so it also applies to drag/drop events
         slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
         return slice;
+      },
+      transformPastedHTML(html) {
+        // Fix for issue ED-4438
+        // text from google docs should not be pasted as inline code
+        if (html.indexOf('id="docs-internal-guid-') >= 0) {
+          html = html.replace(/white-space:pre/g, '');
+          html = html.replace(/white-space:pre-wrap/g, '');
+        }
+        return html;
       },
     },
   });

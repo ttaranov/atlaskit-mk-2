@@ -12,6 +12,9 @@
 .*/node_modules/extract-react-types/.*
 .*/.git/.*
 
+[untyped]
+.*/node_modules/react-select
+
 [include]
 
 [libs]

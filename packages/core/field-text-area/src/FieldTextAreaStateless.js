@@ -43,8 +43,8 @@ type Props = {
   maxLength?: number,
   /** The minimum number of rows of text to display */
   minimumRows?: number,
-  /** Enables the resizing of the text area. */
-  enableResize?: boolean,
+  /** Enables the resizing of the textarea (in both directions, or restricted to one axis) */
+  enableResize?: boolean | 'horizontal' | 'vertical',
   /** Type of field */
   type?: string, //eslint-disable-line react/no-unused-prop-types
   /** Hide the validation message and style. This is used by <Field> to disable Validation display handling by FieldBase
@@ -99,7 +99,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
 
     return (
       <div>
-        {/* // $FlowFixMe TEMPORARY */}
+        {/* // $FlowFixMe - Label signature interpreted incorrectly */}
         <Label
           htmlFor={id}
           isDisabled={disabled}
@@ -125,7 +125,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
             value={value}
             required={required}
             minimumRows={minimumRows}
-            enableResize={enableResize || disabled}
+            enableResize={enableResize}
             onChange={onChange}
             id={id}
             autoFocus={autoFocus}

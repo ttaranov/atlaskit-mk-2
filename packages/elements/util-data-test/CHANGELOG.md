@@ -1,5 +1,12 @@
 # @atlaskit/util-data-test
 
+## 9.1.13
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/emoji@35.1.1
+  - @atlaskit/task-decision@7.1.1
+  - @atlaskit/mention@13.1.1
+
 ## 9.1.12
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -54,17 +61,11 @@
   - @atlaskit/mention@11.1.4
   - @atlaskit/emoji@34.2.0
 
-## 9.1.2
-
 ## 9.1.1
 - [patch] FS-1693 added integration tests for task-decision [85867ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85867ea)
 
 ## 9.1.0
 - [minor] If a Mention item is a team then render a TEAM lozenge automatically [d4976d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4976d4)
-
-## 9.0.3
-
-## 9.0.2
 
 ## 9.0.1
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
@@ -72,12 +73,8 @@
 ## 9.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
-## 8.0.4
-
 ## 8.0.3
 - [patch] Patch release util-data-test to bump emoji [49ff12f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49ff12f)
-
-## 8.0.2
 
 ## 8.0.1
 - [patch] FS-1697 move elements packages to use util-data-test for test data [deb820a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb820a)
@@ -85,17 +82,17 @@
 ## 8.0.0 (2018-03-27)
 * breaking; Change structure of exports in elements packages ([7c0b226](https://bitbucket.org/atlassian/atlaskit/commits/7c0b226))
 * breaking; fS-1697 moved testing and example utils to util-data-test ([7c0b226](https://bitbucket.org/atlassian/atlaskit/commits/7c0b226))
+
 ## 7.3.0 (2018-02-13)
-
 * feature; migrated json data back to util-data-test ([d03b160](https://bitbucket.org/atlassian/atlaskit/commits/d03b160))
+
 ## 7.2.1 (2018-01-17)
-
 * bug fix; missing json files are breaking mk-2 ([0e5e8db](https://bitbucket.org/atlassian/atlaskit/commits/0e5e8db))
+
 ## 7.2.0 (2018-01-17)
-
 * feature; move test json files from fabric packages ([a0dd818](https://bitbucket.org/atlassian/atlaskit/commits/a0dd818))
-## 7.1.1 (2017-09-08)
 
+## 7.1.1 (2017-09-08)
 * bug fix; fix regex in mock-profile-client to match lower and uppercase error strings (issues closed: dir-376) ([e52930f](https://bitbucket.org/atlassian/atlaskit/commits/e52930f))
 
 ## 7.1.0 (2017-08-04)
@@ -107,8 +104,7 @@
 ## 5.0.0 (2017-07-25)
 * feature; remove emoji and mention test data from util-data-test. ([c3604f1](https://bitbucket.org/atlassian/atlaskit/commits/c3604f1))
 * breaking; Emoji and mention data can now be imported directly from the component.
-
-ISSUES CLOSED: FS-1205
+* ISSUES CLOSED: FS-1205
 
 ## 4.10.2 (2017-07-25)
 * fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
@@ -134,18 +130,11 @@ ISSUES CLOSED: FS-1205
 * feature; fS-1090 Update util-data-test to handle isFiltering and new query parameter in filt ([feb1fc4](https://bitbucket.org/atlassian/atlaskit/commits/feb1fc4))
 * feature; fS-1090 Bump mention version ([1274606](https://bitbucket.org/atlassian/atlaskit/commits/1274606))
 
-## 4.6.1 (2017-06-20)
-
 ## 4.4.0 (2017-06-20)
 * fix; changed build scripts to export mention data ([aab2242](https://bitbucket.org/atlassian/atlaskit/commits/aab2242))
 
-## 4.4.0 (2017-06-20)
-
-## 4.4.0 (2017-06-19)
-
 ## 4.3.0 (2017-06-19)
 * fix; integrated native emoji convert breaking changes to MockEmojiResource ([f039649](https://bitbucket.org/atlassian/atlaskit/commits/f039649))
-
 * feature; add ascii emoji input rule to automatically match and convert ascii representations ([b404019](https://bitbucket.org/atlassian/atlaskit/commits/b404019))
 * feature; extracted shared mention testing data to package ([b189402](https://bitbucket.org/atlassian/atlaskit/commits/b189402))
 
@@ -164,22 +153,15 @@ ISSUES CLOSED: FS-1205
 ## 4.1.0 (2017-04-13)
 * feature; feature commit to trigger release ([a849b8b](https://bitbucket.org/atlassian/atlaskit/commits/a849b8b))
 
-## 3.0.0 (2017-04-03)
-
 ## 2.1.3 (2017-04-03)
 * fix; add description, force a release. ([10898af](https://bitbucket.org/atlassian/atlaskit/commits/10898af))
 * fix; bump package version to prevent linking by reactions due to breaking change. ([1aacc41](https://bitbucket.org/atlassian/atlaskit/commits/1aacc41))
 * feature; upgrade to Emoji 13.0.0 compatible data set ([bce544a](https://bitbucket.org/atlassian/atlaskit/commits/bce544a))
 * breaking; Dataset is not compatible with earlier versions of the Emoji component
-
-ISSUES CLOSED: FS-850
-
-## 2.1.1 (2017-03-21)
+* ISSUES CLOSED: FS-850
 
 ## 2.1.1 (2017-03-21)
 * fix; maintainers for all the packages were added ([261d00a](https://bitbucket.org/atlassian/atlaskit/commits/261d00a))
-
-## 2.1.0 (2017-03-14)
 
 ## 1.0.0 (2017-03-14)
 * fix; defer loading of test data unless used ([3630f3b](https://bitbucket.org/atlassian/atlaskit/commits/3630f3b))

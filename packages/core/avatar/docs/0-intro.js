@@ -8,11 +8,11 @@ export default md`
   This package exports an number of different Avatar related components:
 
   - Avatar (Default Export)
-  - [AvatarItem](/mk-2/packages/core/avatar/docs/avatar-item)
-  - [AvatarGroup](/mk-2/packages/core/avatar/docs/avatar-group)
-  - [Presence](/mk-2/packages/core/avatar/docs/presence)
-  - [Status](/mk-2/packages/core/avatar/docs/status)
-  - [Skeleton](/mk-2/packages/core/avatar/docs/skeleton)
+  - [AvatarItem](/packages/core/avatar/docs/avatar-item)
+  - [AvatarGroup](/packages/core/avatar/docs/avatar-group)
+  - [Presence](/packages/core/avatar/docs/presence)
+  - [Status](/packages/core/avatar/docs/status)
+  - [Skeleton](/packages/core/avatar/docs/skeleton)
 
   ## Avatar - Default Export
 

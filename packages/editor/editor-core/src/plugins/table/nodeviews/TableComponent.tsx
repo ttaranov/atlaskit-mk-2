@@ -1,5 +1,6 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
+import { updateColumnsOnResize } from 'prosemirror-tables';
 import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
@@ -10,6 +11,7 @@ import { pluginKey as widthPluginKey } from '../../width';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
+import { CELL_MIN_WIDTH } from '../';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
@@ -18,7 +20,7 @@ import { Props } from './table';
 import { containsHeaderRow } from '../utils';
 
 export interface ComponentProps extends Props {
-  onComponentUpdate?: () => void;
+  onComponentUpdate: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 }
 
@@ -95,26 +97,33 @@ class TableComponent extends React.Component<ComponentProps> {
         eventDispatcher={eventDispatcher}
         editorView={view}
         render={({ containerWidth, pluginState }) => {
+          const tableActive = this.table === pluginState.tableRef;
+          const { scroll } = this.state;
           return (
             <div
               style={{
                 width: calcTableWidth(node.attrs.layout, containerWidth),
               }}
-              className="table-container"
+              className={`table-container ${
+                tableActive ? 'with-controls' : ''
+              }`}
               data-number-column={node.attrs.isNumberColumnEnabled}
               data-layout={node.attrs.layout}
             >
-              <div className="table-row-controls-wrapper">
+              <div
+                className={`table-row-controls-wrapper ${
+                  scroll > 0 ? 'scrolling' : ''
+                }`}
+              >
                 <TableFloatingControls
                   editorView={view}
-                  tableElement={this.table || undefined}
-                  tableActive={this.table === pluginState.tableElement}
+                  tableRef={this.table || undefined}
+                  tableActive={tableActive}
                   isTableHovered={isTableHovered}
-                  remove={pluginState.remove}
                   isTableInDanger={isTableInDanger}
                   isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
                   hasHeaderRow={containsHeaderRow(view.state, node)}
-                  scroll={this.state.scroll}
+                  scroll={scroll}
                 />
               </div>
               <div
@@ -130,9 +139,8 @@ class TableComponent extends React.Component<ComponentProps> {
                 <div className="table-column-controls-wrapper">
                   <ColumnControls
                     editorView={view}
-                    tableElement={pluginState.tableElement}
+                    tableRef={pluginState.tableRef}
                     isTableHovered={isTableHovered}
-                    remove={pluginState.remove}
                     isTableInDanger={isTableInDanger}
                   />
                 </div>
@@ -146,21 +154,24 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidUpdate() {
-    const { onComponentUpdate } = this.props;
-    if (onComponentUpdate) {
-      onComponentUpdate();
-    }
-
+    this.props.onComponentUpdate();
     this.updateShadows();
+
+    if (this.props.allowColumnResizing && this.table) {
+      updateColumnsOnResize(
+        this.props.node,
+        this.table.querySelector('colgroup')!,
+        this.table,
+        CELL_MIN_WIDTH,
+      );
+    }
   }
 
   private handleScroll = (event: Event) => {
     if (!this.wrapper || event.target !== this.wrapper) {
       return;
     }
-
     this.updateShadows();
-
     this.setState({ scroll: this.wrapper.scrollLeft });
   };
 
@@ -168,13 +179,12 @@ class TableComponent extends React.Component<ComponentProps> {
     if (!this.wrapper || !this.table || !this.leftShadow || !this.rightShadow) {
       return;
     }
-
     updateShadows(
       this.wrapper,
       this.table,
       this.leftShadow,
       this.rightShadow,
-      stateKey.getState(this.props.view.state).tableActive,
+      !!stateKey.getState(this.props.view.state).tableRef,
     );
   }
 

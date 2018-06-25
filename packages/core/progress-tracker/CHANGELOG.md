@@ -1,5 +1,11 @@
 # @atlaskit/progress-tracker
 
+## 3.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/page@7.1.1
+  - @atlaskit/theme@4.0.4
+
 ## 3.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -35,8 +41,6 @@
   - @atlaskit/page@6.0.3
   - @atlaskit/theme@3.2.2
   - @atlaskit/docs@3.0.4
-
-## 2.0.1
 
 ## 2.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)

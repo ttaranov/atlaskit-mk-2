@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as jQuery from 'jquery';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import Button from '@atlaskit/button';
+import { FeedbackWrapper } from './styled';
 
 // The following function fetches the code to show a JIRA issue collector.
 // It inserts a script element into the document and then waits until
@@ -45,10 +46,15 @@ const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
 export class FeedbackButton extends React.Component<{}, {}> {
   render() {
     return (
-      <Button
-        onClick={this.showFeedbackDialog}
-        iconBefore={<FeedbackIcon label="feedback" />}
-      />
+      <FeedbackWrapper>
+        <Button
+          appearance="toolbar"
+          onClick={this.showFeedbackDialog}
+          iconBefore={<FeedbackIcon label="feedback" />}
+        >
+          Give feedback
+        </Button>
+      </FeedbackWrapper>
     );
   }
 

@@ -136,7 +136,6 @@ type State = {
   droplistWidth?: number,
 };
 
-// $FlowFixMe Recursion Limit exceeded error, this should be fixed in the next version of flow-bin
 export default class StatelessSelect extends PureComponent<Props, State> {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
@@ -516,7 +515,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     return filteredGroups;
   };
 
-  renderOptions = (items: Array<ItemType>) =>
+  renderOptions = (items: Array<ItemType>): Array<Node> =>
     items.map((item, itemIndex) => (
       <option
         disabled={item.isDisabled}
@@ -527,7 +526,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
       </option>
     ));
 
-  renderOptGroups = (groups: Array<GroupType>) =>
+  renderOptGroups = (groups: Array<GroupType>): Array<Node> =>
     groups.map((group, groupIndex) => (
       <optgroup
         label={group.heading}

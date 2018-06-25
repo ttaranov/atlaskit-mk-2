@@ -7,7 +7,7 @@ import { EditorState } from 'prosemirror-state';
 
 export interface Props {
   state: EditorState;
-  tableElement: HTMLElement;
+  tableRef: HTMLElement;
   tableActive?: boolean;
   isTableHovered?: boolean;
   hoverRows: (rows: number[], danger?: boolean) => void;
@@ -16,26 +16,24 @@ export interface Props {
   resetHoverSelection: () => void;
   selectRow: (row: number) => void;
   hasHeaderRow?: boolean;
-  scroll?: number;
   isTableInDanger?: boolean;
 }
 
 export default class NumberColumn extends Component<Props, any> {
   render() {
     const {
-      tableElement,
+      tableRef,
       isTableHovered,
       state,
       hasHeaderRow,
       isTableInDanger,
-      scroll,
       tableActive,
       hoverRows,
       resetHoverSelection,
       selectRow,
     } = this.props;
 
-    const tbody = tableElement.querySelector('tbody');
+    const tbody = tableRef.querySelector('tbody');
     if (!tbody) {
       return null;
     }
@@ -66,12 +64,6 @@ export default class NumberColumn extends Component<Props, any> {
         </NumberedRow>,
       );
     }
-    return (
-      <NumberColumnContainer
-        className={scroll && scroll > 0 ? 'scrolling' : undefined}
-      >
-        {numberRows}
-      </NumberColumnContainer>
-    );
+    return <NumberColumnContainer>{numberRows}</NumberColumnContainer>;
   }
 }

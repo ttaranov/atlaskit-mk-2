@@ -190,6 +190,18 @@ describe('text-formatting input rules', () => {
       );
     });
 
+    describe('should not break other inline marks', () => {
+      const { editorView } = editor(doc(p(strong('it{<>} test'))));
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(doc(p(strong('it’s test'))));
+    });
+
+    describe('should not break other inline marks', () => {
+      const { editorView } = editor(doc(p(strong(em('it{<>}')))));
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(doc(p(strong(em('it’s')))));
+    });
+
     describe('should not work in mention query', () => {
       trackEvent = jest.fn();
       const { editorView } = editor(doc(p(mentionQuery()('@o{<>}'))));

@@ -8,8 +8,6 @@ import { getLoadingStyle } from './utils';
 
 const getAlignment = p => (p.followsIcon ? 'baseline' : 'center');
 const gridSizeDiv2 = math.divide(gridSize, 2);
-
-// $FlowFixMe TEMPORARY
 const getMargin = p => (p.spacing === 'none' ? 0 : `0 ${gridSizeDiv2(p)}px`);
 
 type Props = {

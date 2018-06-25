@@ -11,6 +11,7 @@ import type { SpinnerProps, SpinnerState } from '../types';
 
 const Outer = styled.div`
   display: inline-block;
+  vertical-align: middle;
 `;
 Outer.displayName = 'Outer';
 
@@ -52,6 +53,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
   endListener = (node: ?HTMLElement, done: Function) => {
     const executeCallback = (event: AnimationEvent) => {
       // ignore animation events on the glyph
+      // $FlowFixMe - tagName does not exist in event.target
       if (event.target.tagName === 'svg') {
         return false;
       }

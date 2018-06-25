@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors } from '@atlaskit/theme';
-import Objects24ActionIcon from '@atlaskit/icon/glyph/objects/24/action';
-import Objects24DecisionIcon from '@atlaskit/icon/glyph/objects/24/decision';
+import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
+import EditorDecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import {
   decisionItem,
   decisionList,
@@ -12,7 +11,6 @@ import {
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
-import pastePlugin from './pm-plugins/paste-plugin';
 import inputRulePlugin from './pm-plugins/input-rules';
 import keymap from './pm-plugins/keymaps';
 import ToolbarDecision from './ui/ToolbarDecision';
@@ -35,7 +33,6 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
         plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {
@@ -73,9 +70,8 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Action',
-        icon: () => (
-          <Objects24ActionIcon label="Action" primaryColor={colors.B300} />
-        ),
+        keywords: ['task'],
+        icon: () => <EditorTaskIcon label="Action" />,
         action(insert, state) {
           return insert(
             state.schema.nodes.taskList.createChecked(
@@ -89,12 +85,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       },
       {
         title: 'Decision',
-        icon: () => (
-          <Objects24DecisionIcon
-            label="Insert Decision"
-            primaryColor={colors.G300}
-          />
-        ),
+        icon: () => <EditorDecisionIcon label="Insert Decision" />,
         action(insert, state) {
           return insert(
             state.schema.nodes.decisionList.createChecked(

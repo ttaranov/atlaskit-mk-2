@@ -1,5 +1,32 @@
 # @atlaskit/global-navigation
 
+## 2.1.0
+- [minor] Add productHref prop [c9595c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9595c4)
+
+## 2.0.0
+- [major] Extract standalone Drawer component. Remove drawer state from navigation state manager navigation-next. Stop exporting Drawer component in global-navigation [d11307b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d11307b)
+- [major] Updated dependencies [d11307b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d11307b)
+  - @atlaskit/navigation-next@1.0.0
+  - @atlaskit/drawer@0.1.0
+
+## 1.0.0
+- [major] Update props api for global-navigation. Change the way ResizeControl works in navigation-next [1516d79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1516d79)
+- [major] Updated dependencies [1516d79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1516d79)
+  - @atlaskit/navigation-next@0.3.4
+
+## 0.1.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [patch] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/onboarding@4.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/navigation-next@0.3.3
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
+## 0.1.2
+- [patch] Updated dependencies [7200aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7200aa4)
+  - @atlaskit/navigation-next@0.3.2
+
 ## 0.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [patch] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -69,7 +96,6 @@
 - [patch] Rename props to be in sync with navigation-next package [1fde1da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1fde1da)
 
 ## 0.0.2
-
 - [patch] Add global-navigation package [41a4d1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/41a4d1c)
 - [patch] Updated dependencies [7c99742](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c99742)
   - @atlaskit/navigation-next@0.0.7

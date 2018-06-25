@@ -37,14 +37,16 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
       <ZoomWrapper className={hideControlsClassName}>
         <ZoomControlsWrapper>
           <Button
+            appearance="toolbar"
             isDisabled={!zoomLevel.canZoomOut}
             onClick={this.zoomOut}
-            iconBefore={<ZoomOutIcon primaryColor="white" label="zoom out" />}
+            iconBefore={<ZoomOutIcon label="zoom out" />}
           />
           <Button
+            appearance="toolbar"
             isDisabled={!zoomLevel.canZoomIn}
             onClick={this.zoomIn}
-            iconBefore={<ZoomInIcon primaryColor="white" label="zoom in" />}
+            iconBefore={<ZoomInIcon label="zoom in" />}
           />
         </ZoomControlsWrapper>
         <ZoomLevelIndicator>{zoomLevel.asPercentage}</ZoomLevelIndicator>

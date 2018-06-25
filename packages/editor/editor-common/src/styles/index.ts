@@ -35,7 +35,7 @@ export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
 export const akEditorFloatingPanelZIndex = akZIndexLayer;
 export const akEditorMentionSelected = akColorN100;
-export const akEditorTableToolbarSize = 12;
+export const akEditorTableToolbarSize = 11;
 export const akEditorTableBorder = akColorN50;
 export const akEditorTableToolbar = akColorN20;
 export const akEditorTableFloatingControls = akColorN20;
@@ -50,3 +50,11 @@ export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
 export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;
+
+export {
+  tableSharedStyle,
+  tableMarginTop,
+  tableMarginBottom,
+  tableMarginSides,
+  calcTableWidth,
+} from './table';

@@ -1,5 +1,26 @@
 # @atlaskit/navigation-next
 
+## 1.0.0
+- [major] Extract standalone Drawer component. Remove drawer state from navigation state manager navigation-next. Stop exporting Drawer component in global-navigation [d11307b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d11307b)
+
+## 0.3.4
+- [patch] Update props api for global-navigation. Change the way ResizeControl works in navigation-next [1516d79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1516d79)
+
+## 0.3.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/field-base@10.1.2
+  - @atlaskit/toggle@4.0.3
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/lozenge@5.0.4
+  - @atlaskit/logo@8.1.2
+  - @atlaskit/icon@12.1.2
+  - @atlaskit/dropdown-menu@5.0.4
+
+## 0.3.2
+- [patch] Add title prop to Group component that will render a title for the group. This is an easier alternative to specifying a separate title item within the group itself. [7200aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7200aa4)
+
 ## 0.3.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -90,8 +111,6 @@
 
 ## 0.0.4
 - [patch] port nav views API to ak. only has support for root views atm. also renderer isn't finalised. [25805b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25805b8)
-
-## 0.0.3
 
 ## 0.0.2
 - [patch] release @atlaskit/navigation-next [33492df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33492df)

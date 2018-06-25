@@ -1,5 +1,21 @@
 # @atlaskit/page-header
 
+## 5.1.3
+- [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+- [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+  - @atlaskit/single-select@5.2.1
+  - @atlaskit/button@8.2.2
+
+## 5.1.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/single-select@5.1.2
+  - @atlaskit/input@3.0.2
+  - @atlaskit/inline-edit@6.1.3
+  - @atlaskit/field-text@6.0.4
+  - @atlaskit/button@8.1.2
+  - @atlaskit/page@7.1.1
+
 ## 5.1.1
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
@@ -65,8 +81,6 @@
 ## 3.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
-## 2.4.2
-
 ## 2.4.1
 - [patch] Re-releasing due to potentially broken babel release [9ed0bba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ed0bba)
 
@@ -89,21 +103,8 @@
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
 ## 2.0.7
-
 - [patch] Update dependencies [623f8ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623f8ca)
-
-## 2.0.6
-
-## 2.0.5
-
-## 2.0.4
-
-## 2.0.3
-
-## 2.0.2
 
 ## 2.0.1
 - [patch] Migrated page-header to mk2. Fixed breadcrumbs main entry point [51bf0c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51bf0c7)
 - [patch] Migrated page-header to mk2. Fixed breadcrumbs main entry point [51bf0c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51bf0c7)
-
-## 1.0.0

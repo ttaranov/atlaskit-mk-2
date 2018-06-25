@@ -18,6 +18,7 @@ import {
 export interface Props {
   onMount();
   onSearch(query: string);
+  onSearchSubmit?();
 
   isLoading: boolean;
   query: string;
@@ -73,7 +74,13 @@ export class GlobalQuickSearch extends React.Component<Props> {
   }
 
   render() {
-    const { query, isLoading, linkComponent, children } = this.props;
+    const {
+      query,
+      isLoading,
+      linkComponent,
+      children,
+      onSearchSubmit,
+    } = this.props;
 
     return (
       <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
@@ -82,6 +89,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           onSearchInput={this.handleSearchInput}
           value={query}
           linkComponent={linkComponent}
+          onSearchSubmit={onSearchSubmit}
         >
           {children}
         </QuickSearch>

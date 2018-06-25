@@ -37,6 +37,8 @@ export const HeaderButtonDefault: ComponentClass<
   .danger > & {
     background-color: ${tableToolbarDeleteColor};
     border-color: ${tableBorderDeleteColor};
+    position: relative;
+    z-index: 1;
   }
   &:focus {
     outline: none;
@@ -69,9 +71,6 @@ export const InsertMarkerDefault: ComponentClass<
   height: 4px;
   width: 4px;
   border-radius: 50%;
-  div:hover > & {
-    background-color: ${tableBorderSelectedColor};
-  }
 `;
 
 export const LineMarkerDefault: ComponentClass<HTMLAttributes<{}>> = styled.div`

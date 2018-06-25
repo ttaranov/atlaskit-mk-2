@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import rafSchedule from 'raf-schd';
-import { ScrollLock } from '@atlaskit/layer-manager';
+import ScrollLock from 'react-scrolllock';
 
 import Footer from './Footer';
 import Header from './Header';

@@ -2,24 +2,7 @@ import { Fragment, Schema } from 'prosemirror-model';
 
 import { Serializer } from '../serializer';
 import { defaultSchema } from '@atlaskit/editor-common';
-import { reduceTree } from './utils';
-import { ReducedNode } from './nodes';
-
-const serializeTree = (node: ReducedNode): string => {
-  if (node.content) {
-    return node.content!
-      .reduce((arr: string[], childNode) => {
-        if (!childNode.text && !childNode.content) {
-          return arr;
-        }
-        arr.push((node.text || '') + serializeTree(childNode));
-        return arr;
-      }, [])
-      .join('\n');
-  }
-
-  return node.text!;
-};
+import { reduce } from './nodes';
 
 export default class TextSerializer implements Serializer<string> {
   constructor(private schema: Schema) {
@@ -27,8 +10,13 @@ export default class TextSerializer implements Serializer<string> {
   }
 
   serializeFragment(fragment: Fragment): string {
-    const tree: ReducedNode = { content: reduceTree(fragment, this.schema) };
-    return serializeTree(tree);
+    const result: string[] = [];
+
+    fragment.forEach(n => {
+      result.push(reduce(n, this.schema));
+    });
+
+    return result.join('\n').replace(/\n+/g, '\n');
   }
 
   static fromSchema(schema: Schema = defaultSchema): TextSerializer {

@@ -15,9 +15,8 @@ const exampleColors: string[] = [
   colors.N0,
 ];
 
-const presences: PresenceType[] = [null, 'online', 'offline', 'busy'];
-// $FlowFixMe - adding null
-const statuses: StatusType[] = [null, 'approved', 'locked', 'declined'];
+const presences: PresenceType[] = ['focus', 'online', 'offline', 'busy'];
+const statuses: StatusType[] = ['approved', 'locked', 'declined'];
 const styles = {
   column: {
     alignItems: 'center',

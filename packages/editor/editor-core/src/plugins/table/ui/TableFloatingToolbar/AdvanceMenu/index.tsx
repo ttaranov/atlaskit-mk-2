@@ -6,7 +6,6 @@ import { EditorView } from 'prosemirror-view';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
 import { analyticsService as analytics } from '../../../../../analytics';
-import { checkIfNumberColumnCellsSelected } from '../../../utils';
 import { ToolbarButton } from '../styles';
 
 export interface Props {
@@ -54,15 +53,17 @@ export default class AdvanceMenu extends Component<Props, State> {
   }
 
   private createItems = () => {
-    const { allowMergeCells, editorView: { state } } = this.props;
+    const {
+      allowMergeCells,
+      editorView: { state },
+    } = this.props;
     const items: any[] = [];
 
     if (allowMergeCells) {
       items.push({
         content: 'Merge cells',
         value: { name: 'merge' },
-        isDisabled:
-          !mergeCells(state) || checkIfNumberColumnCellsSelected(state),
+        isDisabled: !mergeCells(state),
       });
       items.push({
         content: 'Split cell',
@@ -75,7 +76,9 @@ export default class AdvanceMenu extends Component<Props, State> {
   };
 
   private onItemActivated = ({ item }) => {
-    const { editorView: { state, dispatch } } = this.props;
+    const {
+      editorView: { state, dispatch },
+    } = this.props;
     switch (item.value.name) {
       case 'merge':
         analytics.trackEvent('atlassian.editor.format.table.merge.button');

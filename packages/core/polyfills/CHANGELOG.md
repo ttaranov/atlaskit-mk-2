@@ -1,5 +1,9 @@
 # @atlaskit/polyfills
 
+## 2.0.4
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+
 ## 2.0.3
 - [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
 - [none] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
@@ -23,7 +27,6 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 1.4.1
-
 - [patch] Mark packages as internal [016d74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/016d74d)
 
 ## 1.4.0
@@ -31,8 +34,6 @@
 
 ## 1.3.0
 - [minor] added array.prototype.find polyfull to package [d1eb5b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1eb5b7)
-
-## 1.2.4
 
 ## 1.2.3
 - [patch] Removes broken dist builds and simply exposes individual polyfills [c9e83f6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9e83f6)

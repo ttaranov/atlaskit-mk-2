@@ -32,7 +32,7 @@ export default function Example() {
               <AnalyticsDecorator data={{ editorType: 'message' }}>
                 <EditorWithAnalytics
                   {...getPropsPreset('message')}
-                  UNSAFE_allowQuickInsert={true}
+                  quickInsert={true}
                   analyticsHandler={analyticsHandler}
                   disabled={disabled}
                   maxHeight={305}

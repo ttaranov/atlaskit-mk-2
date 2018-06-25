@@ -115,9 +115,9 @@ describe(name, () => {
         const iconWrapper = wrapper.find(IconWrapper);
 
         it(`with value ${s}`, () => {
-          // $FlowFixMe - return type of styled components is bad
+          // $FlowFixMe - https://github.com/facebook/flow/issues/396
           expect(iconWrapper).toHaveStyleRule('height', sizeValues[s]);
-          // $FlowFixMe - return type of styled components is bad
+          // $FlowFixMe - https://github.com/facebook/flow/issues/396
           expect(iconWrapper).toHaveStyleRule('width', sizeValues[s]);
         });
       });
@@ -128,7 +128,7 @@ describe(name, () => {
         const wrapper = mount(<MyIcon label="default primaryColor" />);
         const iconWrapper = wrapper.find(IconWrapper);
 
-        // $FlowFixMe - return type of styled components is bad
+        // $FlowFixMe - https://github.com/facebook/flow/issues/396
         expect(iconWrapper).toHaveStyleRule('color', 'currentColor');
       });
       it('can be changed to a hex value', () => {
@@ -138,7 +138,7 @@ describe(name, () => {
         );
         const iconWrapper = wrapper.find(IconWrapper);
 
-        // $FlowFixMe - return type of styled components is bad
+        // $FlowFixMe - https://github.com/facebook/flow/issues/396
         expect(iconWrapper).toHaveStyleRule('color', primaryColor);
       });
       it('can be changed to a named color', () => {
@@ -148,7 +148,7 @@ describe(name, () => {
         );
         const iconWrapper = wrapper.find(IconWrapper);
 
-        // $FlowFixMe - return type of styled components is bad
+        // $FlowFixMe - https://github.com/facebook/flow/issues/396
         expect(iconWrapper).toHaveStyleRule('color', primaryColor);
       });
     });
@@ -159,7 +159,7 @@ describe(name, () => {
         const props = wrapper.props();
         const iconWrapper = wrapper.find(IconWrapper);
 
-        // $FlowFixMe - return type of styled components is bad
+        // $FlowFixMe - https://github.com/facebook/flow/issues/396
         expect(iconWrapper).toHaveStyleRule('fill', colors.background(props));
       });
       it('can be changed to a hex value', () => {
@@ -169,7 +169,7 @@ describe(name, () => {
         );
         const iconWrapper = wrapper.find(IconWrapper);
 
-        // $FlowFixMe - return type of styled components is bad
+        // $FlowFixMe - https://github.com/facebook/flow/issues/396
         expect(iconWrapper).toHaveStyleRule('fill', secondaryColor);
       });
       it('can be changed to a named color', () => {
@@ -179,7 +179,7 @@ describe(name, () => {
         );
         const iconWrapper = wrapper.find(IconWrapper);
 
-        // $FlowFixMe - return type of styled components is bad
+        // $FlowFixMe - https://github.com/facebook/flow/issues/396
         expect(iconWrapper).toHaveStyleRule('fill', secondaryColor);
       });
     });

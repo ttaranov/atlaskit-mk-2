@@ -1,6 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { reduceTree } from '../utils';
-import { ReducedNode } from './';
+import { reduce, NodeReducer } from './';
 
 const getText = (node: PMNode): string => {
   return (
@@ -11,11 +10,17 @@ const getText = (node: PMNode): string => {
   );
 };
 
-export default function unknown(node: PMNode, schema: Schema): ReducedNode {
-  if (node.childCount) {
-    return {
-      content: reduceTree(node.content, schema),
-    };
+const unknown: NodeReducer = (node: PMNode, schema: Schema) => {
+  const result: string[] = [];
+
+  node.forEach(n => {
+    result.push(reduce(n, schema));
+  });
+
+  if (result.length > 0) {
+    return result.join('');
   }
-  return { text: getText(node) };
-}
+  return getText(node);
+};
+
+export default unknown;

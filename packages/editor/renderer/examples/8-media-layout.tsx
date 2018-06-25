@@ -26,7 +26,6 @@ export default function Example() {
     <SizeDetector
       containerStyle={{
         height: 0,
-        color: 'red',
         borderStyle: 'none',
       }}
     >

@@ -369,6 +369,15 @@ export const getValidNode = (
           content,
         };
       }
+      case 'date': {
+        if (attrs && attrs.timestamp) {
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
       case 'emoji': {
         if (attrs && attrs.shortName) {
           return {

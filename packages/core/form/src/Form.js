@@ -231,7 +231,7 @@ export default class Form extends Component<Props, State> {
           accept={accept}
           acceptCharset={acceptCharset}
           autoComplete={autoComplete}
-          //$FlowFixMe Only for dev preview. TODO: resolve this type error
+          // $FlowFixMe Only for dev preview. TODO: resolve this type error
           ref={(form: HTMLFormElement) => {
             this.form = form;
           }}
