@@ -1,3 +1,4 @@
+import * as React from 'react';
 import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
@@ -14,6 +15,11 @@ import {
 
 export const toolbarSize = 11;
 
+// Need to set type to prevent form submission on click (ED-4744)
+export const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button type="button" {...props} />
+);
+
 export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   display: block;
@@ -21,7 +27,7 @@ export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
 export const HeaderButtonDefault: ComponentClass<
   ButtonHTMLAttributes<{}>
-> = styled.button`
+> = styled(Button)`
   background: ${tableToolbarColor};
   border-top: 1px solid ${tableBorderColor};
   border-left: 1px solid ${tableBorderColor};
