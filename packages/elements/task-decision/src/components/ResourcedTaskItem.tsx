@@ -166,7 +166,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
       showParticipants,
       showPlaceholder,
       taskId,
-      taskDecisionProvider,
     } = this.props;
 
     return (
@@ -181,7 +180,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         showPlaceholder={showPlaceholder}
         creator={creator}
         lastUpdater={lastUpdater}
-        disabled={!taskDecisionProvider}
       >
         {children}
       </TaskItem>
