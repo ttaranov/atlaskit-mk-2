@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import {
   DummyComponentWithAnalytics,
   DummyAtlaskitComponentWithAnalytics,
+  DummyComponentWithAttributesWithAnalytics,
 } from '../examples/helpers';
 
 const myOnClickHandler = () => {
@@ -29,7 +31,20 @@ export default function Example() {
   return (
     <FabricAnalyticsListeners client={Promise.resolve(analyticsWebClientMock)}>
       <div>
-        <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+        <DummyComponentWithAnalytics
+          text="Fabric Elements event - component without attributes"
+          onClick={myOnClickHandler}
+        />
+
+        <AnalyticsContext data={{ issueId: 100, greeting: 'hello' }}>
+          <AnalyticsContext data={{ issueId: 200 }}>
+            <DummyComponentWithAttributesWithAnalytics
+              text="Fabric Elements event - component with attributes"
+              onClick={myOnClickHandler}
+            />
+          </AnalyticsContext>
+        </AnalyticsContext>
+
         <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
       </div>
     </FabricAnalyticsListeners>

@@ -4,13 +4,13 @@ import { mount } from 'enzyme';
 import { UI_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import * as cases from 'jest-in-case';
 
-import AtlaskitListener from '../AtlaskitListener';
+import AtlaskitListener from '../../src/atlaskit/AtlaskitListener';
 import {
   AnalyticsListener,
   withAnalyticsEvents,
   AnalyticsContext,
 } from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../types';
+import { AnalyticsWebClient } from '../../src/types';
 
 const Button: React.StatelessComponent<any> = props => (
   <button id="dummy" onClick={props.onClick}>
