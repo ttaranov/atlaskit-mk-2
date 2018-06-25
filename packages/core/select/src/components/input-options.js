@@ -79,6 +79,13 @@ type OptionProps = CommonProps & {
 };
 type OptionState = { isActive?: boolean };
 
+const Truncate = styled.div`
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  flex: 1;
+  white-space: nowrap;
+`;
+
 class ControlOption extends Component<OptionProps, OptionState> {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });

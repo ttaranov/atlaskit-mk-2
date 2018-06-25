@@ -105,8 +105,8 @@ type Props = ReactSelectProps & {
 function baseStyles(validationState, isCompact) {
   return {
     control: (css, { isFocused, isDisabled }) => {
-      let borderColor = isFocused ? colors.B100 : colors.N10;
-      let backgroundColor = isFocused ? colors.N0 : colors.N10;
+      let borderColor = isFocused ? colors.B100 : colors.N20;
+      let backgroundColor = isFocused ? colors.N0 : colors.N20;
       if (isDisabled) {
         backgroundColor = colors.N20;
       }
@@ -125,6 +125,7 @@ function baseStyles(validationState, isCompact) {
         backgroundColor,
         borderColor,
         borderStyle: 'solid',
+        borderRadius: '3px',
         borderWidth: lgBorder ? 2 : 1,
         boxShadow: 'none',
         minHeight: isCompact ? gridSize() * 4 : gridSize() * 5,
@@ -145,7 +146,8 @@ function baseStyles(validationState, isCompact) {
           '::-webkit-scrollbar-thumb': {
             backgroundColor: 'rgba(0,0,0,0.2)',
           },
-          backgroundColor: isFocused ? colors.N0 : colors.N20,
+          cursor: 'pointer',
+          backgroundColor: isFocused ? colors.N0 : colors.N30,
           borderColor: borderColorHover,
         },
         '::-webkit-scrollbar-thumb:hover': {
@@ -160,6 +162,8 @@ function baseStyles(validationState, isCompact) {
     }),
     clearIndicator: css => ({
       ...css,
+      paddingLeft: '2px',
+      paddingRight: '2px',
       paddingBottom: isCompact ? 0 : 6,
       paddingTop: isCompact ? 0 : 6,
     }),
@@ -178,7 +182,8 @@ function baseStyles(validationState, isCompact) {
         color,
         paddingBottom: isCompact ? 0 : 6,
         paddingTop: isCompact ? 0 : 6,
-
+        paddingLeft: '2px',
+        paddingRight: '2px',
         ':hover': {
           color: colors.N200,
         },
@@ -188,15 +193,47 @@ function baseStyles(validationState, isCompact) {
       const color = isSelected ? colors.N0 : null;
 
       let backgroundColor;
-      if (isSelected) backgroundColor = colors.N200;
+      if (isSelected) backgroundColor = colors.N500;
       else if (isFocused) backgroundColor = colors.N20;
 
-      return { ...css, backgroundColor, color };
+      return {
+        ...css,
+        backgroundColor,
+        color,
+        height: '32px',
+      };
     },
     placeholder: css => ({ ...css, color: colors.N70 }),
     singleValue: (css, { isDisabled }) => ({
       ...css,
-      color: isDisabled ? colors.N70 : colors.N900,
+      color: isDisabled ? colors.N70 : colors.N800,
+    }),
+    menuList: css => ({
+      ...css,
+      paddingTop: gridSize(),
+      paddingBottom: gridSize(),
+    }),
+    multiValue: css => ({
+      ...css,
+      borderRadius: '2px',
+      backgroundColor: colors.N40,
+      color: colors.N500,
+    }),
+    multiValueLabel: css => ({
+      ...css,
+      paddingRight: '2px',
+    }),
+    multiValueRemove: (css, { isFocused }) => ({
+      ...css,
+      backgroundColor: isFocused && colors.R75,
+      color: isFocused && colors.R400,
+      paddingLeft: '2px',
+      paddingRight: '2px',
+      borderRadius: '0px 2px 2px 0px',
+      ':hover': {
+        color: colors.R400,
+        backgroundColor: colors.R75,
+      },
     }),
   };
 }

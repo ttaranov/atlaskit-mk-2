@@ -8,8 +8,7 @@ const MultiExample = () => (
   <Select
     className="react-select"
     classNamePrefix="select"
-    value={[...cities, ...cities]}
-    options={[...cities, ...cities]}
+    options={cities}
     isMulti
     isSearchable={false}
     placeholder="Choose a City"
