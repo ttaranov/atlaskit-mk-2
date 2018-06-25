@@ -21,6 +21,7 @@ import {
   Section,
   SectionSeparator,
   SectionTitle,
+  Switcher,
 } from '../';
 import type {
   GoToItemProps,
@@ -188,6 +189,7 @@ const itemComponents = {
   BackItem,
   Separator,
   Title,
+  Switcher,
 };
 
 const groupComponents = {
