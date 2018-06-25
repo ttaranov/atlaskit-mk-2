@@ -1,5 +1,9 @@
 # @atlaskit/global-navigation
 
+## 2.1.1
+- [patch] Updated dependencies [50ca31b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50ca31b)
+  - @atlaskit/drawer@0.1.1
+
 ## 2.1.0
 - [minor] Add productHref prop [c9595c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9595c4)
 
