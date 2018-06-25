@@ -6,6 +6,7 @@ import {
   defaultParams,
   defaultServiceHost,
   userAuthProviderBaseURL,
+  mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { MediaProvider, MediaStateManager } from '@atlaskit/editor-core';
 
@@ -27,7 +28,6 @@ export function storyMediaProviderFactory(
   mediaProviderFactoryConfig: MediaProviderFactoryConfig = {},
 ) {
   const {
-    serviceHost,
     collectionName,
     stateManager,
     includeUploadContext,
@@ -35,34 +35,21 @@ export function storyMediaProviderFactory(
     includeUserAuthProvider,
   } = mediaProviderFactoryConfig;
   const collection = collectionName || defaultCollectionName;
+  const context = ContextFactory.create({
+    serviceHost: userAuthProviderBaseURL,
+    authProvider: mediaPickerAuthProvider(),
+    userAuthProvider:
+      includeUserAuthProvider === false ? undefined : userAuthProvider,
+  });
 
   return Promise.resolve<MediaProvider>({
     stateManager,
     uploadParams: { collection },
-    viewContext: Promise.resolve<Context>(
-      ContextFactory.create({
-        serviceHost: serviceHost || defaultParams.serviceHost,
-        authProvider: StoryBookAuthProvider.create(false),
-      }),
-    ),
+    viewContext: Promise.resolve<Context>(context),
     uploadContext:
       includeUploadContext === false
         ? undefined
-        : Promise.resolve<Context>(
-            ContextFactory.create({
-              serviceHost: userAuthProviderBaseURL,
-              authProvider: StoryBookAuthProvider.create(false, {
-                [`urn:filestore:collection:${collection}`]: ['read', 'insert'],
-                'urn:filestore:chunk:*': ['create', 'read'],
-                'urn:filestore:upload': ['create'],
-                'urn:filestore:upload:*': ['read', 'update'],
-              }),
-              userAuthProvider:
-                includeUserAuthProvider === false
-                  ? undefined
-                  : userAuthProvider,
-            }),
-          ),
+        : Promise.resolve<Context>(context),
     linkCreateContext: !includeLinkCreateContext
       ? undefined
       : Promise.resolve<Context>(

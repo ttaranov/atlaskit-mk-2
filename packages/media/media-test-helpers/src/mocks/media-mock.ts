@@ -23,6 +23,7 @@ export class MediaMock {
 
   disable() {
     // TODO: add teardown logic to kakapo server
+    console.warn('Disabling logic is not implemented in MediaMock');
   }
 }
 
