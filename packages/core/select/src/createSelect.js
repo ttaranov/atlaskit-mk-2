@@ -132,9 +132,24 @@ function baseStyles(validationState, isCompact) {
         transition: `background-color ${transitionDuration} ease-in-out,
         border-color ${transitionDuration} ease-in-out`,
 
+        '-ms-overflow-style': '-ms-autohiding-scrollbar',
+        '::-webkit-scrollbar': {
+          height: gridSize(),
+          width: gridSize(),
+        },
+        '::-webkit-scrollbar-corner': {
+          display: 'none',
+        },
+
         ':hover': {
+          '::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,0.2)',
+          },
           backgroundColor: isFocused ? colors.N0 : colors.N20,
           borderColor: borderColorHover,
+        },
+        '::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: 'rgba(0,0,0,0.4)',
         },
       };
     },
