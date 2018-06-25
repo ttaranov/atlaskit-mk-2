@@ -15,6 +15,7 @@ import AddItemIcon from '../glyph/add-item';
 import AddIcon from '../glyph/add';
 import AddonIcon from '../glyph/addon';
 import AppAccessIcon from '../glyph/app-access';
+import AppSwitcherIcon from '../glyph/app-switcher';
 import ArrowDownCircleIcon from '../glyph/arrow-down-circle';
 import ArrowDownIcon from '../glyph/arrow-down';
 import ArrowLeftCircleIcon from '../glyph/arrow-left-circle';
@@ -454,6 +455,12 @@ export default {
     component: AppAccessIcon,
     componentName: 'AppAccessIcon',
     package: '@atlaskit/icon/glyph/app-access',
+  },
+  'app-switcher': {
+    keywords: ['app-switcher', 'appswitcher'],
+    component: AppSwitcherIcon,
+    componentName: 'AppSwitcherIcon',
+    package: '@atlaskit/icon/glyph/app-switcher',
   },
   'arrow-down-circle': {
     keywords: ['arrow-down-circle', 'arrowdowncircle'],
