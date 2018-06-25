@@ -305,12 +305,10 @@ class ContextImpl implements Context {
           this.createDownloadFileStream(fileId, file.collection),
         ),
       )
-      .publishReplay(1);
-    // TODO: Should we use refCount or not?
-    // .refCount()
+      .publishReplay(1)
+      .refCount();
 
     this.fileStreamsCache.set(tempFileId, fileStream);
-    fileStream.connect();
 
     return fileStream;
   }
