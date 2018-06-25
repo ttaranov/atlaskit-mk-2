@@ -3,7 +3,7 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import { tableBorderDeleteColor, tableToolbarDeleteColor } from '../../styles';
-import { LineMarkerDefault } from '../styles';
+import { LineMarkerDefault, Button } from '../styles';
 import {
   tableInsertColumnButtonSize,
   tableToolbarSize,
@@ -33,9 +33,9 @@ export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-export const CornerButton: ComponentClass<
-  ButtonHTMLAttributes<{}>
-> = styled.button`
+export const CornerButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
+  Button,
+)`
   position: absolute;
   top: 0;
   width: ${tableToolbarSize - 1}px;
