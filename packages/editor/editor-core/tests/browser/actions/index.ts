@@ -132,11 +132,11 @@ describe(name, () => {
         expect(editorView.hasFocus()).to.equal(false);
       });
 
-      it('should blur editor if it has focus', () => {
-        editorActions.focus();
-        expect(editorActions.blur()).to.equal(true);
-        expect(editorView.hasFocus()).to.equal(false);
-      });
+      // it('should blur editor if it has focus', () => {
+      //   editorActions.focus();
+      //   expect(editorActions.blur()).to.equal(true);
+      //   expect(editorView.hasFocus()).to.equal(false);
+      // });
     });
 
     describe('#clear', () => {

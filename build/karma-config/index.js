@@ -136,7 +136,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         os_version: 'High Sierra',
         browser_version: '11.1',
       },
-      edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
+      // edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
     };
 
     const browsers = Object.keys(launchers);
