@@ -114,7 +114,7 @@ export class NewUploadServiceImpl implements UploadService {
           },
         });
 
-      cancellableFileUpload.cancel = controller.cancel;
+      cancellableFileUpload.cancel = controller.abort;
     });
   }
 

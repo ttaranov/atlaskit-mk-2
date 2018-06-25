@@ -104,7 +104,7 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   cancelUpload = () => {
     if (this.uploadController) {
-      this.uploadController.cancel();
+      this.uploadController.abort();
     }
   };
 

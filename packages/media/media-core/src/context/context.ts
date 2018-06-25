@@ -281,7 +281,7 @@ class ContextImpl implements Context {
         });
 
         if (controller) {
-          controller.setCancel(cancel);
+          controller.setAbort(cancel);
         }
 
         deferredFileId.then(id => {
