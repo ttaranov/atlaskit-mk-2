@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Chrome from '../src/Chrome';
 import Content from '../src/Content';
 import Remove from '../src/RemoveButton';
-import Tag from '../src/Tag';
+import { TagWithoutAnalytics as Tag } from '../src/Tag';
 
 import Before from '../src/Tag/styledBefore';
 import Container from '../src/Tag/styledContainer';
