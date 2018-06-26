@@ -372,6 +372,7 @@ import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
 import ScreenIcon from '../glyph/screen';
 import SearchIcon from '../glyph/search';
+import SelectClearIcon from '../glyph/select-clear';
 import SendIcon from '../glyph/send';
 import SettingsIcon from '../glyph/settings';
 import ShareIcon from '../glyph/share';
@@ -2597,6 +2598,12 @@ export default {
     component: SearchIcon,
     componentName: 'SearchIcon',
     package: '@atlaskit/icon/glyph/search',
+  },
+  'select-clear': {
+    keywords: ['select-clear', 'selectclear'],
+    component: SelectClearIcon,
+    componentName: 'SelectClearIcon',
+    package: '@atlaskit/icon/glyph/select-clear',
   },
   send: {
     keywords: ['send', 'mail'],
