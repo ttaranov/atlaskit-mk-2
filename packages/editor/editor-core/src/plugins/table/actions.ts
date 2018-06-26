@@ -446,16 +446,18 @@ const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
 
 const boldHeaderCells = (state, tableNode) => {
+  const {
+    nodes: {paragraph, table, tableRow, tableHeader},
+    marks: {strong}
+  } = state.schema;
   const rows: any[] = [];
-  const { paragraph, table, tableRow, tableHeader } = state.schema.nodes;
-  const { strong } = state.schema.marks;
 
   tableNode.content.forEach((oldRow, _offset, _index) => {
     const cells: any[] = [];
-    if (_index === 0) {
+    if (_index === 0 && oldRow.firstChild.type === tableHeader) {
       oldRow.forEach((oldCell) => {
         const content = paragraph.createAndFill(undefined, undefined, [strong.create()]);
-        cells.push(tableHeader.createAndFill(oldCell.attrs, content as any, oldCell.marks));
+        cells.push(tableHeader.create(oldCell.attrs, content, oldCell.marks));
       });
       rows.push(tableRow.createChecked(oldRow.attrs, cells, oldRow.marks));
     } else {
