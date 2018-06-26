@@ -1,4 +1,3 @@
-jest.mock('@atlaskit/media-store');
 jest.mock('uuid', () => ({
   v4() {
     return 'some-uuid';
@@ -7,7 +6,12 @@ jest.mock('uuid', () => ({
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { MediaItem, MediaItemProvider, UploadableFile } from '../src';
+import {
+  MediaItem,
+  MediaItemProvider,
+  UploadableFile,
+  UploadController,
+} from '../src';
 import { ContextFactory } from '../src/context/context';
 
 import { uploadFile } from '@atlaskit/media-store';
@@ -25,6 +29,7 @@ const createFakeContext = () => {
   });
 };
 
+(uploadFile as any) = jest.fn();
 const uploadFileMock: jest.Mock<any> = uploadFile as any;
 
 describe('Context', () => {
@@ -531,6 +536,55 @@ describe('Context', () => {
             resolve();
           },
         });
+      });
+    });
+
+    it('should call subscription error when upload is cancelled', () => {
+      const context = createFakeContext();
+      const getFile = jest.fn().mockReturnValue({
+        data: {
+          processingStatus: 'succeeded',
+          id: 'file-id-1',
+          name: 'file-one',
+          size: 1,
+        },
+      });
+      const createDownloadFileStream = jest.fn().mockReturnValue(
+        new Observable(observer => {
+          observer.complete();
+        }),
+      );
+      const file = {
+        content: new Blob(),
+        collection: 'some-collection',
+      };
+      const cancelMock = jest.fn();
+      (context as any).mediaStore = { getFile };
+      (context as any).createDownloadFileStream = createDownloadFileStream;
+      uploadFileMock.mockImplementation((_, __, callbacks) => {
+        callbacks.onProgress(0.1);
+        let uploadFileReject: any;
+        const deferredFileId = new Promise((_, reject) => {
+          uploadFileReject = reject;
+        });
+        return {
+          deferredFileId,
+          cancel() {
+            cancelMock();
+            uploadFileReject();
+          },
+        };
+      });
+      const controller = new UploadController();
+
+      return new Promise(resolve => {
+        context.uploadFile(file, controller).subscribe({
+          error() {
+            expect(cancelMock).toHaveBeenCalledTimes(1);
+            resolve();
+          },
+        });
+        controller.abort();
       });
     });
   });
