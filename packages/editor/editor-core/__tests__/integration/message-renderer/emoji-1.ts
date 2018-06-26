@@ -112,7 +112,7 @@ BrowserTestCase(
 // unable to navigate between emojis on IE - file issue
 BrowserTestCase(
   'Emoji: should be able to navigate between emojis',
-  { skip: ['firefox', 'safari', 'ie'] },
+  { skip: ['firefox', 'safari', 'ie', 'edge'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
