@@ -74,7 +74,7 @@ export default ({ background, text }: Args): Mode => {
         },
         subTextWrapper: {
           ...root.subTextWrapper,
-          color: brightness(20, text).hex,
+          color: chromatism.brightness(20, text).hex,
         },
       };
       return { container: rootStyles, root: rootStyles };
