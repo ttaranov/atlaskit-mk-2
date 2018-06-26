@@ -506,7 +506,7 @@ describe('UploadService', () => {
         type: 'image/png',
       } as any;
       const { uploadService } = setup();
-      const createUploadController = jest.fn().mockReturnValue({ cancel() {} });
+      const createUploadController = jest.fn().mockReturnValue({ abort() {} });
       (uploadService as any).createUploadController = createUploadController;
 
       const filesAddedCallback = jest.fn();
