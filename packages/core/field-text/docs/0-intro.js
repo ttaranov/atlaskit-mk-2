@@ -8,7 +8,7 @@ export default md`
   Text Field provides a form input.
 
 ${code`
-import FieldText { FieldTextStateless } from '@atlaskit/field-text';
+import FieldText, { FieldTextStateless } from '@atlaskit/field-text';
 `}
 
   Text Field exports both a stateful default component, and a stateless component.

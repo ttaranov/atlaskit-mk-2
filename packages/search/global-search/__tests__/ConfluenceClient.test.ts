@@ -48,7 +48,7 @@ const MOCK_QUICKNAV_RESULT_BASE = {
   href: '/href',
   name: 'name',
   id: '123',
-  space: 'space',
+  spaceName: 'spaceName',
 };
 
 const mockQuickNavResult = (className: string) => ({
@@ -96,13 +96,13 @@ describe('ConfluenceClient', () => {
 
       mockRecentlyViewedPages(pages);
 
-      const result = await confluenceClient.getRecentItems();
+      const result = await confluenceClient.getRecentItems('search_id');
 
       expect(result).toEqual([
         {
           resultId: pages[0].id,
           name: pages[0].title,
-          href: `${DUMMY_CONFLUENCE_HOST}${pages[0].url}`,
+          href: `${DUMMY_CONFLUENCE_HOST}${pages[0].url}?search_id=search_id`,
           containerName: pages[0].space,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -111,7 +111,7 @@ describe('ConfluenceClient', () => {
         {
           resultId: pages[1].id,
           name: pages[1].title,
-          href: `${DUMMY_CONFLUENCE_HOST}${pages[1].url}`,
+          href: `${DUMMY_CONFLUENCE_HOST}${pages[1].url}?search_id=search_id`,
           containerName: pages[1].space,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.ConfluenceObjectResult,
@@ -122,7 +122,7 @@ describe('ConfluenceClient', () => {
 
     it('should not break if no results are returned', async () => {
       mockRecentlyViewedPages([]);
-      const result = await confluenceClient.getRecentItems();
+      const result = await confluenceClient.getRecentItems('search_id');
       expect(result).toEqual([]);
     });
   });
@@ -133,13 +133,15 @@ describe('ConfluenceClient', () => {
 
       mockRecentlyViewedSpaces(spaces);
 
-      const result = await confluenceClient.getRecentSpaces();
+      const result = await confluenceClient.getRecentSpaces('search_id');
 
       const expectedResults: ContainerResult[] = [
         {
           resultId: MOCK_SPACE.id,
           name: MOCK_SPACE.name,
-          href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
+          href: `${DUMMY_CONFLUENCE_HOST}/spaces/${
+            MOCK_SPACE.key
+          }/overview?search_id=search_id`,
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.GenericContainerResult,
@@ -147,7 +149,9 @@ describe('ConfluenceClient', () => {
         {
           resultId: MOCK_SPACE.id,
           name: MOCK_SPACE.name,
-          href: `${DUMMY_CONFLUENCE_HOST}/spaces/${MOCK_SPACE.key}/overview`,
+          href: `${DUMMY_CONFLUENCE_HOST}/spaces/${
+            MOCK_SPACE.key
+          }/overview?search_id=search_id`,
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.GenericContainerResult,
@@ -159,7 +163,7 @@ describe('ConfluenceClient', () => {
 
     it('should not break if no spaces are returned', async () => {
       mockRecentlyViewedSpaces([]);
-      const result = await confluenceClient.getRecentSpaces();
+      const result = await confluenceClient.getRecentSpaces('search_id');
       expect(result).toEqual([]);
     });
   });
@@ -183,7 +187,7 @@ describe('ConfluenceClient', () => {
           resultId: '123',
           name: 'name',
           href: `/href?search_id=123`,
-          containerName: 'space',
+          containerName: 'spaceName',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceBlogpost,
@@ -192,7 +196,7 @@ describe('ConfluenceClient', () => {
           resultId: '123',
           name: 'name',
           href: `/href?search_id=123`,
-          containerName: 'space',
+          containerName: 'spaceName',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
@@ -201,7 +205,7 @@ describe('ConfluenceClient', () => {
           resultId: '123',
           name: 'name',
           href: `/href?search_id=123`,
-          containerName: 'space',
+          containerName: 'spaceName',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceAttachment,
@@ -237,10 +241,40 @@ describe('ConfluenceClient', () => {
           resultId: '123',
           name: 'name',
           href: `/href?test=abc&search_id=123`,
-          containerName: 'space',
+          containerName: 'spaceName',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceAttachment,
+        },
+      ];
+
+      expect(results).toEqual(expectedResults);
+    });
+
+    // quick nav's API sends pre-escaped content, different to what we normally expect
+    // so testing that we remember to unescape it before passing it into the component.
+    it('should unescape html entities in the name and spaceNames of results', async () => {
+      const mockResult = mockQuickNavResult(PAGE_CLASSNAME);
+
+      // Make the name include some entities, not intended to be comprehensive
+      mockResult.name = 'name &amp; &gt; &lt;';
+      mockResult.spaceName = 'spaceName &amp; &gt; &lt;';
+
+      const mockResults = [[mockResult]];
+
+      mockQuickNavSearch(mockResults);
+
+      const results = await confluenceClient.searchQuickNav('abc', '123');
+
+      const expectedResults: ConfluenceObjectResult[] = [
+        {
+          resultId: '123',
+          name: 'name & > <',
+          href: `/href?search_id=123`,
+          containerName: 'spaceName & > <',
+          analyticsType: AnalyticsType.ResultConfluence,
+          resultType: ResultType.ConfluenceObjectResult,
+          contentType: ContentType.ConfluencePage,
         },
       ];
 

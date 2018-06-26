@@ -11,20 +11,21 @@ import {
   akColorY200,
   akColorP200,
   akColorB300,
-  akColorN400,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 const overlayZindex = 999;
 
-export const colors = {
+export const mediaTypeIconColors = {
   image: akColorY200,
   audio: akColorP200,
   video: '#ff7143',
   doc: akColorB300,
   unknown: '#3dc7dc',
-  blanketColor: '#1b2638',
 };
+
+export const blanketColor = '#1b2638';
 
 export const hideControlsClassName = 'mvng-hide-controls';
 
@@ -34,7 +35,7 @@ export const Blanket = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: ${colors.blanketColor};
+  background-color: ${blanketColor};
   z-index: ${overlayZindex};
 `;
 
@@ -47,9 +48,11 @@ export const HeaderWrapper = styled.div`
   opacity: 0.85;
   background-image: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0));
   color: #b8c7e0;
+  font-weight: 500;
   padding-top: 15px;
   padding: 24px;
   box-sizing: border-box;
+  pointer-events: none;
   z-index: ${overlayZindex + 1};
 `;
 
@@ -86,6 +89,7 @@ export const ZoomWrapper = styled.div`
   height: 98px;
   background-image: linear-gradient(to top, #0e1624, rgba(14, 22, 36, 0));
   opacity: 0.85;
+  pointer-events: none;
 `;
 
 export const ZoomControlsWrapper = styled.div`
@@ -96,6 +100,9 @@ export const ZoomControlsWrapper = styled.div`
   button {
     margin-right: 10px;
   }
+  > * {
+    pointer-events: all;
+  }
 `;
 
 export const ZoomLevelIndicator = styled.span`
@@ -103,6 +110,7 @@ export const ZoomLevelIndicator = styled.span`
   right: 24px;
   bottom: 22px;
   color: #b8c7e0;
+  pointer-events: all;
 `;
 
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
@@ -150,21 +158,25 @@ export const PDFWrapper = styled.div`
   right: 0;
 `;
 
-const ArrowWrapper = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
-
 export const Arrow = styled.span`
   cursor: pointer;
 `;
 
+const ArrowWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+`;
+
 export const LeftWrapper = styled(ArrowWrapper)`
   text-align: left;
+  left: 0;
 `;
 
 export const RightWrapper = styled(ArrowWrapper)`
   text-align: right;
+  right: 0;
 `;
 
 // header.tsx
@@ -174,6 +186,9 @@ export const Header = styled.div`
 
 export const LeftHeader = styled.div`
   flex: 0.8;
+  > * {
+    pointer-events: all;
+  }
 `;
 
 export const ImageWrapper = styled.div`
@@ -195,7 +210,7 @@ export const MetadataFileName = styled.div`
 `;
 
 export const MetadataSubText = styled.div`
-  color: ${akColorN400};
+  color: ${colors.DN400};
 `;
 
 export const MetadataIconWrapper = styled.div`
@@ -211,13 +226,18 @@ export const IconWrapper: ComponentClass<
   HTMLAttributes<{}> & IconWrapperProps
 > = styled.div`
   display: inline-flex;
-  color: ${({ type }: IconWrapperProps) => colors[type] || colors.unknown};
+  color: ${({ type }: IconWrapperProps) =>
+    mediaTypeIconColors[type] || mediaTypeIconColors.unknown};
 `;
 
 export const RightHeader = styled.div`
   flex: 0.2;
+  flex-basis: 200px;
   text-align: right;
-  margin-right: 50px;
+  margin-right: 40px;
+  > * {
+    pointer-events: all;
+  }
 `;
 
 export const AudioPlayer = styled.div`
@@ -255,4 +275,8 @@ export const DefaultCoverWrapper = styled.div`
   > * {
     transform: scale(2);
   }
+`;
+
+export const FeedbackWrapper = styled.span`
+  padding-right: 5px;
 `;

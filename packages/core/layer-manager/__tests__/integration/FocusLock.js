@@ -1,8 +1,6 @@
 // @flow
-// eslint-disable-next-line
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-// eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 const urlFocusLock = getExampleUrl('core', 'layer-manager', 'focus-lock');

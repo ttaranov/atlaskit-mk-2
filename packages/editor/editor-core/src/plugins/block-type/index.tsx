@@ -81,3 +81,4 @@ const blockType: EditorPlugin = {
 };
 
 export default blockType;
+export { stateKey, BlockTypeState } from './pm-plugins/main';

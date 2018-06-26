@@ -10,7 +10,7 @@ import {
   AudioCover,
   Audio,
   DefaultCoverWrapper,
-  colors,
+  blanketColor,
 } from '../styled';
 
 export type Props = {
@@ -26,7 +26,7 @@ export type State = {
 
 const defaultCover = (
   <DefaultCoverWrapper>
-    <AudioIcon label="cover" size="xlarge" primaryColor={colors.blanketColor} />
+    <AudioIcon label="cover" size="xlarge" primaryColor={blanketColor} />
   </DefaultCoverWrapper>
 );
 

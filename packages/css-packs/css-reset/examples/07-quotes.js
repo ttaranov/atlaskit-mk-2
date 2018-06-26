@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-// $FlowFixMe
+// $FlowFixMe - cannot resolved the file with .less
 import '../src/index.less';
 
 export default () => (

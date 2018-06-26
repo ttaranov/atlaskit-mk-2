@@ -1,5 +1,9 @@
 # @atlaskit/analytics-listeners
 
+## 2.1.0
+- [patch] merge analytics-next context into GAS payload attributes in FabricElementsListener [5d25e8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d25e8b)
+- [minor] moved Atlaskit tests from src to __tests__ [1f78c33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f78c33)
+
 ## 2.0.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

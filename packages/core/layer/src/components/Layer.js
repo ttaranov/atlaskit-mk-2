@@ -41,6 +41,8 @@ export type Props = {
   lockScroll?: boolean,
   /** Force the layer to always be positioned fixed to the viewport. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
   isAlwaysFixed?: boolean,
+  /** Callback that is used to know when the Layer positions it's content. This will only be called once soon after mounting when the Layer's transformed/flipped position is first calculated. */
+  onPositioned?: Function,
 };
 
 type State = {
@@ -104,6 +106,7 @@ export default class Layer extends Component<Props, State> {
     zIndex: 400,
     lockScroll: false,
     isAlwaysFixed: false,
+    onPositioned: () => {},
   };
 
   constructor(props: Props) {
@@ -143,15 +146,21 @@ export default class Layer extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    if (
-      prevState.flipped !== this.state.flipped &&
-      this.props.onFlippedChange
-    ) {
-      this.props.onFlippedChange({
-        flipped: this.state.flipped,
-        actualPosition: this.state.actualPosition,
-        originalPosition: this.state.originalPosition,
-      });
+    const { onFlippedChange, onPositioned } = this.props;
+    const {
+      flipped,
+      actualPosition,
+      originalPosition,
+      hasExtractedStyles,
+    } = this.state;
+
+    if (prevState.flipped !== flipped && onFlippedChange) {
+      onFlippedChange({ flipped, actualPosition, originalPosition });
+    }
+
+    // This flag is set the first time the position is calculated from Popper and applied to the content
+    if (!prevState.hasExtractedStyles && hasExtractedStyles && onPositioned) {
+      onPositioned();
     }
   }
 

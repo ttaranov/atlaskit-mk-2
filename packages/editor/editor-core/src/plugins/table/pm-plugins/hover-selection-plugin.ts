@@ -1,5 +1,6 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
+import { resetHoverSelection } from '../actions';
 
 export const pluginKey = new PluginKey('tableHoverSelectionPlugin');
 
@@ -35,6 +36,14 @@ const plugin = new Plugin({
   key: pluginKey,
   props: {
     decorations: state => pluginKey.getState(state).decorationSet,
+
+    handleClick: ({ state, dispatch }) => {
+      const { decorationSet } = pluginKey.getState(state);
+      if (decorationSet !== DecorationSet.empty) {
+        resetHoverSelection(state, dispatch);
+      }
+      return false;
+    },
   },
 });
 

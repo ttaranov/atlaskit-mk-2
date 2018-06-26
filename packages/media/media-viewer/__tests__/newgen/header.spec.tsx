@@ -2,7 +2,7 @@ import * as util from '../../src/newgen/util';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { Stubs } from '../_stubs';
 import { Subject } from 'rxjs';
 import {
@@ -15,6 +15,7 @@ import {
 import Header, { createDownloadUrl } from '../../src/newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
+import { LeftHeader } from '../../src/newgen/styled';
 
 function createContext(subject: Subject<MediaItem>): Context {
   const token = 'some-token';
@@ -81,7 +82,8 @@ describe('<Header />', () => {
     const el = mount(
       <Header context={createContext(subject)} identifier={identifier} />,
     );
-    expect(el.text()).toEqual('');
+    const metadata = el.find(LeftHeader);
+    expect(metadata.text()).toEqual('');
   });
 
   it('resubscribes to the provider when the data property value is changed', () => {
@@ -219,7 +221,8 @@ describe('<Header />', () => {
         <Header context={createContext(subject)} identifier={identifier} />,
       );
       subject.error(new Error('error'));
-      expect(el.text()).toEqual('');
+      const metadata = el.find(LeftHeader);
+      expect(metadata.text()).toEqual('');
     });
 
     it('should not display metadata for links (not supported at this point)', () => {
@@ -229,7 +232,8 @@ describe('<Header />', () => {
         <Header context={context} identifier={linkIdentifier} />,
       );
       subject.next(linkItem);
-      expect(el.text()).toEqual('');
+      const metadata = el.find(LeftHeader);
+      expect(metadata.text()).toEqual('');
     });
   });
 
@@ -263,24 +267,43 @@ describe('<Header />', () => {
   });
 
   describe('Download button', () => {
-    it('should show the download button', () => {
+    const assertDownloadButton = (
+      el: ReactWrapper<any, any>,
+      enabled: boolean,
+    ) => {
+      expect(
+        el.find({ type: 'button', label: 'Download', isDisabled: !enabled }),
+      ).toHaveLength(1);
+      expect(el.find(DownloadIcon)).toHaveLength(1);
+    };
+
+    it('should show the download button disabled while the item metadata is loading', () => {
+      const subject = new Subject<MediaItem>();
+      const el = mount(
+        <Header context={createContext(subject)} identifier={identifier} />,
+      );
+      el.update();
+      assertDownloadButton(el, false);
+    });
+
+    it('should show the download button enabled when the item is loaded', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
         <Header context={createContext(subject)} identifier={identifier} />,
       );
       subject.next(imageItem);
       el.update();
-      expect(el.find(DownloadIcon)).toHaveLength(1);
+      assertDownloadButton(el, true);
     });
 
-    it('should NOT show the download button when there is an error', () => {
+    it('should show the download button disabled when there is an error', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
         <Header context={createContext(subject)} identifier={identifier} />,
       );
       subject.error(new Error('error'));
       el.update();
-      expect(el.find(DownloadIcon)).toHaveLength(0);
+      assertDownloadButton(el, false);
     });
 
     it('should use a fresh token for the download link', () => {

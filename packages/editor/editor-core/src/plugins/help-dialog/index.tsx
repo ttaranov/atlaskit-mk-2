@@ -22,18 +22,18 @@ export const closeHelpCommand = (tr: Transaction, dispatch: Function): void => {
 
 export const stopPropagationCommand = (e: any): void => e.stopPropagation();
 
-export function createPlugin(dispatch: Function) {
+export function createPlugin(dispatch: Function, imageEnabled: boolean ) {
   return new Plugin({
     key: pluginKey,
     state: {
       init() {
-        return { isVisible: false };
+        return { isVisible: false, imageEnabled };
       },
       apply(tr: Transaction, value: any, state: EditorState) {
         const isVisible = tr.getMeta(pluginKey);
         const currentState = pluginKey.getState(state);
         if (isVisible !== undefined && isVisible !== currentState.isVisible) {
-          const newState = { isVisible };
+          const newState = { ...currentState, isVisible };
           dispatch(pluginKey, newState);
           return newState;
         }
@@ -46,7 +46,7 @@ export function createPlugin(dispatch: Function) {
 const helpDialog: EditorPlugin = {
   pmPlugins() {
     return [
-      { rank: 2200, plugin: ({ dispatch }) => createPlugin(dispatch) },
+      { rank: 2200, plugin: ({ dispatch, props: { legacyImageUploadProvider } }) => createPlugin(dispatch, !!legacyImageUploadProvider) },
       { rank: 2210, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
@@ -62,6 +62,7 @@ const helpDialog: EditorPlugin = {
             appearance={appearance}
             editorView={editorView}
             isVisible={helpDialog.isVisible}
+            imageEnabled={helpDialog.imageEnabled}
           />
         )}
       />

@@ -53,6 +53,7 @@ export default class DropdownMenuStateless extends Component<
     shouldFitContainer: false,
     shouldFlip: true,
     triggerType: 'default',
+    onPositioned: () => {},
   };
 
   state = {
@@ -394,6 +395,7 @@ export default class DropdownMenuStateless extends Component<
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
+      onPositioned,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
@@ -421,6 +423,7 @@ export default class DropdownMenuStateless extends Component<
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
+          onPositioned={onPositioned}
           {...deprecatedProps}
         >
           {isDeprecated ? (

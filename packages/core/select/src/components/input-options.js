@@ -27,7 +27,7 @@ const getPrimaryColor = ({
   isFocused,
   isSelected,
   ...rest
-}: ControlProps): string => {
+}: ControlProps): string | number => {
   let color = backgroundColor;
   if (isDisabled && isSelected) {
     color = themed({ light: colors.B75, dark: colors.DN200 });
@@ -42,7 +42,7 @@ const getPrimaryColor = ({
   } else if (isSelected) {
     color = colors.blue;
   }
-  // $FlowFixMe: TEMPORARY
+  // $FlowFixMe - theme is not found in props
   return color(rest);
 };
 
@@ -52,7 +52,7 @@ const getSecondaryColor = ({
   isDisabled,
   isSelected,
   ...rest
-}: ControlProps): string => {
+}: ControlProps): string | number => {
   let color = themed({ light: colors.N0, dark: colors.DN10 });
 
   if (isDisabled && isSelected) {
@@ -62,7 +62,7 @@ const getSecondaryColor = ({
   } else if (!isSelected) {
     color = transparent;
   }
-  // $FlowFixMe: TEMPORARY
+  // $FlowFixMe - theme is not found in props
   return color(rest);
 };
 
