@@ -3,7 +3,6 @@ import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
-  withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';

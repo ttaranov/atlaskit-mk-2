@@ -1,8 +1,3 @@
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 // @flow
 import '@atlaskit/polyfills/object-assign';
 import React, {
@@ -13,6 +8,11 @@ import React, {
   type ElementRef,
 } from 'react';
 import { getTheme } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import {
   name as packageName,
   version as packageVersion,

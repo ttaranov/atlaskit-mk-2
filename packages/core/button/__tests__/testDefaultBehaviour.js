@@ -1,15 +1,9 @@
 // @flow
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import Spinner from '@atlaskit/spinner';
-import {
-  UIAnalyticsEvent,
-  AnalyticsContext,
-  AnalyticsListener,
-} from '@atlaskit/analytics-next';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
-import { name, version } from '../package.json';
 import Button, { ButtonBase } from '../src/components/Button';
 import IconWrapper from '../src/styled/IconWrapper';
 import ButtonContent from '../src/styled/ButtonContent';
