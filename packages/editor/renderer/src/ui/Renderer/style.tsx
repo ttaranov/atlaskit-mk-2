@@ -1,4 +1,6 @@
 import { HTMLAttributes, ComponentClass } from 'react';
+import styled from 'styled-components';
+
 import {
   akColorB300,
   akColorB400,
@@ -6,13 +8,15 @@ import {
   akColorN40,
   akColorN300,
   akColorN30A,
+  akColorR50,
+  akColorR500,
   akGridSizeUnitless,
   akTypographyMixins,
   akFontFamily,
   akFontSizeDefault,
+  akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
-
+import { tableSharedStyle } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
@@ -72,6 +76,21 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     font-weight: 400;
     white-space: pre-wrap;
     word-wrap: break-word;
+  }
+
+  & span.date-node {
+    background: ${akColorN30A};
+    border-radius: ${akBorderRadius};
+    color: ${akColorN800};
+    padding: 2px 4px;
+    margin: 0 1px;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+
+  & span.date-node-highlighted {
+    background: ${akColorR50};
+    color: ${akColorR500};
   }
 
   & ul {
@@ -222,6 +241,14 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & .wrap-right + .wrap-left {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  ${tableSharedStyle} & .table-container {
+    transition: all 0.1s linear;
+    table {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   /*

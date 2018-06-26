@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent, type ElementType, type Node } from 'react';
 import { Provider, Subscribe } from 'unstated';
-import { ScrollLock } from '@atlaskit/layer-manager';
+import ScrollLock from 'react-scrolllock';
 
 import SpotlightRegistry from './SpotlightRegistry';
 import { Fade } from './Animation';

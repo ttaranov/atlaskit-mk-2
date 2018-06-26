@@ -24,6 +24,10 @@ export default () => (
       <h6>
         This &lt;h6&gt; element <Spinner /> is using h300
       </h6>
+      <h6>
+        The spinner should be middle-aligned with the text |{' '}
+        <Spinner size="small" />
+      </h6>
     </div>
   </div>
 );

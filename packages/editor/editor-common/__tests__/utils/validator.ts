@@ -570,6 +570,25 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('date', () => {
+      it('should pass through attrs as timestamp', () => {
+        const timestamp = {
+          timestamp: 1528886473152,
+        };
+        const { type, attrs } = getValidNode({
+          type: 'date',
+          attrs: timestamp,
+        });
+        expect(type).to.equal('date');
+        expect(attrs).to.deep.equal(timestamp);
+      });
+
+      it('should reject date without timestamp', () => {
+        const { type } = getValidNode({ type: 'date' });
+        expect(type).to.equal('text');
+      });
+    });
+
     describe('bodiedExtension', () => {
       it('should pass through attrs as extension', () => {
         const extensionAttrs = {

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { StyledTable } from '@atlaskit/editor-common';
+import { calcTableWidth } from '@atlaskit/editor-common';
+import { BreakoutConsumer } from '../';
 
-// tslint:disable-next-line:variable-name
 const Table = props => {
   const colgroup = props.columnWidths ? (
     <colgroup>
@@ -12,10 +12,20 @@ const Table = props => {
   ) : null;
 
   return (
-    <StyledTable>
-      {colgroup}
-      <tbody>{props.children}</tbody>
-    </StyledTable>
+    <BreakoutConsumer>
+      {containerWidth => (
+        <div
+          className="table-container"
+          data-layout={props.layout}
+          style={{ width: calcTableWidth(props.layout, containerWidth, false) }}
+        >
+          <table>
+            {colgroup}
+            <tbody>{props.children}</tbody>
+          </table>
+        </div>
+      )}
+    </BreakoutConsumer>
   );
 };
 

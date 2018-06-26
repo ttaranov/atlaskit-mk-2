@@ -104,13 +104,13 @@ describe('<ResourcedTaskItem/>', () => {
     expect(component.find(TaskItem).prop('isDone')).toEqual(true);
   });
 
-  it('should disable taskItem if no provider', () => {
+  it('should not disable taskItem if no provider', () => {
     component = mount(
       <ResourcedTaskItem taskId="task-1" isDone={false}>
         Hello World
       </ResourcedTaskItem>,
     );
-    expect(component.find(TaskItem).prop('disabled')).toEqual(true);
+    expect(component.find(TaskItem).prop('disabled')).toBeFalsy();
   });
 
   it('should subscribe to updates', () => {

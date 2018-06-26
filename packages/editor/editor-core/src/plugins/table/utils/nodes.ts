@@ -1,50 +1,10 @@
-import { Fragment, Node as PmNode, Schema, Slice } from 'prosemirror-model';
+import { Node as PmNode, Schema, Slice } from 'prosemirror-model';
 import { EditorState, Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { findTable } from 'prosemirror-utils';
 
-export const createTableNode = (
-  rows: number,
-  columns: number,
-  schema: Schema,
-): PmNode => {
-  const { table, tableRow, tableCell, tableHeader } = schema.nodes;
-  const rowNodes: PmNode[] = [];
-  for (let i = 0; i < rows; i++) {
-    const cell = i === 0 ? tableHeader : tableCell;
-    const cellNodes: PmNode[] = [];
-    for (let j = 0; j < columns; j++) {
-      cellNodes.push(cell.createAndFill()!);
-    }
-    rowNodes.push(tableRow.create(undefined, Fragment.from(cellNodes)));
-  }
-  return table.create(undefined, Fragment.from(rowNodes));
-};
-
 export const isIsolating = (node: PmNode): boolean => {
   return !!node.type.spec.isolating;
-};
-
-export const canInsertTable = (state: EditorState): boolean => {
-  const {
-    selection: { $from },
-    schema: {
-      marks: { code },
-      nodes: { codeBlock },
-    },
-  } = state;
-
-  for (let i = $from.depth; i > 0; i--) {
-    const node = $from.node(i);
-    // inline code and codeBlock are excluded
-    if (
-      node.type === codeBlock ||
-      (code && $from.marks().some(mark => mark.type === code))
-    ) {
-      return false;
-    }
-  }
-  return true;
 };
 
 export const containsTable = (schema: Schema, slice: Slice): boolean => {

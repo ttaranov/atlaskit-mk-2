@@ -1,5 +1,44 @@
 # @atlaskit/renderer
 
+## 18.2.5
+- [patch] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/task-decision@7.1.2
+  - @atlaskit/editor-common@11.3.0
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-json-transformer@3.1.3
+
+## 18.2.4
+- [patch] ED-4741, adding support for date node in renderer. [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
+- [none] Updated dependencies [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
+  - @atlaskit/editor-common@11.2.9
+
+## 18.2.3
+
+
+
+- [patch] Updated dependencies [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/editor-common@11.2.8
+- [patch] Updated dependencies [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/editor-common@11.2.8
+- [patch] Updated dependencies [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/editor-common@11.2.8
+
+## 18.2.2
+- [patch] Adds in proper task and decision support for text representation [e59b749](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e59b749)
+- [none] Updated dependencies [e59b749](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e59b749)
+
+## 18.2.1
+- [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+- [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+  - @atlaskit/editor-common@11.2.5
+
 ## 18.2.0
 - [minor] Refactor text serializer a bit and adds in table support [7393dc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7393dc3)
 - [none] Updated dependencies [7393dc3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7393dc3)

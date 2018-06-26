@@ -7,25 +7,23 @@ import { updateShadows } from '../nodeviews/TableComponent';
 export const pluginKey = new PluginKey('tableColumnResizingCustomPlugin');
 
 const updateControls = (state: EditorState) => {
-  const { tableElement, tableActive } = tablePluginKey.getState(state);
-  if (!tableElement) {
+  const { tableRef } = tablePluginKey.getState(state);
+  if (!tableRef) {
     return;
   }
-  const tr = tableElement.querySelector('tr');
-
+  const tr = tableRef.querySelector('tr');
   if (!tr) {
     return;
   }
-
   const cols = tr.children;
-  const columnControls: any = tableElement.parentElement.querySelectorAll(
+  const columnControls: any = tableRef.parentElement.querySelectorAll(
     '.table-column',
   );
-  const rows = tableElement.querySelectorAll('tr');
-  const rowControls: any = tableElement.parentElement.parentElement.querySelectorAll(
+  const rows = tableRef.querySelectorAll('tr');
+  const rowControls: any = tableRef.parentElement.parentElement.querySelectorAll(
     '.table-row',
   );
-  const numberedRows = tableElement.parentElement.parentElement.querySelectorAll(
+  const numberedRows = tableRef.parentElement.parentElement.querySelectorAll(
     '.numbered-row',
   );
 
@@ -43,15 +41,11 @@ const updateControls = (state: EditorState) => {
   }
 
   updateShadows(
-    tableElement.parentElement,
-    tableElement,
-    tableElement.parentElement.parentElement.querySelector(
-      '.table-shadow.-left',
-    ),
-    tableElement.parentElement.parentElement.querySelector(
-      '.table-shadow.-right',
-    ),
-    tableActive,
+    tableRef.parentElement,
+    tableRef,
+    tableRef.parentElement.parentElement.querySelector('.table-shadow.-left'),
+    tableRef.parentElement.parentElement.querySelector('.table-shadow.-right'),
+    !!tableRef,
   );
 };
 

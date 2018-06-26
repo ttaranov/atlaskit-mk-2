@@ -140,13 +140,13 @@ export default class DatePicker extends Component<Props, State> {
     isInvalid: false,
     hideIcon: false,
     dateFormat: defaultDateFormat,
-    placeholder: `e.g. ${format(new Date(), defaultDateFormat)}`,
+    placeholder: 'e.g. 2018/01/01',
   };
 
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
-    view: '',
+    view: this.props.value || this.props.defaultValue,
     selectedValue: this.props.value || this.props.defaultValue,
   };
 
@@ -184,7 +184,6 @@ export default class DatePicker extends Component<Props, State> {
 
   onSelectInput = (e: Event) => {
     let value = e.target.value;
-    //const validForSelected = value.trim().match(/(\d{1,2})[- /.](\d{\d){1,2}})?\s*(a|p)?/i)
     if (value) {
       const parsed = parse(value);
       // Only try to set the date if we have month & day
@@ -213,18 +212,14 @@ export default class DatePicker extends Component<Props, State> {
       } else if (dir === 'down' || dir === 'up') {
         this.setState({ isOpen: true });
       }
-      // Escape closes the calendar & resets the value back to the last selected
     } else if (key === 'Escape') {
-      if (this.state.isOpen) {
-        this.triggerChange(this.state.selectedValue);
-        this.setState({ isOpen: false });
-      } else {
-        this.setState({ selectedValue: '' });
-        this.triggerChange('');
-      }
+      this.setState({ isOpen: false });
+    } else if (key === 'Backspace') {
+      this.setState({ selectedValue: '' });
+      this.triggerChange('');
     } else if (key === 'Enter' || key === 'Tab') {
       this.triggerChange(view);
-      this.setState({ isOpen: false, selectedValue: this.state.value });
+      this.setState({ isOpen: false, selectedValue: view });
     }
   };
 
@@ -270,7 +265,7 @@ export default class DatePicker extends Component<Props, State> {
       dateFormat,
       placeholder,
     } = this.props;
-    const { value, view } = this.getState();
+    const { value, view, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon
@@ -314,7 +309,8 @@ export default class DatePicker extends Component<Props, State> {
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          escapeClearsValue
+          menuIsOpen={isOpen}
+          openMenuOnFocus
           closeMenuOnSelect
           autoFocus={autoFocus}
           instanceId={id}

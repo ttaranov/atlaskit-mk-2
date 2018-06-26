@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { colors } from '@atlaskit/theme';
-import Objects24BlogIcon from '@atlaskit/icon/glyph/objects/24/blog';
+import EditorQuoteIcon from '@atlaskit/icon/glyph/editor/quote';
 import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { ToolbarSize } from '../../ui/Toolbar';
@@ -67,9 +66,7 @@ const blockType: EditorPlugin = {
     quickInsert: [
       {
         title: 'Block quote',
-        icon: () => (
-          <Objects24BlogIcon label="Block quote" primaryColor={colors.T300} />
-        ),
+        icon: () => <EditorQuoteIcon label="Block quote" />,
         action(insert, state) {
           return insert(
             state.schema.nodes.blockquote.createChecked(
@@ -84,3 +81,4 @@ const blockType: EditorPlugin = {
 };
 
 export default blockType;
+export { stateKey, BlockTypeState } from './pm-plugins/main';

@@ -6,7 +6,7 @@ import {
   findCellClosestToPos,
   isCellSelection,
 } from 'prosemirror-utils';
-import tableCommands from '../commands';
+import { moveCursorBackward, goToNextCell, createTable } from '../actions';
 import * as keymaps from '../../../keymaps';
 import { analyticsService } from '../../../analytics';
 
@@ -15,19 +15,15 @@ export function keymapPlugin(): Plugin {
 
   keymaps.bindKeymapWithCommand(
     keymaps.nextCell.common!,
-    tableCommands.goToNextCell(1),
+    goToNextCell(1),
     list,
   );
   keymaps.bindKeymapWithCommand(
     keymaps.previousCell.common!,
-    tableCommands.goToNextCell(-1),
+    goToNextCell(-1),
     list,
   );
-  keymaps.bindKeymapWithCommand(
-    keymaps.toggleTable.common!,
-    tableCommands.createTable(),
-    list,
-  );
+  keymaps.bindKeymapWithCommand(keymaps.toggleTable.common!, createTable, list);
   keymaps.bindKeymapWithCommand(
     keymaps.backspace.common!,
     (state: EditorState, dispatch: (tr: Transaction) => void) => {
@@ -58,7 +54,7 @@ export function keymapPlugin(): Plugin {
   );
   keymaps.bindKeymapWithCommand(
     keymaps.backspace.common!,
-    tableCommands.moveCursorBackward(),
+    moveCursorBackward,
     list,
   );
 

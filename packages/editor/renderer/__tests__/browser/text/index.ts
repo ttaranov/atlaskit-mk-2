@@ -735,4 +735,88 @@ describe('Renderer - TextSerializer', () => {
 
     expect(render(doc)).to.equal('Thisis Sparta');
   });
+
+  it('should render task', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'taskList',
+          attrs: {
+            localId: 'empty-list-should-not-render',
+          },
+          content: [
+            {
+              type: 'taskItem',
+              attrs: {
+                localId: 'task-1',
+                state: 'TODO',
+              },
+              content: [
+                {
+                  type: 'text',
+                  text: 'Could you please do this ',
+                },
+                {
+                  type: 'mention',
+                  attrs: {
+                    id: '0',
+                    text: '@Carolyn',
+                    accessLevel: 'CONTAINER',
+                  },
+                },
+                {
+                  type: 'text',
+                  text: ' ',
+                },
+                {
+                  type: 'emoji',
+                  attrs: {
+                    shortName: ':wink:',
+                    id: '1f609',
+                    text: '😉',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('[] Could you please do this @Carolyn 😉');
+  });
+
+  it('should render decision', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'decisionList',
+          attrs: {
+            localId: '',
+          },
+          content: [
+            {
+              type: 'decisionItem',
+              attrs: {
+                localId: '',
+                state: 'DECIDED',
+              },
+              content: [
+                {
+                  type: 'text',
+                  text: 'This is a decision ',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('<> This is a decision');
+  });
 });

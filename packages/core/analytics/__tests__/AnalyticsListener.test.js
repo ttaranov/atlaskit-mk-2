@@ -35,18 +35,6 @@ describe('AnalyticsListener', () => {
     expect(component).not.toBe(undefined);
   });
 
-  it('should not create a component with multiple children', () => {
-    expect(() => {
-      shallow(
-        // $FlowFixMe
-        <AnalyticsListener onEvent={() => {}}>
-          <div />
-          <div />
-        </AnalyticsListener>,
-      );
-    }).toThrow();
-  });
-
   it('should send public event', () => {
     const spy = jest.fn();
     const listener = mount(

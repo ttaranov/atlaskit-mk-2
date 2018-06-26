@@ -132,7 +132,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
       contextIdentifierProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
-      mediaMockEnabled: true,
+      mediaMockEnabled: false,
     };
 
     if (this.state.mediaMockEnabled) {

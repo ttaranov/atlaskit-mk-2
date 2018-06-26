@@ -2,17 +2,7 @@
 
 import type { ComponentType } from 'react';
 
-// import type { NavigationStateInterface } from '../../../state/types';
-
-import type {
-  GlobalItemProps,
-  GlobalTheme,
-  NavigationStateInterface,
-} from '@atlaskit/navigation-next';
-
 export type DrawerContentProps = { closeDrawer: () => void };
-
-type ItemDataShape = GlobalItemProps & { key?: string };
 
 export type InitialNavigationStateShape = {
   activeDrawer?: string | null,
@@ -26,41 +16,35 @@ export type NavigationStateShape = InitialNavigationStateShape & {
   isResizing?: boolean,
 };
 
-export type GlobalNavProps = {
-  children: Node,
-  primaryActions: Array<ItemDataShape>,
-  secondaryActions: Array<ItemDataShape>,
-  theme: GlobalTheme,
-};
-
-type GlobalNavigationItemOptions = {
-  drawer?: {
-    content: ComponentType<DrawerContentProps>,
-    onClose?: () => void,
-  },
-  href?: string,
-  label?: string,
-  onClick?: (() => void) | false,
-  tooltip?: string,
-  component?: ComponentType<*>,
-};
-
 export type GlobalNavigationProps = {
-  primaryActions?: Array<ItemDataShape>,
-  secondaryActions?: Array<ItemDataShape>,
-  product: GlobalNavigationItemOptions,
-  search?: GlobalNavigationItemOptions,
-  create?: GlobalNavigationItemOptions,
-  notification?: GlobalNavigationItemOptions,
-  people?: GlobalNavigationItemOptions,
-  appSwitcher?: GlobalNavigationItemOptions,
-  help?: GlobalNavigationItemOptions,
-  profile?: GlobalNavigationItemOptions,
-};
+  productIcon?: ComponentType<*>,
+  onProductClick?: () => void,
+  productTooltip?: string,
+  productHref?: string,
 
-export type WrappedGlobalNavigationProps = {
-  ...GlobalNavigationProps,
-  navigation: NavigationStateInterface,
-  primaryActions: Array<ItemDataShape>,
-  secondaryActions: Array<ItemDataShape>,
+  onCreateClick?: () => void,
+  createTooltip?: string,
+
+  onYourWorkClick?: () => void,
+  yourWorkTooltip?: string,
+
+  onSearchClick?: () => void,
+  searchTooltip?: string,
+
+  appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
+
+  helpTooltip?: string,
+  helpItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+
+  profileTooltip?: string,
+  profileItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  profileIconUrl?: string,
+  loginHref?: string, // Login url to redirect anonymous users to login page.
+
+  onPeopleClick?: () => void,
+  peopleTooltip?: string,
+
+  onNotificationClick?: () => void,
+  notificationCount?: number,
+  notificationTooltip?: string,
 };
