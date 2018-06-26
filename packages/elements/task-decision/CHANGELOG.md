@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 7.1.4
+- [patch] FS-2051 do not disable TaskItem when there is no provider [6861797](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6861797)
+- [none] Updated dependencies [6861797](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6861797)
+
 ## 7.1.3
 - [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
   - @atlaskit/spinner@8.0.0
