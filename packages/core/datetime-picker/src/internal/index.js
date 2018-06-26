@@ -52,49 +52,6 @@ export function parseDateIntoStateValues(
   };
 }
 
-export function parseTime(timeString: string): Date | typeof NaN {
-  const dateTime = new Date();
-  const time = timeString.trim().match(/(\d+)(?::(\d\d))?\s*(a|p)?/i);
-  const time24hr = timeString.trim().match(/(\d\d)[:.]?(\d\d)/);
-  const num = timeString.replace(/[^0-9]/g, '');
-  const meridiem = time && time[3] ? time[3].toLowerCase() : '';
-
-  let hours: number = 0;
-  let minutes: number = 0;
-
-  // Validate times supplied
-  if ((!time && !time24hr) || (time && !time[1])) return NaN;
-  if (num.length > 4 || (num.length === 2 && parseInt(num, 10) > 12))
-    return NaN;
-
-  // For valid 24hr times we ignore am/pm
-  if (time24hr && time24hr[1] && time24hr[2]) {
-    hours = parseInt(time24hr[1], 10);
-    minutes = parseInt(time24hr[2], 10);
-  } else if (time && time[1]) {
-    // Handle times supplied as one value e.g 135pm
-    if (!time[2]) {
-      if (time[1].length < 3) {
-        hours = parseInt(time[1], 10) || 0;
-        minutes = 0;
-      } else {
-        hours = parseInt(time[1].toString().charAt(0), 10);
-        minutes = parseInt(time[1].toString().substring(1, 3), 10);
-      }
-    } else {
-      hours = parseInt(time[1], 10) || 0;
-      minutes = parseInt(time[2], 10) || 0;
-    }
-    // Adjust hours for PM
-    if (hours === 12 && meridiem !== 'p') {
-      hours = 0;
-    } else {
-      hours += hours < 12 && meridiem === 'p' ? 12 : 0;
-    }
-  }
-
-  dateTime.setHours(hours);
-  dateTime.setMinutes(minutes);
-  dateTime.setSeconds(0, 0);
-  return dateTime;
+export function parseTime(time: string): Date {
+  return parse(`1970-01-01T${time}`);
 }

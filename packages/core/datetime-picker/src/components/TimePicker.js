@@ -82,7 +82,7 @@ type State = {
 
 function formatTime(time: string, timeFormat?: string): string {
   const date = parseTime(time);
-  return isValid(date) ? format(date, timeFormat) : time;
+  return isValid(date) ? format(date, timeFormat || defaultTimeFormat) : time;
 }
 
 const menuStyles = {
