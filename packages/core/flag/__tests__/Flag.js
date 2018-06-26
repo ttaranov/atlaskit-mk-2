@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Flag from '../src';
+import { FlagWithoutAnalytics as Flag } from '../src/components/Flag';
 import Container, {
   Description,
   DismissButton,
