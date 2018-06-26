@@ -36,6 +36,7 @@ describe('AkFieldRadioGroup', () => {
         actionSubject: 'field',
         attributes: {
           componentName: 'radio',
+          type: 'radio',
           packageName,
           packageVersion,
         },
