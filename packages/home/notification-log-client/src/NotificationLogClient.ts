@@ -14,19 +14,24 @@ export default class NotificationLogClient implements NotificationLogProvider {
     this.cloudId = cloudId;
   }
 
-  public async countUnseenNotifications(): Promise<NotificationCountResponse> {
-    const options: RequestServiceOptions = {
+  public async countUnseenNotifications(
+    options: RequestServiceOptions = {},
+  ): Promise<NotificationCountResponse> {
+    const mergedOptions: RequestServiceOptions = {
       path: 'api/notifications/countUnseenNotifications',
+      ...options,
       queryParams: {
         cloudId: this.cloudId,
         direct: true,
+        ...(options.queryParams || {}),
       },
       requestInit: {
         mode: 'cors' as 'cors',
+        ...(options.requestInit || {}),
       },
     };
 
-    return utils.requestService(this.serviceConfig, options) as Promise<
+    return utils.requestService(this.serviceConfig, mergedOptions) as Promise<
       NotificationCountResponse
     >;
   }
