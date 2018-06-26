@@ -45,6 +45,7 @@ const editorTeam = [
   'vsutrave',
   'ahixon_atlassian',
   'wangjerome',
+  'nathanflew',
 ];
 const elementsTeam = [
   'sguillope',
