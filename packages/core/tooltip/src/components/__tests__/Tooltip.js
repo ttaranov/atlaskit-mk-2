@@ -575,7 +575,11 @@ describe('TooltipWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<TooltipWithAnalytics content="Tooltip content" />);
+    mount(
+      <TooltipWithAnalytics content="Tooltip content">
+        <div>foo</div>
+      </TooltipWithAnalytics>,
+    );
     /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
