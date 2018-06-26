@@ -231,7 +231,7 @@ describe('FlagWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<Flag />);
+    mount(<Flag title="hi" id="" icon={<span>hi</span>} />);
     /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
