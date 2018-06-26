@@ -8,7 +8,8 @@ import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Tooltip from '@atlaskit/tooltip';
 
-import Menu, { DropdownMenuStateless as StatelessMenu } from '../src';
+import Menu from '../src';
+import { DropdownMenuStatelessWithoutAnalytics as StatelessMenu } from '../src/components/DropdownMenuStateless';
 
 const itemsList = [
   {

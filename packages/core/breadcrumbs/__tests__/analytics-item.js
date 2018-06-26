@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import {
   withAnalyticsEvents,
-  withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 
 import path from 'path';
