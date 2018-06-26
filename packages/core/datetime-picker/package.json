@@ -23,6 +23,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/calendar": "^6.2.2",
+    "@atlaskit/analytics-next": "^2.1.8",
     "@atlaskit/field-base": "^10.1.2",
     "@atlaskit/icon": "^12.6.1",
     "@atlaskit/layer": "^4.0.3",
