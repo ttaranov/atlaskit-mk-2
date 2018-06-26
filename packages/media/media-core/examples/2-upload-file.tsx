@@ -46,7 +46,11 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
-    const file = event.currentTarget.files![0];
+    if (!event.currentTarget.files || !event.currentTarget.files.length) {
+      return;
+    }
+
+    const file = event.currentTarget.files[0];
     const uplodableFile = {
       content: file,
       name: file.name,
@@ -68,6 +72,8 @@ class Example extends Component<ComponentProps, ComponentState> {
         console.log('stream complete');
       },
       error(error) {
+        // TODO: Add canceled to visual state
+        // TODO: add test
         console.log('stream error', error);
       },
     });

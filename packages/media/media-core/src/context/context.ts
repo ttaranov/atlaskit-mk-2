@@ -265,26 +265,26 @@ class ContextImpl implements Context {
     // TODO [MSW-678]: remove when id upfront is exposed
     const tempFileId = uuid.v4();
     const fileStream = new Observable<FileState>(observer => {
-      try {
-        const name = file.name || '';
-        // TODO send local preview
-        const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
-          onProgress: progress => {
-            observer.next({
-              id: tempFileId,
-              progress,
-              status: 'uploading',
-              name,
-              size,
-            });
-          },
-        });
+      const name = file.name || '';
+      // TODO send local preview
+      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
+        onProgress: progress => {
+          observer.next({
+            id: tempFileId,
+            progress,
+            status: 'uploading',
+            name,
+            size,
+          });
+        },
+      });
 
-        if (controller) {
-          controller.setAbort(cancel);
-        }
+      if (controller) {
+        controller.setAbort(cancel);
+      }
 
-        deferredFileId.then(id => {
+      deferredFileId
+        .then(id => {
           fileId = id;
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
           this.fileStreamsCache.set(id, fileStream);
@@ -295,10 +295,11 @@ class ContextImpl implements Context {
             size,
           });
           observer.complete();
+        })
+        .catch(error => {
+          // we can't use .catch(observer.error) due that will change the Subscriber context
+          observer.error(error);
         });
-      } catch (e) {
-        observer.error(e);
-      }
     })
       .concat(
         Observable.defer(() =>
