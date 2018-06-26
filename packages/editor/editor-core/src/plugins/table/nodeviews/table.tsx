@@ -12,6 +12,10 @@ import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { parseDOMColumnWidths } from '../utils';
 import TableComponent from './TableComponent';
 
+import WithPluginState from '../../../ui/WithPluginState';
+import { pluginKey as widthPluginKey } from '../../width';
+import { stateKey } from '../pm-plugins/main';
+
 export interface Props {
   node: PmNode;
   view: EditorView;
@@ -59,11 +63,22 @@ export default class TableView extends ReactNodeView {
 
   render(props, forwardRef) {
     return (
-      <TableComponent
-        {...props}
-        node={this.node}
-        contentDOM={forwardRef}
-        onComponentUpdate={this.componentDidUpdate}
+      <WithPluginState
+        plugins={{
+          containerWidth: widthPluginKey,
+          pluginState: stateKey,
+        }}
+        eventDispatcher={props.eventDispatcher}
+        editorView={props.view}
+        render={pluginStates => (
+          <TableComponent
+            {...props}
+            {...pluginStates}
+            node={this.node}
+            contentDOM={forwardRef}
+            onComponentUpdate={this.componentDidUpdate}
+          />
+        )}
       />
     );
   }
