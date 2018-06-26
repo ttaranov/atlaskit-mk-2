@@ -65,14 +65,29 @@ export const selectItem = (
   item: TypeAheadItem,
 ): Command => (state, dispatch) => {
   return withTypeAheadQueryMarkPosition(state, (start, end) => {
-    const insert = (node?: Node) => {
+    const insert = (maybeNode?: Node | Object | string) => {
       let tr = state.tr;
 
       tr = tr
         .setMeta(pluginKey, { action: ACTIONS.SELECT_CURRENT })
         .replaceWith(start, end, Fragment.empty);
 
-      if (!node) {
+      if (!maybeNode) {
+        dispatch(tr);
+        return true;
+      }
+
+      let node;
+      try {
+        node =
+          maybeNode instanceof Node
+            ? maybeNode
+            : typeof maybeNode === 'string'
+              ? state.schema.text(maybeNode)
+              : Node.fromJSON(state.schema, maybeNode);
+      } catch (e) {
+        // tslint:disable-next-line:no-console
+        console.error(e);
         dispatch(tr);
         return true;
       }
