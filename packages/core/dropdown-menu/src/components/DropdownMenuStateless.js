@@ -5,7 +5,6 @@ import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
 import {
   withAnalyticsEvents,
-  withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';

@@ -1,8 +1,3 @@
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 // @flow
 
 import Select, {
@@ -13,6 +8,11 @@ import Select, {
 import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 
 import {

@@ -1,14 +1,14 @@
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 // @flow
 
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
