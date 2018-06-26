@@ -71,10 +71,17 @@ class Example extends Component<ComponentProps, ComponentState> {
       complete() {
         console.log('stream complete');
       },
-      error(error) {
-        // TODO: Add canceled to visual state
-        // TODO: add test
+      error: error => {
         console.log('stream error', error);
+        if (error === 'canceled') {
+          const stream: FileState = {
+            id: this.state.files[streamId].id,
+            status: 'error',
+            message: 'upload canceled',
+          };
+
+          this.onFileUpdate(streamId)(stream);
+        }
       },
     });
 
@@ -87,7 +94,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     const { files } = this.state;
     const fileData = Object.keys(files).map((fileId, key) => {
       const file = files[fileId];
-      let name, progress;
+      let name, progress, message;
 
       if (file.status !== 'error') {
         name = <div>name: {file.name}</div>;
@@ -97,6 +104,10 @@ class Example extends Component<ComponentProps, ComponentState> {
         progress = <div>progress: {file.progress}</div>;
       }
 
+      if (file.status === 'error') {
+        message = <div>message: {file.message}</div>;
+      }
+
       return (
         <FileWrapper status={file.status} key={key}>
           <div>Id: {file.id}</div>
@@ -104,6 +115,7 @@ class Example extends Component<ComponentProps, ComponentState> {
           <div>
             {name}
             {progress}
+            {message}
           </div>
         </FileWrapper>
       );
