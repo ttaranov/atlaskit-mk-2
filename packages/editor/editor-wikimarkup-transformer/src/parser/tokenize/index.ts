@@ -24,34 +24,34 @@ import { table } from './table';
 import { tripleDashSymbol } from './triple-dash-symbol';
 
 export enum TokenType {
-  MACRO,
-  PANEL,
-  QUOTE,
-  CODE,
-  NOFORMAT,
-  COLOR,
-  STRING,
-  LINK_FORMAT,
-  LINK_TEXT,
-  ATTACHMENT,
-  HEADING,
-  LIST,
-  TABLE,
-  RULER,
-  HARD_BREAK, // \\, \r, \n, \r\n
-  DOUBLE_DASH_SYMBOL, // --
-  TRIPLE_DASH_SYMBOL, // ---
-  QUADRUPLE_DASH_SYMBOL, // ----
-  STRONG, // *strong*
-  MONOSPACE, // {{text}}
-  SUPERSCRIPT, // ^superscript^
-  SUBSCRIPT, // ^subscript^
-  EMPHASIS, // _emphasis_
-  CITATION, // ??citation??
-  DELETED, // -deleted-
-  INSERTED, // +deleted+
-  EMOJI, // :)
-  MENTION, // [~username]
+  MACRO = 'MACRO',
+  PANEL = 'PANEL',
+  QUOTE = 'QUOTE',
+  CODE = 'CODE',
+  NOFORMAT = 'NOFORMAT',
+  COLOR = 'COLOR',
+  STRING = 'STRING',
+  LINK_FORMAT = 'LINK_FORMAT',
+  LINK_TEXT = 'LINK_TEXT',
+  ATTACHMENT = 'ATTACHMENT',
+  HEADING = 'HEADING',
+  LIST = 'LIST',
+  TABLE = 'TABLE',
+  RULER = 'RULER',
+  HARD_BREAK = 'HARD_BREAK', // \\, \r, \n, \r\n
+  DOUBLE_DASH_SYMBOL = 'DOUBLE_DASH_SYMBOL', // --
+  TRIPLE_DASH_SYMBOL = 'TRIPLE_DASH_SYMBOL', // ---
+  QUADRUPLE_DASH_SYMBOL = 'QUADRUPLE_DASH_SYMBOL', // ----
+  STRONG = 'STRONG', // *strong*
+  MONOSPACE = 'MONOSPACE', // {{text}}
+  SUPERSCRIPT = 'SUPERSCRIPT', // ^superscript^
+  SUBSCRIPT = 'SUBSCRIPT', // ^subscript^
+  EMPHASIS = 'EMPHASIS', // _emphasis_
+  CITATION = 'CITATION', // ??citation??
+  DELETED = 'DELETED', // -deleted-
+  INSERTED = 'INSERTED', // +deleted+
+  EMOJI = 'EMOJI', // :)
+  MENTION = 'MENTION', // [~username]
 }
 
 export interface TextToken {
@@ -70,7 +70,7 @@ export type Token = TextToken | PMNodeToken;
 export type TokenParser = (input: string, schema: Schema) => Token;
 
 const tokenToTokenParserMapping: {
-  [key: number]: TokenParser;
+  [key: string]: TokenParser;
 } = {
   [TokenType.DOUBLE_DASH_SYMBOL]: doubleDashSymbol,
   [TokenType.TRIPLE_DASH_SYMBOL]: tripleDashSymbol,

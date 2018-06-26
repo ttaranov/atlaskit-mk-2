@@ -2,7 +2,7 @@ import { Node as PMNode, Schema } from 'prosemirror-model';
 import { createTextNode } from './nodes/text';
 import { parseToken, TokenType } from './tokenize';
 import { parseKeyword, parseLeadingKeyword } from './tokenize/keyword';
-import { parseWhitespace } from './tokenize/whitespace';
+import { parseWhitespaceOnly } from './tokenize/whitespace';
 
 const processState = {
   NEWLINE: 0,
@@ -28,18 +28,17 @@ export function parseString(
     switch (state) {
       case processState.NEWLINE: {
         /**
-         * During this state, parser will trim leading
+         * During this state, the parser will trim leading
          * spaces and looking for any leading keywords.
          */
-        const length = parseWhitespace(input.substring(index));
+        const substring = input.substring(index);
+        const length = parseWhitespaceOnly(substring);
         if (length) {
           index += length;
           continue;
         }
 
-        const match =
-          parseLeadingKeyword(input.substring(index)) ||
-          parseKeyword(input.substring(index));
+        const match = parseLeadingKeyword(substring) || parseKeyword(substring);
 
         if (match && ignoreTokens.indexOf(match.type) === -1) {
           tokenType = match.type;
