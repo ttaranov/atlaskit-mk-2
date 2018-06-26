@@ -8,7 +8,7 @@ import Button from '@atlaskit/button';
 import { sendKeyToPm } from '@atlaskit/editor-test-helpers';
 
 describe(name, () => {
-  describe('Editor', () => {
+  describe('Editors', () => {
     describe('callbacks', () => {
       it('should fire onChange when text is inserted', () => {
         const handleChange = jest.fn();
