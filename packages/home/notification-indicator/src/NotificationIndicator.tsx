@@ -129,22 +129,17 @@ export default class NotificationIndicator extends Component<Props, State> {
         updatingResult.countOverride ||
         (await this.notificationLogProvider.countUnseenNotifications()).count;
 
-      this.setState(state => {
-        if (
+      if (
           this.props.onCountUpdated &&
-          (!state.count || state.count !== count)
-        ) {
-          this.props.onCountUpdated({
-            oldCount: state.count || 0,
-            newCount: count,
-            source,
-          });
-        }
-
-        return {
-          count,
-        };
-      });
+          (!this.state.count || this.state.count !== count)
+      ) {
+        this.props.onCountUpdated({
+          oldCount: this.state.count || 0,
+          newCount: count,
+          source,
+        });
+      }
+      this.setState({ count });
     } catch (e) {
       // Do nothing
     }
