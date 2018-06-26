@@ -72,21 +72,6 @@ type State = {
   view: string,
 };
 
-// TODO see if there's a different way to control the display value.
-//
-// react-select retains the value the user typed in until the field is
-// blurred. Since we're controlling the open state and value, we need a
-// way explicitly ensure the value is respected. By blurring and then
-// immedately refocusing, we ensure the value is formatted and the input
-// retains focus.
-function ensureValueIsDisplayed() {
-  const { activeElement } = document;
-  if (activeElement) {
-    activeElement.blur();
-    activeElement.focus();
-  }
-}
-
 function isoToObj(iso: string) {
   const parsed = parse(iso);
   return isValid(parsed)
@@ -164,12 +149,12 @@ export default class DatePicker extends Component<Props, State> {
   };
 
   onCalendarSelect = ({ iso: value }: { iso: string }) => {
-    this.triggerChange(value);
     this.setState({ isOpen: false, selectedValue: value });
+    this.triggerChange(value);
   };
 
   onInputClick = () => {
-    this.setState({ isOpen: true });
+    if (!this.getState().isOpen) this.setState({ isOpen: true });
   };
 
   onSelectBlur = (e: SyntheticFocusEvent<>) => {
@@ -230,7 +215,6 @@ export default class DatePicker extends Component<Props, State> {
   triggerChange = (value: string) => {
     this.props.onChange(value);
     this.setState({ value, view: value });
-    ensureValueIsDisplayed();
   };
 
   getContainerRef = (ref: ?HTMLElement) => {

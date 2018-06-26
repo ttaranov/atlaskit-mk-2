@@ -90,15 +90,14 @@ export default () => {
 
       <Label
         htmlFor="react-select-datepicker-2--input"
-        label="controlled (value, isOpen)"
+        label="controlled (value)"
       />
       <Controlled initialValue="2018-01-02">
-        {({ value, onValueChange, isOpen, onBlur }) => (
+        {({ value, onValueChange, onBlur }) => (
           <DatePicker
             id="datepicker-2"
             value={value}
             onChange={onValueChange}
-            isOpen={isOpen}
             onBlur={onBlur}
           />
         )}
@@ -150,7 +149,7 @@ export default () => {
       />
       <TimePicker
         id="timepicker-4"
-        defaultValue="14:30"
+        defaultValue="asdfg"
         onChange={console.log}
         timeIsEditable
       />
