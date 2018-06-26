@@ -22,9 +22,14 @@ export default class AlertView extends React.Component<
   AlertViewProps,
   AlertViewState
 > {
+  constructor(props: AlertViewProps) {
+    super(props);
+    this.el = null;
+  }
+
   state: AlertViewState = {};
 
-  el: HTMLDivElement;
+  el: HTMLDivElement | null;
 
   handleRetry = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();

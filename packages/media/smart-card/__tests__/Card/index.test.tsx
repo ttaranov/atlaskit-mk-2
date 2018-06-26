@@ -226,7 +226,7 @@ describe('Card', () => {
       />,
     );
     wrapper.update();
-    expect(wrapper.find(InlineCard.LinkView)).toHaveLength(1);
+    expect(wrapper.find(InlineCard.ResolvingView)).toHaveLength(1);
   });
 
   it('should render the block view with props when the appearance is inline and the object is resolving', async () => {

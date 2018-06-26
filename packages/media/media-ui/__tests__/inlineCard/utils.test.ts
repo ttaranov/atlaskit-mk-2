@@ -1,4 +1,4 @@
-import { truncateUrlForErrorView } from '../../src/inline/utils';
+import { truncateUrlForErrorView } from '../../src/InlineCard/utils';
 
 describe.only('truncateUrlForErrorView', () => {
   it('should chop off the protocol', () => {
