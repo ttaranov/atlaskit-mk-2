@@ -40,12 +40,13 @@ export default class ReactNodeView implements NodeView {
    * so object can be initialized properly before calling render first time.
    *
    * Example:
-   * Instnace properties get added to an object only after super call in constructor,
-   * which leads to some methods being undefined during the first render.
+   * Instance properties get added to an object only after super call in
+   * constructor, which leads to some methods being undefined during the
+   * first render.
    */
   init() {
-    this.domRef = this.getDomRef();
-    this.setDomAttrs(this.node);
+    this.domRef = this.createDomRef();
+    this.setDomAttrs(this.node, this.domRef);
 
     const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM() || {
       dom: undefined,
@@ -59,8 +60,9 @@ export default class ReactNodeView implements NodeView {
     }
 
     // @see ED-3790
-    // something gets messed up during mutation processing inside of a nodeView if DOM structure has nested plain "div"s,
-    // it doesn't see the difference between them and it kills the nodeView
+    // something gets messed up during mutation processing inside of a
+    // nodeView if DOM structure has nested plain "div"s, it doesn't see the
+    // difference between them and it kills the nodeView
     this.domRef.className = `${this.node.type.name}View-content-wrap`;
 
     this.renderReactComponent(
@@ -78,7 +80,7 @@ export default class ReactNodeView implements NodeView {
     this.portalProviderAPI.render(component, this.domRef!);
   }
 
-  getDomRef(): HTMLElement {
+  createDomRef(): HTMLElement {
     return this.node.isInline
       ? document.createElement('span')
       : document.createElement('div');
@@ -94,6 +96,8 @@ export default class ReactNodeView implements NodeView {
 
   private _handleRef(node: HTMLElement | undefined) {
     const contentDOM = this.contentDOMWrapper || this.contentDOM;
+
+    // move the contentDOM node inside the inner reference after rendering
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);
     }
@@ -113,21 +117,21 @@ export default class ReactNodeView implements NodeView {
   update(
     node: PMNode,
     decorations: Array<Decoration>,
-    predicate: (currentNode: PMNode, newNode: PMNode) => boolean = () => true,
+    validUpdate: (currentNode: PMNode, newNode: PMNode) => boolean = () => true,
   ) {
     // @see https://github.com/ProseMirror/prosemirror/issues/648
     const isValidUpdate =
-      this.node.type === node.type && predicate(this.node, node);
+      this.node.type === node.type && validUpdate(this.node, node);
 
     if (!isValidUpdate) {
       return false;
     }
 
-    this.node = node;
-
-    if (this.domRef) {
-      this.setDomAttrs(node);
+    if (this.domRef && !this.node.sameMarkup(node)) {
+      this.setDomAttrs(node, this.domRef);
     }
+
+    this.node = node;
 
     this.renderReactComponent(
       this.render(this.reactComponentProps, this.handleRef),
@@ -136,11 +140,13 @@ export default class ReactNodeView implements NodeView {
     return true;
   }
 
-  private setDomAttrs(node: PMNode) {
+  /**
+   * Copies the attributes from a ProseMirror Node to a DOM node.
+   * @param node The Prosemirror Node from which to source the attributes
+   */
+  setDomAttrs(node: PMNode, element: HTMLElement) {
     Object.keys(node.attrs || {}).forEach(attr => {
-      if (this.domRef) {
-        this.domRef.setAttribute(attr, node.attrs[attr]);
-      }
+      element.setAttribute(attr, node.attrs[attr]);
     });
   }
 
