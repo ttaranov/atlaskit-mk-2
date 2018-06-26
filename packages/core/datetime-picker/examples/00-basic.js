@@ -149,7 +149,7 @@ export default () => {
       />
       <TimePicker
         id="timepicker-4"
-        defaultValue="asdfg"
+        defaultValue="14:30"
         onChange={console.log}
         timeIsEditable
       />
