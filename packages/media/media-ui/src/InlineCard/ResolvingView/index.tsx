@@ -5,15 +5,14 @@ import { IconAndTitleLayout } from '../IconAndTitleLayout';
 
 export interface ResolvingViewProps {
   url: string;
-  isSelected?: boolean;
   onClick?: () => void;
 }
 
 export class ResolvingView extends React.Component<ResolvingViewProps> {
   render() {
-    const { url, isSelected, onClick } = this.props;
+    const { url, onClick } = this.props;
     return (
-      <Frame isSelected={isSelected} onClick={onClick}>
+      <Frame onClick={onClick}>
         <IconAndTitleLayout icon={<Spinner size={16} />} title={url}>
           - To see a link preview, connect your account
         </IconAndTitleLayout>

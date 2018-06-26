@@ -1,8 +1,12 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { LinkView, ResolvedView, ResolvingView } from '../src/InlineCard';
-import { AuthErrorView } from '../src/inline/AuthErrorView';
-import { ForbiddenView } from '../src/inline/ForbiddenView';
+import {
+  LinkView,
+  ResolvedView,
+  ResolvingView,
+  ErroredView,
+  ForbiddenView,
+} from '../src/InlineCard';
 
 interface Lozenge {
   text: string;
@@ -44,16 +48,17 @@ export default () => (
         vestibulum tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet
         interdum, nunc mauris bibendum mauris, in consequat mi est vitae mauris.
         Phasellus dictum sollicitudin nunc in gravida.
-        <h4>Auth Error View</h4>
+        <h4>Errored View</h4>
         Qui proident do ipsum elit eu commodo ex. Eiusmod reprehenderit occaecat
         ipsum laboris. Velit incididunt esse eu ipsum et laboris eiusmod magna
         irure adipisicing adipisicing eiusmod ex veniam. Sunt velit et pariatur
         amet et magna sunt ea id eu ullamco laboris.
-        <AuthErrorView
+        <ErroredView
+          message="Ooops, something went wrong!"
           url={url}
           onClick={() => {}}
           onRetry={() => {
-            alert('Trying hard!');
+            alert('Trying really hard!');
           }}
         />
         mollit nulla laboris est occaecat commodo veniam sit duis eiusmod.
@@ -68,7 +73,7 @@ export default () => (
           onClick={() => {
             alert("Clicking me won't fix the permissions...");
           }}
-          onRetry={() => {
+          onAuthorise={() => {
             alert('Okay, what else have we got...');
           }}
         />{' '}

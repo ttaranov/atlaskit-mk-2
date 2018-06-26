@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Avatar, { AvatarGroup } from '@atlaskit/avatar';
+import Avatar from '@atlaskit/avatar';
+import AvatarGroup from "@atlaskit/avatar-group";
 import Tooltip from '@atlaskit/tooltip';
 import Button from '@atlaskit/button';
 import { ImageIcon } from '../ImageIcon';

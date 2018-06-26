@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
-import { ForbiddenView } from '../src/inline/ForbiddenView';
+import { ForbiddenView } from '../src/InlineCard/ForbiddenView';
 
 class Example extends React.Component {
   state = {
     url: 'https://product-fabric.atlassian.net/browse/MSW-524',
   };
 
-  handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleUrlChange = (event: React.ChangeEvent<any>) => {
     this.setState({ url: event.target.value });
   };
 
@@ -31,7 +31,7 @@ class Example extends React.Component {
             <ForbiddenView
               url={this.state.url}
               onClick={() => alert('This will have zero effect...')}
-              onRetry={() => alert('Trying hard...')}
+              onAuthorise={() => alert('Trying hard...')}
             />
             <hr />
           </GridColumn>
@@ -44,7 +44,7 @@ class Example extends React.Component {
               <ForbiddenView
                 url={this.state.url}
                 onClick={() => alert('This will have zero effect...')}
-                onRetry={() => alert('Trying hard...')}
+                onAuthorise={() => alert('Trying hard...')}
               />{' '}
               volutpat ornare sodales nec purus. Curabitur tempor lacinia
               auctor. Proin commodo quis nisi at rutrum. In hac habitasse platea

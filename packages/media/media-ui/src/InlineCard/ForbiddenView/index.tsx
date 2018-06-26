@@ -9,16 +9,16 @@ import { Frame } from '../Frame';
 export interface ForbiddenViewProps {
   url: string;
   onClick?: () => void;
-  onRetry?: () => void;
+  onAuthorise?: () => void;
 }
 
 export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const { onRetry } = this.props;
-    if (onRetry) {
-      onRetry();
+    const { onAuthorise } = this.props;
+    if (onAuthorise) {
+      onAuthorise();
     }
   };
 

@@ -2,7 +2,7 @@ type TransitionStatus = 'entering' | 'entered' | 'exiting' | 'exited';
 
 declare module 'react-transition-group/Transition' {
   // an extra function used by the tests for configuring mocks
-  function __setStatus__(status: TransitionStatus): void;
+  function __setStatus__(status: any): void;
 }
 
 jest.mock('react-transition-group/Transition', () => {
