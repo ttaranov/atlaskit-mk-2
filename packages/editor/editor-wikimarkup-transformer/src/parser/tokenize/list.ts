@@ -3,7 +3,7 @@ import { getType as getListType, ListBuilder } from '../builder/list-builder';
 import { parseString } from '../text';
 import { normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType } from './';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const LIST_ITEM_REGEXP = /^([*\-#]+)\s(.*)/;
 const NEWLINE = /\r?\n/;
@@ -52,7 +52,7 @@ export function list(input: string, schema: Schema): Token {
 
     index += line.length;
     // Finding the length of the line break
-    const lengthOfLineBreak = parseWhitespace(input.substring(index), true);
+    const lengthOfLineBreak = parseNewlineOnly(input.substring(index));
     if (lengthOfLineBreak) {
       index += lengthOfLineBreak;
     }

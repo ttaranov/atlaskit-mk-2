@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { Token } from './';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const processState = {
   START: 0,
@@ -29,7 +29,7 @@ export function citation(input: string, schema: Schema): Token {
       }
       case processState.BUFFER: {
         // the linebreak would break the mark
-        const length = parseWhitespace(input.substring(index), true);
+        const length = parseNewlineOnly(input.substring(index));
         if (length) {
           return fallback();
         }

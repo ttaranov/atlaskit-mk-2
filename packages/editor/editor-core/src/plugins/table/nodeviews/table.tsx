@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {
   Node as PmNode,
-  DOMSerializer,
   DOMOutputSpec,
+  DOMSerializer,
 } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
@@ -26,39 +26,51 @@ export interface Props {
   getPos: () => number;
 }
 
+const tableAttributes = (node: PmNode) => {
+  return {
+    'data-number-column': node.attrs.isNumberColumnEnabled,
+    'data-layout': node.attrs.layout,
+    'data-autosize': node.attrs.__autoSize,
+  };
+};
+
 const toDOM = (node: PmNode, props: Props) =>
   [
     'table',
-    {
-      'data-number-column': node.attrs.isNumberColumnEnabled,
-      'data-layout': node.attrs.layout,
-      'data-autosize': node.attrs.__autoSize,
-    },
+    tableAttributes(node),
     props.allowColumnResizing ? ['colgroup'] : '',
     ['tbody', 0],
   ] as DOMOutputSpec;
 
 export default class TableView extends ReactNodeView {
+  private table: HTMLElement | undefined;
+
   constructor(props: Props) {
     super(props.node, props.view, props.getPos, props.portalProviderAPI, props);
   }
 
   getContentDOM() {
-    return DOMSerializer.renderSpec(
+    const rendered = DOMSerializer.renderSpec(
       document,
       toDOM(this.node, this.reactComponentProps as Props),
     );
+
+    if (rendered.dom) {
+      this.table = rendered.dom as HTMLElement;
+    }
+
+    return rendered;
   }
 
-  update(node: PmNode, decorations) {
-    return super.update(
-      node,
-      decorations,
-      (currentNode, newNode) =>
-        node.attrs.isNumberColumnEnabled ===
-          this.node.attrs.isNumberColumnEnabled &&
-        node.attrs.layout === this.node.attrs.layout,
-    );
+  setDomAttrs(node) {
+    if (!this.table) {
+      return;
+    }
+
+    const attrs = tableAttributes(node);
+    Object.keys(attrs).forEach(attr => {
+      this.table!.setAttribute(attr, attrs[attr]);
+    });
   }
 
   render(props, forwardRef) {

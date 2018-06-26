@@ -436,6 +436,18 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${tableStyles};
 
   /**
+   * Fixes the weird cursor navigation bug
+   * for inline-nodes
+   * https://github.com/ProseMirror/prosemirror/issues/514
+  */
+  .mentionView-content-wrap,
+  .inlineExtensionView-content-wrap,
+  .emojiView-content-wrap,
+  .dateView-content-wrap {
+    display: inline-block;
+  }
+
+  /**
    * Panel
    */
   .panelView-content-wrap {
