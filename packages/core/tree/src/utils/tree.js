@@ -10,7 +10,6 @@ import type {
   FlattenedTree,
 } from '../types';
 import { oneOf } from './handy';
-import type { DragPosition } from '../components/Tree-types';
 
 export type TreeItemMutation = {|
   id?: ItemId,
@@ -253,15 +252,3 @@ export const getItem = (tree: TreeData, path: Path): TreeItem => {
 
 const isParentOf = (parent: Path, child: Path): boolean =>
   parent && child && isSamePath(parent, getParentPath(child));
-
-export const getDragPosition = (tree: TreeData, path: Path): ?DragPosition => {
-  const parentPath = path.slice(0, -1);
-  const parent = getItem(tree, parentPath);
-  if (parent) {
-    return {
-      parentId: parent.id,
-      index: path.slice(-1)[0],
-    };
-  }
-  return null;
-};

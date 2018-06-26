@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Tree from '../src/';
-import type { TreeItem, TreeData, ItemId } from '../src/types';
-import type {
-  DragPosition,
-  RenderItemParams,
-} from '../src/components/Tree-types';
-import { mutateTree } from '../src/utils/tree';
+import Tree, {
+  mutateTree,
+  type RenderItemParams,
+  type TreeItem,
+  type TreeData,
+  type ItemId,
+  type DragPosition,
+} from '../src/';
 import { complexTree } from '../mockdata/complexTree';
 
 const PADDING_PER_LEVEL = 35;

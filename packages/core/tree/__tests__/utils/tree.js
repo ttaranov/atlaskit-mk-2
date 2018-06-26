@@ -3,7 +3,6 @@
 import {
   flattenTree,
   getDestinationPath,
-  getDragPosition,
   getItem,
   getSourcePath,
   hasSameParent,
@@ -358,33 +357,6 @@ describe('@atlaskit/tree - utils/tree', () => {
           });
         });
       });
-    });
-  });
-
-  describe('#getDragPosition', () => {
-    it('returns the top element', () => {
-      expect(getDragPosition(treeWithTwoBranches, [0])).toEqual({
-        parentId: '1',
-        index: 0,
-      });
-    });
-
-    it('returns the top element of a sublist', () => {
-      expect(getDragPosition(treeWithTwoBranches, [0, 0])).toEqual({
-        parentId: '1-1',
-        index: 0,
-      });
-    });
-
-    it('returns the last element of a sublist', () => {
-      expect(getDragPosition(treeWithTwoBranches, [0, 1])).toEqual({
-        parentId: '1-1',
-        index: 1,
-      });
-    });
-
-    it('returns undefined for invalid', () => {
-      expect(getDragPosition(treeWithTwoBranches, [100, 1])).toEqual(null);
     });
   });
 });

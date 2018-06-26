@@ -1,8 +1,8 @@
 // @flow
 import { Component } from 'react';
 import type { Props } from './TreeItem-types';
-import { isSamePath } from '../utils/tree';
-import { sameProps } from '../utils/react';
+import { isSamePath } from '../../utils/tree';
+import { sameProps } from '../../utils/react';
 
 export default class TreeItem extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {

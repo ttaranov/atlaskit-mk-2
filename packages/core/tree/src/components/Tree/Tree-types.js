@@ -1,21 +1,11 @@
 // @flow
 import * as React from 'react';
-import { type DraggableStateSnapshot } from 'react-beautiful-dnd';
-import type { TreeItem, TreeData, Path, ItemId } from '../types';
-import { type TreeDraggableProvided } from './TreeItem-types';
+import type { TreeData, Path, ItemId } from '../../types';
+import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
 export type DragPosition = {|
   parentId: ItemId,
   index: number,
-|};
-
-export type RenderItemParams = {|
-  item: TreeItem,
-  depth: number,
-  onExpand: (itemId: ItemId) => void,
-  onCollapse: (itemId: ItemId) => void,
-  provided: TreeDraggableProvided,
-  snapshot: DraggableStateSnapshot,
 |};
 
 export type Props = {|

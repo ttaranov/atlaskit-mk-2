@@ -6,10 +6,14 @@ import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Spinner from '@atlaskit/spinner';
-import Tree from '../src/';
-import type { TreeItem, TreeData, Path, ItemId } from '../src/types';
-import type { RenderItemParams } from '../src/components/Tree-types';
-import { mutateTree } from '../src/utils/tree';
+import Tree, {
+  mutateTree,
+  type RenderItemParams,
+  type TreeItem,
+  type TreeData,
+  type ItemId,
+  type Path,
+} from '../src/';
 import { range } from '../src/utils/handy';
 
 const PADDING_PER_LEVEL = 35;

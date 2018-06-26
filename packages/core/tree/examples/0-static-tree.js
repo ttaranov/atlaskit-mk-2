@@ -5,10 +5,8 @@ import styled from 'styled-components';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Tree from '../src/';
+import Tree, { type RenderItemParams, type TreeItem } from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem } from '../src/types';
-import type { RenderItemParams } from '../src/components/Tree-types';
 
 const PADDING_PER_LEVEL = 35;
 

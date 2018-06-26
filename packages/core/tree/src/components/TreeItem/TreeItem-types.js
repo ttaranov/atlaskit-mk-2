@@ -6,8 +6,7 @@ import {
   type DraggingStyle,
   type NotDraggingStyle,
 } from 'react-beautiful-dnd';
-import type { ItemId, Path, TreeItem } from '../types';
-import type { RenderItemParams } from './Tree-types';
+import type { ItemId, Path, TreeItem } from '../../types';
 
 export type TreeDraggingStyle = {|
   ...DraggingStyle,
@@ -22,6 +21,15 @@ type TreeDraggableProps = {|
   style: ?TreeDraggableStyle,
   // used for shared global styles
   'data-react-beautiful-dnd-draggable': string,
+|};
+
+export type RenderItemParams = {|
+  item: TreeItem,
+  depth: number,
+  onExpand: (itemId: ItemId) => void,
+  onCollapse: (itemId: ItemId) => void,
+  provided: TreeDraggableProvided,
+  snapshot: DraggableStateSnapshot,
 |};
 
 export type TreeDraggableProvided = {|
