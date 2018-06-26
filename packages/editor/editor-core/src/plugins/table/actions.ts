@@ -29,7 +29,7 @@ import {
   safeInsert,
   createTable as createTableNode,
 } from 'prosemirror-utils';
-import { TableLayout, paragraph } from '@atlaskit/editor-common';
+import { TableLayout } from '@atlaskit/editor-common';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
 import { stateKey as tablePluginKey } from './pm-plugins/main';
 import {
