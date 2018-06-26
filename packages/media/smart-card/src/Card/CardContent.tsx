@@ -142,8 +142,8 @@ export class CardContent extends React.Component<CardContentProps> {
   renderInlineResolvingState() {
     const { url } = this;
     return (
-      <InlineCard.LinkView
-        text={url}
+      <InlineCard.ResolvingView
+        url={url}
         onClick={this.url && this.handleFrameClick}
       />
     );
@@ -161,20 +161,48 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineUnauthorisedState() {
-    return null;
+    const { url } = this;
+    return (
+      <InlineCard.ForbiddenView
+        url={url}
+        onClick={this.url && this.handleFrameClick}
+        onAuthorise={this.handleAuthorise}
+      />
+    );
   }
 
   renderInlineForbiddenState() {
-    return null;
+    const { url } = this;
+    return (
+      <InlineCard.ForbiddenView
+        url={url}
+        onClick={this.url && this.handleFrameClick}
+        onAuthorise={this.handleAuthorise}
+      />
+    );
   }
 
   renderInlineNotFoundState() {
-    return null;
+    const { url } = this;
+    return (
+      <InlineCard.ErroredView
+        url={url}
+        message="We couldn't find this link"
+        onClick={this.url && this.handleFrameClick}
+      />
+    );
   }
 
   renderInlineErroredState() {
     const { url } = this;
-    return <InlineCard.LinkView text={url} />;
+    return (
+      <InlineCard.ErroredView
+        url={url}
+        message="We couldn't load this link"
+        onClick={this.url && this.handleFrameClick}
+        onRetry={this.handleErrorRetry}
+      />
+    );
   }
 
   renderInlineCard() {

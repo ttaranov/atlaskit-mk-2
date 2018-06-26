@@ -31,7 +31,7 @@ class Example extends React.Component {
             <ForbiddenView
               url={this.state.url}
               onClick={() => alert('This will have zero effect...')}
-              onRetry={() => alert('Trying hard...')}
+              onAuthorise={() => alert('Trying hard...')}
             />
             <hr />
           </GridColumn>
@@ -44,7 +44,7 @@ class Example extends React.Component {
               <ForbiddenView
                 url={this.state.url}
                 onClick={() => alert('This will have zero effect...')}
-                onRetry={() => alert('Trying hard...')}
+                onAuthorise={() => alert('Trying hard...')}
               />{' '}
               volutpat ornare sodales nec purus. Curabitur tempor lacinia
               auctor. Proin commodo quis nisi at rutrum. In hac habitasse platea

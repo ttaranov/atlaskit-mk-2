@@ -6,13 +6,14 @@ import Button from '@atlaskit/button';
 import { truncateUrlForErrorView } from '../utils';
 import { Frame } from '../Frame';
 
-export interface AuthErrorViewProps {
+export interface ErroredViewProps {
   url: string;
+  message: string;
   onClick?: () => void;
   onRetry?: () => void;
 }
 
-export class AuthErrorView extends React.Component<AuthErrorViewProps> {
+export class ErroredView extends React.Component<ErroredViewProps> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -23,16 +24,18 @@ export class AuthErrorView extends React.Component<AuthErrorViewProps> {
   };
 
   render() {
-    const { url, onClick } = this.props;
+    const { url, message, onClick, onRetry } = this.props;
     return (
       <Frame onClick={onClick}>
         <IconWrapper>
           <WarningIcon label="error" size="medium" primaryColor={colors.Y300} />
         </IconWrapper>
-        {truncateUrlForErrorView(url)} - We were unable to authenticate.{' '}
-        <Button spacing="none" appearance="link" onClick={this.handleRetry}>
-          Try again
-        </Button>
+        {truncateUrlForErrorView(url)} - {message.trim() + ' '}
+        {onRetry && (
+          <Button spacing="none" appearance="link" onClick={this.handleRetry}>
+            Try again
+          </Button>
+        )}
       </Frame>
     );
   }

@@ -4,7 +4,7 @@ import {
   LinkView,
   ResolvedView,
   ResolvingView,
-  AuthErrorView,
+  ErroredView,
   ForbiddenView,
 } from '../src/InlineCard';
 
@@ -53,11 +53,12 @@ export default () => (
         ipsum laboris. Velit incididunt esse eu ipsum et laboris eiusmod magna
         irure adipisicing adipisicing eiusmod ex veniam. Sunt velit et pariatur
         amet et magna sunt ea id eu ullamco laboris.
-        <AuthErrorView
+        <ErroredView
+          message="Ooops, somwthing went wrong!"
           url={url}
           onClick={() => {}}
           onRetry={() => {
-            alert('Trying hard!');
+            alert('Trying really hard!');
           }}
         />
         mollit nulla laboris est occaecat commodo veniam sit duis eiusmod.
@@ -72,7 +73,7 @@ export default () => (
           onClick={() => {
             alert("Clicking me won't fix the permissions...");
           }}
-          onRetry={() => {
+          onAuthorise={() => {
             alert('Okay, what else have we got...');
           }}
         />{' '}
