@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   Draggable,
   Droppable,
@@ -9,6 +9,7 @@ import {
   type DraggableProvided,
   type DraggableStateSnapshot,
   type DraggableLocation,
+  type DroppableProvided,
 } from 'react-beautiful-dnd';
 import type { DragPosition, Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
@@ -192,25 +193,22 @@ export default class Tree extends Component<Props, State> {
         index={index}
         key={flatItem.item.id}
       >
-        {(provided, snapshot) => {
+        {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
           const finalProvided: TreeDraggableProvided = this.patchDndProvided(
             provided,
             snapshot,
           );
           return (
-            <Fragment>
-              <TreeItem
-                key={flatItem.item.id}
-                item={flatItem.item}
-                path={flatItem.path}
-                onExpand={onExpand}
-                onCollapse={onCollapse}
-                renderItem={renderItem}
-                provided={finalProvided}
-                snapshot={snapshot}
-              />
-              {provided.placeholder}
-            </Fragment>
+            <TreeItem
+              key={flatItem.item.id}
+              item={flatItem.item}
+              path={flatItem.path}
+              onExpand={onExpand}
+              onCollapse={onCollapse}
+              renderItem={renderItem}
+              provided={finalProvided}
+              snapshot={snapshot}
+            />
           );
         }}
       </Draggable>
@@ -226,8 +224,8 @@ export default class Tree extends Component<Props, State> {
         onDragUpdate={this.onDragUpdate}
       >
         <Droppable droppableId="list">
-          {dropProvided => (
-            <div ref={dropProvided.innerRef}>{renderedItems}</div>
+          {(provided: DroppableProvided) => (
+            <div ref={provided.innerRef}>{renderedItems}</div>
           )}
         </Droppable>
       </DragDropContext>
