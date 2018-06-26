@@ -3,7 +3,6 @@ import {
   defaultCollectionName,
   StoryBookAuthProvider,
   userAuthProvider,
-  defaultParams,
   defaultServiceHost,
   userAuthProviderBaseURL,
   mediaPickerAuthProvider,
