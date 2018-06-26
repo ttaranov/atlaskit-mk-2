@@ -50,6 +50,7 @@ const tableSharedStyle = css`
       }
       th td {
         background-color: white;
+        font-weight: normal;
       }
       th,
       td {
@@ -71,9 +72,6 @@ const tableSharedStyle = css`
       th {
         background-color: ${akEditorTableToolbar};
         text-align: left;
-        p {
-          font-weight: bold;
-        }
       }
     }
   }
@@ -88,7 +86,7 @@ export const calcTableWidth = (
     case 'full-width':
       return containerWidth
         ? `${containerWidth -
-            (addControllerPadding ? CONTROLLER_PADDING : 0)}px`
+        (addControllerPadding ? CONTROLLER_PADDING : 0)}px`
         : '100%';
     case 'wide':
       if (containerWidth) {

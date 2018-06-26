@@ -29,7 +29,7 @@ import {
   safeInsert,
   createTable as createTableNode,
 } from 'prosemirror-utils';
-import { TableLayout } from '@atlaskit/editor-common';
+import { TableLayout, paragraph } from '@atlaskit/editor-common';
 import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
 import { stateKey as tablePluginKey } from './pm-plugins/main';
 import {
@@ -445,6 +445,26 @@ export const setTableLayout = (layout: TableLayout): Command => (
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
 
+const boldHeaderCells = (state, tableNode) => {
+  const rows: any[] = [];
+  const { paragraph, table, tableRow, tableHeader } = state.schema.nodes;
+  const { strong } = state.schema.marks;
+
+  tableNode.content.forEach((oldRow, _offset, _index) => {
+    const cells: any[] = [];
+    if (_index === 0) {
+      oldRow.forEach((oldCell) => {
+        const content = paragraph.createAndFill(undefined, undefined, [strong.create()]);
+        cells.push(tableHeader.createAndFill(oldCell.attrs, content as any, oldCell.marks));
+      });
+      rows.push(tableRow.createChecked(oldRow.attrs, cells, oldRow.marks));
+    } else {
+      rows.push(oldRow);
+    }
+  });
+  return table.createChecked(tableNode.attrs, rows, tableNode.marks);
+}
+
 export const createTable: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
@@ -452,8 +472,9 @@ export const createTable: Command = (
   if (!tablePluginKey.get(state)) {
     return false;
   }
-  const table = createTableNode(state.schema);
-  dispatch(safeInsert(table)(state.tr).scrollIntoView());
+  let tableNode = createTableNode(state.schema);
+  tableNode = boldHeaderCells(state, tableNode);
+  dispatch(safeInsert(Fragment.from(tableNode))(state.tr).scrollIntoView());
   return true;
 };
 
