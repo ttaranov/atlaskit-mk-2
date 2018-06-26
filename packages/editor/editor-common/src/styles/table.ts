@@ -8,7 +8,7 @@ import {
   akEditorTableToolbar,
   akEditorWideLayoutWidth,
   akEditorTableNumberColumnWidth,
-} from './';
+} from './consts';
 
 export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
