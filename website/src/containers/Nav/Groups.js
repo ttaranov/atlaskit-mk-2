@@ -75,7 +75,6 @@ export default class Groups extends React.Component<GroupsProps, GroupsState> {
       .map(menu => [React.cloneElement(menu, { key: menu.props.path })]);
 
     const parentRoute =
-      // $FlowFixMe
       stack.length > 1 ? stack[stack.length - 2][0].props.path : null;
 
     this.setState({ parentRoute, stack });

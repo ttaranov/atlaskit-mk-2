@@ -21,6 +21,7 @@ import {
   tr,
   td,
   tdCursor,
+  hardBreak,
 } from '@atlaskit/editor-test-helpers';
 import mediaPlugin from '../../../src/plugins/media';
 import codeBlockPlugin from '../../../src/plugins/code-block';
@@ -359,15 +360,15 @@ describe('paste plugins', () => {
             link({
               href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-1',
             })('commit #1 title'),
-            '\n',
+            hardBreak(),
             link({
               href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-2',
             })('commit #2 title'),
-            '\n',
+            hardBreak(),
             link({
               href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-3',
             })('commit #3 title'),
-            '\n',
+            hardBreak(),
             link({
               href: 'https://bitbucket.org/SOME/REPO/commits/commit-id-4',
             })('commit #4 title'),

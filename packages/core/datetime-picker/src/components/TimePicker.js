@@ -5,7 +5,7 @@ import Select, {
   components,
   mergeStyles,
 } from '@atlaskit/select';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
 import { colors } from '@atlaskit/theme';
@@ -80,13 +80,8 @@ type State = {
   isFocused: boolean,
 };
 
-function dateFromTime(time: string): Date {
-  const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
-  return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
-}
-
 function formatTime(time: string, timeFormat?: string): string {
-  const date = dateFromTime(time);
+  const date = parseTime(time);
   return isValid(date) ? format(date, timeFormat) : time;
 }
 
@@ -254,6 +249,7 @@ export default class TimePicker extends Component<Props, State> {
           instanceId={id}
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
+          openMenuOnFocus
           menuPlacement="auto"
           onBlur={this.onBlur}
           onCreateOption={this.onCreateOption}

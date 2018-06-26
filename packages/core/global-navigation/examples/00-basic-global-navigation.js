@@ -11,7 +11,7 @@ import GlobalNavigation from '../src';
 const Global = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
-    onProductClick={() => console.log('product clicked')}
+    productHref="#"
     onCreateClick={() => console.log('create clicked')}
     onSearchClick={() => console.log('search clicked')}
     onYourWorkClick={() => console.log('your work clicked')}

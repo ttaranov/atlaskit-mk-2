@@ -11234,16 +11234,16 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.0.1:
     prosemirror-state "^1.0.0"
     w3c-keyname "^1.1.8"
 
-prosemirror-markdown@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.0.3.tgz#e4d847fde4c467d5febe2404c2a475eb94c7ebf7"
+prosemirror-markdown@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.1.0.tgz#528cdb249fbcfe4b410a6822a2e4b7e585662c38"
   dependencies:
     markdown-it "^6.0.4"
     prosemirror-model "^1.0.0"
 
-prosemirror-model@1.4.0, prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.4.0.tgz#5172c635f62d7378451fcbfd27a580a633f02e2d"
+prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.5.0.tgz#4fa5498ed08eaabafec3e88ea2dcba149d5d458a"
   dependencies:
     orderedmap "^1.0.0"
 
@@ -11281,7 +11281,7 @@ prosemirror-utils@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.5.3.tgz#6e1a70d718ccdd72f5081cce21ab7b82a7040765"
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.3.2:
+prosemirror-view@^1.0.0, prosemirror-view@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.3.3.tgz#1fd6e4bad74c42b8f083558824c6c09330b1edd6"
   dependencies:
@@ -14426,6 +14426,12 @@ underscore@~1.4.4:
 underscore@~1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.6.0.tgz#8b38b10cacdef63337b8b24e4ff86d45aea529a8"
+
+unescape@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/unescape/-/unescape-1.0.1.tgz#956e430f61cad8a4d57d82c518f5e6cc5d0dda96"
+  dependencies:
+    extend-shallow "^2.0.1"
 
 unfetch@^3.0.0:
   version "3.0.0"

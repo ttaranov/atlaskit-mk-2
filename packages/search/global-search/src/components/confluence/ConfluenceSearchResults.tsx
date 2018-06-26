@@ -58,7 +58,7 @@ const renderNoResults = (query: string) => [
 
 const renderAdvancedSearchGroup = (query: string) => {
   const text =
-    query.length === 0 ? 'Advanced Search' : `Advanced Search for "${query}"`;
+    query.length === 0 ? 'Advanced search' : `Advanced search for "${query}"`;
 
   return (
     <ResultItemGroup key="advanced-search">

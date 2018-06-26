@@ -74,13 +74,16 @@ export const tableStyles = css`
     .table-column-controls-wrapper,
     .table-row-controls-wrapper {
       position: absolute;
-      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize + 1}px;
+      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
+    }
+    .table-row-controls-wrapper.scrolling {
+      z-index: 1;
     }
     .table-column-controls-wrapper {
       left: 0;
     }
     .table-row-controls-wrapper {
-      left: -${tableToolbarSize - 2}px;
+      left: -${tableToolbarSize}px;
     }
     .table-wrapper {
       padding-right: ${tableInsertColumnButtonSize / 2}px;

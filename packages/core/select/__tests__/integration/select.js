@@ -1,8 +1,6 @@
 // @flow
-// eslint-disable-next-line
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-// eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
@@ -26,7 +24,6 @@ urlArray.forEach(url => {
       await selectTest.waitForSelector(selectDefault);
       await selectTest.click(selectDefault);
       const menuIsVisible = await selectTest.isVisible(selectMenu);
-      // eslint-disable-next-line
       expect(menuIsVisible).toBe(true);
       if (selectTest.log('browser').value) {
         selectTest.log('browser').value.forEach(val => {

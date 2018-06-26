@@ -85,14 +85,14 @@ export default class InlineEdit extends Component<StatelessProps, State> {
   };
 
   onConfirmClick = (event: any) => {
-    //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
+    // $FlowFixMe because Flow cant be sure the node will be a HTMLElement
     ReactDOM.findDOMNode(this.confirmButtonRef).focus(); //eslint-disable-line react/no-find-dom-node
     event.preventDefault();
     this.props.onConfirm();
   };
 
   onCancelClick = (event: any) => {
-    //$FlowFixMe because Flow cant be sure the node will be a HTMLElement
+    // $FlowFixMe because Flow cant be sure the node will be a HTMLElement
     ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
 
     event.preventDefault();
@@ -168,7 +168,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
             onClick={this.onConfirmClick}
             shouldFitContainer
             ref={ref => {
-              // $FlowFixMe TEMPORARY
+              // $FlowFixMe - `React.Component` [1] is incompatible with `HTMLElement`
               this.confirmButtonRef = ref;
             }}
           />
@@ -179,7 +179,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
             onClick={this.onCancelClick}
             shouldFitContainer
             ref={ref => {
-              // $FlowFixMe TEMPORARY
+              // $FlowFixMe - `React.Component` [1] is incompatible with `HTMLElement`
               this.cancelButtonRef = ref;
             }}
           />
@@ -200,7 +200,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
 
   renderEditView = () => {
     const editView = this.props.shouldConfirmOnEnter
-      ? //$FlowFixMe - suppress errors because of issues with not being able to define iterable
+      ? // $FlowFixMe - suppress errors because of issues with not being able to define iterable
         cloneElement(this.props.editView, {
           onConfirm: this.props.onConfirm,
         })

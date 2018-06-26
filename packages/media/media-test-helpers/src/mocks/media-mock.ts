@@ -20,6 +20,10 @@ export class MediaMock {
     generateUserData();
     generateTenantData();
   }
+
+  disable() {
+    // TODO: add teardown logic to kakapo server
+  }
 }
 
 export const mediaMock = new MediaMock();

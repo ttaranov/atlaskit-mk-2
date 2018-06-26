@@ -38,7 +38,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
         value={this.state.value}
         onChange={this.handleOnChange}
         ref={fieldRef => {
-          // $FlowFixMe - TODO: Why input is being typed as FieldTextStateless and erroring?
+          // $FlowFixMe - `FieldTextStateless` is incompatible with `HTMLInputElement`
           this.input = fieldRef;
         }}
       />

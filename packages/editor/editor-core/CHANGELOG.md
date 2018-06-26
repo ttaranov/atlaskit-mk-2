@@ -1,5 +1,97 @@
 # @atlaskit/editor-core
 
+## 73.8.15
+- [patch] Fix issue where clicking on table controls inside an editor in a form, would submit the form (ED-4744) [5cd03c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cd03c5)
+- [none] Updated dependencies [5cd03c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cd03c5)
+
+## 73.8.14
+- [patch] ED-4909: fix overflow shadow rendering + visual resize performance on tables [69a8c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69a8c78)
+- [none] Updated dependencies [69a8c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69a8c78)
+
+## 73.8.13
+- [patch] ED-4736, fix size of font in inline code mark in editor core. [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
+- [patch] Updated dependencies [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
+
+## 73.8.12
+- [patch] Added support for blocks and lists [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+- [none] Updated dependencies [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+
+## 73.8.11
+- [patch] Introduce regression tests for pasting content from 3rd-party vendors into the editor. `dispatchPasteEvent` now returns the event that was fired when successful, to allow consumers to tell whether it was modified by ProseMirror. (ED-3726) [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
+- [none] Updated dependencies [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
+  - @atlaskit/editor-test-helpers@4.1.6
+
+## 73.8.10
+- [patch] ED-4520, date renderer should render UTC value of date. [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+- [patch] Updated dependencies [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+  - @atlaskit/editor-common@11.3.2
+
+## 73.8.9
+- [patch] ED-4750, adding information to help dialog. [a3f696c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3f696c)
+- [patch] Updated dependencies [a3f696c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3f696c)
+
+## 73.8.8
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/media-picker@8.1.3
+  - @atlaskit/media-card@29.1.4
+  - @atlaskit/task-decision@7.1.3
+  - @atlaskit/emoji@35.1.2
+  - @atlaskit/droplist@6.2.1
+  - @atlaskit/button@8.2.3
+
+## 73.8.7
+- [patch] ED-4924: fix table control styles [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+- [none] Updated dependencies [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+  - @atlaskit/editor-common@11.3.1
+
+## 73.8.6
+- [patch] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/renderer@18.2.5
+  - @atlaskit/task-decision@7.1.2
+  - @atlaskit/editor-common@11.3.0
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-markdown-transformer@1.2.4
+  - @atlaskit/editor-json-transformer@3.1.3
+  - @atlaskit/editor-bitbucket-transformer@3.2.4
+
+## 73.8.5
+- [patch] Bump prosemirror-markdown to 1.1.0 and treat new lines when pasting as <br> [5c28782](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c28782)
+- [none] Updated dependencies [5c28782](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c28782)
+  - @atlaskit/editor-markdown-transformer@1.2.3
+  - @atlaskit/editor-bitbucket-transformer@3.2.3
+
+## 73.8.4
+- [patch] ED-4803, it should be possible to create nested rule. [9b25a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b25a8e)
+- [patch] Updated dependencies [9b25a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b25a8e)
+
+## 73.8.3
+- [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+- [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+  - @atlaskit/editor-test-helpers@4.1.4
+  - @atlaskit/editor-common@11.2.10
+
+## 73.8.2
+
+
+
+- [patch] Updated dependencies [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/renderer@18.2.3
+  - @atlaskit/editor-common@11.2.8
+- [patch] Updated dependencies [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/renderer@18.2.3
+  - @atlaskit/editor-common@11.2.8
+- [patch] Updated dependencies [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/renderer@18.2.3
+  - @atlaskit/editor-common@11.2.8
+
 ## 73.8.1
 - [patch] ED-4744, ED-4749: autoinserts break other inline marks. [34b660c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b660c)
 - [none] Updated dependencies [34b660c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b660c)

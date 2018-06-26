@@ -45,10 +45,7 @@ export default class CornerControls extends Component<Props, any> {
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
           onMouseOut={this.props.resetHoverSelection}
-          className={[
-            isTableInDanger ? 'danger' : '',
-            scroll && scroll > 0 ? 'scrolling' : '',
-          ].join(' ')}
+          className={isTableInDanger ? 'danger' : ''}
         />
         {!checkIfHeaderColumnEnabled(state) &&
           !checkIfNumberColumnEnabled(state) && (

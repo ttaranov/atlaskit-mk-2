@@ -17,7 +17,7 @@ export default () => (
       author={<CommentAuthor>John Smith</CommentAuthor>}
       type="author"
       edited={<CommentEdited>Edited</CommentEdited>}
-      restrictedTo="Admins Only"
+      restrictedTo="Restricted to Admins Only"
       time={<CommentTime>30 August, 2016</CommentTime>}
       content={
         <p>

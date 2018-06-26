@@ -30,6 +30,7 @@ export interface Format {
   type: string;
   keymap?: Function;
   autoFormatting?: Function;
+  imageEnabled?: boolean;
 }
 
 export const formatting: Format[] = [
@@ -210,12 +211,33 @@ const otherFormatting = [
     type: 'redo',
     keymap: () => keymaps.redo,
   },
+  {
+    name: 'Paste plain text',
+    type: 'paste',
+    keymap: () => keymaps.pastePlainText,
+  },
 ];
 
-export const getSupportedFormatting = (schema: Schema): Format[] => {
+const imageAutoFormat = {
+  name: 'Image',
+  type: 'image',
+  autoFormatting: () => (
+    <span>
+      <CodeLg>![Alt Text](http://www.image.com)</CodeLg>
+    </span>
+  ),
+};
+
+export const getSupportedFormatting = (
+  schema: Schema,
+  imageEnabled?: boolean,
+): Format[] => {
   const supportedBySchema = formatting.filter(
     format => schema.nodes[format.type] || schema.marks[format.type],
   );
+  if (imageEnabled) {
+    supportedBySchema.push(imageAutoFormat);
+  }
   return supportedBySchema.concat(otherFormatting);
 };
 
@@ -246,6 +268,7 @@ export interface Props {
   editorView: EditorView;
   isVisible: boolean;
   appearance?: string;
+  imageEnabled?: boolean;
 }
 
 // tslint:disable-next-line:variable-name
@@ -277,11 +300,14 @@ export default class HelpDialog extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     const { schema } = this.props.editorView.state;
-    this.formatting = getSupportedFormatting(schema);
+    this.formatting = getSupportedFormatting(schema, this.props.imageEnabled);
   }
 
   closeDialog = () => {
-    const { state: { tr }, dispatch } = this.props.editorView;
+    const {
+      state: { tr },
+      dispatch,
+    } = this.props.editorView;
     closeHelpCommand(tr, dispatch);
   };
 
