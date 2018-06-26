@@ -18,7 +18,7 @@ describe('dropdown menu - DropdownMenuStateless', () => {
       const wrapper = shallow(<DropdownMenuStateless isOpen />);
       expect(
         wrapper
-          .find('Droplist')
+          .find(Droplist)
           .find(DropdownItemFocusManager)
           .exists(),
       ).toBe(true);
@@ -117,8 +117,8 @@ describe('DropdownMenuStatelessWithAnalytics', () => {
 
     expect(wrapper.find(Droplist).prop('analyticsContext')).toEqual({
       componentName: 'dropdownMenu',
-      package: packageName,
-      version: packageVersion,
+      packageName,
+      packageVersion,
     });
   });
 });
