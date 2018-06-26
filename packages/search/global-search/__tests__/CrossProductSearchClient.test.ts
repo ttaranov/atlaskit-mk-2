@@ -105,7 +105,7 @@ describe('CrossProductSearchClient', () => {
       expect(item.resultId).toEqual('search-/displayUrl');
       expect(item.avatarUrl).toEqual('baseUrl/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
-      expect(item.href).toEqual('baseUrl/displayUrl');
+      expect(item.href).toEqual('baseUrl/displayUrl?search_id=test_uuid');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
       expect(item.resultType).toEqual(ResultType.GenericContainerResult);
     });

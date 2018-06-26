@@ -1,5 +1,6 @@
 export { default as basePlugin } from './base';
 export { default as blockTypePlugin } from './block-type';
+export { stateKey as blockPluginStateKey, BlockTypeState } from './block-type';
 export {
   default as clearMarksOnChangeToEmptyDocumentPlugin,
 } from './clear-marks-on-change-to-empty-document';

@@ -6,6 +6,7 @@ const iconIds: Array<string> = [
   'add',
   'addon',
   'app-access',
+  'app-switcher',
   'arrow-down-circle',
   'arrow-down',
   'arrow-left-circle',

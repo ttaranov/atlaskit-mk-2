@@ -1,5 +1,9 @@
 # @atlaskit/theme
 
+## 4.0.5
+- [patch] Align ADG, Website and AK [dd295bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd295bf)
+- [none] Updated dependencies [dd295bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd295bf)
+
 ## 4.0.4
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

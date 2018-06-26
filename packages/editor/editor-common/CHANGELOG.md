@@ -1,5 +1,31 @@
 # @atlaskit/editor-common
 
+## 11.3.4
+- [patch] ED-4934: fix table styles by avoiding circular imports [d1375ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1375ee)
+- [none] Updated dependencies [d1375ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1375ee)
+
+## 11.3.3
+- [patch] Fixing the cursor navigation between inline nodes [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+- [none] Updated dependencies [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+
+## 11.3.2
+- [patch] ED-4520, date renderer should render UTC value of date. [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+- [none] Updated dependencies [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+
+## 11.3.1
+- [patch] ED-4924: fix table control styles [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+- [none] Updated dependencies [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+
+## 11.3.0
+- [minor] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [none] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-json-transformer@3.1.3
+
+## 11.2.11
+- [patch] Removing unnecessary throw of error [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
+- [none] Updated dependencies [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
+
 ## 11.2.10
 - [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
 - [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)

@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.14.0
+- [minor] Add the new app-switcher icon [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
+- [none] Updated dependencies [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
+  - @atlaskit/icon@12.4.0
+
 ## 8.13.0
 - [minor] Object icons color updated and adding file types icons [c49ce0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c49ce0b)
 - [none] Updated dependencies [c49ce0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c49ce0b)

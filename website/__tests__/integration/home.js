@@ -1,11 +1,9 @@
 // @flow
-// eslint-disable-next-line
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import {
   startDevServer,
   stopDevServer,
 } from '@atlaskit/webdriver-runner/utils/webpack';
-// eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
@@ -25,7 +23,7 @@ BrowserTestCase(
     const title = await homeTest.getText(atlaskitTitle);
     const logo = await homeTest.isVisible(atlaskitLogo);
     const pageIsVisible = await homeTest.isVisible(atlaskitLayer);
-    // eslint-disable-next-line
+
     expect(logo).toBe(true);
     expect(title).toBe('Atlaskit');
     expect(pageIsVisible).toBe(true);

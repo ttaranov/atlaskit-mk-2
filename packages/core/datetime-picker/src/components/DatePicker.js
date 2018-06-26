@@ -140,7 +140,7 @@ export default class DatePicker extends Component<Props, State> {
     isInvalid: false,
     hideIcon: false,
     dateFormat: defaultDateFormat,
-    placeholder: `e.g. ${format(new Date(), defaultDateFormat)}`,
+    placeholder: 'e.g. 2018/01/01',
   };
 
   state = {

@@ -25,14 +25,9 @@ export const NumberColumnContainer: ComponentClass<
 > = styled.div`
   position: relative;
   float: right;
-  top: ${akEditorTableToolbarSize - 1}px;
-  margin-left: ${akEditorTableToolbarSize - 1}px;
+  top: ${akEditorTableToolbarSize}px;
 
-  &.scrolling {
-    z-index: 1;
-  }
-
-  width: ${akEditorTableNumberColumnWidth + 1}px;
+  width: ${akEditorTableNumberColumnWidth + akEditorTableToolbarSize}px;
   box-sizing: border-box;
 
   border-left: 1px solid ${akEditorTableBorder};
@@ -85,7 +80,9 @@ export const StyledNumberedRow: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .with-controls &.danger {
     background-color: ${tableToolbarDeleteColor};
-    border-color: ${tableBorderDeleteColor};
+    border: 1px solid ${tableBorderDeleteColor};
     color: ${akColorR500};
+    position: relative;
+    z-index: 1;
   }
 `;

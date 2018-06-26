@@ -1,5 +1,12 @@
 # @atlaskit/global-navigation
 
+## 2.1.1
+- [patch] Updated dependencies [50ca31b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50ca31b)
+  - @atlaskit/drawer@0.1.1
+
+## 2.1.0
+- [minor] Add productHref prop [c9595c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9595c4)
+
 ## 2.0.0
 - [major] Extract standalone Drawer component. Remove drawer state from navigation state manager navigation-next. Stop exporting Drawer component in global-navigation [d11307b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d11307b)
 - [major] Updated dependencies [d11307b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d11307b)

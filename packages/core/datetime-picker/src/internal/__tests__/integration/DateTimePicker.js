@@ -1,0 +1,90 @@
+// @flow
+import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
+import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import * as assert from 'assert';
+
+const urlDateTimePicker = getExampleUrl('core', 'datetime-picker', 'basic');
+/* Css used for the test */
+const datepickerDefault = '#examples > div > div > div > div:nth-child(3)';
+const datepickerMenu = '[aria-label="calendar"]';
+const date =
+  '[aria-label="calendar"] > table > tbody > tr:nth-child(5) > td:nth-child(6)';
+const dateValue = `${datepickerDefault} > div > div > div`;
+const timepickerDefault = '#examples > div > div > div > div:nth-child(16)';
+const timePickerMenu = '[role="listbox"]';
+const timeValue = `${timepickerDefault} > div > div > div`;
+const timeOption = '[role="option"]';
+
+BrowserTestCase(
+  'When DatePicker is focused & backspace pressed, the input should be cleared',
+  async client => {
+    const dateTimePickerTest = await new Page(client);
+    await dateTimePickerTest.goto(urlDateTimePicker);
+    await dateTimePickerTest.click(datepickerDefault);
+    await dateTimePickerTest.waitForSelector(datepickerMenu);
+    await dateTimePickerTest.click(date);
+    dateTimePickerTest.keys(['Backspace']);
+    expect(await dateTimePickerTest.getText(dateValue)).not.toBe('');
+    if (dateTimePickerTest.log('browser').value) {
+      dateTimePickerTest.log('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Console errors :${val.message} when the input is cleared`,
+        );
+      });
+    }
+  },
+);
+
+BrowserTestCase(
+  'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
+  async client => {
+    const dateTimePickerTest = await new Page(client);
+    await dateTimePickerTest.goto(urlDateTimePicker);
+    await dateTimePickerTest.click(datepickerDefault);
+    await dateTimePickerTest.waitForSelector(datepickerMenu);
+    await dateTimePickerTest.click(date);
+    const previousDate = await dateTimePickerTest.getText(dateValue);
+    dateTimePickerTest.keys(['ArrowLeft']);
+    dateTimePickerTest.keys(['ArrowLeft']);
+    expect(await dateTimePickerTest.getText(dateValue)).not.toBe(previousDate);
+    if (dateTimePickerTest.log('browser').value) {
+      dateTimePickerTest.log('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Console errors :${val.message} when the date is updated`,
+        );
+      });
+    }
+  },
+);
+
+BrowserTestCase(
+  'When entering a new time in Timepicker Editable, the time should be updated to the new value',
+  { skip: ['firefox', 'ie', 'safari', 'edge'] }, // Enter key has an issue in those browser
+  async client => {
+    const timePicker = await new Page(client);
+    await timePicker.goto(urlDateTimePicker);
+    await timePicker.click(timepickerDefault);
+    await timePicker.waitForSelector(timePickerMenu);
+    const previousTime = await timePicker.getText(timeValue);
+    timePicker.keys(['12:45pm']);
+    await timePicker.waitForSelector(timeOption);
+    // There is small issue there about the Key ENTER pressed too fast
+    timePicker.keys(['Enter']);
+    expect(await timePicker.getText(timeValue)).not.toBe(previousTime);
+    expect(await timePicker.getText(timeValue)).toBe('12:45pm');
+    if (timePicker.log('browser').value) {
+      timePicker.log('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Console errors :${val.message} when the time is updated`,
+        );
+      });
+    }
+  },
+);

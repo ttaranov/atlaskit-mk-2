@@ -1,5 +1,17 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.1.5
+- [patch] Fixes an issue where double line breaks doesn’t start a new paragraph [8242007](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242007)
+
+## 1.1.4
+- [patch] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/renderer@18.2.5
+  - @atlaskit/editor-common@11.3.0
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-json-transformer@3.1.3
+  - @atlaskit/editor-core@73.8.6
+
 ## 1.1.3
 - [patch] Remove the additional rows when encode code block from ADF to wikiMarkup [7b81171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b81171)
 

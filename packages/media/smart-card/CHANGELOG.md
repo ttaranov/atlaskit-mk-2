@@ -1,5 +1,10 @@
 # @atlaskit/smart-card
 
+## 5.3.1
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/button@8.2.3
+
 ## 5.3.0
 - [minor] Error view for inline smart card [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
 - [minor] Implemented auth error view for the inline card [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)

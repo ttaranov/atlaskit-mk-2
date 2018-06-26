@@ -21,7 +21,7 @@ export const DummyComponent: React.StatelessComponent<Props> = props => (
 DummyComponent.displayName = 'DummyComponent';
 
 const DummyElementsComponent: React.StatelessComponent<Props> = props => (
-  <DummyComponent text="Fabric Elements event" {...props} />
+  <DummyComponent {...props} />
 );
 
 const DummyAtlaskitComponent: React.StatelessComponent<Props> = props => (
@@ -35,6 +35,24 @@ export const DummyComponentWithAnalytics = withAnalyticsEvents({
       actionSubject: 'someComponent',
       eventType: 'ui',
       source: 'unknown',
+    };
+    createEvent(event).fire(ELEMENTS_CHANNEL);
+  },
+})(DummyElementsComponent);
+
+export const DummyComponentWithAttributesWithAnalytics = withAnalyticsEvents({
+  onClick: (createEvent, props) => {
+    const event: GasPayload = {
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+      attributes: {
+        packageName: '@atlaskit/foo',
+        packageVersion: '1.0.0',
+        componentName: 'foo',
+        fooBar: 'yay',
+      },
     };
     createEvent(event).fire(ELEMENTS_CHANNEL);
   },

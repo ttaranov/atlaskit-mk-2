@@ -20,8 +20,8 @@ type Props = {
   content?: Node,
   /** Whether this comment should appear highlighted */
   highlighted?: boolean,
-  /** The name of a group that a comment is restricted to. Will display in the top items */
-  restrictedTo?: string,
+  /** Text to show in the "restricted to" label. Will display in the top items */
+  restrictedTo?: Node,
   /** Enable "optimistic saving" mode, remove actions and show `savingText` prop */
   isSaving?: boolean,
   /** Text to show when in "optimistic saving" mode */

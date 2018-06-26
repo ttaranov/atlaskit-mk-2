@@ -1,5 +1,12 @@
 # @atlaskit/multi-select
 
+## 10.2.2
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/field-base@10.1.3
+  - @atlaskit/droplist@6.2.1
+  - @atlaskit/button@8.2.3
+
 ## 10.2.1
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

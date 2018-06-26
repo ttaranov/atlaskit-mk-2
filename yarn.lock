@@ -8083,9 +8083,9 @@ junk@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/junk/-/junk-2.1.0.tgz#f431b4b7f072dc500a5f10ce7f4ec71930e70134"
 
-kakapo@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.3.1.tgz#3244e131c04157d862a2a17886883bd32207ea03"
+kakapo@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.3.3.tgz#9adbb1e7b8aaafd021207dadb340b1f20367bea1"
   dependencies:
     "@types/lodash" "^4.14.106"
     faker "^3.1.0"
@@ -11234,16 +11234,16 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.0.1:
     prosemirror-state "^1.0.0"
     w3c-keyname "^1.1.8"
 
-prosemirror-markdown@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.0.3.tgz#e4d847fde4c467d5febe2404c2a475eb94c7ebf7"
+prosemirror-markdown@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.1.0.tgz#528cdb249fbcfe4b410a6822a2e4b7e585662c38"
   dependencies:
     markdown-it "^6.0.4"
     prosemirror-model "^1.0.0"
 
-prosemirror-model@1.4.0, prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.4.0.tgz#5172c635f62d7378451fcbfd27a580a633f02e2d"
+prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.5.0.tgz#4fa5498ed08eaabafec3e88ea2dcba149d5d458a"
   dependencies:
     orderedmap "^1.0.0"
 
@@ -14426,6 +14426,12 @@ underscore@~1.4.4:
 underscore@~1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.6.0.tgz#8b38b10cacdef63337b8b24e4ff86d45aea529a8"
+
+unescape@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/unescape/-/unescape-1.0.1.tgz#956e430f61cad8a4d57d82c518f5e6cc5d0dda96"
+  dependencies:
+    extend-shallow "^2.0.1"
 
 unfetch@^3.0.0:
   version "3.0.0"

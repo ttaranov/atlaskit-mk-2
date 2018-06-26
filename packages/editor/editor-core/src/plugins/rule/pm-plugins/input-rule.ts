@@ -8,9 +8,6 @@ import {
 } from '../../../utils/input-rules';
 
 export const createHorizontalRule = (state, start, end) => {
-  if (state.doc.resolve(start).depth > 1) {
-    return;
-  }
   return state.tr.replaceWith(
     start,
     end,

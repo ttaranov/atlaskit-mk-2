@@ -33,7 +33,12 @@ export {
   TextFormattingState,
   stateKey as textFormattingStateKey,
 } from './plugins/text-formatting/pm-plugins/main';
-
+export { blockPluginStateKey, BlockTypeState } from './plugins';
+export {
+  ListsState,
+  stateKey as listsStateKey,
+} from './plugins/lists/pm-plugins/main';
+export { indentList, outdentList } from './commands';
 // Used in editor-test-helpers
 
 export { keyCodes } from './keymaps';

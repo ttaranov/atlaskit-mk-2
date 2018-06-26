@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/quick-search",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "A quick-search component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
