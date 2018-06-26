@@ -16,6 +16,7 @@
       "skipLibCheck": true,
       "noImplicitReturns": true,
       "noUnusedParameters": true,
+      "resolveJsonModule": true,
       "strict": true,
       "strictFunctionTypes": true,
 

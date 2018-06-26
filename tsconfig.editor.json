@@ -11,6 +11,7 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noUnusedLocals": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es5",
