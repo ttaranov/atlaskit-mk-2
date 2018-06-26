@@ -70,7 +70,7 @@ describe('BreadcrumbsStateless', () => {
 
     describe('with enough items to collapse', () => {
       const firstItem = <Item hasSeparator text="item1" />;
-      const lastItem = <Item text="item2" />;
+      const lastItem = <Item text="item5" />;
       const expandSpy = jest.fn();
       let wrapper;
 
@@ -88,9 +88,10 @@ describe('BreadcrumbsStateless', () => {
         });
 
         it('renders only the first and last items, and an ellipsis item', () => {
-          expect(wrapper.find(Item).length).toBe(2);
-          expect(wrapper.contains(firstItem)).toBe(true);
-          expect(wrapper.contains(lastItem)).toBe(true);
+          expect(wrapper.find(Item).map(item => item.prop('text'))).toEqual([
+            'item1',
+            'item5',
+          ]);
           expect(wrapper.find(EllipsisItem).length).toBe(1);
         });
 
