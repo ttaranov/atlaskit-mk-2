@@ -12,7 +12,7 @@ export const overallHeight = 40;
 
 const sliderThumbStyle = css`
   background: ${thumb.default.background};
-  border: ${sliderThumbBorderThickness}px solid rgba(38, 132, 255, 0);
+  border: ${sliderThumbBorderThickness}px solid transparent;
   border-radius: 50%;
   height: ${sliderThumbSize}px;
   width: ${sliderThumbSize}px;
