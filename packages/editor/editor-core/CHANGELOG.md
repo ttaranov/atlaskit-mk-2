@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.0
+- [minor] Add QuickInsert provider [948e6e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/948e6e1)
+- [none] Updated dependencies [948e6e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/948e6e1)
+
 ## 73.8.22
 - [patch] ED-4971, ED-4852: fix gap cursor and number column styles [10cc9e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cc9e1)
 - [none] Updated dependencies [10cc9e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cc9e1)
