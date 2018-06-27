@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 1.0.1
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/editor-core@73.8.19
+  - @atlaskit/media-core@20.0.0
+
 ## 1.0.0
 - [major] Added support for blocks and lists [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
 - [none] Updated dependencies [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
