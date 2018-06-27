@@ -200,13 +200,13 @@ function baseStyles(validationState, isCompact) {
         ...css,
         backgroundColor,
         color,
-        height: '32px',
       };
     },
     placeholder: css => ({ ...css, color: colors.N70 }),
     singleValue: (css, { isDisabled }) => ({
       ...css,
       color: isDisabled ? colors.N70 : colors.N800,
+      lineHeight: gridSize() * 2, // 16px
     }),
     menuList: css => ({
       ...css,
@@ -221,6 +221,7 @@ function baseStyles(validationState, isCompact) {
     }),
     multiValueLabel: css => ({
       ...css,
+      padding: '2px',
       paddingRight: '2px',
     }),
     multiValueRemove: (css, { isFocused }) => ({
