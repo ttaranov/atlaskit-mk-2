@@ -9,5 +9,6 @@ if [[ MATCHES -gt THRESHOLD ]]; then
   echo "Too many \$FlowFixMe's found:" ${MATCHES} "please try to reduce this number"
   exit 1
 else
+  echo "Currently, this repository has" ${MATCHES} "\$FlowFixMe's" 
   exit 0
 fi
