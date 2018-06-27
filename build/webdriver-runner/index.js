@@ -17,10 +17,8 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
 function runTests() {
   return new Promise((resolve, reject) => {
-    let cmd = `INTEGRATION_TESTS=true jest`;
-    if (process.env.TEST_ENV === 'browserstack') {
-      cmd = `${cmd} --maxWorkers=3`;
-    }
+    /* maxWorkers set to 3 will create 3 threads */
+    let cmd = `INTEGRATION_TESTS=true jest --maxWorkers=3`;
 
     const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',
