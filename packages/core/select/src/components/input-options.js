@@ -86,6 +86,17 @@ const Truncate = styled.div`
   white-space: nowrap;
 `;
 
+const Wrapper = ({ children }: { children: Node }) => (
+  <div
+    css={{
+      alignItems: 'center',
+      display: 'flex ',
+      paddingRight: '4px',
+    }}
+  >
+    {children}
+  </div>
+);
 class ControlOption extends Component<OptionProps, OptionState> {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });
@@ -134,10 +145,12 @@ class ControlOption extends Component<OptionProps, OptionState> {
         getStyles={getStyles}
         innerProps={props}
       >
-        <Icon
-          primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
-          secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
-        />
+        <Wrapper>
+          <Icon
+            primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
+            secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
+          />
+        </Wrapper>
         <Truncate>{children}</Truncate>
       </components.Option>
     );
