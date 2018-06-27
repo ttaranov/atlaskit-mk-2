@@ -19,6 +19,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
 
 export const TitleInput: any = styled.input`
@@ -100,9 +101,12 @@ const providers = {
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
 };
+
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
+
+const quickInsertProvider = quickInsertProviderFactory();
 
 export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
@@ -123,7 +127,7 @@ export class ExampleEditor extends React.Component<Props, State> {
           <Editor
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-            quickInsert={true}
+            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
             delegateAnalyticsEvent={(...args) => console.log(args)}
             allowTasksAndDecisions={true}
             allowCodeBlocks={{ enableKeybindingsForIDE: true }}
