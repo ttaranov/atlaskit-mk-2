@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.8.21
+- [patch] ED-4974: fix updating tableNode in table plugin state [ca61638](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca61638)
+- [none] Updated dependencies [ca61638](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca61638)
+
 ## 73.8.20
 - [patch] Make code blocks and actions have opaque backgrounds [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
 - [patch] ED-4641, fix issue in splitting merged cell when cursor is inside cell but cell is not selected. [d708792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d708792)
