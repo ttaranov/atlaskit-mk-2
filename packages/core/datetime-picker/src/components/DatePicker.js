@@ -293,7 +293,7 @@ export default class DatePicker extends Component<Props, State> {
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
-          menuIsOpen={isOpen}
+          menuIsOpen={isOpen && !isDisabled}
           openMenuOnFocus
           closeMenuOnSelect
           autoFocus={autoFocus}
