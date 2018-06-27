@@ -35,7 +35,7 @@ export const getFakeFileName = (
 export const fakeImage =
   'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20baseProfile%3D%22full%22%20width%3D%22320%22%20height%3D%22240%22%3E%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22grey%22%2F%3E%20%20%3Ctext%20x%3D%220%22%20y%3D%2220%22%20font-size%3D%2220%22%20text-anchor%3D%22start%22%20fill%3D%22white%22%3E320x240%3C%2Ftext%3E%20%3C%2Fsvg%3E';
 
-export const getDateWithOffset = offset => {
+export const getDateWithOffset = (offset: number) => {
   let time = new Date();
   time.setTime(time.getTime() + offset);
   return time;
@@ -51,9 +51,9 @@ export const getFutureDate = () => {
 };
 
 // This function is taken directly from Faker
-export const mockDataUri = function(width, height) {
-  var rawPrefix = 'data:image/svg+xml;charset=UTF-8,';
-  var svgString =
+export const mockDataUri = function(width: number, height: number) {
+  const rawPrefix = 'data:image/svg+xml;charset=UTF-8,';
+  const svgString =
     '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" width="' +
     width +
     '" height="' +
