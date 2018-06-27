@@ -23,7 +23,7 @@ export const Wrapper: ComponentClass<
     props.theme.appearance === 'card' ? 'column' : 'row'};
 
   line-height: 20px;
-  background-color: ${colors.N20};
+  background-color: ${colors.N30A};
   border-radius: ${borderRadius()}px;
   margin: ${akGridSize}px 0;
   padding: ${akGridSize}px ${akGridSize}px;
