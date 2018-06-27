@@ -35,6 +35,8 @@ export default class Tree extends Component<Props, State> {
     onDragEnd: noop,
     renderItem: noop,
     paddingPerLevel: 35,
+    // false by default for backward compatibility
+    isDragEnabled: false,
   };
 
   state = {
@@ -129,6 +131,9 @@ export default class Tree extends Component<Props, State> {
     return null;
   };
 
+  isDraggable = (item: FlattenedItem): boolean =>
+    this.props.isDragEnabled && !item.item.isExpanded;
+
   isMovingDown = (
     source: DraggableLocation,
     destination: DraggableLocation,
@@ -192,6 +197,7 @@ export default class Tree extends Component<Props, State> {
         draggableId={flatItem.item.id}
         index={index}
         key={flatItem.item.id}
+        isDragDisabled={!this.isDraggable(flatItem)}
       >
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
           const finalProvided: TreeDraggableProvided = this.patchDndProvided(

@@ -19,6 +19,7 @@ export type Props = {|
   ) => void,
   renderItem: RenderItemParams => React.Node,
   paddingPerLevel: number,
+  isDragEnabled: boolean,
 |};
 
 export type State = {|
