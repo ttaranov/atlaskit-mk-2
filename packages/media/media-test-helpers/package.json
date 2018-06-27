@@ -24,10 +24,8 @@
   "dependencies": {
     "@atlaskit/media-core": "^20.0.0",
     "@atlaskit/media-store": "^4.2.0",
-    "@types/faker": "^4.1.2",
     "@types/lodash": "^4.14.106",
     "axios": "^0.17.1",
-    "faker": "^4.1.0",
     "kakapo": "^3.3.3",
     "lodash": "^4.17.5",
     "tslib": "^1.8.0",

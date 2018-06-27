@@ -90,10 +90,8 @@
     }
   },
   "devDependencies": {
-    "@atlaskit/eslint-config-base": "^2.0.7",
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^3.1.6",
-    "@types/faker": "^4.1.2",
     "@types/fetch-mock": "^5.12.1",
     "@types/jest": "^20.0.8",
     "@types/lodash": "^4.14.106",
@@ -140,7 +138,6 @@
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.1.0",
     "extract-react-types": "^0.11.0",
-    "faker": "^4.1.0",
     "fetch-mock": "^5.12.1",
     "file-loader": "^0.11.2",
     "flow-bin": "^0.74.0",
