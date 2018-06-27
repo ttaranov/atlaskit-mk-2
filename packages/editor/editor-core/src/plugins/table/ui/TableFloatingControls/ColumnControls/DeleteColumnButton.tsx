@@ -30,6 +30,8 @@ class DeleteColumnButton extends React.Component<ButtonProps> {
   };
 
   render() {
+    return null;
+
     const { style, onClick } = this.props;
     return (
       <DeleteColumnButtonWrap
