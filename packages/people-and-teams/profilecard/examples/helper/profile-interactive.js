@@ -3,12 +3,10 @@ import React, { Component } from 'react';
 import uid from 'uid';
 import styled from 'styled-components';
 import { AtlasKitThemeProvider, colors, themed } from '@atlaskit/theme';
-import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
+import { profiles } from '../../mock-helpers';
 import { AkProfilecard } from '../../src';
 
 import type { PresenceTypes } from '../../src/types';
-
-const { profiles } = profilecardUtils;
 
 const StoryWrapper = styled.div`
   label {
