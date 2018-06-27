@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 7.1.5
+- [patch] FS-2028 force line-height of 20px in T&D Item [445b7c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445b7c9)
+- [none] Updated dependencies [445b7c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445b7c9)
+
 ## 7.1.4
 - [patch] FS-2051 do not disable TaskItem when there is no provider [6861797](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6861797)
 - [none] Updated dependencies [6861797](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6861797)
