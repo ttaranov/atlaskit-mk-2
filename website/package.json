@@ -35,6 +35,7 @@
     "netlify-cli": "^1.2.2"
   },
   "dependencies": {
+    "@atlaskit/analytics-next": "^2.1.8",
     "@atlaskit/badge": "^8.0.3",
     "@atlaskit/button": "^8.2.3",
     "@atlaskit/code": "^5.0.4",
