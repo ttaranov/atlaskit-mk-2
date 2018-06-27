@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { Component, SyntheticEvent } from 'react';
 import {
-  videoProcessingFailedId,
-  imageFileId,
   defaultServiceHost,
   defaultCollectionName,
   mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
-import { ContextFactory } from '../src';
+import { ContextFactory, UploadController } from '../src';
 import { FilesWrapper, FileWrapper } from '../example-helpers/styled';
 import { Observable } from 'rxjs/Observable';
 import { FileState } from '../src/fileState';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface ComponentProps {}
 export interface ComponentState {
@@ -24,6 +23,8 @@ const mediaContext = ContextFactory.create({
 
 class Example extends Component<ComponentProps, ComponentState> {
   fileStreams: Observable<FileState>[];
+  uploadController?: UploadController;
+  subscription?: Subscription;
 
   constructor(props: ComponentProps) {
     super(props);
@@ -33,25 +34,6 @@ class Example extends Component<ComponentProps, ComponentState> {
     };
     this.fileStreams = [];
   }
-
-  componentDidMount() {
-    this.getImageFile();
-  }
-
-  getImageFile = () => {
-    this.getFile(imageFileId.id, imageFileId.collectionName);
-  };
-
-  getProcessingFailedFile = () => {
-    this.getFile(
-      videoProcessingFailedId.id,
-      videoProcessingFailedId.collectionName,
-    );
-  };
-
-  getNonExistingFile = () => {
-    this.getFile('fake-file-id', 'fake-collection-name');
-  };
 
   onFileUpdate = (streamId: number) => (state: FileState) => {
     console.log('on update', streamId, state);
@@ -63,34 +45,47 @@ class Example extends Component<ComponentProps, ComponentState> {
     });
   };
 
-  getFile = (id: string, collectionName?: string) => {
-    const stream = mediaContext.getFile(id, { collectionName });
-
-    this.addStream(stream);
-  };
-
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
-    const file = event.currentTarget.files![0];
-    const stream = mediaContext.uploadFile({
+    if (!event.currentTarget.files || !event.currentTarget.files.length) {
+      return;
+    }
+
+    const file = event.currentTarget.files[0];
+    const uplodableFile = {
       content: file,
       name: file.name,
       collection: defaultCollectionName,
-    });
+    };
+    const uploadController = new UploadController();
+    const stream = mediaContext.uploadFile(uplodableFile, uploadController);
+
+    this.uploadController = uploadController;
     this.addStream(stream);
   };
 
   addStream = (stream: Observable<FileState>) => {
     const streamId = new Date().getTime();
 
-    stream.subscribe({
+    const subscription = stream.subscribe({
       next: this.onFileUpdate(streamId),
       complete() {
         console.log('stream complete');
       },
-      error(error) {
+      error: error => {
         console.log('stream error', error);
+        if (error === 'canceled') {
+          const stream: FileState = {
+            id: this.state.files[streamId].id,
+            status: 'error',
+            message: 'upload canceled',
+          };
+
+          this.onFileUpdate(streamId)(stream);
+        }
       },
     });
+
+    this.subscription = subscription;
 
     this.fileStreams.push(stream);
   };
@@ -99,7 +94,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     const { files } = this.state;
     const fileData = Object.keys(files).map((fileId, key) => {
       const file = files[fileId];
-      let name, progress;
+      let name, progress, message;
 
       if (file.status !== 'error') {
         name = <div>name: {file.name}</div>;
@@ -109,6 +104,10 @@ class Example extends Component<ComponentProps, ComponentState> {
         progress = <div>progress: {file.progress}</div>;
       }
 
+      if (file.status === 'error') {
+        message = <div>message: {file.message}</div>;
+      }
+
       return (
         <FileWrapper status={file.status} key={key}>
           <div>Id: {file.id}</div>
@@ -116,6 +115,7 @@ class Example extends Component<ComponentProps, ComponentState> {
           <div>
             {name}
             {progress}
+            {message}
           </div>
         </FileWrapper>
       );
@@ -124,15 +124,24 @@ class Example extends Component<ComponentProps, ComponentState> {
     return <FilesWrapper>{fileData}</FilesWrapper>;
   };
 
+  cancelUpload = () => {
+    if (this.uploadController) {
+      this.uploadController.abort();
+    }
+  };
+
+  unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  };
+
   render() {
     return (
       <div>
         <input type="file" onChange={this.uploadFile} />
-        <button onClick={this.getImageFile}>Get processed file</button>
-        <button onClick={this.getProcessingFailedFile}>
-          Get processing failed file
-        </button>
-        <button onClick={this.getNonExistingFile}>Get non existing file</button>
+        <button onClick={this.unsubscribe}>Unsubscribe</button>
+        <button onClick={this.cancelUpload}>Cancel upload</button>
         <div>
           <h1>Files</h1>
           {this.renderFiles()}

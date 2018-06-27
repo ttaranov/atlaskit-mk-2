@@ -46,6 +46,7 @@ export interface ProcessedFileState {
 export interface ErrorFileState {
   status: 'error';
   id: string;
+  message?: string;
 }
 export type FileState =
   | UploadingFileState
