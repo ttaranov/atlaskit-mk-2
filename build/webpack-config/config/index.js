@@ -306,13 +306,14 @@ function plugins(
     }),
   ];
 
-  if (true) {
+  if (report) {
     plugins.push(
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         statsOptions: { source: false },
         generateStatsFile: true,
-        logLevel: 'info',
+        openAnalyzer: true,
+        logLevel: 'error',
       }),
     );
   }
