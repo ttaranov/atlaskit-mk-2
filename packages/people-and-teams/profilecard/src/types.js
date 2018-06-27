@@ -13,6 +13,27 @@ export type ProfileCardAction = {
   label: string,
 };
 
+export type ProfilecardProps = {
+  isCensored?: boolean,
+  isActive?: boolean,
+  isBot?: boolean,
+  avatarUrl?: string,
+  fullName?: string,
+  meta?: string,
+  nickname?: string,
+  email?: string,
+  location?: string,
+  timestring?: string,
+  presence?: PresenceTypes,
+  actions?: ProfileCardAction[],
+  isLoading?: boolean,
+  hasError?: boolean,
+  errorType?: ProfileCardErrorType,
+  clientFetchProfile?: Function,
+  analytics?: Function,
+  presenceMessage?: string,
+};
+
 export type ProfileClient = {
   makeRequest: (cloudId: string, userId: string) => Promise<any>,
   setCachedProfile: (cloudId: string, userId: string, cacheItem: any) => void,

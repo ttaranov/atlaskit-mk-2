@@ -10,11 +10,7 @@ import HeightTransitionWrapper from './components/HeightTransitionWrapper';
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
-import type {
-  ProfileCardErrorType,
-  PresenceTypes,
-  ProfileCardAction,
-} from './types';
+import type { ProfilecardProps } from './types';
 
 import {
   CardContainer,
@@ -30,28 +26,7 @@ import {
   DeactivatedInfo,
 } from './styled/Card';
 
-type Props = {
-  isCensored?: boolean,
-  isActive?: boolean,
-  isBot?: boolean,
-  avatarUrl?: string,
-  fullName?: string,
-  meta?: string,
-  nickname?: string,
-  email?: string,
-  location?: string,
-  timestring?: string,
-  presence?: PresenceTypes,
-  actions?: ProfileCardAction[],
-  isLoading?: boolean,
-  hasError?: boolean,
-  errorType?: ProfileCardErrorType,
-  clientFetchProfile?: Function,
-  analytics?: Function,
-  presenceMessage?: string,
-};
-
-export default class Profilecard extends PureComponent<Props, void> {
+export default class Profilecard extends PureComponent<ProfilecardProps, void> {
   static defaultProps = {
     isActive: true,
     isBot: false,
@@ -68,7 +43,7 @@ export default class Profilecard extends PureComponent<Props, void> {
   _timeOpen: any;
   clientFetchProfile: Function;
 
-  constructor(props: Props) {
+  constructor(props: ProfilecardProps) {
     super(props);
 
     this._timeOpen = null;

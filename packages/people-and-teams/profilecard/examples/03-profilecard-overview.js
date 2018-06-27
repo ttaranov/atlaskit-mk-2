@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 
 import { AkProfilecard } from '../src';
+import type { ProfilecardProps } from '../src/types';
 
 const { profiles } = profilecardUtils;
 
@@ -37,7 +38,7 @@ const fakeProfileData = {
   ],
 };
 
-const fakeData = (data = {}) => {
+const fakeData = (data = {}): ProfilecardProps => {
   const newData = {
     ...fakeProfileData,
     ...data,
@@ -49,6 +50,7 @@ const fakeData = (data = {}) => {
     .reduce((result, item) => {
       return {
         ...result,
+        // $FlowFixMe
         [item]: newData[item],
       };
     }, {});
