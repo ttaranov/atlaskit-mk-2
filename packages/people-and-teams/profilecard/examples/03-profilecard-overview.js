@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 import styled from 'styled-components';
-import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
+import { profiles } from '../mock-helpers/index';
 
 import { AkProfilecard } from '../src';
 import type { ProfilecardProps } from '../src/types';
-
-const { profiles } = profilecardUtils;
 
 export const MainStage = styled.div`
   margin: 16px;

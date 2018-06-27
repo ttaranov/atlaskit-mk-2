@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
-import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
+import { profiles } from '../mock-helpers/index';
 import { AkProfilecard } from '../src';
 
-const { profiles } = profilecardUtils;
 const avatarImage = profiles[4].User.avatarUrl;
 
 export default function Example() {

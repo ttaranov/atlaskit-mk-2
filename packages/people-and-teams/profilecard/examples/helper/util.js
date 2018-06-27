@@ -1,8 +1,7 @@
 // @flow
-import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
+import { getMockProfileClient as getMockProfileClientUtil } from '../../mock-helpers';
 import { AkProfileClient, modifyResponse } from '../../src';
 
-const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 const MockProfileClient = getMockProfileClientUtil(
   AkProfileClient,
   modifyResponse,
