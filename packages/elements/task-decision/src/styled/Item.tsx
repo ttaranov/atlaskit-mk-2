@@ -22,6 +22,7 @@ export const Wrapper: ComponentClass<
   flex-direction: ${props =>
     props.theme.appearance === 'card' ? 'column' : 'row'};
 
+  line-height: 20px;
   background-color: ${colors.N20};
   border-radius: ${borderRadius()}px;
   margin: ${akGridSize}px 0;
