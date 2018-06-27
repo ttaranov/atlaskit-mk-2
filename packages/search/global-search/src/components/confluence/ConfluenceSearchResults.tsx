@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import { FormattedMessage } from 'react-intl';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
 import NoRecentActivity from '../NoRecentActivity';
@@ -25,7 +26,11 @@ export const MAX_PEOPLE = 3;
 let preQueryScreenCounter = 0;
 let postQueryScreenCounter = 0;
 
-const renderObjectsGroup = (title: string, results: Result[], query: string) =>
+const renderObjectsGroup = (
+  title: JSX.Element,
+  results: Result[],
+  query: string,
+) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="objects">
       {renderResults(results)}
@@ -118,7 +123,10 @@ const renderRecentActivities = (
   searchSessionId: string,
 ) => [
   renderObjectsGroup(
-    'Recent pages and blogs',
+    <FormattedMessage
+      id="heading-recent-pages"
+      defaultMessage="Recent pages and blogs"
+    />,
     take(recentlyViewedPages, 8),
     query,
   ),

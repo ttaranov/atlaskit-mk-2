@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { IntlProvider } from 'react-intl';
 import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
@@ -16,7 +17,9 @@ export default class extends React.Component {
     return (
       <BasicNavigation
         searchDrawerContent={
-          <GlobalQuickSearch cloudId="cloudId" context="confluence" />
+          <IntlProvider locale="en">
+            <GlobalQuickSearch cloudId="cloudId" context="confluence" />
+          </IntlProvider>
         }
       />
     );
