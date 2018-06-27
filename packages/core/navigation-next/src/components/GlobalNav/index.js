@@ -14,9 +14,13 @@ import {
   PrimaryItemsList,
   SecondaryItemsList,
 } from './primitives';
-import type { GlobalNavProps } from './types';
+import type { GlobalNavPrimitiveProps } from './types';
 
-const GlobalNav = ({ primaryItems, secondaryItems, theme }: GlobalNavProps) => {
+const GlobalNav = ({
+  primaryItems,
+  secondaryItems,
+  theme,
+}: GlobalNavPrimitiveProps) => {
   const wrapperStyles = theme.mode.globalNav();
 
   return (

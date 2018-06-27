@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import { light, styleReducerNoOp, withTheme } from '../../theme';
-import type { ItemAvatarProps } from './types';
+import type { ItemAvatarPrimitiveProps } from './types';
 
-class ItemAvatar extends Component<ItemAvatarProps> {
+class ItemAvatar extends Component<ItemAvatarPrimitiveProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
   };
