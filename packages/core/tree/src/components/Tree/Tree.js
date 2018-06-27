@@ -157,6 +157,7 @@ export default class Tree extends Component<Props, State> {
     if (
       !provided.draggableProps.style ||
       !provided.draggableProps.style.left ||
+      //$ExpectError
       !snapshot.isDropAnimating
     ) {
       // $FlowFixMe
