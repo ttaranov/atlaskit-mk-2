@@ -3,6 +3,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import { parse, format } from 'date-fns';
+import TimePicker from '../../components/TimePicker';
 
 import {
   ClearIndicator,
@@ -67,4 +68,21 @@ test('parseDateIntoStateValues', () => {
     timeValue: '',
     zoneValue: '',
   });
+});
+
+test('TimePicker invalid times should be cleared', () => {
+  const timePickerWrapper = mount(
+    <TimePicker id="timepicker-1" timeIsEditable />,
+  );
+  // Simulate user entering invalid date
+  timePickerWrapper
+    .find('Control Input')
+    .simulate('focus')
+    .simulate('keydown', { key: 'a' })
+    .simulate('keydown', { key: 's' })
+    .simulate('keydown', { key: 'd' })
+    .simulate('keydown', { key: 'Enter' })
+    .simulate('blur');
+
+  expect(timePickerWrapper.state().value).toEqual('');
 });

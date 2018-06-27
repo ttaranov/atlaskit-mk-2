@@ -1,5 +1,13 @@
 # @atlaskit/comment
 
+## 5.0.1
+
+
+- [patch] Updated dependencies [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
+  - @atlaskit/editor-core@73.8.20
+- [none] Updated dependencies [d708792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d708792)
+  - @atlaskit/editor-core@73.8.20
+
 ## 5.0.0
 - [major] No longer add a "Restricted to " prefix to the value of the retrictedTo prop. The "restricted to" label will show whatever you set to the restrictedTo prop. [8efe0af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8efe0af)
 
