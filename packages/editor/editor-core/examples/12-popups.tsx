@@ -35,6 +35,7 @@ class CustomBoundryExample extends PureComponent<any, any> {
           mentionProvider={props.mentionProvider}
           emojiProvider={props.emojiProvider}
           popupsBoundariesElement={this.state.boundary}
+          quickInsert={true}
         />
       </Boundary>
     );
@@ -65,6 +66,7 @@ class PortalExample extends PureComponent<any, any> {
             mentionProvider={props.mentionProvider}
             emojiProvider={props.emojiProvider}
             popupsMountPoint={this.state.portal}
+            quickInsert={true}
           />
         </div>
         <div ref={this.handleRef} />
@@ -101,6 +103,7 @@ class PortalWithCustomBoundaryExample extends PureComponent<any, any> {
               emojiProvider={props.emojiProvider}
               popupsMountPoint={this.state.portal}
               popupsBoundariesElement={this.state.boundary}
+              quickInsert={true}
             />
           </div>
         </Boundary>
@@ -145,6 +148,7 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
             emojiProvider={props.emojiProvider}
             popupsMountPoint={this.state.portal}
             popupsBoundariesElement={this.state.boundary}
+            quickInsert={true}
           />
         </div>
 
@@ -160,6 +164,7 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
           emojiProvider={props.emojiProvider}
           popupsMountPoint={this.state.portal}
           popupsBoundariesElement={this.state.boundary}
+          quickInsert={true}
         />
       </div>
     );
@@ -201,6 +206,7 @@ class JiraSidebarEditor extends PureComponent<any, any> {
                   popupsMountPoint={this.state.portal}
                   popupsBoundariesElement={this.state.boundary}
                   popupsScrollableElement={this.state.scrollable}
+                  quickInsert={true}
                 />
               </div>
             </div>
@@ -238,6 +244,7 @@ export default function Example() {
             onSave={SAVE_ACTION}
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
+            quickInsert={true}
           />
         </div>
       </Content>
@@ -258,6 +265,7 @@ export default function Example() {
             onSave={SAVE_ACTION}
             mentionProvider={mentionProvider}
             emojiProvider={emojiProvider}
+            quickInsert={true}
           />
         </div>
       </Content>
