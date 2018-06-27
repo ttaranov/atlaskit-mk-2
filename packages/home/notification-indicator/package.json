@@ -25,8 +25,8 @@
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }
