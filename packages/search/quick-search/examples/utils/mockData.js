@@ -8,7 +8,7 @@ import {
 } from './types';
 
 function pickRandom<T>(array: Array<T>): T {
-  return array[Math.floor(Math.random() * Array.length)];
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 const mockCatchPhrases = [
