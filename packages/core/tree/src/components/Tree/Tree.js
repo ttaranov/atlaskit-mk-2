@@ -21,10 +21,6 @@ import {
 } from '../../utils/tree';
 import type { FlattenedItem, FlattenedTree, Path, TreeData } from '../../types';
 import TreeItem from '../TreeItem';
-import {
-  type TreeDraggableProvided,
-  type TreeDraggingStyle,
-} from '../TreeItem/TreeItem-types';
 
 export default class Tree extends Component<Props, State> {
   static defaultProps = {
@@ -34,11 +30,10 @@ export default class Tree extends Component<Props, State> {
     onDragStart: noop,
     onDragEnd: noop,
     renderItem: noop,
-    paddingPerLevel: 35,
   };
 
   state = {
-    dropAnimationOffset: 0,
+    pendingPath: null,
   };
 
   onDragEnd = (result: DropResult) => {
@@ -60,7 +55,7 @@ export default class Tree extends Component<Props, State> {
     }
 
     this.setState({
-      dropAnimationOffset: 0,
+      pendingPath: null,
     });
   };
 
@@ -68,15 +63,12 @@ export default class Tree extends Component<Props, State> {
     if (!update.destination) {
       return;
     }
-
-    const source = update.source;
-    const destination = update.destination;
-    const dropAnimationOffset = this.calculatePendingDropAnimatingOffset(
-      source,
-      destination,
+    const pendingPath = this.calculatePendingPath(
+      update.source,
+      update.destination,
     );
     this.setState({
-      dropAnimationOffset,
+      pendingPath,
     });
   };
 
@@ -103,20 +95,13 @@ export default class Tree extends Component<Props, State> {
     return { sourcePosition, destinationPosition };
   };
 
-  calculatePendingDropAnimatingOffset = (
+  calculatePendingPath = (
     source: DraggableLocation,
     destination: DraggableLocation,
-  ): number => {
-    const { paddingPerLevel } = this.props;
+  ): Path => {
     const { tree } = this.props;
     const flattenItems: FlattenedItem[] = flattenTree(tree);
-    const sourcePath: Path = getSourcePath(flattenItems, source.index);
-    const destinationPath: Path = getDestinationPath(
-      flattenItems,
-      source.index,
-      destination.index,
-    );
-    return (destinationPath.length - sourcePath.length) * paddingPerLevel;
+    return getDestinationPath(flattenItems, source.index, destination.index);
   };
 
   static getDragPosition = (tree: TreeData, path: Path): ?DragPosition => {
@@ -131,67 +116,9 @@ export default class Tree extends Component<Props, State> {
     return null;
   };
 
-  isMovingDown = (
-    source: DraggableLocation,
-    destination: DraggableLocation,
-  ): boolean => source.index < destination.index;
-
-  isTopOfSubtree = (
-    source: DraggableLocation,
-    destination: DraggableLocation,
-  ) => {
-    const { tree } = this.props;
-    const flattenItems: FlattenedItem[] = flattenTree(tree);
-    const destinationPath: Path = getDestinationPath(
-      flattenItems,
-      source.index,
-      destination.index,
-    );
-    return flattenItems[destination.index].path.length < destinationPath.length;
-  };
-
-  patchDndProvided = (provided: DraggableProvided): TreeDraggableProvided => {
-    const { dropAnimationOffset } = this.state;
-
-    if (
-      !provided.draggableProps ||
-      !provided.draggableProps.style ||
-      !provided.draggableProps.style.left ||
-      !provided.draggableProps.style.transform
-    ) {
-      // $FlowFixMe
-      return provided;
-    }
-
-    // $FlowFixMe
-    const t = provided.draggableProps.style.transform;
-    // $FlowFixMe
-    const s1 = t.split('px')[1];
-    const finalTransform = `translate(0px${s1}px)`;
-    // $FlowFixMe
-    const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
-    // $FlowFixMe
-    const finalStyle: TreeDraggingStyle = {
-      ...provided.draggableProps.style,
-      transform: finalTransform,
-      // overwrite left position
-      left: finalLeft,
-      // animate so it doesn't jump immediately
-      transition: 'left 0.277s ease-out',
-    };
-    // $FlowFixMe
-    const finalProvided: TreeDraggableProvided = {
-      ...provided,
-      draggableProps: {
-        ...provided.draggableProps,
-        style: finalStyle,
-      },
-    };
-    return finalProvided;
-  };
-
   renderItems = () => {
     const { tree, renderItem, onExpand, onCollapse } = this.props;
+    const { pendingPath } = this.state;
 
     const items: FlattenedTree = flattenTree(tree);
 
@@ -202,18 +129,17 @@ export default class Tree extends Component<Props, State> {
         key={flatItem.item.id}
       >
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
-          const finalProvided: TreeDraggableProvided = this.patchDndProvided(
-            provided,
-          );
+          const finalPath =
+            snapshot.isDragging && pendingPath ? pendingPath : flatItem.path;
           return (
             <TreeItem
               key={flatItem.item.id}
               item={flatItem.item}
-              path={flatItem.path}
+              path={finalPath}
               onExpand={onExpand}
               onCollapse={onCollapse}
               renderItem={renderItem}
-              provided={finalProvided}
+              provided={provided}
               snapshot={snapshot}
             />
           );

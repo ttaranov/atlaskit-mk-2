@@ -70,10 +70,14 @@ export default class DragDropTree extends Component<void, State> {
     provided,
     snapshot,
   }: RenderItemParams) => {
+    console.log(provided.draggableProps);
     return (
       <div
         key={item.id}
         ref={provided.innerRef}
+        data-react-beautiful-dnd-draggable={
+          provided.draggableProps['data-react-beautiful-dnd-draggable']
+        }
         style={{
           ...provided.draggableProps.style,
           paddingLeft: depth * PADDING_PER_LEVEL,

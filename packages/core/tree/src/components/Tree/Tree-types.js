@@ -18,9 +18,8 @@ export type Props = {|
     destinationPosition: DragPosition,
   ) => void,
   renderItem: RenderItemParams => React.Node,
-  paddingPerLevel: number,
 |};
 
 export type State = {|
-  dropAnimationOffset: number,
+  pendingPath: ?Path,
 |};
