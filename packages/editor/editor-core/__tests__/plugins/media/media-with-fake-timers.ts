@@ -14,8 +14,6 @@ import {
 } from '../../../src/plugins/media/pm-plugins/main';
 import mediaPlugin from '../../../src/plugins/media';
 
-jest.useFakeTimers();
-
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -43,6 +41,12 @@ describe('Media plugin', () => {
       pluginKey: mediaPluginKey,
     });
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
   afterAll(() => {
     providerFactory.destroy();
   });
@@ -52,7 +56,7 @@ describe('Media plugin', () => {
       const { pluginState } = editor(doc(p('')));
       await mediaProvider;
       pluginState.insertFiles([{ id: 'foo', fileMimeType: 'image/jpeg' }]);
-      jest.runAllTimers();
+      jest.runOnlyPendingTimers();
       expect(pluginState.allUploadsFinished).toBe(false);
     });
 
@@ -60,7 +64,7 @@ describe('Media plugin', () => {
       const { pluginState } = editor(doc(p('')));
       await mediaProvider;
       pluginState.insertFiles([{ id: 'foo', fileMimeType: 'image/jpeg' }]);
-      jest.runAllTimers();
+      jest.runOnlyPendingTimers();
       stateManager.updateState('foo', {
         id: 'foo',
         status: 'ready',
@@ -69,7 +73,7 @@ describe('Media plugin', () => {
         fileMimeType: 'image/jpeg',
         thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
       });
-      jest.runAllTimers();
+      jest.runOnlyPendingTimers();
       await pluginState.waitForPendingTasks();
       expect(pluginState.allUploadsFinished).toBe(true);
     });
