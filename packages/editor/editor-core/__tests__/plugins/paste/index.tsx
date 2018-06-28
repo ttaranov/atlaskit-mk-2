@@ -246,6 +246,17 @@ describe('paste plugins', () => {
       );
     });
 
+    it('should join adjacent code-blocks', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      dispatchPasteEvent(editorView, {
+        plain: 'code line 1\ncode line 2\ncode line 3',
+        html: '<pre>code line 1\ncode line 2</pre><pre>code line 3</pre>',
+      });
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()('code line 1\ncode line 2\ncode line 3'), p('')),
+      );
+    });
+
     it('should not create paragraph when code is copied inside existing code-block', () => {
       const { editorView } = editor(doc(code_block()('code\n{<>}\ncode')));
       dispatchPasteEvent(editorView, {

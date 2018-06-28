@@ -32,6 +32,7 @@ import {
   handlePasteAsPlainText,
   handleMacroAutoConvert,
 } from '../handlers';
+import { transformSliceToJoinAdjacentCodeBlocks } from '../../code-block/utils';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -170,20 +171,22 @@ export function createPlugin(
         /** If a partial paste of bodied extension, paste only text */
         slice = transformSliceToRemoveOpenBodiedExtension(slice, schema);
 
+        /* Bitbucket copies diffs as multiple adjacent code blocks
+         * so we merge ALL adjacent code blocks to support paste here */
+        slice = transformSliceToJoinAdjacentCodeBlocks(slice);
+
         if (
-          slice.content.childCount === 1 &&
-          slice.content.firstChild!.type === schema.nodes.codeBlock
+          slice.content.childCount &&
+          slice.content.lastChild!.type === schema.nodes.codeBlock
         ) {
           slice = new Slice(
-            Fragment.from([
-              slice.content.firstChild!,
-              schema.nodes.paragraph.createAndFill() as Node,
-            ]),
+            slice.content.append(
+              Fragment.from(schema.nodes.paragraph.createAndFill() as Node),
+            ),
             slice.openStart,
             1,
           );
         }
-
         return slice;
       },
       transformPastedHTML(html) {
