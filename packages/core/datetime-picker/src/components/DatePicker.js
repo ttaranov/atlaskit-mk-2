@@ -3,7 +3,7 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
-import { borderRadius, colors, layers } from '@atlaskit/theme';
+import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
@@ -94,10 +94,9 @@ const arrowKeys = {
 
 const StyledMenu = styled.div`
   background-color: ${colors.N20};
-  border: 1px solid ${colors.N40};
+  border: 0 0 1px solid ${colors.N60A};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
-  margin: 8px 0 0 0;
+  ${elevation.e200} margin: 8px 0 0 0;
   overflow: hidden;
   text-align: center;
   z-index: ${layers.dialog};
