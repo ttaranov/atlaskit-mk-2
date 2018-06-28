@@ -52,6 +52,8 @@ type Props = {
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
+  /** Placeholder text displayed in input */
+  spacing?: 'compact' | 'default',
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** Indicates current value is invalid & changes border color */
@@ -91,11 +93,11 @@ const arrowKeys = {
 };
 
 const StyledMenu = styled.div`
-  background-color: ${colors.N0};
+  background-color: ${colors.N20};
   border: 1px solid ${colors.N40};
   border-radius: ${borderRadius()}px;
   box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
-  margin: 7px 0;
+  margin: 8px 0 0 0;
   overflow: hidden;
   text-align: center;
   z-index: ${layers.dialog};
@@ -119,6 +121,7 @@ export default class DatePicker extends Component<Props, State> {
     onFocus: () => {},
     innerProps: {},
     selectProps: {},
+    spacing: 'default',
     id: '',
     defaultIsOpen: false,
     defaultValue: '',
@@ -280,7 +283,7 @@ export default class DatePicker extends Component<Props, State> {
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
       this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
-
+    const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
     return (
       <div
         {...innerProps}
@@ -310,6 +313,7 @@ export default class DatePicker extends Component<Props, State> {
             control: base => ({
               ...base,
               ...controlStyles,
+              ...disabledStyle,
             }),
           })}
           placeholder={placeholder}
