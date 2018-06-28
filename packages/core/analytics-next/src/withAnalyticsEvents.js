@@ -115,6 +115,7 @@ export default function withAnalyticsEvents<
               const modifiedProps = vmap(
                 createEventMap,
                 (propName, entry) =>
+                  prevModifiedProps[propName] &&
                   prevProps[propName] === props[propName]
                     ? prevModifiedProps[propName]
                     : modifyCallbackProp(

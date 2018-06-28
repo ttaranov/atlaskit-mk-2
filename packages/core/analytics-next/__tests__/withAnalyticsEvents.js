@@ -281,3 +281,17 @@ it('should forward the ref of inner component', () => {
   const [ref] = spy.mock.calls[0];
   expect(ref).toBeInstanceOf(ButtonWithCreate);
 });
+
+it('should always pass analytics events', () => {
+  const spy = jest.fn();
+  const ButtonWithAnalytics = withAnalyticsEvents({
+    onClick: createEvent => createEvent({ action: 'clicked' }).fire(),
+  })(Button);
+  const wrapper = mount(
+    <AnalyticsListener onEvent={spy}>
+      <ButtonWithAnalytics>Click me</ButtonWithAnalytics>
+    </AnalyticsListener>,
+  );
+  wrapper.find(Button).simulate('click');
+  expect(spy).toHaveBeenCalled();
+});
