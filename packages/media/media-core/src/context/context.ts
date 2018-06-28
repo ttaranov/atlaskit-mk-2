@@ -267,54 +267,50 @@ class ContextImpl implements Context {
     const tempFileId = uuid.v4();
     const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
     const fileStream = new Observable<FileState>(observer => {
-      try {
-        const name = file.name || '';
-        if (file.content instanceof Blob) {
-          observer.next({
-            id: tempFileId,
-            name,
-            size,
-            progress: 0,
-            status: 'uploading',
-            preview: {
-              blob: file.content,
-            },
-          });
-        }
-
-        const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
-          onProgress: progress => {
-            observer.next({
-              id: tempFileId,
-              progress,
-              status: 'uploading',
-              name,
-              size,
-            });
+      const name = file.name || '';
+      if (file.content instanceof Blob) {
+        observer.next({
+          id: tempFileId,
+          name,
+          size,
+          progress: 0,
+          status: 'uploading',
+          preview: {
+            blob: file.content,
           },
         });
+      }
 
-        if (controller) {
-          controller.setCancel(cancel);
-        }
-
-        deferredFileId.then(id => {
-          fileId = id;
-          const key = FileStreamCache.createKey(id, { collectionName });
-
-          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
-          this.fileStreamsCache.set(key, fileStream);
+      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
+        onProgress: progress => {
           observer.next({
-            id,
-            status: 'processing',
+            id: tempFileId,
+            progress,
+            status: 'uploading',
             name,
             size,
           });
-          observer.complete();
-        });
-      } catch (e) {
-        observer.error(e);
+        },
+      });
+
+      if (controller) {
+        controller.setCancel(cancel);
       }
+
+      deferredFileId.then(id => {
+        fileId = id;
+        const key = FileStreamCache.createKey(id, { collectionName });
+
+        // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
+        this.fileStreamsCache.set(key, fileStream);
+        observer.next({
+          id,
+          status: 'processing',
+          name,
+          size,
+        });
+        observer.complete();
+      });
     })
       .concat(
         Observable.defer(() =>
