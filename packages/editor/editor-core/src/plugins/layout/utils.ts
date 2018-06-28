@@ -1,4 +1,5 @@
 import { Fragment, Node, Slice, Schema } from 'prosemirror-model';
+import { mapFragment } from '../../utils/slice';
 
 export type FlatMapCallback = (
   node: Node,
@@ -22,25 +23,19 @@ export function flatmap(
   return Fragment.fromArray(fragmentContent);
 }
 
+const isLayoutNode = (node: Node) =>
+  node.type === node.type.schema.nodes.layoutSection ||
+  node.type === node.type.schema.nodes.layoutColumn;
+
 export function unwrapContentFromLayout(
   maybeLayoutSection: Node,
 ): Node | Node[] {
-  const { schema } = maybeLayoutSection.type;
-  if (maybeLayoutSection.type === schema.nodes.layoutSection) {
-    const content = [] as Node[];
-    maybeLayoutSection.content.forEach(maybeLayoutColumn => {
-      // Content in some cases isn't wrapped with a layoutColumn, so leave the contents as is
-      if (maybeLayoutColumn.type === schema.nodes.layoutColumn) {
-        maybeLayoutColumn.forEach(node => {
-          content.push(node);
-        });
-      } else {
-        content.push(maybeLayoutColumn);
-      }
-    });
-    return content;
-  }
-  return maybeLayoutSection;
+  const fragment = mapFragment(Fragment.from(maybeLayoutSection), node => {
+    return isLayoutNode(node)
+      ? ((node.content as any).content as Node[])
+      : node;
+  });
+  return (fragment as any).content as Node[];
 }
 
 export function removeLayoutFromFirstChild(node: Node, i: number) {
@@ -53,10 +48,6 @@ export function removeLayoutFromLastChild(
   fragment: Fragment,
 ) {
   return i === fragment.childCount - 1 ? unwrapContentFromLayout(node) : node;
-}
-
-export function removeLayoutFromAllChildren(node: Node) {
-  return unwrapContentFromLayout(node);
 }
 
 /**
@@ -78,7 +69,7 @@ export function transformSliceToRemoveOpenLayoutNodes(
     const maybeLayoutSection = slice.content.firstChild!;
     if (maybeLayoutSection.type === schema.nodes.layoutSection) {
       return new Slice(
-        flatmap(slice.content, removeLayoutFromAllChildren),
+        flatmap(slice.content, removeLayoutFromFirstChild),
         // '-2' here because we've removed the layoutSection/layoutColumn; reducing the open depth.
         slice.openStart - 2,
         slice.openEnd - 2,
