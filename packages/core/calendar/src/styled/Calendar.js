@@ -56,7 +56,7 @@ export const Wrapper = styled.div`
   background-color: ${wrapperBackgroundColor};
   color: ${colors.text};
   display: inline-block;
-  padding: 10px;
+  padding: 16px;
   user-select: none;
   box-sizing: border-box;
   outline: none;
