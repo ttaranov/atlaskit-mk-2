@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type Node } from 'react';
+import React from 'react';
 
 import { groupedCountries } from './data/countries';
 import Select from './Select';
@@ -9,34 +9,22 @@ import Select from './Select';
 type OptionType = { abbr: string, code: number, icon: string, name: string };
 
 // custom option renderer
-const Label = ({ children }: { children: Node }) => (
-  <div
-    css={{
-      alignItems: 'center',
-      display: 'flex',
-      lineHeight: 1.2,
-    }}
-  >
-    {children}
-  </div>
-);
+const labelCSS = () => ({
+  alignItems: 'center',
+  display: 'flex',
+  lineHeight: 1.2,
+});
 
-const Flag = ({ children }: { children: Node }) => (
-  <span
-    css={{
-      fontSize: '18px',
-      marginRight: '8px',
-    }}
-  >
-    {children}
-  </span>
-);
+const flagCSS = () => ({
+  fontSize: '18px',
+  marginRight: '8px',
+});
 
 const Opt = ({ children, icon }: any) => (
-  <Label>
-    <Flag>{icon}</Flag>
+  <div css={labelCSS()}>
+    <span css={flagCSS()}>{icon}</span>
     {children}
-  </Label>
+  </div>
 );
 
 // return the country name; used for searching
