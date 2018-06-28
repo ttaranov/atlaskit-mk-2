@@ -15,12 +15,7 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '../src/analytics-next';
 
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
-import {
-  CardView,
-  CardViewWithAnalyticsEvents,
-  CardViewBase,
-  CardViewOwnProps,
-} from '../src/root/cardView';
+import { CardView, CardViewBase, CardViewOwnProps } from '../src/root/cardView';
 import { LinkCard } from '../src/links';
 import { FileCard } from '../src/files';
 import { Wrapper } from '../src/root/styled';
