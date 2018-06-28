@@ -160,7 +160,8 @@ export class Card extends Component<CardProps, CardState> {
           const height = this.dataURIDimension('height');
 
           // TODO: make options optional
-          const blob = await mediaStore.getImage(id, {
+
+          const blob = await mediaStore.getImage(state.id, {
             collection: collectionName,
             'max-age': 3600,
             allowAnimated: true,
