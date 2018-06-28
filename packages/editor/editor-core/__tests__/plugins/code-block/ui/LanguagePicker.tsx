@@ -96,9 +96,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('should call setLanguage when dropdown item selected', () => {
       expect(setLanguageStub).toHaveBeenCalledTimes(0);
-      (languagePicker
-        .find(Select)
-        .instance() as any).select.select.selectOption({
+      console.log(languagePicker.find(Select).instance());
+      const { onChange } = languagePicker.find(Select).props();
+      onChange({
         label: 'Javascript',
         value: 'javascript',
       });
@@ -122,7 +122,7 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
         activeCodeBlockDOM={document.body}
         deleteCodeBlock={jest.fn()}
         setLanguage={jest.fn()}
-        isEditorFocused={true}
+        isEditorFocused
       />,
     );
     instance = wrapper.instance() as LanguagePickerWithOutsideListeners;
