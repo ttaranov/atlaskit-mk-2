@@ -163,48 +163,6 @@ describe('@atlaskit/tree - Tree', () => {
       instance.onDragEnd(dropResult);
       expect(mockOnDragEnd).toHaveBeenCalledTimes(0);
     });
-
-    describe('#onDragUpdate', () => {
-      it('should set offset 0 if not necessary', () => {
-        const dropUpdate: DragUpdate = {
-          draggableId: '1-1',
-          type: 'any',
-          source: {
-            droppableId: 'list',
-            index: 4,
-          },
-          destination: {
-            droppableId: 'list',
-            index: 4,
-          },
-        };
-        const instance = mount(
-          <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
-        ).instance();
-        instance.onDragUpdate(dropUpdate);
-        expect(instance.state.dropAnimationOffset).toBe(0);
-      });
-
-      it('should set offset 35 if the last displaced item is on the different level as the dragged item will be', () => {
-        const dropUpdate: DragUpdate = {
-          draggableId: '1-1',
-          type: 'any',
-          source: {
-            droppableId: 'list',
-            index: 1,
-          },
-          destination: {
-            droppableId: 'list',
-            index: 2,
-          },
-        };
-        const instance = mount(
-          <Tree tree={complexTree} renderItem={mockRender} />,
-        ).instance();
-        instance.onDragUpdate(dropUpdate);
-        expect(instance.state.dropAnimationOffset).toBe(35);
-      });
-    });
   });
 
   describe('#getDragPosition', () => {
