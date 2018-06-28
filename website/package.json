@@ -82,6 +82,7 @@
     "react-addons-text-content": "^0.0.4",
     "react-codesandboxer": "^2.1.0",
     "react-dom": "^16.4.0",
+    "react-draggable": "^3.0.5",
     "react-ga": "^2.3.5",
     "react-loadable": "^5.1.0",
     "react-markdown": "^2.5.0",
