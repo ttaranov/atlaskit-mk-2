@@ -127,6 +127,40 @@ describe('Fetcher', () => {
     });
   });
 
+  describe('getRecentFiles()', () => {
+    it('should not return empty files', async () => {
+      querySpy.mockReturnValue(
+        Promise.resolve({
+          data: {
+            contents: [
+              {
+                details: {
+                  size: 100,
+                },
+              },
+              {
+                details: {
+                  size: 0,
+                },
+              },
+              {
+                details: {
+                  size: 1,
+                },
+              },
+            ],
+            nextInclusiveStartKey: 'next-key',
+          },
+        }),
+      );
+      fetcher['query'] = querySpy;
+      const recents = await fetcher.getRecentFiles(apiUrl, auth, 30, 'desc');
+
+      expect(recents.nextInclusiveStartKey).toEqual('next-key');
+      expect(recents.contents).toHaveLength(2);
+    });
+  });
+
   describe('GIPHY methods', () => {
     const gifId = 'some-gif-id';
     const gifSlug = `file-slug-${gifId}`;

@@ -288,7 +288,7 @@ export class StatelessUploadView extends Component<
       }
     };
 
-    return items.filter(item => item.details.size > 0).map(item => {
+    return items.map(item => {
       const { id, occurrenceKey } = item;
       const selected = selectedRecentFiles.indexOf(id) > -1;
 

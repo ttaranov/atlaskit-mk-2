@@ -122,23 +122,6 @@ describe('<StatelessUploadView />', () => {
     expect(component.find(Card)).toHaveLength(3);
   });
 
-  it('should not render empty files', () => {
-    const emptyItem = {
-      ...recentItem,
-      details: {
-        name: '',
-        size: 0,
-      },
-    };
-    const recentItems = [recentItem, emptyItem, recentItem];
-    const component = shallow(getUploadViewElement(false, recentItems));
-
-    expect(component.find(Wrapper)).toHaveLength(1);
-    expect(component.find(Dropzone)).toHaveLength(1);
-    expect(component.find(Dropzone).props().isEmpty).toEqual(false);
-    expect(component.find(Card)).toHaveLength(2);
-  });
-
   it('should render currently uploading items', () => {
     const mockStateOverride: Partial<State> = {
       uploads: {
