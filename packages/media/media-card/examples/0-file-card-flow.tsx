@@ -89,7 +89,6 @@ class Example extends Component<ComponentProps, ComponentState> {
 
     const subscription = stream.subscribe({
       next: state => {
-        console.log('state', state);
         const { fileIds } = this.state;
 
         if (!isIdSaved && state.status === 'uploading') {
@@ -104,10 +103,6 @@ class Example extends Component<ComponentProps, ComponentState> {
           console.log('public id', state.id);
           subscription.unsubscribe();
         }
-
-        // if (fileIds.indexOf(state.id) === -1) {
-
-        // }
       },
       complete() {
         console.log('stream complete');

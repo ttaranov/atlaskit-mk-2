@@ -8,6 +8,7 @@ import {
   UrlPreviewProvider,
   ImageResizeMode,
   MediaItemDetails,
+  FileState,
 } from '@atlaskit/media-core';
 import { MediaStore } from '@atlaskit/media-store';
 
@@ -71,6 +72,22 @@ export interface CardState {
   dataURI?: string;
   progress?: number;
 }
+
+// TODO: should this logic live in media-core to allow MediaViewer to benefit from it?
+const getDataURIFromFileState = (state: FileState): string | undefined => {
+  if (state.status === 'error' || !state.preview) {
+    return undefined;
+  }
+  const type = state.preview.blob.type;
+
+  if (type.indexOf('image/') === 0) {
+    return URL.createObjectURL(state.preview.blob);
+  }
+
+  if (type.indexOf('video/')) {
+    // TODO: use VideoSnapshot, check getPreviewFromVideo.ts
+  }
+};
 
 export class Card extends Component<CardProps, CardState> {
   static defaultProps: Partial<CardProps> = {
@@ -151,17 +168,14 @@ export class Card extends Component<CardProps, CardState> {
 
     context.getFile(id, { collectionName }).subscribe({
       next: async state => {
-        const { dataURI } = this.state;
-        if (!dataURI && state.status === 'uploading' && state.preview) {
-          // TODO: Only set dateURI if there was none before
+        const { dataURI: currentDataURI } = this.state;
+        if (!currentDataURI) {
+          const dataURI = getDataURIFromFileState(state);
+          // TODO: revoke
+          this.setState({ dataURI });
         }
-        if (state.status === 'uploading' && state.preview) {
-          // TODO: get dataURI only for image/video => get logic from MediaPicker and abstract it into a helper
-          // TODO: should this logic live in media-core to allow MediaViewer to benefit from it?
-          const dataURI = URL.createObjectURL(state.preview.blob);
-          console.log('uploading', state.progress);
+        if (state.status === 'uploading') {
           this.setState({
-            dataURI,
             status: 'uploading',
             progress: state.progress,
             metadata: {
