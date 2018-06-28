@@ -15,6 +15,7 @@ import {
   akGridSizeUnitless,
   akBorderRadius,
   akColorN20,
+  akColorN30A,
   akColorN40,
   akColorN300,
   akColorB200,
@@ -40,9 +41,13 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     outline: none;
   }
 
-  .ProseMirror p,
-  .ProseMirror .code {
+  .ProseMirror p {
     ${defaultEditorFontStyles};
+  }
+
+  .ProseMirror span.code {
+    font-size: 12px;
+    font-weight: normal;
   }
 
   .ProseMirror .placeholder-decoration {
@@ -159,7 +164,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror .code {
     padding: 2px 1px;
-    background: ${akColorN20};
+    background: ${akColorN30A};
     border-radius: 3px;
     font-family: ${akEditorCodeFontFamily};
     white-space: pre-wrap;
@@ -430,6 +435,18 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   ${gapCursorStyles};
   ${tableStyles};
+
+  /**
+   * Fixes the weird cursor navigation bug
+   * for inline-nodes
+   * https://github.com/ProseMirror/prosemirror/issues/514
+  */
+  .mentionView-content-wrap,
+  .inlineExtensionView-content-wrap,
+  .emojiView-content-wrap,
+  .dateView-content-wrap {
+    display: inline-block;
+  }
 
   /**
    * Panel

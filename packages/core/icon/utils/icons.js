@@ -15,6 +15,7 @@ import AddItemIcon from '../glyph/add-item';
 import AddIcon from '../glyph/add';
 import AddonIcon from '../glyph/addon';
 import AppAccessIcon from '../glyph/app-access';
+import AppSwitcherIcon from '../glyph/app-switcher';
 import ArrowDownCircleIcon from '../glyph/arrow-down-circle';
 import ArrowDownIcon from '../glyph/arrow-down';
 import ArrowLeftCircleIcon from '../glyph/arrow-left-circle';
@@ -371,6 +372,7 @@ import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
 import ScreenIcon from '../glyph/screen';
 import SearchIcon from '../glyph/search';
+import SelectClearIcon from '../glyph/select-clear';
 import SendIcon from '../glyph/send';
 import SettingsIcon from '../glyph/settings';
 import ShareIcon from '../glyph/share';
@@ -454,6 +456,12 @@ export default {
     component: AppAccessIcon,
     componentName: 'AppAccessIcon',
     package: '@atlaskit/icon/glyph/app-access',
+  },
+  'app-switcher': {
+    keywords: ['app-switcher', 'appswitcher'],
+    component: AppSwitcherIcon,
+    componentName: 'AppSwitcherIcon',
+    package: '@atlaskit/icon/glyph/app-switcher',
   },
   'arrow-down-circle': {
     keywords: ['arrow-down-circle', 'arrowdowncircle'],
@@ -2590,6 +2598,12 @@ export default {
     component: SearchIcon,
     componentName: 'SearchIcon',
     package: '@atlaskit/icon/glyph/search',
+  },
+  'select-clear': {
+    keywords: ['select-clear', 'selectclear'],
+    component: SelectClearIcon,
+    componentName: 'SelectClearIcon',
+    package: '@atlaskit/icon/glyph/select-clear',
   },
   send: {
     keywords: ['send', 'mail'],

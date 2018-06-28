@@ -1,5 +1,13 @@
 # @atlaskit/icon
 
+## 12.5.0
+- [minor] Added select-clear icon  [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
+- [none] Updated dependencies [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
+
+## 12.4.0
+- [minor] Add the new app-switcher icon [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
+- [none] Updated dependencies [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
+
 ## 12.3.1
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

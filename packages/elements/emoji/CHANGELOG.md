@@ -1,5 +1,14 @@
 # @atlaskit/emoji
 
+## 35.1.4
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-picker@8.1.4
+  - @atlaskit/media-core@20.0.0
+
+## 35.1.3
+- [patch] FS-2056 defer input focus in EmojiPickerListSearch [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)
+- [none] Updated dependencies [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)
+
 ## 35.1.2
 - [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
   - @atlaskit/spinner@8.0.0

@@ -77,10 +77,13 @@ type State = {
   value: string,
   isFocused: boolean,
 };
-
+/** Returns a formatted DT string if valid or empty string if not valid */
 function formatTime(time: string, timeFormat: string): string {
   const date = parseTime(time);
-  return isValid(date) ? format(date, timeFormat) : time;
+  if (date instanceof Date) {
+    return isValid(date) ? format(date, timeFormat) : time;
+  }
+  return '';
 }
 
 const menuStyles = {
@@ -111,7 +114,7 @@ export default class TimePicker extends Component<Props, State> {
     isInvalid: false,
     hideIcon: false,
     timeFormat: defaultTimeFormat,
-    placeholder: `e.g. ${format(new Date(), defaultTimeFormat)}`,
+    placeholder: 'e.g. 8:00am',
   };
 
   state = {

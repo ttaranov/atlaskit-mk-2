@@ -52,6 +52,7 @@ export const HeaderWrapper = styled.div`
   padding-top: 15px;
   padding: 24px;
   box-sizing: border-box;
+  pointer-events: none;
   z-index: ${overlayZindex + 1};
 `;
 
@@ -88,6 +89,7 @@ export const ZoomWrapper = styled.div`
   height: 98px;
   background-image: linear-gradient(to top, #0e1624, rgba(14, 22, 36, 0));
   opacity: 0.85;
+  pointer-events: none;
 `;
 
 export const ZoomControlsWrapper = styled.div`
@@ -98,6 +100,9 @@ export const ZoomControlsWrapper = styled.div`
   button {
     margin-right: 10px;
   }
+  > * {
+    pointer-events: all;
+  }
 `;
 
 export const ZoomLevelIndicator = styled.span`
@@ -105,6 +110,7 @@ export const ZoomLevelIndicator = styled.span`
   right: 24px;
   bottom: 22px;
   color: #b8c7e0;
+  pointer-events: all;
 `;
 
 const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
@@ -152,21 +158,25 @@ export const PDFWrapper = styled.div`
   right: 0;
 `;
 
-const ArrowWrapper = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
-
 export const Arrow = styled.span`
   cursor: pointer;
 `;
 
+const ArrowWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+`;
+
 export const LeftWrapper = styled(ArrowWrapper)`
   text-align: left;
+  left: 0;
 `;
 
 export const RightWrapper = styled(ArrowWrapper)`
   text-align: right;
+  right: 0;
 `;
 
 // header.tsx
@@ -176,6 +186,9 @@ export const Header = styled.div`
 
 export const LeftHeader = styled.div`
   flex: 0.8;
+  > * {
+    pointer-events: all;
+  }
 `;
 
 export const ImageWrapper = styled.div`
@@ -222,6 +235,9 @@ export const RightHeader = styled.div`
   flex-basis: 200px;
   text-align: right;
   margin-right: 40px;
+  > * {
+    pointer-events: all;
+  }
 `;
 
 export const AudioPlayer = styled.div`

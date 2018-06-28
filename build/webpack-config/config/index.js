@@ -7,6 +7,16 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
+
+// const vendorLibraries = [
+//   'react',
+//   'react-dom',
+//   'styled-components',
+//   'highlight.js',
+//   'react-router',
+//   'react-router-dom',
+// ];
+
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -40,6 +50,8 @@ module.exports = function createWebpackConfig(
 }*/ {
   return {
     entry: {
+      // TODO: ideally we should have a vendor chunk, with just external library dependencies.
+      // vendor: vendorLibraries,
       main:
         env === 'development' && host && port
           ? [
@@ -58,14 +70,6 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), './src/examples-entry.js'),
             ]
           : path.join(cwd, './src/examples-entry.js'),
-      vendor: [
-        'react',
-        'react-dom',
-        'styled-components',
-        'highlight.js',
-        'react-router',
-        'react-router-dom',
-      ],
     },
     output: {
       filename: '[name].js',
@@ -216,6 +220,22 @@ function plugins(
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
+      async: 'shared-async-deps',
+      minChunks(module, count) {
+        let context = module.context;
+        if (
+          context &&
+          context.includes('node_modules') &&
+          !context.includes('@atlaskit')
+        ) {
+          return count >= 2;
+        }
+
+        return false;
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
       async: 'editor-packages',
       minChunks(module, count) {
         const context = module.context;
@@ -290,8 +310,9 @@ function plugins(
     plugins.push(
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
-        openAnalyzer: true,
+        statsOptions: { source: false },
         generateStatsFile: true,
+        openAnalyzer: true,
         logLevel: 'error',
       }),
     );

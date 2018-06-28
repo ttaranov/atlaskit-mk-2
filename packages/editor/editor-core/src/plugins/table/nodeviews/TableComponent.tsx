@@ -4,12 +4,10 @@ import { updateColumnsOnResize } from 'prosemirror-tables';
 import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
-import { stateKey } from '../pm-plugins/main';
+
+import { stateKey, TablePluginState } from '../pm-plugins/main';
 import { pluginKey as hoverSelectionPluginKey } from '../pm-plugins/hover-selection-plugin';
 
-import { pluginKey as widthPluginKey } from '../../width';
-
-import WithPluginState from '../../../ui/WithPluginState';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import { CELL_MIN_WIDTH } from '../';
 
@@ -22,6 +20,9 @@ import { containsHeaderRow } from '../utils';
 export interface ComponentProps extends Props {
   onComponentUpdate: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
+
+  containerWidth: number;
+  pluginState: TablePluginState;
 }
 
 class TableComponent extends React.Component<ComponentProps> {
@@ -62,7 +63,13 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   render() {
-    const { eventDispatcher, view, node, allowColumnResizing } = this.props;
+    const {
+      view,
+      node,
+      allowColumnResizing,
+      pluginState,
+      containerWidth,
+    } = this.props;
     const columnShadows = allowColumnResizing
       ? [
           <div
@@ -88,68 +95,58 @@ class TableComponent extends React.Component<ComponentProps> {
       isTableInDanger,
     } = hoverSelectionPluginKey.getState(view.state);
 
+    const tableActive = this.table === pluginState.tableRef;
+    const { scroll } = this.state;
+
     return (
-      <WithPluginState
-        plugins={{
-          containerWidth: widthPluginKey,
-          pluginState: stateKey,
+      <div
+        style={{
+          width: calcTableWidth(node.attrs.layout, containerWidth),
         }}
-        eventDispatcher={eventDispatcher}
-        editorView={view}
-        render={({ containerWidth, pluginState }) => {
-          const tableActive = this.table === pluginState.tableRef;
-          const { scroll } = this.state;
-          return (
-            <div
-              style={{
-                width: calcTableWidth(node.attrs.layout, containerWidth),
-              }}
-              className={`table-container ${
-                tableActive ? 'with-controls' : ''
-              }`}
-              data-number-column={node.attrs.isNumberColumnEnabled}
-              data-layout={node.attrs.layout}
-            >
-              <div
-                className={`table-row-controls-wrapper ${
-                  scroll > 0 ? 'scrolling' : ''
-                }`}
-              >
-                <TableFloatingControls
-                  editorView={view}
-                  tableRef={this.table || undefined}
-                  tableActive={tableActive}
-                  isTableHovered={isTableHovered}
-                  isTableInDanger={isTableInDanger}
-                  isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
-                  hasHeaderRow={containsHeaderRow(view.state, node)}
-                  scroll={scroll}
-                />
-              </div>
-              <div
-                className="table-wrapper"
-                ref={elem => {
-                  this.wrapper = elem;
-                  this.props.contentDOM(elem ? elem : undefined);
-                  if (elem) {
-                    this.table = elem.querySelector('table');
-                  }
-                }}
-              >
-                <div className="table-column-controls-wrapper">
-                  <ColumnControls
-                    editorView={view}
-                    tableRef={pluginState.tableRef}
-                    isTableHovered={isTableHovered}
-                    isTableInDanger={isTableInDanger}
-                  />
-                </div>
-              </div>
-              {columnShadows}
-            </div>
-          );
-        }}
-      />
+        className={`table-container ${
+          tableActive ? 'with-controls' : ''
+        }`}
+        data-number-column={node.attrs.isNumberColumnEnabled}
+        data-layout={node.attrs.layout}
+      >
+        <div
+          className={`table-row-controls-wrapper ${
+            scroll > 0 ? 'scrolling' : ''
+          }`}
+        >
+          <TableFloatingControls
+            editorView={view}
+            tableRef={this.table || undefined}
+            tableActive={tableActive}
+            isTableHovered={isTableHovered}
+            isTableInDanger={isTableInDanger}
+            isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
+            hasHeaderRow={containsHeaderRow(view.state, node)}
+            scroll={scroll}
+          />
+        </div>
+        <div
+          className="table-wrapper"
+          ref={elem => {
+            this.wrapper = elem;
+            this.props.contentDOM(elem ? elem : undefined);
+            if (elem) {
+              this.table = elem.querySelector('table');
+            }
+          }}
+        >
+          <div className="table-column-controls-wrapper">
+            <ColumnControls
+              editorView={view}
+              tableRef={pluginState.tableRef}
+              isTableHovered={isTableHovered}
+              isTableInDanger={isTableInDanger}
+            />
+          </div>
+        </div>
+        {columnShadows}
+      </div>
+
     );
   }
 
@@ -171,7 +168,7 @@ class TableComponent extends React.Component<ComponentProps> {
     if (!this.wrapper || event.target !== this.wrapper) {
       return;
     }
-    this.updateShadows();
+
     this.setState({ scroll: this.wrapper.scrollLeft });
   };
 
@@ -179,6 +176,7 @@ class TableComponent extends React.Component<ComponentProps> {
     if (!this.wrapper || !this.table || !this.leftShadow || !this.rightShadow) {
       return;
     }
+
     updateShadows(
       this.wrapper,
       this.table,

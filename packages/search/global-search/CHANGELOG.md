@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.5.8
+- [patch] fixed icon glyph imports after changes in icon package [abf2e65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abf2e65)
+
 ## 4.5.7
 - [patch] Decreasing padding on items and fix analytics.' [0f73740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f73740)
 - [none] Updated dependencies [0f73740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f73740)

@@ -8083,9 +8083,9 @@ junk@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/junk/-/junk-2.1.0.tgz#f431b4b7f072dc500a5f10ce7f4ec71930e70134"
 
-kakapo@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.3.1.tgz#3244e131c04157d862a2a17886883bd32207ea03"
+kakapo@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/kakapo/-/kakapo-3.3.3.tgz#9adbb1e7b8aaafd021207dadb340b1f20367bea1"
   dependencies:
     "@types/lodash" "^4.14.106"
     faker "^3.1.0"
@@ -11261,9 +11261,9 @@ prosemirror-state@>=1.0.0, prosemirror-state@^1.0.0, prosemirror-state@^1.1.0:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.6.5:
-  version "0.6.5"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.6.5.tgz#a99f508a44001224d9d1ab035dc60294969bbd2e"
+prosemirror-tables@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.7.4.tgz#8f4b62b22bad92686da89a79206d8b2a3e53a5a4"
   dependencies:
     prosemirror-keymap "^1.0.0"
     prosemirror-model "^1.0.0"
