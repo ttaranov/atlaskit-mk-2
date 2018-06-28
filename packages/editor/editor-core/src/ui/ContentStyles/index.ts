@@ -129,7 +129,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     .code-content {
       padding: ${akEditorCodeBlockPadding} 16px;
       color: ${akColorN800};
-      overflow: scroll;
+      overflow: auto;
       display: flex;
       flex: 1;
 
