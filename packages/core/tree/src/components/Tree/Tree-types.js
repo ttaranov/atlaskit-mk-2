@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import type { TreeData, Path, ItemId } from '../../types';
+import type { TreeData, Path, ItemId, FlattenedTree } from '../../types';
 import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
 export type DragPosition = {|
@@ -22,5 +22,6 @@ export type Props = {|
 |};
 
 export type State = {|
+  flattenedTree: FlattenedTree,
   dropAnimationOffset: number,
 |};

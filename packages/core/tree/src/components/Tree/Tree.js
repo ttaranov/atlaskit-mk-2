@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import {
   Draggable,
   Droppable,
@@ -19,7 +19,7 @@ import {
   getSourcePath,
   getItem,
 } from '../../utils/tree';
-import type { FlattenedItem, FlattenedTree, Path, TreeData } from '../../types';
+import type { FlattenedItem, Path, TreeData } from '../../types';
 import TreeItem from '../TreeItem';
 import {
   type TreeDraggableProvided,
@@ -39,7 +39,15 @@ export default class Tree extends Component<Props, State> {
 
   state = {
     dropAnimationOffset: 0,
+    flattenedTree: [],
   };
+
+  static getDerivedStateFromProps(props: Props, state: State) {
+    return {
+      ...state,
+      flattenedTree: flattenTree(props.tree),
+    };
+  }
 
   onDragEnd = (result: DropResult) => {
     const { onDragEnd } = this.props;
@@ -85,14 +93,14 @@ export default class Tree extends Component<Props, State> {
     destination: DraggableLocation,
   ): { sourcePosition: ?DragPosition, destinationPosition: ?DragPosition } => {
     const { tree } = this.props;
-    const flattenItems: FlattenedItem[] = flattenTree(tree);
-    const sourcePath: Path = getSourcePath(flattenItems, source.index);
+    const { flattenedTree } = this.state;
+    const sourcePath: Path = getSourcePath(flattenedTree, source.index);
     const sourcePosition: ?DragPosition = Tree.getDragPosition(
       tree,
       sourcePath,
     );
     const destinationPath: Path = getDestinationPath(
-      flattenItems,
+      flattenedTree,
       source.index,
       destination.index,
     );
@@ -138,14 +146,16 @@ export default class Tree extends Component<Props, State> {
     source: DraggableLocation,
     destination: DraggableLocation,
   ) => {
-    const { tree } = this.props;
-    const flattenItems: FlattenedItem[] = flattenTree(tree);
+    const { flattenedTree } = this.state;
+
     const destinationPath: Path = getDestinationPath(
-      flattenItems,
+      flattenedTree,
       source.index,
       destination.index,
     );
-    return flattenItems[destination.index].path.length < destinationPath.length;
+    return (
+      flattenedTree[destination.index].path.length < destinationPath.length
+    );
   };
 
   patchDndProvided = (
@@ -183,12 +193,11 @@ export default class Tree extends Component<Props, State> {
     return finalProvided;
   };
 
-  renderItems = () => {
-    const { tree, renderItem, onExpand, onCollapse } = this.props;
+  renderItems = (): Array<Node> => {
+    const { renderItem, onExpand, onCollapse } = this.props;
+    const { flattenedTree } = this.state;
 
-    const items: FlattenedTree = flattenTree(tree);
-
-    return items.map((flatItem: FlattenedItem, index: number) => (
+    return flattenedTree.map((flatItem: FlattenedItem, index: number) => (
       <Draggable
         draggableId={flatItem.item.id}
         index={index}
