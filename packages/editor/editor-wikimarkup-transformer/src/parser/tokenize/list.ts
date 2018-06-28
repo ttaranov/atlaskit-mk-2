@@ -14,7 +14,7 @@ export function list(input: string, schema: Schema): Token {
 
   /**
    * The following token types will be ignored in parsing
-   * the content of a strong mark
+   * the content of a listItem
    */
   const ignoreTokenTypes = [
     TokenType.DOUBLE_DASH_SYMBOL,
