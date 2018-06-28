@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 73.9.1
+
+- [patch] ED-3801: fix table typing performance [e70bf05](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e70bf05)
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+  - @atlaskit/icon@12.5.1
+- [none] Updated dependencies [e70bf05](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e70bf05)
+
 ## 73.9.0
 - [minor] Add QuickInsert provider [948e6e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/948e6e1)
 - [none] Updated dependencies [948e6e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/948e6e1)

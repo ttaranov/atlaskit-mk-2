@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 12.5.1
+- [patch] Update to select-clear icon to allow for primaryColor and secondaryColor configuration [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+
 ## 12.5.0
 - [minor] Added select-clear icon  [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
 - [none] Updated dependencies [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)

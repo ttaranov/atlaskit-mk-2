@@ -87,6 +87,8 @@ const tablesPlugin: EditorPlugin = {
                 ? tablesState.tableNode.attrs.layout
                 : undefined
             }
+            // pass `tableNode` to control re-render
+            tableNode={tablesState.tableNode}
           />
         )}
       />

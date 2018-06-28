@@ -13,9 +13,9 @@ import {
   akColorB300,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import { colors } from '@atlaskit/theme';
+import { colors, layers } from '@atlaskit/theme';
 
-const overlayZindex = 999;
+const overlayZindex = layers.blanket();
 
 export const mediaTypeIconColors = {
   image: akColorY200,

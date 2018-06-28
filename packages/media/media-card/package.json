@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "29.1.5",
+  "version": "29.1.6",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
