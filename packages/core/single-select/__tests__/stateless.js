@@ -6,7 +6,6 @@ import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import Spinner from '@atlaskit/spinner';
 
-import { StatelessSelect as StatelessSelectWithAnalytics } from '../src';
 import { StatelessSelectWithoutAnalytics as StatelessSelect } from '../src/components/StatelessSelect';
 import InitialLoadingElement from '../src/styled/InitialLoading';
 import Content from '../src/styled/Content';
@@ -940,24 +939,5 @@ describe(name, () => {
       expect(wrapper.find(Spinner).length).toBe(0);
       expect(wrapper.find(InitialLoadingElement).length).toBe(0);
     });
-  });
-});
-
-describe('StatelessSelectWithAnalytics', () => {
-  beforeEach(() => {
-    jest.spyOn(global.console, 'warn');
-    jest.spyOn(global.console, 'error');
-  });
-  afterEach(() => {
-    global.console.warn.mockRestore();
-    global.console.error.mockRestore();
-  });
-
-  it('should mount without errors', () => {
-    mount(<StatelessSelectWithAnalytics />);
-    /* eslint-disable no-console */
-    expect(console.warn).not.toHaveBeenCalled();
-    expect(console.error).not.toHaveBeenCalled();
-    /* eslint-enable no-console */
   });
 });
