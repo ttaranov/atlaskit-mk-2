@@ -2,11 +2,10 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import { type DropResult, type DragUpdate } from 'react-beautiful-dnd';
+import { type DropResult } from 'react-beautiful-dnd';
 import Tree from '../../src/index';
 import { treeWithThreeLeaves } from '../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
-import { complexTree } from '../../mockdata/complexTree';
 
 configure({ adapter: new Adapter() });
 
