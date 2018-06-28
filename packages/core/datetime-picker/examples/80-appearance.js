@@ -12,6 +12,8 @@ export default () => {
 
       <Label label="TimePicker - subtle appearance" />
       <TimePicker onChange={console.log} appearance="subtle" />
+      <Label label="TimePicker - compact spacing" />
+      <TimePicker onChange={console.log} spacing="compact" />
 
       <Label label="DatePicker - default" />
       <DatePicker onChange={console.log} />
@@ -19,6 +21,8 @@ export default () => {
       <DatePicker onChange={console.log} hideIcon />
       <Label label="DatePicker - subtle appearance" />
       <DatePicker onChange={console.log} appearance="subtle" />
+      <Label label="DatePicker - compact spacing" />
+      <DatePicker onChange={console.log} spacing="compact" />
 
       <Label label="DateTimePicker - default" />
       <DateTimePicker onChange={console.log} />
@@ -26,6 +30,8 @@ export default () => {
       <DateTimePicker onChange={console.log} hideIcon />
       <Label label="DateTimePicker - subtle appearance" />
       <DateTimePicker onChange={console.log} appearance="subtle" />
+      <Label label="DateTimePicker - compact spacing" />
+      <DateTimePicker onChange={console.log} spacing="compact" />
     </div>
   );
 };
