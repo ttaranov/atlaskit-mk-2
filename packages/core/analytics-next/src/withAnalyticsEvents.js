@@ -85,15 +85,6 @@ type Obj<T> = { [string]: T };
 const vmap = <A, B>(obj: Obj<A>, fn: (string, A) => B): Obj<B> =>
   Object.keys(obj).reduce((curr, k) => ({ ...curr, [k]: fn(k, obj[k]) }), {});
 
-const createCache = () => {
-  let value = {};
-  return next => {
-    const ret = value;
-    value = next;
-    return ret;
-  };
-};
-
 export default function withAnalyticsEvents<
   Props: {},
   InnerComponent: ComponentType<Props>,
@@ -102,30 +93,20 @@ export default function withAnalyticsEvents<
   createEventMap: EventMap<ExternalProps> = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
   return WrappedComponent => {
-    const propsCache = createCache();
-    const modifiedPropsCache = createCache();
     // $FlowFixMe - flow 0.67 doesn't know about forwardRef
     const WithAnalyticsEvents = React.forwardRef(
       (props: ExternalProps, ref) => {
         return (
           <AnalyticsContextConsumer>
             {createAnalyticsEvent => {
-              const prevProps = propsCache(props);
-              const prevModifiedProps = modifiedPropsCache({});
-              const modifiedProps = vmap(
-                createEventMap,
-                (propName, entry) =>
-                  prevModifiedProps[propName] &&
-                  prevProps[propName] === props[propName]
-                    ? prevModifiedProps[propName]
-                    : modifyCallbackProp(
-                        propName,
-                        entry,
-                        props,
-                        createAnalyticsEvent,
-                      ),
+              const modifiedProps = vmap(createEventMap, (propName, entry) =>
+                modifyCallbackProp(
+                  propName,
+                  entry,
+                  props,
+                  createAnalyticsEvent,
+                ),
               );
-              modifiedPropsCache(modifiedProps);
               return (
                 <WrappedComponent
                   {...props}
