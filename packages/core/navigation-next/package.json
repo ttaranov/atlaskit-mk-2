@@ -32,7 +32,7 @@
     "unstated": "^1.2.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.3.0"
   },
   "devDependencies": {
     "@atlaskit/badge": "^8.0.3",
