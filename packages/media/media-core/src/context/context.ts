@@ -262,8 +262,10 @@ class ContextImpl implements Context {
     let fileId: string;
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
+    const collectionName = file.collection;
     // TODO [MSW-678]: remove when id upfront is exposed
     const tempFileId = uuid.v4();
+    const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
     const fileStream = new Observable<FileState>(observer => {
       try {
         const name = file.name || '';
@@ -286,8 +288,10 @@ class ContextImpl implements Context {
 
         deferredFileId.then(id => {
           fileId = id;
+          const key = FileStreamCache.createKey(id, { collectionName });
+
           // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
-          this.fileStreamsCache.set(id, fileStream);
+          this.fileStreamsCache.set(key, fileStream);
           observer.next({
             id,
             status: 'processing',
@@ -302,14 +306,14 @@ class ContextImpl implements Context {
     })
       .concat(
         Observable.defer(() =>
-          this.createDownloadFileStream(fileId, file.collection),
+          this.createDownloadFileStream(fileId, collectionName),
         ),
       )
       .publishReplay(1);
     // TODO: Should we use refCount or not?
     // .refCount()
 
-    this.fileStreamsCache.set(tempFileId, fileStream);
+    this.fileStreamsCache.set(tempKey, fileStream);
     fileStream.connect();
 
     return fileStream;
