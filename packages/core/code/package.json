@@ -15,8 +15,7 @@
   "dependencies": {
     "@atlaskit/theme": "^4.0.4",
     "memoize-one": "^3.0.1",
-    "react-syntax-highlighter": "^6.0.2",
-    "styled-components": "1.4.6 - 3"
+    "react-syntax-highlighter": "^6.0.2"
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.1.1",
