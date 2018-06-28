@@ -70,8 +70,13 @@ const tableSharedStyle = css`
       }
       th {
         background-color: ${akEditorTableToolbar};
-        font-weight: bold;
         text-align: left;
+        & * {
+          font-weight: normal;
+        }
+        & > p {
+          font-weight: bold;
+        }
       }
     }
   }
