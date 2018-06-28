@@ -108,13 +108,15 @@ export default class Tree extends Component<Props, State> {
     destination: DraggableLocation,
   ): number => {
     const { paddingPerLevel } = this.props;
-    if (
-      this.isMovingDown(source, destination) &&
-      this.isTopOfSubtree(source, destination)
-    ) {
-      return paddingPerLevel;
-    }
-    return 0;
+    const { tree } = this.props;
+    const flattenItems: FlattenedItem[] = flattenTree(tree);
+    const sourcePath: Path = getSourcePath(flattenItems, source.index);
+    const destinationPath: Path = getDestinationPath(
+      flattenItems,
+      source.index,
+      destination.index,
+    );
+    return (destinationPath.length - sourcePath.length) * paddingPerLevel;
   };
 
   static getDragPosition = (tree: TreeData, path: Path): ?DragPosition => {
@@ -148,25 +150,30 @@ export default class Tree extends Component<Props, State> {
     return flattenItems[destination.index].path.length < destinationPath.length;
   };
 
-  patchDndProvided = (
-    provided: DraggableProvided,
-    snapshot: DraggableStateSnapshot,
-  ): TreeDraggableProvided => {
+  patchDndProvided = (provided: DraggableProvided): TreeDraggableProvided => {
     const { dropAnimationOffset } = this.state;
 
     if (
+      !provided.draggableProps ||
       !provided.draggableProps.style ||
       !provided.draggableProps.style.left ||
-      //$ExpectError
-      !snapshot.isDropAnimating
+      !provided.draggableProps.style.transform
     ) {
       // $FlowFixMe
       return provided;
     }
 
+    // $FlowFixMe
+    const t = provided.draggableProps.style.transform;
+    // $FlowFixMe
+    const s1 = t.split('px')[1];
+    const finalTransform = `translate(0px${s1}px)`;
+    // $FlowFixMe
     const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
+    // $FlowFixMe
     const finalStyle: TreeDraggingStyle = {
       ...provided.draggableProps.style,
+      transform: finalTransform,
       // overwrite left position
       left: finalLeft,
       // animate so it doesn't jump immediately
@@ -197,7 +204,6 @@ export default class Tree extends Component<Props, State> {
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
           const finalProvided: TreeDraggableProvided = this.patchDndProvided(
             provided,
-            snapshot,
           );
           return (
             <TreeItem

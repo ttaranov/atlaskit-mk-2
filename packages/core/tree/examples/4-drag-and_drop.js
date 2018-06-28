@@ -71,12 +71,19 @@ export default class DragDropTree extends Component<void, State> {
     snapshot,
   }: RenderItemParams) => {
     return (
-      <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+      <div
+        key={item.id}
+        ref={provided.innerRef}
+        style={{
+          ...provided.draggableProps.style,
+          paddingLeft: depth * PADDING_PER_LEVEL,
+        }}
+      >
         <AkNavigationItem
           isDragging={snapshot.isDragging}
           text={item.data ? item.data.title : ''}
           icon={DragDropTree.getIcon(item, onExpand, onCollapse)}
-          dnd={provided}
+          dnd={{ dragHandleProps: provided.dragHandleProps }}
         />
       </div>
     );
