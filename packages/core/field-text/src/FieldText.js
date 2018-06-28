@@ -12,14 +12,6 @@ export default class FieldText extends Component<FieldTextProps, State> {
     onChange: () => {},
   };
 
-  input: ?HTMLInputElement;
-
-  focus() {
-    if (this.input) {
-      this.input.focus();
-    }
-  }
-
   state = {
     value: this.props.value,
   };
@@ -37,10 +29,6 @@ export default class FieldText extends Component<FieldTextProps, State> {
         {...this.props}
         value={this.state.value}
         onChange={this.handleOnChange}
-        ref={fieldRef => {
-          // $FlowFixMe - `FieldTextStateless` is incompatible with `HTMLInputElement`
-          this.input = fieldRef;
-        }}
       />
     );
   }
