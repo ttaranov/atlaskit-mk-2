@@ -1,22 +1,25 @@
 import * as React from 'react';
-import {
-  MentionListErrorStyle,
-  MentionListErrorHeadlineStyle,
-  MentionListAdviceStyle,
-} from './styles';
 import { HttpError } from '../../api/MentionResource';
+import {
+  DefaultAdvisedAction,
+  DefaultHeadline,
+  DifferentText,
+  LoginAgain,
+} from '../i18n';
 import { GenericErrorIllustration } from './GenericErrorIllustration';
+import {
+  MentionListAdviceStyle,
+  MentionListErrorHeadlineStyle,
+  MentionListErrorStyle,
+} from './styles';
 
 export interface Props {
   error?: Error;
 }
 
-const defaultHeadline = 'Something went wrong';
-const defaultSecondary = 'Try again in a few seconds';
-
 type ErrorMessage = {
-  headline: string;
-  advisedAction: string;
+  headline: React.ComponentType<{}>;
+  advisedAction: React.ComponentType<{}>;
 };
 
 export default class MentionListError extends React.PureComponent<Props, {}> {
@@ -27,18 +30,18 @@ export default class MentionListError extends React.PureComponent<Props, {}> {
    */
   private static prepareError(error: Error | undefined): ErrorMessage {
     const errorMessage = {
-      headline: defaultHeadline,
-      advisedAction: defaultSecondary,
+      headline: DefaultHeadline,
+      advisedAction: DefaultAdvisedAction,
     };
     if (error && error.hasOwnProperty('statusCode')) {
       const httpError = error as HttpError;
 
       if (httpError.statusCode === 401) {
-        errorMessage.advisedAction = 'Try logging out then in again';
+        errorMessage.advisedAction = LoginAgain;
       }
 
       if (httpError.statusCode === 403) {
-        errorMessage.advisedAction = 'Try entering different text';
+        errorMessage.advisedAction = DifferentText;
       }
     }
 
@@ -53,10 +56,10 @@ export default class MentionListError extends React.PureComponent<Props, {}> {
       <MentionListErrorStyle>
         <GenericErrorIllustration />
         <MentionListErrorHeadlineStyle>
-          {errorMessage.headline}
+          <errorMessage.headline />
         </MentionListErrorHeadlineStyle>
         <MentionListAdviceStyle>
-          {errorMessage.advisedAction}
+          <errorMessage.advisedAction />
         </MentionListAdviceStyle>
       </MentionListErrorStyle>
     );

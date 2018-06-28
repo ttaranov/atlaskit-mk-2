@@ -1,23 +1,22 @@
 import { waitUntil } from '@atlaskit/util-common-test';
-import * as React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
-
 import { mention } from '@atlaskit/util-data-test';
-import MentionList, { Props, State } from '../../src/components/MentionList';
+import { ReactWrapper } from 'enzyme';
+import { mountWithIntl } from 'enzyme-react-intl';
+import * as React from 'react';
 import MentionItem from '../../src/components/MentionItem';
+import MentionList, { Props, State } from '../../src/components/MentionList';
 import { isMentionItemSelected } from '../_test-helpers';
 
 const { mentionDataSize } = mention.mentionData;
 const mentions = mention.mentionData.mentionResult;
 
 describe('MentionList', () => {
-  let component;
+  let component: ReactWrapper<Props, State>;
   let defaultMentionItemsShow;
   const setupList = (props?: Props) =>
-    mount(<MentionList mentions={mentions} {...props} />) as ReactWrapper<
-      Props,
-      State
-    >;
+    mountWithIntl(
+      <MentionList mentions={mentions} {...props} />,
+    ) as ReactWrapper<Props, State>;
 
   beforeEach(() => {
     component = setupList();

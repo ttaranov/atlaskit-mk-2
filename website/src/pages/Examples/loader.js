@@ -1,13 +1,14 @@
 // @flow
-import React, { Component } from 'react';
-import styled from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
-import Loadable from 'react-loadable';
 import qs from 'query-string';
-import packageResolver from '../../utils/packageResolver';
-import * as fs from '../../utils/fs';
-import type { File } from '../../types';
+import React, { Component } from 'react';
+import { IntlProvider } from 'react-intl';
+import Loadable from 'react-loadable';
+import styled from 'styled-components';
 import Loading from '../../components/Loading';
+import * as fs from '../../utils/fs';
+import packageResolver from '../../utils/packageResolver';
+import type { File } from '../../types';
 
 const Content = styled.div`
   flex: 1 1 auto;
@@ -103,8 +104,10 @@ function ExampleLoader(props: ExampleLoaderProps) {
   });
 
   return (
-    <Content>
-      <ExampleComponent />
-    </Content>
+    <IntlProvider locale={navigator.language}>
+      <Content>
+        <ExampleComponent />
+      </Content>
+    </IntlProvider>
   );
 }

@@ -31,7 +31,9 @@
     "@atlaskit/util-service-support": "^2.0.10",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
+    "enzyme-react-intl": "^2.0.0",
     "js-search": "^1.3.7",
+    "react-intl": "^2.4.0",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0",
     "xregexp": "^3.2.0"

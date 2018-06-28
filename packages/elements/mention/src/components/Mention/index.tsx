@@ -1,21 +1,20 @@
-import * as React from 'react';
-import { MentionStyle, MentionContainer } from './styles';
-import Tooltip from '@atlaskit/tooltip';
-import {
-  isRestricted,
-  MentionType,
-  isSpecialMentionText,
-  MentionEventHandler,
-} from '../../types';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
-
 import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import * as React from 'react';
 import {
   name as packageName,
   version as packageVersion,
 } from '../../../package.json';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { ELEMENTS_CHANNEL } from '../../constants';
+import {
+  isRestricted,
+  isSpecialMentionText,
+  MentionEventHandler,
+  MentionType,
+} from '../../types';
+import { NoAccessTooltip } from '../NoAccessTooltip';
+import { MentionContainer, MentionStyle } from './styles';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
 export const ANALYTICS_HOVER_DELAY = 1000;
@@ -145,12 +144,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
         spellCheck={false}
       >
         {mentionType === MentionType.RESTRICTED ? (
-          <Tooltip
-            content={`${props.text} won't be notified as they have no access`}
-            position="right"
-          >
-            {mentionComponent}
-          </Tooltip>
+          <NoAccessTooltip name={text}>{mentionComponent}</NoAccessTooltip>
         ) : (
           mentionComponent
         )}

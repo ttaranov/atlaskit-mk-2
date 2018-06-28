@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
-
-import { MentionDescription } from '../../src/types';
-import { Props, State } from '../../src/components/MentionList';
+import { ShallowWrapper } from 'enzyme';
+import { shallowWithIntl } from 'enzyme-react-intl';
+import * as React from 'react';
+import { NoAccessLabel } from '../../src/components/i18n';
 import MentionItem from '../../src/components/MentionItem';
+import { Props, State } from '../../src/components/MentionList';
+import { MentionDescription } from '../../src/types';
 
 const mentionWithNickname = {
   id: '0',
@@ -25,7 +26,7 @@ function setupMentionItem(
   mention: MentionDescription,
   props?: Props,
 ): ShallowWrapper<Props, State> {
-  return shallow(
+  return shallowWithIntl(
     <MentionItem mention={mention} onSelection={props && props.onSelection} />,
   ) as ShallowWrapper<Props, State>;
 }
@@ -49,7 +50,16 @@ describe('MentionItem', () => {
       avatarUrl: '',
       accessLevel: 'SITE',
     });
-    expect(component.find(LockCircleIcon)).toHaveLength(1);
+    const noAccessLabel = component.find(NoAccessLabel);
+    expect(noAccessLabel).toHaveLength(1);
+    // we need to dive twice because NoAccessLabel wraps FormattedMessage
+    // that wraps LookCircleIcon
+    expect(
+      noAccessLabel
+        .dive()
+        .dive()
+        .find(LockCircleIcon),
+    ).toHaveLength(1);
   });
 
   it('should not display access restriction if accessLevel is CONTAINER', () => {
@@ -60,7 +70,7 @@ describe('MentionItem', () => {
       avatarUrl: '',
       accessLevel: 'CONTAINER',
     });
-    expect(component.find(LockCircleIcon)).toHaveLength(0);
+    expect(component.find(NoAccessLabel)).toHaveLength(0);
   });
 
   it('should not display access restriction if no accessLevel data', () => {
@@ -70,6 +80,6 @@ describe('MentionItem', () => {
       mentionName: 'Fidela',
       avatarUrl: '',
     });
-    expect(component.find(LockCircleIcon)).toHaveLength(0);
+    expect(component.find(NoAccessLabel)).toHaveLength(0);
   });
 });

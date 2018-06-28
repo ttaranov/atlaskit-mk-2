@@ -1,20 +1,20 @@
 import { waitUntil } from '@atlaskit/util-common-test';
-import * as React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
-
-import { MentionDescription } from '../../src/types';
-import { HttpError } from '../../src/api/MentionResource';
 import { mention, MockMentionResource } from '@atlaskit/util-data-test';
+import { ReactWrapper } from 'enzyme';
+import { mountWithIntl } from 'enzyme-react-intl';
+import * as React from 'react';
+import { HttpError } from '../../src/api/MentionResource';
+import MentionItem from '../../src/components/MentionItem';
+import MentionList from '../../src/components/MentionList';
+import MentionListError from '../../src/components/MentionListError';
 import MentionPicker, {
   OnClose,
   OnOpen,
   Props,
   State,
 } from '../../src/components/MentionPicker';
-import MentionList from '../../src/components/MentionList';
-import MentionListError from '../../src/components/MentionListError';
-import MentionItem from '../../src/components/MentionItem';
-import { isMentionItemSelected, getMentionItemById } from '../_test-helpers';
+import { MentionDescription } from '../../src/types';
+import { getMentionItemById, isMentionItemSelected } from '../_test-helpers';
 
 const mentions = mention.mentionData.mentionResult;
 const MAX_NOTIFIED_ITEMS = 20;
@@ -24,7 +24,7 @@ function setupPicker(props?: Props): ReactWrapper<Props, State> {
     minWait: 0,
     maxWait: 0,
   });
-  return mount(
+  return mountWithIntl(
     <MentionPicker resourceProvider={resourceProvider} query="" {...props} />,
   ) as ReactWrapper<Props, State>;
 }
