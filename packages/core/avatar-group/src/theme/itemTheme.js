@@ -18,6 +18,7 @@ const avatarItemTheme: Object = {
   },
   active: {
     text: colors.N900,
+    background: colors.backgroundActive,
   },
   padding: {
     default: dropdownPadding,
