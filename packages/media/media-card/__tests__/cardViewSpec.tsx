@@ -67,13 +67,8 @@ describe('CardView', () => {
     );
 
   it('should render FileCard when no metadata is passed', () => {
-    const element = shallow(<CardView status="loading" appearance="small" />);
-    const fileCard = element
-      .find(CardViewWithAnalyticsEvents)
-      .dive()
-      .find(CardViewBase)
-      .dive()
-      .find(FileCard);
+    const element = mount(<CardView status="loading" appearance="small" />);
+    const fileCard = element.find(FileCard);
     expect(fileCard).toHaveLength(1);
   });
 
