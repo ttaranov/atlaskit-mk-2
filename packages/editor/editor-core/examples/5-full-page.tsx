@@ -86,7 +86,9 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {};
+export type Props = {
+  defaultValue?: Object;
+};
 export type State = { disabled: boolean };
 
 const providers = {
@@ -125,6 +127,7 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
+            defaultValue={this.props.defaultValue}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
@@ -197,12 +200,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example() {
+export default function Example(defaultValue) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor />
+        <ExampleEditor defaultValue={defaultValue} />
       </div>
     </EditorContext>
   );
