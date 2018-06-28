@@ -69,6 +69,7 @@ export interface CardState {
   status: CardStatus;
   metadata?: MediaItemDetails;
   dataURI?: string;
+  progress?: number;
 }
 
 export class Card extends Component<CardProps, CardState> {
@@ -81,12 +82,15 @@ export class Card extends Component<CardProps, CardState> {
 
   constructor(props: CardProps) {
     super(props);
-    const { identifier } = props;
-
-    this.subscribe(identifier);
     this.state = {
       status: 'loading',
     };
+  }
+
+  componentDidMount() {
+    const { identifier } = this.props;
+
+    this.subscribe(identifier);
   }
 
   componentWillReceiveProps(nextProps: CardProps) {
@@ -147,8 +151,32 @@ export class Card extends Component<CardProps, CardState> {
 
     context.getFile(id, { collectionName }).subscribe({
       next: async state => {
-        if (state.status === 'uploading') {
-          // TODO: convert state.preview into string and set as dataURI
+        const { dataURI } = this.state;
+        if (!dataURI && state.status === 'uploading' && state.preview) {
+          // TODO: Only set dateURI if there was none before
+        }
+        if (state.status === 'uploading' && state.preview) {
+          // TODO: get dataURI only for image/video => get logic from MediaPicker and abstract it into a helper
+          // TODO: should this logic live in media-core to allow MediaViewer to benefit from it?
+          const dataURI = URL.createObjectURL(state.preview.blob);
+          console.log('uploading', state.progress);
+          this.setState({
+            dataURI,
+            status: 'uploading',
+            progress: state.progress,
+            metadata: {
+              id: state.id,
+              name: state.name,
+              site: state.size,
+            },
+          });
+        }
+
+        if (state.status === 'processing') {
+          this.setState({
+            progress: 1,
+            status: 'complete',
+          });
         }
 
         if (state.status === 'processed') {
@@ -233,7 +261,7 @@ export class Card extends Component<CardProps, CardState> {
       onLoadingChange,
       disableOverlay,
     } = this.props;
-    const { status, metadata, dataURI } = this.state;
+    const { status, progress, metadata, dataURI } = this.state;
     const { mediaItemType, placeholder, analyticsContext } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
@@ -252,6 +280,7 @@ export class Card extends Component<CardProps, CardState> {
           onMouseEnter={onMouseEnter}
           onSelectChange={onSelectChange}
           disableOverlay={disableOverlay}
+          progress={progress}
           onLoadingChange={onLoadingChange} // TODO: Implement here
         />
       </AnalyticsContext>

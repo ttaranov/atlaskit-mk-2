@@ -269,7 +269,19 @@ class ContextImpl implements Context {
     const fileStream = new Observable<FileState>(observer => {
       try {
         const name = file.name || '';
-        // TODO send local preview
+        if (file.content instanceof Blob) {
+          observer.next({
+            id: tempFileId,
+            name,
+            size,
+            progress: 0,
+            status: 'uploading',
+            preview: {
+              blob: file.content,
+            },
+          });
+        }
+
         const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
           onProgress: progress => {
             observer.next({
