@@ -1,13 +1,18 @@
 // @flow
 import React from 'react';
 import { components } from 'react-select';
+import SelectClearIcon from '@atlaskit/icon/glyph/select-clear';
 
 export { CheckboxOption, RadioOption } from './input-options';
 export { ClearIndicator, DropdownIndicator } from './indicators';
 
 export const MultiValueRemove = (props: any) => (
   <components.MultiValueRemove {...props}>
-    <components.CrossIcon size={16} />
+    <SelectClearIcon
+      size="small"
+      primaryColor="transparent"
+      secondaryColor="inherit"
+    />
   </components.MultiValueRemove>
 );
 export const IndicatorSeparator = null;
