@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.6
+- [patch] ED-4927: disable gap cursor for lists [1bdae46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bdae46)
+- [none] Updated dependencies [1bdae46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bdae46)
+
 ## 73.9.5
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/media-picker@8.1.6
