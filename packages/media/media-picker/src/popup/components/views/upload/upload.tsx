@@ -105,7 +105,7 @@ export class StatelessUploadView extends Component<
   };
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, mpBrowser } = this.props;
     const cards = this.renderCards();
     const isEmpty = !isLoading && cards.length === 0;
 
@@ -118,7 +118,7 @@ export class StatelessUploadView extends Component<
 
     return (
       <Wrapper>
-        <Dropzone isEmpty={isEmpty} mpBrowser={this.props.mpBrowser} />
+        <Dropzone isEmpty={isEmpty} mpBrowser={mpBrowser} />
         {contentPart}
       </Wrapper>
     );
@@ -172,7 +172,11 @@ export class StatelessUploadView extends Component<
     const uploadingFilesCards = this.uploadingFilesCards();
     return uploadingFilesCards
       .concat(recentFilesCards)
-      .map(({ key, el: card }) => <CardWrapper key={key}>{card}</CardWrapper>);
+      .map(({ key, el: card }) => (
+        <CardWrapper className="e2e-recent-upload-card" key={key}>
+          {card}
+        </CardWrapper>
+      ));
   }
 
   private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
@@ -250,6 +254,7 @@ export class StatelessUploadView extends Component<
       onEditRemoteImage,
     } = this.props;
     const { items } = recents;
+
     const selectedRecentFiles = selectedItems
       .filter(item => item.serviceName === 'recent_files')
       .map(item => item.id);

@@ -144,6 +144,9 @@ describe('Fetcher', () => {
                 },
               },
               {
+                details: {},
+              },
+              {
                 details: {
                   size: 1,
                 },
@@ -157,7 +160,18 @@ describe('Fetcher', () => {
       const recents = await fetcher.getRecentFiles(apiUrl, auth, 30, 'desc');
 
       expect(recents.nextInclusiveStartKey).toEqual('next-key');
-      expect(recents.contents).toHaveLength(2);
+      expect(recents.contents).toEqual([
+        {
+          details: {
+            size: 100,
+          },
+        },
+        {
+          details: {
+            size: 1,
+          },
+        },
+      ]);
     });
   });
 

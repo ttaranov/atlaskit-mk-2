@@ -87,13 +87,6 @@ describe('<StatelessUploadView />', () => {
       />
     );
   };
-  const recentItem = {
-    type: 'file',
-    id: 'some-file-id',
-    insertedAt: 0,
-    occurrenceKey: 'some-occurrence-key',
-    details: { name: 'some-file-name', size: 1000 },
-  };
 
   it('should render the loading state when "isLoading" is true', () => {
     const component = shallow(getUploadViewElement(true));
@@ -111,6 +104,13 @@ describe('<StatelessUploadView />', () => {
   });
 
   it('should render cards and dropzone when there are recent items', () => {
+    const recentItem = {
+      type: 'file',
+      id: 'some-file-id',
+      insertedAt: 0,
+      occurrenceKey: 'some-occurrence-key',
+      details: { name: 'some-file-name', size: 1000 },
+    };
     const recentItems = [recentItem, recentItem, recentItem];
 
     const component = shallow(getUploadViewElement(false, recentItems));
