@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 73.9.8
+
+- [patch] [refactor] Updated paste plugin to remove old/buggy handling of specific node types. No longer have complex logic around code-block detection on paste. If PM parses it as a code-block, we respect that. [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+- [patch] [refactor] Use ParseRule->context to prevent pasting layoutColumn/layoutSections inside each other. [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+- [patch] [refactor] Use ParseRule->context to prevent nesting bodiedExtensions on paste. [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+- [none] Updated dependencies [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+
 ## 73.9.7
 - [patch] Fixing extension breakout on edit [91c015e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91c015e)
 - [none] Updated dependencies [91c015e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91c015e)
