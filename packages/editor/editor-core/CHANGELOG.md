@@ -1,5 +1,18 @@
 # @atlaskit/editor-core
 
+## 73.9.2
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/emoji@36.0.0
+  - @atlaskit/util-data-test@9.1.14
+  - @atlaskit/task-decision@7.1.7
+  - @atlaskit/mention@13.1.2
+  - @atlaskit/renderer@18.2.7
+  - @atlaskit/editor-json-transformer@3.1.4
+  - @atlaskit/editor-bitbucket-transformer@3.2.5
+  - @atlaskit/editor-test-helpers@4.1.8
+  - @atlaskit/editor-markdown-transformer@1.2.5
+  - @atlaskit/editor-common@11.3.7
+
 ## 73.9.1
 
 - [patch] ED-3801: fix table typing performance [e70bf05](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e70bf05)

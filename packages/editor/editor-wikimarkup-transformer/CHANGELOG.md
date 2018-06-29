@@ -1,5 +1,14 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 1.1.6
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/util-data-test@9.1.14
+  - @atlaskit/renderer@18.2.7
+  - @atlaskit/editor-json-transformer@3.1.4
+  - @atlaskit/editor-core@73.9.2
+  - @atlaskit/editor-test-helpers@4.1.8
+  - @atlaskit/editor-common@11.3.7
+
 ## 1.1.5
 - [patch] Fixes an issue where double line breaks doesn’t start a new paragraph [8242007](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242007)
 
