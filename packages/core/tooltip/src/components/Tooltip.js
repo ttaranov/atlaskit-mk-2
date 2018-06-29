@@ -12,7 +12,7 @@ import React, {
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
-  createAndFireEvent,
+  type UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -26,6 +26,7 @@ import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
 import { getPosition } from './utils';
+import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
 type Props = {
   /** A single element, either Component or DOM node */
@@ -51,6 +52,7 @@ type Props = {
   /** Show only one line of text, and truncate when too long */
   truncate?: boolean,
 };
+
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
@@ -104,6 +106,27 @@ class Tooltip extends Component<Props, State> {
     // handle case where truncate is changed while visible
     if (truncate !== this.props.truncate) {
       this.setState({ coordinates: null });
+    }
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    // AK-4959 - can move logic to withAnalyticsEvents hoc when we have handlers for tooltip visibility
+    const payload = ((wasVisible, nowVisible) => {
+      if (wasVisible && !nowVisible) {
+        return unhoveredPayload;
+      } else if (!wasVisible && nowVisible) {
+        return hoveredPayload;
+      }
+      return undefined;
+    })(prevState.isVisible, this.state.isVisible);
+    /* eslint-disable react/prop-types */
+    // This prop doesn't exist in exported component so we don't want it to be documented
+    // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
+    if (payload && this.props.createAnalyticsEvent) {
+      // $FlowFixMe
+      const event = this.props.createAnalyticsEvent(payload);
+      /* eslint-enable */
+      event.fire('atlaskit');
     }
   }
 
@@ -252,7 +275,6 @@ class Tooltip extends Component<Props, State> {
 export { Tooltip as TooltipWithoutAnalytics };
 
 export type TooltipType = Tooltip;
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
   componentName: 'tooltip',
@@ -260,26 +282,7 @@ export default withAnalyticsContext({
   packageVersion,
 })(
   withAnalyticsEvents({
-    onMouseOver: createAndFireEventOnAtlaskit({
-      action: 'hovered',
-      actionSubject: 'tooltip',
-
-      attributes: {
-        componentName: 'tooltip',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onMouseOut: createAndFireEventOnAtlaskit({
-      action: 'unhovered',
-      actionSubject: 'tooltip',
-
-      attributes: {
-        componentName: 'tooltip',
-        packageName,
-        packageVersion,
-      },
-    }),
+    onMouseOver: hoveredPayload,
+    onMouseOut: unhoveredPayload,
   })(Tooltip),
 );
