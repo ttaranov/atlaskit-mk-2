@@ -10,6 +10,7 @@ import {
   ContainerResultWithAnalytics,
   PersonResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
+import AnalyticsEventFiredOnMount from '../src/components/analytics/AnalyticsEventFiredOnMount';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
@@ -45,6 +46,7 @@ describe('ConfluenceSearchResults', () => {
       spaceResults: [],
       peopleResults: [],
       isLoading: false,
+      searchSessionId: 'abc',
       ...partialProps,
     };
 
@@ -91,6 +93,7 @@ describe('ConfluenceSearchResults', () => {
   it('should render links to advanced search when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
+      recentlyInteractedPeople: [makePersonResult()],
     };
 
     const wrapper = render(props);
@@ -117,6 +120,28 @@ describe('ConfluenceSearchResults', () => {
     expect(group.childAt(1).prop('text')).toEqual(
       'Advanced search for "foo bar"',
     );
+  });
+
+  it('should render the pre query screen analytics event when there are results', () => {
+    const props: Partial<Props> = {
+      query: 'foo bar',
+      objectResults: [makeConfluenceObjectResult({ name: 'name' })],
+    };
+
+    const wrapper = render(props);
+
+    expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
+  });
+
+  it('should render the post query screen analytics event when there are results', () => {
+    const props: Partial<Props> = {
+      query: '',
+      recentlyViewedPages: [makeConfluenceObjectResult({ name: 'name' })],
+    };
+
+    const wrapper = render(props);
+
+    expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
   });
 
   it('should render objects when there are results', () => {

@@ -283,6 +283,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           objectResults,
           spaceResults,
           peopleResults,
+          searchSessionId,
         })}
       </GlobalQuickSearch>
     );
