@@ -9,21 +9,25 @@ import Navigation from './navigation';
 import Header from './header';
 
 export type Props = {
-  onClose?: () => void;
-  onNavigationChange?: (selectedItem: Identifier) => void;
-  showControls?: () => void;
+  readonly onClose?: () => void;
+  readonly onNavigationChange?: (selectedItem: Identifier) => void;
+  readonly showControls?: () => void;
   readonly featureFlags?: MediaViewerFeatureFlags;
-  selectedItem: Identifier;
-  items: Identifier[];
-  context: Context;
+  readonly selectedItem: Identifier;
+  readonly items: Identifier[];
+  readonly context: Context;
 };
 
 export type State = {
   selectedItem: Identifier;
+  isFirstPreview: boolean;
 };
 
 export class List extends React.Component<Props, State> {
-  state: State = { selectedItem: this.props.selectedItem };
+  state: State = {
+    selectedItem: this.props.selectedItem,
+    isFirstPreview: true,
+  };
 
   render() {
     const { items } = this.props;
@@ -56,6 +60,7 @@ export class List extends React.Component<Props, State> {
             identifier={selectedItem}
             showControls={showControls}
             onClose={onClose}
+            isAutoPlay={this.state.isFirstPreview}
           />
           <Navigation
             items={items}
@@ -76,6 +81,6 @@ export class List extends React.Component<Props, State> {
       showControls();
     }
 
-    this.setState({ selectedItem });
+    this.setState({ selectedItem, isFirstPreview: false });
   };
 }

@@ -95,4 +95,27 @@ describe('<List />', () => {
     el.find(ArrowRightCircleIcon).simulate('click');
     expect(showControls).toHaveBeenCalledTimes(2);
   });
+
+  describe('AutoPlay', () => {
+    it('should auto play the first preview', () => {
+      const showControls = jest.fn();
+      const el = createFixture({
+        items: [identifier, identifier, identifier],
+        selectedItem: identifier,
+        showControls,
+      });
+      expect(el.find({ isAutoPlay: true })).toHaveLength(1);
+    });
+
+    it('should not auto play the second preview', () => {
+      const showControls = jest.fn();
+      const el = createFixture({
+        items: [identifier, identifier, identifier],
+        selectedItem: identifier,
+        showControls,
+      });
+      el.find(ArrowRightCircleIcon).simulate('click');
+      expect(el.find({ isAutoPlay: true })).toHaveLength(0);
+    });
+  });
 });

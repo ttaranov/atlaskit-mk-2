@@ -9,11 +9,12 @@ import { getFeatureFlag } from '../../utils/getFeatureFlag';
 import { isIE } from '../../utils/isIE';
 
 export type Props = {
-  item: FileItem;
-  context: Context;
-  collectionName?: string;
+  readonly item: FileItem;
+  readonly context: Context;
+  readonly collectionName?: string;
   readonly featureFlags?: MediaViewerFeatureFlags;
   readonly showControls?: () => void;
+  readonly isAutoPlay: boolean;
 };
 
 export type State = {
@@ -38,7 +39,7 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src, isHDActive } = this.state;
-    const { item, featureFlags, showControls } = this.props;
+    const { item, featureFlags, showControls, isAutoPlay } = this.props;
     const useCustomVideoPlayer =
       !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
 
@@ -49,6 +50,7 @@ export class VideoViewer extends React.Component<Props, State> {
         if (useCustomVideoPlayer) {
           return (
             <CustomVideo
+              isAutoPlay={isAutoPlay}
               onHDToggleClick={this.onHDChange}
               showControls={showControls}
               src={src.data}
@@ -57,7 +59,7 @@ export class VideoViewer extends React.Component<Props, State> {
             />
           );
         } else {
-          return <Video controls src={src.data} />;
+          return <Video autoPlay={isAutoPlay} controls src={src.data} />;
         }
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;

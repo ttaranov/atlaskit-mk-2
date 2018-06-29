@@ -16,6 +16,7 @@ export type Props = {
   readonly featureFlags?: MediaViewerFeatureFlags;
   readonly showControls?: () => void;
   readonly onClose?: () => void;
+  readonly isAutoPlay: boolean;
 };
 
 export type State = {
@@ -50,6 +51,7 @@ export class ItemViewer extends React.Component<Props, State> {
       featureFlags,
       showControls,
       onClose,
+      isAutoPlay,
     } = this.props;
     const { item } = this.state;
     switch (item.status) {
@@ -62,6 +64,7 @@ export class ItemViewer extends React.Component<Props, State> {
           item: itemUnwrapped,
           collectionName: identifier.collectionName,
           onClose,
+          isAutoPlay,
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':

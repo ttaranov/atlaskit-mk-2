@@ -14,9 +14,10 @@ import {
 } from '../styled';
 
 export type Props = {
-  item: FileItem;
-  context: Context;
-  collectionName?: string;
+  readonly item: FileItem;
+  readonly context: Context;
+  readonly collectionName?: string;
+  readonly isAutoPlay: boolean;
 };
 
 export type State = {
@@ -50,12 +51,13 @@ export class AudioViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
+    const { isAutoPlay } = this.props;
 
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return this.renderPlayer(src.data);
+        return this.renderPlayer(src.data, isAutoPlay);
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
@@ -80,10 +82,11 @@ export class AudioViewer extends React.Component<Props, State> {
     audioElement.setAttribute('controlsList', 'nodownload');
   };
 
-  private renderPlayer = src => (
+  private renderPlayer = (src, isAutoPlay) => (
     <AudioPlayer>
       {this.renderCover()}
       <Audio
+        autoPlay={isAutoPlay}
         controls
         innerRef={this.saveAudioElement}
         src={src}

@@ -12,6 +12,7 @@ import { Video } from '../../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
 import { ErrorMessage } from '../../../src/newgen/styled';
 import { CustomVideo } from '../../../src/newgen/viewers/video/customVideo';
+import { AsyncAction } from 'rxjs/scheduler/AsyncAction';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -50,7 +51,12 @@ function createContext(authPromise) {
 function createFixture(authPromise, props?: Partial<Props>) {
   const context = createContext(authPromise);
   const el = mount(
-    <VideoViewer context={context} item={videoItem} {...props} />,
+    <VideoViewer
+      context={context}
+      item={videoItem}
+      {...props}
+      isAutoPlay={false}
+    />,
   );
   return { context, el };
 }
@@ -133,5 +139,50 @@ describe('Video viewer', () => {
       .at(1)
       .simulate('click');
     expect(el.state('isHDActive')).toBeTruthy();
+  });
+
+  describe('AutoPlay', () => {
+    async function createAutoPlayFixture(
+      isAutoPlay: boolean,
+      isCustomVideoPlayer: boolean,
+    ) {
+      const authPromise = Promise.resolve({ token, clientId });
+      const context = createContext(authPromise);
+      const el = mount(
+        <VideoViewer
+          context={context}
+          isAutoPlay={isAutoPlay}
+          item={videoItem}
+          featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
+        />,
+      );
+      await el.instance()['init']();
+      el.update();
+      return el;
+    }
+
+    it('should auto play custom video viewer', async () => {
+      const el = await createAutoPlayFixture(true, true);
+      expect(el.find(CustomVideo)).toHaveLength(1);
+      expect(el.find({ autoPlay: true })).toHaveLength(2);
+    });
+
+    it('should not auto play custom video viewer', async () => {
+      const el = await createAutoPlayFixture(false, true);
+      expect(el.find(CustomVideo)).toHaveLength(1);
+      expect(el.find({ autoPlay: true })).toHaveLength(0);
+    });
+
+    it('should auto play native video viewer', async () => {
+      const el = await createAutoPlayFixture(true, false);
+      expect(el.find(CustomVideo)).toHaveLength(0);
+      expect(el.find({ autoPlay: true })).toHaveLength(2);
+    });
+
+    it('should not auto play native video viewer', async () => {
+      const el = await createAutoPlayFixture(false, false);
+      expect(el.find(CustomVideo)).toHaveLength(0);
+      expect(el.find({ autoPlay: true })).toHaveLength(0);
+    });
   });
 });
