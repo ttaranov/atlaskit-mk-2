@@ -35,7 +35,7 @@ function createFixture(props: Partial<Props>) {
   const el = mount(
     <List
       items={items}
-      selectedItem={selectedItem}
+      defaultSelectedItem={selectedItem}
       context={context}
       {...props}
     />,
@@ -59,7 +59,7 @@ describe('<List />', () => {
     };
     const el = createFixture({
       items: [identifier, identifier2],
-      selectedItem: identifier,
+      defaultSelectedItem: identifier,
     });
     expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
     el.find(ArrowRightCircleIcon).simulate('click');
@@ -74,12 +74,12 @@ describe('<List />', () => {
         type: 'file' as MediaItemType,
       },
     ];
-    const selectedItem = {
+    const defaultSelectedItem = {
       id: 'some-id-2',
       occurrenceKey: 'some-custom-occurrence-key',
       type: 'file' as MediaItemType,
     };
-    const el = createFixture({ items: list, selectedItem });
+    const el = createFixture({ items: list, defaultSelectedItem });
     expect(el.find(ErrorMessage)).toHaveLength(1);
   });
 
@@ -87,7 +87,7 @@ describe('<List />', () => {
     const showControls = jest.fn();
     const el = createFixture({
       items: [identifier, identifier, identifier],
-      selectedItem: identifier,
+      defaultSelectedItem: identifier,
       showControls,
     });
 
@@ -101,7 +101,7 @@ describe('<List />', () => {
       const showControls = jest.fn();
       const el = createFixture({
         items: [identifier, identifier, identifier],
-        selectedItem: identifier,
+        defaultSelectedItem: identifier,
         showControls,
       });
       expect(el.find({ isAutoPlay: true })).toHaveLength(1);
@@ -111,7 +111,7 @@ describe('<List />', () => {
       const showControls = jest.fn();
       const el = createFixture({
         items: [identifier, identifier, identifier],
-        selectedItem: identifier,
+        defaultSelectedItem: identifier,
         showControls,
       });
       el.find(ArrowRightCircleIcon).simulate('click');

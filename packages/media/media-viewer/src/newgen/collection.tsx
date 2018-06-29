@@ -73,7 +73,7 @@ export class Collection extends React.Component<Props, State> {
         return (
           <List
             items={identifiers}
-            selectedItem={item}
+            defaultSelectedItem={item}
             context={context}
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}

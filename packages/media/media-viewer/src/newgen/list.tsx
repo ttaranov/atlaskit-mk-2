@@ -13,7 +13,7 @@ export type Props = {
   readonly onNavigationChange?: (selectedItem: Identifier) => void;
   readonly showControls?: () => void;
   readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly selectedItem: Identifier;
+  readonly defaultSelectedItem: Identifier;
   readonly items: Identifier[];
   readonly context: Context;
 };
@@ -25,7 +25,7 @@ export type State = {
 
 export class List extends React.Component<Props, State> {
   state: State = {
-    selectedItem: this.props.selectedItem,
+    selectedItem: this.props.defaultSelectedItem,
     previewCount: 0,
   };
 

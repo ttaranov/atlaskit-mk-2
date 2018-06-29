@@ -42,7 +42,7 @@ export class MediaViewer extends React.Component<Props, {}> {
       return (
         <Collection
           pageSize={itemSource.pageSize}
-          selectedItem={selectedItem}
+          defaultSelectedItem={selectedItem}
           collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
@@ -52,7 +52,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     } else if (itemSource.kind === 'ARRAY') {
       return (
         <List
-          selectedItem={selectedItem || itemSource.items[0]}
+          defaultSelectedItem={selectedItem || itemSource.items[0]}
           items={itemSource.items}
           context={context}
           onClose={onClose}
