@@ -4,7 +4,6 @@ import {
   em,
   doc,
   p,
-  code,
   mediaGroup,
   media,
   mediaSingle,
@@ -191,15 +190,6 @@ describe('paste plugins', () => {
         );
       });
 
-      it('should remove ` if code mark is pasted immediately after it', () => {
-        const { editorView } = editor(doc(p('`{<>}')));
-        dispatchPasteEvent(editorView, {
-          plain: 'hello',
-          html: '<pre>hello</pre>',
-        });
-        expect(editorView.state.doc).toEqualDocument(doc(p(code('hello'))));
-      });
-
       it('should not create code block for whitespace pre-wrap css', () => {
         const { editorView } = editor(doc(p('{<>}')));
         const href = 'http://example.com/__text__/something';
@@ -256,6 +246,17 @@ describe('paste plugins', () => {
       );
     });
 
+    it('should join adjacent code-blocks', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      dispatchPasteEvent(editorView, {
+        plain: 'code line 1\ncode line 2\ncode line 3',
+        html: '<pre>code line 1\ncode line 2</pre><pre>code line 3</pre>',
+      });
+      expect(editorView.state.doc).toEqualDocument(
+        doc(code_block()('code line 1\ncode line 2\ncode line 3'), p('')),
+      );
+    });
+
     it('should not create paragraph when code is copied inside existing code-block', () => {
       const { editorView } = editor(doc(code_block()('code\n{<>}\ncode')));
       dispatchPasteEvent(editorView, {
@@ -280,17 +281,6 @@ describe('paste plugins', () => {
       );
     });
 
-    it('should create code mark for single lines of code copied', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        plain: 'code single line',
-        html: '<pre>code single line</pre>',
-      });
-      expect(editorView.state.doc).toEqualDocument(
-        doc(p(code('code single line'))),
-      );
-    });
-
     it('should move selection out of code mark if new code mark is created by pasting', () => {
       const { editorView } = editor(doc(p('{<>}')));
       dispatchPasteEvent(editorView, {
@@ -298,42 +288,6 @@ describe('paste plugins', () => {
         html: '<pre>code single line</pre>',
       });
       expect(editorView.state.storedMarks!.length).toEqual(0);
-    });
-
-    it('should not move selection out of code mark if text is pasted inside existing code mark', () => {
-      const { editorView } = editor(doc(p(code('code {<>} code'))));
-      dispatchPasteEvent(editorView, {
-        plain: 'code single line',
-        html: '<pre>code single line</pre>',
-      });
-      expect(editorView.state.storedMarks).toEqual(null);
-      expect(editorView.state.selection.$to.marks().length).toEqual(1);
-    });
-
-    it('should create code block for font-family monospace css', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><div style="font-family: Menlo, Monaco, 'Courier New', monospace;white-space: pre;">Code :D</div>`,
-      });
-      expect(editorView.state.doc).toEqualDocument(
-        doc(code_block()('Code :D')),
-      );
-    });
-
-    it('should create code block for whitespace pre css', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><div style="white-space: pre;">Hello</div>`,
-      });
-      expect(editorView.state.doc).toEqualDocument(doc(code_block()('Hello')));
-    });
-
-    it('should not create code block for whitespace pre-wrap css', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-      dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><div style="white-space: pre-wrap;">Hello</div>`,
-      });
-      expect(editorView.state.doc).toEqualDocument(doc(p('Hello')));
     });
 
     it('should not handle events with Files type', () => {
@@ -415,17 +369,17 @@ describe('paste plugins', () => {
   });
 
   describe('paste bodiedExtension inside another bodiedExtension', () => {
-    it('should remove bodiedExtension from the pasted content', () => {
+    it('should remove bodiedExtension from the pasted content, paste only content', () => {
       const attrs = {
         extensionType: 'com.atlassian.confluence.macro.core',
         extensionKey: 'expand',
       };
       const { editorView } = editor(doc(bodiedExtension(attrs)(p('{<>}'))));
       dispatchPasteEvent(editorView, {
-        html: `<meta charset='utf-8'><p data-pm-context="[]">text</p><div data-node-type="bodied-extension" data-extension-type="com.atlassian.confluence.macro.core" data-extension-key="expand" data-parameters="{&quot;macroMetadata&quot;:{&quot;macroId&quot;:{&quot;value&quot;:1521116439714},&quot;schemaVersion&quot;:{&quot;value&quot;:&quot;2&quot;},&quot;placeholder&quot;:[{&quot;data&quot;:{&quot;url&quot;:&quot;//pug.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2V4cGFuZH0&amp;locale=en_GB&amp;version=2&quot;},&quot;type&quot;:&quot;image&quot;}]}}"><p>text</p></div>`,
+        html: `<meta charset='utf-8'><p data-pm-context="[]">text</p><div data-node-type="bodied-extension" data-extension-type="com.atlassian.confluence.macro.core" data-extension-key="expand" data-parameters="{&quot;macroMetadata&quot;:{&quot;macroId&quot;:{&quot;value&quot;:1521116439714},&quot;schemaVersion&quot;:{&quot;value&quot;:&quot;2&quot;},&quot;placeholder&quot;:[{&quot;data&quot;:{&quot;url&quot;:&quot;//pug.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro?definition=e2V4cGFuZH0&amp;locale=en_GB&amp;version=2&quot;},&quot;type&quot;:&quot;image&quot;}]}}"><p>content</p></div>`,
       });
       expect(editorView.state.doc).toEqualDocument(
-        doc(bodiedExtension(attrs)(p('text'))),
+        doc(bodiedExtension(attrs)(p('text'), p('content'))),
       );
     });
   });
