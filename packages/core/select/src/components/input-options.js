@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Element, type Node } from 'react';
+import React, { Component, type Element } from 'react';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
@@ -79,24 +79,6 @@ type OptionProps = CommonProps & {
 };
 type OptionState = { isActive?: boolean };
 
-const Truncate = styled.div`
-  text-overflow: ellipsis;
-  overflow-x: hidden;
-  flex: 1;
-  white-space: nowrap;
-`;
-
-const Wrapper = ({ children }: { children: Node }) => (
-  <div
-    css={{
-      alignItems: 'center',
-      display: 'flex ',
-      paddingRight: '4px',
-    }}
-  >
-    {children}
-  </div>
-);
 class ControlOption extends Component<OptionProps, OptionState> {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });
@@ -145,17 +127,24 @@ class ControlOption extends Component<OptionProps, OptionState> {
         getStyles={getStyles}
         innerProps={props}
       >
-        <Wrapper>
+        <div css={iconWrapperCSS()}>
           <Icon
             primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
             secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
           />
-        </Wrapper>
-        <Truncate>{children}</Truncate>
+        </div>
+        <div css={truncateCSS()}>{children}</div>
       </components.Option>
     );
   }
 }
+
+const iconWrapperCSS = () => ({
+  alignItems: 'center',
+  display: 'flex ',
+  paddingRight: '4px',
+});
+
 /* TODO:
   to be removed
   the label of an option in the menu
@@ -167,18 +156,12 @@ class ControlOption extends Component<OptionProps, OptionState> {
   by users who buy into radio / checkbox select.
 */
 
-const Truncate = ({ children }: { children: Node }) => (
-  <div
-    css={{
-      textOverflow: 'ellipsis',
-      'overflow-x': 'hidden',
-      flex: 1,
-      whiteSpace: 'nowrap',
-    }}
-  >
-    {children}
-  </div>
-);
+const truncateCSS = () => ({
+  textOverflow: 'ellipsis',
+  'overflow-x': 'hidden',
+  flex: 1,
+  whiteSpace: 'nowrap',
+});
 
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />

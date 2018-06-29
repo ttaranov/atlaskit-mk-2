@@ -195,9 +195,11 @@ function baseStyles(validationState, isCompact) {
       let backgroundColor;
       if (isSelected) backgroundColor = colors.N500;
       else if (isFocused) backgroundColor = colors.N20;
-
       return {
         ...css,
+        paddingTop: `${gridSize() * 2}px`,
+        paddingBottom: `${gridSize() * 2}px`,
+        lineHeight: `${gridSize() * 2}px`,
         backgroundColor,
         color,
       };
@@ -206,7 +208,7 @@ function baseStyles(validationState, isCompact) {
     singleValue: (css, { isDisabled }) => ({
       ...css,
       color: isDisabled ? colors.N70 : colors.N800,
-      lineHeight: gridSize() * 2, // 16px
+      lineHeight: `${gridSize() * 2}px`, // 16px
     }),
     menuList: css => ({
       ...css,
@@ -218,6 +220,7 @@ function baseStyles(validationState, isCompact) {
       borderRadius: '2px',
       backgroundColor: colors.N40,
       color: colors.N500,
+      maxWidth: '100%',
     }),
     multiValueLabel: css => ({
       ...css,
