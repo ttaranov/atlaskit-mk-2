@@ -14,7 +14,7 @@ import { Spinner } from './loading';
 
 export type Props = {
   onClose?: () => void;
-  selectedItem?: Identifier;
+  defaultSelectedItem?: Identifier;
   showControls?: () => void;
   readonly featureFlags?: MediaViewerFeatureFlags;
   collectionName: string;
@@ -51,7 +51,7 @@ export class Collection extends React.Component<Props, State> {
 
   render() {
     const {
-      selectedItem,
+      defaultSelectedItem,
       context,
       onClose,
       collectionName,
@@ -67,8 +67,8 @@ export class Collection extends React.Component<Props, State> {
         const identifiers = items.data.map(x =>
           toIdentifier(x, collectionName),
         );
-        const item = selectedItem
-          ? { ...selectedItem, collectionName }
+        const item = defaultSelectedItem
+          ? { ...defaultSelectedItem, collectionName }
           : identifiers[0];
         return (
           <List
@@ -85,7 +85,7 @@ export class Collection extends React.Component<Props, State> {
 
   private init(props: Props) {
     this.setState(initialState);
-    const { collectionName, context, selectedItem, pageSize } = props;
+    const { collectionName, context, defaultSelectedItem, pageSize } = props;
     this.provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,
@@ -108,7 +108,7 @@ export class Collection extends React.Component<Props, State> {
               data: collection.items.filter(collectionFileItemFilter),
             },
           });
-          if (selectedItem && this.shouldLoadNext(selectedItem)) {
+          if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
             this.provider.loadNextPage();
           }
         }
