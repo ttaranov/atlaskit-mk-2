@@ -5,7 +5,7 @@ import { colors } from '@atlaskit/theme';
 
 export const Heading = styled.div`
   display: flex;
-  padding: 4px 0 8px 0;
+  padding: 0 0 16px 0;
   font-weight: bold;
   color: ${colors.N800};
 `;
