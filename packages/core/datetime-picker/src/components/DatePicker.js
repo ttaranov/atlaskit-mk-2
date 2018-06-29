@@ -52,7 +52,7 @@ type Props = {
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
-  /** Placeholder text displayed in input */
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing?: 'compact' | 'default',
   /** The ISO time that should be used as the input value. */
   value?: string,
@@ -248,6 +248,7 @@ export default class DatePicker extends Component<Props, State> {
       isDisabled,
       name,
       selectProps,
+      spacing,
       dateFormat,
       placeholder,
     } = this.props;
@@ -323,6 +324,7 @@ export default class DatePicker extends Component<Props, State> {
             }
           }
           {...selectProps}
+          spacing={spacing}
           validationState={validationState}
         />
       </div>
