@@ -24,7 +24,6 @@
     "@atlaskit/button": "^8.2.3",
     "@atlaskit/field-base": "^10.1.3",
     "@atlaskit/icon": "^12.1.2",
-    "@atlaskit/media-picker": "^8.1.4",
     "@atlaskit/spinner": "^8.0.0",
     "@atlaskit/theme": "^4.0.4",
     "@atlaskit/tooltip": "^10.2.1",
