@@ -14,7 +14,7 @@ export type Props = Readonly<{
   collectionName?: string;
   featureFlags?: MediaViewerFeatureFlags;
   showControls?: () => void;
-  isAutoPlay: boolean;
+  previewCount: number;
 }>;
 
 export type State = {
@@ -39,10 +39,10 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src, isHDActive } = this.state;
-    const { item, featureFlags, showControls, isAutoPlay } = this.props;
+    const { item, featureFlags, showControls, previewCount } = this.props;
     const useCustomVideoPlayer =
       !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
-
+    const isAutoPlay = previewCount === 0;
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;

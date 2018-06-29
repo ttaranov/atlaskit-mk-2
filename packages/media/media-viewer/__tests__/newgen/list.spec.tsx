@@ -6,6 +6,7 @@ import { Stubs } from '../_stubs';
 import { List, Props } from '../../src/newgen/list';
 import { ErrorMessage } from '../../src/newgen/styled';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
+import { ItemViewer } from '../../src/newgen/item-viewer';
 
 function createContext(subject) {
   const token = 'some-token';
@@ -97,17 +98,18 @@ describe('<List />', () => {
   });
 
   describe('AutoPlay', () => {
-    it('should auto play the first preview', () => {
+    it('should pass ItemViewer an initial previewCount value of zero', () => {
       const showControls = jest.fn();
       const el = createFixture({
         items: [identifier, identifier, identifier],
         defaultSelectedItem: identifier,
         showControls,
       });
-      expect(el.find({ isAutoPlay: true })).toHaveLength(1);
+      const itemViewer = el.find(ItemViewer);
+      expect(itemViewer.prop('previewCount')).toEqual(0);
     });
 
-    it('should not auto play the second preview', () => {
+    it("should increase ItemViewer's previewCount on navigation", () => {
       const showControls = jest.fn();
       const el = createFixture({
         items: [identifier, identifier, identifier],
@@ -115,7 +117,8 @@ describe('<List />', () => {
         showControls,
       });
       el.find(ArrowRightCircleIcon).simulate('click');
-      expect(el.find({ isAutoPlay: true })).toHaveLength(0);
+      const itemViewer = el.find(ItemViewer);
+      expect(itemViewer.prop('previewCount')).toEqual(1);
     });
   });
 });

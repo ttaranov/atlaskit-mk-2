@@ -52,7 +52,7 @@ function createFixture(authPromise, collectionName?) {
       context={context}
       item={audioItem}
       collectionName={collectionName}
-      isAutoPlay={false}
+      previewCount={0}
     />,
   );
   return { context, el };
@@ -152,7 +152,7 @@ describe('Audio viewer', () => {
     });
 
     describe('AutoPlay', () => {
-      async function createAutoPlayFixture(isAutoPlay: boolean) {
+      async function createAutoPlayFixture(previewCount: number) {
         const authPromise = Promise.resolve({ token, clientId });
         const context = createContext(authPromise);
         const el = mount(
@@ -160,7 +160,7 @@ describe('Audio viewer', () => {
             context={context}
             item={audioItem}
             collectionName="collectionName"
-            isAutoPlay={isAutoPlay}
+            previewCount={previewCount}
           />,
         );
         const instance = el.instance();
@@ -169,13 +169,13 @@ describe('Audio viewer', () => {
         return el;
       }
 
-      it('should auto play when auto play is requested', async () => {
-        const el = await createAutoPlayFixture(true);
+      it('should auto play when it is the first preview', async () => {
+        const el = await createAutoPlayFixture(0);
         expect(el.find({ autoPlay: true })).toHaveLength(2);
       });
 
-      it('should not auto play when auto play is not requested', async () => {
-        const el = await createAutoPlayFixture(false);
+      it('should not auto play when it is not the first preview', async () => {
+        const el = await createAutoPlayFixture(1);
         expect(el.find({ autoPlay: true })).toHaveLength(0);
       });
     });

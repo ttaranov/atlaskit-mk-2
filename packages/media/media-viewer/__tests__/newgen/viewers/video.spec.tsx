@@ -55,7 +55,7 @@ function createFixture(authPromise, props?: Partial<Props>) {
       context={context}
       item={videoItem}
       {...props}
-      isAutoPlay={false}
+      previewCount={0}
     />,
   );
   return { context, el };
@@ -143,7 +143,7 @@ describe('Video viewer', () => {
 
   describe('AutoPlay', () => {
     async function createAutoPlayFixture(
-      isAutoPlay: boolean,
+      previewCount: number,
       isCustomVideoPlayer: boolean,
     ) {
       const authPromise = Promise.resolve({ token, clientId });
@@ -151,7 +151,7 @@ describe('Video viewer', () => {
       const el = mount(
         <VideoViewer
           context={context}
-          isAutoPlay={isAutoPlay}
+          previewCount={previewCount}
           item={videoItem}
           featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
         />,
@@ -161,26 +161,26 @@ describe('Video viewer', () => {
       return el;
     }
 
-    it('should auto play custom video viewer when auto play is requested', async () => {
-      const el = await createAutoPlayFixture(true, true);
+    it('should auto play custom video viewer when it is the first preview', async () => {
+      const el = await createAutoPlayFixture(0, true);
       expect(el.find(CustomVideo)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(2);
     });
 
-    it('should not auto play custom video viewer when auto play is not requested', async () => {
-      const el = await createAutoPlayFixture(false, true);
+    it('should not auto play custom video viewer when it is not the first preview', async () => {
+      const el = await createAutoPlayFixture(1, true);
       expect(el.find(CustomVideo)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
     });
 
-    it('should auto play native video viewer when auto play is requested', async () => {
-      const el = await createAutoPlayFixture(true, false);
+    it('should auto play native video viewer when it is the first preview', async () => {
+      const el = await createAutoPlayFixture(0, false);
       expect(el.find(CustomVideo)).toHaveLength(0);
       expect(el.find({ autoPlay: true })).toHaveLength(2);
     });
 
-    it('should not auto play native video viewer when auto play is not requested', async () => {
-      const el = await createAutoPlayFixture(false, false);
+    it('should not auto play native video viewer when it is not the first preview', async () => {
+      const el = await createAutoPlayFixture(1, false);
       expect(el.find(CustomVideo)).toHaveLength(0);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
     });

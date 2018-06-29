@@ -60,7 +60,7 @@ export class List extends React.Component<Props, State> {
             identifier={selectedItem}
             showControls={showControls}
             onClose={onClose}
-            isAutoPlay={this.state.previewCount === 0}
+            previewCount={this.state.previewCount}
           />
           <Navigation
             items={items}

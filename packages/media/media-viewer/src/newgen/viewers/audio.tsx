@@ -17,7 +17,7 @@ export type Props = Readonly<{
   item: FileItem;
   context: Context;
   collectionName?: string;
-  isAutoPlay: boolean;
+  previewCount: number;
 }>;
 
 export type State = {
@@ -81,12 +81,12 @@ export class AudioViewer extends React.Component<Props, State> {
   };
 
   private renderPlayer = (src: string) => {
-    const { isAutoPlay } = this.props;
+    const { previewCount } = this.props;
     return (
       <AudioPlayer>
         {this.renderCover()}
         <Audio
-          autoPlay={isAutoPlay}
+          autoPlay={previewCount === 0}
           controls
           innerRef={this.saveAudioElement}
           src={src}
