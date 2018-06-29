@@ -11,6 +11,7 @@ import {
   take,
   isEmpty,
 } from '../SearchResultsUtil';
+import EmptyState from '../EmptyState';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -104,6 +105,15 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return <EmptyState />;
+    }
     // TODO: insert error state here if the recent results are empty.
     return [
       renderObjectsGroup(
