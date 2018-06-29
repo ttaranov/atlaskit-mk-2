@@ -26,7 +26,7 @@ type Props = {
   /** DEPREACATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
 
   Handler function to be called when the value prop is changed. Called with fn({ oldValue, newValue }) */
-  // onValueUpdated: ({ oldValue: number, newValue: number }) => any,
+  onValueUpdated: ({ oldValue: number, newValue: number }) => any,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
@@ -38,13 +38,13 @@ export default class extends PureComponent<Props> {
     appearance: 'default',
     children: 0,
     max: 99,
-    // onValueUpdated: () => {},
+    onValueUpdated: () => {},
     value: undefined,
   };
 
   // TODO This can be removed when we remove support for onValueUpdated.
   componentWillUpdate(nextProps: Props) {
-    const { children, value } = this.props;
+    const { children, onValueUpdated, value } = this.props;
     let oldValue = children;
     let newValue = nextProps.children;
 
