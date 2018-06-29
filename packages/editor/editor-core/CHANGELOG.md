@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.3
+- [patch] Dismiss quick insert type ahead if query starts with a space [ffee2ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ffee2ef)
+- [none] Updated dependencies [ffee2ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ffee2ef)
+
 ## 73.9.2
 - [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
   - @atlaskit/emoji@36.0.0
