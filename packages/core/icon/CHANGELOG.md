@@ -1,5 +1,12 @@
 # @atlaskit/icon
 
+## 12.6.1
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/modal-dialog@5.2.6
+
 ## 12.6.0
 - [minor] Add a new badge id: department and suitcase [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
 - [none] Updated dependencies [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)

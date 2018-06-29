@@ -1,5 +1,12 @@
 # @atlaskit/flag
 
+## 8.1.5
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/button@8.2.4
+  - @atlaskit/field-radio-group@3.1.3
+  - @atlaskit/icon@12.6.1
+
 ## 8.1.4
 - [patch] Button should be a dev dependency [50ca31b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50ca31b)
 - [none] Updated dependencies [50ca31b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50ca31b)
