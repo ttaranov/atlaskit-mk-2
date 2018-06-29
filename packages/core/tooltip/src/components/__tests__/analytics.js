@@ -2,7 +2,6 @@
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
-  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -29,7 +28,6 @@ describe('Tooltip', () => {
   });
 
   it('should be wrapped with analytics events', () => {
-    expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onMouseOver: {
         action: 'hovered',

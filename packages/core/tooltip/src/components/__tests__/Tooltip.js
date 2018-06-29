@@ -3,11 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { shallow, mount, ReactWrapper } from 'enzyme';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import TooltipWithAnalytics, {
   TooltipWithoutAnalytics as Tooltip,
   marshal,
 } from '../Tooltip';
 import getPosition from '../utils/getPosition';
+import { hoveredPayload, unhoveredPayload } from '../utils/analytics-payloads';
 
 // Variables starting with mock are executed before jest.mock's hoisting
 // See https://facebook.github.io/jest/docs/en/es6-class-mocks.html#calling-jestmock-jest-docs-en-jest-objecthtml-jestmockmodulename-factory-options-with-the-module-factory-parameter
@@ -568,10 +570,12 @@ describe('TooltipWithAnalytics', () => {
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');
     jest.spyOn(global.console, 'error');
+    jest.useFakeTimers();
   });
   afterEach(() => {
     global.console.warn.mockRestore();
     global.console.error.mockRestore();
+    jest.useRealTimers();
   });
 
   it('should mount without errors', () => {
@@ -584,5 +588,26 @@ describe('TooltipWithAnalytics', () => {
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
     /* eslint-enable no-console */
+  });
+
+  it('should send analytics events when tooltip visiblity changes', () => {
+    const Foo = () => <div>foo</div>;
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener channel="atlaskit" onEvent={spy}>
+        <TooltipWithAnalytics content="Tooltip content">
+          <Foo />
+        </TooltipWithAnalytics>
+      </AnalyticsListener>,
+    );
+    wrapper.find(Foo).simulate('mouseover');
+    jest.runTimersToTime(301);
+    wrapper.find(Foo).simulate('mouseout');
+    jest.runTimersToTime(300);
+    const calls = spy.mock.calls;
+    expect(calls).toHaveLength(2);
+    const [[hovered], [unhovered]] = calls;
+    expect(hovered.payload).toEqual(hoveredPayload);
+    expect(unhovered.payload).toEqual(unhoveredPayload);
   });
 });
