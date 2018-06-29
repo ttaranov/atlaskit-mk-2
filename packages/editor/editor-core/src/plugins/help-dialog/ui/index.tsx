@@ -218,7 +218,7 @@ const otherFormatting = [
   },
 ];
 
-const imageAutoFormat = {
+const imageAutoFormat =   {
   name: 'Image',
   type: 'image',
   autoFormatting: () => (
@@ -228,10 +228,7 @@ const imageAutoFormat = {
   ),
 };
 
-export const getSupportedFormatting = (
-  schema: Schema,
-  imageEnabled?: boolean,
-): Format[] => {
+export const getSupportedFormatting = (schema: Schema, imageEnabled?: boolean): Format[] => {
   const supportedBySchema = formatting.filter(
     format => schema.nodes[format.type] || schema.marks[format.type],
   );
@@ -304,10 +301,7 @@ export default class HelpDialog extends React.Component<Props, any> {
   }
 
   closeDialog = () => {
-    const {
-      state: { tr },
-      dispatch,
-    } = this.props.editorView;
+    const { state: { tr }, dispatch } = this.props.editorView;
     closeHelpCommand(tr, dispatch);
   };
 

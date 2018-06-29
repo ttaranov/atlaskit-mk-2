@@ -33,13 +33,9 @@ describe('rule', () => {
 
       it('should create rule inside bodied ext', () => {
         const extensionAttrs = bodiedExtensionData[1].attrs;
-        const { editorView } = editor(
-          doc(bodiedExtension(extensionAttrs)(p('{<>}'), p('text'))),
-        );
+        const { editorView } = editor(doc(bodiedExtension(extensionAttrs)(p('{<>}'), p('text'))));
         sendKeyToPm(editorView, 'Shift-Ctrl--');
-        expect(editorView.state.doc).toEqualDocument(
-          doc(bodiedExtension(extensionAttrs)(p('{<>}'), hr(), p('text'))),
-        );
+        expect(editorView.state.doc).toEqualDocument(doc(bodiedExtension(extensionAttrs)(p('{<>}'), hr(), p('text'))));
       });
     });
   });
