@@ -169,12 +169,12 @@ describe('Audio viewer', () => {
         return el;
       }
 
-      it('should auto play', async () => {
+      it('should auto play when auto play is requested', async () => {
         const el = await createAutoPlayFixture(true);
         expect(el.find({ autoPlay: true })).toHaveLength(2);
       });
 
-      it('should not auto play', async () => {
+      it('should not auto play when auto play is not requested', async () => {
         const el = await createAutoPlayFixture(false);
         expect(el.find({ autoPlay: true })).toHaveLength(0);
       });

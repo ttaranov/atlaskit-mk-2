@@ -161,25 +161,25 @@ describe('Video viewer', () => {
       return el;
     }
 
-    it('should auto play custom video viewer', async () => {
+    it('should auto play custom video viewer when auto play is requested', async () => {
       const el = await createAutoPlayFixture(true, true);
       expect(el.find(CustomVideo)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(2);
     });
 
-    it('should not auto play custom video viewer', async () => {
+    it('should not auto play custom video viewer when auto play is not requested', async () => {
       const el = await createAutoPlayFixture(false, true);
       expect(el.find(CustomVideo)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
     });
 
-    it('should auto play native video viewer', async () => {
+    it('should auto play native video viewer when auto play is requested', async () => {
       const el = await createAutoPlayFixture(true, false);
       expect(el.find(CustomVideo)).toHaveLength(0);
       expect(el.find({ autoPlay: true })).toHaveLength(2);
     });
 
-    it('should not auto play native video viewer', async () => {
+    it('should not auto play native video viewer when auto play is not requested', async () => {
       const el = await createAutoPlayFixture(false, false);
       expect(el.find(CustomVideo)).toHaveLength(0);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
