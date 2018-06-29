@@ -13,12 +13,8 @@ import {
 } from 'react-beautiful-dnd';
 import type { DragPosition, Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
-import {
-  flattenTree,
-  getDestinationPath,
-  getSourcePath,
-  getItem,
-} from '../../utils/tree';
+import { flattenTree, getItem } from '../../utils/tree';
+import { getDestinationPath, getSourcePath } from '../../utils/flat-tree';
 import type { FlattenedItem, Path, TreeData } from '../../types';
 import TreeItem from '../TreeItem';
 import {
