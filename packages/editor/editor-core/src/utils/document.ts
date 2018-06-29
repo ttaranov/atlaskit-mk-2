@@ -99,23 +99,37 @@ export const preprocessDoc = (
     return;
   }
 
-  const content: Node[] = [];
-  origDoc.content.forEach((node, index) => {
+  let content: Node[] = [];
+  // Number of empty Paragraphs from bottom of the node
+  const emptyPfromBottom = {
+    numOfEmptyP: 0,
+    isLastP: true,
+  };
+  origDoc.content.forEach((node, _, index) => {
     const { taskList, decisionList } = schema.nodes;
+
     if (
-      !(
-        node.type.name === 'paragraph' &&
-        node.content.size === 0 &&
-        index === origDoc.childCount - 1 &&
-        origDoc.childCount > 1
-      ) &&
-      ((node.type !== taskList && node.type !== decisionList) ||
-        node.textContent)
+      (node.type !== taskList && node.type !== decisionList) ||
+      node.textContent
     ) {
+      const child = origDoc.content.child(
+        origDoc.content.childCount - index - 1,
+      );
+      if (
+        emptyPfromBottom.isLastP &&
+        child.type.name === 'paragraph' &&
+        child.content.size === 0
+      ) {
+        emptyPfromBottom.numOfEmptyP++;
+      } else {
+        emptyPfromBottom.isLastP = false;
+      }
       content.push(node);
     }
   });
-
+  if (emptyPfromBottom.numOfEmptyP) {
+    content = content.slice(0, content.length - emptyPfromBottom.numOfEmptyP);
+  }
   return schema.nodes.doc.create({}, Fragment.fromArray(content));
 };
 
