@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 4.3.3
+- [patch] Replace internal styled components with emotion styled components [415a64a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/415a64a)
+- [none] Updated dependencies [415a64a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/415a64a)
+
 ## 4.3.2
 - [patch] Updated dependencies [470a1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/470a1fb)
   - @atlaskit/form@2.1.4
