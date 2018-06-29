@@ -20,13 +20,13 @@ export type Props = {
 
 export type State = {
   selectedItem: Identifier;
-  isFirstPreview: boolean;
+  previewCount: number;
 };
 
 export class List extends React.Component<Props, State> {
   state: State = {
     selectedItem: this.props.selectedItem,
-    isFirstPreview: true,
+    previewCount: 0,
   };
 
   render() {
@@ -60,7 +60,7 @@ export class List extends React.Component<Props, State> {
             identifier={selectedItem}
             showControls={showControls}
             onClose={onClose}
-            isAutoPlay={this.state.isFirstPreview}
+            isAutoPlay={this.state.previewCount === 0}
           />
           <Navigation
             items={items}
@@ -81,6 +81,6 @@ export class List extends React.Component<Props, State> {
       showControls();
     }
 
-    this.setState({ selectedItem, isFirstPreview: false });
+    this.setState({ selectedItem, previewCount: this.state.previewCount + 1 });
   };
 }
