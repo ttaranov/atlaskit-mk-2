@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 12.6.0
+- [minor] Add a new badge id: department and suitcase [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+- [none] Updated dependencies [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+
 ## 12.5.1
 - [patch] Update to select-clear icon to allow for primaryColor and secondaryColor configuration [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
 - [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
