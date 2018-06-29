@@ -9,13 +9,13 @@ import { Shortcut } from './shortcut';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   selectedItem?: Identifier;
-  readonly featureFlags?: MediaViewerFeatureFlags;
+  featureFlags?: MediaViewerFeatureFlags;
   context: Context;
   itemSource: ItemSource;
-};
+}>;
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {

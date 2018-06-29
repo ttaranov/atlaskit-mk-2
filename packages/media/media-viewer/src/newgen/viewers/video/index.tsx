@@ -8,14 +8,14 @@ import { CustomVideo } from './customVideo';
 import { getFeatureFlag } from '../../utils/getFeatureFlag';
 import { isIE } from '../../utils/isIE';
 
-export type Props = {
-  readonly item: FileItem;
-  readonly context: Context;
-  readonly collectionName?: string;
-  readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly showControls?: () => void;
-  readonly isAutoPlay: boolean;
-};
+export type Props = Readonly<{
+  item: FileItem;
+  context: Context;
+  collectionName?: string;
+  featureFlags?: MediaViewerFeatureFlags;
+  showControls?: () => void;
+  isAutoPlay: boolean;
+}>;
 
 export type State = {
   src: Outcome<string, Error>;

@@ -8,15 +8,15 @@ import { ErrorMessage } from './styled';
 import Navigation from './navigation';
 import Header from './header';
 
-export type Props = {
-  readonly onClose?: () => void;
-  readonly onNavigationChange?: (selectedItem: Identifier) => void;
-  readonly showControls?: () => void;
-  readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly defaultSelectedItem: Identifier;
-  readonly items: Identifier[];
-  readonly context: Context;
-};
+export type Props = Readonly<{
+  onClose?: () => void;
+  onNavigationChange?: (selectedItem: Identifier) => void;
+  showControls?: () => void;
+  featureFlags?: MediaViewerFeatureFlags;
+  defaultSelectedItem: Identifier;
+  items: Identifier[];
+  context: Context;
+}>;
 
 export type State = {
   selectedItem: Identifier;

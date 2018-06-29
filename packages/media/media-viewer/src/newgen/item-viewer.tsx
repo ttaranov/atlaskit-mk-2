@@ -10,14 +10,14 @@ import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 
-export type Props = {
-  readonly identifier: Identifier;
-  readonly context: Context;
-  readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly showControls?: () => void;
-  readonly onClose?: () => void;
-  readonly isAutoPlay: boolean;
-};
+export type Props = Readonly<{
+  identifier: Identifier;
+  context: Context;
+  featureFlags?: MediaViewerFeatureFlags;
+  showControls?: () => void;
+  onClose?: () => void;
+  isAutoPlay: boolean;
+}>;
 
 export type State = {
   item: Outcome<FileItem, Error>;

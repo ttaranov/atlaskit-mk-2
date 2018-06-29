@@ -13,12 +13,12 @@ import {
   blanketColor,
 } from '../styled';
 
-export type Props = {
-  readonly item: FileItem;
-  readonly context: Context;
-  readonly collectionName?: string;
-  readonly isAutoPlay: boolean;
-};
+export type Props = Readonly<{
+  item: FileItem;
+  context: Context;
+  collectionName?: string;
+  isAutoPlay: boolean;
+}>;
 
 export type State = {
   src: Outcome<string, Error>;

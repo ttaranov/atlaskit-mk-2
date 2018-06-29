@@ -12,15 +12,15 @@ import { Subscription } from 'rxjs';
 import { toIdentifier } from './util';
 import { Spinner } from './loading';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   defaultSelectedItem?: Identifier;
   showControls?: () => void;
-  readonly featureFlags?: MediaViewerFeatureFlags;
+  featureFlags?: MediaViewerFeatureFlags;
   collectionName: string;
   context: Context;
   pageSize: number;
-};
+}>;
 
 export type State = {
   items: Outcome<MediaCollectionItem[], Error>;
