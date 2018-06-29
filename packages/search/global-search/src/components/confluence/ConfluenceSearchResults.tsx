@@ -16,6 +16,10 @@ import {
   PostQueryScreenEvent,
 } from '../analytics/SceenEvents';
 
+export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
+export const MAX_SPACES = 3;
+export const MAX_PEOPLE = 3;
+
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="objects">
@@ -128,13 +132,17 @@ export default function searchResults(props: Props) {
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
-        take(recentlyViewedPages, 8),
+        take(recentlyViewedPages, MAX_PAGES_BLOGS_ATTACHMENTS),
         query,
       ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
+      renderSpacesGroup(
+        'Recent spaces',
+        take(recentlyViewedSpaces, MAX_SPACES),
+        query,
+      ),
       renderPeopleGroup(
         'Recently worked with',
-        take(recentlyInteractedPeople, 3),
+        take(recentlyInteractedPeople, MAX_PEOPLE),
         query,
       ),
       renderAdvancedSearchGroup(query),
@@ -149,11 +157,11 @@ export default function searchResults(props: Props) {
   return [
     renderObjectsGroup(
       'Pages, blogs and attachments',
-      take(objectResults, 8),
+      take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
       query,
     ),
-    renderSpacesGroup('Spaces', take(spaceResults, 3), query),
-    renderPeopleGroup('People', take(peopleResults, 3), query),
+    renderSpacesGroup('Spaces', take(spaceResults, MAX_SPACES), query),
+    renderPeopleGroup('People', take(peopleResults, MAX_PEOPLE), query),
     renderAdvancedSearchGroup(query),
     postQueryScreenEvent,
   ];

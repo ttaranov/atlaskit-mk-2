@@ -4,7 +4,7 @@ import { GasPayload } from '@atlaskit/analytics-gas-types';
 import {
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
-  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_CHANNEL,
 } from '../../util/analytics';
 
 export interface Props {
@@ -51,7 +51,7 @@ class PreQueryScreenEventComponent extends React.Component<Props> {
         preQueryViewCount,
         searchSessionId,
       );
-      event.update(payload).fire(DEFUALT_GAS_CHANNEL);
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
       preQueryViewCount++;
     }
   }
@@ -70,7 +70,7 @@ class PostQueryScreenEventComponent extends React.Component<Props> {
         postQueryViewCount,
         searchSessionId,
       );
-      event.update(payload).fire(DEFUALT_GAS_CHANNEL);
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
       postQueryViewCount++;
     }
   }
