@@ -162,15 +162,21 @@ export default class Tree extends Component<Props, State> {
         ...dragHandleProps,
         onMouseDown: (event: MouseEvent) => {
           this.moveBy = 'mouse';
-          dragHandleProps.onMouseDown(event);
+          if (dragHandleProps) {
+            dragHandleProps.onMouseDown(event);
+          }
         },
         onKeyDown: (event: KeyboardEvent) => {
           this.moveBy = 'key';
-          dragHandleProps.onKeyDown(event);
+          if (dragHandleProps) {
+            dragHandleProps.onKeyDown(event);
+          }
         },
         onTouchStart: (event: TouchEvent) => {
           this.moveBy = 'touch';
-          dragHandleProps.onTouchStart(event);
+          if (dragHandleProps) {
+            dragHandleProps.onTouchStart(event);
+          }
         },
       };
     }
