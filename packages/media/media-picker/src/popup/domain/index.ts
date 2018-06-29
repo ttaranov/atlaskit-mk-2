@@ -181,6 +181,6 @@ export interface CollectionItem {
 }
 
 export interface CollectionItemDetails {
-  readonly name: string;
-  readonly size: number;
+  readonly name?: string;
+  readonly size?: number;
 }

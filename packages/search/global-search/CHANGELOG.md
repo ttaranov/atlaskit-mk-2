@@ -1,5 +1,10 @@
 # @atlaskit/global-search
 
+## 4.5.9
+- [patch] Replace faker with lightweight internal functions [1c3352a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c3352a)
+- [none] Updated dependencies [1c3352a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c3352a)
+  - @atlaskit/quick-search@2.3.3
+
 ## 4.5.8
 - [patch] fixed icon glyph imports after changes in icon package [abf2e65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abf2e65)
 

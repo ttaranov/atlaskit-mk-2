@@ -1,5 +1,11 @@
 # @atlaskit/util-data-test
 
+## 9.1.14
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/emoji@36.0.0
+  - @atlaskit/task-decision@7.1.7
+  - @atlaskit/mention@13.1.2
+
 ## 9.1.13
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
