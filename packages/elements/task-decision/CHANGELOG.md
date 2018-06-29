@@ -1,5 +1,29 @@
 # @atlaskit/task-decision
 
+## 7.1.6
+- [patch] Make code blocks and actions have opaque backgrounds [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
+
+- [patch] Updated dependencies [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
+- [none] Updated dependencies [d708792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d708792)
+
+## 7.1.5
+- [patch] FS-2028 force line-height of 20px in T&D Item [445b7c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445b7c9)
+- [none] Updated dependencies [445b7c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/445b7c9)
+
+## 7.1.4
+- [patch] FS-2051 do not disable TaskItem when there is no provider [6861797](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6861797)
+- [none] Updated dependencies [6861797](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6861797)
+
+## 7.1.3
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/button@8.2.3
+
+## 7.1.2
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/renderer@18.2.5
+  - @atlaskit/editor-common@11.3.0
+
 ## 7.1.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { mention, mentionQuery, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, mentionPluginKey } from './pm-plugins/main';
@@ -72,6 +73,20 @@ const mentionsPlugin: EditorPlugin = {
         isReducedSpacing={true}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Mention',
+        icon: () => <MentionIcon label="Mention" />,
+        action(insert, state) {
+          const mark = state.schema.mark('mentionQuery');
+          const emojiText = state.schema.text('@', [mark]);
+          return insert(emojiText);
+        },
+      },
+    ],
   },
 };
 

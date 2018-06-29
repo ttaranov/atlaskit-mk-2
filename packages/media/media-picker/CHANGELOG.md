@@ -1,5 +1,21 @@
 # @atlaskit/media-picker
 
+## 8.1.4
+- [patch] merge getFile and uploadFile + update MediaPicker NewUploadService + expose UploadController from MediaStore [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-store@4.2.0
+  - @atlaskit/media-test-helpers@14.0.4
+  - @atlaskit/media-editor@9.1.3
+  - @atlaskit/media-card@29.1.5
+  - @atlaskit/media-core@20.0.0
+
+## 8.1.3
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/media-card@29.1.4
+  - @atlaskit/flag@8.1.3
+  - @atlaskit/button@8.2.3
+
 ## 8.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

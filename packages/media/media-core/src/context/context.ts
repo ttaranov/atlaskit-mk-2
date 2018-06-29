@@ -263,16 +263,16 @@ class ContextImpl implements Context {
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
     const collectionName = file.collection;
+    const name = file.name || '';
     // TODO [MSW-678]: remove when id upfront is exposed
     const tempFileId = uuid.v4();
     const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
     const fileStream = new Observable<FileState>(observer => {
-      const name = file.name || '';
       if (file.content instanceof Blob) {
         observer.next({
-          id: tempFileId,
           name,
           size,
+          id: tempFileId,
           progress: 0,
           status: 'uploading',
           preview: {
@@ -284,45 +284,48 @@ class ContextImpl implements Context {
       const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
         onProgress: progress => {
           observer.next({
-            id: tempFileId,
             progress,
-            status: 'uploading',
             name,
             size,
+            id: tempFileId,
+            status: 'uploading',
           });
         },
       });
 
       if (controller) {
-        controller.setCancel(cancel);
+        controller.setAbort(cancel);
       }
 
-      deferredFileId.then(id => {
-        fileId = id;
-        const key = FileStreamCache.createKey(id, { collectionName });
+      deferredFileId
+        .then(id => {
+          fileId = id;
+          const key = FileStreamCache.createKey(id, { collectionName });
 
-        // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
-        this.fileStreamsCache.set(key, fileStream);
-        observer.next({
-          id,
-          status: 'processing',
-          name,
-          size,
+          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
+          this.fileStreamsCache.set(key, fileStream);
+          observer.next({
+            id,
+            name,
+            size,
+            status: 'processing',
+          });
+          observer.complete();
+        })
+        .catch(error => {
+          // we can't use .catch(observer.error) due that will change the Subscriber context
+          observer.error(error);
         });
-        observer.complete();
-      });
     })
       .concat(
         Observable.defer(() =>
           this.createDownloadFileStream(fileId, collectionName),
         ),
       )
-      .publishReplay(1);
-    // TODO: Should we use refCount or not?
-    // .refCount()
+      .publishReplay(1)
+      .refCount();
 
     this.fileStreamsCache.set(tempKey, fileStream);
-    fileStream.connect();
 
     return fileStream;
   }

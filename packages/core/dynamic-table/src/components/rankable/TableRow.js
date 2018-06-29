@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { RankableTableBodyRow } from '../../styled/rankable/TableRow';
-import { RowPlaceholderCell } from '../../styled/rankable/RowPlaceholder';
 import type { HeadType, RowType } from '../../types';
 import withDimensions, {
   type WithDimensionsProps,
@@ -32,7 +31,6 @@ export class RankableTableRow extends Component<Props, {}> {
       isFixedSize,
       isRanking,
       refWidth,
-      refHeight,
       rowIndex,
       isRankingDisabled,
     } = this.props;
@@ -78,20 +76,6 @@ export class RankableTableRow extends Component<Props, {}> {
               );
             })}
           </RankableTableBodyRow>,
-
-          provided.placeholder ? (
-            // we have to pass key here, because array of two elements (RankableTableRow and placeholder) is returned
-            // without key we will get react-warning-keys exception
-            <tr key={1}>
-              <RowPlaceholderCell colSpan={cells.length}>
-                <div
-                  style={inlineStylesIfRanking(isRanking, refWidth, refHeight)}
-                >
-                  {provided.placeholder}
-                </div>
-              </RowPlaceholderCell>
-            </tr>
-          ) : null,
         ]}
       </Draggable>
     );

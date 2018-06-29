@@ -1,6 +1,8 @@
 // @flow
 
-import { brightness } from 'chromatism';
+// TODO: @atlassian/navigation package is the only other package that uses chromatism (currently).
+// We should update to chromatism@3.0.0 once @atlassian/navigation package is deprecated.
+import chromatism from 'chromatism';
 import { colors } from '@atlaskit/theme';
 
 import { light } from './modes';
@@ -13,9 +15,9 @@ type Args = {
 };
 
 export default ({ background, text }: Args): Mode => {
-  const backgroundColorActive = brightness(10, background).hex;
-  const backgroundColorSelected = brightness(-20, background).hex;
-  const backgroundColorHover = brightness(-10, background).hex;
+  const backgroundColorActive = chromatism.brightness(10, background).hex;
+  const backgroundColorSelected = chromatism.brightness(-20, background).hex;
+  const backgroundColorHover = chromatism.brightness(-10, background).hex;
   return {
     globalItem: args => {
       return light.globalItem(args);
@@ -72,7 +74,7 @@ export default ({ background, text }: Args): Mode => {
         },
         subTextWrapper: {
           ...root.subTextWrapper,
-          color: brightness(20, text).hex,
+          color: chromatism.brightness(20, text).hex,
         },
       };
       return { container: rootStyles, root: rootStyles };
@@ -81,7 +83,10 @@ export default ({ background, text }: Args): Mode => {
       const { root } = light.sectionTitle();
       const rootStyles = {
         ...root,
-        titleBase: { ...root.titleBase, color: brightness(20, text).hex },
+        titleBase: {
+          ...root.titleBase,
+          color: chromatism.brightness(20, text).hex,
+        },
       };
       return { container: rootStyles, root: rootStyles };
     },

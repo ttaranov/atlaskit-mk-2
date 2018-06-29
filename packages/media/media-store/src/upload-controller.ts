@@ -1,17 +1,17 @@
-export type CancelFunction = () => void;
+export type AbortFunction = () => void;
 
 export class UploadController {
-  cancelFunction?: CancelFunction;
+  abortFunction?: AbortFunction;
 
   constructor() {}
 
-  setCancel(cancelFunction: CancelFunction) {
-    this.cancelFunction = cancelFunction;
+  setAbort(abortFunction: AbortFunction) {
+    this.abortFunction = abortFunction;
   }
 
-  cancel() {
-    if (this.cancelFunction) {
-      this.cancelFunction();
+  abort() {
+    if (this.abortFunction) {
+      this.abortFunction();
     }
   }
 }

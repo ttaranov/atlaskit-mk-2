@@ -126,7 +126,11 @@ export class Content extends Component<ContentProps, ContentState> {
         onClick={this.onClick}
       >
         <CloseButtonWrapper className={hideControlsClassName}>
-          <Button onClick={onClose} iconBefore={<CrossIcon label="Close" />} />
+          <Button
+            appearance="toolbar"
+            onClick={onClose}
+            iconBefore={<CrossIcon label="Close" />}
+          />
         </CloseButtonWrapper>
         {children}
       </ContentWrapper>

@@ -1,5 +1,11 @@
 # @atlaskit/layer-manager
 
+## 4.3.1
+- [patch] Replaces implementation of ScrollLock with [react-scrolllock](https://github.com/jossmac/react-scrolllock). Deprecates ScrollLock export in @atlaskit/layer-manager. [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
+- [none] Updated dependencies [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
+  - @atlaskit/onboarding@4.1.4
+  - @atlaskit/modal-dialog@5.2.4
+
 ## 4.3.0
 - [minor] Adds autoFocus prop to FocusLock. Fixes scrolling bug in onboarding. [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
 - [none] Updated dependencies [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)

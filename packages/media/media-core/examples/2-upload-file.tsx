@@ -9,6 +9,7 @@ import { ContextFactory, UploadController } from '../src';
 import { FilesWrapper, FileWrapper } from '../example-helpers/styled';
 import { Observable } from 'rxjs/Observable';
 import { FileState } from '../src/fileState';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface ComponentProps {}
 export interface ComponentState {
@@ -23,6 +24,7 @@ const mediaContext = ContextFactory.create({
 class Example extends Component<ComponentProps, ComponentState> {
   fileStreams: Observable<FileState>[];
   uploadController?: UploadController;
+  subscription?: Subscription;
 
   constructor(props: ComponentProps) {
     super(props);
@@ -44,7 +46,11 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
-    const file = event.currentTarget.files![0];
+    if (!event.currentTarget.files || !event.currentTarget.files.length) {
+      return;
+    }
+
+    const file = event.currentTarget.files[0];
     const uplodableFile = {
       content: file,
       name: file.name,
@@ -60,15 +66,26 @@ class Example extends Component<ComponentProps, ComponentState> {
   addStream = (stream: Observable<FileState>) => {
     const streamId = new Date().getTime();
 
-    stream.subscribe({
+    const subscription = stream.subscribe({
       next: this.onFileUpdate(streamId),
       complete() {
         console.log('stream complete');
       },
-      error(error) {
+      error: error => {
         console.log('stream error', error);
+        if (error === 'canceled') {
+          const stream: FileState = {
+            id: this.state.files[streamId].id,
+            status: 'error',
+            message: 'upload canceled',
+          };
+
+          this.onFileUpdate(streamId)(stream);
+        }
       },
     });
+
+    this.subscription = subscription;
 
     this.fileStreams.push(stream);
   };
@@ -77,7 +94,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     const { files } = this.state;
     const fileData = Object.keys(files).map((fileId, key) => {
       const file = files[fileId];
-      let name, progress;
+      let name, progress, message;
 
       if (file.status !== 'error') {
         name = <div>name: {file.name}</div>;
@@ -87,6 +104,10 @@ class Example extends Component<ComponentProps, ComponentState> {
         progress = <div>progress: {file.progress}</div>;
       }
 
+      if (file.status === 'error') {
+        message = <div>message: {file.message}</div>;
+      }
+
       return (
         <FileWrapper status={file.status} key={key}>
           <div>Id: {file.id}</div>
@@ -94,6 +115,7 @@ class Example extends Component<ComponentProps, ComponentState> {
           <div>
             {name}
             {progress}
+            {message}
           </div>
         </FileWrapper>
       );
@@ -104,7 +126,13 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   cancelUpload = () => {
     if (this.uploadController) {
-      this.uploadController.cancel();
+      this.uploadController.abort();
+    }
+  };
+
+  unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   };
 
@@ -112,6 +140,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     return (
       <div>
         <input type="file" onChange={this.uploadFile} />
+        <button onClick={this.unsubscribe}>Unsubscribe</button>
         <button onClick={this.cancelUpload}>Cancel upload</button>
         <div>
           <h1>Files</h1>

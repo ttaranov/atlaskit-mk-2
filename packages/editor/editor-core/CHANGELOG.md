@@ -1,5 +1,177 @@
 # @atlaskit/editor-core
 
+## 73.9.0
+- [minor] Add QuickInsert provider [948e6e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/948e6e1)
+- [none] Updated dependencies [948e6e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/948e6e1)
+
+## 73.8.22
+- [patch] ED-4971, ED-4852: fix gap cursor and number column styles [10cc9e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cc9e1)
+- [none] Updated dependencies [10cc9e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cc9e1)
+
+## 73.8.21
+- [patch] ED-4974: fix updating tableNode in table plugin state [ca61638](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca61638)
+- [none] Updated dependencies [ca61638](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca61638)
+
+## 73.8.20
+- [patch] Make code blocks and actions have opaque backgrounds [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
+- [patch] ED-4641, fix issue in splitting merged cell when cursor is inside cell but cell is not selected. [d708792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d708792)
+- [patch] Updated dependencies [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
+  - @atlaskit/task-decision@7.1.6
+- [patch] Updated dependencies [d708792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d708792)
+  - @atlaskit/task-decision@7.1.6
+
+## 73.8.19
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-test-helpers@14.0.4
+  - @atlaskit/media-filmstrip@9.0.5
+  - @atlaskit/media-card@29.1.5
+  - @atlaskit/editor-common@11.3.5
+  - @atlaskit/emoji@35.1.4
+  - @atlaskit/renderer@18.2.6
+  - @atlaskit/editor-test-helpers@4.1.7
+  - @atlaskit/media-picker@8.1.4
+  - @atlaskit/media-core@20.0.0
+
+## 73.8.18
+- [patch] Fix test [0973ab5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0973ab5)
+- [patch] Remove parenthesis from action tooltips [1b1eea7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b1eea7)
+- [none] Updated dependencies [0973ab5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0973ab5)
+- [patch] Updated dependencies [1b1eea7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b1eea7)
+
+## 73.8.17
+- [patch] ED-4923: stop table columns and selection resetting on toolbar actions [56fa89e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56fa89e)
+- [none] Updated dependencies [56fa89e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56fa89e)
+
+## 73.8.16
+- [patch] Fixing the cursor navigation between inline nodes [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+- [none] Updated dependencies [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+  - @atlaskit/editor-common@11.3.3
+
+## 73.8.15
+- [patch] Fix issue where clicking on table controls inside an editor in a form, would submit the form (ED-4744) [5cd03c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cd03c5)
+- [none] Updated dependencies [5cd03c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5cd03c5)
+
+## 73.8.14
+- [patch] ED-4909: fix overflow shadow rendering + visual resize performance on tables [69a8c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69a8c78)
+- [none] Updated dependencies [69a8c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69a8c78)
+
+## 73.8.13
+- [patch] ED-4736, fix size of font in inline code mark in editor core. [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
+- [patch] Updated dependencies [9b80e35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b80e35)
+
+## 73.8.12
+- [patch] Added support for blocks and lists [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+- [none] Updated dependencies [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+
+## 73.8.11
+- [patch] Introduce regression tests for pasting content from 3rd-party vendors into the editor. `dispatchPasteEvent` now returns the event that was fired when successful, to allow consumers to tell whether it was modified by ProseMirror. (ED-3726) [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
+- [none] Updated dependencies [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
+  - @atlaskit/editor-test-helpers@4.1.6
+
+## 73.8.10
+- [patch] ED-4520, date renderer should render UTC value of date. [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+- [patch] Updated dependencies [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+  - @atlaskit/editor-common@11.3.2
+
+## 73.8.9
+- [patch] ED-4750, adding information to help dialog. [a3f696c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3f696c)
+- [patch] Updated dependencies [a3f696c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3f696c)
+
+## 73.8.8
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/media-picker@8.1.3
+  - @atlaskit/media-card@29.1.4
+  - @atlaskit/task-decision@7.1.3
+  - @atlaskit/emoji@35.1.2
+  - @atlaskit/droplist@6.2.1
+  - @atlaskit/button@8.2.3
+
+## 73.8.7
+- [patch] ED-4924: fix table control styles [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+- [none] Updated dependencies [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+  - @atlaskit/editor-common@11.3.1
+
+## 73.8.6
+- [patch] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/renderer@18.2.5
+  - @atlaskit/task-decision@7.1.2
+  - @atlaskit/editor-common@11.3.0
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-markdown-transformer@1.2.4
+  - @atlaskit/editor-json-transformer@3.1.3
+  - @atlaskit/editor-bitbucket-transformer@3.2.4
+
+## 73.8.5
+- [patch] Bump prosemirror-markdown to 1.1.0 and treat new lines when pasting as <br> [5c28782](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c28782)
+- [none] Updated dependencies [5c28782](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c28782)
+  - @atlaskit/editor-markdown-transformer@1.2.3
+  - @atlaskit/editor-bitbucket-transformer@3.2.3
+
+## 73.8.4
+- [patch] ED-4803, it should be possible to create nested rule. [9b25a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b25a8e)
+- [patch] Updated dependencies [9b25a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b25a8e)
+
+## 73.8.3
+- [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+- [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+  - @atlaskit/editor-test-helpers@4.1.4
+  - @atlaskit/editor-common@11.2.10
+
+## 73.8.2
+
+
+
+- [patch] Updated dependencies [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/renderer@18.2.3
+  - @atlaskit/editor-common@11.2.8
+- [patch] Updated dependencies [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/renderer@18.2.3
+  - @atlaskit/editor-common@11.2.8
+- [patch] Updated dependencies [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+  - @atlaskit/media-card@29.1.3
+  - @atlaskit/media-filmstrip@9.0.4
+  - @atlaskit/renderer@18.2.3
+  - @atlaskit/editor-common@11.2.8
+
+## 73.8.1
+- [patch] ED-4744, ED-4749: autoinserts break other inline marks. [34b660c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b660c)
+- [none] Updated dependencies [34b660c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b660c)
+
+## 73.8.0
+- [minor] Design updates for /QuickInsert™️ menu [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+- [none] Updated dependencies [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+  - @atlaskit/editor-common@11.2.6
+
+## 73.7.12
+- [patch] ED-4899 fix finding parent node for popups (specifically hyperlink) in IE11 [b801e42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b801e42)
+- [none] Updated dependencies [b801e42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b801e42)
+
+## 73.7.11
+- [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+- [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+  - @atlaskit/renderer@18.2.1
+  - @atlaskit/editor-common@11.2.5
+
+## 73.7.10
+- [patch] ED-4846,ED-4816: refactor tables [269abf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/269abf0)
+- [none] Updated dependencies [269abf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/269abf0)
+
+## 73.7.9
+- [patch] Do not call render inside a constructor of a ReactNodeView [7e60aa8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e60aa8)
+- [none] Updated dependencies [7e60aa8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e60aa8)
+
+## 73.7.8
+- [patch] ED-4489 Fix can't submit with enter using Korean and Japanese IME [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
+- [none] Updated dependencies [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
+  - @atlaskit/editor-test-helpers@4.1.3
+  - @atlaskit/editor-common@11.2.3
+
 ## 73.7.7
 - [patch] Fixing extension select and refactor [eca44eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eca44eb)
 - [none] Updated dependencies [eca44eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eca44eb)

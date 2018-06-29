@@ -58,7 +58,7 @@ const renderNoResults = (query: string) => [
 
 const renderAdvancedSearchGroup = (query: string) => {
   const text =
-    query.length === 0 ? 'Advanced Search' : `Advanced Search for "${query}"`;
+    query.length === 0 ? 'Advanced search' : `Advanced search for "${query}"`;
 
   return (
     <ResultItemGroup key="advanced-search">
@@ -104,6 +104,7 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    // TODO: insert error state here if the recent results are empty.
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
@@ -111,7 +112,11 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup('People', take(recentlyInteractedPeople, 3), query),
+      renderPeopleGroup(
+        'Recently worked with',
+        take(recentlyInteractedPeople, 3),
+        query,
+      ),
       renderAdvancedSearchGroup(query),
     ];
   }

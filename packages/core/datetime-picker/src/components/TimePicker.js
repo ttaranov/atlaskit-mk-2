@@ -5,7 +5,7 @@ import Select, {
   components,
   mergeStyles,
 } from '@atlaskit/select';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
 import { colors } from '@atlaskit/theme';
@@ -77,15 +77,13 @@ type State = {
   value: string,
   isFocused: boolean,
 };
-
-function dateFromTime(time: string): Date {
-  const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
-  return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
-}
-
+/** Returns a formatted DT string if valid or empty string if not valid */
 function formatTime(time: string, timeFormat: string): string {
-  const date = dateFromTime(time);
-  return isValid(date) ? format(date, timeFormat) : time;
+  const date = parseTime(time);
+  if (date instanceof Date) {
+    return isValid(date) ? format(date, timeFormat) : time;
+  }
+  return '';
 }
 
 const menuStyles = {
@@ -116,7 +114,7 @@ export default class TimePicker extends Component<Props, State> {
     isInvalid: false,
     hideIcon: false,
     timeFormat: defaultTimeFormat,
-    placeholder: `e.g. ${format(new Date(), defaultTimeFormat)}`,
+    placeholder: 'e.g. 8:00am',
   };
 
   state = {
@@ -249,6 +247,7 @@ export default class TimePicker extends Component<Props, State> {
           instanceId={id}
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
+          openMenuOnFocus
           menuPlacement="auto"
           onBlur={this.onBlur}
           onCreateOption={this.onCreateOption}

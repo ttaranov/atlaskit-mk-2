@@ -1,5 +1,9 @@
 # @atlaskit/tree
 
+## 0.1.2
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+
 ## 0.1.1
 - [patch] Bump version of spinner [1adf8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1adf8d1)
 

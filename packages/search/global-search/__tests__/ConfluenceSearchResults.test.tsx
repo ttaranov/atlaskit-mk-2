@@ -84,7 +84,7 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.People, wrapper);
 
-    expect(group.prop('title')).toEqual('People');
+    expect(group.prop('title')).toEqual('Recently worked with');
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
   });
 
@@ -99,7 +99,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.childAt(0).prop('resultId')).toEqual('search_people');
 
     expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
-    expect(group.childAt(1).prop('text')).toEqual('Advanced Search');
+    expect(group.childAt(1).prop('text')).toEqual('Advanced search');
   });
 
   it('should render links to advanced search when a query is entered and there are results', () => {
@@ -115,7 +115,7 @@ describe('ConfluenceSearchResults', () => {
 
     expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
     expect(group.childAt(1).prop('text')).toEqual(
-      'Advanced Search for "foo bar"',
+      'Advanced search for "foo bar"',
     );
   });
 

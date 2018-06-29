@@ -63,4 +63,22 @@ export default class IosBridge implements NativeBridge {
       });
     }
   }
+
+  updateBlockState(currentBlockType: string) {
+    if (window.webkit && window.webkit.messageHandlers.textFormatBridge) {
+      window.webkit.messageHandlers.textFormatBridge.postMessage({
+        name: 'updateBlockState',
+        states: currentBlockType,
+      });
+    }
+  }
+
+  updateListState(listState: string) {
+    if (window.webkit && window.webkit.messageHandlers.listBridge) {
+      window.webkit.messageHandlers.listBridge.postMessage({
+        name: 'updateListState',
+        states: listState,
+      });
+    }
+  }
 }

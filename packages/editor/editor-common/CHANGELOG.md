@@ -1,5 +1,80 @@
 # @atlaskit/editor-common
 
+## 11.3.5
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-card@29.1.5
+  - @atlaskit/emoji@35.1.4
+  - @atlaskit/editor-test-helpers@4.1.7
+  - @atlaskit/media-core@20.0.0
+
+## 11.3.4
+- [patch] ED-4934: fix table styles by avoiding circular imports [d1375ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1375ee)
+- [none] Updated dependencies [d1375ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1375ee)
+
+## 11.3.3
+- [patch] Fixing the cursor navigation between inline nodes [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+- [none] Updated dependencies [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+
+## 11.3.2
+- [patch] ED-4520, date renderer should render UTC value of date. [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+- [none] Updated dependencies [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+
+## 11.3.1
+- [patch] ED-4924: fix table control styles [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+- [none] Updated dependencies [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+
+## 11.3.0
+- [minor] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [none] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-json-transformer@3.1.3
+
+## 11.2.11
+- [patch] Removing unnecessary throw of error [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
+- [none] Updated dependencies [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
+
+## 11.2.10
+- [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+- [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+  - @atlaskit/editor-test-helpers@4.1.4
+
+## 11.2.9
+- [patch] ED-4741, adding support for date node in renderer. [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
+- [none] Updated dependencies [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
+
+## 11.2.8
+
+
+
+- [patch] Updated dependencies [74a0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74a0d46)
+  - @atlaskit/media-card@29.1.3
+- [patch] Updated dependencies [6c6f078](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6f078)
+  - @atlaskit/media-card@29.1.3
+- [patch] Updated dependencies [5bb26b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bb26b4)
+  - @atlaskit/media-card@29.1.3
+
+## 11.2.7
+- [patch] ED-4848: make wide table mode responsive [862ea96](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/862ea96)
+- [none] Updated dependencies [862ea96](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/862ea96)
+
+## 11.2.6
+- [patch] Design updates for /QuickInsert™️ menu [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+- [none] Updated dependencies [4e4825e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e4825e)
+
+## 11.2.5
+- [patch] Add Table breakout mode in renderer [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+- [none] Updated dependencies [0d3b375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d3b375)
+
+## 11.2.4
+- [patch] ED-4713 Add stage 0 support in json-schema-generator [cce275f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cce275f)
+- [none] Updated dependencies [cce275f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cce275f)
+  - @atlaskit/json-schema-generator@1.0.1
+
+## 11.2.3
+- [patch] ED-4489 Fix can't submit with enter using Korean and Japanese IME [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
+- [none] Updated dependencies [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
+  - @atlaskit/editor-test-helpers@4.1.3
+
 ## 11.2.2
 - [patch] Fixing extension select and refactor [eca44eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eca44eb)
 - [none] Updated dependencies [eca44eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eca44eb)

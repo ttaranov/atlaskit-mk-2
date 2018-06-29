@@ -481,8 +481,8 @@ describe('UploadService', () => {
         type: 'doc',
       } as any;
       const { uploadService } = setup();
-      const cancel = jest.fn();
-      (uploadService as any).createUploadController = () => ({ cancel });
+      const abort = jest.fn();
+      (uploadService as any).createUploadController = () => ({ abort });
 
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
@@ -491,7 +491,7 @@ describe('UploadService', () => {
 
       const generatedId = filesAddedCallback.mock.calls[0][0].files[0].id;
       uploadService.cancel(generatedId);
-      expect(cancel).toHaveBeenCalled();
+      expect(abort).toHaveBeenCalled();
     });
 
     it('should cancel all uploads when #cancel is not passed any arguments', () => {
@@ -506,7 +506,7 @@ describe('UploadService', () => {
         type: 'image/png',
       } as any;
       const { uploadService } = setup();
-      const createUploadController = jest.fn().mockReturnValue({ cancel() {} });
+      const createUploadController = jest.fn().mockReturnValue({ abort() {} });
       (uploadService as any).createUploadController = createUploadController;
 
       const filesAddedCallback = jest.fn();

@@ -1,5 +1,10 @@
 # @atlaskit/field-range
 
+## 4.1.0
+- [minor] Added elevations to the Theme package and updated visual styles for the field-range component. [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)
+- [none] Updated dependencies [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)
+  - @atlaskit/theme@4.1.0
+
 ## 4.0.3
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

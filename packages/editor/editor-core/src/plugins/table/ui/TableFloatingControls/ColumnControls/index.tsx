@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
 import { selectColumn, isTableSelected } from 'prosemirror-utils';
 import {
   ColumnContainer,
@@ -12,23 +13,59 @@ import { toolbarSize } from '../styles';
 import { tableDeleteColumnButtonSize } from '../../styles';
 import InsertColumnButton from './InsertColumnButton';
 import DeleteColumnButton from './DeleteColumnButton';
-import { findColumnSelection, TableSelection } from '../utils';
+import {
+  findColumnSelection,
+  TableSelection,
+  isSelectionUpdated,
+} from '../utils';
 import {
   resetHoverSelection,
   hoverColumns,
   insertColumn,
+  deleteSelectedColumns,
 } from '../../../actions';
 
 export interface Props {
   editorView: EditorView;
-  tableElement?: HTMLElement;
+  selection?: Selection;
+  tableRef?: HTMLElement;
   isTableHovered: boolean;
-  remove: () => void;
   isTableInDanger?: boolean;
+  numberOfColumns?: number;
 }
 
 export default class ColumnControls extends Component<Props, any> {
   state: { dangerColumns: number[] } = { dangerColumns: [] };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const {
+      tableRef,
+      isTableHovered,
+      isTableInDanger,
+      selection,
+      numberOfColumns,
+    } = this.props;
+
+    if (nextProps.tableRef) {
+      const controls = nextProps.tableRef.parentNode!.firstChild as HTMLElement;
+      // checks if controls width is different from table width
+      // 1px difference is acceptible and occurs in some situations due to the browser rendering specifics
+      const shouldUpdate =
+        Math.abs(controls.offsetWidth - nextProps.tableRef.offsetWidth) > 1;
+      if (shouldUpdate) {
+        return true;
+      }
+    }
+
+    return (
+      tableRef !== nextProps.tableRef ||
+      isTableHovered !== nextProps.isTableHovered ||
+      isTableInDanger !== nextProps.isTableInDanger ||
+      numberOfColumns !== nextProps.numberOfColumns ||
+      this.state.dangerColumns !== nextState.dangerColumns ||
+      isSelectionUpdated(selection, nextProps.selection)
+    );
+  }
 
   createDeleteColumnButton(
     selection: TableSelection,
@@ -47,7 +84,7 @@ export default class ColumnControls extends Component<Props, any> {
           left:
             offsetWidth + selectionWidth / 2 - tableDeleteColumnButtonSize / 2,
         }}
-        onClick={() => this.deleteColumns(selectedColIdxs)}
+        onClick={this.deleteColumns}
         onMouseEnter={() => this.hoverColumns(selectedColIdxs, true)}
         onMouseLeave={() => this.hoverColumns(selectedColIdxs)}
       />
@@ -100,19 +137,19 @@ export default class ColumnControls extends Component<Props, any> {
   render() {
     const {
       editorView: { state },
-      tableElement,
+      tableRef,
     } = this.props;
-    if (!tableElement) {
+    if (!tableRef) {
       return null;
     }
-    const tr = tableElement.querySelector('tr');
+    const tr = tableRef.querySelector('tr');
     if (!tr) {
       return null;
     }
 
     const cols = tr.children;
     const nodes: any = [];
-    const tableHeight = tableElement.offsetHeight;
+    const tableHeight = tableRef.offsetHeight;
 
     let prevColWidths = 0;
 
@@ -172,10 +209,11 @@ export default class ColumnControls extends Component<Props, any> {
     event.preventDefault();
   };
 
-  private deleteColumns(cols: number[]) {
-    this.props.remove();
+  private deleteColumns = () => {
+    const { state, dispatch } = this.props.editorView;
+    deleteSelectedColumns(state, dispatch);
     this.resetHoverSelection();
-  }
+  };
 
   private selectColumn = (column: number) => {
     const { state, dispatch } = this.props.editorView;

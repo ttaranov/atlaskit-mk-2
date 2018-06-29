@@ -28,7 +28,7 @@ export default class ToolbarDecision extends PureComponent<Props, State> {
         onClick={this.handleInsertDecision}
         disabled={disabled || isDisabled}
         spacing={isReducedSpacing ? 'none' : 'default'}
-        title="Create decision (<>)"
+        title="Create decision <>"
         iconBefore={<DecisionIcon label="Create decision" />}
       />
     );

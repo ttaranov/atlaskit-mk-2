@@ -5,11 +5,8 @@ Some actual functional tests need to be added:
 - Interaction with all fields
 - Submit the form
 Those tests should be added before the release candidate*/
-
-// eslint-disable-next-line
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-// eslint-disable-next-line
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 

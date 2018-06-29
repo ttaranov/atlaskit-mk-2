@@ -1,5 +1,10 @@
 # @atlaskit/field-text
 
+## 6.1.0
+- [minor] Updated visual styles for textfield and textarea components to match latest ADG spec [37f5ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37f5ea5)
+- [none] Updated dependencies [37f5ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37f5ea5)
+  - @atlaskit/field-base@10.2.0
+
 ## 6.0.4
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

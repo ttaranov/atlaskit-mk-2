@@ -30,6 +30,7 @@ export class Dropzone extends Component<DropzoneProps> {
             <DropzoneText>Drag and drop your files anywhere or</DropzoneText>
             <ButtonWrapper>
               <Button
+                className="e2e-upload-button"
                 appearance="default"
                 onClick={this.clickUpload}
                 isDisabled={!this.props.mpBrowser}

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { HTMLAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
-import { CellSelection } from 'prosemirror-tables';
 import { EditorView } from 'prosemirror-view';
-
+import { hasParentNodeOfType } from 'prosemirror-utils';
+import { Node as PmNode } from 'prosemirror-model';
 import {
   Popup,
   TableLayout,
@@ -15,14 +15,19 @@ import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 
-import { PermittedLayoutsDescriptor } from '../../pm-plugins/main';
+import { PluginConfig } from '../../pm-plugins/main';
 import { ToolbarButton, ToolbarButtonDanger, Separator } from './styles';
 import AdvanceMenu from './AdvanceMenu';
 import BackgroundColorMenu from './BackgroundColorMenu';
 import DisplayOptionsMenu from './DisplayOptionsMenu';
 import { dropShadow } from '../../../../ui/styles';
 
-import { hoverTable, clearHoverTable } from '../../actions';
+import {
+  hoverTable,
+  resetHoverSelection,
+  deleteTable,
+  setTableLayout,
+} from '../../actions';
 
 // `Popup` doesn't work with -ve `offset` if it goes outside of the container hence the -ve margin
 export const Toolbar: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -45,20 +50,11 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
-  tableElement?: HTMLElement;
-  tableActive?: boolean;
+  tableRef?: HTMLElement;
   tableLayout?: TableLayout;
-  cellSelection?: CellSelection;
-  allowMergeCells?: boolean;
-  allowNumberColumn?: boolean;
-  allowBackgroundColor?: boolean;
-  allowHeaderRow?: boolean;
-  allowHeaderColumn?: boolean;
-  stickToolbarToBottom?: boolean;
-  removeTable?: () => void;
-  permittedLayouts?: PermittedLayoutsDescriptor;
+  pluginConfig?: PluginConfig;
+  tableNode?: PmNode;
   updateLayout?: (layoutName: TableLayout) => void;
-  isLayoutSupported?: () => boolean;
 }
 
 export interface State {
@@ -87,70 +83,64 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     isOpen: false,
   };
 
-  setTableinDanger = () => {
-    const { state, dispatch } = this.props.editorView;
-    hoverTable(true)(state, dispatch);
-  };
-
-  resetTableinDanger = () => {
-    const { state, dispatch } = this.props.editorView;
-    clearHoverTable(state, dispatch);
-  };
-
-  removeTable = () => {
-    const { editorView: { state, dispatch }, removeTable } = this.props;
-    clearHoverTable(state, dispatch);
-    removeTable!();
-  };
+  shouldComponentUpdate(nextProps, nextState) {
+    const { tableRef, tableNode, pluginConfig, tableLayout } = this.props;
+    return (
+      tableRef !== nextProps.tableRef ||
+      tableNode !== nextProps.tableNode ||
+      pluginConfig !== nextProps.pluginConfig ||
+      tableLayout !== nextProps.tableLayout
+    );
+  }
 
   render() {
     const {
       popupsMountPoint,
       popupsBoundariesElement,
       popupsScrollableElement,
-      tableElement,
+      tableRef,
       editorView,
-      allowMergeCells,
-      tableActive,
       tableLayout,
-      allowNumberColumn,
-      allowBackgroundColor,
-      allowHeaderRow,
-      allowHeaderColumn,
-      stickToolbarToBottom,
-      isLayoutSupported,
+      pluginConfig,
     } = this.props;
 
-    if (!tableElement || !tableActive) {
+    if (!tableRef || !pluginConfig) {
       return null;
     }
 
+    const {
+      allowHeaderRow,
+      allowNumberColumn,
+      allowMergeCells,
+      allowHeaderColumn,
+      permittedLayouts,
+      stickToolbarToBottom,
+      allowBackgroundColor,
+    } = pluginConfig!;
+
     let availableLayouts: TableLayout[] = [];
-    if (this.props.permittedLayouts) {
-      if (this.props.permittedLayouts === 'all') {
+    if (permittedLayouts) {
+      if (permittedLayouts === 'all') {
         availableLayouts = Object.keys(tableLayouts) as TableLayout[];
       } else {
-        availableLayouts = this.props.permittedLayouts;
+        availableLayouts = permittedLayouts;
       }
     }
 
-    const shouldDisableLayout = isLayoutSupported
-      ? !isLayoutSupported()
-      : false;
     const layoutButtons = Array.from(new Set(availableLayouts)).map(
       layoutName => {
         const label = `Change layout to ${tableLayouts[layoutName].label}`;
         const Icon = tableLayouts[layoutName].icon;
         const onClick = () => {
-          this.props.updateLayout!(layoutName);
+          setTableLayout!(layoutName)(editorView.state, editorView.dispatch);
         };
 
         return (
           <ToolbarButton
             spacing="compact"
-            disabled={shouldDisableLayout}
+            disabled={!this.isLayoutSupported()}
             selected={tableLayout === layoutName}
-            onClick={this.props.updateLayout ? onClick : undefined}
+            onClick={onClick}
             title={label}
             key={layoutName}
             iconBefore={<Icon label={label} />}
@@ -162,7 +152,7 @@ export default class TableFloatingToolbar extends Component<Props, State> {
     return (
       <Popup
         offset={[0, 20]}
-        target={tableElement}
+        target={tableRef}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
@@ -206,8 +196,8 @@ export default class TableFloatingToolbar extends Component<Props, State> {
             <Separator style={{ height: 'auto' }} />
           ) : null}
           <div
-            onMouseEnter={this.setTableinDanger}
-            onMouseLeave={this.resetTableinDanger}
+            onMouseEnter={this.hoverTable}
+            onMouseLeave={this.resetHoverSelection}
           >
             <ToolbarButtonDanger
               spacing="compact"
@@ -220,4 +210,29 @@ export default class TableFloatingToolbar extends Component<Props, State> {
       </Popup>
     );
   }
+
+  private isLayoutSupported = () => {
+    const { selection, schema } = this.props.editorView.state;
+    const { layoutSection, bodiedExtension } = schema.nodes;
+    return (
+      !hasParentNodeOfType(layoutSection)(selection) &&
+      !hasParentNodeOfType(bodiedExtension)(selection)
+    );
+  };
+
+  private hoverTable = () => {
+    const { state, dispatch } = this.props.editorView;
+    hoverTable(true)(state, dispatch);
+  };
+
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    resetHoverSelection(state, dispatch);
+  };
+
+  private removeTable = () => {
+    const { state, dispatch } = this.props.editorView;
+    deleteTable(state, dispatch);
+    this.resetHoverSelection();
+  };
 }

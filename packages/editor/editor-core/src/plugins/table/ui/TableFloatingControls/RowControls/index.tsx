@@ -9,21 +9,20 @@ import {
   HeaderButton,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
-import { getLineMarkerWidth, findRowSelection, TableSelection } from '../utils';
+import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
 import DeleteRowButton from './DeleteRowButton';
 
 export interface Props {
   editorView: EditorView;
-  tableElement: HTMLElement;
+  tableRef: HTMLElement;
   isTableHovered: boolean;
   selectRow: (row: number) => void;
   insertRow: (row: number) => void;
-  remove: () => void;
+  deleteSelectedRows: () => void;
   hoverRows: (rows: number[], danger?: boolean) => void;
   dangerRows?: number[];
   hoveredRows?: number[];
   resetHoverSelection: () => void;
-  scroll?: number;
   isTableInDanger?: boolean;
 }
 
@@ -31,7 +30,6 @@ export default class RowControls extends Component<Props, any> {
   static defaultProps = {
     dangerRows: [],
     hoveredRows: [],
-    scroll: 0,
   };
 
   createDeleteRowButton(selection, offsetHeight, selectionHeight) {
@@ -43,10 +41,7 @@ export default class RowControls extends Component<Props, any> {
     return (
       <DeleteRowButton
         key="delete"
-        onClick={() => {
-          this.props.remove();
-          this.props.resetHoverSelection();
-        }}
+        onClick={this.props.deleteSelectedRows}
         onMouseEnter={() => {
           this.props.hoverRows(selectedRowIdxs, true);
         }}
@@ -84,7 +79,6 @@ export default class RowControls extends Component<Props, any> {
       editorView: { state },
       isTableHovered,
       isTableInDanger,
-      scroll,
     } = this.props;
 
     if (
@@ -105,30 +99,24 @@ export default class RowControls extends Component<Props, any> {
       classNames.push('last');
     }
 
-    if (scroll && scroll > 0) {
-      classNames.push('scrolling');
-    }
-
     return classNames;
   }
 
   render() {
     const {
       editorView: { state },
-      tableElement,
-      scroll,
+      tableRef,
     } = this.props;
-    if (!tableElement) {
+    if (!tableRef) {
       return null;
     }
-    const tbody = tableElement.querySelector('tbody');
+    const tbody = tableRef.querySelector('tbody');
     if (!tbody) {
       return null;
     }
 
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
-    const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll!);
     let prevRowHeights = 0;
 
     const selection = findRowSelection(state, rows);
@@ -159,7 +147,10 @@ export default class RowControls extends Component<Props, any> {
           ) ? (
             <InsertRowButton
               onClick={() => this.props.insertRow(i + 1)}
-              lineMarkerWidth={lineMarkerWidth}
+              lineMarkerWidth={getLineMarkerWidth(
+                tableRef,
+                (tableRef.parentNode as HTMLElement).scrollLeft,
+              )}
             />
           ) : null}
         </RowControlsButtonWrap>,

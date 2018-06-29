@@ -1,0 +1,10 @@
+{
+  "name": "@atlaskit/visual-regression",
+  "version": "0.0.1",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+     "puppeteer":"^1.4.0",
+     "jest-image-snapshot": "^2.4.2"
+  }
+}

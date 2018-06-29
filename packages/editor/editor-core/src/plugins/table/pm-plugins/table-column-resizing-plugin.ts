@@ -3,31 +3,25 @@ import { EditorView } from 'prosemirror-view';
 import { columnResizingPluginKey } from 'prosemirror-tables';
 import { stateKey as tablePluginKey } from '../pm-plugins/main';
 import { updateShadows } from '../nodeviews/TableComponent';
+import { getLineMarkerWidth } from '../ui/TableFloatingControls/utils';
 
 export const pluginKey = new PluginKey('tableColumnResizingCustomPlugin');
 
 const updateControls = (state: EditorState) => {
-  const { tableElement, tableActive } = tablePluginKey.getState(state);
-  if (!tableElement) {
+  const { tableRef } = tablePluginKey.getState(state);
+  if (!tableRef) {
     return;
   }
-  const tr = tableElement.querySelector('tr');
-
+  const tr = tableRef.querySelector('tr');
   if (!tr) {
     return;
   }
-
   const cols = tr.children;
-  const columnControls: any = tableElement.parentElement.querySelectorAll(
-    '.table-column',
-  );
-  const rows = tableElement.querySelectorAll('tr');
-  const rowControls: any = tableElement.parentElement.parentElement.querySelectorAll(
-    '.table-row',
-  );
-  const numberedRows = tableElement.parentElement.parentElement.querySelectorAll(
-    '.numbered-row',
-  );
+  const wrapper = tableRef.parentElement;
+  const columnControls: any = wrapper.querySelectorAll('.table-column');
+  const rows = tableRef.querySelectorAll('tr');
+  const rowControls: any = wrapper.parentElement.querySelectorAll('.table-row');
+  const numberedRows = wrapper.parentElement.querySelectorAll('.numbered-row');
 
   // update column controls width on resize
   for (let i = 0, count = columnControls.length; i < count; i++) {
@@ -42,16 +36,22 @@ const updateControls = (state: EditorState) => {
     }
   }
 
+  const rowMarkers: any = wrapper.parentElement.querySelectorAll(
+    '.ProseMirror-table-insert-row-marker',
+  );
+
+  // update row insert marker (blue horizontal line)
+  for (let i = 0, count = rowMarkers.length; i < count; i++) {
+    const width = getLineMarkerWidth(tableRef, wrapper.scrollLeft);
+    rowMarkers[i].style.width = `${width}px`;
+  }
+
   updateShadows(
-    tableElement.parentElement,
-    tableElement,
-    tableElement.parentElement.parentElement.querySelector(
-      '.table-shadow.-left',
-    ),
-    tableElement.parentElement.parentElement.querySelector(
-      '.table-shadow.-right',
-    ),
-    tableActive,
+    wrapper,
+    tableRef,
+    wrapper.parentElement.querySelector('.table-shadow.-left'),
+    wrapper.parentElement.querySelector('.table-shadow.-right'),
+    !!tableRef,
   );
 };
 

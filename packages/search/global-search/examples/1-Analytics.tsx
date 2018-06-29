@@ -74,7 +74,7 @@ export default class extends React.Component<any, any> {
             <AnalyticsListener onEvent={this.onEvent}>
               <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
                 <AnalyticsNextListener
-                  channel="globalSearch"
+                  channel="fabric-elements"
                   onEvent={e => this.onAnalyticsNextEvent(e)}
                 >
                   <AtlaskitThemeProvider mode="light">

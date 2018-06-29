@@ -1,5 +1,9 @@
 # @atlaskit/notification-indicator
 
+## 3.2.0
+- [minor] Update NotificationIndicator with new features that will be used to reduce backend calls [803ed1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/803ed1f)
+- [minor] Updated dependencies [803ed1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/803ed1f)
+
 ## 3.0.5
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

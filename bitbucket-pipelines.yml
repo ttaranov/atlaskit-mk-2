@@ -48,6 +48,9 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
               - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
+              # The script below counts flowfixme and fails if above the threshold.
+              # The goal is to reduce the threshold over time.
+              - source build/ci-scripts/count-flowfixme.sh 155
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
             caches:
               - node
@@ -61,12 +64,19 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Testing
+            name: Browser Unit Testing - Karma
+            script:
+              - source ./build-setup.sh 
+              - bolt install --pure-lockfile
+              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
+            caches:
+              - node
+        - step:
+            name: Browser Integration Testing - Webdriver
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js browserstack -- yarn test:browser:browserstack
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed 
+              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
             caches:
               - node
         - step:
@@ -110,6 +120,26 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - yarn test:webdriver:browserstack
+          caches:
+            - node
+
+    # This will run with the visual regression tool
+    build-visual-regression:
+    - step:
+          script:
+            #to overcome puppeteer drawback yarn add again
+            # When running Puppeteer in Docker, 
+            # getting headless Chrome up and running in Docker can be tricky.
+            # The bundled Chromium that Puppeteer installs is missing the necessary shared library dependencies.
+            # To fix, you'll need to install the missing dependencies and the latest Chromium package in your Dockerfile:
+            - source ./build/visual-regression/puppeteer.sh
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile 
+            # Install puppeteer so it's available in the container.
+            # Even if it is present in the package.json
+            # For further details see: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
+            - yarn add puppeteer
+            - yarn test:vr
           caches:
             - node
 

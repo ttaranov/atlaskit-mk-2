@@ -114,7 +114,10 @@ export class NewUploadServiceImpl implements UploadService {
           },
         });
 
-      cancellableFileUpload.cancel = controller.cancel;
+      cancellableFileUpload.cancel = () => {
+        // we can't do "cancellableFileUpload.cancel = controller.abort" because will change the "this" context
+        controller.abort();
+      };
     });
   }
 

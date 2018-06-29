@@ -1,5 +1,27 @@
 # @atlaskit/global-search
 
+## 4.5.8
+- [patch] fixed icon glyph imports after changes in icon package [abf2e65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abf2e65)
+
+## 4.5.7
+- [patch] Decreasing padding on items and fix analytics.' [0f73740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f73740)
+- [none] Updated dependencies [0f73740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0f73740)
+  - @atlaskit/quick-search@2.3.2
+
+## 4.5.6
+- [patch] Minor bugfixes and UI tweaks. [80899e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80899e1)
+- [none] Updated dependencies [80899e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80899e1)
+  - @atlaskit/quick-search@2.3.1
+
+## 4.5.5
+- [patch] Fix spaceName attribute coming back from the quick nav API [1c91e59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c91e59)
+
+## 4.5.4
+- [patch] Fixes a bug with search analytics attribution. [4aadd7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aadd7a)
+
+## 4.5.3
+- [patch] Changing the backend from XPSearch Aggregator to the existing Quick Nav API [9706af3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9706af3)
+
 ## 4.5.2
 - [patch] Minor polish [4d3eabc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d3eabc)
 

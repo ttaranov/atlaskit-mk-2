@@ -25,6 +25,7 @@ import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
 import { Definition as Date } from './date';
 import { Definition as Placeholder } from './placeholder';
+import { InlineCardDefinition as InlineCard } from './inline-card';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -148,7 +149,8 @@ export type InlineAtomic =
   | Emoji
   | InlineExtension
   | Date
-  | Placeholder;
+  | Placeholder
+  | InlineCard;
 
 /**
  * @name inline_node

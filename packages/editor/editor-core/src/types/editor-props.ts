@@ -28,6 +28,7 @@ import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit';
 import { CodeBlockOptions } from '../plugins/code-block';
 import { CardProvider, CardOptions } from '../plugins/card';
+import { QuickInsertOptions } from '../plugins/quick-insert/types';
 
 export type EditorAppearance =
   | 'message'
@@ -88,8 +89,7 @@ export interface EditorProps {
   // Temporary flag to enable layouts while it's under development
   UNSAFE_allowLayouts?: boolean;
 
-  // A temporary flag to enable quick insert plugin. Should be turned on by default when feature is completed.
-  UNSAFE_allowQuickInsert?: boolean;
+  quickInsert?: QuickInsertOptions;
 
   UNSAFE_cards?: CardOptions;
 

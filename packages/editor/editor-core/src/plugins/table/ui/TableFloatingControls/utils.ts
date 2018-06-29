@@ -1,15 +1,19 @@
 import { toolbarSize } from './styles';
 import { EditorState, Selection } from 'prosemirror-state';
-import { isRowSelected, isColumnSelected } from 'prosemirror-utils';
+import {
+  isRowSelected,
+  isColumnSelected,
+  isCellSelection,
+} from 'prosemirror-utils';
 import { checkIfNumberColumnEnabled } from '../../utils';
 
 const TABLE_PADDING = 10;
 
 export const getLineMarkerWidth = (
-  tableElement: HTMLElement,
+  tableRef: HTMLElement,
   scroll: number,
 ): number => {
-  const { parentElement, offsetWidth } = tableElement;
+  const { parentElement, offsetWidth } = tableRef;
   const diff = offsetWidth - parentElement!.offsetWidth;
   const scrollDiff = scroll - diff > 0 ? scroll - diff : 0;
 
@@ -105,3 +109,9 @@ export const findColumnSelection = (
 ) => {
   return findTableSelection(state, elems, isColumnSelected, false);
 };
+
+export const isSelectionUpdated = (oldSelection, newSelection) =>
+  isCellSelection(oldSelection!) !== isCellSelection(newSelection) ||
+  (isCellSelection(oldSelection!) &&
+    isCellSelection(newSelection) &&
+    oldSelection!.ranges !== newSelection.ranges);
