@@ -51,13 +51,11 @@ export class AudioViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
-    const { isAutoPlay } = this.props;
-
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return this.renderPlayer(src.data, isAutoPlay);
+        return this.renderPlayer(src.data);
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }
@@ -82,18 +80,21 @@ export class AudioViewer extends React.Component<Props, State> {
     audioElement.setAttribute('controlsList', 'nodownload');
   };
 
-  private renderPlayer = (src, isAutoPlay) => (
-    <AudioPlayer>
-      {this.renderCover()}
-      <Audio
-        autoPlay={isAutoPlay}
-        controls
-        innerRef={this.saveAudioElement}
-        src={src}
-        preload="metadata"
-      />
-    </AudioPlayer>
-  );
+  private renderPlayer = (src: string) => {
+    const { isAutoPlay } = this.props;
+    return (
+      <AudioPlayer>
+        {this.renderCover()}
+        <Audio
+          autoPlay={isAutoPlay}
+          controls
+          innerRef={this.saveAudioElement}
+          src={src}
+          preload="metadata"
+        />
+      </AudioPlayer>
+    );
+  };
 
   private loadCover = (coverUrl: string) => {
     return new Promise(async (resolve, reject) => {
