@@ -15,10 +15,10 @@ export type Props = {|
   onDragStart: (itemId: ItemId) => void,
   onDragEnd: (
     sourcePosition: DragPosition,
-    destinationPosition: DragPosition,
+    destinationPosition: ?DragPosition,
   ) => void,
   renderItem: RenderItemParams => React.Node,
-  paddingPerLevel: number,
+  offsetPerLevel: number,
 |};
 
 export type State = {|

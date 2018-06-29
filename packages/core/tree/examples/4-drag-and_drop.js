@@ -96,10 +96,14 @@ export default class DragDropTree extends Component<void, State> {
     });
   };
 
-  onDragEnd = (source: DragPosition, destination: DragPosition) => {
+  onDragEnd = (source: DragPosition, destination: ?DragPosition) => {
     console.log(source);
     console.log(destination);
     const { tree } = this.state;
+
+    if (!destination) {
+      return;
+    }
 
     const sourceParent: TreeItem = tree.items[source.parentId];
     const itemIdToMove = sourceParent.children[source.index];

@@ -34,7 +34,7 @@ export default class Tree extends Component<Props, State> {
     onDragStart: noop,
     onDragEnd: noop,
     renderItem: noop,
-    paddingPerLevel: 35,
+    offsetPerLevel: 35,
   };
 
   state = {
@@ -49,23 +49,26 @@ export default class Tree extends Component<Props, State> {
     };
   }
 
+  static getDragPosition = (tree: TreeData, path: Path): DragPosition => {
+    const parentPath = path.slice(0, -1);
+    const parent = getItem(tree, parentPath);
+    return {
+      parentId: parent.id,
+      index: path.slice(-1)[0],
+    };
+  };
+
   onDragEnd = (result: DropResult) => {
     const { onDragEnd } = this.props;
-
-    if (!result.destination) {
-      return;
-    }
-
     const source = result.source;
     const destination = result.destination;
+
     const {
       sourcePosition,
       destinationPosition,
     } = this.calculateFinalDropPositions(source, destination);
 
-    if (sourcePosition && destinationPosition) {
-      onDragEnd(sourcePosition, destinationPosition);
-    }
+    onDragEnd(sourcePosition, destinationPosition);
 
     this.setState({
       dropAnimationOffset: 0,
@@ -88,17 +91,23 @@ export default class Tree extends Component<Props, State> {
     });
   };
 
+  /*
+    Translates a drag&drop movement from a purely index based flat list style to tree-friendly `DragPosition` data structure 
+    to make it available in the onDragEnd callback.  
+   */
   calculateFinalDropPositions = (
     source: DraggableLocation,
-    destination: DraggableLocation,
-  ): { sourcePosition: ?DragPosition, destinationPosition: ?DragPosition } => {
+    destination: ?DraggableLocation,
+  ): { sourcePosition: DragPosition, destinationPosition: ?DragPosition } => {
     const { tree } = this.props;
     const { flattenedTree } = this.state;
     const sourcePath: Path = getSourcePath(flattenedTree, source.index);
-    const sourcePosition: ?DragPosition = Tree.getDragPosition(
-      tree,
-      sourcePath,
-    );
+    const sourcePosition: DragPosition = Tree.getDragPosition(tree, sourcePath);
+
+    if (!destination) {
+      return { sourcePosition, destinationPosition: null };
+    }
+
     const destinationPath: Path = getDestinationPath(
       flattenedTree,
       source.index,
@@ -115,26 +124,14 @@ export default class Tree extends Component<Props, State> {
     source: DraggableLocation,
     destination: DraggableLocation,
   ): number => {
-    const { paddingPerLevel } = this.props;
+    const { offsetPerLevel } = this.props;
     if (
       this.isMovingDown(source, destination) &&
       this.isTopOfSubtree(source, destination)
     ) {
-      return paddingPerLevel;
+      return offsetPerLevel;
     }
     return 0;
-  };
-
-  static getDragPosition = (tree: TreeData, path: Path): ?DragPosition => {
-    const parentPath = path.slice(0, -1);
-    const parent = getItem(tree, parentPath);
-    if (parent) {
-      return {
-        parentId: parent.id,
-        index: path.slice(-1)[0],
-      };
-    }
-    return null;
   };
 
   isMovingDown = (

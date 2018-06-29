@@ -9,7 +9,6 @@ import type {
   TreeItem,
   FlattenedTree,
 } from '../types';
-import { oneOf } from './handy';
 
 export type TreeItemMutation = {|
   id?: ItemId,
@@ -82,32 +81,11 @@ export const mutateTree = (
       // copy all old items
       ...tree.items,
       // overwriting only the item being changed
-      [itemId]: mutateTreeItem(itemToChange, mutation),
+      [itemId]: {
+        ...itemToChange,
+        ...mutation,
+      },
     },
-  };
-};
-
-/*
-  Mutate one TreeItem with a given mutation.
-  Required to satisfy Flow
- */
-export const mutateTreeItem = (
-  treeItem: TreeItem,
-  mutation: TreeItemMutation,
-): TreeItem => {
-  return {
-    id: oneOf(mutation.id, treeItem.id),
-    isExpanded: oneOf(mutation.isExpanded, treeItem.isExpanded),
-    hasChildren: oneOf(mutation.hasChildren, treeItem.hasChildren),
-    children:
-      typeof mutation.children !== 'undefined'
-        ? mutation.children
-        : treeItem.children,
-    isChildrenLoading: oneOf(
-      mutation.isChildrenLoading,
-      treeItem.isChildrenLoading,
-    ),
-    data: oneOf(mutation.data, treeItem.data),
   };
 };
 
@@ -125,17 +103,13 @@ export const isSamePath = (a: Path, b: Path): boolean => {
   Checks if the two paths have the same parent
  */
 export const hasSameParent = (a: Path, b: Path): boolean =>
-  a &&
-  b &&
-  a.length === b.length &&
   isSamePath(getParentPath(a), getParentPath(b));
 
 /*
   Calculates the parent path for a path
  */
-export const getParentPath = (child: Path): Path => {
-  return child.slice(0, child.length - 1);
-};
+export const getParentPath = (child: Path): Path =>
+  child.slice(0, child.length - 1);
 
 /*
   Calculates the source path after drag&drop ends
@@ -148,7 +122,7 @@ export const getSourcePath = (
 /*
   Calculates the destination path after drag&drop ends
 
-  During dragging the items are being displaced based on the location of the dragged item.
+  During dragging the items are displaced based on the location of the dragged item.
   Displacement depends on which direction the item is coming from.
 
   index
@@ -169,18 +143,18 @@ export const getDestinationPath = (
   destinationIndex: number,
 ): Path => {
   // Moving down
-  const down = destinationIndex > sourceIndex;
+  const down: boolean = destinationIndex > sourceIndex;
   // Stayed at the same place
-  const samePlace = destinationIndex === sourceIndex;
+  const samePlace: boolean = destinationIndex === sourceIndex;
   // Path of the source location
-  const sourcePath = getSourcePath(flattenedTree, sourceIndex);
+  const sourcePath: Path = getSourcePath(flattenedTree, sourceIndex);
   // Path of the upper item where the item was dropped
-  const upperPath = down
+  const upperPath: ?Path = down
     ? flattenedTree[destinationIndex].path
     : flattenedTree[destinationIndex - 1] &&
       flattenedTree[destinationIndex - 1].path;
   // Path of the lower item where the item was dropped
-  const lowerPath =
+  const lowerPath: ?Path =
     down || samePlace
       ? flattenedTree[destinationIndex + 1] &&
         flattenedTree[destinationIndex + 1].path
@@ -199,12 +173,12 @@ export const getDestinationPath = (
    */
 
   // Top of the list
-  if (isTopOfTheList(upperPath, lowerPath)) {
+  if (lowerPath && isTopOfSubtree(upperPath, lowerPath)) {
     return lowerPath;
   }
 
   // Between two items on the same level
-  if (hasSameParent(upperPath, lowerPath)) {
+  if (upperPath && lowerPath && hasSameParent(upperPath, lowerPath)) {
     if (down && hasSameParent(upperPath, sourcePath)) {
       // if item was moved down within the list, it will replace the displaced item
       return upperPath;
@@ -214,32 +188,36 @@ export const getDestinationPath = (
 
   // End of list
   // this means that the upper item is deeper in the tree.
+  if (upperPath) {
+    const lowerLevel = lowerPath ? lowerPath.length : 1;
+    const upperLevel = upperPath ? upperPath.length : 1;
+    const sourceLevel = sourcePath.length;
+    // Disambiguation of the level.
+    const finalLevel = sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
 
-  const lowerLevel = lowerPath ? lowerPath.length : 1;
-  const upperLevel = upperPath ? upperPath.length : 1;
-  const sourceLevel = sourcePath.length;
-  // Disambiguation of the level.
-  const finalLevel = sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
+    if (finalLevel === upperLevel) {
+      // Insert to the upper list
+      const newPath = [...upperPath];
+      if (!hasSameParent(upperPath, sourcePath)) {
+        newPath[newPath.length - 1] += 1;
+      }
+      return newPath;
+    }
 
-  if (finalLevel === upperLevel) {
-    // Insert to the upper list
-    const newPath = [...upperPath];
-    if (!hasSameParent(upperPath, sourcePath)) {
+    // Insert to the lower list
+    const itemAfterWeInsert = upperPath.slice(0, finalLevel);
+    const newPath = [...itemAfterWeInsert];
+    if (!hasSameParent(itemAfterWeInsert, sourcePath) || !down) {
       newPath[newPath.length - 1] += 1;
     }
     return newPath;
   }
 
-  // Insert to the lower list
-  const itemAfterWeInsert = upperPath.slice(0, finalLevel);
-  const newPath = [...itemAfterWeInsert];
-  if (!hasSameParent(itemAfterWeInsert, sourcePath) || !down) {
-    newPath[newPath.length - 1] += 1;
-  }
-  return newPath;
+  // impossible case
+  return sourcePath;
 };
 
-const isTopOfTheList = (upperPath: Path, lowerPath: Path) =>
+const isTopOfSubtree = (upperPath: ?Path, lowerPath: Path) =>
   !upperPath || isParentOf(upperPath, lowerPath);
 
 export const getItem = (tree: TreeData, path: Path): TreeItem => {
@@ -251,4 +229,4 @@ export const getItem = (tree: TreeData, path: Path): TreeItem => {
 };
 
 const isParentOf = (parent: Path, child: Path): boolean =>
-  parent && child && isSamePath(parent, getParentPath(child));
+  isSamePath(parent, getParentPath(child));
