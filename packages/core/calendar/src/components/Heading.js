@@ -31,7 +31,7 @@ export default (props: Props) => (
         <ArrowleftIcon
           label="Last month"
           size="medium"
-          primaryColor={colors.N80}
+          primaryColor={colors.N70}
         />
       </Btn>
     </ArrowLeft>
@@ -41,7 +41,7 @@ export default (props: Props) => (
         <ArrowrightIcon
           label="Next month"
           size="medium"
-          primaryColor={colors.N80}
+          primaryColor={colors.N70}
         />
       </Btn>
     </ArrowRight>
