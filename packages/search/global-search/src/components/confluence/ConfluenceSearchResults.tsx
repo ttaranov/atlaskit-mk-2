@@ -11,6 +11,10 @@ import {
   take,
   isEmpty,
 } from '../SearchResultsUtil';
+import {
+  PreQueryScreenEvent,
+  PostQueryScreenEvent,
+} from '../analytics/SceenEvents';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -68,6 +72,12 @@ const renderAdvancedSearchGroup = (query: string) => {
   );
 };
 
+const preQueryScreenEvent = <PreQueryScreenEvent key="preQueryScreenEvent" />;
+
+const postQueryScreenEvent = (
+  <PostQueryScreenEvent key="postQueryScreenEvent" />
+);
+
 export interface Props {
   query: string;
   isError: boolean;
@@ -105,6 +115,16 @@ export default function searchResults(props: Props) {
 
   if (query.length === 0) {
     // TODO: insert error state here if the recent results are empty.
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return null;
+    }
+
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
@@ -118,6 +138,7 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderAdvancedSearchGroup(query),
+      preQueryScreenEvent,
     ];
   }
 
@@ -134,5 +155,6 @@ export default function searchResults(props: Props) {
     renderSpacesGroup('Spaces', take(spaceResults, 3), query),
     renderPeopleGroup('People', take(peopleResults, 3), query),
     renderAdvancedSearchGroup(query),
+    postQueryScreenEvent,
   ];
 }
