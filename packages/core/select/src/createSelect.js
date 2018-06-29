@@ -197,8 +197,8 @@ function baseStyles(validationState, isCompact) {
       else if (isFocused) backgroundColor = colors.N20;
       return {
         ...css,
-        paddingTop: `${gridSize() * 2}px`,
-        paddingBottom: `${gridSize() * 2}px`,
+        paddingTop: `${gridSize()}px`,
+        paddingBottom: `${gridSize()}px`,
         lineHeight: `${gridSize() * 2}px`,
         backgroundColor,
         color,

@@ -1,26 +1,15 @@
 // @flow
 import React from 'react';
-import { colors } from '@atlaskit/theme';
 
 import Select from './Select';
 import { RadioOption } from './components';
-
-const optionStyles = (css, { isFocused }) => ({
-  ...css,
-  backgroundColor: isFocused ? colors.N30 : 'transparent',
-  color: 'inherit',
-  cursor: 'pointer',
-  paddingLeft: '16px',
-  ':active': {
-    backgroundColor: colors.B50,
-  },
-});
+import { inputOptionStyles } from './components/input-options';
 
 const RadioSelect = (props: any) => (
   <Select
     {...props}
     isMulti={false}
-    styles={{ option: optionStyles }}
+    styles={{ option: inputOptionStyles }}
     components={{ Option: RadioOption }}
   />
 );

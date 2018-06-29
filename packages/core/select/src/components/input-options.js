@@ -4,7 +4,7 @@ import React, { Component, type Element } from 'react';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import { colors, themed } from '@atlaskit/theme';
+import { colors, themed, gridSize } from '@atlaskit/theme';
 import type { CommonProps, fn, InnerProps } from './types';
 
 // maintains function shape
@@ -161,6 +161,20 @@ const truncateCSS = () => ({
   'overflow-x': 'hidden',
   flex: 1,
   whiteSpace: 'nowrap',
+});
+
+export const inputOptionStyles = (css: Object, { isFocused }: Object) => ({
+  ...css,
+  backgroundColor: isFocused ? colors.N30 : 'transparent',
+  color: 'inherit',
+  cursor: 'pointer',
+  paddingLeft: `${gridSize() * 2}px`,
+  paddingTop: `${gridSize() / 2}px`,
+  paddingBottom: `${gridSize() / 2}px`,
+  lineHeight: `${gridSize() * 2}px`,
+  ':active': {
+    backgroundColor: colors.B50,
+  },
 });
 
 export const CheckboxOption = (props: any) => (
