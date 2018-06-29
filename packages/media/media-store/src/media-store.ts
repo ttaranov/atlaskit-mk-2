@@ -22,6 +22,12 @@ import {
   mapResponseToBlob,
 } from './utils/request';
 
+const defaultImageOptions: MediaStoreGetFileImageParams = {
+  'max-age': 3600,
+  allowAnimated: true,
+  mode: 'full-fit',
+};
+
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
 
@@ -154,7 +160,7 @@ export class MediaStore {
 
   getFileImageURL = async (
     id: string,
-    params?: MediaStoreGetFileImageParams,
+    params: MediaStoreGetFileImageParams = defaultImageOptions,
   ): Promise<string> => {
     const auth = await this.config.authProvider();
 
@@ -166,7 +172,7 @@ export class MediaStore {
 
   getImage = async (
     id: string,
-    params?: MediaStoreGetFileImageParams,
+    params: MediaStoreGetFileImageParams = defaultImageOptions,
   ): Promise<Blob> => {
     return this.request(`/file/${id}/image`, {
       params,
@@ -278,14 +284,14 @@ export type MediaStoreGetFileParams = {
 };
 
 export type MediaStoreGetFileImageParams = {
+  readonly allowAnimated?: boolean;
   readonly version?: number;
   readonly collection?: string;
   readonly width?: number;
   readonly height?: number;
   readonly mode?: 'fit' | 'full-fit' | 'crop';
   readonly upscale?: boolean;
-  readonly 'max-age': number;
-  readonly allowAnimated: boolean;
+  readonly 'max-age'?: number;
 };
 
 export type MediaStoreGetCollectionItemsPrams = {

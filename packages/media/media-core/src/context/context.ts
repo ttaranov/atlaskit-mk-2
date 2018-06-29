@@ -13,6 +13,7 @@ import {
   ContextConfig,
   MediaApiConfig,
   UploadController,
+  MediaType,
 } from '@atlaskit/media-store';
 
 import {
@@ -90,6 +91,22 @@ export class ContextFactory {
 }
 
 const pollingInterval = 1000;
+// TODO: Move into utils
+const getMediaTypeFromFile = (file: UploadableFile): MediaType => {
+  if (file.content instanceof Blob) {
+    const type = file.content.type;
+
+    if (type.indexOf('image/') === 0) {
+      return 'image';
+    } else if (type.indexOf('video/') === 0) {
+      return 'video';
+    } else {
+      return 'unknown';
+    }
+  } else {
+    return 'unknown';
+  }
+};
 
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
@@ -262,6 +279,7 @@ class ContextImpl implements Context {
     let fileId: string;
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
+    const mediaType = getMediaTypeFromFile(file);
     const collectionName = file.collection;
     const name = file.name || '';
     // TODO [MSW-678]: remove when id upfront is exposed
@@ -272,6 +290,7 @@ class ContextImpl implements Context {
         observer.next({
           name,
           size,
+          mediaType,
           id: tempFileId,
           progress: 0,
           status: 'uploading',
@@ -287,6 +306,7 @@ class ContextImpl implements Context {
             progress,
             name,
             size,
+            mediaType,
             id: tempFileId,
             status: 'uploading',
           });

@@ -169,24 +169,28 @@ export class Card extends Component<CardProps, CardState> {
     context.getFile(id, { collectionName }).subscribe({
       next: async state => {
         const { dataURI: currentDataURI } = this.state;
+
         if (!currentDataURI) {
           const dataURI = getDataURIFromFileState(state);
           // TODO: revoke
           this.setState({ dataURI });
         }
         if (state.status === 'uploading') {
+          const { progress, id, name, size, mediaType } = state;
           this.setState({
             status: 'uploading',
-            progress: state.progress,
+            progress,
             metadata: {
-              id: state.id,
-              name: state.name,
-              site: state.size,
+              id,
+              name,
+              size,
+              mediaType,
             },
           });
         }
 
         if (state.status === 'processing') {
+          // TODO: should we set "metadata" here too? It might be possible that the first time you ask for and id is already 'processing'
           this.setState({
             progress: 1,
             status: 'complete',
@@ -194,19 +198,16 @@ export class Card extends Component<CardProps, CardState> {
         }
 
         if (state.status === 'processed') {
+          const { id, name, size, mediaType } = state;
+          // TODO: should we use MediaStore directly here?
           const mediaStore = new MediaStore({
             serviceHost: context.config.serviceHost,
             authProvider: context.config.authProvider,
           });
           const width = this.dataURIDimension('width');
           const height = this.dataURIDimension('height');
-
-          // TODO: make options optional
-
           const blob = await mediaStore.getImage(state.id, {
             collection: collectionName,
-            'max-age': 3600,
-            allowAnimated: true,
             height,
             width,
           });
@@ -216,10 +217,10 @@ export class Card extends Component<CardProps, CardState> {
             dataURI,
             status: 'complete',
             metadata: {
-              // TODO: pass missing data (mimeType, mediaType, creationDate, processingStatus)
-              id: state.id,
-              name: state.name,
-              size: state.size,
+              id,
+              name,
+              size,
+              mediaType,
             },
           });
         }
