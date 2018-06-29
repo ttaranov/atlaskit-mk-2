@@ -40,6 +40,7 @@
       "./typings/node.d.ts",
       "./typings/webpack.d.ts",
       "./typings/rusha.d.ts",
+      "./typings/lodash.last.d.ts",
       "./typings/uuid.d.ts"
     ]
   }

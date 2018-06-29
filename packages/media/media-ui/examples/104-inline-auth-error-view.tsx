@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
-import { ErroredView } from '../src/inlineCard/ErroredView';
+import { ErroredView } from '../src/InlineCard/ErroredView';
 
 class Example extends React.Component {
   state = {
     url: 'https://product-fabric.atlassian.net/browse/MSW-524',
   };
 
-  handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleUrlChange = (event: React.ChangeEvent<any>) => {
     this.setState({ url: event.target.value });
   };
 

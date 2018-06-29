@@ -48,13 +48,13 @@ export default () => (
         vestibulum tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet
         interdum, nunc mauris bibendum mauris, in consequat mi est vitae mauris.
         Phasellus dictum sollicitudin nunc in gravida.
-        <h4>Auth Error View</h4>
+        <h4>Errored View</h4>
         Qui proident do ipsum elit eu commodo ex. Eiusmod reprehenderit occaecat
         ipsum laboris. Velit incididunt esse eu ipsum et laboris eiusmod magna
         irure adipisicing adipisicing eiusmod ex veniam. Sunt velit et pariatur
         amet et magna sunt ea id eu ullamco laboris.
         <ErroredView
-          message="Ooops, somwthing went wrong!"
+          message="Ooops, something went wrong!"
           url={url}
           onClick={() => {}}
           onRetry={() => {
