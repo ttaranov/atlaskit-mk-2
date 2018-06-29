@@ -64,7 +64,7 @@ ${code`
   ${(
     <Props
       heading="Badge Props"
-      props={require('!!extract-react-types-loader!../src/components')}
+      props={require('!!extract-react-types-loader!../src')}
     />
   )}
 `;
