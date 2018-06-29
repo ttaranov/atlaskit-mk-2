@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 73.9.5
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/media-picker@8.1.6
+  - @atlaskit/emoji@36.0.1
+  - @atlaskit/util-data-test@9.1.15
+  - @atlaskit/task-decision@7.1.8
+  - @atlaskit/mention@13.1.3
+  - @atlaskit/renderer@18.2.9
+  - @atlaskit/editor-json-transformer@3.1.5
+  - @atlaskit/editor-bitbucket-transformer@3.2.6
+  - @atlaskit/editor-common@11.3.8
+  - @atlaskit/editor-test-helpers@4.1.9
+  - @atlaskit/editor-markdown-transformer@1.2.6
+
 ## 73.9.4
 - [patch] Updated dependencies [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
   - @atlaskit/code@6.0.0

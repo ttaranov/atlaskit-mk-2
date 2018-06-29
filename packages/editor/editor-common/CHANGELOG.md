@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 11.3.8
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/emoji@36.0.1
+  - @atlaskit/mention@13.1.3
+  - @atlaskit/editor-json-transformer@3.1.5
+  - @atlaskit/editor-test-helpers@4.1.9
+
 ## 11.3.7
 - [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
   - @atlaskit/emoji@36.0.0

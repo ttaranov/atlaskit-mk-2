@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 8.1.6
+- [patch] Safely handle paste handler for clipboard to avoid error noise in unsupported browsers [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+
 ## 8.1.5
 - [patch] re-enable usage of file id upfront in new MediaPicker uploader [3fb464b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3fb464b)
 - [patch] Updated dependencies [3fb464b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3fb464b)
