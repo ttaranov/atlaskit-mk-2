@@ -490,11 +490,20 @@ export const SUPPORTED_LANGUAGES = Object.freeze([
     alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'],
     value: 'xquery',
   },
+  {
+    name: 'PlainText',
+    alias: ['text', 'plaintext'],
+    value: 'text',
+  },
 ]);
 
 export const normalizeLanguage = memoizeOne((language?: string): string => {
+  if (!language) {
+    return '';
+  }
   const match = SUPPORTED_LANGUAGES.find(val => {
     return val.name === language || val.alias.includes(language);
   });
-  return match ? match.value : '';
+  // Fallback to plain monospaced text if language passed but not supported
+  return match ? match.value : 'text';
 });
