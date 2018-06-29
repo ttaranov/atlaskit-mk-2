@@ -2,19 +2,13 @@
 import * as React from 'react';
 import { Component, SyntheticEvent } from 'react';
 import {
-  createStorybookContext,
   defaultCollectionName,
   genericFileId,
-  defaultServiceHost,
-  mediaPickerAuthProvider,
+  createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import { Card, FileIdentifier } from '../src';
-import {
-  UploadController,
-  FileState,
-  ContextFactory,
-} from '@atlaskit/media-core';
+import { UploadController, FileState } from '@atlaskit/media-core';
 import { Observable } from 'rxjs';
 import {
   CardTitle,
@@ -23,11 +17,7 @@ import {
   CardsWrapper,
 } from '../example-helpers/styled';
 
-// const context = createStorybookContext();
-const context = ContextFactory.create({
-  serviceHost: defaultServiceHost,
-  authProvider: mediaPickerAuthProvider('asap'),
-});
+const context = createUploadContext();
 
 export interface ComponentProps {}
 export interface ComponentState {
@@ -99,7 +89,7 @@ class Example extends Component<ComponentProps, ComponentState> {
         }
 
         if (state.status === 'processing') {
-          // TODO: here we have the public id, AKA upload is finished
+          // here we have the public id, AKA upload is finished
           console.log('public id', state.id);
           subscription.unsubscribe();
         }

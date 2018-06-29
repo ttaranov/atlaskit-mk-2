@@ -1,3 +1,4 @@
+import VideoSnapshot from 'video-snapshot';
 import * as React from 'react';
 import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
@@ -74,18 +75,25 @@ export interface CardState {
 }
 
 // TODO: should this logic live in media-core to allow MediaViewer to benefit from it?
-const getDataURIFromFileState = (state: FileState): string | undefined => {
+const getDataURIFromFileState = async (
+  state: FileState,
+): Promise<string | undefined> => {
   if (state.status === 'error' || !state.preview) {
     return undefined;
   }
   const type = state.preview.blob.type;
+  const blob = state.preview.blob;
 
   if (type.indexOf('image/') === 0) {
-    return URL.createObjectURL(state.preview.blob);
+    return URL.createObjectURL(blob);
   }
 
-  if (type.indexOf('video/')) {
-    // TODO: use VideoSnapshot, check getPreviewFromVideo.ts
+  if (type.indexOf('video/') === 0) {
+    const snapshoter = new VideoSnapshot(blob);
+    const src = await snapshoter.takeSnapshot();
+
+    // TODO: revoke => snapshoter.end()
+    return src;
   }
 };
 
@@ -171,7 +179,7 @@ export class Card extends Component<CardProps, CardState> {
         const { dataURI: currentDataURI } = this.state;
 
         if (!currentDataURI) {
-          const dataURI = getDataURIFromFileState(state);
+          const dataURI = await getDataURIFromFileState(state);
           // TODO: revoke
           this.setState({ dataURI });
         }

@@ -49,7 +49,8 @@
     "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",
     "tslib": "^1.8.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^20.0.0",
