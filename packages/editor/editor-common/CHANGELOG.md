@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 11.3.7
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/emoji@36.0.0
+  - @atlaskit/mention@13.1.2
+  - @atlaskit/editor-json-transformer@3.1.4
+  - @atlaskit/editor-test-helpers@4.1.8
+
 ## 11.3.6
 - [patch] Bitbucket images were displaying at 100% of the container, and not respect max-width of the image. ED-4946 [370c812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370c812)
 - [none] Updated dependencies [370c812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370c812)
