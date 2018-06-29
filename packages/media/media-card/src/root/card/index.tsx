@@ -12,7 +12,8 @@ import {
   FileState,
 } from '@atlaskit/media-core';
 import { MediaStore } from '@atlaskit/media-store';
-
+import { AnalyticsContext } from '@atlaskit/analytics-next';
+import { Subscription } from 'rxjs';
 import {
   SharedCardProps,
   CardEventProps,
@@ -22,18 +23,7 @@ import {
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
-import { isRetina } from '../../utils/isRetina';
-import {
-  ElementDimension,
-  getElementDimension,
-} from '../../utils/getElementDimension';
-import {
-  getCardMinHeight,
-  defaultImageCardDimensions,
-} from '../../utils/cardDimensions';
-import { isValidPercentageUnit } from '../../utils/isValidPercentageUnit';
-import { containsPixelUnit } from '../../utils/containsPixelUnit';
+import { getDataURIDimension } from '../../utils/getDataURIDimension';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -98,6 +88,7 @@ const getDataURIFromFileState = async (
 };
 
 export class Card extends Component<CardProps, CardState> {
+  subscription?: Subscription;
   static defaultProps: Partial<CardProps> = {
     appearance: 'auto',
     resizeMode: 'crop',
@@ -105,12 +96,9 @@ export class Card extends Component<CardProps, CardState> {
     disableOverlay: false,
   };
 
-  constructor(props: CardProps) {
-    super(props);
-    this.state = {
-      status: 'loading',
-    };
-  }
+  state: CardState = {
+    status: 'loading',
+  };
 
   componentDidMount() {
     const { identifier } = this.props;
@@ -134,37 +122,8 @@ export class Card extends Component<CardProps, CardState> {
   }
 
   componentWillUnmount() {
-    // TODO: unsubscribe
+    this.unsubscribe();
     // TODO: revokeObjectUrl
-  }
-
-  private isSmall(): boolean {
-    return this.props.appearance === 'small';
-  }
-
-  // TODO: move method into utility
-  dataURIDimension(dimension: ElementDimension): number {
-    const retinaFactor = isRetina() ? 2 : 1;
-    const dimensionValue =
-      (this.props.dimensions && this.props.dimensions[dimension]) || '';
-
-    if (this.isSmall()) {
-      return getCardMinHeight('small') * retinaFactor;
-    }
-
-    if (isValidPercentageUnit(dimensionValue)) {
-      return getElementDimension(this, dimension) * retinaFactor;
-    }
-
-    if (typeof dimensionValue === 'number') {
-      return dimensionValue * retinaFactor;
-    }
-
-    if (containsPixelUnit(`${dimensionValue}`)) {
-      return parseInt(`${dimensionValue}`, 10) * retinaFactor;
-    }
-
-    return defaultImageCardDimensions[dimension] * retinaFactor;
   }
 
   subscribe(identifier: Identifier) {
@@ -174,7 +133,8 @@ export class Card extends Component<CardProps, CardState> {
     const { context } = this.props;
     const { id, collectionName } = identifier;
 
-    context.getFile(id, { collectionName }).subscribe({
+    this.unsubscribe();
+    this.subscription = context.getFile(id, { collectionName }).subscribe({
       next: async state => {
         const { dataURI: currentDataURI } = this.state;
 
@@ -212,8 +172,13 @@ export class Card extends Component<CardProps, CardState> {
             serviceHost: context.config.serviceHost,
             authProvider: context.config.authProvider,
           });
-          const width = this.dataURIDimension('width');
-          const height = this.dataURIDimension('height');
+          const options = {
+            appearance: this.props.appearance,
+            dimensions: this.props.dimensions,
+            component: this,
+          };
+          const width = getDataURIDimension('width', options);
+          const height = getDataURIDimension('height', options);
           const blob = await mediaStore.getImage(state.id, {
             collection: collectionName,
             height,
@@ -240,6 +205,12 @@ export class Card extends Component<CardProps, CardState> {
       },
     });
   }
+
+  unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  };
 
   private isUrlPreviewIdentifier(
     identifier: Identifier,
