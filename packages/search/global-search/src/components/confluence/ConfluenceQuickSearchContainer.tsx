@@ -235,7 +235,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           searchSessionId: searchSessionId,
           ...resultsDetails,
           ...DEFAULT_GAS_ATTRIBUTES,
-        } as PostQueryShownAttributes,
+        },
       };
       event.update(payload).fire(DEFAULT_GAS_CHANNEL);
     }

@@ -1,11 +1,5 @@
 import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
 
-export interface DefaultGasAttributes {
-  packageName: string;
-  packageVersion: string;
-  componentName: string;
-}
-
 export const DEFAULT_GAS_SOURCE = 'globalSearchDrawer';
 export const DEFAULT_GAS_CHANNEL = 'fabric-elements';
 export const DEFAULT_GAS_ATTRIBUTES = {
@@ -14,7 +8,7 @@ export const DEFAULT_GAS_ATTRIBUTES = {
   componentName: 'GlobalQuickSearch',
 };
 
-export interface ShownAnalyticsAttributes extends DefaultGasAttributes {
+export interface ShownAnalyticsAttributes {
   resultCount: number;
   resultSectionCount: number;
   resultContext: ShownResultContextSection[];

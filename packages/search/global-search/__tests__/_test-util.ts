@@ -38,6 +38,7 @@ export function makeConfluenceObjectResult(
     resultType: ResultType.ConfluenceObjectResult,
     containerName: 'containerName',
     contentType: ContentType.ConfluencePage,
+    containerId: 'containerId',
     ...buildMockSearchResultProperties(),
     ...partial,
   };
