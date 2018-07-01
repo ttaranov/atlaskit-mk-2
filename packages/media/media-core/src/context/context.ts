@@ -82,6 +82,7 @@ export interface Context {
   ): Observable<FileState>;
 
   readonly config: ContextConfig;
+  readonly mediaStore: MediaStore;
 }
 
 export class ContextFactory {
@@ -115,7 +116,7 @@ class ContextImpl implements Context {
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
   private readonly fileStreamsCache: FileStreamCache;
-  private readonly mediaStore: MediaStore;
+  readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);

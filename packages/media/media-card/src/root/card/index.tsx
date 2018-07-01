@@ -167,11 +167,6 @@ export class Card extends Component<CardProps, CardState> {
 
         if (state.status === 'processed') {
           const { id, name, size, mediaType } = state;
-          // TODO: should we use MediaStore directly here?
-          const mediaStore = new MediaStore({
-            serviceHost: context.config.serviceHost,
-            authProvider: context.config.authProvider,
-          });
           const options = {
             appearance: this.props.appearance,
             dimensions: this.props.dimensions,
@@ -179,7 +174,7 @@ export class Card extends Component<CardProps, CardState> {
           };
           const width = getDataURIDimension('width', options);
           const height = getDataURIDimension('height', options);
-          const blob = await mediaStore.getImage(state.id, {
+          const blob = await context.mediaStore.getImage(state.id, {
             collection: collectionName,
             height,
             width,
