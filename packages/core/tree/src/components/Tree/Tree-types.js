@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { TreeData, Path, ItemId, FlattenedTree } from '../../types';
 import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
-export type DragPosition = {|
+export type TreePosition = {|
   parentId: ItemId,
   index: number,
 |};
@@ -14,8 +14,8 @@ export type Props = {|
   onCollapse: (itemId: ItemId, path: Path) => void,
   onDragStart: (itemId: ItemId) => void,
   onDragEnd: (
-    sourcePosition: DragPosition,
-    destinationPosition: ?DragPosition,
+    sourcePosition: TreePosition,
+    destinationPosition: ?TreePosition,
   ) => void,
   renderItem: RenderItemParams => React.Node,
   offsetPerLevel: number,
