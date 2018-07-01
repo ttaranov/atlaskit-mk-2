@@ -10,9 +10,8 @@ import {
   type DraggableStateSnapshot,
   type DraggableLocation,
   type DroppableProvided,
-  type DragHandleProps,
 } from 'react-beautiful-dnd';
-import type { DragPosition, Props, State, MovementType } from './Tree-types';
+import type { DragPosition, Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
 import { flattenTree, getItem } from '../../utils/tree';
 import { getDestinationPath, getSourcePath } from '../../utils/flat-tree';
@@ -21,6 +20,7 @@ import TreeItem from '../TreeItem';
 import {
   type TreeDraggableProvided,
   type TreeDraggingStyle,
+  type DragActionType,
 } from '../TreeItem/TreeItem-types';
 
 export default class Tree extends Component<Props, State> {
@@ -39,7 +39,7 @@ export default class Tree extends Component<Props, State> {
     flattenedTree: [],
   };
 
-  moveBy: MovementType = null;
+  moveBy: DragActionType = null;
 
   static getDerivedStateFromProps(props: Props, state: State) {
     return {
@@ -88,6 +88,10 @@ export default class Tree extends Component<Props, State> {
     this.setState({
       dropAnimationOffset,
     });
+  };
+
+  onDragAction = (actionType: DragActionType) => {
+    this.moveBy = actionType;
   };
 
   /*
@@ -154,74 +158,37 @@ export default class Tree extends Component<Props, State> {
     );
   };
 
-  patchDragHandleProps = (
-    dragHandleProps: ?DragHandleProps,
-  ): ?DragHandleProps => {
-    if (dragHandleProps) {
-      return {
-        ...dragHandleProps,
-        onMouseDown: (event: MouseEvent) => {
-          this.moveBy = 'mouse';
-          if (dragHandleProps) {
-            dragHandleProps.onMouseDown(event);
-          }
-        },
-        onKeyDown: (event: KeyboardEvent) => {
-          this.moveBy = 'key';
-          if (dragHandleProps) {
-            dragHandleProps.onKeyDown(event);
-          }
-        },
-        onTouchStart: (event: TouchEvent) => {
-          this.moveBy = 'touch';
-          if (dragHandleProps) {
-            dragHandleProps.onTouchStart(event);
-          }
-        },
-      };
-    }
-    return null;
-  };
-
   patchDndProvided = (
     provided: DraggableProvided,
     snapshot: DraggableStateSnapshot,
   ): TreeDraggableProvided => {
     const { dropAnimationOffset } = this.state;
 
-    // $FlowFixMe
-    let finalProvided: TreeDraggableProvided = {
-      ...provided,
-      dragHandleProps: this.patchDragHandleProps(provided.dragHandleProps),
-    };
-
     if (
-      !finalProvided.draggableProps.style ||
-      !finalProvided.draggableProps.style.left ||
+      !provided.draggableProps.style ||
+      !provided.draggableProps.style.left ||
       //$ExpectError
       (!snapshot.isDropAnimating && this.moveBy !== 'key')
     ) {
       // $FlowFixMe
-      return finalProvided;
+      return provided;
     }
-    const finalLeft =
-      finalProvided.draggableProps.style.left + dropAnimationOffset;
+    const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
     const finalStyle: TreeDraggingStyle = {
-      ...finalProvided.draggableProps.style,
+      ...provided.draggableProps.style,
       // overwrite left position
       left: finalLeft,
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
     // $FlowFixMe
-    finalProvided = {
-      ...finalProvided,
+    const finalProvided: TreeDraggableProvided = {
+      ...provided,
       draggableProps: {
         ...provided.draggableProps,
         style: finalStyle,
       },
     };
-    console.log('patching offset');
     return finalProvided;
   };
 
@@ -247,6 +214,7 @@ export default class Tree extends Component<Props, State> {
               path={flatItem.path}
               onExpand={onExpand}
               onCollapse={onCollapse}
+              onDragAction={this.onDragAction}
               renderItem={renderItem}
               provided={finalProvided}
               snapshot={snapshot}

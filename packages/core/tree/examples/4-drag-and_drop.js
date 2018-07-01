@@ -97,8 +97,6 @@ export default class DragDropTree extends Component<void, State> {
   };
 
   onDragEnd = (source: DragPosition, destination: ?DragPosition) => {
-    console.log(source);
-    console.log(destination);
     const { tree } = this.state;
 
     if (!destination) {
