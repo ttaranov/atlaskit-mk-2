@@ -142,6 +142,7 @@ class ControlOption extends Component<OptionProps, OptionState> {
 const iconWrapperCSS = () => ({
   alignItems: 'center',
   display: 'flex ',
+  'flex-shrink': 0,
   paddingRight: '4px',
 });
 
@@ -159,7 +160,7 @@ const iconWrapperCSS = () => ({
 const truncateCSS = () => ({
   textOverflow: 'ellipsis',
   'overflow-x': 'hidden',
-  flex: 1,
+  'flex-grow': 1,
   whiteSpace: 'nowrap',
 });
 
