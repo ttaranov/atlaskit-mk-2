@@ -117,7 +117,6 @@ function baseStyles(validationState, isCompact) {
       if (validationState === 'error') borderColorHover = colors.R400;
       if (validationState === 'success') borderColorHover = colors.G400;
 
-      const lgBorder = isFocused || validationState !== 'default';
       const transitionDuration = '200ms';
 
       return {
@@ -126,10 +125,10 @@ function baseStyles(validationState, isCompact) {
         borderColor,
         borderStyle: 'solid',
         borderRadius: '3px',
-        borderWidth: lgBorder ? 2 : 1,
+        borderWidth: '2px',
         boxShadow: 'none',
         minHeight: isCompact ? gridSize() * 4 : gridSize() * 5,
-        padding: lgBorder ? 0 : 1,
+        padding: 0,
         transition: `background-color ${transitionDuration} ease-in-out,
         border-color ${transitionDuration} ease-in-out`,
 
