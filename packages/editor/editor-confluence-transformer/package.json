@@ -26,9 +26,11 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
+    "@atlaskit/button": "^8.2.4",
     "@atlaskit/docs": "^4.1.1",
     "@atlaskit/editor-core": "^73.9.5",
     "@atlaskit/editor-test-helpers": "^4.1.9",
+    "@atlaskit/spinner": "^8.0.0",
     "@atlaskit/util-data-test": "^9.1.15",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"

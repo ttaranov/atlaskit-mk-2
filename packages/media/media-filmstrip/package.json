@@ -30,6 +30,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/button": "^8.2.4",
     "@atlaskit/checkbox": "^3.0.6",
     "@atlaskit/docs": "^4.1.1",
     "@atlaskit/field-radio-group": "^3.0.4",

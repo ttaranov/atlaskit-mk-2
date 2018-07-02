@@ -30,6 +30,7 @@
     "@atlaskit/editor-core": "^73.9.5",
     "@atlaskit/editor-json-transformer": "^3.1.5",
     "@atlaskit/editor-test-helpers": "^4.1.9",
+    "@atlaskit/profilecard": "^3.13.0",
     "@atlaskit/renderer": "^18.2.9",
     "@atlaskit/util-data-test": "^9.1.15",
     "@types/prosemirror-model": "^1.0.0",
