@@ -36,6 +36,7 @@ export interface TablePluginState {
   // controls need to be re-rendered when table content changes
   // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
   tableNode?: PmNode;
+  editorHasFocus?: boolean;
 }
 
 export const stateKey = new PluginKey('tablePlugin');
@@ -67,7 +68,9 @@ export const createPlugin = (
           const table = findTable(state.selection);
           const tableNode = table ? table.node : undefined;
           if (pluginState.tableNode !== tableNode) {
-            return setState({ tableNode }, pluginState, dispatch);
+            const nextPluginState = { ...pluginState, tableNode };
+            dispatch(stateKey, nextPluginState);
+            return nextPluginState;
           }
         }
 
@@ -85,7 +88,7 @@ export const createPlugin = (
           const pluginState = stateKey.getState(state);
 
           let tableRef;
-          if (view.hasFocus()) {
+          if (pluginState.editorHasFocus) {
             const parent = findParentDomRefOfType(
               state.schema.nodes.table,
               domAtPos,
@@ -95,12 +98,12 @@ export const createPlugin = (
             }
           }
           if (pluginState.tableRef !== tableRef) {
-            dispatch(
-              state.tr.setMeta(stateKey, {
-                ...pluginState,
-                tableRef,
-              }),
-            );
+            setState({
+              tableRef,
+              tableNode: tableRef
+                ? findTable(state.selection)!.node
+                : undefined,
+            })(state, dispatch);
           }
         },
       };
@@ -122,6 +125,18 @@ export const createPlugin = (
         },
       },
       handleDOMEvents: {
+        blur(view: EditorView, event) {
+          const { state, dispatch } = view;
+          setState({ editorHasFocus: false })(state, dispatch);
+          event.preventDefault();
+          return false;
+        },
+        focus(view: EditorView, event) {
+          const { state, dispatch } = view;
+          setState({ editorHasFocus: true })(state, dispatch);
+          event.preventDefault();
+          return false;
+        },
         click(view: EditorView, event) {
           const element = event.target as HTMLElement;
           const table = findTable(view.state.selection)!;
@@ -175,15 +190,15 @@ export const createPlugin = (
     },
   });
 
-export const setState = (
-  prop: Object,
-  pluginState: TablePluginState,
-  dispatch: Dispatch,
-) => {
+export const setState = (stateProps: Object) => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const pluginState = stateKey.getState(state);
   const nextPluginState = {
     ...pluginState,
-    ...prop,
+    ...stateProps,
   };
-  dispatch(stateKey, nextPluginState);
-  return nextPluginState;
+  dispatch(state.tr.setMeta(stateKey, nextPluginState));
+  return true;
 };

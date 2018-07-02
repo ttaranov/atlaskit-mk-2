@@ -1,7 +1,6 @@
 // @flow
 
-import React, { Component, type Element } from 'react';
-import styled from 'styled-components';
+import React, { Component, type Element, type Node } from 'react';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
@@ -148,12 +147,18 @@ class ControlOption extends Component<OptionProps, OptionState> {
   by users who buy into radio / checkbox select.
 */
 
-const Truncate = styled.div`
-  text-overflow: ellipsis;
-  overflow-x: hidden;
-  flex: 1;
-  white-space: nowrap;
-`;
+const Truncate = ({ children }: { children: Node }) => (
+  <div
+    css={{
+      textOverflow: 'ellipsis',
+      'overflow-x': 'hidden',
+      flex: 1,
+      whiteSpace: 'nowrap',
+    }}
+  >
+    {children}
+  </div>
+);
 
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />

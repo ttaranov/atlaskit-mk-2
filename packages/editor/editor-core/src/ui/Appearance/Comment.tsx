@@ -14,6 +14,7 @@ import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main';
+import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 
 const pulseBackground = keyframes`
@@ -113,7 +114,7 @@ const ContentArea = styled(ContentStyles)`
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
   /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
-    padding: 0 12px;
+    margin: 12px 20px 20px;
   }
 
   padding: ${TableControlsPadding}px;
@@ -203,22 +204,24 @@ export default class Editor extends React.Component<
               {customPrimaryToolbarComponents}
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
-          <ContentArea>
-            {customContentComponents}
-            <PluginSlot
-              editorView={editorView}
-              editorActions={editorActions}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={contentComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-              popupsScrollableElement={popupsScrollableElement}
-              disabled={!!disabled}
-            />
-            {editorDOMElement}
-          </ContentArea>
+          <ClickAreaBlock editorView={editorView}>
+            <ContentArea className="content-area">
+              {customContentComponents}
+              <PluginSlot
+                editorView={editorView}
+                editorActions={editorActions}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={contentComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+                popupsScrollableElement={popupsScrollableElement}
+                disabled={!!disabled}
+              />
+              {editorDOMElement}
+            </ContentArea>
+          </ClickAreaBlock>
         </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>

@@ -16,6 +16,7 @@ export const IconWrapper = styled.span`
   ${getSize} color: ${p => p.primaryColor || 'currentColor'};
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
+  flex-shrink: 0;
   line-height: 1;
 
   > svg {

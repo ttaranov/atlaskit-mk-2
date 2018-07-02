@@ -1,6 +1,11 @@
 import { name } from '../../../package.json';
-import { schema, toDOM, fromHTML } from '../../../test-helpers';
+import { schema, toDOM, fromHTML, toContext } from '../../../test-helpers';
 import { bodiedExtension } from '../../../src';
+import {
+  doc,
+  bodiedExtension as bodiedExt,
+  p,
+} from '@atlaskit/editor-test-helpers';
 
 describe(`${name}/schema bodiedExtension node`, () => {
   describe('parse html', () => {
@@ -31,6 +36,20 @@ describe(`${name}/schema bodiedExtension node`, () => {
       expect(node.attrs.extensionType).toEqual(extensionType);
       expect(node.attrs.extensionKey).toEqual(extensionKey);
       expect(node.attrs.parameters).toEqual(parameters);
+    });
+
+    it('should not parse extension when pasted inside extension', () => {
+      const document = doc(
+        bodiedExt({ extensionKey: '', extensionType: '' })(p('{<>}')),
+      );
+      const context = toContext(document, schema);
+      const pmDoc = fromHTML(
+        '<div data-node-type="bodied-extension" />',
+        schema,
+        { context },
+      );
+      const node = pmDoc.firstChild!;
+      expect(node.type.name).toEqual('paragraph');
     });
   });
 

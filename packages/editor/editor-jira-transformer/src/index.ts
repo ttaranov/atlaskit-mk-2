@@ -229,7 +229,9 @@ export class JIRATransformer implements Transformer<string> {
       return specialsEncoded;
     }
 
-    const elem = this.doc.createElement(`h${node.attrs.level}`);
+    const { level } = node.attrs;
+    // @see ED-4708
+    const elem = this.doc.createElement(`h${level === 6 ? 5 : level}`);
     const anchor = this.doc.createElement('a');
     anchor.setAttribute('name', anchorNameEncode(node.textContent));
     elem.appendChild(anchor);

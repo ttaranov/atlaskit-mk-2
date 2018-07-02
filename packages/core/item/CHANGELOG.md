@@ -1,5 +1,9 @@
 # @atlaskit/item
 
+## 7.0.6
+- [patch] Fix getThemeStyle to support some valid falsy values [4f1894e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f1894e)
+- [none] Updated dependencies [4f1894e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f1894e)
+
 ## 7.0.5
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

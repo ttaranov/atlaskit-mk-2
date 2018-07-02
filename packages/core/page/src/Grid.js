@@ -12,7 +12,7 @@ import Grid from './internal/GridElement';
 type Props = {
   children?: any,
   spacing?: 'cosy' | 'comfortable' | 'compact',
-  layout?: 'fixed' | 'fuild',
+  layout?: 'fixed' | 'fluid',
 } & ThemeProviderProps;
 
 export default withTheme(

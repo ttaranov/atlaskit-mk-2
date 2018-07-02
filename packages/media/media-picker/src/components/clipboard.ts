@@ -43,7 +43,10 @@ export class Clipboard extends LocalUploadComponent {
       Browser behaviour for getting files from the clipboard is very inconsistent and buggy.
       @see https://extranet.atlassian.com/display/FIL/RFC+099%3A+Clipboard+browser+inconsistency
     */
-    const filesArray = Array.from(event.clipboardData.files);
-    this.uploadService.addFiles(filesArray);
+    const { clipboardData } = event;
+    if (clipboardData && clipboardData.files) {
+      const filesArray = Array.from(clipboardData.files);
+      this.uploadService.addFiles(filesArray);
+    }
   };
 }

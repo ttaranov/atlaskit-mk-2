@@ -103,6 +103,7 @@ export default function Example() {
               contextIdentifierProvider={contextIdentifierProvider}
               onChange={onChange}
               onSave={SAVE_ACTION}
+              quickInsert={true}
             />
           )}
         />

@@ -68,6 +68,7 @@ export default function Example() {
               mentionProvider={mentionProvider}
               onChange={onChange}
               onSave={SAVE_ACTION}
+              quickInsert={true}
             />
           )}
         />

@@ -55,5 +55,21 @@ describe(`${name} - theme`, () => {
       );
       expect(getThemeStyle({}, 'borderRadius')).toBe(defaultTheme.borderRadius);
     });
+
+    it('should return correct value for some falsy values', () => {
+      expect(getThemeStyle({ borderRadius: 0 }, 'borderRadius')).toBe(0);
+      expect(getThemeStyle({ borderRadius: false }, 'borderRadius')).toBe(
+        false,
+      );
+      expect(getThemeStyle({ borderRadius: '' }, 'borderRadius')).toBe(
+        defaultTheme.borderRadius,
+      );
+      expect(getThemeStyle({ borderRadius: undefined }, 'borderRadius')).toBe(
+        defaultTheme.borderRadius,
+      );
+      expect(getThemeStyle({ borderRadius: null }, 'borderRadius')).toBe(
+        defaultTheme.borderRadius,
+      );
+    });
   });
 });

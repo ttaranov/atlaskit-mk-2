@@ -15,6 +15,7 @@ import {
   akGridSizeUnitless,
   akBorderRadius,
   akColorN20,
+  akColorN30A,
   akColorN40,
   akColorN300,
   akColorB200,
@@ -163,7 +164,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   .ProseMirror .code {
     padding: 2px 1px;
-    background: ${akColorN20};
+    background: ${akColorN30A};
     border-radius: 3px;
     font-family: ${akEditorCodeFontFamily};
     white-space: pre-wrap;
