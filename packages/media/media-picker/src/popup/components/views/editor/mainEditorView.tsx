@@ -2,6 +2,7 @@ import { deselectItem } from '../../../actions/deselectItem';
 import * as React from 'react';
 import { Component, ComponentClass } from 'react';
 import { connect } from 'react-redux';
+import { EditorViewProps } from '@atlaskit/media-editor';
 
 import { BinaryUploader } from '../../../../components/binary';
 import { State, EditorData, EditorError, FileReference } from '../../../domain';
@@ -11,7 +12,6 @@ import { MainContainer } from './styles';
 import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
-import { EditorViewProps } from './editorView/editorView';
 import editorViewLoader from './editorViewLoader';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;

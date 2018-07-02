@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import Button from '@atlaskit/button';
 import ZoomOutIcon from '@atlaskit/icon/glyph/media-services/zoom-out';
 import ZoomInIcon from '@atlaskit/icon/glyph/media-services/zoom-in';
@@ -14,6 +14,7 @@ import {
 export interface ZoomControlsProps {
   onChange: (newZoomLevel: ZoomLevel) => void;
   zoomLevel: ZoomLevel;
+  children?: ReactNode;
 }
 
 export class ZoomControls extends Component<ZoomControlsProps, {}> {
@@ -32,7 +33,8 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
   };
 
   render() {
-    const { zoomLevel } = this.props;
+    const { zoomLevel, children } = this.props;
+
     return (
       <ZoomWrapper className={hideControlsClassName}>
         <ZoomControlsWrapper>
@@ -48,6 +50,7 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
             onClick={this.zoomIn}
             iconBefore={<ZoomInIcon label="zoom in" />}
           />
+          {children}
         </ZoomControlsWrapper>
         <ZoomLevelIndicator>{zoomLevel.asPercentage}</ZoomLevelIndicator>
       </ZoomWrapper>

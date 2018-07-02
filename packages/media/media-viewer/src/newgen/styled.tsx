@@ -280,3 +280,11 @@ export const DefaultCoverWrapper = styled.div`
 export const FeedbackWrapper = styled.span`
   padding-right: 5px;
 `;
+
+export const EditorWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+`;

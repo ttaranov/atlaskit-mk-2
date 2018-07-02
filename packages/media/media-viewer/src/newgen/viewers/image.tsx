@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
+import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
+import Button from '@atlaskit/button';
+import { LoadParameters, EditorView } from '@atlaskit/media-editor';
 import { Outcome, ZoomLevel } from '../domain';
-import { Img, ErrorMessage, ImageWrapper } from '../styled';
+import { Img, ErrorMessage, ImageWrapper, EditorWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
 import { closeOnDirectClick } from '../utils/closeOnDirectClick';
@@ -20,11 +23,13 @@ export type ImageViewerProps = {
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, Error>;
   zoomLevel: ZoomLevel;
+  isAnnotating: boolean;
 };
 
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
   zoomLevel: new ZoomLevel(),
+  isAnnotating: false,
 };
 
 export class ImageViewer extends React.Component<
@@ -52,6 +57,114 @@ export class ImageViewer extends React.Component<
     this.setState({ zoomLevel });
   };
 
+  private onEditorError = (
+    message: string,
+    retryHandler?: () => void,
+  ): void => {
+    // this.props.onShowEditorError({ message, retryHandler });
+  };
+
+  private onMediaEditorLoad = (
+    url: string,
+    loadParameters: LoadParameters,
+  ): void => {
+    // this.loadParameters = loadParameters;
+  };
+
+  private closeEditor = () => {
+    this.setState({
+      isAnnotating: false,
+    });
+  };
+
+  private onEditorCancel = (): void => {
+    this.closeEditor();
+    // this.props.onCloseEditor();
+  };
+
+  private onEditorSave = (content: string) => {
+    const { context, item, collectionName: collection } = this.props;
+    // TODO: find a better name
+    const name = `${item.details.name}-1`;
+
+    context
+      .uploadFile({
+        collection,
+        content,
+        name,
+      })
+      .subscribe({
+        next: state => {
+          console.log(state);
+        },
+        error: err => {
+          console.log(err);
+        },
+      });
+
+    // TODO: do after upload finish
+    this.closeEditor();
+  };
+
+  renderEditor = (imageUrl: string) => {
+    return (
+      <EditorWrapper>
+        <EditorView
+          imageUrl={imageUrl}
+          onSave={this.onEditorSave}
+          onCancel={this.onEditorCancel}
+          onError={this.onEditorError}
+        />
+      </EditorWrapper>
+    );
+  };
+
+  // renderEditor(imageUrl: string): JSX.Element {
+  //   // const onError = (url: string, error: Error) => this.onError(error);
+  //   const onError = (url: string, error: Error) => {
+  //     console.log(error);
+  //   };
+  //   const onShapeParametersChanged = ({
+  //     color,
+  //     lineWidth,
+  //   }: ShapeParameters) => {
+  //     // this.setState({ color, lineWidth });
+  //   };
+  //   // TODO: pass image dimensions
+  //   const dimensions = {width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT};
+  //   const color = { red: 0xbf, green: 0x26, blue: 0x00 };
+  //   const lineWidth = 10;
+  //   const tool = 'arrow';
+
+  //   return (
+  //     <MediaEditor
+  //       imageUrl={imageUrl}
+  //       dimensions={dimensions}
+  //       backgroundColor={TRANSPARENT_COLOR}
+  //       shapeParameters={{ color, lineWidth, addShadow: true }}
+  //       tool={tool}
+  //       onLoad={this.onMediaEditorLoad}
+  //       onError={onError}
+  //       onShapeParametersChanged={onShapeParametersChanged}
+  //     />
+  //   );
+  // }
+
+  onAnnotateClick = () => {
+    this.setState({
+      isAnnotating: true,
+    });
+  };
+
+  renderAnnotateButton = () => {
+    return (
+      <Button
+        onClick={this.onAnnotateClick}
+        iconBefore={<AnnotateIcon label="annotate" />}
+      />
+    );
+  };
+
   renderImage(src: string) {
     const { onClose } = this.props;
     const { zoomLevel } = this.state;
@@ -71,18 +184,24 @@ export class ImageViewer extends React.Component<
         <ZoomControls
           zoomLevel={this.state.zoomLevel}
           onChange={this.onZoomChange}
-        />
+        >
+          {this.renderAnnotateButton()}
+        </ZoomControls>
       </ImageWrapper>
     );
   }
 
   render() {
-    const { objectUrl } = this.state;
+    const { objectUrl, isAnnotating } = this.state;
     switch (objectUrl.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return this.renderImage(objectUrl.data);
+        if (isAnnotating) {
+          return this.renderEditor(objectUrl.data);
+        } else {
+          return this.renderImage(objectUrl.data);
+        }
       case 'FAILED':
         return <ErrorMessage>{objectUrl.err.message}</ErrorMessage>;
     }
