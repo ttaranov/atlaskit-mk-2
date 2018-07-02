@@ -12,6 +12,7 @@ import Video, {
   VideoState,
   VideoActions,
 } from 'react-video-renderer';
+import { colors } from '@atlaskit/theme';
 import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
@@ -30,6 +31,7 @@ import {
 import { formatDuration } from '../../utils/formatDuration';
 import { hideControlsClassName } from '../../styled';
 import { Shortcut } from '../../shortcut';
+import { toggleFullscreen } from './fullscreen';
 
 export interface CustomVideoProps {
   readonly src: string;
@@ -41,7 +43,9 @@ export interface CustomVideoProps {
 
 export type ToggleButtonAction = () => void;
 
-export class CustomVideo extends Component<CustomVideoProps, {}> {
+export class CustomVideo extends Component<CustomVideoProps> {
+  videoWrapperRef?: HTMLElement;
+
   onTimeChange = (navigate: NavigateFunction) => (value: number) => {
     navigate(value);
   };
@@ -67,14 +71,15 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
     if (!isHDAvailable) {
       return;
     }
-
+    const primaryColor = isHDActive ? colors.B200 : colors.DN400;
     return (
       <Button
+        appearance="toolbar"
         isSelected={isHDActive}
         onClick={onHDToggleClick}
         iconBefore={
           <VidHdCircleIcon
-            primaryColor="#a0b0cb"
+            primaryColor={primaryColor}
             secondaryColor="#313d51"
             label="hd"
           />
@@ -105,11 +110,21 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
     );
   };
 
+  onFullScreenClick = () => {
+    toggleFullscreen(this.videoWrapperRef);
+  };
+
+  saveVideoWrapperRef = el => {
+    if (el) {
+      this.videoWrapperRef = el;
+    }
+  };
+
   render() {
     const { src } = this.props;
 
     return (
-      <CustomVideoWrapper>
+      <CustomVideoWrapper innerRef={this.saveVideoWrapperRef}>
         <Video src={src} autoPlay={false}>
           {(video, videoState, actions) => {
             const isPlaying = videoState.status === 'playing';
@@ -128,13 +143,14 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
             );
             const fullScreenButton = (
               <Button
+                appearance="toolbar"
+                onClick={this.onFullScreenClick}
                 iconBefore={
                   <VidFullScreenOnIcon
                     primaryColor="white"
                     label="fullscreen"
                   />
                 }
-                onClick={actions.requestFullscreen}
               />
             );
 
