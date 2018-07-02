@@ -8,6 +8,11 @@ import {
   ClassAttributes,
   ComponentClass,
 } from 'react';
+import { colors } from '@atlaskit/theme';
+
+export interface MutedIndicatorProps {
+  isMuted: boolean;
+}
 
 export const CustomVideoWrapper: ComponentClass<
   HTMLAttributes<{}>
@@ -42,7 +47,6 @@ export const TimebarWrapper = styled.div`
 `;
 
 export const VolumeWrapper = styled.div`
-  padding-right: 10px;
   display: flex;
   width: 35px;
   overflow: hidden;
@@ -50,7 +54,7 @@ export const VolumeWrapper = styled.div`
 
   &:hover {
     padding-right: 20px;
-    width: 180px;
+    width: 152px;
   }
 `;
 
@@ -107,7 +111,9 @@ export const BufferedTime = styled.div`
   width: 0;
 `;
 
-export const LeftControls = styled.div``;
+export const LeftControls = styled.div`
+  display: flex;
+`;
 
 export const RightControls = styled.div`
   display: flex;
@@ -124,11 +130,13 @@ export const ControlsWrapper = styled.div`
 
 export const VolumeToggleWrapper = styled.div`
   position: relative;
-`;
 
-export interface MutedIndicatorProps {
-  isMuted: boolean;
-}
+  button {
+    width: 36px;
+    color: ${({ isMuted }: MutedIndicatorProps) =>
+      isMuted ? `${colors.R300} !important;` : ''};
+  }
+`;
 
 export const MutedIndicator = styled.div`
   width: 29px;
@@ -136,7 +144,7 @@ export const MutedIndicator = styled.div`
   position: absolute;
   top: 5px;
   left: 9px;
-  background: white;
+  background: ${colors.R300};
   transform: rotate(32deg) translateY(10px);
   opacity: 0;
   pointer-events: none;
@@ -150,7 +158,7 @@ export const MutedIndicator = styled.div`
 `;
 
 export const VolumeRange = styled.input`
-  margin-left: 30px;
+  transform: translateX(5px);
 `;
 
 export interface CurrentTimeTooltipProps {

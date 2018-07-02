@@ -2,13 +2,15 @@ import * as React from 'react';
 import { Component } from 'react';
 import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
-import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import VidFullScreenOnIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
 import HipchatOutgoingSoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
 import VidHdCircleIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
 import Video, {
   SetVolumeFunction,
   NavigateFunction,
+  VideoState,
+  VideoActions,
 } from 'react-video-renderer';
 import { TimeRange } from './TimeRange';
 import {
@@ -81,6 +83,28 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
     );
   };
 
+  renderVolume = ({ isMuted, volume }: VideoState, actions: VideoActions) => {
+    return (
+      <VolumeWrapper>
+        <VolumeToggleWrapper isMuted={isMuted}>
+          <MutedIndicator isMuted={isMuted} />
+          <Button
+            appearance="toolbar"
+            onClick={actions.toggleMute}
+            iconBefore={<HipchatOutgoingSoundIcon label="volume" />}
+          />
+        </VolumeToggleWrapper>
+        <VolumeRange
+          type="range"
+          step={0.01}
+          value={volume}
+          max={1}
+          onChange={this.onVolumeChange(actions.setVolume)}
+        />
+      </VolumeWrapper>
+    );
+  };
+
   render() {
     const { src } = this.props;
 
@@ -97,6 +121,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
             const toggleButtonAction = isPlaying ? actions.pause : actions.play;
             const button = (
               <Button
+                appearance="toolbar"
                 iconBefore={toggleButtonIcon}
                 onClick={toggleButtonAction}
               />
@@ -104,7 +129,7 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
             const fullScreenButton = (
               <Button
                 iconBefore={
-                  <EditorMediaFullWidthIcon
+                  <VidFullScreenOnIcon
                     primaryColor="white"
                     label="fullscreen"
                   />
@@ -130,31 +155,16 @@ export class CustomVideo extends Component<CustomVideoProps, {}> {
                     />
                   </TimeWrapper>
                   <TimebarWrapper>
-                    <LeftControls>{button}</LeftControls>
+                    <LeftControls>
+                      {button}
+                      {this.renderVolume(videoState, actions)}
+                    </LeftControls>
                     <RightControls>
                       <CurrentTime>
                         {formatDuration(videoState.currentTime)} /{' '}
                         {formatDuration(videoState.duration)}
                       </CurrentTime>
                       {this.renderHDButton()}
-                      <VolumeWrapper>
-                        <VolumeToggleWrapper>
-                          <MutedIndicator isMuted={videoState.isMuted} />
-                          <Button
-                            onClick={actions.toggleMute}
-                            iconBefore={
-                              <HipchatOutgoingSoundIcon label="volume" />
-                            }
-                          />
-                        </VolumeToggleWrapper>
-                        <VolumeRange
-                          type="range"
-                          step={0.01}
-                          value={videoState.volume}
-                          max={1}
-                          onChange={this.onVolumeChange(actions.setVolume)}
-                        />
-                      </VolumeWrapper>
                       {fullScreenButton}
                     </RightControls>
                   </TimebarWrapper>
