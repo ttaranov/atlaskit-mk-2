@@ -81,58 +81,74 @@ export interface Props {
   peopleResults: Result[];
 }
 
-export default function searchResults(props: Props) {
-  const {
-    query,
-    isError,
-    isLoading,
-    retrySearch,
-    recentlyViewedPages,
-    recentlyViewedSpaces,
-    recentlyInteractedPeople,
-    objectResults,
-    spaceResults,
-    peopleResults,
-  } = props;
-
-  if (isLoading) {
-    return null; // better than showing empty error, but worth some more thought.
+class SearchResult extends React.Component<Props> {
+  shouldComponentUpdate(nextProps) {
+    const shouldUpdate = !nextProps.isLoading;
+    if (shouldUpdate)
+      console.log('should update', this.props, nextProps, shouldUpdate);
+    return shouldUpdate;
   }
 
-  if (isError) {
-    return <SearchError onRetryClick={retrySearch} />;
-  }
+  render() {
+    const {
+      query,
+      isError,
+      isLoading,
+      retrySearch,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
+      objectResults,
+      spaceResults,
+      peopleResults,
+    } = this.props;
 
-  if (query.length === 0) {
-    // TODO: insert error state here if the recent results are empty.
+    if (isLoading) {
+      return null; // better than showing empty error, but worth some more thought.
+    }
+
+    if (isError) {
+      return <SearchError onRetryClick={retrySearch} />;
+    }
+
+    if (query.length === 0) {
+      // TODO: insert error state here if the recent results are empty.
+      return [
+        renderObjectsGroup(
+          'Recent pages and blogs',
+          take(recentlyViewedPages, 8),
+          query,
+        ),
+        renderSpacesGroup(
+          'Recent spaces',
+          take(recentlyViewedSpaces, 3),
+          query,
+        ),
+        renderPeopleGroup(
+          'Recently worked with',
+          take(recentlyInteractedPeople, 3),
+          query,
+        ),
+        renderAdvancedSearchGroup(query),
+      ];
+    }
+
+    if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
+      return renderNoResults(query);
+    }
+
     return [
       renderObjectsGroup(
-        'Recent pages and blogs',
-        take(recentlyViewedPages, 8),
+        'Pages, blogs and attachments',
+        take(objectResults, 8),
         query,
       ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup(
-        'Recently worked with',
-        take(recentlyInteractedPeople, 3),
-        query,
-      ),
+      renderSpacesGroup('Spaces', take(spaceResults, 3), query),
+      renderPeopleGroup('People', take(peopleResults, 3), query),
       renderAdvancedSearchGroup(query),
     ];
   }
-
-  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return renderNoResults(query);
-  }
-
-  return [
-    renderObjectsGroup(
-      'Pages, blogs and attachments',
-      take(objectResults, 8),
-      query,
-    ),
-    renderSpacesGroup('Spaces', take(spaceResults, 3), query),
-    renderPeopleGroup('People', take(peopleResults, 3), query),
-    renderAdvancedSearchGroup(query),
-  ];
+}
+export default function searchResults(props: Props) {
+  return <SearchResult {...props} />;
 }

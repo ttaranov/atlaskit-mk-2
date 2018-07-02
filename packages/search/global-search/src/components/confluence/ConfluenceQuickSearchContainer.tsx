@@ -60,14 +60,18 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   handleSearch = (query: string) => {
-    this.setState({
-      query: query,
-    });
+    if (this.state.query !== query) {
+      this.setState({
+        query: query,
+        isLoading: true,
+      });
+    }
 
     if (query.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
         isError: false,
+        isLoading: false,
         objectResults: [],
         spaceResults: [],
         peopleResults: [],
