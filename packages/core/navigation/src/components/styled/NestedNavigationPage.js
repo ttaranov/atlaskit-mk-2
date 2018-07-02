@@ -21,7 +21,6 @@ export const getAnimation = ({ transitionState, traversalDirection }: Object) =>
     : null;
 
 // Use the same scrollbar styling as the main container navigation
-// $FlowFixMe
 const NestedNavigationPage = styled(ScrollHintScrollContainer)`
   ${getAnimation} flex-shrink: 0;
   /* we want each page to have internal scrolling */

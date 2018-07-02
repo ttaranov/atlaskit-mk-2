@@ -46,7 +46,7 @@ const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
     icon: <SearchIcon size="medium" label="Search People" />,
-    text: 'People directory',
+    text: 'Search in People',
   });
 
 const renderNoResults = (query: string) => [

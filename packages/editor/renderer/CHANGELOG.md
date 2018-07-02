@@ -1,5 +1,19 @@
 # @atlaskit/renderer
 
+## 18.2.9
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/util-data-test@9.1.15
+  - @atlaskit/task-decision@7.1.8
+  - @atlaskit/mention@13.1.3
+  - @atlaskit/editor-json-transformer@3.1.5
+  - @atlaskit/editor-common@11.3.8
+  - @atlaskit/editor-test-helpers@4.1.9
+
+## 18.2.8
+- [patch] Updated dependencies [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
+  - @atlaskit/code@6.0.0
+  - @atlaskit/docs@4.2.1
+
 ## 18.2.7
 - [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
   - @atlaskit/util-data-test@9.1.14

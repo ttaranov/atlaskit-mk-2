@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 36.0.1
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/media-picker@8.1.6
+  - @atlaskit/util-data-test@9.1.15
+
 ## 36.0.0
 - [major] remove MediaPicker and use media-core to upload files [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
 - [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
