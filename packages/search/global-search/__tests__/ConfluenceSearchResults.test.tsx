@@ -99,7 +99,7 @@ describe('ConfluenceSearchResults', () => {
 
     group = findGroup(Group.PeopleSearch, wrapper);
     expect(group.childAt(0).prop('resultId')).toEqual('search_people');
-    expect(group.childAt(0).prop('text')).toEqual('People directory');
+    expect(group.childAt(0).prop('text')).toEqual('Search in People');
   });
 
   it('should render links to people and advanced search when a query is entered and there are results', () => {
