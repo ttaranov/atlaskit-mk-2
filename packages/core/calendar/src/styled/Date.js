@@ -77,7 +77,7 @@ export const DateDiv = styled.div`
   border-radius: 3px;
   color: ${getColor};
   cursor: ${getCursor};
-  font-size: 12px;
+  font-size: 14px;
   padding: 4px 9px;
   position: relative;
   text-align: center;
