@@ -5,7 +5,11 @@ import { MediaCollectionViewer } from './media-collection-viewer';
 import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
-import { ItemSource, MediaViewerFeatureFlags } from '../newgen/domain';
+import {
+  ItemSource,
+  MediaViewerFeatureFlags,
+  ImageAnnotatedCallback,
+} from '../newgen/domain';
 import { getFeatureFlag } from '../newgen/utils/getFeatureFlag';
 
 export interface MediaViewerItem {
@@ -32,6 +36,7 @@ export interface MediaViewerProps {
   readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
   readonly onClose?: () => void;
+  readonly onImageAnnotated?: ImageAnnotatedCallback;
 
   readonly featureFlags?: MediaViewerFeatureFlags;
 }
@@ -43,6 +48,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     const {
       featureFlags,
       onClose,
+      onImageAnnotated,
       context,
       selectedItem,
       collectionName,
@@ -71,6 +77,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
             onClose={onClose}
             itemSource={itemSource}
             featureFlags={featureFlags}
+            onImageAnnotated={onImageAnnotated}
           />
         );
       } else if (dataSource.list) {
@@ -93,6 +100,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
             onClose={onClose}
             itemSource={itemSource}
             featureFlags={featureFlags}
+            onImageAnnotated={onImageAnnotated}
           />
         );
       }

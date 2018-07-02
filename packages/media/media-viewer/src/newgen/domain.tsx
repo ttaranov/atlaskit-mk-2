@@ -1,5 +1,7 @@
 import { MediaItemType } from '@atlaskit/media-core';
 
+export type ImageAnnotatedCallback = (item: Identifier) => void;
+
 export type Identifier = {
   type: MediaItemType;
   id: string;

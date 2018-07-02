@@ -5,7 +5,12 @@ import {
   MediaCollectionProvider,
   isError,
 } from '@atlaskit/media-core';
-import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
+import {
+  Outcome,
+  Identifier,
+  MediaViewerFeatureFlags,
+  ImageAnnotatedCallback,
+} from './domain';
 import { ErrorMessage } from './styled';
 import { List } from './list';
 import { Subscription } from 'rxjs';
@@ -13,6 +18,7 @@ import { toIdentifier } from './util';
 import { Spinner } from './loading';
 
 export type Props = {
+  onImageAnnotated?: ImageAnnotatedCallback;
   onClose?: () => void;
   selectedItem?: Identifier;
   showControls?: () => void;

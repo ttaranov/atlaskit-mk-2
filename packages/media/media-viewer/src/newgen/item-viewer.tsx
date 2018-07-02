@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { ErrorMessage } from './styled';
-import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
+import {
+  Outcome,
+  Identifier,
+  MediaViewerFeatureFlags,
+  ImageAnnotatedCallback,
+} from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
@@ -16,6 +21,7 @@ export type Props = {
   readonly featureFlags?: MediaViewerFeatureFlags;
   readonly showControls?: () => void;
   readonly onClose?: () => void;
+  readonly onImageAnnotated?: ImageAnnotatedCallback;
 };
 
 export type State = {
@@ -50,6 +56,7 @@ export class ItemViewer extends React.Component<Props, State> {
       featureFlags,
       showControls,
       onClose,
+      onImageAnnotated,
     } = this.props;
     const { item } = this.state;
     switch (item.status) {
@@ -65,7 +72,13 @@ export class ItemViewer extends React.Component<Props, State> {
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
-            return <ImageViewer featureFlags={featureFlags} {...viewerProps} />;
+            return (
+              <ImageViewer
+                onImageAnnotated={onImageAnnotated}
+                featureFlags={featureFlags}
+                {...viewerProps}
+              />
+            );
           case 'audio':
             return <AudioViewer {...viewerProps} />;
           case 'video':

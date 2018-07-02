@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { Identifier, ItemSource, MediaViewerFeatureFlags } from './domain';
+import {
+  Identifier,
+  ItemSource,
+  MediaViewerFeatureFlags,
+  ImageAnnotatedCallback,
+} from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
@@ -10,6 +15,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 
 export type Props = {
+  onImageAnnotated?: ImageAnnotatedCallback;
   onClose?: () => void;
   selectedItem?: Identifier;
   readonly featureFlags?: MediaViewerFeatureFlags;
@@ -37,6 +43,7 @@ export class MediaViewer extends React.Component<Props, {}> {
       onClose,
       itemSource,
       featureFlags,
+      onImageAnnotated,
     } = this.props;
     if (itemSource.kind === 'COLLECTION') {
       return (
@@ -47,6 +54,7 @@ export class MediaViewer extends React.Component<Props, {}> {
           context={context}
           onClose={onClose}
           featureFlags={featureFlags}
+          onImageAnnotated={onImageAnnotated}
         />
       );
     } else if (itemSource.kind === 'ARRAY') {
@@ -57,6 +65,7 @@ export class MediaViewer extends React.Component<Props, {}> {
           context={context}
           onClose={onClose}
           featureFlags={featureFlags}
+          onImageAnnotated={onImageAnnotated}
         />
       );
     } else {

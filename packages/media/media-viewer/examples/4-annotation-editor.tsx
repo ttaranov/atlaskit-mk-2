@@ -24,6 +24,10 @@ export default class Example extends React.Component<{}, State> {
     this.setState({ selectedItem });
   };
 
+  onImageAnnotated = item => {
+    console.log('onImageAnnotated', item);
+  };
+
   render() {
     const { selectedItem } = this.state;
 
@@ -40,6 +44,7 @@ export default class Example extends React.Component<{}, State> {
             dataSource={{ list: [selectedItem] }}
             collectionName={defaultCollectionName}
             onClose={() => this.setState({ selectedItem: undefined })}
+            onImageAnnotated={this.onImageAnnotated}
           />
         )}
       </div>

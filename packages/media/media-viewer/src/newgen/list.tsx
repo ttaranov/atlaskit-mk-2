@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
-import { Identifier, MediaViewerFeatureFlags } from './domain';
+import {
+  Identifier,
+  MediaViewerFeatureFlags,
+  ImageAnnotatedCallback,
+} from './domain';
 import { HeaderWrapper, hideControlsClassName, ListWrapper } from './styled';
 import { getSelectedIndex } from './util';
 import { ErrorMessage } from './styled';
@@ -9,6 +13,7 @@ import Navigation from './navigation';
 import Header from './header';
 
 export type Props = {
+  onImageAnnotated?: ImageAnnotatedCallback;
   onClose?: () => void;
   onNavigationChange?: (selectedItem: Identifier) => void;
   showControls?: () => void;
@@ -31,7 +36,13 @@ export class List extends React.Component<Props, State> {
   }
 
   renderContent(items: Identifier[]) {
-    const { context, onClose, featureFlags, showControls } = this.props;
+    const {
+      context,
+      onClose,
+      featureFlags,
+      showControls,
+      onImageAnnotated,
+    } = this.props;
     const { selectedItem } = this.state;
     if (getSelectedIndex(items, selectedItem) < 0) {
       return (
@@ -56,6 +67,7 @@ export class List extends React.Component<Props, State> {
             identifier={selectedItem}
             showControls={showControls}
             onClose={onClose}
+            onImageAnnotated={onImageAnnotated}
           />
           <Navigation
             items={items}

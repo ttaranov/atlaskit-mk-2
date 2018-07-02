@@ -4,11 +4,18 @@ import * as deepEqual from 'deep-equal';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import Button from '@atlaskit/button';
 import { EditorView } from '@atlaskit/media-editor';
-import { Outcome, ZoomLevel, MediaViewerFeatureFlags } from '../domain';
+import {
+  Outcome,
+  ZoomLevel,
+  MediaViewerFeatureFlags,
+  ImageAnnotatedCallback,
+  Identifier,
+} from '../domain';
 import { Img, ErrorMessage, ImageWrapper, EditorWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
 import { closeOnDirectClick } from '../utils/closeOnDirectClick';
+import { Subscription } from 'rxjs';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -18,6 +25,7 @@ export type ImageViewerProps = {
   item: FileItem;
   collectionName?: string;
   onClose?: () => void;
+  readonly onImageAnnotated?: ImageAnnotatedCallback;
   readonly featureFlags?: MediaViewerFeatureFlags;
 };
 
@@ -37,6 +45,7 @@ export class ImageViewer extends React.Component<
   ImageViewerProps,
   ImageViewerState
 > {
+  subscription?: Subscription;
   state: ImageViewerState = initialState;
 
   componentDidMount() {
@@ -45,6 +54,7 @@ export class ImageViewer extends React.Component<
 
   componentWillUnmount() {
     this.release();
+    this.unsubscribe();
   }
 
   componentWillUpdate(nextProps) {
@@ -75,12 +85,19 @@ export class ImageViewer extends React.Component<
     this.closeEditor();
   };
 
+  unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  };
+
   private onEditorSave = (content: string) => {
     const { context, item, collectionName: collection } = this.props;
     // TODO: find a better name
     const name = `${item.details.name}-1`;
 
-    context
+    this.unsubscribe();
+    this.subscription = context
       .uploadFile({
         collection,
         content,
@@ -88,8 +105,22 @@ export class ImageViewer extends React.Component<
       })
       .subscribe({
         next: state => {
-          // TODO: Call callback when file has been processed
-          console.log(state);
+          if (state.status === 'processing') {
+            const { onImageAnnotated } = this.props;
+
+            this.unsubscribe();
+
+            if (onImageAnnotated) {
+              const item: Identifier = {
+                id: state.id,
+                type: 'file',
+                occurrenceKey: 'string', // TODO: Pass right occurence
+                collectionName: collection,
+              };
+
+              onImageAnnotated(item);
+            }
+          }
         },
         error: err => {
           console.log(err);
@@ -120,11 +151,12 @@ export class ImageViewer extends React.Component<
   };
 
   renderAnnotateButton = () => {
-    const { featureFlags } = this.props;
+    const { featureFlags, onImageAnnotated } = this.props;
 
-    if (featureFlags && featureFlags.annotationEditor) {
+    if (featureFlags && featureFlags.annotationEditor && onImageAnnotated) {
       return (
         <Button
+          appearance="toolbar"
           onClick={this.onAnnotateClick}
           iconBefore={<AnnotateIcon label="annotate" />}
         />
