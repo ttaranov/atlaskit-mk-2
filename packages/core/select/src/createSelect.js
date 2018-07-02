@@ -197,17 +197,16 @@ function baseStyles(validationState, isCompact) {
 
       let backgroundColor;
       if (isSelected) backgroundColor = colors.N500;
-      else if (isFocused) backgroundColor = colors.N20;
+      else if (isFocused) backgroundColor = colors.N30;
       return {
         ...css,
-        paddingTop: `${gridSize()}px`,
-        paddingBottom: `${gridSize()}px`,
-        lineHeight: `${gridSize() * 2}px`,
+        paddingTop: '6px',
+        paddingBottom: '6px',
         backgroundColor,
         color,
       };
     },
-    placeholder: css => ({ ...css, color: colors.N70 }),
+    placeholder: css => ({ ...css, color: colors.N100 }),
     singleValue: (css, { isDisabled }) => ({
       ...css,
       color: isDisabled ? colors.N70 : colors.N800,

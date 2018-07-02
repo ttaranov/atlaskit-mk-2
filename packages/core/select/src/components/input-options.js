@@ -170,9 +170,8 @@ export const inputOptionStyles = (css: Object, { isFocused }: Object) => ({
   color: 'inherit',
   cursor: 'pointer',
   paddingLeft: `${gridSize() * 2}px`,
-  paddingTop: `${gridSize() / 2}px`,
-  paddingBottom: `${gridSize() / 2}px`,
-  lineHeight: `${gridSize() * 2}px`,
+  paddingTop: '4px',
+  paddingBottom: '4px',
   ':active': {
     backgroundColor: colors.B50,
   },
