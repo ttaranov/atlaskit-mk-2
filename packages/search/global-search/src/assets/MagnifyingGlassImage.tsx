@@ -16,7 +16,7 @@ export default () => (
         <stop offset="0.6908" stop-color="#fff" stop-opacity="0.1" />
       </linearGradient>
     </defs>
-    <title>Magnifying Glass</title>
+    <title>Search</title>
     <g isolation="isolate">
       <g id="Layer_2" data-name="Layer 2">
         <g id="Objects">

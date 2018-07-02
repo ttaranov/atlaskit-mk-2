@@ -8,8 +8,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: ${math.multiply(gridSize, 4)}px;
-  margin-bottom: ${math.multiply(gridSize, 4)}px;
+  margin: ${math.multiply(gridSize, 4)}px 0;
 `;
 
 const ImageWrapper = styled.div`
@@ -23,9 +22,12 @@ const TextWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const TitleWrapper = styled.div`
   margin: ${math.multiply(gridSize, 2)}px 0;
 `;
+
+const ADVANCED_SEARCH_URL = '/wiki/dosearchsite.action';
 
 const Text = ({ url }) => (
   <TextWrapper>
@@ -45,7 +47,7 @@ export default class EmptyState extends React.Component {
         <ImageWrapper>
           <MaginfyingGlassImage />
         </ImageWrapper>
-        <Text url="http://wwww.google.com" />
+        <Text url={ADVANCED_SEARCH_URL} />
       </Wrapper>
     );
   }
