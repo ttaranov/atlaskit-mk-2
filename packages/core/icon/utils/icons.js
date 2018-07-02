@@ -77,6 +77,7 @@ import CrossCircleIcon from '../glyph/cross-circle';
 import CrossIcon from '../glyph/cross';
 import DashboardIcon from '../glyph/dashboard';
 import DecisionIcon from '../glyph/decision';
+import DepartmentIcon from '../glyph/department';
 import DetailViewIcon from '../glyph/detail-view';
 import DiscoverFilledIcon from '../glyph/discover-filled';
 import DiscoverIcon from '../glyph/discover';
@@ -385,6 +386,7 @@ import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
 import SubtaskIcon from '../glyph/subtask';
+import SuitcaseIcon from '../glyph/suitcase';
 import SwitcherIcon from '../glyph/switcher';
 import TableIcon from '../glyph/table';
 import TaskIcon from '../glyph/task';
@@ -828,6 +830,12 @@ export default {
     component: DecisionIcon,
     componentName: 'DecisionIcon',
     package: '@atlaskit/icon/glyph/decision',
+  },
+  department: {
+    keywords: ['department'],
+    component: DepartmentIcon,
+    componentName: 'DepartmentIcon',
+    package: '@atlaskit/icon/glyph/department',
   },
   'detail-view': {
     keywords: ['detail-view', 'detailview'],
@@ -2676,6 +2684,12 @@ export default {
     component: SubtaskIcon,
     componentName: 'SubtaskIcon',
     package: '@atlaskit/icon/glyph/subtask',
+  },
+  suitcase: {
+    keywords: ['suitcase'],
+    component: SuitcaseIcon,
+    componentName: 'SuitcaseIcon',
+    package: '@atlaskit/icon/glyph/suitcase',
   },
   switcher: {
     keywords: ['switcher'],

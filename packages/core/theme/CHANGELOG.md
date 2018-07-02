@@ -1,5 +1,9 @@
 # @atlaskit/theme
 
+## 4.1.0
+- [minor] Added elevations to the Theme package and updated visual styles for the field-range component. [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)
+- [none] Updated dependencies [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)
+
 ## 4.0.5
 - [patch] Align ADG, Website and AK [dd295bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd295bf)
 - [none] Updated dependencies [dd295bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd295bf)

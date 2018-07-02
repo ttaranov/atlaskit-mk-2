@@ -48,6 +48,9 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
               - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
+              # The script below counts flowfixme and fails if above the threshold.
+              # The goal is to reduce the threshold over time.
+              - source build/ci-scripts/count-flowfixme.sh 120
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
             caches:
               - node

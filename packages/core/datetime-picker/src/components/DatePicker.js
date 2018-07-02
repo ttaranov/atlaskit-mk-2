@@ -263,7 +263,7 @@ export default class DatePicker extends Component<Props, State> {
           disabled={disabled}
           onChange={this.onCalendarChange}
           onSelect={this.onCalendarSelect}
-          // $FlowFixMe
+          // $FlowFixMe - Calendar is not a react component
           ref={this.refCalendar}
           selected={[this.state.selectedValue]}
           innerProps={menuInnerProps}

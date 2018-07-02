@@ -123,6 +123,20 @@ describe('extension', () => {
           ),
         );
       });
+
+      it('should preserve the extension breakout mode on edit', async () => {
+        const { editorView } = editor(
+          doc(
+            bodiedExtension({ ...extensionAttrs, layout: 'full-width' })(
+              paragraph('te{<>}xt'),
+            ),
+          ),
+        );
+        const pluginState = pluginKey.getState(editorView.state);
+        const provider = await macroProviderPromise;
+        expect(editExtension(provider)(editorView)).toBe(true);
+        expect(pluginState.node.node.attrs.layout).toEqual('full-width');
+      });
     });
 
     describe('removeExtension', () => {

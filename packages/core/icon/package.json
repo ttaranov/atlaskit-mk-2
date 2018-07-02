@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "12.5.0",
+  "version": "12.6.1",
   "description": "A React package that contains icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
@@ -33,10 +33,10 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.2.2",
+    "@atlaskit/button": "^8.2.4",
     "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/field-text": "^6.0.4",
-    "@atlaskit/modal-dialog": "^5.2.5",
+    "@atlaskit/field-text": "^6.1.1",
+    "@atlaskit/modal-dialog": "^5.2.6",
     "@atlaskit/tooltip": "^10.3.1",
     "babel-core": "^6.26.0",
     "classnames": "^2.2.5",
