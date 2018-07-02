@@ -240,6 +240,14 @@ describe('inputrules', () => {
             'atlassian.editor.format.codeblock.autoformatting',
           );
         });
+
+        it('should convert "```" to a code block without first character', () => {
+          const { editorView, sel } = editor(doc(p(' ``{<>}')));
+          insertText(editorView, '`', sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(' '), code_block()()),
+          );
+        });
       });
     });
   });
