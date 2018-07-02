@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/navigation": "^32.1.1",
+    "@atlaskit/navigation": "^32.3.0",
     "@atlaskit/page": "^7.1.1",
     "@atlaskit/quick-search": "^2.3.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
