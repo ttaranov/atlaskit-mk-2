@@ -162,10 +162,14 @@ function baseStyles(validationState, isCompact) {
     }),
     clearIndicator: css => ({
       ...css,
+      color: colors.N70,
       paddingLeft: '2px',
       paddingRight: '2px',
       paddingBottom: isCompact ? 0 : 6,
       paddingTop: isCompact ? 0 : 6,
+      ':hover': {
+        color: colors.N500,
+      },
     }),
     loadingIndicator: css => ({
       ...css,
