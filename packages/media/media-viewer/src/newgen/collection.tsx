@@ -56,6 +56,7 @@ export class Collection extends React.Component<Props, State> {
       onClose,
       collectionName,
       showControls,
+      featureFlags,
     } = this.props;
     const { items } = this.state;
     switch (items.status) {
@@ -78,6 +79,7 @@ export class Collection extends React.Component<Props, State> {
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}
             showControls={showControls}
+            featureFlags={featureFlags}
           />
         );
     }

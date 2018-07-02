@@ -27,6 +27,7 @@ export type Outcome<Data, Err> =
 export type MediaViewerFeatureFlags = {
   nextGen?: boolean;
   customVideoPlayer?: boolean;
+  annotationEditor?: boolean;
 };
 
 export class ZoomLevel {

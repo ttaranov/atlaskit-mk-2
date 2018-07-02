@@ -65,7 +65,7 @@ export class ItemViewer extends React.Component<Props, State> {
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
-            return <ImageViewer {...viewerProps} />;
+            return <ImageViewer featureFlags={featureFlags} {...viewerProps} />;
           case 'audio':
             return <AudioViewer {...viewerProps} />;
           case 'video':

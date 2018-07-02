@@ -2,7 +2,6 @@ import * as React from 'react';
 import Button from '@atlaskit/button';
 import {
   createStorybookContext,
-  createUploadContext,
   imageFileId,
   audioFileId,
   videoFileId,
@@ -17,8 +16,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 
-// const context = createStorybookContext();
-const context = createUploadContext();
+const context = createStorybookContext();
 
 const imageItem: MediaViewerItem = {
   type: 'file',

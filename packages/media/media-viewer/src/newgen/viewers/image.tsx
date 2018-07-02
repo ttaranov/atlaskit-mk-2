@@ -3,8 +3,8 @@ import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import Button from '@atlaskit/button';
-import { LoadParameters, EditorView } from '@atlaskit/media-editor';
-import { Outcome, ZoomLevel } from '../domain';
+import { EditorView } from '@atlaskit/media-editor';
+import { Outcome, ZoomLevel, MediaViewerFeatureFlags } from '../domain';
 import { Img, ErrorMessage, ImageWrapper, EditorWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
@@ -18,6 +18,7 @@ export type ImageViewerProps = {
   item: FileItem;
   collectionName?: string;
   onClose?: () => void;
+  readonly featureFlags?: MediaViewerFeatureFlags;
 };
 
 export type ImageViewerState = {
@@ -64,13 +65,6 @@ export class ImageViewer extends React.Component<
     // this.props.onShowEditorError({ message, retryHandler });
   };
 
-  private onMediaEditorLoad = (
-    url: string,
-    loadParameters: LoadParameters,
-  ): void => {
-    // this.loadParameters = loadParameters;
-  };
-
   private closeEditor = () => {
     this.setState({
       isAnnotating: false,
@@ -79,7 +73,6 @@ export class ImageViewer extends React.Component<
 
   private onEditorCancel = (): void => {
     this.closeEditor();
-    // this.props.onCloseEditor();
   };
 
   private onEditorSave = (content: string) => {
@@ -95,6 +88,7 @@ export class ImageViewer extends React.Component<
       })
       .subscribe({
         next: state => {
+          // TODO: Call callback when file has been processed
           console.log(state);
         },
         error: err => {
@@ -119,37 +113,6 @@ export class ImageViewer extends React.Component<
     );
   };
 
-  // renderEditor(imageUrl: string): JSX.Element {
-  //   // const onError = (url: string, error: Error) => this.onError(error);
-  //   const onError = (url: string, error: Error) => {
-  //     console.log(error);
-  //   };
-  //   const onShapeParametersChanged = ({
-  //     color,
-  //     lineWidth,
-  //   }: ShapeParameters) => {
-  //     // this.setState({ color, lineWidth });
-  //   };
-  //   // TODO: pass image dimensions
-  //   const dimensions = {width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT};
-  //   const color = { red: 0xbf, green: 0x26, blue: 0x00 };
-  //   const lineWidth = 10;
-  //   const tool = 'arrow';
-
-  //   return (
-  //     <MediaEditor
-  //       imageUrl={imageUrl}
-  //       dimensions={dimensions}
-  //       backgroundColor={TRANSPARENT_COLOR}
-  //       shapeParameters={{ color, lineWidth, addShadow: true }}
-  //       tool={tool}
-  //       onLoad={this.onMediaEditorLoad}
-  //       onError={onError}
-  //       onShapeParametersChanged={onShapeParametersChanged}
-  //     />
-  //   );
-  // }
-
   onAnnotateClick = () => {
     this.setState({
       isAnnotating: true,
@@ -157,12 +120,16 @@ export class ImageViewer extends React.Component<
   };
 
   renderAnnotateButton = () => {
-    return (
-      <Button
-        onClick={this.onAnnotateClick}
-        iconBefore={<AnnotateIcon label="annotate" />}
-      />
-    );
+    const { featureFlags } = this.props;
+
+    if (featureFlags && featureFlags.annotationEditor) {
+      return (
+        <Button
+          onClick={this.onAnnotateClick}
+          iconBefore={<AnnotateIcon label="annotate" />}
+        />
+      );
+    }
   };
 
   renderImage(src: string) {
