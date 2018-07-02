@@ -27,7 +27,9 @@ const TitleWrapper = styled.div`
   margin: ${math.multiply(gridSize, 2)}px 0;
 `;
 
-const ADVANCED_SEARCH_URL = '/wiki/dosearchsite.action';
+export interface Props {
+  advancedSearchUrl: string;
+}
 
 const Text = ({ url }) => (
   <TextWrapper>
@@ -40,14 +42,14 @@ const Text = ({ url }) => (
     </div>
   </TextWrapper>
 );
-export default class EmptyState extends React.Component {
+export default class EmptyState extends React.Component<Props> {
   render() {
     return (
       <Wrapper>
         <ImageWrapper>
           <MaginfyingGlassImage />
         </ImageWrapper>
-        <Text url={ADVANCED_SEARCH_URL} />
+        <Text url={this.props.advancedSearchUrl} />
       </Wrapper>
     );
   }

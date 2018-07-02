@@ -10,6 +10,7 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
+  getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
 import EmptyState from '../EmptyState';
 
@@ -112,7 +113,9 @@ export default function searchResults(props: Props) {
         recentlyViewedSpaces,
       ].every(isEmpty)
     ) {
-      return <EmptyState />;
+      return (
+        <EmptyState advancedSearchUrl={getConfluenceAdvancedSearchLink()} />
+      );
     }
     // TODO: insert error state here if the recent results are empty.
     return [
