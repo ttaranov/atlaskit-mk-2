@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 4.3.4
+- [patch] Updated dependencies [a78cd4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78cd4d)
+  - @atlaskit/icon@12.6.2
+
 ## 4.3.3
 - [patch] Replace internal styled components with emotion styled components [415a64a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/415a64a)
 - [none] Updated dependencies [415a64a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/415a64a)
