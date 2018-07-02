@@ -59,7 +59,7 @@ const renderNoResults = (query: string) => [
 ];
 
 const PeopleSearchWrapper = styled.div`
-  margin-top: 24px;
+  margin-top: ${gridSize * 3}px;
 `;
 
 const StickyFooter = styled.div`
