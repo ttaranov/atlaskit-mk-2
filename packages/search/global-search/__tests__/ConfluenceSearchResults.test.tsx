@@ -13,11 +13,13 @@ import {
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
+import EmptyState from '../src/components/EmptyState';
 import {
   makeConfluenceContainerResult,
   makeConfluenceObjectResult,
   makePersonResult,
 } from './_test-util';
+import { wrap } from 'module';
 
 enum Group {
   Objects = 'objects',
@@ -88,9 +90,48 @@ describe('ConfluenceSearchResults', () => {
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
   });
 
+  describe('empty state', () => {
+    it('should render empty state when no recent activities', () => {
+      const props: Partial<Props> = {
+        recentlyInteractedPeople: [],
+        recentlyViewedPages: [],
+        recentlyViewedSpaces: [],
+      };
+
+      const wrapper = render(props);
+      const emptyState = wrapper.find(EmptyState);
+      expect(emptyState.length).toBe(1);
+    });
+
+    [
+      {
+        recentlyInteractedPeople: [makePersonResult()],
+        recentlyViewedPages: [],
+        recentlyViewedSpaces: [],
+      },
+      {
+        recentlyInteractedPeople: [],
+        recentlyViewedPages: [makeConfluenceObjectResult()],
+        recentlyViewedSpaces: [],
+      },
+      {
+        recentlyInteractedPeople: [],
+        recentlyViewedPages: [],
+        recentlyViewedSpaces: [makeConfluenceContainerResult()],
+      },
+    ].forEach(properties => {
+      it('should not render empty state if any recent is non empty', () => {
+        const wrapper = render(properties);
+        const emptyState = wrapper.find(EmptyState);
+        expect(emptyState.length).toBe(0);
+      });
+    });
+  });
+
   it('should render links to advanced search when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
+      recentlyInteractedPeople: [makePersonResult()], // to skip the empty state
     };
 
     const wrapper = render(props);

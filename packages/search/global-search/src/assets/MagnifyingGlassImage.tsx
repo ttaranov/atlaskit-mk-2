@@ -12,12 +12,12 @@ export default () => (
         gradientTransform="translate(-443.9467 123.0686) rotate(-13.7976)"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0" stop-color="#fff" />
-        <stop offset="0.6908" stop-color="#fff" stop-opacity="0.1" />
+        <stop offset="0" stopColor="#fff" />
+        <stop offset="0.6908" stopColor="#fff" stopOpacity="0.1" />
       </linearGradient>
     </defs>
     <title>Search</title>
-    <g isolation="isolate">
+    <g>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Objects">
           <path
