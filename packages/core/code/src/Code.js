@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter/light';
-import { withTheme } from 'styled-components';
+import { withTheme, ThemeProvider } from 'styled-components';
 import {
   normalizeLanguage,
   type ADFSupportedLanguages,
@@ -17,7 +17,7 @@ type CodeProps = {
   theme?: Theme | ThemeProps,
 };
 
-class Code extends PureComponent<CodeProps, {}> {
+export class Code extends PureComponent<CodeProps, {}> {
   static defaultProps = {
     language: '',
     theme: {},
@@ -35,4 +35,12 @@ class Code extends PureComponent<CodeProps, {}> {
   }
 }
 
-export default withTheme(Code);
+const CodeWithTheme = withTheme(Code);
+const emptyTheme = {};
+export default function(props: {}) {
+  return (
+    <ThemeProvider theme={emptyTheme}>
+      <CodeWithTheme {...props} />
+    </ThemeProvider>
+  );
+}
