@@ -52,7 +52,7 @@ BrowserTestCase(
     await sample.type(editorSelector, 'this');
     await sample.type(editorSelector, '`');
 
-    await sample.waitForSelector('pre');
+    await sample.waitForSelector('span.code');
     const doc = await sample.$eval(editorSelector, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
   },

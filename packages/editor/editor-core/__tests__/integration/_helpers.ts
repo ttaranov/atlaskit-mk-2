@@ -4,7 +4,7 @@
  * And, don't get too fancy with it ;)
  */
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
+export const getDocFromElement = `function(el) { return el.pmViewDesc.node.toJSON(); }`;
 export const editable = '.ProseMirror';
 
 export const editors = [

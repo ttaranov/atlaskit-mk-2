@@ -54,7 +54,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '```');
-    await browser.waitForSelector('pre');
+    await browser.waitForSelector('.code-block');
     await browser.type(editable, ':smile:');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();

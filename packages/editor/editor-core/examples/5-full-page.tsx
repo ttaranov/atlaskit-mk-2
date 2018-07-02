@@ -87,7 +87,7 @@ const SaveAndCancelButtons = props => (
 );
 
 export type Props = {
-  defaultValue?: Object;
+  defaultValue?: any;
 };
 export type State = { disabled: boolean };
 
@@ -200,7 +200,7 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example(defaultValue) {
+export default function Example({ defaultValue = '' }) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>

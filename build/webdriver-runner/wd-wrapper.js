@@ -74,11 +74,13 @@ export default class Page {
   }
 
   $eval(selector, pageFunction) {
-    return this.browser
-      .execute(
-        `return (${pageFunction}(document.querySelector("${selector}")))`,
-      )
-      .then(obj => obj.value);
+    return this.browser.waitForExist(selector, WAIT_TIMEOUT).then(() => {
+      return this.browser
+        .execute(
+          `return (${pageFunction}(document.querySelector("${selector}")));`,
+        )
+        .then(obj => obj.value);
+    });
   }
 
   count(selector) {
