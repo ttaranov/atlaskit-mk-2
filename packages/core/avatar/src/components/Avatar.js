@@ -121,7 +121,7 @@ class Avatar extends Component<AvatarPropTypes> {
       stackIndex,
       onClick,
     } = this.props;
-    console.log(document.body);
+
     // distill props from context, props, and state
     const enhancedProps: AvatarPropTypes = (getProps(this): any);
 
