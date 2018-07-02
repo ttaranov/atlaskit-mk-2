@@ -97,6 +97,7 @@ BrowserTestCase(
     await browser.waitForSelector('pre');
     await browser.type(editable, ['this is a code block ', '@Caro']);
     await browser.type(editable, 'Return');
+    await browser.wait(2000);
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
   },

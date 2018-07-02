@@ -74,11 +74,13 @@ export default class Page {
   }
 
   $eval(selector, pageFunction) {
-    return this.browser
-      .execute(
-        `return (${pageFunction}(document.querySelector("${selector}")))`,
-      )
-      .then(obj => obj.value);
+    return this.browser.waitForExist(selector, WAIT_TIMEOUT).then(() => {
+      return this.browser
+        .execute(
+          `return (${pageFunction}(document.querySelector("${selector}")))`,
+        )
+        .then(obj => obj.value);
+    });
   }
 
   count(selector) {
@@ -191,6 +193,10 @@ export default class Page {
 
   waitUntil(predicate) {
     return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
+  }
+
+  wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   // Window
