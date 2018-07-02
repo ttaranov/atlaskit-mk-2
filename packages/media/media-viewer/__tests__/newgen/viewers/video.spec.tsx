@@ -12,7 +12,6 @@ import { Video } from '../../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
 import { ErrorMessage } from '../../../src/newgen/styled';
 import { CustomVideo } from '../../../src/newgen/viewers/video/customVideo';
-import { AsyncAction } from 'rxjs/scheduler/AsyncAction';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
