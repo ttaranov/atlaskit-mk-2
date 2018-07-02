@@ -19,7 +19,6 @@ import {
   makeConfluenceObjectResult,
   makePersonResult,
 } from './_test-util';
-import { wrap } from 'module';
 
 enum Group {
   Objects = 'objects',
@@ -120,7 +119,7 @@ describe('ConfluenceSearchResults', () => {
         recentlyViewedSpaces: [makeConfluenceContainerResult()],
       },
     ].forEach(properties => {
-      it('should not render empty state if any recent is non empty', () => {
+      it('should not render empty state if any recent activity is not empty', () => {
         const wrapper = render(properties);
         const emptyState = wrapper.find(EmptyState);
         expect(emptyState.length).toBe(0);
