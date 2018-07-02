@@ -64,20 +64,15 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Unit Testing - Karma
+            name: Browser Testing
             script:
               - source ./build-setup.sh 
               - bolt install --pure-lockfile
+              - echo "Run browser unit tests using Karma"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-            caches:
-              - node
-        - step:
-            name: Browser Integration Testing - Webdriver
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
+              - echo "Run browser integration tests using Webdriver"
               - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
-            caches:
+              caches:
               - node
         - step:
             name: Building website
