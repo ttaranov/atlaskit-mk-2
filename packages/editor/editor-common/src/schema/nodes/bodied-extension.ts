@@ -38,6 +38,11 @@ export const bodiedExtension: NodeSpec = {
   },
   parseDOM: [
     {
+      context: 'bodiedExtension//',
+      tag: '[data-node-type="bodied-extension"]',
+      skip: true,
+    },
+    {
       tag: '[data-node-type="bodied-extension"]',
       getAttrs: (dom: HTMLElement) => ({
         extensionType: dom.getAttribute('data-extension-type'),

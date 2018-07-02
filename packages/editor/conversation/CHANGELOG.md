@@ -1,5 +1,14 @@
 # @atlaskit/conversation
 
+## 8.2.8
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/util-data-test@9.1.15
+  - @atlaskit/renderer@18.2.9
+  - @atlaskit/reactions@12.1.5
+  - @atlaskit/editor-common@11.3.8
+  - @atlaskit/editor-core@73.9.5
+  - @atlaskit/comment@5.0.3
+
 ## 8.2.7
 - [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
   - @atlaskit/util-data-test@9.1.14

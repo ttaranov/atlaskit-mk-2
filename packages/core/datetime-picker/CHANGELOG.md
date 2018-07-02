@@ -1,5 +1,13 @@
 # @atlaskit/datetime-picker
 
+## 5.3.2
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/modal-dialog@5.2.6
+
 ## 5.3.1
 - [patch] TimePicker timesIsEditable invalid values are set to empty strings  [b710290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b710290)
 - [patch] Updated dependencies [b710290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b710290)

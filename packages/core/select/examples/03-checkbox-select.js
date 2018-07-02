@@ -10,7 +10,7 @@ const CheckboxExample = () => (
       ...cities,
       {
         label:
-          "super long name that noone will ever read because it's way too long",
+          "super long name that no one will ever read because it's way too long to be a realistic option but it will highlight the flexbox grow and shrink styles",
         value: 'test',
       },
     ]}
