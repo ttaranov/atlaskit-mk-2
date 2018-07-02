@@ -125,7 +125,6 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
       ...this.state.data,
     };
 
-    // $FlowFixMe
     return <AkProfilecardStatic {...newProps} actions={this.filterActions()} />;
   }
 }

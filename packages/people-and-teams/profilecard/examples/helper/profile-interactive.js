@@ -128,7 +128,6 @@ export default class ProfilecardInteractive extends Component<Props, State> {
         <input
           checked={this.state.presence === attribute}
           id={id}
-          // $FlowFixMe
           onChange={() => this.setState({ presence: attribute })}
           type="radio"
         />

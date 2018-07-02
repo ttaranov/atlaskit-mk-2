@@ -223,14 +223,12 @@ class ProfileClient {
 
   getProfile(cloudId: string, userId: string): Promise<any> {
     if (!cloudId || !userId) {
-      // $FlowFixMe
       return Promise.reject(new Error('cloudId or userId missing'));
     }
 
     const cache = this.getCachedProfile(cloudId, userId);
 
     if (cache) {
-      // $FlowFixMe
       return Promise.resolve(cache);
     }
 

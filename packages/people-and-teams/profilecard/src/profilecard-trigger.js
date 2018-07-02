@@ -49,7 +49,6 @@ export default class ProfilecardTrigger extends PureComponent<Props, State> {
     isFlipped: false,
   };
 
-  // $FlowFixMe
   handleLayerFlipChange = ({ flipped }) => {
     this.setState({ isFlipped: flipped });
   };
