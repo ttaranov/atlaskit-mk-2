@@ -37,7 +37,7 @@ const thSpacing = css`
 export const CalendarTh = styled.th`
   border: 0;
   color: ${getCalendarThColor};
-  font-size: 14px;
+  font-size: 11px;
   ${thSpacing};
   text-transform: uppercase;
   text-align: center;
