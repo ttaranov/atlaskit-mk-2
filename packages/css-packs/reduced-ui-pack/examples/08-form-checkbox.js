@@ -38,6 +38,16 @@ export default () => (
           />
           <label htmlFor="option3">Enable two-factor authentication</label>
         </div>
+        <div className="ak-field-checkbox">
+          <input
+            type="checkbox"
+            name="option4"
+            id="option4"
+            value="option4"
+            disabled
+          />
+          <label htmlFor="option4">Autoplay videos</label>
+        </div>
       </fieldset>
       <div className="ak-field-group">
         <button className="ak-button ak-button__appearance-primary">
