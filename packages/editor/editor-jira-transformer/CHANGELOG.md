@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.1.6
+- [patch] ED-4708: map h6 to h5 [454aab7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/454aab7)
+
 ## 3.1.5
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/util-data-test@9.1.15
