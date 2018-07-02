@@ -23,8 +23,13 @@ export const insertMacroFromMacroBrowser = (
     macroNode,
   );
   if (newMacro) {
-    const node = resolveMacro(newMacro, view.state);
-    const { schema: { nodes: { bodiedExtension } } } = view.state;
+    const currentLayout = (macroNode && macroNode.attrs.layout) || 'default';
+    const node = resolveMacro(newMacro, view.state, { layout: currentLayout });
+    const {
+      schema: {
+        nodes: { bodiedExtension },
+      },
+    } = view.state;
     let { tr } = view.state;
     if (node) {
       if (
@@ -48,6 +53,7 @@ export const insertMacroFromMacroBrowser = (
 export const resolveMacro = (
   macro?: MacroAttributes,
   state?: EditorState,
+  optionalAttrs?: object,
 ): PmNode | null => {
   if (!macro || !state) {
     return null;
@@ -58,10 +64,10 @@ export const resolveMacro = (
   let node;
 
   if (type === 'extension') {
-    node = schema.nodes.extension.create(attrs);
+    node = schema.nodes.extension.create({ ...attrs, ...optionalAttrs });
   } else if (type === 'bodiedExtension') {
     node = schema.nodes.bodiedExtension.create(
-      attrs,
+      { ...attrs, ...optionalAttrs },
       schema.nodeFromJSON(macro).content,
     );
   } else if (type === 'inlineExtension') {

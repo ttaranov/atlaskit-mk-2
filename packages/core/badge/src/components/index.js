@@ -1,7 +1,7 @@
 // @flow
 
 import { Appearance } from '@atlaskit/theme';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Container from './Container';
 import Format from './Format';
 import * as theme from '../theme';
@@ -32,7 +32,7 @@ type Props = {
   value?: number,
 };
 
-export default class extends PureComponent<Props> {
+export default class Badge extends Component<Props> {
   static displayName = 'Ak.Badge';
   static defaultProps = {
     appearance: 'default',
