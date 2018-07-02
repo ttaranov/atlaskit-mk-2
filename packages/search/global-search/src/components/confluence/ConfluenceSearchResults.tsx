@@ -81,7 +81,7 @@ export interface Props {
   peopleResults: Result[];
 }
 
-class SearchResult extends React.Component<Props> {
+export class SearchResult extends React.Component<Props> {
   shouldComponentUpdate(nextProps) {
     const shouldUpdate = !nextProps.isLoading;
     if (shouldUpdate)
