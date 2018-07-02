@@ -435,6 +435,9 @@
       "git add"
     ]
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "jest-junit": {
     "output": "test-reports/junit.xml"
   }
