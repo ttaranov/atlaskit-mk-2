@@ -23,10 +23,13 @@ type Props = {
   /** The maximum value to display. If value is 100, and max is 50, "50+" will be displayed */
   max: number,
 
-  /** DEPREACATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
+  /** DEPRECATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
 
   Handler function to be called when the value prop is changed. Called with fn({ oldValue, newValue }) */
-  onValueUpdated: ({ oldValue: number, newValue: number }) => any,
+  onValueUpdated: ({
+    oldValue: number,
+    newValue: number,
+  }) => any,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
@@ -57,9 +60,9 @@ export default class Badge extends Component<Props> {
       newValue = nextProps.value;
     }
 
-    // if (onValueUpdated && newValue !== oldValue) {
-    //   onValueUpdated({ oldValue, newValue });
-    // }
+    if (onValueUpdated && newValue !== oldValue) {
+      onValueUpdated({ oldValue, newValue });
+    }
   }
 
   render() {
