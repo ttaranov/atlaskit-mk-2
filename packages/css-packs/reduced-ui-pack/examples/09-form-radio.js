@@ -40,6 +40,32 @@ export default () => (
           <label htmlFor="option3">Use the server time</label>
         </div>
       </fieldset>
+      <fieldset className="ak-field-group">
+        <legend>
+          <span>More options</span>
+        </legend>
+        <div className="ak-field-radio">
+          <input
+            type="radio"
+            name="tests"
+            id="testsoption1"
+            value="option1"
+            disabled
+            defaultChecked
+          />
+          <label htmlFor="testsoption1">Needs tests</label>
+        </div>
+        <div className="ak-field-radio">
+          <input
+            type="radio"
+            name="tests"
+            id="testsoption2"
+            value="option2"
+            disabled
+          />
+          <label htmlFor="testsoption2">No tests required</label>
+        </div>
+      </fieldset>
       <div className="ak-field-group">
         <button className="ak-button ak-button__appearance-primary">
           Save

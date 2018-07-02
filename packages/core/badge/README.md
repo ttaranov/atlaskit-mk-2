@@ -1,14 +1,6 @@
 # Badge
 
-Badges are visual indicators for numeric values such as tallies and scores.
-They're commonly used before and after the label of the thing they're
-quantifying.
-
-They must be used singly after a single item name, and have only numbers.
-
-* Use lozenges for statuses.
-* Use labels to call out tags and high-visibility attributes.
-* Use a tooltip if you want to indicate units.
+Tools for tracking interactions with UI components. Easily capture UI context and state when these events occur.
 
 ## Installation
 
@@ -16,42 +8,6 @@ They must be used singly after a single item name, and have only numbers.
 yarn add @atlaskit/badge
 ```
 
-Interact with a [live demo of the @NAME@ component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
-
 ## Usage
 
-The `default` export gives you full badge functionality and automatically formats the number you priovide it.
-
-```js
-import Badge from '@atlaskit/badge';
-
-// Displays: 99+
-<Badge>{1000}</Badge>
-
-// Displays: 999+
-<Badge max={999}>{1000}</Badge>
-```
-
-### Container
-
-The named `Container` export retains the styling of a normal badge, but without formatting. This means you can compose in whatever information you need to.
-
-```js
-import { Container } from '@atlaskit/badge';
-
-// Displays: <em>Something</em>
-<Container><em>Something</em></Container>
-```
-
-_Beware that putting arbitrary content inside of a badge might cause it to take on an unitended look._
-
-### Format
-
-The `Format` export can be used to compose your own badge together, or if you need the badge  style formatting somewhere else.
-
-```js
-import { Container, Format } from '@atlaskit/badge';
-
-// Displays: <em>999+</em>
-<Container><em><Format>{1000}</Format></em></Container>
-```
+Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/badge).

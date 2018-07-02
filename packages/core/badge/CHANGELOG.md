@@ -1,5 +1,8 @@
 # @atlaskit/badge
 
+## 8.1.0
+- [minor] Create a Container and Format export so that you can compose custom badges together. [ac1b819](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac1b819)
+
 ## 8.0.3
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

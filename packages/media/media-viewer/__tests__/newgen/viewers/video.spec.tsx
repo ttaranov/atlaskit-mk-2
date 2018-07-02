@@ -50,7 +50,12 @@ function createContext(authPromise) {
 function createFixture(authPromise, props?: Partial<Props>) {
   const context = createContext(authPromise);
   const el = mount(
-    <VideoViewer context={context} item={videoItem} {...props} />,
+    <VideoViewer
+      context={context}
+      item={videoItem}
+      {...props}
+      previewCount={0}
+    />,
   );
   return { context, el };
 }
@@ -133,5 +138,50 @@ describe('Video viewer', () => {
       .at(1)
       .simulate('click');
     expect(el.state('isHDActive')).toBeTruthy();
+  });
+
+  describe('AutoPlay', () => {
+    async function createAutoPlayFixture(
+      previewCount: number,
+      isCustomVideoPlayer: boolean,
+    ) {
+      const authPromise = Promise.resolve({ token, clientId });
+      const context = createContext(authPromise);
+      const el = mount(
+        <VideoViewer
+          context={context}
+          previewCount={previewCount}
+          item={videoItem}
+          featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
+        />,
+      );
+      await el.instance()['init']();
+      el.update();
+      return el;
+    }
+
+    it('should auto play custom video viewer when it is the first preview', async () => {
+      const el = await createAutoPlayFixture(0, true);
+      expect(el.find(CustomVideo)).toHaveLength(1);
+      expect(el.find({ autoPlay: true })).toHaveLength(2);
+    });
+
+    it('should not auto play custom video viewer when it is not the first preview', async () => {
+      const el = await createAutoPlayFixture(1, true);
+      expect(el.find(CustomVideo)).toHaveLength(1);
+      expect(el.find({ autoPlay: true })).toHaveLength(0);
+    });
+
+    it('should auto play native video viewer when it is the first preview', async () => {
+      const el = await createAutoPlayFixture(0, false);
+      expect(el.find(CustomVideo)).toHaveLength(0);
+      expect(el.find({ autoPlay: true })).toHaveLength(2);
+    });
+
+    it('should not auto play native video viewer when it is not the first preview', async () => {
+      const el = await createAutoPlayFixture(1, false);
+      expect(el.find(CustomVideo)).toHaveLength(0);
+      expect(el.find({ autoPlay: true })).toHaveLength(0);
+    });
   });
 });
