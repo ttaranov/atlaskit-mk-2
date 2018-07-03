@@ -1,12 +1,19 @@
 import { Node, Fragment, Slice } from 'prosemirror-model';
 
+/**
+ * A helper to get the underlying array of a fragment.
+ */
+function getFragmentBackingArray(fragment: Fragment): ReadonlyArray<Node> {
+  return (fragment as any).content as Node[];
+}
+
 export function mapFragment(
   content: Fragment,
   callback: (
     node: Node,
     parent: Node | null,
     index: number,
-  ) => Node | Node[] | null,
+  ) => Node | Node[] | Fragment | null,
   parent: Node | null = null,
 ) {
   const children = [] as Node[];
@@ -20,9 +27,13 @@ export function mapFragment(
           i,
         );
     if (transformed) {
-      Array.isArray(transformed)
-        ? children.push(...transformed)
-        : children.push(transformed);
+      if (transformed instanceof Fragment) {
+        children.push(...getFragmentBackingArray(transformed));
+      } else if (Array.isArray(transformed)) {
+        children.push(...transformed);
+      } else {
+        children.push(transformed);
+      }
     }
   }
   return Fragment.fromArray(children);
@@ -34,7 +45,7 @@ export function mapSlice(
     nodes: Node,
     parent: Node | null,
     index: number,
-  ) => Node | Node[] | null,
+  ) => Node | Node[] | Fragment | null,
 ): Slice {
   const fragment = mapFragment(slice.content, callback);
   return new Slice(fragment, slice.openStart, slice.openEnd);

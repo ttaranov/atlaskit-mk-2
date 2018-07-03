@@ -31,11 +31,12 @@ export function unwrapContentFromLayout(
   maybeLayoutSection: Node,
 ): Node | Node[] {
   const fragment = mapFragment(Fragment.from(maybeLayoutSection), node => {
-    return isLayoutNode(node)
-      ? ((node.content as any).content as Node[])
-      : node;
+    return isLayoutNode(node) ? node.content : node;
   });
-  return (fragment as any).content as Node[];
+
+  const nodes = [] as Node[];
+  fragment.forEach(i => nodes.push(i));
+  return nodes;
 }
 
 export function removeLayoutFromFirstChild(node: Node, i: number) {

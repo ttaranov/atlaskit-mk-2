@@ -1,7 +1,7 @@
 import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
-import { Slice, Schema, Node } from 'prosemirror-model';
+import { Slice, Schema } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
   removeSelectedNode,
@@ -114,7 +114,7 @@ export const transformSliceToRemoveOpenBodiedExtension = (
         slice.openEnd && index + 1 === slice.content.childCount;
 
       if (currentNodeIsAtStartAndIsOpen || currentNodeIsAtEndAndIsOpen) {
-        return (node.content as any).content as Node[];
+        return node.content;
       }
     }
     return node;

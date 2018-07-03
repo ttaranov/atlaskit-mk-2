@@ -23,7 +23,7 @@ export function transformToCodeBlockAction(
         } else if (node.isInline) {
           return node.attrs.text ? state.schema.text(node.attrs.text) : null;
         } else {
-          return node.content.childCount ? (node.content as any).content : null;
+          return node.content.childCount ? node.content : null;
         }
       },
     );
