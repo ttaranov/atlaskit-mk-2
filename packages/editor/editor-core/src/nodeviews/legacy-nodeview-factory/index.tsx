@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { ComponentClass, StatelessComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
@@ -104,9 +105,12 @@ class NodeViewElem implements NodeView {
       eventDispatcher,
     } = this;
 
-    const ConnectedReactPMNode = connect(ReactPMNode, eventDispatcher);
+    const ConnectedReactPMNode = connect(
+      ReactPMNode,
+      eventDispatcher,
+    );
 
-    this.portalProviderAPI.render(
+    ReactDOM.render(
       <ConnectedReactPMNode
         node={node}
         getPos={getPos}
