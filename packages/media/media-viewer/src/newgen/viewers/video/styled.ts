@@ -164,6 +164,7 @@ export const MutedIndicator = styled.div`
 export const VolumeRange = styled.input`
   transform: translateX(5px);
   height: 100%;
+  cursor: pointer;
 `;
 
 export interface CurrentTimeTooltipProps {
