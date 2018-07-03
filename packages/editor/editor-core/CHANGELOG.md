@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.16
+- [patch] ED-4956, add toolbar option for decision item. [c353a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c353a5a)
+- [patch] Updated dependencies [c353a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c353a5a)
+
 ## 73.9.15
 - [patch] Support markdown style horizontal rules. ED-4820 [3d33ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d33ed4)
 - [none] Updated dependencies [3d33ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d33ed4)
