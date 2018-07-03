@@ -11,8 +11,15 @@ import { complexTree } from '../../mockdata/complexTree';
 configure({ adapter: new Adapter() });
 
 describe('@atlaskit/tree - Tree', () => {
-  const mockRender = jest.fn();
-  mockRender.mockReturnValue(<span />);
+  const mockRender = jest.fn(({ provided }) => (
+    <div
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
+      Draggable
+    </div>
+  ));
 
   beforeEach(() => {
     mockRender.mockClear();
