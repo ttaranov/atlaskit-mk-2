@@ -17,10 +17,15 @@ export function transformToCodeBlockAction(
 ): Transaction {
   const { $from } = state.selection;
   const codeBlock = state.schema.nodes.codeBlock;
+  const parentPos = $from.before();
+  const tr = mergeContent(clearMarkupFor(state, parentPos), state);
 
-  const where = $from.before($from.depth);
-  const tr = clearMarkupFor(state, where);
-  return mergeContent(tr, state).setNodeMarkup(where, codeBlock, attrs);
+  // If our offset isnt at 3 (backticks) at the start of line, cater for content.
+  if ($from.parentOffset >= 3) {
+    return tr.split($from.pos, undefined, [{ type: codeBlock, attrs }]);
+  }
+
+  return tr.setNodeMarkup(parentPos, codeBlock, attrs);
 }
 
 export function isConvertableToCodeBlock(state: EditorState): boolean {
