@@ -13,7 +13,9 @@ export interface Props {
   createAnalyticsEvent: CreateAnalyticsEventFn;
 }
 
-class AnalyticsEventFiredOnMount extends React.Component<Props> {
+export class UnwrappedAnalyticsEventFiredOnMount extends React.Component<
+  Props
+> {
   componentDidMount() {
     if (this.props.createAnalyticsEvent) {
       const event = this.props.createAnalyticsEvent();
@@ -26,6 +28,4 @@ class AnalyticsEventFiredOnMount extends React.Component<Props> {
   }
 }
 
-export const WrappedAnalyticsEventFiredOnMount = AnalyticsEventFiredOnMount;
-
-export default withAnalyticsEvents()(AnalyticsEventFiredOnMount);
+export default withAnalyticsEvents()(UnwrappedAnalyticsEventFiredOnMount);

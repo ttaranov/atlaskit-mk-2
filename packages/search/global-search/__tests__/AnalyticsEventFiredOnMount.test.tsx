@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WrappedAnalyticsEventFiredOnMount } from '../src/components/analytics/AnalyticsEventFiredOnMount';
+import { UnwrappedAnalyticsEventFiredOnMount } from '../src/components/analytics/AnalyticsEventFiredOnMount';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { mount } from 'enzyme';
 import { CreateAnalyticsEventFn } from '../src/components/analytics/types';
@@ -41,7 +41,7 @@ describe('AnalyticsEventFiredOnMount', () => {
 
   it('should fire the correct event with the supplied payload, and the callback', () => {
     mount(
-      <WrappedAnalyticsEventFiredOnMount
+      <UnwrappedAnalyticsEventFiredOnMount
         onEventFired={onEventFiredStub}
         payloadProvider={payloadProviderStub}
         createAnalyticsEvent={createAnalyticsEventStub}
@@ -62,7 +62,7 @@ describe('AnalyticsEventFiredOnMount', () => {
 
   it('should fire the correct event wth the supplier payload after subsequent unmount/mounts', () => {
     const wrapper = mount(
-      <WrappedAnalyticsEventFiredOnMount
+      <UnwrappedAnalyticsEventFiredOnMount
         onEventFired={onEventFiredStub}
         payloadProvider={payloadProviderStub}
         createAnalyticsEvent={createAnalyticsEventStub}
