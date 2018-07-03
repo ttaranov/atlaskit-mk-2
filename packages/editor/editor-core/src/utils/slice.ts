@@ -2,7 +2,11 @@ import { Node, Fragment, Slice } from 'prosemirror-model';
 
 export function mapFragment(
   content: Fragment,
-  callback: (node: Node, parent: Node | null, index: number) => Node | Node[],
+  callback: (
+    node: Node,
+    parent: Node | null,
+    index: number,
+  ) => Node | Node[] | null,
   parent: Node | null = null,
 ) {
   const children = [] as Node[];
@@ -15,17 +19,22 @@ export function mapFragment(
           parent,
           i,
         );
-
-    Array.isArray(transformed)
-      ? children.push(...transformed)
-      : children.push(transformed);
+    if (transformed) {
+      Array.isArray(transformed)
+        ? children.push(...transformed)
+        : children.push(transformed);
+    }
   }
   return Fragment.fromArray(children);
 }
 
 export function mapSlice(
   slice: Slice,
-  callback: (nodes: Node, parent: Node | null, index: number) => Node | Node[],
+  callback: (
+    nodes: Node,
+    parent: Node | null,
+    index: number,
+  ) => Node | Node[] | null,
 ): Slice {
   const fragment = mapFragment(slice.content, callback);
   return new Slice(fragment, slice.openStart, slice.openEnd);
