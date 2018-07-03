@@ -15,5 +15,6 @@ export type colorPaletteType = '8' | '16' | '24';
 export type ThemeValue = ({}) => any | any;
 export type ThemeStructure = {
   components?: { [string]: ThemeValue },
+  mode?: string,
   [string]: ThemeValue,
 };

@@ -6,7 +6,8 @@ import { ThemeProvider } from 'styled-components';
 
 import type { ThemeModes, ThemeProps } from '../types';
 import { background } from '../colors';
-import ThemeReset from './ThemeReset';
+import Reset from './Reset';
+import { Provider } from './Context';
 
 import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
 
@@ -78,9 +79,16 @@ export default class AtlaskitThemeProvider extends Component<
     const { children } = this.props;
     const theme = this.state.theme;
     return (
-      <ThemeProvider theme={theme}>
-        <ThemeReset>{children}</ThemeReset>
-      </ThemeProvider>
+      /* Wrapping the new provider around the old one provides forward
+      compatibility when using the old provider for styled components. This
+      allows us to use components converted to use the new API with consumers
+      using the old provider along side components that may still be using the
+      old theming API. */
+      <Provider value={{ mode: theme[CHANNEL].mode }}>
+        <ThemeProvider theme={theme}>
+          <Reset>{children}</Reset>
+        </ThemeProvider>
+      </Provider>
     );
   }
 }
