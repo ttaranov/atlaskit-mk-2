@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { createPortal } from 'react-dom';
+import {
+  createPortal,
+  unstable_renderSubtreeIntoContainer,
+  unmountComponentAtNode,
+} from 'react-dom';
 import { EventDispatcher } from '../../event-dispatcher';
 
 export type PortalProviderProps = {
@@ -12,15 +16,20 @@ export type PortalRendererState = {
 
 export class PortalProviderAPI extends EventDispatcher {
   portals = new Map();
+  context: any;
+
+  setContext = context => {
+    this.context = context;
+  };
 
   render(children: React.ReactChild, container: HTMLElement) {
     this.portals.set(container, children);
-    this.emit('update', this.portals);
+    unstable_renderSubtreeIntoContainer(this.context, children, container);
   }
 
   remove(container: HTMLElement) {
     this.portals.delete(container);
-    this.emit('update', this.portals);
+    unmountComponentAtNode(container);
   }
 }
 
@@ -43,6 +52,7 @@ export class PortalRenderer extends React.Component<
 > {
   constructor(props) {
     super(props);
+    props.portalProviderAPI.setContext(this);
     props.portalProviderAPI.on('update', this.handleUpdate);
     this.state = { portals: new Map() };
   }
