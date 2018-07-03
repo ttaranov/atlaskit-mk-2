@@ -6,7 +6,7 @@ import {
   getStartOfCurrentLine,
 } from './line-handling';
 
-import { analyticsService } from '../../../../src/analytics';
+import { analyticsService } from '../../../analytics';
 
 export function indent(state: EditorState, dispatch) {
   const { text, start } = getLinesFromSelection(state);
