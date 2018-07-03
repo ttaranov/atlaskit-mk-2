@@ -306,7 +306,7 @@ function plugins(
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${env}"`,
-      'process.env.WEBSITE_ENV': `"${websiteEnv}"`,
+      WEBSITE_ENV: `"${websiteEnv}"`,
     }),
   ];
 
