@@ -91,7 +91,7 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragAction = (actionType: DragActionType) => {
-    this.moveBy = actionType;
+    this.lastDragAction = actionType;
   };
 
   /*
