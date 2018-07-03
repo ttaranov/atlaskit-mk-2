@@ -689,13 +689,12 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   line-height: 1.428571428571429;
   padding: 2px 6px;
 }
-.ak-field-select[multiple] > option:selected {
-  background-color: red;
+.ak-field-select[multiple] > option:checked {
+  background-color: #DFE1E6;
   color: inherit;
 }
-.ak-field-select[multiple]:focus > option:selected {
+.ak-field-select[multiple]:focus > option:checked {
   background-color: #4C9AFF;
-  background-color: red;
   color: white;
 }
 .ak-field-select:-moz-focusring {
