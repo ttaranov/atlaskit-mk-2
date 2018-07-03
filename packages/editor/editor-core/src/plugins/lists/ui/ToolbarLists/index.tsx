@@ -4,6 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import TaskIcon from '@atlaskit/icon/glyph/editor/task';
+import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import { analyticsDecorator as analytics } from '../../../../analytics';
 import {
@@ -33,7 +34,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
-  enableTaskToolbar?: boolean;
+  enableTaskDecisionToolbar?: boolean;
 }
 
 export interface State {
@@ -114,7 +115,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       tooltipPosition: 'right',
       elemBefore: <NumberListIcon label="Ordered list" />,
     });
-    if (this.props.enableTaskToolbar) {
+    if (this.props.enableTaskDecisionToolbar) {
       items.push({
         content: 'Create action',
         value: { name: 'action' },
@@ -138,7 +139,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       isSmall,
       isReducedSpacing,
       isSeparator,
-      enableTaskToolbar,
+      enableTaskDecisionToolbar,
     } = this.props;
     const {
       bulletListActive,
@@ -170,14 +171,23 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               iconBefore={<NumberListIcon label="Ordered list" />}
             />
           )}
-          {enableTaskToolbar && (
-            <ToolbarButton
-              spacing={isReducedSpacing ? 'none' : 'default'}
-              onClick={this.handleCreateAction}
-              disabled={disabled}
-              title="Create action []"
-              iconBefore={<TaskIcon label="Create action" />}
-            />
+          {enableTaskDecisionToolbar && (
+            <>
+              <ToolbarButton
+                spacing={isReducedSpacing ? 'none' : 'default'}
+                onClick={this.handleCreateAction}
+                disabled={disabled}
+                title="Create action []"
+                iconBefore={<TaskIcon label="Create action" />}
+              />
+              <ToolbarButton
+                spacing={isReducedSpacing ? 'none' : 'default'}
+                onClick={this.handleCreateDecision}
+                disabled={disabled}
+                title="Create decision <>"
+                iconBefore={<DecisionIcon label="Create decision" />}
+              />
+            </>
           )}
           {isSeparator && <Separator />}
         </ButtonGroup>
@@ -284,6 +294,16 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     return true;
   };
 
+  @analytics('atlassian.fabric.decision.trigger.button')
+  private handleCreateDecision = (): boolean => {
+    const { editorView } = this.props;
+    if (!editorView) {
+      return false;
+    }
+    changeToTaskDecision(editorView, 'decisionList');
+    return true;
+  };
+
   private onItemActivated = ({ item }) => {
     this.setState({ isDropdownOpen: false });
     switch (item.value.name) {
@@ -295,6 +315,9 @@ export default class ToolbarLists extends PureComponent<Props, State> {
         break;
       case 'action':
         this.handleCreateAction();
+        break;
+      case 'decision':
+        this.handleCreateDecision();
         break;
     }
   };

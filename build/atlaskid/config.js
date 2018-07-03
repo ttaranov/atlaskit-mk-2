@@ -72,7 +72,12 @@ const mediaTeam = [
   'iloire-atlassian',
   'ivandemchenko',
 ];
-const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
+const searchAndSmartsTeam = [
+  'drichard',
+  'pteen',
+  'ashwini_rattihalli',
+  'fo2ad',
+];
 const kitkatTeam = [
   'kamil-kaczmarczyk',
   'mszerszynski',

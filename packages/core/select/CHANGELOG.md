@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 4.3.6
+- [patch] ADG3 guideline allignemnt, updated padding and height, update colors for hover and active, update icons  [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+- [none] Updated dependencies [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+
 ## 4.3.5
 - [patch] Updated dependencies [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
   - @atlaskit/form@2.1.5

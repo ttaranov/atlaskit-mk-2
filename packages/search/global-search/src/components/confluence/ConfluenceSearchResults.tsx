@@ -10,9 +10,11 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
+  getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics';
+import NoRecentActivity from '../NoRecentActivity';
 
 let preQueryScreenCounter = 0;
 let postQueryScreenCounter = 0;
@@ -111,6 +113,19 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return (
+        <NoRecentActivity
+          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
+        />
+      );
+    }
     // TODO: insert error state here if the recent results are empty.
     if (
       [

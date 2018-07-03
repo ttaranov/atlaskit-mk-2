@@ -5,9 +5,9 @@ import ArrowDown from '@atlaskit/icon/glyph/arrow-down';
 import ArrowUp from '@atlaskit/icon/glyph/arrow-up';
 import { Label } from '@atlaskit/field-base';
 import { ToggleStateless } from '@atlaskit/toggle';
+import { AVATAR_SIZES } from '@atlaskit/avatar';
 import { Note, Code } from '../examples-util/helpers';
-import { AvatarGroup } from '../src';
-import { AVATAR_SIZES } from '../src/styled/constants';
+import AvatarGroup from '../src';
 import { avatarUrl } from '../examples-util/data';
 
 type State = {|
@@ -57,7 +57,6 @@ export default class AvatarGroupExample extends Component<*, State> {
 
     return (
       <div>
-        <h2>Avatar Group </h2>
         <Note size="large">
           Click the excess indicator to see the remaining avatars in a dropdown
           menu.

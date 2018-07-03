@@ -1,18 +1,21 @@
 // @flow
 import React from 'react';
 import { Presence } from '../src';
-import { Block, Dot } from '../examples-util/helpers';
-
-const presenceArray = ['online', 'busy', 'focus', 'offline'];
+import { Block, ShrinkWrap } from '../examples-util/helpers';
 
 export default () => (
   <Block>
-    {presenceArray.map(presence => {
-      return (
-        <Dot>
-          <Presence presence={presence} />
-        </Dot>
-      );
-    })}
+    <ShrinkWrap>
+      <Presence presence="online" />
+    </ShrinkWrap>
+    <ShrinkWrap>
+      <Presence presence="busy" />
+    </ShrinkWrap>
+    <ShrinkWrap>
+      <Presence presence="focus" />
+    </ShrinkWrap>
+    <ShrinkWrap>
+      <Presence presence="offline" />
+    </ShrinkWrap>
   </Block>
 );

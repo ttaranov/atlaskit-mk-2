@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { AvatarGroup } from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
 import Users from '../../../../src/block/DetailView/Users';
 
 describe('Users', () => {
