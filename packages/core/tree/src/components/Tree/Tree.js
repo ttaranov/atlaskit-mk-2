@@ -158,12 +158,10 @@ export default class Tree extends Component<Props, State> {
     const { dropAnimationOffset } = this.state;
 
     if (
+      !snapshot.isDropAnimating ||
       !provided.draggableProps.style ||
-      !provided.draggableProps.style.left ||
-      //$ExpectError
-      !snapshot.isDropAnimating
+      !provided.draggableProps.style.left
     ) {
-      // $FlowFixMe
       return provided;
     }
 
@@ -175,7 +173,6 @@ export default class Tree extends Component<Props, State> {
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
-    // $FlowFixMe
     const finalProvided: TreeDraggableProvided = {
       ...provided,
       draggableProps: {
