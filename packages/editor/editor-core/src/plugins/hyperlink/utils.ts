@@ -72,7 +72,8 @@ export function normalizeUrl(url: string) {
 
 export function linkifyContent(schema: Schema, slice: Slice): Slice {
   return mapSlice(slice, (node, parent) => {
-    if (parent && parent.type !== schema.nodes.codeBlock && node.isText) {
+    const isAllowedInParent = !parent || parent.type !== schema.nodes.codeBlock;
+    if (isAllowedInParent && node.isText) {
       const linkified = [] as Node[];
       const link = node.type.schema.marks['link'];
       const text = node.text!;
