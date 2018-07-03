@@ -28,7 +28,7 @@ export const exitFullscreen = () => {
 
 export const getFullscreenElement = (): HTMLElement | undefined => {
   const properties = [
-    'exitFullscreen',
+    'fullscreenElement',
     'webkitCurrentFullScreenElement',
     'mozCurrentFullScreenElement',
     'msCurrentFullScreenElement',

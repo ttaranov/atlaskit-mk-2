@@ -1,13 +1,16 @@
+jest.mock('../../src/newgen/viewers/video/fullscreen');
 import * as React from 'react';
 import { mount } from 'enzyme';
-import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import FullScreenIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
 import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidHdCircleIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
 import {
   CustomVideo,
   CustomVideoProps,
 } from '../../src/newgen/viewers/video/customVideo';
+import { toggleFullscreen } from '../../src/newgen/viewers/video/fullscreen';
 import { TimeRange } from '../../src/newgen/viewers/video/TimeRange';
 import {
   VolumeRange,
@@ -76,7 +79,7 @@ describe('<CustomVideo />', () => {
           .find(Button)
           .last()
           .prop('iconBefore') as any).type,
-      ).toEqual(EditorMediaFullWidthIcon);
+      ).toEqual(FullScreenIcon);
     });
 
     it('should render hd button if available', () => {
@@ -88,13 +91,20 @@ describe('<CustomVideo />', () => {
       expect(
         (component
           .find(Button)
-          .at(1)
+          .at(2)
           .prop('iconBefore') as any).type,
       ).toEqual(VidHdCircleIcon);
       component.setProps({
         isHDAvailable: false,
       });
       expect(component.find(Button)).toHaveLength(3);
+    });
+
+    it('should render spinner when the video is in loading state', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('waiting');
+      expect(component.find(Spinner)).toHaveLength(1);
     });
   });
 
@@ -103,9 +113,17 @@ describe('<CustomVideo />', () => {
       const showControls = jest.fn();
       const { component } = setup({ showControls });
 
-      component.find(Shortcut).prop('handler')();
+      component
+        .find(Shortcut)
+        .first()
+        .prop('handler')();
+      component
+        .find(Shortcut)
+        .last()
+        .prop('handler')();
 
-      expect(showControls).toHaveBeenCalledTimes(1);
+      expect(component.find(Shortcut)).toHaveLength(2);
+      expect(showControls).toHaveBeenCalledTimes(2);
     });
 
     it('should fire callback when hd button is clicked', () => {
@@ -117,9 +135,19 @@ describe('<CustomVideo />', () => {
 
       component
         .find(Button)
-        .at(1)
+        .at(2)
         .simulate('click');
       expect(onHDToggleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should request full screen when fullscreen button is clicked', () => {
+      const { component } = setup();
+
+      component
+        .find(Button)
+        .last()
+        .simulate('click');
+      expect(toggleFullscreen).toHaveBeenCalledTimes(1);
     });
   });
 
