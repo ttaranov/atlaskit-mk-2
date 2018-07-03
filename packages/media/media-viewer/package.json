@@ -51,6 +51,8 @@
     "@types/sinon-chai": "^2.7.27",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jquery": "^3.2.1",
+    "react": "^16.3.0",
+    "rxjs": "^5.1.0",
     "sinon-chai": "^2.9.0"
   }
 }

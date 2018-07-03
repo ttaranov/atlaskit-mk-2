@@ -13,11 +13,12 @@ import { RefsNode, Refs } from './schema-builder';
 import { Schema } from 'prosemirror-model';
 import { PluginKey } from 'prosemirror-state';
 import patchEditorViewForJSDOM from './jsdom-fixtures';
+// @ts-ignore - to be modified in 2.9
 import {
   PortalProvider,
   PortalProviderAPI,
   PortalRenderer,
-} from '../../editor-core/src/ui/PortalProvider';
+} from '@atlaskit/editor-core/src/ui/PortalProvider';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
@@ -62,6 +63,7 @@ export default function createEditorForTests<T = any>({
           <>
             <TestReactEditorView
               editorProps={editorProps}
+              // @ts-ignore
               portalProviderAPI={portalProvider}
               providerFactory={
                 providerFactory ? providerFactory : new ProviderFactory()

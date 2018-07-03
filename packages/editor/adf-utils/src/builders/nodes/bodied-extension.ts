@@ -22,8 +22,9 @@ import {
   BodiedExtensionDefinition,
   ExtensionContent,
 } from '@atlaskit/editor-common';
-
+// @ts-ignore
 export const bodiedExtension = (attrs: BodiedExtensionDefinition['attrs']) => (
+  // @ts-ignore
   ...content: ExtensionContent
 ): BodiedExtensionDefinition => ({
   type: 'bodiedExtension',

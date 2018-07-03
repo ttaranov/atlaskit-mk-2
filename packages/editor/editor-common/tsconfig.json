@@ -7,8 +7,8 @@
     "./docs/**/*.tsx",
     "./tests/**/*.ts",
     "./tests/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
+   
+   
     "test-helpers/**/*.ts",
     "test-helpers/**/*.tsx"
   ],

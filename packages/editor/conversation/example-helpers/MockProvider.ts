@@ -66,7 +66,7 @@ export class MockProvider extends AbstractConversationResource {
   constructor(config: ConversationResourceConfig) {
     super();
     this.config = config;
-    this.updateUser(config.user);
+    this.updateUser(config.user as User);
     this.responseCode = 200;
   }
 
@@ -160,7 +160,7 @@ export class MockProvider extends AbstractConversationResource {
   ): Comment {
     return {
       commentAri: `abc:cloud:platform::comment/${localId}`,
-      createdBy: this.config.user,
+      createdBy: this.config.user as User,
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),
       document: {
@@ -182,7 +182,7 @@ export class MockProvider extends AbstractConversationResource {
     document: any,
   ): Promise<Comment> {
     const result = {
-      createdBy: this.config.user,
+      createdBy: this.config.user as User,
       createdAt: Date.now(),
       document: {
         adf: document,

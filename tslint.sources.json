@@ -46,7 +46,6 @@
     "no-implicit-dependencies": true
   },
   "jsRules": {
-    // We use eslint for .js and .jsx, so all the TSLint rules can be disabled.
     "array-type": [false],
     "arrow-parens": false,
     "curly": false,

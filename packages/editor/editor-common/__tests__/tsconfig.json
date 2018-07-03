@@ -1,7 +1,0 @@
-{
-  "extends": "../../../../tsconfig.fabric.json",
-  "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-  ]
-}

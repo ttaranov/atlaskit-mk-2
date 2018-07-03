@@ -40,6 +40,9 @@
   "devDependencies": {
     "@atlaskit/docs": "^4.1.1",
     "@atlaskit/single-select": "^5.2.5",
-    "@atlaskit/util-data-test": "^9.1.15"
+    "@atlaskit/util-data-test": "^9.1.15",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "react": "^16.3.0"
   }
 }

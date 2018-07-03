@@ -22,10 +22,6 @@ export const MOCK_USERS: User[] = [
     name: 'Awesome Person',
     avatarUrl: 'https://api.adorable.io/avatars/80/awesomeperson.png',
   },
-  {
-    id: undefined,
-    name: 'Undefined',
-  },
 ];
 
 export const MESSAGES: string[] = [

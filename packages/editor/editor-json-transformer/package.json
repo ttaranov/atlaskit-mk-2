@@ -30,6 +30,7 @@
     "@atlaskit/editor-test-helpers": "^4.2.2",
     "@atlaskit/util-data-test": "^9.1.15",
     "@types/prosemirror-model": "^1.0.0",
-    "chai-as-promised": "^6.0.0"
+    "chai-as-promised": "^6.0.0",
+    "react": "^16.3.0"
   }
 }
