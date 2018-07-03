@@ -83,7 +83,7 @@ export interface Props {
   peopleResults: Result[];
 }
 
-export class SearchResult extends React.Component<Props> {
+export default class extends React.Component<Props> {
   shouldComponentUpdate(nextProps) {
     const shouldUpdate = !nextProps.isLoading;
     return shouldUpdate;
@@ -168,8 +168,4 @@ export class SearchResult extends React.Component<Props> {
 
     return this.renderSearchResults();
   }
-}
-
-export default function(props: Props) {
-  return <SearchResult {...props} />;
 }

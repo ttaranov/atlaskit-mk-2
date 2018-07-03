@@ -9,7 +9,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import renderSearchResults from './ConfluenceSearchResults';
+import SearchResult from './ConfluenceSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import { redirectToConfluenceAdvancedSearch } from '../SearchResultsUtil';
@@ -276,18 +276,18 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
       >
-        {renderSearchResults({
-          query,
-          isError,
-          isLoading,
-          retrySearch: this.retrySearch,
-          recentlyViewedPages,
-          recentlyViewedSpaces,
-          recentlyInteractedPeople,
-          objectResults,
-          spaceResults,
-          peopleResults,
-        })}
+        <SearchResult
+          query={query}
+          isError={isError}
+          isLoading={isLoading}
+          retrySearch={() => this.retrySearch()}
+          recentlyViewedPages={recentlyViewedPages}
+          recentlyViewedSpaces={recentlyViewedSpaces}
+          recentlyInteractedPeople={recentlyInteractedPeople}
+          objectResults={objectResults}
+          spaceResults={spaceResults}
+          peopleResults={peopleResults}
+        />
       </GlobalQuickSearch>
     );
   }

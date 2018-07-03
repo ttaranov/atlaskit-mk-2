@@ -1,4 +1,4 @@
-import { shallow, ShallowWrapper, mount, ReactWrapper } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
@@ -32,9 +32,9 @@ import {
   errorConfluenceQuickNavSearch,
   makeConfluenceClient,
 } from './mocks/_mockConfluenceClient';
-import { SearchResult } from '../src/components/confluence/ConfluenceSearchResults';
+import SearchResult from '../src/components/confluence/ConfluenceSearchResults';
 
-function searchFor(query: string, wrapper: ShallowWrapper | ReactWrapper) {
+function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
   const onSearchFn: Function = quicksearch.prop('onSearch');
   onSearchFn(query);
@@ -45,10 +45,7 @@ function searchFor(query: string, wrapper: ShallowWrapper | ReactWrapper) {
  * This component uses a lot of internal state and async calls.
  * Make sure we wait for next tick and then force render update for React 16.
  */
-async function waitForRender(
-  wrapper: ShallowWrapper | ReactWrapper,
-  millis?: number,
-) {
+async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   await delay(millis);
   wrapper.update();
 }
@@ -76,16 +73,6 @@ function render(partialProps?: Partial<Props>) {
   return shallow<Props>(<ConfluenceQuickSearchContainer {...props} />);
 }
 
-function mountComponent(partialProps?: Partial<Props>) {
-  const props: Props = {
-    confluenceClient: noResultsConfluenceClient,
-    crossProductSearchClient: noResultsCrossProductSearchClient,
-    peopleSearchClient: noResultsPeopleSearchClient,
-    ...partialProps,
-  };
-
-  return mount<Props>(<ConfluenceQuickSearchContainer {...props} />);
-}
 describe('ConfluenceQuickSearchContainer', () => {
   describe('loading state', () => {
     it.skip('should set loading state when searching', () => {
@@ -421,13 +408,17 @@ describe('ConfluenceQuickSearchContainer', () => {
 
       searchFor('error state', wrapper);
       await waitForRender(wrapper);
-      let searchResult = wrapper.find(GlobalQuickSearch).find(SearchResult);
-      expect(searchResult.props().isError).toBe(true);
+      const searchResultWithError = wrapper
+        .find(GlobalQuickSearch)
+        .find(SearchResult);
+      expect(searchResultWithError.props().isError).toBe(true);
 
       searchFor('good state', wrapper);
       await waitForRender(wrapper);
-      searchResult = wrapper.find(GlobalQuickSearch).find(SearchResult);
-      expect(searchResult.props().isError).toBe(false);
+      const successfulSearchResult = wrapper
+        .find(GlobalQuickSearch)
+        .find(SearchResult);
+      expect(successfulSearchResult.props().isError).toBe(false);
     });
 
     it('should not show the error state when only people search fails', async () => {

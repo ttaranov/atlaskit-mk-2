@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import {
+import SearchResult, {
   Props,
-  SearchResult,
 } from '../src/components/confluence/ConfluenceSearchResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 
