@@ -19,7 +19,12 @@ describe('<CustomVideo />', () => {
   const setup = (props?: Partial<CustomVideoProps>) => {
     const onChange = jest.fn();
     const component = mount(
-      <CustomVideo isHDAvailable={false} src="video-src" {...props} />,
+      <CustomVideo
+        isAutoPlay={true}
+        isHDAvailable={false}
+        src="video-src"
+        {...props}
+      />,
     );
 
     return {
@@ -115,6 +120,24 @@ describe('<CustomVideo />', () => {
         .at(1)
         .simulate('click');
       expect(onHDToggleClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('auto play', () => {
+    it('should use autoplay when requested', () => {
+      const { component } = setup({
+        isHDAvailable: true,
+        isAutoPlay: true,
+      });
+      expect(component.find({ autoPlay: true })).toHaveLength(2);
+    });
+
+    it('should not use autoplay when not requested', () => {
+      const { component } = setup({
+        isHDAvailable: true,
+        isAutoPlay: false,
+      });
+      expect(component.find({ autoPlay: true })).toHaveLength(0);
     });
   });
 });

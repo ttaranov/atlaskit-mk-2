@@ -101,7 +101,7 @@ export default function withPseudoState<InnerProps: {}>(
 
       // strip the consumer's handlers off props, then merge with our handlers
       // if the element is interactive
-      // $FlowFixMe
+      // $FlowFixMe - omit issue
       const props: CombinedProps = omit(this.props, ...INTERNAL_HANDLERS);
 
       const self: Object = this;

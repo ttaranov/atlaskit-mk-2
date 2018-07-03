@@ -9,7 +9,7 @@ import {
   HeaderButton,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
-import { getLineMarkerWidth, findRowSelection, TableSelection } from '../utils';
+import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
 import DeleteRowButton from './DeleteRowButton';
 
 export interface Props {
@@ -23,7 +23,6 @@ export interface Props {
   dangerRows?: number[];
   hoveredRows?: number[];
   resetHoverSelection: () => void;
-  scroll?: number;
   isTableInDanger?: boolean;
 }
 
@@ -31,7 +30,6 @@ export default class RowControls extends Component<Props, any> {
   static defaultProps = {
     dangerRows: [],
     hoveredRows: [],
-    scroll: 0,
   };
 
   createDeleteRowButton(selection, offsetHeight, selectionHeight) {
@@ -108,7 +106,6 @@ export default class RowControls extends Component<Props, any> {
     const {
       editorView: { state },
       tableRef,
-      scroll,
     } = this.props;
     if (!tableRef) {
       return null;
@@ -120,7 +117,6 @@ export default class RowControls extends Component<Props, any> {
 
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
-    const lineMarkerWidth = getLineMarkerWidth(tableRef, scroll!);
     let prevRowHeights = 0;
 
     const selection = findRowSelection(state, rows);
@@ -151,7 +147,10 @@ export default class RowControls extends Component<Props, any> {
           ) ? (
             <InsertRowButton
               onClick={() => this.props.insertRow(i + 1)}
-              lineMarkerWidth={lineMarkerWidth}
+              lineMarkerWidth={getLineMarkerWidth(
+                tableRef,
+                (tableRef.parentNode as HTMLElement).scrollLeft,
+              )}
             />
           ) : null}
         </RowControlsButtonWrap>,

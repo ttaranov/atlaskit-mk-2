@@ -11,7 +11,6 @@
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
 .*/.git/.*
-
 [untyped]
 .*/node_modules/react-select
 
@@ -46,6 +45,8 @@ module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/typings/raw-loader.js
 module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/typings/extract-react-types-loader.js'
 module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/typings/extract-react-types.js'
 module.name_mapper='.*\.md' -> '<PROJECT_ROOT>/typings/md.js'
+module.file_ext=.less
+module.name_mapper.extension='less' -> 'empty/object'
 
 suppress_comment=\\(.\\|\n\\)*\\$ExpectError
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe

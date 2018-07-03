@@ -94,10 +94,6 @@ export const tableStyles = css`
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
     }
-    .table-decoration {
-      position: relative;
-      left: -1px;
-    }
   }
 
   /* =============== TABLE COLUMN RESIZING ================== */

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "5.0.1",
+  "version": "5.0.4",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -28,9 +28,9 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^11.1.1",
+    "@atlaskit/avatar": "^12.0.0",
     "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/editor-core": "^73.8.20",
+    "@atlaskit/editor-core": "^73.9.19",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [

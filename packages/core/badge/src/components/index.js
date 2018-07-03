@@ -1,7 +1,7 @@
 // @flow
 
 import { Appearance } from '@atlaskit/theme';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Container from './Container';
 import Format from './Format';
 import * as theme from '../theme';
@@ -23,16 +23,19 @@ type Props = {
   /** The maximum value to display. If value is 100, and max is 50, "50+" will be displayed */
   max: number,
 
-  /** DEPREACATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
+  /** DEPRECATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
 
   Handler function to be called when the value prop is changed. Called with fn({ oldValue, newValue }) */
-  onValueUpdated: ({ oldValue: number, newValue: number }) => any,
+  onValueUpdated: ({
+    oldValue: number,
+    newValue: number,
+  }) => any,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
 };
 
-export default class extends PureComponent<Props> {
+export default class Badge extends Component<Props> {
   static displayName = 'Ak.Badge';
   static defaultProps = {
     appearance: 'default',

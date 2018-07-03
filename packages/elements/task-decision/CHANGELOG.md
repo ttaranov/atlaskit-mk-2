@@ -1,5 +1,26 @@
 # @atlaskit/task-decision
 
+## 7.1.10
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/avatar-group@1.0.0
+
+## 7.1.9
+- [patch] onChange for a ResourcedTaskItem will be called on changes even if no taskDecisionProvider is provided [07cb42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07cb42f)
+- [none] Updated dependencies [07cb42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07cb42f)
+
+## 7.1.8
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/util-data-test@9.1.15
+  - @atlaskit/renderer@18.2.9
+  - @atlaskit/editor-common@11.3.8
+
+## 7.1.7
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/util-data-test@9.1.14
+  - @atlaskit/renderer@18.2.7
+  - @atlaskit/editor-common@11.3.7
+
 ## 7.1.6
 - [patch] Make code blocks and actions have opaque backgrounds [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
 
