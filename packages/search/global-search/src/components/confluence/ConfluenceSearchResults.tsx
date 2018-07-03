@@ -12,7 +12,7 @@ import {
   isEmpty,
   getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
-import EmptyState from '../EmptyState';
+import NoRecentActivity from '../NoRecentActivity';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -114,7 +114,9 @@ export default function searchResults(props: Props) {
       ].every(isEmpty)
     ) {
       return (
-        <EmptyState advancedSearchUrl={getConfluenceAdvancedSearchLink()} />
+        <NoRecentActivity
+          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
+        />
       );
     }
     // TODO: insert error state here if the recent results are empty.

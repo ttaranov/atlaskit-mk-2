@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import EmptyState from '../src/components/EmptyState';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 
 import { GlobalQuickSearch } from '../src/index';

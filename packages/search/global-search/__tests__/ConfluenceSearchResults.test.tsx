@@ -13,7 +13,7 @@ import {
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
-import EmptyState from '../src/components/EmptyState';
+import NoRecentActivity from '../src/components/NoRecentActivity';
 import {
   makeConfluenceContainerResult,
   makeConfluenceObjectResult,
@@ -98,7 +98,7 @@ describe('ConfluenceSearchResults', () => {
       };
 
       const wrapper = render(props);
-      const emptyState = wrapper.find(EmptyState);
+      const emptyState = wrapper.find(NoRecentActivity);
       expect(emptyState.length).toBe(1);
     });
 
@@ -121,7 +121,7 @@ describe('ConfluenceSearchResults', () => {
     ].forEach(properties => {
       it('should not render empty state if any recent activity is not empty', () => {
         const wrapper = render(properties);
-        const emptyState = wrapper.find(EmptyState);
+        const emptyState = wrapper.find(NoRecentActivity);
         expect(emptyState.length).toBe(0);
       });
     });
