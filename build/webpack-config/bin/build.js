@@ -10,6 +10,7 @@ const { print, buildBanner } = require('../banner');
 async function runDevServer() {
   const [entry] = process.argv.slice(2);
   const env = 'production';
+  const websiteEnv = process.env.WEBSITE_ENV;
   const includePatterns = true;
   const noMinimize = !!process.argv.find(arg =>
     arg.startsWith('--no-minimize'),
@@ -25,6 +26,7 @@ async function runDevServer() {
   const config = createConfig({
     entry,
     env,
+    websiteEnv,
     includePatterns,
     noMinimize,
     report,
