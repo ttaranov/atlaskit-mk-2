@@ -39,6 +39,7 @@ export interface CustomVideoProps {
   readonly onHDToggleClick?: () => void;
   readonly isHDAvailable: boolean;
   readonly showControls?: () => void;
+  readonly isAutoPlay: boolean;
 }
 
 export type ToggleButtonAction = () => void;
@@ -121,11 +122,11 @@ export class CustomVideo extends Component<CustomVideoProps> {
   };
 
   render() {
-    const { src } = this.props;
+    const { src, isAutoPlay } = this.props;
 
     return (
       <CustomVideoWrapper innerRef={this.saveVideoWrapperRef}>
-        <Video src={src} autoPlay={false}>
+        <Video src={src} autoPlay={isAutoPlay}>
           {(video, videoState, actions) => {
             const isPlaying = videoState.status === 'playing';
             const toggleButtonIcon = isPlaying ? (

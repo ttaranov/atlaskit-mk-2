@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/badge",
-  "version": "8.0.3",
+  "version": "8.1.0",
   "description": "A React component that indicates values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

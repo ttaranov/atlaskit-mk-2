@@ -23,6 +23,7 @@ const createPayload = (actionSubject, action) => ({
       componentName: 'mention',
       accessLevel: 'CONTAINER',
       isSpecial: false,
+      userId: mentionData.id,
     },
     source: 'unknown',
     eventType: 'ui',

@@ -1,5 +1,10 @@
 # @atlaskit/mention
 
+## 13.1.4
+- [patch] added mention userId in the Mention lozenge analytics [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
+- [patch] Updated dependencies [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
+  - @atlaskit/util-data-test@9.1.16
+
 ## 13.1.3
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/util-data-test@9.1.15

@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 32.3.0
+- [minor] Drawer content is scrollable. Drawer header stays fixed in position. [d4b23f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b23f1)
+- [none] Updated dependencies [d4b23f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b23f1)
+
 ## 32.2.4
 - [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
 - [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
