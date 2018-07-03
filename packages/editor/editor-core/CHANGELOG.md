@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.12
+- [patch] Set overflow to auto so we're not showing scrollbars by default in code blocks. ED-4992 [19aec32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19aec32)
+- [none] Updated dependencies [19aec32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19aec32)
+
 ## 73.9.11
 - [patch] ED-4462, in comment editor clicking below content should create a new paragraph at bottom. [e196df9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e196df9)
 - [patch] Updated dependencies [e196df9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e196df9)
