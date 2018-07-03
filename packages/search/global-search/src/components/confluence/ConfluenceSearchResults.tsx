@@ -10,7 +10,9 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
+  getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
+import NoRecentActivity from '../NoRecentActivity';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -104,6 +106,19 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return (
+        <NoRecentActivity
+          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
+        />
+      );
+    }
     // TODO: insert error state here if the recent results are empty.
     return [
       renderObjectsGroup(
