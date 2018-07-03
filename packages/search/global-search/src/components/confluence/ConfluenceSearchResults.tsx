@@ -85,8 +85,7 @@ export interface Props {
 
 export default class extends React.Component<Props> {
   shouldComponentUpdate(nextProps) {
-    const shouldUpdate = !nextProps.isLoading;
-    return shouldUpdate;
+    return !nextProps.isLoading;
   }
 
   renderNoQuery() {
