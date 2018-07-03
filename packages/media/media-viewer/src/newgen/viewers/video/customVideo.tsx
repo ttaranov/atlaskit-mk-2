@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Component } from 'react';
 import PlayIcon from '@atlaskit/icon/glyph/vid-play';
 import PauseIcon from '@atlaskit/icon/glyph/vid-pause';
-import FullScreenIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
+import FullScreenIconOn from '@atlaskit/icon/glyph/vid-full-screen-on';
+import FullScreenIconOff from '@atlaskit/icon/glyph/vid-full-screen-off';
 import SoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
-import HdIcon from '@atlaskit/icon/glyph/vid-hd-circle';
+import HDIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
 import Video, {
   SetVolumeFunction,
@@ -32,8 +33,12 @@ import {
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
 import { hideControlsClassName } from '../../styled';
-import { Shortcut } from '../../shortcut';
-import { toggleFullscreen } from './fullscreen';
+import { Shortcut, keyCodes } from '../../shortcut';
+import {
+  toggleFullscreen,
+  getFullscreenElement,
+  vendorify,
+} from './fullscreen';
 
 export interface CustomVideoProps {
   readonly src: string;
@@ -44,6 +49,10 @@ export interface CustomVideoProps {
   readonly isAutoPlay: boolean;
 }
 
+export interface CustomVideoState {
+  isFullScreenEnabled: boolean;
+}
+
 export type ToggleButtonAction = () => void;
 
 const spinner = (
@@ -51,8 +60,37 @@ const spinner = (
     <Spinner invertColor size="xlarge" />
   </SpinnerWrapper>
 );
-export class CustomVideo extends Component<CustomVideoProps> {
+export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
   videoWrapperRef?: HTMLElement;
+
+  state: CustomVideoState = {
+    isFullScreenEnabled: false,
+  };
+
+  componentDidMount() {
+    document.addEventListener(
+      vendorify('fullscreenchange', false),
+      this.onFullScreenChange,
+    );
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener(
+      vendorify('fullscreenchange', false),
+      this.onFullScreenChange,
+    );
+  }
+
+  onFullScreenChange = () => {
+    const { isFullScreenEnabled: currentFullScreenMode } = this.state;
+    const isFullScreenEnabled = getFullscreenElement() ? true : false;
+
+    if (currentFullScreenMode !== isFullScreenEnabled) {
+      this.setState({
+        isFullScreenEnabled,
+      });
+    }
+  };
 
   onTimeChange = (navigate: NavigateFunction) => (value: number) => {
     navigate(value);
@@ -86,7 +124,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
         isSelected={isHDActive}
         onClick={onHDToggleClick}
         iconBefore={
-          <HdIcon
+          <HDIcon
             primaryColor={primaryColor}
             secondaryColor="#313d51"
             label="hd"
@@ -126,9 +164,25 @@ export class CustomVideo extends Component<CustomVideoProps> {
     }
   };
 
+  renderFullScreenButton = () => {
+    const { isFullScreenEnabled } = this.state;
+    const icon = isFullScreenEnabled ? (
+      <FullScreenIconOff primaryColor="white" label="disable fullscreen" />
+    ) : (
+      <FullScreenIconOn primaryColor="white" label="enable fullscreen" />
+    );
+
+    return (
+      <Button
+        appearance="toolbar"
+        onClick={this.onFullScreenClick}
+        iconBefore={icon}
+      />
+    );
+  };
+
   render() {
     const { src, isAutoPlay } = this.props;
-
     return (
       <CustomVideoWrapper innerRef={this.saveVideoWrapperRef}>
         <Video src={src} autoPlay={isAutoPlay}>
@@ -148,26 +202,17 @@ export class CustomVideo extends Component<CustomVideoProps> {
                 onClick={toggleButtonAction}
               />
             );
-            const fullScreenButton = (
-              <Button
-                appearance="toolbar"
-                onClick={this.onFullScreenClick}
-                iconBefore={
-                  <FullScreenIcon primaryColor="white" label="fullscreen" />
-                }
-              />
-            );
 
             return (
               <VideoWrapper>
                 {video}
                 {status === 'loading' && spinner}
                 <Shortcut
-                  keyCode={32}
+                  keyCode={keyCodes.space}
                   handler={this.shortcutHanler(toggleButtonAction)}
                 />
                 <Shortcut
-                  keyCode={77}
+                  keyCode={keyCodes.m}
                   handler={this.shortcutHanler(actions.toggleMute)}
                 />
                 <ControlsWrapper className={hideControlsClassName}>
@@ -190,7 +235,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
                         {formatDuration(duration)}
                       </CurrentTime>
                       {this.renderHDButton()}
-                      {fullScreenButton}
+                      {this.renderFullScreenButton()}
                     </RightControls>
                   </TimebarWrapper>
                 </ControlsWrapper>
