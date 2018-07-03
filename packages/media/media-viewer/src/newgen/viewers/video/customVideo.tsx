@@ -162,6 +162,10 @@ export class CustomVideo extends Component<CustomVideoProps> {
                   keyCode={32}
                   handler={this.shortcutHanler(toggleButtonAction)}
                 />
+                <Shortcut
+                  keyCode={77}
+                  handler={this.shortcutHanler(actions.toggleMute)}
+                />
                 <ControlsWrapper className={hideControlsClassName}>
                   <TimeWrapper>
                     <TimeRange

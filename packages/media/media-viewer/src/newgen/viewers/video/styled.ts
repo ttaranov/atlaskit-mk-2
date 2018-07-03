@@ -34,6 +34,7 @@ export const VideoWrapper = styled.div`
     flex: 1;
     width: 100vw;
     height: 100vh;
+    max-height: 100vh;
   }
 `;
 
@@ -50,6 +51,7 @@ export const VolumeWrapper = styled.div`
   width: 35px;
   overflow: hidden;
   transition: width 0.3s;
+  align-items: center;
 
   &:hover {
     padding-right: 20px;
@@ -82,7 +84,6 @@ export const CurrentTimeLine = styled.div`
   height: inherit;
   position: absolute;
   top: 0;
-  min-width: 17px;
   max-width: 100%;
 `;
 
@@ -158,6 +159,7 @@ export const MutedIndicator = styled.div`
 
 export const VolumeRange = styled.input`
   transform: translateX(5px);
+  height: 100%;
 `;
 
 export interface CurrentTimeTooltipProps {
