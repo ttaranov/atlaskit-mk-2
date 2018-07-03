@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { gridSize, math } from '@atlaskit/theme';
+import { gridSize } from '@atlaskit/theme';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 import MaginfyingGlassImage from '../assets/MagnifyingGlassImage';
 
@@ -9,13 +9,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: ${math.multiply(gridSize, 4)}px 0;
+  margin: ${gridSize() * 4}px 0;
 `;
 
 const ImageWrapper = styled.div`
   width: 20%;
   height: 20%;
-  margin-top: ${math.multiply(gridSize, 11)}px;
+  margin-top: ${gridSize() * 11}px;
 `;
 
 const TextWrapper = styled.div`
@@ -23,12 +23,12 @@ const TextWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: ${math.multiply(gridSize, 3)}px;
+  margin-top: ${gridSize() * 3}px;
 `;
 
 const Title = styled.h4`
   ${akTypographyMixins.h600};
-  margin-bottom: ${math.multiply(gridSize, 2)}px;
+  margin-bottom: ${gridSize() * 2}px;
   margin-top: 0;
 `;
 
