@@ -1,4 +1,4 @@
-export const requestFullScreen = (element: HTMLElement) => {
+export const requestFullscreen = (element: HTMLElement) => {
   const methods = [
     'requestFullscreen',
     'webkitRequestFullscreen',
@@ -42,6 +42,6 @@ export const toggleFullscreen = (element?: HTMLElement) => {
   if (getFullscreenElement()) {
     exitFullscreen();
   } else if (element) {
-    requestFullScreen(element);
+    requestFullscreen(element);
   }
 };

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
-import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
-import VidPauseIcon from '@atlaskit/icon/glyph/vid-pause';
-import VidFullScreenOnIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
-import HipchatOutgoingSoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
-import VidHdCircleIcon from '@atlaskit/icon/glyph/vid-hd-circle';
+import PlayIcon from '@atlaskit/icon/glyph/vid-play';
+import PauseIcon from '@atlaskit/icon/glyph/vid-pause';
+import FullScreenIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
+import SoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
+import HdIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
 import Video, {
   SetVolumeFunction,
@@ -86,7 +86,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
         isSelected={isHDActive}
         onClick={onHDToggleClick}
         iconBefore={
-          <VidHdCircleIcon
+          <HdIcon
             primaryColor={primaryColor}
             secondaryColor="#313d51"
             label="hd"
@@ -104,7 +104,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
           <Button
             appearance="toolbar"
             onClick={actions.toggleMute}
-            iconBefore={<HipchatOutgoingSoundIcon label="volume" />}
+            iconBefore={<SoundIcon label="volume" />}
           />
         </VolumeToggleWrapper>
         <VolumeRange
@@ -118,9 +118,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
     );
   };
 
-  onFullScreenClick = () => {
-    toggleFullscreen(this.videoWrapperRef);
-  };
+  onFullScreenClick = () => toggleFullscreen(this.videoWrapperRef);
 
   saveVideoWrapperRef = el => {
     if (el) {
@@ -138,9 +136,9 @@ export class CustomVideo extends Component<CustomVideoProps> {
             const { status, currentTime, buffered, duration } = videoState;
             const isPlaying = status === 'playing';
             const toggleButtonIcon = isPlaying ? (
-              <VidPauseIcon label="play" />
+              <PauseIcon label="play" />
             ) : (
-              <VidPlayIcon label="pause" />
+              <PlayIcon label="pause" />
             );
             const toggleButtonAction = isPlaying ? actions.pause : actions.play;
             const button = (
@@ -155,10 +153,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
                 appearance="toolbar"
                 onClick={this.onFullScreenClick}
                 iconBefore={
-                  <VidFullScreenOnIcon
-                    primaryColor="white"
-                    label="fullscreen"
-                  />
+                  <FullScreenIcon primaryColor="white" label="fullscreen" />
                 }
               />
             );
