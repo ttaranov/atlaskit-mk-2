@@ -14,7 +14,11 @@ import {
 import type { TreePosition, Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
 import { flattenTree, getItem } from '../../utils/tree';
-import { getDestinationPath, getSourcePath } from '../../utils/flat-tree';
+import {
+  getDestinationPath,
+  getSourcePath,
+  getFlatItemPath,
+} from '../../utils/flat-tree';
 import type { FlattenedItem, Path, TreeData } from '../../types';
 import TreeItem from '../TreeItem';
 import {
@@ -128,34 +132,24 @@ export default class Tree extends Component<Props, State> {
     destination: DraggableLocation,
   ): number => {
     const { offsetPerLevel } = this.props;
-    if (
-      this.isMovingDown(source, destination) &&
-      this.isTopOfSubtree(source, destination)
-    ) {
-      return offsetPerLevel;
-    }
-    return 0;
-  };
-
-  isMovingDown = (
-    source: DraggableLocation,
-    destination: DraggableLocation,
-  ): boolean => source.index < destination.index;
-
-  isTopOfSubtree = (
-    source: DraggableLocation,
-    destination: DraggableLocation,
-  ) => {
     const { flattenedTree } = this.state;
+
+    if (!destination) {
+      return 0;
+    }
 
     const destinationPath: Path = getDestinationPath(
       flattenedTree,
       source.index,
       destination.index,
     );
-    return (
-      flattenedTree[destination.index].path.length < destinationPath.length
+    const displacedPath: Path = getFlatItemPath(
+      flattenedTree,
+      destination.index,
     );
+    const offsetDifference: number =
+      destinationPath.length - displacedPath.length;
+    return offsetDifference * offsetPerLevel;
   };
 
   patchDndProvided = (

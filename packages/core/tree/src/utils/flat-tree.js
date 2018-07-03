@@ -3,13 +3,15 @@ import type { Path, FlattenedTree } from '../types';
 
 import { isTopOfSubtree, hasSameParent } from './path';
 
-/*
-  Calculates the source path after drag&drop ends
- */
-export const getSourcePath = (
+export const getFlatItemPath = (
   flattenedTree: FlattenedTree,
   sourceIndex: number,
 ): Path => flattenedTree[sourceIndex].path;
+
+/*
+  Calculates the source path after drag&drop ends
+ */
+export const getSourcePath = getFlatItemPath;
 
 /*
     Calculates the destination path after drag&drop ends
