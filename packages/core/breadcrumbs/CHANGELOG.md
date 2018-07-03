@@ -1,5 +1,8 @@
 # @atlaskit/breadcrumbs
 
+## 5.1.3
+- [patch] Update flow type for breadcrumbs item to be Element type [6b40dc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b40dc6)
+
 ## 5.1.2
 - [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
 - [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)

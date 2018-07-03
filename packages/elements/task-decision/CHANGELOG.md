@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 7.1.9
+- [patch] onChange for a ResourcedTaskItem will be called on changes even if no taskDecisionProvider is provided [07cb42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07cb42f)
+- [none] Updated dependencies [07cb42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07cb42f)
+
 ## 7.1.8
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/util-data-test@9.1.15
