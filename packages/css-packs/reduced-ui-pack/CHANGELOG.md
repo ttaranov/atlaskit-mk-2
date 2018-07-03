@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.17.0
+- [minor] Add chevron large icons [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+- [none] Updated dependencies [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+  - @atlaskit/icon@12.7.0
+
 ## 8.16.0
 - [minor] Updated form field styling to match latest ADG3 styles [e57e853](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e57e853)
 
