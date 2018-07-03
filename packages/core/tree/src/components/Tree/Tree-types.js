@@ -25,5 +25,3 @@ export type State = {|
   flattenedTree: FlattenedTree,
   dropAnimationOffset: number,
 |};
-
-export type MovementType = null | 'mouse' | 'key' | 'touch';

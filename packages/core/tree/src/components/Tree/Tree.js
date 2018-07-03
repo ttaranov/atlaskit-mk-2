@@ -39,7 +39,7 @@ export default class Tree extends Component<Props, State> {
     flattenedTree: [],
   };
 
-  moveBy: DragActionType = null;
+  lastDragAction: DragActionType = null;
 
   static getDerivedStateFromProps(props: Props, state: State) {
     return {
@@ -165,17 +165,18 @@ export default class Tree extends Component<Props, State> {
     const { dropAnimationOffset } = this.state;
 
     if (
-      (!snapshot.isDropAnimating && this.moveBy !== 'key') ||
-      !snapshot.isDropAnimating ||
-      !provided.draggableProps.style
+      // Patching is needed
+      (!snapshot.isDropAnimating && this.lastDragAction !== 'key') ||
+      // Patching is possible
+      !provided.draggableProps.style ||
+      !provided.draggableProps.style.left
     ) {
       return provided;
     }
-    const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
     const finalStyle: TreeDraggingStyle = {
       ...provided.draggableProps.style,
       // overwrite left position
-      left: finalLeft,
+      left: provided.draggableProps.style.left + dropAnimationOffset,
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
