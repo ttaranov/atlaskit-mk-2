@@ -30,7 +30,10 @@ const InsertRowButton = ({
         spacing="none"
       />
     </InsertRowButtonInner>
-    <RowLineMarker style={{ width: lineMarkerWidth }} />
+    <RowLineMarker
+      style={{ width: lineMarkerWidth }}
+      className="ProseMirror-table-insert-row-marker"
+    />
     <InsertRowMarker />
   </InsertRowButtonWrap>
 );

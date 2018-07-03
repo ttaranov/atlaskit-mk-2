@@ -11,7 +11,7 @@ import {
   type DraggableLocation,
   type DroppableProvided,
 } from 'react-beautiful-dnd';
-import type { DragPosition, Props, State } from './Tree-types';
+import type { TreePosition, Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
 import { flattenTree, getItem } from '../../utils/tree';
 import { getDestinationPath, getSourcePath } from '../../utils/flat-tree';
@@ -48,7 +48,7 @@ export default class Tree extends Component<Props, State> {
     };
   }
 
-  static getDragPosition = (tree: TreeData, path: Path): DragPosition => {
+  static getTreePosition = (tree: TreeData, path: Path): TreePosition => {
     const parentPath = path.slice(0, -1);
     const parent = getItem(tree, parentPath);
     return {
@@ -95,17 +95,17 @@ export default class Tree extends Component<Props, State> {
   };
 
   /*
-    Translates a drag&drop movement from a purely index based flat list style to tree-friendly `DragPosition` data structure 
+    Translates a drag&drop movement from a purely index based flat list style to tree-friendly `TreePosition` data structure 
     to make it available in the onDragEnd callback.  
    */
   calculateFinalDropPositions = (
     source: DraggableLocation,
     destination: ?DraggableLocation,
-  ): { sourcePosition: DragPosition, destinationPosition: ?DragPosition } => {
+  ): { sourcePosition: TreePosition, destinationPosition: ?TreePosition } => {
     const { tree } = this.props;
     const { flattenedTree } = this.state;
     const sourcePath: Path = getSourcePath(flattenedTree, source.index);
-    const sourcePosition: DragPosition = Tree.getDragPosition(tree, sourcePath);
+    const sourcePosition: TreePosition = Tree.getTreePosition(tree, sourcePath);
 
     if (!destination) {
       return { sourcePosition, destinationPosition: null };
@@ -116,7 +116,7 @@ export default class Tree extends Component<Props, State> {
       source.index,
       destination.index,
     );
-    const destinationPosition: ?DragPosition = Tree.getDragPosition(
+    const destinationPosition: ?TreePosition = Tree.getTreePosition(
       tree,
       destinationPath,
     );
@@ -165,12 +165,10 @@ export default class Tree extends Component<Props, State> {
     const { dropAnimationOffset } = this.state;
 
     if (
-      !provided.draggableProps.style ||
-      !provided.draggableProps.style.left ||
-      //$ExpectError
-      (!snapshot.isDropAnimating && this.moveBy !== 'key')
+      (!snapshot.isDropAnimating && this.moveBy !== 'key') ||
+      !snapshot.isDropAnimating ||
+      !provided.draggableProps.style
     ) {
-      // $FlowFixMe
       return provided;
     }
     const finalLeft = provided.draggableProps.style.left + dropAnimationOffset;
@@ -181,7 +179,6 @@ export default class Tree extends Component<Props, State> {
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
-    // $FlowFixMe
     const finalProvided: TreeDraggableProvided = {
       ...provided,
       draggableProps: {

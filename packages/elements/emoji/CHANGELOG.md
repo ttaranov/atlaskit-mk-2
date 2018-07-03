@@ -1,5 +1,20 @@
 # @atlaskit/emoji
 
+## 36.0.1
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/media-picker@8.1.6
+  - @atlaskit/util-data-test@9.1.15
+
+## 36.0.0
+- [major] remove MediaPicker and use media-core to upload files [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/util-data-test@9.1.14
+
+## 35.1.4
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-picker@8.1.4
+  - @atlaskit/media-core@20.0.0
+
 ## 35.1.3
 - [patch] FS-2056 defer input focus in EmojiPickerListSearch [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)
 - [none] Updated dependencies [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)

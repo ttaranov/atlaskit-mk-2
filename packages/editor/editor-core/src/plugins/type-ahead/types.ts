@@ -16,7 +16,7 @@ export type TypeAheadHandler = {
   selectItem: (
     state: EditorState,
     item: TypeAheadItem,
-    replaceWith: (node: Node) => boolean,
+    insert: (node: Node | Object | string) => boolean,
   ) => boolean;
 };
 

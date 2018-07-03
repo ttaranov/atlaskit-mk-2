@@ -34,6 +34,7 @@ export function mobileEditor() {
           allowMentions={true}
           mentionProvider={Promise.resolve(new MentionProviderImpl())}
           onChange={editorView => this.setState({})}
+          quickInsert={true}
         />
       </div>
     </EditorContext>

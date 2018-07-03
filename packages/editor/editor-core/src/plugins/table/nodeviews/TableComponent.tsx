@@ -15,10 +15,14 @@ const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
 
 import { Props } from './table';
-import { containsHeaderRow } from '../utils';
+import {
+  containsHeaderRow,
+  checkIfHeaderColumnEnabled,
+  checkIfHeaderRowEnabled,
+} from '../utils';
 
 export interface ComponentProps extends Props {
-  onComponentUpdate: () => void;
+  onComponentMount: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 
   containerWidth: number;
@@ -49,6 +53,8 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidMount() {
+    this.props.onComponentMount();
+
     if (this.props.allowColumnResizing && this.wrapper && !isIE11) {
       this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
     }
@@ -95,6 +101,7 @@ class TableComponent extends React.Component<ComponentProps> {
       isTableInDanger,
     } = hoverSelectionPluginKey.getState(view.state);
 
+    const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
     const { scroll } = this.state;
 
@@ -103,9 +110,7 @@ class TableComponent extends React.Component<ComponentProps> {
         style={{
           width: calcTableWidth(node.attrs.layout, containerWidth),
         }}
-        className={`table-container ${
-          tableActive ? 'with-controls' : ''
-        }`}
+        className={`table-container ${tableActive ? 'with-controls' : ''}`}
         data-number-column={node.attrs.isNumberColumnEnabled}
         data-layout={node.attrs.layout}
       >
@@ -116,13 +121,17 @@ class TableComponent extends React.Component<ComponentProps> {
         >
           <TableFloatingControls
             editorView={view}
-            tableRef={this.table || undefined}
+            tableRef={tableRef}
             tableActive={tableActive}
             isTableHovered={isTableHovered}
             isTableInDanger={isTableInDanger}
             isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
+            isHeaderColumnEnabled={checkIfHeaderColumnEnabled(view.state)}
+            isHeaderRowEnabled={checkIfHeaderRowEnabled(view.state)}
             hasHeaderRow={containsHeaderRow(view.state, node)}
-            scroll={scroll}
+            // pass `selection` and `tableHeight` to control re-render
+            selection={view.state.selection}
+            tableHeight={tableRef ? tableRef.offsetHeight : undefined}
           />
         </div>
         <div
@@ -138,20 +147,21 @@ class TableComponent extends React.Component<ComponentProps> {
           <div className="table-column-controls-wrapper">
             <ColumnControls
               editorView={view}
-              tableRef={pluginState.tableRef}
+              tableRef={tableRef}
               isTableHovered={isTableHovered}
               isTableInDanger={isTableInDanger}
+              // pass `selection` and `numberOfColumns` to control re-render
+              selection={view.state.selection}
+              numberOfColumns={node.firstChild!.childCount}
             />
           </div>
         </div>
         {columnShadows}
       </div>
-
     );
   }
 
   componentDidUpdate() {
-    this.props.onComponentUpdate();
     this.updateShadows();
 
     if (this.props.allowColumnResizing && this.table) {

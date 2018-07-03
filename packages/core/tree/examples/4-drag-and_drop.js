@@ -11,7 +11,7 @@ import Tree, {
   type TreeItem,
   type TreeData,
   type ItemId,
-  type DragPosition,
+  type TreePosition,
 } from '../src/';
 import { complexTree } from '../mockdata/complexTree';
 
@@ -96,7 +96,7 @@ export default class DragDropTree extends Component<void, State> {
     });
   };
 
-  onDragEnd = (source: DragPosition, destination: ?DragPosition) => {
+  onDragEnd = (source: TreePosition, destination: ?TreePosition) => {
     const { tree } = this.state;
 
     if (!destination) {

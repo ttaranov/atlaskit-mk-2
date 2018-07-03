@@ -238,7 +238,8 @@ export function convert(
         const level = Number(tag.charAt(1));
         const supportedMarks = [schema.marks.link].filter(mark => !!mark);
         return schema.nodes.heading.createChecked(
-          { level },
+          // @see ED-4708
+          { level: level === 6 ? 5 : level },
           schema.nodes.heading.validContent(content)
             ? content
             : ensureInline(schema, content, supportedMarks as any),

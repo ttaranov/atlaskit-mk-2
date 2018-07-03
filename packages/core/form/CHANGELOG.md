@@ -1,5 +1,15 @@
 # @atlaskit/form
 
+## 2.1.5
+- [patch] fix styled-components syntax error [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
+- [none] Updated dependencies [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
+  - @atlaskit/select@4.3.5
+
+## 2.1.4
+- [patch] Fix Field validator error on empty strings  [470a1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/470a1fb)
+- [patch] Updated dependencies [470a1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/470a1fb)
+  - @atlaskit/select@4.3.2
+
 ## 2.1.3
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

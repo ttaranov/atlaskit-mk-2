@@ -1,13 +1,15 @@
 import * as React from 'react';
 import Select from '@atlaskit/select';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import Separator from '../../../../ui/Separator';
-import { TrashToolbarButton, FloatingToolbar } from './styles';
 import {
   createLanguageList,
   DEFAULT_LANGUAGES,
   getLanguageIdentifier,
 } from '@atlaskit/editor-common';
+
+import { analyticsService } from '../../../../analytics';
+import Separator from '../../../../ui/Separator';
+import { TrashToolbarButton, FloatingToolbar } from './styles';
 
 const LANGUAGE_LIST_ITEMS = createLanguageList(DEFAULT_LANGUAGES).map(lang => ({
   label: lang.name,
@@ -65,8 +67,11 @@ export class LanguagePicker extends React.Component<Props> {
     };
   }
 
-  handleLanguageSelected = ({ value }) => {
-    this.props.setLanguage(value);
+  handleLanguageSelected = ({ value: language }) => {
+    this.props.setLanguage(language);
+    analyticsService.trackEvent('atlassian.editor.codeblock.language.set', {
+      language,
+    });
   };
 
   handleCodeBlockDelete = () => {
