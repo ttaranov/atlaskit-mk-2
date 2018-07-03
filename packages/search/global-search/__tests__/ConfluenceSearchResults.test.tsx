@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, {
+import {
   Props,
+  SearchResult,
 } from '../src/components/confluence/ConfluenceSearchResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 
@@ -49,7 +50,7 @@ describe('ConfluenceSearchResults', () => {
       ...partialProps,
     };
 
-    return shallow(<div>{searchResults(props)}</div>);
+    return shallow(<SearchResult {...props} />);
   }
 
   it('should render recently viewed objects when no query is entered', () => {

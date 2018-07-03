@@ -86,8 +86,6 @@ export interface Props {
 export class SearchResult extends React.Component<Props> {
   shouldComponentUpdate(nextProps) {
     const shouldUpdate = !nextProps.isLoading;
-    if (shouldUpdate)
-      console.log('should update', this.props, nextProps, shouldUpdate);
     return shouldUpdate;
   }
 
