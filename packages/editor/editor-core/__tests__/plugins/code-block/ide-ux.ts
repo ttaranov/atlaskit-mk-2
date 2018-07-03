@@ -9,10 +9,14 @@ import {
 import { AllSelection } from 'prosemirror-state';
 
 describe('IDE UX plugin', () => {
+  let trackEvent = jest.fn();
   const editor = doc =>
     createEditor({
       doc,
-      editorProps: { allowCodeBlocks: { enableKeybindingsForIDE: true } },
+      editorProps: {
+        allowCodeBlocks: { enableKeybindingsForIDE: true },
+        analyticsHandler: trackEvent,
+      },
     });
   describe('Select-All', () => {
     describe('when cursor inside code-block', () => {
@@ -179,6 +183,14 @@ describe('IDE UX plugin', () => {
           );
         });
       });
+
+      it('should track when Mod-] is pressed', () => {
+        const { editorView } = editor(doc(code_block()('top\n{<>}start\nend')));
+        sendKeyToPm(editorView, 'Mod-]');
+        expect(trackEvent).toHaveBeenCalledWith(
+          'atlassian.editor.codeblock.indent',
+        );
+      });
     });
 
     describe('Mod-[ pressed', () => {
@@ -303,6 +315,16 @@ describe('IDE UX plugin', () => {
           );
         });
       });
+
+      it('should track when Mod-[ is pressed', () => {
+        const { editorView } = editor(
+          doc(code_block()('top\n{<>}   start\nend')),
+        );
+        sendKeyToPm(editorView, 'Mod-[');
+        expect(trackEvent).toHaveBeenCalledWith(
+          'atlassian.editor.codeblock.deindent',
+        );
+      });
     });
 
     describe('Tab pressed', () => {
@@ -417,6 +439,14 @@ describe('IDE UX plugin', () => {
             doc(code_block()('to'), p('end')),
           );
         });
+      });
+
+      it('should track when Tab is pressed', () => {
+        const { editorView } = editor(doc(code_block()('top\n{<>}start\nend')));
+        sendKeyToPm(editorView, 'Tab');
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.codeblock.insert.indent',
+        );
       });
     });
 
@@ -541,6 +571,16 @@ describe('IDE UX plugin', () => {
             doc(code_block()('  to'), p('end')),
           );
         });
+      });
+
+      it('should track when Shift-Tab is pressed', () => {
+        const { editorView } = editor(
+          doc(code_block()('top\n{<>}   start\nend')),
+        );
+        sendKeyToPm(editorView, 'Shift-Tab');
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.codeblock.deindent',
+        );
       });
     });
 
