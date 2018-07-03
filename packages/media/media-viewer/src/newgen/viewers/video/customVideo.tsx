@@ -13,6 +13,7 @@ import Video, {
   VideoActions,
 } from 'react-video-renderer';
 import { colors } from '@atlaskit/theme';
+import Spinner from '@atlaskit/spinner';
 import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
@@ -27,6 +28,7 @@ import {
   VolumeToggleWrapper,
   MutedIndicator,
   VolumeRange,
+  SpinnerWrapper,
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
 import { hideControlsClassName } from '../../styled';
@@ -44,6 +46,11 @@ export interface CustomVideoProps {
 
 export type ToggleButtonAction = () => void;
 
+const spinner = (
+  <SpinnerWrapper>
+    <Spinner invertColor size="xlarge" />
+  </SpinnerWrapper>
+);
 export class CustomVideo extends Component<CustomVideoProps> {
   videoWrapperRef?: HTMLElement;
 
@@ -128,7 +135,8 @@ export class CustomVideo extends Component<CustomVideoProps> {
       <CustomVideoWrapper innerRef={this.saveVideoWrapperRef}>
         <Video src={src} autoPlay={isAutoPlay}>
           {(video, videoState, actions) => {
-            const isPlaying = videoState.status === 'playing';
+            const { status, currentTime, buffered, duration } = videoState;
+            const isPlaying = status === 'playing';
             const toggleButtonIcon = isPlaying ? (
               <VidPauseIcon label="play" />
             ) : (
@@ -158,6 +166,7 @@ export class CustomVideo extends Component<CustomVideoProps> {
             return (
               <VideoWrapper>
                 {video}
+                {status === 'loading' && spinner}
                 <Shortcut
                   keyCode={32}
                   handler={this.shortcutHanler(toggleButtonAction)}
@@ -169,9 +178,9 @@ export class CustomVideo extends Component<CustomVideoProps> {
                 <ControlsWrapper className={hideControlsClassName}>
                   <TimeWrapper>
                     <TimeRange
-                      currentTime={videoState.currentTime}
-                      bufferedTime={videoState.buffered}
-                      duration={videoState.duration}
+                      currentTime={currentTime}
+                      bufferedTime={buffered}
+                      duration={duration}
                       onChange={this.onTimeChange(actions.navigate)}
                     />
                   </TimeWrapper>
@@ -182,8 +191,8 @@ export class CustomVideo extends Component<CustomVideoProps> {
                     </LeftControls>
                     <RightControls>
                       <CurrentTime>
-                        {formatDuration(videoState.currentTime)} /{' '}
-                        {formatDuration(videoState.duration)}
+                        {formatDuration(currentTime)} /{' '}
+                        {formatDuration(duration)}
                       </CurrentTime>
                       {this.renderHDButton()}
                       {fullScreenButton}
