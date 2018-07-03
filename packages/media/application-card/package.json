@@ -1,0 +1,43 @@
+{
+  "name": "@atlaskit/application-card",
+  "version": "1.0.0",
+  "description": "Application card implementation",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "sideEffects": true,
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Artur B"
+    },
+    {
+      "name": "Ivan D"
+    }
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/media-ui": "^3.1.2",
+    "babel-runtime": "^6.26.0",
+    "deep-equal": "^1.0.1",
+    "tslib": "^1.8.0",
+    "uuid": "^3.1.0"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^4.1.1",
+    "@atlaskit/media-test-helpers": "^14.0.3",
+    "@atlaskit/toggle": "^4.0.3",
+    "deepcopy": "0.6.3",
+    "scrollparent": "^2.0.1"
+  }
+}

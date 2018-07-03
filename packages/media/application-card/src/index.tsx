@@ -1,22 +1,11 @@
-/*
-
-  This is a temporary class for compatibility and maps the Fabric DocumentFormat to the new ViewModel,
-  until we are confident that this is the right API to support both the DocumentFormat and the
-  MediaServices Smart-Card API, and require integrators to update their integrations. Then, this
-  class will then be removed and integrators should use the new views directly and maintain any
-  necessary mapping to their selected data source themselves.
-
-*/
-
 import * as React from 'react';
-export * from '../../app/model';
+export * from './model';
 import {
-  AppCardModel as OldViewModel,
+  AppCardModel,
   AppCardUser as OldUserViewModel,
   OnActionClickCallback,
-} from '../../app/model';
+} from './model';
 import { BlockCard } from '@atlaskit/media-ui';
-import { AppCardView } from '../../app/components/AppCardView';
 import { v4 } from 'uuid';
 
 export type AppCardProps = BlockCard.ResolvedViewProps;
@@ -28,7 +17,7 @@ function convertUser(oldUser: OldUserViewModel) {
   };
 }
 
-function getContext(oldViewModel: OldViewModel) {
+function getContext(oldViewModel: AppCardModel) {
   if (!oldViewModel.context) {
     return undefined;
   }
@@ -38,14 +27,14 @@ function getContext(oldViewModel: OldViewModel) {
   };
 }
 
-function getHref(oldViewModel: OldViewModel) {
+function getHref(oldViewModel: AppCardModel) {
   if (!oldViewModel.link) {
     return undefined;
   }
   return oldViewModel.link.url;
 }
 
-function getTitle(oldViewModel: OldViewModel) {
+function getTitle(oldViewModel: AppCardModel) {
   if (!oldViewModel.title) {
     return undefined;
   }
@@ -54,7 +43,7 @@ function getTitle(oldViewModel: OldViewModel) {
   };
 }
 
-function getDescription(oldViewModel: OldViewModel) {
+function getDescription(oldViewModel: AppCardModel) {
   if (!oldViewModel.description) {
     return undefined;
   }
@@ -63,14 +52,14 @@ function getDescription(oldViewModel: OldViewModel) {
   };
 }
 
-function getPreview(oldViewModel: OldViewModel) {
+function getPreview(oldViewModel: AppCardModel) {
   if (!oldViewModel.preview) {
     return undefined;
   }
   return oldViewModel.preview.url;
 }
 
-function getUser(oldViewModel: OldViewModel) {
+function getUser(oldViewModel: AppCardModel) {
   if (!oldViewModel.title || !oldViewModel.title.user) {
     return undefined;
   }
@@ -80,7 +69,7 @@ function getUser(oldViewModel: OldViewModel) {
   };
 }
 
-function getUsers(oldViewModel: OldViewModel) {
+function getUsers(oldViewModel: AppCardModel) {
   if (!oldViewModel.details) {
     return undefined;
   }
@@ -93,7 +82,7 @@ function getUsers(oldViewModel: OldViewModel) {
   }, []);
 }
 
-function getDetails(oldViewModel: OldViewModel) {
+function getDetails(oldViewModel: AppCardModel) {
   if (!oldViewModel.details) {
     return undefined;
   }
@@ -107,7 +96,7 @@ function getDetails(oldViewModel: OldViewModel) {
 }
 
 function getActions(
-  oldViewModel: OldViewModel,
+  oldViewModel: AppCardModel,
   onActionClick?: OnActionClickCallback,
 ) {
   if (!oldViewModel.actions) {
@@ -135,7 +124,7 @@ function getActions(
   });
 }
 
-export function convertAppCardToSmartCard(model: OldViewModel): AppCardProps {
+export function convertAppCardToSmartCard(model: AppCardModel): AppCardProps {
   return {
     context: getContext(model),
     link: getHref(model),
@@ -148,36 +137,24 @@ export function convertAppCardToSmartCard(model: OldViewModel): AppCardProps {
   };
 }
 
-export interface AppCardViewV2Props {
-  newDesign?: boolean;
-  model: OldViewModel;
+export interface AppCardViewProps {
+  model: AppCardModel;
   onClick?: () => void;
   onActionClick?: OnActionClickCallback;
 }
 
-class AppCardViewV2 extends React.Component<AppCardViewV2Props> {
+class AppCardView extends React.Component<AppCardViewProps> {
   render() {
-    const { newDesign, model, onClick, onActionClick } = this.props;
-    if (newDesign) {
-      return (
-        <BlockCard.ResolvedView
-          {...convertAppCardToSmartCard(model)}
-          onClick={onClick}
-          actions={getActions(model, onActionClick)}
-        />
-      );
-    } else {
-      return (
-        <AppCardView
-          model={model}
-          onClick={onClick}
-          onActionClick={onActionClick}
-        />
-      );
-    }
+    const { model, onClick, onActionClick } = this.props;
+    return (
+      <BlockCard.ResolvedView
+        {...convertAppCardToSmartCard(model)}
+        onClick={onClick}
+        actions={getActions(model, onActionClick)}
+      />
+    );
   }
 }
 
 // export the new class as the old class
-export { AppCardViewV2 as AppCardView };
-export { OldViewModel as AppCardModel };
+export { AppCardView, AppCardModel };

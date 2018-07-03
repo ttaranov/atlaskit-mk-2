@@ -1,4 +1,5 @@
 export interface AppCardModel {
+  // keep it
   link?: AppCardLink;
   title: AppCardTitle;
   description?: AppCardDescription;

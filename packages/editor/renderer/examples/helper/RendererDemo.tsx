@@ -293,7 +293,7 @@ export default class RendererDemo extends PureComponent<
           <div style={{ color: '#ccc', marginBottom: '8px' }}>
             &lt;Renderer&gt;
           </div>
-          <Renderer {...props} useNewApplicationCard={true} />
+          <Renderer {...props} />
           <div style={{ color: '#ccc', marginTop: '8px' }}>
             &lt;/Renderer&gt;
           </div>

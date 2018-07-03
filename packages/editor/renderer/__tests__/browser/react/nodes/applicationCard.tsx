@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import ApplicationCard from '../../../../src/react/nodes/applicationCard';
-import { AppCardView } from '@atlaskit/media-card';
+import { AppCardView } from '@atlaskit/application-card';
 import { EventHandlers } from '@atlaskit/editor-common';
 import * as sinon from 'sinon';
 
@@ -44,11 +44,7 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
       actions: actions,
     };
     applicationCard = shallow(
-      <ApplicationCard
-        eventHandlers={eventHandlers}
-        useNewApplicationCard={true}
-        {...attrs}
-      />,
+      <ApplicationCard eventHandlers={eventHandlers} {...attrs} />,
     );
   });
 
@@ -72,9 +68,5 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
     applicationCard.find(AppCardView).simulate('click');
     expect(spyOnClick.callCount).to.equal(1);
     expect(spyOnClick.calledWith('link-url')).to.equal(true);
-  });
-
-  it('should pass useNewApplicationCard to AppCardView', () => {
-    expect(applicationCard.find(AppCardView).prop('newDesign')).to.equal(true);
   });
 });

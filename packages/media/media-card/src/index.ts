@@ -20,12 +20,6 @@ export * from './root/card';
 export * from './root/cardView';
 export * from './list';
 export * from './actions';
-// TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
-export {
-  AppCardView,
-  AppCardModel,
-  convertAppCardToSmartCard,
-} from './app_2/AppCardViewV2';
 
 export type CardStatus =
   | 'uploading'

@@ -36,7 +36,6 @@ export interface Props {
   portal?: HTMLElement;
   rendererContext?: RendererContext;
   schema?: Schema;
-  useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
 }
@@ -66,7 +65,6 @@ export default class Renderer extends PureComponent<Props, {}> {
       document,
       extensionHandlers,
       schema,
-      useNewApplicationCard,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -79,7 +77,6 @@ export default class Renderer extends PureComponent<Props, {}> {
         schema,
         ...rendererContext,
       } as RendererContext,
-      useNewApplicationCard,
     });
   }
 

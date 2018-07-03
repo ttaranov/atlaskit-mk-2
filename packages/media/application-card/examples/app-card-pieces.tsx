@@ -9,7 +9,7 @@ import {
   AppCardContext,
   AppCardAction,
   AppCardUser,
-} from '../src/app_2/AppCardViewV2';
+} from '../src';
 import { FixedWidthContainer, Section } from './app-card/styled';
 
 const newDesign = true;
@@ -348,85 +348,73 @@ export default () => (
       <h1>AppCardView: Pieces</h1>
       <Section title="With context">
         <AppCardView model={modelWithContext} />
-        <AppCardView newDesign={newDesign} model={modelWithContext} />
+        <AppCardView model={modelWithContext} />
         <AppCardView model={modelWithIconInContext} />
-        <AppCardView newDesign={newDesign} model={modelWithIconInContext} />
+        <AppCardView model={modelWithIconInContext} />
         <AppCardView model={modelWithLinkInContext} />
-        <AppCardView newDesign={newDesign} model={modelWithLinkInContext} />
+        <AppCardView model={modelWithLinkInContext} />
       </Section>
 
       <Section title="With link">
         <AppCardView model={modelWithLink} />
-        <AppCardView newDesign={newDesign} model={modelWithLink} />
+        <AppCardView model={modelWithLink} />
       </Section>
 
       <Section title="With title">
         <AppCardView model={modelWithShortTitle} />
-        <AppCardView newDesign={newDesign} model={modelWithShortTitle} />
+        <AppCardView model={modelWithShortTitle} />
         <AppCardView model={modelWithLoooongTitle} />
-        <AppCardView newDesign={newDesign} model={modelWithLoooongTitle} />
+        <AppCardView model={modelWithLoooongTitle} />
       </Section>
 
       <Section title="With description">
         <AppCardView model={modelWithDescription} />
-        <AppCardView newDesign={newDesign} model={modelWithDescription} />
+        <AppCardView model={modelWithDescription} />
         <AppCardView model={modelWithTitleInDescription} />
-        <AppCardView
-          newDesign={newDesign}
-          model={modelWithTitleInDescription}
-        />
+        <AppCardView model={modelWithTitleInDescription} />
       </Section>
 
       <Section title="With user">
         <AppCardView model={modelWithUserInTitle} />
-        <AppCardView newDesign={newDesign} model={modelWithUserInTitle} />
+        <AppCardView model={modelWithUserInTitle} />
       </Section>
 
       <Section title="With preview">
         <AppCardView model={modelWithPreview} />
-        <AppCardView newDesign={newDesign} model={modelWithPreview} />
+        <AppCardView model={modelWithPreview} />
         <AppCardView model={mostOfTheThingsWithPreview} />
-        <AppCardView newDesign={newDesign} model={mostOfTheThingsWithPreview} />
+        <AppCardView model={mostOfTheThingsWithPreview} />
       </Section>
 
       <Section title="With details">
         <AppCardView model={modelWithTitleAndTextInDetails} />
-        <AppCardView
-          newDesign={newDesign}
-          model={modelWithTitleAndTextInDetails}
-        />
+        <AppCardView model={modelWithTitleAndTextInDetails} />
         <AppCardView model={modelWithIconInDetails} />
-        <AppCardView newDesign={newDesign} model={modelWithIconInDetails} />
+        <AppCardView model={modelWithIconInDetails} />
         <AppCardView model={modelWithBadgeInDetails} />
-        <AppCardView newDesign={newDesign} model={modelWithBadgeInDetails} />
+        <AppCardView model={modelWithBadgeInDetails} />
         <AppCardView model={modelWithLozengeInDetails} />
-        <AppCardView newDesign={newDesign} model={modelWithLozengeInDetails} />
+        <AppCardView model={modelWithLozengeInDetails} />
         <AppCardView model={modelWithUserInDetails} />
-        <AppCardView newDesign={newDesign} model={modelWithUserInDetails} />
+        <AppCardView model={modelWithUserInDetails} />
         <AppCardView model={modelWithUsersInDetails} />
-        <AppCardView newDesign={newDesign} model={modelWithUsersInDetails} />
+        <AppCardView model={modelWithUsersInDetails} />
         <AppCardView model={modelWithLotsOfDetails} />
-        <AppCardView newDesign={newDesign} model={modelWithLotsOfDetails} />
+        <AppCardView model={modelWithLotsOfDetails} />
       </Section>
 
       <Section title="With actions">
         <AppCardView model={detailsWithPrimaryAction} />
-        <AppCardView newDesign={newDesign} model={detailsWithPrimaryAction} />
+        <AppCardView model={detailsWithPrimaryAction} />
         <AppCardView model={detailsWithSecondaryActions} />
-        <AppCardView
-          newDesign={newDesign}
-          model={detailsWithSecondaryActions}
-        />
+        <AppCardView model={detailsWithSecondaryActions} />
       </Section>
 
       <Section title="With background">
         <AppCardView model={modelWithBackground} />
-        <AppCardView newDesign={newDesign} model={modelWithBackground} />
+        <AppCardView model={modelWithBackground} />
         <AppCardView model={modelWithMostOfTheThingsAndWithBackground} />
-        <AppCardView
-          newDesign={newDesign}
-          model={modelWithMostOfTheThingsAndWithBackground}
-        />
+        <AppCardView model={modelWithMostOfTheThingsAndWithBackground} />
       </Section>
 
       <Section title="With handlers">
@@ -436,7 +424,6 @@ export default () => (
           onActionClick={handleActionClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={modelWithBackground}
           onClick={handleClick}
           onActionClick={handleActionClick}
@@ -447,7 +434,6 @@ export default () => (
           onActionClick={handleActionClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={modelWithMostOfTheThings}
           onClick={handleClick}
           onActionClick={handleActionClick}
@@ -457,10 +443,7 @@ export default () => (
       <FixedWidthContainer>
         <Section title="In a container">
           <AppCardView model={{ title: { text: 'Short title' } }} />
-          <AppCardView
-            newDesign={newDesign}
-            model={{ title: { text: 'Short title' } }}
-          />
+          <AppCardView model={{ title: { text: 'Short title' } }} />
           <AppCardView
             model={{
               title: {
@@ -470,7 +453,6 @@ export default () => (
             }}
           />
           <AppCardView
-            newDesign={newDesign}
             model={{
               title: {
                 text:
@@ -486,7 +468,6 @@ export default () => (
             }}
           />
           <AppCardView
-            newDesign={newDesign}
             model={{
               title: {
                 text: `Super long title, longer than the card max-width: ${loremIpsum}`,
@@ -501,7 +482,6 @@ export default () => (
             }}
           />
           <AppCardView
-            newDesign={newDesign}
             model={{
               title: { text: 'Short description' },
               description: { text: 'hi' },
@@ -520,7 +500,6 @@ export default () => (
             }}
           />
           <AppCardView
-            newDesign={newDesign}
             model={{
               title: {
                 text:
@@ -539,7 +518,6 @@ export default () => (
             }}
           />
           <AppCardView
-            newDesign={newDesign}
             model={{
               title: { text: `Super long description` },
               description: { text: loremIpsum },
@@ -547,12 +525,9 @@ export default () => (
           />
 
           <AppCardView model={modelWithLotsOfDetails} />
-          <AppCardView newDesign={newDesign} model={modelWithLotsOfDetails} />
+          <AppCardView model={modelWithLotsOfDetails} />
           <AppCardView model={{ preview, ...modelWithLotsOfDetails }} />
-          <AppCardView
-            newDesign={newDesign}
-            model={{ preview, ...modelWithLotsOfDetails }}
-          />
+          <AppCardView model={{ preview, ...modelWithLotsOfDetails }} />
         </Section>
       </FixedWidthContainer>
 
@@ -566,7 +541,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThings,
             actions: loadingStatesActions.slice(0, 1),
@@ -583,7 +557,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThings,
             actions: loadingStatesActions.slice(0, 2),
@@ -597,7 +570,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{ ...modelWithMostOfTheThings, actions: loadingStatesActions }}
           onClick={handleClick}
           onActionClick={handleActionWithLoadingStatesClick}
@@ -611,7 +583,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions.slice(0, 1),
@@ -628,7 +599,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions.slice(0, 2),
@@ -645,7 +615,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions,
@@ -654,7 +623,6 @@ export default () => (
           onActionClick={handleActionWithLoadingStatesClick}
         />
         <AppCardView
-          newDesign={newDesign}
           model={{
             ...modelWithMostOfTheThingsAndWithBackground,
             actions: loadingStatesActions,

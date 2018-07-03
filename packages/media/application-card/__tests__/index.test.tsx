@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { AppCardView as OldAppCardView } from '../../../src/app';
+import { AppCardView, AppCardModel } from '../src';
 import { BlockCard } from '@atlaskit/media-ui';
-import { AppCardView, AppCardModel } from '../../../src/app_2/AppCardViewV2';
 
 const exampleURL = 'https://www.example.com/test-image.png';
 
@@ -13,30 +12,13 @@ const modelWithTitle = {
 };
 
 function convertModel(model: AppCardModel) {
-  const element = shallow(<AppCardView newDesign={true} model={model} />);
+  const element = shallow(<AppCardView model={model} />);
   return element.find(BlockCard.ResolvedView).props();
 }
 
-describe('AppCardViewV2', () => {
-  it('should not render the old design by default', () => {
+describe('AppCardView', () => {
+  it('should render the new design', () => {
     const element = shallow(<AppCardView model={modelWithTitle} />);
-    expect(element.find(OldAppCardView)).toHaveLength(1);
-    expect(element.find(BlockCard.ResolvedView)).toHaveLength(0);
-  });
-
-  it('should not render the old design when newDesign=false', () => {
-    const element = shallow(
-      <AppCardView newDesign={false} model={modelWithTitle} />,
-    );
-    expect(element.find(OldAppCardView)).toHaveLength(1);
-    expect(element.find(BlockCard.ResolvedView)).toHaveLength(0);
-  });
-
-  it('should render the new design when newDesign=true', () => {
-    const element = shallow(
-      <AppCardView newDesign={true} model={modelWithTitle} />,
-    );
-    expect(element.find(OldAppCardView)).toHaveLength(0);
     expect(element.find(BlockCard.ResolvedView)).toHaveLength(1);
   });
 
@@ -414,7 +396,6 @@ describe('AppCardViewV2', () => {
     const onActionClick = jest.fn();
     const element = mount(
       <AppCardView
-        newDesign={true}
         model={{
           ...modelWithTitle,
           actions: [action],

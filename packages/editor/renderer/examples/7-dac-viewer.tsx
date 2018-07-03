@@ -81,13 +81,7 @@ export default class Example extends PureComponent<{}, State> {
       return <span dangerouslySetInnerHTML={{ __html: textMessage }} />;
     }
 
-    return (
-      <Renderer
-        document={json}
-        dataProviders={providerFactory}
-        useNewApplicationCard={true}
-      />
-    );
+    return <Renderer document={json} dataProviders={providerFactory} />;
   }
 
   componentDidMount() {

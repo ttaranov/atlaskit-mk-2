@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { UrlPreview, ImageResizeMode, Resource } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus, CardAppearance } from '../..';
-import { AppCardView } from '../../app';
+import { AppCardView } from '@atlaskit/application-card';
 import { LinkCardGenericView } from '../cardGenericView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { URLEmbedCard } from '../embed/urlEmbedCard';
