@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.18
+- [patch] ED-5005: fix editing nested inlineExtensions inside bodiedExtensions [6fd79a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd79a8)
+- [none] Updated dependencies [6fd79a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd79a8)
+
 ## 73.9.17
 - [patch] 5012 fix quick insert char duplication [6b7f320](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b7f320)
 - [none] Updated dependencies [6b7f320](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b7f320)
