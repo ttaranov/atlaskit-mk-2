@@ -88,14 +88,14 @@ export default class TableView extends ReactNodeView {
             {...pluginStates}
             node={this.node}
             contentDOM={forwardRef}
-            onComponentUpdate={this.componentDidUpdate}
+            onComponentMount={this.componentDidMount}
           />
         )}
       />
     );
   }
 
-  componentDidUpdate = () => {
+  componentDidMount = () => {
     // When we get a table with an 'auto' attribute, we want to:
     // 1. render with table-layout: auto
     // 2. capture the column widths

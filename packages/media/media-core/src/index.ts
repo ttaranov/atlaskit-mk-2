@@ -14,6 +14,7 @@ export {
   UploadableFile,
   UploadFileCallbacks,
   UploadFileResult,
+  UploadController,
 } from '@atlaskit/media-store';
 
 export * from './mediaTypes';

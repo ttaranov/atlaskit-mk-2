@@ -41,7 +41,7 @@ export type Props = OwnProps & OldAnalytics;
 const mentionPayload = (
   actionSubject: string,
   action: string,
-  { accessLevel, text }: Props,
+  { accessLevel, text, id }: Props,
 ): GasPayload => ({
   action,
   actionSubject,
@@ -52,6 +52,7 @@ const mentionPayload = (
     componentName: 'mention',
     accessLevel,
     isSpecial: isSpecialMentionText(text),
+    userId: id,
   },
   source: 'unknown',
 });

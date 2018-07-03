@@ -23,6 +23,8 @@ type TreeDraggableProps = {|
   'data-react-beautiful-dnd-draggable': string,
 |};
 
+export type DragActionType = null | 'mouse' | 'key' | 'touch';
+
 export type RenderItemParams = {|
   item: TreeItem,
   depth: number,
@@ -45,6 +47,7 @@ export type Props = {|
   path: Path,
   onExpand: (itemId: ItemId, path: Path) => void,
   onCollapse: (itemId: ItemId, path: Path) => void,
+  onDragAction: (actionType: DragActionType) => void,
   renderItem: RenderItemParams => React.Node,
   provided: TreeDraggableProvided,
   snapshot: DraggableStateSnapshot,

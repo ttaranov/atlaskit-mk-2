@@ -13,11 +13,12 @@ import {
   blanketColor,
 } from '../styled';
 
-export type Props = {
+export type Props = Readonly<{
   item: FileItem;
   context: Context;
   collectionName?: string;
-};
+  previewCount: number;
+}>;
 
 export type State = {
   src: Outcome<string, Error>;
@@ -50,7 +51,6 @@ export class AudioViewer extends React.Component<Props, State> {
 
   render() {
     const { src } = this.state;
-
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
@@ -80,17 +80,21 @@ export class AudioViewer extends React.Component<Props, State> {
     audioElement.setAttribute('controlsList', 'nodownload');
   };
 
-  private renderPlayer = src => (
-    <AudioPlayer>
-      {this.renderCover()}
-      <Audio
-        controls
-        innerRef={this.saveAudioElement}
-        src={src}
-        preload="metadata"
-      />
-    </AudioPlayer>
-  );
+  private renderPlayer = (src: string) => {
+    const { previewCount } = this.props;
+    return (
+      <AudioPlayer>
+        {this.renderCover()}
+        <Audio
+          autoPlay={previewCount === 0}
+          controls
+          innerRef={this.saveAudioElement}
+          src={src}
+          preload="metadata"
+        />
+      </AudioPlayer>
+    );
+  };
 
   private loadCover = (coverUrl: string) => {
     return new Promise(async (resolve, reject) => {

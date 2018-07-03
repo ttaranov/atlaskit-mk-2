@@ -268,7 +268,13 @@ export class MediaApiFetcher implements Fetcher {
         inclusiveStartKey,
       },
       mapAuthToAuthHeaders(auth),
-    ).then(({ data }) => data);
+    ).then(({ data }) => ({
+      ...data,
+      // This prevents showing "ghost" files in recents
+      contents: data.contents.filter(
+        item => item.details.size && item.details.size > 0,
+      ),
+    }));
   }
 
   unlinkCloudAccount(

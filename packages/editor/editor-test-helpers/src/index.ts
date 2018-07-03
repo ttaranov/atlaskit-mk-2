@@ -78,6 +78,7 @@ export {
   layoutSection,
   layoutColumn,
   inlineCard,
+  clean,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';

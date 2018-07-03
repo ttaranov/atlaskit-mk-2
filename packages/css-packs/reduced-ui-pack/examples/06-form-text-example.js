@@ -20,6 +20,16 @@ export default () => (
         />
       </div>
       <div className="ak-field-group">
+        <label htmlFor="org">Organisation</label>
+        <input
+          type="text"
+          className="ak-field-text ak-field__size-medium"
+          id="org"
+          name="org"
+          disabled
+        />
+      </div>
+      <div className="ak-field-group">
         <label htmlFor="password">Password</label>
         <input
           type="password"

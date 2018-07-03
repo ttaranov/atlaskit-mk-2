@@ -108,6 +108,7 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
                 contextIdentifierProvider={contextIdentifierProvider}
                 onChange={this.onChange(onChange)}
                 onSave={SAVE_ACTION}
+                quickInsert={true}
               />
             );
           }}

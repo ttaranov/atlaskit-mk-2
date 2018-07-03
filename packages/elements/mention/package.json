@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "13.1.1",
+  "version": "13.1.5",
   "config": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
     "@atlaskit/analytics": "^3.0.4",
     "@atlaskit/analytics-gas-types": "^2.1.2",
     "@atlaskit/analytics-next": "^2.1.7",
-    "@atlaskit/avatar": "^11.1.0",
+    "@atlaskit/avatar": "^12.0.0",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/lozenge": "^5.0.4",
     "@atlaskit/tooltip": "^10.2.1",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^4.1.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^9.1.13",
+    "@atlaskit/util-data-test": "^9.1.16",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^5.12.1",
     "whatwg-fetch": "^2.0.3"

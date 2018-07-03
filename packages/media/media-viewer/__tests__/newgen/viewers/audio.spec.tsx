@@ -52,6 +52,7 @@ function createFixture(authPromise, collectionName?) {
       context={context}
       item={audioItem}
       collectionName={collectionName}
+      previewCount={0}
     />,
   );
   return { context, el };
@@ -148,6 +149,35 @@ describe('Audio viewer', () => {
 
       expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
       expect(constructAuthTokenUrlSpy.mock.calls[1][2]).toEqual(collectionName);
+    });
+
+    describe('AutoPlay', () => {
+      async function createAutoPlayFixture(previewCount: number) {
+        const authPromise = Promise.resolve({ token, clientId });
+        const context = createContext(authPromise);
+        const el = mount(
+          <AudioViewer
+            context={context}
+            item={audioItem}
+            collectionName="collectionName"
+            previewCount={previewCount}
+          />,
+        );
+        const instance = el.instance();
+        await instance['init']();
+        el.update();
+        return el;
+      }
+
+      it('should auto play when it is the first preview', async () => {
+        const el = await createAutoPlayFixture(0);
+        expect(el.find({ autoPlay: true })).toHaveLength(2);
+      });
+
+      it('should not auto play when it is not the first preview', async () => {
+        const el = await createAutoPlayFixture(1);
+        expect(el.find({ autoPlay: true })).toHaveLength(0);
+      });
     });
   });
 });

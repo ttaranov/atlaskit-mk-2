@@ -59,9 +59,7 @@ const SPACE = { token: ' ', size: 2, regex: /[^ ]/ };
 const TAB = { token: '\t', size: 1, regex: /[^\t]/ };
 export const getLineInfo = (line: string) => {
   const indentToken = line.startsWith('\t') ? TAB : SPACE;
-  const indentLength = line.search(
-    indentToken.token === '\t' ? indentToken.regex : indentToken.regex,
-  );
+  const indentLength = line.search(indentToken.regex);
   const indentText = line.substring(
     0,
     indentLength >= 0 ? indentLength : line.length,

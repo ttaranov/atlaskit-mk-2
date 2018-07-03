@@ -56,6 +56,8 @@ type Props = {
   times?: Array<string>,
   /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing?: 'compact' | 'default',
 };
 
 type State = {
@@ -150,6 +152,7 @@ export default class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     timeFormat: defaultTimeFormat,
     dateFormat: defaultDateFormat,
+    spacing: 'default',
   };
 
   state = {
@@ -241,6 +244,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
       appearance: this.props.appearance,
+      spacing: this.props.spacing,
     };
 
     const { styles: datePickerStyles = {} } = (datePickerSelectProps: any);

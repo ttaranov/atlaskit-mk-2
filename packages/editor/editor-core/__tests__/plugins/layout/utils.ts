@@ -1,12 +1,10 @@
 import { Node, Fragment, Slice } from 'prosemirror-model';
 import {
   defaultSchema,
-  doc,
   p,
   layoutSection,
   layoutColumn,
   hr,
-  createEditor,
 } from '@atlaskit/editor-test-helpers';
 import {
   flatmap,
@@ -15,7 +13,6 @@ import {
   removeLayoutFromLastChild,
   removeLayoutFromAllChildren,
   transformSliceToRemoveOpenLayoutNodes,
-  removeLayoutsIfSelectionIsInLayout,
 } from '../../../src/plugins/layout/utils';
 
 const array = (...args): Node[] => args.map(i => i(defaultSchema));
@@ -291,57 +288,6 @@ describe('layout', () => {
           ),
         );
       });
-    });
-  });
-
-  describe('#removeLayoutsIfSelectionIsInLayout', () => {
-    it('should return the original slice if selection is not inside a layout', () => {
-      const { editorView } = createEditor({
-        doc: doc(p('{<>}')),
-        editorProps: { UNSAFE_allowLayouts: true },
-      });
-      const slice = new Slice(
-        fragment(
-          p('Start'),
-          layoutSection()(layoutColumn(p('Middle')), layoutColumn(p('Column'))),
-          p('End'),
-        ),
-        0,
-        0,
-      );
-      expect(removeLayoutsIfSelectionIsInLayout(slice, editorView.state)).toBe(
-        slice,
-      );
-    });
-
-    it('should unwrap the contents of all layouts if selection is inside a layout', () => {
-      const { editorView } = createEditor({
-        doc: doc(
-          layoutSection()(
-            layoutColumn(p('Hello{<>}')),
-            layoutColumn(p('World')),
-          ),
-        ),
-        editorProps: { UNSAFE_allowLayouts: true },
-      });
-      const slice = new Slice(
-        fragment(
-          p('Start'),
-          layoutSection()(layoutColumn(p('Middle')), layoutColumn(p('Column'))),
-          p('End'),
-        ),
-        0,
-        0,
-      );
-      expect(
-        removeLayoutsIfSelectionIsInLayout(slice, editorView.state),
-      ).toEqual(
-        new Slice(
-          fragment(p('Start'), p('Middle'), p('Column'), p('End')),
-          0,
-          0,
-        ),
-      );
     });
   });
 });

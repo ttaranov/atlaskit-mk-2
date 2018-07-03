@@ -40,10 +40,6 @@ export const TargetOuter = styled.div`
 `;
 
 // fixed position holds the target in place if overflow/scroll is necessary
-
-/* Strange, incompatible union type error from StyledComponents
- API use and argument appear valid */
-// $FlowFixMe
 export const TargetInner = styled(Div)`
   ${animationWithCheck} position: fixed;
 `;
@@ -58,10 +54,6 @@ export const TargetOverlay = styled.div`
 `;
 
 // exported for consumer
-
-/* Strange, incompatible union type error from StyledComponents
- API use and argument appear valid */
-// $FlowFixMe
 export const Pulse = styled(Div)`
   ${animation};
 `;

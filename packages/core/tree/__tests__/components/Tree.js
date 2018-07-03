@@ -11,8 +11,15 @@ import { complexTree } from '../../mockdata/complexTree';
 configure({ adapter: new Adapter() });
 
 describe('@atlaskit/tree - Tree', () => {
-  const mockRender = jest.fn();
-  mockRender.mockReturnValue(<span />);
+  const mockRender = jest.fn(({ provided }) => (
+    <div
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
+      Draggable
+    </div>
+  ));
 
   beforeEach(() => {
     mockRender.mockClear();
@@ -140,97 +147,70 @@ describe('@atlaskit/tree - Tree', () => {
         { parentId: '1-2', index: 1 },
       );
     });
+  });
 
-    it('does not call props.onDragEnd if destination is undefined', () => {
-      const mockOnDragEnd = jest.fn();
-      const dropResult: DropResult = {
+  describe('#onDragUpdate', () => {
+    it('should set offset 0 if not necessary', () => {
+      const dropUpdate: DragUpdate = {
         draggableId: '1-1',
         type: 'any',
         source: {
           droppableId: 'list',
           index: 4,
         },
-        destination: undefined,
-        reason: 'DROP',
+        destination: {
+          droppableId: 'list',
+          index: 4,
+        },
       };
       const instance = mount(
-        <Tree
-          tree={treeWithTwoBranches}
-          renderItem={mockRender}
-          onDragEnd={mockOnDragEnd}
-        />,
+        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
       ).instance();
-      instance.onDragEnd(dropResult);
-      expect(mockOnDragEnd).toHaveBeenCalledTimes(0);
+      instance.onDragUpdate(dropUpdate);
+      expect(instance.state.dropAnimationOffset).toBe(0);
     });
 
-    describe('#onDragUpdate', () => {
-      it('should set offset 0 if not necessary', () => {
-        const dropUpdate: DragUpdate = {
-          draggableId: '1-1',
-          type: 'any',
-          source: {
-            droppableId: 'list',
-            index: 4,
-          },
-          destination: {
-            droppableId: 'list',
-            index: 4,
-          },
-        };
-        const instance = mount(
-          <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
-        ).instance();
-        instance.onDragUpdate(dropUpdate);
-        expect(instance.state.dropAnimationOffset).toBe(0);
-      });
-
-      it('should set offset 35 if the last displaced item is on the different level as the dragged item will be', () => {
-        const dropUpdate: DragUpdate = {
-          draggableId: '1-1',
-          type: 'any',
-          source: {
-            droppableId: 'list',
-            index: 1,
-          },
-          destination: {
-            droppableId: 'list',
-            index: 2,
-          },
-        };
-        const instance = mount(
-          <Tree tree={complexTree} renderItem={mockRender} />,
-        ).instance();
-        instance.onDragUpdate(dropUpdate);
-        expect(instance.state.dropAnimationOffset).toBe(35);
-      });
+    it('should set offset 35 if the last displaced item is on the different level as the dragged item will be', () => {
+      const dropUpdate: DragUpdate = {
+        draggableId: '1-1',
+        type: 'any',
+        source: {
+          droppableId: 'list',
+          index: 1,
+        },
+        destination: {
+          droppableId: 'list',
+          index: 2,
+        },
+      };
+      const instance = mount(
+        <Tree tree={complexTree} renderItem={mockRender} />,
+      ).instance();
+      instance.onDragUpdate(dropUpdate);
+      expect(instance.state.dropAnimationOffset).toBe(35);
     });
   });
 
-  describe('#getDragPosition', () => {
+  describe('#getTreePosition', () => {
     it('returns the top element', () => {
-      expect(Tree.getDragPosition(treeWithTwoBranches, [0])).toEqual({
+      expect(Tree.getTreePosition(treeWithTwoBranches, [0])).toEqual({
         parentId: '1',
         index: 0,
       });
     });
 
     it('returns the top element of a sublist', () => {
-      expect(Tree.getDragPosition(treeWithTwoBranches, [0, 0])).toEqual({
+      expect(Tree.getTreePosition(treeWithTwoBranches, [0, 0])).toEqual({
         parentId: '1-1',
         index: 0,
       });
     });
 
     it('returns the last element of a sublist', () => {
-      expect(Tree.getDragPosition(treeWithTwoBranches, [0, 1])).toEqual({
+      expect(Tree.getTreePosition(treeWithTwoBranches, [0, 1])).toEqual({
         parentId: '1-1',
         index: 1,
       });
-    });
-
-    it('returns undefined for invalid', () => {
-      expect(Tree.getDragPosition(treeWithTwoBranches, [100, 1])).toEqual(null);
     });
   });
 });
