@@ -2,6 +2,7 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
 import { SecurityOptions } from '@atlaskit/util-service-support';
+import { parseQueryFromUrl } from '../_test-helpers';
 
 import { MentionDescription } from '../../../types';
 import MentionResource, {
@@ -59,6 +60,11 @@ function checkOrder(expected, actual) {
   }
 }
 
+const FULL_CONTEXT = {
+  containerId: 'someContainerId',
+  objectId: 'someObjectId',
+};
+
 describe('MentionResource', () => {
   beforeEach(() => {
     fetchMock.mock(
@@ -106,7 +112,7 @@ describe('MentionResource', () => {
           },
         })
         .mock(
-          /\/mentions\/record\?selectedUserId=\d+$/,
+          /\/mentions\/record\?selectedUserId=\d+.*$/,
           {
             body: '',
           },
@@ -120,23 +126,38 @@ describe('MentionResource', () => {
 
   describe('#subscribe', () => {
     it('subscribe should receive updates', done => {
-      const resource = new MentionResource(apiConfig);
+      const resource = new MentionResource({
+        ...apiConfig,
+        containerId: 'defaultContainerId', // should be ignored
+      });
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
 
         // note: should use fetchMock.lastOptions() but it does not work
         const requestData = fetchMock.lastUrl();
+
+        const queryParams = parseQueryFromUrl(requestData.url);
+        expect(queryParams.containerId).toBe('someContainerId');
+        expect(queryParams.objectId).toBe('someObjectId');
         expect(requestData.credentials).toEqual('include');
         done();
       });
-      resource.filter('craig');
+      resource.filter('craig', FULL_CONTEXT);
     });
 
     it('multiple subscriptions should receive updates', done => {
-      const resource = new MentionResource(apiConfig);
+      const resource = new MentionResource({
+        ...apiConfig,
+        containerId: 'defaultContainerId',
+      });
       let count = 0;
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
+
+        const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+        expect(queryParams.containerId).toBe('defaultContainerId');
+        expect(queryParams.objectId).toBe('someObjectId');
+
         count++;
         if (count === 2) {
           done();
@@ -149,7 +170,9 @@ describe('MentionResource', () => {
           done();
         }
       });
-      resource.filter('craig');
+      resource.filter('craig', {
+        objectId: 'someObjectId',
+      });
     });
 
     it('subscribe should receive updates with credentials omitted', done => {
@@ -224,11 +247,18 @@ describe('MentionResource', () => {
 
         if (results.length === 2) {
           checkOrder(expected, results);
+
+          const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+          expect(queryParams.objectId).toBe('someObjectId');
           done();
         }
       });
-      resource.filter('cr');
-      resource.filter('craig');
+      resource.filter('cr', {
+        objectId: 'someObjectId',
+      });
+      resource.filter('craig', {
+        objectId: 'someObjectId',
+      });
     });
 
     // Temporarily disabled due to failing on Mobile Safari 9.0.0.
@@ -433,12 +463,17 @@ describe('MentionResource', () => {
   describe('#recordMentionSelection', () => {
     it('should call record endpoint', done => {
       const resource = new MentionResource(apiConfig);
-
       resource
-        .recordMentionSelection({
-          id: '666',
-        })
+        .recordMentionSelection(
+          {
+            id: '666',
+          },
+          FULL_CONTEXT,
+        )
         .then(() => {
+          const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+          expect(queryParams.containerId).toBe('someContainerId');
+          expect(queryParams.objectId).toBe('someObjectId');
           expect(fetchMock.called('record')).toBe(true);
           done();
         });

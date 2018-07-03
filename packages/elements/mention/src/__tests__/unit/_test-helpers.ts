@@ -46,3 +46,22 @@ export function isMentionItemSelected(
   const selectedItem = getSelectedMentionItem(component);
   return selectedItem.length && selectedItem.prop('mention').id === itemId;
 }
+
+export function parseQueryParams(query) {
+  return query
+    ? query
+        .split('&')
+        .map(item => {
+          const itemData = item.split('=');
+          const obj = {};
+          obj[itemData[0]] = itemData[1];
+          return obj;
+        })
+        .reduce((accumulator = {}, current) => ({ ...accumulator, ...current }))
+    : {};
+}
+
+export function parseQueryFromUrl(url) {
+  const idx = url.indexOf('?');
+  return idx != -1 ? parseQueryParams(url.substring(url.indexOf('?') + 1)) : {};
+}

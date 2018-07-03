@@ -6,6 +6,7 @@ import {
   MentionDescription,
   MentionPicker as AkMentionPicker,
   MentionProvider,
+  ContextMentionResource,
 } from '@atlaskit/mention';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -64,8 +65,14 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.resolveResourceProvider(this.props.mentionProvider);
-    this.resolveContextIdentifierProvider(this.props.contextIdentifierProvider);
+    this.promiseWrapper(this.props.contextIdentifierProvider).then(
+      (contextIdProvider: ContextIdentifierProvider | undefined) => {
+        this.resolveResourceProvider(
+          this.props.mentionProvider,
+          contextIdProvider,
+        );
+      },
+    );
   }
 
   componentWillUnmount() {
@@ -84,15 +91,22 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.mentionProvider !== this.props.mentionProvider) {
-      this.resolveResourceProvider(nextProps.mentionProvider);
-    }
     if (
       nextProps.contextIdentifierProvider !==
       this.props.contextIdentifierProvider
     ) {
-      this.resolveContextIdentifierProvider(
-        nextProps.contextIdentifierProvider,
+      this.promiseWrapper(nextProps.contextIdentifierProvider).then(
+        (contextIdProvider: ContextIdentifierProvider | undefined) => {
+          this.resolveResourceProvider(
+            this.props.mentionProvider,
+            contextIdProvider,
+          );
+        },
+      );
+    } else if (nextProps.mentionProvider !== this.props.mentionProvider) {
+      this.resolveResourceProvider(
+        nextProps.mentionProvider,
+        this.state.contextIdentifierProvider,
       );
     }
   }
@@ -132,30 +146,30 @@ export class MentionPicker extends PureComponent<Props, State> {
     this.mentions = mentions;
   };
 
-  private resolveResourceProvider(resourceProvider): void {
-    this.unsubscribeMentionProvider();
-    if (resourceProvider) {
-      resourceProvider.then((mentionProvider: MentionProvider) => {
-        this.setState({ mentionProvider });
+  private promiseWrapper = (promise: Promise<any>): Promise<any> =>
+    promise || Promise.resolve(undefined);
+
+  private resolveResourceProvider(
+    resourceProviderPromise,
+    contextIdentifierProvider,
+  ) {
+    if (resourceProviderPromise) {
+      resourceProviderPromise.then((mentionProvider: MentionProvider) => {
+        const wrappedMentioProvider = new ContextMentionResource(
+          mentionProvider,
+          contextIdentifierProvider,
+        );
+        this.setState({
+          mentionProvider: wrappedMentioProvider,
+          contextIdentifierProvider,
+        });
         mentionProvider.subscribe(
           'MentionPickerPlugin',
           this.handleMentionResults,
         );
       });
     } else {
-      this.setState({ mentionProvider: undefined });
-    }
-  }
-
-  private resolveContextIdentifierProvider(contextIdentifierPromise): void {
-    if (contextIdentifierPromise) {
-      contextIdentifierPromise.then(
-        (contextIdentifierProvider: ContextIdentifierProvider) => {
-          this.setState({ contextIdentifierProvider });
-        },
-      );
-    } else {
-      this.setState({ contextIdentifierProvider: undefined });
+      this.setState({ mentionProvider: undefined, contextIdentifierProvider });
     }
   }
 
