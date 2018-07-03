@@ -10,7 +10,9 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
+  getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
+import NoRecentActivity from '../NoRecentActivity';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -89,15 +91,62 @@ export class SearchResult extends React.Component<Props> {
     return shouldUpdate;
   }
 
+  renderNoQuery() {
+    const {
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
+      query,
+    } = this.props;
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return (
+        <NoRecentActivity
+          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
+        />
+      );
+    }
+    return [
+      renderObjectsGroup(
+        'Recent pages and blogs',
+        take(recentlyViewedPages, 8),
+        query,
+      ),
+      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
+      renderPeopleGroup(
+        'Recently worked with',
+        take(recentlyInteractedPeople, 3),
+        query,
+      ),
+      renderAdvancedSearchGroup(query),
+    ];
+  }
+
+  renderSearchResults() {
+    const { query, objectResults, spaceResults, peopleResults } = this.props;
+    return [
+      renderObjectsGroup(
+        'Pages, blogs and attachments',
+        take(objectResults, 8),
+        query,
+      ),
+      renderSpacesGroup('Spaces', take(spaceResults, 3), query),
+      renderPeopleGroup('People', take(peopleResults, 3), query),
+      renderAdvancedSearchGroup(query),
+    ];
+  }
+
   render() {
     const {
       query,
       isError,
       isLoading,
       retrySearch,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
       objectResults,
       spaceResults,
       peopleResults,
@@ -112,43 +161,17 @@ export class SearchResult extends React.Component<Props> {
     }
 
     if (query.length === 0) {
-      // TODO: insert error state here if the recent results are empty.
-      return [
-        renderObjectsGroup(
-          'Recent pages and blogs',
-          take(recentlyViewedPages, 8),
-          query,
-        ),
-        renderSpacesGroup(
-          'Recent spaces',
-          take(recentlyViewedSpaces, 3),
-          query,
-        ),
-        renderPeopleGroup(
-          'Recently worked with',
-          take(recentlyInteractedPeople, 3),
-          query,
-        ),
-        renderAdvancedSearchGroup(query),
-      ];
+      return this.renderNoQuery();
     }
 
     if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
       return renderNoResults(query);
     }
 
-    return [
-      renderObjectsGroup(
-        'Pages, blogs and attachments',
-        take(objectResults, 8),
-        query,
-      ),
-      renderSpacesGroup('Spaces', take(spaceResults, 3), query),
-      renderPeopleGroup('People', take(peopleResults, 3), query),
-      renderAdvancedSearchGroup(query),
-    ];
+    return this.renderSearchResults();
   }
 }
-export default function searchResults(props: Props) {
+
+export default function(props: Props) {
   return <SearchResult {...props} />;
 }

@@ -9,13 +9,13 @@ import { Shortcut } from './shortcut';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   selectedItem?: Identifier;
-  readonly featureFlags?: MediaViewerFeatureFlags;
+  featureFlags?: MediaViewerFeatureFlags;
   context: Context;
   itemSource: ItemSource;
-};
+}>;
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
@@ -42,7 +42,7 @@ export class MediaViewer extends React.Component<Props, {}> {
       return (
         <Collection
           pageSize={itemSource.pageSize}
-          selectedItem={selectedItem}
+          defaultSelectedItem={selectedItem}
           collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
@@ -52,7 +52,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     } else if (itemSource.kind === 'ARRAY') {
       return (
         <List
-          selectedItem={selectedItem || itemSource.items[0]}
+          defaultSelectedItem={selectedItem || itemSource.items[0]}
           items={itemSource.items}
           context={context}
           onClose={onClose}

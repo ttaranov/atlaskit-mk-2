@@ -10,13 +10,14 @@ import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
 
-export type Props = {
-  readonly identifier: Identifier;
-  readonly context: Context;
-  readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly showControls?: () => void;
-  readonly onClose?: () => void;
-};
+export type Props = Readonly<{
+  identifier: Identifier;
+  context: Context;
+  featureFlags?: MediaViewerFeatureFlags;
+  showControls?: () => void;
+  onClose?: () => void;
+  previewCount: number;
+}>;
 
 export type State = {
   item: Outcome<FileItem, Error>;
@@ -50,6 +51,7 @@ export class ItemViewer extends React.Component<Props, State> {
       featureFlags,
       showControls,
       onClose,
+      previewCount,
     } = this.props;
     const { item } = this.state;
     switch (item.status) {
@@ -62,6 +64,7 @@ export class ItemViewer extends React.Component<Props, State> {
           item: itemUnwrapped,
           collectionName: identifier.collectionName,
           onClose,
+          previewCount,
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':

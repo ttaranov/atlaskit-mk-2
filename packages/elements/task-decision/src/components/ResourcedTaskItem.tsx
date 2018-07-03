@@ -152,6 +152,11 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           });
         }
       });
+    } else {
+      // No provider - state managed by consumer
+      if (onChange) {
+        onChange(taskId, isDone);
+      }
     }
   };
 
