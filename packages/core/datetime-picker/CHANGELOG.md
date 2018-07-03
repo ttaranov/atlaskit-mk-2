@@ -1,5 +1,9 @@
 # @atlaskit/datetime-picker
 
+## 5.3.3
+- [patch] Updated dependencies [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+  - @atlaskit/select@4.3.6
+
 ## 5.3.2
 - [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
 - [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
