@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.21
+- [patch] Export QuickInsert types [912c8ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/912c8ae)
+- [none] Updated dependencies [912c8ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/912c8ae)
+
 ## 73.9.20
 - [patch] ED-4912: move styles to plugins [623b406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623b406)
 - [none] Updated dependencies [623b406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623b406)
