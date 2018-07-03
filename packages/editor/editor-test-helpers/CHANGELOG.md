@@ -1,5 +1,23 @@
 # @atlaskit/editor-test-helpers
 
+## 4.2.0
+- [minor] Export 'clean' function from schema-builder to allow converting RefNodes to normal PM nodes [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+
+
+
+- [none] Updated dependencies [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+
 ## 4.1.9
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/editor-common@11.3.8

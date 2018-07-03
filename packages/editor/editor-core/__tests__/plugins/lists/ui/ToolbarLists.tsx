@@ -4,6 +4,7 @@ import AkButton from '@atlaskit/button';
 import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../src/analytics';
 import listPlugin from '../../../../src/plugins/lists';
+import tasksAndDecisionsPlugin from '../../../../src/plugins/tasks-and-decisions';
 import {
   ListsState,
   stateKey,
@@ -16,7 +17,7 @@ describe('ToolbarLists', () => {
   const editor = (doc: any) =>
     createEditor<ListsState>({
       doc,
-      editorPlugins: [listPlugin],
+      editorPlugins: [listPlugin, tasksAndDecisionsPlugin],
       pluginKey: stateKey,
     });
 
@@ -55,7 +56,7 @@ describe('ToolbarLists', () => {
     beforeEach(() => {
       const { editorView, pluginState } = editor(doc(p('text{<>}')));
       toolbarOption = mount(
-        <ToolbarLists pluginState={pluginState} editorView={editorView} />,
+        <ToolbarLists pluginState={pluginState} editorView={editorView} enableTaskDecisionToolbar={true} />,
       );
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
@@ -82,6 +83,26 @@ describe('ToolbarLists', () => {
         .simulate('click');
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.button',
+      );
+    });
+
+    it('should trigger analyticsService.trackEvent when task list button is clicked', () => {
+      toolbarOption
+        .find(AkButton)
+        .filterWhere(node => node.html().indexOf('Create action') > 0)
+        .simulate('click');
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.fabric.action.trigger.button',
+      );
+    });
+
+    it('should trigger analyticsService.trackEvent when decision list button is clicked', () => {
+      toolbarOption
+        .find(AkButton)
+        .filterWhere(node => node.html().indexOf('Create decision') > 0)
+        .simulate('click');
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.fabric.decision.trigger.button',
       );
     });
   });

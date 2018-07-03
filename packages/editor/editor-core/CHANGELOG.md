@@ -1,5 +1,62 @@
 # @atlaskit/editor-core
 
+## 73.9.17
+- [patch] 5012 fix quick insert char duplication [6b7f320](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b7f320)
+- [none] Updated dependencies [6b7f320](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b7f320)
+
+## 73.9.16
+- [patch] ED-4956, add toolbar option for decision item. [c353a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c353a5a)
+- [patch] Updated dependencies [c353a5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c353a5a)
+
+## 73.9.15
+- [patch] Support markdown style horizontal rules. ED-4820 [3d33ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d33ed4)
+- [none] Updated dependencies [3d33ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d33ed4)
+
+## 73.9.14
+- [patch] Track indent, deindent and language selection to gauge what is being used. ED-4865 [d511301](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d511301)
+- [none] Updated dependencies [d511301](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d511301)
+
+## 73.9.13
+- [patch] Codeblocks were capturing preceeding content when started in the middle/end of a paragraph. ED-4677 [78a9e6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/78a9e6e)
+- [none] Updated dependencies [78a9e6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/78a9e6e)
+
+## 73.9.12
+- [patch] Set overflow to auto so we're not showing scrollbars by default in code blocks. ED-4992 [19aec32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19aec32)
+- [none] Updated dependencies [19aec32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19aec32)
+
+## 73.9.11
+- [patch] ED-4462, in comment editor clicking below content should create a new paragraph at bottom. [e196df9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e196df9)
+- [patch] Updated dependencies [e196df9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e196df9)
+
+## 73.9.10
+- [patch] Updated dependencies [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
+  - @atlaskit/mention@13.1.4
+  - @atlaskit/util-data-test@9.1.16
+  - @atlaskit/renderer@18.2.10
+  - @atlaskit/editor-common@11.3.10
+
+## 73.9.9
+- [patch] Set initial collab selection to the start of the document. ED-4759 [db5345a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db5345a)
+- [none] Updated dependencies [db5345a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db5345a)
+
+## 73.9.8
+
+- [patch] [refactor] Updated paste plugin to remove old/buggy handling of specific node types. No longer have complex logic around code-block detection on paste. If PM parses it as a code-block, we respect that. [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+- [patch] [refactor] Use ParseRule->context to prevent pasting layoutColumn/layoutSections inside each other. [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+- [patch] [refactor] Use ParseRule->context to prevent nesting bodiedExtensions on paste. [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+- [none] Updated dependencies [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+  - @atlaskit/editor-test-helpers@4.2.0
+  - @atlaskit/editor-common@11.3.9
+
 ## 73.9.7
 - [patch] Fixing extension breakout on edit [91c015e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91c015e)
 - [none] Updated dependencies [91c015e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91c015e)
