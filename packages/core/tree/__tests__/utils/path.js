@@ -8,11 +8,11 @@ describe('@atlaskit/tree - utils/flat-tree', () => {
       expect(isSamePath(path, path)).toBe(true);
     });
 
-    it("returns true if it's the same", () => {
+    it('returns true if it the same', () => {
       expect(isSamePath([1, 1], [1, 1])).toBe(true);
     });
 
-    it("returns false if it's not", () => {
+    it('returns false if  not sname', () => {
       expect(isSamePath([1, 1, 1], [1, 1])).toBe(false);
     });
 

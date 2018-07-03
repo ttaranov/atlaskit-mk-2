@@ -56,7 +56,7 @@ describe('@atlaskit/tree - utils/tree', () => {
       });
     });
 
-    it("doesn't show collapsed subtrees", () => {
+    it('does not show collapsed subtrees', () => {
       const collapsedTree = {
         rootId: treeWithTwoBranches.rootId,
         items: {
