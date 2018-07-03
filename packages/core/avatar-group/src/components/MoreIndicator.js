@@ -2,10 +2,8 @@
 /* eslint-disable react/no-unused-prop-types, react/prop-types, react/sort-comp */
 
 import React, { Component } from 'react';
+import { withPseudoState, getProps, type SizeType } from '@atlaskit/avatar';
 import { Outer, Inner } from '../styled/MoreIndicator';
-import { withPseudoState } from '../hoc';
-import { getProps } from '../helpers';
-import type { SizeType } from '../types';
 
 type Props = {
   /** Used to override the default border color of the presence indicator.

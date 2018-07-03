@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^3.0.4",
-    "@atlaskit/avatar": "^11.1.0",
+    "@atlaskit/avatar-group": "^0.0.0",
     "@atlaskit/button": "^8.2.3",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/spinner": "^8.0.0",
@@ -43,6 +43,7 @@
     "@atlaskit/docs": "^4.1.0",
     "@atlaskit/editor-common": "^11.3.8",
     "@atlaskit/renderer": "^18.2.9",
+    "@atlaskit/avatar": "^11.1.0",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^9.1.15",
     "fetch-mock": "^5.12.1"

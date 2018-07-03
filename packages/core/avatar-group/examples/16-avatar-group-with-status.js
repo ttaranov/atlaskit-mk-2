@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
 import Toggle from '@atlaskit/toggle';
-import { AvatarGroup } from '../src';
+import AvatarGroup from '../src';
 import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 
 function getStatus() {

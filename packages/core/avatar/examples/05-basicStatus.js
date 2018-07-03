@@ -1,18 +1,18 @@
 // @flow
 import React from 'react';
 import { Status } from '../src';
-import { Block, Dot } from '../examples-util/helpers';
+import { Block, ShrinkWrap } from '../examples-util/helpers';
 
 export default () => (
   <Block>
-    <Dot>
+    <ShrinkWrap>
       <Status status="approved" />
-    </Dot>
-    <Dot>
+    </ShrinkWrap>
+    <ShrinkWrap>
       <Status status="declined" />
-    </Dot>
-    <Dot>
+    </ShrinkWrap>
+    <ShrinkWrap>
       <Status status="locked" />
-    </Dot>
+    </ShrinkWrap>
   </Block>
 );
