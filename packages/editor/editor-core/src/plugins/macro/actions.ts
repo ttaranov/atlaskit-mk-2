@@ -31,16 +31,15 @@ export const insertMacroFromMacroBrowser = (
       },
     } = view.state;
     let { tr } = view.state;
-    if (node) {
+    if (node && tr.selection instanceof NodeSelection) {
+      // preventing nested bodiedExtensions
       if (
-        // trying to replace selected node
-        tr.selection instanceof NodeSelection &&
-        // selected node is not nested in bodiedExtension
-        !hasParentNodeOfType(bodiedExtension)(tr.selection)
+        node.type === bodiedExtension &&
+        hasParentNodeOfType(bodiedExtension)(tr.selection)
       ) {
-        tr = replaceSelectedNode(node)(tr);
-      } else {
         tr = safeInsert(node)(tr);
+      } else {
+        tr = replaceSelectedNode(node)(tr);
       }
       view.dispatch(tr.scrollIntoView());
       return true;

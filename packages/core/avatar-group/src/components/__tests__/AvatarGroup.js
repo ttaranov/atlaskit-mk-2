@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import Avatar from '../Avatar';
+import Avatar from '@atlaskit/avatar';
 import AvatarGroup from '../AvatarGroup';
 import MoreIndicator from '../MoreIndicator';
 

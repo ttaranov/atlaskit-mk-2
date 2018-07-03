@@ -3,16 +3,15 @@
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
 import DropdownMenu, { DropdownItemGroup } from '@atlaskit/dropdown-menu';
-import Avatar from './Avatar';
+import Avatar, {
+  type AvatarClickType,
+  type AvatarPropTypes,
+  type ComponentType,
+  type FunctionType,
+  type SizeType,
+} from '@atlaskit/avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
-import MoreIndicator from '../components/MoreIndicator';
-import type {
-  AvatarClickType,
-  AvatarPropTypes,
-  ComponentType,
-  FunctionType,
-  SizeType,
-} from '../types';
+import MoreIndicator from './MoreIndicator';
 import itemTheme from '../theme/itemTheme';
 import AvatarGroupItem from './AvatarGroupItem';
 

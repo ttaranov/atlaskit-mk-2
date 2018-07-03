@@ -25,14 +25,14 @@ export function inputRulePlugin(
   const typeAheadInputRule = createInputRule(regex, (state, match, start, end):
     | Transaction
     | undefined => {
-    const mark = schema.mark('typeAheadQuery', { trigger: match[0] });
+    const mark = schema.mark('typeAheadQuery', { trigger: match[2] });
     const { tr } = state;
 
     analyticsService.trackEvent('atlassian.editor.typeahead.trigger', {
-      trigger: match[0],
+      trigger: match[2],
     });
 
-    return tr.replaceSelectionWith(schema.text(match[0], [mark]), false);
+    return tr.replaceSelectionWith(schema.text(match[2], [mark]), false);
   });
 
   return inputRules({ rules: [typeAheadInputRule] });

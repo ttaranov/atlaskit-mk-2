@@ -1,5 +1,13 @@
 # @atlaskit/navigation
 
+## 32.3.1
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/quick-search@2.3.4
+  - @atlaskit/single-select@5.2.4
+  - @atlaskit/item@7.0.7
+  - @atlaskit/dropdown-menu@5.2.2
+
 ## 32.3.0
 - [minor] Drawer content is scrollable. Drawer header stays fixed in position. [d4b23f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b23f1)
 - [none] Updated dependencies [d4b23f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b23f1)
