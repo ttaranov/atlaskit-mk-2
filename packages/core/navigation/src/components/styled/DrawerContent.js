@@ -9,6 +9,7 @@ const DrawerContent = styled.div`
   flex-grow: 1;
   padding: 0 ${layout.padding.side}px;
   width: 100%;
+  overflow-y: auto;
 `;
 
 DrawerContent.displayName = 'DrawerContent';

@@ -56,6 +56,8 @@ type Props = {
   onFocus: () => void,
   /** Props to apply to the select. */
   selectProps: Object,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing: 'compact' | 'default',
   /** The times to show in the dropdown. */
   times: Array<string>,
   /** Allow users to edit the input and add a time */
@@ -77,10 +79,13 @@ type State = {
   value: string,
   isFocused: boolean,
 };
-
+/** Returns a formatted DT string if valid or empty string if not valid */
 function formatTime(time: string, timeFormat: string): string {
   const date = parseTime(time);
-  return isValid(date) ? format(date, timeFormat) : time;
+  if (date instanceof Date) {
+    return isValid(date) ? format(date, timeFormat) : time;
+  }
+  return '';
 }
 
 const menuStyles = {
@@ -103,6 +108,7 @@ export default class TimePicker extends Component<Props, State> {
     onFocus: () => {},
     times: defaultTimes,
     selectProps: {},
+    spacing: 'default',
     innerProps: {},
     id: '',
     defaultIsOpen: false,
@@ -205,6 +211,7 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
       timeFormat,
       placeholder,
+      spacing,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -279,6 +286,7 @@ export default class TimePicker extends Component<Props, State> {
             }
           }
           {...otherSelectProps}
+          spacing={spacing}
           validationState={validationState}
         />
       </div>

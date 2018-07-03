@@ -1,4 +1,4 @@
-import { codeBlock, createSchema } from '../../../src';
+import { codeBlock, createSchema, paragraph } from '../../../src';
 import { DEFAULT_LANGUAGES } from '../../../src/utils';
 import { fromHTML, toHTML } from '../../../test-helpers';
 import { name } from '../../../package.json';
@@ -101,6 +101,30 @@ describe(`${name}/schema codeBlock node`, () => {
           expect(codeBlock.attrs.language).toEqual(null);
         });
       });
+    });
+
+    it('should parse code block from tag with font-family monospace css', () => {
+      const doc = fromHTML(
+        `<meta charset="utf-8"><div style="font-family: Menlo, Monaco, 'Courier New', monospace;">Code :D</div>`,
+        schema,
+      );
+      expect(doc.firstChild!.type.spec).toEqual(codeBlock);
+    });
+
+    it('should parse code block from tag with `whitespace: pre` css', () => {
+      const doc = fromHTML(
+        '<meta charset="utf-8"><div style="white-space: pre;">Hello</div>',
+        schema,
+      );
+      expect(doc.firstChild!.type.spec).toEqual(codeBlock);
+    });
+
+    it('should not create code block for `whitespace pre-wrap` css', () => {
+      const doc = fromHTML(
+        '<meta charset="utf-8"><div style="white-space: pre-wrap;">Hello</div>',
+        schema,
+      );
+      expect(doc.firstChild!.type.spec).toEqual(paragraph);
     });
 
     describe('when language is set', () => {

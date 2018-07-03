@@ -1,15 +1,42 @@
 // @flow
 import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
+import { colors } from '@atlaskit/theme';
+
+const Warning = p => (
+  <div
+    style={{
+      backgroundColor: colors.Y75,
+      boxShadow: `-4px 0 0 ${colors.Y200}`,
+      marginBottom: '1.4em',
+      padding: '1em 1.2em',
+    }}
+    {...p}
+  />
+);
 
 export default md`
   ### Usage
+
+  ${(
+    <Warning>
+      <p>
+        <strong>
+          The previous export of `AvatarGroup` has been moved to its own package
+          `@atlaskit/avatar-group`.
+        </strong>
+      </p>
+      <p>
+        Please update your dependencies to use the @atlaskit/avatar-group
+        package.
+      </p>
+    </Warning>
+  )}
 
   This package exports an number of different Avatar related components:
 
   - Avatar (Default Export)
   - [AvatarItem](/packages/core/avatar/docs/avatar-item)
-  - [AvatarGroup](/packages/core/avatar/docs/avatar-group)
   - [Presence](/packages/core/avatar/docs/presence)
   - [Status](/packages/core/avatar/docs/status)
   - [Skeleton](/packages/core/avatar/docs/skeleton)

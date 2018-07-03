@@ -101,6 +101,12 @@ export function createPlugin(dispatch: Dispatch, typeAhead): Plugin {
           const { from, to } = selection;
           const { typeAheadQuery } = state.schema.marks;
 
+          // Disable type ahead query when the first character is a space.
+          if (pluginState.active && pluginState.query.indexOf(' ') === 0) {
+            dismissCommand()(state, dispatch);
+            return;
+          }
+
           // Disable type ahead query when removing trigger.
           if (pluginState.active && !pluginState.query) {
             const { nodeBefore } = selection.$from;
@@ -200,8 +206,8 @@ export function defaultActionHandler({
     '',
   );
   const query = (nodeBefore.textContent || '')
-    .replace(trigger, '')
-    .replace(/^([^\x00-\xFF]|[\s\n])+/g, '');
+    .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
+    .replace(trigger, '');
 
   const typeAheadHandler = typeAhead.find(t => t.trigger === trigger)!;
   let typeAheadItems: Array<TypeAheadItem> | Promise<Array<TypeAheadItem>> = [];

@@ -161,6 +161,7 @@ export default class Example extends React.Component<Props, State> {
                 }}
                 placeholder="Write something..."
                 shouldFocus={false}
+                quickInsert={true}
                 contentComponents={
                   <TitleInput
                     placeholder="Give this page a title..."

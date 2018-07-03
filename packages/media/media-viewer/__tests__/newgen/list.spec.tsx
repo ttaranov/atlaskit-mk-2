@@ -6,6 +6,7 @@ import { Stubs } from '../_stubs';
 import { List, Props } from '../../src/newgen/list';
 import { ErrorMessage } from '../../src/newgen/styled';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
+import { ItemViewer } from '../../src/newgen/item-viewer';
 
 function createContext(subject) {
   const token = 'some-token';
@@ -35,7 +36,7 @@ function createFixture(props: Partial<Props>) {
   const el = mount(
     <List
       items={items}
-      selectedItem={selectedItem}
+      defaultSelectedItem={selectedItem}
       context={context}
       {...props}
     />,
@@ -59,7 +60,7 @@ describe('<List />', () => {
     };
     const el = createFixture({
       items: [identifier, identifier2],
-      selectedItem: identifier,
+      defaultSelectedItem: identifier,
     });
     expect(el.state().selectedItem).toMatchObject({ id: 'some-id' });
     el.find(ArrowRightCircleIcon).simulate('click');
@@ -74,12 +75,12 @@ describe('<List />', () => {
         type: 'file' as MediaItemType,
       },
     ];
-    const selectedItem = {
+    const defaultSelectedItem = {
       id: 'some-id-2',
       occurrenceKey: 'some-custom-occurrence-key',
       type: 'file' as MediaItemType,
     };
-    const el = createFixture({ items: list, selectedItem });
+    const el = createFixture({ items: list, defaultSelectedItem });
     expect(el.find(ErrorMessage)).toHaveLength(1);
   });
 
@@ -87,12 +88,37 @@ describe('<List />', () => {
     const showControls = jest.fn();
     const el = createFixture({
       items: [identifier, identifier, identifier],
-      selectedItem: identifier,
+      defaultSelectedItem: identifier,
       showControls,
     });
 
     el.find(ArrowRightCircleIcon).simulate('click');
     el.find(ArrowRightCircleIcon).simulate('click');
     expect(showControls).toHaveBeenCalledTimes(2);
+  });
+
+  describe('AutoPlay', () => {
+    it('should pass ItemViewer an initial previewCount value of zero', () => {
+      const showControls = jest.fn();
+      const el = createFixture({
+        items: [identifier, identifier, identifier],
+        defaultSelectedItem: identifier,
+        showControls,
+      });
+      const itemViewer = el.find(ItemViewer);
+      expect(itemViewer.prop('previewCount')).toEqual(0);
+    });
+
+    it("should increase ItemViewer's previewCount on navigation", () => {
+      const showControls = jest.fn();
+      const el = createFixture({
+        items: [identifier, identifier, identifier],
+        defaultSelectedItem: identifier,
+        showControls,
+      });
+      el.find(ArrowRightCircleIcon).simulate('click');
+      const itemViewer = el.find(ItemViewer);
+      expect(itemViewer.prop('previewCount')).toEqual(1);
+    });
   });
 });

@@ -1,7 +1,7 @@
 // @flow
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
-import CodeBlock from '../src/CodeBlock';
+import ThemedCodeBlock, { CodeBlock } from '../src/CodeBlock';
 
 const input = `
   const a = 'foo';
@@ -11,12 +11,18 @@ const input = `
 
 describe('CodeBlock', () => {
   it('should have an empty string as the default language', () => {
-    expect(shallow(<CodeBlock text={input} />).prop('language')).toBe('');
+    expect(
+      mount(<ThemedCodeBlock text={input} />)
+        .find(CodeBlock)
+        .prop('language'),
+    ).toBe('');
   });
 
   it('should have "showLineNumbers" enabled by default', () => {
-    expect(shallow(<CodeBlock text={input} />).prop('showLineNumbers')).toBe(
-      true,
-    );
+    expect(
+      mount(<ThemedCodeBlock text={input} />)
+        .find(CodeBlock)
+        .prop('showLineNumbers'),
+    ).toBe(true);
   });
 });
