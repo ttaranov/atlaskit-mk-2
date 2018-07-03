@@ -16,7 +16,7 @@ const textPreviouslySelected = themed({
   dark: colors.N600,
 });
 const textSelected = themed({ light: colors.N0, dark: colors.N700 });
-const textSibling = themed({ light: colors.N80, dark: colors.N80 });
+const textSibling = themed({ light: colors.N200, dark: colors.N200 });
 
 const hoverPreviouslySelectedBackground = themed({
   light: colors.B50,
@@ -65,6 +65,7 @@ function getHoverBackgroundColor(props) {
 }
 
 const getHoverColor = props => {
+  if (props.sibling) return textSibling(props);
   if (props.disabled) return textDisabled(props);
   if (props.selected || props.previouslySelected || props.isActive)
     return textHoverSelected(props);
