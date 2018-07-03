@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 73.9.19
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/media-card@29.1.7
+  - @atlaskit/task-decision@7.1.10
+  - @atlaskit/mention@13.1.5
+  - @atlaskit/modal-dialog@5.2.7
+  - @atlaskit/item@7.0.7
+  - @atlaskit/avatar-group@1.0.0
+
 ## 73.9.18
 - [patch] ED-5005: fix editing nested inlineExtensions inside bodiedExtensions [6fd79a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd79a8)
 - [none] Updated dependencies [6fd79a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd79a8)

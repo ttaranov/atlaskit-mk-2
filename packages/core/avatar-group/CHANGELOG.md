@@ -1,5 +1,12 @@
 # @atlaskit/avatar
 
+## 1.0.0
+- [major] Split avatar-group into its own package [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/item@7.0.7
+  - @atlaskit/dropdown-menu@5.2.2
+
 ## 10.0.7
 - [patch] Fix text color for items with href in AvatarGroup [2cbb9ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cbb9ff)
 - [none] Updated dependencies [2cbb9ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cbb9ff)

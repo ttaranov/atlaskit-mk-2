@@ -1,5 +1,11 @@
 # @atlaskit/smart-card
 
+## 5.3.2
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/dropdown-menu@5.2.2
+  - @atlaskit/avatar-group@1.0.0
+
 ## 5.3.1
 - [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
   - @atlaskit/spinner@8.0.0
