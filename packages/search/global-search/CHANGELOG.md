@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.5.10
+- [patch] add empty state for no recent activities in global search [2ecbd39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ecbd39)
+
 ## 4.5.9
 - [patch] Replace faker with lightweight internal functions [1c3352a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c3352a)
 - [none] Updated dependencies [1c3352a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c3352a)
