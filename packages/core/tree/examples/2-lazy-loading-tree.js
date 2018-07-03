@@ -79,12 +79,18 @@ export default class LazyTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => (
+  renderItem = ({
+    item,
+    depth,
+    onExpand,
+    onCollapse,
+    provided,
+  }: RenderItemParams) => (
     <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={LazyTree.getIcon(item, onExpand, onCollapse)}
-        onKeyDown={() => console.log('asd')}
+        dnd={provided}
       />
     </div>
   );
