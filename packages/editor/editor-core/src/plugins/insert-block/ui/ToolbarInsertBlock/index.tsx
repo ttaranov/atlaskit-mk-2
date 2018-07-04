@@ -48,6 +48,7 @@ import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
 import { insertLayoutColumns } from '../../../layout/actions';
 import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
+import { Command } from '../../../../commands';
 
 export interface Props {
   buttons: number;
@@ -82,7 +83,7 @@ export interface Props {
   macroProvider?: MacroProvider | null;
   insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
-  onInsertBlockType?: (name: string, view: EditorView) => void;
+  onInsertBlockType?: (name: string) => Command;
   onInsertMacroFromMacroBrowser?: (
     macroProvider: MacroProvider,
   ) => (editorView: EditorView) => void;
@@ -570,7 +571,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertBlockType!(item.value.name, editorView);
+        const { state, dispatch } = editorView;
+        onInsertBlockType!(item.value.name)(state, dispatch, editorView);
         break;
       case 'decision':
         this.insertDecision();

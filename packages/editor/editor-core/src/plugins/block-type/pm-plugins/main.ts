@@ -1,6 +1,5 @@
 import { Node } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import {
   NORMAL_TEXT,
   HEADING_1,
@@ -15,7 +14,6 @@ import {
   OTHER,
   BlockType,
 } from '../types';
-import * as commands from '../../../commands';
 import { areBlockTypesDisabled } from '../../../utils';
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
@@ -65,14 +63,6 @@ export class BlockTypeState {
 
   unsubscribe(cb: StateChangeHandler) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  setBlockType(name: string, view: EditorView): boolean {
-    return commands.setBlockType(view, name);
-  }
-
-  insertBlockType(name: string, view: EditorView): boolean {
-    return commands.insertBlockType(name)(view.state, view.dispatch);
   }
 
   update(newEditorState, dirty = false) {
