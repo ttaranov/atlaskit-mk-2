@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { ErrorMessage } from './styled';
-import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
+import { Outcome, Identifier } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
@@ -13,7 +13,6 @@ import * as deepEqual from 'deep-equal';
 export type Props = Readonly<{
   identifier: Identifier;
   context: Context;
-  featureFlags?: MediaViewerFeatureFlags;
   showControls?: () => void;
   onClose?: () => void;
   previewCount: number;
@@ -48,7 +47,6 @@ export class ItemViewer extends React.Component<Props, State> {
     const {
       context,
       identifier,
-      featureFlags,
       showControls,
       onClose,
       previewCount,
@@ -72,13 +70,7 @@ export class ItemViewer extends React.Component<Props, State> {
           case 'audio':
             return <AudioViewer {...viewerProps} />;
           case 'video':
-            return (
-              <VideoViewer
-                showControls={showControls}
-                featureFlags={featureFlags}
-                {...viewerProps}
-              />
-            );
+            return <VideoViewer showControls={showControls} {...viewerProps} />;
           case 'doc':
             return <DocViewer {...viewerProps} />;
           default:

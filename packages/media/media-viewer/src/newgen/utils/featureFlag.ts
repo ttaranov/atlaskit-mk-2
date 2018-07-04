@@ -1,3 +1,5 @@
+// @ts-ignore: unused variable
+import { createContext, Context } from 'react';
 import { MediaViewerFeatureFlags } from '../domain';
 
 export const featureFlagsMap = {
@@ -19,3 +21,8 @@ export const getFeatureFlag = (
 
   return devOverride;
 };
+
+export const FeatureFlagsContext = createContext<MediaViewerFeatureFlags>({
+  nextGen: false,
+  customVideoPlayer: false,
+});

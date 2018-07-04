@@ -5,7 +5,7 @@ import {
   MediaCollectionProvider,
   isError,
 } from '@atlaskit/media-core';
-import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
+import { Outcome, Identifier } from './domain';
 import { ErrorMessage } from './styled';
 import { List } from './list';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,6 @@ export type Props = Readonly<{
   onClose?: () => void;
   defaultSelectedItem?: Identifier;
   showControls?: () => void;
-  featureFlags?: MediaViewerFeatureFlags;
   collectionName: string;
   context: Context;
   pageSize: number;

@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
 import { constructAuthTokenUrl } from '../../util';
-import { Outcome, MediaViewerFeatureFlags } from '../../domain';
+import { Outcome } from '../../domain';
 import { Spinner } from '../../loading';
 import { ErrorMessage, Video } from '../../styled';
 import { CustomVideo } from './customVideo';
-import { getFeatureFlag } from '../../utils/getFeatureFlag';
+import { FeatureFlagsContext } from '../../utils/featureFlag';
 import { isIE } from '../../utils/isIE';
 
 export type Props = Readonly<{
   item: FileItem;
   context: Context;
   collectionName?: string;
-  featureFlags?: MediaViewerFeatureFlags;
   showControls?: () => void;
   previewCount: number;
 }>;
@@ -39,28 +38,35 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src, isHDActive } = this.state;
-    const { item, featureFlags, showControls, previewCount } = this.props;
-    const useCustomVideoPlayer =
-      !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
+    const { item, showControls, previewCount } = this.props;
+
     const isAutoPlay = previewCount === 0;
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        if (useCustomVideoPlayer) {
-          return (
-            <CustomVideo
-              isAutoPlay={isAutoPlay}
-              onHDToggleClick={this.onHDChange}
-              showControls={showControls}
-              src={src.data}
-              isHDActive={isHDActive}
-              isHDAvailable={isHDAvailable(item)}
-            />
-          );
-        } else {
-          return <Video autoPlay={isAutoPlay} controls src={src.data} />;
-        }
+        return (
+          <FeatureFlagsContext.Consumer>
+            {features => {
+              const useCustomVideoPlayer =
+                !isIE() && features.customVideoPlayer;
+              if (useCustomVideoPlayer) {
+                return (
+                  <CustomVideo
+                    isAutoPlay={isAutoPlay}
+                    onHDToggleClick={this.onHDChange}
+                    showControls={showControls}
+                    src={src.data}
+                    isHDActive={isHDActive}
+                    isHDAvailable={isHDAvailable(item)}
+                  />
+                );
+              } else {
+                return <Video autoPlay={isAutoPlay} controls src={src.data} />;
+              }
+            }}
+          </FeatureFlagsContext.Consumer>
+        );
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
     }

@@ -6,7 +6,7 @@ import { MediaFileListViewer } from './media-file-list-viewer';
 import { MediaViewerConstructor, MediaViewerConfig } from '../mediaviewer';
 import { MediaViewer as MediaViewerNextGen } from '../newgen/media-viewer';
 import { ItemSource, MediaViewerFeatureFlags } from '../newgen/domain';
-import { getFeatureFlag } from '../newgen/utils/getFeatureFlag';
+import { getFeatureFlag } from '../newgen/utils/featureFlag';
 
 export interface MediaViewerItem {
   id: string;

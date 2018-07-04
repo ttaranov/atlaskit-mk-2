@@ -1,4 +1,4 @@
-import { getFeatureFlag } from '../../../src/newgen/utils/getFeatureFlag';
+import { getFeatureFlag } from '../../../src/newgen/utils/featureFlag';
 
 describe('getFeatureFlag', () => {
   it('should return the value if its present in the passed features flags', () => {

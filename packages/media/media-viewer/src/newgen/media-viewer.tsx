@@ -8,6 +8,7 @@ import { Blanket } from './styled';
 import { Shortcut } from './shortcut';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
+import { FeatureFlagsContext, getFeatureFlag } from './utils/featureFlag';
 
 export type Props = Readonly<{
   onClose?: () => void;
@@ -19,13 +20,20 @@ export type Props = Readonly<{
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
-    const { onClose } = this.props;
+    const { onClose, featureFlags } = this.props;
+    const featureFlagsWithOverrides: MediaViewerFeatureFlags = {
+      nextGen: getFeatureFlag('nextGen', featureFlags),
+      customVideoPlayer: getFeatureFlag('customVideoPlayer', featureFlags),
+    };
+
     return (
       <ThemeProvider theme={theme}>
-        <Blanket>
-          {onClose && <Shortcut keyCode={27} handler={onClose} />}
-          <Content onClose={onClose}>{this.renderContent()}</Content>
-        </Blanket>
+        <FeatureFlagsContext.Provider value={featureFlagsWithOverrides}>
+          <Blanket>
+            {onClose && <Shortcut keyCode={27} handler={onClose} />}
+            <Content onClose={onClose}>{this.renderContent()}</Content>
+          </Blanket>
+        </FeatureFlagsContext.Provider>
       </ThemeProvider>
     );
   }
