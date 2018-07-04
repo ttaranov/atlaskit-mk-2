@@ -25,6 +25,8 @@ export class MockContextItem {
   collection: Array<MediaCollectionFile>;
   collectionName: string;
 }
+
+// TODO: Convert to an interface
 export class MockContext {
   userContext: MockContextItem = {
     auth: {

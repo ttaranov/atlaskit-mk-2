@@ -35,14 +35,17 @@ export class GenericEventEmitter<M extends EventPayloadMap<P>, P = any>
     event: E,
     listener: EventPayloadListener<M, E>,
   ): void {
+    // @ts-ignore
     this.emitter.once(event, listener);
   }
 
   on<E extends keyof M>(event: E, listener: EventPayloadListener<M, E>): void {
+    // @ts-ignore
     this.emitter.on(event, listener);
   }
 
   onAny<E extends keyof M>(listener: (event: E, payload: M[E]) => void): void {
+    // @ts-ignore
     this.emitter.onAny(listener);
   }
 
@@ -50,10 +53,12 @@ export class GenericEventEmitter<M extends EventPayloadMap<P>, P = any>
     event: E,
     listener: EventPayloadListener<M, E>,
   ): void {
+    // @ts-ignore
     this.emitter.addListener(event, listener);
   }
 
   off<E extends keyof M>(event: E, listener: EventPayloadListener<M, E>): void {
+    // @ts-ignore
     this.emitter.off(event, listener);
   }
 
@@ -61,6 +66,7 @@ export class GenericEventEmitter<M extends EventPayloadMap<P>, P = any>
     event: E,
     handler: EventPayloadListener<M, E>,
   ): void {
+    // @ts-ignore
     this.emitter.removeListener(event, handler);
   }
 
@@ -69,11 +75,13 @@ export class GenericEventEmitter<M extends EventPayloadMap<P>, P = any>
     if (event === undefined) {
       this.emitter.removeAllListeners();
     } else {
+      // @ts-ignore
       this.emitter.removeAllListeners(event);
     }
   }
 
   emit<E extends keyof M>(event: E, payload: M[E]): boolean {
+    // @ts-ignore
     return this.emitter.emit(event, payload);
   }
 }

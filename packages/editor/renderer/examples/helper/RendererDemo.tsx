@@ -258,7 +258,7 @@ export default class RendererDemo extends PureComponent<
       const html = renderDocument<string>(doc, this.emailSerializer).result;
 
       if (this.emailRef && html) {
-        this.emailRef.contentDocument.body.innerHTML = html;
+        this.emailRef.contentDocument!.body.innerHTML = html;
       }
     } catch (ex) {
       // pass

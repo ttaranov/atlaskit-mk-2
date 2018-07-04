@@ -412,7 +412,8 @@ export class MediaComponentInternal extends Component<Props, State> {
       return;
     }
 
-    this.setState({ [contextName as any]: context });
+    // TODO: [ts29] WTF?
+    this.setState({ [contextName as any]: context, id: this.state.id });
   };
 
   private get resizeMode(): ImageResizeMode {

@@ -46,7 +46,7 @@ export function clearFormatting(): Command {
             const nodeRange = fromPos.blockRange(toPos);
             if (nodeRange) {
               const targetLiftDepth = liftTarget(nodeRange);
-              if (targetLiftDepth !== null) {
+              if (targetLiftDepth || targetLiftDepth === 0) {
                 tr.lift(nodeRange, targetLiftDepth!);
               }
             }

@@ -47,7 +47,7 @@ describe('HTMLEmbedCard', () => {
     });
 
     element.find(Iframe).simulate('load');
-    expect(iframe.contentWindow.postMessage).toBeCalledWith(
+    expect(iframe.contentWindow!.postMessage).toBeCalledWith(
       {
         type: 'embed',
         id: 'abc-123',
