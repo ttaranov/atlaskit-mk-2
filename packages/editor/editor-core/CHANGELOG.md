@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.24
+- [patch] Ensure mention state changes are notified on changes via applyTr [13d423c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13d423c)
+- [none] Updated dependencies [13d423c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13d423c)
+
 ## 73.9.23
 - [patch] Fixing the cursor disappear issue for Mobile [8c0ee26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ee26)
 - [none] Updated dependencies [8c0ee26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ee26)
