@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -63,7 +63,7 @@
     "@atlaskit/theme": "^4.0.4",
     "@atlaskit/tooltip": "^10.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "@atlaskit/webpack-config": "^2.0.0",
+    "@atlaskit/webpack-config": "^2.0.1",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
     "babel-runtime": "^6.26.0",
