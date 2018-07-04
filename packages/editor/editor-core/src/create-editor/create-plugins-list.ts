@@ -40,6 +40,7 @@ import {
   gapCursorPlugin,
   inlineActionPlugin,
   cardPlugin,
+  floatingToolbarPlugin,
 } from '../plugins';
 
 /**
@@ -202,6 +203,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
+  plugins.push(floatingToolbarPlugin);
 
   if (props.appearance === 'message') {
     plugins.push(isMultilineContentPlugin);

@@ -9,6 +9,7 @@ import EditorActions from '../actions';
 import { ToolbarSize } from '../ui/Toolbar';
 import { QuickInsertItem } from '../plugins/quick-insert/types';
 import { TypeAheadHandler } from '../plugins/type-ahead/types';
+import { FloatingToolbarHandler } from '../plugins/floating-toolbar/types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';
@@ -54,6 +55,7 @@ export type PluginsOptions = {
   [pluginName: string]: any;
   quickInsert?: Array<QuickInsertItem>;
   typeAhead?: TypeAheadHandler;
+  floatingToolbar?: FloatingToolbarHandler;
 };
 
 export interface EditorPlugin {

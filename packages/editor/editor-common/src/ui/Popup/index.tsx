@@ -203,7 +203,7 @@ export default class Popup extends PureComponent<Props, State> {
     }
 
     // Without mountTo property renders popup as is,
-    // which means it will be croped by "overflow: hidden" container.
+    // which means it will be cropped by "overflow: hidden" container.
     return this.renderPopup();
   }
 }
