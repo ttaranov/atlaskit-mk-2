@@ -59,12 +59,39 @@ describe('<Heading />', () => {
   });
 
   it('should have heading id', () => {
+    const headingContent = [
+      {
+        type: 'text',
+        text: 'This is a Heading',
+      },
+      {
+        type: 'emoji',
+        attrs: {
+          shortName: ':grin:',
+          id: '1f601',
+          text: ' 😁 ',
+        },
+      },
+      {
+        type: 'text',
+        text: 'with a emoji',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: 'www.atlassian.com',
+            },
+          },
+        ],
+      },
+    ];
+
     const heading = shallow(
-      <Heading level={1} content={contentGenerator('This is a Heading')}>
-        This is a Heading 😎 with a emoji
+      <Heading level={1} content={headingContent}>
+        This is a Heading 😁 with a emoji
       </Heading>,
     );
     expect(heading.name()).to.equal('h1');
-    expect(heading.prop('id')).to.equal('This-is-a-Heading-😎-with-a-emoji');
+    expect(heading.prop('id')).to.equal('This-is-a-Heading-😁-with-a-emoji');
   });
 });
