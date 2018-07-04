@@ -25,6 +25,7 @@ module.exports = function createWebpackConfig(
     globs = createDefaultGlob(),
     includePatterns = false,
     env = 'development',
+    websiteEnv = 'local',
     cwd = process.cwd(),
     noMinimize = false,
     report = false,
@@ -36,6 +37,7 @@ module.exports = function createWebpackConfig(
     cwd?: string,
     includePatterns: boolean,
     env: string,
+    websiteEnv: string,
     noMinimize?: boolean,
     report?: boolean,
   }*/,
@@ -183,7 +185,7 @@ module.exports = function createWebpackConfig(
         'node_modules',
       ],
     },
-    plugins: plugins({ cwd, env, noMinimize, report }),
+    plugins: plugins({ cwd, env, websiteEnv, noMinimize, report }),
   };
 };
 
@@ -191,9 +193,10 @@ function plugins(
   {
     cwd,
     env,
+    websiteEnv,
     noMinimize,
     report,
-  } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
+  } /*: { cwd: string, env: string, websiteEnv: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
     new webpack.NamedChunksPlugin(
@@ -311,6 +314,7 @@ function plugins(
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${env}"`,
+      WEBSITE_ENV: `"${websiteEnv}"`,
     }),
   ];
 
