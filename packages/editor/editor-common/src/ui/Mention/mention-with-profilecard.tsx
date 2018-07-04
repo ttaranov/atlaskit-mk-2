@@ -4,10 +4,9 @@ import { PureComponent, ReactInstance, SyntheticEvent } from 'react';
 import { MentionProvider, ResourcedMention } from '@atlaskit/mention';
 
 import { MentionUserType as UserType } from '../../schema';
-import { ProfilecardProvider } from './types';
-import ProfileCard, {
-  AkProfilecardTriggerActions,
-} from '@atlaskit/profilecard';
+import { ProfilecardProvider, AkProfilecardTriggerActions } from './types';
+import ProfileCard from '@atlaskit/profilecard';
+
 import { MentionEventHandler } from '../EventHandlers';
 import Popup from '../Popup';
 import withOuterListeners from '../with-outer-listeners';

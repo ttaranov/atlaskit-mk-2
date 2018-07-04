@@ -1,4 +1,9 @@
-import { AkProfileClient } from '@atlaskit/profilecard';
+import { SyntheticEvent } from 'react';
+
+export interface AkProfilecardTriggerActions {
+  callback?: (evt: SyntheticEvent<any>) => void;
+  label?: string;
+}
 
 export interface ProfileCardAction {
   callback: () => void;
@@ -7,7 +12,7 @@ export interface ProfileCardAction {
 
 export interface ProfilecardProvider {
   cloudId: string;
-  resourceClient: AkProfileClient;
+  resourceClient: any;
   getActions: (
     id: string,
     text: string,
