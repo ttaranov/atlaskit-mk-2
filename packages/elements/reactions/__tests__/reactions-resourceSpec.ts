@@ -264,13 +264,13 @@ describe('@atlaskit/reactions/reactions-provider', () => {
         .addReaction(containerAri, ari, emojiId, objectCreationTimestamp)
         .then(state => {
           const lastCall = fetchMock.lastCall('add');
-          expect(lastCall).to.not.equal(undefined);
+          expect(lastCall).not.toEqual(undefined);
 
           return lastCall[0].json().then(body => {
-            expect(body.containerAri).to.equal(containerAri);
-            expect(body.ari).to.equal(ari);
-            expect(body.emojiId).to.equal(emojiId);
-            expect(body.objectCreationTimestamp).to.equal(
+            expect(body.containerAri).toEqual(containerAri);
+            expect(body.ari).toEqual(ari);
+            expect(body.emojiId).toEqual(emojiId);
+            expect(body.objectCreationTimestamp).toEqual(
               objectCreationTimestamp,
             );
           });

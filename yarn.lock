@@ -11202,7 +11202,7 @@ prosemirror-tables@^0.7.4:
     prosemirror-transform "^1.0.0"
     prosemirror-view "^1.0.0"
 
-prosemirror-transform@^1.1.2, prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0:
+prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.1.2.tgz#f62568080364f72304432f8a5ee452613f0cbd73"
   dependencies:
