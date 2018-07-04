@@ -3,6 +3,7 @@ import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
+import NoRecentActivity from '../NoRecentActivity';
 import NoResults from '../NoResults';
 import {
   renderResults,
@@ -12,7 +13,6 @@ import {
   isEmpty,
   getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
-import NoRecentActivity from '../NoRecentActivity';
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -35,7 +35,7 @@ const renderPeopleGroup = (title: string, results: Result[], query: string) =>
     </ResultItemGroup>
   ) : null;
 
-export const renderSearchConfluenceItem = (query: string, text: string) =>
+const renderSearchConfluenceItem = (query: string, text: string) =>
   searchConfluenceItem({
     query: query,
     icon: <SearchIcon size="medium" label="Advanced search" />,
@@ -83,88 +83,106 @@ export interface Props {
   peopleResults: Result[];
 }
 
-export default class extends React.Component<Props> {
-  shouldComponentUpdate(nextProps) {
-    return !nextProps.isLoading;
+const renderRecentActivities = (
+  query: string,
+  recentlyViewedPages: Result[],
+  recentlyViewedSpaces: Result[],
+  recentlyInteractedPeople: Result[],
+) => [
+  renderObjectsGroup(
+    'Recent pages and blogs',
+    take(recentlyViewedPages, 8),
+    query,
+  ),
+  renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
+  renderPeopleGroup(
+    'Recently worked with',
+    take(recentlyInteractedPeople, 3),
+    query,
+  ),
+  renderAdvancedSearchGroup(query),
+];
+
+const renderSearchResults = (
+  query: string,
+  objectResults: Result[],
+  spaceResults: Result[],
+  peopleResults: Result[],
+) => {
+  return [
+    renderObjectsGroup(
+      'Pages, blogs and attachments',
+      take(objectResults, 8),
+      query,
+    ),
+    renderSpacesGroup('Spaces', take(spaceResults, 3), query),
+    renderPeopleGroup('People', take(peopleResults, 3), query),
+    renderAdvancedSearchGroup(query),
+  ];
+};
+
+const renderNoQuery = (
+  query: string,
+  recentlyViewedPages: Result[],
+  recentlyViewedSpaces: Result[],
+  recentlyInteractedPeople: Result[],
+) => {
+  if (
+    [recentlyInteractedPeople, recentlyViewedPages, recentlyViewedSpaces].every(
+      isEmpty,
+    )
+  ) {
+    return (
+      <NoRecentActivity advancedSearchUrl={getConfluenceAdvancedSearchLink()} />
+    );
+  }
+  return renderRecentActivities(
+    query,
+    recentlyViewedPages,
+    recentlyViewedPages,
+    recentlyInteractedPeople,
+  );
+};
+export default (props: Props) => {
+  const {
+    query,
+    isError,
+    objectResults,
+    spaceResults,
+    peopleResults,
+    isLoading,
+    recentlyViewedPages,
+    recentlyViewedSpaces,
+    recentlyInteractedPeople,
+    retrySearch,
+  } = props;
+
+  if (isError) {
+    return <SearchError onRetryClick={retrySearch} />;
   }
 
-  renderNoQuery() {
-    const {
+  if (query.length === 0) {
+    return renderNoQuery(
+      query,
       recentlyViewedPages,
       recentlyViewedSpaces,
       recentlyInteractedPeople,
-      query,
-    } = this.props;
-    if (
-      [
-        recentlyInteractedPeople,
-        recentlyViewedPages,
-        recentlyViewedSpaces,
-      ].every(isEmpty)
-    ) {
-      return (
-        <NoRecentActivity
-          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
-        />
-      );
-    }
-    return [
-      renderObjectsGroup(
-        'Recent pages and blogs',
-        take(recentlyViewedPages, 8),
-        query,
-      ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup(
-        'Recently worked with',
-        take(recentlyInteractedPeople, 3),
-        query,
-      ),
-      renderAdvancedSearchGroup(query),
-    ];
+    );
   }
 
-  renderSearchResults() {
-    const { query, objectResults, spaceResults, peopleResults } = this.props;
-    return [
-      renderObjectsGroup(
-        'Pages, blogs and attachments',
-        take(objectResults, 8),
-        query,
-      ),
-      renderSpacesGroup('Spaces', take(spaceResults, 3), query),
-      renderPeopleGroup('People', take(peopleResults, 3), query),
-      renderAdvancedSearchGroup(query),
-    ];
+  const noSearchResult = [objectResults, spaceResults, peopleResults].every(
+    isEmpty,
+  );
+  if (noSearchResult) {
+    return isLoading
+      ? renderRecentActivities(
+          query,
+          recentlyViewedPages,
+          recentlyViewedSpaces,
+          recentlyInteractedPeople,
+        )
+      : renderNoResults(query);
   }
 
-  render() {
-    const {
-      query,
-      isError,
-      isLoading,
-      retrySearch,
-      objectResults,
-      spaceResults,
-      peopleResults,
-    } = this.props;
-
-    if (isLoading) {
-      return null; // better than showing empty error, but worth some more thought.
-    }
-
-    if (isError) {
-      return <SearchError onRetryClick={retrySearch} />;
-    }
-
-    if (query.length === 0) {
-      return this.renderNoQuery();
-    }
-
-    if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-      return renderNoResults(query);
-    }
-
-    return this.renderSearchResults();
-  }
-}
+  return renderSearchResults(query, objectResults, spaceResults, peopleResults);
+};

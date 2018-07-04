@@ -9,7 +9,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import SearchResult from './ConfluenceSearchResults';
+import renderSearchResults from './ConfluenceSearchResults';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import {
   redirectToConfluenceAdvancedSearch,
@@ -108,7 +108,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         ----------------------------------
         Scope.ConfluencePageBlogAttachment,
         */
-
         Scope.ConfluenceSpace,
       ],
     );
@@ -251,14 +250,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     const {
       query,
       isLoading,
+      searchSessionId,
       isError,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
       objectResults,
       spaceResults,
       peopleResults,
-      searchSessionId,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
     } = this.state;
 
     return (
@@ -271,18 +270,18 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
       >
-        <SearchResult
-          query={query}
-          isError={isError}
-          isLoading={isLoading}
-          retrySearch={() => this.retrySearch()}
-          recentlyViewedPages={recentlyViewedPages}
-          recentlyViewedSpaces={recentlyViewedSpaces}
-          recentlyInteractedPeople={recentlyInteractedPeople}
-          objectResults={objectResults}
-          spaceResults={spaceResults}
-          peopleResults={peopleResults}
-        />
+        {renderSearchResults({
+          retrySearch: this.retrySearch,
+          query,
+          isError,
+          objectResults,
+          spaceResults,
+          peopleResults,
+          isLoading,
+          recentlyViewedPages,
+          recentlyViewedSpaces,
+          recentlyInteractedPeople,
+        })}
       </GlobalQuickSearch>
     );
   }
