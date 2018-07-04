@@ -216,3 +216,26 @@ export function take<T>(array: Array<T>, n: number) {
 export function isEmpty<T>(array: Array<T>) {
   return array.length === 0;
 }
+
+/**
+ *
+ * Gracefully handle promise catch and returning default value
+ * @param promise promise to handle its catch block
+ * @param defaultValue value returned by the promise in case of error
+ * @param errorHandler function to be called in case of promise rejection
+ */
+export function handlePromiseError<T>(
+  promise: Promise<T>,
+  defaultValue?: T,
+  errorHandler?: ((reason: any) => T | void),
+): Promise<T | undefined> {
+  return promise.catch(error => {
+    try {
+      if (errorHandler) {
+        errorHandler(error);
+      }
+    } finally {
+      return defaultValue;
+    }
+  });
+}
