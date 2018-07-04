@@ -1,10 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { DropdownItem } from '@atlaskit/dropdown-menu';
-import Avatar from './Avatar';
-import { withPseudoState } from '../hoc';
+import Avatar, { withPseudoState, getProps } from '@atlaskit/avatar';
 import { getBackgroundColor } from '../styled/AvatarGroup';
-import { getProps } from '../helpers';
 
 type Props = {
   avatar: {

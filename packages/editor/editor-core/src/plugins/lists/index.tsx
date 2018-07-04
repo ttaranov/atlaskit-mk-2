@@ -48,7 +48,7 @@ const listPlugin: EditorPlugin = {
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         popupsScrollableElement={popupsScrollableElement}
-        enableTaskToolbar={
+        enableTaskDecisionToolbar={
           !!editorView.state.schema.nodes.taskItem && appearance === 'full-page'
         }
       />

@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter/light';
-import { withTheme } from 'styled-components';
+import { withTheme, ThemeProvider } from 'styled-components';
 import {
   normalizeLanguage,
   type ADFSupportedLanguages,
@@ -19,7 +19,7 @@ type CodeBlockProps = {
   theme?: Theme | ThemeProps,
 };
 
-class CodeBlock extends PureComponent<CodeBlockProps, {}> {
+export class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
 
   static defaultProps = {
@@ -67,4 +67,12 @@ class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   }
 }
 
-export default withTheme(CodeBlock);
+const CodeBlockWithTheme = withTheme(CodeBlock);
+const emptyTheme = {};
+export default function(props: {}) {
+  return (
+    <ThemeProvider theme={emptyTheme}>
+      <CodeBlockWithTheme {...props} />
+    </ThemeProvider>
+  );
+}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AvatarGroup } from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
 import { UserViewModel } from '../../CardView/ViewModel';
 import { Wrapper } from './styled';
 

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import { AvatarGroup } from '../src';
-import { Block } from '../examples-util/helpers';
+import AvatarGroup from '../src';
+import { ExampleGroup } from '../examples-util/helpers';
 import { RANDOM_USERS, getAdorableAvatar } from '../examples-util/data';
 
 export default () => {
@@ -18,15 +18,15 @@ export default () => {
 
   return (
     <div style={{ maxWidth: 270 }}>
-      <Block heading="Stack">
+      <ExampleGroup heading="Display in a Stack">
         <AvatarGroup
           appearance="stack"
           onAvatarClick={console.log}
           data={data}
           size="large"
         />
-      </Block>
-      <Block heading="Grid">
+      </ExampleGroup>
+      <ExampleGroup heading="Display as a Grid">
         <AvatarGroup
           appearance="grid"
           onAvatarClick={console.log}
@@ -34,7 +34,7 @@ export default () => {
           maxCount={14}
           size="large"
         />
-      </Block>
+      </ExampleGroup>
     </div>
   );
 };
