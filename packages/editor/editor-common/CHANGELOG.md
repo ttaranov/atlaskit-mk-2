@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 11.3.11
+- [patch] Move removing nulls to the transformer instead of only in the tests. ED-4496 [617d8c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617d8c1)
+- [none] Updated dependencies [617d8c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617d8c1)
+  - @atlaskit/editor-json-transformer@3.1.6
+
 ## 11.3.10
 - [patch] Updated dependencies [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
   - @atlaskit/mention@13.1.4
