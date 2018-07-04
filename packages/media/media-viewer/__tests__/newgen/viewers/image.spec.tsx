@@ -9,6 +9,7 @@ import {
   REQUEST_CANCELLED,
 } from '../../../src/newgen/viewers/image';
 import { ZoomControls } from '../../../src/newgen/zoomControls';
+import { awaitError } from '@atlaskit/media-test-helpers';
 
 const collectionName = 'some-collection';
 const imageItem: FileItem = {
@@ -54,16 +55,6 @@ function createFixture(fetchImageBlobCancelableResponse, cancel?) {
     />,
   );
   return { blobService, context, el, onClose };
-}
-
-async function awaitError(response, expectedMessage) {
-  try {
-    await response;
-  } catch (err) {
-    if (err.message !== expectedMessage) {
-      throw err;
-    }
-  }
 }
 
 describe('ImageViewer', () => {

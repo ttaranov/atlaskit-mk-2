@@ -35,6 +35,8 @@ export class MediaFileAttributesFactory {
       if (details.mimeType === 'image/jpeg') {
         return `/file/${details.id}/image`;
       }
+
+      return undefined;
     };
 
     const artifact = artifactFormat && getArtifactUrl(artifactFormat.name);

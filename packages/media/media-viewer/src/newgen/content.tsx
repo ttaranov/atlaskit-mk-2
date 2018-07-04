@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Component, SyntheticEvent, ReactElement, ReactNode } from 'react';
+import {
+  Component,
+  SyntheticEvent,
+  ReactElement,
+  ReactNode,
+  MouseEventHandler,
+} from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
 import { closeOnDirectClick } from './utils/closeOnDirectClick';
@@ -46,8 +52,8 @@ export const findParent = (
 };
 
 export class Content extends Component<ContentProps, ContentState> {
-  private checkActivityTimeout: number;
-  private contentWrapperElement: HTMLElement;
+  private checkActivityTimeout?: number;
+  private contentWrapperElement?: HTMLElement;
 
   state: ContentState = {
     showControls: true,
@@ -97,13 +103,13 @@ export class Content extends Component<ContentProps, ContentState> {
 
   // We want to check mouse movement on click too
   // in order to not hide controls when user is interacting with any control
-  private onClick = e => {
+  private onClick = (e: any) => {
     const { onClose } = this.props;
     this.checkMouseMovement();
     closeOnDirectClick(onClose)(e);
   };
 
-  private saveContentWrapperRef = el => {
+  private saveContentWrapperRef = (el: HTMLElement) => {
     this.contentWrapperElement = el;
   };
 

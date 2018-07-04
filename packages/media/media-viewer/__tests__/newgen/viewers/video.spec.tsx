@@ -6,12 +6,13 @@ import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
 import { Stubs } from '../../_stubs';
 import { Subject } from 'rxjs/Subject';
-import { FileItem } from '@atlaskit/media-core';
+import { FileItem, Auth } from '@atlaskit/media-core';
 import { VideoViewer, Props } from '../../../src/newgen/viewers/video';
 import { Video } from '../../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
 import { ErrorMessage } from '../../../src/newgen/styled';
 import { CustomVideo } from '../../../src/newgen/viewers/video/customVideo';
+import { awaitError } from '@atlaskit/media-test-helpers';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -33,7 +34,7 @@ const videoItem: FileItem = {
   },
 };
 
-function createContext(authPromise) {
+function createContext(authPromise: Promise<Auth>) {
   const serviceHost = 'some-service-host';
   const authProvider = jest.fn().mockReturnValue(authPromise);
   const contextConfig = {
@@ -47,7 +48,7 @@ function createContext(authPromise) {
   ) as any;
 }
 
-function createFixture(authPromise, props?: Partial<Props>) {
+function createFixture(authPromise: Promise<Auth>, props?: Partial<Props>) {
   const context = createContext(authPromise);
   const el = mount(
     <VideoViewer
@@ -60,16 +61,6 @@ function createFixture(authPromise, props?: Partial<Props>) {
   return { context, el };
 }
 
-async function awaitError(response, expectedMessage) {
-  try {
-    await response;
-  } catch (err) {
-    if (err.message !== expectedMessage) {
-      throw err;
-    }
-  }
-}
-
 describe('Video viewer', () => {
   afterEach(() => {
     constructAuthTokenUrlSpy.mockClear();
@@ -78,7 +69,7 @@ describe('Video viewer', () => {
   it('assigns a src for videos when successful', async () => {
     const authPromise = Promise.resolve({ token, clientId });
     const { el } = createFixture(authPromise);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
     el.update();
     expect(el.find(Video).prop('src')).toEqual(
       'some-service-host/video?client=some-client-id&token=some-token',
@@ -86,7 +77,7 @@ describe('Video viewer', () => {
   });
 
   it('shows spinner when pending', async () => {
-    const authPromise = new Promise(() => {});
+    const authPromise: any = new Promise(() => {});
     const { el } = createFixture(authPromise);
     el.update();
     expect(el.find(Spinner)).toHaveLength(1);
@@ -104,7 +95,7 @@ describe('Video viewer', () => {
     const collectionName = 'some-collection';
     const authPromise = Promise.resolve({ token, clientId });
     const { el } = createFixture(authPromise, { collectionName });
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
     el.update();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
@@ -115,7 +106,7 @@ describe('Video viewer', () => {
       featureFlags: { customVideoPlayer: true },
     });
 
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
     el.update();
 
     expect(el.find(CustomVideo)).toHaveLength(1);
@@ -130,7 +121,7 @@ describe('Video viewer', () => {
       featureFlags: { customVideoPlayer: true },
     });
 
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
     el.update();
     expect(el.state('isHDActive')).toBeFalsy();
     el
@@ -155,7 +146,7 @@ describe('Video viewer', () => {
           featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
         />,
       );
-      await el.instance()['init']();
+      await (el as any).instance()['init']();
       el.update();
       return el;
     }

@@ -26,13 +26,17 @@ function createContext() {
   ) as any;
 }
 
-function createFixture(fetchPromise, item, collectionName?) {
+function createFixture(
+  fetchPromise: Promise<any>,
+  item: FileItem,
+  collectionName?: string,
+) {
   const context = createContext();
   const onClose = jest.fn(() => fetchPromise);
   const el = mount(
     <DocViewer item={item} context={context} collectionName={collectionName} />,
   );
-  el.instance()['fetch'] = jest.fn();
+  (el as any).instance()['fetch'] = jest.fn();
   return { context, el, onClose };
 }
 
@@ -57,7 +61,7 @@ describe('DocViewer', () => {
       },
     };
     const { el } = createFixture(fetchPromise, item);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
 
     expect(el.state()).toMatchObject({
       src: {
@@ -82,7 +86,7 @@ describe('DocViewer', () => {
       },
     };
     const { el } = createFixture(fetchPromise, item);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
 
     expect(el.find(Spinner)).toHaveLength(1);
   });
@@ -100,7 +104,7 @@ describe('DocViewer', () => {
     };
     const { el } = createFixture(fetchPromise, item);
 
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
 
     expect(el.state()).toMatchObject({
       src: {
@@ -127,7 +131,7 @@ describe('DocViewer', () => {
       },
     };
     const { el } = createFixture(fetchPromise, item, collectionName);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 });

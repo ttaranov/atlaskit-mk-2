@@ -41,14 +41,14 @@ export class ImageViewer extends React.Component<
     this.release();
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: ImageViewerProps) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps.item, this.props.context);
     }
   }
 
-  private onZoomChange = zoomLevel => {
+  private onZoomChange = (zoomLevel: ZoomLevel) => {
     this.setState({ zoomLevel });
   };
 
@@ -151,7 +151,7 @@ export class ImageViewer extends React.Component<
   }
 
   // This method is spied on by some test cases, so don't rename or remove it.
-  public revokeObjectUrl(objectUrl) {
+  public revokeObjectUrl(objectUrl: string) {
     URL.revokeObjectURL(objectUrl);
   }
 }
