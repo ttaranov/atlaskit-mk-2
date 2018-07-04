@@ -46,11 +46,6 @@ import {
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
-  const textFormattingOptions = props.textFormatting
-    ? props.textFormatting
-    : typeof props.allowTextFormatting === 'object'
-      ? props.allowTextFormatting
-      : {};
   return [
     pastePlugin,
     basePlugin,
@@ -58,7 +53,7 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
     hyperlinkPlugin,
-    textFormattingPlugin(textFormattingOptions),
+    textFormattingPlugin(props.textFormatting || {}),
     widthPlugin,
     typeAheadPlugin,
   ];

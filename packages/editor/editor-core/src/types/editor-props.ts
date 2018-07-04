@@ -67,7 +67,6 @@ export interface EditorProps {
   addonToolbarComponents?: ReactElement;
 
   allowBlockType?: { exclude?: Array<string> };
-  allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
   allowCodeBlocks?: boolean | CodeBlockOptions;
@@ -135,9 +134,6 @@ export interface EditorProps {
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
-
-  // TODO: Deprecated remove after v63.0.0
-  allowTextFormatting?: boolean | TextFormattingOptions;
 
   extensionHandlers?: ExtensionHandlers;
 }
