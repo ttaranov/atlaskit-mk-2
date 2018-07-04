@@ -1,5 +1,10 @@
 # @atlaskit/analytics-listeners
 
+## 2.1.1
+- [patch] removes requirement of children to be a single React node [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+- [none] Updated dependencies [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+  - @atlaskit/analytics-next@2.1.9
+
 ## 2.1.0
 - [patch] merge analytics-next context into GAS payload attributes in FabricElementsListener [5d25e8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d25e8b)
 - [minor] moved Atlaskit tests from src to __tests__ [1f78c33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f78c33)
