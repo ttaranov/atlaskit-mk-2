@@ -19,11 +19,13 @@ import {
   underline,
   textColor,
 } from '@atlaskit/editor-test-helpers';
-import { stateKey as clearFormattingPluginKey } from '../../../src/plugins/text-formatting/pm-plugins/clear-formatting';
+import { pluginKey as clearFormattingPluginKey } from '../../../src/plugins/text-formatting/pm-plugins/clear-formatting';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import textColorPlugin from '../../../src/plugins/text-color';
 import listPlugin from '../../../src/plugins/lists';
 import panelPlugin from '../../../src/plugins/panel';
+import { clearFormatting } from '../../../src/plugins/text-formatting/commands/clear-formatting';
+import { checkFormattingIsPresent } from '../../../src/plugins/text-formatting/utils';
 
 describe('clear-formatting', () => {
   const editor = (
@@ -86,19 +88,19 @@ describe('clear-formatting', () => {
     });
 
     it('should be false if all present marks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p(strong('{<}text{>}'))));
+      const { editorView } = editor(doc(p(strong('{<}text{>}'))));
 
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).toBe(false);
+      clearFormatting()(editorView.state, editorView.dispatch);
+      expect(checkFormattingIsPresent(editorView.state)).toBe(false);
       editorView.destroy();
     });
 
     it('should be false if all present blocks are cleared', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(code_block({})('code{<>}block')),
       );
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).toBe(false);
+      clearFormatting()(editorView.state, editorView.dispatch);
+      expect(checkFormattingIsPresent(editorView.state)).toBe(false);
       editorView.destroy();
     });
   });
@@ -112,11 +114,11 @@ describe('clear-formatting', () => {
       { nodeName: 'strikeout', nodeType: strike },
     ].forEach(({ nodeName, nodeType }) => {
       it(`should clear ${nodeName} if present`, () => {
-        const { editorView, pluginState } = editor(
+        const { editorView } = editor(
           doc(p(nodeType('t{<}ex{>}t'))),
         );
 
-        pluginState.clearFormatting(editorView);
+        clearFormatting()(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
           doc(p(nodeType('t'), 'ex', nodeType('t'))),
         );
@@ -127,11 +129,11 @@ describe('clear-formatting', () => {
 
     it(`should clear text color if present`, () => {
       const blackText = textColor({ color: '#FFFFFF' });
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p(blackText('t{<}ex{>}t'))),
       );
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(p(blackText('t'), 'ex', blackText('t'))),
       );
@@ -140,71 +142,71 @@ describe('clear-formatting', () => {
     });
 
     it('should remove heading blocks if present', () => {
-      const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
+      const { editorView } = editor(doc(h1('te{<>}xt')));
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
 
       editorView.destroy();
     });
 
     it('should remove superscript if present', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p(subsup({ type: 'sup' })('{<}text{>}'))),
       );
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
       editorView.destroy();
     });
 
     it('should remove blockquote if present', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(blockquote(p('te{<>}xt'))),
       );
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
 
       editorView.destroy();
     });
 
     it('should remove panel if present', () => {
-      const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
+      const { editorView } = editor(doc(panel()(p('te{<>}xt'))));
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
 
       editorView.destroy();
     });
 
     it('should remove superscript if present', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p(subsup({ type: 'sup' })('{<}text{>}'))),
       );
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
 
       editorView.destroy();
     });
 
     it('should remove subscript if present', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p(subsup({ type: 'sub' })('{<}text{>}'))),
       );
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
 
       editorView.destroy();
     });
 
     it('should not remove link if present', () => {
-      const { editorView, pluginState } = editor(
+      const { editorView } = editor(
         doc(p(link({ href: 'http://www.atlassian.com' })('t{<}ex{>}t'))),
       );
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(p(link({ href: 'http://www.atlassian.com' })('text'))),
       );
@@ -213,9 +215,9 @@ describe('clear-formatting', () => {
     });
 
     it('should not remove ordered list item if present', () => {
-      const { editorView, pluginState } = editor(doc(ol(li(p('te{<>}xt')))));
+      const { editorView } = editor(doc(ol(li(p('te{<>}xt')))));
 
-      pluginState.clearFormatting(editorView);
+      clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(ol(li(p('text')))));
 
       editorView.destroy();
@@ -225,10 +227,10 @@ describe('clear-formatting', () => {
   describe('keymap', () => {
     it('should clear formatting', () => {
       const trackEvent = jest.fn();
-      const { editorView, pluginState } = editor(doc(p(strong('t{<}ex{>}t'))), {
+      const { editorView } = editor(doc(p(strong('t{<}ex{>}t'))), {
         trackEvent,
       });
-      expect(pluginState.formattingIsPresent).toBe(true);
+      expect(checkFormattingIsPresent(editorView.state)).toBe(true);
 
       if (browser.mac) {
         sendKeyToPm(editorView, 'Cmd-\\');
@@ -236,7 +238,7 @@ describe('clear-formatting', () => {
         sendKeyToPm(editorView, 'Ctrl-\\');
       }
 
-      expect(pluginState.formattingIsPresent).toBe(false);
+      expect(checkFormattingIsPresent(editorView.state)).toBe(false);
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.clear.keyboard',
       );
