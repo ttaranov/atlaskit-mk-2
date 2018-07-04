@@ -28,7 +28,7 @@ type QueryAttributes = Partial<{
   spaceInQuery: boolean;
 }>;
 
-const emptyQueryResponse = {
+const emptyQueryResponse: QueryAttributes = {
   queryLength: 0,
   spaceInQuery: false,
 };
