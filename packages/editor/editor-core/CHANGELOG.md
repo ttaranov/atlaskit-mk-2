@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 73.9.23
+- [patch] Fixing the cursor disappear issue for Mobile [8c0ee26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ee26)
+- [none] Updated dependencies [8c0ee26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ee26)
+
 ## 73.9.22
 - [patch] Fixing the empty list copy [0955a27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0955a27)
 - [none] Updated dependencies [0955a27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0955a27)
