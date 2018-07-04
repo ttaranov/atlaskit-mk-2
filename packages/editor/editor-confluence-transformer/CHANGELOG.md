@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq-transformer
 
+## 4.1.8
+- [patch] Ensure nodes created by transformers are valid, otherwise throws an error. ED-3824 [b45fa8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b45fa8b)
+
 ## 4.1.7
 - [patch] Add missing dependencies to packages to get the website to build [99446e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99446e3)
 

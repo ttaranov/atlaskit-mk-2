@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-confluence-transformer",
-  "version": "4.1.7",
+  "version": "4.1.8",
   "description": "Editor Confluence Transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
