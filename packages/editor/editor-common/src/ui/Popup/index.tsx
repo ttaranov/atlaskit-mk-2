@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { createPortal } from 'react-dom';
 import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
-import Portal from '../Portal';
 import {
   calculatePosition,
   calculatePlacement,
@@ -37,7 +36,7 @@ export interface State {
   overflowScrollParent: HTMLElement | false;
 }
 
-export default class Popup extends PureComponent<Props, State> {
+export default class Popup extends React.Component<Props, State> {
   scrollElement: undefined | false | HTMLElement;
   static defaultProps = {
     offset: [0, 0],
@@ -199,7 +198,7 @@ export default class Popup extends PureComponent<Props, State> {
     }
 
     if (this.props.mountTo) {
-      return <Portal mountTo={this.props.mountTo}>{this.renderPopup()}</Portal>;
+      return createPortal(this.renderPopup(), this.props.mountTo);
     }
 
     // Without mountTo property renders popup as is,
