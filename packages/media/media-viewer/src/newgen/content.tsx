@@ -59,10 +59,10 @@ export class Content extends Component<ContentProps, ContentState> {
     }
   };
 
-  private hideControls = (e?: HTMLElement) => () => {
-    if (e) {
+  private hideControls = (element?: HTMLElement) => () => {
+    if (element) {
       const parent = findParent(
-        e,
+        element,
         hideControlsClassName,
         this.contentWrapperElement,
       );

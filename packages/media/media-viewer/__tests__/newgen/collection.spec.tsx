@@ -90,7 +90,7 @@ describe('<Collection />', () => {
   });
 
   it('should filter links', () => {
-    const subject = new Subject<any>();
+    const subject = new Subject<MediaCollection | Error>();
     const context = createContext({ subject });
     const el = createFixture(context, identifier);
     subject.next(mediaCollection);
