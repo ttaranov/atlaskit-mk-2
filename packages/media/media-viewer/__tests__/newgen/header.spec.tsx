@@ -315,8 +315,7 @@ describe('<Header />', () => {
     });
 
     it('should generate a valid download link', async () => {
-      const subject = new Subject<MediaItem>();
-      const context = createContext({ subject });
+      const context = createContext();
       const item: FileItem = {
         type: 'file',
         details: {

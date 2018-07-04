@@ -109,7 +109,9 @@ export class Collection extends React.Component<Props, State> {
             },
           });
           if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
-            this.provider && this.provider.loadNextPage();
+            if (this.provider) {
+              this.provider.loadNextPage();
+            }
           }
         }
       },
