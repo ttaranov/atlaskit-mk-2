@@ -5,9 +5,8 @@
     "access": "public"
   },
   "description": "A React component to display a card with user information.",
-  "main": "dist/es5/index.js",
-  "module": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "files": [
     "dist"
