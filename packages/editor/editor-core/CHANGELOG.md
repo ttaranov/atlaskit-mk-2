@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 73.9.25
+- [patch] remove all the empty lines after last valid doc [a877895](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a877895)
+- [none] Updated dependencies [a877895](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a877895)
+  - @atlaskit/editor-bitbucket-transformer@3.2.7
+
 ## 73.9.24
 - [patch] Ensure mention state changes are notified on changes via applyTr [13d423c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13d423c)
 - [none] Updated dependencies [13d423c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13d423c)
