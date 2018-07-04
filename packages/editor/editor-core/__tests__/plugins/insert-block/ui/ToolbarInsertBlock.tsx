@@ -11,7 +11,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
 
-import { stateKey as blockTypePluginKey } from '../../../../src/plugins/block-type/pm-plugins/main';
+import { pluginKey as blockTypePluginKey } from '../../../../src/plugins/block-type/pm-plugins/main';
 import DropdownMenu from '../../../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../../../src/plugins/insert-block/ui/ToolbarInsertBlock';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';

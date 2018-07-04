@@ -59,7 +59,7 @@ export const OTHER: BlockType = {
   nodeName: '',
 };
 
-export const ALL_BLOCK_TYPES = [
+export const TEXT_BLOCK_TYPES = [
   NORMAL_TEXT,
   HEADING_1,
   HEADING_2,
@@ -67,10 +67,20 @@ export const ALL_BLOCK_TYPES = [
   HEADING_4,
   HEADING_5,
   HEADING_6,
-  BLOCK_QUOTE,
-  CODE_BLOCK,
-  PANEL,
 ];
+
+export const WRAPPER_BLOCK_TYPES = [BLOCK_QUOTE, CODE_BLOCK, PANEL];
+
+export const ALL_BLOCK_TYPES = TEXT_BLOCK_TYPES.concat(WRAPPER_BLOCK_TYPES);
+
+export const BLOCK_TYPE_BY_LEVEL = {
+  1: HEADING_1,
+  2: HEADING_2,
+  3: HEADING_3,
+  4: HEADING_4,
+  5: HEADING_5,
+  6: HEADING_6,
+};
 
 export type BlockTypeName =
   | 'normal'

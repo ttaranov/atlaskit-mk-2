@@ -66,8 +66,17 @@ class EditorWithState extends Editor {
     subscribeForListStateChanges(view, eventDispatcher);
   }
 
-  onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
+  onEditorDestroyed(instance: {
+    view: EditorView;
+    eventDispatcher: any;
+    transformer?: any;
+  }) {
     super.onEditorDestroyed(instance);
+
+    const { eventDispatcher, view } = instance;
+    unsubscribeFromBlockStateChanges(view, eventDispatcher);
+    unsubscribeFromListStateChanges(view, eventDispatcher);
+
     bridge.editorActions._privateUnregisterEditor();
     bridge.editorView = null;
     bridge.mentionsPluginState = null;
@@ -104,22 +113,38 @@ function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   }
 }
 
+const blockStateUpdated = state => {
+  toNativeBridge.updateBlockState(state.currentBlockType.name);
+};
+
 function subscribeForBlockStateChanges(view: EditorView, eventDispatcher: any) {
-  let blockState = blockPluginStateKey.getState(view.state);
-  bridge.blockState = blockState;
-  if (blockState) {
-    blockState.subscribe(state =>
-      toNativeBridge.updateBlockState(state.currentBlockType.name),
-    );
-  }
+  bridge.blockState = blockPluginStateKey.getState(view.state);
+  eventDispatcher.on((blockPluginStateKey as any).key, blockStateUpdated);
 }
+
+function unsubscribeFromBlockStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
+  eventDispatcher.off((blockPluginStateKey as any).key, blockStateUpdated);
+  bridge.blockState = undefined;
+}
+
+const listStateUpdated = state => {
+  toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
+};
 
 function subscribeForListStateChanges(view: EditorView, eventDispatcher: any) {
   const listState: ListsState = listsStateKey.getState(view.state);
   bridge.listState = listState;
-  eventDispatcher.on(listsStateKey, state => {
-    toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
-  });
+  eventDispatcher.on((listsStateKey as any).key, listStateUpdated);
+}
+
+function unsubscribeFromListStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
+  eventDispatcher.off((listsStateKey as any).key, listStateUpdated);
 }
 
 function getToken(context?: any) {
