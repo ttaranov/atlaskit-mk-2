@@ -158,11 +158,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
 
   onFullScreenClick = () => toggleFullscreen(this.videoWrapperRef);
 
-  saveVideoWrapperRef = el => {
-    if (el) {
-      this.videoWrapperRef = el;
-    }
-  };
+  saveVideoWrapperRef = (el?: HTMLElement) => (this.videoWrapperRef = el);
 
   renderFullScreenButton = () => {
     const { isFullScreenEnabled } = this.state;

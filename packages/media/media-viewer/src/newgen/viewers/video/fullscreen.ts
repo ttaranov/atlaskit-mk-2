@@ -23,7 +23,6 @@ export const vendorify = (
 
 export const requestFullscreen = (element: HTMLElement) => {
   const methodName = vendorify('requestFullScreen');
-  console.log('methodName', methodName);
 
   if (methodName && element[methodName]) {
     element[methodName]();
