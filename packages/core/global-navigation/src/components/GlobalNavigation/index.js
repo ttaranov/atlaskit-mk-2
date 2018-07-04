@@ -24,6 +24,7 @@ class GlobalNavigation extends Component<WrappedGlobalNavigationProps> {
   constructPrimaryItems = ldConfig => {
     const { create, product, search, primaryActions, navigation } = this.props;
     const { create: ldCreate, product: ldProduct, search: ldSearch } = ldConfig;
+    console.log(ldConfig);
     const {
       create: defaultCreate,
       product: defaultProduct,
