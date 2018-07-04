@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-  Component,
-  SyntheticEvent,
-  ReactElement,
-  ReactNode,
-  MouseEventHandler,
-} from 'react';
+import { Component, SyntheticEvent, ReactElement, ReactNode } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Button from '@atlaskit/button';
 import { closeOnDirectClick } from './utils/closeOnDirectClick';
@@ -60,7 +54,9 @@ export class Content extends Component<ContentProps, ContentState> {
   };
 
   private clearTimeout = () => {
-    window.clearTimeout(this.checkActivityTimeout);
+    if (this.checkActivityTimeout) {
+      window.clearTimeout(this.checkActivityTimeout);
+    }
   };
 
   private hideControls = (e?: HTMLElement) => () => {

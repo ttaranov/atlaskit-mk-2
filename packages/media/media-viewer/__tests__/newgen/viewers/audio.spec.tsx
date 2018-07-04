@@ -3,8 +3,7 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Stubs } from '../../_stubs';
-import { Subject } from 'rxjs/Subject';
+import { createContext } from '../../_stubs';
 import { FileItem, Auth } from '@atlaskit/media-core';
 import { awaitError } from '@atlaskit/media-test-helpers';
 import { AudioViewer } from '../../../src/newgen/viewers/audio';
@@ -32,22 +31,8 @@ const audioItem: FileItem = {
   },
 };
 
-function createContext(authPromise: Promise<Auth>) {
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn().mockReturnValue(authPromise);
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(new Subject<FileItem>()),
-  ) as any;
-}
-
 function createFixture(authPromise: Promise<Auth>, collectionName?: string) {
-  const context = createContext(authPromise);
+  const context = createContext({ authPromise });
   const el = mount(
     <AudioViewer
       context={context}
@@ -145,7 +130,7 @@ describe('Audio viewer', () => {
     describe('AutoPlay', () => {
       async function createAutoPlayFixture(previewCount: number) {
         const authPromise = Promise.resolve({ token, clientId });
-        const context = createContext(authPromise);
+        const context = createContext({ authPromise });
         const el = mount(
           <AudioViewer
             context={context}

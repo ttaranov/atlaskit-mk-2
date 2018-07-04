@@ -118,9 +118,9 @@ export class MediaFileAttributesFactory {
       item.type === 'file';
     return collection.items
       .filter(collectionFileItemFilter)
-      .map((item: MediaCollectionFileItem) =>
+      .map((item: MediaCollectionItem) =>
         MediaFileAttributesFactory.fromMediaCollectionFileItem(
-          item,
+          item as MediaCollectionFileItem,
           serviceHost,
         ),
       );

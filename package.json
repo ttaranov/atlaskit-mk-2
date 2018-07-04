@@ -92,6 +92,7 @@
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^3.1.6",
+    "@types/events": "^1.2.0",
     "@types/fetch-mock": "^5.12.1",
     "@types/jest": "^20.0.8",
     "@types/lodash": "^4.14.106",
@@ -137,6 +138,7 @@
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.1.0",
+    "events": "1.1.1",
     "extract-react-types": "^0.11.0",
     "fetch-mock": "^5.12.1",
     "file-loader": "^0.11.2",

@@ -4,8 +4,7 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import { Stubs } from '../../_stubs';
-import { Subject } from 'rxjs/Subject';
+import { createContext } from '../../_stubs';
 import { FileItem, Auth } from '@atlaskit/media-core';
 import { VideoViewer, Props } from '../../../src/newgen/viewers/video';
 import { Video } from '../../../src/newgen/styled';
@@ -34,22 +33,8 @@ const videoItem: FileItem = {
   },
 };
 
-function createContext(authPromise: Promise<Auth>) {
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn().mockReturnValue(authPromise);
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(new Subject<FileItem>()),
-  ) as any;
-}
-
 function createFixture(authPromise: Promise<Auth>, props?: Partial<Props>) {
-  const context = createContext(authPromise);
+  const context = createContext({ authPromise });
   const el = mount(
     <VideoViewer
       context={context}
@@ -137,7 +122,7 @@ describe('Video viewer', () => {
       isCustomVideoPlayer: boolean,
     ) {
       const authPromise = Promise.resolve({ token, clientId });
-      const context = createContext(authPromise);
+      const context = createContext({ authPromise });
       const el = mount(
         <VideoViewer
           context={context}

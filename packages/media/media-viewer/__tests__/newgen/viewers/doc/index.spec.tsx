@@ -3,35 +3,17 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
-import { Stubs } from '../../../_stubs';
+import { createContext } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
 import { DocViewer } from '../../../../src/newgen/viewers/doc/index';
-
-function createContext() {
-  const subject = new Subject<FileItem>();
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(subject),
-  ) as any;
-}
 
 function createFixture(
   fetchPromise: Promise<any>,
   item: FileItem,
   collectionName?: string,
 ) {
-  const context = createContext();
+  const context = createContext(undefined as any);
   const onClose = jest.fn(() => fetchPromise);
   const el = mount(
     <DocViewer item={item} context={context} collectionName={collectionName} />,
