@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getText } from '../../text/nodes/unknown';
+import { getText } from '../../utils';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
