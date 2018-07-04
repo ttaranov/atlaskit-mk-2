@@ -2,7 +2,7 @@ import * as util from '../../../src/newgen/util';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import Button from '@atlaskit/button';
 import { Stubs } from '../../_stubs';
 import { Subject } from 'rxjs/Subject';
@@ -12,6 +12,9 @@ import { Video } from '../../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
 import { ErrorMessage } from '../../../src/newgen/styled';
 import { CustomVideo } from '../../../src/newgen/viewers/video/customVideo';
+import { FeatureFlagsContext } from '../../../src/newgen/utils/featureFlag';
+import { Ellipsify } from '@atlaskit/media-ui';
+import { MediaViewerFeatureFlags } from '../../../src/newgen/domain';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -47,16 +50,27 @@ function createContext(authPromise) {
   ) as any;
 }
 
-function createFixture(authPromise, props?: Partial<Props>) {
-  const context = createContext(authPromise);
+async function createFixture(
+  authPromise?,
+  props?: Partial<Props>,
+  featureFlags: MediaViewerFeatureFlags = {},
+) {
+  const defaultAuthPromise = Promise.resolve({ token, clientId });
+  const context = createContext(authPromise || defaultAuthPromise);
   const el = mount(
-    <VideoViewer
-      context={context}
-      item={videoItem}
-      {...props}
-      previewCount={0}
-    />,
+    <FeatureFlagsContext.Provider value={featureFlags}>
+      <VideoViewer
+        context={context}
+        item={videoItem}
+        previewCount={0}
+        {...props}
+      />,
+    </FeatureFlagsContext.Provider>,
   );
+
+  await init(el);
+  el.update();
+
   return { context, el };
 }
 
@@ -70,6 +84,10 @@ async function awaitError(response, expectedMessage) {
   }
 }
 
+const init = (element: ReactWrapper) => {
+  return (element.first().instance() as any)['init']();
+};
+
 describe('Video viewer', () => {
   afterEach(() => {
     constructAuthTokenUrlSpy.mockClear();
@@ -77,24 +95,23 @@ describe('Video viewer', () => {
 
   it('assigns a src for videos when successful', async () => {
     const authPromise = Promise.resolve({ token, clientId });
-    const { el } = createFixture(authPromise);
-    await el.instance()['init']();
-    el.update();
+    const { el } = await createFixture(authPromise);
+
     expect(el.find(Video).prop('src')).toEqual(
       'some-service-host/video?client=some-client-id&token=some-token',
     );
   });
 
-  it('shows spinner when pending', async () => {
+  it.only('shows spinner when pending', async () => {
     const authPromise = new Promise(() => {});
     const { el } = createFixture(authPromise);
-    el.update();
+
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
   it('shows error if there is an error', async () => {
     const authPromise = Promise.reject(new Error('test error'));
-    const { el } = createFixture(authPromise);
+    const { el } = await createFixture(authPromise);
     await awaitError(authPromise, 'test error');
     el.update();
     expect(el.find(ErrorMessage)).toHaveLength(1);
@@ -103,20 +120,17 @@ describe('Video viewer', () => {
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
     const collectionName = 'some-collection';
     const authPromise = Promise.resolve({ token, clientId });
-    const { el } = createFixture(authPromise, { collectionName });
-    await el.instance()['init']();
+    const { el } = await createFixture(authPromise, { collectionName });
+
     el.update();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 
   it('should render a custom video player if the feature flag is active', async () => {
     const authPromise = Promise.resolve({ token, clientId });
-    const { el } = createFixture(authPromise, {
-      featureFlags: { customVideoPlayer: true },
+    const { el } = await createFixture(authPromise, undefined, {
+      customVideoPlayer: true,
     });
-
-    await el.instance()['init']();
-    el.update();
 
     expect(el.find(CustomVideo)).toHaveLength(1);
     expect(el.find(CustomVideo).prop('src')).toEqual(
@@ -126,12 +140,10 @@ describe('Video viewer', () => {
 
   it('should toggle hd when button is clicked', async () => {
     const authPromise = Promise.resolve({ token, clientId });
-    const { el } = createFixture(authPromise, {
-      featureFlags: { customVideoPlayer: true },
+    const { el } = await createFixture(authPromise, undefined, {
+      customVideoPlayer: true,
     });
 
-    await el.instance()['init']();
-    el.update();
     expect(el.state('isHDActive')).toBeFalsy();
     el
       .find(Button)
@@ -141,45 +153,34 @@ describe('Video viewer', () => {
   });
 
   describe('AutoPlay', () => {
-    async function createAutoPlayFixture(
-      previewCount: number,
-      isCustomVideoPlayer: boolean,
-    ) {
-      const authPromise = Promise.resolve({ token, clientId });
-      const context = createContext(authPromise);
-      const el = mount(
-        <VideoViewer
-          context={context}
-          previewCount={previewCount}
-          item={videoItem}
-          featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
-        />,
-      );
-      await el.instance()['init']();
-      el.update();
-      return el;
-    }
-
     it('should auto play custom video viewer when it is the first preview', async () => {
-      const el = await createAutoPlayFixture(0, true);
+      const { el } = await createFixture(
+        undefined,
+        { previewCount: 0 },
+        { customVideoPlayer: true },
+      );
       expect(el.find(CustomVideo)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(2);
     });
 
     it('should not auto play custom video viewer when it is not the first preview', async () => {
-      const el = await createAutoPlayFixture(1, true);
+      const { el } = await createFixture(
+        undefined,
+        { previewCount: 1 },
+        { customVideoPlayer: true },
+      );
       expect(el.find(CustomVideo)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
     });
 
     it('should auto play native video viewer when it is the first preview', async () => {
-      const el = await createAutoPlayFixture(0, false);
+      const { el } = await createFixture(undefined, { previewCount: 0 });
       expect(el.find(CustomVideo)).toHaveLength(0);
       expect(el.find({ autoPlay: true })).toHaveLength(2);
     });
 
     it('should not auto play native video viewer when it is not the first preview', async () => {
-      const el = await createAutoPlayFixture(1, false);
+      const { el } = await createFixture(undefined, { previewCount: 1 });
       expect(el.find(CustomVideo)).toHaveLength(0);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
     });
