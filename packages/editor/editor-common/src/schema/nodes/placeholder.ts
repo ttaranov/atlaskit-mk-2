@@ -3,7 +3,7 @@ import { Node, NodeSpec } from 'prosemirror-model';
 /**
  * @name placeholder_node
  */
-export interface Definition {
+export interface PlaceholderDefinition {
   type: 'placeholder';
   attrs: {
     text: string;

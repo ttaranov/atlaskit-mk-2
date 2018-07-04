@@ -1,12 +1,12 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 import { browser } from '../../utils';
-import { Definition as Text } from './text';
+import { TextDefinition as Text } from './text';
 import { NoMark } from './doc';
 
 /**
  * @name codeBlock_node
  */
-export interface Definition {
+export interface CodeBlockDefinition {
   type: 'codeBlock';
   content?: Array<Text & NoMark>;
   attrs?: {
