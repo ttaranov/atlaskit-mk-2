@@ -6,12 +6,12 @@ import GoogleAnalyticsListener from './GoogleAnalyticsListener';
 import { GOOGLE_ANALYTICS_ID } from '../../constants';
 
 // AK-4967 - replace with real implementation from analytics-web-client
-const mockAnalyticsClient = {
+const mockAnalyticsClient = Promise.resolve({
   sendUIEvent: e => console.log('sendUIEvent', e),
   sendOperationalEvent: e => console.log('sendOperationalEvent', e),
   sendTrackEvent: e => console.log('sendTrackEvent', e),
   sendScreenEvent: e => console.log('sendScreenEvent', e),
-};
+});
 
 const AnalyticsListeners = ({ children }) => {
   return (
@@ -20,7 +20,7 @@ const AnalyticsListeners = ({ children }) => {
         {yes =>
           yes ? (
             <FabricAnalyticsListeners client={mockAnalyticsClient}>
-              <div>{children}</div>
+              {children}
             </FabricAnalyticsListeners>
           ) : (
             children
