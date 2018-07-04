@@ -23,6 +23,8 @@ export interface MediaArtifact {
   url?: string;
 }
 
+export type Artifacts = { [name: string]: MediaArtifact };
+
 export interface FileDetails {
   id: string;
   name?: string;
@@ -31,7 +33,7 @@ export interface FileDetails {
   mediaType?: MediaType;
   creationDate?: number; // timestamp in milliseconds from EPOCH
   processingStatus?: FileProcessingStatus;
-  artifacts?: { [name: string]: MediaArtifact };
+  artifacts?: Artifacts;
 }
 
 export interface LinkItem {
