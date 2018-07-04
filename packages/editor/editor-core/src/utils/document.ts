@@ -100,24 +100,25 @@ export const preprocessDoc = (
   }
 
   const content: Node[] = [];
-  let isParagraphLast = true;
-  origDoc.content.forEach((__, _, index) => {
-    const reverseIndex = origDoc.content.childCount - index - 1;
-    const node = origDoc.content.child(reverseIndex);
+  // A flag to indicate if the element in the array is the last paragraph
+  let isLastParagraph = true;
+
+  for (let i = origDoc.content.childCount - 1; i >= 0; i--) {
+    const node = origDoc.content.child(i);
     const { taskList, decisionList } = schema.nodes;
     if (
       !(
         node.type.name === 'paragraph' &&
         node.content.size === 0 &&
-        isParagraphLast
+        isLastParagraph
       ) &&
       ((node.type !== taskList && node.type !== decisionList) ||
         node.textContent)
     ) {
       content.push(node);
-      isParagraphLast = false;
+      isLastParagraph = false;
     }
-  });
+  }
 
   return schema.nodes.doc.create({}, Fragment.fromArray(content.reverse()));
 };
