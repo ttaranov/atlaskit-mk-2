@@ -22,6 +22,7 @@ import { emojiPluginKey } from '../emoji/pm-plugins/main';
 import WithPluginState from '../../ui/WithPluginState';
 import { ToolbarSize } from '../../ui/Toolbar';
 import ToolbarInsertBlock from './ui/ToolbarInsertBlock';
+import { insertBlockType } from '../../commands';
 
 const toolbarSizeToButtons = toolbarSize => {
   switch (toolbarSize) {
@@ -125,7 +126,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               insertEmoji={emojiState && emojiState.insertEmoji}
               emojiProvider={providers.emojiProvider}
               horizontalRuleEnabled={options.horizontalRuleEnabled}
-              onInsertBlockType={blockTypeState.insertBlockType}
+              onInsertBlockType={insertBlockType}
               onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
               macroProvider={macroState.macroProvider}
               popupsMountPoint={popupsMountPoint}

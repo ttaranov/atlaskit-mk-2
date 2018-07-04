@@ -14,6 +14,7 @@ import {
 } from '../../../../ui/styles';
 import { BlockType } from '../../types';
 import { BlockTypeState } from '../../pm-plugins/main';
+import { setBlockType } from '../../../../commands';
 
 export interface Props {
   isDisabled?: boolean;
@@ -167,7 +168,7 @@ export default class ToolbarBlockType extends React.PureComponent<
   private handleSelectBlockType = ({ item }) => {
     const blockType = item.value;
     const { availableBlockTypes } = this.state;
-    this.props.pluginState.setBlockType(blockType.name, this.props.editorView);
+    setBlockType(this.props.editorView, blockType.name);
     this.setState({
       active: false,
       availableBlockTypes,
