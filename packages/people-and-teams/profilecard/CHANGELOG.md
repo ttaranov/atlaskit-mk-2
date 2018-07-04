@@ -1,5 +1,13 @@
 # @atlaskit/profilecard
 
+## 3.13.1
+
+- [patch] Migrate Profilecard to AKM2 DIR-553 [9bac948](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9bac948)
+- [none] Updated dependencies [99446e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99446e3)
+  - @atlaskit/docs@4.2.2
+- [none] Updated dependencies [9bac948](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9bac948)
+  - @atlaskit/docs@4.2.2
+
 ## 3.12.3 (2017-12-13)
 
 * bug fix; cap profilecard cache age at 30 days ([6e112c0](https://bitbucket.org/atlassian/atlaskit/commits/6e112c0))
