@@ -35,4 +35,20 @@ describe('Lozenge', () => {
       expect(Component).toMatchSnapshot();
     });
   });
+
+  describe('maxWidth property', () => {
+    it('should render correctly with string maxWidth', () => {
+      const wrapper = <Lozenge maxWidth="100%">Hello</Lozenge>;
+
+      const Component = renderer.create(wrapper).toJSON();
+      expect(Component).toMatchSnapshot();
+    });
+
+    it('should render correctly with number maxWidth', () => {
+      const wrapper = <Lozenge maxWidth={120}>Hello</Lozenge>;
+
+      const Component = renderer.create(wrapper).toJSON();
+      expect(Component).toMatchSnapshot();
+    });
+  });
 });
