@@ -18,6 +18,7 @@ export interface Definition {
 
 export const decisionList: NodeSpec = {
   group: 'block',
+  defining: true,
   content: 'decisionItem+',
   attrs: {
     localId: { default: '' },

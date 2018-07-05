@@ -16,6 +16,7 @@ export interface Definition {
 
 export const decisionItem: NodeSpec = {
   content: 'inline*',
+  defining: true,
   marks: '_',
   attrs: {
     localId: { default: '' },
