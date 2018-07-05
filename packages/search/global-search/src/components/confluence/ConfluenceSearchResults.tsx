@@ -13,6 +13,11 @@ import {
   isEmpty,
   getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
+import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
+import { buildScreenEvent, Screen } from '../../util/analytics';
+
+let preQueryScreenCounter = 0;
+let postQueryScreenCounter = 0;
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -82,6 +87,7 @@ export interface Props {
   spaceResults: Result[];
   peopleResults: Result[];
   keepRecentActivityResults: boolean;
+  searchSessionId: string;
 }
 
 const renderRecentActivities = (
@@ -89,6 +95,7 @@ const renderRecentActivities = (
   recentlyViewedPages: Result[],
   recentlyViewedSpaces: Result[],
   recentlyInteractedPeople: Result[],
+  searchSessionId: string,
 ) => [
   renderObjectsGroup(
     'Recent pages and blogs',
@@ -102,6 +109,13 @@ const renderRecentActivities = (
     query,
   ),
   renderAdvancedSearchGroup(query),
+  <AnalyticsEventFiredOnMount
+    key="preQueryScreenEvent"
+    onEventFired={() => preQueryScreenCounter++}
+    payloadProvider={() =>
+      buildScreenEvent(Screen.PRE_QUERY, preQueryScreenCounter, searchSessionId)
+    }
+  />,
 ];
 
 const renderSearchResults = (
@@ -109,6 +123,7 @@ const renderSearchResults = (
   objectResults: Result[],
   spaceResults: Result[],
   peopleResults: Result[],
+  searchSessionId: string,
 ) => {
   return [
     renderObjectsGroup(
@@ -119,6 +134,17 @@ const renderSearchResults = (
     renderSpacesGroup('Spaces', take(spaceResults, 3), query),
     renderPeopleGroup('People', take(peopleResults, 3), query),
     renderAdvancedSearchGroup(query),
+    <AnalyticsEventFiredOnMount
+      key="postQueryScreenEvent"
+      onEventFired={() => postQueryScreenCounter++}
+      payloadProvider={() =>
+        buildScreenEvent(
+          Screen.POST_QUERY,
+          postQueryScreenCounter,
+          searchSessionId,
+        )
+      }
+    />,
   ];
 };
 
@@ -127,6 +153,7 @@ const renderNoQuery = (
   recentlyViewedPages: Result[],
   recentlyViewedSpaces: Result[],
   recentlyInteractedPeople: Result[],
+  searchSessionId,
 ) => {
   if (
     [recentlyInteractedPeople, recentlyViewedPages, recentlyViewedSpaces].every(
@@ -142,6 +169,7 @@ const renderNoQuery = (
     recentlyViewedPages,
     recentlyViewedSpaces,
     recentlyInteractedPeople,
+    searchSessionId,
   );
 };
 export default (props: Props) => {
@@ -157,6 +185,7 @@ export default (props: Props) => {
     recentlyInteractedPeople,
     retrySearch,
     keepRecentActivityResults,
+    searchSessionId,
   } = props;
 
   if (isError) {
@@ -169,6 +198,7 @@ export default (props: Props) => {
       recentlyViewedPages,
       recentlyViewedSpaces,
       recentlyInteractedPeople,
+      searchSessionId,
     );
   }
 
@@ -179,9 +209,16 @@ export default (props: Props) => {
           recentlyViewedPages,
           recentlyViewedSpaces,
           recentlyInteractedPeople,
+          searchSessionId,
         )
       : renderNoResults(query);
   }
 
-  return renderSearchResults(query, objectResults, spaceResults, peopleResults);
+  return renderSearchResults(
+    query,
+    objectResults,
+    spaceResults,
+    peopleResults,
+    searchSessionId,
+  );
 };

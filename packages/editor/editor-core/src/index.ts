@@ -14,6 +14,11 @@ export { default as ToolbarFeedback } from './ui/ToolbarFeedback';
 export { default as WithPluginState } from './ui/WithPluginState';
 
 export {
+  QuickInsertProvider,
+  QuickInsertItem,
+} from './plugins/quick-insert/types';
+
+export {
   ErrorReporter,
   ErrorReportingHandler,
   JSONDocNode,

@@ -1,5 +1,40 @@
 # @atlaskit/editor-core
 
+## 73.9.25
+- [patch] remove all the empty lines after last valid doc [a877895](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a877895)
+- [none] Updated dependencies [a877895](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a877895)
+  - @atlaskit/editor-bitbucket-transformer@3.2.7
+
+## 73.9.24
+- [patch] Ensure mention state changes are notified on changes via applyTr [13d423c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13d423c)
+- [none] Updated dependencies [13d423c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13d423c)
+
+## 73.9.23
+- [patch] Fixing the cursor disappear issue for Mobile [8c0ee26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ee26)
+- [none] Updated dependencies [8c0ee26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ee26)
+
+## 73.9.22
+- [patch] Fixing the empty list copy [0955a27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0955a27)
+- [none] Updated dependencies [0955a27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0955a27)
+
+## 73.9.21
+- [patch] Export QuickInsert types [912c8ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/912c8ae)
+- [none] Updated dependencies [912c8ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/912c8ae)
+
+## 73.9.20
+- [patch] ED-4912: move styles to plugins [623b406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623b406)
+- [none] Updated dependencies [623b406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623b406)
+
+## 73.9.19
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/media-card@29.1.7
+  - @atlaskit/task-decision@7.1.10
+  - @atlaskit/mention@13.1.5
+  - @atlaskit/modal-dialog@5.2.7
+  - @atlaskit/item@7.0.7
+  - @atlaskit/avatar-group@1.0.0
+
 ## 73.9.18
 - [patch] ED-5005: fix editing nested inlineExtensions inside bodiedExtensions [6fd79a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd79a8)
 - [none] Updated dependencies [6fd79a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fd79a8)

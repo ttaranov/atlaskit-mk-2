@@ -56,7 +56,11 @@ describe('ToolbarLists', () => {
     beforeEach(() => {
       const { editorView, pluginState } = editor(doc(p('text{<>}')));
       toolbarOption = mount(
-        <ToolbarLists pluginState={pluginState} editorView={editorView} enableTaskDecisionToolbar={true} />,
+        <ToolbarLists
+          pluginState={pluginState}
+          editorView={editorView}
+          enableTaskDecisionToolbar={true}
+        />,
       );
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;

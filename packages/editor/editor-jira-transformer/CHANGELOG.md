@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira-transformer
 
+## 3.1.7
+- [patch] Ensure nodes created by transformers are valid, otherwise throws an error. ED-3824 [b45fa8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b45fa8b)
+
 ## 3.1.6
 - [patch] ED-4708: map h6 to h5 [454aab7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/454aab7)
 

@@ -291,6 +291,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyViewedSpaces,
           recentlyInteractedPeople,
           keepRecentActivityResults,
+          searchSessionId,
         })}
       </GlobalQuickSearch>
     );

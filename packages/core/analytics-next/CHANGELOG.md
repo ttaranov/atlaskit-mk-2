@@ -1,5 +1,9 @@
 # @atlaskit/analytics-next
 
+## 2.1.9
+- [patch] removes requirement of children to be a single React node [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+- [none] Updated dependencies [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+
 ## 2.1.8
 - [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
 - [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)

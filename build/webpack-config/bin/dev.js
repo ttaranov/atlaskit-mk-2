@@ -35,6 +35,7 @@ async function runDevServer() {
     ? ''
     : workspacesGlobRaw.replace(/^['"](.+)['"]$/, '$1'); // Unwrap string from quotes
   const env = 'development';
+  const websiteEnv = 'local';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
@@ -81,6 +82,7 @@ async function runDevServer() {
     port: PORT,
     globs,
     env,
+    websiteEnv,
     includePatterns,
     report,
   });
