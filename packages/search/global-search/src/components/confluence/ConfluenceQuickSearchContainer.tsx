@@ -146,6 +146,26 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   ): ((reason: any) => void) => error =>
     this.handleSearchErrorAnalytics(error, source);
 
+  getSearchResultState = (
+    query: string,
+    objectResults: Result[],
+    spaceResults: Map<Scope, Result[]>,
+    peopleResults: Result[],
+  ) => {
+    if (this.state.query === query) {
+      return {
+        objectResults,
+        spaceResults: spaceResults.get(Scope.ConfluenceSpace) || [],
+        peopleResults,
+      };
+    }
+    return {
+      objectResults: this.state.objectResults,
+      spaceResults: this.state.spaceResults,
+      peopleResults: this.state.peopleResults,
+    };
+  };
+
   doSearch = async (query: string) => {
     this.setState({
       isLoading: true,
@@ -157,7 +177,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     });
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query),
-      undefined,
+      new Map<Scope, Result[]>(),
       this.handleSearchErrorAnalyticsThunk('xpsearch-confluence'),
     );
 
@@ -170,27 +190,20 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     try {
       const [
         objectResults,
-        spaceResultsMap,
+        spaceResultsMap = new Map<Scope, Result[]>(),
         peopleResults = [],
       ] = await Promise.all([
         quickNavPromise,
         confXpSearchPromise,
         searchPeoplePromise,
       ]);
-      const searchResult =
-        this.state.query === query
-          ? {
-              objectResults,
-              spaceResults: spaceResultsMap
-                ? spaceResultsMap.get(Scope.ConfluenceSpace) || []
-                : [],
-              peopleResults,
-            }
-          : {
-              objectResults: this.state.objectResults,
-              spaceResults: this.state.spaceResults,
-              peopleResults: this.state.peopleResults,
-            };
+
+      const searchResult = this.getSearchResultState(
+        query,
+        objectResults,
+        spaceResultsMap,
+        peopleResults,
+      );
 
       this.setState({
         isError: false,

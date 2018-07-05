@@ -172,7 +172,7 @@ const renderNoQuery = (
     searchSessionId,
   );
 };
-export default (props: Props) => {
+const render = (props: Props) => {
   const {
     query,
     isError,
@@ -193,13 +193,15 @@ export default (props: Props) => {
   }
 
   if (query.length === 0) {
-    return renderNoQuery(
-      query,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
-      searchSessionId,
-    );
+    return isLoading
+      ? null
+      : renderNoQuery(
+          query,
+          recentlyViewedPages,
+          recentlyViewedSpaces,
+          recentlyInteractedPeople,
+          searchSessionId,
+        );
   }
 
   if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
@@ -222,3 +224,5 @@ export default (props: Props) => {
     searchSessionId,
   );
 };
+
+export default render;
