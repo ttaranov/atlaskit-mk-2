@@ -42,6 +42,7 @@
       "./typings/rusha.d.ts",
       "./typings/uuid.d.ts",
       "./typings/deep-equal.d.ts",
-      "./typings/pdfjs-dist.d.ts"
+      "./typings/pdfjs-dist.d.ts",
+      "./typings/events.d.ts"
     ]
   }

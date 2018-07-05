@@ -92,7 +92,6 @@
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/enzyme": "^3.1.6",
-    "@types/events": "^1.2.0",
     "@types/fetch-mock": "^5.12.1",
     "@types/jest": "^20.0.8",
     "@types/lodash": "^4.14.106",
