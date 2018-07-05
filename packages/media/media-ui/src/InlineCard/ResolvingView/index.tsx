@@ -14,7 +14,7 @@ export class ResolvingView extends React.Component<ResolvingViewProps> {
     return (
       <Frame onClick={onClick}>
         <IconAndTitleLayout icon={<Spinner size={16} />} title={url}>
-          - To see a link preview, connect your account
+          - Connect your account to preview links
         </IconAndTitleLayout>
       </Frame>
     );

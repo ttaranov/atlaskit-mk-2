@@ -6,6 +6,7 @@ import {
   ResolvingView,
   ErroredView,
   ForbiddenView,
+  UnauthorizedView,
 } from '../src/InlineCard';
 
 interface Lozenge {
@@ -27,47 +28,25 @@ export default () => (
   <Page>
     <Grid>
       <GridColumn>
-        <h4>LinkView (initial Resolving/Errored)</h4>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo this is <code>LinkView</code>:
+        <h4>Paste link into editor</h4>
+        Labore sunt adipisicing esse magna.
         <LinkView text={url} onClick={onClick} />
-        quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
-        laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
-        ut vehicula. Donec volutpat libero id ullamcorper faucibus. Sed
-        vestibulum tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet
-        interdum, nunc mauris bibendum mauris, in consequat mi est vitae mauris.
-        Phasellus dictum sollicitudin nunc in gravida.
-        <h4>ResolvingView</h4>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo this is{' '}
-        <code>ResolvingView</code>:
-        <ResolvingView url={url} onClick={onClick} />
-        quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
-        laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
-        ut vehicula. Donec volutpat libero id ullamcorper faucibus. Sed
-        vestibulum tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet
-        interdum, nunc mauris bibendum mauris, in consequat mi est vitae mauris.
-        Phasellus dictum sollicitudin nunc in gravida.
-        <h4>Errored View</h4>
-        Qui proident do ipsum elit eu commodo ex. Eiusmod reprehenderit occaecat
-        ipsum laboris. Velit incididunt esse eu ipsum et laboris eiusmod magna
-        irure adipisicing adipisicing eiusmod ex veniam. Sunt velit et pariatur
-        amet et magna sunt ea id eu ullamco laboris.
-        <ErroredView
-          message="Ooops, something went wrong!"
-          url={url}
+        <h4>Unauthorised view</h4>
+        Labore sunt adipisicing esse magna.
+        <UnauthorizedView
+          icon={icon}
           onClick={() => {}}
-          onRetry={() => {
-            alert('Trying really hard!');
+          onAuthorise={() => {
+            alert('Does nothing...');
           }}
+          url={url}
         />
-        mollit nulla laboris est occaecat commodo veniam sit duis eiusmod.
-        Officia reprehenderit do ut reprehenderit incididunt laborum Lorem enim
-        irure consectetur pariatur dolor. Duis irure voluptate aute consequat
-        ullamco nostrud officia eiusmod non veniam do dolor non in.
+        <h4>ResolvingView</h4>
+        Labore sunt adipisicing esse magna.
+        <ResolvingView url={url} onClick={onClick} />
+        Labore sunt adipisicing esse magna.
         <h4>No Permissions View</h4>
-        Reprehenderit non occaecat do non esse irure aute aliqua minim
-        exercitation. Sit nisi tempor voluptate
+        Labore sunt adipisicing esse magna.
         <ForbiddenView
           url={url}
           onClick={() => {
@@ -76,27 +55,28 @@ export default () => (
           onAuthorise={() => {
             alert('Okay, what else have we got...');
           }}
-        />{' '}
-        cillum aute reprehenderit officia quis irure quis. Do nostrud est sit
-        aute exercitation ut sit. Exercitation tempor laborum culpa ullamco
-        ullamco in laboris.
-        <h4>ResolvedView</h4>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a semper
-        ex, vel molestie arcu. Phasellus commodo this is{' '}
-        <code>ResolvedView</code>:
-        <ResolvedView title={title} onClick={onClick} />
-        quam eu vulputate blandit. Nullam consequat auctor condimentum. Praesent
-        laoreet ultricies libero egestas mattis. Nulla iaculis ullamcorper nisl
-        ut this is <code>ResolvedView</code>:
+        />
+        <h4>Errored View</h4>
+        Labore sunt adipisicing esse magna.
+        <ErroredView
+          message="Ooops, something went wrong!"
+          url={url}
+          onClick={() => {}}
+          onRetry={() => {
+            alert('Trying really hard!');
+          }}
+        />
+        Labore sunt adipisicing esse magna.
+        <h4>Resolved view</h4>
+        Labore sunt adipisicing esse magna.
         <ResolvedView
           icon={icon}
           title={title}
           lozenge={lozenge}
           onClick={onClick}
         />
-        vehicula. Donec volutpat libero id ullamcorper faucibus. Sed vestibulum
-        tincidunt tortor ut laoreet. Nulla posuere, nisi et aliquet interdum,
-        <code>ResolvedView (selected)</code>:
+        <h4>Resolved selecetd view</h4>
+        Labore sunt adipisicing esse magna.
         <ResolvedView
           icon={icon}
           title={title}
@@ -104,8 +84,6 @@ export default () => (
           isSelected={true}
           onClick={onClick}
         />
-        nunc mauris bibendum mauris, in consequat mi est vitae mauris. Phasellus
-        dictum sollicitudin nunc in gravida.
       </GridColumn>
     </Grid>
   </Page>

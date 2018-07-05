@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { IconWrapper } from './styled';
 import { colors } from '@atlaskit/theme';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Button from '@atlaskit/button';
 import { truncateUrlForErrorView } from '../utils';
 import { Frame } from '../Frame';
+import { IconAndTitleLayout } from '../IconAndTitleLayout';
 
 export interface ErroredViewProps {
   url: string;
@@ -27,10 +27,16 @@ export class ErroredView extends React.Component<ErroredViewProps> {
     const { url, message, onClick, onRetry } = this.props;
     return (
       <Frame onClick={onClick}>
-        <IconWrapper>
-          <WarningIcon label="error" size="medium" primaryColor={colors.Y300} />
-        </IconWrapper>
-        {truncateUrlForErrorView(url)} - {message.trim() + ' '}
+        <IconAndTitleLayout
+          icon={
+            <ErrorIcon label="error" size="medium" primaryColor={colors.R300} />
+          }
+          title={
+            <span style={{ color: colors.R300 }}>
+              {truncateUrlForErrorView(url) + ' - ' + message.trim()}
+            </span>
+          }
+        />{' '}
         {onRetry && (
           <Button spacing="none" appearance="link" onClick={this.handleRetry}>
             Try again

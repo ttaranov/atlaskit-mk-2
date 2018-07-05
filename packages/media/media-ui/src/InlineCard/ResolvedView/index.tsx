@@ -3,7 +3,8 @@ import { Frame } from '../Frame';
 import Lozenge from '@atlaskit/lozenge';
 import { LozengeViewModel } from '../../types';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
-import { Icon, Title } from './styled';
+import { Title } from './styled';
+import { Icon } from '../Icon';
 
 export interface ResolvedViewProps {
   icon?: string;
