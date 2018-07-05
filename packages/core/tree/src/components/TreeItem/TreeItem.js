@@ -23,12 +23,21 @@ export default class TreeItem extends Component<Props> {
       snapshot,
     } = this.props;
 
+    const finalProvided: TreeDraggableProvided = {
+      ...provided,
+      props: {
+        innerRef: provided.innerRef,
+        ...provided.draggableProps,
+        ...provided.dragHandleProps,
+      },
+    };
+
     return renderItem({
       item,
       depth: path.length - 1,
       onExpand: itemId => onExpand(itemId, path),
       onCollapse: itemId => onCollapse(itemId, path),
-      provided,
+      provided: finalProvided,
       snapshot,
     });
   }

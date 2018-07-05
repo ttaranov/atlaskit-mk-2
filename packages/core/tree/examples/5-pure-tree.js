@@ -1,0 +1,118 @@
+//@flow
+
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Tree, {
+  mutateTree,
+  moveItemOnTree,
+  type RenderItemParams,
+  type TreeItem,
+  type TreeData,
+  type ItemId,
+  type TreePosition,
+} from '../src/';
+import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
+
+const PADDING_PER_LEVEL = 35;
+
+const TreeItemContainer = styled.div``;
+
+const TreeItemDraggable = styled.div`
+  display: flex;
+  justify-content: left;
+`;
+
+const Icon = styled.div``;
+
+const Text = styled.div``;
+
+const PreTextIcon = styled.span`
+  display: inline-block;
+  width: 16px;
+  justify-content: center;
+`;
+
+type State = {|
+  tree: TreeData,
+|};
+
+const getIcon = (
+  item: TreeItem,
+  onExpand: (itemId: ItemId) => void,
+  onCollapse: (itemId: ItemId) => void,
+): Node => {
+  if (item.children && item.children.length > 0) {
+    return item.isExpanded ? (
+      <PreTextIcon onClick={() => onCollapse(item.id)}>-</PreTextIcon>
+    ) : (
+      <PreTextIcon onClick={() => onExpand(item.id)}>+</PreTextIcon>
+    );
+  }
+  return <PreTextIcon>&bull;</PreTextIcon>;
+};
+
+export default class PureTree extends Component<void, State> {
+  state = {
+    tree: treeWithTwoBranches,
+  };
+
+  renderItem = ({
+    item,
+    depth,
+    onExpand,
+    onCollapse,
+    provided,
+  }: RenderItemParams) => {
+    return (
+      <TreeItemContainer
+        key={item.id}
+        style={{ paddingLeft: depth * PADDING_PER_LEVEL }}
+      >
+        <TreeItemDraggable {...provided.props}>
+          <Icon>{getIcon(item, onExpand, onCollapse)}</Icon>
+          <Text>{item.data.title}</Text>
+        </TreeItemDraggable>
+      </TreeItemContainer>
+    );
+  };
+
+  onExpand = (itemId: ItemId) => {
+    const { tree }: State = this.state;
+    this.setState({
+      tree: mutateTree(tree, itemId, { isExpanded: true }),
+    });
+  };
+
+  onCollapse = (itemId: ItemId) => {
+    const { tree }: State = this.state;
+    this.setState({
+      tree: mutateTree(tree, itemId, { isExpanded: false }),
+    });
+  };
+
+  onDragEnd = (source: TreePosition, destination: ?TreePosition) => {
+    const { tree } = this.state;
+
+    if (!destination) {
+      return;
+    }
+    const newTree = moveItemOnTree(tree, source, destination);
+    this.setState({
+      tree: newTree,
+    });
+  };
+
+  render() {
+    const { tree } = this.state;
+
+    return (
+      <Tree
+        tree={tree}
+        renderItem={this.renderItem}
+        onExpand={this.onExpand}
+        onCollapse={this.onCollapse}
+        onDragEnd={this.onDragEnd}
+      />
+    );
+  }
+}

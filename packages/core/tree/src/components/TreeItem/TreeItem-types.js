@@ -38,6 +38,12 @@ export type TreeDraggableProvided = {|
   dragHandleProps: ?DragHandleProps,
   // The following props will be removed once we move to react 16
   innerRef: (?HTMLElement) => void,
+  props: {
+    // repeating the same fields
+    ...TreeDraggableProps,
+    ...?DragHandleProps,
+    innerRef: (?HTMLElement) => void,
+  },
 |};
 
 export type Props = {|
