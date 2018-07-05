@@ -4,7 +4,7 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { CardDimensions, CardEventHandler } from '@atlaskit/media-card';
-import { ProsemirrorGetPosHandler, ReactNodeProps } from '../../../nodeviews';
+import { ReactNodeProps } from '../ui/wrapper-click-area';
 import UIMedia from '../ui/Media';
 import {
   MediaPluginState,
@@ -12,13 +12,14 @@ import {
 } from '../pm-plugins/main';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import ProgressLoader from '../../../ui/ProgressLoader';
+import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 
 export interface MediaNodeProps extends ReactNodeProps {
-  getPos: ProsemirrorGetPosHandler;
+  getPos: getPosHandler;
   view: EditorView;
   node: PMNode;
   providerFactory: ProviderFactory;
-  cardDimensions: CardDimensions;
+  cardDimensions?: CardDimensions;
   isMediaSingle?: boolean;
   progress?: number;
   onExternalImageLoaded?: (
