@@ -14,7 +14,6 @@ import Video, {
   VideoActions,
 } from 'react-video-renderer';
 import { colors } from '@atlaskit/theme';
-import Spinner from '@atlaskit/spinner';
 import FieldRange from '@atlaskit/field-range';
 import { TimeRange } from './TimeRange';
 import {
@@ -39,6 +38,7 @@ import {
   getFullscreenElement,
   vendorify,
 } from './fullscreen';
+import { Spinner } from '../../loading';
 
 export interface CustomVideoProps {
   readonly src: string;
@@ -57,7 +57,7 @@ export type ToggleButtonAction = () => void;
 
 const spinner = (
   <SpinnerWrapper>
-    <Spinner invertColor size="xlarge" />
+    <Spinner />
   </SpinnerWrapper>
 );
 export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
@@ -116,6 +116,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
       return;
     }
     const primaryColor = isHDActive ? colors.B200 : colors.DN400;
+    const secondaryColor = isHDActive ? colors.white : colors.DN60;
     return (
       <Button
         appearance="toolbar"
@@ -124,7 +125,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
         iconBefore={
           <HDIcon
             primaryColor={primaryColor}
-            secondaryColor="#313d51"
+            secondaryColor={secondaryColor}
             label="hd"
           />
         }
@@ -159,9 +160,9 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
   renderFullScreenButton = () => {
     const { isFullScreenEnabled } = this.state;
     const icon = isFullScreenEnabled ? (
-      <FullScreenIconOff primaryColor="white" label="disable fullscreen" />
+      <FullScreenIconOff label="disable fullscreen" />
     ) : (
-      <FullScreenIconOn primaryColor="white" label="enable fullscreen" />
+      <FullScreenIconOn label="enable fullscreen" />
     );
 
     return (

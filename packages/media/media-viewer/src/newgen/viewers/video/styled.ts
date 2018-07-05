@@ -22,10 +22,6 @@ export const CustomVideoWrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${blanketColor};
-
-  button {
-    color: white !important;
-  }
 `;
 
 export const VideoWrapper = styled.div`
