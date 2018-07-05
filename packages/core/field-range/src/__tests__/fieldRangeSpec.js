@@ -123,5 +123,11 @@ describe('FieldRange', () => {
       const input = fieldRange.find('InputRange');
       expect(input.props().valuePercent).toBe('50.00');
     });
+    it('should update the value when props change', () => {
+      fieldRange = mount(<FieldRange value={50} min={0} max={100} />);
+      expect(fieldRange.find('InputRange').prop('valuePercent')).toBe('50.00');
+      fieldRange.setProps({ value: 25 });
+      expect(fieldRange.find('InputRange').prop('valuePercent')).toBe('25.00');
+    });
   });
 });
