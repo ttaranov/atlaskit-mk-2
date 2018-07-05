@@ -234,8 +234,7 @@ export function handlePromiseError<T>(
       if (errorHandler) {
         errorHandler(error);
       }
-    } finally {
-      return defaultValue;
-    }
+    } catch {}
+    return defaultValue;
   });
 }

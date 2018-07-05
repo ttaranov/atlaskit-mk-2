@@ -81,6 +81,7 @@ export interface Props {
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
+  keepRecentActivityResults: boolean;
 }
 
 const renderRecentActivities = (
@@ -139,7 +140,7 @@ const renderNoQuery = (
   return renderRecentActivities(
     query,
     recentlyViewedPages,
-    recentlyViewedPages,
+    recentlyViewedSpaces,
     recentlyInteractedPeople,
   );
 };
@@ -155,6 +156,7 @@ export default (props: Props) => {
     recentlyViewedSpaces,
     recentlyInteractedPeople,
     retrySearch,
+    keepRecentActivityResults,
   } = props;
 
   if (isError) {
@@ -170,11 +172,8 @@ export default (props: Props) => {
     );
   }
 
-  const noSearchResult = [objectResults, spaceResults, peopleResults].every(
-    isEmpty,
-  );
-  if (noSearchResult) {
-    return isLoading
+  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
+    return isLoading && keepRecentActivityResults
       ? renderRecentActivities(
           query,
           recentlyViewedPages,

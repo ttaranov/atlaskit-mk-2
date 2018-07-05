@@ -35,6 +35,7 @@ export interface State {
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
+  keepRecentActivityResults: boolean;
 }
 
 /**
@@ -58,6 +59,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       objectResults: [],
       spaceResults: [],
       peopleResults: [],
+      keepRecentActivityResults: true,
     };
   }
 
@@ -77,6 +79,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         objectResults: [],
         spaceResults: [],
         peopleResults: [],
+        keepRecentActivityResults: true,
       });
     } else {
       this.doSearch(query);
@@ -192,10 +195,15 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       this.setState({
         isError: false,
         isLoading: false,
+        keepRecentActivityResults: false,
         ...searchResult,
       });
     } catch {
-      this.setState({ isError: true, isLoading: false });
+      this.setState({
+        isError: true,
+        isLoading: false,
+        keepRecentActivityResults: false,
+      });
     }
   };
 
@@ -258,6 +266,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       recentlyViewedPages,
       recentlyViewedSpaces,
       recentlyInteractedPeople,
+      keepRecentActivityResults,
     } = this.state;
 
     return (
@@ -281,6 +290,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyViewedPages,
           recentlyViewedSpaces,
           recentlyInteractedPeople,
+          keepRecentActivityResults,
         })}
       </GlobalQuickSearch>
     );
