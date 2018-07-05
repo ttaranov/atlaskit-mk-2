@@ -14,7 +14,8 @@ export const getFilesInRecents = (fetcher: Fetcher) => (
 ) => (next: Dispatch<Action>) => (action: Action) => {
   const { userAuthProvider } = store.getState();
   if (isGetFilesInRecentsAction(action)) {
-    requestRecentFiles(fetcher, userAuthProvider, store);
+    const { inclusiveStartKey } = action;
+    requestRecentFiles(fetcher, userAuthProvider, store, inclusiveStartKey);
   }
 
   return next(action);
@@ -24,14 +25,20 @@ export const requestRecentFiles = (
   fetcher: Fetcher,
   userAuthProvider: AuthProvider,
   store: Store<State>,
+  inclusiveStartKey?: string,
 ): Promise<void> => {
-  const { apiUrl } = store.getState();
+  const { apiUrl, recents } = store.getState();
 
   return userAuthProvider()
-    .then(auth => fetcher.getRecentFiles(apiUrl, auth, 30, 'desc'))
+    .then(auth =>
+      fetcher.getRecentFiles(apiUrl, auth, 30, 'desc', inclusiveStartKey),
+    )
     .then(({ contents, nextInclusiveStartKey }) => {
       store.dispatch(
-        getFilesInRecentsFullfilled(contents, nextInclusiveStartKey),
+        getFilesInRecentsFullfilled(
+          [...recents.items, ...contents],
+          nextInclusiveStartKey,
+        ),
       );
     })
     .catch(() => {

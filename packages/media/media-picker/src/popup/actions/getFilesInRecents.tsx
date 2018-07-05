@@ -5,6 +5,7 @@ export const GET_FILES_IN_RECENTS = 'GET_FILES_IN_RECENTS';
 
 export interface GetFilesInRecentsAction extends Action {
   type: 'GET_FILES_IN_RECENTS';
+  inclusiveStartKey?: string;
 }
 
 export const isGetFilesInRecentsAction = (
@@ -13,8 +14,11 @@ export const isGetFilesInRecentsAction = (
   return action.type === GET_FILES_IN_RECENTS;
 };
 
-export const getFilesInRecents = (): GetFilesInRecentsAction => {
+export const getFilesInRecents = (
+  inclusiveStartKey?: string,
+): GetFilesInRecentsAction => {
   return {
+    inclusiveStartKey,
     type: GET_FILES_IN_RECENTS,
   };
 };

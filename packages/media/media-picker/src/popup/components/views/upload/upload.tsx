@@ -16,7 +16,7 @@ import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-
+import { InfiniteScroll } from '@atlaskit/media-ui';
 import { Browser } from '../../../../components/browser';
 
 import { isImage } from '../../../tools/isImage';
@@ -44,6 +44,7 @@ import {
   RecentUploadsTitle,
   CardWrapper,
 } from './styled';
+import { getFilesInRecents } from '../../../actions/getFilesInRecents';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
@@ -79,6 +80,7 @@ export interface UploadViewDispatchProps {
     file: FileReference,
     collectionName: string,
   ) => void;
+  readonly onThresholdReached: (inclusiveStartKey?: string) => void;
 }
 
 export type UploadViewProps = UploadViewOwnProps &
@@ -108,8 +110,10 @@ export class StatelessUploadView extends Component<
     const { isLoading, mpBrowser } = this.props;
     const cards = this.renderCards();
     const isEmpty = !isLoading && cards.length === 0;
-
     let contentPart: JSX.Element | null = null;
+
+    console.log({ isLoading }, cards.length);
+
     if (isLoading) {
       contentPart = this.loadingView();
     } else if (!isEmpty) {
@@ -117,12 +121,23 @@ export class StatelessUploadView extends Component<
     }
 
     return (
-      <Wrapper>
-        <Dropzone isEmpty={isEmpty} mpBrowser={mpBrowser} />
-        {contentPart}
-      </Wrapper>
+      //height={500}
+      <InfiniteScroll onThresholdReached={this.onThresholdReachedListener}>
+        <Wrapper>
+          <Dropzone isEmpty={isEmpty} mpBrowser={mpBrowser} />
+          {contentPart}
+        </Wrapper>
+      </InfiniteScroll>
     );
   }
+
+  onThresholdReachedListener = () => {
+    const { onThresholdReached, recents } = this.props;
+
+    console.log('onThresholdReached', recents.nextKey);
+    onThresholdReached(recents.nextKey);
+    // this.store.dispatch(getFilesInRecents());
+  };
 
   private loadingView = () => {
     return (
@@ -377,6 +392,8 @@ const mapDispatchToProps = (
     dispatch(editorShowImage(dataUri, file)),
   onEditRemoteImage: (file, collectionName) =>
     dispatch(editRemoteImage(file, collectionName)),
+  onThresholdReached: (inclusiveStartKey?: string) =>
+    dispatch(getFilesInRecents(inclusiveStartKey)),
 });
 
 export default connect<
