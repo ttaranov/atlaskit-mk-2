@@ -10,7 +10,7 @@ type Props = ThemeStructure & { children: Node };
 
 const emptyObj = {};
 
-export const Theme = ({ children, components, mode, ...props }: Props) => (
+export default ({ children, components, ...props }: Props) => (
   <Consumer>
     {(theme: ThemeStructure) => {
       // Pre-calc dynamic values based on the parent theme so this doesn't have

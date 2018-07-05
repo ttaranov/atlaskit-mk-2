@@ -37,3 +37,7 @@ export const layers = {
   spotlight: () => 700,
   tooltip: () => 800,
 };
+
+// New API
+export { default as Theme } from './components/Theme';
+export { default as Themed } from './components/Themed';
