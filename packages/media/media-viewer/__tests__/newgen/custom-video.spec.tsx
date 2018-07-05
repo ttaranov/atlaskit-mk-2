@@ -6,16 +6,14 @@ import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidHdCircleIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
+import FieldRange from '@atlaskit/field-range';
 import {
   CustomVideo,
   CustomVideoProps,
 } from '../../src/newgen/viewers/video/customVideo';
 import { toggleFullscreen } from '../../src/newgen/viewers/video/fullscreen';
 import { TimeRange } from '../../src/newgen/viewers/video/TimeRange';
-import {
-  VolumeRange,
-  CurrentTime,
-} from '../../src/newgen/viewers/video/styled';
+import { CurrentTime } from '../../src/newgen/viewers/video/styled';
 import { Shortcut } from '../../src/newgen/shortcut';
 
 describe('<CustomVideo />', () => {
@@ -62,7 +60,7 @@ describe('<CustomVideo />', () => {
     it('should render the volume controls', () => {
       const { component } = setup();
 
-      expect(component.find(VolumeRange).prop('value')).toEqual(1);
+      expect(component.find(FieldRange).prop('value')).toEqual(1);
     });
 
     it('should render the time (current/total) in the right format', () => {
