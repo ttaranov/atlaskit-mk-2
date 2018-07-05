@@ -31,3 +31,25 @@ export const isTopOfSubtree = (abovePath: ?Path, belowPath: Path) =>
 
 const isParentOf = (parent: Path, child: Path): boolean =>
   isSamePath(parent, getParentPath(child));
+
+export const getIndexAmongSiblings = (path: Path): number => {
+  const lastIndex = path[path.length - 1];
+  return lastIndex;
+};
+
+export const getPathOnLevel = (path: Path, level: number): Path =>
+  path.slice(0, level);
+
+export const moveAfterPath = (after: Path, from: Path): Path => {
+  const newPath: Path = [...after];
+  const movedDownOnTheSameLevel = isLowerSibling(newPath, from);
+  if (!movedDownOnTheSameLevel) {
+    // not moved within the same subtree
+    newPath[newPath.length - 1] += 1;
+  }
+  return newPath;
+};
+
+export const isLowerSibling = (a: Path, other: Path): boolean =>
+  hasSameParent(a, other) &&
+  getIndexAmongSiblings(a) > getIndexAmongSiblings(other);

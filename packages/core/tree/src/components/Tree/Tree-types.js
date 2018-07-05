@@ -3,11 +3,6 @@ import * as React from 'react';
 import type { TreeData, Path, ItemId, FlattenedTree } from '../../types';
 import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
-export type TreePosition = {|
-  parentId: ItemId,
-  index: number,
-|};
-
 export type Props = {|
   tree: TreeData,
   onExpand: (itemId: ItemId, path: Path) => void,
