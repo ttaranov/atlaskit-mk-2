@@ -17,6 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/lozenge": "^5.0.4",
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
