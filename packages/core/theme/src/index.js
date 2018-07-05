@@ -39,5 +39,6 @@ export const layers = {
 };
 
 // New API
+export { default as Reset } from './components/Reset';
 export { default as Theme } from './components/Theme';
 export { default as Themed } from './components/Themed';

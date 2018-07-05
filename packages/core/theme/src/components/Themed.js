@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import type { Node } from 'react';
 
 import { Consumer } from './Context';
+import callOrPass from '../utils/callOrPass';
 import callOrPassAll from '../utils/callOrPassAll';
 import type { ThemeStructure } from '../types';
 
@@ -29,14 +30,14 @@ export default class extends Component<Props> {
         {({ components, ...themeParent }: ThemeStructure) => {
           const executedDefaults = callOrPassAll(defaults, themeParent);
           const executedTheme = callOrPassAll(overrides, themeParent);
-          const executedComponents =
+          const executedComponent =
             component && components && components[component]
-              ? callOrPassAll(components[component], props)
+              ? callOrPass(components[component], props)
               : null;
           return children({
             ...executedDefaults,
             ...themeParent,
-            ...executedComponents,
+            ...executedComponent,
             ...executedTheme,
           });
         }}
