@@ -2,17 +2,18 @@
 
 import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import type { ThemeModes, ThemeProps } from '../types';
-import { background } from '../colors';
-import Reset from './Reset';
-import { Provider } from './Context';
+import * as colors from '../colors';
 
 import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
 
+// For forward-compat until everything is upgraded.
+import { Provider } from './Context';
+
 function getStylesheetResetCSS(state: ThemeProps) {
-  const backgroundColor = background(state);
+  const backgroundColor = colors.background(state);
   return `
     body { background: ${backgroundColor}; }
   `;
@@ -26,6 +27,45 @@ type Props = {
 function buildThemeState(mode): ThemeProps {
   return { theme: { [CHANNEL]: { mode } } };
 }
+
+const LegacyReset = styled.div`
+  background-color: ${colors.background};
+  color: ${colors.text};
+
+  a {
+    color: ${colors.link};
+  }
+  a:hover {
+    color: ${colors.linkHover};
+  }
+  a:active {
+    color: ${colors.linkActive};
+  }
+  a:focus {
+    outline-color: ${colors.linkOutline};
+  }
+  h1 {
+    color: ${colors.heading};
+  }
+  h2 {
+    color: ${colors.heading};
+  }
+  h3 {
+    color: ${colors.heading};
+  }
+  h4 {
+    color: ${colors.heading};
+  }
+  h5 {
+    color: ${colors.heading};
+  }
+  h6 {
+    color: ${colors.subtleHeading};
+  }
+  small {
+    color: ${colors.subtleText};
+  }
+`;
 
 export default class AtlaskitThemeProvider extends Component<
   Props,
@@ -86,7 +126,7 @@ export default class AtlaskitThemeProvider extends Component<
       old theming API. */
       <Provider value={{ mode: theme[CHANNEL].mode }}>
         <ThemeProvider theme={theme}>
-          <Reset>{children}</Reset>
+          <LegacyReset>{children}</LegacyReset>
         </ThemeProvider>
       </Provider>
     );
