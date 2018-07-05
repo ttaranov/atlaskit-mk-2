@@ -12,7 +12,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
     onChange: () => {},
   };
 
-  input: ?FieldTextStateless;
+  input: ?HTMLInputElement;
 
   focus() {
     if (this.input) {
@@ -37,7 +37,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
         {...this.props}
         value={this.state.value}
         onChange={this.handleOnChange}
-        ref={fieldRef => {
+        innerRef={(fieldRef: ?HTMLInputElement) => {
           this.input = fieldRef;
         }}
       />
