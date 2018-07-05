@@ -147,6 +147,44 @@ describe('<CustomVideo />', () => {
         .simulate('click');
       expect(toggleFullscreen).toHaveBeenCalledTimes(1);
     });
+
+    it('should update TimeRange when time changes', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('timeUpdate', {
+        target: {
+          currentTime: 10,
+          buffered: [],
+        },
+      });
+      expect(component.find(TimeRange).prop('currentTime')).toEqual(10);
+    });
+
+    it('should update buffered time when it changes', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('timeUpdate', {
+        target: {
+          currentTime: 10,
+          buffered: {
+            length: 1,
+            end: () => 10,
+          },
+        },
+      });
+      expect(component.find(TimeRange).prop('bufferedTime')).toEqual(10);
+    });
+
+    it('should update FieldRange when volume changes', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('volumeChange', {
+        target: {
+          volume: 0.3,
+        },
+      });
+      expect(component.find(FieldRange).prop('value')).toEqual(0.3);
+    });
   });
 
   describe('auto play', () => {
