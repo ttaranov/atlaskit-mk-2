@@ -1,10 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
-
-const Link = styled.a`
-  cursor: pointer;
-  margin: 2px;
-`;
+import { Link } from './styled';
 
 export interface LinkViewProps {
   text: string;

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { IconWrapper } from './styled';
 import { colors } from '@atlaskit/theme';
 import LockIcon from '@atlaskit/icon/glyph/lock-filled';
 import Button from '@atlaskit/button';
 import { truncateUrlForErrorView } from '../utils';
 import { Frame } from '../Frame';
+import { IconAndTitleLayout } from '../IconAndTitleLayout';
 
 export interface ForbiddenViewProps {
   url: string;
@@ -26,11 +26,15 @@ export class ForbiddenView extends React.Component<ForbiddenViewProps> {
     const { url, onClick } = this.props;
     return (
       <Frame onClick={onClick}>
-        <IconWrapper>
-          <LockIcon label="error" size="medium" primaryColor={colors.B400} />
-        </IconWrapper>
-        {truncateUrlForErrorView(url)} - You don't have permissions to view
-        this.{' '}
+        <IconAndTitleLayout
+          icon={
+            <LockIcon label="error" size="medium" primaryColor={colors.B400} />
+          }
+          title={
+            truncateUrlForErrorView(url) +
+            " - You don't have permissions to view"
+          }
+        />{' '}
         <Button spacing="none" appearance="link" onClick={this.handleRetry}>
           Try another account
         </Button>
