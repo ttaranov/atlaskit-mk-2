@@ -285,4 +285,76 @@ describe('ConfluenceSearchResults', () => {
       ).toBe(true);
     });
   });
+
+  it('should render nothing on initial load', () => {
+    const props: Partial<Props> = {
+      query: '',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.children().length).toBe(0);
+  });
+
+  it('should render previous search result while loading', () => {
+    const props: Partial<Props> = {
+      query: 'abc',
+      objectResults: [makeConfluenceObjectResult({ name: 'name' })],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+      keepRecentActivityResults: false,
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const objectGroup = findGroup(Group.Objects, wrapper);
+    expect(objectGroup.children()).toHaveLength(1);
+
+    const peopleGroup = findGroup(Group.People, wrapper);
+    expect(peopleGroup.children()).toHaveLength(0);
+  });
+
+  it('should render recent activity while loading first search', () => {
+    const props: Partial<Props> = {
+      query: 'abc',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+      keepRecentActivityResults: true,
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const objectGroup = findGroup(Group.Objects, wrapper);
+    expect(objectGroup.children()).toHaveLength(0);
+
+    const peopleGroup = findGroup(Group.People, wrapper);
+    expect(peopleGroup.children()).toHaveLength(1);
+  });
+
+  it('should render previous no search result while loading new search', () => {
+    const props: Partial<Props> = {
+      query: 'abc',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+      keepRecentActivityResults: false,
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const objectGroup = findGroup(Group.Objects, wrapper);
+    expect(objectGroup.children()).toHaveLength(0);
+
+    const peopleGroup = findGroup(Group.People, wrapper);
+    expect(peopleGroup.children()).toHaveLength(0);
+
+    expect(wrapper.find(NoResults).exists()).toBe(true);
+  });
 });

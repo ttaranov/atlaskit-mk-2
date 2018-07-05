@@ -32,7 +32,7 @@ import {
   errorConfluenceQuickNavSearch,
   makeConfluenceClient,
 } from './mocks/_mockConfluenceClient';
-import * as SearchResult from '../src/components/confluence/ConfluenceSearchResults';
+import * as SearchResults from '../src/components/confluence/ConfluenceSearchResults';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
@@ -77,7 +77,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   let searchResultSpy;
 
   beforeEach(() => {
-    searchResultSpy = jest.spyOn(SearchResult, 'default');
+    searchResultSpy = jest.spyOn(SearchResults, 'default');
   });
   afterEach(() => {
     searchResultSpy.mockRestore();
