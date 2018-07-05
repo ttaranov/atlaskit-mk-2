@@ -15,6 +15,7 @@ import Video, {
 } from 'react-video-renderer';
 import { colors } from '@atlaskit/theme';
 import Spinner from '@atlaskit/spinner';
+import FieldRange from '@atlaskit/field-range';
 import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
@@ -28,7 +29,6 @@ import {
   ControlsWrapper,
   VolumeToggleWrapper,
   MutedIndicator,
-  VolumeRange,
   SpinnerWrapper,
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
@@ -96,10 +96,8 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
     navigate(value);
   };
 
-  onVolumeChange = (setVolume: SetVolumeFunction) => (e: any) => {
-    const value = e.target.value;
+  onVolumeChange = (setVolume: SetVolumeFunction) => (value: number) =>
     setVolume(value);
-  };
 
   shortcutHanler = (toggleButtonAction: ToggleButtonAction) => () => {
     const { showControls } = this.props;
@@ -145,11 +143,9 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             iconBefore={<SoundIcon label="volume" />}
           />
         </VolumeToggleWrapper>
-        <VolumeRange
-          type="range"
-          step={0.01}
-          value={volume}
+        <FieldRange
           max={1}
+          value={volume}
           onChange={this.onVolumeChange(actions.setVolume)}
         />
       </VolumeWrapper>

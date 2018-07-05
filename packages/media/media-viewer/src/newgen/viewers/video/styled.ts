@@ -61,6 +61,12 @@ export const VolumeWrapper = styled.div`
     padding-right: 20px;
     width: 152px;
   }
+
+  input {
+    transform: translateX(13px);
+    height: 100%;
+    cursor: pointer;
+  }
 `;
 
 export const TimeWrapper = styled.div`
@@ -159,12 +165,6 @@ export const MutedIndicator = styled.div`
     opacity: 1;
   `
       : ''};
-`;
-
-export const VolumeRange = styled.input`
-  transform: translateX(5px);
-  height: 100%;
-  cursor: pointer;
 `;
 
 export interface CurrentTimeTooltipProps {
