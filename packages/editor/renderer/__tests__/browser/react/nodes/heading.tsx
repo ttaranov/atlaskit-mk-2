@@ -58,7 +58,7 @@ describe('<Heading />', () => {
     expect(headers[5].prop('id')).to.equal('This-is-a-Heading-6');
   });
 
-  it('should have heading id and encode into url friendly', () => {
+  it('should have heading id', () => {
     const headingContent = [
       {
         type: 'text',
@@ -92,6 +92,6 @@ describe('<Heading />', () => {
       </Heading>,
     );
     expect(heading.name()).to.equal('h1');
-    expect(heading.prop('id')).to.equal('This-is-a-Heading-😁 -with-a-emoji');
+    expect(heading.prop('id')).to.equal('This-is-a-Heading-😁-with-a-emoji');
   });
 });
