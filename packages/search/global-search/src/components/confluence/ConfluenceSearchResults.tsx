@@ -12,7 +12,12 @@ import {
   isEmpty,
   getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
+import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
+import { buildScreenEvent, Screen } from '../../util/analytics';
 import NoRecentActivity from '../NoRecentActivity';
+
+let preQueryScreenCounter = 0;
+let postQueryScreenCounter = 0;
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -81,6 +86,7 @@ export interface Props {
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
+  searchSessionId: string;
 }
 
 export default function searchResults(props: Props) {
@@ -95,6 +101,7 @@ export default function searchResults(props: Props) {
     objectResults,
     spaceResults,
     peopleResults,
+    searchSessionId,
   } = props;
 
   if (isLoading) {
@@ -120,6 +127,16 @@ export default function searchResults(props: Props) {
       );
     }
     // TODO: insert error state here if the recent results are empty.
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return null;
+    }
+
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
@@ -133,6 +150,17 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderAdvancedSearchGroup(query),
+      <AnalyticsEventFiredOnMount
+        key="preQueryScreenEvent"
+        onEventFired={() => preQueryScreenCounter++}
+        payloadProvider={() =>
+          buildScreenEvent(
+            Screen.PRE_QUERY,
+            preQueryScreenCounter,
+            searchSessionId,
+          )
+        }
+      />,
     ];
   }
 
@@ -149,5 +177,16 @@ export default function searchResults(props: Props) {
     renderSpacesGroup('Spaces', take(spaceResults, 3), query),
     renderPeopleGroup('People', take(peopleResults, 3), query),
     renderAdvancedSearchGroup(query),
+    <AnalyticsEventFiredOnMount
+      key="postQueryScreenEvent"
+      onEventFired={() => postQueryScreenCounter++}
+      payloadProvider={() =>
+        buildScreenEvent(
+          Screen.POST_QUERY,
+          postQueryScreenCounter,
+          searchSessionId,
+        )
+      }
+    />,
   ];
 }

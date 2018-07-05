@@ -349,6 +349,7 @@ export default class ExamplesModal extends Component<Props, State> {
     }
     return (
       <Modal
+        autoFocus={false}
         body={ModalBody}
         header={({ showKeyline }) => (
           <ModalHeaderComp

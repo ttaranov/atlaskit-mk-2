@@ -56,6 +56,7 @@
     "start:jira": "                          yarn run website:start **/packages/jira/**",
     "start:marketplace": "                   yarn run website:start **/packages/marketplace/**",
     "start:media": "                         yarn run website:start **/packages/media/**",
+    "start:people-and-teams": "                     yarn run website:start **/packages/people-and-teams/**",
     "start:pipelines": "                     yarn run website:start **/packages/pipelines/**",
     "start:purchasing": "                    yarn run website:start **/packages/purchasing/**",
     "start:search": "                        yarn run website:start **/packages/search/**",
@@ -206,6 +207,7 @@
     "tslint-config-prettier": "^1.6.0",
     "tslint-react": "^3.2.0",
     "typescript": "~2.6.2",
+    "uid": "^0.0.2",
     "url-loader": "^0.5.9",
     "validator": "^9.4.1",
     "webdriverio": "^4.10.1",
@@ -217,7 +219,6 @@
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/profilecard": "^3.13.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",

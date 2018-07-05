@@ -1,5 +1,16 @@
 # @atlaskit/renderer
 
+## 18.2.11
+- [patch] Add missing dependencies to packages to get the website to build [99446e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99446e3)
+
+- [none] Updated dependencies [99446e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99446e3)
+  - @atlaskit/media-filmstrip@9.0.6
+  - @atlaskit/profilecard@3.13.1
+  - @atlaskit/docs@4.2.2
+- [none] Updated dependencies [9bac948](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9bac948)
+  - @atlaskit/media-filmstrip@9.0.6
+  - @atlaskit/docs@4.2.2
+
 ## 18.2.10
 - [patch] Updated dependencies [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
   - @atlaskit/mention@13.1.4

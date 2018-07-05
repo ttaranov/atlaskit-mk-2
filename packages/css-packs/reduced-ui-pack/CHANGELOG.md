@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.18.0
+- [minor] Added lozenges to reduced-ui-pack [9baf761](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9baf761)
+
 ## 8.17.0
 - [minor] Add chevron large icons [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
 - [none] Updated dependencies [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)

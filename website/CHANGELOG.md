@@ -1,5 +1,10 @@
 # @atlaskit/website
 
+## 2.1.6
+- [patch] adds environment variable for whether the atlaskit website is running locally, in staging or in production [a04c1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a04c1c5)
+- [patch] Updated dependencies [a04c1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a04c1c5)
+  - @atlaskit/webpack-config@2.0.1
+
 ## 2.1.5
 - [patch] Updated dependencies [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
   - @atlaskit/code@6.0.0

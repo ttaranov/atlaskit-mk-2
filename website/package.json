@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -22,9 +22,9 @@
     "build:copy": "cp dist/index.html dist/404.html && cp -R public/* dist/",
     "build:zip": "rm -rf dist.zip && zip -r dist.zip dist/",
     "start": "yarn webpack:dev",
-    "deploy": "yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
-    "deploy-staging": "yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
-    "deploy-staging:no-minimize": "yarn build:no-minimize && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
+    "deploy": "WEBSITE_ENV=production yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
+    "deploy-staging": "WEBSITE_ENV=staging yarn build && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip",
+    "deploy-staging:no-minimize": "WEBSITE_ENV=staging yarn build:no-minimize && netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
@@ -63,7 +63,7 @@
     "@atlaskit/theme": "^4.0.4",
     "@atlaskit/tooltip": "^10.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "@atlaskit/webpack-config": "^2.0.0",
+    "@atlaskit/webpack-config": "^2.0.1",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
     "babel-runtime": "^6.26.0",
