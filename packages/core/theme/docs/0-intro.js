@@ -22,9 +22,9 @@ import { AtlaskitThemeProvider, themed, colors } from '@atlaskit/theme';
 
   ${(
     <Example
-      Component={require('../examples/0-theme-provider').default}
+      Component={require('../examples/0-deprecated-theme-provider').default}
       title="Theme Provider Example"
-      source={require('!!raw-loader!../examples/0-theme-provider')}
+      source={require('!!raw-loader!../examples/0-deprecated-theme-provider')}
     />
   )}
 
@@ -36,8 +36,15 @@ import { AtlaskitThemeProvider, themed, colors } from '@atlaskit/theme';
 
   ## Helpers
 
-  The \`themed\` export is a function that generates functions which switch on mode. These generated functions can be passed to a styled component to make a property responsive to mode. Atlaskit components will do this by default.
-  colors object
+  ### \`colors\`
 
-  The \`colors\` object is an export that has the ADG colors attached to it, for easy use.
+  An object containing the colors defined by the ADG color pallete.
+
+  ${(
+    <Example
+      Component={require('../examples/helpers-color').default}
+      title="colors"
+      source={require('!!raw-loader!../examples/helpers-color')}
+    />
+  )}
 `;
