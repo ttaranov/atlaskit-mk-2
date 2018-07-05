@@ -28,7 +28,8 @@ export default function Heading(
 const getHeaderId = (contents): string => {
   return contents
     .reduce((acc, node) => {
-      return acc.concat(getText(node) || '');
+      let headingText = getText(node) || '';
+      return acc.concat(headingText);
     }, '')
     .replace(/ /g, '-');
 };
