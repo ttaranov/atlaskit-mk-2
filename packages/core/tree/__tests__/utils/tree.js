@@ -1,6 +1,11 @@
 //@flow
 
-import { flattenTree, getItem, mutateTree } from '../../src/utils/tree';
+import {
+  flattenTree,
+  getItem,
+  mutateTree,
+  getTreePosition,
+} from '../../src/utils/tree';
 import { treeWithThreeLeaves } from '../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../mockdata/treeWithTwoBranches';
 
@@ -161,6 +166,29 @@ describe('@atlaskit/tree - utils/tree', () => {
 
     it('returns undefined if item does not exist', () => {
       expect(getItem(treeWithThreeLeaves, [100])).toBe(undefined);
+    });
+  });
+
+  describe('#getTreePosition', () => {
+    it('returns the top element', () => {
+      expect(getTreePosition(treeWithTwoBranches, [0])).toEqual({
+        parentId: '1',
+        index: 0,
+      });
+    });
+
+    it('returns the top element of a sublist', () => {
+      expect(getTreePosition(treeWithTwoBranches, [0, 0])).toEqual({
+        parentId: '1-1',
+        index: 0,
+      });
+    });
+
+    it('returns the last element of a sublist', () => {
+      expect(getTreePosition(treeWithTwoBranches, [0, 1])).toEqual({
+        parentId: '1-1',
+        index: 1,
+      });
     });
   });
 });

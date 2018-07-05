@@ -190,27 +190,4 @@ describe('@atlaskit/tree - Tree', () => {
       expect(instance.state.dropAnimationOffset).toBe(35);
     });
   });
-
-  describe('#getTreePosition', () => {
-    it('returns the top element', () => {
-      expect(Tree.getTreePosition(treeWithTwoBranches, [0])).toEqual({
-        parentId: '1',
-        index: 0,
-      });
-    });
-
-    it('returns the top element of a sublist', () => {
-      expect(Tree.getTreePosition(treeWithTwoBranches, [0, 0])).toEqual({
-        parentId: '1-1',
-        index: 0,
-      });
-    });
-
-    it('returns the last element of a sublist', () => {
-      expect(Tree.getTreePosition(treeWithTwoBranches, [0, 1])).toEqual({
-        parentId: '1-1',
-        index: 1,
-      });
-    });
-  });
 });
