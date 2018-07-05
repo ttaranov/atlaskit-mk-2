@@ -18,7 +18,6 @@ import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
 import { Dispatch } from '../../../event-dispatcher';
-import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { EditorAppearance } from '../../../types/editor-props';
 import DropPlaceholder from '../ui/Media/DropPlaceholder';
 import { MediaPluginOptions } from '../media-plugin-options';
@@ -41,6 +40,7 @@ import DefaultMediaStateManager from '../default-state-manager';
 import { insertMediaSingleNode } from '../utils/media-single';
 
 import { hasParentNodeOfType } from 'prosemirror-utils';
+import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -52,7 +52,7 @@ export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
 export interface MediaNodeWithPosHandler {
   node: PMNode;
-  getPos: ProsemirrorGetPosHandler;
+  getPos: getPosHandler;
 }
 
 export class MediaPluginState {
@@ -455,7 +455,7 @@ export class MediaPluginState {
    * Called from React UI Component when user clicks on "Delete" icon
    * inside of it
    */
-  handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+  handleMediaNodeRemoval = (node: PMNode, getPos: getPosHandler) => {
     removeMediaNode(this.view, node, getPos);
   };
 
@@ -479,7 +479,7 @@ export class MediaPluginState {
   /**
    * Called from React UI Component on componentDidMount
    */
-  handleMediaNodeMount = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+  handleMediaNodeMount = (node: PMNode, getPos: getPosHandler) => {
     this.mediaNodes.push({ node, getPos });
   };
 
@@ -795,6 +795,10 @@ export class MediaPluginState {
 
     // replace the old node with a new one
     const nodePos = getPos();
+    if (typeof nodePos === 'undefined') {
+      return;
+    }
+
     const tr = view.state.tr.replaceWith(
       nodePos,
       nodePos + mediaNode.nodeSize,

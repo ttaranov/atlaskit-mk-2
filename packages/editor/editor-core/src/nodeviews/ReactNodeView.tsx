@@ -3,7 +3,7 @@ import { NodeView, EditorView, Decoration } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { PortalProviderAPI } from '../ui/PortalProvider';
 
-export type getPosHandler = () => number;
+export type getPosHandler = () => number | undefined;
 export type ReactComponentProps = { [key: string]: any };
 
 export default class ReactNodeView implements NodeView {
