@@ -12,7 +12,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
     onChange: () => {},
   };
 
-  input: ?HTMLInputElement;
+  input: ?FieldTextStateless;
 
   focus() {
     if (this.input) {
