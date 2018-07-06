@@ -53,7 +53,6 @@ describe('text-formatting input rules', () => {
       doc,
       editorProps: {
         analyticsHandler: trackEvent,
-        allowMentions: true,
         allowCodeBlocks: true,
         textFormatting: { disableCode },
         emojiProvider: new Promise(() => {}),
