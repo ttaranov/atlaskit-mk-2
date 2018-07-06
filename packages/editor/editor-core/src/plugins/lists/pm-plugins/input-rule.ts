@@ -3,7 +3,7 @@ import {
   inputRules,
   wrappingInputRule,
 } from 'prosemirror-inputrules';
-import { NodeType, Schema } from 'prosemirror-model';
+import { NodeType, Schema, NodeRange, Node as PMNode } from 'prosemirror-model';
 import { Plugin, Transaction, EditorState } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../../analytics';
 import {
@@ -49,7 +49,7 @@ export const insertList = (
   let tr = state.tr.delete(start, end).split(start);
 
   // If node has more content split at the end of autoformatting.
-  let currentNode = tr.doc.nodeAt(start + 1);
+  let currentNode = tr.doc.nodeAt(start + 1) as PMNode;
   tr.doc.nodesBetween(start, start + currentNode!.nodeSize, (node, pos) => {
     if (node.type === hardBreak) {
       tr = tr.split(pos + 1).delete(pos, pos + 1);
@@ -60,7 +60,7 @@ export const insertList = (
   const { listItem } = state.schema.nodes;
   const position = tr.doc.resolve(start + 2);
   let range = position.blockRange(position)!;
-  tr = tr.wrap(range, [{ type: listType }, { type: listItem }]);
+  tr = tr.wrap(range as NodeRange, [{ type: listType }, { type: listItem }]);
   return tr;
 };
 

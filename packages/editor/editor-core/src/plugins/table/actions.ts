@@ -44,7 +44,7 @@ import {
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
-import { outdentList } from '../../commands';
+import { outdentList } from '../lists/commands';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
