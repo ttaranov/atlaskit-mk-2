@@ -16,7 +16,7 @@ import listPlugin from '../../../src/plugins/lists';
 import TableView from '../../../src/plugins/table/nodeviews/table';
 import {
   TablePluginState,
-  stateKey as tablePluginKey,
+  pluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 
 describe('TableView', () => {
@@ -38,7 +38,7 @@ describe('TableView', () => {
           permittedLayouts: 'all',
         },
       },
-      pluginKey: tablePluginKey,
+      pluginKey,
     });
   // previous regression involved PM trying to render child DOM elements,
   // but the NodeView had an undefined contentDOM after the React render finishes

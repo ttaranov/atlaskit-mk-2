@@ -25,7 +25,7 @@ import {
   FloatingToolbarHandler,
   RenderOptionsProps,
 } from '../floating-toolbar/types';
-import { stateKey, TablePluginState, PluginConfig } from './pm-plugins/main';
+import { pluginKey, TablePluginState, PluginConfig } from './pm-plugins/main';
 import {
   hoverTable,
   deleteTable,
@@ -79,7 +79,7 @@ const supportsTableLayout = (pluginConfig: PluginConfig) => (
     pluginConfig.permittedLayouts.indexOf(layoutName) > -1);
 
 export const getToolbarConfig: FloatingToolbarHandler = state => {
-  const tableState: TablePluginState | undefined = stateKey.getState(state);
+  const tableState: TablePluginState | undefined = pluginKey.getState(state);
   if (
     tableState &&
     tableState.tableRef &&
