@@ -1,11 +1,11 @@
 import { Node, NodeSpec } from 'prosemirror-model';
-import { Definition as DecisionItemNode } from './decision-item';
+import { DecisionItemDefinition as DecisionItemNode } from './decision-item';
 import { uuid } from '../../utils';
 
 /**
  * @name decisionList_node
  */
-export interface Definition {
+export interface DecisionListDefinition {
   type: 'decisionList';
   /**
    * @minItems 1

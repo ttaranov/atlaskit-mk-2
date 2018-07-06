@@ -3,7 +3,7 @@ import { NodeSpec } from 'prosemirror-model';
 /**
  * @name text_node
  */
-export interface Definition {
+export interface TextDefinition {
   type: 'text';
   /**
    * @minLength 1

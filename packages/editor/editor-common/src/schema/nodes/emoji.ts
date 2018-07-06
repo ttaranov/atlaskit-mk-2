@@ -4,12 +4,12 @@ import { acNameToEmoji, acShortcutToEmoji } from '../../utils/confluence/emoji';
 /**
  * @name emoji_node
  */
-export interface Definition {
+export interface EmojiDefinition {
   type: 'emoji';
-  attrs: Attributes;
+  attrs: EmojiAttributes;
 }
 
-export interface Attributes {
+export interface EmojiAttributes {
   id?: string; // Optional to support legacy formats
   shortName: string;
   text?: string;

@@ -4,7 +4,7 @@ export type ExtensionLayout = 'default' | 'wide' | 'full-width';
 /**
  * @name bodiedExtension_node
  */
-export interface Definition {
+export interface BodiedExtensionDefinition {
   type: 'bodiedExtension';
   attrs: {
     /**
