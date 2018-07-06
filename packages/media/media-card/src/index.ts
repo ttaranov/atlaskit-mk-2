@@ -10,7 +10,7 @@ import {
   MediaType,
   FileProcessingStatus,
 } from '@atlaskit/media-core';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { CardAction } from './actions';
 

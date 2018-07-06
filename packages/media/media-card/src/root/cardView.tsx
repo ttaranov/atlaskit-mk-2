@@ -11,8 +11,8 @@ import {
 import {
   withAnalyticsEvents,
   createAndFireEvent,
-  WithAnalyticsEventProps,
 } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
 import {
   SharedCardProps,
