@@ -21,7 +21,7 @@ export interface Props {
       content: string;
       elemBefore?: React.ReactNode;
       tooltipDescription?: string;
-      tooltopPosition?: string;
+      tooltipPosition?: string;
       isActive: boolean;
       isDisabled?: boolean;
     }>;
@@ -36,7 +36,7 @@ export interface State {
 const DropListWithOutsideListeners: any = withOuterListeners(DropList);
 
 /**
- * Hack for item to immitate old dropdown-menu selected styles
+ * Hack for item to imitate old dropdown-menu selected styles
  */
 const ItemWrapper: any = styled.div`
   ${(props: any) =>
