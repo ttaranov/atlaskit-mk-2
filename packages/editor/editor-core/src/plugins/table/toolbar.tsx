@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { splitCell, mergeCells } from 'prosemirror-tables';
 
 import {
@@ -66,9 +67,9 @@ const withAnalytics = (
   command: Command,
   eventName: string,
   properties?: AnalyticsProperties,
-) => {
+) => (state: EditorState, dispatch: (tr: Transaction) => void) => {
   analytics.trackEvent(eventName, properties);
-  return command;
+  return command(state, dispatch);
 };
 
 const supportsTableLayout = (pluginConfig: PluginConfig) => (
