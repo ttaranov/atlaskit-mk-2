@@ -14,7 +14,7 @@ test('children', () => {
       appearance: 'subtle',
       spacing: 'none',
       tabIndex: -1,
-      children: 'children',
+      iconBefore: 'children',
     }),
   );
 });

@@ -14,7 +14,6 @@ export default (props: Props) => (
     onClick={props.onClick}
     spacing="none"
     tabIndex={-1}
-  >
-    {props.children}
-  </Button>
+    iconBefore={props.children}
+  />
 );
