@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.1.13
+- [patch] allow dev override to override feature flag [468bbfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468bbfe)
+
 ## 15.1.12
 - [patch] Use media.tsconfig in MediaViewer [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
 - [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
