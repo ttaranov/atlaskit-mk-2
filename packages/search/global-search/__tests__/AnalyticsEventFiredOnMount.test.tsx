@@ -3,7 +3,7 @@ import { UnwrappedAnalyticsEventFiredOnMount } from '../src/components/analytics
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { mount } from 'enzyme';
 import { CreateAnalyticsEventFn } from '../src/components/analytics/types';
-import { DEFUALT_GAS_CHANNEL } from '../src/util/analytics';
+import { DEFAULT_GAS_CHANNEL } from '../src/util/analytics';
 
 const mockPayloadA: GasPayload = {
   action: 'action-A',
@@ -54,7 +54,7 @@ describe('AnalyticsEventFiredOnMount', () => {
 
     // ensure event fired once on the correct channel
     expect(mockEvent.fire.mock.calls.length).toBe(1);
-    expect(mockEvent.fire.mock.calls[0][0]).toBe(DEFUALT_GAS_CHANNEL);
+    expect(mockEvent.fire.mock.calls[0][0]).toBe(DEFAULT_GAS_CHANNEL);
 
     // ensure callback called
     expect(onEventFiredStub.mock.calls.length).toBe(1);
@@ -79,7 +79,7 @@ describe('AnalyticsEventFiredOnMount', () => {
 
     // ensure event fired twice on the correct channel
     expect(mockEvent.fire.mock.calls.length).toBe(2);
-    expect(mockEvent.fire.mock.calls[1][0]).toBe(DEFUALT_GAS_CHANNEL);
+    expect(mockEvent.fire.mock.calls[1][0]).toBe(DEFAULT_GAS_CHANNEL);
 
     // ensure callback called twice
     expect(onEventFiredStub.mock.calls.length).toBe(2);
