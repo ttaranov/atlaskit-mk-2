@@ -7,6 +7,11 @@ export const layoutSection: NodeSpec = {
   },
   parseDOM: [
     {
+      context: 'layoutSection//|layoutColumn//',
+      tag: 'div[data-layout-type]',
+      skip: true,
+    },
+    {
       tag: 'div[data-layout-type]',
       getAttrs(dom: HTMLElement) {
         return { layout: dom.getAttribute('data-layout-type') || 'two_equal' };

@@ -10,15 +10,18 @@ import {
   searchPeopleItem,
   take,
   isEmpty,
+  getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
-import {
-  PreQueryScreenEvent,
-  PostQueryScreenEvent,
-} from '../analytics/SceenEvents';
+import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
+import { buildScreenEvent, Screen } from '../../util/analytics';
+import NoRecentActivity from '../NoRecentActivity';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
+
+let preQueryScreenCounter = 0;
+let postQueryScreenCounter = 0;
 
 const renderObjectsGroup = (title: string, results: Result[], query: string) =>
   results.length > 0 ? (
@@ -53,7 +56,7 @@ const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
     icon: <SearchIcon size="medium" label="Search People" />,
-    text: 'People directory',
+    text: 'Search in People',
   });
 
 const renderNoResults = (query: string) => [
@@ -76,12 +79,6 @@ const renderAdvancedSearchGroup = (query: string) => {
   );
 };
 
-const preQueryScreenEvent = <PreQueryScreenEvent key="preQueryScreenEvent" />;
-
-const postQueryScreenEvent = (
-  <PostQueryScreenEvent key="postQueryScreenEvent" />
-);
-
 export interface Props {
   query: string;
   isError: boolean;
@@ -93,6 +90,7 @@ export interface Props {
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
+  searchSessionId: string;
 }
 
 export default function searchResults(props: Props) {
@@ -107,6 +105,7 @@ export default function searchResults(props: Props) {
     objectResults,
     spaceResults,
     peopleResults,
+    searchSessionId,
   } = props;
 
   if (isLoading) {
@@ -118,6 +117,19 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
+    if (
+      [
+        recentlyInteractedPeople,
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+      ].every(isEmpty)
+    ) {
+      return (
+        <NoRecentActivity
+          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
+        />
+      );
+    }
     // TODO: insert error state here if the recent results are empty.
     if (
       [
@@ -146,7 +158,17 @@ export default function searchResults(props: Props) {
         query,
       ),
       renderAdvancedSearchGroup(query),
-      preQueryScreenEvent,
+      <AnalyticsEventFiredOnMount
+        key="preQueryScreenEvent"
+        onEventFired={() => preQueryScreenCounter++}
+        payloadProvider={() =>
+          buildScreenEvent(
+            Screen.PRE_QUERY,
+            preQueryScreenCounter,
+            searchSessionId,
+          )
+        }
+      />,
     ];
   }
 
@@ -163,6 +185,17 @@ export default function searchResults(props: Props) {
     renderSpacesGroup('Spaces', take(spaceResults, MAX_SPACES), query),
     renderPeopleGroup('People', take(peopleResults, MAX_PEOPLE), query),
     renderAdvancedSearchGroup(query),
-    postQueryScreenEvent,
+
+    <AnalyticsEventFiredOnMount
+      key="postQueryScreenEvent"
+      onEventFired={() => postQueryScreenCounter++}
+      payloadProvider={() =>
+        buildScreenEvent(
+          Screen.POST_QUERY,
+          postQueryScreenCounter,
+          searchSessionId,
+        )
+      }
+    />,
   ];
 }

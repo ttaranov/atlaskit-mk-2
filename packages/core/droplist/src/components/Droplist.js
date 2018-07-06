@@ -126,7 +126,7 @@ export default class Droplist extends Component<Props, void> {
 
   handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
-      // $FlowFixMe
+      // $FlowFixMe - flow is lost and if not an instance of Node
       if (event.target instanceof Node) {
         // Rather than check for the target within the entire Droplist, we specify the trigger/content.
         // This aids with future effort in scroll-locking Droplist when isMenuFixed is enabled; the scroll
@@ -208,7 +208,7 @@ export default class Droplist extends Component<Props, void> {
           boundariesElement={boundariesElement}
           content={layerContent}
           offset={dropOffset}
-          // $FlowFixMe
+          // $FlowFixMe - Cannot create `Layer` element because in property `position
           position={position}
           isAlwaysFixed={isOpen && isMenuFixed}
           onPositioned={onPositioned}

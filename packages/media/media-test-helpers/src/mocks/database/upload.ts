@@ -1,6 +1,7 @@
-import * as Faker from 'faker';
 import { MediaUpload } from '@atlaskit/media-store';
+import * as uuid from 'uuid';
 import { ChunkId } from './chunk';
+import { getFutureDate } from './mockData';
 
 export type Upload = MediaUpload & {
   chunks: ChunkId[];
@@ -8,9 +9,9 @@ export type Upload = MediaUpload & {
 
 export function createUpload(): Upload {
   return {
-    id: Faker.random.uuid(),
+    id: uuid.v4(),
     created: Date.now(),
-    expires: Faker.date.future().valueOf(),
+    expires: getFutureDate().valueOf(),
     chunks: [],
   };
 }

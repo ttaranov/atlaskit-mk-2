@@ -13,6 +13,8 @@ import { GapCursorSelection, Side } from './selection';
 // we don't show gap cursor for those nodes
 const INGORED_NODES = [
   'paragraph',
+  'bulletList',
+  'orderedList',
   'listItem',
   'taskItem',
   'decisionItem',

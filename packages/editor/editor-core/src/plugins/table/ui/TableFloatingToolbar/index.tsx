@@ -3,7 +3,7 @@ import { HTMLAttributes, ComponentClass, Component } from 'react';
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { hasParentNodeOfType } from 'prosemirror-utils';
-
+import { Node as PmNode } from 'prosemirror-model';
 import {
   Popup,
   TableLayout,
@@ -53,6 +53,7 @@ export interface Props {
   tableRef?: HTMLElement;
   tableLayout?: TableLayout;
   pluginConfig?: PluginConfig;
+  tableNode?: PmNode;
   updateLayout?: (layoutName: TableLayout) => void;
 }
 
@@ -81,6 +82,16 @@ export default class TableFloatingToolbar extends Component<Props, State> {
   state: State = {
     isOpen: false,
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { tableRef, tableNode, pluginConfig, tableLayout } = this.props;
+    return (
+      tableRef !== nextProps.tableRef ||
+      tableNode !== nextProps.tableNode ||
+      pluginConfig !== nextProps.pluginConfig ||
+      tableLayout !== nextProps.tableLayout
+    );
+  }
 
   render() {
     const {

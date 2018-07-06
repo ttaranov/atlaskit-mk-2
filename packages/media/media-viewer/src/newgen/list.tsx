@@ -8,22 +8,26 @@ import { ErrorMessage } from './styled';
 import Navigation from './navigation';
 import Header from './header';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   onNavigationChange?: (selectedItem: Identifier) => void;
   showControls?: () => void;
-  readonly featureFlags?: MediaViewerFeatureFlags;
-  selectedItem: Identifier;
+  featureFlags?: MediaViewerFeatureFlags;
+  defaultSelectedItem: Identifier;
   items: Identifier[];
   context: Context;
-};
+}>;
 
 export type State = {
   selectedItem: Identifier;
+  previewCount: number;
 };
 
 export class List extends React.Component<Props, State> {
-  state: State = { selectedItem: this.props.selectedItem };
+  state: State = {
+    selectedItem: this.props.defaultSelectedItem,
+    previewCount: 0,
+  };
 
   render() {
     const { items } = this.props;
@@ -56,6 +60,7 @@ export class List extends React.Component<Props, State> {
             identifier={selectedItem}
             showControls={showControls}
             onClose={onClose}
+            previewCount={this.state.previewCount}
           />
           <Navigation
             items={items}
@@ -76,6 +81,6 @@ export class List extends React.Component<Props, State> {
       showControls();
     }
 
-    this.setState({ selectedItem });
+    this.setState({ selectedItem, previewCount: this.state.previewCount + 1 });
   };
 }

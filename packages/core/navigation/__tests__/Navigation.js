@@ -568,8 +568,7 @@ describe('<Navigation />', () => {
   });
   describe('reactWarnings', () => {
     beforeEach(() => {
-      // $FlowFixMe
-      console.error = jest.fn(error => {
+      jest.fn(error => {
         throw new Error(error);
       });
     });

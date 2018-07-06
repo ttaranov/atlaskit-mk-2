@@ -1,5 +1,14 @@
 # @atlaskit/code
 
+## 6.0.1
+- [patch] Add default theme prop to prevent Code throwing errors when no theme provider is given [07334bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07334bc)
+- [none] Updated dependencies [07334bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07334bc)
+
+## 6.0.0
+- [major] Significantly reduce the bundle-size of @atlaskit/code by only supporting a subset of languages. Also introduces support for theming the content via @atlaskit/theme. AK-4536 [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
+- [none] Updated dependencies [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
+  - @atlaskit/docs@4.2.1
+
 ## 5.0.4
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

@@ -1,5 +1,17 @@
 # @atlaskit/media-viewer
 
+## 15.1.11
+- [patch] Fix passing feature flags down the List component [ae107ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae107ed)
+
+## 15.1.10
+- [patch] Autoplay video and audio files when they are the selected media items [99c6b85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99c6b85)
+
+## 15.1.9
+- [patch] CHANGESET: Use theme/layers's z-index for the Blanket component [186ff55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/186ff55)
+
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+  - @atlaskit/icon@12.5.1
+
 ## 15.1.8
 - [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
   - @atlaskit/media-test-helpers@14.0.4

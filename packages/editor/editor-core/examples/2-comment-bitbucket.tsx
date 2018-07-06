@@ -125,6 +125,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
+                    quickInsert={true}
                     primaryToolbarComponents={[
                       <ToolbarFeedback
                         packageVersion={version}

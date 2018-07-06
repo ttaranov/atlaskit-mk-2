@@ -16,6 +16,9 @@
   "files": [
     "dist"
   ],
+  "atlaskit": {
+    "internal": true
+  },
   "license": "Apache-2.0",
   "devDependencies": {
     "jscodeshift": "^0.5.1",

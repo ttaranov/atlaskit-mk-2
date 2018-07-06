@@ -1,6 +1,12 @@
 import { name } from '../../../package.json';
 import { createSchema } from '../../../src';
-import { fromHTML, toHTML } from '../../../test-helpers';
+import { fromHTML, toHTML, toContext } from '../../../test-helpers';
+import {
+  layoutSection,
+  layoutColumn,
+  doc,
+  p,
+} from '@atlaskit/editor-test-helpers';
 
 const schema = makeSchema();
 
@@ -14,6 +20,20 @@ describe(`${name}/schema layout-section node`, () => {
     const doc = fromHTML('<div data-layout-type="two_equal" />', schema);
     const node = doc.firstChild!;
     expect(node.type.name).toEqual('layoutSection');
+  });
+
+  it('should not match <div data-layout-type="*" /> when pasted inside layoutSection', () => {
+    const document = doc(
+      layoutSection()(layoutColumn(p('{<>}')), layoutColumn(p(''))),
+    );
+    const context = toContext(document, schema);
+    const pmDoc = fromHTML(
+      '<div data-layout-type="two_equal"><p>Text</p></div>',
+      schema,
+      { context },
+    );
+    const node = pmDoc.firstChild!;
+    expect(node.type.name).toEqual('paragraph');
   });
 });
 

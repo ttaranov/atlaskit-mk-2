@@ -82,7 +82,7 @@ function createFixture(
 ) {
   const el = mount(
     <Collection
-      selectedItem={identifier}
+      defaultSelectedItem={identifier}
       collectionName={collectionName}
       context={context}
       onClose={onClose}
@@ -169,7 +169,9 @@ describe('<Collection />', () => {
     subject.next(mediaCollection);
     el.update();
     const listProps = el.find(List).props();
-    expect(listProps.selectedItem.collectionName).toEqual(collectionName);
+    expect(listProps.defaultSelectedItem.collectionName).toEqual(
+      collectionName,
+    );
     listProps.items.forEach(item => {
       expect(item.collectionName).toEqual(collectionName);
     });

@@ -32,6 +32,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     transparentFallback: false,
     width: '100%',
     height: '100%',
+    className: '',
   };
 
   constructor(props) {

@@ -12,9 +12,9 @@ import styled from 'styled-components';
  * Provide a styled container with form as default.
  */
 const FormWrapper = styled.div`
-  display: 'flex';
-  min-height: '100vh';
-  flex-direction: 'column';
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 `;
 
 /**

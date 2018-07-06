@@ -42,7 +42,7 @@ export const confluenceJiraIssue = (attrs: {
   schemaVersion?: string;
   server?: string;
   serverId?: string;
-}) => schema.nodes.confluenceJiraIssue.create(attrs);
+}) => schema.nodes.confluenceJiraIssue.createChecked(attrs);
 export const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
 export const mediaSingle = (
   attrs: MediaSingleAttributes = { layout: 'center' },
@@ -90,7 +90,7 @@ export const media = (attrs: {
     mediaAttrs.__fileMimeType = fileMimeType;
   }
 
-  return schema.nodes.media.create(mediaAttrs);
+  return schema.nodes.media.createChecked(mediaAttrs);
 };
 export const table = nodeFactory(schema.nodes.table, {});
 export const tr = nodeFactory(schema.nodes.tableRow, {});
@@ -114,12 +114,12 @@ export const inlineExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
-}) => schema.nodes.inlineExtension.create(attrs);
+}) => schema.nodes.inlineExtension.createChecked(attrs);
 export const extension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
-}) => schema.nodes.extension.create(attrs);
+}) => schema.nodes.extension.createChecked(attrs);
 export const bodiedExtension = (
   attrs: {
     extensionKey: string;
@@ -127,12 +127,12 @@ export const bodiedExtension = (
     parameters?: object;
   },
   content,
-) => schema.nodes.bodiedExtension.create(attrs, content);
+) => schema.nodes.bodiedExtension.createChecked(attrs, content);
 export const emoji = (attrs: {
   id?: string;
   shortName: string;
   text?: string;
-}) => schema.nodes.emoji.create(attrs);
+}) => schema.nodes.emoji.createChecked(attrs);
 export const confluenceInlineComment = (attrs: { reference: string }) =>
   markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);
 export const taskList = (attrs: { localId?: string } = {}) =>

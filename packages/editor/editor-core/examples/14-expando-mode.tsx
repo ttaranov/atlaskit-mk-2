@@ -19,7 +19,11 @@ export default class Example extends React.Component<{}, ExampleState> {
   render() {
     return (
       <div>
-        <Editor appearance={this.state.appearance} shouldFocus={true} />
+        <Editor
+          appearance={this.state.appearance}
+          shouldFocus={true}
+          quickInsert={true}
+        />
         <Button appearance="primary" onClick={this.toggleAppearance}>
           Toggle
         </Button>

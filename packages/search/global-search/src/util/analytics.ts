@@ -1,4 +1,5 @@
 import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
 
 export const DEFAULT_GAS_SOURCE = 'globalSearchDrawer';
 export const DEFAULT_GAS_CHANNEL = 'fabric-elements';
@@ -85,5 +86,28 @@ export function buildShownEventDetails(
     resultCount: totalResultCount,
     resultSectionCount: sectionsWithContent.length,
     resultContext: sectionsWithContent.map(mapResultsToShownSection),
+  };
+}
+
+export enum Screen {
+  PRE_QUERY = 'globalSearchPreQueryDrawer',
+  POST_QUERY = 'globalSearchPostQueryDrawer',
+}
+
+export function buildScreenEvent(
+  screen: Screen,
+  timesViewed: number,
+  searchSessionId: string,
+): GasPayload {
+  return {
+    action: 'viewed',
+    actionSubject: screen,
+    eventType: 'screen',
+    source: DEFAULT_GAS_SOURCE,
+    attributes: {
+      timesViewed: timesViewed,
+      searchSessionId: searchSessionId,
+      ...DEFAULT_GAS_ATTRIBUTES,
+    },
   };
 }

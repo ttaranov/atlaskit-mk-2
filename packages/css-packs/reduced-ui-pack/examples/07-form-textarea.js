@@ -19,6 +19,16 @@ export default () => (
         />
       </div>
       <div className="ak-field-group">
+        <label htmlFor="feedback">Feedback</label>
+        <textarea
+          className="ak-field-textarea"
+          rows="3"
+          id="feedback"
+          name="feedback"
+          disabled
+        />
+      </div>
+      <div className="ak-field-group">
         <button className="ak-button ak-button__appearance-primary">
           Add comment
         </button>
