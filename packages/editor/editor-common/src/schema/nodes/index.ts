@@ -71,3 +71,5 @@ export { placeholder } from './placeholder';
 export { layoutSection } from './layout-section';
 export { layoutColumn } from './layout-column';
 export { inlineCard, CardAttributes } from './inline-card';
+export { unsupportedBlock } from './unsupported-block';
+export { unsupportedInline } from './unsupported-inline';
