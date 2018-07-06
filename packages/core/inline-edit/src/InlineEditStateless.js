@@ -21,8 +21,8 @@ type State = {
   resetFieldBase?: boolean,
   shouldResetFieldBase?: boolean,
   wasFocusReceivedSinceLastBlur?: boolean,
-  startX?: number,
-  startY?: number,
+  startX: number,
+  startY: number,
 };
 
 export default class InlineEdit extends Component<StatelessProps, State> {
