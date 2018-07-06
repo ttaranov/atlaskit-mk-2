@@ -2,4 +2,4 @@
 
 import { createContext } from 'react';
 
-export const { Consumer, Provider } = createContext({ mode: 'default' });
+export const { Consumer, Provider } = createContext({});

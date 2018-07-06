@@ -1,7 +1,5 @@
 // @flow
 
-import type { Node } from 'react';
-
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Themed from './Themed';
@@ -40,7 +38,7 @@ const Div = styled.div`
   `};
 `;
 
-export default ({ children, ...props }: { children: Node }) => (
+export default ({ children, ...props }: { children: React.Node }) => (
   <Themed>
     {theme => (
       <Div {...theme} {...props}>

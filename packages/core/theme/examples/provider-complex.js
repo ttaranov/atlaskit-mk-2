@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import { Reset, Theme, Themed } from '../src';
+import { Reset, Provider, Themed } from '../src';
 
 type Props = {};
 type State = {
@@ -11,18 +11,14 @@ type State = {
 };
 
 const themes = {
-  big: ({ children }) => <Theme gridSize={20}>{children}</Theme>,
-  dark: ({ children }) => (
-    <Theme backgroundColor="#555" textColor="#eee">
-      {children}
-    </Theme>
+  big: props => <Provider gridSize={20} {...props} />,
+  dark: props => (
+    <Provider backgroundColor="#555" textColor="#eee" {...props} />
   ),
-  light: ({ children }) => (
-    <Theme backgroundColor="#eee" textColor="#555">
-      {children}
-    </Theme>
+  light: props => (
+    <Provider backgroundColor="#eee" textColor="#555" {...props} />
   ),
-  small: ({ children }) => <Theme gridSize={10}>{children}</Theme>,
+  small: props => <Provider gridSize={10} {...props} />,
 };
 
 export default class extends Component<Props, State> {
@@ -50,7 +46,7 @@ export default class extends Component<Props, State> {
       <ThemeColor>
         <ThemeSize>
           <Themed>
-            {({ backgroundColor, gridSize, textColor }) => (
+            {({ gridSize }) => (
               <Reset style={{ padding: gridSize }}>
                 <Button onClick={this.switchThemeColor}>
                   Toggle color ({color})
@@ -60,14 +56,6 @@ export default class extends Component<Props, State> {
                     Toggle size ({size})
                   </Button>
                 </span>
-                <p
-                  style={{
-                    color: textColor,
-                    margin: `${gridSize}px 0`,
-                  }}
-                >
-                  This is the new theming API.
-                </p>
               </Reset>
             )}
           </Themed>

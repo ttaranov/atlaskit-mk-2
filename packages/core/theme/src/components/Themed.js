@@ -1,44 +1,39 @@
 // @flow
 
 import React, { Component } from 'react';
-import type { Node } from 'react';
 
 import { Consumer } from './Context';
-import callOrPass from '../utils/callOrPass';
-import callOrPassAll from '../utils/callOrPassAll';
 import type { ThemeStructure } from '../types';
 
 type Props = {
-  children: (*) => Node,
-  component?: string,
-  defaults: *,
-  props: *,
-  overrides: *,
+  /** Render prop to render the descendant tree. */
+  children: (*) => *,
+  /** The instance of the component being themed. */
+  component: Component,
+  /** Props that are used in the component theming functions to dynamically change it. */
+  props: { [string]: * },
 };
 
-export default class extends Component<Props> {
+function callIfFunction(fn, props): {} | void {
+  return typeof fn === 'function' ? fn(props) : null;
+}
+
+export default class Themed extends Component<Props> {
   static displayName = 'Ak.Core.Theme';
   static defaultProps = {
-    defaults: {},
-    overrides: {},
+    component: null,
     props: {},
   };
   render() {
-    const { children, component, defaults, props, overrides } = this.props;
+    const { children, component, props } = this.props;
     return (
       <Consumer>
         {({ components, ...themeParent }: ThemeStructure) => {
-          const executedDefaults = callOrPassAll(defaults, themeParent);
-          const executedTheme = callOrPassAll(overrides, themeParent);
-          const executedComponent =
-            component && components && components[component]
-              ? callOrPass(components[component], props)
-              : null;
+          const { defaultProps, displayName } = component.constructor;
           return children({
-            ...executedDefaults,
-            ...themeParent,
-            ...executedComponent,
-            ...executedTheme,
+            ...callIfFunction(defaultProps.theme, props),
+            ...callIfFunction(themeParent[displayName], props),
+            ...callIfFunction(component.props.theme, props),
           });
         }}
       </Consumer>
