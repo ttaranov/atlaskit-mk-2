@@ -104,4 +104,4 @@ export class GlobalQuickSearch extends React.Component<
   }
 }
 
-export default injectIntl(withAnalyticsEvents()(GlobalQuickSearch));
+export default injectIntl<Props>(withAnalyticsEvents()(GlobalQuickSearch));
