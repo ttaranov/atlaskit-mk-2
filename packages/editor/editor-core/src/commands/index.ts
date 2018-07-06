@@ -1,9 +1,4 @@
-import {
-  Fragment,
-  Slice,
-  Node as PMNode,
-  ResolvedPos,
-} from 'prosemirror-model';
+import { Fragment, Slice, Node as PMNode } from 'prosemirror-model';
 import {
   EditorState,
   NodeSelection,
@@ -11,13 +6,10 @@ import {
   TextSelection,
   Transaction,
 } from 'prosemirror-state';
-import { findWrapping, liftTarget } from 'prosemirror-transform';
+import { findWrapping } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
-import * as baseCommand from 'prosemirror-commands';
-import * as baseListCommand from 'prosemirror-schema-list';
 import * as blockTypes from '../plugins/block-type/types';
 import {
-  isRangeOfType,
   canMoveDown,
   canMoveUp,
   atTheEndOfDoc,
@@ -71,7 +63,11 @@ export function setBlockType(view: EditorView, name: string): boolean {
 
 export function setNormalText(): Command {
   return function(state, dispatch) {
-    const { tr, selection: { $from, $to }, schema } = state;
+    const {
+      tr,
+      selection: { $from, $to },
+      schema,
+    } = state;
     dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
     return true;
   };
@@ -79,7 +75,11 @@ export function setNormalText(): Command {
 
 export function setHeading(level: number): Command {
   return function(state, dispatch) {
-    const { tr, selection: { $from, $to }, schema } = state;
+    const {
+      tr,
+      selection: { $from, $to },
+      schema,
+    } = state;
     dispatch(
       tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
     );
@@ -87,145 +87,8 @@ export function setHeading(level: number): Command {
   };
 }
 
-/**
- * Sometimes a selection in the editor can be slightly offset, for example:
- * it's possible for a selection to start or end at an empty node at the very end of
- * a line. This isn't obvious by looking at the editor and it's likely not what the
- * user intended - so we need to adjust the selection a bit in scenarios like that.
- */
-export function adjustSelectionInList(
-  doc,
-  selection: TextSelection,
-): TextSelection {
-  let { $from, $to } = selection;
-
-  const isSameLine = $from.pos === $to.pos;
-
-  if (isSameLine) {
-    $from = doc.resolve($from.start($from.depth));
-    $to = doc.resolve($from.end($from.depth));
-  }
-
-  let startPos = $from.pos;
-  let endPos = $to.pos;
-
-  if (isSameLine && startPos === doc.nodeSize - 3) {
-    // Line is empty, don't do anything
-    return selection;
-  }
-
-  // Selection started at the very beginning of a line and therefor points to the previous line.
-  if ($from.nodeBefore && !isSameLine) {
-    startPos++;
-    let node = doc.nodeAt(startPos);
-    while (!node || (node && !node.isText)) {
-      startPos++;
-      node = doc.nodeAt(startPos);
-    }
-  }
-
-  if (endPos === startPos) {
-    return new TextSelection(doc.resolve(startPos));
-  }
-
-  return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
-}
-
 export function preventDefault(): Command {
   return function(state, dispatch) {
-    return true;
-  };
-}
-
-export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
-  return function(
-    state: EditorState,
-    dispatch: (tr: Transaction) => void,
-    view: EditorView,
-  ): boolean {
-    dispatch(
-      state.tr.setSelection(
-        adjustSelectionInList(state.doc, state.selection as TextSelection),
-      ),
-    );
-    state = view.state;
-
-    const { $from, $to } = state.selection;
-    const parent = $from.node(-2);
-    const grandgrandParent = $from.node(-3);
-    const isRangeOfSingleType = isRangeOfType(
-      state.doc,
-      $from,
-      $to,
-      state.schema.nodes[listType],
-    );
-
-    if (
-      ((parent && parent.type === state.schema.nodes[listType]) ||
-        (grandgrandParent &&
-          grandgrandParent.type === state.schema.nodes[listType])) &&
-      isRangeOfSingleType
-    ) {
-      // Untoggles list
-      return liftListItems()(state, dispatch);
-    } else {
-      // Wraps selection in list and converts list type e.g. bullet_list -> ordered_list if needed
-      if (!isRangeOfSingleType) {
-        liftListItems()(state, dispatch);
-        state = view.state;
-      }
-      return wrapInList(state.schema.nodes[listType])(state, dispatch);
-    }
-  };
-}
-
-export function toggleBulletList(): Command {
-  return toggleList('bulletList');
-}
-
-export function toggleOrderedList(): Command {
-  return toggleList('orderedList');
-}
-
-export function wrapInList(nodeType): Command {
-  return baseCommand.autoJoin(
-    baseListCommand.wrapInList(nodeType),
-    (before, after) => before.type === after.type && before.type === nodeType,
-  );
-}
-
-export function liftListItems(): Command {
-  return function(state, dispatch) {
-    const { tr } = state;
-    const { $from, $to } = state.selection;
-
-    tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      // Following condition will ensure that block types paragraph, heading, codeBlock, blockquote, panel are lifted.
-      // isTextblock is true for paragraph, heading, codeBlock.
-      if (
-        node.isTextblock ||
-        node.type.name === 'blockquote' ||
-        node.type.name === 'panel'
-      ) {
-        const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
-        const range = sel.$from.blockRange(sel.$to);
-
-        if (!range || sel.$from.parent.type !== state.schema.nodes.listItem) {
-          return false;
-        }
-
-        const target = range && liftTarget(range);
-
-        if (target === undefined || target === null) {
-          return false;
-        }
-
-        tr.lift(range, target);
-      }
-    });
-
-    dispatch(tr);
-
     return true;
   };
 }
@@ -345,90 +208,6 @@ export function insertRule(): Command {
   };
 }
 
-export function indentList(): Command {
-  return function(state, dispatch) {
-    const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
-    if ($from.node(-1).type === listItem) {
-      return baseListCommand.sinkListItem(listItem)(state, dispatch);
-    }
-    return false;
-  };
-}
-
-export function outdentList(): Command {
-  return function(state, dispatch) {
-    const { listItem } = state.schema.nodes;
-    const { $from, $to } = state.selection;
-    if ($from.node(-1).type === listItem) {
-      // if we're backspacing at the start of a list item, unindent it
-      // take the the range of nodes we might be lifting
-      let range = $from.blockRange(
-        $to,
-        node => node.childCount > 0 && node.firstChild!.type === listItem,
-      );
-
-      if (!range) {
-        return false;
-      }
-
-      let tr;
-      if (
-        baseListCommand.liftListItem(listItem)(state, liftTr => (tr = liftTr))
-      ) {
-        /* we now need to handle the case that we lifted a sublist out,
-          * and any listItems at the current level get shifted out to
-          * their own new list; e.g.:
-          *
-          * unorderedList
-          *  listItem(A)
-          *  listItem
-          *    unorderedList
-          *      listItem(B)
-          *  listItem(C)
-          *
-          * becomes, after unindenting the first, top level listItem, A:
-          *
-          * content of A
-          * unorderedList
-          *  listItem(B)
-          * unorderedList
-          *  listItem(C)
-          *
-          * so, we try to merge these two lists if they're of the same type, to give:
-          *
-          * content of A
-          * unorderedList
-          *  listItem(B)
-          *  listItem(C)
-          */
-
-        const $start: ResolvedPos = state.doc.resolve(range.start);
-        const $end: ResolvedPos = state.doc.resolve(range.end);
-        const $join = tr.doc.resolve(tr.mapping.map(range.end - 1));
-
-        if (
-          $join.nodeBefore &&
-          $join.nodeAfter &&
-          $join.nodeBefore.type === $join.nodeAfter.type
-        ) {
-          if (
-            $end.nodeAfter &&
-            $end.nodeAfter.type === listItem &&
-            $end.parent.type === $start.parent.type
-          ) {
-            tr.join($join.pos);
-          }
-        }
-
-        dispatch(tr.scrollIntoView());
-        return true;
-      }
-    }
-    return false;
-  };
-}
-
 export function shouldAppendParagraphAfterBlockNode(state) {
   return (
     (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) || isTableCell(state)
@@ -478,7 +257,9 @@ export function createNewParagraphBelow(
 }
 
 function canCreateParagraphNear(state: EditorState): boolean {
-  const { selection: { $from } } = state;
+  const {
+    selection: { $from },
+  } = state;
   const node = $from.node($from.depth);
   const insideCodeBlock = !!node && node.type === state.schema.nodes.codeBlock;
   const isNodeSelection = state.selection instanceof NodeSelection;
@@ -576,7 +357,11 @@ export const removeEmptyHeadingAtStartOfDocument: Command = (
 
 export function createParagraphAtEnd(): Command {
   return function(state, dispatch) {
-    const { doc, tr, schema: { nodes } } = state;
+    const {
+      doc,
+      tr,
+      schema: { nodes },
+    } = state;
     if (
       doc.lastChild &&
       !(

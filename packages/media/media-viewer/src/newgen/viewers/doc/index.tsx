@@ -5,13 +5,13 @@ import { ErrorMessage } from '../../styled';
 import { Spinner } from '../../loading';
 import { constructAuthTokenUrl } from '../../util';
 import { Props as RendererProps } from './pdfRenderer';
+import { ComponentClass } from 'react';
 
 const moduleLoader = () =>
   import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
 
-const componentLoader: () => Promise<
-  React.ComponentClass<RendererProps>
-> = () => moduleLoader().then(module => module.PDFRenderer);
+const componentLoader: () => Promise<ComponentClass<RendererProps>> = () =>
+  moduleLoader().then(module => module.PDFRenderer);
 
 export type Props = {
   context: Context;
@@ -29,7 +29,7 @@ const initialState: State = {
 };
 
 export class DocViewer extends React.Component<Props, State> {
-  static PDFComponent;
+  static PDFComponent: ComponentClass<RendererProps>;
 
   state: State = initialState;
 
@@ -39,7 +39,7 @@ export class DocViewer extends React.Component<Props, State> {
 
   private async init() {
     if (!DocViewer.PDFComponent) {
-      await this.loadDocViewer(this.props);
+      await this.loadDocViewer();
     }
     const { item, context, collectionName } = this.props;
 
@@ -75,7 +75,7 @@ export class DocViewer extends React.Component<Props, State> {
     }
   }
 
-  private async loadDocViewer(props: Props) {
+  private async loadDocViewer() {
     DocViewer.PDFComponent = await componentLoader();
     this.forceUpdate();
   }

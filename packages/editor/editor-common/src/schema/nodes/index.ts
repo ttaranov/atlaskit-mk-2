@@ -10,16 +10,16 @@ export { heading } from './heading';
 export { rule } from './rule';
 export { orderedList } from './ordered-list';
 export { paragraph } from './paragraph';
-export { emoji, Attributes as EmojiAttributes } from './emoji';
+export { emoji, EmojiAttributes } from './emoji';
 export { image } from './image';
 export {
   mention,
-  Attributes as MentionAttributes,
+  MentionAttributes,
   toJSON as mentionToJSON,
   UserType as MentionUserType,
 } from './mention';
 export { listItem } from './list-item';
-export { panel, Attributes as PanelAttributes } from './panel';
+export { panel, PanelAttributes } from './panel';
 export { text } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {
@@ -36,7 +36,7 @@ export { mediaGroup } from './media-group';
 export {
   mediaSingle,
   Layout as MediaSingleLayout,
-  Attributes as MediaSingleAttributes,
+  MediaSingleAttributes,
 } from './media-single';
 export {
   table,
@@ -56,7 +56,7 @@ export {
 } from './tableNodes';
 export {
   applicationCard,
-  Attributes as ApplicationCardAttributes,
+  ApplicationCardAttributes,
   AppCardAction,
 } from './applicationCard';
 export { decisionList } from './decision-list';
@@ -71,3 +71,5 @@ export { placeholder } from './placeholder';
 export { layoutSection } from './layout-section';
 export { layoutColumn } from './layout-column';
 export { inlineCard, CardAttributes } from './inline-card';
+export { unsupportedBlock } from './unsupported-block';
+export { unsupportedInline } from './unsupported-inline';

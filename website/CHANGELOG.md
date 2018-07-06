@@ -1,5 +1,12 @@
 # @atlaskit/website
 
+## 2.1.7
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-test-helpers@14.0.6
+  - @atlaskit/media-filmstrip@9.0.7
+  - @atlaskit/media-core@21.0.0
+  - @atlaskit/media-card@29.1.8
+
 ## 2.1.6
 - [patch] adds environment variable for whether the atlaskit website is running locally, in staging or in production [a04c1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a04c1c5)
 - [patch] Updated dependencies [a04c1c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a04c1c5)

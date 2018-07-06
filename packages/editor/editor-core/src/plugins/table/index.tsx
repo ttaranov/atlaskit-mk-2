@@ -9,12 +9,11 @@ import {
   tableRow,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import WithPluginState from '../../ui/WithPluginState';
-import TableFloatingToolbar from './ui/TableFloatingToolbar';
-import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
+import { createPlugin, PluginConfig } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
+import { getToolbarConfig } from './toolbar';
 
 export const CELL_MIN_WIDTH = 128;
 
@@ -71,30 +70,6 @@ const tablesPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
-    return (
-      <WithPluginState
-        plugins={{ tablesState: stateKey }}
-        render={({ tablesState }) => (
-          <TableFloatingToolbar
-            editorView={editorView}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            pluginConfig={tablesState.pluginConfig}
-            tableRef={tablesState.tableRef}
-            tableLayout={
-              tablesState.tableNode
-                ? tablesState.tableNode.attrs.layout
-                : undefined
-            }
-            // pass `tableNode` to control re-render
-            tableNode={tablesState.tableNode}
-          />
-        )}
-      />
-    );
-  },
-
   pluginsOptions: {
     quickInsert: [
       {
@@ -105,6 +80,7 @@ const tablesPlugin: EditorPlugin = {
         },
       },
     ],
+    floatingToolbar: getToolbarConfig,
   },
 };
 

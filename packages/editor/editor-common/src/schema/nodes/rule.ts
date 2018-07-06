@@ -3,7 +3,7 @@ import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
 /**
  * @name rule_node
  */
-export interface Definition {
+export interface RuleDefinition {
   type: 'rule';
 }
 

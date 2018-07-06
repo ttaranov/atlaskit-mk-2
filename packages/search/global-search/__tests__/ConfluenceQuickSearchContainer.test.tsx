@@ -41,6 +41,8 @@ function searchFor(query: string, wrapper: ShallowWrapper) {
   wrapper.update();
 }
 
+declare var global: any;
+
 /**
  * This component uses a lot of internal state and async calls.
  * Make sure we wait for next tick and then force render update for React 16.
@@ -75,12 +77,18 @@ function render(partialProps?: Partial<Props>) {
 
 describe('ConfluenceQuickSearchContainer', () => {
   let searchResultSpy;
+  let originalPerformance;
 
   beforeEach(() => {
     searchResultSpy = jest.spyOn(SearchResults, 'default');
+    originalPerformance = global.window.performance;
+    global.window.performance = {
+      now: () => 1,
+    };
   });
   afterEach(() => {
     searchResultSpy.mockRestore();
+    global.window.performance = originalPerformance;
   });
 
   const assertSearchResultToHaveProperty = (property: string) => {
@@ -99,15 +107,6 @@ describe('ConfluenceQuickSearchContainer', () => {
       searchResultSpy.mock.calls[searchResultSpy.mock.calls.length - 1][0]
         .isError;
     expect(error).toBe(hasError);
-  };
-
-  const assertSearchResultNotToHaveProperty = (property: string) => {
-    expect(searchResultSpy.mock.calls.length).toBeGreaterThan(1);
-    const group =
-      searchResultSpy.mock.calls[searchResultSpy.mock.calls.length - 1][0][
-        property
-      ];
-    expect(group).toHaveLength(0);
   };
 
   describe('loading state', () => {

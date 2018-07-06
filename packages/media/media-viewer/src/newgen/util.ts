@@ -13,6 +13,7 @@ export async function constructAuthTokenUrl(
 ): Promise<string> {
   const host = context.config.serviceHost;
   const auth = await context.config.authProvider({ collectionName });
+
   if (isClientBasedAuth(auth)) {
     return buildClientBasedUrl(
       host,

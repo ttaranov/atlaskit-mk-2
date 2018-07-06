@@ -5,7 +5,7 @@ import { uuid } from '../../utils';
 /**
  * @name taskItem_node
  */
-export interface Definition {
+export interface TaskItemDefinition {
   type: 'taskItem';
   content: Array<Inline>;
   attrs: {
