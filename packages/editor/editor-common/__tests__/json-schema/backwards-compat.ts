@@ -18,15 +18,15 @@ async function fetchJSONSchema(url: string) {
   return res.data;
 }
 
-function fetchPackageBasedJSONSchema(version: string) {
+function fetchLastPublishedJSONSchema() {
   return fetchJSONSchema(
-    `https://unpkg.com/@atlaskit/editor-common@${version}/dist/json-schema/v1/full.json`,
+    `https://unpkg.com/@atlaskit/editor-common@lastest/dist/json-schema/v1/full.json`,
   );
 }
 
-function fetchGitBasedJSONSchema(shaOrBranch: string) {
+function fetchMasterJSONSchema() {
   return fetchJSONSchema(
-    `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/${shaOrBranch}/packages/editor/editor-common/json-schema/v1/full.json`,
+    `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/master/packages/editor/editor-common/json-schema/v1/full.json`,
   );
 }
 
@@ -55,7 +55,7 @@ describe('JSON schema', () => {
     let existingSchema: any;
 
     try {
-      existingSchema = await fetchGitBasedJSONSchema('master');
+      existingSchema = await fetchMasterJSONSchema();
     } catch (err) {
       // if package with this version doesn't exist test against the latest version
       // this can happen when you manually bump version in package.json
@@ -65,7 +65,7 @@ describe('JSON schema', () => {
         );
       }
 
-      existingSchema = await fetchPackageBasedJSONSchema('latest');
+      existingSchema = await fetchLastPublishedJSONSchema();
     }
 
     try {
