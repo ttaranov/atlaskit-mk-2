@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 18.2.13
+- [patch] Updated dependencies [17b638b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17b638b)
+  - @atlaskit/editor-common@11.3.14
+
 ## 18.2.12
 
 
