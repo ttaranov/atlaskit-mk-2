@@ -15,12 +15,12 @@ export interface ShownAnalyticsAttributes {
   resultContext: ShownResultContextSection[];
 }
 
-interface ShownResultContextSection {
+export interface ShownResultContextSection {
   sectionId: string;
   results: ShownResultContextItem[];
 }
 
-interface ShownResultContextItem {
+export interface ShownResultContextItem {
   resultContentId: string;
   resultType?: string;
   containerId?: string;

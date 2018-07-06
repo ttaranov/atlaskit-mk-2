@@ -24,7 +24,6 @@ import {
   DEFAULT_GAS_ATTRIBUTES,
   ShownAnalyticsAttributes,
   buildShownEventDetails,
-  PostQueryShownAttributes,
   sanitizeSearchQuery,
 } from '../../util/analytics';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
