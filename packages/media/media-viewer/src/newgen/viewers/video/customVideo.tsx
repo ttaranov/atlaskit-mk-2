@@ -55,11 +55,6 @@ export interface CustomVideoState {
 
 export type ToggleButtonAction = () => void;
 
-const spinner = (
-  <SpinnerWrapper>
-    <Spinner />
-  </SpinnerWrapper>
-);
 export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
   videoWrapperRef?: HTMLElement;
 
@@ -174,6 +169,12 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
     );
   };
 
+  renderSpinner = () => (
+    <SpinnerWrapper>
+      <Spinner />
+    </SpinnerWrapper>
+  );
+
   render() {
     const { src, isAutoPlay } = this.props;
     return (
@@ -205,7 +206,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             return (
               <VideoWrapper>
                 {video}
-                {isLoading && spinner}
+                {isLoading && this.renderSpinner()}
                 <Shortcut
                   keyCode={keyCodes.space}
                   handler={this.shortcutHanler(toggleButtonAction)}
