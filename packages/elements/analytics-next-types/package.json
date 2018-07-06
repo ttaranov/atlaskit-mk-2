@@ -10,9 +10,6 @@
   "files": [
     "index.d.ts"
   ],
-  "dependencies": {
-    "tslib": "^1.8.0"
-  },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     "Eduardo S",
@@ -29,5 +26,11 @@
   "keywords": [
     "fabric",
     "ui"
-  ]
+  ],
+  "devDependencies": {
+    "react": "^16.3.0"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0"
+  }
 }

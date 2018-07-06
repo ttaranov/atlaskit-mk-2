@@ -1,11 +1,6 @@
 {
   "extends": "../../../tsconfig.fabric.json",
-  "exclude": [
-    "**/node_modules/@atlaskit/analytics-next/src/index.d.ts",
-    "../../../node_modules/@atlaskit/analytics-next"
-  ],
   "include": [
-    "./node_modules/@atlaskit/analytics-next-types/index.d.ts",
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./__tests__/**/*.ts",
