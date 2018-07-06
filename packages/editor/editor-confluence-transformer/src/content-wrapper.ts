@@ -23,7 +23,7 @@ export const docContentWrapper = (
   const blockContent: PMNode[] = [];
   content.forEach((node: PMNode) => {
     if (node.type === schema.nodes.confluenceUnsupportedInline) {
-      const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.create(
+      const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.createChecked(
         {
           cxhtml: node.attrs.cxhtml,
         },
@@ -183,7 +183,7 @@ export const ensureInline = (
     // We replace an non-inline node with UnsupportedInline node
     const originalNode =
       convertedNodesReverted.get(node) || convertedNodesReverted.get(content);
-    const unsupportedInline: PMNode = schema.nodes.confluenceUnsupportedInline.create(
+    const unsupportedInline: PMNode = schema.nodes.confluenceUnsupportedInline.createChecked(
       {
         cxhtml: originalNode ? encodeCxhtml(originalNode) : '',
       },
@@ -237,7 +237,7 @@ export function ensureBlock(
   const defaultConvertInvalid = (node: PMNode) => {
     const originalNode =
       convertedNodesReverted.get(node) || convertedNodesReverted.get(content);
-    const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.create(
+    const unsupportedBlock: PMNode = schema.nodes.confluenceUnsupportedBlock.createChecked(
       {
         cxhtml: originalNode ? encodeCxhtml(originalNode) : '',
       },

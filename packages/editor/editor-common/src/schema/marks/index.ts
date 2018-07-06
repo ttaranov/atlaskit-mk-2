@@ -13,5 +13,5 @@ export { confluenceInlineComment } from './confluence-inline-comment';
 export {
   action,
   Action as ActionMarkAction,
-  Attributes as ActionMarkAttributes,
+  ActionMarkAttributes,
 } from './action';

@@ -5,8 +5,8 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
 const urlSelect = getExampleUrl('core', 'select');
-const selectDefault = '.select__control';
-const selectMenu = '.select__menu';
+const selectDefault = '.react-select__control';
+const selectMenu = '.react-select__menu';
 
 const urlArray = [
   'single-select',

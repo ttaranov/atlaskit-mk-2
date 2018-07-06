@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import Avatar, { AvatarGroup } from '@atlaskit/avatar';
+import Avatar from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
 
 import Participants from '../../src/components/Participants';
 import { getParticipants } from '../_test-data';

@@ -12,8 +12,9 @@ describe('getFeatureFlag', () => {
     expect(getFeatureFlag('customVideoPlayer', { nextGen: true })).toBeFalsy();
 
     (window as any).localStorage = {
-      getItem(item) {
+      getItem(item: string) {
         if (item === 'MediaViewerNextGenCustomVideoPlayer') return true;
+        return undefined;
       },
     };
 

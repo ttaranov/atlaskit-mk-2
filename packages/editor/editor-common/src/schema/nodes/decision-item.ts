@@ -5,7 +5,7 @@ import { uuid } from '../../utils';
 /**
  * @name decisionItem_node
  */
-export interface Definition {
+export interface DecisionItemDefinition {
   type: 'decisionItem';
   content: Array<Inline>;
   attrs: {

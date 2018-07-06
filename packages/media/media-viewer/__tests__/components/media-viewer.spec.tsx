@@ -163,7 +163,7 @@ describe('<MediaViewer />', () => {
     it('should show the next gen viewer when dev flag is enabled', () => {
       let originalLocalStorage = global.window.localStorage;
       global.window.localStorage = {
-        getItem: key => key === 'MediaViewerNextGenEnabled',
+        getItem: (key: string) => key === 'MediaViewerNextGenEnabled',
       };
       const context = Stubs.context(contextConfig);
       const el = mount(

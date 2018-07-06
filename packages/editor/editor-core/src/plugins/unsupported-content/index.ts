@@ -1,6 +1,8 @@
 import {
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
+  unsupportedBlock,
+  unsupportedInline,
 } from '@atlaskit/editor-common';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorPlugin, PMPluginFactory } from '../../types';
@@ -32,6 +34,14 @@ const createPlugin: PMPluginFactory = ({ schema, portalProviderAPI }) => {
           ReactUnsupportedInlineNode,
           portalProviderAPI,
         ),
+        unsupportedBlock: ReactNodeView.fromComponent(
+          ReactUnsupportedBlockNode,
+          portalProviderAPI,
+        ),
+        unsupportedInline: ReactNodeView.fromComponent(
+          ReactUnsupportedInlineNode,
+          portalProviderAPI,
+        ),
       },
     },
   });
@@ -50,13 +60,23 @@ const unsupportedContentPlugin: EditorPlugin = {
         name: 'confluenceUnsupportedInline',
         node: confluenceUnsupportedInline,
       },
+      {
+        rank: 1320,
+        name: 'unsupportedBlock',
+        node: unsupportedBlock,
+      },
+      {
+        rank: 1330,
+        name: 'unsupportedInline',
+        node: unsupportedInline,
+      },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 1320,
+        rank: 1340,
         plugin: createPlugin,
       },
     ];

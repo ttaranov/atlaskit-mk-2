@@ -80,7 +80,10 @@ export class JIRATransformer implements Transformer<string> {
     // JIRA encodes empty content as a single nbsp
     if (nodes.length === 1 && nodes[0].textContent === '\xa0') {
       const schemaNodes = this.schema.nodes;
-      return schemaNodes.doc.create({}, schemaNodes.paragraph.create());
+      return schemaNodes.doc.createChecked(
+        {},
+        schemaNodes.paragraph.createChecked(),
+      );
     }
 
     // Process through nodes in reverse (so deepest child elements are first).
