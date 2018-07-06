@@ -1,4 +1,4 @@
-// For version "1.1.3"
+// For version "2.1.9"
 import * as React from 'react';
 
 declare module '@atlaskit/analytics-next' {
@@ -18,6 +18,8 @@ declare module '@atlaskit/analytics-next' {
    */
 
   // Utils
+
+  // That replaces {} in flow types
   type ObjectType = { [key: string]: any };
 
   // Basic events
@@ -31,7 +33,6 @@ declare module '@atlaskit/analytics-next' {
     | ((payload: AnalyticsEventPayload) => AnalyticsEventPayload);
 
   type AnalyticsEventProps = {
-    action: string;
     payload: AnalyticsEventPayload;
   };
 
@@ -45,6 +46,7 @@ declare module '@atlaskit/analytics-next' {
 
   type ChannelIdentifier = string;
 
+  // It's called UIAnalyticsEventHandler in flow
   interface UIAnalyticsEventHandlerSignature {
     (event: UIAnalyticsEventInterface, channel?: ChannelIdentifier): void;
   }
@@ -54,6 +56,7 @@ declare module '@atlaskit/analytics-next' {
     handlers?: Array<UIAnalyticsEventHandlerSignature>;
   };
 
+  // Called UIAnalyticsEvent in flow
   interface UIAnalyticsEventInterface {
     context: Array<ObjectType>;
     handlers?: Array<UIAnalyticsEventHandlerSignature>;
@@ -113,12 +116,12 @@ declare module '@atlaskit/analytics-next' {
     withAnalyticsEvents.js
    */
   type CreateUIAnalyticsEventSignature = (
-    payload?: AnalyticsEventPayload,
+    payload: AnalyticsEventPayload,
   ) => UIAnalyticsEventInterface;
 
   interface EventMap<TOwnProps> {
     [k: string]:
-      | ObjectType
+      | AnalyticsEventPayload
       | ((
           create: CreateUIAnalyticsEventSignature,
           props: TOwnProps,
@@ -126,7 +129,7 @@ declare module '@atlaskit/analytics-next' {
   }
 
   interface WithAnalyticsEventProps {
-    createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+    createAnalyticsEvent: CreateUIAnalyticsEventSignature | void;
   }
 
   type WithAnalyticsEventFunction = <TOwnProps>(
@@ -148,4 +151,9 @@ declare module '@atlaskit/analytics-next' {
   ) => UIAnalyticsEventInterface;
 
   function createAndFireEvent(channel?: string): CreateAndFireEventFunction;
+
+  /*
+    cleanProps.js
+   */
+  function cleanProps(props: ObjectType): ObjectType;
 }
