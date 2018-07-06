@@ -44,7 +44,24 @@ describe('Analytics', () => {
     });
 
     it('should return correct attributes for space results', () => {
-      const mockPersonResult = makeConfluenceContainerResult({ resultId: '1' });
+      const mockSpaceResult = makeConfluenceContainerResult({ resultId: '1' });
+
+      const attributes = buildShownEventDetails([mockSpaceResult]);
+
+      expect(attributes).toEqual({
+        resultCount: 1,
+        resultSectionCount: 1,
+        resultContext: [
+          {
+            sectionId: ResultType.GenericContainerResult,
+            results: [
+              {
+                resultContentId: '1',
+              },
+            ],
+          },
+        ],
+      });
     });
 
     it('should return correct attributes for people results', () => {
