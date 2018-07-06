@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 11.3.13
+- [patch] ED-4420: added unsupported nodes [f33ac3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f33ac3c)
+- [none] Updated dependencies [f33ac3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f33ac3c)
+
 ## 11.3.12
 
 
