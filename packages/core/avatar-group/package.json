@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/avatar-group",
   "version": "1.0.0",
-  "description": "A component that represents a user",
+  "description": "A component to group avatars to display them together",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
