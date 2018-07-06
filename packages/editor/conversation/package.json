@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "8.2.10",
+  "version": "8.2.11",
   "config": {
     "access": "public"
   },
@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@atlaskit/avatar": "^12.0.0",
-    "@atlaskit/comment": "^5.0.4",
+    "@atlaskit/comment": "^5.0.5",
     "@atlaskit/editor-common": "^11.3.8",
-    "@atlaskit/editor-core": "^73.9.29",
+    "@atlaskit/editor-core": "^74.0.0",
     "@atlaskit/reactions": "^12.1.5",
     "@atlaskit/renderer": "^18.2.9",
     "date-fns": "^1.29.0",
