@@ -180,7 +180,13 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
       <CustomVideoWrapper innerRef={this.saveVideoWrapperRef}>
         <Video src={src} autoPlay={isAutoPlay}>
           {(video, videoState, actions) => {
-            const { status, currentTime, buffered, duration } = videoState;
+            const {
+              status,
+              currentTime,
+              buffered,
+              duration,
+              isLoading,
+            } = videoState;
             const isPlaying = status === 'playing';
             const toggleButtonIcon = isPlaying ? (
               <PauseIcon label="play" />
@@ -199,7 +205,7 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             return (
               <VideoWrapper>
                 {video}
-                {status === 'loading' && spinner}
+                {isLoading && spinner}
                 <Shortcut
                   keyCode={keyCodes.space}
                   handler={this.shortcutHanler(toggleButtonAction)}
