@@ -1,22 +1,26 @@
-import { EditorView } from 'prosemirror-view';
 import { setParentNodeMarkup, removeParentNodeOfType } from 'prosemirror-utils';
 import { analyticsService } from '../../analytics';
+import { Command } from '../../types';
 
 export type DomAtPos = (pos: number) => { node: HTMLElement; offset: number };
 
-export const removePanel = (view: EditorView) => {
+export const removePanel = (): Command => (state, dispatch) => {
   const {
-    state: { tr, schema },
-    dispatch,
-  } = view;
-  dispatch(removeParentNodeOfType(schema.nodes.panel)(tr));
+    schema: { nodes },
+    tr,
+  } = state;
+  dispatch(removeParentNodeOfType(nodes.panel)(tr));
+  return true;
 };
 
-export const changePanelType = (view: EditorView, { panelType }) => {
-  analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
+export const changePanelType = (panelType): Command => (state, dispatch) => {
+  analyticsService.trackEvent(
+    `atlassian.editor.format.${panelType.panelType}.button`,
+  );
   const {
-    state: { tr, schema },
-    dispatch,
-  } = view;
-  dispatch(setParentNodeMarkup(schema.nodes.panel, null, { panelType })(tr));
+    schema: { nodes },
+    tr,
+  } = state;
+  dispatch(setParentNodeMarkup(nodes.panel, null, panelType)(tr));
+  return true;
 };

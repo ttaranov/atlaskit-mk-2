@@ -26,10 +26,12 @@ const panelPlugin: EditorPlugin = {
           <PanelEdit
             editorView={editorView}
             pluginState={panelState}
-            onRemove={() => removePanel(editorView)}
-            onPanelChange={panelType => {
-              changePanelType(editorView, panelType);
-            }}
+            onRemove={() =>
+              removePanel()(editorView.state, editorView.dispatch)
+            }
+            onPanelChange={panelType =>
+              changePanelType(panelType)(editorView.state, editorView.dispatch)
+            }
           />
         )}
       />

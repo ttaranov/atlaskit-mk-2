@@ -7,13 +7,7 @@ import {
 } from '../../../../src/plugins/panel/pm-plugins/main';
 import PanelEdit from '../../../../src/plugins/panel/ui/PanelEdit';
 
-import {
-  doc,
-  panel,
-  p,
-  createEditor,
-  createEvent,
-} from '@atlaskit/editor-test-helpers';
+import { doc, panel, p, createEditor } from '@atlaskit/editor-test-helpers';
 import panelPlugin from '../../../../src/plugins/panel';
 import listPlugin from '../../../../src/plugins/lists';
 import { changePanelType } from '../../../../src/plugins/panel/actions';
@@ -71,7 +65,9 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
           pluginState={pluginState}
           editorView={editorView}
           onRemove={() => {}}
-          onPanelChange={panelType => changePanelType(editorView, panelType)}
+          onPanelChange={panelType =>
+            changePanelType(panelType)(editorView.state, editorView.dispatch)
+          }
         />,
       );
     });

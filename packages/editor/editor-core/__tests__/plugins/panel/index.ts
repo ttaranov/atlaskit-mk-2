@@ -49,7 +49,10 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.activePanelType).toEqual('info');
       expect(pluginState.element).not.toBe(undefined);
       expect(pluginState.activePanelType).not.toBe(undefined);
-      changePanelType(editorView, { panelType: 'note' });
+      changePanelType({ panelType: 'note' })(
+        editorView.state,
+        editorView.dispatch,
+      );
       //Wait till the dispatch cycle finishes and the state updates
       setTimeout(() => {
         expect(pluginState.activePanelType).toEqual('note');
@@ -58,7 +61,10 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should be able to change panel type using function changeType for panel with multiple blocks', () => {
       const { editorView } = editor(doc(panel()(p('te{<>}xt'), p('text'))));
-      changePanelType(editorView, { panelType: 'note' });
+      changePanelType({ panelType: 'note' })(
+        editorView.state,
+        editorView.dispatch,
+      );
       expect(editorView.state.doc).toEqualDocument(
         doc(panelNote(p('text'), p('text'))),
       );
@@ -67,7 +73,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
     it('should be able to remove panel type using function removePanel', () => {
       const { pluginState, editorView } = editor(doc(panel()(p('te{<>}xt'))));
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -76,7 +82,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('te{<>}xt'), p('te{<>}xt'), p('te{<>}xt'))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -85,7 +91,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(table()(tr(td({})(panel()(p('text{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(table()(tr(td({})(p())))),
       );
@@ -96,7 +102,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(table()(tr(td({})(panel()(p('{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(table()(tr(td({})(p())))),
       );
@@ -105,7 +111,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
     it('should be able to remove panel type using function removePanel even if panel has no text content', () => {
       const { pluginState, editorView } = editor(doc(panel()(p('{<>}'))));
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -114,7 +120,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('te{<>}xt'), p('text'))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -123,7 +129,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(p('testing'), panel()(p('te{<>}xt'), p('text')), p('testing')),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(p('testing'), p('testing')),
       );
@@ -133,7 +139,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       const { editorView } = editor(
         doc(p('one'), panel()(p('text'), ol(li(p('te{<>}xt')))), p('two')),
       );
-      removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('one'), p('two')));
     });
 
@@ -142,7 +148,10 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('text'), ol(li(p('te{<>}xt'))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      changePanelType(editorView, { panelType: 'note' });
+      changePanelType({ panelType: 'note' })(
+        editorView.state,
+        editorView.dispatch,
+      );
       //Wait till the dispatch cycle finishes and the state updates
       setTimeout(() => {
         expect(pluginState.activePanelType).toEqual('note');

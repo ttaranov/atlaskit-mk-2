@@ -110,10 +110,14 @@ export const createPlugin = ({
       handleDOMEvents: {
         blur(view: EditorView, event) {
           const pluginState = getPluginState(view.state);
-          dispatch(pluginKey, {
-            ...pluginState,
-            toolbarVisible: false,
-          });
+          if (pluginState.toolbarVisible) {
+            setPluginState({
+              toolbarVisible: false,
+              element: null,
+              activePanelType: undefined,
+            })(view.state, view.dispatch);
+            return true;
+          }
           return false;
         },
       },
