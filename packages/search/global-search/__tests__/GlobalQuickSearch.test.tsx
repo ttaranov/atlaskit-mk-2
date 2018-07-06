@@ -5,6 +5,10 @@ import GlobalQuickSearchWithAnalytics, {
   Props,
 } from '../src/components/GlobalQuickSearch';
 import { QuickSearch } from '@atlaskit/quick-search';
+import {
+  shallowWithIntl,
+  mountWithIntl,
+} from './helpers/_intl-enzyme-test-helper';
 
 const noop = () => {};
 const DEFAULT_PROPS = {
@@ -22,13 +26,13 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
-  return shallow<Props>(<GlobalQuickSearch {...props} />);
+  return shallowWithIntl(<GlobalQuickSearch {...props} />);
 }
 
 describe('GlobalQuickSearch', () => {
   describe('GlobalQuickSearchWithAnalytics', () => {
     it('should render GlobalQuickSearch with a createAnalyticsEvent prop', () => {
-      const wrapper = shallow(
+      const wrapper = mountWithIntl(
         <GlobalQuickSearchWithAnalytics {...DEFAULT_PROPS} />,
       );
       expect(

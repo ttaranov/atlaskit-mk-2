@@ -20,6 +20,7 @@ import {
   makeConfluenceObjectResult,
   makePersonResult,
 } from './_test-util';
+import { FormattedMessage } from 'react-intl';
 
 enum Group {
   Objects = 'objects',
@@ -194,7 +195,9 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Objects, wrapper);
 
-    expect(group.prop('title')).toEqual('Pages, blogs and attachments');
+    expect(group.prop('title')).toEqual(
+      <FormattedMessage id="global-search.heading-confluence-objects" />,
+    );
     expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
   });
 
