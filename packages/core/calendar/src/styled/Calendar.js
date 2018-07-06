@@ -33,6 +33,8 @@ export const CalendarTbody = styled.tbody`
 // @atlaskit/css-reset should adjust default behaviours
 const thSpacing = css`
   padding: 8px 8px;
+  min-width: 40px;
+  box-sizing: border-box;
 `;
 export const CalendarTh = styled.th`
   border: 0;
