@@ -11,7 +11,7 @@ import { ZoomControls } from '../../../../src/newgen/zoomControls';
 import { Spinner } from '../../../../src/newgen/loading';
 import { ErrorMessage } from '../../../../src/newgen/styled';
 
-function createFixture(documentPromise) {
+function createFixture(documentPromise: Promise<any>) {
   const onClose = jest.fn();
   pdfjsLib.getDocument = jest.fn(() => ({
     promise: documentPromise,
@@ -26,8 +26,8 @@ function createFixture(documentPromise) {
 }
 
 describe('PDFRenderer', () => {
-  let originalGetDocument;
-  let originalViewer;
+  let originalGetDocument: any;
+  let originalViewer: any;
   beforeEach(() => {
     originalGetDocument = pdfjsLib.getDocument;
     originalViewer = PDFJSViewer.PDFViewer;

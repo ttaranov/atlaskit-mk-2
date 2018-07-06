@@ -70,7 +70,9 @@ export class VideoViewer extends React.Component<Props, State> {
     const { context, item, collectionName } = this.props;
     const preferHd = isHDActive && isHDAvailable(item);
     const videoUrl = getVideoArtifactUrl(item, preferHd);
-
+    if (!videoUrl) {
+      return;
+    }
     try {
       this.setState({
         src: {
@@ -90,7 +92,7 @@ export class VideoViewer extends React.Component<Props, State> {
 }
 
 function isHDAvailable(fileItem: FileItem): boolean {
-  return (
+  return !!(
     fileItem.details &&
     fileItem.details.artifacts &&
     fileItem.details.artifacts[hdArtifact] &&

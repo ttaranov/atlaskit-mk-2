@@ -8,24 +8,8 @@ import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
 import { AudioViewer } from '../../src/newgen/viewers/audio';
 import { DocViewer } from '../../src/newgen/viewers/doc';
-import { Stubs } from '../_stubs';
+import { createContext } from '../_stubs';
 import { Subject } from 'rxjs';
-
-function createContext(subject: Subject<MediaItem>) {
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(subject),
-  ) as any;
-}
 
 const identifier = {
   id: 'some-id',
@@ -104,7 +88,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -116,7 +100,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -130,7 +114,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -148,7 +132,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -162,7 +146,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -180,7 +164,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -198,7 +182,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -216,7 +200,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -230,7 +214,7 @@ describe('<ItemViewer />', () => {
     const el = mount(
       <ItemViewer
         previewCount={0}
-        context={createContext(subject)}
+        context={createContext({ subject })}
         identifier={identifier}
       />,
     );
@@ -241,7 +225,7 @@ describe('<ItemViewer />', () => {
 
   it('MSW-720: passes the collectionName to the provider', () => {
     const subject = new Subject<MediaItem>();
-    const context = createContext(subject);
+    const context = createContext({ subject });
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -261,7 +245,7 @@ describe('<ItemViewer />', () => {
       const el = mount(
         <ItemViewer
           previewCount={0}
-          context={createContext(subject)}
+          context={createContext({ subject })}
           identifier={identifier}
         />,
       );
@@ -273,7 +257,7 @@ describe('<ItemViewer />', () => {
     it('resubscribes to the provider when the data property value is changed', () => {
       const identifierCopy = { ...identifier };
       const subject = new Subject<MediaItem>();
-      const context = createContext(subject);
+      const context = createContext({ subject });
       const el = mount(
         <ItemViewer
           previewCount={0}
@@ -297,7 +281,7 @@ describe('<ItemViewer />', () => {
       expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
 
       // if the context changes, we will also resubscribe
-      const newContext = createContext(subject);
+      const newContext = createContext({ subject });
       el.setProps({ context: newContext, identifier: identifier2 });
       expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
       expect(newContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
@@ -305,7 +289,7 @@ describe('<ItemViewer />', () => {
 
     it('should return to PENDING state when resets', () => {
       const subject = new Subject<MediaItem>();
-      const context = createContext(subject);
+      const context = createContext({ subject });
       const el = mount(
         <ItemViewer
           previewCount={0}

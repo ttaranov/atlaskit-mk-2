@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
-import { Stubs } from '../../_stubs';
+import { Stubs, createContext } from '../../_stubs';
 import {
   ImageViewer,
   REQUEST_CANCELLED,
 } from '../../../src/newgen/viewers/image';
 import { ZoomControls } from '../../../src/newgen/zoomControls';
+import { awaitError } from '@atlaskit/media-test-helpers';
 
 const collectionName = 'some-collection';
 const imageItem: FileItem = {
@@ -20,30 +20,16 @@ const imageItem: FileItem = {
   },
 };
 
-function createContext(blobService?) {
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(new Subject<FileItem>()),
-    blobService,
-  ) as any;
-}
-
-function createFixture(fetchImageBlobCancelableResponse, cancel?) {
+function createFixture(
+  fetchImageBlobCancelableResponse: Promise<Blob>,
+  cancel?: Function,
+) {
   const blobService = Stubs.blobService();
   blobService.fetchImageBlobCancelable.mockReturnValue({
     response: fetchImageBlobCancelableResponse || Promise.resolve(new Blob()),
     cancel: cancel || jest.fn(),
   });
-  const context = createContext(blobService);
+  const context = createContext({ blobService });
   const onClose = jest.fn();
   const el = mount(
     <ImageViewer
@@ -54,16 +40,6 @@ function createFixture(fetchImageBlobCancelableResponse, cancel?) {
     />,
   );
   return { blobService, context, el, onClose };
-}
-
-async function awaitError(response, expectedMessage) {
-  try {
-    await response;
-  } catch (err) {
-    if (err.message !== expectedMessage) {
-      throw err;
-    }
-  }
 }
 
 describe('ImageViewer', () => {
@@ -89,15 +65,17 @@ describe('ImageViewer', () => {
     const response = Promise.reject(new Error(REQUEST_CANCELLED));
     const { el } = createFixture(response);
 
-    el.instance()['preventRaceCondition'] = jest.fn();
+    (el as any).instance()['preventRaceCondition'] = jest.fn();
 
     await awaitError(response, REQUEST_CANCELLED);
 
-    expect(el.instance()['preventRaceCondition'].mock.calls.length === 1);
+    expect(
+      (el as any).instance()['preventRaceCondition'].mock.calls.length === 1,
+    );
   });
 
   it('cancels an image fetch request when unmounted', () => {
-    const response = new Promise(() => {});
+    const response: any = new Promise(() => {});
     const cancel = jest.fn();
     const { el } = createFixture(response, cancel);
 
@@ -111,7 +89,7 @@ describe('ImageViewer', () => {
     const { el } = createFixture(response);
 
     const revokeObjectUrl = jest.fn();
-    el.instance()['revokeObjectUrl'] = revokeObjectUrl;
+    (el as any).instance()['revokeObjectUrl'] = revokeObjectUrl;
 
     await response;
     el.unmount();
@@ -124,7 +102,7 @@ describe('ImageViewer', () => {
     const { el } = createFixture(response);
 
     const revokeObjectUrl = jest.fn();
-    el.instance()['revokeObjectUrl'] = revokeObjectUrl;
+    (el as any).instance()['revokeObjectUrl'] = revokeObjectUrl;
 
     await response;
     expect(el.state().objectUrl.status).toEqual('SUCCESSFUL');
