@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 74.0.1
+- [patch] ED-4964: refactor lists state [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
+- [none] Updated dependencies [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
+
 ## 74.0.0
 - [major] Remove deprecated APIs [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
 - [none] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
