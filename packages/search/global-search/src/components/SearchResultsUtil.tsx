@@ -19,10 +19,10 @@ import AdvancedSearchResult from './AdvancedSearchResult';
 import ObjectResultComponent from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
-  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface BaseResultProps {
   type: string;
@@ -62,7 +62,7 @@ function createAndFireSearchResultSelectedEvent(createEvent, props): void {
       ...DEFAULT_GAS_ATTRIBUTES,
     },
   });
-  event.fire(DEFUALT_GAS_CHANNEL);
+  event.fire(DEFAULT_GAS_CHANNEL);
 }
 
 const searchResultsAnalyticsEvents = {

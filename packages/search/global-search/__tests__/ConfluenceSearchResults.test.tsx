@@ -168,7 +168,6 @@ describe('ConfluenceSearchResults', () => {
     };
 
     const wrapper = render(props);
-
     expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
   });
 
@@ -179,7 +178,6 @@ describe('ConfluenceSearchResults', () => {
     };
 
     const wrapper = render(props);
-
     expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
   });
 

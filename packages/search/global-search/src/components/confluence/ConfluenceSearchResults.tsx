@@ -13,8 +13,12 @@ import {
   getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
-import { buildScreenEvent, Screen } from '../../util/analytics';
+import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import NoRecentActivity from '../NoRecentActivity';
+
+export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
+export const MAX_SPACES = 3;
+export const MAX_PEOPLE = 3;
 
 let preQueryScreenCounter = 0;
 let postQueryScreenCounter = 0;
@@ -140,13 +144,17 @@ export default function searchResults(props: Props) {
     return [
       renderObjectsGroup(
         'Recent pages and blogs',
-        take(recentlyViewedPages, 8),
+        take(recentlyViewedPages, MAX_PAGES_BLOGS_ATTACHMENTS),
         query,
       ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
+      renderSpacesGroup(
+        'Recent spaces',
+        take(recentlyViewedSpaces, MAX_SPACES),
+        query,
+      ),
       renderPeopleGroup(
         'Recently worked with',
-        take(recentlyInteractedPeople, 3),
+        take(recentlyInteractedPeople, MAX_PEOPLE),
         query,
       ),
       renderAdvancedSearchGroup(query),
@@ -171,12 +179,13 @@ export default function searchResults(props: Props) {
   return [
     renderObjectsGroup(
       'Pages, blogs and attachments',
-      take(objectResults, 8),
+      take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
       query,
     ),
-    renderSpacesGroup('Spaces', take(spaceResults, 3), query),
-    renderPeopleGroup('People', take(peopleResults, 3), query),
+    renderSpacesGroup('Spaces', take(spaceResults, MAX_SPACES), query),
+    renderPeopleGroup('People', take(peopleResults, MAX_PEOPLE), query),
     renderAdvancedSearchGroup(query),
+
     <AnalyticsEventFiredOnMount
       key="postQueryScreenEvent"
       onEventFired={() => postQueryScreenCounter++}
