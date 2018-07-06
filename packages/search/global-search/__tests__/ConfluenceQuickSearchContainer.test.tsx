@@ -40,6 +40,8 @@ function searchFor(query: string, wrapper: ShallowWrapper) {
   wrapper.update();
 }
 
+declare var global: any;
+
 /**
  * This component uses a lot of internal state and async calls.
  * Make sure we wait for next tick and then force render update for React 16.
@@ -73,6 +75,19 @@ function render(partialProps?: Partial<Props>) {
 }
 
 describe('ConfluenceQuickSearchContainer', () => {
+  let originalPerformance;
+
+  beforeEach(() => {
+    originalPerformance = global.window.performance;
+    global.window.performance = {
+      now: () => 1,
+    };
+  });
+
+  afterEach(() => {
+    global.window.performance = originalPerformance;
+  });
+
   describe('loading state', () => {
     it.skip('should set loading state when searching', () => {
       const wrapper = render();

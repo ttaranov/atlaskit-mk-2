@@ -37,10 +37,11 @@ export function firePostQueryShownEvent(
   resultsDetails: ShownAnalyticsAttributes,
   elapsedMs: number,
   searchSessionId: string,
+  query: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
   const event = createAnalyticsEvent();
-  const sanitizedQuery = sanitizeSearchQuery(this.state.query);
+  const sanitizedQuery = sanitizeSearchQuery(query);
 
   const payload: GasPayload = {
     action: 'shown',

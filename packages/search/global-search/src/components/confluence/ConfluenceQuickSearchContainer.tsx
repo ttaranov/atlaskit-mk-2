@@ -17,14 +17,9 @@ import renderSearchResults, {
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import { redirectToConfluenceAdvancedSearch } from '../SearchResultsUtil';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
 import {
-  DEFAULT_GAS_CHANNEL,
-  DEFAULT_GAS_SOURCE,
-  DEFAULT_GAS_ATTRIBUTES,
   ShownAnalyticsAttributes,
   buildShownEventDetails,
-  sanitizeSearchQuery,
 } from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { take } from '../SearchResultsUtil';
@@ -33,6 +28,7 @@ import {
   firePostQueryShownEvent,
 } from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
+import performanceNow from '../../util/performance-now';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -94,7 +90,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           spaceResults: [],
           peopleResults: [],
         },
-        () => this.fireShownPreQueryAnalyticsEvent(),
+        () => this.fireShownPreQueryEvent(),
       );
     } else {
       this.doSearch(query);
@@ -187,7 +183,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     const { createAnalyticsEvent } = this.props;
     if (createAnalyticsEvent) {
       const elapsedMs: number = requestStartTime
-        ? window.performance.now() - requestStartTime
+        ? performanceNow() - requestStartTime
         : 0;
 
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
@@ -210,22 +206,21 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     resultsDetails: ShownAnalyticsAttributes,
   ) {
     const { createAnalyticsEvent } = this.props;
-
     if (createAnalyticsEvent) {
-      const elapsedMs: number = window.performance.now() - requestStartTime;
+      const elapsedMs: number = performanceNow() - requestStartTime;
 
       firePostQueryShownEvent(
         resultsDetails,
         elapsedMs,
         this.state.searchSessionId,
+        this.state.query,
         createAnalyticsEvent,
       );
     }
   }
 
   doSearch = async (query: string) => {
-    const startTime = new Date();
-
+    const startTime = performanceNow();
     const quickNavPromise = this.searchQuickNav(query);
     const confXpSearchPromise = this.searchCrossProductConfluence(query);
     const searchPeoplePromise = this.searchPeople(query);
@@ -292,7 +287,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   handleMount = async () => {
-    const startTime = new Date();
+    const startTime = performanceNow();
 
     this.setState({
       isLoading: true,
@@ -321,7 +316,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyViewedSpaces: await recentSpacesPromise,
           recentlyInteractedPeople: await recentPeoplePromise,
         },
-        () => this.fireShownPreQueryAnalyticsEvent(startTime),
+        () => this.fireShownPreQueryEvent(startTime),
       );
     } finally {
       this.setState({
