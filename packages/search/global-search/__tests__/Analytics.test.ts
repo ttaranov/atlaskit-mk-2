@@ -1,4 +1,4 @@
-import { buildShownEventDetails } from '../src/util/analytics';
+import { buildShownEventDetails } from '../src/util/analytics-util';
 import {
   makeConfluenceContainerResult,
   makeConfluenceObjectResult,

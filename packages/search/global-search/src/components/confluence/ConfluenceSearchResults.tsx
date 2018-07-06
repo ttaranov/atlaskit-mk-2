@@ -13,7 +13,7 @@ import {
   getConfluenceAdvancedSearchLink,
 } from '../SearchResultsUtil';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
-import { buildScreenEvent, Screen } from '../../util/analytics';
+import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import NoRecentActivity from '../NoRecentActivity';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;

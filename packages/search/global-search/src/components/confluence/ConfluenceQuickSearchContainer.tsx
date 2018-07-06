@@ -25,9 +25,14 @@ import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
   sanitizeSearchQuery,
-} from '../../util/analytics';
+} from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { take } from '../SearchResultsUtil';
+import {
+  firePreQueryShownEvent,
+  firePostQueryShownEvent,
+} from '../../util/analytics-event-helper';
+import { CreateAnalyticsEventFn } from '../analytics/types';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -35,7 +40,7 @@ export interface Props {
   confluenceClient: ConfluenceClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   linkComponent?: LinkComponent;
-  createAnalyticsEvent?: Function;
+  createAnalyticsEvent?: CreateAnalyticsEventFn;
 }
 
 export interface State {
@@ -178,65 +183,43 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     };
   }
 
-  fireShownPreQueryAnalyticsEvent(requestStartTime?: Date) {
-    const elapsedMs = requestStartTime
-      ? new Date().getTime() - requestStartTime.getTime()
-      : 0;
+  fireShownPreQueryEvent(requestStartTime?: number) {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const elapsedMs: number = requestStartTime
+        ? window.performance.now() - requestStartTime
+        : 0;
 
-    const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-      take(this.state.recentlyViewedPages, MAX_PAGES_BLOGS_ATTACHMENTS),
-      take(this.state.recentlyViewedSpaces, MAX_SPACES),
-      take(this.state.recentlyInteractedPeople, MAX_PEOPLE),
-    );
+      const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
+        take(this.state.recentlyViewedPages, MAX_PAGES_BLOGS_ATTACHMENTS),
+        take(this.state.recentlyViewedSpaces, MAX_SPACES),
+        take(this.state.recentlyInteractedPeople, MAX_PEOPLE),
+      );
 
-    if (this.props.createAnalyticsEvent) {
-      const event = this.props.createAnalyticsEvent();
-      const searchSessionId = this.state.searchSessionId;
-      const payload: GasPayload = {
-        action: 'shown',
-        actionSubject: 'searchResults',
-        actionSubjectId: 'preQuerySearchResults',
-        eventType: 'ui',
-        source: DEFAULT_GAS_SOURCE,
-        attributes: {
-          preQueryRequestDurationMs: elapsedMs,
-          searchSessionId: searchSessionId,
-          ...eventAttributes,
-          ...DEFAULT_GAS_ATTRIBUTES,
-        },
-      };
-      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+      firePreQueryShownEvent(
+        eventAttributes,
+        elapsedMs,
+        this.state.searchSessionId,
+        createAnalyticsEvent,
+      );
     }
   }
 
-  fireShownPostQueryAnalyticsEvent(
-    requestStartTime: Date,
+  fireShownPostQueryEvent(
+    requestStartTime: number,
     resultsDetails: ShownAnalyticsAttributes,
   ) {
-    const elapsedMs = new Date().getTime() - requestStartTime.getTime();
+    const { createAnalyticsEvent } = this.props;
 
-    if (this.props.createAnalyticsEvent) {
-      const event = this.props.createAnalyticsEvent();
-      const searchSessionId = this.state.searchSessionId;
-      const sanitizedQuery = sanitizeSearchQuery(this.state.query);
+    if (createAnalyticsEvent) {
+      const elapsedMs: number = window.performance.now() - requestStartTime;
 
-      const payload: GasPayload = {
-        action: 'shown',
-        actionSubject: 'searchResults',
-        actionSubjectId: 'postQuerySearchResults',
-        eventType: 'ui',
-        source: DEFAULT_GAS_SOURCE,
-        attributes: {
-          queryCharacterCount: sanitizedQuery.length,
-          queryWordCount:
-            sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
-          postQueryRequestDurationMs: elapsedMs,
-          searchSessionId: searchSessionId,
-          ...resultsDetails,
-          ...DEFAULT_GAS_ATTRIBUTES,
-        },
-      };
-      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+      firePostQueryShownEvent(
+        resultsDetails,
+        elapsedMs,
+        this.state.searchSessionId,
+        createAnalyticsEvent,
+      );
     }
   }
 
@@ -292,7 +275,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         // pull the space results out of the Map
         const spaceResults = spaceResultsMap.get(Scope.ConfluenceSpace) || [];
 
-        this.fireShownPostQueryAnalyticsEvent(
+        this.fireShownPostQueryEvent(
           startTime,
           buildShownEventDetails(
             take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),

@@ -22,7 +22,7 @@ import {
   DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface BaseResultProps {
   type: string;

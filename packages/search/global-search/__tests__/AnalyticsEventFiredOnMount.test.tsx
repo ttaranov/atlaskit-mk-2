@@ -3,7 +3,7 @@ import { UnwrappedAnalyticsEventFiredOnMount } from '../src/components/analytics
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { mount } from 'enzyme';
 import { CreateAnalyticsEventFn } from '../src/components/analytics/types';
-import { DEFAULT_GAS_CHANNEL } from '../src/util/analytics';
+import { DEFAULT_GAS_CHANNEL } from '../src/util/analytics-util';
 
 const mockPayloadA: GasPayload = {
   action: 'action-A',

@@ -13,7 +13,7 @@ import {
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_CHANNEL,
   sanitizeSearchQuery,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface Props {
   onMount();
