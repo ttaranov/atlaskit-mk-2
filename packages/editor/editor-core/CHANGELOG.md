@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 74.0.2
+- [patch] Fix analytics wrapper [dc40093](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc40093)
+- [none] Updated dependencies [dc40093](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc40093)
+
 ## 74.0.1
 - [patch] ED-4964: refactor lists state [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
 - [none] Updated dependencies [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
