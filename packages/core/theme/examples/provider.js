@@ -14,6 +14,7 @@ export default () => (
               backgroundColor: theme[k],
               color: color(theme[k]).negate(),
               display: 'inline-block',
+              marginBottom: 10,
               marginRight: 10,
               padding: 10,
             }}
