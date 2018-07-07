@@ -6,6 +6,7 @@ import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
 type Props = {|
+  // $FlowFixMe - inexact `FieldTextProps` is incompatible with exact `Props`
   ...FieldTextProps,
   innerRef?: (node: ?HTMLInputElement) => void,
 |};
@@ -34,6 +35,7 @@ export default class FieldTextStateless extends Component<Props, void> {
 
   setInputRef = (input: ?HTMLInputElement) => {
     this.input = input;
+    // $FlowFixMe - Cannot call `this.props.innerRef` because undefined [1] is not a function
     this.props.innerRef(input);
   };
 
