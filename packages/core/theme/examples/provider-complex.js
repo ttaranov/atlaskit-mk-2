@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import { Reset, Provider, Themed } from '../src';
+import { Consumer, Reset, Provider } from '../src';
 
 type Props = {};
 type State = {
@@ -45,7 +45,7 @@ export default class extends Component<Props, State> {
     return (
       <ThemeColor>
         <ThemeSize>
-          <Themed>
+          <Consumer>
             {({ gridSize }) => (
               <Reset style={{ padding: gridSize }}>
                 <Button onClick={this.switchThemeColor}>
@@ -58,7 +58,7 @@ export default class extends Component<Props, State> {
                 </span>
               </Reset>
             )}
-          </Themed>
+          </Consumer>
         </ThemeSize>
       </ThemeColor>
     );

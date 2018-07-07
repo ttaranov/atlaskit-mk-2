@@ -1,33 +1,37 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Consumer, Provider, Themed } from '../src';
+import React, { Component, Fragment } from 'react';
+import { Provider, Themed } from '../src';
 
-const defaultButtonTheme = (props: { hover?: boolean, primary?: boolean }) => {
+const defaultButtonTheme = (
+  theme,
+  props: { hover?: boolean, primary?: boolean },
+) => {
   let backgroundColor;
   const textColor = props.primary ? '#fff' : '#333';
 
   if (props.hover) {
-    backgroundColor = props.primary ? 'darkblue' : '#ddd';
+    backgroundColor = props.primary ? 'navy' : '#ddd';
   } else {
-    backgroundColor = props.primary ? 'blue' : '#eee';
+    backgroundColor = props.primary ? 'skyblue' : '#eee';
   }
 
   return {
+    ...theme,
     backgroundColor,
     textColor,
-    ...props,
   };
 };
-const customButtonTheme = props =>
-  defaultButtonTheme({
-    backgroundColor: 'palevioletred',
-    textColor: 'papayawhip',
-    ...props,
-  });
-const AppTheme = props => <Provider button={defaultButtonTheme} {...props} />;
+const contextButtonTheme = () => ({
+  backgroundColor: 'rebeccapurple',
+});
+const customButtonTheme = () => ({
+  backgroundColor: 'palevioletred',
+});
+const AppTheme = props => <Provider MyButton={contextButtonTheme} {...props} />;
 
-class Button extends Component<{ theme: React.Node }> {
+class Button extends Component<*> {
+  static displayName = 'MyButton';
   static defaultProps = {
     theme: defaultButtonTheme,
     type: 'button',
@@ -38,10 +42,7 @@ class Button extends Component<{ theme: React.Node }> {
   onMouseEnter = () => this.setState({ hover: true });
   onMouseLeave = () => this.setState({ hover: false });
   render() {
-    const {
-      props: { theme, ...props },
-      state,
-    } = this;
+    const { props, state } = this;
     return (
       <Themed component={this} props={{ ...props, ...state }}>
         {t => (
@@ -54,11 +55,14 @@ class Button extends Component<{ theme: React.Node }> {
               borderRadius: 3,
               color: t.textColor,
               cursor: 'pointer',
+              marginBottom: 10,
               marginRight: 10,
               padding: 10,
             }}
-            {...props}
-          />
+            type={props.type}
+          >
+            {props.children}
+          </button>
         )}
       </Themed>
     );
@@ -66,9 +70,16 @@ class Button extends Component<{ theme: React.Node }> {
 }
 
 export default () => (
-  <AppTheme>
+  <Fragment>
     <Button>Default</Button>
-    <Button primary>Primary</Button>
-    <Button theme={customButtonTheme}>Custom</Button>
-  </AppTheme>
+    <Button primary>Default primary</Button>
+    <AppTheme>
+      <Button>Context</Button>
+      <Button primary>Context primary</Button>
+      <Button theme={customButtonTheme}>Custom</Button>
+      <Button primary theme={customButtonTheme}>
+        Custom primary
+      </Button>
+    </AppTheme>
+  </Fragment>
 );

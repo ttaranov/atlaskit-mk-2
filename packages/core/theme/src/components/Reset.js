@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled, { css } from 'styled-components';
-import Themed from './Themed';
+import { Consumer } from './Context';
 
 const orTextColor = preferred => p => p[preferred] || p.textColor;
 const Div = styled.div`
@@ -39,11 +39,11 @@ const Div = styled.div`
 `;
 
 export default ({ children, ...props }: { children: React.Node }) => (
-  <Themed>
+  <Consumer>
     {theme => (
       <Div {...theme} {...props}>
         {children}
       </Div>
     )}
-  </Themed>
+  </Consumer>
 );
