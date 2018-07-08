@@ -3,9 +3,13 @@
 import React from 'react';
 
 import { light, withTheme } from '../../theme';
-import type { SectionTitleProps } from './types';
+import type { SectionTitlePrimitiveProps } from './types';
 
-const SectionTitle = ({ after: After, children, theme }: SectionTitleProps) => {
+const SectionTitle = ({
+  after: After,
+  children,
+  theme,
+}: SectionTitlePrimitiveProps) => {
   const { mode, context } = theme;
   const styles = mode.sectionTitle()[context];
 

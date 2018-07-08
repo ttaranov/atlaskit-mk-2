@@ -45,9 +45,9 @@ export type ItemProps = {
   onClick?: (SyntheticEvent<MouseEvent>) => void,
   /** How tight the spacing between the elements inside the Item should be. */
   spacing: Spacing,
-  /** A function which will be passed the default styles object for the Item,
-   * and should return a new styles object. Allows you to patch and customise
-   * the Item's appearance. */
+  /** A function which will be passed the default styles object for the Item as
+   * well as its current state, and should return a new styles object. Allows
+   * you to patch and customise the Item's appearance. */
   styles: StyleReducer<ItemPresentationProps>,
   /** The string to render as a 'description' under the main text content in the
    * Item. */

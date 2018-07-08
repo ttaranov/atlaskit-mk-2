@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 
 import InteractionStateManager from '../InteractionStateManager';
+import type { InteractionState } from '../InteractionStateManager/types';
 import { styleReducerNoOp } from '../../theme';
 import ItemPrimitive from './primitives';
 import type { ItemProps } from './types';
@@ -14,7 +15,10 @@ export default class Item extends PureComponent<ItemProps> {
     spacing: 'default',
     text: '',
   };
-  renderItem = (state: *) => <ItemPrimitive {...state} {...this.props} />;
+
+  renderItem = (state: InteractionState) => (
+    <ItemPrimitive {...state} {...this.props} />
+  );
 
   render() {
     return (

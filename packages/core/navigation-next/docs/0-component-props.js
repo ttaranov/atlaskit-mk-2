@@ -1,6 +1,7 @@
 // @flow
+
 import React from 'react';
-import { md } from '@atlaskit/docs';
+import { md, Props } from '@atlaskit/docs';
 import { colors } from '@atlaskit/theme';
 
 const Warning = p => (
@@ -28,5 +29,14 @@ ${(
       production.
     </p>
   </Warning>
+)}
+
+# UI component props
+
+${(
+  <Props
+    heading="LayoutManager"
+    props={require('!!extract-react-types-loader!../src/components/LayoutManager')}
+  />
 )}
 `;
