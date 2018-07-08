@@ -19,5 +19,12 @@ export const fakeCursorStyles = css`
       height: 100%;
       border-right: 1px solid rgba(0, 0, 0, 0.4);
     }
+
+    .ProseMirror-fake-text-selection {
+      display: inline;
+      pointer-events: none;
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
   }
 `;

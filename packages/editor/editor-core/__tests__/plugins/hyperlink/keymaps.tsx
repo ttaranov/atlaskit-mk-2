@@ -1,9 +1,3 @@
-import { mount } from 'enzyme';
-import * as React from 'react';
-
-import { hyperlinkPluginKey } from '../../../src/plugins/hyperlink';
-import HyperlinkEdit from '../../../src/plugins/hyperlink/ui/HyperlinkEdit';
-import PanelTextInput from '../../../src/ui/PanelTextInput';
 import {
   createEditor,
   doc,
@@ -14,13 +8,17 @@ import {
   code,
   hardBreak,
 } from '@atlaskit/editor-test-helpers';
+import {
+  HyperlinkState,
+  InsertStatus,
+  stateKey,
+} from '../../../src/plugins/hyperlink/pm-plugins/main';
 
 describe('hyperlink - keymap', () => {
   const editor = (doc: any, editorProps = {}) =>
     createEditor({
       doc,
       editorProps,
-      pluginKey: hyperlinkPluginKey,
     });
 
   describe('Enter keypress', () => {
@@ -136,41 +134,41 @@ describe('hyperlink - keymap', () => {
 
   describe('Cmd-k keypress', () => {
     it('should open floating toolbar for non-message editor', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}text{>}')));
-      const hyperlinkEdit = mount(
-        <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
-      );
+      const { editorView } = editor(doc(p('{<}text{>}')));
       sendKeyToPm(editorView, 'Mod-k');
-      hyperlinkEdit.update();
-      const input = hyperlinkEdit.find(PanelTextInput);
-      expect(input.length).toEqual(1);
-      hyperlinkEdit.unmount();
+      expect(stateKey.getState(editorView.state)).toEqual(
+        expect.objectContaining({
+          activeLinkMark: {
+            type: InsertStatus.INSERT_LINK_TOOLBAR,
+            from: 1,
+            to: 5,
+          },
+        }) as HyperlinkState,
+      );
     });
 
     it('should not work for message editor', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}text{>}')), {
+      const { editorView } = editor(doc(p('{<}text{>}')), {
         appearance: 'message',
       });
-      const hyperlinkEdit = mount(
-        <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
-      );
       sendKeyToPm(editorView, 'Mod-k');
-      const input = hyperlinkEdit.find(PanelTextInput);
-      expect(input.length).toEqual(0);
-      hyperlinkEdit.unmount();
+      expect(stateKey.getState(editorView.state)).toEqual(
+        expect.objectContaining({
+          activeLinkMark: undefined,
+        }) as HyperlinkState,
+      );
     });
 
     it('should not open floating toolbar if incompatible mark is selected', () => {
-      const { editorView, pluginState } = editor(doc(p(code('te{<>}xt'))), {
+      const { editorView } = editor(doc(p(code('te{<>}xt'))), {
         appearance: 'message',
       });
-      const hyperlinkEdit = mount(
-        <HyperlinkEdit pluginState={pluginState} editorView={editorView} />,
-      );
       sendKeyToPm(editorView, 'Mod-k');
-      const input = hyperlinkEdit.find(PanelTextInput);
-      expect(input.exists()).toBe(false);
-      hyperlinkEdit.unmount();
+      expect(stateKey.getState(editorView.state)).toEqual(
+        expect.objectContaining({
+          activeLinkMark: undefined,
+        }) as HyperlinkState,
+      );
     });
   });
 });
