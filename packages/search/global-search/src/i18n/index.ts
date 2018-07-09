@@ -1,5 +1,5 @@
-import enMessages = require('./en.json');
-import esMessages = require('./es.json');
-import frMessages = require('./fr.json');
+import * as enMessages from './en.json';
+import * as esMessages from './es.json';
+import * as frMessages from './fr.json';
 
 export { enMessages, esMessages, frMessages };
