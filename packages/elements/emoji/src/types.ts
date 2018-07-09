@@ -1,6 +1,8 @@
 import { SyntheticEvent } from 'react';
 import { CategoryId } from './components/picker/categories';
 
+export type CategoryId = CategoryId;
+
 export type RelativePosition = 'above' | 'below' | 'auto';
 
 export interface Styles {
