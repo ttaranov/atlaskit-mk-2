@@ -37,10 +37,10 @@ import Content from './Content';
 const FillScreen = props => <Fade component={StyledFillScreen} {...props} />;
 // eslint-disable-next-line react/prop-types
 const Positioner = ({ scrollBehavior, ...props }) => {
-  const component =
+  const PositionerComponent =
     scrollBehavior === 'inside' ? PositionerAbsolute : PositionerRelative;
 
-  return <SlideUp component={component} {...props} />;
+  return <PositionerComponent {...props} />;
 };
 
 function getScrollDistance() {
