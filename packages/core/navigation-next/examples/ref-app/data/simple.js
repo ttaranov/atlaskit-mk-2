@@ -1,8 +1,8 @@
 // @flow
 
-import type { State } from '../types';
+import type { DataShape } from '../types';
 
-const data: State = {
+const data: DataShape = {
   settings: {
     theme: 'light',
     customText: null,

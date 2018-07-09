@@ -25,7 +25,7 @@ type Page = {
   content: string,
 };
 
-type Project = {
+export type Project = {
   name: string,
   boards: Array<Board>,
   shortcuts: Array<Shortcut>,
@@ -34,7 +34,7 @@ type Project = {
 
 type Theme = 'light' | 'dark' | 'custom';
 
-export type State = {
+export type DataShape = {
   settings: {
     theme: Theme,
     customText: ?string,
