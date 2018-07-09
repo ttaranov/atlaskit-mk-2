@@ -9,9 +9,9 @@ import InfoIcon from '@atlaskit/icon/glyph/info';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
 
-import SectionMessage from '../src';
-import { type Appearance } from '../src/components/SectionMessage';
-import { Title, Action } from '../src/components/styled';
+import SectionMessage from '../../';
+import { type Appearance } from '../../types';
+import { Title, Action } from '../../components/styled';
 
 describe('SectionMessage', () => {
   it('should render correct defaults', () => {
