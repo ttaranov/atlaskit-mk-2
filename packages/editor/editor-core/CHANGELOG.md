@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 74.0.4
+- [patch] ED-1718: improve lists styles [570c4fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/570c4fb)
+- [none] Updated dependencies [570c4fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/570c4fb)
+
 ## 74.0.3
 - [patch] ED-4851: merge hover selection with main plugin [7eb5bdf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5bdf)
 - [none] Updated dependencies [7eb5bdf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5bdf)
