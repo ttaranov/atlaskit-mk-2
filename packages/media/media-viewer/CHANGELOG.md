@@ -1,5 +1,39 @@
 # @atlaskit/media-viewer
 
+## 15.1.11
+- [patch] Fix passing feature flags down the List component [ae107ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae107ed)
+
+## 15.1.10
+- [patch] Autoplay video and audio files when they are the selected media items [99c6b85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99c6b85)
+
+## 15.1.9
+- [patch] CHANGESET: Use theme/layers's z-index for the Blanket component [186ff55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/186ff55)
+
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+  - @atlaskit/icon@12.5.1
+
+## 15.1.8
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-test-helpers@14.0.4
+  - @atlaskit/media-core@20.0.0
+
+## 15.1.7
+- [patch] MSW-776: allow selection of top and bottom of documents [d62c079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d62c079)
+
+## 15.1.6
+- [patch] MSW-777: position navigation arrows differently, so that they no longer overlap the content area [0334e5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0334e5c)
+
+## 15.1.5
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/button@8.2.3
+
+## 15.1.4
+- [patch] MSW-774 : adjust zoom levels [a6369ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6369ce)
+
+## 15.1.3
+- [patch] Better toolbar UX for MediaViewer NG [66abc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66abc9a)
+
 ## 15.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

@@ -214,8 +214,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       isLoading: true,
     });
 
-    const recentItemsPromise = this.props.confluenceClient.getRecentItems();
-    const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces();
+    const recentItemsPromise = this.props.confluenceClient.getRecentItems(
+      this.state.searchSessionId,
+    );
+    const recentSpacesPromise = this.props.confluenceClient.getRecentSpaces(
+      this.state.searchSessionId,
+    );
     const recentPeoplePromise = this.props.peopleSearchClient.getRecentPeople();
 
     recentItemsPromise.catch(
@@ -279,6 +283,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           objectResults,
           spaceResults,
           peopleResults,
+          searchSessionId,
         })}
       </GlobalQuickSearch>
     );

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import { NavigationSubscriber, GlobalNav } from '@atlaskit/navigation-next';
+import { GlobalNav } from '@atlaskit/navigation-next';
 
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
@@ -9,7 +9,7 @@ import generateProductConfig from '../../config/product-config';
 import type { NavItem } from '../../config/types';
 import type { GlobalNavigationProps } from './types';
 
-class GlobalNavigation extends Component<GlobalNavigationProps> {
+export default class GlobalNavigation extends Component<GlobalNavigationProps> {
   static defaultProps = {};
 
   constructNavItems = () => {
@@ -49,9 +49,3 @@ class GlobalNavigation extends Component<GlobalNavigationProps> {
     );
   }
 }
-
-export default (props: GlobalNavigationProps) => (
-  <NavigationSubscriber>
-    {navigation => <GlobalNavigation navigation={navigation} {...props} />}
-  </NavigationSubscriber>
-);

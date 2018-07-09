@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Frame } from '../Frame';
 import Spinner from '@atlaskit/spinner';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
+import { SpinnerWrapper } from './styled';
 
 export interface ResolvingViewProps {
   url: string;
@@ -13,8 +14,15 @@ export class ResolvingView extends React.Component<ResolvingViewProps> {
     const { url, onClick } = this.props;
     return (
       <Frame onClick={onClick}>
-        <IconAndTitleLayout icon={<Spinner size={16} />} title={url}>
-          - To see a link preview, connect your account
+        <IconAndTitleLayout
+          icon={
+            <SpinnerWrapper>
+              <Spinner size={16} />
+            </SpinnerWrapper>
+          }
+          title={url}
+        >
+          - Connect your account to preview links
         </IconAndTitleLayout>
       </Frame>
     );

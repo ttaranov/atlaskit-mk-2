@@ -60,6 +60,12 @@ class Controlled extends Component<Props, State> {
     });
   };
 
+  onFocus = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
   render() {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -84,15 +90,14 @@ export default () => {
 
       <Label
         htmlFor="react-select-datepicker-2--input"
-        label="controlled (value, isOpen)"
+        label="controlled (value)"
       />
       <Controlled initialValue="2018-01-02">
-        {({ value, onValueChange, isOpen, onBlur }) => (
+        {({ value, onValueChange, onBlur }) => (
           <DatePicker
             id="datepicker-2"
             value={value}
             onChange={onValueChange}
-            isOpen={isOpen}
             onBlur={onBlur}
           />
         )}
@@ -122,8 +127,8 @@ export default () => {
             id="timepicker-2"
             value={value}
             onChange={onValueChange}
-            isOpen={isOpen}
             onBlur={onBlur}
+            isOpen={isOpen}
           />
         )}
       </Controlled>

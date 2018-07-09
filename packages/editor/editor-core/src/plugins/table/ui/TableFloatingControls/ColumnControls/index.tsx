@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
 import { selectColumn, isTableSelected } from 'prosemirror-utils';
 import {
   ColumnContainer,
@@ -12,7 +13,11 @@ import { toolbarSize } from '../styles';
 import { tableDeleteColumnButtonSize } from '../../styles';
 import InsertColumnButton from './InsertColumnButton';
 import DeleteColumnButton from './DeleteColumnButton';
-import { findColumnSelection, TableSelection } from '../utils';
+import {
+  findColumnSelection,
+  TableSelection,
+  isSelectionUpdated,
+} from '../utils';
 import {
   resetHoverSelection,
   hoverColumns,
@@ -22,13 +27,45 @@ import {
 
 export interface Props {
   editorView: EditorView;
+  selection?: Selection;
   tableRef?: HTMLElement;
   isTableHovered: boolean;
   isTableInDanger?: boolean;
+  numberOfColumns?: number;
 }
 
 export default class ColumnControls extends Component<Props, any> {
   state: { dangerColumns: number[] } = { dangerColumns: [] };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const {
+      tableRef,
+      isTableHovered,
+      isTableInDanger,
+      selection,
+      numberOfColumns,
+    } = this.props;
+
+    if (nextProps.tableRef) {
+      const controls = nextProps.tableRef.parentNode!.firstChild as HTMLElement;
+      // checks if controls width is different from table width
+      // 1px difference is acceptible and occurs in some situations due to the browser rendering specifics
+      const shouldUpdate =
+        Math.abs(controls.offsetWidth - nextProps.tableRef.offsetWidth) > 1;
+      if (shouldUpdate) {
+        return true;
+      }
+    }
+
+    return (
+      tableRef !== nextProps.tableRef ||
+      isTableHovered !== nextProps.isTableHovered ||
+      isTableInDanger !== nextProps.isTableInDanger ||
+      numberOfColumns !== nextProps.numberOfColumns ||
+      this.state.dangerColumns !== nextState.dangerColumns ||
+      isSelectionUpdated(selection, nextProps.selection)
+    );
+  }
 
   createDeleteColumnButton(
     selection: TableSelection,

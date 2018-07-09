@@ -1,21 +1,24 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import Code from '../../../../src/react/marks/code';
 
 describe('Renderer - React/Marks/Code', () => {
-  const mark = shallow(<Code>This is code</Code>);
-
   it('should generate content with a <Code>-tag', () => {
-    expect(mark.find('Code').length).to.equal(1);
+    const mark = mount(<Code>This is code</Code>);
+    expect(mark.find(Code).length).to.equal(1);
+    mark.unmount();
   });
 
   it('should output correct html', () => {
+    const mark = mount(<Code>This is code</Code>);
     expect(mark.html()).to.include('<code>This is code</code>');
+    mark.unmount();
   });
 
   it('should handle arrays correctly', () => {
-    const markWithArray = shallow(<Code>{['This ', 'is', ' code']}</Code>);
+    const markWithArray = mount(<Code>{['This ', 'is', ' code']}</Code>);
     expect(markWithArray.html()).to.include('<code>This is code</code>');
+    markWithArray.unmount();
   });
 });

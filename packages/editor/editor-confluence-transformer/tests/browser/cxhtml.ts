@@ -2,10 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import {
-  confluenceSchemaWithMediaSingle as schema,
-  parseDate,
-} from '@atlaskit/editor-common';
+import { confluenceSchemaWithMediaSingle as schema } from '@atlaskit/editor-common';
 import { chaiPlugin } from '@atlaskit/editor-test-helpers';
 import {
   blockquote,
@@ -1153,7 +1150,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     check(
       'date node',
       `<time datetime="${iso}"></time>`,
-      doc(p(date({ timestamp: parseDate(iso).valueOf() }))),
+      doc(p(date({ timestamp: Date.parse(iso) }))),
     );
   });
 

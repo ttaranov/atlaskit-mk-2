@@ -1,5 +1,9 @@
 # @atlaskit/page
 
+## 7.2.1
+- [patch] Fixed typo in grid component [c1fda8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1fda8b)
+- [none] Updated dependencies [c1fda8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1fda8b)
+
 ## 7.2.0
 - [minor] Fixes types for Flow 0.74 [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)
 - [none] Updated dependencies [dc50cd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc50cd2)

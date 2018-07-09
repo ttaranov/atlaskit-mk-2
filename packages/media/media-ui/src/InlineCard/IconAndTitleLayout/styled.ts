@@ -1,12 +1,23 @@
 import styled from 'styled-components';
 import { ImgHTMLAttributes, HTMLAttributes, ComponentClass } from 'react';
 
+// export const IconWrapper: ComponentClass<ImgHTMLAttributes<{}>> = styled.span`
+//   display: inline-flex;
+//   vertical-align: text-bottom;
+//   margin-right: 2px;
+//   > * {
+//     display: inline-flex;
+//   }
+// `;
+
 export const IconWrapper: ComponentClass<ImgHTMLAttributes<{}>> = styled.span`
+  vertical-align: middle;
   display: inline-flex;
-  vertical-align: text-bottom;
-  margin-right: 2px;
-  > * {
-    display: inline-flex;
+  overflow: hidden;
+  > span {
+    margin-top: -3px;
+    height: 23px;
+    width: 23px;
   }
 `;
 

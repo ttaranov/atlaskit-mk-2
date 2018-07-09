@@ -199,8 +199,9 @@ export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
   />
 );
 
-function getConfluenceAdvancedSearchLink(query: string) {
-  return `/wiki/dosearchsite.action?queryString=${encodeURIComponent(query)}`;
+export function getConfluenceAdvancedSearchLink(query?: string) {
+  const queryString = query ? `?queryString=${encodeURIComponent(query)}` : '';
+  return `/wiki/dosearchsite.action${queryString}`;
 }
 
 export function redirectToConfluenceAdvancedSearch(query = '') {

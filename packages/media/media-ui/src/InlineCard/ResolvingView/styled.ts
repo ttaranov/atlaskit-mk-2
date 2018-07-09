@@ -1,13 +1,10 @@
 import styled from 'styled-components';
-import { ImgHTMLAttributes, ComponentClass } from 'react';
+import { ComponentClass, HTMLAttributes } from 'react';
 
-export const Icon: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
-  /* Hide alt text when image fails to load */
-  display: inline-block;
-  overflow: hidden;
-
+export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  display: inline-flex;
   width: 16px;
   height: 16px;
-  margin-right: 2px;
-  vertical-align: text-bottom;
+  vertical-align: middle;
+  margin-right: 3px;
 `;

@@ -33,7 +33,7 @@ class FabricAnalyticsListeners extends React.Component<Props> {
     return (
       <AtlaskitListener client={client} logger={this.logger}>
         <FabricElementsListener client={client} logger={this.logger}>
-          {React.Children.only(children)}
+          {children}
         </FabricElementsListener>
       </AtlaskitListener>
     );

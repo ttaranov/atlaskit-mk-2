@@ -53,7 +53,7 @@ export const h400 = () => css`
 `;
 
 export const h300 = () => css`
-  ${baseHeading(12, 16)} color: ${colors.subtleHeading};
+  ${baseHeading(12, 16)} color: ${colors.heading};
   font-weight: 600;
   margin-top: ${gridSize() * 2.5}px;
   text-transform: uppercase;

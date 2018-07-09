@@ -22,9 +22,14 @@ export const ResultItemAfterWrapper = styled.div`
   display: flex;
 `;
 
-export const ResultItemCaption = styled.span`
-  color: ${colors.N300};
-  margin-left: ${gridSize() * 2}px;
+export const ResultItemCaption = styled.small`
+  color: ${colors.N200};
+  margin-left: ${gridSize()}px;
+`;
+
+export const ResultItemSubText = styled.small`
+  font-size: 12px;
+  color: ${colors.N200};
 `;
 
 export const ResultItemIcon = styled.div`

@@ -69,27 +69,18 @@ export function normalizeUrl(url: string) {
   return (match && match.url) || url;
 }
 
-export function linkifyContent(
-  schema: Schema,
-  slice: Slice,
-): Slice | undefined {
+export function linkifyContent(schema: Schema, slice: Slice): Slice {
   const fragment = linkinfyFragment(schema, slice.content);
-  if (fragment) {
-    return new Slice(fragment, slice.openStart, slice.openEnd);
-  }
+  return new Slice(fragment, slice.openStart, slice.openEnd);
 }
 
-function linkinfyFragment(
-  schema: Schema,
-  fragment: Fragment,
-): Fragment | undefined {
+function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment {
   const linkified: Node[] = [];
   for (let i = 0, len = fragment.childCount; i < len; i++) {
     const child: Node = fragment.child(i);
     if (child.type === schema.nodes.table) {
-      return;
-    }
-    if (child.isText) {
+      linkified.push(child);
+    } else if (child.isText) {
       const text = child.textContent as string;
       const link = child.type.schema.marks['link'];
       const matches: any[] = findLinkMatches(text);

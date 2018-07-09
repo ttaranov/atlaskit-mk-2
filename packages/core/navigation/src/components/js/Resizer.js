@@ -181,7 +181,4 @@ class Resizer extends PureComponent<Props, State> {
   }
 }
 
-// We use the isElectronMac theme value in Resizer's calculation methods, so need access to
-// the theme props which withTheme provides.
-// $FlowFixMe
 export default withTheme(Resizer);

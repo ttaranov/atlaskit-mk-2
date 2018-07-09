@@ -110,13 +110,13 @@ describe('@atlaskit comments', () => {
       });
 
       describe('restrictedTo prop', () => {
-        it('should render a Lock icon and restrictedTo name when supplied', () => {
+        it('should render a Lock icon and restrictedTo text when supplied', () => {
           const wrapper = mount(
             <Comment avatar="" restrictedTo="atlassian-staff" />,
           );
           expect(wrapper.find(LockFilledIcon).length).toBe(1);
           expect(wrapper.text()).toEqual(
-            expect.stringContaining('atlassian-staff'),
+            expect.stringMatching('atlassian-staff'),
           );
         });
 

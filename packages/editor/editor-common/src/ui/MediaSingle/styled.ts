@@ -73,7 +73,7 @@ const MediaSingleDimensionHelper = ({
   width: ${calcWidth(layout, width, containerWidth)};
   max-width: ${containerWidth < akEditorFullPageMaxWidth
     ? '100%'
-    : containerWidth};
+    : `${containerWidth}px`};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
   &::after {

@@ -52,6 +52,8 @@ type Props = {
   maxHeight?: number,
   /** Content which will trigger the drop list to open and close. */
   trigger?: Node,
+  /** Callback to know when the list is first correctly positioned within it's Layer */
+  onPositioned?: Function,
 };
 
 export default class Droplist extends Component<Props, void> {
@@ -70,6 +72,7 @@ export default class Droplist extends Component<Props, void> {
     shouldFitContainer: false,
     shouldFlip: true,
     trigger: null,
+    onPositioned: () => {},
   };
 
   static childContextTypes = {
@@ -123,7 +126,7 @@ export default class Droplist extends Component<Props, void> {
 
   handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
-      // $FlowFixMe
+      // $FlowFixMe - flow is lost and if not an instance of Node
       if (event.target instanceof Node) {
         // Rather than check for the target within the entire Droplist, we specify the trigger/content.
         // This aids with future effort in scroll-locking Droplist when isMenuFixed is enabled; the scroll
@@ -176,6 +179,7 @@ export default class Droplist extends Component<Props, void> {
       shouldFitContainer,
       shouldFlip,
       trigger,
+      onPositioned,
     } = this.props;
 
     const layerContent = isOpen ? (
@@ -204,9 +208,10 @@ export default class Droplist extends Component<Props, void> {
           boundariesElement={boundariesElement}
           content={layerContent}
           offset={dropOffset}
-          // $FlowFixMe
+          // $FlowFixMe - Cannot create `Layer` element because in property `position
           position={position}
           isAlwaysFixed={isOpen && isMenuFixed}
+          onPositioned={onPositioned}
         >
           <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
             {trigger}

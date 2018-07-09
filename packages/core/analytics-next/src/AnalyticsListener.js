@@ -1,6 +1,6 @@
 // @flow
 
-import { Children, Component, type Node } from 'react';
+import { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
 import UIAnalyticsEvent from './UIAnalyticsEvent';
 import type { UIAnalyticsEventHandler } from './types';
@@ -43,6 +43,6 @@ export default class AnalyticsListener extends Component<Props> {
   };
 
   render() {
-    return Children.only(this.props.children);
+    return this.props.children;
   }
 }

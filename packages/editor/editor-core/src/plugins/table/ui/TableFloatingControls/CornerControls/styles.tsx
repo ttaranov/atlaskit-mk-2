@@ -3,7 +3,7 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import { tableBorderDeleteColor, tableToolbarDeleteColor } from '../../styles';
-import { LineMarkerDefault } from '../styles';
+import { LineMarkerDefault, Button } from '../styles';
 import {
   tableInsertColumnButtonSize,
   tableToolbarSize,
@@ -19,8 +19,8 @@ import {
 } from '@atlaskit/editor-common';
 
 export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: ${tableToolbarSize}px;
-  height: ${tableToolbarSize}px;
+  width: ${tableToolbarSize + 1}px;
+  height: ${tableToolbarSize + 1}px;
 
   display: none;
 
@@ -33,17 +33,16 @@ export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-export const CornerButton: ComponentClass<
-  ButtonHTMLAttributes<{}>
-> = styled.button`
+export const CornerButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
+  Button,
+)`
   position: absolute;
   top: 0;
-  width: ${tableToolbarSize - 1}px;
-  height: ${tableToolbarSize - 1}px;
+  width: ${tableToolbarSize + 1}px;
+  height: ${tableToolbarSize + 1}px;
   border: 1px solid ${tableBorderColor};
   border-radius: 0;
   border-top-left-radius: ${tableBorderRadiusSize}px;
-  border-bottom: 0 none;
   background: ${tableToolbarColor};
   cursor: pointer;
   padding: 0;
@@ -60,10 +59,6 @@ export const CornerButton: ComponentClass<
   &.danger {
     border-color: ${tableBorderDeleteColor};
     background: ${tableToolbarDeleteColor};
-  }
-
-  &.scrolling {
-    z-index: 2;
   }
 
   .table-container[data-number-column='true'] & {

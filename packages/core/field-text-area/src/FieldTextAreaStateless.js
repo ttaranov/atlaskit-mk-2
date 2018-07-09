@@ -125,7 +125,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
             value={value}
             required={required}
             minimumRows={minimumRows}
-            enableResize={enableResize || disabled}
+            enableResize={enableResize}
             onChange={onChange}
             id={id}
             autoFocus={autoFocus}

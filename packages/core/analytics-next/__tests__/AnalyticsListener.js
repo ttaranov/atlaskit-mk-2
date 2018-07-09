@@ -76,4 +76,16 @@ it('should add ancestor analytics event handlers to getAtlaskitAnalyticsEventHan
   expect(outerHandler).toHaveBeenCalled();
 });
 
+it('should support many children', () => {
+  const onEvent = jest.fn();
+  const wrapper = mount(
+    <AnalyticsListener onEvent={onEvent}>
+      <ContextConsumer onClick={([handler]) => handler()} />
+      <ContextConsumer onClick={([handler]) => handler()} />
+    </AnalyticsListener>,
+  );
+  wrapper.find(ContextConsumer).forEach(consumer => consumer.simulate('click'));
+  expect(onEvent).toHaveBeenCalledTimes(2);
+});
+
 // TODO: Add channel stuff once listener swallow branch has been merged

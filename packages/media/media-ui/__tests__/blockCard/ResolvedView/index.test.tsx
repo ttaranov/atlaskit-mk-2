@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { shallow, mount, ReactWrapper } from 'enzyme';
 import Button from '@atlaskit/button';
-import Avatar, { AvatarGroup } from '@atlaskit/avatar';
+import Avatar from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
 import { ResolvedView, Action } from '../../../src/BlockCard/ResolvedView';
 import { ImageIcon } from '../../../src/BlockCard/ImageIcon';
 import {

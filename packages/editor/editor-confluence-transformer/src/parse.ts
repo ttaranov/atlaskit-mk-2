@@ -4,7 +4,6 @@ import {
   MediaSingleLayout,
   acNameToEmoji,
   acShortcutToEmoji,
-  parseDate,
   tableBackgroundColorNames,
   akEditorFullPageMaxWidth,
   akEditorTableNumberColumnWidth,
@@ -100,9 +99,11 @@ function converter(
   // All unsupported content is wrapped in an `unsupportedInline` node. Wrapping
   // `unsupportedInline` inside `paragraph` where appropriate is handled when
   // the content is inserted into a parent.
-  const unsupportedInline = schema.nodes.confluenceUnsupportedInline.create({
-    cxhtml: encodeCxhtml(node),
-  });
+  const unsupportedInline = schema.nodes.confluenceUnsupportedInline.createChecked(
+    {
+      cxhtml: encodeCxhtml(node),
+    },
+  );
 
   // marks and nodes
   if (node instanceof Element) {
@@ -243,7 +244,7 @@ function converter(
           }
         }
 
-        return schema.nodes.emoji.create(emoji);
+        return schema.nodes.emoji.createChecked(emoji);
 
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(schema, node) || unsupportedInline;
@@ -255,7 +256,7 @@ function converter(
         ) {
           const cdata = node.firstChild.firstChild!;
 
-          return schema.nodes.mention.create({
+          return schema.nodes.mention.createChecked({
             id: node.firstChild.getAttribute('atlassian-id'),
             text: cdata!.nodeValue,
           });
@@ -264,7 +265,7 @@ function converter(
       case 'FAB:MENTION':
         const cdata = node.firstChild!;
 
-        return schema.nodes.mention.create({
+        return schema.nodes.mention.createChecked({
           id: node.getAttribute('atlassian-id'),
           text: cdata!.nodeValue,
         });
@@ -344,7 +345,7 @@ function converter(
           mediaAttrs.__fileMimeType = node.getAttribute('file-mime-type')!;
         }
 
-        return schema.nodes.media.create(mediaAttrs);
+        return schema.nodes.media.createChecked(mediaAttrs);
 
       case 'AC:INLINE-COMMENT-MARKER':
         if (!content) {
@@ -361,7 +362,7 @@ function converter(
       case 'AC:PLACEHOLDER':
         const text = node.textContent;
         if (text) {
-          return schema.nodes.placeholder.create({ text });
+          return schema.nodes.placeholder.createChecked({ text });
         }
         return null;
 
@@ -369,7 +370,7 @@ function converter(
         return convertADF(schema, node) || unsupportedInline;
 
       case 'PRE':
-        return schema.nodes.codeBlock.create(
+        return schema.nodes.codeBlock.createChecked(
           { language: null },
           schema.text(node.textContent || ''),
         );
@@ -381,11 +382,10 @@ function converter(
           return convertTable(schema, node as HTMLTableElement);
         }
       case 'TIME':
-        const iso = node.getAttribute('datetime');
-        if (iso) {
-          const date = parseDate(iso);
-          const timestamp = date.valueOf();
-          return schema.nodes.date.create({ timestamp });
+        const dateStr = node.getAttribute('datetime');
+        if (dateStr) {
+          let timestamp = Date.parse(dateStr);
+          return schema.nodes.date.createChecked({ timestamp });
         }
         return unsupportedInline;
       case 'DIV':
@@ -448,24 +448,27 @@ function convertConfluenceMacro(
 
       if (panelTitle) {
         panelBody.push(
-          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle)),
+          schema.nodes.heading.createChecked(
+            { level: 3 },
+            schema.text(panelTitle),
+          ),
         );
       }
 
       if (richTextBody) {
         panelBody = panelBody.concat(richTextBody);
       } else {
-        panelBody.push(schema.nodes.paragraph.create({}));
+        panelBody.push(schema.nodes.paragraph.createChecked({}));
       }
-      return schema.nodes.panel.create(
+      return schema.nodes.panel.createChecked(
         { panelType: mapPanelTypeToPm(macroName) },
         panelBody,
       );
 
     case 'PANEL':
-      return schema.nodes.panel.create(
+      return schema.nodes.panel.createChecked(
         { panelType: 'note' },
-        richTextBody || [schema.nodes.paragraph.create()],
+        richTextBody || [schema.nodes.paragraph.createChecked()],
       );
 
     case 'JIRA':
@@ -474,12 +477,12 @@ function convertConfluenceMacro(
       // if this is an issue list, render it as unsupported node
       // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
       if (!issueKey) {
-        return schema.nodes.confluenceUnsupportedInline.create({
+        return schema.nodes.confluenceUnsupportedInline.createChecked({
           cxhtml: encodeCxhtml(node),
         });
       }
 
-      return schema.nodes.confluenceJiraIssue.create({
+      return schema.nodes.confluenceJiraIssue.createChecked({
         issueKey,
         macroId,
         schemaVersion,
@@ -489,7 +492,7 @@ function convertConfluenceMacro(
   }
 
   if (plainTextBody) {
-    return schema.nodes.codeBlock.create(
+    return schema.nodes.codeBlock.createChecked(
       { language: null },
       schema.text(plainTextBody),
     );
@@ -497,7 +500,7 @@ function convertConfluenceMacro(
 
   switch (properties['fab:display-type']) {
     case 'INLINE':
-      return schema.nodes.inlineExtension.create({
+      return schema.nodes.inlineExtension.createChecked({
         extensionType: 'com.atlassian.confluence.macro.core',
         extensionKey: macroName,
         parameters: {
@@ -533,11 +536,11 @@ function convertConfluenceMacro(
         },
       };
       return richTextBody
-        ? schema.nodes.bodiedExtension.create(
+        ? schema.nodes.bodiedExtension.createChecked(
             attrs,
             Fragment.from(richTextBody),
           )
-        : schema.nodes.extension.create(attrs);
+        : schema.nodes.extension.createChecked(attrs);
   }
 
   return null;
@@ -677,12 +680,12 @@ function convertTable(schema: Schema, node: HTMLTableElement) {
       };
 
       colwidthIdx += colspan;
-      cellNodes.push(cell.create(attrs, pmNode));
+      cellNodes.push(cell.createChecked(attrs, pmNode));
     }
     rowNodes.push(tableRow.createChecked(undefined, Fragment.from(cellNodes)));
   }
 
-  return table.create(
+  return table.createChecked(
     {
       isNumberColumnEnabled,
       __autoSize:

@@ -58,8 +58,8 @@ export default class ResultBase extends PureComponent<Props> {
       isCompact,
       isSelected,
       onMouseLeave,
-      subText,
       text,
+      subText,
       linkComponent,
     } = this.props;
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "4.0.4",
+  "version": "4.1.0",
   "description": "The Atlaskit theme framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

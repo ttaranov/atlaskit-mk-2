@@ -113,5 +113,19 @@ describe('Layer', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(state);
     });
+
+    it('hasExtractedStyles should cause onPositioned callback to be called', () => {
+      const spy = jest.fn();
+      const wrapper = mount(
+        <Layer onPositioned={spy} content={content}>
+          <div>Foo</div>
+        </Layer>,
+      );
+
+      expect(wrapper.state('hasExtractedStyles')).toBe(false);
+      wrapper.setState({ hasExtractedStyles: true });
+
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
   });
 });

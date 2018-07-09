@@ -34,7 +34,7 @@ export default class FormExample extends Component<void, void> {
           <AkRadio
             name="standalone"
             value="single-radio"
-            onRadioChange={this.onRadioChange}
+            onChange={this.onRadioChange}
           >
             Single Radio button
           </AkRadio>

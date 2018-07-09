@@ -26,6 +26,7 @@ import {
   media,
   sendKeyToPm,
   randomId,
+  createEvent,
 } from '@atlaskit/editor-test-helpers';
 import { TableLayout, defaultSchema } from '@atlaskit/editor-common';
 import {
@@ -54,8 +55,10 @@ import { mediaPlugin } from '../../../src/plugins';
 import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 import listPlugin from '../../../src/plugins/lists';
 import TableView from '../../../src/plugins/table/nodeviews/table';
+import { TextSelection } from 'prosemirror-state';
 
 describe('table plugin', () => {
+  const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
@@ -1061,6 +1064,25 @@ describe('table plugin', () => {
       expect(tableElement.getAttribute('data-layout')).toBe('full-width');
 
       editorView.destroy();
+    });
+  });
+
+  describe('table plugin state', () => {
+    it('should update tableNode when cursor enters the table', () => {
+      const {
+        plugin,
+        editorView: view,
+        refs: { nextPos },
+      } = editor(doc(table()(tr(td()(p('{nextPos}')))), p('te{<>}xt')));
+      plugin.props.handleDOMEvents!.focus(view, event);
+      view.dispatch(
+        view.state.tr.setSelection(
+          new TextSelection(view.state.doc.resolve(nextPos)),
+        ),
+      );
+      const { tableNode } = tablePluginKey.getState(view.state);
+      expect(tableNode).toBeDefined();
+      expect(tableNode.type.name).toEqual('table');
     });
   });
 });
