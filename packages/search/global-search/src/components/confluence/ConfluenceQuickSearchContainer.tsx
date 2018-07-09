@@ -31,7 +31,6 @@ import {
 } from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
-import { GasPayload } from '../../../node_modules/@atlaskit/analytics-gas-types';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
