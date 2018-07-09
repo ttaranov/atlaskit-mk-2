@@ -1,7 +1,7 @@
 import CategoryTracker from '../../../src/components/picker/CategoryTracker';
 import { defaultCategories } from '../../../src/constants';
 
-describe('<CategoryTracker />', () => {
+describe('CategoryTracker', () => {
   describe('getRow', () => {
     it('returns undefined if the category was not added', () => {
       const tracker = new CategoryTracker();
