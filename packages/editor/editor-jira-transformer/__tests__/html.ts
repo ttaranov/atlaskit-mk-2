@@ -315,14 +315,15 @@ describe('JIRATransformer html:', () => {
       doc(h5('Read all about it!')),
     );
 
-    checkParseEncodeRoundTrips(
-      '<h6> with anchor',
-      schema,
-      '<h6><a name="Readallaboutit%21"></a>Read all about it!</h6>',
-      doc(h6('Read all about it!')),
-    );
-
     describe('lossy transformation', () => {
+      // @see ED-4708
+      checkEncode(
+        '<h6> with anchor',
+        schema,
+        doc(h6('Read all about it!')),
+        '<h5><a name="Readallaboutit%21"></a>Read all about it!</h5>',
+      );
+
       checkEncode(
         '<h1> with nested <b>',
         schema,
@@ -342,6 +343,13 @@ describe('JIRATransformer html:', () => {
         schema,
         ['<h1><a name="Readallaboutit%21"></a>Read all <b>about</b> it!</h1>'],
         doc(h1('Read all ', strong('about'), ' it!')),
+      );
+
+      checkParse(
+        '<h6> with anchor',
+        schema,
+        ['<h6><a name="Readallaboutit%21"></a>Read all about it!</h6>'],
+        doc(h5('Read all about it!')),
       );
 
       checkParse(

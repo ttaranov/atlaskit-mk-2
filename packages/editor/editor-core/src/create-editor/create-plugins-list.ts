@@ -40,17 +40,13 @@ import {
   gapCursorPlugin,
   inlineActionPlugin,
   cardPlugin,
+  floatingToolbarPlugin,
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
-  const textFormattingOptions = props.textFormatting
-    ? props.textFormatting
-    : typeof props.allowTextFormatting === 'object'
-      ? props.allowTextFormatting
-      : {};
   return [
     pastePlugin,
     basePlugin,
@@ -58,7 +54,7 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
     hyperlinkPlugin,
-    textFormattingPlugin(textFormattingOptions),
+    textFormattingPlugin(props.textFormatting || {}),
     widthPlugin,
     typeAheadPlugin,
   ];
@@ -202,6 +198,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
+  plugins.push(floatingToolbarPlugin);
 
   if (props.appearance === 'message') {
     plugins.push(isMultilineContentPlugin);

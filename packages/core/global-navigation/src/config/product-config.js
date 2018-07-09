@@ -1,5 +1,8 @@
 // @flow
-import React, { type ComponentType } from 'react';
+import React, {
+  type ComponentType,
+  type StatelessFunctionalComponent,
+} from 'react';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
 import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
@@ -10,7 +13,9 @@ import type { ProductConfigShape } from './types';
 
 const isNotEmpty = obj => {
   const values = Object.values(obj);
-  return !!(values.length && values.reduce((acc, curr) => acc && !!curr, true));
+  return !!(
+    values.length && values.reduce((acc, curr) => acc || !!curr, false)
+  );
 };
 
 const generateDropDown = (
@@ -39,19 +44,32 @@ const generateAvatar = profileIconUrl => () => (
     size="small"
   />
 );
+type OtherConfig = {
+  href?: string,
+  badge?: ?StatelessFunctionalComponent<*>,
+};
+function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
+  const { href } = otherConfig;
+  const shouldNotRenderItem = !onClick && !href;
 
-function configFactory(onClick, tooltip, otherConfig = {}) {
-  if (!onClick && (tooltip || isNotEmpty(otherConfig))) {
+  if (shouldNotRenderItem && (tooltip || isNotEmpty(otherConfig))) {
     /* eslint-disable-next-line no-console */
     console.warn(
-      `One of the items in the Global Navigation is missing an onClick handler. This item will not be rendered in Global Navigation.`,
+      `One of the items in the Global Navigation is missing an onClick (or an href in case of the productIcon). This item will not be rendered in Global Navigation.`,
     );
   }
 
-  if (!onClick) return null;
+  if (shouldNotRenderItem) return null;
+
+  if (onClick && href) {
+    /* eslint-disable-next-line no-console */
+    console.warn(
+      'You have provided both href and an onClick handler for one of the items. onClick will be ignored.',
+    );
+  }
 
   return {
-    onClick,
+    ...(href ? { href } : { onClick }),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };
@@ -81,14 +99,15 @@ function profileConfigFactory(
   profileIconUrl,
   otherConfig = {},
 ) {
-  if (!items && !href && (tooltip || isNotEmpty(otherConfig))) {
+  const shouldNotRenderProfile = !items && !href;
+  if (shouldNotRenderProfile && (tooltip || isNotEmpty(otherConfig))) {
     /* eslint-disable-next-line no-console */
     console.warn(
       'You provided some prop(s) for profile, but not profileItems or loginHref. Profile will not be rendered in Global Navigation',
     );
   }
 
-  if (!items && !href) return null;
+  if (shouldNotRenderProfile) return null;
 
   if (items && href) {
     /* eslint-disable-next-line no-console */
@@ -115,6 +134,7 @@ export default function generateProductConfig(
     onProductClick,
     productTooltip,
     productIcon,
+    productHref,
     onCreateClick,
     createTooltip,
     onSearchClick,
@@ -144,6 +164,7 @@ export default function generateProductConfig(
   return {
     product: configFactory(onProductClick, productTooltip, {
       icon: productIcon,
+      href: productHref,
     }),
     create: configFactory(onCreateClick, createTooltip),
     search: configFactory(onSearchClick, searchTooltip),

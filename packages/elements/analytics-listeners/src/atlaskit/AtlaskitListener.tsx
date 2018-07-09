@@ -26,7 +26,7 @@ export default class AtlaskitListener extends React.Component<ListenerProps> {
         onEvent={this.listenerHandler}
         channel={ATLASKIT_CHANNEL}
       >
-        {React.Children.only(this.props.children)}
+        {this.props.children}
       </AnalyticsListener>
     );
   }

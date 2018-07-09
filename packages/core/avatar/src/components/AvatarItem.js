@@ -81,6 +81,7 @@ class AvatarItem extends Component<Props> {
     } = this.props;
 
     // maintain the illusion of a mask around presence/status
+    // $FlowFixMe - should be fixed when theme work is done
     const borderColor = getBackgroundColor(this.props);
 
     // distill props from context, props, and state

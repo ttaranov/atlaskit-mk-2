@@ -106,11 +106,10 @@ class Spotlight extends Component<Props> {
   };
 
   renderTargetClone() {
-    // NOTE: `clone` & `rect` are NOT public API
     const {
-      // $FlowFixMe
+      // $FlowFixMe - `clone` & `rect` are NOT public API
       clone, // eslint-disable-line react/prop-types
-      // $FlowFixMe
+      // $FlowFixMe - `clone` & `rect` are NOT public API
       rect, // eslint-disable-line react/prop-types
       pulse,
       target,
@@ -154,10 +153,10 @@ class Spotlight extends Component<Props> {
       footer,
       header,
       heading,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       in: transitionIn, // eslint-disable-line react/prop-types
       image,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       scrollY, // eslint-disable-line react/prop-types
     } = this.props;
 
@@ -184,9 +183,7 @@ class Spotlight extends Component<Props> {
         <FocusLock enabled={transitionIn} returnFocus={false}>
           <Dialog width={dialogWidth} tabIndex="-1">
             {headerElement}
-            {/* // $FlowFixMe TEMPORARY */}
             <DialogBody>
-              {/* // $FlowFixMe TEMPORARY */}
               {heading && <Heading>{heading}</Heading>}
               {children}
             </DialogBody>

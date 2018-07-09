@@ -46,7 +46,7 @@ function elementCropDirection(el: HTMLElement) {
     direction = 'top';
   }
   if (
-    // $FlowFixMe
+    // $FlowFixMe - cannot call null on a number for document.documentElement
     rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)
   ) {
     direction = 'bottom';
@@ -62,6 +62,16 @@ function getScrollY(node = window) {
   const scrollContainer = getScrollParent(node);
 
   return scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
+}
+
+function updateAttribute(
+  node: HTMLElement,
+  attribute: string,
+  update: string => string,
+) {
+  const current = node.getAttribute(attribute);
+  node.setAttribute(attribute, update(current || ''));
+  return node;
 }
 
 export default function withScrollMeasurements(
@@ -146,9 +156,18 @@ export default function withScrollMeasurements(
         scrollParent.scrollTop += offsetY;
       }
 
-      // get adjusted measurements after scrolling
+      // ensure positioning of cloned node is static
+      const clonedNode = updateAttribute(
+        node.cloneNode(true),
+        'style',
+        style =>
+          style.indexOf('position') > -1
+            ? style.replace(/position: (.*);/, 'position: static;')
+            : `${style} position: static;`,
+      );
+
       this.setState({
-        clone: node.outerHTML,
+        clone: clonedNode.outerHTML,
         rect: { height, left, top, width },
         scrollY: getScrollY(),
       });

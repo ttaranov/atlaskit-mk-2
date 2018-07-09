@@ -14,9 +14,9 @@ import {
 
 import {
   TablePluginState,
-  stateKey,
+  pluginKey,
+  getPluginState,
 } from '../../../../src/plugins/table/pm-plugins/main';
-import { pluginKey as hoverStateKey } from '../../../../src/plugins/table//pm-plugins/hover-selection-plugin';
 
 import { hoverTable } from '../../../../src/plugins/table/actions';
 import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatingControls';
@@ -29,7 +29,7 @@ describe('TableFloatingControls', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      pluginKey: pluginKey,
     });
 
   describe('when tableRef is undefined', () => {
@@ -79,11 +79,9 @@ describe('TableFloatingControls', () => {
       );
       hoverTable(true)(editorView.state, editorView.dispatch);
       const {
-        decorationSet,
-      }: { decorationSet: DecorationSet } = hoverStateKey.getState(
-        editorView.state,
-      );
-      const decoration = decorationSet.find()[0] as any;
+        hoverDecoration,
+      }: { hoverDecoration: DecorationSet } = getPluginState(editorView.state);
+      const decoration = hoverDecoration.find()[0] as any;
       expect(decoration.type.attrs.class.indexOf('danger')).toBeGreaterThan(-1);
     });
   });

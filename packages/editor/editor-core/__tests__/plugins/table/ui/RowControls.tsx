@@ -17,7 +17,7 @@ import {
 import AkButton from '@atlaskit/button';
 import {
   TablePluginState,
-  stateKey,
+  pluginKey,
 } from '../../../../src/plugins/table/pm-plugins/main';
 import RowControls from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls';
 import {
@@ -57,7 +57,7 @@ describe('RowControls', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      pluginKey,
     });
 
   [1, 2, 3].forEach(row => {
@@ -175,8 +175,8 @@ describe('RowControls', () => {
           .simulate('click');
 
         // selecting the row mutates the editor state (which is inside editorView)
-        // so, re-apply the updated prop
-        floatingControls.setProps({ editorView });
+        // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+        floatingControls.setProps({ tableHeight: 100 });
 
         // we should now have a delete button
         expect(floatingControls.find(DeleteRowButton).length).toBe(1);
@@ -291,8 +291,8 @@ describe('RowControls', () => {
     editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
     // selecting the row mutates the editor state (which is inside editorView)
-    // so, re-apply the updated prop
-    floatingControls.setProps({ editorView });
+    // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+    floatingControls.setProps({ tableHeight: 100 });
 
     expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 
@@ -345,8 +345,8 @@ describe('RowControls', () => {
     editorView.dispatch(selectTable(editorView.state.tr));
 
     // selecting the row mutates the editor state (which is inside editorView)
-    // so, re-apply the updated prop
-    floatingControls.setProps({ editorView });
+    // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+    floatingControls.setProps({ tableHeight: 100 });
 
     expect(floatingControls.find(DeleteRowButton).length).toBe(0);
     floatingControls.unmount();
@@ -392,8 +392,8 @@ describe('RowControls', () => {
       editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
       // selecting the row mutates the editor state (which is inside editorView)
-      // so, re-apply the updated prop
-      floatingControls.setProps({ editorView });
+      // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ tableHeight: 100 });
 
       expect(floatingControls.find(InsertRowButton).length).toBe(2);
 
@@ -439,8 +439,8 @@ describe('RowControls', () => {
       editorView.dispatch(selectRows([0, 1, 2])(editorView.state.tr));
 
       // selecting the row mutates the editor state (which is inside editorView)
-      // so, re-apply the updated prop
-      floatingControls.setProps({ editorView });
+      // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ tableHeight: 100 });
 
       expect(floatingControls.find(InsertRowButton).length).toBe(1);
 
@@ -484,8 +484,8 @@ describe('RowControls', () => {
       editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
       // selecting the row mutates the editor state (which is inside editorView)
-      // so, re-apply the updated prop
-      floatingControls.setProps({ editorView });
+      // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ tableHeight: 100 });
 
       expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 

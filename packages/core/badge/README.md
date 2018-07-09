@@ -1,14 +1,6 @@
 # Badge
 
-Badges are visual indicators for numeric values such as tallies and scores.
-They're commonly used before and after the label of the thing they're
-quantifying.
-
-They must be used singly after a single item name, and have only numbers.
-
-* Use lozenges for statuses.
-* Use labels to call out tags and high-visibility attributes.
-* Use a tooltip if you want to indicate units.
+Tools for tracking interactions with UI components. Easily capture UI context and state when these events occur.
 
 ## Installation
 

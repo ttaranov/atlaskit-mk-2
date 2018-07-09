@@ -3,7 +3,7 @@ import {
   getEmojiAcName,
   hexToRgb,
   MediaSingleAttributes,
-  timestampToIso,
+  timestampToIsoFormat,
   tableBackgroundColorPalette,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
@@ -174,7 +174,9 @@ export default function encode(node: PMNode, schema: Schema) {
       const rowElement = doc.createElement('tr');
 
       rowNode.content.forEach((colNode, _, j) => {
-        const { attrs: { background, rowspan, colspan } } = colNode;
+        const {
+          attrs: { background, rowspan, colspan },
+        } = colNode;
 
         const cellElement =
           colNode.type === schema.nodes.tableCell
@@ -514,7 +516,7 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = doc.createElement('time');
     const { timestamp } = node.attrs;
     if (timestamp) {
-      elem.setAttribute('datetime', timestampToIso(timestamp));
+      elem.setAttribute('datetime', timestampToIsoFormat(timestamp));
     }
     return elem;
   }

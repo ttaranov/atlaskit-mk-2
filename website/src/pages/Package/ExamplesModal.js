@@ -61,10 +61,6 @@ const ModalContent = styled.div`
   ${akElevationMixins.e200} flex: 1 1 auto;
   min-height: 240px;
 `;
-
-// This seems to be an issue with styledComponent flow type compatibility
-// intersection type incompatible with expected param type of React.Component.
-// $FlowFixMe:
 const ModalHeader = styled(OgModalHeader)`
   margin-left: 20px;
   margin-right: 20px;
@@ -353,6 +349,7 @@ export default class ExamplesModal extends Component<Props, State> {
     }
     return (
       <Modal
+        autoFocus={false}
         body={ModalBody}
         header={({ showKeyline }) => (
           <ModalHeaderComp

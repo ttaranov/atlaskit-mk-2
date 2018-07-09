@@ -19,7 +19,6 @@ import {
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
 import { constructAuthTokenUrl } from './util';
-
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
@@ -52,9 +51,9 @@ const initialState: State = {
 export default class Header extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -127,16 +126,26 @@ export default class Header extends React.Component<Props, State> {
 
   private renderDownload = () => {
     const { item } = this.state;
+    const icon = <DownloadIcon label="Download" />;
     if (item.status !== 'SUCCESSFUL') {
-      return;
+      return (
+        <Button
+          label="Download"
+          appearance="toolbar"
+          isDisabled={true}
+          iconBefore={icon}
+        />
+      );
+    } else {
+      return (
+        <Button
+          label="Download"
+          appearance="toolbar"
+          onClick={this.downloadItem(item.data)}
+          iconBefore={icon}
+        />
+      );
     }
-
-    return (
-      <Button
-        onClick={this.downloadItem(item.data)}
-        iconBefore={<DownloadIcon label="download" />}
-      />
-    );
   };
 
   render() {
@@ -144,8 +153,8 @@ export default class Header extends React.Component<Props, State> {
       <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
         <RightHeader>
-          {this.renderDownload()}
           <FeedbackButton />
+          {this.renderDownload()}
         </RightHeader>
       </HeaderWrapper>
     );

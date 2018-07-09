@@ -3,7 +3,7 @@ import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 /**
  * @name date_node
  */
-export interface Definition {
+export interface DateDefinition {
   type: 'date';
   attrs: {
     /**

@@ -2,7 +2,7 @@ import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { findTable, findParentDomRefOfType } from 'prosemirror-utils';
-import { EditorView } from 'prosemirror-view';
+import { EditorView, DecorationSet } from 'prosemirror-view';
 import { TableLayout } from '@atlaskit/editor-common';
 
 import {
@@ -31,14 +31,24 @@ export interface PluginConfig {
 }
 
 export interface TablePluginState {
+  hoverDecoration: DecorationSet;
   pluginConfig: PluginConfig;
-  tableRef?: HTMLElement;
+  editorHasFocus?: boolean;
   // controls need to be re-rendered when table content changes
   // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
   tableNode?: PmNode;
+  tableRef?: HTMLElement;
+  isTableHovered?: boolean;
+  isTableInDanger?: boolean;
 }
 
-export const stateKey = new PluginKey('tablePlugin');
+export const pluginKey = new PluginKey('tablePlugin');
+
+export const defaultTableSelection = {
+  isTableInDanger: false,
+  isTableHovered: false,
+  hoverDecoration: DecorationSet.empty,
+};
 
 export const createPlugin = (
   dispatch: Dispatch,
@@ -50,6 +60,7 @@ export const createPlugin = (
     state: {
       init: (): TablePluginState => ({
         pluginConfig,
+        ...defaultTableSelection,
       }),
       apply(
         tr: Transaction,
@@ -57,24 +68,34 @@ export const createPlugin = (
         _,
         state: EditorState,
       ) {
-        const nextPluginState = tr.getMeta(stateKey);
+        const nextPluginState = tr.getMeta(pluginKey);
         if (nextPluginState) {
-          dispatch(stateKey, nextPluginState);
+          dispatch(pluginKey, nextPluginState);
           return nextPluginState;
         }
 
         if (tr.docChanged) {
           const table = findTable(state.selection);
           const tableNode = table ? table.node : undefined;
-          if (pluginState.tableNode !== tableNode) {
-            return setState({ tableNode }, pluginState, dispatch);
+          if (
+            pluginState.tableNode !== tableNode ||
+            pluginState.hoverDecoration !== DecorationSet.empty
+          ) {
+            const nextPluginState = {
+              ...pluginState,
+              // @see: https://product-fabric.atlassian.net/browse/ED-3796
+              ...defaultTableSelection,
+              tableNode,
+            };
+            dispatch(pluginKey, nextPluginState);
+            return nextPluginState;
           }
         }
 
         return pluginState;
       },
     },
-    key: stateKey,
+    key: pluginKey,
     view: (editorView: EditorView) => {
       const domAtPos = editorView.domAtPos.bind(editorView);
 
@@ -82,10 +103,10 @@ export const createPlugin = (
         update: (view: EditorView) => {
           const { state, dispatch } = view;
           const { selection } = state;
-          const pluginState = stateKey.getState(state);
+          const pluginState = getPluginState(state);
 
           let tableRef;
-          if (view.hasFocus()) {
+          if (pluginState.editorHasFocus) {
             const parent = findParentDomRefOfType(
               state.schema.nodes.table,
               domAtPos,
@@ -95,22 +116,31 @@ export const createPlugin = (
             }
           }
           if (pluginState.tableRef !== tableRef) {
-            dispatch(
-              state.tr.setMeta(stateKey, {
-                ...pluginState,
-                tableRef,
-              }),
-            );
+            setPluginState({
+              tableRef,
+              tableNode: tableRef
+                ? findTable(state.selection)!.node
+                : undefined,
+            })(state, dispatch);
           }
         },
       };
     },
     props: {
+      decorations: state => getPluginState(state).hoverDecoration,
+
+      handleClick: ({ state, dispatch }) => {
+        if (getPluginState(state).hoverDecoration !== DecorationSet.empty) {
+          setPluginState({ ...defaultTableSelection })(state, dispatch);
+        }
+        return false;
+      },
+
       nodeViews: {
         table: (node: PmNode, view: EditorView, getPos: () => number) => {
           const {
             pluginConfig: { allowColumnResizing },
-          } = stateKey.getState(view.state);
+          } = getPluginState(view.state);
           return new TableNodeView({
             node,
             view,
@@ -122,6 +152,18 @@ export const createPlugin = (
         },
       },
       handleDOMEvents: {
+        blur(view: EditorView, event) {
+          const { state, dispatch } = view;
+          setPluginState({ editorHasFocus: false })(state, dispatch);
+          event.preventDefault();
+          return false;
+        },
+        focus(view: EditorView, event) {
+          const { state, dispatch } = view;
+          setPluginState({ editorHasFocus: true })(state, dispatch);
+          event.preventDefault();
+          return false;
+        },
         click(view: EditorView, event) {
           const element = event.target as HTMLElement;
           const table = findTable(view.state.selection)!;
@@ -175,15 +217,19 @@ export const createPlugin = (
     },
   });
 
-export const setState = (
-  prop: Object,
-  pluginState: TablePluginState,
-  dispatch: Dispatch,
-) => {
+export const getPluginState = (state: EditorState) => {
+  return pluginKey.getState(state);
+};
+
+export const setPluginState = (stateProps: Object) => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const pluginState = getPluginState(state);
   const nextPluginState = {
     ...pluginState,
-    ...prop,
+    ...stateProps,
   };
-  dispatch(stateKey, nextPluginState);
-  return nextPluginState;
+  dispatch(state.tr.setMeta(pluginKey, nextPluginState));
+  return true;
 };

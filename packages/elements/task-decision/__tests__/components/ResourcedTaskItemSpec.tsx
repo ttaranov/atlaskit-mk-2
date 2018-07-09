@@ -56,7 +56,7 @@ describe('<ResourcedTaskItem/>', () => {
     expect(contentRef!.textContent).toEqual('Hello world');
   });
 
-  it('should not call onChange prop in change handling if no provider', () => {
+  it('should call onChange prop in change handling if no provider', () => {
     const spy = jest.fn();
     component = mount(
       <ResourcedTaskItem
@@ -70,7 +70,7 @@ describe('<ResourcedTaskItem/>', () => {
     );
     const input = component.find('input');
     input.simulate('change');
-    expect(spy).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call onChange prop in change handling if provider', () => {
@@ -104,13 +104,13 @@ describe('<ResourcedTaskItem/>', () => {
     expect(component.find(TaskItem).prop('isDone')).toEqual(true);
   });
 
-  it('should disable taskItem if no provider', () => {
+  it('should not disable taskItem if no provider', () => {
     component = mount(
       <ResourcedTaskItem taskId="task-1" isDone={false}>
         Hello World
       </ResourcedTaskItem>,
     );
-    expect(component.find(TaskItem).prop('disabled')).toEqual(true);
+    expect(component.find(TaskItem).prop('disabled')).toBeFalsy();
   });
 
   it('should subscribe to updates', () => {

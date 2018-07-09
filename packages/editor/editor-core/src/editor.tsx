@@ -73,16 +73,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
   }
 
   private deprecationWarnings(props) {
-    if (props.hasOwnProperty('allowHyperlinks')) {
+    if (props.hasOwnProperty('mediaProvider')) {
       // tslint:disable-next-line:no-console
       console.warn(
-        "allowHyperlinks property is deprecated. It's safe to remove it because hyperlink plugin is enabled by default.",
-      );
-    }
-    if (props.hasOwnProperty('allowTextFormatting')) {
-      // tslint:disable-next-line:no-console
-      console.warn(
-        'allowTextFormatting property is deprecated. TextFormatting plugin is enabled by default. If you need to pass options to textFormatting plugin use `textFormatting={{ textFormattingOptions }}` [Will be removed in editor-core@63.0.0]',
+        'mediaProvider property is deprecated. To pass media provider use media property – <Editor media={{ provider }} /> [Will be removed in editor-core@77.0.0]',
       );
     }
   }
@@ -126,6 +120,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       legacyImageUploadProvider,
       media,
       collabEdit,
+      quickInsert,
       UNSAFE_cards,
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
@@ -155,8 +150,16 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
     this.providerFactory.setProvider('macroProvider', macroProvider);
+
     if (UNSAFE_cards && UNSAFE_cards.provider) {
       this.providerFactory.setProvider('cardProvider', UNSAFE_cards.provider);
+    }
+
+    if (quickInsert && typeof quickInsert !== 'boolean') {
+      this.providerFactory.setProvider(
+        'quickInsertProvider',
+        quickInsert.provider,
+      );
     }
   }
 

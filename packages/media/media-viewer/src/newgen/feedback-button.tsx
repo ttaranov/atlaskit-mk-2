@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as jQuery from 'jquery';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import Button from '@atlaskit/button';
+import { FeedbackWrapper } from './styled';
 
 // The following function fetches the code to show a JIRA issue collector.
 // It inserts a script element into the document and then waits until
@@ -18,14 +19,14 @@ type ShowIssueCollectorFn = () => void;
 const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
   const COLLECTOR_ID = '6b29563e';
   const ISSUE_COLLECTOR_URL = `https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-t6xhtk/b/5/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=${COLLECTOR_ID}`;
-  let showIssueCollector;
+  let showIssueCollector: Promise<ShowIssueCollectorFn>;
   return () => {
     if (!showIssueCollector) {
       showIssueCollector = new Promise(resolve => {
         window.ATL_JQ_PAGE_PROPS = {
           ...window.ATL_JQ_PAGE_PROPS,
           [COLLECTOR_ID]: {
-            triggerFunction(showIssueCollector) {
+            triggerFunction(showIssueCollector: ShowIssueCollectorFn) {
               resolve(showIssueCollector);
             },
           },
@@ -45,10 +46,15 @@ const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
 export class FeedbackButton extends React.Component<{}, {}> {
   render() {
     return (
-      <Button
-        onClick={this.showFeedbackDialog}
-        iconBefore={<FeedbackIcon label="feedback" />}
-      />
+      <FeedbackWrapper>
+        <Button
+          appearance="toolbar"
+          onClick={this.showFeedbackDialog}
+          iconBefore={<FeedbackIcon label="feedback" />}
+        >
+          Give feedback
+        </Button>
+      </FeedbackWrapper>
     );
   }
 
@@ -57,7 +63,7 @@ export class FeedbackButton extends React.Component<{}, {}> {
       showIssueCollector => {
         showIssueCollector();
       },
-      err => {
+      _ => {
         /* do nothing */
       },
     );

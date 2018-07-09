@@ -7,10 +7,12 @@ import FabricElementsListener, {
 import {
   DummyComponentWithAnalytics,
   TaggedDummyComponentWithAnalytics,
+  DummyComponentWithAttributesWithAnalytics,
   Props,
 } from '../examples/helpers';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../src/types';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 describe('<FabricElementsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
@@ -58,21 +60,65 @@ describe('<FabricElementsListener />', () => {
     });
   };
 
-  it('should listen and fire an UI event with analyticsWebClient', () => {
-    fireAndVerifySentEvent(DummyComponentWithAnalytics, {
-      action: 'someAction',
-      actionSubject: 'someComponent',
-      source: 'unknown',
-      tags: [ELEMENTS_TAG],
+  describe('Listen and fire an UI event with analyticsWebClient', () => {
+    it('should fire event with elements tag', () => {
+      fireAndVerifySentEvent(DummyComponentWithAnalytics, {
+        action: 'someAction',
+        actionSubject: 'someComponent',
+        source: 'unknown',
+        tags: [ELEMENTS_TAG],
+      });
     });
-  });
 
-  it('should listen and fire an UI event with analyticsWebClient without duplicating the tag', () => {
-    fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
-      action: 'someAction',
-      actionSubject: 'someComponent',
-      source: 'unknown',
-      tags: [ELEMENTS_TAG, 'foo'],
+    it('should fire event without duplicating the tag', () => {
+      fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
+        action: 'someAction',
+        actionSubject: 'someComponent',
+        source: 'unknown',
+        tags: [ELEMENTS_TAG, 'foo'],
+      });
+    });
+
+    it('should fire event with context merged into the attributes', () => {
+      const component = mount(
+        <FabricElementsListener client={clientPromise} logger={loggerMock}>
+          <FabricElementsAnalyticsContext
+            data={{ issueId: 100, greeting: 'hello' }}
+          >
+            <AnalyticsContext data={{ issueId: 200, msg: 'boo' }}>
+              <FabricElementsAnalyticsContext data={{ issueId: 300 }}>
+                <DummyComponentWithAttributesWithAnalytics
+                  onClick={jest.fn()}
+                />
+              </FabricElementsAnalyticsContext>
+            </AnalyticsContext>
+          </FabricElementsAnalyticsContext>
+        </FabricElementsListener>,
+      );
+
+      const analyticsListener = component.find(AnalyticsListener);
+      const dummy = analyticsListener.find('#dummy');
+      dummy.simulate('click');
+
+      // note: AnalyticsContext data should not be in propagated in the attributes, only FabricElementsAnalyticsContext
+      return clientPromise.then(client => {
+        expect(client.sendUIEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'someAction',
+            actionSubject: 'someComponent',
+            source: 'unknown',
+            attributes: {
+              packageName: '@atlaskit/foo',
+              packageVersion: '1.0.0',
+              componentName: 'foo',
+              fooBar: 'yay',
+              greeting: 'hello',
+              issueId: 300, // right most object attribute wins the conflict
+            },
+            tags: [ELEMENTS_TAG],
+          }),
+        );
+      });
     });
   });
 });

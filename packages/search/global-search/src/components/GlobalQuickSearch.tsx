@@ -11,9 +11,9 @@ import {
 import {
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
-  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_CHANNEL,
   sanitizeSearchQuery,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface Props {
   onMount();
@@ -67,10 +67,31 @@ export class GlobalQuickSearch extends React.Component<Props> {
           searchSessionId: searchSessionId,
         },
       };
-      event.update(payload).fire(DEFUALT_GAS_CHANNEL);
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
     }
 
     this.queryVersion++;
+  }
+
+  componentWillUnmount() {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      // Note: This analytics event is currently missing the
+      // trigger attribute, to indicate _how_ the drawer was dismissed.
+      // as well as the correct actionSubjectId.
+      const event = createAnalyticsEvent();
+      const payload: GasPayload = {
+        action: 'dismissed',
+        actionSubject: 'globalSearchDrawer',
+        source: DEFAULT_GAS_SOURCE,
+        eventType: 'ui',
+        attributes: {
+          searchSessionId: this.props.searchSessionId,
+          ...DEFAULT_GAS_ATTRIBUTES,
+        },
+      };
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+    }
   }
 
   render() {

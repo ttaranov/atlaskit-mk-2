@@ -1,8 +1,9 @@
 import { ClientBasedAuth } from '@atlaskit/media-core';
 import { MediaStore, MediaCollection } from '@atlaskit/media-store';
 import { Database } from 'kakapo';
-import * as Faker from 'faker';
+import * as uuid from 'uuid';
 
+import { getFakeFileName, fakeImage } from './mockData';
 import { mapDataUriToBlob } from '../../utils';
 import { createCollection } from './collection';
 import { CollectionItem, createCollectionItem } from './collection-item';
@@ -14,12 +15,12 @@ export * from './collection';
 export * from './collection-item';
 
 export const tenantAuth: ClientBasedAuth = {
-  clientId: Faker.random.uuid(),
+  clientId: uuid.v4(),
   token: 'some-tenant-token',
 };
 
 export const userAuth: ClientBasedAuth = {
-  clientId: Faker.random.uuid(),
+  clientId: uuid.v4(),
   token: 'some-user-token',
 };
 
@@ -50,18 +51,14 @@ export function generateUserData(): void {
     authProvider: userAuthProvider,
   });
 
-  const image = mapDataUriToBlob(Faker.image.dataUri(320, 240));
-
+  const image = mapDataUriToBlob(fakeImage);
   mediaStore.createCollection('recents');
 
   for (let i = 0; i < 10; i++) {
     mediaStore.createFileFromBinary(image, {
-      name: Faker.system.commonFileName(
-        Faker.system.fileExt(image.type),
-        image.type,
-      ),
+      name: getFakeFileName(),
       collection: 'recents',
-      occurrenceKey: Faker.random.uuid(),
+      occurrenceKey: uuid.v4(),
     });
   }
 }

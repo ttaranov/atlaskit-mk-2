@@ -26,6 +26,10 @@ describe(`${name}/schema decisionList node`, () => {
     const orderedList = doc.firstChild!;
     expect(orderedList.type.name).toEqual('orderedList');
   });
+
+  it('decisionList requires defining to be true', () => {
+    expect(schema.nodes.decisionList.spec.defining).toBe(true);
+  });
 });
 
 function makeSchema() {

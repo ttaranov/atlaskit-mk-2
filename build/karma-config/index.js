@@ -1,17 +1,16 @@
 const constants = require('karma').constants;
+const puppeteer = require('puppeteer');
 const ChromiumRevision = require('puppeteer/package.json').puppeteer
   .chromium_revision;
-const Downloader = require('puppeteer/utils/ChromiumDownloader');
+
 const boltQuery = require('bolt-query');
 const path = require('path');
 const babelPolyfill = require.resolve('babel-polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
+const browserFetcher = puppeteer.createBrowserFetcher();
+const revisionInfo = browserFetcher.download(ChromiumRevision);
 
-const revisionInfo = Downloader.revisionInfo(
-  Downloader.currentPlatform(),
-  ChromiumRevision,
-);
 process.env.CHROME_BIN = revisionInfo.executablePath;
 
 const webpackConfig = {
@@ -154,6 +153,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         retryLimit: 5,
         startTunnel: true,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
+        localIdentifier: `${process.env.BITBUCKET_COMMIT}_unit_tests`,
         project: 'Atlaskit',
         build: `${process.env.BITBUCKET_BRANCH} ${time} ${
           process.env.BITBUCKET_COMMIT

@@ -105,9 +105,36 @@ describe('NotificationIndicator', () => {
     expect(wrapper.find(Badge).length).toEqual(0);
   });
 
+  it('Should not refresh when skip=true on call to onCountUpdating', async () => {
+    const onCountUpdating = event => ({ skip: true });
+    const onCountUpdated = sinon.spy();
+    await renderNotificationIndicator(returnCount(1), {
+      onCountUpdating,
+      onCountUpdated,
+    });
+    expect(onCountUpdated.called).toEqual(false);
+  });
+
+  it('Should override count when countOverride is set on call to onCountUpdating', async () => {
+    const onCountUpdating = event => ({ countOverride: 3 });
+    const onCountUpdated = sinon.spy();
+    const wrapper = await renderNotificationIndicator(returnError(), {
+      onCountUpdating,
+      onCountUpdated,
+    });
+    expect(onCountUpdated.called).toEqual(true);
+    expect(wrapper.state('count')).toEqual(3);
+  });
+
   it('Should call onCountUpdated on new count', async () => {
     const onCountUpdated = sinon.spy();
     await renderNotificationIndicator(returnCount(1), { onCountUpdated });
+    expect(onCountUpdated.called).toEqual(true);
+  });
+
+  it('Should call onCountUpdated after refresh returns 0', async () => {
+    const onCountUpdated = sinon.spy();
+    await renderNotificationIndicator(returnCount(0), { onCountUpdated });
     expect(onCountUpdated.called).toEqual(true);
   });
 
@@ -134,7 +161,54 @@ describe('NotificationIndicator', () => {
     expect(onCountUpdated.callCount).toEqual(2);
   });
 
-  it('Should refresh on visibilitychange if document is visible', async () => {
+  it('Should update refresh interval when refreshRate prop changes', async () => {
+    const onCountUpdated = sinon.spy();
+    const wrapper = await renderNotificationIndicator(returnCount(1), {
+      refreshRate: 1,
+      onCountUpdated,
+    });
+
+    expect(wrapper.state('intervalId')).not.toEqual(null);
+    expect(wrapper.state('count')).toEqual(1);
+
+    notificationLogClient.setResponse(returnCount(2));
+    await timeout(5); // Wait for the next tick to complete
+    wrapper.update();
+    expect(wrapper.state('count')).toEqual(2);
+
+    // Ensure the original setInterval has been removed
+    notificationLogClient.setResponse(returnCount(3));
+    wrapper.setProps({ refreshRate: 100 });
+    await timeout(5); // Wait
+    expect(onCountUpdated.callCount).toEqual(2);
+
+    // Ensure the new setInterval has been applied
+    wrapper.setProps({ refreshRate: 1 });
+    expect(onCountUpdated.callCount).toEqual(2);
+    await timeout(5); // Wait for the next tick to complete
+    expect(onCountUpdated.callCount).toEqual(3);
+  });
+
+  it('Should not refresh on visibilitychange if refreshOnVisibilityChange=false', async () => {
+    const onCountUpdated = sinon.spy();
+    const wrapper = await renderNotificationIndicator(returnCount(1), {
+      refreshRate: 99999,
+      refreshOnVisibilityChange: false,
+      onCountUpdated,
+    });
+
+    expect(wrapper.state('count')).toEqual(1);
+
+    notificationLogClient.setResponse(returnCount(5));
+    triggerVisibilityChange();
+    await timeout(0);
+    wrapper.update();
+
+    // no change
+    expect(wrapper.state('count')).toEqual(1);
+  });
+
+  it('Should refresh on visibilitychange if document is visible for refreshOnVisibilityChange=true', async () => {
     const onCountUpdated = sinon.spy();
     const wrapper = await renderNotificationIndicator(returnCount(1), {
       refreshRate: 99999,
@@ -149,5 +223,41 @@ describe('NotificationIndicator', () => {
     wrapper.update();
 
     expect(wrapper.state('count')).toEqual(5);
+  });
+
+  it('Should not refresh on visibilitychange when skipping too many eager fetches on tab change', async () => {
+    const onCountUpdating = event => {
+      if (event.visibilityChangesSinceTimer > 1) {
+        return { skip: true };
+      }
+      return {};
+    };
+    const onCountUpdated = sinon.spy();
+    const wrapper = await renderNotificationIndicator(returnCount(1), {
+      refreshRate: 2,
+      onCountUpdating,
+      onCountUpdated,
+    });
+    expect(wrapper.state('count')).toEqual(1);
+
+    // initial visibilitychange
+    notificationLogClient.setResponse(returnCount(5));
+    triggerVisibilityChange();
+    await timeout(0);
+    wrapper.update();
+    expect(wrapper.state('count')).toEqual(5);
+
+    // ignore next visibilitychange until timer cycles
+    notificationLogClient.setResponse(returnCount(6));
+    triggerVisibilityChange();
+    wrapper.update();
+    expect(wrapper.state('count')).toEqual(5);
+
+    // timer has cycled, update on visibilitychange
+    notificationLogClient.setResponse(returnCount(6));
+    triggerVisibilityChange();
+    await timeout(5);
+    wrapper.update();
+    expect(wrapper.state('count')).toEqual(6);
   });
 });

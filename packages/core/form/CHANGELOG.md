@@ -1,5 +1,30 @@
 # @atlaskit/form
 
+## 2.1.5
+- [patch] fix styled-components syntax error [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
+- [none] Updated dependencies [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
+  - @atlaskit/select@4.3.5
+
+## 2.1.4
+- [patch] Fix Field validator error on empty strings  [470a1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/470a1fb)
+- [patch] Updated dependencies [470a1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/470a1fb)
+  - @atlaskit/select@4.3.2
+
+## 2.1.3
+- [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+- [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
+  - @atlaskit/tooltip@10.3.1
+  - @atlaskit/select@4.3.1
+  - @atlaskit/modal-dialog@5.2.5
+  - @atlaskit/single-select@5.2.1
+  - @atlaskit/multi-select@10.2.1
+  - @atlaskit/field-text-area@3.1.2
+  - @atlaskit/button@8.2.2
+  - @atlaskit/checkbox@3.1.2
+  - @atlaskit/calendar@6.1.3
+  - @atlaskit/field-radio-group@3.1.2
+  - @atlaskit/icon@12.3.1
+
 ## 2.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

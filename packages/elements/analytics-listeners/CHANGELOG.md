@@ -1,5 +1,27 @@
 # @atlaskit/analytics-listeners
 
+## 2.1.2
+
+- [patch] Add missing dependencies to packages to get the website to build [99446e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99446e3)
+
+- [none] Updated dependencies [9c32280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c32280)
+  - @atlaskit/analytics-namespaced-context@1.0.2
+- [none] Updated dependencies [99446e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99446e3)
+  - @atlaskit/docs@4.2.2
+  - @atlaskit/analytics-namespaced-context@1.0.2
+- [none] Updated dependencies [9bac948](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9bac948)
+  - @atlaskit/analytics-namespaced-context@1.0.2
+  - @atlaskit/docs@4.2.2
+
+## 2.1.1
+- [patch] removes requirement of children to be a single React node [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+- [none] Updated dependencies [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+  - @atlaskit/analytics-next@2.1.9
+
+## 2.1.0
+- [patch] merge analytics-next context into GAS payload attributes in FabricElementsListener [5d25e8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d25e8b)
+- [minor] moved Atlaskit tests from src to __tests__ [1f78c33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1f78c33)
+
 ## 2.0.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

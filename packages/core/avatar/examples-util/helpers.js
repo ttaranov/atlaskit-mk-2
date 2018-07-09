@@ -37,8 +37,8 @@ export const Code = styled.code`
 export const Gap = styled.span`
   margin-right: ${gridSize}px;
 `;
-// $FlowFixMe
-export const Dot = styled(Gap)`
+
+export const ShrinkWrap = styled(Gap)`
   height: ${math.multiply(gridSize, 3)}px;
   width: ${math.multiply(gridSize, 3)}px;
 `;

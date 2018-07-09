@@ -11,7 +11,6 @@ import {
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
-import pastePlugin from './pm-plugins/paste-plugin';
 import inputRulePlugin from './pm-plugins/input-rules';
 import keymap from './pm-plugins/keymaps';
 import ToolbarDecision from './ui/ToolbarDecision';
@@ -34,7 +33,6 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
         plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {

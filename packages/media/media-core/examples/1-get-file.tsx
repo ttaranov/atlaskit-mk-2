@@ -71,13 +71,12 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0];
-    const { deferredFileId } = mediaContext.uploadFile({
+    const stream = mediaContext.uploadFile({
       content: file,
       name: file.name,
       collection: defaultCollectionName,
     });
-    const fileId = await deferredFileId;
-    this.getFile(fileId);
+    this.addStream(stream);
   };
 
   addStream = (stream: Observable<FileState>) => {

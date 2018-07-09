@@ -6,23 +6,27 @@ import { Collection } from './collection';
 import { Content } from './content';
 import { Blanket } from './styled';
 import { Shortcut } from './shortcut';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   selectedItem?: Identifier;
-  readonly featureFlags?: MediaViewerFeatureFlags;
+  featureFlags?: MediaViewerFeatureFlags;
   context: Context;
   itemSource: ItemSource;
-};
+}>;
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
     const { onClose } = this.props;
     return (
-      <Blanket>
-        {onClose && <Shortcut keyCode={27} handler={onClose} />}
-        <Content onClose={onClose}>{this.renderContent()}</Content>
-      </Blanket>
+      <ThemeProvider theme={theme}>
+        <Blanket>
+          {onClose && <Shortcut keyCode={27} handler={onClose} />}
+          <Content onClose={onClose}>{this.renderContent()}</Content>
+        </Blanket>
+      </ThemeProvider>
     );
   }
 
@@ -38,7 +42,7 @@ export class MediaViewer extends React.Component<Props, {}> {
       return (
         <Collection
           pageSize={itemSource.pageSize}
-          selectedItem={selectedItem}
+          defaultSelectedItem={selectedItem}
           collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
@@ -48,7 +52,7 @@ export class MediaViewer extends React.Component<Props, {}> {
     } else if (itemSource.kind === 'ARRAY') {
       return (
         <List
-          selectedItem={selectedItem || itemSource.items[0]}
+          defaultSelectedItem={selectedItem || itemSource.items[0]}
           items={itemSource.items}
           context={context}
           onClose={onClose}

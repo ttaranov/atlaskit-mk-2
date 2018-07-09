@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-// $FlowFixMe
+// $FlowFixMe - https://github.com/facebook/flow/issues/4494
 import '../src/index.less';
 
 export default () => (

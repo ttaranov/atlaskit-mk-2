@@ -13,6 +13,8 @@ export const pdfViewerClassName = 'pdfViewer';
 /* tslint:disable:no-unused-expression */
 injectGlobal`
   .${pdfViewerClassName} {
+    margin-top: 64px;
+    margin-bottom: 64px;
     .page {
       margin: 1px auto -8px auto;
       border: 9px solid transparent;
@@ -96,7 +98,7 @@ const initialState: State = {
 };
 
 export class PDFRenderer extends React.Component<Props, State> {
-  private el: HTMLDivElement;
+  private el?: HTMLDivElement;
   private pdfViewer: any;
 
   state: State = initialState;
@@ -117,11 +119,11 @@ export class PDFRenderer extends React.Component<Props, State> {
     }
   }
 
-  private savePdfElement = el => {
+  private savePdfElement = (el: HTMLDivElement) => {
     this.el = el;
   };
 
-  private handleZoom = zoomLevel => {
+  private handleZoom = (zoomLevel: ZoomLevel) => {
     this.pdfViewer.currentScale = zoomLevel.value;
     this.setState({ zoomLevel });
   };
@@ -138,7 +140,10 @@ export class PDFRenderer extends React.Component<Props, State> {
               className={pdfViewerClassName}
               onClick={closeOnDirectClick(this.props.onClose)}
             />
-            <ZoomControls zoomLevel={this.state.zoomLevel} onChange={this.handleZoom} />
+            <ZoomControls
+              zoomLevel={this.state.zoomLevel}
+              onChange={this.handleZoom}
+            />
           </PDFWrapper>
         );
       case 'FAILED':

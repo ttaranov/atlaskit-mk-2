@@ -74,13 +74,16 @@ export const tableStyles = css`
     .table-column-controls-wrapper,
     .table-row-controls-wrapper {
       position: absolute;
-      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize + 1}px;
+      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
+    }
+    .table-row-controls-wrapper.scrolling {
+      z-index: 1;
     }
     .table-column-controls-wrapper {
       left: 0;
     }
     .table-row-controls-wrapper {
-      left: -${tableToolbarSize - 2}px;
+      left: -${tableToolbarSize}px;
     }
     .table-wrapper {
       padding-right: ${tableInsertColumnButtonSize / 2}px;
@@ -90,10 +93,6 @@ export const tableStyles = css`
       /* fixes gap cursor height */
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
-    }
-    .table-decoration {
-      position: relative;
-      left: -1px;
     }
   }
 

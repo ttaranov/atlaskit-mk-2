@@ -1,6 +1,5 @@
 //@flow
 'use strict';
-
 /* 
 * util module to build webpack-dev-server for running integration test.
 * const CHANGED_PACKAGES accepts environment variable which is used to 
@@ -47,7 +46,7 @@ let config;
 const pattern = process.argv[2] || '';
 
 function packageIsInPatternOrChanged(workspace) {
-  if (!workspace.files.webdriver.length) return false;
+  if (!workspace.files.matchedTests.length) return false;
   if (pattern === '' && !CHANGED_PACKAGES) return true;
 
   /**
@@ -67,21 +66,28 @@ function packageIsInPatternOrChanged(workspace) {
     : pattern.includes(workspace.dir);
 }
 
-async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
+async function getPackagesWithTests() /*: Promise<Array<string>> */ {
+  let testPattern = process.env.VISUAL_REGRESSION
+    ? 'visual-regression'
+    : 'integration';
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
-    workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
+    workspaceFiles: {
+      matchedTests: `{src/**/__tests__,__tests__}/${testPattern}/*.+(js|ts|tsx)`,
+    },
   });
   return project.workspaces
     .filter(packageIsInPatternOrChanged)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }
+
 //
 // Creating webpack instance
 //
 async function startDevServer() {
-  const workspacesGlob = await getPackagesWithWebdriverTests();
+  const workspacesGlob = await getPackagesWithTests();
   const env = 'production';
+  const websiteEnv = 'production';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
@@ -105,6 +111,7 @@ async function startDevServer() {
     host: HOST,
     port: PORT,
     globs,
+    websiteEnv,
     includePatterns,
     env,
     cwd: path.join(__dirname, '../../..', 'website'),
@@ -130,6 +137,10 @@ async function startDevServer() {
     //change stats to verbose to get detailed information
     stats: 'minimal',
     clientLogLevel: 'none',
+
+    // disable hot reload for tests - they don't need it for running
+    hot: false,
+    inline: false,
   });
 
   return new Promise((resolve, reject) => {

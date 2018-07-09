@@ -1,8 +1,8 @@
 export enum ResultType {
-  JiraObjectResult,
-  GenericContainerResult,
-  PersonResult,
-  ConfluenceObjectResult,
+  JiraObjectResult = 'jira-object-result',
+  GenericContainerResult = 'generic-container-result',
+  PersonResult = 'person-result',
+  ConfluenceObjectResult = 'confluence-object-result',
 }
 
 export interface Result {
@@ -21,6 +21,7 @@ export interface Result {
 
 export interface ConfluenceObjectResult extends Result {
   containerName: string;
+  containerId: string;
   contentType?: ContentType;
   resultType: ResultType.ConfluenceObjectResult;
   iconClass?: string;
@@ -51,6 +52,7 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
+  Person = 'person',
 }
 
 export enum AnalyticsType {

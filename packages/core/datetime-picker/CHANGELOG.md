@@ -1,5 +1,40 @@
 # @atlaskit/datetime-picker
 
+## 5.4.2
+- [patch] Fix Calendar width increasing for some months [29ffb24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29ffb24)
+- [patch] Updated dependencies [29ffb24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29ffb24)
+  - @atlaskit/calendar@6.2.2
+
+## 5.4.1
+- [patch] Calendar chevrons use large versions [a973ac3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a973ac3)
+- [patch] Updated dependencies [a973ac3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a973ac3)
+  - @atlaskit/calendar@6.2.1
+
+## 5.4.0
+- [minor] Visual changes to match ADG3 guidelines [059d111](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/059d111)
+- [minor] Updated dependencies [059d111](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/059d111)
+  - @atlaskit/calendar@6.2.0
+
+## 5.3.3
+- [patch] Updated dependencies [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+  - @atlaskit/select@4.3.6
+
+## 5.3.2
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/modal-dialog@5.2.6
+
+## 5.3.1
+- [patch] TimePicker timesIsEditable invalid values are set to empty strings  [b710290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b710290)
+- [patch] Updated dependencies [b710290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b710290)
+
+## 5.3.0
+- [minor] Backspace now clears input & fixed tab clearing input [5783a8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5783a8d)
+- [minor] Updated dependencies [5783a8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5783a8d)
+
 ## 5.2.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

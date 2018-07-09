@@ -21,6 +21,6 @@
     "karma-mocha-reporter": "^2.2.4",
     "karma-webpack": "^2.0.4",
     "mocha": "^3.5.0",
-    "puppeteer": "^0.10.2"
+    "puppeteer": "^1.4.0"
   }
 }

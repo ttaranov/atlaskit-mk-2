@@ -35,10 +35,8 @@ const Positioner = ({ scrollBehavior, ...props }) => {
 function getScrollDistance() {
   return (
     window.pageYOffset ||
-    // $FlowFixMe
-    document.documentElement.scrollTop ||
-    // $FlowFixMe
-    document.body.scrollTop ||
+    (document.documentElement && document.documentElement.scrollTop) ||
+    (document.body && document.body.scrollTop) ||
     0
   );
 }
@@ -188,7 +186,7 @@ class Modal extends Component<Props, State> {
 
   handleOverlayClick = e => {
     if (this.props.shouldCloseOnOverlayClick) {
-      // $FlowFixMe TEMPORARY
+      // $FlowFixMe - Event is incompatible with Synthetic event
       this.props.onClose(e);
     }
   };
@@ -221,7 +219,7 @@ class Modal extends Component<Props, State> {
       footer,
       header,
       height,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
       isHeadingMultiline,
@@ -311,6 +309,5 @@ export default withRenderTarget(
     target: 'modal',
     withTransitionGroup: true,
   },
-  // $FlowFixMe TEMPORARY
   Modal,
 );
