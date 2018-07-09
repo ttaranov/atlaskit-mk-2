@@ -23,7 +23,7 @@ import {
 
 import {
   TablePluginState,
-  stateKey as tablesPluginKey,
+  pluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 import {
   tablesPlugin,
@@ -44,7 +44,7 @@ describe('table keymap', () => {
       editorProps: {
         analyticsHandler: trackEvent,
       },
-      pluginKey: tablesPluginKey,
+      pluginKey,
     });
   const editorWithPlugins = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
@@ -62,7 +62,7 @@ describe('table keymap', () => {
       editorProps: {
         analyticsHandler: trackEvent,
       },
-      pluginKey: tablesPluginKey,
+      pluginKey,
     });
   let trackEvent;
   beforeEach(() => {
