@@ -46,6 +46,13 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
     this.pluginState.handleMediaNodeUnmount(node);
   }
 
+  componentWillReceiveProps(newProps: MediaNodeProps) {
+    if (this.props.getPos !== newProps.getPos) {
+      this.pluginState.handleMediaNodeUnmount(this.props.node);
+      this.handleNewNode(newProps);
+    }
+  }
+
   cancelProgress = () => {
     const {
       node: {
