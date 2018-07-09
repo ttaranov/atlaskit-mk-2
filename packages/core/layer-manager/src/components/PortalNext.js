@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 // 1. Portals it's children using React.createPortal
 // 2. Manages the stacking context so that floating components are visible correctly
 
-type Layer = 'natural' | 'tooltip';
+type Layer = 'default' | 'tooltip';
 
 type Props = {
   layer: Layer,
@@ -25,12 +25,15 @@ const defaultGetLayer = (layer: Layer) =>
   document.querySelector(`body > div#${layer}`);
 
 const defaultCreateLayers = (layers: Layer[]) => {
-  const elems = [];
-  layers.forEach(layer => {
+  const elems = {};
+  layers.forEach((layer, i) => {
     const elem = document.createElement('div');
     elem.setAttribute('id', layer);
-    document.body.appendChild(elem);
-    elems.concat(elem);
+    elem.setAttribute('style', `z-index: ${i + 1}`);
+    if (document.body) {
+      document.body.appendChild(elem);
+    }
+    elems[layer] = elem;
   });
   return elems;
 };
@@ -53,24 +56,21 @@ class Portal extends React.Component<Props, State> {
     }
     return container;
   };
-  // componentDidUpdate(prevProps: Props) {
-  //   if (prevProps.layer !== this.props.layer) {
-  //     // eslint-disable-next-line react/no-did-update-set-state
-  //     this.setState({ container: this.getContainer() });
-  //   }
-  // }
-  // componentDidMount() {
-  //   if (!this.state.container) {
-  //     console.log('container', this.getContainer());
-  //     // eslint-disable-next-line react/no-did-mount-set-state
-  //     this.setState({ container: this.getContainer() });
-  //   }
-  // }
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.layer !== this.props.layer) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ container: this.getContainer() });
+    }
+  }
+  componentDidMount() {
+    if (!this.state.container) {
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({ container: this.getContainer() });
+    }
+  }
   render() {
     const { children } = this.props;
-    // const { container } = this.state;
-    const container = this.getContainer();
-    console.log('rendering', container);
+    const { container } = this.state;
     return container ? ReactDOM.createPortal(children, container) : null;
   }
 }
