@@ -19,7 +19,7 @@ const getItems = projects => [
     type: 'Group',
     id: 'menu',
     items: [
-      { id: 'back', type: 'BackItem', text: 'Back to home', goTo: 'root/home' },
+      { id: 'back', type: 'LinkItem', text: 'Back to home', to: '/' },
       { id: 'projects-title', type: 'Title', text: 'Projects' },
       ...projects.map(({ name }) => ({ type: 'Item', text: name, id: name })),
     ],

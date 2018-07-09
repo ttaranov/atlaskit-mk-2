@@ -18,8 +18,8 @@ const getItems = () => [
     type: 'Group',
     id: 'menu',
     items: [
-      { id: 'projects', type: 'Item', text: 'Projects', goTo: 'root/projects' },
-      { id: 'settings', type: 'Item', text: 'Settings', goTo: 'root/settings' },
+      { id: 'projects', type: 'LinkItem', text: 'Projects', to: '/projects' },
+      { id: 'settings', type: 'LinkItem', text: 'Settings', to: '/settings' },
     ],
   },
 ];

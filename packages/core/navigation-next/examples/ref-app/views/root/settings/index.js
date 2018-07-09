@@ -18,7 +18,7 @@ const getItems = () => [
     type: 'Group',
     id: 'menu',
     items: [
-      { id: 'back', type: 'BackItem', text: 'Back to home', goTo: 'root/home' },
+      { id: 'back', type: 'LinkItem', text: 'Back to home', to: '/' },
       { id: 'settings-title', type: 'Title', text: 'Settings' },
       { id: 'theme-settings', type: 'Item', text: 'Theme settings' },
     ],
