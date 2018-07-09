@@ -123,10 +123,7 @@ const renderRecentActivities = (
   searchSessionId: string,
 ) => [
   renderObjectsGroup(
-    <FormattedMessage
-      id="heading-recent-pages"
-      defaultMessage="Recent pages and blogs"
-    />,
+    <FormattedMessage id="global-search.heading-recent-pages" />,
     take(recentlyViewedPages, 8),
     query,
   ),
@@ -159,7 +156,7 @@ const renderSearchResults = (
 ) => {
   return [
     renderObjectsGroup(
-      'Pages, blogs and attachments',
+      <FormattedMessage id="global-search.heading-confluence-objects" />,
       take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
       query,
     ),
@@ -205,6 +202,7 @@ const renderNoQuery = (
     searchSessionId,
   );
 };
+
 const render = (props: Props) => {
   const {
     query,
