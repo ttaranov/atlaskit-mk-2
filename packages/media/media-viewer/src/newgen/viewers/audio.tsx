@@ -72,7 +72,7 @@ export class AudioViewer extends React.Component<Props, State> {
     }
   };
 
-  private saveAudioElement = audioElement => {
+  private saveAudioElement = (audioElement?: HTMLElement) => {
     if (!audioElement) {
       return;
     }
@@ -119,6 +119,9 @@ export class AudioViewer extends React.Component<Props, State> {
   private async init() {
     const { context, item, collectionName } = this.props;
     const audioUrl = getAudioArtifactUrl(item);
+    if (!audioUrl) {
+      return;
+    }
 
     try {
       this.setCoverUrl();

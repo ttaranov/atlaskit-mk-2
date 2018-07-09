@@ -22,7 +22,7 @@ import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
 import { closeHistory } from 'prosemirror-history';
 import { hasParentNodeOfType } from 'prosemirror-utils';
-import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
+import { pluginKey as tableStateKey } from '../../table/pm-plugins/main';
 
 // @ts-ignore
 import { handlePaste as handlePasteTable } from 'prosemirror-tables';

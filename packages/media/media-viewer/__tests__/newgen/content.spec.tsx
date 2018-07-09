@@ -66,7 +66,7 @@ describe('<Content />', () => {
     const { component } = setup();
     const clearTimeout = jest.fn();
 
-    component.instance()['clearTimeout'] = clearTimeout;
+    (component as any).instance()['clearTimeout'] = clearTimeout;
     component.unmount();
     expect(clearTimeout).toHaveBeenCalledTimes(1);
   });

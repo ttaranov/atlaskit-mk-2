@@ -4,7 +4,7 @@ import { PortalProvider, PortalRenderer } from '../../src/ui/PortalProvider';
 
 const Component = () => <div>My component</div>;
 
-describe('PortalProvider', () => {
+describe.skip('PortalProvider', () => {
   let place;
   let place2;
   beforeEach(() => {

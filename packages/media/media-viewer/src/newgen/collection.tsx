@@ -31,10 +31,10 @@ const initialState: State = { items: { status: 'PENDING' } };
 export class Collection extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
-  private provider: MediaCollectionProvider;
+  private subscription?: Subscription;
+  private provider?: MediaCollectionProvider;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -109,7 +109,9 @@ export class Collection extends React.Component<Props, State> {
             },
           });
           if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
-            this.provider.loadNextPage();
+            if (this.provider) {
+              this.provider.loadNextPage();
+            }
           }
         }
       },
@@ -130,7 +132,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private onNavigationChange = (item: Identifier) => {
-    if (this.shouldLoadNext(item)) {
+    if (this.shouldLoadNext(item) && this.provider) {
       this.provider.loadNextPage();
     }
   };

@@ -6,6 +6,7 @@ import { TrashToolbarButton } from '../../../../src/plugins/code-block/ui/Langua
 import LanguagePickerWithOutsideListeners, {
   LanguagePicker,
 } from '../../../../src/plugins/code-block/ui/LanguagePicker';
+import { analyticsService } from '../../../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   let languagePicker: ReactWrapper<any, any>;
@@ -27,6 +28,22 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
   afterEach(() => {
     languagePicker.unmount();
+  });
+
+  describe('Tracking selection', () => {
+    it('should track the selected language', () => {
+      const trackSpy = jest.spyOn(analyticsService, 'trackEvent');
+      (languagePicker
+        .find(Select)
+        .instance() as any).select.select.selectOption({
+        label: 'Javascript',
+        value: 'javascript',
+      });
+      expect(trackSpy).toHaveBeenCalledWith(
+        'atlassian.editor.codeblock.language.set',
+        { language: 'javascript' },
+      );
+    });
   });
 
   describe('#shouldComponentUpdate', () => {

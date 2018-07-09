@@ -1,10 +1,10 @@
 import { NodeSpec } from 'prosemirror-model';
-import { Definition as Media } from './media';
+import { MediaDefinition as Media } from './media';
 
 /**
  * @name mediaGroup_node
  */
-export interface Definition {
+export interface MediaGroupDefinition {
   type: 'mediaGroup';
   /**
    * @minItems 1

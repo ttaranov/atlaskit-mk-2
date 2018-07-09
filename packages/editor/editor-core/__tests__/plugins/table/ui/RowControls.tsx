@@ -17,7 +17,7 @@ import {
 import AkButton from '@atlaskit/button';
 import {
   TablePluginState,
-  stateKey,
+  pluginKey,
 } from '../../../../src/plugins/table/pm-plugins/main';
 import RowControls from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls';
 import {
@@ -57,7 +57,7 @@ describe('RowControls', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      pluginKey,
     });
 
   [1, 2, 3].forEach(row => {

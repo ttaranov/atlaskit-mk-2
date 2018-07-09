@@ -1,10 +1,10 @@
 import { NodeSpec } from 'prosemirror-model';
-import { Definition as ListItemNode } from './list-item';
+import { ListItemDefinition as ListItemNode } from './list-item';
 
 /**
  * @name orderedList_node
  */
-export interface Definition {
+export interface OrderedListDefinition {
   type: 'orderedList';
   /**
    * @minItems 1

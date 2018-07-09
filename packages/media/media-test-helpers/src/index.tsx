@@ -11,3 +11,4 @@ export * from './createMouseEvent';
 export * from './userAuthProvider';
 export * from './mediaPickerAuthProvider';
 export * from './mocks';
+export * from './await-error';

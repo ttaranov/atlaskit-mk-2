@@ -11,9 +11,9 @@ import {
 import {
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
-  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_CHANNEL,
   sanitizeSearchQuery,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface Props {
   onMount();
@@ -67,7 +67,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           searchSessionId: searchSessionId,
         },
       };
-      event.update(payload).fire(DEFUALT_GAS_CHANNEL);
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
     }
 
     this.queryVersion++;

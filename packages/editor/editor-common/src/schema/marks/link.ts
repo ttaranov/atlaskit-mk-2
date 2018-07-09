@@ -27,7 +27,7 @@ export interface LinkAttributes {
 /**
  * @name link_mark
  */
-export interface Definition {
+export interface LinkDefinition {
   type: 'link';
   attrs: LinkAttributes;
 }

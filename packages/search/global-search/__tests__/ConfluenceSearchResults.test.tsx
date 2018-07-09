@@ -10,9 +10,11 @@ import {
   ContainerResultWithAnalytics,
   PersonResultWithAnalytics,
 } from '../src/components/SearchResultsUtil';
+import AnalyticsEventFiredOnMount from '../src/components/analytics/AnalyticsEventFiredOnMount';
 import SearchError from '../src/components/SearchError';
 import NoResults from '../src/components/NoResults';
 import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
+import NoRecentActivity from '../src/components/NoRecentActivity';
 import {
   makeConfluenceContainerResult,
   makeConfluenceObjectResult,
@@ -45,6 +47,7 @@ describe('ConfluenceSearchResults', () => {
       spaceResults: [],
       peopleResults: [],
       isLoading: false,
+      searchSessionId: 'abc',
       ...partialProps,
     };
 
@@ -88,9 +91,48 @@ describe('ConfluenceSearchResults', () => {
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
   });
 
+  describe('empty state', () => {
+    it('should render empty state when no recent activities', () => {
+      const props: Partial<Props> = {
+        recentlyInteractedPeople: [],
+        recentlyViewedPages: [],
+        recentlyViewedSpaces: [],
+      };
+
+      const wrapper = render(props);
+      const emptyState = wrapper.find(NoRecentActivity);
+      expect(emptyState.length).toBe(1);
+    });
+
+    [
+      {
+        recentlyInteractedPeople: [makePersonResult()],
+        recentlyViewedPages: [],
+        recentlyViewedSpaces: [],
+      },
+      {
+        recentlyInteractedPeople: [],
+        recentlyViewedPages: [makeConfluenceObjectResult()],
+        recentlyViewedSpaces: [],
+      },
+      {
+        recentlyInteractedPeople: [],
+        recentlyViewedPages: [],
+        recentlyViewedSpaces: [makeConfluenceContainerResult()],
+      },
+    ].forEach(properties => {
+      it('should not render empty state if any recent activity is not empty', () => {
+        const wrapper = render(properties);
+        const emptyState = wrapper.find(NoRecentActivity);
+        expect(emptyState.length).toBe(0);
+      });
+    });
+  });
+
   it('should render links to advanced search when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
+      recentlyInteractedPeople: [makePersonResult()],
     };
 
     const wrapper = render(props);
@@ -117,6 +159,26 @@ describe('ConfluenceSearchResults', () => {
     expect(group.childAt(1).prop('text')).toEqual(
       'Advanced search for "foo bar"',
     );
+  });
+
+  it('should render the pre query screen analytics event when there are results', () => {
+    const props: Partial<Props> = {
+      query: 'foo bar',
+      objectResults: [makeConfluenceObjectResult({ name: 'name' })],
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
+  });
+
+  it('should render the post query screen analytics event when there are results', () => {
+    const props: Partial<Props> = {
+      query: '',
+      recentlyViewedPages: [makeConfluenceObjectResult({ name: 'name' })],
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
   });
 
   it('should render objects when there are results', () => {

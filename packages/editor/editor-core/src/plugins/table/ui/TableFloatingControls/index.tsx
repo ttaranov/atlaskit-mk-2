@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
+import { selectRow } from 'prosemirror-utils';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
 import NumberColumn from './NumberColumn';
@@ -9,7 +10,6 @@ import { Container } from './styles';
 import { isSelectionUpdated } from './utils';
 import {
   resetHoverSelection,
-  selectRowClearHover,
   hoverRows,
   insertRow,
   deleteSelectedRows,
@@ -134,7 +134,8 @@ export default class TableFloatingControls extends Component<Props, State> {
 
   private selectRow = (row: number) => {
     const { state, dispatch } = this.props.editorView;
-    selectRowClearHover(row)(state, dispatch);
+    dispatch(selectRow(row)(state.tr));
+    this.resetHoverSelection();
   };
 
   private insertRow = (row: number) => {

@@ -1,6 +1,7 @@
 import { Schema } from 'prosemirror-model';
 import { defaultSchema, Transformer } from '@atlaskit/editor-common';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
+import { Node } from 'prosemirror-model';
 
 export const bigEmojiHeight = 40;
 
@@ -16,3 +17,12 @@ export class ADFEncoder<T> {
     this.encode = createEncoder(transformer, new JSONTransformer());
   }
 }
+
+export const getText = (node: Node): string => {
+  return (
+    node.text ||
+    node.attrs.text ||
+    node.attrs.shortName ||
+    `[${node.type.name}]`
+  );
+};

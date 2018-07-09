@@ -4,7 +4,7 @@ import { COLOR, FONT_STYLE, LINK, SEARCH_QUERY } from '../groups';
 /**
  * @name code_mark
  */
-export interface Definition {
+export interface CodeDefinition {
   type: 'code';
 }
 

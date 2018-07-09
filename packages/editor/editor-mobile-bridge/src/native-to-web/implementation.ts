@@ -11,6 +11,8 @@ import {
   ListsState,
   indentList,
   outdentList,
+  toggleOrderedList,
+  toggleBulletList,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
@@ -121,12 +123,12 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   onOrderedListSelected() {
     if (this.listState && this.editorView) {
-      this.listState.toggleOrderedList(this.editorView);
+      toggleOrderedList(this.editorView);
     }
   }
   onBulletListSelected() {
     if (this.listState && this.editorView) {
-      this.listState.toggleBulletList(this.editorView);
+      toggleBulletList(this.editorView);
     }
   }
 
