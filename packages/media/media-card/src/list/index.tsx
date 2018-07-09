@@ -200,12 +200,20 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.loadNextPage();
   };
 
-  render(): JSX.Element {
-    const { height } = this.props;
+  get isEmpty(): boolean {
+    const { collection } = this.state;
+
+    return !!(collection && collection.items.length === 0);
+  }
+
+  render() {
+    const {
+      height,
+      emptyComponent,
+      loadingComponent,
+      errorComponent,
+    } = this.props;
     const { loading, error, collection } = this.state;
-    const emptyComponent = this.props.emptyComponent || EmptyComponent;
-    const loadingComponent = this.props.loadingComponent || LoadingComponent;
-    const errorComponent = this.props.errorComponent || ErrorComponent;
 
     if (loading) {
       return loadingComponent;
@@ -221,6 +229,10 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     if (!collection) {
       return loadingComponent;
+    }
+
+    if (this.isEmpty) {
+      return emptyComponent;
     }
 
     if (this.useInfiniteScroll) {

@@ -19,6 +19,24 @@ import { LazyContent } from '../../src/utils/lazyContent';
 import { TransitionGroup } from 'react-transition-group';
 
 describe('CardList', () => {
+  const setup = () => {
+    const subject = new Subject();
+    const context = fakeContext({
+      getMediaCollectionProvider: {
+        observable() {
+          return subject;
+        },
+      },
+    });
+
+    return {
+      context,
+      subject,
+      ErrorComponent: () => <div>Error</div>,
+      EmptyComponent: () => <div>Empty</div>,
+    };
+  };
+
   const collectionName = 'MyMedia';
   const expectedMediaItemProvider = 'the media item provider';
   const oldItem: MediaCollectionFileItem = {
@@ -357,7 +375,7 @@ describe('CardList', () => {
       list.setState({
         loading: false,
         error: undefined,
-        collection: { items: [] },
+        collection: { items: [fileItem] },
       });
       expect(list.is(InfiniteScroll)).toBe(true);
     });
@@ -445,27 +463,27 @@ describe('CardList', () => {
       cardList.update();
       expect(cardList.find(MediaCard)).toHaveLength(0);
     });
+
+    it('should render empty component when there are no items in the collection', () => {
+      const { EmptyComponent } = setup();
+      const collection = { items: [] };
+      const context = contextWithInclusiveStartKey;
+      const cardList = mount(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          shouldLazyLoadCards={false}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      cardList.setState({ loading: false, error: undefined, collection });
+      cardList.update();
+      expect(cardList.find(EmptyComponent)).toHaveLength(1);
+    });
   });
 
   describe('Errors', () => {
-    const setup = () => {
-      const subject = new Subject();
-      const context = fakeContext({
-        getMediaCollectionProvider: {
-          observable() {
-            return subject;
-          },
-        },
-      });
-
-      return {
-        context,
-        subject,
-        ErrorComponent: () => <div>Error</div>,
-        EmptyComponent: () => <div>Empty</div>,
-      };
-    };
-
     it('should render <EmptyComponent /> given CollectionNotFoundError', () => {
       const { context, subject, ErrorComponent, EmptyComponent } = setup();
       const wrapper = shallow(
@@ -517,7 +535,7 @@ describe('CardList', () => {
       expect(wrapper.find(TransitionGroup)).toHaveLength(0);
       expect(wrapper.find(ErrorComponent)).toHaveLength(1);
 
-      subject.next({ id: 'some-collection', items: [] });
+      subject.next({ id: 'some-collection', items: [fileItem] });
       wrapper.update();
 
       // TransitionGroup is rendered when we want to show a card list
