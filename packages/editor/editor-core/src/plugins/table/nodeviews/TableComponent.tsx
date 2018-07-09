@@ -5,8 +5,7 @@ import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 
-import { stateKey, TablePluginState } from '../pm-plugins/main';
-import { pluginKey as hoverSelectionPluginKey } from '../pm-plugins/hover-selection-plugin';
+import { TablePluginState, getPluginState } from '../pm-plugins/main';
 
 import { calcTableWidth } from '@atlaskit/editor-common';
 import { CELL_MIN_WIDTH } from '../';
@@ -96,10 +95,7 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const {
-      isTableHovered,
-      isTableInDanger,
-    } = hoverSelectionPluginKey.getState(view.state);
+    const { isTableHovered, isTableInDanger } = getPluginState(view.state);
 
     const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
@@ -192,7 +188,7 @@ class TableComponent extends React.Component<ComponentProps> {
       this.table,
       this.leftShadow,
       this.rightShadow,
-      !!stateKey.getState(this.props.view.state).tableRef,
+      !!getPluginState(this.props.view.state).tableRef,
     );
   }
 

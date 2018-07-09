@@ -20,10 +20,10 @@ import {
   hoverRows,
   hoverTable,
 } from '../../../src/plugins/table/actions';
-import { pluginKey as hoverPluginKey } from '../../../src/plugins/table/pm-plugins/hover-selection-plugin';
 import {
   TablePluginState,
-  stateKey as tablePluginKey,
+  pluginKey,
+  getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
 import tablesPlugin from '../../../src/plugins/table';
 
@@ -32,16 +32,14 @@ describe('table hover selection plugin', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
-      pluginKey: tablePluginKey,
+      pluginKey,
     });
 
   const getTableDecorations = (editorView: EditorView, cells) => {
     const {
-      decorationSet,
-    }: { decorationSet: DecorationSet } = hoverPluginKey.getState(
-      editorView.state,
-    );
-    return decorationSet.find(cells[0].pos, cells[cells.length - 1].pos);
+      hoverDecoration,
+    }: { hoverDecoration: DecorationSet } = getPluginState(editorView.state);
+    return hoverDecoration.find(cells[0].pos, cells[cells.length - 1].pos);
   };
 
   describe('hoverColumn(number)', () => {
@@ -214,7 +212,7 @@ describe('table hover selection plugin', () => {
 
         // reset hover selection plugin to an empty DecorationSet
         resetHoverSelection(editorView.state, editorView.dispatch);
-        expect(hoverPluginKey.getState(editorView.state).decorationSet).toEqual(
+        expect(getPluginState(editorView.state).hoverDecoration).toEqual(
           DecorationSet.empty,
         );
       });
