@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.1.14
+- [patch] Fancy video player improvements 3.0 [bb2b947](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb2b947)
+
 ## 15.1.13
 - [patch] allow dev override to override feature flag [468bbfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468bbfe)
 
