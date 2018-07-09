@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.6.1
+- [patch] Add dismissed event and fix screen events. [c65736e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c65736e)
+
 ## 4.6.0
 
 - [minor] Support sticky header and footer [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
