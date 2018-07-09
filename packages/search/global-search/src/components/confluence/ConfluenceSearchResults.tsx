@@ -106,10 +106,14 @@ const renderRecentActivities = (
     take(recentlyViewedPages, 8),
     query,
   ),
-  renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
+  renderSpacesGroup(
+    'Recent spaces',
+    take(recentlyViewedSpaces, MAX_SPACES),
+    query,
+  ),
   renderPeopleGroup(
     'Recently worked with',
-    take(recentlyInteractedPeople, 3),
+    take(recentlyInteractedPeople, MAX_PEOPLE),
     query,
   ),
   renderAdvancedSearchGroup(query),
