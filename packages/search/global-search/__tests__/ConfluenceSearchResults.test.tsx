@@ -196,7 +196,7 @@ describe('ConfluenceSearchResults', () => {
     const group = findGroup(Group.Objects, wrapper);
 
     expect(group.prop('title')).toEqual(
-      <FormattedMessage id="global-search.heading-confluence-objects" />,
+      <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
     );
     expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
   });

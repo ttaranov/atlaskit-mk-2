@@ -123,7 +123,7 @@ const renderRecentActivities = (
   searchSessionId: string,
 ) => [
   renderObjectsGroup(
-    <FormattedMessage id="global-search.heading-recent-pages" />,
+    <FormattedMessage id="global-search.confluence.recent-pages-heading" />,
     take(recentlyViewedPages, 8),
     query,
   ),
@@ -156,7 +156,7 @@ const renderSearchResults = (
 ) => {
   return [
     renderObjectsGroup(
-      <FormattedMessage id="global-search.heading-confluence-objects" />,
+      <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
       take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
       query,
     ),
