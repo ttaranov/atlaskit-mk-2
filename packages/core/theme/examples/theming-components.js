@@ -48,8 +48,6 @@ type Props = {
   children: React.Node,
   // eslint-disable-next-line react/no-unused-prop-types
   theme: Component,
-  // eslint-disable-next-line react/no-unused-prop-types
-  type: String,
 };
 
 type State = {
@@ -59,7 +57,6 @@ type State = {
 class Button extends Component<Props, State> {
   static defaultProps = {
     theme: DefaultButtonTheme,
-    type: 'button',
   };
   state = {
     hover: false,
@@ -86,7 +83,7 @@ class Button extends Component<Props, State> {
                 marginRight: 10,
                 padding: 10,
               }}
-              type={props.type}
+              type="button"
             >
               {props.children}
             </button>
