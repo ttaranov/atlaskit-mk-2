@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.5.12
+- [patch] fixing XPSRCH-915 search results should not disapear between searches [0683d75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0683d75)
+
 ## 4.5.11
 - [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
   - @atlaskit/avatar@12.0.0
