@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 29.1.9
+- [patch] Render empty component in CardList when there are no items in the collection [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
+
 ## 29.1.8
 - [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
   - @atlaskit/media-test-helpers@14.0.6

@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 74.0.6
+- [patch] Updated dependencies [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
+  - @atlaskit/media-card@29.1.9
+  - @atlaskit/editor-common@11.4.2
+
 ## 74.0.5
 - [patch] Refactor Panel Plugin [0bdfa19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bdfa19)
 - [none] Updated dependencies [0bdfa19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bdfa19)
