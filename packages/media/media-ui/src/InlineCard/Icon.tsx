@@ -7,4 +7,5 @@ export const Icon: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   width: 16px;
   height: 16px;
   vertical-align: text-bottom;
+  margin-right: 2px;
 `;
