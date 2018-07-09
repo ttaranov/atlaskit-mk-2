@@ -1,11 +1,8 @@
 // @flow
 import React, { Component, type Node, type ElementType } from 'react';
-import { colors } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
-import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
-import InfoIcon from '@atlaskit/icon/glyph/info';
+import { baseAppearanceObj } from '../theme';
+import type { Appearance } from '../types';
 
 import {
   Container,
@@ -17,41 +14,6 @@ import {
   Content,
   ContentContainer,
 } from './styled';
-
-const newAppearanceObj = {
-  info: {
-    backgroundColor: colors.B50,
-    Icon: InfoIcon,
-    primaryIconColor: colors.B500,
-  },
-  warning: {
-    backgroundColor: colors.Y50,
-    Icon: WarningIcon,
-    primaryIconColor: colors.Y500,
-  },
-  error: {
-    backgroundColor: colors.R50,
-    Icon: ErrorIcon,
-    primaryIconColor: colors.R500,
-  },
-  confirmation: {
-    backgroundColor: colors.G50,
-    Icon: CheckCircleIcon,
-    primaryIconColor: colors.G500,
-  },
-  change: {
-    backgroundColor: colors.P50,
-    Icon: InfoIcon,
-    primaryIconColor: colors.P500,
-  },
-};
-
-export type Appearance =
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'confirmation'
-  | 'change';
 
 // There is a bug in eslint react with flow types being spread in function.
 // See https://github.com/yannickcr/eslint-plugin-react/issues/1764 for context
@@ -79,7 +41,7 @@ type Props = {
   actions?: Array<ActionType>,
   /*
     An Icon component to be rendered instead of the default icon for the component.
-    This should only be an `@atlaskit/icon` icon. You can check out [this example](http://localhost:9000/packages/core/section-message/example/custom-icon)
+    This should only be an `@atlaskit/icon` icon. You can check out [this example](/packages/core/section-message/example/custom-icon)
     to see how to provide this icon.
   */
   icon?: ElementType,
@@ -134,7 +96,8 @@ export default class SectionMessage extends Component<Props, *> {
       icon,
       linkComponent,
     } = this.props;
-    const appearanceObj = newAppearanceObj[appearance] || newAppearanceObj.info;
+    const appearanceObj =
+      baseAppearanceObj[appearance] || baseAppearanceObj.info;
     const Icon = icon || appearanceObj.Icon;
 
     return (
