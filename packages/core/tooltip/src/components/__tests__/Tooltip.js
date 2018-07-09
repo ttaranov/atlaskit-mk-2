@@ -9,7 +9,7 @@ import TooltipWithAnalytics, {
   marshal,
 } from '../Tooltip';
 import getPosition from '../utils/getPosition';
-import { hoveredPayload, unhoveredPayload } from '../utils/analytics-payloads';
+import { hoveredPayload } from '../utils/analytics-payloads';
 
 // Variables starting with mock are executed before jest.mock's hoisting
 // See https://facebook.github.io/jest/docs/en/es6-class-mocks.html#calling-jestmock-jest-docs-en-jest-objecthtml-jestmockmodulename-factory-options-with-the-module-factory-parameter
@@ -590,7 +590,7 @@ describe('TooltipWithAnalytics', () => {
     /* eslint-enable no-console */
   });
 
-  it('should send analytics events when tooltip visiblity changes', () => {
+  it('should send analytics event when tooltip becomes visible', () => {
     const Foo = () => <div>foo</div>;
     const spy = jest.fn();
     const wrapper = mount(
@@ -604,10 +604,8 @@ describe('TooltipWithAnalytics', () => {
     jest.runTimersToTime(301);
     wrapper.find(Foo).simulate('mouseout');
     jest.runTimersToTime(300);
-    const calls = spy.mock.calls;
-    expect(calls).toHaveLength(2);
-    const [[hovered], [unhovered]] = calls;
-    expect(hovered.payload).toEqual(hoveredPayload);
-    expect(unhovered.payload).toEqual(unhoveredPayload);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const [[{ payload }]] = spy.mock.calls;
+    expect(payload).toEqual(hoveredPayload);
   });
 });

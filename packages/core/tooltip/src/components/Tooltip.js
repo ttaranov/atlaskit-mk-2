@@ -110,20 +110,16 @@ class Tooltip extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     // AK-4959 - can move logic to withAnalyticsEvents hoc when we have handlers for tooltip visibility
-    const payload = ((wasVisible, nowVisible) => {
-      if (wasVisible && !nowVisible) {
-        return unhoveredPayload;
-      } else if (!wasVisible && nowVisible) {
-        return hoveredPayload;
-      }
-      return undefined;
-    })(prevState.isVisible, this.state.isVisible);
     /* eslint-disable react/prop-types */
     // This prop doesn't exist in exported component so we don't want it to be documented
     // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
-    if (payload && this.props.createAnalyticsEvent) {
+    if (
+      !prevState.isVisible &&
+      this.state.isVisible &&
+      this.props.createAnalyticsEvent
+    ) {
       // $FlowFixMe
-      const event = this.props.createAnalyticsEvent(payload);
+      const event = this.props.createAnalyticsEvent(hoveredPayload);
       /* eslint-enable */
       event.fire('atlaskit');
     }
