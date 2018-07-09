@@ -6,7 +6,7 @@ import {
   isError,
 } from '@atlaskit/media-core';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
-import { ErrorMessage } from './styled';
+import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
 import { Subscription } from 'rxjs';
 import { toIdentifier } from './util';
@@ -23,7 +23,7 @@ export type Props = Readonly<{
 }>;
 
 export type State = {
-  items: Outcome<MediaCollectionItem[], Error>;
+  items: Outcome<MediaCollectionItem[], MediaViewerError>;
 };
 
 const initialState: State = { items: { status: 'PENDING' } };
@@ -62,7 +62,7 @@ export class Collection extends React.Component<Props, State> {
       case 'PENDING':
         return <Spinner />;
       case 'FAILED':
-        return <ErrorMessage>Error loading collection</ErrorMessage>;
+        return <ErrorMessage error={items.err} />;
       case 'SUCCESSFUL':
         const identifiers = items.data.map(x =>
           toIdentifier(x, collectionName),
@@ -98,7 +98,7 @@ export class Collection extends React.Component<Props, State> {
           this.setState({
             items: {
               status: 'FAILED',
-              err: collection,
+              err: createError('metadataFailed'),
             },
           });
         } else {

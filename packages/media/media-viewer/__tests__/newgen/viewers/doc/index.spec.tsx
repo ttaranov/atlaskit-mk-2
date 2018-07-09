@@ -7,6 +7,8 @@ import { FileItem } from '@atlaskit/media-core';
 import { createContext } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
 import { DocViewer } from '../../../../src/newgen/viewers/doc/index';
+import { ErrorMessage, createError } from '../../../../src/newgen/error';
+import Button from '@atlaskit/button';
 
 function createFixture(
   fetchPromise: Promise<any>,
@@ -73,7 +75,7 @@ describe('DocViewer', () => {
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
-  it('shows an error if no artifact found', async () => {
+  it('shows an error message and download button if no artifact found', async () => {
     const fetchPromise = Promise.resolve(() => {});
     const item: FileItem = {
       type: 'file',
@@ -91,9 +93,21 @@ describe('DocViewer', () => {
     expect(el.state()).toMatchObject({
       src: {
         status: 'FAILED',
-        err: new Error('no pdf artifacts found for this file'),
+        err: createError('noPDFArtifactsFound', item),
       },
     });
+
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      'No PDF artifacts found for this file.',
+    );
+
+    // download button
+    expect(errorMessage.text()).toContain(
+      'Try downloading the file to view it',
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
+import Button from '@atlaskit/button';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { ItemViewer } from '../../src/newgen/item-viewer';
-import { ErrorMessage } from '../../src/newgen/styled';
+import { ErrorMessage } from '../../src/newgen/error';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
 import { AudioViewer } from '../../src/newgen/viewers/audio';
@@ -95,7 +96,7 @@ describe('<ItemViewer />', () => {
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
-  it('shows an error on failure', () => {
+  it('shows an unknown error on failure', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
       <ItemViewer
@@ -106,7 +107,10 @@ describe('<ItemViewer />', () => {
     );
     subject.error(new Error('error'));
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain('Something went wrong');
+    expect(errorMessage.find(Button)).toHaveLength(0);
   });
 
   it('should show the image viewer if media type is image', () => {
@@ -127,7 +131,7 @@ describe('<ItemViewer />', () => {
     );
   });
 
-  it('should error if processing Status failed', () => {
+  it('should should error and download button if processing Status failed', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
       <ItemViewer
@@ -138,7 +142,12 @@ describe('<ItemViewer />', () => {
     );
     subject.next(videoItemFailedProcessing);
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      `We couldn't generate a preview for this file.Try downloading the file to view it.Download`,
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
   it('should show the video viewer if media type is video', () => {
@@ -195,7 +204,7 @@ describe('<ItemViewer />', () => {
     );
   });
 
-  it('should error if file is unsupported', () => {
+  it('should should error and download button if file is unsupported', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
       <ItemViewer
@@ -206,7 +215,12 @@ describe('<ItemViewer />', () => {
     );
     subject.next(unsupportedItem);
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      `We can't preview this file type.Try downloading the file to view it.Download`,
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
   it('should show not support links', () => {
@@ -220,7 +234,12 @@ describe('<ItemViewer />', () => {
     );
     subject.next(linkItem);
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain('Links are not supported.');
+
+    // no download button
+    expect(errorMessage.find(Button)).toHaveLength(0);
   });
 
   it('MSW-720: passes the collectionName to the provider', () => {

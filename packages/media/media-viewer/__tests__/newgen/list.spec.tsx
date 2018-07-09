@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
 import { createContext } from '../_stubs';
 import { List, Props } from '../../src/newgen/list';
-import { ErrorMessage } from '../../src/newgen/styled';
+import { ErrorMessage } from '../../src/newgen/error';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { ItemViewer } from '../../src/newgen/item-viewer';
 import { Identifier } from '../../src/newgen/domain';
