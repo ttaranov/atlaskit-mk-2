@@ -27,6 +27,7 @@ type Page = {
 
 export type Project = {
   name: string,
+  id: string,
   boards: Array<Board>,
   shortcuts: Array<Shortcut>,
   pages: Array<Page>,

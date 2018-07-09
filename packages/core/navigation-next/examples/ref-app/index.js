@@ -12,10 +12,12 @@ import {
   NavigationSubscriber,
   NavRenderer,
   RootViewSubscriber,
+  ContainerViewSubscriber,
 } from '../../src';
 
 import RootViews from './views/root';
-import { HomePage, SettingsPage } from './pages';
+import { ProjectSwitcher } from './pages/components';
+import { HomePage, ProjectPage, ProjectsPage, SettingsPage } from './pages';
 
 const MyGlobalNavigation = () => (
   <NavigationSubscriber>
@@ -38,7 +40,7 @@ const Wordmark = () => (
   </div>
 );
 
-const LinkItem = ({ to, ...props }) => (
+const LinkItem = ({ to, ...props }: *) => (
   <Item
     component={({ className, children }) => (
       <Link to={to} className={className}>
@@ -54,7 +56,10 @@ const MyProductNavigation = () => (
     <RootViewSubscriber>
       {({ state: { data } }) =>
         data ? (
-          <NavRenderer items={data} customComponents={{ LinkItem, Wordmark }} />
+          <NavRenderer
+            items={data}
+            customComponents={{ LinkItem, ProjectSwitcher, Wordmark }}
+          />
         ) : (
           'LOADING'
         )
@@ -63,22 +68,51 @@ const MyProductNavigation = () => (
   </ProductNavigationWrapper>
 );
 
+const MyContainerView = () => (
+  <ProductNavigationWrapper>
+    <ContainerViewSubscriber>
+      {({ state: { data } }) =>
+        data ? (
+          <NavRenderer
+            items={data}
+            customComponents={{ LinkItem, ProjectSwitcher, Wordmark }}
+          />
+        ) : (
+          'LOADING'
+        )
+      }
+    </ContainerViewSubscriber>
+  </ProductNavigationWrapper>
+);
+
 export default () => (
   <HashRouter hashType="slash">
     <NavigationProvider>
       <Fragment>
         <RootViews />
-        <LayoutManager
-          globalNavigation={MyGlobalNavigation}
-          productRootNavigation={MyProductNavigation}
-          productContainerNavigation={null}
-        >
-          <Switch>
-            {/* <Route path="/projects" component={ProjectsPage} /> */}
-            <Route path="/settings" component={SettingsPage} />
-            <Route path="/" component={HomePage} />
-          </Switch>
-        </LayoutManager>
+        <ContainerViewSubscriber>
+          {containerView => (
+            <LayoutManager
+              globalNavigation={MyGlobalNavigation}
+              productRootNavigation={MyProductNavigation}
+              productContainerNavigation={
+                containerView.state.activeView ? MyContainerView : null
+              }
+            >
+              <Switch>
+                <Route
+                  path="/projects/:projectId"
+                  render={({ match }) => (
+                    <ProjectPage projectId={match.params.projectId} />
+                  )}
+                />
+                <Route path="/projects" component={ProjectsPage} />
+                <Route path="/settings" component={SettingsPage} />
+                <Route path="/" component={HomePage} />
+              </Switch>
+            </LayoutManager>
+          )}
+        </ContainerViewSubscriber>
       </Fragment>
     </NavigationProvider>
   </HashRouter>
