@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from 'react';
+import { TransitionGroup } from 'react-transition-group';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
+import { FocusLock, PortalNext } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
 
 import {
@@ -261,66 +262,64 @@ class Modal extends Component<Props, State> {
         : '';
 
     return (
-      <FillScreen
-        {...transitionProps}
-        aria-hidden={isBackground}
-        onExit={this.handleExit}
-        scrollDistance={scrollDistance}
-      >
-        <FocusLock
-          enabled={stackIndex === 0 && !isExiting}
-          autoFocus={autoFocus}
-        >
-          <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
-          <Positioner
+      <PortalNext>
+        <TransitionGroup>
+          <FillScreen
             {...transitionProps}
-            customTransition={customTransition}
-            onClick={this.handleOverlayClick}
-            onEntered={this.handleEntered}
-            onExited={onCloseComplete}
-            scrollBehavior={scrollBehavior}
-            widthName={widthName}
-            widthValue={widthValue}
+            aria-hidden={isBackground}
+            onExit={this.handleExit}
+            scrollDistance={scrollDistance}
           >
-            <Dialog
-              heightValue={height}
-              isChromeless={isChromeless}
-              onClick={this.handleDialogClick}
-              role="dialog"
-              tabIndex="-1"
+            <FocusLock
+              enabled={stackIndex === 0 && !isExiting}
+              autoFocus={autoFocus}
             >
-              <Content
-                actions={actions}
-                appearance={appearance}
-                footer={footer}
-                heading={heading}
-                isHeadingMultiline={isHeadingMultiline}
-                header={header}
-                onClose={onClose}
-                shouldScroll={scrollBehavior === 'inside'}
-                shouldCloseOnEscapePress={shouldCloseOnEscapePress}
-                onStackChange={onStackChange}
-                isChromeless={isChromeless}
-                stackIndex={stackIndex}
-                body={body}
+              <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
+              <Positioner
+                {...transitionProps}
+                customTransition={customTransition}
+                onClick={this.handleOverlayClick}
+                onEntered={this.handleEntered}
+                onExited={onCloseComplete}
+                scrollBehavior={scrollBehavior}
+                widthName={widthName}
+                widthValue={widthValue}
               >
-                {children}
-              </Content>
-            </Dialog>
-          </Positioner>
-        </FocusLock>
-      </FillScreen>
+                <Dialog
+                  heightValue={height}
+                  isChromeless={isChromeless}
+                  onClick={this.handleDialogClick}
+                  role="dialog"
+                  tabIndex="-1"
+                >
+                  <Content
+                    actions={actions}
+                    appearance={appearance}
+                    footer={footer}
+                    heading={heading}
+                    isHeadingMultiline={isHeadingMultiline}
+                    header={header}
+                    onClose={onClose}
+                    shouldScroll={scrollBehavior === 'inside'}
+                    shouldCloseOnEscapePress={shouldCloseOnEscapePress}
+                    onStackChange={onStackChange}
+                    isChromeless={isChromeless}
+                    stackIndex={stackIndex}
+                    body={body}
+                  >
+                    {children}
+                  </Content>
+                </Dialog>
+              </Positioner>
+            </FocusLock>
+          </FillScreen>
+        </TransitionGroup>
+      </PortalNext>
     );
   }
 }
 
-export const ModalDialogWithoutAnalytics = withRenderTarget(
-  {
-    target: 'modal',
-    withTransitionGroup: true,
-  },
-  Modal,
-);
+export const ModalDialogWithoutAnalytics = Modal;
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
