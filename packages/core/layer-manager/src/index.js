@@ -17,3 +17,5 @@ export {
 // DEPRECATED - we used to have a custom ScrollLock component but
 // react-scrolllock already exists.
 export { default as ScrollLock } from 'react-scrolllock';
+
+export { default as PortalNext } from './components/PortalNext';
