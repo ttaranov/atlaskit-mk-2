@@ -1,8 +1,33 @@
-import { ConfluenceObjectResult, ContentType } from '../model/Result';
 import * as React from 'react';
+import { ConfluenceObjectResult, ContentType } from '../model/Result';
 import Objects24PageIcon from '@atlaskit/icon/glyph/objects/24/page';
 import Objects24BlogIcon from '@atlaskit/icon/glyph/objects/24/blog';
+import FileTypes24File24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
+import FileTypes24File24ExcelSpreadsheetIcon from '@atlaskit/icon/glyph/file-types/24/file-24-excel-spreadsheet';
+import FileTypes24File24VideoIcon from '@atlaskit/icon/glyph/file-types/24/file-24-video';
+import FileTypes24File24ArchiveIcon from '@atlaskit/icon/glyph/file-types/24/file-24-archive';
+import FileTypes24File24PowerpointPresentationIcon from '@atlaskit/icon/glyph/file-types/24/file-24-powerpoint-presentation';
+import FileTypes24File24SourceCodeIcon from '@atlaskit/icon/glyph/file-types/24/file-24-source-code';
+import FileTypes24File24AudioIcon from '@atlaskit/icon/glyph/file-types/24/file-24-audio';
+import FileTypes24File24WordDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-word-document';
+import FileTypes24File24PdfDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-pdf-document';
+import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/file-24-generic';
+
 import Avatar from '@atlaskit/avatar';
+import { colors } from '@atlaskit/theme';
+
+const TYPE_MATCH_ICON_MAP = {
+  'attachment-audio': FileTypes24File24AudioIcon,
+  'attachment-code': FileTypes24File24SourceCodeIcon,
+  'attachment-word-document': FileTypes24File24WordDocumentIcon,
+  'attachment-image': FileTypes24File24ImageIcon,
+  'attachment-pdf-pdf': FileTypes24File24PdfDocumentIcon,
+  'attachment-presentation': FileTypes24File24PowerpointPresentationIcon,
+  'attachment-spreadsheet': FileTypes24File24ExcelSpreadsheetIcon,
+  'attachment-video': FileTypes24File24VideoIcon,
+  'attachment-zip': FileTypes24File24ArchiveIcon,
+  default: FileTypes24File24GenericIcon,
+};
 
 // ----------------- START CODE MODIFIED FROM CONFLUENCE FRONTEND ------- //
 // ./packages/confluence-rest-api/src/helpers/icons.js //
@@ -51,7 +76,7 @@ const getIconType = (iconClass: string, fileName: string) => {
     return !!typeMatches;
   });
 
-  if (matches && matches.length > 1) {
+  if (matches && matches.length > 0) {
     const type = ICONS_TRANSFORMERS.getType(matches[1]);
     const subType = subTypeMatch(fileName, ICONS_TRANSFORMERS.subTypeMatchers);
 
@@ -86,9 +111,9 @@ const getPageIconComponentForResult = (result: ConfluenceObjectResult) => (
 
 const getBlogPostIconComponentForResult = (result: ConfluenceObjectResult) => (
   <Objects24BlogIcon
+    label={result.name}
     size="medium"
     primaryColor={colors.B200}
-    label={result.name}
   />
 );
 
@@ -99,6 +124,9 @@ const getDefaultAvatarComponentForResult = (result: ConfluenceObjectResult) => (
 export const getMediaTypeAvatarForResult = (result: ConfluenceObjectResult) => {
   const iconType = getIconType(result.iconClass!, result.name);
 
-  // MEGA CASE STATEMENT!!
-  return iconType;
+  const IconComponent = iconType
+    ? TYPE_MATCH_ICON_MAP[iconType]
+    : TYPE_MATCH_ICON_MAP.default;
+
+  return <IconComponent label={result.name} size="small" />;
 };
