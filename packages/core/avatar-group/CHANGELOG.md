@@ -1,5 +1,8 @@
 # @atlaskit/avatar-group
 
+## 1.0.1
+- [patch] Small avatar-group docs improvements [a54f6ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a54f6ea)
+
 ## 1.0.0
 - [major] Split avatar-group into its own package [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
 - [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
