@@ -17,7 +17,10 @@ import {
 } from '../../../../analytics/fabric-analytics-helper';
 import { MentionsState } from '../../pm-plugins/main';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { buildTypeAheadCancelPayload } from '../analytics';
+import {
+  buildTypeAheadCancelPayload,
+  buildTypeAheadInsertedPayload,
+} from '../analytics';
 
 export interface Props {
   editorView?: EditorView;
@@ -40,6 +43,7 @@ export interface State {
   mentionProvider?: MentionProvider;
   contextIdentifierProvider?: ContextIdentifierProvider;
   focused?: boolean;
+  mentions?: MentionDescription[];
 }
 
 export class MentionPicker extends PureComponent<Props, State> {
@@ -70,6 +74,7 @@ export class MentionPicker extends PureComponent<Props, State> {
     if (pluginState) {
       pluginState.unsubscribe(this.handlePluginStateChange);
     }
+    this.unsubscribeMentionProvider();
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -89,6 +94,12 @@ export class MentionPicker extends PureComponent<Props, State> {
       this.resolveContextIdentifierProvider(
         nextProps.contextIdentifierProvider,
       );
+    }
+  }
+
+  private unsubscribeMentionProvider() {
+    if (this.state.mentionProvider) {
+      this.state.mentionProvider.unsubscribe('MentionPickerPlugin');
     }
   }
 
@@ -117,10 +128,19 @@ export class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
+  private handleMentionResults = (mentions: MentionDescription[]) => {
+    this.setState({ mentions });
+  };
+
   private resolveResourceProvider(resourceProvider): void {
+    this.unsubscribeMentionProvider();
     if (resourceProvider) {
       resourceProvider.then((mentionProvider: MentionProvider) => {
         this.setState({ mentionProvider });
+        mentionProvider.subscribe(
+          'MentionPickerPlugin',
+          this.handleMentionResults,
+        );
       });
     } else {
       this.setState({ mentionProvider: undefined });
@@ -162,17 +182,36 @@ export class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
+  private fireEvent = payload =>
+    this.props.createAnalyticsEvent(payload).fire(ELEMENTS_CHANNEL);
+
   private sendCancelledEvent = () => {
-    this.props
-      .createAnalyticsEvent(
-        buildTypeAheadCancelPayload(
-          this.pickerElapsedTime,
-          this.previousCount,
-          this.nextCount,
-          this.pluginState && this.pluginState.lastQuery,
-        ),
-      )
-      .fire(ELEMENTS_CHANNEL);
+    this.fireEvent(
+      buildTypeAheadCancelPayload(
+        this.pickerElapsedTime,
+        this.previousCount,
+        this.nextCount,
+        this.pluginState && this.pluginState.lastQuery,
+      ),
+    );
+    this.resetCounters();
+  };
+
+  private sendSelectedAnalyticsEvent = (
+    mention: MentionDescription,
+    insertType: InsertType,
+  ) => {
+    this.fireEvent(
+      buildTypeAheadInsertedPayload(
+        this.pickerElapsedTime,
+        this.previousCount,
+        this.nextCount,
+        insertType,
+        mention,
+        this.state.mentions,
+        this.pluginState && this.pluginState.lastQuery,
+      ),
+    );
     this.resetCounters();
   };
 
@@ -277,8 +316,9 @@ export class MentionPicker extends PureComponent<Props, State> {
         } as ContextIdentifierProvider)
       : {};
 
+    const mode: InsertType = this.insertType || InsertType.SELECTED;
     analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
-      mode: this.insertType || InsertType.SELECTED,
+      mode,
       isSpecial: isSpecialMention(mention) || false,
       accessLevel: accessLevel || '',
       queryLength: lastQuery ? lastQuery.length : 0,
@@ -287,11 +327,12 @@ export class MentionPicker extends PureComponent<Props, State> {
       ...contextIdentifier,
     });
 
+    this.sendSelectedAnalyticsEvent(mention, mode);
     this.insertType = undefined;
   };
 
   private getMentionsCount(): number {
-    return (this.picker && this.picker.mentionsCount()) || 0;
+    return (this.state.mentions && this.state.mentions.length) || 0;
   }
 
   handleSpaceTyped = (): void => {

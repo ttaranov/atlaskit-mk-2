@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { MentionResource } from '@atlaskit/mention';
+import { MentionResource, MentionDescription } from '@atlaskit/mention';
 import { EditorView } from 'prosemirror-view';
 import { MentionPicker } from '../../../../src/plugins/mentions/ui/MentionPicker';
 import { analyticsService } from '../../../../src/analytics';
+import { enter } from '../../../../src/keymaps';
 
 describe('MentionPicker', () => {
   describe('Analytics', () => {
@@ -35,12 +36,14 @@ describe('MentionPicker', () => {
     let state;
 
     beforeEach(() => {
+      createAnalyticsEvent.mockReturnValue({ fire: jest.fn() });
       trackEvent = jest.spyOn(analyticsService, 'trackEvent');
       state = {
         subscribe: jest.fn(),
         unsubscribe: jest.fn(),
+        dismiss: jest.fn(),
+        insertMention: jest.fn(),
       };
-      createAnalyticsEvent.mockReset();
 
       pluginKey.getState.mockReturnValueOnce(state);
 
@@ -54,11 +57,17 @@ describe('MentionPicker', () => {
         />,
       );
       componentInstance = component.instance() as MentionPicker;
+      (componentInstance as any).picker = {
+        selectNext: jest.fn(),
+        selectPrevious: jest.fn(),
+        chooseCurrentSelection: jest.fn(),
+      };
     });
 
     afterEach(() => {
       trackEvent.mockRestore();
       component.unmount();
+      createAnalyticsEvent.mockReset();
     });
 
     it('should fire analytics in handleSpaceTyped', () => {
@@ -91,34 +100,121 @@ describe('MentionPicker', () => {
       );
     });
 
-    it('should fire typeahead cancelled event', () => {
-      const event: any = { fire: jest.fn() };
-      createAnalyticsEvent.mockReturnValueOnce(event);
-      state.lastQuery = 'someQuery';
-      state.onSelectNext();
-      state.onSelectNext();
-      state.onSelectPrevious();
-      state.onDismiss();
-      expect(createAnalyticsEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          action: 'cancelled',
-          actionSubject: 'typeahead',
-          actionSubjectId: 'mentionTypeahead',
-          eventType: 'ui',
-          source: 'unknown',
-          attributes: expect.objectContaining({
-            packageName: '@atlaskit/editor-core',
-            packageVersion: expect.any(String),
-            spaceInQuery: false,
-            queryLength: 9,
-            duration: expect.any(Number),
-            upKeyCount: 1,
-            downKeyCount: 2,
+    describe('mentionTypeahead', () => {
+      const mention: MentionDescription = {
+        id: 'abc-123',
+        accessLevel: 'CONTAINER',
+        userType: 'DEFAULT',
+      };
+      const mentions: MentionDescription[] = [
+        { id: '123-abc' },
+        mention,
+        { id: '321-abc' },
+      ];
+
+      it('should fire typeahead cancelled event', () => {
+        const event: any = { fire: jest.fn() };
+        createAnalyticsEvent.mockReturnValueOnce(event);
+        state.lastQuery = 'someQuery';
+        state.onSelectNext();
+        state.onSelectNext();
+        state.onSelectPrevious();
+        state.onDismiss();
+        expect(createAnalyticsEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: 'cancelled',
+            actionSubject: 'typeahead',
+            actionSubjectId: 'mentionTypeahead',
+            eventType: 'ui',
+            source: 'unknown',
+            attributes: expect.objectContaining({
+              packageName: '@atlaskit/editor-core',
+              packageVersion: expect.any(String),
+              spaceInQuery: false,
+              queryLength: 9,
+              duration: expect.any(Number),
+              upKeyCount: 1,
+              downKeyCount: 2,
+            }),
           }),
-        }),
-      );
-      expect(event.fire).toHaveBeenCalledTimes(1);
-      expect(event.fire).toHaveBeenCalledWith('fabric-elements');
+        );
+        expect(event.fire).toHaveBeenCalledTimes(1);
+        expect(event.fire).toHaveBeenCalledWith('fabric-elements');
+      });
+
+      it('should fire typeahead pressed event', () => {
+        const event: any = { fire: jest.fn() };
+        createAnalyticsEvent.mockReturnValueOnce(event);
+        state.lastQuery = 'someQuery';
+        state.onSelectNext();
+        state.onSelectNext();
+        state.onSelectPrevious();
+        component.setState({ mentions });
+        state.onSelectCurrent(enter.common);
+        (componentInstance as any).handleSelectedMention(mention);
+        expect(createAnalyticsEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: 'pressed',
+            actionSubject: 'typeahead',
+            actionSubjectId: 'mentionTypeahead',
+            eventType: 'ui',
+            source: 'unknown',
+            attributes: expect.objectContaining({
+              packageName: '@atlaskit/editor-core',
+              packageVersion: expect.any(String),
+              duration: expect.any(Number),
+              position: 1,
+              keyboardKey: 'enter',
+              queryLength: 9,
+              spaceInQuery: false,
+              accessLevel: 'CONTAINER',
+              userType: 'DEFAULT',
+              userId: 'abc-123',
+              upKeyCount: 1,
+              downKeyCount: 2,
+            }),
+          }),
+        );
+        expect(event.fire).toHaveBeenCalledTimes(1);
+        expect(event.fire).toHaveBeenCalledWith('fabric-elements');
+      });
+
+      it('should fire typeahead clicked event', () => {
+        const event: any = { fire: jest.fn() };
+        createAnalyticsEvent.mockReturnValueOnce(event);
+        state.lastQuery = 'longer Query';
+        state.onSelectNext();
+        state.onSelectPrevious();
+        state.onSelectPrevious();
+        state.onSelectPrevious();
+        component.setState({ mentions });
+        (componentInstance as any).handleSelectedMention(mention);
+        expect(createAnalyticsEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: 'clicked',
+            actionSubject: 'typeahead',
+            actionSubjectId: 'mentionTypeahead',
+            eventType: 'ui',
+            source: 'unknown',
+            attributes: expect.objectContaining({
+              packageName: '@atlaskit/editor-core',
+              packageVersion: expect.any(String),
+              duration: expect.any(Number),
+              position: 1,
+              keyboardKey: undefined,
+              queryLength: 12,
+              spaceInQuery: true,
+              accessLevel: 'CONTAINER',
+              userType: 'DEFAULT',
+              userId: 'abc-123',
+              upKeyCount: 3,
+              downKeyCount: 1,
+            }),
+          }),
+        );
+        expect(event.fire).toHaveBeenCalledTimes(1);
+        expect(event.fire).toHaveBeenCalledWith('fabric-elements');
+      });
     });
   });
 });
