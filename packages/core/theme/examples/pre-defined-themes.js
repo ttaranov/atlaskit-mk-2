@@ -1,10 +1,10 @@
 // @flow
 
 import React from 'react';
-import { Consumer, Provider } from '../src';
+import { Consumer, Theme } from '../src';
 
 const CustomTheme = props => (
-  <Provider backgroundColor="#333" color="#eee" padding={10} {...props} />
+  <Theme backgroundColor="#333" color="#eee" padding={10} {...props} />
 );
 
 export default () => (

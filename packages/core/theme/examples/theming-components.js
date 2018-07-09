@@ -1,42 +1,67 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import { Provider, Themed } from '../src';
+import { Theme } from '../src';
 
-const defaultButtonTheme = (
-  theme,
-  props: { hover?: boolean, primary?: boolean },
-) => {
-  let backgroundColor;
-  const textColor = props.primary ? '#fff' : '#333';
+const DefaultButtonTheme = props => (
+  <Theme>
+    {theme => (
+      <Theme
+        button={state => ({
+          backgroundColor: state.hover ? '#ddd' : '#eee',
+          textColor: '#333',
+          ...(theme.button && theme.button(state)),
+        })}
+        {...props}
+      />
+    )}
+  </Theme>
+);
 
-  if (props.hover) {
-    backgroundColor = props.primary ? 'navy' : '#ddd';
-  } else {
-    backgroundColor = props.primary ? 'skyblue' : '#eee';
-  }
+const AppTheme = props => (
+  <Theme
+    button={state => ({
+      backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
+      textColor: state.hover ? '#fff' : 'papayawhip',
+    })}
+    {...props}
+  />
+);
 
-  return {
-    ...theme,
-    backgroundColor,
-    textColor,
-  };
+const CustomButtonTheme = props => (
+  <DefaultButtonTheme>
+    {theme => (
+      <Theme
+        button={state => ({
+          ...theme.button(state),
+          backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
+        })}
+        {...props}
+      />
+    )}
+  </DefaultButtonTheme>
+);
+
+// ESLint thinks these are unused even though we are using props.*.
+type Props = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  children: React.Node,
+  // eslint-disable-next-line react/no-unused-prop-types
+  theme: Component,
+  // eslint-disable-next-line react/no-unused-prop-types
+  type: String,
 };
-const contextButtonTheme = () => ({
-  backgroundColor: 'rebeccapurple',
-});
-const customButtonTheme = () => ({
-  backgroundColor: 'palevioletred',
-});
-const AppTheme = props => <Provider MyButton={contextButtonTheme} {...props} />;
 
-class Button extends Component<*> {
-  static displayName = 'MyButton';
+type State = {
+  hover: Boolean,
+};
+
+class Button extends Component<Props, State> {
   static defaultProps = {
-    theme: defaultButtonTheme,
+    theme: DefaultButtonTheme,
     type: 'button',
   };
-  state: {
+  state = {
     hover: false,
   };
   onMouseEnter = () => this.setState({ hover: true });
@@ -44,27 +69,30 @@ class Button extends Component<*> {
   render() {
     const { props, state } = this;
     return (
-      <Themed component={this} props={{ ...props, ...state }}>
-        {t => (
-          <button
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-            style={{
-              backgroundColor: t.backgroundColor,
-              border: 0,
-              borderRadius: 3,
-              color: t.textColor,
-              cursor: 'pointer',
-              marginBottom: 10,
-              marginRight: 10,
-              padding: 10,
-            }}
-            type={props.type}
-          >
-            {props.children}
-          </button>
-        )}
-      </Themed>
+      <props.theme>
+        {({ button }) => {
+          const { backgroundColor, textColor: color } = button(state);
+          return (
+            <button
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+              style={{
+                backgroundColor,
+                border: 0,
+                borderRadius: 3,
+                color,
+                cursor: 'pointer',
+                marginBottom: 10,
+                marginRight: 10,
+                padding: 10,
+              }}
+              type={props.type}
+            >
+              {props.children}
+            </button>
+          );
+        }}
+      </props.theme>
     );
   }
 }
@@ -72,14 +100,9 @@ class Button extends Component<*> {
 export default () => (
   <Fragment>
     <Button>Default</Button>
-    <Button primary>Default primary</Button>
     <AppTheme>
       <Button>Context</Button>
-      <Button primary>Context primary</Button>
-      <Button theme={customButtonTheme}>Custom</Button>
-      <Button primary theme={customButtonTheme}>
-        Custom primary
-      </Button>
+      <Button theme={CustomButtonTheme}>Custom</Button>
     </AppTheme>
   </Fragment>
 );

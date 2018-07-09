@@ -28,40 +28,43 @@ export default md`
 
   ## \`Consumer\`
 
-  The \`Consumer\` component takes a function as children and executes it with the current theme props. If there are no providers declared around a consumer, it will return an empty object.
+  The raw \`Consumer\` returned by \`React.createContext()\`.
 
-  ${(
-    <Example
-      Component={require('../examples/consumer').default}
-      source={require('!!raw-loader!../examples/consumer')}
-    />
-  )}
-
-  To see the usage of a \`Consumer\` with a \`Provider\`, see the \`Provider\` API.
+  To see the usage of a \`Consumer\` with a \`Theme\`, see the \`Theme\` API. We do export a raw \`Provider\` but it's likely you'll want the \`Theme\` component instead.
 
   ## \`Provider\`
 
-  The \`Provider\` component allows you to define a theme by wrapping it around the tree you want to provide theme props to. The \`Consumer\` is then used to retrieve the provided theme props.
+  The raw \`Provider\` returned by \`React.createContext()\`.
+
+  ## \`Theme\`
+
+  The \`Theme\` component is at the center of the theming API.
+
+  ### \`Defining a theme\`
+
+  When provided a subtree, the \`Theme\` component takes the values you provide and sets them on the new context.
 
   ${(
     <Example
-      Component={require('../examples/provider').default}
-      source={require('!!raw-loader!../examples/provider')}
+      Component={require('../examples/theme').default}
+      source={require('!!raw-loader!../examples/theme')}
     />
   )}
 
-  Providers can be composed together. The values from the inner-most \`Provider\` take precedence.
+  ### \`Composing themes\`
+
+  When themes are composed together, values in the ancestor context are merged with the provided values and are then set on the new context.
 
   ${(
     <Example
-      Component={require('../examples/provider-composed').default}
-      source={require('!!raw-loader!../examples/provider-composed')}
+      Component={require('../examples/theme-composed').default}
+      source={require('!!raw-loader!../examples/theme-composed')}
     />
   )}
 
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/components/Provider')}
+      props={require('!!extract-react-types-loader!../src/components/Theme')}
     />
   )}
 
@@ -78,6 +81,8 @@ export default md`
 
   You'll definitely need to pass on \`children\` but it's up to you whether or not you want to pass along other \`props\`. We recommend you do because themes become more composable and are able to be mixed and matched. They're just components, after all.
 
+  The example below shows the above example, but split out into two separate themes that pass on \`props\` as described above.
+
   ${(
     <Example
       Component={require('../examples/pre-defined-themes-composed').default}
@@ -87,12 +92,19 @@ export default md`
 
   ### Theming components
 
+  When provided with a function as \`children\` (i.e. render prop), the \`Theme\` component passes in the current theming context. You may then render the descendant tree based on the theme.
+
   ${(
     <Example
       Component={require('../examples/theming-components').default}
       source={require('!!raw-loader!../examples/theming-components')}
     />
   )}
+
+  There's a few things to note about the example shown above.
+
+  1. It declares the default theme using a mixture of the two ways \`Theme\` can be invoked. This is so that the values it provides can be overridden by more specific themes, thus making them defaults.
+  2. It uses default props to supply the default theme as the \`theme\` prop. This also allows a consumer to specify a custom theme directly, via the prop.
 
   ## \`Reset\`
 
@@ -109,8 +121,8 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/reset-with-provider').default}
-      source={require('!!raw-loader!../examples/reset-with-provider')}
+      Component={require('../examples/reset-with-theme').default}
+      source={require('!!raw-loader!../examples/reset-with-theme')}
     />
   )}
 

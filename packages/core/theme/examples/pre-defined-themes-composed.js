@@ -1,10 +1,10 @@
 // @flow
 
 import React from 'react';
-import { Consumer, Provider } from '../src';
+import { Consumer, Theme } from '../src';
 
 const ColorTheme = props => (
-  <Provider backgroundColor="#333" color="#eee" {...props} />
+  <Theme backgroundColor="#333" color="#eee" {...props} />
 );
 
 const CustomTheme = props => <ColorTheme padding={10} {...props} />;

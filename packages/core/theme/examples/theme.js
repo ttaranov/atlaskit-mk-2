@@ -2,10 +2,10 @@
 
 import React from 'react';
 import color from 'color';
-import { Consumer, Provider } from '../src';
+import { Consumer, Theme } from '../src';
 
 export default () => (
-  <Provider backgroundColor="#333" textColor="#eee">
+  <Theme backgroundColor="#333" textColor="#eee">
     <Consumer>
       {theme =>
         Object.keys(theme).map(k => (
@@ -24,5 +24,5 @@ export default () => (
         ))
       }
     </Consumer>
-  </Provider>
+  </Theme>
 );

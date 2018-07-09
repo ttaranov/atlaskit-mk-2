@@ -2,13 +2,14 @@
 
 import React from 'react';
 import color from 'color';
-import { Consumer, Provider } from '../src';
+import { Consumer, Theme } from '../src';
 
 const DisplayThemeColors = () => (
   <Consumer>
     {theme =>
       Object.keys(theme).map(k => (
         <div
+          key={k}
           style={{
             backgroundColor: theme[k],
             color: color(theme[k]).negate(),
@@ -26,10 +27,10 @@ const DisplayThemeColors = () => (
 );
 
 export default () => (
-  <Provider backgroundColor="#333" textColor="#eee">
+  <Theme backgroundColor="#333" textColor="#eee">
     <DisplayThemeColors />
-    <Provider backgroundColor="palevioletred">
+    <Theme backgroundColor="palevioletred">
       <DisplayThemeColors />
-    </Provider>
-  </Provider>
+    </Theme>
+  </Theme>
 );

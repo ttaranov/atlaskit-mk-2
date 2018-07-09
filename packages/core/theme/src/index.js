@@ -39,7 +39,6 @@ export const layers = {
 };
 
 // New API
-export { Consumer } from './components/Context';
-export { default as Provider } from './components/Provider';
+export { Consumer, Provider } from './components/Context';
 export { default as Reset } from './components/Reset';
-export { default as Themed } from './components/Themed';
+export { default as Theme } from './components/Theme';
