@@ -1,6 +1,6 @@
 import React from 'react';
 import LDClient from 'ldclient-js';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import {
   LAUNCH_DARKLY_LOCAL_KEY,
   LAUNCH_DARKLY_STAGING_KEY,
