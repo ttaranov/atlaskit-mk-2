@@ -1,4 +1,4 @@
-# @atlaskit/avatar
+# @atlaskit/avatar-group
 
 ## 1.0.0
 - [major] Split avatar-group into its own package [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
