@@ -129,7 +129,7 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 9.0.0
-- [major] Added a second argument with items clicked object to onAvatarClick hook on AvatarGroup   [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
+- [major] onAvatarClick prop on AvatarGroup now has a second argument. This second argument is the item that was clicked on. [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
 
 ## 8.4.1
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)
