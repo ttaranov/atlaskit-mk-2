@@ -17,7 +17,9 @@ export class UnauthorizedView extends React.Component<UnauthorizedViewProps> {
     event.preventDefault();
     event.stopPropagation();
     const { onAuthorise } = this.props;
-    onAuthorise && onAuthorise();
+    if (onAuthorise) {
+      return onAuthorise();
+    }
   };
 
   render() {
