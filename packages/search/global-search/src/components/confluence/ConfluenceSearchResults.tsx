@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors, gridSize, math } from '@atlaskit/theme';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { Result } from '../../model/Result';
@@ -70,7 +70,7 @@ const renderNoResults = (query: string) => [
 ];
 
 const PeopleSearchWrapper = styled.div`
-  margin-top: ${gridSize * 3}px;
+  margin-top: ${math.multiply(gridSize, 3)}px;
 `;
 
 const StickyFooter = styled.div`
