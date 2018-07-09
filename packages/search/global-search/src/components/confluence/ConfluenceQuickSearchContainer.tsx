@@ -22,6 +22,9 @@ import {
 import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
+  DEFAULT_GAS_SOURCE,
+  DEFAULT_GAS_CHANNEL,
+  DEFAULT_GAS_ATTRIBUTES,
 } from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { take } from '../SearchResultsUtil';
@@ -31,6 +34,7 @@ import {
 } from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
+import { GasPayload } from '../../../node_modules/@atlaskit/analytics-gas-types';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -158,6 +162,27 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       } catch (error) {
         // TODO logging on error
       }
+    }
+  }
+
+  componentWillUnmount() {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      // Note: This analytics event is currently missing the
+      // trigger attribute, to indicate _how_ the drawer was dismissed.
+      // as well as the correct actionSubjectId.
+      const event = createAnalyticsEvent();
+      const payload: GasPayload = {
+        action: 'dismissed',
+        actionSubject: 'globalSearchDrawer',
+        source: DEFAULT_GAS_SOURCE,
+        eventType: 'ui',
+        attributes: {
+          searchSessionId: this.state.searchSessionId,
+          ...DEFAULT_GAS_ATTRIBUTES,
+        },
+      };
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
     }
   }
 

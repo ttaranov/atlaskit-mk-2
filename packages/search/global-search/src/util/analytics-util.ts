@@ -1,6 +1,8 @@
 import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 
+export declare type ScreenEventSafeGasPayload = GasPayload & { name: string };
+
 export const DEFAULT_GAS_SOURCE = 'globalSearchDrawer';
 export const DEFAULT_GAS_CHANNEL = 'fabric-elements';
 export const DEFAULT_GAS_ATTRIBUTES = {
@@ -90,20 +92,21 @@ export function buildShownEventDetails(
 }
 
 export enum Screen {
-  PRE_QUERY = 'globalSearchPreQueryDrawer',
-  POST_QUERY = 'globalSearchPostQueryDrawer',
+  PRE_QUERY = 'GlobalSearchPreQueryDrawer',
+  POST_QUERY = 'GlobalSearchPostQueryDrawer',
 }
 
 export function buildScreenEvent(
   screen: Screen,
   timesViewed: number,
   searchSessionId: string,
-): GasPayload {
+): ScreenEventSafeGasPayload {
   return {
     action: 'viewed',
     actionSubject: screen,
     eventType: 'screen',
     source: DEFAULT_GAS_SOURCE,
+    name: `viewed${screen}`,
     attributes: {
       timesViewed: timesViewed,
       searchSessionId: searchSessionId,
