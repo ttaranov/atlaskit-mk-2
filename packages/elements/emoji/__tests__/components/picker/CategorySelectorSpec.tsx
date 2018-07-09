@@ -73,15 +73,14 @@ describe('<CategorySelector />', () => {
   it('onCategorySelected called which clicking a category', () => {
     let selectedCategoryId;
     const component = setupComponent({
+      dynamicCategories: ['CUSTOM', 'FREQUENT'],
       onCategorySelected: id => {
         selectedCategoryId = id;
       },
     });
     const categoryButtons = component.find('button');
-    categoryButtons.at(4).simulate('click');
-    expect(selectedCategoryId, 'Category was selected').to.equal(
-      defaultCategories[4],
-    );
+    categoryButtons.at(defaultCategories.length + 1).simulate('click');
+    expect(selectedCategoryId, 'Category was selected').to.equal('CUSTOM');
   });
 
   it('active category highlighted', () => {
