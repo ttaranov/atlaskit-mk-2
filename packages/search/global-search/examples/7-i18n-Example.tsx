@@ -1,9 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider, addLocaleData } from 'react-intl';
 import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
+
+import * as fr from 'react-intl/locale-data/fr';
+import * as es from 'react-intl/locale-data/es';
+addLocaleData([...fr, ...es]);
 
 const LanguageSelector = styled.div`
   position: absolute;

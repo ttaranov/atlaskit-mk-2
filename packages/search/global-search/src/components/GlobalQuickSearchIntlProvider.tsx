@@ -1,15 +1,6 @@
 import * as React from 'react';
 
-import {
-  IntlProvider,
-  injectIntl,
-  InjectedIntlProps,
-  addLocaleData,
-} from 'react-intl';
-
-import * as fr from 'react-intl/locale-data/fr';
-import * as es from 'react-intl/locale-data/es';
-addLocaleData([...fr, ...es]);
+import { IntlProvider, injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { enMessages, esMessages, frMessages } from '../i18n';
 const messages = { en: enMessages, es: esMessages, fr: frMessages };
