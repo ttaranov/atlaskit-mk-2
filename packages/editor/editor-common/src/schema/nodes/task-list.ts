@@ -18,6 +18,7 @@ export interface TaskListDefinition {
 
 export const taskList: NodeSpec = {
   group: 'block',
+  defining: true,
   content: 'taskItem+',
   attrs: {
     localId: { default: '' },
