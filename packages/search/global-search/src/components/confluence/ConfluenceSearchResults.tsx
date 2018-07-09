@@ -1,4 +1,6 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import { colors, gridSize, math } from '@atlaskit/theme';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { Result } from '../../model/Result';
@@ -67,16 +69,30 @@ const renderNoResults = (query: string) => [
   </ResultItemGroup>,
 ];
 
+const PeopleSearchWrapper = styled.div`
+  margin-top: ${math.multiply(gridSize, 3)}px;
+`;
+
+const StickyFooter = styled.div`
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid ${colors.N40};
+  padding: ${gridSize}px 0;
+`;
+
 const renderAdvancedSearchGroup = (query: string) => {
   const text =
     query.length === 0 ? 'Advanced search' : `Advanced search for "${query}"`;
 
-  return (
-    <ResultItemGroup key="advanced-search">
+  return [
+    <PeopleSearchWrapper key="people-search">
       {renderSearchPeopleItem(query)}
+    </PeopleSearchWrapper>,
+    <StickyFooter key="advanced-search">
       {renderSearchConfluenceItem(query, text)}
-    </ResultItemGroup>
-  );
+    </StickyFooter>,
+  ];
 };
 
 export interface Props {

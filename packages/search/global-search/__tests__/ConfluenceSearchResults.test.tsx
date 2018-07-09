@@ -25,13 +25,12 @@ enum Group {
   Objects = 'objects',
   Spaces = 'spaces',
   People = 'people',
+  PeopleSearch = 'people-search',
   AdvancedSearch = 'advanced-search',
 }
 
 function findGroup(group: Group, wrapper: ShallowWrapper) {
-  return wrapper
-    .find(ResultItemGroup)
-    .findWhere(n => n.key() === group.valueOf());
+  return wrapper.findWhere(n => n.key() === group.valueOf());
 }
 
 describe('ConfluenceSearchResults', () => {
@@ -129,36 +128,37 @@ describe('ConfluenceSearchResults', () => {
     });
   });
 
-  it('should render links to advanced search when no query is entered', () => {
+  it('should render links to people and advanced search when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
       recentlyInteractedPeople: [makePersonResult()],
     };
 
     const wrapper = render(props);
-    const group = findGroup(Group.AdvancedSearch, wrapper);
+    let group = findGroup(Group.AdvancedSearch, wrapper);
+    expect(group.childAt(0).prop('resultId')).toEqual('search_confluence');
+    expect(group.childAt(0).prop('text')).toEqual('Advanced search');
 
+    group = findGroup(Group.PeopleSearch, wrapper);
     expect(group.childAt(0).prop('resultId')).toEqual('search_people');
-
-    expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
-    expect(group.childAt(1).prop('text')).toEqual('Advanced search');
+    expect(group.childAt(0).prop('text')).toEqual('Search in People');
   });
 
-  it('should render links to advanced search when a query is entered and there are results', () => {
+  it('should render links to people and advanced search when a query is entered and there are results', () => {
     const props: Partial<Props> = {
       query: 'foo bar',
       objectResults: [makeConfluenceObjectResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
-    const group = findGroup(Group.AdvancedSearch, wrapper);
-
-    expect(group.childAt(0).prop('resultId')).toEqual('search_people');
-
-    expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
-    expect(group.childAt(1).prop('text')).toEqual(
+    let group = findGroup(Group.AdvancedSearch, wrapper);
+    expect(group.childAt(0).prop('resultId')).toEqual('search_confluence');
+    expect(group.childAt(0).prop('text')).toEqual(
       'Advanced search for "foo bar"',
     );
+
+    group = findGroup(Group.PeopleSearch, wrapper);
+    expect(group.childAt(0).prop('resultId')).toEqual('search_people');
   });
 
   it('should render the pre query screen analytics event when there are results', () => {
