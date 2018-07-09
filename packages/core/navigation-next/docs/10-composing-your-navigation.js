@@ -17,7 +17,7 @@ This guide will introduce you to many of the components exported by \`@atlaskit/
 <a name="the-layoutmanager-component"></a>
 ## The LayoutManager component
 
-If you've read the Conceptual Model documentation you'll understand that the user interface of an Atlassian application is made up of a series of metaphorical 'layers'. These are, in order from lowest to highest, the global layer, the product layer, the container layer, and the page layer.
+If you've read the [Conceptual Model documentation](https://product-fabric.atlassian.net/wiki/spaces/NAV/pages/675251320/Navigation+conceptual+model+for+V2) you'll understand that the user interface of an Atlassian application is made up of a series of metaphorical 'layers'. These are, in order from lowest to highest, the global layer, the product layer, the container layer, and the page layer.
 
 We handle the placement and positioning of these layers using a component called the \`LayoutManager\`, which is essentially the entrypoint to \`@atlaskit/navigation-next\`. \`LayoutManager\` takes the following props:
 
