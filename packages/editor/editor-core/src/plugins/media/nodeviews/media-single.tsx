@@ -84,9 +84,12 @@ export class MediaSingleNode extends Component<
   }
 
   handleMediaUpdate = state => {
-    this.setState({
-      progress: state.progress || 0,
-    });
+    // check for progress, otherwise we setState before initial mount
+    if (typeof state.progress !== 'undefined') {
+      this.setState({
+        progress: state.progress,
+      });
+    }
   };
 
   private onExternalImageLoaded = ({ width, height }) => {
