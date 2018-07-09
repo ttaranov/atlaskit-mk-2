@@ -8,7 +8,10 @@ import CategorySelector, {
   Props,
   sortCategories,
 } from '../../../src/components/picker/CategorySelector';
-import { CategoryDescriptionMap } from '../../../src/components/picker/categories';
+import {
+  CategoryDescriptionMap,
+  CategoryId,
+} from '../../../src/components/picker/categories';
 
 const setupComponent = (props?: Props): ReactWrapper<any, any> =>
   mount(<CategorySelector {...props} />);
@@ -33,7 +36,7 @@ describe('<CategorySelector />', () => {
   });
 
   it('displays categories in sorted order', () => {
-    const dynamicCategories = ['CUSTOM', 'FREQUENT', 'ATLASSIAN'];
+    const dynamicCategories: CategoryId[] = ['CUSTOM', 'FREQUENT', 'ATLASSIAN'];
     const component = setupComponent({
       dynamicCategories,
     });
