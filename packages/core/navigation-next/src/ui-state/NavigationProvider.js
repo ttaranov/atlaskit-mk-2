@@ -3,17 +3,17 @@
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
 import { getContainerViewState, getRootViewState } from '../api';
-import NavigationState from './NavigationState';
-import type { NavigationProviderProps, NavigationStateShape } from './types';
+import UIState from './UIState';
+import type { NavigationProviderProps, UIStateShape } from './types';
 
-const LS_KEY = 'ATLASKIT_NAVIGATION_STATE';
+const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
 
 function defaultGetCache() {
   const stored = localStorage.getItem(LS_KEY);
   return stored ? JSON.parse(stored) : {};
 }
 
-function defaultSetCache(state: NavigationStateShape) {
+function defaultSetCache(state: UIStateShape) {
   localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
@@ -27,13 +27,13 @@ export default class NavigationProvider extends Component<
     },
     debug: false,
   };
-  navState: NavigationState;
+  uiState: UIState;
 
   constructor(props: NavigationProviderProps) {
     super(props);
 
     const { cache, initialState, debug } = props;
-    this.navState = new NavigationState(initialState, cache);
+    this.uiState = new UIState(initialState, cache);
     if (debug) {
       getContainerViewState().setDebug(debug);
       getRootViewState().setDebug(debug);
@@ -49,8 +49,8 @@ export default class NavigationProvider extends Component<
 
   render() {
     const { children } = this.props;
-    const { navState } = this;
+    const { uiState } = this;
 
-    return <Provider inject={[navState]}>{children}</Provider>;
+    return <Provider inject={[uiState]}>{children}</Provider>;
   }
 }

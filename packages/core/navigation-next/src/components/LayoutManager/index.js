@@ -3,7 +3,7 @@
 import React, { Component, Fragment, type ElementRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 
-import { NavigationSubscriber } from '../../state';
+import { UIStateSubscriber } from '../../';
 import { Shadow } from '../../common/primitives';
 import { light } from '../../theme';
 import ProductNav from '../ProductNav';
@@ -176,7 +176,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
 }
 
 export default (props: WrappedLayoutManagerProps) => (
-  <NavigationSubscriber>
+  <UIStateSubscriber>
     {navigation => <LayoutManager navigation={navigation} {...props} />}
-  </NavigationSubscriber>
+  </UIStateSubscriber>
 );

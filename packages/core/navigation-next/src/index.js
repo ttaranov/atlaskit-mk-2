@@ -19,14 +19,14 @@ export { default as SectionSeparator } from './components/SectionSeparator';
 export { default as SectionTitle } from './components/SectionTitle';
 
 /** State */
-export { NavigationProvider, NavigationSubscriber } from './state';
+export { NavigationProvider, UIStateSubscriber } from './ui-state';
 
 /** Theme */
 export { dark, light, settings, modeGenerator } from './theme';
 
 /** Types */
 export { GlobalItemProps } from './components/GlobalItem';
-export { NavigationStateInterface } from './state';
+export { UIStateInterface } from './ui-state';
 export { GlobalTheme } from './theme';
 
 /** Nav API */

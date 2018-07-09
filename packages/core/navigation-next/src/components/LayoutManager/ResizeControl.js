@@ -4,8 +4,8 @@ import React, { PureComponent, Fragment } from 'react';
 import { css } from 'emotion';
 import raf from 'raf-schd';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
-import ChevronRight from '@atlaskit/icon/glyph/chevron-right-circle';
+import ChevronLeft from '../../../../icon/glyph/chevron-left-circle';
+import ChevronRight from '../../../../icon/glyph/chevron-right-circle';
 
 import { GLOBAL_NAV_WIDTH, PRODUCT_NAV_WIDTH } from '../../common/constants';
 import { Shadow } from '../../common/primitives';

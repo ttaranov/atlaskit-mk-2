@@ -7,13 +7,13 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
-import { NavigationSubscriber } from '../../src';
+import { UIStateSubscriber } from '../../src';
 
 export const globalNavPrimaryItems = [
   {
     key: 'jira',
     component: ({ className, children }: *) => (
-      <NavigationSubscriber>
+      <UIStateSubscriber>
         {navigation => {
           function onClick() {
             if (navigation.state.productNavIsCollapsed) {
@@ -32,7 +32,7 @@ export const globalNavPrimaryItems = [
             </button>
           );
         }}
-      </NavigationSubscriber>
+      </UIStateSubscriber>
     ),
     icon: JiraIcon,
     label: 'Jira',

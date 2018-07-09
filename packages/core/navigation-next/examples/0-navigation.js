@@ -21,10 +21,10 @@ import {
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
-  NavigationSubscriber,
   Section,
   SectionSeparator,
   SectionTitle,
+  UIStateSubscriber,
 } from '../src';
 
 /**
@@ -34,7 +34,7 @@ const globalNavPrimaryItems = [
   {
     key: 'jira',
     component: ({ className, children }: *) => (
-      <NavigationSubscriber>
+      <UIStateSubscriber>
         {navigation => {
           function onClick() {
             if (navigation.state.productNavIsCollapsed) {
@@ -53,7 +53,7 @@ const globalNavPrimaryItems = [
             </button>
           );
         }}
-      </NavigationSubscriber>
+      </UIStateSubscriber>
     ),
     icon: JiraIcon,
     label: 'Jira',

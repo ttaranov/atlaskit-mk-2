@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import {
   getContainerViewState,
   getRootViewState,
-  NavigationSubscriber,
+  UIStateSubscriber,
 } from '../../src';
 
 import { containerViews, rootViews } from './mock-data';
@@ -125,7 +125,7 @@ class BacklogViewBase extends Component<*> {
   }
 }
 export const BacklogView = () => (
-  <NavigationSubscriber>
+  <UIStateSubscriber>
     {navUI => <BacklogViewBase navUI={navUI} />}
-  </NavigationSubscriber>
+  </UIStateSubscriber>
 );

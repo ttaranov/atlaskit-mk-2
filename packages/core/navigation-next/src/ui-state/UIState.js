@@ -3,12 +3,12 @@
 import { Container } from 'unstated';
 
 import type {
-  InitialNavigationStateShape,
-  NavigationStateCache,
-  NavigationStateCacheGetter,
-  NavigationStateCacheSetter,
-  NavigationStateInterface,
-  NavigationStateShape,
+  InitialUIStateShape,
+  UIStateCache,
+  UIStateCacheGetter,
+  UIStateCacheSetter,
+  UIStateInterface,
+  UIStateShape,
 } from './types';
 
 import { PRODUCT_NAV_WIDTH } from '../common/constants';
@@ -26,15 +26,12 @@ type Resize = {
   productNavIsCollapsed: boolean,
 };
 
-export default class NavigationState extends Container<NavigationStateShape>
-  implements NavigationStateInterface {
-  getCache: ?NavigationStateCacheGetter;
-  setCache: ?NavigationStateCacheSetter;
+export default class UIState extends Container<UIStateShape>
+  implements UIStateInterface {
+  getCache: ?UIStateCacheGetter;
+  setCache: ?UIStateCacheSetter;
 
-  constructor(
-    initialState?: InitialNavigationStateShape,
-    cache: NavigationStateCache | false,
-  ) {
+  constructor(initialState?: InitialUIStateShape, cache: UIStateCache | false) {
     super();
 
     if (!cache) {
