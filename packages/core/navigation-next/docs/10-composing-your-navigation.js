@@ -43,7 +43,7 @@ The \`LayoutManager\` will position these layers and handle UI state concerns su
 <a name="configuring-the-global-navigation"></a>
 ## Configuring the global navigation
 
-As we begin composing the navigation we might as well start at the bottom - the global layer. Conceptually this layer universal across every Atlassian product. In practice there will be some product-specific items in this area, and some of the actions will be contextual, but for the most part our customers should get a very consistent experience here no matter what Atlassian product they're using. To facilitate this consistency we provide a pre-configured \`@atlaskit/global-navigation\` component which accepts a simple set of props and will compose the global navigation layer for you. You can find the full props interface in the documentation for that component, but for now let's simply render the product icon.
+As we begin composing the navigation we might as well start at the bottom - the global layer. Conceptually this layer is universal across every Atlassian product. In practice there will be some product-specific items in this area, and some of the actions will be contextual, but for the most part our customers should get a very consistent experience here no matter what Atlassian product they're using. To facilitate this consistency we provide a pre-configured \`@atlaskit/global-navigation\` component which accepts a simple set of props and will compose the global navigation layer for you. You can find the full props interface in the documentation for that component, but for now let's simply render the product icon.
 
 ${code`
 import GlobalNavigation from '@atlaskit/global-navigation';
@@ -72,7 +72,6 @@ We can render basically anything we want in this section. All of the typical pri
 
 ${code`
 import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
 import { AtlassianWordmark } from '@atlaskit/logo';
 import { Item, Section, SectionTitle, SectionSeparator } from '@atlaskit/navigation-next';
 
