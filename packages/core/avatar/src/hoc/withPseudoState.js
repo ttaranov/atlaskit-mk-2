@@ -1,7 +1,6 @@
 // @flow
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ComponentType, type ElementRef } from 'react';
 import { omit, getDisplayName } from '../utils';
-import type { ElementType, FunctionType } from '../types';
 
 type Props = {
   href?: string,
@@ -9,15 +8,15 @@ type Props = {
   isFocus?: boolean,
   isHover?: boolean,
   isInteractive?: boolean,
-  onBlur?: FunctionType,
-  onClick?: FunctionType,
-  onFocus?: FunctionType,
-  onKeyDown?: FunctionType,
-  onKeyUp?: FunctionType,
-  onMouseDown?: FunctionType,
-  onMouseEnter?: FunctionType,
-  onMouseLeave?: FunctionType,
-  onMouseUp?: FunctionType,
+  onBlur?: () => mixed,
+  onClick?: () => mixed,
+  onFocus?: () => mixed,
+  onKeyDown?: () => mixed,
+  onKeyUp?: () => mixed,
+  onMouseDown?: () => mixed,
+  onMouseEnter?: () => mixed,
+  onMouseLeave?: () => mixed,
+  onMouseUp?: () => mixed,
 };
 
 const INTERNAL_HANDLERS = [
@@ -47,7 +46,7 @@ export default function withPseudoState<InnerProps: {}>(
     State,
   > {
     static displayName = getDisplayName('withPseudoState', WrappedComponent);
-    component: { blur?: FunctionType, focus?: FunctionType };
+    component: ElementRef<*>;
     actionKeys: Array<string>;
     componentWillMount() {
       const { href, isInteractive, onClick } = this.props;
@@ -68,13 +67,13 @@ export default function withPseudoState<InnerProps: {}>(
 
     // expose blur/focus to consumers via ref
     blur = () => {
-      if (this.component.blur) this.component.blur();
+      if (this.component && this.component.blur) this.component.blur();
     };
     focus = () => {
-      if (this.component.focus) this.component.focus();
+      if (this.component && this.component.focus) this.component.focus();
     };
 
-    setComponent = (component: ElementType) => {
+    setComponent = (component: ElementRef<*>) => {
       this.component = component;
     };
 

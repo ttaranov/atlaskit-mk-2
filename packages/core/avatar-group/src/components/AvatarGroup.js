@@ -1,13 +1,11 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { ThemeProvider } from 'styled-components';
 import DropdownMenu, { DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar, {
   type AvatarClickType,
   type AvatarPropTypes,
-  type ComponentType,
-  type FunctionType,
   type SizeType,
 } from '@atlaskit/avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
@@ -29,7 +27,7 @@ type Props = {
    can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
-  avatar: ComponentType,
+  avatar: ComponentType<*>,
   /** The maximum number of avatars allowed in the grid */
   maxCount: number,
   /** Defines the size of the avatar */
@@ -43,7 +41,7 @@ type Props = {
   onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
-  onMoreClick?: FunctionType,
+  onMoreClick?: () => mixed,
 
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
