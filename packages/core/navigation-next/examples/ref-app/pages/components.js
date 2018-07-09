@@ -24,3 +24,10 @@ export const SetNavView = props => (
     {something => <SetNavViewLifecycleProvider {...props} {...something} />}
   </RootViewSubscriber>
 );
+
+export const PageView = ({ children, currentNavView, ...props }: *) => (
+  <Page>
+    <SetNavView id={currentNavView} />
+    {children}
+  </Page>
+);

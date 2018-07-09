@@ -1,13 +1,12 @@
 // @flow
 
 import React from 'react';
-import { SetNavView, Page } from '../components';
+import { PageView } from '../components';
 
 export default function SettingsPage() {
   return (
-    <Page>
-      <SetNavView id="root/home" />
+    <PageView currentNavView="root/home">
       <h1>Home</h1>
-    </Page>
+    </PageView>
   );
 }
