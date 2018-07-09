@@ -1,15 +1,15 @@
 import { Command } from '../../types';
 import { normalizeUrl } from './utils';
-import { stateKey, LinkAction } from './pm-plugins/main';
+import {
+  stateKey,
+  LinkAction,
+  canLinkBeCreatedInRange,
+} from './pm-plugins/main';
 import { EditorState } from 'prosemirror-state';
 import { filter } from '../../utils/commands';
 import { Mark, Node } from 'prosemirror-model';
 
-const hasNoLinkMarksInRange = (from: number, to: number) => (
-  state: EditorState,
-) => !state.doc.rangeHasMark(from, to, state.schema.marks.link);
-
-const hasLinkMarkAtPos = (pos: number) => (state: EditorState): boolean => {
+const isLinkAllowedAtPos = (pos: number) => (state: EditorState): boolean => {
   const text = state.doc.nodeAt(pos);
   if (text) {
     const link = state.schema.marks.link;
@@ -19,7 +19,7 @@ const hasLinkMarkAtPos = (pos: number) => (state: EditorState): boolean => {
 };
 
 export function setLinkHref(pos: number, href: string): Command {
-  return filter(hasLinkMarkAtPos(pos), (state, dispatch, view) => {
+  return filter(isLinkAllowedAtPos(pos), (state, dispatch, view) => {
     const node = state.doc.nodeAt(pos) as Node;
     const link = state.schema.marks.link;
     const mark = link.isInSet(node.marks) as Mark;
@@ -39,11 +39,11 @@ export function setLinkHref(pos: number, href: string): Command {
 }
 
 export function setLinkText(pos: number, text: string): Command {
-  return filter(hasLinkMarkAtPos(pos), (state, dispatch, view) => {
+  return filter(isLinkAllowedAtPos(pos), (state, dispatch, view) => {
     const node = state.doc.nodeAt(pos) as Node;
     const link = state.schema.marks.link;
     const mark = link.isInSet(node.marks) as Mark;
-    if (node && text !== node.text) {
+    if (node && text && text !== node.text) {
       const tr = state.tr;
       tr.insertText(text, pos, pos + node.nodeSize);
       tr.addMark(pos, pos + text.length, mark);
@@ -61,7 +61,7 @@ export function insertLink(
   href: string,
   text?: string,
 ): Command {
-  return filter(hasNoLinkMarksInRange(from, to), (state, dispatch, view) => {
+  return filter(canLinkBeCreatedInRange(from, to), (state, dispatch, view) => {
     const link = state.schema.marks.link;
     if (href.trim()) {
       const tr = state.tr;
@@ -88,7 +88,7 @@ export function removeLink(pos: number): Command {
   return setLinkHref(pos, '');
 }
 
-export function showInsertLinkPopup(): Command {
+export function showLinkToolbar(): Command {
   return function(state, dispatch) {
     dispatch(state.tr.setMeta(stateKey, LinkAction.SHOW_INSERT_TOOLBAR));
     return true;

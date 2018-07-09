@@ -4,17 +4,17 @@ import { Dispatch } from '../../../event-dispatcher';
 import { getCursor } from '../../../utils';
 
 export enum LinkAction {
-  EDITOR_FOCUSED,
-  EDITOR_BLURRED,
-  SHOW_INSERT_TOOLBAR,
-  HIDE_TOOLBAR,
-  SELECTION_CHANGE,
+  EDITOR_FOCUSED = 'focus',
+  EDITOR_BLURRED = 'blur',
+  SHOW_INSERT_TOOLBAR = 'show_insert',
+  HIDE_TOOLBAR = 'hide_toolbar',
+  SELECTION_CHANGE = 'selection_change',
 }
 export enum InsertStatus {
-  EDIT_LINK_TOOLBAR,
-  INSERT_LINK_TOOLBAR,
+  EDIT_LINK_TOOLBAR = 'edit',
+  INSERT_LINK_TOOLBAR = 'insert',
 }
-type LinkToolbarState =
+export type LinkToolbarState =
   | {
       type: InsertStatus.EDIT_LINK_TOOLBAR;
       node: Node;
@@ -26,6 +26,28 @@ type LinkToolbarState =
       to: number;
     }
   | undefined;
+
+export const canLinkBeCreatedInRange = (from: number, to: number) => (
+  state: EditorState,
+) => {
+  if (!state.doc.rangeHasMark(from, to, state.schema.marks.link)) {
+    const $from = state.doc.resolve(from);
+    const $to = state.doc.resolve(to);
+    const link = state.schema.marks.link;
+    if ($from.parent === $to.parent && $from.parent.isTextblock) {
+      if ($from.parent.type.allowsMarkType(link)) {
+        let allowed = true;
+        state.doc.nodesBetween(from, to, node => {
+          allowed =
+            allowed && !node.marks.some(mark => mark.type.excludes(link));
+          return allowed;
+        });
+        return allowed;
+      }
+    }
+  }
+  return false;
+};
 
 const isSelectionInsideLink = (state: EditorState): boolean => {
   const $cursor = getCursor(state.selection);
@@ -66,16 +88,12 @@ const toState = (
   if (!state) {
     switch (action) {
       case LinkAction.SHOW_INSERT_TOOLBAR:
-        const isSameParent =
-          editorState.selection.$from.parent ===
-          editorState.selection.$to.parent;
-        const isInsideTextblock =
-          editorState.selection.$from.parent.isTextblock;
-        if (isSameParent && isInsideTextblock) {
+        const { from, to } = editorState.selection;
+        if (canLinkBeCreatedInRange(from, to)(editorState)) {
           return {
             type: InsertStatus.INSERT_LINK_TOOLBAR,
-            from: editorState.selection.from,
-            to: editorState.selection.to,
+            from,
+            to,
           };
         }
         return undefined;
@@ -150,28 +168,28 @@ export const plugin = (dispatch: Dispatch) =>
         oldState,
         newState,
       ): HyperlinkState {
-        let state: HyperlinkState = {
-          isEditorFocused: pluginState.isEditorFocused,
-          activeLinkMark: mapTransactionToState(pluginState.activeLinkMark, tr),
-        };
+        let state = pluginState;
         const action = tr.getMeta(stateKey) as LinkAction;
+
+        if (tr.docChanged) {
+          state = {
+            isEditorFocused: state.isEditorFocused,
+            activeLinkMark: mapTransactionToState(state.activeLinkMark, tr),
+          };
+        }
 
         if (action) {
           state = {
             isEditorFocused: mapFocusState(state.isEditorFocused, action),
-            activeLinkMark: toState(
-              pluginState.activeLinkMark,
-              action,
-              newState,
-            ),
+            activeLinkMark: toState(state.activeLinkMark, action, newState),
           };
         }
 
-        if (!oldState.selection.eq(newState.selection) || tr.docChanged) {
+        if (!oldState.selection.map(tr.doc, tr.mapping).eq(tr.selection)) {
           state = {
             isEditorFocused: state.isEditorFocused,
             activeLinkMark: toState(
-              pluginState.activeLinkMark,
+              state.activeLinkMark,
               LinkAction.SELECTION_CHANGE,
               newState,
             ),
@@ -187,7 +205,7 @@ export const plugin = (dispatch: Dispatch) =>
     key: stateKey,
     props: {
       handleDOMEvents: {
-        click: (view, event) => {
+        click: view => {
           const pluginState: HyperlinkState = stateKey.getState(view.state);
           if (!pluginState.isEditorFocused) {
             const focusType = view.hasFocus()
@@ -197,7 +215,7 @@ export const plugin = (dispatch: Dispatch) =>
           }
           return false;
         },
-        focus: (view, event) => {
+        focus: view => {
           const pluginState: HyperlinkState = stateKey.getState(view.state);
           if (!pluginState.isEditorFocused) {
             view.dispatch(
@@ -206,7 +224,7 @@ export const plugin = (dispatch: Dispatch) =>
           }
           return false;
         },
-        blur: (view, event: FocusEvent) => {
+        blur: view => {
           const pluginState: HyperlinkState = stateKey.getState(view.state);
           if (pluginState.isEditorFocused) {
             view.dispatch(

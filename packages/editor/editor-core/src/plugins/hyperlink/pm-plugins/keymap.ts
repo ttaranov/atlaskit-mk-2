@@ -6,7 +6,7 @@ import { analyticsService, trackAndInvoke } from '../../../analytics';
 import { EditorProps } from '../../../types/editor-props';
 import { Match, getLinkMatch } from '../utils';
 import { HyperlinkState, stateKey } from '../pm-plugins/main';
-import { showInsertLinkPopup, hideLinkToolbar } from '../commands';
+import { showLinkToolbar, hideLinkToolbar } from '../commands';
 
 export function createKeymapPlugin(
   schema: Schema,
@@ -19,7 +19,7 @@ export function createKeymapPlugin(
       keymaps.addLink.common!,
       trackAndInvoke(
         'atlassian.editor.format.hyperlink.keyboard',
-        showInsertLinkPopup(),
+        showLinkToolbar(),
       ),
       list,
     );
@@ -39,10 +39,10 @@ export function createKeymapPlugin(
 
   keymaps.bindKeymapWithCommand(
     keymaps.escape.common!,
-    (state: EditorState, dispatch) => {
+    (state: EditorState, dispatch, view) => {
       const hyperlinkPlugin = stateKey.getState(state) as HyperlinkState;
       if (hyperlinkPlugin.activeLinkMark) {
-        hideLinkToolbar()(state, dispatch);
+        hideLinkToolbar()(state, dispatch, view);
         return false;
       }
       return false;

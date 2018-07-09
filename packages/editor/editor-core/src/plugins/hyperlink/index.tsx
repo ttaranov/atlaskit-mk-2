@@ -1,24 +1,12 @@
 import * as React from 'react';
-import { Mark } from 'prosemirror-model';
 import { link, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { createInputRulePlugin } from './pm-plugins/input-rule';
 import { createKeymapPlugin } from './pm-plugins/keymap';
-import {
-  plugin,
-  stateKey,
-  HyperlinkState,
-  InsertStatus,
-} from './pm-plugins/main';
-import {
-  AddLinkDisplayTextToolbar,
-  EditLinkHrefToolbar,
-  InsertLinkToolbar,
-  ActivityPoweredInsertLinkToolbar,
-} from './ui';
-import { normalizeUrl } from './utils';
+import { plugin, stateKey, HyperlinkState } from './pm-plugins/main';
 import fakeCursorToolbarPlugin from './pm-plugins/fake-cursor-for-toolbar';
+import HyperlinkToolbar from './ui';
 
 const hyperlinkPlugin: EditorPlugin = {
   marks() {
@@ -46,61 +34,17 @@ const hyperlinkPlugin: EditorPlugin = {
     const renderToolbar = providers => (
       <WithPluginState
         plugins={{ hyperlinkState: stateKey }}
-        render={({ hyperlinkState }: { hyperlinkState?: HyperlinkState }) => {
-          if (hyperlinkState && hyperlinkState.activeLinkMark) {
-            if (
-              hyperlinkState.activeLinkMark.type ===
-              InsertStatus.EDIT_LINK_TOOLBAR
-            ) {
-              const { node, pos } = hyperlinkState.activeLinkMark;
-              const mark = editorView.state.schema.marks.link.isInSet(
-                node.marks,
-              ) as Mark;
-              const isLinkTextTheSameAsTheLinkUrl =
-                mark.attrs.href === normalizeUrl(node.text!);
-              const Toolbar = isLinkTextTheSameAsTheLinkUrl
-                ? AddLinkDisplayTextToolbar
-                : EditLinkHrefToolbar;
-              return (
-                <Toolbar
-                  pos={pos}
-                  node={node}
-                  view={editorView}
-                  popupsMountPoint={popupsMountPoint}
-                  popupsBoundariesElement={popupsBoundariesElement}
-                />
-              );
-            } else if (
-              hyperlinkState.activeLinkMark.type ===
-              InsertStatus.INSERT_LINK_TOOLBAR
-            ) {
-              const { from, to } = hyperlinkState.activeLinkMark;
-              if (providers && providers.activityProvider) {
-                return (
-                  <ActivityPoweredInsertLinkToolbar
-                    from={from}
-                    to={to}
-                    view={editorView}
-                    popupsMountPoint={popupsMountPoint}
-                    popupsBoundariesElement={popupsBoundariesElement}
-                    activityProvider={providers.activityProvider}
-                  />
-                );
-              } else {
-                return (
-                  <InsertLinkToolbar
-                    from={from}
-                    to={to}
-                    view={editorView}
-                    popupsMountPoint={popupsMountPoint}
-                    popupsBoundariesElement={popupsBoundariesElement}
-                  />
-                );
-              }
+        render={({ hyperlinkState }: { hyperlinkState?: HyperlinkState }) => (
+          <HyperlinkToolbar
+            hyperlinkState={hyperlinkState}
+            view={editorView}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+            activityProvider={
+              providers ? providers.activityProvider : undefined
             }
-          }
-          return null;
-        }}
+          />
+        )}
       />
     );
 

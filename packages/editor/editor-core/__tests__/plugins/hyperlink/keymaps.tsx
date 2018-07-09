@@ -7,6 +7,7 @@ import {
   em,
   code,
   hardBreak,
+  a,
 } from '@atlaskit/editor-test-helpers';
 import {
   HyperlinkState,
@@ -128,6 +129,25 @@ describe('hyperlink - keymap', () => {
       );
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.hyperlink.autoformatting',
+      );
+    });
+  });
+
+  describe('Escape keypress', () => {
+    it('should hide the edit link toolbar', () => {
+      const trackEvent = jest.fn();
+      const { editorView } = editor(
+        doc(p(a({ href: 'google.com' })('li{<>}nk'))),
+        {
+          analyticsHandler: trackEvent,
+        },
+      );
+
+      sendKeyToPm(editorView, 'Escape');
+      expect(stateKey.getState(editorView.state)).toEqual(
+        expect.objectContaining({
+          activeLinkMark: undefined,
+        }) as HyperlinkState,
       );
     });
   });
