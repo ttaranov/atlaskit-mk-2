@@ -164,13 +164,6 @@ export function insertCodeBlock(): Command {
   };
 }
 
-export function showLinkPanel(): Command {
-  return function(state, dispatch, view) {
-    const pluginState = hyperlinkPluginKey.getState(state);
-    return pluginState.showLinkPanel(view);
-  };
-}
-
 export function insertNewLine(): Command {
   return function(state, dispatch) {
     const { $from } = state.selection;

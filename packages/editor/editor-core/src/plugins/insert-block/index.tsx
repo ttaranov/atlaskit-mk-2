@@ -6,7 +6,7 @@ import {
   BlockTypeState,
 } from '../block-type/pm-plugins/main';
 import { stateKey as mediaStateKey } from '../media/pm-plugins/main';
-import { hyperlinkPluginKey } from '../hyperlink';
+import { stateKey as hyperlinkPluginKey } from '../hyperlink/pm-plugins/main';
 import { mentionPluginKey as mentionStateKey } from '../mentions/pm-plugins/main';
 import { pluginKey as tablesStateKey } from '../table/pm-plugins/main';
 import { stateKey as imageUploadStateKey } from '../image-upload/pm-plugins/main';
@@ -117,10 +117,9 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               linkSupported={!!hyperlinkState}
               linkDisabled={
                 !hyperlinkState ||
-                !hyperlinkState.linkable ||
-                hyperlinkState.active
+                !hyperlinkState.canInsertLink ||
+                hyperlinkState.activeLinkMark
               }
-              showLinkPanel={hyperlinkState && hyperlinkState.showLinkPanel}
               emojiDisabled={!emojiState || !emojiState.enabled}
               insertEmoji={emojiState && emojiState.insertEmoji}
               emojiProvider={providers.emojiProvider}

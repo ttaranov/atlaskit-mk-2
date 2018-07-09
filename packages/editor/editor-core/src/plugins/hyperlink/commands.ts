@@ -9,7 +9,7 @@ import { EditorState } from 'prosemirror-state';
 import { filter } from '../../utils/commands';
 import { Mark, Node } from 'prosemirror-model';
 
-const isLinkAllowedAtPos = (pos: number) => (state: EditorState): boolean => {
+const isLinkAtPos = (pos: number) => (state: EditorState): boolean => {
   const text = state.doc.nodeAt(pos);
   if (text) {
     const link = state.schema.marks.link;
@@ -19,7 +19,7 @@ const isLinkAllowedAtPos = (pos: number) => (state: EditorState): boolean => {
 };
 
 export function setLinkHref(pos: number, href: string): Command {
-  return filter(isLinkAllowedAtPos(pos), (state, dispatch, view) => {
+  return filter(isLinkAtPos(pos), (state, dispatch, view) => {
     const node = state.doc.nodeAt(pos) as Node;
     const link = state.schema.marks.link;
     const mark = link.isInSet(node.marks) as Mark;
@@ -39,7 +39,7 @@ export function setLinkHref(pos: number, href: string): Command {
 }
 
 export function setLinkText(pos: number, text: string): Command {
-  return filter(isLinkAllowedAtPos(pos), (state, dispatch, view) => {
+  return filter(isLinkAtPos(pos), (state, dispatch, view) => {
     const node = state.doc.nodeAt(pos) as Node;
     const link = state.schema.marks.link;
     const mark = link.isInSet(node.marks) as Mark;

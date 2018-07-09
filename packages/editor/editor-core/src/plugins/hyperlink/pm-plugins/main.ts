@@ -145,6 +145,7 @@ const getActiveLinkMark = (state: EditorState) => {
 export interface HyperlinkState {
   isEditorFocused: boolean;
   activeLinkMark?: LinkToolbarState;
+  canInsertLink: boolean;
 }
 
 export const stateKey = new PluginKey('hyperlinkPlugin');
@@ -153,7 +154,12 @@ export const plugin = (dispatch: Dispatch) =>
   new Plugin({
     state: {
       init(_, state: EditorState): HyperlinkState {
+        const canInsertLink = canLinkBeCreatedInRange(
+          state.selection.from,
+          state.selection.to,
+        )(state);
         return {
+          canInsertLink,
           isEditorFocused: true,
           activeLinkMark: toState(
             undefined,
@@ -173,6 +179,10 @@ export const plugin = (dispatch: Dispatch) =>
 
         if (tr.docChanged) {
           state = {
+            canInsertLink: canLinkBeCreatedInRange(
+              newState.selection.from,
+              newState.selection.to,
+            )(newState),
             isEditorFocused: state.isEditorFocused,
             activeLinkMark: mapTransactionToState(state.activeLinkMark, tr),
           };
@@ -180,6 +190,7 @@ export const plugin = (dispatch: Dispatch) =>
 
         if (action) {
           state = {
+            canInsertLink: state.canInsertLink,
             isEditorFocused: mapFocusState(state.isEditorFocused, action),
             activeLinkMark: toState(state.activeLinkMark, action, newState),
           };
@@ -187,6 +198,10 @@ export const plugin = (dispatch: Dispatch) =>
 
         if (!oldState.selection.map(tr.doc, tr.mapping).eq(tr.selection)) {
           state = {
+            canInsertLink: canLinkBeCreatedInRange(
+              newState.selection.from,
+              newState.selection.to,
+            )(newState),
             isEditorFocused: state.isEditorFocused,
             activeLinkMark: toState(
               state.activeLinkMark,
