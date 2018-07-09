@@ -9,9 +9,9 @@ export const vendorify = (
 
   if (HTMLElement.prototype.webkitRequestFullscreen) {
     prefix = 'webkit';
-  } else if (HTMLElement.prototype['mozRequestFullScreen']) {
+  } else if ((HTMLElement as any).prototype['mozRequestFullScreen']) {
     prefix = 'moz';
-  } else if (HTMLElement.prototype['msRequestFullScreen']) {
+  } else if ((HTMLElement as any).prototype['msRequestFullScreen']) {
     prefix = 'ms';
   }
 
@@ -24,23 +24,23 @@ export const vendorify = (
 export const requestFullscreen = (element: HTMLElement) => {
   const methodName = vendorify('requestFullScreen');
 
-  if (methodName && element[methodName]) {
-    element[methodName]();
+  if (methodName && (element as any)[methodName]) {
+    (element as any)[methodName]();
   }
 };
 
 export const exitFullscreen = () => {
   const methodName = vendorify('exitFullscreen');
 
-  if (methodName && document[methodName]) {
-    document[methodName]();
+  if (methodName && (document as any)[methodName]) {
+    (document as any)[methodName]();
   }
 };
 
 export const getFullscreenElement = (): HTMLElement | undefined => {
   const propertyName = vendorify('fullscreenElement');
 
-  return propertyName && document[propertyName];
+  return propertyName && (document as any)[propertyName];
 };
 
 export const toggleFullscreen = (element?: HTMLElement) => {
