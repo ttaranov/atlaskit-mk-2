@@ -9,6 +9,7 @@ import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
+import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import QuoteIcon from '@atlaskit/icon/glyph/quote';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
@@ -45,6 +46,7 @@ import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/action
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
 import { insertLayoutColumns } from '../../../layout/actions';
+import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
 
 export interface Props {
   buttons: number;
@@ -54,6 +56,7 @@ export interface Props {
   editorActions?: EditorActions;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
+  decisionSupported?: boolean;
   mentionsSupported?: boolean;
   insertMentionQuery?: () => void;
   mediaUploadsEnabled?: boolean;
@@ -289,6 +292,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
+      decisionSupported,
       macroProvider,
       linkSupported,
       linkDisabled,
@@ -373,7 +377,15 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         });
       });
     }
-
+    if (decisionSupported) {
+      items.push({
+        content: 'Decision',
+        value: { name: 'decision' },
+        tooltipDescription: 'Insert decision',
+        tooltipPosition: 'right',
+        elemBefore: <DecisionIcon label="Insert decision" />,
+      });
+    }
     if (
       horizontalRuleEnabled &&
       this.props.editorView.state.schema.nodes.rule
@@ -487,6 +499,16 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
+  @analyticsDecorator('atlassian.editor.format.decision.button')
+  private insertDecision = (): boolean => {
+    const { editorView } = this.props;
+    if (!editorView) {
+      return false;
+    }
+    changeToTaskDecision(editorView, 'decisionList');
+    return true;
+  };
+
   @analyticsDecorator('atlassian.editor.format.horizontalrule.button')
   private insertHorizontalRule = (): boolean => {
     const { editorView } = this.props;
@@ -545,6 +567,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
           `atlassian.editor.format.${item.value.name}.button`,
         );
         onInsertBlockType!(item.value.name, editorView);
+        break;
+      case 'decision':
+        this.insertDecision();
         break;
       case 'horizontalrule':
         this.insertHorizontalRule();
