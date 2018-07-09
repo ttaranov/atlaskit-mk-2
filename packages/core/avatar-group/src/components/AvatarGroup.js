@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import { ThemeProvider } from 'styled-components';
 import DropdownMenu, { DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar, {
@@ -27,7 +27,7 @@ type Props = {
    can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
-  avatar: ComponentType<*>,
+  avatar: ElementConfig<typeof Avatar>,
   /** The maximum number of avatars allowed in the grid */
   maxCount: number,
   /** Defines the size of the avatar */

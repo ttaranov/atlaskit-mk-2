@@ -2,10 +2,12 @@
 import { type ComponentType } from 'react';
 
 export function omit(obj: {}, ...keysToOmit: Array<string>) {
-  return Object.keys(obj).reduce((acc, key: string) => {
-    if (keysToOmit.indexOf(key) === -1) acc[key] = obj[key];
-    return acc;
-  }, {});
+  const newObj = { ...obj };
+
+  for (const key of keysToOmit) {
+    delete newObj[key];
+  }
+  return newObj;
 }
 
 export function getDisplayName(prefix: string, Component: ComponentType<*>) {

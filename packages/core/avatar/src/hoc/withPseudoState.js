@@ -100,7 +100,10 @@ export default function withPseudoState<InnerProps: {}>(
 
       // strip the consumer's handlers off props, then merge with our handlers
       // if the element is interactive
-      // $FlowFixMe - omit issue
+      // We cannot properly type omit because of the inability to convert from
+      // an array to a union of the array's items. See https://github.com/facebook/flow/issues/961
+      // if you want to learn more about this
+      // $FlowFixMe
       const props: CombinedProps = omit(this.props, ...INTERNAL_HANDLERS);
 
       const self: Object = this;
