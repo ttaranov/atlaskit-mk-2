@@ -85,6 +85,7 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
           <ToolbarButton
             spacing="compact"
             href={alwaysOpenLinkAt || this.state.text}
+            onClick={onOpenLink}
             target="_blank"
             title="Open link"
             iconBefore={<OpenIcon label="Open link" />}

@@ -12,8 +12,10 @@ import HyperlinkEdit from './HyperlinkEdit';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import { ActivityProvider } from '@atlaskit/activity';
 import RecentSearch from './RecentSearch';
+import { normalizeUrl } from '../utils';
+import { InsertStatus, HyperlinkState } from '../pm-plugins/main';
 
-export class AddLinkDisplayTextToolbar extends React.PureComponent<{
+export class AddDisplayTextToolbar extends React.PureComponent<{
   pos: number;
   node: Node;
   view: EditorView;
@@ -160,4 +162,68 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
       />
     );
   }
+}
+
+export interface Props {
+  hyperlinkState?: HyperlinkState;
+  view: EditorView;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
+  activityProvider?: Promise<ActivityProvider>;
+}
+export default function HyperlinkToolbar(props: Props) {
+  const {
+    hyperlinkState,
+    view,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    activityProvider,
+  } = props;
+  if (hyperlinkState && hyperlinkState.activeLinkMark) {
+    if (hyperlinkState.activeLinkMark.type === InsertStatus.EDIT_LINK_TOOLBAR) {
+      const { node, pos } = hyperlinkState.activeLinkMark;
+      const mark = view.state.schema.marks.link.isInSet(node.marks) as Mark;
+      const isLinkTextTheSameAsTheLinkUrl =
+        mark.attrs.href === normalizeUrl(node.text!);
+      const Toolbar = isLinkTextTheSameAsTheLinkUrl
+        ? AddDisplayTextToolbar
+        : EditLinkHrefToolbar;
+      return (
+        <Toolbar
+          pos={pos}
+          node={node}
+          view={view}
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
+        />
+      );
+    } else if (
+      hyperlinkState.activeLinkMark.type === InsertStatus.INSERT_LINK_TOOLBAR
+    ) {
+      const { from, to } = hyperlinkState.activeLinkMark;
+      if (activityProvider) {
+        return (
+          <ActivityPoweredInsertLinkToolbar
+            from={from}
+            to={to}
+            view={view}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+            activityProvider={activityProvider}
+          />
+        );
+      } else {
+        return (
+          <InsertLinkToolbar
+            from={from}
+            to={to}
+            view={view}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+          />
+        );
+      }
+    }
+  }
+  return null;
 }
