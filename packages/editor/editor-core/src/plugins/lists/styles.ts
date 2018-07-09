@@ -26,58 +26,6 @@ export const listsStyles = css`
     }
   }
 
-  .ProseMirror ol {
-    & > li,
-    & > li > ol > li > ol > li > ol > li,
-    & > li > ol > li > ol > li > ol > li > ol > li > ol > li > ol > li {
-      list-style-type: decimal;
-    }
-    /* stylelint-disable selector-combinator-space-before */
-    & > li > ol > li,
-    & > li > ol > li > ol > li > ol > li > ol > li,
-    &
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li {
-      list-style-type: lower-alpha;
-    }
-
-    & > li > ol > li > ol > li,
-    & > li > ol > li > ol > li > ol > li > ol > li > ol > li,
-    &
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li
-      > ol
-      > li {
-      list-style-type: lower-roman;
-    }
-  }
-  /* stylelint-enable */
   .ProseMirror li > * {
     pointer-events: auto;
   }
@@ -99,28 +47,38 @@ export const listsStyles = css`
 
   /** =============== LIST INDENT STYLES ========= */
   .ProseMirror {
-    ul {
+    ul,
+    ul ul ul ul,
+    ul ul ul ul ul ul ul {
       list-style-type: disc;
     }
 
-    ul ul {
+    ul ul,
+    ul ul ul ul ul,
+    ul ul ul ul ul ul ul ul {
       list-style-type: circle;
     }
 
-    ul ul ul {
+    ul ul ul,
+    ul ul ul ul ul ul,
+    ul ul ul ul ul ul ul ul ul {
       list-style-type: square;
     }
 
-    ul ul ul ul {
-      list-style-type: disc;
+    ol,
+    ol ol ol ol,
+    ol ol ol ol ol ol ol {
+      list-style-type: decimal;
     }
-
-    ul ul ul ul ul {
-      list-style-type: circle;
+    ol ol,
+    ol ol ol ol ol,
+    ol ol ol ol ol ol ol ol {
+      list-style-type: lower-alpha;
     }
-
-    ul ul ul ul ul ul {
-      list-style-type: square;
+    ol ol ol,
+    ol ol ol ol ol ol,
+    ol ol ol ol ol ol ol ol ol {
+      list-style-type: lower-roman;
     }
   }
 `;
