@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "4.5.12",
+  "version": "4.6.0",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -30,7 +30,7 @@
     "@atlaskit/flag": "^8.1.1",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/modal-dialog": "^5.2.7",
-    "@atlaskit/quick-search": "^2.3.4",
+    "@atlaskit/quick-search": "^3.0.0",
     "@atlaskit/theme": "^4.0.4",
     "@atlaskit/util-service-support": "^2.0.11",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -49,9 +49,9 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/navigation": "^32.3.1",
+    "@atlaskit/navigation": "^32.3.2",
     "@atlaskit/page": "^7.1.1",
-    "@atlaskit/quick-search": "^2.3.4",
+    "@atlaskit/quick-search": "^3.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fetch-mock": "^5.12.1",
     "react-dom": "^16.3.0",

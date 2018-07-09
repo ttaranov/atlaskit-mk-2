@@ -1,5 +1,15 @@
 # @atlaskit/global-search
 
+## 4.6.0
+
+- [minor] Support sticky header and footer [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+- [minor] Updated dependencies [8bf8e51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8bf8e51)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+- [none] Updated dependencies [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+
 ## 4.5.12
 - [patch] fixing XPSRCH-915 search results should not disapear between searches [0683d75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0683d75)
 
