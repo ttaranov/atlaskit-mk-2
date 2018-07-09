@@ -107,6 +107,7 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
+          containerId: 'abc',
         },
         {
           resultId: pages[1].id,
@@ -116,6 +117,7 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceBlogpost,
+          containerId: 'abc',
         },
       ]);
     });

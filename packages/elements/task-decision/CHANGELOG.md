@@ -1,5 +1,19 @@
 # @atlaskit/task-decision
 
+## 7.1.11
+- [patch] FS-1704 - Bug fix - copy and pasting of rendered actions/decisions into the editor [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+- [none] Updated dependencies [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+  - @atlaskit/editor-common@11.4.1
+
+## 7.1.10
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/avatar-group@1.0.0
+
+## 7.1.9
+- [patch] onChange for a ResourcedTaskItem will be called on changes even if no taskDecisionProvider is provided [07cb42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07cb42f)
+- [none] Updated dependencies [07cb42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07cb42f)
+
 ## 7.1.8
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/util-data-test@9.1.15

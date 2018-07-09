@@ -19,10 +19,10 @@ import AdvancedSearchResult from './AdvancedSearchResult';
 import ObjectResultComponent from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
-  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface BaseResultProps {
   type: string;
@@ -62,7 +62,7 @@ function createAndFireSearchResultSelectedEvent(createEvent, props): void {
       ...DEFAULT_GAS_ATTRIBUTES,
     },
   });
-  event.fire(DEFUALT_GAS_CHANNEL);
+  event.fire(DEFAULT_GAS_CHANNEL);
 }
 
 const searchResultsAnalyticsEvents = {
@@ -199,8 +199,9 @@ export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
   />
 );
 
-function getConfluenceAdvancedSearchLink(query: string) {
-  return `/wiki/dosearchsite.action?queryString=${encodeURIComponent(query)}`;
+export function getConfluenceAdvancedSearchLink(query?: string) {
+  const queryString = query ? `?queryString=${encodeURIComponent(query)}` : '';
+  return `/wiki/dosearchsite.action${queryString}`;
 }
 
 export function redirectToConfluenceAdvancedSearch(query = '') {

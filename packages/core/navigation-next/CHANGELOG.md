@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 1.0.2
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/dropdown-menu@5.2.2
+
 ## 1.0.1
 - [patch] Fix export 'brightness' was not found in 'chromatism' warning/error in navigation-next [0c9d7b1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c9d7b1)
 

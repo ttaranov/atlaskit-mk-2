@@ -57,7 +57,7 @@ export default class FabricElementsListener extends React.Component<
         onEvent={this.listenerHandler}
         channel={ELEMENTS_CHANNEL}
       >
-        {React.Children.only(this.props.children)}
+        {this.props.children}
       </AnalyticsListener>
     );
   }

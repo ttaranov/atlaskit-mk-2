@@ -1,9 +1,10 @@
 // @flow
 
-import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
-import ArrowrightIcon from '@atlaskit/icon/glyph/arrow-right';
+import ArrowleftIcon from '@atlaskit/icon/glyph/chevron-left-large';
+import ArrowrightIcon from '@atlaskit/icon/glyph/chevron-right-large';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
+import styled from 'styled-components';
 import { getMonthName } from '../util';
 import Btn from './Btn';
 
@@ -16,26 +17,33 @@ type Props = {|
   handleClickPrev?: () => void,
 |};
 
+const ArrowLeft = styled.div`
+  margin-left: 8px;
+`;
+const ArrowRight = styled.div`
+  margin-right: 8px;
+`;
+
 export default (props: Props) => (
   <Heading aria-hidden="true">
-    <div>
+    <ArrowLeft>
       <Btn onClick={props.handleClickPrev}>
         <ArrowleftIcon
           label="Last month"
           size="medium"
-          primaryColor={colors.N80}
+          primaryColor={colors.N70}
         />
       </Btn>
-    </div>
+    </ArrowLeft>
     <MonthAndYear>{`${getMonthName(props.month)} ${props.year}`}</MonthAndYear>
-    <div>
+    <ArrowRight>
       <Btn onClick={props.handleClickNext}>
         <ArrowrightIcon
           label="Next month"
           size="medium"
-          primaryColor={colors.N80}
+          primaryColor={colors.N70}
         />
       </Btn>
-    </div>
+    </ArrowRight>
   </Heading>
 );

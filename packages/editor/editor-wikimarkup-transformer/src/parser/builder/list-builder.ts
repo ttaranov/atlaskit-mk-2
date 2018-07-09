@@ -5,7 +5,7 @@ import { AddArgs, Builder, List, ListItem, ListType } from '../../interfaces';
  * Return the type of a list from the bullets
  */
 export function getType(bullets: string): ListType {
-  return /#/.test(bullets) ? 'orderedList' : 'bulletList';
+  return /#$/.test(bullets) ? 'orderedList' : 'bulletList';
 }
 
 export class ListBuilder implements Builder {

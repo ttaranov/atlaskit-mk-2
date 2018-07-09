@@ -1,10 +1,10 @@
 // @flow
 
-import React, { Component, type Element, type Node } from 'react';
+import React, { Component, type Element } from 'react';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import { colors, themed } from '@atlaskit/theme';
+import { colors, themed, gridSize } from '@atlaskit/theme';
 import type { CommonProps, fn, InnerProps } from './types';
 
 // maintains function shape
@@ -127,15 +127,25 @@ class ControlOption extends Component<OptionProps, OptionState> {
         getStyles={getStyles}
         innerProps={props}
       >
-        <Icon
-          primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
-          secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
-        />
-        <Truncate>{children}</Truncate>
+        <div css={iconWrapperCSS()}>
+          <Icon
+            primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
+            secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
+          />
+        </div>
+        <div css={truncateCSS()}>{children}</div>
       </components.Option>
     );
   }
 }
+
+const iconWrapperCSS = () => ({
+  alignItems: 'center',
+  display: 'flex ',
+  'flex-shrink': 0,
+  paddingRight: '4px',
+});
+
 /* TODO:
   to be removed
   the label of an option in the menu
@@ -147,18 +157,25 @@ class ControlOption extends Component<OptionProps, OptionState> {
   by users who buy into radio / checkbox select.
 */
 
-const Truncate = ({ children }: { children: Node }) => (
-  <div
-    css={{
-      textOverflow: 'ellipsis',
-      'overflow-x': 'hidden',
-      flex: 1,
-      whiteSpace: 'nowrap',
-    }}
-  >
-    {children}
-  </div>
-);
+const truncateCSS = () => ({
+  textOverflow: 'ellipsis',
+  'overflow-x': 'hidden',
+  'flex-grow': 1,
+  whiteSpace: 'nowrap',
+});
+
+export const inputOptionStyles = (css: Object, { isFocused }: Object) => ({
+  ...css,
+  backgroundColor: isFocused ? colors.N30 : 'transparent',
+  color: 'inherit',
+  cursor: 'pointer',
+  paddingLeft: `${gridSize() * 2}px`,
+  paddingTop: '4px',
+  paddingBottom: '4px',
+  ':active': {
+    backgroundColor: colors.B50,
+  },
+});
 
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />

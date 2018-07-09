@@ -1,7 +1,7 @@
 // @flow
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
-import Code from '../src/Code';
+import ThemedCode, { Code } from '../src/Code';
 
 const input = `
   const a = 'foo';
@@ -11,6 +11,10 @@ const input = `
 
 describe('Code', () => {
   it('should have an empty string as the default language', () => {
-    expect(shallow(<Code text={input} />).prop('language')).toBe('');
+    expect(
+      mount(<ThemedCode text={input} />)
+        .find(Code)
+        .prop('language'),
+    ).toBe('');
   });
 });

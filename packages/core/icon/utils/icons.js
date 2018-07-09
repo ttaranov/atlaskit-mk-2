@@ -61,8 +61,10 @@ import CheckboxIcon from '../glyph/checkbox';
 import ChevronDownCircleIcon from '../glyph/chevron-down-circle';
 import ChevronDownIcon from '../glyph/chevron-down';
 import ChevronLeftCircleIcon from '../glyph/chevron-left-circle';
+import ChevronLeftLargeIcon from '../glyph/chevron-left-large';
 import ChevronLeftIcon from '../glyph/chevron-left';
 import ChevronRightCircleIcon from '../glyph/chevron-right-circle';
+import ChevronRightLargeIcon from '../glyph/chevron-right-large';
 import ChevronRightIcon from '../glyph/chevron-right';
 import ChevronUpCircleIcon from '../glyph/chevron-up-circle';
 import ChevronUpIcon from '../glyph/chevron-up';
@@ -735,6 +737,12 @@ export default {
     componentName: 'ChevronLeftCircleIcon',
     package: '@atlaskit/icon/glyph/chevron-left-circle',
   },
+  'chevron-left-large': {
+    keywords: ['chevron-left-large', 'chevronleftlarge'],
+    component: ChevronLeftLargeIcon,
+    componentName: 'ChevronLeftLargeIcon',
+    package: '@atlaskit/icon/glyph/chevron-left-large',
+  },
   'chevron-left': {
     keywords: ['chevron-left', 'chevronleft', 'back', 'previous'],
     component: ChevronLeftIcon,
@@ -746,6 +754,12 @@ export default {
     component: ChevronRightCircleIcon,
     componentName: 'ChevronRightCircleIcon',
     package: '@atlaskit/icon/glyph/chevron-right-circle',
+  },
+  'chevron-right-large': {
+    keywords: ['chevron-right-large', 'chevronrightlarge'],
+    component: ChevronRightLargeIcon,
+    componentName: 'ChevronRightLargeIcon',
+    package: '@atlaskit/icon/glyph/chevron-right-large',
   },
   'chevron-right': {
     keywords: ['chevron-right', 'chevronright', 'forward', 'next'],

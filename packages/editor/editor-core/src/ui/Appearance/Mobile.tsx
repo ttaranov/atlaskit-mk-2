@@ -35,7 +35,7 @@ const ContentArea = styled(ContentStyles)`
   height: 100%;
 
   .ProseMirror {
-    height: 100%;
+    min-height: 100%;
   }
 `;
 ContentArea.displayName = 'ContentArea';

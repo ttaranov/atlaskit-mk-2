@@ -75,6 +75,9 @@ export const defaultTheme: ItemTheme = {
   },
 };
 
+const isValidCssValue = value =>
+  value !== undefined && value !== null && value !== '';
+
 // Returns the theme that contains the requested theme key(s), preferring the user-supplied
 // theme if it is provided.
 export const themeWithKeys = (
@@ -83,11 +86,15 @@ export const themeWithKeys = (
   parentKey?: string,
 ) => {
   if (parentKey) {
-    return maybeTheme && maybeTheme[parentKey] && maybeTheme[parentKey][key]
+    return maybeTheme &&
+      maybeTheme[parentKey] &&
+      isValidCssValue(maybeTheme[parentKey][key])
       ? maybeTheme
       : defaultTheme;
   }
-  return maybeTheme && maybeTheme[key] ? maybeTheme : defaultTheme;
+  return maybeTheme && isValidCssValue(maybeTheme[key])
+    ? maybeTheme
+    : defaultTheme;
 };
 
 // Returns the theme value for the requested key(s), falling back to the default theme if the

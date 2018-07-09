@@ -1,5 +1,25 @@
 # @atlaskit/conversation
 
+## 8.2.11
+- [patch] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+  - @atlaskit/editor-core@74.0.0
+  - @atlaskit/comment@5.0.5
+
+## 8.2.10
+
+
+- [none] Updated dependencies [40095d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40095d6)
+  - @atlaskit/editor-core@73.9.29
+- [patch] Updated dependencies [d520a6f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d520a6f)
+  - @atlaskit/editor-core@73.9.29
+
+## 8.2.9
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/editor-core@73.9.19
+  - @atlaskit/single-select@5.2.4
+  - @atlaskit/comment@5.0.4
+
 ## 8.2.8
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/util-data-test@9.1.15

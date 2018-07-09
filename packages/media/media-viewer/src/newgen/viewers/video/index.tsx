@@ -8,13 +8,14 @@ import { CustomVideo } from './customVideo';
 import { getFeatureFlag } from '../../utils/getFeatureFlag';
 import { isIE } from '../../utils/isIE';
 
-export type Props = {
+export type Props = Readonly<{
   item: FileItem;
   context: Context;
   collectionName?: string;
-  readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly showControls?: () => void;
-};
+  featureFlags?: MediaViewerFeatureFlags;
+  showControls?: () => void;
+  previewCount: number;
+}>;
 
 export type State = {
   src: Outcome<string, Error>;
@@ -38,10 +39,10 @@ export class VideoViewer extends React.Component<Props, State> {
 
   render() {
     const { src, isHDActive } = this.state;
-    const { item, featureFlags, showControls } = this.props;
+    const { item, featureFlags, showControls, previewCount } = this.props;
     const useCustomVideoPlayer =
       !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
-
+    const isAutoPlay = previewCount === 0;
     switch (src.status) {
       case 'PENDING':
         return <Spinner />;
@@ -49,6 +50,7 @@ export class VideoViewer extends React.Component<Props, State> {
         if (useCustomVideoPlayer) {
           return (
             <CustomVideo
+              isAutoPlay={isAutoPlay}
               onHDToggleClick={this.onHDChange}
               showControls={showControls}
               src={src.data}
@@ -57,7 +59,7 @@ export class VideoViewer extends React.Component<Props, State> {
             />
           );
         } else {
-          return <Video controls src={src.data} />;
+          return <Video autoPlay={isAutoPlay} controls src={src.data} />;
         }
       case 'FAILED':
         return <ErrorMessage>{src.err.message}</ErrorMessage>;
@@ -68,7 +70,9 @@ export class VideoViewer extends React.Component<Props, State> {
     const { context, item, collectionName } = this.props;
     const preferHd = isHDActive && isHDAvailable(item);
     const videoUrl = getVideoArtifactUrl(item, preferHd);
-
+    if (!videoUrl) {
+      return;
+    }
     try {
       this.setState({
         src: {
@@ -88,7 +92,7 @@ export class VideoViewer extends React.Component<Props, State> {
 }
 
 function isHDAvailable(fileItem: FileItem): boolean {
-  return (
+  return !!(
     fileItem.details &&
     fileItem.details.artifacts &&
     fileItem.details.artifacts[hdArtifact] &&

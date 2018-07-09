@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "7.1.8",
+  "version": "7.1.11",
   "config": {
     "access": "public"
   },
@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^3.0.4",
-    "@atlaskit/avatar": "^11.1.0",
+    "@atlaskit/avatar-group": "^1.0.0",
     "@atlaskit/button": "^8.2.3",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/spinner": "^8.0.0",
@@ -40,8 +40,9 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/avatar": "^12.0.0",
     "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/editor-common": "^11.3.8",
+    "@atlaskit/editor-common": "^11.4.1",
     "@atlaskit/renderer": "^18.2.9",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^9.1.15",
