@@ -184,7 +184,7 @@ const renderSearchResults = (
       query,
     ),
     renderPeopleGroup(
-      <FormattedMessage id="global-search.confluence.people-heading" />,
+      <FormattedMessage id="global-search.people.people-heading" />,
       take(peopleResults, MAX_PEOPLE),
       query,
     ),
