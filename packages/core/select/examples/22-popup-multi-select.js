@@ -17,17 +17,25 @@ const options = [
 
 const defaults = { options, placeholder: 'Choose a City' };
 
-class MultiPopupSelectExample extends Component {
+type State = {
+  values: Array<Object>,
+  valuesString: string,
+  placeholder: string,
+  controlShouldRenderValue: boolean,
+};
+class MultiPopupSelectExample extends Component<*, State> {
   state = {
     values: [options[0]],
+    valuesString: '',
     placeholder: 'Choose value...',
+    controlShouldRenderValue: false,
   };
   componentWillMount() {
     this.setState(state => ({
       valuesString: state.values.map(v => v.label).join(', '),
     }));
   }
-  onChange = values => {
+  onChange = (values: any) => {
     this.setState({
       values,
       valuesString: values.map(v => v.label).join(', '),
@@ -40,21 +48,30 @@ class MultiPopupSelectExample extends Component {
   };
 
   render() {
+    const {
+      placeholder,
+      valuesString,
+      values,
+      controlShouldRenderValue,
+    } = this.state;
     return (
       <Fragment>
         <PopupSelect
           {...defaults}
-          controlShouldRenderValue={this.state.controlShouldRenderValue}
+          controlShouldRenderValue={controlShouldRenderValue}
           hideSelectedOptions={false}
           onChange={this.onChange}
-          value={this.state.values}
-          target={
-            <Button>{this.state.valuesString || this.state.placeholder}</Button>
-          }
+          value={values}
+          target={<Button>{valuesString || placeholder}</Button>}
           isMulti
         />
         <div>
-          <Checkbox onChange={this.toggleConfig} label="show value in search" />
+          <Checkbox
+            value="show value in search"
+            name="toggleValue"
+            onChange={this.toggleConfig}
+            label="show value in search"
+          />
         </div>
       </Fragment>
     );
