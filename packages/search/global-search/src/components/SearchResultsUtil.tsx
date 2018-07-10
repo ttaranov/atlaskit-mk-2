@@ -24,6 +24,8 @@ import {
   DEFAULT_GAS_ATTRIBUTES,
 } from '../util/analytics-util';
 
+export const ADVANCED_SEARCH_RESULT_ID = 'search_confluence';
+
 export interface BaseResultProps {
   type: string;
   name: string;
@@ -169,7 +171,7 @@ export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
   <AdvancedSearchResult
     href={getConfluenceAdvancedSearchLink(props.query)}
     key="search_confluence"
-    resultId="search_confluence"
+    resultId={ADVANCED_SEARCH_RESULT_ID}
     text={props.text}
     icon={props.icon}
     type={AnalyticsType.AdvancedSearchConfluence}

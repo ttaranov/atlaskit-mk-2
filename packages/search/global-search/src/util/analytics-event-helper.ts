@@ -5,8 +5,33 @@ import {
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
 } from './analytics-util';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { GasPayload, EventType } from '@atlaskit/analytics-gas-types';
 import { CreateAnalyticsEventFn } from '../components/analytics/types';
+
+const fireGasEvent = (
+  createAnalyticsEvent: CreateAnalyticsEventFn | undefined,
+  action: string,
+  actionSubject: string,
+  actionSubjectId: string,
+  eventType: EventType,
+  extraAtrributes: object,
+): void => {
+  if (createAnalyticsEvent) {
+    const event = createAnalyticsEvent();
+    const payload = {
+      action,
+      actionSubject,
+      actionSubjectId,
+      eventType,
+      source: DEFAULT_GAS_SOURCE,
+      attributes: {
+        ...extraAtrributes,
+        ...DEFAULT_GAS_ATTRIBUTES,
+      },
+    };
+    event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+  }
+};
 
 export function firePreQueryShownEvent(
   eventAttributes: ShownAnalyticsAttributes,
@@ -14,25 +39,51 @@ export function firePreQueryShownEvent(
   searchSessionId: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
-  if (createAnalyticsEvent) {
-    const event = createAnalyticsEvent();
-    const payload: GasPayload = {
-      action: 'shown',
-      actionSubject: 'searchResults',
-      actionSubjectId: 'preQuerySearchResults',
-      eventType: 'ui',
-      source: DEFAULT_GAS_SOURCE,
-      attributes: {
-        preQueryRequestDurationMs: elapsedMs,
-        searchSessionId: searchSessionId,
-        ...eventAttributes,
-        ...DEFAULT_GAS_ATTRIBUTES,
-      },
-    };
-    event.update(payload).fire(DEFAULT_GAS_CHANNEL);
-  }
+  fireGasEvent(
+    createAnalyticsEvent,
+    'shown',
+    'searchResults',
+    'preQuerySearchResults',
+    'ui',
+    {
+      preQueryRequestDurationMs: elapsedMs,
+      searchSessionId: searchSessionId,
+      ...eventAttributes,
+    },
+  );
 }
 
+export function fireTextEnteredEvent(
+  query: string,
+  searchSessionId: string,
+  queryVersion: number,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
+) {
+  // TODO ask why length of sanitizedQuery
+  const sanitizedQuery = sanitizeSearchQuery(query);
+  fireGasEvent(createAnalyticsEvent, 'entered', 'text', '', 'track', {
+    queryId: null,
+    queryVersion: queryVersion,
+    queryLength: sanitizedQuery.length,
+    wordCount:
+      sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
+    searchSessionId: searchSessionId,
+  });
+}
+
+export function fireDismissedEvent(
+  searchSessionId: string,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
+) {
+  fireGasEvent(
+    createAnalyticsEvent,
+    'dismissed',
+    'globalSearchDrawer',
+    '',
+    'ui',
+    { searchSessionId },
+  );
+}
 export function firePostQueryShownEvent(
   resultsDetails: ShownAnalyticsAttributes,
   elapsedMs: number,
@@ -62,26 +113,37 @@ export function firePostQueryShownEvent(
   event.update(payload).fire(DEFAULT_GAS_CHANNEL);
 }
 
-export type KeyboardControlEvent = {
-  resultId: string;
-  type: string;
-  contentType: string;
-  sectionIndex: string;
-  index: string;
-  indexWithinSection: string;
-  key;
-};
+const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
+  resultContentId: eventData.resultId,
+  type: eventData.contentType,
+  sectionId: eventData.type,
+  sectionIndex: eventData.sectionIndex,
+  globalInde: eventData.index,
+  indexWithinSection: eventData.indexWithinSection,
+});
 
-export type SelectedSearchResultEventData = {
+export interface SearchResultEvent {
   resultId: string;
   type: string;
   contentType: string;
   sectionIndex: string;
   index: string;
   indexWithinSection: string;
-  method;
-  newTab;
-};
+}
+
+export interface KeyboardControlEvent extends SearchResultEvent {
+  key: string;
+}
+
+export interface SelectedSearchResultEvent extends SearchResultEvent {
+  method: string;
+  newTab: boolean;
+}
+
+export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
+  queryHash: string;
+  queryVersion: string;
+}
 
 export type AnalyticsNextEvent = {
   payload: GasPayload;
@@ -91,75 +153,65 @@ export type AnalyticsNextEvent = {
 };
 
 export function fireSelectedSearchResult(
-  eventData: SelectedSearchResultEventData,
+  eventData: SelectedSearchResultEvent,
   searchSessionId: string,
-  createAnalyticsEvent: CreateAnalyticsEventFn,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  const {
-    method,
-    newTab,
-    resultId,
-    type,
-    contentType,
-    sectionIndex,
-    index,
-    indexWithinSection,
-  } = eventData;
-  const event = createAnalyticsEvent();
-  const payload: GasPayload = {
-    action: 'selected',
-    actionSubject: 'navigationItem',
-    actionSubjectId: 'searchResult',
-    eventType: 'track',
-    source: DEFAULT_GAS_SOURCE,
-    attributes: {
+  const { method, newTab } = eventData;
+  fireGasEvent(
+    createAnalyticsEvent,
+    'selected',
+    'navigationItem',
+    'searchResult',
+    'ui',
+    {
       trigger: method,
       searchSessionId: searchSessionId,
-      resultContentId: resultId,
-      type: contentType,
-      sectionId: type,
-      sectionIndex,
-      globalIndex: index,
-      indexWithinSection,
       newTab,
-      ...DEFAULT_GAS_ATTRIBUTES,
+      ...transformSearchResultEventData(eventData),
     },
-  };
-  event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+  );
+}
+
+export function fireSelectedAdvancedSearch(
+  eventData: AdvancedSearchSelectedEvent,
+  searchSessionId: string,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
+) {
+  const { method, newTab, queryHash, queryVersion } = eventData;
+  fireGasEvent(
+    createAnalyticsEvent,
+    'selected',
+    'navigationItem',
+    'confluenceAdvancedSearchLink',
+    'ui',
+    {
+      trigger: method,
+      searchSessionId: searchSessionId,
+      newTab,
+      queryHash,
+      queryVersion,
+      ...transformSearchResultEventData(eventData),
+    },
+  );
 }
 
 export function fireHighlightedSearchResult(
   eventData: KeyboardControlEvent,
   searchSessionId: string,
-  createAnalyticsEvent: CreateAnalyticsEventFn,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  const {
-    key,
-    resultId,
-    type,
-    contentType,
-    sectionIndex,
-    index,
-    indexWithinSection,
-  } = eventData;
-  const event = createAnalyticsEvent();
-  const payload: GasPayload = {
-    action: 'highlighted',
-    actionSubject: 'navigationItem',
-    actionSubjectId: 'searchResult',
-    eventType: 'ui',
-    source: DEFAULT_GAS_SOURCE,
-    attributes: {
+  const { key } = eventData;
+  fireGasEvent(
+    createAnalyticsEvent,
+    'highlighted',
+    'navigationItem',
+    'searchResult',
+    'ui',
+    {
       searchSessionId: searchSessionId,
-      resultContentId: resultId,
-      type: contentType,
-      sectionId: type,
-      sectionIndex,
-      globalInde: index,
-      indexWithinSection,
-      ...DEFAULT_GAS_ATTRIBUTES,
+      ...transformSearchResultEventData(eventData),
       key,
     },
-  };
-  event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+  );
 }
