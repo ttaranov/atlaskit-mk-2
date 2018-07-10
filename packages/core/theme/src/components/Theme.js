@@ -10,26 +10,34 @@ type Props = {
 
 const noop = () => null;
 
-function simplifyThemeFunction(parentTheme, fn, name) {
+function functionOrValue(parentTheme, childTheme, name) {
+  return typeof childTheme[name] === 'function'
+    ? simplifyThemeFunction(parentTheme, childTheme, name)
+    : childTheme[name];
+}
+
+function mergeParentAndChildTheme(parentTheme, childTheme) {
+  return Object.keys(childTheme).reduce(
+    (parentThemeCopy, name) => {
+      parentThemeCopy[name] = functionOrValue(parentTheme, childTheme, name);
+      return parentThemeCopy;
+    },
+    { ...parentTheme },
+  );
+}
+
+function simplifyThemeFunction(parentTheme, childTheme, name) {
   return state =>
-    fn(state, { ...parentTheme, [name]: parentTheme[name] || noop });
+    childTheme[name](state, {
+      ...childTheme,
+      [name]: parentTheme[name] || noop,
+    });
 }
 
-function valueOrFunction(parentTheme, fn, name) {
-  return typeof fn === 'function'
-    ? simplifyThemeFunction(parentTheme, fn, name)
-    : fn;
-}
-
-export default ({ children, ...props }: Props) => (
+export default ({ children, ...childTheme }: Props) => (
   <Consumer>
-    {(theme: ThemeStructure) => {
-      const merged = { ...theme };
-
-      Object.keys(props).forEach(name => {
-        merged[name] = valueOrFunction(theme, props[name], name);
-      });
-
+    {(parentTheme: ThemeStructure) => {
+      const merged = mergeParentAndChildTheme(parentTheme, childTheme);
       return typeof children === 'function' ? (
         children(merged)
       ) : (
