@@ -5,12 +5,18 @@ import {
   p,
   insertText,
 } from '@atlaskit/editor-test-helpers';
+import hyperlinkEditorPlugin from '../../../src/plugins/hyperlink';
 
 describe('hyperlink', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
     });
+
+  it('should not show toolbar in message editor', () => {
+    const props = { appearance: 'message' } as any;
+    expect(hyperlinkEditorPlugin.contentComponent!(props)).toBe(null);
+  });
 
   describe('link mark behaviour', () => {
     it('should not change the link text when typing text before a link', () => {
