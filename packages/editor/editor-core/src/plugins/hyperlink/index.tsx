@@ -26,11 +26,15 @@ const hyperlinkPlugin: EditorPlugin = {
   },
 
   contentComponent({
+    appearance,
     editorView,
     popupsMountPoint,
     popupsBoundariesElement,
     providerFactory,
   }) {
+    if (appearance === 'message') {
+      return null;
+    }
     const renderToolbar = providers => (
       <WithPluginState
         plugins={{ hyperlinkState: stateKey }}
