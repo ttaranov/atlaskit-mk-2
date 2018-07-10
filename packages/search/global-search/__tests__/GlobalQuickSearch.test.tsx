@@ -48,7 +48,8 @@ describe('GlobalQuickSearch', () => {
     const wrapper = render({ onSearch: searchMock });
 
     const onSearchInput: Function = wrapper
-      .find(QuickSearch)
+      .children()
+      .first()
       .prop('onSearchInput');
     onSearchInput({ target: { value: 'foo' } });
 

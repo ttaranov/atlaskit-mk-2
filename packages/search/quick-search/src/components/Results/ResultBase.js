@@ -25,7 +25,7 @@ export default class ResultBase extends PureComponent<Props> {
     type: BASE_RESULT_TYPE,
   };
 
-  handleClick = e => {
+  handleClick = (e: object) => {
     const {
       analyticsData,
       onClick,
