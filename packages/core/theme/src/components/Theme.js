@@ -4,8 +4,10 @@ import React, { type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
 import type {
   ThemeInput,
+  ThemeInputFunction,
   ThemeInputValue,
   ThemeOutput,
+  ThemeOutputFunction,
   ThemeOutputValue,
 } from '../types';
 
@@ -43,15 +45,14 @@ function mergeParentAndChildTheme(
 function simplifyThemeFunction(
   parentTheme: ThemeOutput,
   childTheme: ThemeInput,
-  childThemeFn: *,
+  childThemeFn: ThemeInputFunction,
   name: string,
-): (*) => ThemeOutput {
-  return state => {
-    return childThemeFn(state, {
+): ThemeOutputFunction {
+  return state =>
+    childThemeFn(state, {
       ...childTheme,
       [name]: parentTheme[name] || noop,
     });
-  };
 }
 
 export default ({ children, ...childTheme }: Props) => (
