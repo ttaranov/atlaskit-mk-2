@@ -1,9 +1,8 @@
 // @flow
 import React, { Component, type ComponentType, type ElementRef } from 'react';
-import { mergeStyles } from 'react-select';
+import { mergeStyles, makeAnimated } from 'react-select';
 import { colors, gridSize } from '@atlaskit/theme';
 
-import * as animatedComponents from 'react-select/lib/animated';
 import * as defaultComponents from './components';
 
 // NOTE in the future, `Props` and `defaultProps` should come
@@ -263,11 +262,10 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       }
     }
     cacheComponents = (components?: {}) => {
-      this.components = {
+      this.components = makeAnimated({
         ...defaultComponents,
-        ...animatedComponents,
         ...components,
-      };
+      });
     };
     focus() {
       this.select.focus();
