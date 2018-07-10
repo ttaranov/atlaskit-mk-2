@@ -61,3 +61,105 @@ export function firePostQueryShownEvent(
   };
   event.update(payload).fire(DEFAULT_GAS_CHANNEL);
 }
+
+export type HighlightEventData = {
+  resultId: string;
+  type: string;
+  sectionId: string;
+  sectionIndex: string;
+  globalIndex: string;
+  indexWithinSection: string;
+  key;
+};
+
+export type SelectedSearchResultEventData = {
+  resultId: string;
+  type: string;
+  sectionId: string;
+  sectionIndex: string;
+  globalIndex: string;
+  indexWithinSection: string;
+  method;
+  newTab;
+};
+
+export type AnalyticsNextEvent = {
+  payload: GasPayload;
+  context: Array<any>;
+  update: (GasPayload) => AnalyticsNextEvent;
+  fire: (string) => AnalyticsNextEvent;
+};
+
+export function fireSelectedSearchResult(
+  eventData: SelectedSearchResultEventData,
+  searchSessionId: string,
+  createAnalyticsEvent: CreateAnalyticsEventFn,
+) {
+  const {
+    method,
+    newTab,
+    resultId,
+    type,
+    sectionId,
+    sectionIndex,
+    globalIndex,
+    indexWithinSection,
+  } = eventData;
+  const event = createAnalyticsEvent();
+  const payload: GasPayload = {
+    action: 'selected',
+    actionSubject: 'navigationItem',
+    actionSubjectId: 'searchResult',
+    eventType: 'track',
+    source: DEFAULT_GAS_SOURCE,
+    attributes: {
+      trigger: method,
+      searchSessionId: searchSessionId,
+      resultContentId: resultId,
+      type,
+      sectionId,
+      sectionIndex,
+      globalIndex,
+      indexWithinSection,
+      newTab,
+      ...DEFAULT_GAS_ATTRIBUTES,
+    },
+  };
+  event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+}
+
+export function fireHighlightedSearchResult(
+  eventData: HighlightEventData,
+  searchSessionId: string,
+  createAnalyticsEvent: CreateAnalyticsEventFn,
+) {
+  const {
+    key,
+    resultId,
+    type,
+    sectionId,
+    sectionIndex,
+    globalIndex,
+    indexWithinSection,
+  } = eventData;
+  const event = createAnalyticsEvent();
+  const payload: GasPayload = {
+    action: 'highlighted',
+    actionSubject: 'navigationItem',
+    actionSubjectId: 'searchResult',
+    eventType: 'ui',
+    source: DEFAULT_GAS_SOURCE,
+    attributes: {
+      searchSessionId: searchSessionId,
+      resultContentId: resultId,
+      type,
+      sectionId,
+      sectionIndex,
+      globalIndex,
+      indexWithinSection,
+      ...DEFAULT_GAS_ATTRIBUTES,
+      key,
+    },
+  };
+  event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+}

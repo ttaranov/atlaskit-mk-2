@@ -8,12 +8,23 @@ import {
   AnalyticsContext,
 } from '@atlaskit/analytics-next';
 
+import { withAnalytics } from '@atlaskit/analytics';
+
+import {
+  fireSelectedSearchResult,
+  fireHighlightedSearchResult,
+  SelectedSearchResultEventData,
+  KeyboardControlEvent,
+} from '../util/analytics-event-helper';
+
 import {
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_CHANNEL,
   sanitizeSearchQuery,
 } from '../util/analytics-util';
+
+import { CreateAnalyticsEventFn } from '../components/analytics/types';
 
 export interface Props {
   onMount();
@@ -25,7 +36,7 @@ export interface Props {
   searchSessionId: string;
   children: React.ReactNode;
   linkComponent?: LinkComponent;
-  createAnalyticsEvent?: Function;
+  createAnalyticsEvent?: CreateAnalyticsEventFn;
 }
 
 /**
@@ -73,6 +84,36 @@ export class GlobalQuickSearch extends React.Component<Props> {
     this.queryVersion++;
   }
 
+  fireQuickSearchEvents = (
+    eventName: string,
+    eventData: KeyboardControlEvent | SelectedSearchResultEventData,
+  ) => {
+    const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
+    const QS_ANALYTICS_EV_KB_CTRLS_USED = `${ATLASKIT_QUICKSEARCH_NS}.keyboard-controls-used`;
+    const QS_ANALYTICS_EV_SUBMIT = `${ATLASKIT_QUICKSEARCH_NS}.submit`;
+
+    const { createAnalyticsEvent, searchSessionId } = this.props;
+    if (createAnalyticsEvent) {
+      if (eventName === QS_ANALYTICS_EV_SUBMIT) {
+        // result selected
+        fireSelectedSearchResult(
+          eventData as SelectedSearchResultEventData,
+          searchSessionId,
+          createAnalyticsEvent,
+        );
+      } else if (eventName === QS_ANALYTICS_EV_KB_CTRLS_USED) {
+        const data = eventData as KeyboardControlEvent;
+        if (data.key === 'ArrowDown' || data.key === 'ArrowUp') {
+          fireHighlightedSearchResult(
+            data,
+            searchSessionId,
+            createAnalyticsEvent,
+          );
+        }
+      }
+    }
+  };
+
   render() {
     const {
       query,
@@ -82,9 +123,17 @@ export class GlobalQuickSearch extends React.Component<Props> {
       onSearchSubmit,
     } = this.props;
 
+    const QuickSearchWithAnalytics = withAnalytics(
+      QuickSearch,
+      {
+        firePrivateAnalyticsEvent: this.fireQuickSearchEvents,
+      },
+      {},
+    );
+
     return (
       <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
-        <QuickSearch
+        <QuickSearchWithAnalytics
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           value={query}
@@ -92,7 +141,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           onSearchSubmit={onSearchSubmit}
         >
           {children}
-        </QuickSearch>
+        </QuickSearchWithAnalytics>
       </AnalyticsContext>
     );
   }

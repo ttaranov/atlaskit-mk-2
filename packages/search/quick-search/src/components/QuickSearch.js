@@ -17,13 +17,32 @@ import {
 
 const noOp = () => {};
 
-/** Flatten a AkNavigationItemGroups of results into a plain array of results */
+/**
+ * Flatten a AkNavigationItemGroups of results into a plain array of results
+ * add group index and global index to each child
+ * */
 const flattenChildren = children =>
   React.Children.toArray(children)
     .filter(childGroup => isReactElement(childGroup))
     .reduce(
-      (flatArray, childGroup) =>
-        flatArray.concat(React.Children.toArray(childGroup.props.children)),
+      (flatArray, childGroup, sectionIndex) =>
+        flatArray.concat(
+          React.Children.toArray(childGroup.props.children).map(
+            (child, indexWithinSection) => {
+              return Object.assign({}, child, {
+                props: {
+                  ...child.props,
+                  analyticsData: {
+                    ...child.props.analyticsData,
+                    globalIndex: flatArray.length,
+                    sectionIndex,
+                    indexWithinSection,
+                  },
+                },
+              });
+            },
+          ),
+        ),
       [],
     );
 
@@ -129,6 +148,7 @@ export class QuickSearch extends Component<Props, State> {
   flatResults: Array<any> = flattenChildren(this.props.children);
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
+  lastKeyPressed: string = null;
 
   /** Select first result by default if `selectedResultId` prop is not provided */
   state = {
@@ -164,6 +184,27 @@ export class QuickSearch extends Component<Props, State> {
     ) {
       this.hasSearchQueryEventFired = true;
       this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_QUERY_ENTERED);
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.lastKeyPressed) {
+      if (prevState.selectedResultId !== this.state.selectedResultId) {
+        const result = getResultById(
+          this.flatResults,
+          this.state.selectedResultId,
+        );
+        if (result) {
+          this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
+            ...result.props.analyticsData,
+            key: this.lastKeyPressed,
+            resultId: result.props.resultId,
+            type: result.props.contentType,
+            sectionId: result.props.type,
+          });
+        }
+      }
+      this.lastKeyPressed = null;
     }
   }
 
@@ -241,12 +282,7 @@ export class QuickSearch extends Component<Props, State> {
       event.key === 'ArrowDown' ||
       event.key === 'Enter'
     ) {
-      if (!this.hasKeyDownEventFired) {
-        this.hasKeyDownEventFired = true;
-        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
-          key: event.key,
-        });
-      }
+      this.lastKeyPressed = event.key;
     }
 
     if (event.key === 'ArrowUp') {
@@ -273,9 +309,13 @@ export class QuickSearch extends Component<Props, State> {
         // Capture when users are using the keyboard to submit
         if (typeof firePrivateAnalyticsEvent === 'function') {
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
-            index: this.flatResults.indexOf(result),
-            method: 'keyboard',
-            type: result.props.type,
+            // index: this.flatResults.indexOf(result),
+            ...result.props.analyticsData,
+            method: 'returnKey',
+            resultId: result.props.resultId,
+            type: result.props.contentType,
+            sectionId: result.props.type,
+            newTab: false, // enter always open in the same tab
           });
         }
 
@@ -298,7 +338,7 @@ export class QuickSearch extends Component<Props, State> {
   renderChildren() {
     let ii = 0;
     /** Attach mouse interaction handlers and determine whether this result is selected */
-    const renderResult = result => {
+    const renderResult = (result, indexWithinSection, sectionIndex) => {
       // return native element as-is
       if (!isReactElement(result)) {
         return result;
@@ -309,7 +349,12 @@ export class QuickSearch extends Component<Props, State> {
         result.props.resultId === this.state.selectedResultId;
 
       return React.cloneElement(result, {
-        analyticsData: { ...result.props.analyticsData, index: ii++ },
+        analyticsData: {
+          ...result.props.analyticsData,
+          globalIndex: ii++,
+          indexWithinSection,
+          sectionIndex,
+        },
         isSelected,
         onMouseEnter: this.handleResultMouseEnter,
         onMouseLeave: this.handleResultMouseLeave,
@@ -319,7 +364,7 @@ export class QuickSearch extends Component<Props, State> {
     };
 
     /** Process a group of results */
-    const renderGroup = group => {
+    const renderGroup = (group, sectionIndex) => {
       // return native element as-is
       if (!isReactElement(group)) {
         return group;
@@ -328,7 +373,9 @@ export class QuickSearch extends Component<Props, State> {
       return React.cloneElement(
         group,
         null,
-        React.Children.map(group.props.children, renderResult),
+        React.Children.map(group.props.children, (result, resultIndex) =>
+          renderResult(result, resultIndex, sectionIndex),
+        ),
       );
     };
 
