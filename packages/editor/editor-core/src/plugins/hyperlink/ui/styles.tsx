@@ -1,11 +1,17 @@
 import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
-import UiToolbarButton from '../../../ui/ToolbarButton';
-import UiFloatingToolbar from '../../../ui/FloatingToolbar';
+import UiToolbarButton, {
+  Props as UiToolbarButtonProps,
+} from '../../../ui/ToolbarButton';
+import UiFloatingToolbar, {
+  Props as UiFloatingToolbarProps,
+} from '../../../ui/FloatingToolbar';
 import UiSeparator from '../../../ui/Separator';
 
 // `line-height: 1` to fix extra 1px height from toolbar wrapper
-export const FloatingToolbar = styled(UiFloatingToolbar)`
+export const FloatingToolbar: ComponentClass<UiFloatingToolbarProps> = styled(
+  UiFloatingToolbar,
+)`
   max-height: 350px;
   min-height: 32px;
   height: initial;
@@ -28,7 +34,9 @@ export const FloatingToolbar = styled(UiFloatingToolbar)`
 `;
 
 // `a&` because `Button` uses it and it produces a more specific selector `a.xyz`
-export const ToolbarButton = styled(UiToolbarButton)`
+export const ToolbarButton: ComponentClass<UiToolbarButtonProps> = styled(
+  UiToolbarButton,
+)`
   width: 24px;
   padding: 0;
   margin: 0 2px;

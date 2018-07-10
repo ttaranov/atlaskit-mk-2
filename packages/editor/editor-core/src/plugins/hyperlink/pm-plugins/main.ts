@@ -61,12 +61,9 @@ const mapTransactionToState = (
   if (state) {
     if (state.type === InsertStatus.EDIT_LINK_TOOLBAR) {
       const { pos, deleted } = tr.mapping.mapResult(state.pos, 1);
-      if (!deleted) {
-        return {
-          ...state,
-          pos,
-          node: tr.doc.nodeAt(pos) as Node,
-        };
+      const node = tr.doc.nodeAt(pos) as Node;
+      if (!deleted && !!node.type.schema.marks.link.isInSet(node.marks)) {
+        return { ...state, pos, node };
       }
       // If the position has been deleted, then require a navigation to show the toolbar again
       return undefined;
