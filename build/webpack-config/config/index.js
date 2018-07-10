@@ -315,6 +315,9 @@ function plugins(
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${env}"`,
       WEBSITE_ENV: `"${websiteEnv}"`,
+      BASE_TITLE: `"${
+        env === 'development' ? 'DEV - ' : ''
+      } Atlaskit by Atlassian"`,
     }),
   ];
 
