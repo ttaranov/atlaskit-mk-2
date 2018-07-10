@@ -33,11 +33,11 @@ const fakeCursorToolbarPlugin: Plugin = new Plugin({
     apply(tr, pluginState: DecorationSet, oldState, newState) {
       const oldInsertToolbarState = getInsertLinkToolbarState(oldState);
       const insertToolbarState = getInsertLinkToolbarState(newState);
+      // Map DecorationSet if it still refers to the same position in the document
       if (oldInsertToolbarState && insertToolbarState) {
         const { from, to } = insertToolbarState;
         const oldFrom = tr.mapping.map(oldInsertToolbarState.from);
         const oldTo = tr.mapping.map(oldInsertToolbarState.to);
-        // Map decoration if it still refers to the same position in the document
         if (oldFrom === from && oldTo === to) {
           return pluginState.map(tr.mapping, tr.doc);
         }
