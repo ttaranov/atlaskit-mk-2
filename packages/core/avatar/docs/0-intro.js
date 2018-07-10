@@ -44,7 +44,7 @@ export default md`
   ## Avatar - Default Export
 
   Use the \`Avatar\` component to represent users with their profile picture.
-  Optionally, a presence to indicate online status can also be displayed.
+  Optionally, a presence to indicate online statudsfdsfdsfdfdss can also be displayed.
 
   You can use the \`Presence\` component independently for contexts where the
   profile picture is not required (e.g. next to a username)
