@@ -61,8 +61,10 @@ import CheckboxIcon from '../glyph/checkbox';
 import ChevronDownCircleIcon from '../glyph/chevron-down-circle';
 import ChevronDownIcon from '../glyph/chevron-down';
 import ChevronLeftCircleIcon from '../glyph/chevron-left-circle';
+import ChevronLeftLargeIcon from '../glyph/chevron-left-large';
 import ChevronLeftIcon from '../glyph/chevron-left';
 import ChevronRightCircleIcon from '../glyph/chevron-right-circle';
+import ChevronRightLargeIcon from '../glyph/chevron-right-large';
 import ChevronRightIcon from '../glyph/chevron-right';
 import ChevronUpCircleIcon from '../glyph/chevron-up-circle';
 import ChevronUpIcon from '../glyph/chevron-up';
@@ -77,6 +79,7 @@ import CrossCircleIcon from '../glyph/cross-circle';
 import CrossIcon from '../glyph/cross';
 import DashboardIcon from '../glyph/dashboard';
 import DecisionIcon from '../glyph/decision';
+import DepartmentIcon from '../glyph/department';
 import DetailViewIcon from '../glyph/detail-view';
 import DiscoverFilledIcon from '../glyph/discover-filled';
 import DiscoverIcon from '../glyph/discover';
@@ -372,6 +375,7 @@ import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
 import ScreenIcon from '../glyph/screen';
 import SearchIcon from '../glyph/search';
+import SelectClearIcon from '../glyph/select-clear';
 import SendIcon from '../glyph/send';
 import SettingsIcon from '../glyph/settings';
 import ShareIcon from '../glyph/share';
@@ -384,6 +388,7 @@ import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
 import SubtaskIcon from '../glyph/subtask';
+import SuitcaseIcon from '../glyph/suitcase';
 import SwitcherIcon from '../glyph/switcher';
 import TableIcon from '../glyph/table';
 import TaskIcon from '../glyph/task';
@@ -732,6 +737,12 @@ export default {
     componentName: 'ChevronLeftCircleIcon',
     package: '@atlaskit/icon/glyph/chevron-left-circle',
   },
+  'chevron-left-large': {
+    keywords: ['chevron-left-large', 'chevronleftlarge'],
+    component: ChevronLeftLargeIcon,
+    componentName: 'ChevronLeftLargeIcon',
+    package: '@atlaskit/icon/glyph/chevron-left-large',
+  },
   'chevron-left': {
     keywords: ['chevron-left', 'chevronleft', 'back', 'previous'],
     component: ChevronLeftIcon,
@@ -743,6 +754,12 @@ export default {
     component: ChevronRightCircleIcon,
     componentName: 'ChevronRightCircleIcon',
     package: '@atlaskit/icon/glyph/chevron-right-circle',
+  },
+  'chevron-right-large': {
+    keywords: ['chevron-right-large', 'chevronrightlarge'],
+    component: ChevronRightLargeIcon,
+    componentName: 'ChevronRightLargeIcon',
+    package: '@atlaskit/icon/glyph/chevron-right-large',
   },
   'chevron-right': {
     keywords: ['chevron-right', 'chevronright', 'forward', 'next'],
@@ -827,6 +844,12 @@ export default {
     component: DecisionIcon,
     componentName: 'DecisionIcon',
     package: '@atlaskit/icon/glyph/decision',
+  },
+  department: {
+    keywords: ['department'],
+    component: DepartmentIcon,
+    componentName: 'DepartmentIcon',
+    package: '@atlaskit/icon/glyph/department',
   },
   'detail-view': {
     keywords: ['detail-view', 'detailview'],
@@ -2598,6 +2621,12 @@ export default {
     componentName: 'SearchIcon',
     package: '@atlaskit/icon/glyph/search',
   },
+  'select-clear': {
+    keywords: ['select-clear', 'selectclear'],
+    component: SelectClearIcon,
+    componentName: 'SelectClearIcon',
+    package: '@atlaskit/icon/glyph/select-clear',
+  },
   send: {
     keywords: ['send', 'mail'],
     component: SendIcon,
@@ -2669,6 +2698,12 @@ export default {
     component: SubtaskIcon,
     componentName: 'SubtaskIcon',
     package: '@atlaskit/icon/glyph/subtask',
+  },
+  suitcase: {
+    keywords: ['suitcase'],
+    component: SuitcaseIcon,
+    componentName: 'SuitcaseIcon',
+    package: '@atlaskit/icon/glyph/suitcase',
   },
   switcher: {
     keywords: ['switcher'],

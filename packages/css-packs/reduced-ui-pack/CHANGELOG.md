@@ -1,5 +1,21 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.18.0
+- [minor] Added lozenges to reduced-ui-pack [9baf761](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9baf761)
+
+## 8.17.0
+- [minor] Add chevron large icons [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+- [none] Updated dependencies [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+  - @atlaskit/icon@12.7.0
+
+## 8.16.0
+- [minor] Updated form field styling to match latest ADG3 styles [e57e853](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e57e853)
+
+## 8.15.0
+- [minor] Add a new badge id: department and suitcase [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+- [none] Updated dependencies [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+  - @atlaskit/icon@12.6.0
+
 ## 8.14.0
 - [minor] Add the new app-switcher icon [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
 - [none] Updated dependencies [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)

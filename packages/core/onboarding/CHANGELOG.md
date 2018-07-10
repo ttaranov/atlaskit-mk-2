@@ -1,5 +1,12 @@
 # @atlaskit/onboarding
 
+## 4.1.7
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/modal-dialog@5.2.6
+
 ## 4.1.6
 - [patch] Fixes positioning issue when target is relatively positioned [11e8465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11e8465)
 - [none] Updated dependencies [11e8465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11e8465)

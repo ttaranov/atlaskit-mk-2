@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import styled from 'styled-components';
 
 import { groupedCountries } from './data/countries';
 import Select from './Select';
@@ -10,20 +9,22 @@ import Select from './Select';
 type OptionType = { abbr: string, code: number, icon: string, name: string };
 
 // custom option renderer
-const Label = styled.div`
-  align-items: center;
-  display: flex;
-  line-height: 1.2;
-`;
-const Flag = styled.span`
-  font-size: 18px;
-  margin-right: 8px;
-`;
+const labelCSS = () => ({
+  alignItems: 'center',
+  display: 'flex',
+  lineHeight: 1.2,
+});
+
+const flagCSS = () => ({
+  fontSize: '18px',
+  marginRight: '8px',
+});
+
 const Opt = ({ children, icon }: any) => (
-  <Label>
-    <Flag>{icon}</Flag>
+  <div css={labelCSS()}>
+    <span css={flagCSS()}>{icon}</span>
     {children}
-  </Label>
+  </div>
 );
 
 // return the country name; used for searching

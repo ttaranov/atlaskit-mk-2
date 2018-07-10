@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "7.1.5",
+  "version": "7.1.13",
   "config": {
     "access": "public"
   },
@@ -17,12 +17,12 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^3.0.4",
-    "@atlaskit/avatar": "^11.1.0",
-    "@atlaskit/button": "^8.2.3",
+    "@atlaskit/avatar-group": "^1.0.2",
+    "@atlaskit/button": "^8.2.5",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/spinner": "^8.0.0",
     "@atlaskit/theme": "^4.0.4",
-    "@atlaskit/util-service-support": "^2.0.10",
+    "@atlaskit/util-service-support": "^2.0.12",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "tslib": "^1.8.0",
@@ -37,15 +37,26 @@
   "peerDependencies": {
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "styled-components": "^3.2.6"
+    "rxjs": "^5.1.0",
+    "styled-components": "^3.2.6",
+    "url-search-params": "^0.10.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "@atlaskit/avatar": "^13.0.0",
     "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/editor-common": "^11.3.0",
-    "@atlaskit/renderer": "^18.2.5",
+    "@atlaskit/editor-common": "^11.4.1",
+    "@atlaskit/renderer": "^18.2.9",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^9.1.13",
-    "fetch-mock": "^5.12.1"
+    "@atlaskit/util-data-test": "^9.1.18",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "fetch-mock": "^5.12.1",
+    "react": "^16.3.0",
+    "rxjs": "^5.1.0",
+    "sinon": "^2.2.0",
+    "url-search-params": "^0.10.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }

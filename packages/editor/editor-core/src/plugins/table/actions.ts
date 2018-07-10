@@ -4,7 +4,6 @@ import {
   TextSelection,
   Selection,
 } from 'prosemirror-state';
-import { DecorationSet } from 'prosemirror-view';
 import {
   goToNextCell as baseGotoNextCell,
   selectionCell,
@@ -18,7 +17,6 @@ import {
   getCellsInTable,
   addColumnAt,
   addRowAt,
-  selectRow,
   isCellSelection,
   removeTable,
   removeSelectedColumns,
@@ -30,8 +28,12 @@ import {
   createTable as createTableNode,
 } from 'prosemirror-utils';
 import { TableLayout } from '@atlaskit/editor-common';
-import { pluginKey as hoverSelectionPluginKey } from './pm-plugins/hover-selection-plugin';
-import { stateKey as tablePluginKey } from './pm-plugins/main';
+import {
+  getPluginState,
+  setPluginState,
+  pluginKey,
+  defaultTableSelection,
+} from './pm-plugins/main';
 import {
   createHoverDecorationSet,
   getCellSelection,
@@ -44,19 +46,13 @@ import {
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
-import { outdentList } from '../../commands';
+import { outdentList } from '../lists/commands';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  dispatch(
-    state.tr.setMeta(hoverSelectionPluginKey, {
-      decorationSet: DecorationSet.empty,
-      isTableHovered: false,
-      isTableInDanger: false,
-    }),
-  );
+  setPluginState({ ...defaultTableSelection })(state, dispatch);
   return true;
 };
 
@@ -74,11 +70,10 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
       [],
     );
 
-    dispatch(
-      state.tr.setMeta(hoverSelectionPluginKey, {
-        decorationSet: createHoverDecorationSet(cells, state, danger),
-      }),
-    );
+    setPluginState({
+      hoverDecoration: createHoverDecorationSet(cells, state, danger),
+    })(state, dispatch);
+
     return true;
   }
   return false;
@@ -95,11 +90,10 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
       return rowCells ? acc.concat(rowCells) : acc;
     }, []);
 
-    dispatch(
-      state.tr.setMeta(hoverSelectionPluginKey, {
-        decorationSet: createHoverDecorationSet(cells, state, danger),
-      }),
-    );
+    setPluginState({
+      hoverDecoration: createHoverDecorationSet(cells, state, danger),
+    })(state, dispatch);
+
     return true;
   }
   return false;
@@ -112,13 +106,13 @@ export const hoverTable = (danger?: boolean): Command => (
   const table = findTable(state.selection);
   if (table) {
     const cells = getCellsInTable(state.selection)!;
-    dispatch(
-      state.tr.setMeta(hoverSelectionPluginKey, {
-        decorationSet: createHoverDecorationSet(cells, state, danger),
-        isTableHovered: true,
-        isTableInDanger: danger,
-      }),
-    );
+
+    setPluginState({
+      hoverDecoration: createHoverDecorationSet(cells, state, danger),
+      isTableHovered: true,
+      isTableInDanger: danger,
+    })(state, dispatch);
+
     return true;
   }
   return false;
@@ -314,15 +308,6 @@ export function transformSliceToAddTableHeaders(
   return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
 }
 
-export const selectRowClearHover = (row: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  resetHoverSelection(state, dispatch);
-  dispatch(selectRow(row)(state.tr));
-  return true;
-};
-
 export const deleteTable: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
@@ -410,7 +395,7 @@ export const deleteSelectedRows: Command = (
   // make sure header row is always present (for Bitbucket markdown)
   const {
     pluginConfig: { isHeaderRowRequired },
-  } = tablePluginKey.getState(state);
+  } = getPluginState(state);
   if (isHeaderRowRequired && isHeaderRowSelected(state)) {
     tr = convertFirstRowToHeader(state.schema)(tr);
   }
@@ -449,7 +434,7 @@ export const createTable: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  if (!tablePluginKey.get(state)) {
+  if (!pluginKey.get(state)) {
     return false;
   }
   const table = createTableNode(state.schema);
@@ -494,7 +479,7 @@ export const moveCursorBackward: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const pluginState = tablePluginKey.getState(state);
+  const pluginState = getPluginState(state);
   const { $cursor } = state.selection as TextSelection;
   // if cursor is in the middle of a text node, do nothing
   if (

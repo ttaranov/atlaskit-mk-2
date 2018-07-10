@@ -98,7 +98,7 @@ const initialState: State = {
 };
 
 export class PDFRenderer extends React.Component<Props, State> {
-  private el: HTMLDivElement;
+  private el?: HTMLDivElement;
   private pdfViewer: any;
 
   state: State = initialState;
@@ -119,11 +119,11 @@ export class PDFRenderer extends React.Component<Props, State> {
     }
   }
 
-  private savePdfElement = el => {
+  private savePdfElement = (el: HTMLDivElement) => {
     this.el = el;
   };
 
-  private handleZoom = zoomLevel => {
+  private handleZoom = (zoomLevel: ZoomLevel) => {
     this.pdfViewer.currentScale = zoomLevel.value;
     this.setState({ zoomLevel });
   };

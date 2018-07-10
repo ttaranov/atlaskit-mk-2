@@ -1,6 +1,4 @@
 import { Fragment, Node, Slice, Schema } from 'prosemirror-model';
-import { hasParentNodeOfType } from 'prosemirror-utils';
-import { EditorState } from 'prosemirror-state';
 
 export type FlatMapCallback = (
   node: Node,
@@ -114,25 +112,5 @@ export function transformSliceToRemoveOpenLayoutNodes(
 
   // Case 2 & 3 also handles a slice starting in one layoutSection & finishing in a different layoutSection
 
-  return slice;
-}
-
-export function removeLayoutsIfSelectionIsInLayout(
-  slice: Slice,
-  state: EditorState,
-) {
-  // If pasting into a layout, remove any layouts from the slice
-  const isSelectionInLayout = hasParentNodeOfType(
-    state.schema.nodes.layoutColumn,
-  )(state.selection);
-  if (isSelectionInLayout) {
-    const sliceWithNoLayouts = new Slice(
-      flatmap(slice.content, removeLayoutFromAllChildren),
-      // transformPasted ensure the start/end node of the slice won't be a layout, so these won't change
-      slice.openStart,
-      slice.openEnd,
-    );
-    return sliceWithNoLayouts;
-  }
   return slice;
 }

@@ -25,9 +25,10 @@ export const NumberColumnContainer: ComponentClass<
 > = styled.div`
   position: relative;
   float: right;
+  margin-left: ${akEditorTableToolbarSize - 1}px;
   top: ${akEditorTableToolbarSize}px;
 
-  width: ${akEditorTableNumberColumnWidth + akEditorTableToolbarSize}px;
+  width: ${akEditorTableNumberColumnWidth + 1}px;
   box-sizing: border-box;
 
   border-left: 1px solid ${akEditorTableBorder};

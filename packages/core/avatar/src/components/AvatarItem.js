@@ -1,5 +1,10 @@
 // @flow
-import React, { cloneElement, Component } from 'react';
+import React, {
+  cloneElement,
+  Component,
+  type Element,
+  type ComponentType,
+} from 'react';
 
 import { propsOmittedFromClickData } from './constants';
 import { omit } from '../utils';
@@ -11,15 +16,15 @@ import {
 } from '../styled/AvatarItem';
 import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
-import type { AvatarClickType, ComponentType, ElementType } from '../types';
+import type { AvatarClickType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
-  avatar: ElementType,
+  avatar: Element<*>,
   /** Change background color */
   backgroundColor?: string,
   /** A custom component to use instead of the default span. */
-  component?: ComponentType,
+  component?: ComponentType<*>,
   /** Provides a url for avatars being used as a link. */
   href?: string,
   /** Change the style to indicate the item is active. */
@@ -81,7 +86,6 @@ class AvatarItem extends Component<Props> {
     } = this.props;
 
     // maintain the illusion of a mask around presence/status
-    // $FlowFixMe
     const borderColor = getBackgroundColor(this.props);
 
     // distill props from context, props, and state

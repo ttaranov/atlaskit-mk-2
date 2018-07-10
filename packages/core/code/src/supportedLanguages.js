@@ -1,5 +1,138 @@
 // @flow
-export const SUPPORTED_LANGUAGES = [
+/* eslint import/no-dynamic-require: 0, global-require: 0 */
+import { registerLanguage } from 'react-syntax-highlighter/light';
+import memoizeOne from 'memoize-one';
+
+/*
+ * These are those languages which will be pre-loaded to auto-detect
+ * the language for syntax highlighting. This list is based on the top 20
+ * languages on github by number of PR, as of May 2018
+ * https://madnight.github.io/githut/#/pull_requests/2018/1
+ */
+import clojure from 'react-syntax-highlighter/languages/hljs/clojure';
+import coffeescript from 'react-syntax-highlighter/languages/hljs/coffeescript';
+import cpp from 'react-syntax-highlighter/languages/hljs/cpp';
+import csharp from 'react-syntax-highlighter/languages/hljs/cs';
+import css from 'react-syntax-highlighter/languages/hljs/css';
+import d from 'react-syntax-highlighter/languages/hljs/d';
+import go from 'react-syntax-highlighter/languages/hljs/go';
+import groovy from 'react-syntax-highlighter/languages/hljs/groovy';
+import java from 'react-syntax-highlighter/languages/hljs/java';
+import javascript from 'react-syntax-highlighter/languages/hljs/javascript';
+import kotlin from 'react-syntax-highlighter/languages/hljs/kotlin';
+import lua from 'react-syntax-highlighter/languages/hljs/lua';
+import objectivec from 'react-syntax-highlighter/languages/hljs/objectivec';
+import php from 'react-syntax-highlighter/languages/hljs/php';
+import python from 'react-syntax-highlighter/languages/hljs/python';
+import ruby from 'react-syntax-highlighter/languages/hljs/ruby';
+import rust from 'react-syntax-highlighter/languages/hljs/rust';
+import scala from 'react-syntax-highlighter/languages/hljs/scala';
+import shell from 'react-syntax-highlighter/languages/hljs/shell';
+import sql from 'react-syntax-highlighter/languages/hljs/sql';
+import swift from 'react-syntax-highlighter/languages/hljs/swift';
+import typescript from 'react-syntax-highlighter/languages/hljs/typescript';
+
+registerLanguage('clojure', clojure);
+registerLanguage('coffeescript', coffeescript);
+registerLanguage('cpp', cpp);
+registerLanguage('cs', csharp);
+registerLanguage('css', css);
+registerLanguage('d', d);
+registerLanguage('go', go);
+registerLanguage('groovy', groovy);
+registerLanguage('java', java);
+registerLanguage('javascript', javascript);
+registerLanguage('kotlin', kotlin);
+registerLanguage('lua', lua);
+registerLanguage('objectivec', objectivec);
+registerLanguage('php', php);
+registerLanguage('python', python);
+registerLanguage('ruby', ruby);
+registerLanguage('rust', rust);
+registerLanguage('scala', scala);
+registerLanguage('shell', shell);
+registerLanguage('sql', sql);
+registerLanguage('swift', swift);
+registerLanguage('typescript', typescript);
+
+/*
+ * These values all those are supported by ADF.
+ * The comments show mappings of these values to the corresponding
+ * language definition file, or to that of the most
+ * syntactically similar language supported by highlightjs
+ */
+export type ADFSupportedLanguages =
+  | 'abap' // → sql
+  | 'actionscript'
+  | 'ada'
+  | 'arduino'
+  | 'autoit'
+  | 'c' // → cpp
+  | 'c++' // → cpp
+  | 'clojure'
+  | 'coffeescript'
+  | 'csharp' // → cs
+  | 'css'
+  | 'cuda' // → cpp
+  | 'd'
+  | 'dart'
+  | 'delphi'
+  | 'elixir'
+  | 'erlang'
+  | 'fortran'
+  | 'foxpro' // → purebasic
+  | 'go'
+  | 'groovy'
+  | 'haskell'
+  | 'haxe'
+  | 'html' // → xml
+  | 'java'
+  | 'javascript'
+  | 'json'
+  | 'julia'
+  | 'kotlin'
+  | 'latex' // → tex
+  | 'livescript'
+  | 'lua'
+  | 'mathematica'
+  | 'matlab'
+  | 'objective-c' // → objectivec
+  | 'objective-j' // → objectivec
+  | 'objectpascal' // → delphi
+  | 'ocaml'
+  | 'octave' // → matlab
+  | 'perl'
+  | 'php'
+  | 'powershell'
+  | 'prolog'
+  | 'puppet'
+  | 'python'
+  | 'qml'
+  | 'r'
+  | 'racket' // → lisp
+  | 'restructuredtext' // → rest
+  | 'ruby'
+  | 'rust'
+  | 'sass' // → less
+  | 'scala'
+  | 'scheme'
+  | 'shell'
+  | 'smalltalk'
+  | 'sql'
+  | 'standardml' // → sml
+  | 'swift'
+  | 'tcl'
+  | 'tex'
+  | 'text'
+  | 'typescript'
+  | 'vala'
+  | 'vbnet'
+  | 'verilog'
+  | 'vhdl'
+  | 'xml'
+  | 'xquery';
+
+export const SUPPORTED_LANGUAGES = Object.freeze([
   {
     name: 'PHP',
     alias: ['php', 'php3', 'php4', 'php5'],
@@ -48,7 +181,7 @@ export const SUPPORTED_LANGUAGES = [
   {
     name: 'C',
     alias: ['c'],
-    value: '',
+    value: 'cpp',
   },
   {
     name: 'Swift',
@@ -63,7 +196,7 @@ export const SUPPORTED_LANGUAGES = [
   {
     name: 'Shell',
     alias: ['shell', 'bash', 'sh', 'ksh', 'zsh'],
-    value: 'bash',
+    value: 'shell',
   },
   {
     name: 'Scala',
@@ -81,19 +214,9 @@ export const SUPPORTED_LANGUAGES = [
     value: 'actionscript',
   },
   {
-    name: 'AppleScript',
-    alias: ['applescript'],
-    value: 'applescript',
-  },
-  {
     name: 'ColdFusion',
     alias: ['coldfusion'],
     value: 'xml',
-  },
-  {
-    name: 'Diff',
-    alias: ['diff'],
-    value: 'diff',
   },
   {
     name: 'JavaFX',
@@ -101,19 +224,14 @@ export const SUPPORTED_LANGUAGES = [
     value: 'java',
   },
   {
-    name: 'VisualBasic',
-    alias: ['visualbasic', 'vb'],
-    value: 'vbscript',
-  },
-  {
-    name: 'PlainText',
-    alias: ['plaintext', 'text'],
-    value: 'text',
-  },
-  {
     name: 'VbNet',
     alias: ['vbnet', 'vb.net'],
     value: 'vbnet',
+  },
+  {
+    name: 'JSON',
+    alias: ['json'],
+    value: 'json',
   },
   {
     name: 'MATLAB',
@@ -284,7 +402,7 @@ export const SUPPORTED_LANGUAGES = [
   },
   {
     name: 'QML',
-    alias: ['qbs'],
+    alias: ['qbs', 'qml'],
     value: 'qml',
   },
   {
@@ -295,7 +413,7 @@ export const SUPPORTED_LANGUAGES = [
   {
     name: 'FoxPro',
     alias: ['foxpro', 'vfp', 'clipper', 'xbase'],
-    value: 'vbscript',
+    value: 'vbnet',
   },
   {
     name: 'Scheme',
@@ -328,11 +446,6 @@ export const SUPPORTED_LANGUAGES = [
     value: 'tcl',
   },
   {
-    name: 'Markdown',
-    alias: ['mkdown', 'md', 'markdown'],
-    value: 'markdown',
-  },
-  {
     name: 'Mathematica',
     alias: ['mathematica', 'mma', 'nb'],
     value: 'mathematica',
@@ -344,7 +457,7 @@ export const SUPPORTED_LANGUAGES = [
   },
   {
     name: 'StandardML',
-    alias: ['standardmL', 'sml'],
+    alias: ['standardmL', 'sml', 'standardml'],
     value: 'sml',
   },
   {
@@ -377,18 +490,20 @@ export const SUPPORTED_LANGUAGES = [
     alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'],
     value: 'xquery',
   },
-];
-
-export const languageList: string[] = SUPPORTED_LANGUAGES.reduce(
-  (acc: string[], val: any) => {
-    return acc.concat(val.name, val.alias);
+  {
+    name: 'PlainText',
+    alias: ['text', 'plaintext'],
+    value: 'text',
   },
-  [],
-);
+]);
 
-export function normalizeLanguage(language?: string): string {
-  const match = SUPPORTED_LANGUAGES.filter(val => {
-    return val.name === language || val.alias.indexOf(language) !== -1;
-  }).shift();
-  return match ? match.value : ''; // default to empty string to enable language auto-detect
-}
+export const normalizeLanguage = memoizeOne((language?: string): string => {
+  if (!language) {
+    return '';
+  }
+  const match = SUPPORTED_LANGUAGES.find(val => {
+    return val.name === language || val.alias.includes(language);
+  });
+  // Fallback to plain monospaced text if language passed but not supported
+  return match ? match.value : 'text';
+});

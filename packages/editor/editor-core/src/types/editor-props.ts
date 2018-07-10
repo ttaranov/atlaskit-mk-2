@@ -28,6 +28,7 @@ import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit';
 import { CodeBlockOptions } from '../plugins/code-block';
 import { CardProvider, CardOptions } from '../plugins/card';
+import { QuickInsertOptions } from '../plugins/quick-insert/types';
 
 export type EditorAppearance =
   | 'message'
@@ -66,7 +67,6 @@ export interface EditorProps {
   addonToolbarComponents?: ReactElement;
 
   allowBlockType?: { exclude?: Array<string> };
-  allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
   allowCodeBlocks?: boolean | CodeBlockOptions;
@@ -88,7 +88,7 @@ export interface EditorProps {
   // Temporary flag to enable layouts while it's under development
   UNSAFE_allowLayouts?: boolean;
 
-  quickInsert?: boolean;
+  quickInsert?: QuickInsertOptions;
 
   UNSAFE_cards?: CardOptions;
 
@@ -134,9 +134,6 @@ export interface EditorProps {
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
-
-  // TODO: Deprecated remove after v63.0.0
-  allowTextFormatting?: boolean | TextFormattingOptions;
 
   extensionHandlers?: ExtensionHandlers;
 }

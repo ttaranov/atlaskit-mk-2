@@ -5,10 +5,13 @@ import Base, { Label } from '@atlaskit/field-base';
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-export default class FieldTextStateless extends Component<
-  FieldTextProps,
-  void,
-> {
+type Props = {|
+  // $FlowFixMe - inexact `FieldTextProps` is incompatible with exact `Props`
+  ...FieldTextProps,
+  innerRef?: (node: ?HTMLInputElement) => void,
+|};
+
+export default class FieldTextStateless extends Component<Props, void> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -19,6 +22,7 @@ export default class FieldTextStateless extends Component<
     required: false,
     type: 'text',
     isValidationHidden: false,
+    innerRef: () => {},
   };
 
   input: ?HTMLInputElement;
@@ -29,8 +33,10 @@ export default class FieldTextStateless extends Component<
     }
   }
 
-  handleInputRef = (input: HTMLInputElement) => {
+  setInputRef = (input: ?HTMLInputElement) => {
     this.input = input;
+    // $FlowFixMe - Cannot call `this.props.innerRef` because undefined [1] is not a function
+    this.props.innerRef(input);
   };
 
   render() {
@@ -59,7 +65,7 @@ export default class FieldTextStateless extends Component<
             disabled={this.props.disabled}
             form={this.props.form}
             id={this.props.id}
-            innerRef={this.handleInputRef}
+            innerRef={this.setInputRef}
             maxLength={this.props.maxLength}
             min={this.props.min}
             max={this.props.max}

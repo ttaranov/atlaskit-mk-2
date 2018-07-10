@@ -37,7 +37,6 @@ export default class DynamicTable extends Component<Props, State> {
 
   componentWillReceiveProps(newProps: Props) {
     this.setState({
-      // $FlowFixMe
       page: newProps.page,
       sortKey: newProps.defaultSortKey,
       sortOrder: newProps.defaultSortOrder,

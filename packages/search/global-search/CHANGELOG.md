@@ -1,5 +1,52 @@
 # @atlaskit/global-search
 
+## 4.6.2
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/navigation@32.3.3
+  - @atlaskit/modal-dialog@5.2.8
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/button@8.2.5
+  - @atlaskit/navigation@32.3.3
+  - @atlaskit/modal-dialog@5.2.8
+
+## 4.6.1
+- [patch] Add dismissed event and fix screen events. [c65736e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c65736e)
+
+## 4.6.0
+
+- [minor] Support sticky header and footer [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+- [minor] Updated dependencies [8bf8e51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8bf8e51)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+- [none] Updated dependencies [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+
+## 4.5.12
+- [patch] fixing XPSRCH-915 search results should not disapear between searches [0683d75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0683d75)
+
+## 4.5.11
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/quick-search@2.3.4
+  - @atlaskit/navigation@32.3.1
+  - @atlaskit/modal-dialog@5.2.7
+
+## 4.5.10
+- [patch] add empty state for no recent activities in global search [2ecbd39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ecbd39)
+
+## 4.5.9
+- [patch] Replace faker with lightweight internal functions [1c3352a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c3352a)
+- [none] Updated dependencies [1c3352a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c3352a)
+  - @atlaskit/quick-search@2.3.3
+
 ## 4.5.8
 - [patch] fixed icon glyph imports after changes in icon package [abf2e65](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abf2e65)
 

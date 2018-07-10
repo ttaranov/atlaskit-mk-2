@@ -87,6 +87,7 @@ async function getPackagesWithTests() /*: Promise<Array<string>> */ {
 async function startDevServer() {
   const workspacesGlob = await getPackagesWithTests();
   const env = 'production';
+  const websiteEnv = 'production';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
@@ -110,6 +111,7 @@ async function startDevServer() {
     host: HOST,
     port: PORT,
     globs,
+    websiteEnv,
     includePatterns,
     env,
     cwd: path.join(__dirname, '../../..', 'website'),

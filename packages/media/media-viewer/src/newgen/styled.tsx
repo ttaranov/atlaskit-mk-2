@@ -13,9 +13,9 @@ import {
   akColorB300,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import { colors } from '@atlaskit/theme';
+import { colors, layers } from '@atlaskit/theme';
 
-const overlayZindex = 999;
+const overlayZindex = layers.blanket();
 
 export const mediaTypeIconColors = {
   image: akColorY200,
@@ -25,7 +25,7 @@ export const mediaTypeIconColors = {
   unknown: '#3dc7dc',
 };
 
-export const blanketColor = '#1b2638';
+export const blanketColor = colors.DN30;
 
 export const hideControlsClassName = 'mvng-hide-controls';
 

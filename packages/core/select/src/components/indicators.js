@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { components } from 'react-select';
-import CrossIcon from '@atlaskit/icon/glyph/editor/close';
+import SelectClearIcon from '@atlaskit/icon/glyph/select-clear';
 import DownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 
 // indicators
 export const ClearIndicator = (props: any) => (
   <components.ClearIndicator {...props}>
-    <CrossIcon />
+    <SelectClearIcon size="small" primaryColor="inherit" />
   </components.ClearIndicator>
 );
 export const DropdownIndicator = (props: any) => (

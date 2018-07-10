@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
+import { selectRow } from 'prosemirror-utils';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
 import NumberColumn from './NumberColumn';
 import { Container } from './styles';
+import { isSelectionUpdated } from './utils';
 import {
   resetHoverSelection,
-  selectRowClearHover,
   hoverRows,
   insertRow,
   deleteSelectedRows,
@@ -20,14 +22,16 @@ export interface State {
 
 export interface Props {
   editorView: EditorView;
+  selection?: Selection;
   tableRef?: HTMLElement;
   tableActive?: boolean;
   isTableHovered?: boolean;
   isTableInDanger?: boolean;
-  scroll?: number;
-
+  isHeaderColumnEnabled?: boolean;
+  isHeaderRowEnabled?: boolean;
   isNumberColumnEnabled?: boolean;
   hasHeaderRow?: boolean;
+  tableHeight?: number;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -36,9 +40,30 @@ export default class TableFloatingControls extends Component<Props, State> {
     hoveredRows: [],
   };
 
-  static defaultProps = {
-    scroll: 0,
-  };
+  shouldComponentUpdate(nextProps, nextState) {
+    const {
+      tableRef,
+      isTableHovered,
+      isTableInDanger,
+      isHeaderRowEnabled,
+      isHeaderColumnEnabled,
+      isNumberColumnEnabled,
+      selection,
+      tableHeight,
+    } = this.props;
+    return (
+      tableRef !== nextProps.tableRef ||
+      tableHeight !== nextProps.tableHeight ||
+      isTableHovered !== nextProps.isTableHovered ||
+      isTableInDanger !== nextProps.isTableInDanger ||
+      this.state.dangerRows !== nextState.dangerRows ||
+      this.state.hoveredRows !== nextState.hoveredRows ||
+      isHeaderRowEnabled !== nextProps.isHeaderRowEnabled ||
+      isHeaderColumnEnabled !== nextProps.isHeaderColumnEnabled ||
+      isNumberColumnEnabled !== nextProps.isNumberColumnEnabled ||
+      isSelectionUpdated(selection, nextProps.selection)
+    );
+  }
 
   render() {
     const {
@@ -47,6 +72,8 @@ export default class TableFloatingControls extends Component<Props, State> {
       isTableHovered,
       isTableInDanger,
       isNumberColumnEnabled,
+      isHeaderColumnEnabled,
+      isHeaderRowEnabled,
       tableActive,
       hasHeaderRow,
     } = this.props;
@@ -74,10 +101,13 @@ export default class TableFloatingControls extends Component<Props, State> {
         ) : null}
         <CornerControls
           editorView={editorView}
+          selection={editorView.state.selection}
           tableRef={tableRef}
           resetHoverSelection={this.resetHoverSelection}
-          scroll={this.props.scroll}
           isTableInDanger={isTableInDanger}
+          isHeaderColumnEnabled={isHeaderColumnEnabled}
+          isHeaderRowEnabled={isHeaderRowEnabled}
+          isNumberColumnEnabled={isNumberColumnEnabled}
         />
         <RowControls
           editorView={editorView}
@@ -88,7 +118,6 @@ export default class TableFloatingControls extends Component<Props, State> {
           dangerRows={this.state.dangerRows}
           hoveredRows={this.state.hoveredRows}
           resetHoverSelection={this.resetHoverSelection}
-          scroll={this.props.scroll}
           isTableInDanger={isTableInDanger}
           selectRow={this.selectRow}
           insertRow={this.insertRow}
@@ -105,7 +134,8 @@ export default class TableFloatingControls extends Component<Props, State> {
 
   private selectRow = (row: number) => {
     const { state, dispatch } = this.props.editorView;
-    selectRowClearHover(row)(state, dispatch);
+    dispatch(selectRow(row)(state.tr));
+    this.resetHoverSelection();
   };
 
   private insertRow = (row: number) => {

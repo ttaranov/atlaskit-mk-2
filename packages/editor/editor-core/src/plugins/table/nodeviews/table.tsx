@@ -14,7 +14,7 @@ import TableComponent from './TableComponent';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
-import { stateKey } from '../pm-plugins/main';
+import { pluginKey } from '../pm-plugins/main';
 
 export interface Props {
   node: PmNode;
@@ -78,7 +78,7 @@ export default class TableView extends ReactNodeView {
       <WithPluginState
         plugins={{
           containerWidth: widthPluginKey,
-          pluginState: stateKey,
+          pluginState: pluginKey,
         }}
         eventDispatcher={props.eventDispatcher}
         editorView={props.view}
@@ -88,14 +88,14 @@ export default class TableView extends ReactNodeView {
             {...pluginStates}
             node={this.node}
             contentDOM={forwardRef}
-            onComponentUpdate={this.componentDidUpdate}
+            onComponentMount={this.componentDidMount}
           />
         )}
       />
     );
   }
 
-  componentDidUpdate = () => {
+  componentDidMount = () => {
     // When we get a table with an 'auto' attribute, we want to:
     // 1. render with table-layout: auto
     // 2. capture the column widths

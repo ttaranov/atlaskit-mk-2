@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
   selectRow,
@@ -26,11 +25,13 @@ import {
   media,
   sendKeyToPm,
   randomId,
+  createEvent,
 } from '@atlaskit/editor-test-helpers';
-import { TableLayout, defaultSchema } from '@atlaskit/editor-common';
+import { TableLayout } from '@atlaskit/editor-common';
 import {
   TablePluginState,
-  stateKey as tablePluginKey,
+  pluginKey,
+  getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
 import { createTable } from '../../../src/plugins/table/actions';
 import { setNodeSelection } from '../../../src/utils';
@@ -53,9 +54,10 @@ import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';
 import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 import listPlugin from '../../../src/plugins/lists';
-import TableView from '../../../src/plugins/table/nodeviews/table';
+import { TextSelection } from 'prosemirror-state';
 
 describe('table plugin', () => {
+  const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
@@ -74,66 +76,12 @@ describe('table plugin', () => {
           permittedLayouts: 'all',
         },
       },
-      pluginKey: tablePluginKey,
+      pluginKey,
     });
 
   let trackEvent;
   beforeEach(() => {
     trackEvent = jest.fn();
-  });
-
-  describe('TableView', () => {
-    // previous regression involved PM trying to render child DOM elements,
-    // but the NodeView had an undefined contentDOM after the React render finishes
-    // (since render is not synchronous)
-    it('always provides a content DOM', () => {
-      jest.useFakeTimers();
-
-      const originalHandleRef = (TableView.prototype as any)._handleRef;
-      const handleRefInnerMock = jest.fn(originalHandleRef);
-
-      // in the tests, handleRef gets called immediately (due to event loop ordering)
-      // however, the ref callback function can be called async from React after
-      // calling render, which can often occur in the browser
-      //
-      // to simulate this, we add a callback to force it to run out-of-order
-      const handleRefMock = sinon
-        // @ts-ignore
-        .stub(TableView.prototype, '_handleRef')
-        .callsFake(ref => {
-          setTimeout(ref => handleRefInnerMock.call(this, ref), 0);
-        });
-
-      // create the NodeView
-      const node = table()(tr(tdCursor, tdEmpty, tdEmpty))(defaultSchema);
-      const { editorView, portalProviderAPI } = editor(doc(p()));
-      const tableView = new TableView({
-        node,
-        allowColumnResizing: false,
-        view: editorView,
-        portalProviderAPI,
-        getPos: () => 1,
-      }).init();
-
-      // we expect to have a contentDOM after instanciating the NodeView so that
-      // ProseMirror will render the node's children into the element
-      expect(tableView.contentDOM).toBeDefined();
-
-      // we shouldn't have called the mock yet, since it's behind the setTimeout
-      expect(handleRefInnerMock).not.toBeCalled();
-
-      // run the timers through
-      jest.runAllTimers();
-
-      // the timer should have expired now
-      expect(handleRefInnerMock).toBeCalled();
-
-      // ensure we still have a contentDOM
-      expect(tableView.contentDOM).toBeDefined();
-
-      // reset the mock
-      handleRefMock.reset();
-    });
   });
 
   describe('createTable()', () => {
@@ -463,7 +411,7 @@ describe('table plugin', () => {
                 isHeaderRowRequired: true,
               },
             },
-            pluginKey: tablePluginKey,
+            pluginKey,
           });
 
         it('it should convert first following row to header if isHeaderRowRequired is true', () => {
@@ -1042,7 +990,7 @@ describe('table plugin', () => {
             editorView.state,
             editorView.dispatch,
           );
-          const { tableNode } = tablePluginKey.getState(editorView.state);
+          const { tableNode } = getPluginState(editorView.state);
           expect(tableNode.attrs.layout).toBe(nextLayout);
           editorView.destroy();
         });
@@ -1061,6 +1009,25 @@ describe('table plugin', () => {
       expect(tableElement.getAttribute('data-layout')).toBe('full-width');
 
       editorView.destroy();
+    });
+  });
+
+  describe('table plugin state', () => {
+    it('should update tableNode when cursor enters the table', () => {
+      const {
+        plugin,
+        editorView: view,
+        refs: { nextPos },
+      } = editor(doc(table()(tr(td()(p('{nextPos}')))), p('te{<>}xt')));
+      plugin.props.handleDOMEvents!.focus(view, event);
+      view.dispatch(
+        view.state.tr.setSelection(
+          new TextSelection(view.state.doc.resolve(nextPos)),
+        ),
+      );
+      const { tableNode } = getPluginState(view.state);
+      expect(tableNode).toBeDefined();
+      expect(tableNode.type.name).toEqual('table');
     });
   });
 });

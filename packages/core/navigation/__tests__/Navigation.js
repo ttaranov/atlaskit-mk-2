@@ -568,14 +568,9 @@ describe('<Navigation />', () => {
   });
   describe('reactWarnings', () => {
     beforeEach(() => {
-      // $FlowFixMe
-      console.error = jest.fn(error => {
+      jest.fn(error => {
         throw new Error(error);
       });
-    });
-
-    afterEach(() => {
-      console.error.mockRestore();
     });
 
     it('should not throw errors on mounting closed Navigation with primary icon', () => {

@@ -49,6 +49,8 @@ export default createSchema({
     'unknownBlock',
     'placeholder',
     'inlineCard',
+    'unsupportedBlock',
+    'unsupportedInline',
   ],
   marks: [
     'em',

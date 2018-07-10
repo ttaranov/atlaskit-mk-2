@@ -2,7 +2,7 @@
 import React from 'react';
 import { AkCodeBlock } from '../src';
 
-const exampleCodeBlock = `
+const exampleCodeBlock = `  // React Component
   class HelloMessage extends React.Component {
     render() {
       return (

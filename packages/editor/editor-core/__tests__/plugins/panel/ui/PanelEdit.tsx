@@ -3,22 +3,16 @@ import * as React from 'react';
 import AkButton from '@atlaskit/button';
 import {
   PanelState,
-  stateKey,
+  pluginKey as stateKey,
 } from '../../../../src/plugins/panel/pm-plugins/main';
 import PanelEdit from '../../../../src/plugins/panel/ui/PanelEdit';
 
-import {
-  doc,
-  panel,
-  p,
-  createEditor,
-  createEvent,
-} from '@atlaskit/editor-test-helpers';
+import { doc, panel, p, createEditor } from '@atlaskit/editor-test-helpers';
 import panelPlugin from '../../../../src/plugins/panel';
 import listPlugin from '../../../../src/plugins/lists';
+import { changePanelType } from '../../../../src/plugins/panel/actions';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
-  const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<PanelState>({
       doc,
@@ -30,20 +24,22 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     });
 
   it('should return null if state variable toolbarVisible is false', () => {
-    const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
-    const panelEditOptions = shallow(
-      <PanelEdit pluginState={pluginState} editorView={editorView} />,
-    );
-    panelEditOptions.setState({ toolbarVisible: false });
+    const pluginState = {
+      toolbarVisible: false,
+      element: '<div></div>',
+      activePanelType: 'info',
+    };
+    const panelEditOptions = shallow(<PanelEdit pluginState={pluginState} />);
     expect(panelEditOptions.html()).toEqual(null);
   });
 
   it('should not return null if state variable toolbarVisible is true', () => {
-    const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
-    const panelEditOptions = shallow(
-      <PanelEdit pluginState={pluginState} editorView={editorView} />,
-    );
-    panelEditOptions.setState({ toolbarVisible: true });
+    const pluginState = {
+      toolbarVisible: true,
+      element: '<div></div>',
+      activePanelType: 'info',
+    };
+    const panelEditOptions = shallow(<PanelEdit pluginState={pluginState} />);
     expect(panelEditOptions.html()).not.toBe(null);
   });
 
@@ -52,58 +48,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(
       <PanelEdit pluginState={pluginState} editorView={editorView} />,
     );
-    panelEditOptions.setState({ toolbarVisible: true });
     expect(panelEditOptions.find('button').length).toEqual(6);
-  });
-
-  it('should set toolbarVisible to true when panel is clicked', () => {
-    const { plugin, editorView, pluginState, sel } = editor(
-      doc(panel()(p('text'))),
-    );
-    const panelEditOptions = mount(
-      <PanelEdit pluginState={pluginState} editorView={editorView} />,
-    );
-    plugin.props.handleDOMEvents!.focus(editorView, event);
-    plugin.props.handleClick!(editorView, sel, event);
-    pluginState.update(
-      editorView.state,
-      editorView.domAtPos.bind(editorView),
-      true,
-    );
-    expect(panelEditOptions.state('toolbarVisible')).toBe(true);
-    panelEditOptions.unmount();
-  });
-
-  it('should set toolbarVisible to false when panel is blur', () => {
-    const { plugin, editorView, pluginState } = editor(doc(panel()(p('text'))));
-    const panelEditOptions = mount(
-      <PanelEdit pluginState={pluginState} editorView={editorView} />,
-    );
-    plugin.props.handleDOMEvents!.blur(editorView, event);
-    expect(panelEditOptions.state('toolbarVisible')).not.toBe(true);
-    panelEditOptions.unmount();
-  });
-
-  it('should continue toolbarVisible to true when panelType is changed', () => {
-    const { plugin, editorView, pluginState } = editor(doc(panel()(p('text'))));
-    const panelEditOptions = mount(
-      <PanelEdit pluginState={pluginState} editorView={editorView} />,
-    );
-    plugin.props.handleDOMEvents!.focus(editorView, event);
-    pluginState.changePanelType(editorView, { panelType: 'note' });
-    expect(panelEditOptions.state('toolbarVisible')).toBe(true);
-    panelEditOptions.unmount();
-  });
-
-  it('should set toolbarVisible to false when panel is removed', () => {
-    const { plugin, editorView, pluginState } = editor(doc(panel()(p('text'))));
-    const panelEditOptions = mount(
-      <PanelEdit pluginState={pluginState} editorView={editorView} />,
-    );
-    plugin.props.handleDOMEvents!.focus(editorView, event);
-    pluginState.removePanel(editorView);
-    expect(panelEditOptions.state('toolbarVisible')).toBe(false);
-    panelEditOptions.unmount();
   });
 
   describe('analytics', () => {
@@ -111,16 +56,20 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     let toolbarOption;
     beforeEach(() => {
       trackEvent = jest.fn();
-      const { plugin, editorView, pluginState, sel } = editor(
+      const { editorView, pluginState } = editor(
         doc(panel()(p('text{<>}'))),
         trackEvent,
       );
       toolbarOption = mount(
-        <PanelEdit pluginState={pluginState} editorView={editorView} />,
+        <PanelEdit
+          pluginState={pluginState}
+          editorView={editorView}
+          onRemove={() => {}}
+          onPanelChange={panelType =>
+            changePanelType(panelType)(editorView.state, editorView.dispatch)
+          }
+        />,
       );
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      plugin.props.handleClick!(editorView, sel, event);
-      toolbarOption.update();
     });
     afterEach(() => {
       toolbarOption.unmount();
@@ -132,6 +81,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
             .find(AkButton)
             .at(index)
             .simulate('click');
+
           expect(trackEvent).toHaveBeenCalledWith(
             `atlassian.editor.format.${panelType}.button`,
           );
