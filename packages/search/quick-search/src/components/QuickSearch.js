@@ -34,7 +34,7 @@ const flattenChildren = children =>
                   ...child.props,
                   analyticsData: {
                     ...child.props.analyticsData,
-                    globalIndex: flatArray.length,
+                    index: flatArray.length,
                     sectionIndex,
                     indexWithinSection,
                   },
@@ -187,25 +187,19 @@ export class QuickSearch extends Component<Props, State> {
     }
   }
 
-  componentDidUpdate(_, prevState) {
-    if (this.lastKeyPressed) {
-      if (prevState.selectedResultId !== this.state.selectedResultId) {
-        const result = getResultById(
-          this.flatResults,
-          this.state.selectedResultId,
-        );
-        if (result) {
-          this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
-            ...result.props.analyticsData,
-            key: this.lastKeyPressed,
-            resultId: result.props.resultId,
-            type: result.props.contentType,
-            sectionId: result.props.type,
-          });
-        }
-      }
-      this.lastKeyPressed = null;
+  fireKeyboardControlEvent(selectedResultId) {
+    const { firePrivateAnalyticsEvent } = this.props;
+    if (firePrivateAnalyticsEvent) {
+      const result = getResultById(this.flatResults, selectedResultId);
+      firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
+        ...result.props.analyticsData,
+        key: this.lastKeyPressed,
+        resultId: result.props.resultId,
+        contentType: result.props.contentType,
+        type: result.props.type,
+      });
     }
+    this.lastKeyPressed = null;
   }
 
   /**
@@ -227,9 +221,11 @@ export class QuickSearch extends Component<Props, State> {
       currentIndex,
       adjustment,
     );
+    const selectedResultId = getResultIdByIndex(this.flatResults, newIndex);
     this.setState({
-      selectedResultId: getResultIdByIndex(this.flatResults, newIndex),
+      selectedResultId,
     });
+    this.fireKeyboardControlEvent(selectedResultId);
   };
 
   /** Select next result */
@@ -277,13 +273,7 @@ export class QuickSearch extends Component<Props, State> {
     this.props.onSearchKeyDown(event);
 
     // Capture whether users are using keyboard controls
-    if (
-      event.key === 'ArrowUp' ||
-      event.key === 'ArrowDown' ||
-      event.key === 'Enter'
-    ) {
-      this.lastKeyPressed = event.key;
-    }
+    this.lastKeyPressed = event.key;
 
     if (event.key === 'ArrowUp') {
       event.preventDefault(); // Don't move cursor around in search input field
@@ -308,13 +298,14 @@ export class QuickSearch extends Component<Props, State> {
 
         // Capture when users are using the keyboard to submit
         if (typeof firePrivateAnalyticsEvent === 'function') {
+          this.fireKeyboardControlEvent(this.state.selectedResultId);
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
             // index: this.flatResults.indexOf(result),
             ...result.props.analyticsData,
             method: 'returnKey',
             resultId: result.props.resultId,
-            type: result.props.contentType,
-            sectionId: result.props.type,
+            type: result.props.type,
+            contentType: result.props.contentType,
             newTab: false, // enter always open in the same tab
           });
         }
@@ -351,7 +342,7 @@ export class QuickSearch extends Component<Props, State> {
       return React.cloneElement(result, {
         analyticsData: {
           ...result.props.analyticsData,
-          globalIndex: ii++,
+          index: ii++,
           indexWithinSection,
           sectionIndex,
         },

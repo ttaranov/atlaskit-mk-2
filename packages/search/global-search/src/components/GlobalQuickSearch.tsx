@@ -24,7 +24,7 @@ import {
   sanitizeSearchQuery,
 } from '../util/analytics-util';
 
-import { CreateAnalyticsEventFn } from '../components/analytics/types';
+import { CreateAnalyticsEventFn } from './analytics/types';
 
 export interface Props {
   onMount();

@@ -38,8 +38,8 @@ export default class ResultBase extends PureComponent<Props> {
       ...analyticsData,
       method: 'click',
       resultId,
-      type: contentType,
-      sectionId: type,
+      contentType,
+      type,
       newTab: e.metaKey || e.shiftKey || e.ctrlKey,
     });
     onClick({ resultId, type });

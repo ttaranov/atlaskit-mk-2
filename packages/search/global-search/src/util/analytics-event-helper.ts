@@ -62,12 +62,12 @@ export function firePostQueryShownEvent(
   event.update(payload).fire(DEFAULT_GAS_CHANNEL);
 }
 
-export type HighlightEventData = {
+export type KeyboardControlEvent = {
   resultId: string;
   type: string;
-  sectionId: string;
+  contentType: string;
   sectionIndex: string;
-  globalIndex: string;
+  index: string;
   indexWithinSection: string;
   key;
 };
@@ -75,9 +75,9 @@ export type HighlightEventData = {
 export type SelectedSearchResultEventData = {
   resultId: string;
   type: string;
-  sectionId: string;
+  contentType: string;
   sectionIndex: string;
-  globalIndex: string;
+  index: string;
   indexWithinSection: string;
   method;
   newTab;
@@ -100,9 +100,9 @@ export function fireSelectedSearchResult(
     newTab,
     resultId,
     type,
-    sectionId,
+    contentType,
     sectionIndex,
-    globalIndex,
+    index,
     indexWithinSection,
   } = eventData;
   const event = createAnalyticsEvent();
@@ -116,10 +116,10 @@ export function fireSelectedSearchResult(
       trigger: method,
       searchSessionId: searchSessionId,
       resultContentId: resultId,
-      type,
-      sectionId,
+      type: contentType,
+      sectionId: type,
       sectionIndex,
-      globalIndex,
+      globalIndex: index,
       indexWithinSection,
       newTab,
       ...DEFAULT_GAS_ATTRIBUTES,
@@ -129,7 +129,7 @@ export function fireSelectedSearchResult(
 }
 
 export function fireHighlightedSearchResult(
-  eventData: HighlightEventData,
+  eventData: KeyboardControlEvent,
   searchSessionId: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
@@ -137,9 +137,9 @@ export function fireHighlightedSearchResult(
     key,
     resultId,
     type,
-    sectionId,
+    contentType,
     sectionIndex,
-    globalIndex,
+    index,
     indexWithinSection,
   } = eventData;
   const event = createAnalyticsEvent();
@@ -152,10 +152,10 @@ export function fireHighlightedSearchResult(
     attributes: {
       searchSessionId: searchSessionId,
       resultContentId: resultId,
-      type,
-      sectionId,
+      type: contentType,
+      sectionId: type,
       sectionIndex,
-      globalIndex,
+      globalInde: index,
       indexWithinSection,
       ...DEFAULT_GAS_ATTRIBUTES,
       key,
