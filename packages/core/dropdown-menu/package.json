@@ -18,6 +18,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-next": "^2.1.8",
     "@atlaskit/button": "^8.2.5",
     "@atlaskit/droplist": "^6.2.2",
     "@atlaskit/icon": "^12.6.1",
@@ -28,8 +29,8 @@
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {

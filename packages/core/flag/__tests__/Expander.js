@@ -7,7 +7,7 @@ import {
   DismissButton,
   Title,
 } from '../src/components/Flag/styledFlag';
-import Flag from '../src';
+import { FlagWithoutAnalytics as Flag } from '../src/components/Flag';
 import ExpanderInternal from '../src/components/Expander/styledExpander';
 
 describe('Flag Expander', () => {

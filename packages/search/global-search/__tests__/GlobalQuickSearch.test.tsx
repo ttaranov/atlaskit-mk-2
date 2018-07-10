@@ -30,7 +30,7 @@ describe('GlobalQuickSearch', () => {
     it('should render GlobalQuickSearch with a createAnalyticsEvent prop', () => {
       const wrapper = shallow(
         <GlobalQuickSearchWithAnalytics {...DEFAULT_PROPS} />,
-      );
+      ).dive();
       expect(
         wrapper.find(GlobalQuickSearch).prop('createAnalyticsEvent'),
       ).toBeDefined();

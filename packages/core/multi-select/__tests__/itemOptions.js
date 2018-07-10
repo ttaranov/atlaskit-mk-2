@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { name } from '../package.json';
-import { MultiSelectStateless } from '../src';
+import { MultiSelectStatelessWithoutAnalytics as MultiSelectStateless } from '../src/components/Stateless';
 import type { ItemType, GroupType } from '../src/types';
 
 describe(`${name} - shared functions`, () => {

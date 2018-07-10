@@ -3,7 +3,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import { parse, format } from 'date-fns';
-import TimePicker from '../../components/TimePicker';
+import { TimePickerWithoutAnalytics as TimePicker } from '../../components/TimePicker';
 
 import {
   ClearIndicator,

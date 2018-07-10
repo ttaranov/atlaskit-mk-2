@@ -22,6 +22,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-next": "^2.1.8",
     "@atlaskit/icon": "^12.3.1",
     "@atlaskit/theme": "^4.0.4",
     "babel-runtime": "^6.26.0",
@@ -29,14 +30,14 @@
     "debug": "^2.2.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^13.0.0",
     "@atlaskit/docs": "^4.1.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.3.0",
+    "react-dom": "^16.4.0",
     "react-test-renderer": "^16.3.0"
   }
 }

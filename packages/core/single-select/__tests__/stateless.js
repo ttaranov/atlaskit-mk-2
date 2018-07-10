@@ -6,7 +6,7 @@ import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import Spinner from '@atlaskit/spinner';
 
-import { StatelessSelect } from '../src';
+import { StatelessSelectWithoutAnalytics as StatelessSelect } from '../src/components/StatelessSelect';
 import InitialLoadingElement from '../src/styled/InitialLoading';
 import Content from '../src/styled/Content';
 import Trigger from '../src/styled/Trigger';

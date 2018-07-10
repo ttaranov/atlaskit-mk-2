@@ -3,8 +3,13 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Droplist from '@atlaskit/droplist';
-
-import { DropdownMenuStateless } from '../src';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+import DropdownMenuStatelessWithAnalytics, {
+  DropdownMenuStatelessWithoutAnalytics as DropdownMenuStateless,
+} from '../src/components/DropdownMenuStateless';
 import DropdownItemFocusManager from '../src/components/context/DropdownItemFocusManager';
 
 describe('dropdown menu - DropdownMenuStateless', () => {
@@ -13,7 +18,7 @@ describe('dropdown menu - DropdownMenuStateless', () => {
       const wrapper = shallow(<DropdownMenuStateless isOpen />);
       expect(
         wrapper
-          .find('Droplist')
+          .find(Droplist)
           .find(DropdownItemFocusManager)
           .exists(),
       ).toBe(true);
@@ -86,6 +91,34 @@ describe('dropdown menu - DropdownMenuStateless', () => {
         target: buttonRef,
       });
       expect(spy).toHaveBeenCalledTimes(0);
+    });
+  });
+});
+
+describe('DropdownMenuStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DropdownMenuStatelessWithAnalytics isOpen />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
+  });
+  it('should override the existing analytics context of Droplist', () => {
+    const wrapper = mount(<DropdownMenuStatelessWithAnalytics />);
+
+    expect(wrapper.find(Droplist).prop('analyticsContext')).toEqual({
+      componentName: 'dropdownMenu',
+      packageName,
+      packageVersion,
     });
   });
 });
