@@ -3,10 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Spinner from '@atlaskit/spinner';
-import FieldBase from '../../src';
-import FieldBaseStatelessWithAnalytics, {
-  FieldBaseStatelessWithoutAnalytics as FieldBaseStateless,
-} from '../components/FieldBaseStateless';
+import FieldBase, { FieldBaseStateless } from '../../src';
 import { ChildWrapper, Content } from '../styled/Content';
 import { WarningIcon } from '../components/ValidationElement';
 
@@ -297,26 +294,5 @@ describe('ak-field-base', () => {
 
       expect(wrapper.state('isFocused')).toBe(true);
     });
-  });
-});
-
-describe('FieldBaseStatelessWithAnalytics', () => {
-  beforeEach(() => {
-    jest.spyOn(global.console, 'warn');
-    jest.spyOn(global.console, 'error');
-  });
-  afterEach(() => {
-    global.console.warn.mockRestore();
-    global.console.error.mockRestore();
-  });
-
-  it('should mount without errors', () => {
-    mount(
-      <FieldBaseStatelessWithAnalytics onFocus={onFocus} onBlur={onBlur} />,
-    );
-    /* eslint-disable no-console */
-    expect(console.warn).not.toHaveBeenCalled();
-    expect(console.error).not.toHaveBeenCalled();
-    /* eslint-enable no-console */
   });
 });

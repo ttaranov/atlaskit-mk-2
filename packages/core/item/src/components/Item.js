@@ -6,16 +6,6 @@ import React, {
   type ElementRef,
 } from 'react';
 
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
-
 import styledRootElement from '../styled/Item';
 import {
   Before,
@@ -87,8 +77,7 @@ type Props = {
   /** Standard browser title to be displayed on the item when hovered. */
   title?: string,
 };
-
-class Item extends Component<Props, {}> {
+export default class Item extends Component<Props, {}> {
   static defaultProps = {
     autoFocus: false,
     description: '',
@@ -259,58 +248,3 @@ class Item extends Component<Props, {}> {
     );
   }
 }
-
-export { Item as ItemWithoutAnalytics };
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'item',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onClick: createAndFireEventOnAtlaskit({
-      action: 'clicked',
-      actionSubject: 'item',
-
-      attributes: {
-        componentName: 'item',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onKeyDown: createAndFireEventOnAtlaskit({
-      action: 'keyDowned',
-      actionSubject: 'item',
-
-      attributes: {
-        componentName: 'item',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onMouseEnter: createAndFireEventOnAtlaskit({
-      action: 'hovered',
-      actionSubject: 'item',
-
-      attributes: {
-        componentName: 'item',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onMouseLeave: createAndFireEventOnAtlaskit({
-      action: 'unhovered',
-      actionSubject: 'item',
-
-      attributes: {
-        componentName: 'item',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(Item),
-);

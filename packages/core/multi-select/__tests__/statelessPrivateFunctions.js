@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { MultiSelectStatelessWithoutAnalytics as MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStateless } from '../src';
 import { name } from '../package.json';
 import type { ItemType, GroupType } from '../src/types';
 

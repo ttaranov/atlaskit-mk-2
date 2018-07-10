@@ -2,20 +2,9 @@
 import React, { PureComponent, type Node } from 'react';
 import ReactDOM from 'react-dom';
 
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-
 import Droplist from '@atlaskit/droplist';
 import { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 
 import { SelectWrapper } from '../styled/Stateless';
 import Trigger from './Trigger';
@@ -141,7 +130,7 @@ type State = {
   groupedItems: Array<GroupType>,
 };
 
-class StatelessMultiSelect extends PureComponent<Props, State> {
+export default class StatelessMultiSelect extends PureComponent<Props, State> {
   inputNode: HTMLElement | null;
   tagGroup: HTMLElement | null;
   static defaultProps = {
@@ -153,7 +142,6 @@ class StatelessMultiSelect extends PureComponent<Props, State> {
     shouldFlip: true,
     isLoading: false,
     isOpen: false,
-    // $FlowFixMe
     items: [],
     label: '',
     loadingMessage: 'Receiving information',
@@ -580,58 +568,3 @@ class StatelessMultiSelect extends PureComponent<Props, State> {
     );
   }
 }
-
-export { StatelessMultiSelect as MultiSelectStatelessWithoutAnalytics };
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'multiSelect',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onFilterChange: createAndFireEventOnAtlaskit({
-      action: 'filtered',
-      actionSubject: 'multiSelect',
-
-      attributes: {
-        componentName: 'multiSelect',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onNewItemCreated: createAndFireEventOnAtlaskit({
-      action: 'created',
-      actionSubject: 'multiSelect',
-
-      attributes: {
-        componentName: 'multiSelect',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onSelected: createAndFireEventOnAtlaskit({
-      action: 'selected',
-      actionSubject: 'multiSelect',
-
-      attributes: {
-        componentName: 'multiSelect',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onOpenChange: createAndFireEventOnAtlaskit({
-      action: 'opened',
-      actionSubject: 'multiSelect',
-
-      attributes: {
-        componentName: 'multiSelect',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(StatelessMultiSelect),
-);

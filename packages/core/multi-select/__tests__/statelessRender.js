@@ -10,7 +10,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
 
-import { MultiSelectStatelessWithoutAnalytics as MultiSelectStateless } from '../src/components/Stateless';
+import { MultiSelectStateless } from '../src';
 import { SelectWrapper } from '../src/styled/Stateless';
 import InitialLoading from '../src/styled/InitialLoading';
 import NoMatches from '../src/styled/NoMatch';
@@ -450,6 +450,12 @@ describe(`${name} - stateless`, () => {
           .at(0)
           .prop('appearance'),
       ).toBe('rounded');
+      expect(
+        tagGroup
+          .find(Tag)
+          .at(1)
+          .prop('appearance'),
+      ).toBe('default');
     });
   });
 });

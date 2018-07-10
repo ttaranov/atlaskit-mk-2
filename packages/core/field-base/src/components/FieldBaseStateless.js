@@ -1,20 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 import InlineDialog from '@atlaskit/inline-dialog';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 import { Content, ContentWrapper, ChildWrapper } from '../styled/Content';
 import ValidationElement from './ValidationElement';
 import type { FieldBaseStatelessProps } from '../types';
 
-class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
+export default class FieldBaseStateless extends Component<
+  FieldBaseStatelessProps,
+> {
   static defaultProps = {
     appearance: 'standard',
     invalidMessage: '',
@@ -114,69 +107,3 @@ class FieldBaseStateless extends Component<FieldBaseStatelessProps> {
     );
   }
 }
-
-export { FieldBaseStateless as FieldBaseStatelessWithoutAnalytics };
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'fieldBase',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onBlur: createAndFireEventOnAtlaskit({
-      action: 'blurred',
-      actionSubject: 'field',
-
-      attributes: {
-        componentName: 'fieldBase',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onDialogBlur: createAndFireEventOnAtlaskit({
-      action: 'blurred',
-      actionSubject: 'field',
-
-      attributes: {
-        componentName: 'fieldBase',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onDialogClick: createAndFireEventOnAtlaskit({
-      action: 'clicked',
-      actionSubject: 'field',
-
-      attributes: {
-        componentName: 'fieldBase',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onDialogFocus: createAndFireEventOnAtlaskit({
-      action: 'focused',
-      actionSubject: 'field',
-
-      attributes: {
-        componentName: 'fieldBase',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onFocus: createAndFireEventOnAtlaskit({
-      action: 'focused',
-      actionSubject: 'field',
-
-      attributes: {
-        componentName: 'fieldBase',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(FieldBaseStateless),
-);

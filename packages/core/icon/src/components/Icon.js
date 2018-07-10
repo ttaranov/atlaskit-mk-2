@@ -2,16 +2,7 @@
 import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 import { sizes } from '../constants';
 
 const getSize = props => {
@@ -61,7 +52,7 @@ type Props = {
   size?: 'small' | 'medium' | 'large' | 'xlarge',
 };
 
-class Icon extends Component<Props, {}> {
+export default class Icon extends Component<Props, {}> {
   static defaultProps = {
     onClick: () => {},
   };
@@ -127,29 +118,7 @@ class Icon extends Component<Props, {}> {
   }
 }
 
-export { Icon as IconWithoutAnalytics };
-
 export const size = Object.keys(sizes).reduce(
   (p, c) => Object.assign(p, { [c]: c }),
   {},
-);
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'icon',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onClick: createAndFireEventOnAtlaskit({
-      action: 'clicked',
-      actionSubject: 'icon',
-
-      attributes: {
-        componentName: 'icon',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(Icon),
 );

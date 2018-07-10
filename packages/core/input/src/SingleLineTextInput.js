@@ -1,18 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import keyCode from 'keycode';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 import { fontSize } from '@atlaskit/theme';
 import styled from 'styled-components';
-
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
 
 const common = `
   appearance: none;
@@ -65,7 +55,7 @@ type Props = {
   onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
-class SingleLineTextInput extends Component<Props, {}> {
+export default class SingleLineTextInput extends Component<Props, {}> {
   static defaultProps = {
     style: {},
     isInitiallySelected: false,
@@ -138,36 +128,3 @@ class SingleLineTextInput extends Component<Props, {}> {
     return this.props.isEditing ? this.renderEditView() : this.renderReadView();
   }
 }
-
-export { SingleLineTextInput as SingleLineTextInputWithoutAnalytics };
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'input',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onConfirm: createAndFireEventOnAtlaskit({
-      action: 'confirmed',
-      actionSubject: 'input',
-
-      attributes: {
-        componentName: 'input',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onKeyDown: createAndFireEventOnAtlaskit({
-      action: 'keyDowned',
-      actionSubject: 'input',
-
-      attributes: {
-        componentName: 'input',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(SingleLineTextInput),
-);
