@@ -8,6 +8,7 @@ import React, {
   type Element,
   type ComponentType,
 } from 'react';
+import { PortalNext } from '@atlaskit/layer-manager';
 
 import {
   withAnalyticsEvents,
@@ -21,7 +22,6 @@ import {
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
-import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
 import { getPosition } from './utils';
@@ -170,14 +170,14 @@ class Tooltip extends Component<Props, State> {
     if (!coordinates) {
       const MeasurableTooltip = component;
       return (
-        <Portal>
+        <PortalNext layer="tooltip">
           <MeasurableTooltip
             innerRef={this.handleMeasureRef}
             style={{ visibility: 'hidden' }}
           >
             {content}
           </MeasurableTooltip>
-        </Portal>
+        </PortalNext>
       );
     }
 
