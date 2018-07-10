@@ -33,7 +33,10 @@ export function setLinkHref(pos: number, href: string): Command {
       );
     }
     dispatch(tr);
-    view && view.focus();
+
+    if (view) {
+      view.focus();
+    }
     return true;
   });
 }
@@ -48,7 +51,10 @@ export function setLinkText(pos: number, text: string): Command {
       tr.insertText(text, pos, pos + node.nodeSize);
       tr.addMark(pos, pos + text.length, mark);
       dispatch(tr);
-      view && view.focus();
+
+      if (view) {
+        view.focus();
+      }
       return true;
     }
     return false;
@@ -77,7 +83,10 @@ export function insertLink(
         tr.addMark(from, to, link.create({ href: normalizeUrl(href) }));
       }
       dispatch(tr);
-      view && view.focus();
+
+      if (view) {
+        view.focus();
+      }
       return true;
     }
     return false;
@@ -99,7 +108,9 @@ export function hideLinkToolbar(): Command {
   return function(state, dispatch, view) {
     dispatch(state.tr.setMeta(stateKey, LinkAction.HIDE_TOOLBAR));
 
-    view && view.focus();
+    if (view) {
+      view.focus();
+    }
     return true;
   };
 }

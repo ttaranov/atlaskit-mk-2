@@ -17,8 +17,6 @@ import {
   isTableCell,
 } from '../utils';
 
-import { hyperlinkPluginKey } from '../plugins/hyperlink';
-
 export function setBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
   switch (name) {
