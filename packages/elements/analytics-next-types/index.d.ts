@@ -1,4 +1,4 @@
-// For version "1.1.3"
+// For version "2.1.9"
 import * as React from 'react';
 
 // This is not needed for classes UIAnalyticsEvent and AnalyticsEvent,
@@ -17,6 +17,8 @@ import * as React from 'react';
  */
 
 // Utils
+
+// That replaces {} in flow types
 export type ObjectType = { [key: string]: any };
 
 // Basic events
@@ -30,7 +32,6 @@ export type AnalyticsEventUpdater =
   | ((payload: AnalyticsEventPayload) => AnalyticsEventPayload);
 
 export type AnalyticsEventProps = {
-  action: string;
   payload: AnalyticsEventPayload;
 };
 
@@ -44,6 +45,7 @@ export interface AnalyticsEventInterface {
 
 export type ChannelIdentifier = string;
 
+// It's called UIAnalyticsEventHandler in flow
 export interface UIAnalyticsEventHandlerSignature {
   (event: UIAnalyticsEventInterface, channel?: ChannelIdentifier): void;
 }
@@ -53,6 +55,7 @@ export type UIAnalyticsEventProps = AnalyticsEventProps & {
   handlers?: Array<UIAnalyticsEventHandlerSignature>;
 };
 
+// Called UIAnalyticsEvent in flow
 export interface UIAnalyticsEventInterface {
   context: Array<ObjectType>;
   handlers?: Array<UIAnalyticsEventHandlerSignature>;
@@ -81,7 +84,7 @@ export interface AnalyticsListenerProps {
   onEvent: (event: UIAnalyticsEventInterface, channel?: string) => void;
 }
 
-export declare class AnalyticsListener extends React.Component<
+export class AnalyticsListener extends React.Component<
   AnalyticsListenerProps
 > {}
 
@@ -93,9 +96,7 @@ export interface AnalyticsContextProps {
   data: ObjectType;
 }
 
-export declare class AnalyticsContext extends React.Component<
-  AnalyticsContextProps
-> {}
+export class AnalyticsContext extends React.Component<AnalyticsContextProps> {}
 
 /*
   withAnalyticsContext.js
@@ -108,7 +109,7 @@ export type WithAnalyticsContextFunction = <TOwnProps>(
   component: React.ComponentClass<TOwnProps>,
 ) => React.ComponentClass<TOwnProps & WithAnalyticsContextProps>;
 
-export declare function withAnalyticsContext(
+export function withAnalyticsContext(
   defaultData?: any,
 ): WithAnalyticsContextFunction;
 
@@ -116,12 +117,12 @@ export declare function withAnalyticsContext(
   withAnalyticsEvents.js
  */
 export type CreateUIAnalyticsEventSignature = (
-  payload?: AnalyticsEventPayload,
+  payload: AnalyticsEventPayload,
 ) => UIAnalyticsEventInterface;
 
 export interface EventMap<TOwnProps> {
   [k: string]:
-    | ObjectType
+    | AnalyticsEventPayload
     | ((
         create: CreateUIAnalyticsEventSignature,
         props: TOwnProps,
@@ -129,14 +130,14 @@ export interface EventMap<TOwnProps> {
 }
 
 export interface WithAnalyticsEventProps {
-  createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  createAnalyticsEvent: CreateUIAnalyticsEventSignature | void;
 }
 
 export type WithAnalyticsEventFunction = <TOwnProps>(
   component: React.ComponentClass<WithAnalyticsEventProps & TOwnProps>,
 ) => React.ComponentClass<TOwnProps>;
 
-export declare function withAnalyticsEvents<TOwnProps>(
+export function withAnalyticsEvents<TOwnProps>(
   createEventMap?: EventMap<TOwnProps>,
 ): WithAnalyticsEventFunction;
 
@@ -150,6 +151,11 @@ export type CreateAndFireEventFunction = (
   createAnalyticsEvent: CreateUIAnalyticsEventSignature,
 ) => UIAnalyticsEventInterface;
 
-export declare function createAndFireEvent(
+export function createAndFireEvent(
   channel?: string,
 ): CreateAndFireEventFunction;
+
+/*
+  cleanProps.js
+ */
+export function cleanProps(props: ObjectType): ObjectType;
