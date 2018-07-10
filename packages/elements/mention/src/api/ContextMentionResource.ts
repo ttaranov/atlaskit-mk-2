@@ -1,9 +1,11 @@
-// @ts-ignore
 import {
   MentionProvider,
   MentionContextIdentifier,
+  // @ts-ignore
   ErrorCallback,
+  // @ts-ignore
   InfoCallback,
+  // @ts-ignore
   ResultCallback,
 } from './MentionResource';
 import { padArray } from '../util';

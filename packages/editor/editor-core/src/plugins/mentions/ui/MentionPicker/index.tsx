@@ -65,14 +65,12 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.props.contextIdentifierProvider.then(
-      (contextIdProvider: ContextIdentifierProvider) => {
-        this.resolveResourceProvider(
-          this.props.mentionProvider,
-          contextIdProvider,
-        );
-      },
-    );
+    Promise.all([
+      this.props.mentionProvider,
+      this.props.contextIdentifierProvider,
+    ]).then(([mentionProvider, contextIdentifierProvider]) => {
+      this.resolveResourceProvider(mentionProvider, contextIdentifierProvider);
+    });
   }
 
   componentWillUnmount() {
@@ -91,25 +89,31 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    const contextIdProviderPromise = this.getUpdatedProp(
+      'contextIdentifierProvider',
+      nextProps,
+    );
+    const mentionProviderPromise = this.getUpdatedProp(
+      'mentionProvider',
+      nextProps,
+    );
+
     if (
-      nextProps.contextIdentifierProvider !==
-      this.props.contextIdentifierProvider
+      contextIdProviderPromise !== this.props.contextIdentifierProvider ||
+      mentionProviderPromise !== this.props.mentionProvider
     ) {
-      nextProps.contextIdentifierProvider.then(
-        (contextIdProvider: ContextIdentifierProvider) => {
+      Promise.all([contextIdProviderPromise, mentionProviderPromise]).then(
+        ([contextIdentifierProvider, mentionProvider]) =>
           this.resolveResourceProvider(
-            this.props.mentionProvider,
-            contextIdProvider,
-          );
-        },
-      );
-    } else if (nextProps.mentionProvider !== this.props.mentionProvider) {
-      this.resolveResourceProvider(
-        nextProps.mentionProvider,
-        this.state.contextIdentifierProvider,
+            mentionProvider,
+            contextIdentifierProvider,
+          ),
       );
     }
   }
+
+  private getUpdatedProp = (name: keyof Props, nextProps: Props): any =>
+    this.props[name] !== nextProps[name] ? nextProps[name] : this.props[name];
 
   private unsubscribeMentionProvider() {
     if (this.state.mentionProvider) {
@@ -147,28 +151,23 @@ export class MentionPicker extends PureComponent<Props, State> {
   };
 
   private resolveResourceProvider(
-    resourceProviderPromise,
-    contextIdentifierProvider,
+    mentionProvider?: MentionProvider,
+    contextIdentifierProvider?: ContextIdentifierProvider,
   ) {
-    if (resourceProviderPromise) {
-      resourceProviderPromise.then((mentionProvider: MentionProvider) => {
-        // note: because state.contextIdentifierProvider is optional, we are playing safe here
-        //        despite props.contextIdentifierProvider is not
-        const wrappedMentionProvider = contextIdentifierProvider
-          ? new ContextMentionResource(
-              mentionProvider,
-              contextIdentifierProvider,
-            )
-          : mentionProvider;
-        this.setState({
-          mentionProvider: wrappedMentionProvider,
-          contextIdentifierProvider,
-        });
-        mentionProvider.subscribe(
-          'MentionPickerPlugin',
-          this.handleMentionResults,
-        );
+    if (mentionProvider) {
+      // note: because state.contextIdentifierProvider is optional, we are playing safe here
+      //        despite props.contextIdentifierProvider is not
+      const wrappedMentionProvider = contextIdentifierProvider
+        ? new ContextMentionResource(mentionProvider, contextIdentifierProvider)
+        : mentionProvider;
+      this.setState({
+        mentionProvider: wrappedMentionProvider,
+        contextIdentifierProvider,
       });
+      mentionProvider.subscribe(
+        'MentionPickerPlugin',
+        this.handleMentionResults,
+      );
     } else {
       this.setState({ mentionProvider: undefined, contextIdentifierProvider });
     }

@@ -1,4 +1,4 @@
-import ContextMentionResource from '../../src/api/ContextMentionResource';
+import ContextMentionResource from '../../../api/ContextMentionResource';
 
 describe('ContextMentionResource', () => {
   let mentionProviderMock;
@@ -25,8 +25,6 @@ describe('ContextMentionResource', () => {
       CONTEXT_IDENTIFIER,
     );
   });
-
-  afterEach(() => {});
 
   describe('MentionProvider', () => {
     it('filter should be called with containerId/objectId', () => {

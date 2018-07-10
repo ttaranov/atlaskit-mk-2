@@ -2,7 +2,7 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
 import { SecurityOptions } from '@atlaskit/util-service-support';
-import { parseQueryFromUrl } from '../_test-helpers';
+import * as queryString from 'query-string';
 
 import { MentionDescription } from '../../../types';
 import MentionResource, {
@@ -135,8 +135,10 @@ describe('MentionResource', () => {
 
         // note: should use fetchMock.lastOptions() but it does not work
         const requestData = fetchMock.lastUrl();
+        const queryParams = queryString.parse(
+          queryString.extract(requestData.url),
+        );
 
-        const queryParams = parseQueryFromUrl(requestData.url);
         expect(queryParams.containerId).toBe('someContainerId');
         expect(queryParams.objectId).toBe('someObjectId');
         expect(requestData.credentials).toEqual('include');
@@ -154,7 +156,9 @@ describe('MentionResource', () => {
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
 
-        const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+        const queryParams = queryString.parse(
+          queryString.extract(fetchMock.lastUrl().url),
+        );
         expect(queryParams.containerId).toBe('defaultContainerId');
 
         count++;
@@ -245,7 +249,9 @@ describe('MentionResource', () => {
         if (results.length === 2) {
           checkOrder(expected, results);
 
-          const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+          const queryParams = queryString.parse(
+            queryString.extract(fetchMock.lastUrl().url),
+          );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
           done();
@@ -471,7 +477,9 @@ describe('MentionResource', () => {
           FULL_CONTEXT,
         )
         .then(() => {
-          const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+          const queryParams = queryString.parse(
+            queryString.extract(fetchMock.lastUrl().url),
+          );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
           expect(fetchMock.called('record')).toBe(true);
