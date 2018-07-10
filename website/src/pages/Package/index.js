@@ -188,6 +188,7 @@ export default class Package extends Component<PackageProps, PackageState> {
   };
 
   render() {
+    const { isExact: urlIsExactMatch } = this.props.match;
     const { groupId, pkgId } = this.props.match.params;
     const { pkg, doc, changelog, missing } = this.state;
 
@@ -208,11 +209,13 @@ export default class Package extends Component<PackageProps, PackageState> {
 
     return (
       <Page>
-        <Helmet>
-          <title>
-            {fs.titleize(pkgId)} package - {BASE_TITLE}
-          </title>
-        </Helmet>
+        {urlIsExactMatch && (
+          <Helmet>
+            <title>
+              {fs.titleize(pkgId)} package - {BASE_TITLE}
+            </title>
+          </Helmet>
+        )}
         <Title>
           <h1>{fs.titleize(pkgId)}</h1>
           {examplePath && (
