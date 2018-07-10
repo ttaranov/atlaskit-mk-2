@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/util-data-test",
   "description": "Shared test and story data",
-  "version": "9.1.16",
+  "version": "9.1.17",
   "config": {
     "access": "public"
   },
@@ -15,7 +15,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^36.0.1",
+    "@atlaskit/emoji": "^37.0.0",
     "@atlaskit/mention": "^13.1.4",
     "@atlaskit/task-decision": "^7.1.8",
     "@atlaskit/util-service-support": "^2.0.11",

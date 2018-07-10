@@ -77,6 +77,7 @@ export const CardsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const CardWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin: 6px 0;
   margin-right: 12px;
+  outline: none;
 
   /* Cards are displayed in rows of 4, line up last card with edge of dropzone border */
   &:nth-child(4n) {

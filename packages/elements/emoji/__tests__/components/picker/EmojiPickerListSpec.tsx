@@ -36,7 +36,7 @@ describe('<EmojiPickerList />', () => {
       const wrapper = mount(<EmojiPickerList emojis={emojis} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
-      expect(categoryHeadings.get(0).props.id).to.match(/^category_PEOPLE/);
+      expect(categoryHeadings.get(0).props.id).to.equal('PEOPLE');
     });
 
     it('should show frequently used category first if present', () => {
@@ -61,8 +61,8 @@ describe('<EmojiPickerList />', () => {
       const wrapper = mount(<EmojiPickerList emojis={emojisWithFrequent} />);
 
       const categoryHeadings = wrapper.find(EmojiPickerCategoryHeading);
-      expect(categoryHeadings.get(0).props.id).to.match(/^category_FREQUENT/);
-      expect(categoryHeadings.get(1).props.id).to.match(/^category_PEOPLE/);
+      expect(categoryHeadings.get(0).props.id).to.equal('FREQUENT');
+      expect(categoryHeadings.get(1).props.id).to.equal('PEOPLE');
     });
 
     it('should order emoji inside category', () => {
