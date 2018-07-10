@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 11.4.5
+- [patch] Updated dependencies [6f51fdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f51fdb)
+
 ## 11.4.4
 
 
