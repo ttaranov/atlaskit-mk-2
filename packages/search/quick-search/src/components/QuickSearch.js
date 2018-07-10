@@ -187,7 +187,7 @@ export class QuickSearch extends Component<Props, State> {
     }
   }
 
-  fireKeyboardControlEvent(selectedResultId: string) {
+  fireKeyboardControlEvent(selectedResultId: number | string | null) {
     const { firePrivateAnalyticsEvent } = this.props;
     if (firePrivateAnalyticsEvent) {
       const result = getResultById(this.flatResults, selectedResultId) || {
@@ -227,7 +227,9 @@ export class QuickSearch extends Component<Props, State> {
     this.setState({
       selectedResultId,
     });
-    this.fireKeyboardControlEvent(selectedResultId);
+    if (selectedResultId) {
+      this.fireKeyboardControlEvent(selectedResultId);
+    }
   };
 
   /** Select next result */
@@ -275,7 +277,13 @@ export class QuickSearch extends Component<Props, State> {
     this.props.onSearchKeyDown(event);
 
     // Capture whether users are using keyboard controls
-    this.lastKeyPressed = event.key || '';
+    if (
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
+      event.key === 'Enter'
+    ) {
+      this.lastKeyPressed = event.key;
+    }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault(); // Don't move cursor around in search input field

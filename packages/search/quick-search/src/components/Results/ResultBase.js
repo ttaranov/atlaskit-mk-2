@@ -25,7 +25,7 @@ export default class ResultBase extends PureComponent<Props> {
     type: BASE_RESULT_TYPE,
   };
 
-  handleClick = (e: object) => {
+  handleClick = (e: ?MouseEvent) => {
     const {
       analyticsData,
       onClick,
@@ -40,7 +40,7 @@ export default class ResultBase extends PureComponent<Props> {
       resultId,
       contentType,
       type,
-      newTab: e.metaKey || e.shiftKey || e.ctrlKey,
+      newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
     });
     onClick({ resultId, type });
   };
