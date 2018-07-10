@@ -4,18 +4,14 @@ import React, { Component, Fragment } from 'react';
 import { Theme } from '../src';
 
 const DefaultButtonTheme = props => (
-  <Theme>
-    {theme => (
-      <Theme
-        button={state => ({
-          backgroundColor: state.hover ? '#ddd' : '#eee',
-          textColor: '#333',
-          ...(theme.button && theme.button(state)),
-        })}
-        {...props}
-      />
-    )}
-  </Theme>
+  <Theme
+    button={(state, theme) => ({
+      backgroundColor: state.hover ? '#ddd' : '#eee',
+      textColor: '#333',
+      ...theme(state),
+    })}
+    {...props}
+  />
 );
 
 const AppTheme = props => (
@@ -30,15 +26,13 @@ const AppTheme = props => (
 
 const CustomButtonTheme = props => (
   <DefaultButtonTheme>
-    {theme => (
-      <Theme
-        button={state => ({
-          ...theme.button(state),
-          backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
-        })}
-        {...props}
-      />
-    )}
+    <Theme
+      button={(state, theme) => ({
+        ...theme(state),
+        backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
+      })}
+      {...props}
+    />
   </DefaultButtonTheme>
 );
 
