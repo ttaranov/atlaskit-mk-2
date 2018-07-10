@@ -29,6 +29,12 @@ export {
   setGapCursorSelection,
 } from './utils';
 
+export {
+  PortalProvider,
+  PortalProviderAPI,
+  PortalRenderer,
+} from './ui/PortalProvider';
+
 // Plugin Keys for WithPluginState
 
 export { stateKey as mediaPluginKey } from './plugins/media/pm-plugins/main';
