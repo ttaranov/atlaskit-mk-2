@@ -73,7 +73,7 @@ export default md`
 
   ### Pre-defined themes
 
-  To create a predefined theme, all you have to do is create a component that uses a \`Provider\` internally.
+  To create a predefined theme, all you have to do is create a component that uses a \`Theme\` internally.
 
   ${(
     <Example
