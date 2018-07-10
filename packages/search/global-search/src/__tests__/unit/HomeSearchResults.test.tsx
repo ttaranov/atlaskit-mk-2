@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, { Props } from '../src/components/home/HomeSearchResults';
+import searchResults, { Props } from '../../components/home/HomeSearchResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   ObjectResultWithAnalytics,
   PersonResultWithAnalytics,
-} from '../src/components/SearchResultsUtil';
-import SearchError from '../src/components/SearchError';
-import NoResults from '../src/components/NoResults';
-import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
+} from '../../components/SearchResultsUtil';
+import SearchError from '../../components/SearchError';
+import NoResults from '../../components/NoResults';
+import AdvancedSearchResult from '../../components/AdvancedSearchResult';
 import {
   makeJiraObjectResult,
   makeConfluenceObjectResult,

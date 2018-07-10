@@ -3,7 +3,7 @@ import CrossProductSearchClient, {
   Scope,
   removeHighlightTags,
   ConfluenceItem,
-} from '../src/api/CrossProductSearchClient';
+} from '../../api/CrossProductSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
@@ -13,7 +13,7 @@ import {
   ContentType,
   ContainerResult,
   JiraObjectResult,
-} from '../src/model/Result';
+} from '../../model/Result';
 
 function apiWillReturn(state: CrossProductSearchResponse) {
   const opts = {
@@ -63,7 +63,7 @@ describe('CrossProductSearchClient', () => {
 
       const item = result.get(
         Scope.ConfluencePageBlog,
-      )[0] as ConfluenceObjectResult;
+      )![0] as ConfluenceObjectResult;
       expect(item.resultId).toEqual('search-/url');
       expect(item.name).toEqual('page name');
       expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
@@ -101,7 +101,7 @@ describe('CrossProductSearchClient', () => {
       ]);
       expect(result.get(Scope.ConfluenceSpace)).toHaveLength(1);
 
-      const item = result.get(Scope.ConfluenceSpace)[0] as ContainerResult;
+      const item = result.get(Scope.ConfluenceSpace)![0] as ContainerResult;
       expect(item.resultId).toEqual('search-/displayUrl');
       expect(item.avatarUrl).toEqual('baseUrl/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
@@ -150,7 +150,7 @@ describe('CrossProductSearchClient', () => {
       ]);
       expect(result.get(Scope.JiraIssue)).toHaveLength(1);
 
-      const item = result.get(Scope.JiraIssue)[0] as JiraObjectResult;
+      const item = result.get(Scope.JiraIssue)![0] as JiraObjectResult;
       expect(item.name).toEqual('summary');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
@@ -203,11 +203,12 @@ describe('CrossProductSearchClient', () => {
       scopes: [],
     });
 
-    const result = await searchClient.search('query', 'test_uuid', [
-      Scope.ConfluencePageBlog,
-      Scope.JiraIssue,
-    ]);
+    // const result = await searchClient.search('query', 'test_uuid', [
+    //   Scope.ConfluencePageBlog,
+    //   Scope.JiraIssue,
+    // ]);
     const call = fetchMock.calls('xpsearch')[0];
+    // @ts-ignore
     const body = JSON.parse(call[0]._bodyText);
 
     expect(body.query).toEqual('query');

@@ -2,19 +2,19 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import renderSearchResults, {
   Props,
-} from '../src/components/confluence/ConfluenceSearchResults';
-import { ResultItemGroup } from '@atlaskit/quick-search';
+} from '../../components/confluence/ConfluenceSearchResults';
+// import { ResultItemGroup } from '@atlaskit/quick-search';
 
 import {
   ObjectResultWithAnalytics,
   ContainerResultWithAnalytics,
   PersonResultWithAnalytics,
-} from '../src/components/SearchResultsUtil';
-import AnalyticsEventFiredOnMount from '../src/components/analytics/AnalyticsEventFiredOnMount';
-import SearchError from '../src/components/SearchError';
-import NoResults from '../src/components/NoResults';
-import AdvancedSearchResult from '../src/components/AdvancedSearchResult';
-import NoRecentActivity from '../src/components/NoRecentActivity';
+} from '../../components/SearchResultsUtil';
+import AnalyticsEventFiredOnMount from '../../components/analytics/AnalyticsEventFiredOnMount';
+import SearchError from '../../components/SearchError';
+import NoResults from '../../components/NoResults';
+import AdvancedSearchResult from '../../components/AdvancedSearchResult';
+import NoRecentActivity from '../../components/NoRecentActivity';
 import {
   makeConfluenceContainerResult,
   makeConfluenceObjectResult,
@@ -49,7 +49,7 @@ describe('ConfluenceSearchResults', () => {
       searchSessionId: 'abc',
       ...partialProps,
     };
-
+    // @ts-ignore
     return shallow(<div>{renderSearchResults(props)}</div>);
   }
 

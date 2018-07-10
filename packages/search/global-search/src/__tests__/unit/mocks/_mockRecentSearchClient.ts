@@ -1,4 +1,4 @@
-import { RecentSearchClient } from '../../src/api/RecentSearchClient';
+import { RecentSearchClient } from '../../../api/RecentSearchClient';
 
 export const noResultsRecentSearchClient: RecentSearchClient = {
   getRecentItems() {
