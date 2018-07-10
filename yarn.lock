@@ -11470,6 +11470,10 @@ react-emotion@^9.0.2:
     babel-plugin-emotion "^9.1.2"
     create-emotion-styled "^9.1.2"
 
+react-fast-compare@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.1.tgz#92c91ac4814aa8cfcfb04780ad1bfff2bbe3a3c6"
+
 react-focus-lock@^1.11.1:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/react-focus-lock/-/react-focus-lock-1.11.1.tgz#6e8a1bdef14f0f04673a26e27b415e3d671f2762"
