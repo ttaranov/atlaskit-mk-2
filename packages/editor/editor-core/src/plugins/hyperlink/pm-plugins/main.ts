@@ -4,8 +4,6 @@ import { Dispatch } from '../../../event-dispatcher';
 import { getCursor } from '../../../utils';
 
 export enum LinkAction {
-  EDITOR_FOCUSED = 'focus',
-  EDITOR_BLURRED = 'blur',
   SHOW_INSERT_TOOLBAR = 'show_insert',
   HIDE_TOOLBAR = 'hide_toolbar',
   SELECTION_CHANGE = 'selection_change',
@@ -52,17 +50,6 @@ export const canLinkBeCreatedInRange = (from: number, to: number) => (
 const isSelectionInsideLink = (state: EditorState): boolean => {
   const $cursor = getCursor(state.selection);
   return $cursor ? !!state.schema.marks.link.isInSet($cursor.marks()) : false;
-};
-
-const mapFocusState = (isEditorFocused: boolean, action: LinkAction) => {
-  switch (action) {
-    case LinkAction.EDITOR_FOCUSED:
-      return true;
-    case LinkAction.EDITOR_BLURRED:
-      return false;
-    default:
-      return isEditorFocused;
-  }
 };
 
 const mapTransactionToState = (state: LinkToolbarState, tr: Transaction) => {
@@ -143,7 +130,6 @@ const getActiveLinkMark = (state: EditorState) => {
 };
 
 export interface HyperlinkState {
-  isEditorFocused: boolean;
   activeLinkMark?: LinkToolbarState;
   canInsertLink: boolean;
 }
@@ -160,7 +146,6 @@ export const plugin = (dispatch: Dispatch) =>
         )(state);
         return {
           canInsertLink,
-          isEditorFocused: true,
           activeLinkMark: toState(
             undefined,
             LinkAction.SELECTION_CHANGE,
@@ -183,7 +168,6 @@ export const plugin = (dispatch: Dispatch) =>
               newState.selection.from,
               newState.selection.to,
             )(newState),
-            isEditorFocused: state.isEditorFocused,
             activeLinkMark: mapTransactionToState(state.activeLinkMark, tr),
           };
         }
@@ -191,7 +175,6 @@ export const plugin = (dispatch: Dispatch) =>
         if (action) {
           state = {
             canInsertLink: state.canInsertLink,
-            isEditorFocused: mapFocusState(state.isEditorFocused, action),
             activeLinkMark: toState(state.activeLinkMark, action, newState),
           };
         }
@@ -202,7 +185,6 @@ export const plugin = (dispatch: Dispatch) =>
               newState.selection.from,
               newState.selection.to,
             )(newState),
-            isEditorFocused: state.isEditorFocused,
             activeLinkMark: toState(
               state.activeLinkMark,
               LinkAction.SELECTION_CHANGE,
@@ -218,36 +200,4 @@ export const plugin = (dispatch: Dispatch) =>
       },
     },
     key: stateKey,
-    props: {
-      handleDOMEvents: {
-        click: view => {
-          const pluginState: HyperlinkState = stateKey.getState(view.state);
-          if (!pluginState.isEditorFocused) {
-            const focusType = view.hasFocus()
-              ? LinkAction.EDITOR_FOCUSED
-              : LinkAction.EDITOR_BLURRED;
-            view.dispatch(view.state.tr.setMeta(stateKey, focusType));
-          }
-          return false;
-        },
-        focus: view => {
-          const pluginState: HyperlinkState = stateKey.getState(view.state);
-          if (!pluginState.isEditorFocused) {
-            view.dispatch(
-              view.state.tr.setMeta(stateKey, LinkAction.EDITOR_FOCUSED),
-            );
-          }
-          return false;
-        },
-        blur: view => {
-          const pluginState: HyperlinkState = stateKey.getState(view.state);
-          if (pluginState.isEditorFocused) {
-            view.dispatch(
-              view.state.tr.setMeta(stateKey, LinkAction.EDITOR_BLURRED),
-            );
-          }
-          return false;
-        },
-      },
-    },
   });

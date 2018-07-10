@@ -9,7 +9,6 @@ import {
   doc,
   createEditor,
   p,
-  createEvent,
   insertText,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../../src/utils';
@@ -22,16 +21,8 @@ describe('hyperlink', () => {
     });
   };
 
-  const event = createEvent('event');
-
   describe('plugin', () => {
     describe('#state.init', () => {
-      it('should set isEditorFocused to true', () => {
-        const { editorView, plugin } = editor(doc(p('paragraph{<>}')));
-        const pluginState = plugin.spec.state.init({}, editorView.state);
-        expect(pluginState.isEditorFocused).toBe(true);
-      });
-
       it('should show edit link toolbar if initial selection is inside a link', () => {
         const { editorView, plugin } = editor(
           doc(p(a({ href: 'https://google.com' })('Li{<>}nk'))),
@@ -289,37 +280,6 @@ describe('hyperlink', () => {
         );
         expect(pluginState.activeLinkMark).toBeUndefined();
       });
-    });
-  });
-
-  describe('isEditorFocused', () => {
-    it('should set to `true` when a focus event fires', () => {
-      const { plugin, editorView } = editor(doc(p('{<>}')));
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-
-      const pluginState = hyperlinkStateKey.getState(editorView.state);
-      expect(pluginState.isEditorFocused).toBe(true);
-    });
-
-    it('should set to `false` when a blur event fires', () => {
-      const { plugin, editorView } = editor(doc(p('{<>}')));
-
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-
-      const pluginState = hyperlinkStateKey.getState(editorView.state);
-      expect(pluginState.isEditorFocused).toBe(false);
-    });
-
-    it('should set to `true` when a click event fires and editor is not focused', () => {
-      const { plugin, editorView } = editor(doc(p('{<>}')));
-
-      jest.spyOn(editorView, 'hasFocus').mockReturnValue(true);
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      plugin.props.handleDOMEvents!.click(editorView, event);
-
-      const pluginState = hyperlinkStateKey.getState(editorView.state);
-      expect(pluginState.isEditorFocused).toBe(true);
     });
   });
 });
