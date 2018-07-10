@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { MentionDescription, MentionResource } from '@atlaskit/mention';
 import { shallow } from 'enzyme';
-import { MentionResource, MentionDescription } from '@atlaskit/mention';
 import { EditorView } from 'prosemirror-view';
-import { MentionPicker } from '../../../../src/plugins/mentions/ui/MentionPicker';
+import * as React from 'react';
 import { analyticsService } from '../../../../src/analytics';
 import { enter } from '../../../../src/keymaps';
+import { MentionPicker } from '../../../../src/plugins/mentions/ui/MentionPicker';
 
 describe('MentionPicker', () => {
   describe('Analytics', () => {
@@ -12,13 +12,13 @@ describe('MentionPicker', () => {
     let component;
     let componentInstance: MentionPicker;
 
-    const mentionProvider = Promise.resolve(
-      new MentionResource({
-        url: `https://url/mentions/abcde`,
-        containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
-        productId: 'chat',
-      }),
-    );
+    const mentionResource = new MentionResource({
+      url: `https://url/mentions/abcde`,
+      containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
+      productId: 'chat',
+    });
+    const subscribeSpy = jest.spyOn(mentionResource, 'subscribe');
+    const mentionProvider = Promise.resolve(mentionResource);
     const contextIdentifierProvider = Promise.resolve({
       containerId: 'container-id',
       objectId: 'object-id',
@@ -68,6 +68,7 @@ describe('MentionPicker', () => {
       trackEvent.mockRestore();
       component.unmount();
       createAnalyticsEvent.mockReset();
+      subscribeSpy.mockReset();
     });
 
     it('should fire analytics in handleSpaceTyped', () => {
@@ -149,7 +150,7 @@ describe('MentionPicker', () => {
         state.onSelectNext();
         state.onSelectNext();
         state.onSelectPrevious();
-        component.setState({ mentions });
+        subscribeSpy.mock.calls[0][1](mentions);
         state.onSelectCurrent(enter.common);
         (componentInstance as any).handleSelectedMention(mention);
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
@@ -187,7 +188,7 @@ describe('MentionPicker', () => {
         state.onSelectPrevious();
         state.onSelectPrevious();
         state.onSelectPrevious();
-        component.setState({ mentions });
+        subscribeSpy.mock.calls[0][1](mentions);
         (componentInstance as any).handleSelectedMention(mention);
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({

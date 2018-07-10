@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
-import { PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { Popup, ContextIdentifierProvider } from '@atlaskit/editor-common';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { ContextIdentifierProvider, Popup } from '@atlaskit/editor-common';
 import {
+  ELEMENTS_CHANNEL,
+  isSpecialMention,
+  MentionDescription,
   MentionPicker as AkMentionPicker,
   MentionProvider,
-  MentionDescription,
-  isSpecialMention,
-  ELEMENTS_CHANNEL,
 } from '@atlaskit/mention';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { analyticsService } from '../../../../analytics';
 import {
   getInsertTypeForKey,
   InsertType,
 } from '../../../../analytics/fabric-analytics-helper';
 import { MentionsState } from '../../pm-plugins/main';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   buildTypeAheadCancelPayload,
   buildTypeAheadInsertedPayload,
@@ -43,7 +43,6 @@ export interface State {
   mentionProvider?: MentionProvider;
   contextIdentifierProvider?: ContextIdentifierProvider;
   focused?: boolean;
-  mentions?: MentionDescription[];
 }
 
 export class MentionPicker extends PureComponent<Props, State> {
@@ -56,6 +55,7 @@ export class MentionPicker extends PureComponent<Props, State> {
   private insertType?: InsertType;
   private nextCount: number = 0;
   private previousCount: number = 0;
+  private mentions?: MentionDescription[];
 
   componentWillMount() {
     this.pickerOpenTime = 0;
@@ -129,7 +129,7 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handleMentionResults = (mentions: MentionDescription[]) => {
-    this.setState({ mentions });
+    this.mentions = mentions;
   };
 
   private resolveResourceProvider(resourceProvider): void {
@@ -208,7 +208,7 @@ export class MentionPicker extends PureComponent<Props, State> {
         this.nextCount,
         insertType,
         mention,
-        this.state.mentions,
+        this.mentions,
         this.pluginState && this.pluginState.lastQuery,
       ),
     );
@@ -331,9 +331,8 @@ export class MentionPicker extends PureComponent<Props, State> {
     this.insertType = undefined;
   };
 
-  private getMentionsCount(): number {
-    return (this.state.mentions && this.state.mentions.length) || 0;
-  }
+  private getMentionsCount = (): number =>
+    (this.mentions && this.mentions.length) || 0;
 
   handleSpaceTyped = (): void => {
     analyticsService.trackEvent('atlassian.fabric.mention.picker.space', {});
