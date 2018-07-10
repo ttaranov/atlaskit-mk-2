@@ -8,9 +8,16 @@ import React, {
 } from 'react';
 import { Theme } from '../src';
 
+type MyTheme = {
+  button: ({ hover: boolean }) => {
+    backgroundColor: string,
+    textColor: string,
+  },
+};
+
 const DefaultButtonTheme = props => (
   <Theme
-    button={(state, { button }) => ({
+    button={(state, { button }: MyTheme) => ({
       backgroundColor: state.hover ? '#ddd' : '#eee',
       textColor: '#333',
       ...button(state),
@@ -21,7 +28,7 @@ const DefaultButtonTheme = props => (
 
 const AppTheme = props => (
   <Theme
-    button={(state, { button }) => ({
+    button={(state, { button }: MyTheme) => ({
       ...button(state),
       backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
       textColor: state.hover ? '#fff' : 'papayawhip',
@@ -33,7 +40,7 @@ const AppTheme = props => (
 const CustomButtonTheme = props => (
   <DefaultButtonTheme>
     <Theme
-      button={(state, { button }) => ({
+      button={(state, { button }: MyTheme) => ({
         ...button(state),
         backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
       })}
@@ -64,7 +71,7 @@ class Button extends Component<Props, State> {
     const { props, state } = this;
     return (
       <props.theme>
-        {({ button }) => {
+        {({ button }: MyTheme) => {
           const { backgroundColor, textColor: color } = button(state);
           return (
             <button

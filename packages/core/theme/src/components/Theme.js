@@ -2,41 +2,61 @@
 
 import React, { type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
-import type { ThemeStructure } from '../types';
+import type {
+  ThemeInput,
+  ThemeInputValue,
+  ThemeOutput,
+  ThemeOutputValue,
+} from '../types';
 
 type Props = {
   children: ((*) => Node) | Node,
-} & ThemeStructure;
+  [string]: ThemeInputValue,
+};
 
 const noop = () => null;
 
-function functionOrValue(parentTheme, childTheme, name) {
-  return typeof childTheme[name] === 'function'
-    ? simplifyThemeFunction(parentTheme, childTheme, name)
-    : childTheme[name];
+function resolveThemeValue(
+  parentTheme: ThemeOutput,
+  childTheme: ThemeInput,
+  name: string,
+): ThemeOutputValue {
+  const childThemeFn = childTheme[name];
+  return typeof childThemeFn === 'function'
+    ? simplifyThemeFunction(parentTheme, childTheme, childThemeFn, name)
+    : childThemeFn;
 }
 
-function mergeParentAndChildTheme(parentTheme, childTheme) {
+function mergeParentAndChildTheme(
+  parentTheme: ThemeOutput,
+  childTheme: ThemeInput,
+): ThemeOutput {
   return Object.keys(childTheme).reduce(
-    (parentThemeCopy, name) => {
-      parentThemeCopy[name] = functionOrValue(parentTheme, childTheme, name);
+    (parentThemeCopy: ThemeOutput, name: string): ThemeOutput => {
+      parentThemeCopy[name] = resolveThemeValue(parentTheme, childTheme, name);
       return parentThemeCopy;
     },
     { ...parentTheme },
   );
 }
 
-function simplifyThemeFunction(parentTheme, childTheme, name) {
-  return state =>
-    childTheme[name](state, {
+function simplifyThemeFunction(
+  parentTheme: ThemeOutput,
+  childTheme: ThemeInput,
+  childThemeFn: *,
+  name: string,
+): (*) => ThemeOutput {
+  return state => {
+    return childThemeFn(state, {
       ...childTheme,
       [name]: parentTheme[name] || noop,
     });
+  };
 }
 
 export default ({ children, ...childTheme }: Props) => (
   <Consumer>
-    {(parentTheme: ThemeStructure) => {
+    {(parentTheme: ThemeOutput) => {
       const merged = mergeParentAndChildTheme(parentTheme, childTheme);
       return typeof children === 'function' ? (
         children(merged)
