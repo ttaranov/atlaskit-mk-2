@@ -37,21 +37,29 @@ const renderObjectsGroup = (
     </ResultItemGroup>
   ) : null;
 
-const renderSpacesGroup = (title: string, results: Result[], query: string) =>
+const renderSpacesGroup = (
+  title: JSX.Element,
+  results: Result[],
+  query: string,
+) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="spaces">
       {renderResults(results)}
     </ResultItemGroup>
   ) : null;
 
-const renderPeopleGroup = (title: string, results: Result[], query: string) =>
+const renderPeopleGroup = (
+  title: JSX.Element,
+  results: Result[],
+  query: string,
+) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="people">
       {renderResults(results)}
     </ResultItemGroup>
   ) : null;
 
-const renderSearchConfluenceItem = (query: string, text: string) =>
+const renderSearchConfluenceItem = (query: string, text: JSX.Element) =>
   searchConfluenceItem({
     query: query,
     icon: <SearchIcon size="medium" label="Advanced search" />,
@@ -63,13 +71,16 @@ const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
     icon: <SearchIcon size="medium" label="Search People" />,
-    text: 'Search in People',
+    text: <FormattedMessage id="global-search.people.advanced-search" />,
   });
 
 const renderNoResults = (query: string) => [
   <NoResults key="no-results" />,
   <ResultItemGroup title="" key="advanced-search">
-    {renderSearchConfluenceItem(query, 'Advanced search with filters')}
+    {renderSearchConfluenceItem(
+      query,
+      <FormattedMessage id="global-search.confluence.advanced-search-filters" />,
+    )}
     {renderSearchPeopleItem(query)}
   </ResultItemGroup>,
 ];
@@ -88,7 +99,14 @@ const StickyFooter = styled.div`
 
 const renderAdvancedSearchGroup = (query: string) => {
   const text =
-    query.length === 0 ? 'Advanced search' : `Advanced search for "${query}"`;
+    query.length === 0 ? (
+      <FormattedMessage id="global-search.confluence.advanced-search" />
+    ) : (
+      <FormattedMessage
+        id="global-search.confluence.advanced-search-for"
+        values={{ query }}
+      />
+    );
 
   return [
     <PeopleSearchWrapper key="people-search">
@@ -128,12 +146,12 @@ const renderRecentActivities = (
     query,
   ),
   renderSpacesGroup(
-    'Recent spaces',
+    <FormattedMessage id="global-search.confluence.recent-spaces-heading" />,
     take(recentlyViewedSpaces, MAX_SPACES),
     query,
   ),
   renderPeopleGroup(
-    'Recently worked with',
+    <FormattedMessage id="global-search.people.recent-people-heading" />,
     take(recentlyInteractedPeople, MAX_PEOPLE),
     query,
   ),
@@ -160,8 +178,16 @@ const renderSearchResults = (
       take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
       query,
     ),
-    renderSpacesGroup('Spaces', take(spaceResults, MAX_SPACES), query),
-    renderPeopleGroup('People', take(peopleResults, MAX_PEOPLE), query),
+    renderSpacesGroup(
+      <FormattedMessage id="global-search.confluence.spaces-heading" />,
+      take(spaceResults, MAX_SPACES),
+      query,
+    ),
+    renderPeopleGroup(
+      <FormattedMessage id="global-search.confluence.people-heading" />,
+      take(peopleResults, MAX_PEOPLE),
+      query,
+    ),
     renderAdvancedSearchGroup(query),
 
     <AnalyticsEventFiredOnMount

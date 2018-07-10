@@ -1,17 +1,14 @@
 import * as React from 'react';
-
 import { IntlProvider, injectIntl, InjectedIntlProps } from 'react-intl';
-
 import { enMessages, esMessages, frMessages } from '../i18n';
+
 const messages = { en: enMessages, es: esMessages, fr: frMessages };
 
 export interface Props {
   children: JSX.Element;
 }
 
-class GlobalQuickSearchIntlProvider extends React.Component<
-  Props & InjectedIntlProps
-> {
+class MessagesIntlProvider extends React.Component<Props & InjectedIntlProps> {
   render() {
     const { intl, children } = this.props;
 
@@ -21,4 +18,4 @@ class GlobalQuickSearchIntlProvider extends React.Component<
   }
 }
 
-export default injectIntl(GlobalQuickSearchIntlProvider);
+export default injectIntl(MessagesIntlProvider);

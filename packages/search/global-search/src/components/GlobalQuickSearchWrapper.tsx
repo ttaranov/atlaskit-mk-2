@@ -7,7 +7,7 @@ import ConfluenceQuickSearchContainer, {
   Props as ConfContainerProps,
 } from './confluence/ConfluenceQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
-import GlobalQuickSearchIntlProvider from './GlobalQuickSearchIntlProvider';
+import MessagesIntlProvider from './MessagesIntlProvider';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
@@ -114,9 +114,9 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     const { linkComponent } = this.props;
 
     return (
-      <GlobalQuickSearchIntlProvider>
+      <MessagesIntlProvider>
         <ContainerComponent {...searchClients} linkComponent={linkComponent} />
-      </GlobalQuickSearchIntlProvider>
+      </MessagesIntlProvider>
     );
   }
 }
