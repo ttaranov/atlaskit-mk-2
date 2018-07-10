@@ -2,10 +2,10 @@
 
 import React from 'react';
 import color from 'color';
-import { Consumer, Theme } from '../src';
+import { Theme } from '../src';
 
 const DisplayThemeColors = () => (
-  <Consumer>
+  <Theme>
     {theme =>
       Object.keys(theme).map(k => (
         <div
@@ -23,7 +23,7 @@ const DisplayThemeColors = () => (
         </div>
       ))
     }
-  </Consumer>
+  </Theme>
 );
 
 export default () => (

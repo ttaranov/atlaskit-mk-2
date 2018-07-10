@@ -12,4 +12,6 @@ export type ThemedValue = (props: ?ThemeProps) => string | number;
 export type colorPaletteType = '8' | '16' | '24';
 
 // New types
-export type ThemeStructure = { [string]: * };
+export type ThemeStructure = {
+  [string]: ((*, (*) => ThemeStructure) => *) | *,
+};

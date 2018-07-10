@@ -1,9 +1,10 @@
 // @flow
-import React from 'react';
+
+import React, { type Node } from 'react';
 import { code, md, Example, Props } from '@atlaskit/docs';
 import Lozenge from '@atlaskit/lozenge';
 
-const Deprecated = ({ children }: { children: React.Node }) => (
+const Deprecated = ({ children }: { children: Node }) => (
   <h2>
     <code>{children}</code>{' '}
     <Lozenge appearance="removed" isBold>

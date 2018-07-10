@@ -1,14 +1,19 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, {
+  Component,
+  Fragment,
+  type Node,
+  type ComponentType,
+} from 'react';
 import { Theme } from '../src';
 
 const DefaultButtonTheme = props => (
   <Theme
-    button={(state, theme) => ({
+    button={(state, { button }) => ({
       backgroundColor: state.hover ? '#ddd' : '#eee',
       textColor: '#333',
-      ...theme(state),
+      ...button(state),
     })}
     {...props}
   />
@@ -16,7 +21,8 @@ const DefaultButtonTheme = props => (
 
 const AppTheme = props => (
   <Theme
-    button={state => ({
+    button={(state, { button }) => ({
+      ...button(state),
       backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
       textColor: state.hover ? '#fff' : 'papayawhip',
     })}
@@ -27,8 +33,8 @@ const AppTheme = props => (
 const CustomButtonTheme = props => (
   <DefaultButtonTheme>
     <Theme
-      button={(state, theme) => ({
-        ...theme(state),
+      button={(state, { button }) => ({
+        ...button(state),
         backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
       })}
       {...props}
@@ -36,16 +42,13 @@ const CustomButtonTheme = props => (
   </DefaultButtonTheme>
 );
 
-// ESLint thinks these are unused even though we are using props.*.
 type Props = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  children: React.Node,
-  // eslint-disable-next-line react/no-unused-prop-types
-  theme: Component,
+  children: Node,
+  theme: ComponentType<*>,
 };
 
 type State = {
-  hover: Boolean,
+  hover: boolean,
 };
 
 class Button extends Component<Props, State> {

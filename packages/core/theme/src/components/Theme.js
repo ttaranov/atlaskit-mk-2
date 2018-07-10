@@ -2,31 +2,39 @@
 
 import React, { type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
+import type { ThemeStructure } from '../types';
 
 type Props = {
-  children: (*) => Node | Node,
-};
+  children: ((*) => Node) | Node,
+} & ThemeStructure;
 
 const noop = () => null;
 
-export default function Theme({ children, ...props }: Props) {
-  return (
-    <Consumer>
-      {theme => {
-        const merged = { ...theme };
-
-        Object.keys(props).forEach(k => {
-          const v = props[k];
-          merged[k] =
-            typeof v === 'function' ? state => v(state, theme[k] || noop) : v;
-        });
-
-        return typeof children === 'function' ? (
-          children(merged)
-        ) : (
-          <Provider value={merged}>{children}</Provider>
-        );
-      }}
-    </Consumer>
-  );
+function simplifyThemeFunction(parentTheme, fn, name) {
+  return state =>
+    fn(state, { ...parentTheme, [name]: parentTheme[name] || noop });
 }
+
+function valueOrFunction(parentTheme, fn, name) {
+  return typeof fn === 'function'
+    ? simplifyThemeFunction(parentTheme, fn, name)
+    : fn;
+}
+
+export default ({ children, ...props }: Props) => (
+  <Consumer>
+    {(theme: ThemeStructure) => {
+      const merged = { ...theme };
+
+      Object.keys(props).forEach(name => {
+        merged[name] = valueOrFunction(theme, props[name], name);
+      });
+
+      return typeof children === 'function' ? (
+        children(merged)
+      ) : (
+        <Provider value={merged}>{children}</Provider>
+      );
+    }}
+  </Consumer>
+);
