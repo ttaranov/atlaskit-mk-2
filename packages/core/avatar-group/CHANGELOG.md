@@ -1,5 +1,19 @@
 # @atlaskit/avatar-group
 
+## 1.0.2
+- [patch] Fix flow types [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/item@7.0.8
+  - @atlaskit/dropdown-menu@5.2.3
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/button@8.2.5
+  - @atlaskit/item@7.0.8
+  - @atlaskit/dropdown-menu@5.2.3
+
 ## 1.0.1
 - [patch] Small avatar-group docs improvements [a54f6ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a54f6ea)
 

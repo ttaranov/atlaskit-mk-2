@@ -1,5 +1,19 @@
 # @atlaskit/media-image
 
+## 29.1.10
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/smart-card@5.3.3
+  - @atlaskit/dropdown-menu@5.2.3
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/smart-card@5.3.3
+  - @atlaskit/button@8.2.5
+  - @atlaskit/dropdown-menu@5.2.3
+
 ## 29.1.9
 - [patch] Render empty component in CardList when there are no items in the collection [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
 
