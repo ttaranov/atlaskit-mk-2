@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { type Node } from 'react';
 import styled, { css } from 'styled-components';
 import { Consumer } from './Context';
 
@@ -38,7 +38,7 @@ const Div = styled.div`
   `};
 `;
 
-export default ({ children, ...props }: { children: React.Node }) => (
+export default ({ children, ...props }: { children: Node }) => (
   <Consumer>
     {theme => (
       <Div {...theme} {...props}>

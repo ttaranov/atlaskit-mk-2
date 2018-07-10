@@ -23,6 +23,7 @@ export default md`
     <Example
       Component={require('../examples/colors').default}
       source={require('!!raw-loader!../examples/colors')}
+      title="colors"
     />
   )}
 
@@ -40,14 +41,21 @@ export default md`
 
   The \`Theme\` component is at the center of the theming API.
 
+  ${(
+    <Props
+      props={require('!!extract-react-types-loader!../src/components/Theme')}
+    />
+  )}
+
   ### \`Defining a theme\`
 
   When provided a subtree, the \`Theme\` component takes the values you provide and sets them on the new context.
 
   ${(
     <Example
-      Component={require('../examples/theme').default}
-      source={require('!!raw-loader!../examples/theme')}
+      Component={require('../examples/defining-a-theme').default}
+      source={require('!!raw-loader!../examples/defining-a-theme')}
+      title="Defining a theme"
     />
   )}
 
@@ -57,14 +65,9 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/theme-composed').default}
-      source={require('!!raw-loader!../examples/theme-composed')}
-    />
-  )}
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/Theme')}
+      Component={require('../examples/composing-themes').default}
+      source={require('!!raw-loader!../examples/composing-themes')}
+      title="Composing themes"
     />
   )}
 
@@ -76,6 +79,7 @@ export default md`
     <Example
       Component={require('../examples/pre-defined-themes').default}
       source={require('!!raw-loader!../examples/pre-defined-themes')}
+      title="Pre-defined themes"
     />
   )}
 
@@ -87,6 +91,7 @@ export default md`
     <Example
       Component={require('../examples/pre-defined-themes-composed').default}
       source={require('!!raw-loader!../examples/pre-defined-themes-composed')}
+      title="Pre-defined themes (composed)"
     />
   )}
 
@@ -98,14 +103,16 @@ export default md`
     <Example
       Component={require('../examples/theming-components').default}
       source={require('!!raw-loader!../examples/theming-components')}
+      title="Theming components"
     />
   )}
 
-  There's a few things to note about the example shown above.
+  ### Default themes
 
-  1. It declares the default theme using a mixture of the two ways \`Theme\` can be invoked. This is so that the values it provides can be overridden by more specific themes, thus making them defaults.
-  2. It uses default props to supply the default theme as the \`theme\` prop. This also allows a consumer to specify a custom theme directly, via the prop.
+  Default themes are mostly the same as normal themes, except for that they mixin the ancestor component theme *after* the default theme declarations in the component theming function. This can be seen in the above example in the \`DefaultButtonTheme\`.
 
+  We recommend using \`defaultProps\` and a prop such as \`theme\` to apply the default theme for your components. This allows a consumer to pass a custom theme to the component using \`theme\` and you don't have to change your usage. You can also see this in the example above where it calls out to \`<props.theme />\`.
+  
   ## \`Reset\`
 
   The \`Reset\` component allows you to reset the styles for a particular node tree. Unlike the deprecated \`AtlaskitThemeProvider\`, this is not applied automatically, so it is up to you to put this in your app where appropriate.
@@ -114,6 +121,7 @@ export default md`
     <Example
       Component={require('../examples/reset').default}
       source={require('!!raw-loader!../examples/reset')}
+      title="Reset"
     />
   )}
 
@@ -121,8 +129,9 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/reset-with-theme').default}
-      source={require('!!raw-loader!../examples/reset-with-theme')}
+      Component={require('../examples/themed-reset').default}
+      source={require('!!raw-loader!../examples/themed-reset')}
+      title="Themed reset"
     />
   )}
 
@@ -144,6 +153,7 @@ export default md`
     <Example
       Component={require('../examples/deprecated-theme-provider').default}
       source={require('!!raw-loader!../examples/deprecated-theme-provider')}
+      title="DEPRECATED AtlaskitThemeProvider"
     />
   )}
 

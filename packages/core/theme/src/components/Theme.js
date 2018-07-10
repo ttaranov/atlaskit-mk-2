@@ -1,10 +1,10 @@
 // @flow
 
-import React from 'react';
+import React, { type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
 
 type Props = {
-  children: (*) => React.Node | React.Node,
+  children: (*) => Node | Node,
 };
 
 const noop = () => null;
