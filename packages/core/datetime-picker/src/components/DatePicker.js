@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 import {
   ClearIndicator,
-  DropdownIndicator as InternalDropdownIndicator,
+  DropdownIndicator,
   defaultDateFormat,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
@@ -123,10 +123,6 @@ const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
     containerRef={selectProps.calendarContainerRef}
     content={<Menu {...props} selectProps={selectProps} />}
   />
-);
-
-const DropdownIndicator = ({ selectProps }: Object) => (
-  <InternalDropdownIndicator icon={selectProps.dropdownIndicatorIcon} />
 );
 
 export default class DatePicker extends Component<Props, State> {
