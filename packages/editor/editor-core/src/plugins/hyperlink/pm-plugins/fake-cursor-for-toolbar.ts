@@ -1,4 +1,4 @@
-import { Plugin } from 'prosemirror-state';
+import { Plugin, EditorState } from 'prosemirror-state';
 import { DecorationSet, Decoration } from 'prosemirror-view';
 import {
   InsertStatus,
@@ -15,12 +15,15 @@ const createTextCursor = (pos: number): Decoration => {
 const createTextSelection = (from: number, to: number): Decoration =>
   Decoration.inline(from, to, { class: 'ProseMirror-fake-text-selection' });
 
-const getInsertLinkToolbarState = (state: HyperlinkState) =>
-  state &&
-  state.activeLinkMark &&
-  state.activeLinkMark.type === InsertStatus.INSERT_LINK_TOOLBAR
-    ? state.activeLinkMark
-    : undefined;
+const getInsertLinkToolbarState = (editorState: EditorState) => {
+  const state = hyperlinkStateKey.getState(editorState) as HyperlinkState;
+  if (state && state.activeLinkMark) {
+    if (state.activeLinkMark.type === InsertStatus.INSERT_LINK_TOOLBAR) {
+      return state.activeLinkMark;
+    }
+  }
+  return undefined;
+};
 
 const fakeCursorToolbarPlugin: Plugin = new Plugin({
   state: {
@@ -28,12 +31,8 @@ const fakeCursorToolbarPlugin: Plugin = new Plugin({
       return DecorationSet.empty;
     },
     apply(tr, pluginState: DecorationSet, oldState, newState) {
-      const oldInsertToolbarState = getInsertLinkToolbarState(
-        hyperlinkStateKey.getState(oldState),
-      );
-      const insertToolbarState = getInsertLinkToolbarState(
-        hyperlinkStateKey.getState(newState),
-      );
+      const oldInsertToolbarState = getInsertLinkToolbarState(oldState);
+      const insertToolbarState = getInsertLinkToolbarState(newState);
       if (oldInsertToolbarState && insertToolbarState) {
         const { from, to } = insertToolbarState;
         const oldFrom = tr.mapping.map(oldInsertToolbarState.from);
