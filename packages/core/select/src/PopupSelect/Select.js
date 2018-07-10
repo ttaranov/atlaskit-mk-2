@@ -20,7 +20,7 @@ import NodeResolver from 'react-node-resolver';
 
 import { colors } from '@atlaskit/theme';
 
-import { Menu, DummyControl, defaultComponents } from './components';
+import { MenuDialog, DummyControl, defaultComponents } from './components';
 
 // ==============================
 // Types
@@ -52,7 +52,6 @@ type State = { isOpen: boolean };
 
 const defaultStyles = {
   groupHeading: provided => ({ ...provided, color: colors.N80 }),
-  menu: () => null,
 };
 
 export default class PopupSelect extends PureComponent<Props, State> {
@@ -251,7 +250,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
         {({ placement, ref, style }) => {
           return (
             <NodeResolver innerRef={this.resolveMenuRef(ref)}>
-              <Menu
+              <MenuDialog
                 style={style}
                 data-placement={placement}
                 minWidth={minMenuWidth}
@@ -276,7 +275,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
                   onChange={this.handleSelectChange}
                 />
                 {footer}
-              </Menu>
+              </MenuDialog>
             </NodeResolver>
           );
         }}

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { components } from 'react-select';
 
 import { colors } from '@atlaskit/theme';
@@ -12,7 +12,7 @@ import SearchIcon from '@atlaskit/icon/glyph/editor/search';
 
 type MenuProps = { maxWidth: number, minWidth: number };
 
-export const Menu = ({ maxWidth, minWidth, ...props }: MenuProps) => {
+export const MenuDialog = ({ maxWidth, minWidth, ...props }: MenuProps) => {
   const shadow = colors.N40A;
   return (
     <div
@@ -59,4 +59,9 @@ export const DummyControl = (props: *) => (
     <components.Control {...props} />
   </div>
 );
-export const defaultComponents = { Control, DropdownIndicator };
+// NOTE `props` intentionally omitted from `Fragment`
+// eslint-disable-next-line
+const Menu = ({ key, children, ...props }: *) => (
+  <Fragment key={key}>{children}</Fragment>
+);
+export const defaultComponents = { Control, DropdownIndicator, Menu };

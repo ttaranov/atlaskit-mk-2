@@ -12,13 +12,20 @@ import Avatar from '@atlaskit/avatar';
 const gridSize = gridSizeFn();
 
 type ElementProps = {
+  innerRef: Ref<*>,
   isFocused: boolean,
   isSelected: boolean,
 };
 
-const OptionElement = ({ isFocused, isSelected, ...props }: ElementProps) => {
+const OptionElement = ({
+  innerRef,
+  isFocused,
+  isSelected,
+  ...props
+}: ElementProps) => {
   return (
     <div
+      ref={innerRef}
       css={{
         alignItems: 'center',
         border: 'none',
@@ -139,22 +146,12 @@ export default class Option extends PureComponent<ItemProps> {
   };
 
   render() {
-    const {
-      data,
-      innerProps: { innerRef, ...innerProps },
-      isFocused,
-      isSelected,
-    } = this.props;
+    const { data, innerProps, isFocused, isSelected } = this.props;
     const { avatar, subText, text, ...dataProps } = data;
     const presentationProps = { isFocused, isSelected };
 
     return (
-      <OptionElement
-        ref={innerRef}
-        {...presentationProps}
-        {...dataProps}
-        {...innerProps}
-      >
+      <OptionElement {...presentationProps} {...dataProps} {...innerProps}>
         {!!avatar && (
           <ElementWrapper is="before">
             <Avatar
