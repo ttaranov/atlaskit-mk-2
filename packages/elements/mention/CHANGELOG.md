@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 13.1.8
+- [patch] FS-2093 add mention insert analytics event [30bbe5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bbe5a)
+- [none] Updated dependencies [30bbe5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bbe5a)
+
 ## 13.1.7
 
 
