@@ -38,10 +38,15 @@ const Div = styled.div`
   `};
 `;
 
+const defaultTheme = {
+  backgroundColor: '#fff',
+  textColor: '#333',
+};
+
 export default ({ children, ...props }: { children: Node }) => (
   <Consumer>
     {theme => (
-      <Div {...theme} {...props}>
+      <Div {...defaultTheme} {...theme} {...props}>
         {children}
       </Div>
     )}

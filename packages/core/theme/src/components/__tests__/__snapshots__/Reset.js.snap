@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reset 1`] = `
+.c0 {
+  background-color: #fff;
+  color: #333;
+}
+
+.c0 a {
+  color: #333;
+}
+
+.c0 a:hover {
+  color: #333;
+}
+
+.c0 a:active {
+  color: #333;
+}
+
+.c0 a:focus {
+  outline-color: #333;
+}
+
+.c0 h1,
+.c0 h2,
+.c0 h3,
+.c0 h4,
+.c0 h5 {
+  color: #333;
+}
+
+.c0 h6 {
+  color: #333;
+}
+
+.c0 small {
+  color: #333;
+}
+
+<Component>
+  <styled.div
+    backgroundColor="#fff"
+    textColor="#333"
+  >
+    <div
+      className="c0"
+    />
+  </styled.div>
+</Component>
+`;
+
+exports[`themed reset 1`] = `
+.c0 {
+  background-color: #000;
+  color: #fff;
+}
+
+.c0 a {
+  color: blue;
+}
+
+.c0 a:hover {
+  color: #fff;
+}
+
+.c0 a:active {
+  color: #fff;
+}
+
+.c0 a:focus {
+  outline-color: #fff;
+}
+
+.c0 h1,
+.c0 h2,
+.c0 h3,
+.c0 h4,
+.c0 h5 {
+  color: #fff;
+}
+
+.c0 h6 {
+  color: #fff;
+}
+
+.c0 small {
+  color: #fff;
+}
+
+<Component
+  backgroundColor="#000"
+  linkColor="blue"
+  textColor="#fff"
+>
+  <Component>
+    <styled.div
+      backgroundColor="#000"
+      linkColor="blue"
+      textColor="#fff"
+    >
+      <div
+        className="c0"
+      />
+    </styled.div>
+  </Component>
+</Component>
+`;
