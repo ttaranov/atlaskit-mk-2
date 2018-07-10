@@ -35,11 +35,11 @@ export default function PackageDocument({
     <Page>
       <Helmet>
         <title>
-          {fs.titleize(pkgId)} – {fs.titleize(docId)} - {BASE_TITLE}
+          {fs.titleize(pkgId)} - {fs.titleize(docId)} - {BASE_TITLE}
         </title>
       </Helmet>
       <Title>
-        {fs.titleize(pkgId)} – {fs.titleize(docId)}
+        {fs.titleize(pkgId)} - {fs.titleize(docId)}
       </Title>
       <Content />
     </Page>
