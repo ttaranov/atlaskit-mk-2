@@ -16,7 +16,7 @@ var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var MediaServicesZoomOutIcon = function MediaServicesZoomOutIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M16.436 15.085l3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406zM13.5 11.5h-6a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
+var MediaServicesFullScreenIcon = function MediaServicesFullScreenIcon(props) {
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M16 8h3a1 1 0 0 1 0 2h-3a2 2 0 0 1-2-2V5a1 1 0 0 1 2 0v3zm-8 2H5a1 1 0 1 1 0-2h3V5a1 1 0 1 1 2 0v3a2 2 0 0 1-2 2zm8 4h3a1 1 0 0 1 0 2h-3v3a1 1 0 0 1-2 0v-3a2 2 0 0 1 2-2zm-8 2H5a1 1 0 0 1 0-2h3a2 2 0 0 1 2 2v3a1 1 0 0 1-2 0v-3z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
-exports.default = MediaServicesZoomOutIcon;
+exports.default = MediaServicesFullScreenIcon;
