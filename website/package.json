@@ -65,6 +65,7 @@
     "@atlaskit/tooltip": "^10.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/webpack-config": "^2.0.1",
+    "@atlassiansox/analytics-web-client": "^1.4.14",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
     "babel-runtime": "^6.26.0",
