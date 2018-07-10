@@ -37,7 +37,10 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
 
   describe('openHelpCommand', () => {
     it('should set helpDialog visible flag to true', () => {
-      const { state: { tr }, dispatch } = editorView;
+      const {
+        state: { tr },
+        dispatch,
+      } = editorView;
       openHelpCommand(tr, dispatch);
       expect(tr.getMeta(pluginKey)).to.equal(true);
     });
@@ -45,7 +48,10 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
 
   describe('closeHelpCommand', () => {
     it('should set helpDialog visible flag to false', () => {
-      const { state: { tr }, dispatch } = editorView;
+      const {
+        state: { tr },
+        dispatch,
+      } = editorView;
       closeHelpCommand(tr, dispatch);
       expect(tr.getMeta(pluginKey)).to.equal(false);
     });
