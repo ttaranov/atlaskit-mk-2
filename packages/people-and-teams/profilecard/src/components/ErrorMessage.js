@@ -8,7 +8,7 @@ import { type ProfileCardErrorType } from '../types';
 
 type Props = {
   reload?: Function,
-  errorType?: ProfileCardErrorType,
+  errorType?: ?ProfileCardErrorType,
 };
 
 export default class ErrorMessage extends PureComponent<Props> {
