@@ -29,4 +29,17 @@ describe('<DecisionList/>', () => {
     expect(component.find('li').length).toBe(0);
     expect(component.find(DecisionItem).length).toBe(0);
   });
+  it('should include data attributes on ol/li', () => {
+    const component = mount(
+      <DecisionList>
+        <DecisionItem>1</DecisionItem>
+      </DecisionList>,
+    );
+    const ol = component.find('ol');
+    expect(ol.length).toEqual(1);
+    expect(ol.prop('data-decision-list-local-id')).toEqual('');
+    const li = component.find('li');
+    expect(li.length).toEqual(1);
+    expect(li.prop('data-decision-local-id')).toEqual('');
+  });
 });

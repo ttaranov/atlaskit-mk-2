@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "11.3.14",
+  "version": "11.4.3",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@atlaskit/emoji": "^36.0.2",
     "@atlaskit/icon": "^12.1.2",
-    "@atlaskit/media-card": "^29.1.8",
+    "@atlaskit/media-card": "^29.1.9",
     "@atlaskit/mention": "^13.1.4",
     "@atlaskit/profilecard": "^3.13.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { DEFUALT_GAS_CHANNEL } from '../../util/analytics';
+import { DEFAULT_GAS_CHANNEL } from '../../util/analytics-util';
 import { CreateAnalyticsEventFn } from './types';
 
 export type PayloadProvider = () => GasPayload;
@@ -19,7 +19,7 @@ export class UnwrappedAnalyticsEventFiredOnMount extends React.Component<
   componentDidMount() {
     if (this.props.createAnalyticsEvent) {
       const event = this.props.createAnalyticsEvent();
-      event.update(this.props.payloadProvider()).fire(DEFUALT_GAS_CHANNEL);
+      event.update(this.props.payloadProvider()).fire(DEFAULT_GAS_CHANNEL);
       this.props.onEventFired();
     }
   }

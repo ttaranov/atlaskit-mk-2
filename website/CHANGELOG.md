@@ -1,5 +1,15 @@
 # @atlaskit/website
 
+## 2.1.8
+
+
+- [patch] Updated dependencies [8bf8e51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8bf8e51)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+- [none] Updated dependencies [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+
 ## 2.1.7
 - [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
   - @atlaskit/media-test-helpers@14.0.6

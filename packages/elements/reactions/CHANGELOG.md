@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 12.2.0
+- [minor] FS-1907 adding reaction sends itemCreationDate of object to service [ddcc42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ddcc42f)
+
 ## 12.1.5
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/emoji@36.0.1

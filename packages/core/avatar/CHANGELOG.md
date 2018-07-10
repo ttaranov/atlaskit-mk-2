@@ -1,5 +1,13 @@
 # @atlaskit/avatar
 
+## 13.0.0
+
+- [major] Remove unneeded componentType and functionType type exports [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+- [none] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/button@8.2.5
+
 ## 12.0.0
 - [major] Split avatar-group into its own package [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
 - [none] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
@@ -129,7 +137,7 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 9.0.0
-- [major] update api onAvatarClick for Avatar Group [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
+- [major] onAvatarClick prop on AvatarGroup now has a second argument. This second argument is the item that was clicked on. [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
 
 ## 8.4.1
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)

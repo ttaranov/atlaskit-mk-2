@@ -160,7 +160,7 @@ export type Inline = InlineFormattedText | InlineCode | InlineAtomic;
 /**
  * @name doc_node
  */
-export interface Doc {
+export interface DocNode {
   version: 1;
   type: 'doc';
   content: TopLevel;

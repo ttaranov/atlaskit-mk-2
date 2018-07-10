@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "13.1.5",
+  "version": "13.1.7",
   "config": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
     "@atlaskit/analytics": "^3.0.4",
     "@atlaskit/analytics-gas-types": "^2.1.2",
     "@atlaskit/analytics-next": "^2.1.7",
-    "@atlaskit/avatar": "^12.0.0",
+    "@atlaskit/avatar": "^13.0.0",
     "@atlaskit/icon": "^12.1.2",
     "@atlaskit/lozenge": "^5.0.4",
     "@atlaskit/tooltip": "^10.2.1",

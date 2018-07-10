@@ -19,10 +19,10 @@ import AdvancedSearchResult from './AdvancedSearchResult';
 import ObjectResultComponent from './ObjectResult';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
-  DEFUALT_GAS_CHANNEL,
+  DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
-} from '../util/analytics';
+} from '../util/analytics-util';
 
 export interface BaseResultProps {
   type: string;
@@ -62,7 +62,7 @@ function createAndFireSearchResultSelectedEvent(createEvent, props): void {
       ...DEFAULT_GAS_ATTRIBUTES,
     },
   });
-  event.fire(DEFUALT_GAS_CHANNEL);
+  event.fire(DEFAULT_GAS_CHANNEL);
 }
 
 const searchResultsAnalyticsEvents = {
@@ -215,4 +215,26 @@ export function take<T>(array: Array<T>, n: number) {
 
 export function isEmpty<T>(array: Array<T>) {
   return array.length === 0;
+}
+
+/**
+ *
+ * Gracefully handle promise catch and returning default value
+ * @param promise promise to handle its catch block
+ * @param defaultValue value returned by the promise in case of error
+ * @param errorHandler function to be called in case of promise rejection
+ */
+export function handlePromiseError<T>(
+  promise: Promise<T>,
+  defaultValue?: T,
+  errorHandler?: ((reason: any) => T | void),
+): Promise<T | undefined> {
+  return promise.catch(error => {
+    try {
+      if (errorHandler) {
+        errorHandler(error);
+      }
+    } catch {}
+    return defaultValue;
+  });
 }

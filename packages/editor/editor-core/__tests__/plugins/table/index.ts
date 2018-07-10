@@ -30,7 +30,8 @@ import {
 import { TableLayout } from '@atlaskit/editor-common';
 import {
   TablePluginState,
-  stateKey as tablePluginKey,
+  pluginKey,
+  getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
 import { createTable } from '../../../src/plugins/table/actions';
 import { setNodeSelection } from '../../../src/utils';
@@ -75,7 +76,7 @@ describe('table plugin', () => {
           permittedLayouts: 'all',
         },
       },
-      pluginKey: tablePluginKey,
+      pluginKey,
     });
 
   let trackEvent;
@@ -410,7 +411,7 @@ describe('table plugin', () => {
                 isHeaderRowRequired: true,
               },
             },
-            pluginKey: tablePluginKey,
+            pluginKey,
           });
 
         it('it should convert first following row to header if isHeaderRowRequired is true', () => {
@@ -989,7 +990,7 @@ describe('table plugin', () => {
             editorView.state,
             editorView.dispatch,
           );
-          const { tableNode } = tablePluginKey.getState(editorView.state);
+          const { tableNode } = getPluginState(editorView.state);
           expect(tableNode.attrs.layout).toBe(nextLayout);
           editorView.destroy();
         });
@@ -1024,7 +1025,7 @@ describe('table plugin', () => {
           new TextSelection(view.state.doc.resolve(nextPos)),
         ),
       );
-      const { tableNode } = tablePluginKey.getState(view.state);
+      const { tableNode } = getPluginState(view.state);
       expect(tableNode).toBeDefined();
       expect(tableNode.type.name).toEqual('table');
     });

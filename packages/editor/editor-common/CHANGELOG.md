@@ -1,5 +1,21 @@
 # @atlaskit/editor-common
 
+## 11.4.3
+- [patch] ED-5034 unify full-width sizes of media, tables and extensions [dac304d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac304d)
+- [none] Updated dependencies [dac304d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac304d)
+
+## 11.4.2
+- [patch] Updated dependencies [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
+  - @atlaskit/media-card@29.1.9
+
+## 11.4.1
+- [patch] FS-1704 - Bug fix - copy and pasting of rendered actions/decisions into the editor [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+- [none] Updated dependencies [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+
+## 11.4.0
+- [minor] Add @atlaskit/adf-utils package [dd2efd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2efd5)
+- [none] Updated dependencies [dd2efd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2efd5)
+
 ## 11.3.14
 - [patch] Replace Portal component with ReactDOM.createPortal [17b638b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17b638b)
 - [none] Updated dependencies [17b638b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17b638b)

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, {
+import renderSearchResults, {
   Props,
 } from '../src/components/confluence/ConfluenceSearchResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
@@ -25,13 +25,12 @@ enum Group {
   Objects = 'objects',
   Spaces = 'spaces',
   People = 'people',
+  PeopleSearch = 'people-search',
   AdvancedSearch = 'advanced-search',
 }
 
 function findGroup(group: Group, wrapper: ShallowWrapper) {
-  return wrapper
-    .find(ResultItemGroup)
-    .findWhere(n => n.key() === group.valueOf());
+  return wrapper.findWhere(n => n.key() === group.valueOf());
 }
 
 describe('ConfluenceSearchResults', () => {
@@ -51,7 +50,7 @@ describe('ConfluenceSearchResults', () => {
       ...partialProps,
     };
 
-    return shallow(<div>{searchResults(props)}</div>);
+    return shallow(<div>{renderSearchResults(props)}</div>);
   }
 
   it('should render recently viewed objects when no query is entered', () => {
@@ -129,36 +128,37 @@ describe('ConfluenceSearchResults', () => {
     });
   });
 
-  it('should render links to advanced search when no query is entered', () => {
+  it('should render links to people and advanced search when no query is entered', () => {
     const props: Partial<Props> = {
       query: '',
       recentlyInteractedPeople: [makePersonResult()],
     };
 
     const wrapper = render(props);
-    const group = findGroup(Group.AdvancedSearch, wrapper);
+    let group = findGroup(Group.AdvancedSearch, wrapper);
+    expect(group.childAt(0).prop('resultId')).toEqual('search_confluence');
+    expect(group.childAt(0).prop('text')).toEqual('Advanced search');
 
+    group = findGroup(Group.PeopleSearch, wrapper);
     expect(group.childAt(0).prop('resultId')).toEqual('search_people');
-
-    expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
-    expect(group.childAt(1).prop('text')).toEqual('Advanced search');
+    expect(group.childAt(0).prop('text')).toEqual('Search in People');
   });
 
-  it('should render links to advanced search when a query is entered and there are results', () => {
+  it('should render links to people and advanced search when a query is entered and there are results', () => {
     const props: Partial<Props> = {
       query: 'foo bar',
       objectResults: [makeConfluenceObjectResult({ name: 'name' })],
     };
 
     const wrapper = render(props);
-    const group = findGroup(Group.AdvancedSearch, wrapper);
-
-    expect(group.childAt(0).prop('resultId')).toEqual('search_people');
-
-    expect(group.childAt(1).prop('resultId')).toEqual('search_confluence');
-    expect(group.childAt(1).prop('text')).toEqual(
+    let group = findGroup(Group.AdvancedSearch, wrapper);
+    expect(group.childAt(0).prop('resultId')).toEqual('search_confluence');
+    expect(group.childAt(0).prop('text')).toEqual(
       'Advanced search for "foo bar"',
     );
+
+    group = findGroup(Group.PeopleSearch, wrapper);
+    expect(group.childAt(0).prop('resultId')).toEqual('search_people');
   });
 
   it('should render the pre query screen analytics event when there are results', () => {
@@ -168,7 +168,6 @@ describe('ConfluenceSearchResults', () => {
     };
 
     const wrapper = render(props);
-
     expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
   });
 
@@ -179,7 +178,6 @@ describe('ConfluenceSearchResults', () => {
     };
 
     const wrapper = render(props);
-
     expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
   });
 
@@ -284,5 +282,77 @@ describe('ConfluenceSearchResults', () => {
           .exists(),
       ).toBe(true);
     });
+  });
+
+  it('should render nothing on initial load', () => {
+    const props: Partial<Props> = {
+      query: '',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+    };
+
+    const wrapper = render(props);
+    expect(wrapper.children().length).toBe(0);
+  });
+
+  it('should render previous search result while loading', () => {
+    const props: Partial<Props> = {
+      query: 'abc',
+      objectResults: [makeConfluenceObjectResult({ name: 'name' })],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+      keepRecentActivityResults: false,
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const objectGroup = findGroup(Group.Objects, wrapper);
+    expect(objectGroup.children()).toHaveLength(1);
+
+    const peopleGroup = findGroup(Group.People, wrapper);
+    expect(peopleGroup.children()).toHaveLength(0);
+  });
+
+  it('should render recent activity while loading first search', () => {
+    const props: Partial<Props> = {
+      query: 'abc',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+      keepRecentActivityResults: true,
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const objectGroup = findGroup(Group.Objects, wrapper);
+    expect(objectGroup.children()).toHaveLength(0);
+
+    const peopleGroup = findGroup(Group.People, wrapper);
+    expect(peopleGroup.children()).toHaveLength(1);
+  });
+
+  it('should render previous no search result while loading new search', () => {
+    const props: Partial<Props> = {
+      query: 'abc',
+      objectResults: [],
+      spaceResults: [],
+      peopleResults: [],
+      isLoading: true,
+      keepRecentActivityResults: false,
+      recentlyInteractedPeople: [makePersonResult()],
+    };
+
+    const wrapper = render(props);
+    const objectGroup = findGroup(Group.Objects, wrapper);
+    expect(objectGroup.children()).toHaveLength(0);
+
+    const peopleGroup = findGroup(Group.People, wrapper);
+    expect(peopleGroup.children()).toHaveLength(0);
+
+    expect(wrapper.find(NoResults).exists()).toBe(true);
   });
 });

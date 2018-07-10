@@ -1,5 +1,69 @@
 # @atlaskit/editor-core
 
+## 74.0.8
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/media-card@29.1.10
+  - @atlaskit/task-decision@7.1.12
+  - @atlaskit/mention@13.1.7
+  - @atlaskit/item@7.0.8
+  - @atlaskit/modal-dialog@5.2.8
+  - @atlaskit/avatar-group@1.0.2
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/media-card@29.1.10
+  - @atlaskit/task-decision@7.1.12
+  - @atlaskit/mention@13.1.7
+  - @atlaskit/button@8.2.5
+  - @atlaskit/modal-dialog@5.2.8
+  - @atlaskit/item@7.0.8
+  - @atlaskit/avatar-group@1.0.2
+
+## 74.0.7
+- [patch] FS-2092  add mention typeahead cancel analytics event [40bd3fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40bd3fb)
+- [none] Updated dependencies [40bd3fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40bd3fb)
+  - @atlaskit/mention@13.1.6
+
+## 74.0.6
+- [patch] Updated dependencies [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
+  - @atlaskit/media-card@29.1.9
+  - @atlaskit/editor-common@11.4.2
+
+## 74.0.5
+- [patch] Refactor Panel Plugin [0bdfa19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bdfa19)
+- [none] Updated dependencies [0bdfa19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bdfa19)
+
+## 74.0.4
+- [patch] ED-1718: improve lists styles [570c4fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/570c4fb)
+- [none] Updated dependencies [570c4fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/570c4fb)
+
+## 74.0.3
+- [patch] ED-4851: merge hover selection with main plugin [7eb5bdf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5bdf)
+- [none] Updated dependencies [7eb5bdf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5bdf)
+
+## 74.0.2
+- [patch] Fix analytics wrapper [dc40093](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc40093)
+- [none] Updated dependencies [dc40093](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc40093)
+
+## 74.0.1
+- [patch] ED-4964: refactor lists state [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
+- [none] Updated dependencies [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
+
+## 74.0.0
+- [major] Remove deprecated APIs [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+- [none] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+  - @atlaskit/editor-test-helpers@4.2.2
+  - @atlaskit/editor-markdown-transformer@1.2.7
+  - @atlaskit/editor-json-transformer@3.1.7
+  - @atlaskit/editor-bitbucket-transformer@3.2.8
+
+## 73.10.0
+- [minor] New floating toolbar plugin [d3cedbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3cedbd)
+- [none] Updated dependencies [d3cedbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3cedbd)
+
 ## 73.9.29
 
 - [patch] Revert usage of createPortal in favour of unstable_renderSubtreeIntoContainer to improve perf [d520a6f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d520a6f)

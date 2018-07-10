@@ -49,7 +49,7 @@ export default class ProfilecardTrigger extends PureComponent<Props, State> {
     isFlipped: false,
   };
 
-  handleLayerFlipChange = ({ flipped }) => {
+  handleLayerFlipChange = ({ flipped }: { flipped: boolean }) => {
     this.setState({ isFlipped: flipped });
   };
 
