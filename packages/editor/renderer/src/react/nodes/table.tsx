@@ -6,7 +6,8 @@ const Table = props => {
   const colgroup = props.columnWidths ? (
     <colgroup>
       {props.columnWidths.map((colWidth, idx) => {
-        return <col key={idx} style={{ width: `${colWidth}px` }} />;
+        const style = colWidth ? { width: `${colWidth}px` } : {};
+        return <col key={idx} style={style} />;
       })}
     </colgroup>
   ) : null;
