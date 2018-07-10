@@ -6,6 +6,12 @@ import {
   setTextSelection,
   getDefaultPluginsList,
   EditorPlugin,
+  // @ts-ignore
+  PortalProvider,
+  // @ts-ignore
+  PortalProviderAPI,
+  // @ts-ignore
+  PortalRenderer,
 } from '@atlaskit/editor-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { mount } from 'enzyme';
@@ -13,11 +19,6 @@ import { RefsNode, Refs } from './schema-builder';
 import { Schema } from 'prosemirror-model';
 import { PluginKey } from 'prosemirror-state';
 import patchEditorViewForJSDOM from './jsdom-fixtures';
-import {
-  PortalProvider,
-  PortalProviderAPI,
-  PortalRenderer,
-} from '../../editor-core/src/ui/PortalProvider';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];

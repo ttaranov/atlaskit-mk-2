@@ -1,4 +1,4 @@
-jest.mock('../../src/newgen/viewers/video/fullscreen');
+jest.mock('../../../newgen/viewers/video/fullscreen');
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FullScreenIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
@@ -11,6 +11,7 @@ import {
   CustomVideo,
   CustomVideoProps,
 } from '../../../newgen/viewers/video/customVideo';
+import { toggleFullscreen } from '../../../newgen/viewers/video/fullscreen';
 import { TimeRange } from '../../../newgen/viewers/video/TimeRange';
 import { CurrentTime } from '../../../newgen/viewers/video/styled';
 import { Shortcut } from '../../../newgen/shortcut';
@@ -144,7 +145,6 @@ describe('<CustomVideo />', () => {
         .find(Button)
         .last()
         .simulate('click');
-      // @ts-ignore
       expect(toggleFullscreen).toHaveBeenCalledTimes(1);
     });
 
