@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Consumer, Theme } from '../src';
+import { Theme } from '../src';
 
 const ColorTheme = props => (
   <Theme backgroundColor="#333" color="#fff" {...props} />

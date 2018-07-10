@@ -35,6 +35,7 @@ function mergeParentAndChildTheme(
 ): ThemeOutput {
   return Object.keys(childTheme).reduce(
     (parentThemeCopy: ThemeOutput, name: string): ThemeOutput => {
+      // eslint-disable-next-line no-param-reassign
       parentThemeCopy[name] = resolveThemeValue(parentTheme, childTheme, name);
       return parentThemeCopy;
     },

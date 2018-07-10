@@ -9,6 +9,7 @@ import React, {
 import { Theme } from '../src';
 
 type MyTheme = {
+  // eslint-disable-next-line react/no-unused-prop-types
   button: ({ hover: boolean }) => {
     backgroundColor: string,
     textColor: string,
