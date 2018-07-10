@@ -59,7 +59,6 @@ const ATLASKIT_TAG = 'atlaskit';
 
 export default (event: EventNextType, logger: Logger): GasPayload | null => {
   const sources = getSources(event);
-  const source = last(sources);
   const extraAttributes = getExtraAttributes(event);
   const components = getComponents(event);
 
@@ -92,11 +91,11 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
   if (event.payload) {
     if (eventType === UI_EVENT_TYPE) {
       return {
-        eventType: eventType,
-        source,
+        eventType,
+        source: 'unknown',
         actionSubject: getActionSubject(event),
         action,
-        actionSubjectId: actionSubjectId,
+        actionSubjectId,
         attributes,
         tags: Array.from(tags),
       } as any;
