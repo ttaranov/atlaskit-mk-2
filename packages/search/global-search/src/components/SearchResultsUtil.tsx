@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import {
-  ObjetResult as ObjectResultComponent,
+  ObjectResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
@@ -23,6 +23,7 @@ import {
   DEFAULT_GAS_SOURCE,
   DEFAULT_GAS_ATTRIBUTES,
 } from '../util/analytics-util';
+import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
 
 export interface BaseResultProps {
   type: string;
@@ -30,6 +31,7 @@ export interface BaseResultProps {
   resultId: string;
   href: string;
   avatarUrl?: string;
+  avatar?: JSX.Element;
 }
 
 export interface ObjectResultProps extends BaseResultProps {
@@ -98,6 +100,7 @@ export function renderResults(results: Result[]) {
             type={confluenceResult.analyticsType}
             contentType={confluenceResult.contentType}
             containerName={confluenceResult.containerName}
+            avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
           />
         );
       }

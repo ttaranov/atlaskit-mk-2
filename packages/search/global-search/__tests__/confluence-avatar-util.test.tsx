@@ -51,12 +51,13 @@ function generateTestCasesForExtensions(extensionsToTest) {
 }
 
 function renderAvatarForResult(result) {
-  return shallow(getAvatarForConfluenceObjectResult(result));
+  const avatar = getAvatarForConfluenceObjectResult(result);
+  return shallow(avatar);
 }
 
 function assertAvatarCorrectness(wrapper, filename, mock) {
   expect(wrapper.type()).toBe(mock);
-  expect(wrapper.prop('size')).toBe('small');
+  expect(wrapper.prop('size')).toBe('medium');
   expect(wrapper.prop('label')).toBe(filename);
 }
 
@@ -73,58 +74,95 @@ describe('confluence-avatar-util', () => {
     assertAvatarCorrectness(wrapper, fileName, expectedMock);
   }
 
-  describe('image attachments', () => {
-    const imageTestCases = generateTestCasesForExtensions([
-      'png',
-      'gif',
-      'jpg',
-      'jpeg',
-    ]);
-    imageTestCases.forEach(testFileName => {
-      it(`file name should be correctly mapped to the image attachment icon: ${testFileName}`, () => {
-        executeTest(testFileName, 'icon-file-image', 'MockImage');
+  function describeTestGroup(
+    groupType,
+    testExtensions,
+    cqlIconClass,
+    quickNavIconClass,
+    expectedMock,
+  ) {
+    describe(`${groupType} attachments`, () => {
+      const testCases = generateTestCasesForExtensions(testExtensions);
+      testCases.forEach(testFileName => {
+        it(`file name should be correctly mapped to the ${groupType} attachment icon: ${testFileName}`, () => {
+          executeTest(testFileName, cqlIconClass, expectedMock);
+          executeTest(testFileName, quickNavIconClass, expectedMock);
+        });
       });
     });
-  });
+  }
 
-  describe('audio attachments', () => {
-    const audioTestCases = generateTestCasesForExtensions([
-      'wma',
-      'ram',
-      'wmv',
-      'mp3',
-    ]);
-    audioTestCases.forEach(testFileName => {
-      it(`file name should be correctly mapped to the audio attachment icon: ${testFileName}`, () => {
-        executeTest(testFileName, 'icon-file-multimedia', 'MockAudio');
-      });
-    });
-  });
-
-  describe('pdf attachments', () => {
-    const audioTestCases = generateTestCasesForExtensions(['pdf']);
-    audioTestCases.forEach(testFileName => {
-      it(`file name should be correctly mapped to the pdf attachment icon: ${testFileName}`, () => {
-        executeTest(testFileName, 'content-type-attachment-pdf', 'MockPdf');
-      });
-    });
-  });
-
-  describe('word document attachments', () => {
-    const audioTestCases = generateTestCasesForExtensions([
-      'docx',
-      'dotx',
-      'doc',
-      'dot',
-    ]);
-    audioTestCases.forEach(testFileName => {
-      it(`file name should be correctly mapped to the word document attachment icon: ${testFileName}`, () => {
-        executeTest(
-          testFileName,
-          'content-type-attachment-word',
-          'MockDocument',
-        );
-      });
-    });
+  [
+    {
+      id: 'audio',
+      quickNavIconClass: 'content-type-attachment-multimedia',
+      cqlIconClass: 'icon-file-multimedia',
+      extensions: ['wma', 'wmv', 'ram', 'mp3'],
+      expectedMock: 'MockAudio',
+    },
+    {
+      id: 'code',
+      quickNavIconClass: 'content-type-attachment-code',
+      cqlIconClass: 'icon-file-code',
+      extensions: ['xml', 'html', 'js', 'css', 'java', 'jar', 'war', 'ear'],
+      expectedMock: 'MockSourceCode',
+    },
+    {
+      id: 'document',
+      quickNavIconClass: 'content-type-attachment-document',
+      cqlIconClass: 'icon-file-document',
+      extensions: ['docx', 'dotx', 'doc', 'dot'],
+      expectedMock: 'MockDocument',
+    },
+    {
+      id: 'pdf',
+      quickNavIconClass: 'content-type-attachment-pdf',
+      cqlIconClass: 'icon-file-pdf',
+      extensions: ['pdf'],
+      expectedMock: 'MockPdf',
+    },
+    {
+      id: 'presentation',
+      quickNavIconClass: 'content-type-attachment-presentation',
+      cqlIconClass: 'icon-file-presentation',
+      extensions: ['pptx', 'ppsx', 'potx', 'pot', 'ppt', 'pptm'],
+      expectedMock: 'MockPresentation',
+    },
+    {
+      id: 'spreadsheet',
+      quickNavIconClass: 'content-type-attachment-excel',
+      cqlIconClass: 'icon-file-presentation',
+      extensions: ['xlt', 'xls', 'xlsm', 'xlsx', 'xlst'],
+      expectedMock: 'MockSpreadsheet',
+    },
+    {
+      id: 'video',
+      quickNavIconClass: 'content-type-attachment-multimedia',
+      cqlIconClass: 'icon-file-video',
+      extensions: ['mov', 'mpeg', 'mpg', 'mp4', 'avi'],
+      expectedMock: 'MockVideo',
+    },
+    {
+      id: 'zip',
+      quickNavIconClass: 'content-type-attachment-zip',
+      cqlIconClass: 'icon-file-zip',
+      extensions: ['zip'],
+      expectedMock: 'MockArchive',
+    },
+    {
+      id: 'generic',
+      quickNavIconClass: 'dummy-unmatched-icon-class',
+      cqlIconClass: 'dummy-unmatched-icon-class',
+      extensions: ['unknown', 'test'],
+      expectedMock: 'MockGeneric',
+    },
+  ].forEach(testGroup => {
+    describeTestGroup(
+      testGroup.id,
+      testGroup.extensions,
+      testGroup.cqlIconClass,
+      testGroup.quickNavIconClass,
+      testGroup.expectedMock,
+    );
   });
 });
