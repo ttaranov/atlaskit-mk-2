@@ -177,7 +177,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
 async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: __dirname,
-    workspaceFiles: { karma: 'tests/browser/**/*.+(js|ts|tsx)' },
+    workspaceFiles: { karma: '__tests-karma__/**/*.+(js|ts|tsx)' },
   });
 
   return project.workspaces
