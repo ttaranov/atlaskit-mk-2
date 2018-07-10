@@ -8,6 +8,7 @@ import {
   MentionProvider,
   MentionDescription,
   isSpecialMention,
+  ELEMENTS_CHANNEL,
 } from '@atlaskit/mention';
 import { analyticsService } from '../../../../analytics';
 import {
@@ -15,6 +16,8 @@ import {
   InsertType,
 } from '../../../../analytics/fabric-analytics-helper';
 import { MentionsState } from '../../pm-plugins/main';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { buildTypeAheadCancelPayload } from '../analytics';
 
 export interface Props {
   editorView?: EditorView;
@@ -27,6 +30,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  createAnalyticsEvent: Function;
 }
 
 export interface State {
@@ -38,7 +42,7 @@ export interface State {
   focused?: boolean;
 }
 
-export default class MentionPicker extends PureComponent<Props, State> {
+export class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   content?: HTMLElement;
   private pluginState?: MentionsState;
@@ -46,6 +50,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private pickerOpenTime: number;
   private pickerElapsedTime: number;
   private insertType?: InsertType;
+  private nextCount: number = 0;
+  private previousCount: number = 0;
 
   componentWillMount() {
     this.pickerOpenTime = 0;
@@ -86,6 +92,11 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
+  private resetCounters = () => {
+    this.nextCount = 0;
+    this.previousCount = 0;
+  };
+
   private setPluginState(props: Props) {
     const { editorView, pluginKey } = props;
     if (!editorView) {
@@ -101,7 +112,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       pluginState.onSelectPrevious = this.handleSelectPrevious;
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
-      pluginState.onDismiss = this.handleOnClose;
+      pluginState.onDismiss = this.handleDismiss;
       pluginState.onSpaceTyped = this.handleSpaceTyped;
     }
   }
@@ -149,6 +160,25 @@ export default class MentionPicker extends PureComponent<Props, State> {
     });
 
     return true;
+  };
+
+  private sendCancelledEvent = () => {
+    this.props
+      .createAnalyticsEvent(
+        buildTypeAheadCancelPayload(
+          this.pickerElapsedTime,
+          this.previousCount,
+          this.nextCount,
+          this.pluginState && this.pluginState.lastQuery,
+        ),
+      )
+      .fire(ELEMENTS_CHANNEL);
+    this.resetCounters();
+  };
+
+  private handleDismiss = () => {
+    this.handleOnClose();
+    this.sendCancelledEvent();
   };
 
   render() {
@@ -208,6 +238,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.picker) {
       (this.picker as AkMentionPicker).selectPrevious();
     }
+    this.previousCount++;
 
     return true;
   };
@@ -216,6 +247,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.picker) {
       (this.picker as AkMentionPicker).selectNext();
     }
+    this.nextCount++;
 
     return true;
   };
@@ -266,3 +298,5 @@ export default class MentionPicker extends PureComponent<Props, State> {
     analyticsService.trackEvent('atlassian.fabric.mention.picker.space', {});
   };
 }
+
+export default withAnalyticsEvents()(MentionPicker);

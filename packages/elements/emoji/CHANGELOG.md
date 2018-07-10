@@ -1,5 +1,13 @@
 # @atlaskit/emoji
 
+## 37.0.0
+- [major] FS-2011 change EmojiRepository to use CategoryId [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+- [minor] FS-2011 fix scroll to user custom upload section [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+- [none] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/util-data-test@9.1.17
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/util-data-test@9.1.17
+
 ## 36.0.2
 
 

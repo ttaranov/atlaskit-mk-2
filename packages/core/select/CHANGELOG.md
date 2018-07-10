@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 4.4.0
+- [minor] Added nav-next "Switcher" component. Minor fixes and dep bump for select. [ed5d8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5d8d1)
+- [none] Updated dependencies [ed5d8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5d8d1)
+
 ## 4.3.6
 - [patch] ADG3 guideline allignemnt, updated padding and height, update colors for hover and active, update icons  [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
 - [none] Updated dependencies [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)

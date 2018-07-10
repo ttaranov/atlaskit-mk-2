@@ -12,6 +12,7 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   boundariesElement?: string;
   allowAllEmojis?: boolean;
+  objectCreationTimestamp?: number;
 }
 
 export interface State {
@@ -52,9 +53,14 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
 
   private handleReactionClick = emojiId => {
     const { reactionsProvider } = this.state;
-    const { containerAri, ari } = this.props;
+    const { containerAri, ari, objectCreationTimestamp } = this.props;
     if (reactionsProvider) {
-      reactionsProvider.toggleReaction(containerAri, ari, emojiId);
+      reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        emojiId,
+        objectCreationTimestamp,
+      );
     }
   };
 

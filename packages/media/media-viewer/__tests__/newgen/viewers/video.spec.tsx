@@ -111,7 +111,7 @@ describe('Video viewer', () => {
     expect(el.state('isHDActive')).toBeFalsy();
     el
       .find(Button)
-      .at(1)
+      .at(2)
       .simulate('click');
     expect(el.state('isHDActive')).toBeTruthy();
   });

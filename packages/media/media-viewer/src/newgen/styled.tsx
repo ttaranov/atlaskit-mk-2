@@ -25,7 +25,7 @@ export const mediaTypeIconColors = {
   unknown: '#3dc7dc',
 };
 
-export const blanketColor = '#1b2638';
+export const blanketColor = colors.DN30;
 
 export const hideControlsClassName = 'mvng-hide-controls';
 

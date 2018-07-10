@@ -16,14 +16,14 @@ const focusBorderColor = themed({
   dark: colors.B75,
 });
 
-type getBackgroundColorType = {|
+type getBackgroundColorType = {
   backgroundColor?: string,
   href?: string,
   isActive?: boolean,
   isHover?: boolean,
   isSelected?: boolean,
   onClick?: AvatarClickType,
-|};
+};
 
 export function getBackgroundColor({
   backgroundColor,
