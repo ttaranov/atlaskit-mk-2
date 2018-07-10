@@ -73,8 +73,8 @@ export function isRestricted(accessLevel) {
   );
 }
 
-export function isSpecialMention(mention: MentionDescription) {
-  return mention.userType && mention.userType === UserType[UserType.SPECIAL];
+export function isSpecialMention(mention: MentionDescription): boolean {
+  return !!mention.userType && mention.userType === UserType[UserType.SPECIAL];
 }
 
 export function isAppMention(mention: MentionDescription) {

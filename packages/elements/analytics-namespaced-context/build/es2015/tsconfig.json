@@ -3,7 +3,6 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "../../dist/es2015",
-    "rootDir": "../../src",
     "target": "es5",
     "module": "es2015"
   },

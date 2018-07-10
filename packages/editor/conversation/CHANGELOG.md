@@ -1,5 +1,19 @@
 # @atlaskit/conversation
 
+## 8.2.13
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/editor-core@74.0.8
+  - @atlaskit/single-select@5.2.5
+  - @atlaskit/comment@5.0.6
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/editor-core@74.0.8
+  - @atlaskit/single-select@5.2.5
+  - @atlaskit/comment@5.0.6
+
 ## 8.2.12
 - [patch] Updated dependencies [ddcc42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ddcc42f)
   - @atlaskit/reactions@12.2.0

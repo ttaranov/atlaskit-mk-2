@@ -1,5 +1,20 @@
 # @atlaskit/editor-common
 
+## 11.4.5
+- [patch] Updated dependencies [6f51fdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f51fdb)
+
+## 11.4.4
+
+
+- [patch] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/emoji@37.0.0
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/emoji@37.0.0
+
+## 11.4.3
+- [patch] ED-5034 unify full-width sizes of media, tables and extensions [dac304d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac304d)
+- [none] Updated dependencies [dac304d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac304d)
+
 ## 11.4.2
 - [patch] Updated dependencies [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
   - @atlaskit/media-card@29.1.9
