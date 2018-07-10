@@ -15,7 +15,7 @@ export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';
 export { default as Section } from './components/Section';
-export { default as SectionSeparator } from './components/SectionSeparator';
+export { default as Separator } from './components/Separator';
 export { default as SectionTitle } from './components/SectionTitle';
 
 /** State */

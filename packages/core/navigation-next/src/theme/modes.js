@@ -5,7 +5,7 @@ import globalNav from '../components/GlobalNav/styles';
 import productNav from '../components/ProductNav/styles';
 import item from '../components/Item/styles';
 import sectionTitle from '../components/SectionTitle/styles';
-import sectionSeparator from '../components/SectionSeparator/styles';
+import sectionSeparator from '../components/Separator/styles';
 import scrollHint from '../components/ScrollableSectionInner/styles';
 
 import type { Mode } from './types';

@@ -9,7 +9,7 @@ import {
   Item,
   Section,
   ScrollableSectionInner,
-  SectionSeparator,
+  Separator,
   SectionTitle,
 } from '../src';
 
@@ -98,7 +98,7 @@ class NestedSection extends Component<{}, { activeLevel: number }> {
                   {...itemProps}
                 />
               ))}
-              <SectionSeparator />
+              <Separator />
             </div>
           )}
         </Section>
@@ -150,7 +150,7 @@ export default () => (
               {scrollingItems.map(itemProps => (
                 <Item key={itemProps.text} {...itemProps} />
               ))}
-              <SectionSeparator />
+              <Separator />
             </ScrollableSectionInner>
           )}
         </Section>

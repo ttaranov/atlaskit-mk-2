@@ -19,7 +19,7 @@ import {
   ItemPrimitive,
   RootViewSubscriber,
   Section,
-  SectionSeparator,
+  Separator,
   SectionTitle,
 } from '../';
 import type {
@@ -110,9 +110,6 @@ const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
     </div>
   </div>
 );
-
-// Separator
-const Separator = SectionSeparator;
 
 // Title
 const Title = ({ text, ...props }: TitleProps) => (

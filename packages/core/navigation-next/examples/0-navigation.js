@@ -22,7 +22,7 @@ import {
   LayoutManager,
   NavigationProvider,
   Section,
-  SectionSeparator,
+  Separator,
   SectionTitle,
   UIStateSubscriber,
 } from '../src';
@@ -133,7 +133,7 @@ const productContainerNavSections = [
       { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
       { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
       { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },
-      { type: SectionSeparator, key: 'separator' },
+      { type: Separator, key: 'separator' },
     ],
   },
 ];
