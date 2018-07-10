@@ -1,6 +1,6 @@
 import MentionResource, {
   AbstractMentionResource,
-  MentionContextIdentifiers,
+  MentionContextIdentifier,
   MentionProvider,
 } from './api/MentionResource';
 import PresenceResource, {
@@ -32,7 +32,7 @@ export {
   MentionDescription,
   MentionsResult,
   // types
-  MentionContextIdentifiers,
+  MentionContextIdentifier,
   // Components
   MentionItem,
   MentionList,

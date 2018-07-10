@@ -63,5 +63,7 @@ export function parseQueryParams(query) {
 
 export function parseQueryFromUrl(url) {
   const idx = url.indexOf('?');
-  return idx != -1 ? parseQueryParams(url.substring(url.indexOf('?') + 1)) : {};
+  return idx !== -1
+    ? parseQueryParams(url.substring(url.indexOf('?') + 1))
+    : {};
 }

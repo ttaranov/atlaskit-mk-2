@@ -22,8 +22,6 @@ describe('MentionPicker', () => {
     const CONTAINER_ID = 'container-id';
     const OBJECT_ID = 'object-id';
 
-    let componentWillReceivePropsSpy;
-
     const mentionProvider = Promise.resolve(mentionResource);
     const contextIdentifierProvider = Promise.resolve({
       containerId: CONTAINER_ID,
@@ -68,10 +66,6 @@ describe('MentionPicker', () => {
         selectPrevious: jest.fn(),
         chooseCurrentSelection: jest.fn(),
       };
-      componentWillReceivePropsSpy = jest.spyOn(
-        componentInstance,
-        'componentWillReceiveProps',
-      );
     });
 
     afterEach(() => {
@@ -82,9 +76,21 @@ describe('MentionPicker', () => {
     });
 
     it('should have contextIdentifiers in the state after component is mounted', () => {
-      expect(component.state().contextIdentifierProvider).toEqual({
-        containerId: CONTAINER_ID,
-        objectId: OBJECT_ID,
+      return new Promise(resolve => setTimeout(resolve)).then(() => {
+        expect(component.state().contextIdentifierProvider).toEqual({
+          containerId: CONTAINER_ID,
+          objectId: OBJECT_ID,
+        });
+        expect(
+          component.state().mentionProvider instanceof ContextMentionResource,
+        ).toBeTruthy();
+        expect(
+          (component.state()
+            .mentionProvider as ContextMentionResource).getContextIdentifier(),
+        ).toEqual({
+          containerId: CONTAINER_ID,
+          objectId: OBJECT_ID,
+        });
       });
     });
 
@@ -99,7 +105,6 @@ describe('MentionPicker', () => {
           objectId: OBJECT_ID,
         }),
       });
-      expect(componentWillReceivePropsSpy).toHaveBeenCalled();
 
       // To be able to see the proper expect failure and not a timeout, the expectation is wrappered in the code bellow to run verify the result in the next tick
       // given the setState() triggered in the MentionPicker.componentWillReceiveProps is async
@@ -109,7 +114,7 @@ describe('MentionPicker', () => {
         ).toBeTruthy();
         expect(
           (component.state()
-            .mentionProvider as ContextMentionResource).getContextIdentifiers(),
+            .mentionProvider as ContextMentionResource).getContextIdentifier(),
         ).toEqual({
           containerId: 'Yay',
           objectId: OBJECT_ID,
@@ -130,7 +135,6 @@ describe('MentionPicker', () => {
       component.setProps({
         mentionProvider: Promise.resolve(newMentionResource),
       });
-      expect(componentWillReceivePropsSpy).toHaveBeenCalled();
 
       // To be able to see the proper expect failure and not a timeout, the expectation is wrappered in the code bellow to run verify the result in the next tick
       // given the setState() triggered in the MentionPicker.componentWillReceiveProps is async
@@ -140,7 +144,7 @@ describe('MentionPicker', () => {
         ).toBeTruthy();
         expect(
           (component.state()
-            .mentionProvider as ContextMentionResource).getContextIdentifiers(),
+            .mentionProvider as ContextMentionResource).getContextIdentifier(),
         ).toEqual({
           containerId: CONTAINER_ID,
           objectId: OBJECT_ID,

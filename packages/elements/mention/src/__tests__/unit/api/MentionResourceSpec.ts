@@ -156,7 +156,6 @@ describe('MentionResource', () => {
 
         const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
         expect(queryParams.containerId).toBe('defaultContainerId');
-        expect(queryParams.objectId).toBe('someObjectId');
 
         count++;
         if (count === 2) {
@@ -170,9 +169,7 @@ describe('MentionResource', () => {
           done();
         }
       });
-      resource.filter('craig', {
-        objectId: 'someObjectId',
-      });
+      resource.filter('craig');
     });
 
     it('subscribe should receive updates with credentials omitted', done => {
@@ -249,14 +246,17 @@ describe('MentionResource', () => {
           checkOrder(expected, results);
 
           const queryParams = parseQueryFromUrl(fetchMock.lastUrl().url);
+          expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
           done();
         }
       });
       resource.filter('cr', {
+        containerId: 'someContainerId',
         objectId: 'someObjectId',
       });
       resource.filter('craig', {
+        containerId: 'someContainerId',
         objectId: 'someObjectId',
       });
     });

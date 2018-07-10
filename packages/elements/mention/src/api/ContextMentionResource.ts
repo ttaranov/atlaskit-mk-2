@@ -1,38 +1,36 @@
-// @ts-ignore: unused variable
-import MentionResource, {
+// @ts-ignore
+import {
   MentionProvider,
-  MentionContextIdentifiers,
-  ResultCallback,
-  InfoCallback,
+  MentionContextIdentifier,
   ErrorCallback,
+  InfoCallback,
+  ResultCallback,
 } from './MentionResource';
-// @ts-ignore: unused variable
-import { MentionDescription } from '../types';
+import { padArray } from '../util';
+
+import {
+  // @ts-ignore
+  MentionDescription,
+} from '../types';
 
 /**
  * This component is stateful and should be instantianted per contextIdentifiers.
  */
 export default class ContextMentionResource implements MentionProvider {
   private mentionProvider: MentionProvider;
-  private contextIdentifiers?: MentionContextIdentifiers;
+  private contextIdentifier: MentionContextIdentifier;
 
   constructor(
     mentionProvider: MentionProvider,
-    contextIdentifiers?: MentionContextIdentifiers,
+    contextIdentifier: MentionContextIdentifier,
   ) {
     this.mentionProvider = mentionProvider;
-    this.contextIdentifiers = contextIdentifiers;
+    this.contextIdentifier = contextIdentifier;
   }
 
-  getContextIdentifiers(): MentionContextIdentifiers | undefined {
-    return this.contextIdentifiers;
+  getContextIdentifier(): MentionContextIdentifier | undefined {
+    return this.contextIdentifier;
   }
-
-  padArray = (arr: Array<any>, size: number, value: any): Array<any> => {
-    const gap = new Array(size);
-    gap.fill(undefined);
-    return arr ? [...arr, ...gap] : [...gap];
-  };
 
   callWithContextIds = <K extends keyof MentionProvider>(
     f: K,
@@ -40,13 +38,12 @@ export default class ContextMentionResource implements MentionProvider {
   ): MentionProvider[K] => (...args: any[]) => {
     const argsLength = args ? args.length : 0;
     // cover the scenario where optional parameters are not passed
-    let mentionArgs =
+    // by passing undefined instead to keep the contextIdentifiers parameter in the right position
+    const mentionArgs =
       argsLength !== declaredArgs
-        ? this.padArray(args, declaredArgs - argsLength, undefined)
+        ? padArray(args, declaredArgs - argsLength, undefined)
         : args;
-    return this.contextIdentifiers
-      ? this.mentionProvider[f](...mentionArgs, this.contextIdentifiers)
-      : this.mentionProvider[f](...mentionArgs);
+    return this.mentionProvider[f](...mentionArgs, this.contextIdentifier);
   };
 
   callDefault = <K extends keyof MentionProvider>(f: K): MentionProvider[K] => (

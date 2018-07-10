@@ -65,8 +65,8 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.promiseWrapper(this.props.contextIdentifierProvider).then(
-      (contextIdProvider: ContextIdentifierProvider | undefined) => {
+    this.props.contextIdentifierProvider.then(
+      (contextIdProvider: ContextIdentifierProvider) => {
         this.resolveResourceProvider(
           this.props.mentionProvider,
           contextIdProvider,
@@ -95,8 +95,8 @@ export class MentionPicker extends PureComponent<Props, State> {
       nextProps.contextIdentifierProvider !==
       this.props.contextIdentifierProvider
     ) {
-      this.promiseWrapper(nextProps.contextIdentifierProvider).then(
-        (contextIdProvider: ContextIdentifierProvider | undefined) => {
+      nextProps.contextIdentifierProvider.then(
+        (contextIdProvider: ContextIdentifierProvider) => {
           this.resolveResourceProvider(
             this.props.mentionProvider,
             contextIdProvider,
@@ -146,21 +146,22 @@ export class MentionPicker extends PureComponent<Props, State> {
     this.mentions = mentions;
   };
 
-  private promiseWrapper = (promise: Promise<any>): Promise<any> =>
-    promise || Promise.resolve(undefined);
-
   private resolveResourceProvider(
     resourceProviderPromise,
     contextIdentifierProvider,
   ) {
     if (resourceProviderPromise) {
       resourceProviderPromise.then((mentionProvider: MentionProvider) => {
-        const wrappedMentioProvider = new ContextMentionResource(
-          mentionProvider,
-          contextIdentifierProvider,
-        );
+        // note: because state.contextIdentifierProvider is optional, we are playing safe here
+        //        despite props.contextIdentifierProvider is not
+        const wrappedMentionProvider = contextIdentifierProvider
+          ? new ContextMentionResource(
+              mentionProvider,
+              contextIdentifierProvider,
+            )
+          : mentionProvider;
         this.setState({
-          mentionProvider: wrappedMentioProvider,
+          mentionProvider: wrappedMentionProvider,
           contextIdentifierProvider,
         });
         mentionProvider.subscribe(
