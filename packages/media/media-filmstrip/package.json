@@ -27,6 +27,8 @@
   },
   "peerDependencies": {
     "react": "^16.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -37,6 +39,9 @@
     "@atlaskit/field-range": "^4.0.3",
     "@atlaskit/media-card": "^29.1.8",
     "@atlaskit/media-core": "^21.0.0",
-    "@atlaskit/media-test-helpers": "^14.0.6"
+    "@atlaskit/media-test-helpers": "^14.0.6",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "react": "^16.3.0"
   }
 }

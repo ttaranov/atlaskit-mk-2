@@ -37,6 +37,8 @@
   },
   "peerDependencies": {
     "react": "^16.3.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -46,6 +48,9 @@
     "@atlaskit/inline-message": "^5.1.1",
     "@atlaskit/page": "^7.1.0",
     "brace": "^0.11.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "react": "^16.3.0",
     "react-ace": "^6.1.0"
   }
 }
