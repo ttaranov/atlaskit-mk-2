@@ -47,15 +47,29 @@ export const canLinkBeCreatedInRange = (from: number, to: number) => (
   return false;
 };
 
-const isSelectionInsideLink = (state: EditorState): boolean => {
+const isSelectionInsideLink = (state: EditorState | Transaction): boolean => {
   const $cursor = getCursor(state.selection);
-  return $cursor ? !!state.schema.marks.link.isInSet($cursor.marks()) : false;
+  return $cursor
+    ? !!state.doc.type.schema.marks.link.isInSet($cursor.marks())
+    : false;
 };
 
-const mapTransactionToState = (state: LinkToolbarState, tr: Transaction) => {
+const mapTransactionToState = (
+  state: LinkToolbarState,
+  tr: Transaction,
+): LinkToolbarState => {
   if (state) {
     if (state.type === InsertStatus.EDIT_LINK_TOOLBAR) {
-      return { ...state, pos: tr.mapping.map(state.pos) };
+      const { pos, deleted } = tr.mapping.mapResult(state.pos, 1);
+      if (!deleted) {
+        return {
+          ...state,
+          pos,
+          node: tr.doc.nodeAt(pos) as Node,
+        };
+      }
+      // If the position has been deleted, then require a navigation to show the toolbar again
+      return undefined;
     } else {
       return {
         ...state,
@@ -85,6 +99,7 @@ const toState = (
         }
         return undefined;
       case LinkAction.SELECTION_CHANGE:
+        // If the user has moved their cursor, see if they're in a link
         const linkedText = getActiveLinkMark(editorState);
         if (linkedText) {
           return { ...linkedText, type: InsertStatus.EDIT_LINK_TOOLBAR };
@@ -98,6 +113,8 @@ const toState = (
       case LinkAction.SELECTION_CHANGE:
         const linkedText = getActiveLinkMark(editorState);
         if (linkedText) {
+          // If the user has moved their cursor to another link
+          // Make sure we return the same object, if it's the same link
           return linkedText.pos === state.pos && linkedText.node === state.node
             ? state
             : { ...linkedText, type: InsertStatus.EDIT_LINK_TOOLBAR };
@@ -119,7 +136,7 @@ const toState = (
   }
 };
 
-const getActiveLinkMark = (state: EditorState) => {
+const getActiveLinkMark = (state: EditorState | Transaction) => {
   if (isSelectionInsideLink(state)) {
     const $cursor = getCursor(state.selection)!;
     const pos = $cursor.pos - $cursor.textOffset;
