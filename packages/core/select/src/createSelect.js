@@ -1,6 +1,8 @@
 // @flow
 import React, { Component, type ComponentType, type ElementRef } from 'react';
 import { mergeStyles, makeAnimated } from 'react-select';
+import memoizeOne from 'memoize-one';
+import isEqual from 'react-fast-compare';
 import { colors, gridSize } from '@atlaskit/theme';
 
 import * as defaultComponents from './components';
@@ -249,6 +251,9 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
     select: ElementRef<*>;
     constructor(props: Props) {
       super(props);
+      this.cacheComponents = memoizeOne(this.cacheComponents, isEqual).bind(
+        this,
+      );
       this.cacheComponents(props.components);
     }
     static defaultProps = {
@@ -257,9 +262,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       onClickPreventDefault: true,
     };
     componentWillReceiveProps(nextProps: Props) {
-      if (nextProps.components !== this.props.components) {
-        this.cacheComponents(nextProps.components);
-      }
+      this.cacheComponents(nextProps.components);
     }
     cacheComponents = (components?: {}) => {
       this.components = makeAnimated({
