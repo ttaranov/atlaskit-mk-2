@@ -8,7 +8,10 @@ import CategorySelector, {
   Props,
   sortCategories,
 } from '../../../src/components/picker/CategorySelector';
-import { CategoryDescriptionMap } from '../../../src/components/picker/categories';
+import {
+  CategoryDescriptionMap,
+  CategoryId,
+} from '../../../src/components/picker/categories';
 
 const setupComponent = (props?: Props): ReactWrapper<any, any> =>
   mount(<CategorySelector {...props} />);
@@ -33,7 +36,7 @@ describe('<CategorySelector />', () => {
   });
 
   it('displays categories in sorted order', () => {
-    const dynamicCategories = ['CUSTOM', 'FREQUENT', 'ATLASSIAN'];
+    const dynamicCategories: CategoryId[] = ['CUSTOM', 'FREQUENT', 'ATLASSIAN'];
     const component = setupComponent({
       dynamicCategories,
     });
@@ -70,15 +73,14 @@ describe('<CategorySelector />', () => {
   it('onCategorySelected called which clicking a category', () => {
     let selectedCategoryId;
     const component = setupComponent({
+      dynamicCategories: ['CUSTOM', 'FREQUENT'],
       onCategorySelected: id => {
         selectedCategoryId = id;
       },
     });
     const categoryButtons = component.find('button');
-    categoryButtons.at(4).simulate('click');
-    expect(selectedCategoryId, 'Category was selected').to.equal(
-      defaultCategories[4],
-    );
+    categoryButtons.at(defaultCategories.length + 1).simulate('click');
+    expect(selectedCategoryId, 'Category was selected').to.equal('CUSTOM');
   });
 
   it('active category highlighted', () => {

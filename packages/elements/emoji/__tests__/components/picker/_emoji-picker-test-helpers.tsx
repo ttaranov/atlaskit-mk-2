@@ -20,7 +20,7 @@ import EmojiErrorMessage from '../../../src/components/common/EmojiErrorMessage'
 import EmojiUploadPreview from '../../../src/components/common/EmojiUploadPreview';
 import {
   CategoryDescriptionMap,
-  CategoryId,
+  CategoryGroupKey,
 } from '../../../src/components/picker/categories';
 
 export function setupPickerWithoutToneSelector(): Promise<
@@ -64,14 +64,10 @@ export const findEmoji = list => list.find(Emoji);
  */
 export const emojisVisible = (picker, list) => hasSelector(picker, Emoji, list);
 
-const nodeIsCategory = (category: CategoryId, n) =>
-  n.is(EmojiPickerCategoryHeading) &&
-  n
-    .prop('id')
-    .toLocaleLowerCase()
-    .startsWith(`category_${category.toLocaleLowerCase()}`);
+const nodeIsCategory = (category: CategoryGroupKey, n) =>
+  n.is(EmojiPickerCategoryHeading) && n.prop('id') === category;
 
-export const findCategoryHeading = (category: CategoryId, component) =>
+export const findCategoryHeading = (category: CategoryGroupKey, component) =>
   component
     .find(EmojiPickerCategoryHeading)
     .filterWhere(n => nodeIsCategory(category, n));
@@ -86,7 +82,10 @@ const findAllVirtualRows = component =>
     // ignore spinner
   );
 
-export const emojiRowsVisibleInCategory = (category: CategoryId, component) => {
+export const emojiRowsVisibleInCategory = (
+  category: CategoryGroupKey,
+  component,
+) => {
   component.update();
   const rows = findAllVirtualRows(component);
   let foundStart = false;
@@ -112,7 +111,7 @@ export const emojiRowsVisibleInCategory = (category: CategoryId, component) => {
   });
 };
 
-const getCategoryButton = (category: CategoryId, picker) => {
+const getCategoryButton = (category: CategoryGroupKey, picker) => {
   const categorySelector = picker.find(CategorySelector);
   return categorySelector.findWhere(
     n =>
@@ -122,11 +121,11 @@ const getCategoryButton = (category: CategoryId, picker) => {
   );
 };
 
-export const categoryVisible = (category: CategoryId, component) =>
+export const categoryVisible = (category: CategoryGroupKey, component) =>
   findCategoryHeading(category, component).length > 0;
 
 export const showCategory = (
-  category: CategoryId,
+  category: CategoryGroupKey,
   component,
   categoryTitle?: string,
 ): Promise<any> => {
@@ -146,7 +145,7 @@ export const showCategory = (
 
 export const findEmojiInCategory = (
   emojis,
-  categoryId: CategoryId,
+  categoryId: CategoryGroupKey,
 ): EmojiDescription | undefined => {
   const upperCategoryId = categoryId.toLocaleUpperCase();
   for (let i = 0; i < emojis.length; i++) {
