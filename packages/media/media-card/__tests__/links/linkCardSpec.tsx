@@ -14,7 +14,7 @@ import { A } from '../../src/links/card/styled';
 import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
 import { URLEmbedCard } from '../../src/links/embed/urlEmbedCard';
 import { HTMLEmbedCard } from '../../src/links/embed/htmlEmbedCard';
-import { AppCardView } from '../../src/app';
+import { AppCardView } from '@atlaskit/application-card';
 
 describe('LinkCard', () => {
   describe('.render()', () => {
