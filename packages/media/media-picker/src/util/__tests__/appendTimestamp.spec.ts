@@ -1,4 +1,4 @@
-import { appendTimestamp } from '../../../src/plugins/media/utils/media-common';
+import { appendTimestamp } from '../appendTimestamp';
 
 describe('appendTimestamp', () => {
   const defaultDate = Date.UTC(2018, 11, 12, 15, 30, 45);

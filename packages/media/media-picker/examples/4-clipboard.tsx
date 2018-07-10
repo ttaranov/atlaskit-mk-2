@@ -5,6 +5,7 @@ import {
   userAuthProvider,
   defaultMediaPickerAuthProvider,
   userAuthProviderBaseURL,
+  defaultMediaPickerCollectionName,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
@@ -90,7 +91,12 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
         ? userAuthProvider
         : undefined,
     });
-    const clipboard = MediaPicker('clipboard', context);
+    const clipboard = MediaPicker('clipboard', context, {
+      useNewUploadService: false,
+      uploadParams: {
+        collection: defaultMediaPickerCollectionName,
+      },
+    });
 
     this.clipboard = clipboard;
 

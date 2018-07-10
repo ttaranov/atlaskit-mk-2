@@ -4,6 +4,7 @@ import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { MPClipboardLoaded } from '../outer/analytics/events';
 import { MediaPickerContext } from '../domain/context';
 import { whenDomReady } from '../util/documentReady';
+import { appendTimestamp } from '../util/appendTimestamp';
 
 export interface ClipboardConfig extends LocalUploadConfig {
   readonly userAuthProvider?: AuthProvider;
@@ -16,6 +17,22 @@ export interface ClipboardConstructor {
     clipboardConfig: ClipboardConfig,
   ): Clipboard;
 }
+
+// TODO: write tests for this
+export const getFilesFromClipboard = (files: FileList) => {
+  return Array.from(files).map(file => {
+    if (file.type.indexOf('image/') === 0) {
+      const name = appendTimestamp(file.name, file.lastModified);
+
+      return new File([file], name, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+    } else {
+      return file;
+    }
+  });
+};
 
 export class Clipboard extends LocalUploadComponent {
   constructor(
@@ -45,7 +62,7 @@ export class Clipboard extends LocalUploadComponent {
     */
     const { clipboardData } = event;
     if (clipboardData && clipboardData.files) {
-      const filesArray = Array.from(clipboardData.files);
+      const filesArray = getFilesFromClipboard(clipboardData.files);
       this.uploadService.addFiles(filesArray);
     }
   };
