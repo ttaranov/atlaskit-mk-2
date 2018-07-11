@@ -8,10 +8,10 @@ export interface LinkViewProps {
 
 export class LinkView extends React.Component<LinkViewProps> {
   handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onClick } = this.props;
     if (onClick) {
+      event.preventDefault();
+      event.stopPropagation();
       onClick();
     }
   };

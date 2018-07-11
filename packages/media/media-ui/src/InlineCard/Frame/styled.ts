@@ -1,7 +1,7 @@
 import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { borderRadius as akBorderRadius } from '@atlaskit/theme';
 
 export interface WrapperProps {
   isSelected?: boolean;

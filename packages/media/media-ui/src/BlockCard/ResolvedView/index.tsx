@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
-import AvatarGroup from "@atlaskit/avatar-group";
+import AvatarGroup from '@atlaskit/avatar-group';
 import Tooltip from '@atlaskit/tooltip';
 import Button from '@atlaskit/button';
 import { ImageIcon } from '../ImageIcon';
@@ -26,9 +26,6 @@ import {
 } from './styled';
 import Transition from './Transition';
 import { LozengeViewModel } from '../../types';
-
-// hack: Button's types aren't up-to-date and don't support isLoading
-const GenericButton = Button as any;
 
 export interface ContextViewModel {
   icon?: string;
@@ -328,7 +325,7 @@ export class ResolvedView extends React.Component<
           const { id, text } = action;
           const isPending = pendingActionsById[id];
           return (
-            <GenericButton
+            <Button
               key={id}
               spacing="compact"
               isDisabled={isPending || isAnyActionFailed}
@@ -336,7 +333,7 @@ export class ResolvedView extends React.Component<
               onClick={this.createActionHandler(action)}
             >
               {text}
-            </GenericButton>
+            </Button>
           );
         })}
       </ActionsWrapper>

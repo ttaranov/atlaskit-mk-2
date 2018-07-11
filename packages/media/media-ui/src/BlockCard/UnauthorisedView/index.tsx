@@ -14,10 +14,10 @@ export interface UnauthorisedViewProps {
 
 export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
   handleAuthorise = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onAuthorise } = this.props;
     if (onAuthorise) {
+      event.preventDefault();
+      event.stopPropagation();
       onAuthorise();
     }
   };

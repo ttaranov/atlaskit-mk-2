@@ -30,7 +30,7 @@ class Example extends React.Component {
           <GridColumn>
             <ErroredView
               url={this.state.url}
-              message="Somwthing went wrong here"
+              message="Something went wrong here"
               onClick={() => alert('This will have zero effect...')}
               onRetry={() => alert('Trying hard...')}
             />
@@ -44,7 +44,7 @@ class Example extends React.Component {
               in finibus augue. Etiam ut leo justo. Proin consequat lacus id leo{' '}
               <ErroredView
                 url={this.state.url}
-                message="Somwthing went wrong here"
+                message="Something went wrong here"
                 onClick={() => alert('This will have zero effect...')}
                 onRetry={() => alert('Trying hard...')}
               />{' '}

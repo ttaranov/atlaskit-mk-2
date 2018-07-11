@@ -10,10 +10,10 @@ export interface CollapsedFrameProps {
 
 export class CollapsedFrame extends React.Component<CollapsedFrameProps> {
   handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onClick } = this.props;
     if (onClick) {
+      event.preventDefault();
+      event.stopPropagation();
       onClick();
     }
   };
@@ -23,10 +23,10 @@ export class CollapsedFrame extends React.Component<CollapsedFrameProps> {
     if (event.key !== ' ' && event.key !== 'Enter') {
       return;
     }
-    event.preventDefault();
-    event.stopPropagation();
     const { onClick } = this.props;
     if (onClick) {
+      event.preventDefault();
+      event.stopPropagation();
       onClick();
     }
   };

@@ -1,5 +1,5 @@
 import { keyframes } from 'styled-components';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { borderRadius as akBorderRadius } from '@atlaskit/theme';
 
 export const ellipsis = (maxWidth: string | number = '100%') => {
   const unit = typeof maxWidth === 'number' ? 'px' : '';

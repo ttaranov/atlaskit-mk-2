@@ -15,10 +15,10 @@ export interface ErroredViewProps {
 
 export class ErroredView extends React.Component<ErroredViewProps> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onRetry } = this.props;
     if (onRetry) {
+      event.preventDefault();
+      event.stopPropagation();
       onRetry();
     }
   };
@@ -43,7 +43,7 @@ export class ErroredView extends React.Component<ErroredViewProps> {
                 <Button
                   appearance="link"
                   spacing="none"
-                  onClick={this.handleRetry as () => void}
+                  onClick={this.handleRetry}
                 >
                   Try again
                 </Button>

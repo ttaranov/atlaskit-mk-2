@@ -14,10 +14,10 @@ export interface ForbiddenViewProps {
 
 export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onAuthorise } = this.props;
     if (onAuthorise) {
+      event.preventDefault();
+      event.stopPropagation();
       onAuthorise();
     }
   };

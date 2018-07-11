@@ -9,10 +9,10 @@ export interface FrameViewProps {
 
 export class Frame extends React.Component<FrameViewProps> {
   handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onClick } = this.props;
     if (onClick) {
+      event.preventDefault();
+      event.stopPropagation();
       onClick();
     }
   };
@@ -21,10 +21,10 @@ export class Frame extends React.Component<FrameViewProps> {
     if (event.key !== ' ' && event.key !== 'Enter') {
       return;
     }
-    event.preventDefault();
-    event.stopPropagation();
     const { onClick } = this.props;
     if (onClick) {
+      event.preventDefault();
+      event.stopPropagation();
       onClick();
     }
   };

@@ -22,35 +22,32 @@ export default class AlertView extends React.Component<
   AlertViewProps,
   AlertViewState
 > {
-  constructor(props: AlertViewProps) {
-    super(props);
-    this.el = null;
-  }
-
   state: AlertViewState = {};
 
-  el: HTMLDivElement | null;
+  el?: HTMLDivElement;
 
   handleRetry = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onRetry } = this.props;
     if (onRetry) {
+      event.preventDefault();
+      event.stopPropagation();
       onRetry();
     }
   };
 
   handleDismis = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
     const { onDismis } = this.props;
     if (onDismis) {
+      event.preventDefault();
+      event.stopPropagation();
       onDismis();
     }
   };
 
-  handleMount = (el: HTMLDivElement) => {
-    this.el = el;
+  handleMount = (el?: HTMLDivElement) => {
+    if (el) {
+      this.el = el;
+    }
   };
 
   handleResize = debounce(() => {
@@ -90,19 +87,11 @@ export default class AlertView extends React.Component<
 
     return (
       <>
-        <Button
-          appearance="link"
-          spacing="none"
-          onClick={this.handleRetry as () => void}
-        >
+        <Button appearance="link" spacing="none" onClick={this.handleRetry}>
           Try again
         </Button>{' '}
         or{' '}
-        <Button
-          appearance="link"
-          spacing="none"
-          onClick={this.handleDismis as () => void}
-        >
+        <Button appearance="link" spacing="none" onClick={this.handleDismis}>
           cancel
         </Button>.
       </>
