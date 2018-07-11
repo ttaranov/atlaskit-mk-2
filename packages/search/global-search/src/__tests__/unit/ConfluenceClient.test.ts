@@ -34,6 +34,7 @@ function buildMockPage(type: ConfluenceContentType): RecentPage {
     title: 'Page title',
     type: 'page',
     url: '/content/123',
+    iconClass: 'iconClass',
   };
 }
 
@@ -49,6 +50,7 @@ const MOCK_QUICKNAV_RESULT_BASE = {
   name: 'name',
   id: '123',
   spaceName: 'spaceName',
+  spaceKey: 'spaceKey',
 };
 
 const mockQuickNavResult = (className: string) => ({
@@ -108,6 +110,7 @@ describe('ConfluenceClient', () => {
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
           containerId: 'abc',
+          iconClass: 'iconClass',
         },
         {
           resultId: pages[1].id,
@@ -118,6 +121,7 @@ describe('ConfluenceClient', () => {
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceBlogpost,
           containerId: 'abc',
+          iconClass: 'iconClass',
         },
       ]);
     });
@@ -193,6 +197,8 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceBlogpost,
+          containerId: 'spaceKey',
+          iconClass: BLOG_CLASSNAME,
         },
         {
           resultId: '123',
@@ -202,6 +208,8 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
+          containerId: 'spaceKey',
+          iconClass: PAGE_CLASSNAME,
         },
         {
           resultId: '123',
@@ -211,6 +219,8 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceAttachment,
+          containerId: 'spaceKey',
+          iconClass: ATTACHMENT_CLASSNAME,
         },
       ];
 
@@ -247,6 +257,8 @@ describe('ConfluenceClient', () => {
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluenceAttachment,
+          containerId: 'spaceKey',
+          iconClass: ATTACHMENT_CLASSNAME,
         },
       ];
 
@@ -274,9 +286,11 @@ describe('ConfluenceClient', () => {
           name: 'name & > <',
           href: `/href?search_id=123`,
           containerName: 'spaceName & > <',
+          containerId: 'spaceKey',
           analyticsType: AnalyticsType.ResultConfluence,
           resultType: ResultType.ConfluenceObjectResult,
           contentType: ContentType.ConfluencePage,
+          iconClass: PAGE_CLASSNAME,
         },
       ];
 

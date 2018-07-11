@@ -196,6 +196,7 @@ function quickNavResultToObjectResult(
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.ConfluenceObjectResult,
     containerId: quickNavResult.spaceKey!,
+    iconClass: quickNavResult.className,
   };
 }
 
