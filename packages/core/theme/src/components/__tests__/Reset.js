@@ -1,9 +1,9 @@
 // @flow
 
 import React from 'react';
+import { mount } from 'enzyme';
 import Reset from '../Reset';
 import Theme from '../Theme';
-import { mount } from 'enzyme';
 
 test('reset', () => {
   expect(mount(<Reset />)).toMatchSnapshot();
