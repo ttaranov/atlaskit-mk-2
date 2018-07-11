@@ -3,10 +3,11 @@ import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
-import { ErrorMessage, PDFWrapper } from '../../styled';
+import { PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 import { Outcome, ZoomLevel } from '../../domain';
 import { Spinner } from '../../loading';
+import { ErrorMessage, createError, MediaViewerError } from '../../error';
 
 export const pdfViewerClassName = 'pdfViewer';
 
@@ -34,18 +35,18 @@ injectGlobal`
         line-height: 1;
         font-family: sans-serif;
         opacity: 0.8;
-        
+
         ::selection {
           background: rgb(0,0,255);
         }
       }
-      
+
       .annotationLayer {
         position: absolute;
         top: 0;
         bottom: 0;
       }
-      
+
       .textLayer > div, .annotationLayer > section {
         color: transparent;
         position: absolute;
@@ -88,7 +89,7 @@ export type Props = {
 };
 
 export type State = {
-  doc: Outcome<any, Error>;
+  doc: Outcome<any, MediaViewerError>;
   zoomLevel: ZoomLevel;
 };
 
@@ -115,7 +116,12 @@ export class PDFRenderer extends React.Component<Props, State> {
         this.pdfViewer.setDocument(doc);
       });
     } catch (err) {
-      this.setState({ doc: { status: 'FAILED', err } });
+      this.setState({
+        doc: {
+          status: 'FAILED',
+          err: createError('previewFailed', undefined, err),
+        },
+      });
     }
   }
 
@@ -147,7 +153,7 @@ export class PDFRenderer extends React.Component<Props, State> {
           </PDFWrapper>
         );
       case 'FAILED':
-        return <ErrorMessage>{doc.err.message}</ErrorMessage>;
+        return <ErrorMessage error={doc.err} />;
     }
   }
 }
