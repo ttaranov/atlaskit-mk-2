@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { ErrorMessage, createError } from '../../src/newgen/error';
+import { ErrorMessage, createError } from '../../../newgen/error';
 import Button from '@atlaskit/button';
 
 describe('Error Message', () => {

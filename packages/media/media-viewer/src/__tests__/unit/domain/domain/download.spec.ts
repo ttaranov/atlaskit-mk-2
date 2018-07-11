@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import { Context, MediaItem, FileItem } from '@atlaskit/media-core';
-import { Stubs } from '../_stubs';
-import { createDownloadUrl } from '../../src/newgen/domain/download';
+import { Stubs } from '../../_stubs';
+import { createDownloadUrl } from '../../../../newgen/domain/download';
 
 function createContext(subject: Subject<MediaItem>): Context {
   const token = 'some-token';

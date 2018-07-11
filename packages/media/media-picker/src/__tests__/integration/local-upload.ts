@@ -9,7 +9,7 @@ BrowserTestCase(
   async client => {
     const page = await gotoPopupSimplePage(client);
     const filename = 'popup.png';
-    const localPath = path.join(__dirname, '..', '..', 'docs', filename);
+    const localPath = path.join(__dirname, '..', '..', '..', 'docs', filename);
 
     expect(await page.getRecentUploadCards()).toHaveLength(10);
 
