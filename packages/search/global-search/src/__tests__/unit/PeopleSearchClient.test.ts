@@ -1,10 +1,10 @@
 import PeopleSearchClient, {
   SearchResult,
   GraphqlResponse,
-} from '../src/api/PeopleSearchClient';
+} from '../../api/PeopleSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
-import { AnalyticsType, ResultType, PersonResult } from '../src/model/Result';
+import { AnalyticsType, ResultType, PersonResult } from '../../model/Result';
 
 function searchApiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const response = Array.isArray(state)
@@ -14,7 +14,7 @@ function searchApiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const opts = {
     name: 'people',
   };
-
+  // @ts-ignore
   fetchMock.post('localhost/graphql', response, opts);
 }
 
@@ -26,7 +26,7 @@ function recentPeopleApiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const opts = {
     name: 'people',
   };
-
+  // @ts-ignore
   fetchMock.post('localhost/graphql', response, opts);
 }
 
@@ -45,6 +45,7 @@ describe('PeopleSearchClient', () => {
       searchClient.search('query');
 
       const call = fetchMock.calls('people')[0];
+      // @ts-ignore
       const body = JSON.parse(call[0]._bodyText);
 
       expect(body.variables.cloudId).toEqual('123');
@@ -116,6 +117,7 @@ describe('PeopleSearchClient', () => {
       searchClient.getRecentPeople();
 
       const call = fetchMock.calls('people')[0];
+      // @ts-ignore
       const body = JSON.parse(call[0]._bodyText);
 
       expect(body.variables.cloudId).toEqual('123');

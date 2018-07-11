@@ -1,8 +1,8 @@
 import {
   Scope,
   CrossProductSearchClient,
-} from '../../src/api/CrossProductSearchClient';
-import { Result } from '../../src/model/Result';
+} from '../../../api/CrossProductSearchClient';
+import { Result } from '../../../model/Result';
 import { makeJiraObjectResult } from '../_test-util';
 
 export function makeSingleResultCrossProductSearchResponse(

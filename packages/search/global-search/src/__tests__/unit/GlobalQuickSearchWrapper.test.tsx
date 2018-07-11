@@ -1,8 +1,8 @@
 import * as React from 'react';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearchWrapper';
+import GlobalQuickSearch from '../../components/GlobalQuickSearchWrapper';
 import { mount } from 'enzyme';
-import { HomeQuickSearchContainer } from '../src/components/home/HomeQuickSearchContainer';
-import { ConfluenceQuickSearchContainer } from '../src/components/confluence/ConfluenceQuickSearchContainer';
+import { HomeQuickSearchContainer } from '../../components/home/HomeQuickSearchContainer';
+import { ConfluenceQuickSearchContainer } from '../../components/confluence/ConfluenceQuickSearchContainer';
 
 it('should render the home container with context home', () => {
   const wrapper = mount(<GlobalQuickSearch cloudId="123" context="home" />);

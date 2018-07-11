@@ -16,7 +16,6 @@ import {
   media,
   mediaSingle,
 } from '@atlaskit/editor-test-helpers';
-import { hyperlinkPluginKey } from '../../../../src/plugins/hyperlink/pm-plugins/main';
 
 chai.use(chaiPlugin);
 
@@ -28,7 +27,6 @@ describe('paste', () => {
         legacyImageUploadProvider: Promise.resolve(() => {}),
         allowLists: true,
       },
-      pluginKey: hyperlinkPluginKey,
     });
 
   if (!browser.ie && !isMobileBrowser()) {

@@ -10,7 +10,7 @@ import {
   PersonResultWithAnalytics,
   ContainerResultWithAnalytics,
   handlePromiseError,
-} from '../src/components/SearchResultsUtil';
+} from '../../components/SearchResultsUtil';
 import {
   JiraObjectResult,
   ContainerResult,
@@ -18,7 +18,7 @@ import {
   PersonResult,
   AnalyticsType,
   ContentType,
-} from '../src/model/Result';
+} from '../../model/Result';
 import {
   makeConfluenceObjectResult,
   makeConfluenceContainerResult,
@@ -206,7 +206,7 @@ describe('renderResults', () => {
       const promise = Promise.reject(new Error('err'));
       const errorHandlerMock = jest.fn();
       const defaultValue = 80;
-
+      // @ts-ignore
       return handlePromiseError(promise, defaultValue, errorHandlerMock).then(
         value => {
           expect(value).toBe(defaultValue);
@@ -221,7 +221,7 @@ describe('renderResults', () => {
         throw new Error('new error');
       };
       const defaultValue = 80;
-
+      // @ts-ignore
       return handlePromiseError(promise, defaultValue, errorHandlerMock)
         .then(value => {
           expect(value).toBe(defaultValue);
