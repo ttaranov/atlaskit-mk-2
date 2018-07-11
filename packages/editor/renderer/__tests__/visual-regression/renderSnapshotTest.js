@@ -14,15 +14,16 @@ describe('Snapshot Test', () => {
     removeOldProdSnapshots(imageSnapshotFolder);
   });
 
-  it('renderer media single-should match prod', async () => {
+  it('The renderer should match prod', async () => {
     const url = getExampleUrl(
       'editor',
       'renderer',
       'basic',
       global.__BASEURL__,
     );
+
     await global.page.goto(url);
-    const image = await takeElementScreenShot(global.page, '.media-single');
+    const image = await takeElementScreenShot(global.page, '#RendererOutput');
     //$FlowFixMe
     expect(image).toMatchProdImageSnapshot();
   });
