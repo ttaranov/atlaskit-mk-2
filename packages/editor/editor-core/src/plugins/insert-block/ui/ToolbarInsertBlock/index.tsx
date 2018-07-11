@@ -123,8 +123,11 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     }
   }
 
-  private onOpenChange = (attrs: any) => {
-    const state: any = { isOpen: attrs.isOpen };
+  private onOpenChange = (attrs: { isOpen: boolean; open?: boolean }) => {
+    const state = {
+      isOpen: attrs.isOpen,
+      emojiPickerOpen: this.state.emojiPickerOpen,
+    };
     if (this.state.emojiPickerOpen && !attrs.open) {
       state.emojiPickerOpen = false;
     }
@@ -523,7 +526,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   };
 
   @analyticsDecorator('atlassian.editor.emoji.button')
-  private handleSelectedEmoji = (emojiId: any, emoji: any): boolean => {
+  private handleSelectedEmoji = (emojiId: EmojiId): boolean => {
     this.props.insertEmoji!(emojiId);
     this.toggleEmojiPicker();
     return true;

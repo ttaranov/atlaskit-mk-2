@@ -129,8 +129,8 @@ function wrapSelectionIn(type): Command {
     const { tr } = state;
     const { $from, $to } = state.selection;
     const { paragraph } = state.schema.nodes;
-    const range = $from.blockRange($to) as any;
-    const wrapping = range && (findWrapping(range, type) as any);
+    const range = $from.blockRange($to);
+    const wrapping = range && findWrapping(range, type);
     if (range && wrapping) {
       tr.wrap(range, wrapping).scrollIntoView();
     } else {
@@ -155,7 +155,7 @@ export function insertCodeBlock(): Command {
     const { $to } = state.selection;
     const { codeBlock } = state.schema.nodes;
     const moveSel = $to.node($to.depth).textContent ? 1 : 0;
-    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill()!);
+    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill() as PMNode);
     tr.setSelection(
       Selection.near(tr.doc.resolve(state.selection.to + moveSel)),
     );
@@ -285,7 +285,7 @@ export function createParagraphNear(append: boolean = true): Command {
       insertPos = getInsertPosFromNonTextBlock(state, append);
     }
 
-    const tr = state.tr.insert(insertPos, paragraph.createAndFill()!);
+    const tr = state.tr.insert(insertPos, paragraph.createAndFill() as PMNode);
     tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
     dispatch(tr);
 
@@ -369,7 +369,7 @@ export function createParagraphAtEnd(): Command {
         doc.lastChild.content.size === 0
       )
     ) {
-      tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
+      tr.insert(doc.content.size, nodes.paragraph.createAndFill() as PMNode);
     }
     tr.setSelection(TextSelection.create(tr.doc, tr.doc.content.size - 1));
     tr.scrollIntoView();
