@@ -93,7 +93,7 @@ describe('DocViewer', () => {
     expect(el.state()).toMatchObject({
       src: {
         status: 'FAILED',
-        err: createError('noPDFArtifactsFound', item),
+        err: createError('noPDFArtifactsFound'),
       },
     });
 
