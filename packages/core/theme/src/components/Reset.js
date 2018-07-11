@@ -2,9 +2,12 @@
 
 import React, { type Node } from 'react';
 import styled, { css } from 'styled-components';
+import * as colors from '../colors';
 import { Consumer } from './Context';
+import type { ThemeReset } from '../types';
 
-const orTextColor = preferred => p => p[preferred] || p.textColor;
+const orTextColor = (preferred: string) => (p: ThemeReset) =>
+  p[preferred] || p.textColor;
 const Div = styled.div`
   ${p => css`
     background-color: ${p.backgroundColor};
@@ -20,7 +23,7 @@ const Div = styled.div`
       color: ${orTextColor('linkColorActive')};
     }
     a:focus {
-      outline-color: ${orTextColor('inkColorOutline')};
+      outline-color: ${orTextColor('linkColorOutline')};
     }
     h1,
     h2,
@@ -38,9 +41,16 @@ const Div = styled.div`
   `};
 `;
 
-const defaultTheme = {
-  backgroundColor: '#fff',
-  textColor: '#333',
+const defaultTheme: ThemeReset = {
+  backgroundColor: colors.background,
+  linkColor: colors.link,
+  linkColorHover: colors.linkHover,
+  linkColorActive: colors.linkActive,
+  linkColorOutline: colors.linkOutline,
+  headingColor: colors.heading,
+  subtleHeadingColor: colors.subtleHeading,
+  subtleTextColor: colors.subtleText,
+  textColor: colors.text,
 };
 
 export default ({ children, ...props }: { children: Node }) => (

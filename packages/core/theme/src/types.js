@@ -19,3 +19,16 @@ export type ThemeInputValue = ThemeInputFunction | ThemeBaseValue;
 export type ThemeOutput = { [string]: ThemeOutputValue };
 export type ThemeOutputFunction = (*) => ThemeOutput;
 export type ThemeOutputValue = *;
+
+// Themes
+export type ThemeReset = {
+  backgroundColor: string,
+  textColor: string,
+  linkColor?: string,
+  linkColorHover?: string,
+  linkColorActive?: string,
+  linkColorOutline?: string,
+  headingColor?: string,
+  subtleHeadingColor?: string,
+  subtleTextColor?: string,
+};
