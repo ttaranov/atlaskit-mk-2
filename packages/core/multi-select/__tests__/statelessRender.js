@@ -450,12 +450,6 @@ describe(`${name} - stateless`, () => {
           .at(0)
           .prop('appearance'),
       ).toBe('rounded');
-      expect(
-        tagGroup
-          .find(Tag)
-          .at(1)
-          .prop('appearance'),
-      ).toBe('default');
     });
   });
 });
