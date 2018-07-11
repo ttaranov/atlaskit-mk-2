@@ -11,7 +11,7 @@ import * as React from 'react';
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount, shallow } from 'enzyme';
 
-import { enMessages } from '../../src/i18n';
+import { enMessages } from '../../../i18n';
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const intlProvider = new IntlProvider(
