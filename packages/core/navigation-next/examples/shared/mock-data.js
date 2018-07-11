@@ -61,13 +61,11 @@ export const globalNavSecondaryItems = [
 const rootIndex = [
   {
     id: 'root/index:header',
-    isRootLevel: true,
     items: [{ type: 'JiraWordmark', id: 'jira-wordmark' }],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'root/index:menu',
-    isRootLevel: true,
     items: [
       {
         type: 'LinkItem',
@@ -93,23 +91,21 @@ const rootIndex = [
     ],
     nestedGroupKey: 'menu',
     parentId: null,
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
 const rootIssues = [
   {
     id: 'root/issues:header',
-    isRootLevel: true,
     items: [
       { type: 'JiraWordmark', id: 'jira-wordmark' },
       { type: 'BackItem', goTo: 'root/index', id: 'back' },
     ],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'root/issues:menu',
-    isRootLevel: true,
     items: [
       {
         type: 'LinkItem',
@@ -130,7 +126,7 @@ const rootIssues = [
     ],
     nestedGroupKey: 'menu',
     parentId: 'root/index:menu',
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
@@ -209,14 +205,12 @@ const ProjectSwitcherItem = {
 const containerProject = [
   {
     id: 'container/project/index:header',
-    isRootLevel: true,
     items: [ProjectSwitcherItem],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'container/project/index:menu',
     nestedGroupKey: 'menu',
-    isRootLevel: true,
     items: [
       {
         icon: 'BacklogIcon',
@@ -251,14 +245,13 @@ const containerProject = [
         type: 'GoToItem',
       },
     ],
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
 const containerProjectIssues = [
   {
     id: 'container/project/issues:header',
-    isRootLevel: true,
     items: [
       ProjectSwitcherItem,
       {
@@ -269,11 +262,10 @@ const containerProjectIssues = [
         type: 'Group',
       },
     ],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'container/project/issues:menu',
-    isRootLevel: true,
     nestedGroupKey: 'menu',
     parentId: 'container/project/index:menu',
     items: [
@@ -289,7 +281,7 @@ const containerProjectIssues = [
       { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
       { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
     ],
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 

@@ -31,7 +31,6 @@ type CustomComponents = { [string]: ComponentType<any> };
 type SharedGroupTypeProps = {
   customComponents?: CustomComponents,
   id: string,
-  isRootLevel?: boolean,
   items: ViewData,
 };
 
@@ -40,7 +39,7 @@ export type GroupProps = SharedGroupTypeProps & {
   title?: string,
 };
 
-export type NestedProps = SharedGroupTypeProps & {
+export type SectionProps = SharedGroupTypeProps & {
   nestedGroupKey: string,
   parentId: string | null,
 };

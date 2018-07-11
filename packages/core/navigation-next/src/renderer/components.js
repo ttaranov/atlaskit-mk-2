@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -16,7 +16,7 @@ import {
   ContainerHeader,
   Item as BaseItem,
   ItemPrimitive,
-  Section,
+  Section as SectionComponent,
   Separator,
   Heading as HeadingComponent,
   Switcher,
@@ -27,7 +27,7 @@ import type {
   GroupProps,
   ItemProps,
   ItemsRendererProps,
-  NestedProps,
+  SectionProps,
   HeadingProps,
 } from './types';
 
@@ -131,49 +131,33 @@ const Debug = props => (
  * GROUPS
  */
 
-const rootLevelGroupStyles = {
-  paddingLeft: `${gridSize * 2}px`,
-  paddingRight: `${gridSize * 2}px`,
-};
-
 // Group
-const Group = ({
-  customComponents,
-  hasSeparator,
-  isRootLevel,
-  items,
-  title,
-}: GroupProps) =>
+const Group = ({ customComponents, hasSeparator, items, title }: GroupProps) =>
   items.length ? (
-    <div css={isRootLevel ? rootLevelGroupStyles : null}>
+    <Fragment>
       {title ? <Heading text={title} /> : null}
       <ItemsRenderer items={items} customComponents={customComponents} />
       {hasSeparator && <Separator />}
-    </div>
+    </Fragment>
   ) : null;
 
-// Nested
-const Nested = ({
+// Section
+const Section = ({
   customComponents,
   id,
-  isRootLevel,
   items,
   nestedGroupKey,
   parentId,
-}: NestedProps) => (
-  <Section id={id} key={nestedGroupKey} parentId={parentId}>
-    {({ css }) => (
-      <div
-        css={{
-          ...css,
-          ...(isRootLevel ? rootLevelGroupStyles : null),
-        }}
-      >
-        <ItemsRenderer items={items} customComponents={customComponents} />
-      </div>
-    )}
-  </Section>
-);
+}: SectionProps) =>
+  items.length ? (
+    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+      {({ css }) => (
+        <div css={{ ...css }}>
+          <ItemsRenderer items={items} customComponents={customComponents} />
+        </div>
+      )}
+    </SectionComponent>
+  ) : null;
 
 const itemComponents = {
   ContainerHeader,
@@ -188,7 +172,7 @@ const itemComponents = {
 
 const groupComponents = {
   Group,
-  Nested,
+  Section,
 };
 
 const components = { ...itemComponents, ...groupComponents };
