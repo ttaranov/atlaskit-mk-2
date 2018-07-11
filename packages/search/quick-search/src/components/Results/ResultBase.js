@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
 
-import type { ResultType as Props } from './types';
+import { ResultType as Props } from './types';
 
 const BASE_RESULT_TYPE = 'base';
 

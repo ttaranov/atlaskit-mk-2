@@ -143,6 +143,8 @@ export interface SelectedSearchResultEvent extends SearchResultEvent {
 export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   queryHash: string;
   queryVersion: string;
+  queryId: null | string;
+  wasOnNoResultsScreen: boolean;
 }
 
 export type AnalyticsNextEvent = {
@@ -191,6 +193,9 @@ export function fireSelectedAdvancedSearch(
       newTab,
       queryHash,
       queryVersion,
+      queryId: null,
+      wasOnNoResultsScreen:
+        +eventData.index === 0 && +eventData.sectionIndex === 1,
       ...transformSearchResultEventData(eventData),
     },
   );

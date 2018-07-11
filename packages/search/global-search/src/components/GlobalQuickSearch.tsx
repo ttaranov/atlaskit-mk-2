@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
 import { LinkComponent } from './GlobalQuickSearchWrapper';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
 import {
   withAnalyticsEvents,
   AnalyticsContext,
@@ -21,8 +20,6 @@ import {
   fireTextEnteredEvent,
   fireDismissedEvent,
 } from '../util/analytics-event-helper';
-
-import { sanitizeSearchQuery } from '../util/analytics-util';
 
 import { CreateAnalyticsEventFn } from './analytics/types';
 import { ADVANCED_SEARCH_RESULT_ID } from './SearchResultsUtil';
