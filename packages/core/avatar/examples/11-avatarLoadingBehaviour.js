@@ -26,8 +26,7 @@ const initialState: State = {
 export default class ExternalSrcAvatar extends Component<*, State> {
   state: State = initialState;
 
-  changeUrl = (event: Event) =>
-    // $FlowFixMe - cannot find event.target.value
+  changeUrl = (event: SyntheticInputEvent<HTMLInputElement>) =>
     this.setState({ inputValue: event.target.value });
 
   loadImage = (event: Event) => {

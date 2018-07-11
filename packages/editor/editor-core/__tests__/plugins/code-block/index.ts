@@ -4,7 +4,6 @@ import {
   doc,
   createEditor,
   p,
-  createEvent,
 } from '@atlaskit/editor-test-helpers';
 import { setTextSelection } from '../../../src/utils';
 
@@ -17,16 +16,8 @@ describe('code-block', () => {
     });
   };
 
-  const event = createEvent('event');
-
   describe('plugin', () => {
     describe('#state.init', () => {
-      it('should set isEditorFocused to true', () => {
-        const { editorView, plugin } = editor(doc(p('paragraph{<>}')));
-        const pluginState = plugin.spec.state.init({}, editorView.state);
-        expect(pluginState.isEditorFocused).toBe(true);
-      });
-
       it('should set activeCodeBlock if initial selection is inside a code-block', () => {
         const { editorView, plugin } = editor(
           doc(code_block()('para{<>}graph')),
@@ -48,9 +39,10 @@ describe('code-block', () => {
     describe('#state.update', () => {
       describe('when entering code block', () => {
         it('sets the activeCodeBlock', () => {
-          const { refs: { cbPos }, editorView } = editor(
-            doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')),
-          );
+          const {
+            refs: { cbPos },
+            editorView,
+          } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
 
           setTextSelection(editorView, cbPos);
           const pluginState = codeBlockPluginKey.getState(editorView.state);
@@ -64,7 +56,10 @@ describe('code-block', () => {
 
       describe('when moving to a different code block', () => {
         it('should update the activeCodeBlock', () => {
-          const { refs: { cbPos }, editorView } = editor(
+          const {
+            refs: { cbPos },
+            editorView,
+          } = editor(
             doc(
               code_block()('codeBlock{<>}'),
               code_block()('codeBlock{cbPos}'),
@@ -87,9 +82,11 @@ describe('code-block', () => {
 
       describe('when moving within the same code block', () => {
         it('should not update state', () => {
-          const { refs: { cbPos }, pluginState, editorView } = editor(
-            doc(code_block()('{<>}codeBlock{cbPos}')),
-          );
+          const {
+            refs: { cbPos },
+            pluginState,
+            editorView,
+          } = editor(doc(code_block()('{<>}codeBlock{cbPos}')));
 
           setTextSelection(editorView, cbPos);
           expect(codeBlockPluginKey.getState(editorView.state)).toEqual(
@@ -101,9 +98,10 @@ describe('code-block', () => {
 
       describe('when leaving code block', () => {
         it('should unset the activeCodeBlock', () => {
-          const { refs: { pPos }, editorView } = editor(
-            doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')),
-          );
+          const {
+            refs: { pPos },
+            editorView,
+          } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
 
           expect(
             codeBlockPluginKey.getState(editorView.state).activeCodeBlock,
@@ -140,46 +138,6 @@ describe('code-block', () => {
           expect(pluginState.activeCodeBlock.pos).toBe(0);
         });
       });
-    });
-  });
-
-  describe('isEditorFocused', () => {
-    it('should set to `true` when a focus event fires', () => {
-      let { plugin, editorView, pluginState } = editor(
-        doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')),
-      );
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-
-      pluginState = codeBlockPluginKey.getState(editorView.state);
-      expect(pluginState.isEditorFocused).toBe(true);
-      editorView.destroy();
-    });
-
-    it('should set to `false` when a blur event fires', () => {
-      let { plugin, editorView, pluginState } = editor(
-        doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')),
-      );
-
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-
-      pluginState = codeBlockPluginKey.getState(editorView.state);
-      expect(pluginState.isEditorFocused).toBe(false);
-      editorView.destroy();
-    });
-
-    it('should set to `true` when a click event fires and editor is focused', () => {
-      let { plugin, editorView, pluginState } = editor(
-        doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')),
-      );
-
-      jest.spyOn(editorView, 'hasFocus').mockReturnValue(true);
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      plugin.props.handleDOMEvents!.click(editorView, event);
-
-      pluginState = codeBlockPluginKey.getState(editorView.state);
-      expect(pluginState.isEditorFocused).toBe(true);
-      editorView.destroy();
     });
   });
 });

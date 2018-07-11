@@ -1,5 +1,21 @@
 # @atlaskit/global-search
 
+## 4.6.2
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/navigation@32.3.3
+  - @atlaskit/modal-dialog@5.2.8
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/button@8.2.5
+  - @atlaskit/navigation@32.3.3
+  - @atlaskit/modal-dialog@5.2.8
+
 ## 4.6.1
 - [patch] Add dismissed event and fix screen events. [c65736e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c65736e)
 

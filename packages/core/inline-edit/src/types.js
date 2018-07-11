@@ -35,6 +35,12 @@ type BaseProps = {
   disableEditViewFieldBase?: boolean,
   /** Component to be shown in an @atlaskit/inline-dialog when edit view is open. */
   invalidMessage?: Node,
+  /** The text announced to screen readers when focusing on the edit button */
+  editButtonLabel: string,
+  /** The text announced to screen readers when focusing on the confirm button */
+  confirmButtonLabel: string,
+  /** The text announced to screen readers when focusing on the cancel button */
+  cancelButtonLabel: string,
 };
 
 export type StatelessProps = BaseProps & {

@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
+import type { PresenceType } from '../types';
 
 const Svg = props => (
   <svg
@@ -33,7 +34,7 @@ const OnlineCircle = styled.circle`
   fill: ${themed({ light: colors.G300, dark: colors.G200 })};
 `;
 
-export default function getPresenceSvg(presence: string) {
+export default function getPresenceSvg(presence: PresenceType) {
   switch (presence) {
     case 'busy':
       return (

@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { ViewState } from '../data-state';
-import { UIState } from '../ui-state';
+import { UIState, ViewState } from '../';
 import type { UIStateShape } from '../ui-state/types';
 import type { NavigationProviderProps } from './types';
 

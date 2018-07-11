@@ -146,6 +146,13 @@ export default class DatePicker extends Component<Props, State> {
     };
   };
 
+  /**
+   * Checks if a date is one of the disabled
+   */
+  isDateDisabled = (date: String) => {
+    return this.props.disabled.indexOf(date) > -1;
+  };
+
   onCalendarChange = ({ iso }: { iso: string }) => {
     this.setState({ view: iso });
   };
@@ -204,7 +211,12 @@ export default class DatePicker extends Component<Props, State> {
     } else if (key === 'Backspace') {
       this.setState({ selectedValue: '' });
       this.triggerChange('');
-    } else if (key === 'Enter' || key === 'Tab') {
+
+      // Dates may be disabled
+    } else if (
+      !this.isDateDisabled(view) &&
+      (key === 'Enter' || key === 'Tab')
+    ) {
       this.triggerChange(view);
       this.setState({ isOpen: false, selectedValue: view });
     }

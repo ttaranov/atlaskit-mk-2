@@ -19,6 +19,7 @@ import {
   Section,
   Separator,
   SectionTitle,
+  Switcher,
   ViewStateSubscriber,
 } from '../';
 import type {
@@ -182,6 +183,7 @@ const itemComponents = {
   BackItem,
   Separator,
   Title,
+  Switcher,
 };
 
 const groupComponents = {

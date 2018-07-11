@@ -17,6 +17,7 @@ export {
 export { default as Section } from './components/Section';
 export { default as Separator } from './components/Separator';
 export { default as SectionTitle } from './components/SectionTitle';
+export { default as Switcher } from './components/Switcher';
 
 /** State */
 export { NavigationProvider } from './provider';
