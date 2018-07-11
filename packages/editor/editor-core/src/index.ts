@@ -36,7 +36,7 @@ export { mentionPluginKey } from './plugins/mentions/pm-plugins/main';
 export { MentionsState } from './plugins/mentions/pm-plugins/main';
 export {
   TextFormattingState,
-  stateKey as textFormattingStateKey,
+  pluginKey as textFormattingStateKey,
 } from './plugins/text-formatting/pm-plugins/main';
 export { blockPluginStateKey, BlockTypeState } from './plugins';
 export {
@@ -49,6 +49,15 @@ export {
   toggleOrderedList,
   toggleBulletList,
 } from './plugins/lists/commands';
+export {
+  toggleSuperscript,
+  toggleSubscript,
+  toggleStrike,
+  toggleCode,
+  toggleUnderline,
+  toggleEm,
+  toggleStrong,
+} from './plugins/text-formatting/commands/text-formatting';
 // Used in editor-test-helpers
 
 export { keyCodes } from './keymaps';
