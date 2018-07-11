@@ -134,10 +134,10 @@ const rootIssues = [
   },
 ];
 
-export const rootViews = {
-  'root/index': rootIndex,
-  'root/issues': rootIssues,
-};
+export const rootViews = [
+  { id: 'root/index', getItems: () => rootIndex, type: 'product' },
+  { id: 'root/issues', getItems: () => rootIssues, type: 'product' },
+];
 
 /** Product container views */
 const containerProject = [
@@ -239,7 +239,15 @@ const containerProjectIssues = [
   },
 ];
 
-export const containerViews = {
-  'container/project/index': containerProject,
-  'container/project/issues': containerProjectIssues,
-};
+export const containerViews = [
+  {
+    id: 'container/project/index',
+    getItems: () => containerProject,
+    type: 'container',
+  },
+  {
+    id: 'container/project/issues',
+    getItems: () => containerProjectIssues,
+    type: 'container',
+  },
+];

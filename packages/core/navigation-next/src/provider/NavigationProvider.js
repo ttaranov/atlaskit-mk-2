@@ -2,9 +2,10 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { getContainerViewState, getRootViewState } from '../api';
-import UIState from './UIState';
-import type { NavigationProviderProps, UIStateShape } from './types';
+import { ViewState } from '../data-state';
+import { UIState } from '../ui-state';
+import type { UIStateShape } from '../ui-state/types';
+import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
 
@@ -25,32 +26,31 @@ export default class NavigationProvider extends Component<
       get: defaultGetCache,
       set: defaultSetCache,
     },
-    debug: false,
+    isDebugEnabled: false,
   };
   uiState: UIState;
+  viewState: ViewState;
 
   constructor(props: NavigationProviderProps) {
     super(props);
 
-    const { cache, initialState, debug } = props;
+    const { cache, initialState, isDebugEnabled } = props;
     this.uiState = new UIState(initialState, cache);
-    if (debug) {
-      getContainerViewState().setDebug(debug);
-      getRootViewState().setDebug(debug);
-    }
+    this.viewState = new ViewState({ isDebugEnabled: isDebugEnabled || false });
   }
 
-  componentWillReceiveProps(nextProps: NavigationProviderProps) {
-    if (this.props.debug !== nextProps.debug) {
-      getContainerViewState().setDebug(!!nextProps.debug);
-      getRootViewState().setDebug(!!nextProps.debug);
+  componentDidUpdate(prevProps: NavigationProviderProps) {
+    const { viewState } = this;
+    const { isDebugEnabled } = this.props;
+    if (isDebugEnabled !== prevProps.isDebugEnabled) {
+      viewState.setIsDebugEnabled(!!isDebugEnabled);
     }
   }
 
   render() {
     const { children } = this.props;
-    const { uiState } = this;
+    const { uiState, viewState } = this;
 
-    return <Provider inject={[uiState]}>{children}</Provider>;
+    return <Provider inject={[uiState, viewState]}>{children}</Provider>;
   }
 }

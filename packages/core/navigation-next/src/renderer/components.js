@@ -14,13 +14,12 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   ContainerHeader,
-  ContainerViewSubscriber,
   Item as BaseItem,
   ItemPrimitive,
-  RootViewSubscriber,
   Section,
   Separator,
   SectionTitle,
+  ViewStateSubscriber,
 } from '../';
 import type {
   GoToItemProps,
@@ -57,19 +56,17 @@ const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
   }
 
   const props = { ...rest, after };
-  const ViewSubscriber = goTo.match(/^root\//)
-    ? RootViewSubscriber
-    : ContainerViewSubscriber;
-
-  const handleClick = (e, view) => {
+  const handleClick = (e, viewState) => {
     e.preventDefault();
-    view.setView(goTo);
+    viewState.setView(goTo);
   };
 
   return (
-    <ViewSubscriber>
-      {view => <Item onClick={e => handleClick(e, view)} {...props} />}
-    </ViewSubscriber>
+    <ViewStateSubscriber>
+      {viewState => (
+        <Item onClick={e => handleClick(e, viewState)} {...props} />
+      )}
+    </ViewStateSubscriber>
   );
 };
 

@@ -6,11 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { Label } from '@atlaskit/field-base';
 import { ToggleStateless } from '@atlaskit/toggle';
 
-import {
-  ContainerViewSubscriber,
-  LayoutManager,
-  NavigationProvider,
-} from '../src';
+import { ViewStateSubscriber, LayoutManager, NavigationProvider } from '../src';
 
 import {
   DefaultGlobalNavigation,
@@ -40,13 +36,13 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
     return (
       <HashRouter>
         <NavigationProvider debug={isDebugEnabled}>
-          <ContainerViewSubscriber>
+          <ViewStateSubscriber>
             {containerView => (
               <LayoutManager
                 globalNavigation={DefaultGlobalNavigation}
                 productRootNavigation={ProductRoot}
                 productContainerNavigation={
-                  containerView.state.activeView ? ProductContainer : null
+                  containerView.state.containerViewId ? ProductContainer : null
                 }
               >
                 <div style={{ padding: 30 }}>
@@ -64,7 +60,7 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
                 </div>
               </LayoutManager>
             )}
-          </ContainerViewSubscriber>
+          </ViewStateSubscriber>
         </NavigationProvider>
       </HashRouter>
     );

@@ -1,6 +1,6 @@
 // @flow
 
-import type { Element, Node } from 'react';
+import type { Node } from 'react';
 
 /**
  * UIState
@@ -40,16 +40,6 @@ export interface UIStateInterface {
   unPeek: () => void;
   togglePeek: () => void;
 }
-
-/**
- * NavigationProvider
- */
-export type NavigationProviderProps = {
-  children: Element<*>,
-  cache: UIStateCache | false,
-  initialState?: InitialUIStateShape,
-  debug?: boolean,
-};
 
 /**
  * UIStateSubscriber

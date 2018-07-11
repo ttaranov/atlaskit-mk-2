@@ -12,7 +12,6 @@ const isGecko = window && window.navigator.userAgent.indexOf('Gecko') >= 0;
 const isWebkit =
   window && window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
 const scrollBarSize = isGecko || isWebkit ? 15 : 30;
-// console.log(window.navigator.userAgent);
 
 const baseStyles = {
   wrapper: {

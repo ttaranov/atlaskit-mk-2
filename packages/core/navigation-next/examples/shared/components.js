@@ -9,10 +9,9 @@ import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import {
   GlobalNav,
-  ContainerViewSubscriber,
   ItemAvatar,
-  RootViewSubscriber,
-  NavRenderer,
+  ViewRenderer,
+  ViewStateSubscriber,
 } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
@@ -61,13 +60,12 @@ export const ProjectSwitcher = ({ components: C, ...props }: *) => (
   </div>
 );
 
-const ViewRenderer = ({ view }: *) => {
-  const { activeView, data } = view.state;
-  return activeView && data ? (
+const Renderer = ({ items }: *) => {
+  return items ? (
     <div css={{ padding: `${gridSize * 2}px 0` }}>
-      <NavRenderer
+      <ViewRenderer
         customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
-        items={data}
+        items={items}
       />
     </div>
   ) : (
@@ -76,13 +74,15 @@ const ViewRenderer = ({ view }: *) => {
 };
 
 export const ProductRoot = () => (
-  <RootViewSubscriber>
-    {rootView => <ViewRenderer view={rootView} />}
-  </RootViewSubscriber>
+  <ViewStateSubscriber>
+    {({ state }) => <Renderer items={state.productViewData} />}
+  </ViewStateSubscriber>
 );
 
 export const ProductContainer = () => (
-  <ContainerViewSubscriber>
-    {containerView => <ViewRenderer view={containerView} />}
-  </ContainerViewSubscriber>
+  <ViewStateSubscriber>
+    {({ state: { containerViewData } }) => (
+      <Renderer items={containerViewData} />
+    )}
+  </ViewStateSubscriber>
 );
