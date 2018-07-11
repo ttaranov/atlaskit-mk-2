@@ -12,7 +12,7 @@ import type {
 
 type Props = {
   children: ((*) => Node) | Node,
-  values: ThemeInput,
+  values?: ThemeInput,
 };
 
 const noop = () => null;
@@ -55,7 +55,7 @@ function simplifyThemeFunction(
     });
 }
 
-export default ({ children, values: childTheme }: Props) => (
+export default ({ children, values: childTheme = {} }: Props) => (
   <Consumer>
     {(parentTheme: ThemeOutput) => {
       const merged = mergeParentAndChildTheme(parentTheme, childTheme);
