@@ -96,12 +96,32 @@ export default class Form extends Component<Props, State> {
   form: HTMLFormElement;
 
   /** Extract Header, Footer & Sections */
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.form) {
+      // $FlowFixMe Only for dev preview. TODO: resolve this type error
+      this.form.addEventListener('submit', this.onSubmit);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.form) {
+      // $FlowFixMe Only for dev preview. TODO: resolve this type error
+      this.form.removeEventListener('submit', this.onSubmit);
+    }
+  }
 
   // EVENT HANDLERS
   onSubmit = (event: SyntheticEvent<*>) => {
-    if (this.props.onSubmit) this.props.onSubmit(event);
+    if (this.props.onSubmit) {
+      this.props.onSubmit(event);
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      console.log('onSubmit');
+    }
   };
+
   onValidate = (event: SyntheticEvent<*>) => {
     if (this.props.onValidate) this.props.onValidate(event);
   };
@@ -187,11 +207,12 @@ export default class Form extends Component<Props, State> {
     this.form.reset();
   };
   /** Validate all fields for the form or hand validation to custom validate handler if defined */
-  validate = () => {
-    const fields = this.getForm().fields;
+  validate = (): FormFields => {
+    const fields: FormFields = this.getForm().fields;
     for (let i = 0; i < fields.fieldStates.length; i++) {
       if (fields.fieldStates[i].validate) fields.fieldStates[i].validate();
     }
+    return fields;
   };
 
   renderHeader = () => {};

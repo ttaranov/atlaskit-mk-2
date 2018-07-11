@@ -105,8 +105,15 @@ export default class ValidatorsExample extends PureComponent<void, State> {
   formRef: any;
 
   // Form Event Handlers
+
+  // Provide submit
   onSubmitHandler = () => {
     console.log('onSubmitHandler');
+    // Do any custom data handling & validation
+
+    const validatedForm = this.formRef.validate();
+    // Now call submit when your done
+    this.formRef.submit();
   };
 
   onValidateHandler = () => {
@@ -256,11 +263,7 @@ export default class ValidatorsExample extends PureComponent<void, State> {
           </FormSection>
 
           <FormFooter actions={{}}>
-            <Button
-              type="submit"
-              appearance="primary"
-              onClick={this.submitClickHandler}
-            >
+            <Button type="submit" appearance="primary">
               Submit
             </Button>
             <Button appearance="subtle" onClick={this.validateClickHandler}>
@@ -268,7 +271,6 @@ export default class ValidatorsExample extends PureComponent<void, State> {
             </Button>
           </FormFooter>
         </Form>
-
         <p>The data submitted by the form will appear below:</p>
         <iframe
           src=""
