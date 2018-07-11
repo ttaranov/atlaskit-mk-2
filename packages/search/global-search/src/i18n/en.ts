@@ -1,4 +1,5 @@
-{
+// prettier-ignore
+export default {
   "global-search.confluence.search-placeholder": "Search...",
   "global-search.confluence.recent-pages-heading": "Recent pages and blogs",
   "global-search.confluence.recent-spaces-heading": "Recent spaces",

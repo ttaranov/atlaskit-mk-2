@@ -8,12 +8,20 @@ export interface Props {
   children: JSX.Element;
 }
 
+// TODO do we have messages for each locale ('en-GB') or each parentLocale? ('en')?
+const getMessages = (locale: string) => {
+  const parentLocale = locale.split('-')[0];
+  return messages[parentLocale];
+};
+
 class MessagesIntlProvider extends React.Component<Props & InjectedIntlProps> {
   render() {
     const { intl, children } = this.props;
 
     return (
-      <IntlProvider messages={messages[intl.locale]}>{children}</IntlProvider>
+      <IntlProvider messages={getMessages(intl.locale)}>
+        {children}
+      </IntlProvider>
     );
   }
 }
