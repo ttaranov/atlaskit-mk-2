@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 8.3.0
+- [minor] Adds beforeunload warning dialog when a Conversation has an open editor [aabd327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aabd327)
+
 ## 8.2.13
 
 

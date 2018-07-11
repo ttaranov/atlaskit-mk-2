@@ -133,8 +133,17 @@ export const ContentWrapper = styled.div`
 
 ContentWrapper.displayName = 'Content';
 
-export const ErrorMessage = styled.div`
+export const ErrorMessageWrapper = styled.div`
+  text-align: center;
   color: #b8c7e0;
+  p {
+    line-height: 100%;
+  }
+`;
+
+export const ErrorImage = styled.img`
+  margin-bottom: 10px;
+  user-select: none;
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
@@ -279,4 +288,13 @@ export const DefaultCoverWrapper = styled.div`
 
 export const FeedbackWrapper = styled.span`
   padding-right: 5px;
+`;
+
+export const DownloadButtonWrapper = styled.div`
+  margin-top: 28px;
+  text-align: center;
+
+  button {
+    font-weight: bold;
+  }
 `;
