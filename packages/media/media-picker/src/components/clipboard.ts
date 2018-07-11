@@ -23,7 +23,6 @@ export const getFilesFromClipboard = (files: FileList) => {
   return Array.from(files).map(file => {
     if (file.type.indexOf('image/') === 0) {
       const name = appendTimestamp(file.name, file.lastModified);
-
       return new File([file], name, {
         type: file.type,
         lastModified: file.lastModified,
@@ -61,6 +60,7 @@ export class Clipboard extends LocalUploadComponent {
       @see https://extranet.atlassian.com/display/FIL/RFC+099%3A+Clipboard+browser+inconsistency
     */
     const { clipboardData } = event;
+
     if (clipboardData && clipboardData.files) {
       const filesArray = getFilesFromClipboard(clipboardData.files);
       this.uploadService.addFiles(filesArray);

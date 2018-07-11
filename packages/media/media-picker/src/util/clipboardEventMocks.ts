@@ -3,7 +3,7 @@
 export class MockFile implements File {
   readonly size: number;
   readonly type: string;
-  readonly lastModified: number;
+  readonly lastModified: number = 1234;
   readonly lastModifiedDate: any;
   readonly name: string;
   readonly webkitRelativePath: string;
@@ -11,6 +11,15 @@ export class MockFile implements File {
   msDetachStream(): any {}
   slice(start?: number, end?: number, contentType?: string): Blob {
     throw new Error('not implemented');
+  }
+  constructor(
+    options: { type: string; name: string } = {
+      type: '',
+      name: 'some-file.png',
+    },
+  ) {
+    this.type = options.type;
+    this.name = options.name;
   }
 }
 

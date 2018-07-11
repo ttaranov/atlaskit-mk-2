@@ -59,4 +59,14 @@ describe('Clipboard', () => {
     document.dispatchEvent(event);
     expect(addFiles).toHaveBeenCalledTimes(0);
   });
+
+  it('should append timestamp to clipboard image files', () => {
+    const imageFile = new MockFile({ type: 'image/png', name: 'me.jpg' });
+    document.dispatchEvent(
+      new MockClipboardEvent('paste', [imageFile, new MockFile()]),
+    );
+    expect(addFiles).toHaveBeenCalledTimes(1);
+    expect(addFiles.mock.calls[0][0][0].name).toEqual('me-19700101-000001.jpg');
+    expect(addFiles.mock.calls[0][0][1].name).toEqual('some-file.png');
+  });
 });
