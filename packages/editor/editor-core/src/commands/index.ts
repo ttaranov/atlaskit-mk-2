@@ -14,7 +14,7 @@ import {
   isTableCell,
 } from '../utils';
 
-import { hyperlinkPluginKey } from '../plugins/hyperlink';
+import { stateKey as hyperlinkPluginKey } from '../plugins/hyperlink/pm-plugins/main';
 
 export function preventDefault(): Command {
   return function(state, dispatch) {
