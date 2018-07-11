@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { makeConfluenceObjectResult } from './_test-util';
-import { ContentType } from '../src/model/Result';
-import { shallow } from 'enzyme';
+import { ContentType } from '../../../src/model/Result';
 import FileTypes24File24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
 import FileTypes24File24ExcelSpreadsheetIcon from '@atlaskit/icon/glyph/file-types/24/file-24-excel-spreadsheet';
 import FileTypes24File24VideoIcon from '@atlaskit/icon/glyph/file-types/24/file-24-video';
@@ -13,7 +12,7 @@ import FileTypes24File24WordDocumentIcon from '@atlaskit/icon/glyph/file-types/2
 import FileTypes24File24PdfDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-pdf-document';
 import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/file-24-generic';
 
-import { getAvatarForConfluenceObjectResult } from '../src/util/confluence-avatar-util';
+import { getAvatarForConfluenceObjectResult } from '../../../src/util/confluence-avatar-util';
 
 const TEST_FILE_PREFIXES = [
   '',
@@ -68,6 +67,13 @@ describe('confluence-avatar-util', () => {
   }
 
   [
+    {
+      id: 'image',
+      quickNavIconClass: 'content-type-attachment-image',
+      cqlIconClass: 'icon-file-image',
+      extensions: ['gif', 'jpeg', 'jpg', 'png'],
+      expectedAvatar: FileTypes24File24ImageIcon,
+    },
     {
       id: 'audio',
       quickNavIconClass: 'content-type-attachment-multimedia',
