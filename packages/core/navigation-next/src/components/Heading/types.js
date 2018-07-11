@@ -4,7 +4,7 @@ import type { ComponentType, Node } from 'react';
 
 import type { ProductTheme } from '../../theme/types';
 
-export type SectionTitleProps = {
+export type HeadingProps = {
   after?: ComponentType<*>,
   children: Node,
   theme: ProductTheme,

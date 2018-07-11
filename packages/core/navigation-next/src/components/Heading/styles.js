@@ -7,7 +7,7 @@ import type { ThemedProductComponentStyles } from '../../theme/types';
 const fontSize = 11;
 
 const baseStyles = {
-  titleBase: {
+  headingBase: {
     alignItems: 'center',
     display: 'flex',
     flexShrink: 0,
@@ -34,33 +34,33 @@ const baseStyles = {
 const light = () => ({
   container: {
     ...baseStyles,
-    titleBase: { ...baseStyles.titleBase, color: colors.N200 },
+    headingBase: { ...baseStyles.headingBase, color: colors.N200 },
   },
   root: {
     ...baseStyles,
-    titleBase: { ...baseStyles.titleBase, color: colors.B75 },
+    headingBase: { ...baseStyles.headingBase, color: colors.B75 },
   },
 });
 
 const dark = () => ({
   container: {
     ...baseStyles,
-    titleBase: { ...baseStyles.titleBase, color: colors.DN100 },
+    headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
   },
   root: {
     ...baseStyles,
-    titleBase: { ...baseStyles.titleBase, color: colors.DN100 },
+    headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
   },
 });
 
 const settings = () => ({
   container: {
     ...baseStyles,
-    titleBase: { ...baseStyles.titleBase, color: colors.N70 },
+    headingBase: { ...baseStyles.headingBase, color: colors.N70 },
   },
   root: {
     ...baseStyles,
-    titleBase: { ...baseStyles.titleBase, color: colors.N70 },
+    headingBase: { ...baseStyles.headingBase, color: colors.N70 },
   },
 });
 

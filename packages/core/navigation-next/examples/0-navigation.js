@@ -17,13 +17,13 @@ import { JiraWordmark } from '@atlaskit/logo';
 import {
   ContainerHeader,
   GlobalNav,
+  Heading,
   Item,
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
   Section,
   Separator,
-  SectionTitle,
   UIStateSubscriber,
 } from '../src';
 
@@ -129,7 +129,7 @@ const productContainerNavSections = [
     key: 'menu',
     isRootLevel: true,
     items: [
-      { type: SectionTitle, key: 'title', children: 'Section title' },
+      { type: Heading, key: 'title', children: 'Section title' },
       { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
       { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
       { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },

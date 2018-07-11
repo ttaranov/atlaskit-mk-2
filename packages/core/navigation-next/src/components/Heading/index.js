@@ -3,14 +3,14 @@
 import React from 'react';
 
 import { light, withTheme } from '../../theme';
-import type { SectionTitleProps } from './types';
+import type { HeadingProps } from './types';
 
-const SectionTitle = ({ after: After, children, theme }: SectionTitleProps) => {
+const Heading = ({ after: After, children, theme }: HeadingProps) => {
   const { mode, context } = theme;
-  const styles = mode.sectionTitle()[context];
+  const styles = mode.heading()[context];
 
   return (
-    <div css={styles.titleBase}>
+    <div css={styles.headingBase}>
       <div css={styles.textWrapper}>{children}</div>
       {!!After && (
         <div css={styles.afterWrapper}>
@@ -21,4 +21,4 @@ const SectionTitle = ({ after: After, children, theme }: SectionTitleProps) => {
   );
 };
 
-export default withTheme({ mode: light, context: 'container' })(SectionTitle);
+export default withTheme({ mode: light, context: 'container' })(Heading);

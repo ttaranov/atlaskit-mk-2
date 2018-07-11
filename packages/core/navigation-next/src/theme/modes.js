@@ -4,8 +4,8 @@ import globalItem from '../components/GlobalItem/styles';
 import globalNav from '../components/GlobalNav/styles';
 import productNav from '../components/ProductNav/styles';
 import item from '../components/Item/styles';
-import sectionTitle from '../components/SectionTitle/styles';
-import sectionSeparator from '../components/Separator/styles';
+import heading from '../components/Heading/styles';
+import separator from '../components/Separator/styles';
 import scrollHint from '../components/ScrollableSectionInner/styles';
 
 import type { Mode } from './types';
@@ -15,8 +15,8 @@ export const light: Mode = {
   globalNav: globalNav.light,
   productNav: productNav.light,
   item: item.light,
-  sectionTitle: sectionTitle.light,
-  sectionSeparator: sectionSeparator.light,
+  heading: heading.light,
+  separator: separator.light,
   scrollHint: scrollHint.light,
 };
 
@@ -25,8 +25,8 @@ export const dark: Mode = {
   globalNav: globalNav.dark,
   productNav: productNav.dark,
   item: item.dark,
-  sectionTitle: sectionTitle.dark,
-  sectionSeparator: sectionSeparator.dark,
+  heading: heading.dark,
+  separator: separator.dark,
   scrollHint: scrollHint.dark,
 };
 
@@ -35,7 +35,7 @@ export const settings: Mode = {
   globalNav: globalNav.settings,
   productNav: productNav.settings,
   item: item.settings,
-  sectionTitle: sectionTitle.settings,
-  sectionSeparator: sectionSeparator.settings,
+  heading: heading.settings,
+  separator: separator.settings,
   scrollHint: scrollHint.settings,
 };

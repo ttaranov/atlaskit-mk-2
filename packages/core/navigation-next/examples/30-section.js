@@ -6,11 +6,11 @@ import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { colors } from '@atlaskit/theme';
 
 import {
+  Heading,
   Item,
   Section,
   ScrollableSectionInner,
   Separator,
-  SectionTitle,
 } from '../src';
 
 const Container = props => (
@@ -90,7 +90,7 @@ class NestedSection extends Component<{}, { activeLevel: number }> {
         <Section key="nested-section" {...sectionProps}>
           {({ css }) => (
             <div css={{ ...css, paddingBottom: '16px' }}>
-              <SectionTitle>{title}</SectionTitle>
+              <Heading>{title}</Heading>
               {items.map(({ goTo, ...itemProps }) => (
                 <Item
                   key={itemProps.text}
@@ -146,7 +146,7 @@ export default () => (
                 },
               })}
             >
-              <SectionTitle>Section title</SectionTitle>
+              <Heading>Section title</Heading>
               {scrollingItems.map(itemProps => (
                 <Item key={itemProps.text} {...itemProps} />
               ))}

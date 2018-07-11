@@ -35,11 +35,11 @@ export type ThemedProductComponentStyles<Props> = {
 export type Mode = {
   globalItem: GlobalComponentTheme<GlobalItemPresentationProps>,
   globalNav: GlobalComponentTheme<void>,
-  productNav: ProductComponentTheme<void>,
+  heading: ProductComponentTheme<void>,
   item: ProductComponentTheme<ItemPresentationProps>,
-  sectionTitle: ProductComponentTheme<void>,
-  sectionSeparator: ProductComponentTheme<void>,
+  productNav: ProductComponentTheme<void>,
   scrollHint: ProductComponentTheme<void>,
+  separator: ProductComponentTheme<void>,
 };
 
 export type ProductTheme = {

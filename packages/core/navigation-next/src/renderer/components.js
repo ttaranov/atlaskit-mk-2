@@ -18,7 +18,7 @@ import {
   ItemPrimitive,
   Section,
   Separator,
-  SectionTitle,
+  Heading as HeadingComponent,
   Switcher,
   ViewStateSubscriber,
 } from '../';
@@ -28,7 +28,7 @@ import type {
   ItemProps,
   ItemsRendererProps,
   NestedProps,
-  TitleProps,
+  HeadingProps,
 } from './types';
 
 const iconMap = {
@@ -110,8 +110,8 @@ const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
 );
 
 // Title
-const Title = ({ text, ...props }: TitleProps) => (
-  <SectionTitle {...props}>{text}</SectionTitle>
+const Heading = ({ text, ...props }: HeadingProps) => (
+  <HeadingComponent {...props}>{text}</HeadingComponent>
 );
 
 const Debug = props => (
@@ -146,7 +146,7 @@ const Group = ({
 }: GroupProps) =>
   items.length ? (
     <div css={isRootLevel ? rootLevelGroupStyles : null}>
-      {title ? <Title text={title} /> : null}
+      {title ? <Heading text={title} /> : null}
       <ItemsRenderer items={items} customComponents={customComponents} />
       {hasSeparator && <Separator />}
     </div>
@@ -182,7 +182,7 @@ const itemComponents = {
   Item,
   BackItem,
   Separator,
-  Title,
+  Heading,
   Switcher,
 };
 

@@ -45,6 +45,17 @@ export default ({ background, text }: Args): Mode => {
         },
       };
     },
+    heading: () => {
+      const { root } = light.heading();
+      const rootStyles = {
+        ...root,
+        titleBase: {
+          ...root.titleBase,
+          color: chromatism.brightness(20, text).hex,
+        },
+      };
+      return { container: rootStyles, root: rootStyles };
+    },
     item: ({
       isActive,
       isHover,
@@ -79,22 +90,6 @@ export default ({ background, text }: Args): Mode => {
       };
       return { container: rootStyles, root: rootStyles };
     },
-    sectionTitle: () => {
-      const { root } = light.sectionTitle();
-      const rootStyles = {
-        ...root,
-        titleBase: {
-          ...root.titleBase,
-          color: chromatism.brightness(20, text).hex,
-        },
-      };
-      return { container: rootStyles, root: rootStyles };
-    },
-    sectionSeparator: () => {
-      const { root } = light.sectionSeparator();
-      const rootStyles = { ...root, backgroundColor: colors.N80A };
-      return { container: rootStyles, root: rootStyles };
-    },
     scrollHint: () => {
       const { root } = light.scrollHint();
       const rootStyles = {
@@ -114,6 +109,11 @@ export default ({ background, text }: Args): Mode => {
           },
         },
       };
+      return { container: rootStyles, root: rootStyles };
+    },
+    separator: () => {
+      const { root } = light.separator();
+      const rootStyles = { ...root, backgroundColor: colors.N80A };
       return { container: rootStyles, root: rootStyles };
     },
   };

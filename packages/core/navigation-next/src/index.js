@@ -8,6 +8,7 @@ export {
 } from './components/GlobalItem/primitives';
 export { default as GlobalNav } from './components/GlobalNav';
 export { default as Item } from './components/Item';
+export { default as Heading } from './components/Heading';
 export { default as ItemPrimitive } from './components/Item/primitives';
 export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as LayoutManager } from './components/LayoutManager';
@@ -16,7 +17,6 @@ export {
 } from './components/ScrollableSectionInner';
 export { default as Section } from './components/Section';
 export { default as Separator } from './components/Separator';
-export { default as SectionTitle } from './components/SectionTitle';
 export { default as Switcher } from './components/Switcher';
 
 /** State */
