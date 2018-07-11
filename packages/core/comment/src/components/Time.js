@@ -60,27 +60,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-
-    onFocus: createAndFireEventOnAtlaskit({
-      action: 'focused',
-      actionSubject: 'commentTime',
-
-      attributes: {
-        componentName: 'commentTime',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onMouseOver: createAndFireEventOnAtlaskit({
-      action: 'hovered',
-      actionSubject: 'commentTime',
-
-      attributes: {
-        componentName: 'commentTime',
-        packageName,
-        packageVersion,
-      },
-    }),
   })(Time),
 );

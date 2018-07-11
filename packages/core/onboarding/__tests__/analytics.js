@@ -32,7 +32,7 @@ describe('Spotlight', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       targetOnClick: {
-        action: 'click',
+        action: 'clicked',
         actionSubject: 'spotlight',
         attributes: {
           componentName: 'spotlight',

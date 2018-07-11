@@ -32,7 +32,7 @@ describe('DroplistItem', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenCalledWith({
       onActivate: {
-        action: 'activated',
+        action: 'selected',
         actionSubject: 'droplistItem',
         attributes: {
           componentName: 'droplistItem',

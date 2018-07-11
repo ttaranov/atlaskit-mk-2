@@ -22,7 +22,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 describe('Navigation', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
-      componentName: 'navigation',
+      componentName: 'navigationSidebar',
       packageName,
       packageVersion,
     });
@@ -33,7 +33,7 @@ describe('Navigation', () => {
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onResize: {
         action: 'resized',
-        actionSubject: 'navigation',
+        actionSubject: 'navigationSidebar',
         attributes: {
           componentName: 'navigation',
           packageName,
@@ -42,16 +42,7 @@ describe('Navigation', () => {
       },
       onResizeStart: {
         action: 'resizeStarted',
-        actionSubject: 'navigation',
-        attributes: {
-          componentName: 'navigation',
-          packageName,
-          packageVersion,
-        },
-      },
-      onToggleStart: {
-        action: 'toggled',
-        actionSubject: 'navigation',
+        actionSubject: 'navigationSidebar',
         attributes: {
           componentName: 'navigation',
           packageName,
@@ -60,7 +51,7 @@ describe('Navigation', () => {
       },
       onToggleEnd: {
         action: 'toggled',
-        actionSubject: 'navigation',
+        actionSubject: 'navigationSidebar',
         attributes: {
           componentName: 'navigation',
           packageName,

@@ -30,7 +30,7 @@ describe('Tooltip', () => {
   it('should be wrapped with analytics events', () => {
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onMouseOver: {
-        action: 'hovered',
+        action: 'displayed',
         actionSubject: 'tooltip',
         attributes: {
           componentName: 'tooltip',
@@ -39,7 +39,7 @@ describe('Tooltip', () => {
         },
       },
       onMouseOut: {
-        action: 'unhovered',
+        action: 'hidden',
         actionSubject: 'tooltip',
         attributes: {
           componentName: 'tooltip',

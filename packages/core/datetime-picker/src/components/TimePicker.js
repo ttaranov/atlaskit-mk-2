@@ -314,7 +314,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
+      action: 'selectedTime',
       actionSubject: 'timePicker',
 
       attributes: {

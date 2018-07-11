@@ -32,7 +32,7 @@ describe('DatePicker', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenCalledWith({
       onChange: {
-        action: 'changed',
+        action: 'selectedDate',
         actionSubject: 'datePicker',
         attributes: {
           componentName: 'datePicker',

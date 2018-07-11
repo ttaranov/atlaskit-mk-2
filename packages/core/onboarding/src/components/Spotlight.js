@@ -233,7 +233,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     targetOnClick: createAndFireEventOnAtlaskit({
-      action: 'click',
+      action: 'clicked',
       actionSubject: 'spotlight',
 
       attributes: {

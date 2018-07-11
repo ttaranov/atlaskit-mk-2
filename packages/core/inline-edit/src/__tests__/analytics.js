@@ -50,7 +50,7 @@ describe('InlineEditStateless', () => {
         },
       },
       onEditRequested: {
-        action: 'edited',
+        action: 'focused',
         actionSubject: 'inlineEdit',
         attributes: {
           componentName: 'inlineEdit',

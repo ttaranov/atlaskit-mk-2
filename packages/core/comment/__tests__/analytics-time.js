@@ -40,24 +40,6 @@ describe('CommentTime', () => {
           packageVersion,
         },
       },
-      onFocus: {
-        action: 'focused',
-        actionSubject: 'commentTime',
-        attributes: {
-          componentName: 'commentTime',
-          packageName,
-          packageVersion,
-        },
-      },
-      onMouseOver: {
-        action: 'hovered',
-        actionSubject: 'commentTime',
-        attributes: {
-          componentName: 'commentTime',
-          packageName,
-          packageVersion,
-        },
-      },
     });
   });
 });

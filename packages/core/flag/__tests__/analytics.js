@@ -58,24 +58,6 @@ describe('Flag', () => {
           packageVersion,
         },
       },
-      onMouseOut: {
-        action: 'unhovered',
-        actionSubject: 'flag',
-        attributes: {
-          componentName: 'flag',
-          packageName,
-          packageVersion,
-        },
-      },
-      onMouseOver: {
-        action: 'hovered',
-        actionSubject: 'flag',
-        attributes: {
-          componentName: 'flag',
-          packageName,
-          packageVersion,
-        },
-      },
     });
   });
 });

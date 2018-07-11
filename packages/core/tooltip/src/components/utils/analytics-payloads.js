@@ -5,7 +5,7 @@ import {
 } from '../../../package.json';
 
 export const hoveredPayload = {
-  action: 'hovered',
+  action: 'displayed',
   actionSubject: 'tooltip',
 
   attributes: {
@@ -16,7 +16,7 @@ export const hoveredPayload = {
 };
 
 export const unhoveredPayload = {
-  action: 'unhovered',
+  action: 'hidden',
   actionSubject: 'tooltip',
 
   attributes: {

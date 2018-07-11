@@ -22,7 +22,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 describe('AkFieldRadioGroup', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
-      componentName: 'radio',
+      componentName: 'fieldRadioGroup',
       packageName,
       packageVersion,
     });
@@ -30,13 +30,12 @@ describe('AkFieldRadioGroup', () => {
 
   it('should be wrapped with analytics events', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
-    expect(withAnalyticsEvents).toHaveBeenCalledWith({
+    expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onRadioChange: {
-        action: 'changed',
-        actionSubject: 'field',
+        action: 'selected',
+        actionSubject: 'radioItem',
         attributes: {
-          componentName: 'radio',
-          type: 'radio',
+          componentName: 'fieldRadioGroup',
           packageName,
           packageVersion,
         },

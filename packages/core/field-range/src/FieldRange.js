@@ -149,18 +149,17 @@ export { Slider as FieldRangeWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
-  componentName: 'range',
+  componentName: 'fieldRange',
   packageName,
   packageVersion,
 })(
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
-      actionSubject: 'field',
+      action: 'selectedValue',
+      actionSubject: 'slider',
 
       attributes: {
-        componentName: 'range',
-        type: 'range',
+        componentName: 'fieldRange',
         packageName,
         packageVersion,
       },

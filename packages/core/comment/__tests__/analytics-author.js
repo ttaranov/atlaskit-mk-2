@@ -40,24 +40,6 @@ describe('CommentAuthor', () => {
           packageVersion,
         },
       },
-      onFocus: {
-        action: 'focused',
-        actionSubject: 'commentAuthor',
-        attributes: {
-          componentName: 'commentAuthor',
-          packageName,
-          packageVersion,
-        },
-      },
-      onMouseOver: {
-        action: 'hovered',
-        actionSubject: 'commentAuthor',
-        attributes: {
-          componentName: 'commentAuthor',
-          packageName,
-          packageVersion,
-        },
-      },
     });
   });
 });

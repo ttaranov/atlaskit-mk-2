@@ -40,24 +40,6 @@ describe('CommentAction', () => {
           packageVersion,
         },
       },
-      onFocus: {
-        action: 'focused',
-        actionSubject: 'commentAction',
-        attributes: {
-          componentName: 'commentAction',
-          packageName,
-          packageVersion,
-        },
-      },
-      onMouseOver: {
-        action: 'hovered',
-        actionSubject: 'commentAction',
-        attributes: {
-          componentName: 'commentAction',
-          packageName,
-          packageVersion,
-        },
-      },
     });
   });
 });

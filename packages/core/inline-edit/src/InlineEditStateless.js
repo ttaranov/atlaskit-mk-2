@@ -293,7 +293,7 @@ export default withAnalyticsContext({
     }),
 
     onEditRequested: createAndFireEventOnAtlaskit({
-      action: 'edited',
+      action: 'focused',
       actionSubject: 'inlineEdit',
 
       attributes: {

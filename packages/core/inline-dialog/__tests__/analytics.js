@@ -31,33 +31,6 @@ describe('InlineDialog', () => {
   it('should be wrapped with analytics events', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
-      onContentBlur: {
-        action: 'blurred',
-        actionSubject: 'inlineDialog',
-        attributes: {
-          componentName: 'inlineDialog',
-          packageName,
-          packageVersion,
-        },
-      },
-      onContentClick: {
-        action: 'clicked',
-        actionSubject: 'inlineDialog',
-        attributes: {
-          componentName: 'inlineDialog',
-          packageName,
-          packageVersion,
-        },
-      },
-      onContentFocus: {
-        action: 'focused',
-        actionSubject: 'inlineDialog',
-        attributes: {
-          componentName: 'inlineDialog',
-          packageName,
-          packageVersion,
-        },
-      },
       onClose: {
         action: 'closed',
         actionSubject: 'inlineDialog',

@@ -61,27 +61,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-
-    onFocus: createAndFireEventOnAtlaskit({
-      action: 'focused',
-      actionSubject: 'commentAuthor',
-
-      attributes: {
-        componentName: 'commentAuthor',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onMouseOver: createAndFireEventOnAtlaskit({
-      action: 'hovered',
-      actionSubject: 'commentAuthor',
-
-      attributes: {
-        componentName: 'commentAuthor',
-        packageName,
-        packageVersion,
-      },
-    }),
   })(Author),
 );

@@ -447,14 +447,14 @@ export { Navigation as NavigationWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
-  componentName: 'navigation',
+  componentName: 'navigationSidebar',
   packageName,
   packageVersion,
 })(
   withAnalyticsEvents({
     onResize: createAndFireEventOnAtlaskit({
       action: 'resized',
-      actionSubject: 'navigation',
+      actionSubject: 'navigationSidebar',
 
       attributes: {
         componentName: 'navigation',
@@ -465,18 +465,7 @@ export default withAnalyticsContext({
 
     onResizeStart: createAndFireEventOnAtlaskit({
       action: 'resizeStarted',
-      actionSubject: 'navigation',
-
-      attributes: {
-        componentName: 'navigation',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onToggleStart: createAndFireEventOnAtlaskit({
-      action: 'toggled',
-      actionSubject: 'navigation',
+      actionSubject: 'navigationSidebar',
 
       attributes: {
         componentName: 'navigation',
@@ -487,7 +476,7 @@ export default withAnalyticsContext({
 
     onToggleEnd: createAndFireEventOnAtlaskit({
       action: 'toggled',
-      actionSubject: 'navigation',
+      actionSubject: 'navigationSidebar',
 
       attributes: {
         componentName: 'navigation',

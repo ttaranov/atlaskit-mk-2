@@ -134,7 +134,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onSelect: createAndFireEventOnAtlaskit({
-      action: 'changed',
+      action: 'clicked',
       actionSubject: 'tab',
 
       attributes: {

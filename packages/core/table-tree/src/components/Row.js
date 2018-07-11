@@ -125,7 +125,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onExpand: createAndFireEventOnAtlaskit({
-      action: 'toggled',
+      action: 'expanded',
       actionSubject: 'tableTree',
 
       attributes: {
@@ -136,7 +136,7 @@ export default withAnalyticsContext({
     }),
 
     onCollapse: createAndFireEventOnAtlaskit({
-      action: 'toggled',
+      action: 'collapsed',
       actionSubject: 'tableTree',
 
       attributes: {

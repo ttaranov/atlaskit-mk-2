@@ -138,39 +138,6 @@ export default withAnalyticsContext({
   packageVersion,
 })(
   withAnalyticsEvents({
-    onContentBlur: createAndFireEventOnAtlaskit({
-      action: 'blurred',
-      actionSubject: 'inlineDialog',
-
-      attributes: {
-        componentName: 'inlineDialog',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onContentClick: createAndFireEventOnAtlaskit({
-      action: 'clicked',
-      actionSubject: 'inlineDialog',
-
-      attributes: {
-        componentName: 'inlineDialog',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onContentFocus: createAndFireEventOnAtlaskit({
-      action: 'focused',
-      actionSubject: 'inlineDialog',
-
-      attributes: {
-        componentName: 'inlineDialog',
-        packageName,
-        packageVersion,
-      },
-    }),
-
     onClose: createAndFireEventOnAtlaskit({
       action: 'closed',
       actionSubject: 'inlineDialog',

@@ -31,8 +31,12 @@ type Props = {
   placeholder?: string,
   /** The value of the input. */
   value?: string | number,
+  /** Handler to be called when the input is blurred */
+  onBlur?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
   /** Handler to be called when the input changes. */
   onChange?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
+  /** Handler to be called when the input is focused */
+  onFocus?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
@@ -95,7 +99,9 @@ class FieldTextAreaStateless extends Component<Props, void> {
       maxLength,
       minimumRows,
       name,
+      onBlur,
       onChange,
+      onFocus,
       placeholder,
       enableResize,
       required,
@@ -133,7 +139,9 @@ class FieldTextAreaStateless extends Component<Props, void> {
             required={required}
             minimumRows={minimumRows}
             enableResize={enableResize}
+            onBlur={onBlur}
             onChange={onChange}
+            onFocus={onFocus}
             id={id}
             autoFocus={autoFocus}
             spellCheck={isSpellCheckEnabled}
@@ -152,18 +160,28 @@ export { FieldTextAreaStateless as FieldTextAreaStatelessWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
-  componentName: 'textarea',
+  componentName: 'fieldTextArea',
   packageName,
   packageVersion,
 })(
   withAnalyticsEvents({
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
-      actionSubject: 'field',
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'textArea',
 
       attributes: {
-        componentName: 'textarea',
-        type: 'textArea',
+        componentName: 'fieldTextArea',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'textArea',
+
+      attributes: {
+        componentName: 'fieldTextArea',
         packageName,
         packageVersion,
       },

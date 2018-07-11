@@ -32,7 +32,7 @@ describe('Row', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onExpand: {
-        action: 'toggled',
+        action: 'expanded',
         actionSubject: 'tableTree',
         attributes: {
           componentName: 'row',
@@ -41,7 +41,7 @@ describe('Row', () => {
         },
       },
       onCollapse: {
-        action: 'toggled',
+        action: 'collapsed',
         actionSubject: 'tableTree',
         attributes: {
           componentName: 'row',

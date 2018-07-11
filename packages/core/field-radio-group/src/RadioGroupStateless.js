@@ -73,18 +73,17 @@ export { FieldRadioGroupStateless as AkFieldRadioGroupWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
-  componentName: 'radio',
+  componentName: 'fieldRadioGroup',
   packageName,
   packageVersion,
 })(
   withAnalyticsEvents({
     onRadioChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
-      actionSubject: 'field',
+      action: 'selected',
+      actionSubject: 'radioItem',
 
       attributes: {
-        componentName: 'radio',
-        type: 'radio',
+        componentName: 'fieldRadioGroup',
         packageName,
         packageVersion,
       },

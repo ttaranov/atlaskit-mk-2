@@ -196,7 +196,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onActivate: createAndFireEventOnAtlaskit({
-      action: 'activated',
+      action: 'selected',
       actionSubject: 'droplistItem',
 
       attributes: {

@@ -474,7 +474,7 @@ export default withAnalyticsContext({
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
       action: 'changed',
-      actionSubject: 'calendar',
+      actionSubject: 'calendarDate',
 
       attributes: {
         componentName: 'calendar',
@@ -485,7 +485,7 @@ export default withAnalyticsContext({
 
     onSelect: createAndFireEventOnAtlaskit({
       action: 'selected',
-      actionSubject: 'calendar',
+      actionSubject: 'calendarDate',
 
       attributes: {
         componentName: 'calendar',

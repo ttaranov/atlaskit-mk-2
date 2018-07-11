@@ -33,60 +33,18 @@ describe('FieldTextStateless', () => {
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onBlur: {
         action: 'blurred',
-        actionSubject: 'fieldText',
+        actionSubject: 'textField',
         attributes: {
           componentName: 'fieldText',
-          type: 'text',
-          packageName,
-          packageVersion,
-        },
-      },
-      onChange: {
-        action: 'changed',
-        actionSubject: 'fieldText',
-        attributes: {
-          componentName: 'fieldText',
-          type: 'text',
           packageName,
           packageVersion,
         },
       },
       onFocus: {
         action: 'focused',
-        actionSubject: 'fieldText',
+        actionSubject: 'textField',
         attributes: {
           componentName: 'fieldText',
-          type: 'text',
-          packageName,
-          packageVersion,
-        },
-      },
-      onKeyDown: {
-        action: 'keyDowned',
-        actionSubject: 'fieldText',
-        attributes: {
-          componentName: 'fieldText',
-          type: 'text',
-          packageName,
-          packageVersion,
-        },
-      },
-      onKeyPress: {
-        action: 'keyPressed',
-        actionSubject: 'fieldText',
-        attributes: {
-          componentName: 'fieldText',
-          type: 'text',
-          packageName,
-          packageVersion,
-        },
-      },
-      onKeyUp: {
-        action: 'keyUpped',
-        actionSubject: 'fieldText',
-        attributes: {
-          componentName: 'fieldText',
-          type: 'text',
           packageName,
           packageVersion,
         },

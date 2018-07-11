@@ -33,7 +33,7 @@ describe('Calendar', () => {
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onChange: {
         action: 'changed',
-        actionSubject: 'calendar',
+        actionSubject: 'calendarDate',
         attributes: {
           componentName: 'calendar',
           packageName,
@@ -42,7 +42,7 @@ describe('Calendar', () => {
       },
       onSelect: {
         action: 'selected',
-        actionSubject: 'calendar',
+        actionSubject: 'calendarDate',
         attributes: {
           componentName: 'calendar',
           packageName,

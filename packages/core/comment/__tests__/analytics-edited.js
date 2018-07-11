@@ -40,24 +40,6 @@ describe('CommentEdited', () => {
           packageVersion,
         },
       },
-      onFocus: {
-        action: 'focused',
-        actionSubject: 'commentEdited',
-        attributes: {
-          componentName: 'commentEdited',
-          packageName,
-          packageVersion,
-        },
-      },
-      onMouseOver: {
-        action: 'hovered',
-        actionSubject: 'commentEdited',
-        attributes: {
-          componentName: 'commentEdited',
-          packageName,
-          packageVersion,
-        },
-      },
     });
   });
 });

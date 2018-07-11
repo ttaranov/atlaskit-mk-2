@@ -199,27 +199,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-
-    onMouseOut: createAndFireEventOnAtlaskit({
-      action: 'unhovered',
-      actionSubject: 'flag',
-
-      attributes: {
-        componentName: 'flag',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onMouseOver: createAndFireEventOnAtlaskit({
-      action: 'hovered',
-      actionSubject: 'flag',
-
-      attributes: {
-        componentName: 'flag',
-        packageName,
-        packageVersion,
-      },
-    }),
   })(Flag),
 );

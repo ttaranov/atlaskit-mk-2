@@ -22,7 +22,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 describe('FieldRange', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
-      componentName: 'range',
+      componentName: 'fieldRange',
       packageName,
       packageVersion,
     });
@@ -32,11 +32,10 @@ describe('FieldRange', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onChange: {
-        action: 'changed',
-        actionSubject: 'field',
+        action: 'selectedValue',
+        actionSubject: 'slider',
         attributes: {
-          componentName: 'range',
-          type: 'range',
+          componentName: 'fieldRange',
           packageName,
           packageVersion,
         },

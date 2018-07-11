@@ -32,7 +32,7 @@ describe('TimePicker', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenCalledWith({
       onChange: {
-        action: 'changed',
+        action: 'selectedTime',
         actionSubject: 'timePicker',
         attributes: {
           componentName: 'timePicker',

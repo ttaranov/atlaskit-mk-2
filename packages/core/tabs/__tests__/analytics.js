@@ -32,7 +32,7 @@ describe('Tabs', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onSelect: {
-        action: 'changed',
+        action: 'clicked',
         actionSubject: 'tab',
         attributes: {
           componentName: 'tabs',

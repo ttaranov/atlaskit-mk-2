@@ -352,7 +352,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
+      action: 'selectedDate',
       actionSubject: 'datePicker',
 
       attributes: {

@@ -110,23 +110,10 @@ export default withAnalyticsContext({
   withAnalyticsEvents({
     onBlur: createAndFireEventOnAtlaskit({
       action: 'blurred',
-      actionSubject: 'fieldText',
+      actionSubject: 'textField',
 
       attributes: {
         componentName: 'fieldText',
-        type: 'text',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
-      actionSubject: 'fieldText',
-
-      attributes: {
-        componentName: 'fieldText',
-        type: 'text',
         packageName,
         packageVersion,
       },
@@ -134,47 +121,10 @@ export default withAnalyticsContext({
 
     onFocus: createAndFireEventOnAtlaskit({
       action: 'focused',
-      actionSubject: 'fieldText',
+      actionSubject: 'textField',
 
       attributes: {
         componentName: 'fieldText',
-        type: 'text',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onKeyDown: createAndFireEventOnAtlaskit({
-      action: 'keyDowned',
-      actionSubject: 'fieldText',
-
-      attributes: {
-        componentName: 'fieldText',
-        type: 'text',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onKeyPress: createAndFireEventOnAtlaskit({
-      action: 'keyPressed',
-      actionSubject: 'fieldText',
-
-      attributes: {
-        componentName: 'fieldText',
-        type: 'text',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onKeyUp: createAndFireEventOnAtlaskit({
-      action: 'keyUpped',
-      actionSubject: 'fieldText',
-
-      attributes: {
-        componentName: 'fieldText',
-        type: 'text',
         packageName,
         packageVersion,
       },
