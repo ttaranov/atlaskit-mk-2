@@ -6,7 +6,7 @@ import {
   ContentType,
   ContainerResult,
   PersonResult,
-} from '../src/model/Result';
+} from '../../model/Result';
 
 function buildMockSearchResultProperties() {
   return {

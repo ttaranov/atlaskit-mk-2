@@ -4,11 +4,11 @@ import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   HomeQuickSearchContainer,
   Props,
-} from '../src/components/home/HomeQuickSearchContainer';
-import { Result } from '../src/model/Result';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
-import { Scope } from '../src/api/CrossProductSearchClient';
-import SearchError from '../src/components/SearchError';
+} from '../../components/home/HomeQuickSearchContainer';
+import { Result } from '../../model/Result';
+import GlobalQuickSearch from '../../components/GlobalQuickSearch';
+import { Scope } from '../../api/CrossProductSearchClient';
+import SearchError from '../../components/SearchError';
 import { delay, makeJiraObjectResult } from './_test-util';
 import {
   noResultsPeopleSearchClient,

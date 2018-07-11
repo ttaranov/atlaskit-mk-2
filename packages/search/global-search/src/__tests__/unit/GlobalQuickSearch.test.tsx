@@ -3,7 +3,7 @@ import * as React from 'react';
 import GlobalQuickSearchWithAnalytics, {
   GlobalQuickSearch,
   Props,
-} from '../src/components/GlobalQuickSearch';
+} from '../../components/GlobalQuickSearch';
 import { QuickSearch } from '@atlaskit/quick-search';
 
 const noop = () => {};

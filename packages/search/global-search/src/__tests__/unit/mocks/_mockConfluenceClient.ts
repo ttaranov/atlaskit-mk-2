@@ -1,6 +1,6 @@
-import { ConfluenceClient } from '../../src/api/ConfluenceClient';
+import { ConfluenceClient } from '../../../api/ConfluenceClient';
 import { makeConfluenceObjectResult } from '../_test-util';
-import { Result } from '../../src/model/Result';
+import { Result } from '../../../model/Result';
 
 const EMPTY_PROMISE = () => Promise.resolve([]);
 

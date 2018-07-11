@@ -2,9 +2,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { QuickSearch, ResultItemGroup, PersonResult } from '../src';
-import AkSearch from '../src/components/Search/Search';
-import ResultItem from '../src/components/ResultItem/ResultItem';
+import { QuickSearch, ResultItemGroup, PersonResult } from '..';
+import AkSearch from '../components/Search/Search';
+import ResultItem from '../components/ResultItem/ResultItem';
 
 import {
   QS_ANALYTICS_EV_CLOSE,
@@ -12,7 +12,7 @@ import {
   QS_ANALYTICS_EV_OPEN,
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
-} from '../src/components/constants';
+} from '../components/constants';
 
 const noOp = () => {};
 

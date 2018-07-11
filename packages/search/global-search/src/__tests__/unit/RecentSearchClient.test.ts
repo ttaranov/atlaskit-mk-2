@@ -1,7 +1,7 @@
 import RecentSearchClient, {
   RecentItem,
   splitIssueKeyAndName,
-} from '../src/api/RecentSearchClient';
+} from '../../api/RecentSearchClient';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
@@ -9,8 +9,7 @@ import {
   AnalyticsType,
   ResultType,
   ConfluenceObjectResult,
-  ContentType,
-} from '../src/model/Result';
+} from '../../model/Result';
 
 function apiWillReturn(state: RecentItem[]) {
   const response = Array.isArray(state) ? { data: state } : state;

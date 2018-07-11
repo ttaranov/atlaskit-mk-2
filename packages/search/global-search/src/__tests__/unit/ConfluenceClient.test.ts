@@ -4,14 +4,14 @@ import ConfluenceClient, {
   ConfluenceContentType,
   QuickNavResponse,
   QuickNavResult,
-} from '../src/api/ConfluenceClient';
+} from '../../api/ConfluenceClient';
 import {
   AnalyticsType,
   ResultType,
   ContentType,
   ContainerResult,
   ConfluenceObjectResult,
-} from '../src/model/Result';
+} from '../../model/Result';
 
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
@@ -183,7 +183,7 @@ describe('ConfluenceClient', () => {
       mockQuickNavSearch(mockResults);
 
       const results = await confluenceClient.searchQuickNav('abc', '123');
-
+      // @ts-ignore
       const expectedResults: ConfluenceObjectResult[] = [
         {
           resultId: '123',
@@ -237,7 +237,7 @@ describe('ConfluenceClient', () => {
       mockQuickNavSearch(mockResults);
 
       const results = await confluenceClient.searchQuickNav('abc', '123');
-
+      // @ts-ignore
       const expectedResults: ConfluenceObjectResult[] = [
         {
           resultId: '123',
@@ -267,7 +267,7 @@ describe('ConfluenceClient', () => {
       mockQuickNavSearch(mockResults);
 
       const results = await confluenceClient.searchQuickNav('abc', '123');
-
+      // @ts-ignore
       const expectedResults: ConfluenceObjectResult[] = [
         {
           resultId: '123',

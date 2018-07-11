@@ -1,4 +1,4 @@
-import { PeopleSearchClient } from '../../src/api/PeopleSearchClient';
+import { PeopleSearchClient } from '../../../api/PeopleSearchClient';
 
 export const noResultsPeopleSearchClient: PeopleSearchClient = {
   search(query: string) {

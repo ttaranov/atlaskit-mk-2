@@ -1,15 +1,15 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import { ResultItemGroup } from '@atlaskit/quick-search';
+// import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   ConfluenceQuickSearchContainer,
   Props,
-} from '../src/components/confluence/ConfluenceQuickSearchContainer';
-import { Result, PersonResult } from '../src/model/Result';
-import GlobalQuickSearch from '../src/components/GlobalQuickSearch';
-import { Scope } from '../src/api/CrossProductSearchClient';
-import SearchError from '../src/components/SearchError';
-import * as searchResultsUtil from '../src/components/SearchResultsUtil';
+} from '../../components/confluence/ConfluenceQuickSearchContainer';
+import { Result, PersonResult } from '../../model/Result';
+import GlobalQuickSearch from '../../components/GlobalQuickSearch';
+import { Scope } from '../../api/CrossProductSearchClient';
+import SearchError from '../../components/SearchError';
+import * as searchResultsUtil from '../../components/SearchResultsUtil';
 import {
   delay,
   makeConfluenceObjectResult,
@@ -32,7 +32,7 @@ import {
   errorConfluenceQuickNavSearch,
   makeConfluenceClient,
 } from './mocks/_mockConfluenceClient';
-import * as SearchResults from '../src/components/confluence/ConfluenceSearchResults';
+import * as SearchResults from '../../components/confluence/ConfluenceSearchResults';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
@@ -52,17 +52,17 @@ async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   wrapper.update();
 }
 
-enum Group {
-  Objects = 'objects',
-  Spaces = 'spaces',
-  People = 'people',
-}
+// enum Group {
+//   Objects = 'objects',
+//   Spaces = 'spaces',
+//   People = 'people',
+// }
 
-function findGroup(group: Group, wrapper: ShallowWrapper) {
-  return wrapper
-    .find(ResultItemGroup)
-    .findWhere(n => n.key() === group.valueOf());
-}
+// function findGroup(group: Group, wrapper: ShallowWrapper) {
+//   return wrapper
+//     .find(ResultItemGroup)
+//     .findWhere(n => n.key() === group.valueOf());
+// }
 
 function render(partialProps?: Partial<Props>) {
   const props: Props = {
