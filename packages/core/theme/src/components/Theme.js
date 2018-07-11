@@ -5,7 +5,6 @@ import { Consumer, Provider } from '../components/Context';
 import type {
   ThemeInput,
   ThemeInputFunction,
-  ThemeInputValue,
   ThemeOutput,
   ThemeOutputFunction,
   ThemeOutputValue,
@@ -13,7 +12,7 @@ import type {
 
 type Props = {
   children: ((*) => Node) | Node,
-  [string]: ThemeInputValue,
+  values: ThemeInput,
 };
 
 const noop = () => null;
@@ -56,7 +55,7 @@ function simplifyThemeFunction(
     });
 }
 
-export default ({ children, ...childTheme }: Props) => (
+export default ({ children, values: childTheme }: Props) => (
   <Consumer>
     {(parentTheme: ThemeOutput) => {
       const merged = mergeParentAndChildTheme(parentTheme, childTheme);

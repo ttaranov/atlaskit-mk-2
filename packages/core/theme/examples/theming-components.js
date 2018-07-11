@@ -8,45 +8,60 @@ import React, {
 } from 'react';
 import { Theme } from '../src';
 
-type MyTheme = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  button: ({ hover: boolean }) => {
-    backgroundColor: string,
-    textColor: string,
+type MyThemeProps = {
+  children: Node,
+  values: {
+    // eslint-disable-next-line react/no-unused-prop-types
+    button: ({ hover: boolean }) => {
+      backgroundColor: string,
+      textColor: string,
+    },
   },
 };
 
-const DefaultButtonTheme = props => (
+const DefaultButtonTheme = (props: MyThemeProps) => (
   <Theme
-    button={(state, { button }: MyTheme) => ({
-      backgroundColor: state.hover ? '#ddd' : '#eee',
-      textColor: '#333',
-      ...button(state),
-    })}
-    {...props}
-  />
+    values={{
+      button: (state, { button }: MyTheme) => ({
+        backgroundColor: state.hover ? '#ddd' : '#eee',
+        textColor: '#333',
+        ...button(state),
+      }),
+      ...props.values,
+    }}
+  >
+    {props.children}
+  </Theme>
 );
 
-const AppTheme = props => (
+const AppTheme = (props: MyThemeProps) => (
   <Theme
-    button={(state, { button }: MyTheme) => ({
-      ...button(state),
-      backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
-      textColor: state.hover ? '#fff' : 'papayawhip',
-    })}
-    {...props}
-  />
+    values={{
+      button: (state, { button }: MyTheme) => ({
+        ...button(state),
+        backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
+        textColor: state.hover ? '#fff' : 'papayawhip',
+      }),
+      ...props.values,
+    }}
+  >
+    {props.children}
+  </Theme>
 );
 
-const CustomButtonTheme = props => (
+const CustomButtonTheme = (props: MyThemeProps) => (
   <DefaultButtonTheme>
     <Theme
-      button={(state, { button }: MyTheme) => ({
-        ...button(state),
-        backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
-      })}
-      {...props}
-    />
+      values={{
+        button: (state, { button }: MyTheme) => ({
+          ...button(state),
+          backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
+        }),
+        ...props.values,
+      }}
+    >
+      {props.children}
+    </Theme>
   </DefaultButtonTheme>
 );
 
