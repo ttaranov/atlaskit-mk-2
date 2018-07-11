@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { link, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { createPlugin, hyperlinkPluginKey } from './pm-plugins/main';
+import WithPluginState from '../../ui/WithPluginState';
 import { createInputRulePlugin } from './pm-plugins/input-rule';
 import { createKeymapPlugin } from './pm-plugins/keymap';
-import HyperlinkEdit from './ui/HyperlinkEdit';
-
-export { hyperlinkPluginKey };
+import { plugin, stateKey, HyperlinkState } from './pm-plugins/main';
+import fakeCursorToolbarPlugin from './pm-plugins/fake-cursor-for-toolbar';
+import HyperlinkToolbar from './ui';
 
 const hyperlinkPlugin: EditorPlugin = {
   marks() {
@@ -15,7 +15,8 @@ const hyperlinkPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 900, plugin: ({ schema, props }) => createPlugin(schema, props) },
+      { rank: 900, plugin: ({ dispatch }) => plugin(dispatch) },
+      { rank: 905, plugin: () => fakeCursorToolbarPlugin },
       { rank: 910, plugin: ({ schema }) => createInputRulePlugin(schema) },
       {
         rank: 920,
@@ -25,36 +26,37 @@ const hyperlinkPlugin: EditorPlugin = {
   },
 
   contentComponent({
-    editorView,
-    providerFactory,
     appearance,
+    editorView,
     popupsMountPoint,
     popupsBoundariesElement,
-    popupsScrollableElement,
+    providerFactory,
   }) {
     if (appearance === 'message') {
       return null;
     }
-
-    const renderNode = providers => {
-      const pluginState = hyperlinkPluginKey.getState(editorView.state);
-      return (
-        <HyperlinkEdit
-          editorView={editorView}
-          pluginState={pluginState}
-          activityProvider={providers.activityProvider}
-          popupsMountPoint={popupsMountPoint}
-          popupsBoundariesElement={popupsBoundariesElement}
-          popupsScrollableElement={popupsScrollableElement}
-        />
-      );
-    };
+    const renderToolbar = providers => (
+      <WithPluginState
+        plugins={{ hyperlinkState: stateKey }}
+        render={({ hyperlinkState }: { hyperlinkState?: HyperlinkState }) => (
+          <HyperlinkToolbar
+            hyperlinkState={hyperlinkState}
+            view={editorView}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+            activityProvider={
+              providers ? providers.activityProvider : undefined
+            }
+          />
+        )}
+      />
+    );
 
     return (
       <WithProviders
         providerFactory={providerFactory}
         providers={['activityProvider']}
-        renderNode={renderNode}
+        renderNode={renderToolbar}
       />
     );
   },

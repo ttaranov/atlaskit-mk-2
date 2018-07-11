@@ -45,6 +45,7 @@ import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/action
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
 import { insertLayoutColumns } from '../../../layout/actions';
+import { showLinkToolbar } from '../../../hyperlink/commands';
 
 export interface Props {
   buttons: number;
@@ -69,7 +70,6 @@ export interface Props {
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
   linkDisabled?: boolean;
-  showLinkPanel?: (editorView: EditorView) => void;
   emojiDisabled?: boolean;
   insertEmoji?: (emojiId: EmojiId) => void;
   popupsMountPoint?: HTMLElement;
@@ -436,8 +436,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
 
   @analyticsDecorator('atlassian.editor.format.hyperlink.button')
   private toggleLinkPanel = (): boolean => {
-    const { showLinkPanel, editorView } = this.props;
-    showLinkPanel!(editorView);
+    const { editorView } = this.props;
+    showLinkToolbar()(editorView.state, editorView.dispatch);
     return true;
   };
 
