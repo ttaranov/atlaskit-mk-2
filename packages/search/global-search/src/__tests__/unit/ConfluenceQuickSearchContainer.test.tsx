@@ -227,7 +227,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     const wrapper = render();
     searchFor('query', wrapper);
 
-    const onSearchSubmit: Function = wrapper
+    const onSearchSubmit = wrapper
       .find(GlobalQuickSearch)
       .prop('onSearchSubmit');
 
@@ -235,7 +235,7 @@ describe('ConfluenceQuickSearchContainer', () => {
       .spyOn(searchResultsUtil, 'redirectToConfluenceAdvancedSearch')
       .mockImplementation(() => {});
 
-    onSearchSubmit();
+    onSearchSubmit!();
     expect(mockRedirect).toHaveBeenCalledWith('query');
   });
 

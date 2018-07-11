@@ -25,6 +25,7 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
+  // @ts-ignore - doesn't recognise injected intl prop
   return shallowWithIntl(<GlobalQuickSearch {...props} />);
 }
 
