@@ -1,10 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DropdownIndicator 1`] = `<DropdownIndicator />`;
+exports[`DropdownIndicator 1`] = `
+<DropdownIndicator
+  selectProps={Object {}}
+/>
+`;
 
 exports[`DropdownIndicator 2`] = `
 <DropdownIndicator
-  icon="asdf"
+  selectProps={
+    Object {
+      "dropdownIndicatorIcon": "asdf",
+    }
+  }
 >
   <span
     role="img"

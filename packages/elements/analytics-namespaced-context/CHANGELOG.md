@@ -1,5 +1,10 @@
 # @atlaskit/analytics-namespaced-context
 
+## 1.0.3
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/analytics-gas-types@2.1.4
+
 ## 1.0.2
 - [patch] Add missing dependencies to packages to get the website to build [9c32280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c32280)
 

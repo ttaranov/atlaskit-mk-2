@@ -76,6 +76,27 @@ export class GlobalQuickSearch extends React.Component<
     this.queryVersion++;
   }
 
+  componentWillUnmount() {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      // Note: This analytics event is currently missing the
+      // trigger attribute, to indicate _how_ the drawer was dismissed.
+      // as well as the correct actionSubjectId.
+      const event = createAnalyticsEvent();
+      const payload: GasPayload = {
+        action: 'dismissed',
+        actionSubject: 'globalSearchDrawer',
+        source: DEFAULT_GAS_SOURCE,
+        eventType: 'ui',
+        attributes: {
+          searchSessionId: this.props.searchSessionId,
+          ...DEFAULT_GAS_ATTRIBUTES,
+        },
+      };
+      event.update(payload).fire(DEFAULT_GAS_CHANNEL);
+    }
+  }
+
   render() {
     const {
       query,

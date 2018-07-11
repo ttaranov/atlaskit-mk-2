@@ -24,6 +24,7 @@ import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository from './EmojiRepository';
 import SiteEmojiResource from './media/SiteEmojiResource';
+import { CategoryId } from '../components/picker/categories';
 
 export interface EmojiResourceConfig {
   /**
@@ -233,13 +234,15 @@ export interface LastQuery {
   options?: SearchOptions;
 }
 
-export class EmojiResource extends AbstractResource<
-  string,
-  EmojiSearchResult,
-  any,
-  undefined,
-  SearchOptions
-> implements EmojiProvider {
+export class EmojiResource
+  extends AbstractResource<
+    string,
+    EmojiSearchResult,
+    any,
+    undefined,
+    SearchOptions
+  >
+  implements EmojiProvider {
   protected recordConfig?: ServiceConfig;
   protected emojiRepository?: EmojiRepository;
   protected lastQuery: LastQuery;
@@ -487,7 +490,7 @@ export class EmojiResource extends AbstractResource<
     return this.retryIfLoading(() => this.findById(id), undefined);
   }
 
-  findInCategory(categoryId: string): Promise<EmojiDescription[]> {
+  findInCategory(categoryId: CategoryId): Promise<EmojiDescription[]> {
     if (this.isLoaded()) {
       return Promise.resolve(this.emojiRepository!.findInCategory(categoryId));
     }
@@ -578,7 +581,7 @@ export class EmojiResource extends AbstractResource<
     }
   }
 
-  calculateDynamicCategories(): Promise<string[]> {
+  calculateDynamicCategories(): Promise<CategoryId[]> {
     if (this.isLoaded()) {
       return Promise.resolve(this.emojiRepository!.getDynamicCategoryList());
     }

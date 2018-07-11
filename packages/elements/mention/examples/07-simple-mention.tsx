@@ -4,7 +4,7 @@ import { AnalyticsListener } from '@atlaskit/analytics';
 import { AnalyticsListener as AnalyticsListenerNext } from '@atlaskit/analytics-next';
 import debug from '../src/util/logger';
 import { onMentionEvent } from '../example-helpers/index';
-import { mockMentionData as mentionData } from '../__tests__/_test-helpers';
+import { mockMentionData as mentionData } from '../src/__tests__/unit/_test-helpers';
 import { ELEMENTS_CHANNEL } from '../src/constants';
 
 const padding = { padding: '10px' };

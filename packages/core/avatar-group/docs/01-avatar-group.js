@@ -15,7 +15,7 @@ export default md`
 
   ### The Four Exceptions
 
-  There are three props of \`Avatar\` that \`AvatarGroup\` can or will override:
+  There are four props of \`Avatar\` that \`AvatarGroup\` can or will override:
 
   - \`onAvatarClick\` will be passed to \`onClick\` unless there is an explicit \`onClick\` on the avatar object
   - \`borderColor\` will get the \`AvatarGroup\`'s \`borderColor\`

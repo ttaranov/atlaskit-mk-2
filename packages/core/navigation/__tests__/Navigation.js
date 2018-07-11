@@ -573,10 +573,6 @@ describe('<Navigation />', () => {
       });
     });
 
-    afterEach(() => {
-      console.error.mockRestore();
-    });
-
     it('should not throw errors on mounting closed Navigation with primary icon', () => {
       expect(() => {
         mount(
