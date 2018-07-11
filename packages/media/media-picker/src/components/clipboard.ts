@@ -21,7 +21,7 @@ export interface ClipboardConstructor {
 export const getFilesFromClipboard = (files: FileList) => {
   return Array.from(files).map(file => {
     if (file.type.indexOf('image/') === 0) {
-      const name = appendTimestamp(file.name, file.lastModified);
+      const name = appendTimestamp(file.name, (file as any).lastModified);
       return new File([file], name, {
         type: file.type,
       });
