@@ -113,7 +113,7 @@ export class GlobalQuickSearch extends React.Component<
           onSearchInput={this.handleSearchInput}
           value={query}
           placeholder={this.props.intl.formatMessage({
-            id: 'global-search.confluence.search-placeholder',
+            id: 'global-search.search-placeholder',
           })}
           linkComponent={linkComponent}
           onSearchSubmit={onSearchSubmit}

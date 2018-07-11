@@ -10,12 +10,11 @@
 import * as React from 'react';
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount, shallow } from 'enzyme';
-
-import { enMessages } from '../../../i18n';
+import { getMessagesForLocale } from '../../../i18n';
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const intlProvider = new IntlProvider(
-  { locale: 'en', messages: enMessages },
+  { locale: 'en', messages: getMessagesForLocale('en') },
   {},
 );
 const { intl } = intlProvider.getChildContext();
