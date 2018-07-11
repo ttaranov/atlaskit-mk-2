@@ -70,6 +70,8 @@ pipelines:
               - bolt install --pure-lockfile
               - echo "Run browser unit tests using Karma"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
+              - echo "Check how many builds are running in Browserstack"
+              - node build/ci-scripts/browserstack.queues.js
               - echo "Run browser integration tests using Webdriver"
               - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
             caches:
