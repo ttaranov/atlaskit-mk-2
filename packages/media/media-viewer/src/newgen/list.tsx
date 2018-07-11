@@ -4,7 +4,7 @@ import { ItemViewer } from './item-viewer';
 import { Identifier, MediaViewerFeatureFlags } from './domain';
 import { HeaderWrapper, hideControlsClassName, ListWrapper } from './styled';
 import { getSelectedIndex } from './util';
-import { ErrorMessage } from './styled';
+import { ErrorMessage, createError } from './error';
 import Navigation from './navigation';
 import Header from './header';
 
@@ -38,12 +38,7 @@ export class List extends React.Component<Props, State> {
     const { context, onClose, featureFlags, showControls } = this.props;
     const { selectedItem } = this.state;
     if (getSelectedIndex(items, selectedItem) < 0) {
-      return (
-        <ErrorMessage>
-          The selected item with id '{selectedItem.id}' was not found on the
-          list
-        </ErrorMessage>
-      );
+      return <ErrorMessage error={createError('idNotFound')} />;
     } else {
       return (
         <ListWrapper>

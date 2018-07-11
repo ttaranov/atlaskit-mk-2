@@ -5,13 +5,14 @@ import { constructAuthTokenUrl } from '../util';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
 import {
-  ErrorMessage,
   AudioPlayer,
   AudioCover,
   Audio,
   DefaultCoverWrapper,
   blanketColor,
 } from '../styled';
+import { ErrorMessage, createError, MediaViewerError } from '../error';
+import { renderDownloadButton } from '../domain/download';
 
 export type Props = Readonly<{
   item: FileItem;
@@ -21,7 +22,7 @@ export type Props = Readonly<{
 }>;
 
 export type State = {
-  src: Outcome<string, Error>;
+  src: Outcome<string, MediaViewerError>;
   coverUrl?: string;
 };
 
@@ -57,7 +58,12 @@ export class AudioViewer extends React.Component<Props, State> {
       case 'SUCCESSFUL':
         return this.renderPlayer(src.data);
       case 'FAILED':
-        return <ErrorMessage>{src.err.message}</ErrorMessage>;
+        return (
+          <ErrorMessage error={src.err}>
+            <p>Try downloading the file to view it.</p>
+            {this.renderDownloadButton()}
+          </ErrorMessage>
+        );
     }
   }
 
@@ -135,10 +141,15 @@ export class AudioViewer extends React.Component<Props, State> {
       this.setState({
         src: {
           status: 'FAILED',
-          err,
+          err: createError('previewFailed', item, err),
         },
       });
     }
+  }
+
+  private renderDownloadButton() {
+    const { item, context, collectionName } = this.props;
+    return renderDownloadButton(item, context, collectionName);
   }
 }
 
