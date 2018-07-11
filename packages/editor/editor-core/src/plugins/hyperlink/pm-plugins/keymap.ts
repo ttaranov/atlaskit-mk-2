@@ -42,7 +42,10 @@ export function createKeymapPlugin(
     (state: EditorState, dispatch, view) => {
       const hyperlinkPlugin = stateKey.getState(state) as HyperlinkState;
       if (hyperlinkPlugin.activeLinkMark) {
-        hideLinkToolbar()(state, dispatch, view);
+        hideLinkToolbar()(state, dispatch);
+        if (view) {
+          view.focus();
+        }
         return false;
       }
       return false;

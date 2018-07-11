@@ -33,12 +33,14 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
     const existingLink = (node.type.schema.marks.link.isInSet(
       node.marks,
     ) as Mark).attrs.href;
-    const unlink = () => removeLink(pos)(view.state, view.dispatch, view);
+    const unlink = () =>
+      removeLink(pos)(view.state, view.dispatch) && view.focus();
     const hideToolbar = () =>
-      hideLinkToolbar()(view.state, view.dispatch, view);
-    const updateLinkText = text =>
-      setLinkText(pos, text)(view.state, view.dispatch, view);
-    const updateLinkTextOrElse = text => updateLinkText(text) || hideToolbar();
+      hideLinkToolbar()(view.state, view.dispatch) && view.focus();
+    const updateLinkText = (text: string) =>
+      setLinkText(pos, text)(view.state, view.dispatch) && view.focus();
+    const updateLinkTextOrHideToolbar = (text: string) =>
+      updateLinkText(text) || hideToolbar();
     return (
       <HyperlinkEdit
         target={findDomRefAtPos(pos, view.domAtPos.bind(view))}
@@ -47,7 +49,7 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
         alwaysOpenLinkAt={existingLink}
         placeholder="Text to display"
         onSubmit={updateLinkText}
-        onBlur={updateLinkTextOrElse}
+        onBlur={updateLinkTextOrHideToolbar}
         onUnlink={unlink}
         onOpenLink={() => {}}
       />
@@ -74,11 +76,13 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
       node.marks,
     ) as Mark).attrs.href;
     const hideToolbar = () =>
-      hideLinkToolbar()(view.state, view.dispatch, view);
-    const updateLinkHref = href =>
-      setLinkHref(pos, href)(view.state, view.dispatch, view);
-    const updateLinkHrefOrElse = href => updateLinkHref(href) || hideToolbar();
-    const unlink = () => removeLink(pos)(view.state, view.dispatch, view);
+      hideLinkToolbar()(view.state, view.dispatch) && view.focus();
+    const updateLinkHref = (href: string) =>
+      setLinkHref(pos, href)(view.state, view.dispatch) && view.focus();
+    const updateLinkHrefOrHideToolbar = (href: string) =>
+      updateLinkHref(href) || hideToolbar();
+    const unlink = () =>
+      removeLink(pos)(view.state, view.dispatch) && view.focus();
     return (
       <HyperlinkEdit
         target={findDomRefAtPos(pos, view.domAtPos.bind(view))}
@@ -87,7 +91,7 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
         defaultValue={existingLink}
         placeholder="Paste link"
         onSubmit={updateLinkHref}
-        onBlur={updateLinkHrefOrElse}
+        onBlur={updateLinkHrefOrHideToolbar}
         onUnlink={unlink}
         onOpenLink={() => {}}
       />
@@ -111,9 +115,9 @@ export class InsertLinkToolbar extends React.PureComponent<{
       popupsBoundariesElement,
     } = this.props;
     const hideToolbar = () =>
-      hideLinkToolbar()(view.state, view.dispatch, view);
+      hideLinkToolbar()(view.state, view.dispatch) && view.focus();
     const addLink = (href: string) =>
-      insertLink(from, to, href)(view.state, view.dispatch, view);
+      insertLink(from, to, href)(view.state, view.dispatch) && view.focus();
     return (
       <HyperlinkEdit
         target={findDomRefAtPos(from, view.domAtPos.bind(view))}
@@ -146,9 +150,10 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
       activityProvider,
     } = this.props;
     const hideToolbar = () =>
-      hideLinkToolbar()(view.state, view.dispatch, view);
+      hideLinkToolbar()(view.state, view.dispatch) && view.focus();
     const addLink = (href: string, text?: string) =>
-      insertLink(from, to, href, text)(view.state, view.dispatch, view);
+      insertLink(from, to, href, text)(view.state, view.dispatch) &&
+      view.focus();
     return (
       <RecentSearch
         target={findDomRefAtPos(from, view.domAtPos.bind(view))}

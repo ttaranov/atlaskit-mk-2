@@ -19,7 +19,7 @@ const isLinkAtPos = (pos: number) => (state: EditorState): boolean => {
 };
 
 export function setLinkHref(pos: number, href: string): Command {
-  return filter(isLinkAtPos(pos), (state, dispatch, view) => {
+  return filter(isLinkAtPos(pos), (state, dispatch) => {
     const node = state.doc.nodeAt(pos) as Node;
     const link = state.schema.marks.link;
     const mark = link.isInSet(node.marks) as Mark;
@@ -33,16 +33,12 @@ export function setLinkHref(pos: number, href: string): Command {
       );
     }
     dispatch(tr);
-
-    if (view) {
-      view.focus();
-    }
     return true;
   });
 }
 
 export function setLinkText(pos: number, text: string): Command {
-  return filter(isLinkAtPos(pos), (state, dispatch, view) => {
+  return filter(isLinkAtPos(pos), (state, dispatch) => {
     const node = state.doc.nodeAt(pos) as Node;
     const link = state.schema.marks.link;
     const mark = link.isInSet(node.marks) as Mark;
@@ -51,10 +47,6 @@ export function setLinkText(pos: number, text: string): Command {
       tr.insertText(text, pos, pos + node.nodeSize);
       tr.addMark(pos, pos + text.length, mark);
       dispatch(tr);
-
-      if (view) {
-        view.focus();
-      }
       return true;
     }
     return false;
@@ -67,7 +59,7 @@ export function insertLink(
   href: string,
   text?: string,
 ): Command {
-  return filter(canLinkBeCreatedInRange(from, to), (state, dispatch, view) => {
+  return filter(canLinkBeCreatedInRange(from, to), (state, dispatch) => {
     const link = state.schema.marks.link;
     if (href.trim()) {
       const tr = state.tr;
@@ -83,10 +75,6 @@ export function insertLink(
         tr.addMark(from, to, link.create({ href: normalizeUrl(href) }));
       }
       dispatch(tr);
-
-      if (view) {
-        view.focus();
-      }
       return true;
     }
     return false;
@@ -105,12 +93,8 @@ export function showLinkToolbar(): Command {
 }
 
 export function hideLinkToolbar(): Command {
-  return function(state, dispatch, view) {
+  return function(state, dispatch) {
     dispatch(state.tr.setMeta(stateKey, LinkAction.HIDE_TOOLBAR));
-
-    if (view) {
-      view.focus();
-    }
     return true;
   };
 }
