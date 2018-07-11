@@ -117,7 +117,10 @@ export class PDFRenderer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        doc: { status: 'FAILED', err: createError('previewFailed') },
+        doc: {
+          status: 'FAILED',
+          err: createError('previewFailed', undefined, err),
+        },
       });
     }
   }

@@ -49,7 +49,7 @@ export class DocViewer extends React.Component<Props, State> {
       this.setState({
         src: {
           status: 'FAILED',
-          err: createError('noPDFArtifactsFound', item),
+          err: createError('noPDFArtifactsFound'),
         },
       });
       return;
@@ -70,7 +70,7 @@ export class DocViewer extends React.Component<Props, State> {
       this.setState({
         src: {
           status: 'FAILED',
-          err: createError('previewFailed'),
+          err: createError('previewFailed', undefined, err),
         },
       });
     }
