@@ -23,11 +23,7 @@ describe('Snapshot Test', () => {
     );
 
     await global.page.goto(url);
-    const image = await takeElementScreenShot(
-      global.page,
-      '#RendererOutput',
-      true,
-    );
+    const image = await takeElementScreenShot(global.page, '#RendererOutput');
     //$FlowFixMe
     expect(image).toMatchProdImageSnapshot();
   });
