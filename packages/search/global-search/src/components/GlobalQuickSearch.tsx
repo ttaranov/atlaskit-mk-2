@@ -73,7 +73,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
         {
           ...eventData,
           queryHash: '',
-          queryVersion: '' + this.queryVersion,
+          queryVersion: this.queryVersion,
         } as AdvancedSearchSelectedEvent,
         searchSessionId,
         createAnalyticsEvent,

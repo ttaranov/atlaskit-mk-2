@@ -142,7 +142,7 @@ export interface SelectedSearchResultEvent extends SearchResultEvent {
 
 export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   queryHash: string;
-  queryVersion: string;
+  queryVersion: number;
   queryId: null | string;
   wasOnNoResultsScreen: boolean;
 }
