@@ -1,5 +1,11 @@
 # @atlaskit/reactions
 
+## 12.2.2
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-data-test@9.1.18
+  - @atlaskit/emoji@37.0.1
+
 ## 12.2.1
 
 

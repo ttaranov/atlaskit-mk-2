@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 1.1.0
+- [minor] Added nav-next "Switcher" component. Minor fixes and dep bump for select. [ed5d8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5d8d1)
+- [none] Updated dependencies [ed5d8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5d8d1)
+  - @atlaskit/select@4.4.0
+
 ## 1.0.3
 
 

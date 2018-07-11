@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 7.1.13
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-service-support@2.0.12
+  - @atlaskit/util-data-test@9.1.18
+
 ## 7.1.12
 
 

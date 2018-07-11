@@ -1,5 +1,22 @@
 # @atlaskit/editor-core
 
+## 74.0.14
+- [patch] Split out non-core style and minor refactors in anticipation of hyperlink refactor [d1c7461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1c7461)
+- [none] Updated dependencies [d1c7461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1c7461)
+
+## 74.0.13
+- [patch] ED-4914: extracted flash to a separate component [ea16bf8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea16bf8)
+- [none] Updated dependencies [ea16bf8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea16bf8)
+
+## 74.0.12
+- [patch] ED-5029, fix padding in comment editor. [a38f1e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a38f1e9)
+- [patch] Updated dependencies [a38f1e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a38f1e9)
+
+## 74.0.11
+- [patch] FS-2093 add mention insert analytics event [30bbe5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bbe5a)
+- [none] Updated dependencies [30bbe5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30bbe5a)
+  - @atlaskit/mention@13.1.8
+
 ## 74.0.10
 - [patch] Updated dependencies [6f51fdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f51fdb)
   - @atlaskit/media-picker@9.0.1
