@@ -46,7 +46,7 @@ export default class CollapsedEditor extends React.Component<Props, State> {
     }
 
     if (!this.state.editorModules) {
-      // TODO: Proper loading state
+      /* TODO: Proper loading state */
       return <ChromeCollapsed text="Loading..." />;
     }
 

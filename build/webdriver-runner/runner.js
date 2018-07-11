@@ -14,9 +14,12 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
 
 const webdriverio = require('webdriverio');
+
+process.env.USER = process.env.USER || 'local';
+
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
-  : process.env.USER;
+  : process.env.USER + '_' + Math.random().toString();
 let clients /*: Array<?Object>*/ = [];
 let skipForBrowser /*:?Object */ = {};
 
@@ -172,6 +175,7 @@ function setBrowserStackClients() {
       browser_version: '16',
       resolution: '1440x900',
     },
+    maxInstances: 10,
   };
 
   let clis = [];
@@ -190,7 +194,7 @@ function setBrowserStackClients() {
         build: process.env.BITBUCKET_BRANCH,
         'browserstack.local': true,
         'browserstack.debug': true,
-        'browserstack.idleTimeout': 300,
+        'browserstack.idleTimeout': 120,
         'browserstack.localIdentifier': commit,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },

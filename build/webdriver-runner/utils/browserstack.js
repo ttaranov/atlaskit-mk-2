@@ -7,9 +7,10 @@
 const browserstack = require('browserstack-local');
 const bsLocal = new browserstack.Local();
 const bsKey = process.env.BROWSERSTACK_KEY;
+process.env.USER = process.env.USER || 'local';
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
-  : process.env.USER;
+  : process.env.USER + '_' + Math.random().toString();
 
 async function startBrowserStack() {
   return new Promise((resolve, reject) => {
