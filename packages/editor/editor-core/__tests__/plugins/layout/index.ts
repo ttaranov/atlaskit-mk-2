@@ -96,15 +96,7 @@ describe('layout', () => {
             ),
           )(defaultSchema);
           const state = toState(document);
-          const newState = state.apply(enforceLayoutColumnConstraints(state)!);
-          expect(newState.doc).toEqualDocument(
-            doc(
-              layoutSection({ layoutType })(
-                layoutColumn(p('First')),
-                layoutColumn(p('Last')),
-              ),
-            ),
-          );
+          expect(enforceLayoutColumnConstraints(state)).toBeUndefined();
         });
       },
     );
@@ -118,16 +110,7 @@ describe('layout', () => {
           ),
         )(defaultSchema);
         const state = toState(document);
-        const newState = state.apply(enforceLayoutColumnConstraints(state)!);
-        expect(newState.doc).toEqualDocument(
-          doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('Last')),
-            ),
-          ),
-        );
+        expect(enforceLayoutColumnConstraints(state)!).toBeUndefined();
       });
 
       it(`should add a third column when layout is ${layoutType}`, () => {
