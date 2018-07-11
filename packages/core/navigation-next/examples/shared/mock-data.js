@@ -16,8 +16,8 @@ export const globalNavPrimaryItems = [
       <UIStateSubscriber>
         {navigation => {
           function onClick() {
-            if (navigation.state.productNavIsCollapsed) {
-              navigation.expandProductNav();
+            if (navigation.state.isCollapsed) {
+              navigation.expand();
             }
             navigation.togglePeek();
           }

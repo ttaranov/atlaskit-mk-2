@@ -8,7 +8,7 @@ import type { Node } from 'react';
 export type InitialUIStateShape = {
   isHinting?: boolean,
   isPeeking?: boolean,
-  productNavIsCollapsed?: boolean,
+  isCollapsed?: boolean,
   productNavWidth?: number,
 };
 
@@ -28,9 +28,9 @@ export type UIStateCache = {
 export interface UIStateInterface {
   state: UIStateShape;
 
-  collapseProductNav: () => void;
-  expandProductNav: () => void;
-  toggleProductNav: () => void;
+  collapse: () => void;
+  expand: () => void;
+  toggleCollapse: () => void;
 
   hint: () => void;
   unHint: () => void;

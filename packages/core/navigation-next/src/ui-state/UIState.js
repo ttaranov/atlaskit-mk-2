@@ -17,13 +17,13 @@ const defaultState = {
   isHinting: false,
   isPeeking: false,
   isResizing: false,
-  productNavIsCollapsed: false,
+  isCollapsed: false,
   productNavWidth: PRODUCT_NAV_WIDTH,
 };
 
 type Resize = {
   productNavWidth: number,
-  productNavIsCollapsed: boolean,
+  isCollapsed: boolean,
 };
 
 export default class UIState extends Container<UIStateShape>
@@ -56,31 +56,29 @@ export default class UIState extends Container<UIStateShape>
   // UI
   // ==============================
 
-  collapseProductNav = () => {
-    this.storeState({ productNavIsCollapsed: true });
+  collapse = () => {
+    this.storeState({ isCollapsed: true });
   };
-  expandProductNav = () => {
-    this.storeState({ productNavIsCollapsed: false });
+  expand = () => {
+    this.storeState({ isCollapsed: false });
   };
-  toggleProductNav = () => {
-    const toggle = this.state.productNavIsCollapsed
-      ? this.expandProductNav
-      : this.collapseProductNav;
+  toggleCollapse = () => {
+    const toggle = this.state.isCollapsed ? this.expand : this.collapse;
     toggle();
   };
 
-  manualResizeStart = ({ productNavWidth, productNavIsCollapsed }: Resize) => {
+  manualResizeStart = ({ productNavWidth, isCollapsed }: Resize) => {
     this.storeState({
       isResizing: true,
       productNavWidth,
-      productNavIsCollapsed,
+      isCollapsed,
     });
   };
-  manualResizeEnd = ({ productNavWidth, productNavIsCollapsed }: Resize) => {
+  manualResizeEnd = ({ productNavWidth, isCollapsed }: Resize) => {
     this.storeState({
       isResizing: false,
       productNavWidth,
-      productNavIsCollapsed,
+      isCollapsed,
     });
   };
 

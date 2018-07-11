@@ -26,17 +26,14 @@ class LayoutManager extends Component<LayoutManagerProps> {
 
   renderGlobalNav(activeTransition) {
     const { navigation, globalNavigation: GlobalNavigation } = this.props;
-    const { isPeeking, productNavIsCollapsed } = navigation.state;
-    const displayShadow =
-      productNavIsCollapsed && !isPeeking && !activeTransition;
+    const { isPeeking, isCollapsed } = navigation.state;
+    const displayShadow = isCollapsed && !isPeeking && !activeTransition;
     return (
       <ThemeProvider
         theme={theme => ({
           mode: light, // If no theme already exists default to light mode
           ...theme,
-          context: navigation.state.productNavIsCollapsed
-            ? 'collapsed'
-            : 'expanded',
+          context: navigation.state.isCollapsed ? 'collapsed' : 'expanded',
         })}
       >
         <Fragment>
@@ -142,18 +139,14 @@ class LayoutManager extends Component<LayoutManagerProps> {
 
   render() {
     const { navigation } = this.props;
-    const {
-      isResizing,
-      productNavIsCollapsed,
-      productNavWidth,
-    } = navigation.state;
+    const { isResizing, isCollapsed, productNavWidth } = navigation.state;
 
     return (
       <Fragment>
         <LayoutContainer>
           <ResizeTransition
             from={[0]}
-            in={!productNavIsCollapsed}
+            in={!isCollapsed}
             properties={['width']}
             to={[productNavWidth]}
             userIsDragging={isResizing}
@@ -162,7 +155,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
           </ResizeTransition>
           <ResizeTransition
             from={[0]}
-            in={!productNavIsCollapsed}
+            in={!isCollapsed}
             properties={['paddingLeft']}
             to={[productNavWidth]}
             userIsDragging={isResizing}
