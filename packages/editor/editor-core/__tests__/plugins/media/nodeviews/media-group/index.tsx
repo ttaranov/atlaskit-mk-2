@@ -3,13 +3,14 @@ import { shallow } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { mediaGroup, media } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-common';
+import { defaultSchema, ProviderFactory } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
   DefaultMediaStateManager,
 } from '../../../../../src/plugins/media/pm-plugins/main';
-import MediaGroup from '../../../../../src/plugins/media/nodeviews/media-group';
+import { MediaGroupNode as MediaGroup } from '../../../../../src/plugins/media/nodeviews/media-group';
+import { stateKey as nodeViewStateKey } from '../../../../../src/plugins/base/pm-plugins/react-nodeview';
 
 interface MediaProps {
   node: PMNode;
@@ -31,12 +32,22 @@ describe('nodeviews/mediaGroup', () => {
     __key: '12345',
   })();
   const view = {} as EditorView;
+  const mockProps = {
+    providerFactory: {} as ProviderFactory,
+    getPos: () => 0,
+  };
   beforeEach(() => {
     pluginState = {} as MediaPluginState;
     pluginState.stateManager = stateManager;
     pluginState.getMediaOptions = () => ({});
     pluginState.getMediaNodeState = () => ({});
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
+    jest.spyOn(nodeViewStateKey, 'getState').mockImplementation(() => {
+      return {
+        subscribe: () => {},
+        unsubscribe: () => {},
+      };
+    });
   });
 
   it('should re-render when offset changes', () => {
@@ -47,7 +58,7 @@ describe('nodeviews/mediaGroup', () => {
     };
 
     const wrapper = shallow(
-      <MediaGroup {...props}>
+      <MediaGroup {...mockProps} {...props}>
         <Media node={mediaNode(defaultSchema)} />
       </MediaGroup>,
     );
@@ -65,7 +76,7 @@ describe('nodeviews/mediaGroup', () => {
     };
 
     const wrapper = shallow(
-      <MediaGroup {...props}>
+      <MediaGroup {...mockProps} {...props}>
         <Media node={mediaNode(defaultSchema)} />
       </MediaGroup>,
     );
@@ -86,7 +97,7 @@ describe('nodeviews/mediaGroup', () => {
     };
 
     const wrapper = shallow(
-      <MediaGroup {...props}>
+      <MediaGroup {...mockProps} {...props}>
         <Media node={mediaNode(defaultSchema)} />
       </MediaGroup>,
     );

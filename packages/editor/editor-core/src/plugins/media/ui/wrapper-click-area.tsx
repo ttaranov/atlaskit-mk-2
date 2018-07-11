@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import { ReactNodeViewState } from '../../../plugins/base/pm-plugins/react-nodeview';
 import { setNodeSelection } from '../../../utils';
-import {
-  ProsemirrorGetPosHandler,
-  ReactComponentConstructor,
-} from '../../types';
-import { ReactNodeViewComponents } from '../';
+import { getPosHandler } from '../../../nodeviews/ReactNodeView';
+
+export interface ReactNodeViewComponents {
+  [key: string]: React.ComponentClass<any> | React.StatelessComponent<any>;
+}
+
+export interface ReactNodeProps {
+  selected: boolean;
+}
+export type ReactComponentConstructor = new (props: any) => React.Component<
+  any,
+  any
+>;
 
 interface Props {
   components: ReactNodeViewComponents;
-  getPos: ProsemirrorGetPosHandler;
-  node: PMNode;
+  getPos: getPosHandler;
   pluginState: ReactNodeViewState;
-  providerFactory: ProviderFactory;
   view: EditorView;
 }
 
@@ -61,6 +65,9 @@ export default function wrapComponentWithClickArea(
     ) => {
       const { getPos } = this.props;
       const nodePos = getPos();
+      if (typeof nodePos === 'undefined') {
+        return;
+      }
 
       this.setState({
         selected: nodePos >= anchorPos && nodePos < headPos,
@@ -69,7 +76,13 @@ export default function wrapComponentWithClickArea(
 
     private onClick = () => {
       const { getPos, view } = this.props;
-      setNodeSelection(view, getPos());
+      const pos = getPos();
+
+      if (typeof pos === 'undefined') {
+        return;
+      }
+
+      setNodeSelection(view, pos);
     };
   };
 }
