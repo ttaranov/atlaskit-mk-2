@@ -4,6 +4,7 @@ import {
   em,
   doc,
   p,
+  code,
   mediaGroup,
   media,
   mediaSingle,
@@ -245,6 +246,24 @@ describe('paste plugins', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(code_block()('code line 1\ncode line 2'), p('')),
       );
+    });
+
+    it('should create code-mark for single lines of code copied', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      dispatchPasteEvent(editorView, {
+        plain: 'code line 1',
+        html: '<pre>code line 1</pre>',
+      });
+      expect(editorView.state.doc).toEqualDocument(doc(p(code('code line 1'))));
+    });
+
+    it('should remove single preceding backtick', () => {
+      const { editorView } = editor(doc(p('`{<>}')));
+      dispatchPasteEvent(editorView, {
+        plain: 'code line 1',
+        html: '<pre>code line 1</pre>',
+      });
+      expect(editorView.state.doc).toEqualDocument(doc(p(code('code line 1'))));
     });
 
     it('should join adjacent code-blocks', () => {
