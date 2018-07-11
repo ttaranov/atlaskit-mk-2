@@ -25,6 +25,7 @@ import {
   makePersonResult,
   makeJiraObjectResult,
 } from './_test-util';
+import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {
@@ -150,14 +151,19 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(confluenceResults)}</span>);
 
-    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
-      href: 'href',
-      resultId: 'resultId',
-      type: 'result-confluence',
-      name: 'name',
-      containerName: 'containerName',
-      contentType: ContentType.ConfluencePage,
-    });
+    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual(
+      expect.objectContaining({
+        href: 'href',
+        resultId: 'resultId',
+        type: 'result-confluence',
+        name: 'name',
+        containerName: 'containerName',
+        contentType: ContentType.ConfluencePage,
+      }),
+    );
+    expect(wrapper.find(ObjectResultWithAnalytics).prop('avatar').type).toEqual(
+      Objects24Object24PageIcon,
+    );
   });
 
   it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
