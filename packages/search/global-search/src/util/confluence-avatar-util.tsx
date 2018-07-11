@@ -16,20 +16,10 @@ import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/fil
 import Avatar from '@atlaskit/avatar';
 import { colors } from '@atlaskit/theme';
 
-const ATTACHMENT_TYPE_MATCH_ICON_MAP = {
-  audio: FileTypes24File24AudioIcon,
-  code: FileTypes24File24SourceCodeIcon,
-  document: FileTypes24File24WordDocumentIcon,
-  image: FileTypes24File24ImageIcon,
-  pdf: FileTypes24File24PdfDocumentIcon,
-  presentation: FileTypes24File24PowerpointPresentationIcon,
-  spreadsheet: FileTypes24File24ExcelSpreadsheetIcon,
-  video: FileTypes24File24VideoIcon,
-  zip: FileTypes24File24ArchiveIcon,
-
-  // default
-  default: FileTypes24File24GenericIcon,
-};
+export interface ExtensionMatcher {
+  regexp: RegExp;
+  avatar: any; // can't seem to find a type that doesn't complain here.
+}
 
 /**
  * The following code was derived from an implementation in confluence-frontend,
@@ -44,17 +34,45 @@ const ATTACHMENT_ICON_CLASS_PREFIXES = [
   'icon-file-',
 ];
 
-const ATTACHMENT_FILE_EXTENSION_MATCHERS = {
-  audio: /\.(wma|wmv|ram|mp3)$/i,
-  code: /\.(xml|html|js|css|java|jar|war|ear)$/i,
-  document: /\.(docx|dotx|doc|dot)$/i,
-  image: /\.(gif|jpeg|jpg|png)$/i,
-  pdf: /\.(pdf)$/i,
-  presentation: /\.(pptx|ppsx|potx|pot|ppt|pptm)$/i,
-  spreadsheet: /\.(xlt|xls|xlsm|xlsx|xlst)$/i,
-  video: /\.(mov|mpeg|mpg|mp4|avi)$/i,
-  zip: /\.(zip)$/i,
-};
+const DEFAULT_ATTACHMENT_AVATAR = FileTypes24File24GenericIcon;
+const ATTACHMENT_FILE_EXTENSION_MATCHERS: ExtensionMatcher[] = [
+  {
+    regexp: /\.(gif|jpeg|jpg|png)$/i,
+    avatar: FileTypes24File24ImageIcon,
+  },
+  {
+    regexp: /\.(pdf)$/i,
+    avatar: FileTypes24File24PdfDocumentIcon,
+  },
+  {
+    regexp: /\.(docx|dotx|doc|dot)$/i,
+    avatar: FileTypes24File24WordDocumentIcon,
+  },
+  {
+    regexp: /\.(xml|html|js|css|java|jar|war|ear)$/i,
+    avatar: FileTypes24File24SourceCodeIcon,
+  },
+  {
+    regexp: /\.(xlt|xls|xlsm|xlsx|xlst)$/i,
+    avatar: FileTypes24File24ExcelSpreadsheetIcon,
+  },
+  {
+    regexp: /\.(wma|wmv|ram|mp3)$/i,
+    avatar: FileTypes24File24AudioIcon,
+  },
+  {
+    regexp: /\.(pptx|ppsx|potx|pot|ppt|pptm)$/i,
+    avatar: FileTypes24File24PowerpointPresentationIcon,
+  },
+  {
+    regexp: /\.(mov|mpeg|mpg|mp4|avi)$/i,
+    avatar: FileTypes24File24VideoIcon,
+  },
+  {
+    regexp: /\.(zip)$/i,
+    avatar: FileTypes24File24ArchiveIcon,
+  },
+];
 
 const getIconType = (iconClass: string, fileName: string) => {
   // Check the iconClass to make sure we're looking at an attachment
@@ -64,17 +82,21 @@ const getIconType = (iconClass: string, fileName: string) => {
 
   // if it's an attachment, look at the file extension to work out which type
   if (prefixMatches) {
-    const attachmentTypes = Object.keys(ATTACHMENT_FILE_EXTENSION_MATCHERS);
-    const matchingType = attachmentTypes.find(attachmentType => {
-      const extensionMatcher =
-        ATTACHMENT_FILE_EXTENSION_MATCHERS[attachmentType];
-      return extensionMatcher.exec(fileName);
-    });
+    const matchingType:
+      | ExtensionMatcher
+      | undefined = ATTACHMENT_FILE_EXTENSION_MATCHERS.find(
+      (extensionMatcher: ExtensionMatcher) => {
+        const matches = extensionMatcher.regexp.exec(fileName);
+        return !!matches && matches.length > 0;
+      },
+    );
 
-    return matchingType;
+    if (matchingType) {
+      return matchingType.avatar;
+    }
   }
 
-  return null;
+  return DEFAULT_ATTACHMENT_AVATAR;
 };
 
 export const getAvatarForConfluenceObjectResult = (
@@ -112,11 +134,7 @@ const getDefaultAvatarComponentForResult = (result: ConfluenceObjectResult) => (
 );
 
 export const getMediaTypeAvatarForResult = (result: ConfluenceObjectResult) => {
-  const iconType = getIconType(result.iconClass!, result.name);
-
-  const IconComponent = iconType
-    ? ATTACHMENT_TYPE_MATCH_ICON_MAP[iconType]
-    : ATTACHMENT_TYPE_MATCH_ICON_MAP.default;
+  const IconComponent = getIconType(result.iconClass!, result.name);
 
   return <IconComponent label={result.name} size="medium" />;
 };

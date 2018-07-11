@@ -1,41 +1,27 @@
+import * as React from 'react';
 import { makeConfluenceObjectResult } from './_test-util';
 import { ContentType } from '../src/model/Result';
 import { shallow } from 'enzyme';
-
-function mock(module, mockName) {
-  jest.mock(module, () => {
-    return {
-      default: mockName,
-    };
-  });
-}
-
-mock('@atlaskit/icon/glyph/file-types/24/file-24-image', 'MockImage');
-mock(
-  '@atlaskit/icon/glyph/file-types/24/file-24-excel-spreadsheet',
-  'MockSpreadsheet',
-);
-mock('@atlaskit/icon/glyph/file-types/24/file-24-video', 'MockVideo');
-mock('@atlaskit/icon/glyph/file-types/24/file-24-archive', 'MockArchive');
-mock(
-  '@atlaskit/icon/glyph/file-types/24/file-24-powerpoint-presentation',
-  'MockPresentation',
-);
-mock(
-  '@atlaskit/icon/glyph/file-types/24/file-24-source-code',
-  'MockSourceCode',
-);
-mock('@atlaskit/icon/glyph/file-types/24/file-24-audio', 'MockAudio');
-mock(
-  '@atlaskit/icon/glyph/file-types/24/file-24-word-document',
-  'MockDocument',
-);
-mock('@atlaskit/icon/glyph/file-types/24/file-24-pdf-document', 'MockPdf');
-mock('@atlaskit/icon/glyph/file-types/24/file-24-generic', 'MockGeneric');
+import FileTypes24File24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
+import FileTypes24File24ExcelSpreadsheetIcon from '@atlaskit/icon/glyph/file-types/24/file-24-excel-spreadsheet';
+import FileTypes24File24VideoIcon from '@atlaskit/icon/glyph/file-types/24/file-24-video';
+import FileTypes24File24ArchiveIcon from '@atlaskit/icon/glyph/file-types/24/file-24-archive';
+import FileTypes24File24PowerpointPresentationIcon from '@atlaskit/icon/glyph/file-types/24/file-24-powerpoint-presentation';
+import FileTypes24File24SourceCodeIcon from '@atlaskit/icon/glyph/file-types/24/file-24-source-code';
+import FileTypes24File24AudioIcon from '@atlaskit/icon/glyph/file-types/24/file-24-audio';
+import FileTypes24File24WordDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-word-document';
+import FileTypes24File24PdfDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-pdf-document';
+import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/file-24-generic';
 
 import { getAvatarForConfluenceObjectResult } from '../src/util/confluence-avatar-util';
 
-const TEST_FILE_PREFIXES = ['', 'test123', '©©©!@#$%^&*()'];
+const TEST_FILE_PREFIXES = [
+  '',
+  'test123',
+  '©©©!@#$%^&*()',
+  'test.zip',
+  'test.jpeg',
+];
 
 /**
  * Given a list of file extensions, return an array of test filenames containing
@@ -50,28 +36,17 @@ function generateTestCasesForExtensions(extensionsToTest) {
   return [].concat(...tests);
 }
 
-function renderAvatarForResult(result) {
-  const avatar = getAvatarForConfluenceObjectResult(result);
-  return shallow(avatar);
-}
-
-function assertAvatarCorrectness(wrapper, filename, mock) {
-  expect(wrapper.type()).toBe(mock);
-  expect(wrapper.prop('size')).toBe('medium');
-  expect(wrapper.prop('label')).toBe(filename);
-}
-
 describe('confluence-avatar-util', () => {
-  function executeTest(fileName, iconClass, expectedMock) {
+  function executeTest(fileName, iconClass, ExpectedAvatar) {
     const confluenceResult = makeConfluenceObjectResult({
       contentType: ContentType.ConfluenceAttachment,
       name: fileName,
       iconClass: iconClass,
     });
 
-    const wrapper = renderAvatarForResult(confluenceResult);
-
-    assertAvatarCorrectness(wrapper, fileName, expectedMock);
+    // assert correct icon is returned with correct props
+    const avatar = getAvatarForConfluenceObjectResult(confluenceResult);
+    expect(avatar).toEqual(<ExpectedAvatar label={fileName} size="medium" />);
   }
 
   function describeTestGroup(
@@ -79,14 +54,14 @@ describe('confluence-avatar-util', () => {
     testExtensions,
     cqlIconClass,
     quickNavIconClass,
-    expectedMock,
+    expectedAvatar,
   ) {
     describe(`${groupType} attachments`, () => {
       const testCases = generateTestCasesForExtensions(testExtensions);
       testCases.forEach(testFileName => {
         it(`file name should be correctly mapped to the ${groupType} attachment icon: ${testFileName}`, () => {
-          executeTest(testFileName, cqlIconClass, expectedMock);
-          executeTest(testFileName, quickNavIconClass, expectedMock);
+          executeTest(testFileName, cqlIconClass, expectedAvatar);
+          executeTest(testFileName, quickNavIconClass, expectedAvatar);
         });
       });
     });
@@ -98,63 +73,63 @@ describe('confluence-avatar-util', () => {
       quickNavIconClass: 'content-type-attachment-multimedia',
       cqlIconClass: 'icon-file-multimedia',
       extensions: ['wma', 'wmv', 'ram', 'mp3'],
-      expectedMock: 'MockAudio',
+      expectedAvatar: FileTypes24File24AudioIcon,
     },
     {
       id: 'code',
       quickNavIconClass: 'content-type-attachment-code',
       cqlIconClass: 'icon-file-code',
       extensions: ['xml', 'html', 'js', 'css', 'java', 'jar', 'war', 'ear'],
-      expectedMock: 'MockSourceCode',
+      expectedAvatar: FileTypes24File24SourceCodeIcon,
     },
     {
       id: 'document',
       quickNavIconClass: 'content-type-attachment-document',
       cqlIconClass: 'icon-file-document',
       extensions: ['docx', 'dotx', 'doc', 'dot'],
-      expectedMock: 'MockDocument',
+      expectedAvatar: FileTypes24File24WordDocumentIcon,
     },
     {
       id: 'pdf',
       quickNavIconClass: 'content-type-attachment-pdf',
       cqlIconClass: 'icon-file-pdf',
       extensions: ['pdf'],
-      expectedMock: 'MockPdf',
+      expectedAvatar: FileTypes24File24PdfDocumentIcon,
     },
     {
       id: 'presentation',
       quickNavIconClass: 'content-type-attachment-presentation',
       cqlIconClass: 'icon-file-presentation',
       extensions: ['pptx', 'ppsx', 'potx', 'pot', 'ppt', 'pptm'],
-      expectedMock: 'MockPresentation',
+      expectedAvatar: FileTypes24File24PowerpointPresentationIcon,
     },
     {
       id: 'spreadsheet',
       quickNavIconClass: 'content-type-attachment-excel',
       cqlIconClass: 'icon-file-presentation',
       extensions: ['xlt', 'xls', 'xlsm', 'xlsx', 'xlst'],
-      expectedMock: 'MockSpreadsheet',
+      expectedAvatar: FileTypes24File24ExcelSpreadsheetIcon,
     },
     {
       id: 'video',
       quickNavIconClass: 'content-type-attachment-multimedia',
       cqlIconClass: 'icon-file-video',
       extensions: ['mov', 'mpeg', 'mpg', 'mp4', 'avi'],
-      expectedMock: 'MockVideo',
+      expectedAvatar: FileTypes24File24VideoIcon,
     },
     {
       id: 'zip',
       quickNavIconClass: 'content-type-attachment-zip',
       cqlIconClass: 'icon-file-zip',
       extensions: ['zip'],
-      expectedMock: 'MockArchive',
+      expectedAvatar: FileTypes24File24ArchiveIcon,
     },
     {
       id: 'generic',
       quickNavIconClass: 'dummy-unmatched-icon-class',
       cqlIconClass: 'dummy-unmatched-icon-class',
       extensions: ['unknown', 'test'],
-      expectedMock: 'MockGeneric',
+      expectedAvatar: FileTypes24File24GenericIcon,
     },
   ].forEach(testGroup => {
     describeTestGroup(
@@ -162,7 +137,7 @@ describe('confluence-avatar-util', () => {
       testGroup.extensions,
       testGroup.cqlIconClass,
       testGroup.quickNavIconClass,
-      testGroup.expectedMock,
+      testGroup.expectedAvatar,
     );
   });
 });
