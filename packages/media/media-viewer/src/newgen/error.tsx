@@ -52,7 +52,7 @@ const messages: MessagesType<ErrorName> = {
   idNotFound: (
     <div>
       {errorLoadingFileImage}
-      <p>The selected item was not found on the list</p>
+      <p>The selected item was not found on the list.</p>
     </div>
   ),
 

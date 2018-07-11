@@ -96,7 +96,7 @@ describe('<ItemViewer />', () => {
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
-  it('shows an unknown error on failure', () => {
+  it('shows a generic error on unknown failure', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
       <ItemViewer
@@ -223,7 +223,7 @@ describe('<ItemViewer />', () => {
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
-  it('should show not support links', () => {
+  it('should show an error for a link (not supported)', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
       <ItemViewer

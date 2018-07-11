@@ -8,6 +8,7 @@ import { ErrorMessage } from '../../src/newgen/error';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { ItemViewer } from '../../src/newgen/item-viewer';
 import { Identifier } from '../../src/newgen/domain';
+import Button from '@atlaskit/button';
 
 function createFixture(props: Partial<Props>) {
   const items: Identifier[] = [];
@@ -66,7 +67,12 @@ describe('<List />', () => {
       type: 'file' as MediaItemType,
     };
     const el = createFixture({ items: list, defaultSelectedItem });
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      'The selected item was not found on the list.',
+    );
+    expect(errorMessage.find(Button)).toHaveLength(0);
   });
 
   it('should show controls when navigation occurs', () => {
