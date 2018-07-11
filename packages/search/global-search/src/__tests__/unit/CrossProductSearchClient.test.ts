@@ -202,11 +202,11 @@ describe('CrossProductSearchClient', () => {
     apiWillReturn({
       scopes: [],
     });
-
-    // const result = await searchClient.search('query', 'test_uuid', [
-    //   Scope.ConfluencePageBlog,
-    //   Scope.JiraIssue,
-    // ]);
+    // @ts-ignore
+    const result = await searchClient.search('query', 'test_uuid', [
+      Scope.ConfluencePageBlog,
+      Scope.JiraIssue,
+    ]);
     const call = fetchMock.calls('xpsearch')[0];
     // @ts-ignore
     const body = JSON.parse(call[0]._bodyText);
