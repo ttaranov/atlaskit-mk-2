@@ -17,7 +17,7 @@ import {
 
 import {
   TablePluginState,
-  stateKey,
+  pluginKey,
 } from '../../../../src/plugins/table/pm-plugins/main';
 import ColumnControls from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls';
 import {
@@ -50,7 +50,7 @@ describe('ColumnControls', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      pluginKey,
     });
 
   [1, 2, 3].forEach(column => {

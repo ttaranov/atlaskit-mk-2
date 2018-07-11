@@ -11,7 +11,6 @@ import {
 import { EditorPlugin } from '../../types';
 import { createPlugin, PluginConfig } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
-import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
 import { getToolbarConfig } from './toolbar';
 
@@ -66,7 +65,6 @@ const tablesPlugin: EditorPlugin = {
       // plugin as it is currently swallowing backspace events inside tables
       { rank: 905, plugin: () => keymapPlugin() },
       { rank: 930, plugin: () => tableEditing() },
-      { rank: 940, plugin: () => hoverSelectionPlugin },
     ];
   },
 

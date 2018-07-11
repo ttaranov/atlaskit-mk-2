@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { type Element } from 'react';
 import type { AvatarPropTypesBase } from '../types';
 /**
  * Styling a avatar is complicated and there are a number of properties which
@@ -28,7 +28,7 @@ export default function CustomComponentProxy({
   secondaryText,
   stackIndex,
   ...props
-}: AvatarPropTypesBase) {
+}: AvatarPropTypesBase): ?Element<*> {
   if (ProxiedComponent) return <ProxiedComponent {...props} />;
   return null;
 }

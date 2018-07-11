@@ -21,8 +21,12 @@ test('defaultTimes', () => {
 });
 
 test('DropdownIndicator', () => {
-  expect(mount(<DropdownIndicator />)).toMatchSnapshot();
-  expect(mount(<DropdownIndicator icon="asdf" />)).toMatchSnapshot();
+  expect(mount(<DropdownIndicator selectProps={{}} />)).toMatchSnapshot();
+  expect(
+    mount(
+      <DropdownIndicator selectProps={{ dropdownIndicatorIcon: 'asdf' }} />,
+    ),
+  ).toMatchSnapshot();
 });
 
 // Convert our test values to the local timezone and use those as expected values so that

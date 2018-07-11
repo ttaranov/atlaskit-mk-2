@@ -12,7 +12,7 @@ import { shallow, mount } from 'enzyme';
 import { FileDetails, LinkDetails, Resource } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
-import { UIAnalyticsEventInterface } from '../src/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
 import { CardView, CardViewBase, CardViewOwnProps } from '../src/root/cardView';

@@ -1,6 +1,5 @@
 // @flow
 import React, { Component, cloneElement } from 'react';
-import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -32,8 +31,8 @@ type State = {
   resetFieldBase?: boolean,
   shouldResetFieldBase?: boolean,
   wasFocusReceivedSinceLastBlur?: boolean,
-  startX?: number,
-  startY?: number,
+  startX: number,
+  startY: number,
 };
 
 class InlineEdit extends Component<StatelessProps, State> {
@@ -49,6 +48,9 @@ class InlineEdit extends Component<StatelessProps, State> {
     isLabelHidden: false,
     isWaiting: false,
     shouldConfirmOnEnter: false,
+    editButtonLabel: 'Edit',
+    confirmButtonLabel: 'Confirm',
+    cancelButtonLabel: 'Cancel',
   };
 
   state = {
@@ -56,6 +58,8 @@ class InlineEdit extends Component<StatelessProps, State> {
     resetFieldBase: false,
     shouldResetFieldBase: false,
     wasFocusReceivedSinceLastBlur: false,
+    startX: 0,
+    startY: 0,
   };
 
   componentWillReceiveProps(nextProps: StatelessProps) {
@@ -95,16 +99,17 @@ class InlineEdit extends Component<StatelessProps, State> {
   };
 
   onConfirmClick = (event: any) => {
-    // $FlowFixMe because Flow cant be sure the node will be a HTMLElement
-    ReactDOM.findDOMNode(this.confirmButtonRef).focus(); //eslint-disable-line react/no-find-dom-node
+    if (this.confirmButtonRef) {
+      this.confirmButtonRef.focus();
+    }
     event.preventDefault();
     this.props.onConfirm();
   };
 
   onCancelClick = (event: any) => {
-    // $FlowFixMe because Flow cant be sure the node will be a HTMLElement
-    ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
-
+    if (this.cancelButtonRef) {
+      this.cancelButtonRef.focus();
+    }
     event.preventDefault();
     this.props.onCancel();
   };
@@ -120,8 +125,8 @@ class InlineEdit extends Component<StatelessProps, State> {
     this.setState({ fieldBaseWrapperIsHover: false });
 
   mouseHasMoved = (event: { clientX: number, clientY: number }) => {
-    const startX: number = this.state.startX || 0;
-    const startY: number = this.state.startY || 0;
+    const startX: number = this.state.startX;
+    const startY: number = this.state.startY;
 
     return (
       Math.abs(startX - event.clientX) >= DRAG_THRESHOLD ||
@@ -174,22 +179,23 @@ class InlineEdit extends Component<StatelessProps, State> {
       <ButtonsWrapper>
         <ButtonWrapper>
           <Button
-            iconBefore={<ConfirmIcon label="confirm" size="small" />}
+            ariaLabel={this.props.confirmButtonLabel}
+            type="submit"
+            iconBefore={<ConfirmIcon size="small" />}
             onClick={this.onConfirmClick}
             shouldFitContainer
-            ref={ref => {
-              // $FlowFixMe - `React.Component` [1] is incompatible with `HTMLElement`
+            innerRef={ref => {
               this.confirmButtonRef = ref;
             }}
           />
         </ButtonWrapper>
         <ButtonWrapper>
           <Button
-            iconBefore={<CancelIcon label="cancel" size="small" />}
+            ariaLabel={this.props.cancelButtonLabel}
+            iconBefore={<CancelIcon size="small" />}
             onClick={this.onCancelClick}
             shouldFitContainer
-            ref={ref => {
-              // $FlowFixMe - `React.Component` [1] is incompatible with `HTMLElement`
+            innerRef={ref => {
               this.cancelButtonRef = ref;
             }}
           />
@@ -202,6 +208,7 @@ class InlineEdit extends Component<StatelessProps, State> {
       <ReadViewContentWrapper>
         {this.props.readView}
         <EditButton
+          aria-label={this.props.editButtonLabel}
           type="button"
           fieldBaseWrapperIsHover={this.state.fieldBaseWrapperIsHover}
         />

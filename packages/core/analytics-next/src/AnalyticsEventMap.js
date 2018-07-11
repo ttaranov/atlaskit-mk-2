@@ -691,6 +691,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
   },
 ];
 
+// $FlowFixMe
 module.exports.analyticsPackages = analyticsEventMap
   .filter(pkg => pkg.test !== true)
   .map(config => {
@@ -719,5 +720,6 @@ module.exports.instrumentedComponents = analyticsEventMap
         payload: { action: config.props[propName] },
       });
     });
+    // $FlowFixMe
     return acc.concat(items);
   }, []);

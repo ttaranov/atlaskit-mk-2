@@ -111,11 +111,11 @@ class Tooltip extends Component<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     // AK-4959 - can move logic to withAnalyticsEvents hoc when we have handlers for tooltip visibility
     /* eslint-disable react/prop-types */
-    // This prop doesn't exist in exported component so we don't want it to be documented
-    // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
     if (
       !prevState.isVisible &&
       this.state.isVisible &&
+      // This prop doesn't exist in exported component so we don't want it to be documented
+      // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
       this.props.createAnalyticsEvent
     ) {
       // $FlowFixMe

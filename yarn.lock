@@ -459,6 +459,10 @@
     "@webassemblyjs/wast-parser" "1.5.12"
     long "^3.2.0"
 
+Base64@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/Base64/-/Base64-1.0.1.tgz#def45cc50c961bcc9bf2321d0f52bcbfec1f1bb1"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -8102,6 +8106,13 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+ldclient-js@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/ldclient-js/-/ldclient-js-2.3.1.tgz#97dcb55df7ae036832ccc5a30fb49785add42257"
+  dependencies:
+    Base64 "1.0.1"
+    escape-string-regexp "1.0.5"
+
 leb@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/leb/-/leb-0.3.0.tgz#32bee9fad168328d6aea8522d833f4180eed1da3"
@@ -11459,6 +11470,10 @@ react-emotion@^9.0.2:
     babel-plugin-emotion "^9.1.2"
     create-emotion-styled "^9.1.2"
 
+react-fast-compare@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.1.tgz#92c91ac4814aa8cfcfb04780ad1bfff2bbe3a3c6"
+
 react-focus-lock@^1.11.1:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/react-focus-lock/-/react-focus-lock-1.11.1.tgz#6e8a1bdef14f0f04673a26e27b415e3d671f2762"
@@ -11553,9 +11568,9 @@ react-node-resolver@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-node-resolver/-/react-node-resolver-1.0.1.tgz#1798a729c0e218bf2f0e8ddf79c550d4af61d83a"
 
-react-popper@1.0.0-beta.6:
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-1.0.0-beta.6.tgz#cb27a2ac56adccbaf5f9c4132387289069240834"
+react-popper@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-1.0.0.tgz#b99452144e8fe4acc77fa3d959a8c79e07a65084"
   dependencies:
     babel-runtime "6.x.x"
     create-react-context "^0.2.1"
@@ -11628,9 +11643,9 @@ react-scrolllock@^3.0.1:
   dependencies:
     exenv "^1.2.2"
 
-react-select@^2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-beta.6.tgz#87ac27831f348cb9535dfd825534934adcfb7e97"
+react-select@^2.0.0-beta.7:
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0-beta.7.tgz#db1183d359136d26fe56399c86d37a7f96fea33a"
   dependencies:
     classnames "^2.2.5"
     emotion "^9.1.2"
@@ -11690,9 +11705,9 @@ react-value@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-value/-/react-value-0.2.0.tgz#04d6e3351add34e9365d4597f207e2a13ba85564"
 
-react-video-renderer@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-video-renderer/-/react-video-renderer-1.0.1.tgz#c87a69aaeacd5190ca044fd2fc79376cb1432e25"
+react-video-renderer@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-video-renderer/-/react-video-renderer-2.0.1.tgz#b02068528dfe463be76cf7af6c8ab8f1a7d60747"
 
 react-virtualized@^9.8.0:
   version "9.12.0"
