@@ -143,6 +143,7 @@ export const ErrorMessageWrapper = styled.div`
 
 export const ErrorImage = styled.img`
   margin-bottom: 10px;
+  user-select: none;
 `;
 
 export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
