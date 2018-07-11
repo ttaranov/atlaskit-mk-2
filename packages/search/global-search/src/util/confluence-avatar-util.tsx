@@ -103,35 +103,27 @@ export const getAvatarForConfluenceObjectResult = (
   result: ConfluenceObjectResult,
 ) => {
   if (result.contentType === ContentType.ConfluencePage) {
-    return getPageIconComponentForResult(result);
+    return (
+      <Objects24Object24PageIcon
+        size="medium"
+        primaryColor={colors.B200}
+        label={result.name}
+      />
+    );
   } else if (result.contentType === ContentType.ConfluenceBlogpost) {
-    return getBlogPostIconComponentForResult(result);
+    return (
+      <Objects24Object24BlogIcon
+        label={result.name}
+        size="medium"
+        primaryColor={colors.B200}
+      />
+    );
   } else if (result.contentType === ContentType.ConfluenceAttachment) {
     return getMediaTypeAvatarForResult(result);
   } else {
-    return getDefaultAvatarComponentForResult(result);
+    return <Avatar src={result.avatarUrl} size="medium" appearance="square" />;
   }
 };
-
-const getPageIconComponentForResult = (result: ConfluenceObjectResult) => (
-  <Objects24Object24PageIcon
-    size="medium"
-    primaryColor={colors.B200}
-    label={result.name}
-  />
-);
-
-const getBlogPostIconComponentForResult = (result: ConfluenceObjectResult) => (
-  <Objects24Object24BlogIcon
-    label={result.name}
-    size="medium"
-    primaryColor={colors.B200}
-  />
-);
-
-const getDefaultAvatarComponentForResult = (result: ConfluenceObjectResult) => (
-  <Avatar src={result.avatarUrl} size="medium" appearance="square" />
-);
 
 export const getMediaTypeAvatarForResult = (result: ConfluenceObjectResult) => {
   const IconComponent = getIconType(result.iconClass!, result.name);
