@@ -42,15 +42,15 @@ const Div = styled.div`
 `;
 
 const defaultTheme: ThemeReset = {
-  backgroundColor: colors.background,
-  linkColor: colors.link,
-  linkColorHover: colors.linkHover,
-  linkColorActive: colors.linkActive,
-  linkColorOutline: colors.linkOutline,
-  headingColor: colors.heading,
-  subtleHeadingColor: colors.subtleHeading,
-  subtleTextColor: colors.subtleText,
-  textColor: colors.text,
+  backgroundColor: colors.N0,
+  linkColor: colors.B400,
+  linkColorHover: colors.B300,
+  linkColorActive: colors.B500,
+  linkColorOutline: colors.B100,
+  headingColor: colors.N800,
+  subtleHeadingColor: colors.N200,
+  subtleTextColor: colors.N200,
+  textColor: colors.N900,
 };
 
 export default ({ children, ...props }: { children: Node }) => (
