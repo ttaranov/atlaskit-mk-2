@@ -15,15 +15,14 @@ export function enforceLayoutColumnConstraints(
         node.childCount === 3
       ) {
         const thirdColumn = node.content.child(2);
+
+        const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
         tr.replaceWith(
           tr.mapping.map(
-            pos +
-            node.nodeSize /* Outside right edge of layoutSection*/ -
-            1 /* Inside right edge of layoutSection */ -
-            thirdColumn.nodeSize /* Outside right edge of second column */ -
-              1 /* Inside right edge of second column */,
+            /* Inside right edge of second column */
+            insideRightEdgeOfLayoutSection - thirdColumn.nodeSize - 1,
           ),
-          tr.mapping.map(pos + node.nodeSize - 1),
+          tr.mapping.map(insideRightEdgeOfLayoutSection),
           thirdColumn.content,
         );
       } else if (
@@ -31,17 +30,16 @@ export function enforceLayoutColumnConstraints(
         (node.attrs.layoutType as string).startsWith('three') &&
         node.childCount === 2
       ) {
+        const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
         tr.replaceWith(
-          tr.mapping.map(
-            pos + node.nodeSize - 1,
-          ) /* Inside right edge of layoutSection */,
-          tr.mapping.map(pos + node.nodeSize - 1),
+          tr.mapping.map(insideRightEdgeOfLayoutSection),
+          tr.mapping.map(insideRightEdgeOfLayoutSection),
           state.schema.nodes.layoutColumn.createAndFill() as Node,
         );
       }
     }
   });
-  return tr;
+  return tr.docChanged ? tr : undefined;
 }
 
 export const pluginKey = new PluginKey('layout');
@@ -62,7 +60,7 @@ const layoutPlugin: EditorPlugin = {
             key: pluginKey,
             state: {
               init: () => ({}),
-              apply: () => ({}),
+              apply: (_, state) => state,
             },
             appendTransaction(_, oldState, newState) {
               if (!oldState.doc.eq(newState.doc)) {
