@@ -37,7 +37,7 @@ export type Mode = {
   globalNav: GlobalComponentTheme<void>,
   heading: ProductComponentTheme<void>,
   item: ProductComponentTheme<ItemPresentationProps>,
-  productNav: ProductComponentTheme<void>,
+  contentNav: ProductComponentTheme<void>,
   scrollHint: ProductComponentTheme<void>,
   separator: ProductComponentTheme<void>,
 };

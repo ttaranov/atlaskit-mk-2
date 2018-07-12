@@ -3,14 +3,23 @@
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
 import { UIState, ViewState } from '../';
+import { CONTENT_NAV_WIDTH } from '../common/constants';
 import type { UIStateShape } from '../ui-state/types';
 import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
 
-function defaultGetCache() {
+function defaultGetCache(): UIStateShape {
   const stored = localStorage.getItem(LS_KEY);
-  return stored ? JSON.parse(stored) : {};
+  return stored
+    ? JSON.parse(stored)
+    : {
+        isHinting: false,
+        isPeeking: false,
+        isCollapsed: false,
+        productNavWidth: CONTENT_NAV_WIDTH,
+        isResizing: false,
+      };
 }
 
 function defaultSetCache(state: UIStateShape) {

@@ -4,10 +4,10 @@ import React, { PureComponent, Fragment } from 'react';
 import { css } from 'emotion';
 import raf from 'raf-schd';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '../../../../icon/glyph/chevron-left-circle';
-import ChevronRight from '../../../../icon/glyph/chevron-right-circle';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
+import ChevronRight from '@atlaskit/icon/glyph/chevron-right-circle';
 
-import { GLOBAL_NAV_WIDTH, PRODUCT_NAV_WIDTH } from '../../common/constants';
+import { GLOBAL_NAV_WIDTH, CONTENT_NAV_WIDTH } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
 
@@ -227,13 +227,13 @@ export default class ResizeControl extends PureComponent<Props, State> {
 
     // check if the intention was just a click, and toggle
     if (!isDragging && !this.invalidDragAttempted) {
-      publishWidth = Math.max(PRODUCT_NAV_WIDTH, width);
+      publishWidth = Math.max(CONTENT_NAV_WIDTH, width);
       this.toggleCollapse();
     }
 
     // prevent the user from creating an unusable width
-    if (publishWidth < PRODUCT_NAV_WIDTH) {
-      publishWidth = PRODUCT_NAV_WIDTH;
+    if (publishWidth < CONTENT_NAV_WIDTH) {
+      publishWidth = CONTENT_NAV_WIDTH;
 
       if (didDragOpen && delta > expandThreshold) {
         shouldCollapse = false;

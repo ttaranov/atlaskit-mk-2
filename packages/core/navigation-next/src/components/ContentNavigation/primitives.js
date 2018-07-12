@@ -30,8 +30,8 @@ const animationFade = state => {
 
 /**
  * Component tree structure
- *  - RootNav
- *  - ContainerNav
+ *  - ProductNavigation
+ *  - ContainerNavigation
  *    - ContainerOverlay
  *  - InnerShadow
  */
@@ -50,23 +50,23 @@ const ScrollProvider = (props: any) => (
 );
 
 /**
- * RootNav
+ * ProductNavigation
  */
-const RootNavPrimitive = withTheme({ mode: light, context: 'root' })(
+const ProductNavigationPrimitive = withTheme({ mode: light, context: 'root' })(
   ({ children, theme = { mode: light } }) => (
-    <div css={theme.mode.productNav().root}>
+    <div css={theme.mode.contentNav().root}>
       <ScrollProvider>{children}</ScrollProvider>
     </div>
   ),
 );
 
-type RootNavProps = { children: Node };
+type ProductNavigationProps = { children: Node };
 
-export const RootNav = (props: RootNavProps) => (
+export const ProductNavigation = (props: ProductNavigationProps) => (
   <ThemeProvider
     theme={oldTheme => ({ mode: light, ...oldTheme, context: 'root' })}
   >
-    <RootNavPrimitive {...props} />
+    <ProductNavigationPrimitive {...props} />
   </ThemeProvider>
 );
 
@@ -86,49 +86,50 @@ const slideIn = keyframes`
 // `;
 
 /**
- * ContainerNav
+ * ContainerNavigation
  */
-const ContainerNavPrimitive = withTheme({ mode: light, context: 'container' })(
-  ({ children, isEntering, isExiting, isHinting, isPeeking, theme }) => {
-    let animationName;
-    if (isEntering) animationName = slideIn;
+const ContainerNavigationPrimitive = withTheme({
+  mode: light,
+  context: 'container',
+})(({ children, isEntering, isExiting, isHinting, isPeeking, theme }) => {
+  let animationName;
+  if (isEntering) animationName = slideIn;
 
-    let transform = null;
-    if (isHinting) transform = 'translateX(16px)';
-    if (isPeeking) transform = 'translateX(calc(100% - 32px))';
-    if (isExiting) transform = 'translateX(100%)';
+  let transform = null;
+  if (isHinting) transform = 'translateX(16px)';
+  if (isPeeking) transform = 'translateX(calc(100% - 32px))';
+  if (isExiting) transform = 'translateX(100%)';
 
-    return (
-      <div
-        css={{
-          ...theme.mode.productNav().container,
-          animationName,
-          animationDuration: transitionDuration,
-          animationFillMode: 'forwards',
-          animationTimingFunction: transitionTimingFunction,
-          transitionProperty: 'boxShadow, transform',
-          transitionDuration,
-          transitionTimingFunction,
-          transform,
-        }}
-      >
-        <Shadow isBold={isPeeking} isOverDarkBg />
-        <ScrollProvider>{children}</ScrollProvider>
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      css={{
+        ...theme.mode.contentNav().container,
+        animationName,
+        animationDuration: transitionDuration,
+        animationFillMode: 'forwards',
+        animationTimingFunction: transitionTimingFunction,
+        transitionProperty: 'boxShadow, transform',
+        transitionDuration,
+        transitionTimingFunction,
+        transform,
+      }}
+    >
+      <Shadow isBold={isPeeking} isOverDarkBg />
+      <ScrollProvider>{children}</ScrollProvider>
+    </div>
+  );
+});
 
-type ContainerNavProps = {
+type ContainerNavigationProps = {
   children: Node,
   isPeeking: boolean,
 };
 
-export const ContainerNav = (props: ContainerNavProps) => (
+export const ContainerNavigation = (props: ContainerNavigationProps) => (
   <ThemeProvider
     theme={oldTheme => ({ mode: light, ...oldTheme, context: 'container' })}
   >
-    <ContainerNavPrimitive {...props} />
+    <ContainerNavigationPrimitive {...props} />
   </ThemeProvider>
 );
 

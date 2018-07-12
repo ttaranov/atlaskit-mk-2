@@ -30,8 +30,8 @@ export default ({ background, text }: Args): Mode => {
         color: text,
       };
     },
-    productNav: () => {
-      const { container, root } = light.productNav();
+    contentNav: () => {
+      const { container, root } = light.contentNav();
       return {
         container: {
           ...container,

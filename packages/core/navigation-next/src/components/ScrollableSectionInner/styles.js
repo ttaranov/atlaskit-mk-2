@@ -2,7 +2,7 @@
 
 import { colors, gridSize } from '@atlaskit/theme';
 
-import productNavThemes from '../ProductNav/styles';
+import contentNavThemes from '../ContentNavigation/styles';
 import type { ThemedProductComponentStyles } from '../../theme/types';
 
 const scrollHintHeight = 2;
@@ -64,7 +64,7 @@ const light = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.light().container.backgroundColor,
+        backgroundColor: contentNavThemes.light().container.backgroundColor,
       },
     },
   },
@@ -80,7 +80,7 @@ const light = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.light().root.backgroundColor,
+        backgroundColor: contentNavThemes.light().root.backgroundColor,
       },
     },
   },
@@ -99,7 +99,7 @@ const dark = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.dark().container.backgroundColor,
+        backgroundColor: contentNavThemes.dark().container.backgroundColor,
       },
     },
   },
@@ -115,7 +115,7 @@ const dark = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.dark().root.backgroundColor,
+        backgroundColor: contentNavThemes.dark().root.backgroundColor,
       },
     },
   },
@@ -134,7 +134,7 @@ const settings = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.settings().container.backgroundColor,
+        backgroundColor: contentNavThemes.settings().container.backgroundColor,
       },
     },
   },
@@ -150,7 +150,7 @@ const settings = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.settings().root.backgroundColor,
+        backgroundColor: contentNavThemes.settings().root.backgroundColor,
       },
     },
   },

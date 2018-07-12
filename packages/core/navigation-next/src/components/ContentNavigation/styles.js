@@ -3,13 +3,13 @@
 import { colors } from '@atlaskit/theme';
 
 import type { ThemedProductComponentStyles } from '../../theme/types';
-import { PRODUCT_NAV_WIDTH } from '../../common/constants';
+import { CONTENT_NAV_WIDTH } from '../../common/constants';
 
 const baseStyles = {
   boxSizing: 'border-box',
   height: '100%',
   left: 0,
-  minWidth: PRODUCT_NAV_WIDTH,
+  minWidth: CONTENT_NAV_WIDTH,
   overflowX: 'hidden',
   position: 'absolute',
   top: 0,

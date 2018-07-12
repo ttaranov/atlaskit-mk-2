@@ -40,8 +40,8 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
             {containerView => (
               <LayoutManager
                 globalNavigation={DefaultGlobalNavigation}
-                productRootNavigation={ProductRoot}
-                productContainerNavigation={
+                productNavigation={ProductRoot}
+                containerNavigation={
                   containerView.state.containerViewId ? ProductContainer : null
                 }
               >

@@ -11,14 +11,14 @@ import type {
   UIStateShape,
 } from './types';
 
-import { PRODUCT_NAV_WIDTH } from '../common/constants';
+import { CONTENT_NAV_WIDTH } from '../common/constants';
 
 const defaultState = {
   isHinting: false,
   isPeeking: false,
   isResizing: false,
   isCollapsed: false,
-  productNavWidth: PRODUCT_NAV_WIDTH,
+  productNavWidth: CONTENT_NAV_WIDTH,
 };
 
 type Resize = {

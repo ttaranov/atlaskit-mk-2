@@ -44,7 +44,7 @@ export function applyDisabledProperties(disableInteraction: boolean) {
 
 // Product Nav
 
-export const ProductNavWrapper = ({
+export const ContentNavigationWrapper = ({
   innerRef,
   disableInteraction,
   ...props

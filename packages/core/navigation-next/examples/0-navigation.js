@@ -165,8 +165,10 @@ const RenderSection = ({ section }: *) => (
     ))}
   </div>
 );
-const ProductRoot = () => <RenderSection section={productRootNavSections} />;
-const ProductContainer = () => (
+const ProductNavigation = () => (
+  <RenderSection section={productRootNavSections} />
+);
+const ContainerNavigation = () => (
   <RenderSection section={productContainerNavSections} />
 );
 
@@ -174,8 +176,8 @@ export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={GlobalNavigation}
-      productRootNavigation={ProductRoot}
-      productContainerNavigation={ProductContainer}
+      productNavigation={ProductNavigation}
+      containerNavigation={ContainerNavigation}
     >
       <div style={{ padding: 30 }}>Page content</div>
     </LayoutManager>

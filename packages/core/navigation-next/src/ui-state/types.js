@@ -2,6 +2,8 @@
 
 import type { Node } from 'react';
 
+import UIState from './UIState';
+
 /**
  * UIState
  */
@@ -12,8 +14,12 @@ export type InitialUIStateShape = {
   productNavWidth?: number,
 };
 
-export type UIStateShape = InitialUIStateShape & {
-  isResizing?: boolean,
+export type UIStateShape = {
+  isHinting: boolean,
+  isPeeking: boolean,
+  isCollapsed: boolean,
+  productNavWidth: number,
+  isResizing: boolean,
 };
 
 export type UIStateCacheGetter = () => UIStateShape;
@@ -45,5 +51,5 @@ export interface UIStateInterface {
  * UIStateSubscriber
  */
 export type UIStateSubscriberProps = {
-  children: UIStateInterface => Node,
+  children: UIState => Node,
 };
