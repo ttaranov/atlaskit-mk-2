@@ -20,6 +20,7 @@ import {
   makeConfluenceObjectResult,
   makePersonResult,
 } from './_test-util';
+import { FormattedMessage } from 'react-intl';
 
 enum Group {
   Objects = 'objects',
@@ -86,7 +87,9 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.People, wrapper);
 
-    expect(group.prop('title')).toEqual('Recently worked with');
+    expect(group.prop('title')).toEqual(
+      <FormattedMessage id="global-search.people.recent-people-heading" />,
+    );
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
   });
 
@@ -137,11 +140,15 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     let group = findGroup(Group.AdvancedSearch, wrapper);
     expect(group.childAt(0).prop('resultId')).toEqual('search_confluence');
-    expect(group.childAt(0).prop('text')).toEqual('Advanced search');
+    expect(group.childAt(0).prop('text')).toEqual(
+      <FormattedMessage id="global-search.confluence.advanced-search" />,
+    );
 
     group = findGroup(Group.PeopleSearch, wrapper);
     expect(group.childAt(0).prop('resultId')).toEqual('search_people');
-    expect(group.childAt(0).prop('text')).toEqual('Search in People');
+    expect(group.childAt(0).prop('text')).toEqual(
+      <FormattedMessage id="global-search.people.advanced-search" />,
+    );
   });
 
   it('should render links to people and advanced search when a query is entered and there are results', () => {
@@ -154,7 +161,10 @@ describe('ConfluenceSearchResults', () => {
     let group = findGroup(Group.AdvancedSearch, wrapper);
     expect(group.childAt(0).prop('resultId')).toEqual('search_confluence');
     expect(group.childAt(0).prop('text')).toEqual(
-      'Advanced search for "foo bar"',
+      <FormattedMessage
+        id="global-search.confluence.advanced-search-for"
+        values={{ query: 'foo bar' }}
+      />,
     );
 
     group = findGroup(Group.PeopleSearch, wrapper);
@@ -194,7 +204,9 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Objects, wrapper);
 
-    expect(group.prop('title')).toEqual('Pages, blogs and attachments');
+    expect(group.prop('title')).toEqual(
+      <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
+    );
     expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
   });
 
@@ -211,7 +223,9 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.Spaces, wrapper);
 
-    expect(group.prop('title')).toEqual('Spaces');
+    expect(group.prop('title')).toEqual(
+      <FormattedMessage id="global-search.confluence.spaces-heading" />,
+    );
     expect(group.find(ContainerResultWithAnalytics).prop('name')).toEqual(
       'name',
     );
@@ -226,7 +240,9 @@ describe('ConfluenceSearchResults', () => {
     const wrapper = render(props);
     const group = findGroup(Group.People, wrapper);
 
-    expect(group.prop('title')).toEqual('People');
+    expect(group.prop('title')).toEqual(
+      <FormattedMessage id="global-search.people.people-heading" />,
+    );
     expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
   });
 

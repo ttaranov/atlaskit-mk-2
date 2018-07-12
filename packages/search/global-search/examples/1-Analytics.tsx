@@ -4,6 +4,7 @@ import { AtlaskitThemeProvider } from '@atlaskit/theme';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 import styled from 'styled-components';
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 import { AnalyticsListener } from '@atlaskit/analytics';
 
@@ -78,7 +79,12 @@ export default class extends React.Component<any, any> {
                   onEvent={e => this.onAnalyticsNextEvent(e)}
                 >
                   <AtlaskitThemeProvider mode="light">
-                    <GlobalQuickSearch cloudId="cloudId" context="confluence" />
+                    <LocaleIntlProvider>
+                      <GlobalQuickSearch
+                        cloudId="cloudId"
+                        context="confluence"
+                      />
+                    </LocaleIntlProvider>
                   </AtlaskitThemeProvider>
                 </AnalyticsNextListener>
               </AnalyticsListener>

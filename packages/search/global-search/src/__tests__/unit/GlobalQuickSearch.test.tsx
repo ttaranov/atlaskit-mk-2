@@ -1,10 +1,13 @@
-import { shallow } from 'enzyme';
 import * as React from 'react';
 import GlobalQuickSearchWithAnalytics, {
   GlobalQuickSearch,
   Props,
 } from '../../components/GlobalQuickSearch';
 import { QuickSearch } from '@atlaskit/quick-search';
+import {
+  shallowWithIntl,
+  mountWithIntl,
+} from './helpers/_intl-enzyme-test-helper';
 
 const noop = () => {};
 const DEFAULT_PROPS = {
@@ -22,13 +25,14 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
-  return shallow<Props>(<GlobalQuickSearch {...props} />);
+  // @ts-ignore - doesn't recognise injected intl prop
+  return shallowWithIntl(<GlobalQuickSearch {...props} />);
 }
 
 describe('GlobalQuickSearch', () => {
   describe('GlobalQuickSearchWithAnalytics', () => {
     it('should render GlobalQuickSearch with a createAnalyticsEvent prop', () => {
-      const wrapper = shallow(
+      const wrapper = mountWithIntl(
         <GlobalQuickSearchWithAnalytics {...DEFAULT_PROPS} />,
       ).dive();
       expect(

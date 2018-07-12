@@ -2,10 +2,12 @@ import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { Outcome, ZoomLevel } from '../domain';
-import { Img, ErrorMessage, ImageWrapper } from '../styled';
+import { Img, ImageWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
 import { closeOnDirectClick } from '../utils/closeOnDirectClick';
+import { ErrorMessage, createError, MediaViewerError } from '../error';
+import { renderDownloadButton } from '../domain/download';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -18,7 +20,7 @@ export type ImageViewerProps = {
 };
 
 export type ImageViewerState = {
-  objectUrl: Outcome<ObjectUrl, Error>;
+  objectUrl: Outcome<ObjectUrl, MediaViewerError>;
   zoomLevel: ZoomLevel;
 };
 
@@ -84,8 +86,18 @@ export class ImageViewer extends React.Component<
       case 'SUCCESSFUL':
         return this.renderImage(objectUrl.data);
       case 'FAILED':
-        return <ErrorMessage>{objectUrl.err.message}</ErrorMessage>;
+        return (
+          <ErrorMessage error={objectUrl.err}>
+            <p>Try downloading the file to view it.</p>
+            {this.renderDownloadButton()}
+          </ErrorMessage>
+        );
     }
+  }
+
+  private renderDownloadButton() {
+    const { item, context, collectionName } = this.props;
+    return renderDownloadButton(item, context, collectionName);
   }
 
   private cancelImageFetch?: () => void;
@@ -125,7 +137,7 @@ export class ImageViewer extends React.Component<
           this.setState({
             objectUrl: {
               status: 'FAILED',
-              err,
+              err: createError('previewFailed', fileItem, err),
             },
           });
         }
