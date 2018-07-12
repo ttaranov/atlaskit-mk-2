@@ -1,17 +1,19 @@
 import * as React from 'react';
 import GlobalQuickSearch from '../../components/GlobalQuickSearchWrapper';
-import { mount } from 'enzyme';
 import { HomeQuickSearchContainer } from '../../components/home/HomeQuickSearchContainer';
 import { ConfluenceQuickSearchContainer } from '../../components/confluence/ConfluenceQuickSearchContainer';
+import { mountWithIntl } from './helpers/_intl-enzyme-test-helper';
 
 it('should render the home container with context home', () => {
-  const wrapper = mount(<GlobalQuickSearch cloudId="123" context="home" />);
+  const wrapper = mountWithIntl(
+    <GlobalQuickSearch cloudId="123" context="home" />,
+  );
 
   expect(wrapper.find(HomeQuickSearchContainer).exists()).toBe(true);
 });
 
 it('should render the confluence container with context confluence', () => {
-  const wrapper = mount(
+  const wrapper = mountWithIntl(
     <GlobalQuickSearch cloudId="123" context="confluence" />,
   );
 
@@ -28,7 +30,7 @@ const MyLinkComponent = class extends React.Component<{
 };
 
 it('should pass through the linkComponent prop', () => {
-  const wrapper = mount(
+  const wrapper = mountWithIntl(
     <GlobalQuickSearch
       cloudId="123"
       context="confluence"
