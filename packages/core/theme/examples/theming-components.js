@@ -3,26 +3,23 @@
 import React, {
   Component,
   Fragment,
-  type Node,
   type ComponentType,
+  type Node,
 } from 'react';
-import { Theme } from '../src';
+import { Theme, type ThemeDefinition } from '../src';
 
-type MyThemeProps = {
-  children: Node,
-  values: {
-    // eslint-disable-next-line react/no-unused-prop-types
-    button: ({ hover: boolean }) => {
-      backgroundColor: string,
-      textColor: string,
-    },
+type MyTheme = ThemeDefinition<{
+  // eslint-disable-next-line react/no-unused-prop-types
+  button: ({ hover: boolean }) => {
+    backgroundColor: string,
+    textColor: string,
   },
-};
+}>;
 
-const DefaultButtonTheme = (props: MyThemeProps) => (
+const DefaultButtonTheme = (props: MyTheme) => (
   <Theme
     values={{
-      button: (state, { button }: MyTheme) => ({
+      button: (state, { button }) => ({
         backgroundColor: state.hover ? '#ddd' : '#eee',
         textColor: '#333',
         ...button(state),
@@ -34,10 +31,10 @@ const DefaultButtonTheme = (props: MyThemeProps) => (
   </Theme>
 );
 
-const AppTheme = (props: MyThemeProps) => (
+const AppTheme = (props: MyTheme) => (
   <Theme
     values={{
-      button: (state, { button }: MyTheme) => ({
+      button: (state, { button }) => ({
         ...button(state),
         backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
         textColor: state.hover ? '#fff' : 'papayawhip',
@@ -49,11 +46,11 @@ const AppTheme = (props: MyThemeProps) => (
   </Theme>
 );
 
-const CustomButtonTheme = (props: MyThemeProps) => (
+const CustomButtonTheme = (props: MyTheme) => (
   <DefaultButtonTheme>
     <Theme
       values={{
-        button: (state, { button }: MyTheme) => ({
+        button: (state, { button }) => ({
           ...button(state),
           backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
         }),
@@ -67,7 +64,7 @@ const CustomButtonTheme = (props: MyThemeProps) => (
 
 type Props = {
   children: Node,
-  theme: ComponentType<*>,
+  theme: ComponentType<MyTheme>,
 };
 
 type State = {
@@ -87,7 +84,7 @@ class Button extends Component<Props, State> {
     const { props, state } = this;
     return (
       <props.theme>
-        {({ button }: MyTheme) => {
+        {({ button }) => {
           const { backgroundColor, textColor: color } = button(state);
           return (
             <button

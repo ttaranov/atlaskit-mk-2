@@ -53,7 +53,11 @@ const defaultTheme: ThemeReset = {
   textColor: colors.N900,
 };
 
-export default ({ children, ...props }: { children: Node }) => (
+type Props = {
+  children?: Node,
+};
+
+export default ({ children, ...props }: Props) => (
   <Consumer>
     {theme => (
       <Div {...defaultTheme} {...theme} {...props}>

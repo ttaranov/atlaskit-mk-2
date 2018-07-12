@@ -1,30 +1,26 @@
 // @flow
 
-import React, { type Node } from 'react';
-import { Theme } from '../src';
+import React from 'react';
+import { Theme, type ThemeDefinition } from '../src';
 
-type ColorThemeProps = {
-  children: Node,
-  values: {
-    backgroundColor: string,
-    color: string,
-  },
+type ColorThemeValues = {
+  backgroundColor?: string,
+  color?: string,
 };
 
-type CustomThemeProps = {
-  children: Node,
-  values: {
-    padding: number,
-  },
-};
+type CustomThemeValues = ColorThemeValues & { padding?: number };
 
-const ColorTheme = ({ children, values }: ColorThemeProps) => (
-  <Theme values={{ backgroundColor: '#333', color: '#eee', ...values }}>
-    {children}
-  </Theme>
+const ColorTheme = ({
+  children,
+  values,
+}: ThemeDefinition<ColorThemeValues>) => (
+  <Theme values={{ color: '#eee', ...values }}>{children}</Theme>
 );
 
-const CustomTheme = ({ children, values }: CustomThemeProps) => (
+const CustomTheme = ({
+  children,
+  values,
+}: ThemeDefinition<CustomThemeValues>) => (
   <ColorTheme values={{ padding: 10, ...values }}>{children}</ColorTheme>
 );
 

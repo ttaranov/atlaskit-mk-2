@@ -1,18 +1,16 @@
 // @flow
 
-import React, { type Node } from 'react';
-import { Theme } from '../src';
+import React from 'react';
+import { Theme, type ThemeDefinition } from '../src';
 
-type CustomThemeProps = {
-  children: Node,
-  values: {
-    backgroundColor: string,
-    color: string,
-    padding: number,
-  },
-};
-
-const CustomTheme = ({ children, values }: CustomThemeProps) => (
+const CustomTheme = ({
+  children,
+  values,
+}: ThemeDefinition<{
+  backgroundColor?: string,
+  color?: string,
+  padding?: number,
+}>) => (
   <Theme
     values={{ backgroundColor: '#333', color: '#eee', padding: 10, ...values }}
   >
@@ -21,7 +19,7 @@ const CustomTheme = ({ children, values }: CustomThemeProps) => (
 );
 
 export default () => (
-  <CustomTheme backgroundColor="rebeccapurple">
+  <CustomTheme values={{ backgroundColor: 'rebeccapurple' }}>
     {theme => <div style={theme}>I am themed.</div>}
   </CustomTheme>
 );
