@@ -18,7 +18,7 @@ import {
   ItemPrimitive,
   Section as SectionComponent,
   Separator,
-  Heading as HeadingComponent,
+  GroupHeading as GroupHeadingComponent,
   Switcher,
   ViewStateSubscriber,
 } from '../';
@@ -28,7 +28,7 @@ import type {
   ItemProps,
   ItemsRendererProps,
   SectionProps,
-  HeadingProps,
+  GroupHeadingProps,
 } from './types';
 
 const iconMap = {
@@ -110,8 +110,8 @@ const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
 );
 
 // Title
-const Heading = ({ text, ...props }: HeadingProps) => (
-  <HeadingComponent {...props}>{text}</HeadingComponent>
+const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
+  <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
 const Debug = props => (
@@ -135,7 +135,7 @@ const Debug = props => (
 const Group = ({ customComponents, hasSeparator, items, title }: GroupProps) =>
   items.length ? (
     <Fragment>
-      {title ? <Heading text={title} /> : null}
+      {title ? <GroupHeading text={title} /> : null}
       <ItemsRenderer items={items} customComponents={customComponents} />
       {hasSeparator && <Separator />}
     </Fragment>
@@ -166,7 +166,7 @@ const itemComponents = {
   Item,
   BackItem,
   Separator,
-  Heading,
+  GroupHeading,
   Switcher,
 };
 

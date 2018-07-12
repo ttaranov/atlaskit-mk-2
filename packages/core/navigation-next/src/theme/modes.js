@@ -4,7 +4,7 @@ import globalItem from '../components/GlobalItem/styles';
 import globalNav from '../components/GlobalNav/styles';
 import productNav from '../components/ProductNav/styles';
 import item from '../components/Item/styles';
-import heading from '../components/Heading/styles';
+import heading from '../components/GroupHeading/styles';
 import separator from '../components/Separator/styles';
 import scrollHint from '../components/ScrollableSectionInner/styles';
 

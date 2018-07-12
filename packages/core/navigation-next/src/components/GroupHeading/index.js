@@ -3,9 +3,9 @@
 import React from 'react';
 
 import { light, withTheme } from '../../theme';
-import type { HeadingProps } from './types';
+import type { GroupHeadingProps } from './types';
 
-const Heading = ({ after: After, children, theme }: HeadingProps) => {
+const GroupHeading = ({ after: After, children, theme }: GroupHeadingProps) => {
   const { mode, context } = theme;
   const styles = mode.heading()[context];
 
@@ -21,4 +21,4 @@ const Heading = ({ after: After, children, theme }: HeadingProps) => {
   );
 };
 
-export default withTheme({ mode: light, context: 'container' })(Heading);
+export default withTheme({ mode: light, context: 'container' })(GroupHeading);

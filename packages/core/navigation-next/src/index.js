@@ -8,7 +8,7 @@ export {
 } from './components/GlobalItem/primitives';
 export { default as GlobalNav } from './components/GlobalNav';
 export { default as Item } from './components/Item';
-export { default as Heading } from './components/Heading';
+export { default as GroupHeading } from './components/GroupHeading';
 export { default as ItemPrimitive } from './components/Item/primitives';
 export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as LayoutManager } from './components/LayoutManager';

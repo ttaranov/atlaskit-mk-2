@@ -17,7 +17,7 @@ import { JiraWordmark } from '@atlaskit/logo';
 import {
   ContainerHeader,
   GlobalNav,
-  Heading,
+  GroupHeading,
   Item,
   ItemAvatar,
   LayoutManager,
@@ -129,7 +129,7 @@ const productContainerNavSections = [
     key: 'menu',
     isRootLevel: true,
     items: [
-      { type: Heading, key: 'title', children: 'Section title' },
+      { type: GroupHeading, key: 'title', children: 'Group heading' },
       { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
       { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
       { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },

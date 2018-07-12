@@ -22,7 +22,7 @@ export type GoToItemProps = {
   goTo: string,
 };
 
-export type HeadingProps = {
+export type GroupHeadingProps = {
   text: string,
 };
 
