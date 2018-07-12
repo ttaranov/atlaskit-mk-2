@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/quick-search",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A quick-search component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -38,6 +38,7 @@
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "prop-types": "^15.5.10",
     "sinon": "^2.2.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "react": "^16.3.0"
   }
 }

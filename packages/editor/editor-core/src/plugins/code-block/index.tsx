@@ -8,6 +8,7 @@ import ideUX from './pm-plugins/ide-ux';
 import LanguagePicker from './ui/LanguagePicker';
 import WithPluginState from '../../ui/WithPluginState';
 import { setNodeAttributes, deleteNodeAtPos } from './commands';
+import { focusStateKey } from '../base/pm-plugins/focus-handler';
 
 export interface CodeBlockOptions {
   enableKeybindingsForIDE?: boolean;
@@ -45,8 +46,14 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       };
       return (
         <WithPluginState
-          plugins={{ codeBlockState: stateKey }}
-          render={({ codeBlockState }: { codeBlockState: CodeBlockState }) => {
+          plugins={{ codeBlockState: stateKey, isEditorFocused: focusStateKey }}
+          render={({
+            codeBlockState,
+            isEditorFocused,
+          }: {
+            codeBlockState: CodeBlockState;
+            isEditorFocused: boolean;
+          }) => {
             if (codeBlockState.activeCodeBlock) {
               const { pos, node } = codeBlockState.activeCodeBlock;
               const codeBlockDOM = domAtPos(pos) as HTMLElement;
@@ -62,7 +69,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
                   setLanguage={setLanguage}
                   deleteCodeBlock={deleteCodeBlock}
                   activeLanguage={node.attrs.language}
-                  isEditorFocused={codeBlockState.isEditorFocused}
+                  isEditorFocused={isEditorFocused}
                   popupsMountPoint={popupsMountPoint}
                   popupsBoundariesElement={popupsBoundariesElement}
                 />

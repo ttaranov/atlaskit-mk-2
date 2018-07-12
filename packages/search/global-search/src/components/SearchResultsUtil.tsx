@@ -163,7 +163,7 @@ export function renderResults(results: Result[]) {
 export interface AdvancedSearchItemProps {
   query: string;
   icon: JSX.Element;
-  text: string;
+  text: string | JSX.Element;
   showKeyboardLozenge?: boolean;
 }
 

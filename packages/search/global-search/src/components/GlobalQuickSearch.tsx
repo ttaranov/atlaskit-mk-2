@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
 import { LinkComponent } from './GlobalQuickSearchWrapper';
@@ -40,7 +41,9 @@ export interface Props {
 /**
  * Presentational component that renders the search input and search results.
  */
-export class GlobalQuickSearch extends React.Component<Props> {
+export class GlobalQuickSearch extends React.Component<
+  Props & InjectedIntlProps
+> {
   queryVersion: number = 0;
 
   componentDidMount() {
@@ -135,6 +138,9 @@ export class GlobalQuickSearch extends React.Component<Props> {
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           value={query}
+          placeholder={this.props.intl.formatMessage({
+            id: 'global-search.search-placeholder',
+          })}
           linkComponent={linkComponent}
           onSearchSubmit={onSearchSubmit}
         >
@@ -145,4 +151,4 @@ export class GlobalQuickSearch extends React.Component<Props> {
   }
 }
 
-export default withAnalyticsEvents()(GlobalQuickSearch);
+export default injectIntl<Props>(withAnalyticsEvents()(GlobalQuickSearch));

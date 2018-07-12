@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-next-types",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "TypeScript Type Definitions for @atlaskit/analytics-next",
   "config": {
     "access": "public"

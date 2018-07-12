@@ -1,5 +1,13 @@
 # @atlaskit/util-data-test
 
+## 9.1.18
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-service-support@2.0.12
+  - @atlaskit/task-decision@7.1.13
+  - @atlaskit/mention@13.1.9
+  - @atlaskit/emoji@37.0.1
+
 ## 9.1.17
 - [patch] FS-2011 change EmojiRepository to use CategoryId [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
 

@@ -1,5 +1,9 @@
 # @atlaskit/quick-search
 
+## 3.0.2
+- [patch] Move tests under src and club unit, integration, visual regression [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)
+- [none] Updated dependencies [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)
+
 ## 3.0.1
 
 
