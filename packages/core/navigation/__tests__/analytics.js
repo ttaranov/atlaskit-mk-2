@@ -49,15 +49,6 @@ describe('Navigation', () => {
           packageVersion,
         },
       },
-      onToggleEnd: {
-        action: 'toggled',
-        actionSubject: 'navigationSidebar',
-        attributes: {
-          componentName: 'navigation',
-          packageName,
-          packageVersion,
-        },
-      },
     });
   });
 });

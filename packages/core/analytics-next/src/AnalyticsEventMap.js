@@ -127,8 +127,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     component: 'CommentAction',
     props: {
       onClick: 'clicked',
-      onFocus: 'focused',
-      onMouseOver: 'hovered',
     },
     attributes: {
       componentName: 'commentAction',
@@ -142,8 +140,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     component: 'CommentAuthor',
     props: {
       onClick: 'clicked',
-      onFocus: 'focused',
-      onMouseOver: 'hovered',
     },
     attributes: {
       componentName: 'commentAuthor',
@@ -157,8 +153,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     component: 'CommentEdited',
     props: {
       onClick: 'clicked',
-      onFocus: 'focused',
-      onMouseOver: 'hovered',
     },
     attributes: {
       componentName: 'commentEdited',
@@ -172,8 +166,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     component: 'CommentTime',
     props: {
       onClick: 'clicked',
-      onFocus: 'focused',
-      onMouseOver: 'hovered',
     },
     attributes: {
       componentName: 'commentTime',
@@ -183,7 +175,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
   {
     path: 'calendar/src/components/Calendar.js',
     testPath: 'calendar/src/components/__tests__/analytics.js',
-    actionSubject: 'calendar',
+    actionSubject: 'calendarDate',
     component: 'Calendar',
     props: {
       onChange: 'changed',
@@ -217,7 +209,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     actionSubject: 'datePicker',
     component: 'DatePicker',
     props: {
-      onChange: 'changed',
+      onChange: 'selectedDate',
     },
     attributes: {
       componentName: 'datePicker',
@@ -231,7 +223,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     actionSubject: 'timePicker',
     component: 'TimePicker',
     props: {
-      onChange: 'changed',
+      onChange: 'selectedTime',
     },
     attributes: {
       componentName: 'timePicker',
@@ -288,7 +280,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     actionSubject: 'droplistItem',
     component: 'DroplistItem',
     props: {
-      onActivate: 'activated',
+      onActivate: 'selected',
     },
     attributes: {
       componentName: 'droplistItem',
@@ -311,85 +303,46 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'dynamic-table/__tests__/Stateless.js',
   },
   {
-    path: 'field-base/src/components/FieldBaseStateless.js',
-    testPath: 'field-base/src/__tests__/analytics.js',
-    actionSubject: 'field',
-    component: 'FieldBaseStateless',
-    derivatives: ['FieldBase'],
-    props: {
-      onBlur: 'blurred',
-      onDialogBlur: 'blurred',
-      onDialogClick: 'clicked',
-      onDialogFocus: 'focused',
-      onFocus: 'focused',
-    },
-    attributes: {
-      componentName: 'fieldBase',
-    },
-    componentTestPath: 'field-base/src/__tests__/index.js',
-  },
-  {
     path: 'field-radio-group/src/RadioGroupStateless.js',
     testPath: 'field-radio-group/src/__tests__/analytics-radio-group.js',
-    actionSubject: 'field',
+    actionSubject: 'radioItem',
     component: 'AkFieldRadioGroup',
     derivatives: ['RadioGroup'],
     props: {
-      onRadioChange: 'changed',
+      onRadioChange: 'selected',
     },
     attributes: {
-      componentName: 'radio',
-      type: 'radio',
+      componentName: 'fieldRadioGroup',
     },
     componentTestPath: 'field-radio-group/src/__tests__/RadioGroup.js',
   },
   {
-    path: 'field-range/src/FieldRange.js',
-    testPath: 'field-range/src/__tests__/analytics.js',
-    actionSubject: 'field',
-    component: 'FieldRange',
-    props: {
-      onChange: 'changed',
-    },
-    attributes: {
-      componentName: 'range',
-      type: 'range',
-    },
-    componentTestPath: 'field-range/src/__tests__/fieldRangeSpec.js',
-    needsMountTest: true,
-  },
-  {
     path: 'field-text/src/FieldTextStateless.js',
     testPath: 'field-text/src/__tests__/analytics.js',
-    actionSubject: 'fieldText',
+    actionSubject: 'textField',
     component: 'FieldTextStateless',
     derivatives: ['FieldText'],
     props: {
       onBlur: 'blurred',
-      onChange: 'changed',
       onFocus: 'focused',
-      onKeyDown: 'keyDowned',
-      onKeyPress: 'keyPressed',
-      onKeyUp: 'keyUpped',
     },
     attributes: {
       componentName: 'fieldText',
-      type: 'text',
     },
     componentTestPath: 'field-text/src/__tests__/index.js',
   },
   {
     path: 'field-text-area/src/FieldTextAreaStateless.js',
     testPath: 'field-text-area/src/__tests__/analytics.js',
-    actionSubject: 'field',
+    actionSubject: 'textArea',
     component: 'FieldTextAreaStateless',
     derivatives: ['FieldTextArea'],
     props: {
-      onChange: 'changed',
+      onBlur: 'blurred',
+      onFocus: 'focused',
     },
     attributes: {
-      componentName: 'textarea',
-      type: 'textArea',
+      componentName: 'fieldTextArea',
     },
     componentTestPath: 'field-text-area/src/__tests__/index.js',
   },
@@ -402,8 +355,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       onBlur: 'blurred',
       onDismissed: 'dismissed',
       onFocus: 'focused',
-      onMouseOut: 'unhovered',
-      onMouseOver: 'hovered',
     },
     attributes: {
       componentName: 'flag',
@@ -412,28 +363,11 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     manualComponentTestOverride: true,
   },
   {
-    path: 'icon/src/components/Icon.js',
-    testPath: 'icon/__tests__/analytics.js',
-    actionSubject: 'icon',
-    component: 'Icon',
-    props: {
-      onClick: 'clicked',
-    },
-    attributes: {
-      componentName: 'icon',
-    },
-    componentTestPath: 'icon/__tests__/IconSpec.js',
-    manualComponentTestOverride: true,
-  },
-  {
     path: 'inline-dialog/src/InlineDialog/index.js',
     testPath: 'inline-dialog/__tests__/analytics.js',
     actionSubject: 'inlineDialog',
     component: 'InlineDialog',
     props: {
-      onContentBlur: 'blurred',
-      onContentClick: 'clicked',
-      onContentFocus: 'focused',
       onClose: 'closed',
     },
     attributes: {
@@ -458,37 +392,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'inline-edit/src/__tests__/InlineEdit.js',
   },
   {
-    path: 'input/src/SingleLineTextInput.js',
-    testPath: 'input/src/__tests__/analytics.js',
-    actionSubject: 'input',
-    component: 'SingleLineTextInput',
-    props: {
-      onConfirm: 'confirmed',
-      onKeyDown: 'keyDowned',
-    },
-    componentTestPath: 'input/src/__tests__/index.js',
-    attributes: {
-      componentName: 'input',
-    },
-    refIssue: true,
-  },
-  {
-    path: 'item/src/components/Item.js',
-    testPath: 'item/__tests__/analytics.js',
-    actionSubject: 'item',
-    component: 'Item',
-    props: {
-      onClick: 'clicked',
-      onKeyDown: 'keyDowned',
-      onMouseEnter: 'hovered',
-      onMouseLeave: 'unhovered',
-    },
-    attributes: {
-      componentName: 'item',
-    },
-    componentTestPath: 'item/__tests__/Item.js',
-  },
-  {
     path: 'modal-dialog/src/components/Modal.js',
     testPath: 'modal-dialog/__tests__/analytics.js',
     actionSubject: 'modalDialog',
@@ -502,22 +405,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'modal-dialog/__tests__/modalDialog.js',
   },
   {
-    path: 'multi-select/src/components/Stateless.js',
-    testPath: 'multi-select/__tests__/analytics.js',
-    actionSubject: 'multiSelect',
-    component: 'MultiSelectStateless',
-    props: {
-      onFilterChange: 'filtered',
-      onNewItemCreated: 'created',
-      onSelected: 'selected',
-      onOpenChange: 'opened',
-    },
-    attributes: {
-      componentName: 'multiSelect',
-    },
-    componentTestPath: 'multi-select/__tests__/statelessBehaviour.js',
-  },
-  {
     path: 'navigation/src/components/js/Navigation.js',
     testPath: 'navigation/__tests__/analytics.js',
     actionSubject: 'navigation',
@@ -525,8 +412,6 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     props: {
       onResize: 'resized',
       onResizeStart: 'resizeStarted',
-      onToggleStart: 'toggled',
-      onToggleEnd: 'toggled',
     },
     attributes: {
       componentName: 'navigation',
@@ -534,12 +419,25 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'navigation/__tests__/Navigation.js',
   },
   {
+    path: 'navigation/src/components/js/NavigationItem.js',
+    testPath: 'navigation/__tests__/NavigationItem-analytics.js',
+    actionSubject: 'navigationItem',
+    component: 'NavigationItem',
+    props: {
+      onClick: 'clicked',
+    },
+    attributes: {
+      componentName: 'navigationItem',
+    },
+    componentTestPath: 'navigation/__tests__/NavigationItem.js',
+  },
+  {
     path: 'onboarding/src/components/Spotlight.js',
     testPath: 'onboarding/__tests__/analytics.js',
     actionSubject: 'spotlight',
     component: 'Spotlight',
     props: {
-      targetOnClick: 'click',
+      targetOnClick: 'clicked',
     },
     attributes: {
       componentName: 'spotlight',
@@ -566,7 +464,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     actionSubject: 'progressIndicator',
     component: 'ProgressDots',
     props: {
-      onSelect: 'selected',
+      onSelect: 'clicked',
     },
     attributes: {
       componentName: 'progressIndicator',
@@ -576,7 +474,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
   {
     path: 'select/src/Select.js',
     testPath: 'select/__tests__/analytics.js',
-    actionSubject: 'item',
+    actionSubject: 'listItem',
     component: 'Select',
     props: {
       onChange: 'selected',
@@ -589,42 +487,13 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     refIssue: true,
   },
   {
-    path: 'single-select/src/components/StatelessSelect.js',
-    testPath: 'single-select/__tests__/analytics.js',
-    actionSubject: 'singleSelect',
-    component: 'StatelessSelect',
-    derivatives: ['SingleSelect'],
-    props: {
-      onFilterChange: 'filtered',
-      onSelected: 'selected',
-      onOpenChange: 'opened',
-    },
-    attributes: {
-      componentName: 'singleSelect',
-    },
-    componentTestPath: 'single-select/__tests__/stateless.js',
-  },
-  {
-    path: 'spinner/src/Spinner/index.js',
-    testPath: 'spinner/src/Spinner/__tests__/analytics.js',
-    actionSubject: 'spinner',
-    component: 'Spinner',
-    props: {
-      onComplete: 'completed',
-    },
-    attributes: {
-      componentName: 'spinner',
-    },
-    componentTestPath: 'spinner/src/Spinner/__tests__/index.js',
-  },
-  {
     path: 'table-tree/src/components/Row.js',
     testPath: 'table-tree/src/__tests__/analytics.js',
     actionSubject: 'tableTree',
     component: 'Row',
     props: {
-      onExpand: 'toggled',
-      onCollapse: 'toggled',
+      onExpand: 'expanded',
+      onCollapse: 'collapsed',
     },
     attributes: {
       componentName: 'row',
@@ -638,7 +507,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     actionSubject: 'tab',
     component: 'Tabs',
     props: {
-      onSelect: 'changed',
+      onSelect: 'clicked',
     },
     attributes: {
       componentName: 'tabs',
@@ -681,8 +550,7 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     actionSubject: 'tooltip',
     component: 'Tooltip',
     props: {
-      onMouseOver: 'hovered',
-      onMouseOut: 'unhovered',
+      onMouseOver: 'displayed',
     },
     attributes: {
       componentName: 'tooltip',
