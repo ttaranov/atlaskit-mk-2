@@ -75,15 +75,15 @@ const slideIn = keyframes`
   to { transform: translateX(0); }
 `;
 
-const slideOut = keyframes`
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
-`;
+// const slideOut = keyframes`
+//   from { transform: translateX(0); }
+//   to { transform: translateX(100%); }
+// `;
 
-const slideOutFromPeek = keyframes`
-  from { transform: translateX(calc(100% - 32px)); }
-  to { transform: translateX(100%); }
-`;
+// const slideOutFromPeek = keyframes`
+//   from { transform: translateX(calc(100% - 32px)); }
+//   to { transform: translateX(100%); }
+// `;
 
 /**
  * ContainerNav
@@ -92,12 +92,11 @@ const ContainerNavPrimitive = withTheme({ mode: light, context: 'container' })(
   ({ children, isEntering, isExiting, isHinting, isPeeking, theme }) => {
     let animationName;
     if (isEntering) animationName = slideIn;
-    if (isExiting) animationName = slideOut;
-    if (isPeeking && isExiting) animationName = slideOutFromPeek;
 
     let transform = null;
     if (isHinting) transform = 'translateX(16px)';
     if (isPeeking) transform = 'translateX(calc(100% - 32px))';
+    if (isExiting) transform = 'translateX(100%)';
 
     return (
       <div

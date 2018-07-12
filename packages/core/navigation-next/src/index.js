@@ -12,6 +12,7 @@ export { default as Heading } from './components/Heading';
 export { default as ItemPrimitive } from './components/Item/primitives';
 export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as LayoutManager } from './components/LayoutManager';
+export { default as PeekToggleItem } from './components/PeekToggleItem';
 export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';
@@ -21,7 +22,7 @@ export { default as Switcher } from './components/Switcher';
 
 /** State */
 export { NavigationProvider } from './provider';
-export { UIState, UIStateSubscriber } from './ui-state';
+export { UIState, UIStateSubscriber, withNavigationUI } from './ui-state';
 export {
   ViewState,
   ViewStateSubscriber,

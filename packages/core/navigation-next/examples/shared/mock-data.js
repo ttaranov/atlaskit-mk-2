@@ -7,7 +7,7 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
-import { UIStateSubscriber } from '../../src';
+import { PeekToggleItem, UIStateSubscriber } from '../../src';
 
 export const globalNavPrimaryItems = [
   {
@@ -37,6 +37,7 @@ export const globalNavPrimaryItems = [
     icon: JiraIcon,
     label: 'Jira',
   },
+  { key: 'peek', component: PeekToggleItem },
   { key: 'search', icon: SearchIcon },
   { key: 'create', icon: AddIcon },
 ];

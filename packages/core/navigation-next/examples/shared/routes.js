@@ -4,7 +4,11 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import { UIStateSubscriber, withNavigationViews } from '../../src';
+import {
+  UIStateSubscriber,
+  withNavigationViews,
+  withNavigationUI,
+} from '../../src';
 
 import { containerViews, rootViews } from './mock-data';
 import ShortcutsPlugin from './shortcuts-plugin';
@@ -25,11 +29,17 @@ const SetHomeView = withNavigationViews(SetHomeViewBase);
 
 class SetActiveViewBase extends Component<{
   id: string,
+  navigationUI: *,
   navigationViews: *,
   shouldClearContainer: boolean,
 }> {
   componentDidMount() {
-    const { id, navigationViews, shouldClearContainer } = this.props;
+    const {
+      id,
+      navigationUI,
+      navigationViews,
+      shouldClearContainer,
+    } = this.props;
     const { containerViewId, productViewId } = navigationViews.state;
     if (id !== containerViewId && id !== productViewId) {
       navigationViews.setView(id);
@@ -37,12 +47,13 @@ class SetActiveViewBase extends Component<{
     if (shouldClearContainer) {
       navigationViews.clearContainerView();
     }
+    navigationUI.unPeek();
   }
   render() {
     return null;
   }
 }
-const SetActiveView = withNavigationViews(SetActiveViewBase);
+const SetActiveView = withNavigationUI(withNavigationViews(SetActiveViewBase));
 
 class ViewRegistrarBase extends Component<{ navigationViews: *, view: * }> {
   componentDidMount() {
