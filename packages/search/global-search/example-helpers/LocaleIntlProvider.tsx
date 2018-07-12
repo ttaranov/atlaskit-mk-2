@@ -12,8 +12,8 @@ const LocaleIntlProvider = ({ locale = 'en', children }) => (
   </IntlProvider>
 );
 
-const LocaleAndMessagesIntlProvider = ({ children }) => (
-  <LocaleIntlProvider>
+const LocaleAndMessagesIntlProvider = ({ locale = 'en', children }) => (
+  <LocaleIntlProvider key={locale} locale={locale}>
     <MessagesIntlProvider>{children}</MessagesIntlProvider>
   </LocaleIntlProvider>
 );

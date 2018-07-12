@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 4.5.2
+- [patch] Update loading indicator to be inline with ADG3  [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
+- [none] Updated dependencies [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
+
 ## 4.5.1
 - [patch] fixed actionMeta not being passed to onChange of PopupSelect [83833be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83833be)
 - [none] Updated dependencies [83833be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83833be)

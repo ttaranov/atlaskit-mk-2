@@ -1,5 +1,19 @@
 # @atlaskit/editor-test-helpers
 
+## 4.2.3
+
+
+
+- [none] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [none] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+
 ## 4.2.2
 - [patch] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
   - @atlaskit/editor-core@74.0.0

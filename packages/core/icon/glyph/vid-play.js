@@ -17,6 +17,6 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VidPlayIcon = function VidPlayIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.791 4.597C8.354 4.267 8 4.445 8 5v13.998c0 .553.366.745.827.422l9.346-6.545c.457-.32.473-.846.036-1.176L8.79 4.597z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.595 19.522C7.162 20.364 6 19.702 6 18.04V5.963C6 4.3 7.158 3.635 8.595 4.479l11.083 6.51c.951.559.958 1.46 0 2.023l-11.083 6.51z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
 exports.default = VidPlayIcon;
