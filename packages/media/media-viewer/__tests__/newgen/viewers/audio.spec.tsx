@@ -8,11 +8,9 @@ import { FileItem, Auth } from '@atlaskit/media-core';
 import { awaitError } from '@atlaskit/media-test-helpers';
 import { AudioViewer } from '../../../src/newgen/viewers/audio';
 import Spinner from '@atlaskit/spinner';
-import {
-  ErrorMessage,
-  DefaultCoverWrapper,
-  AudioCover,
-} from '../../../src/newgen/styled';
+import { DefaultCoverWrapper, AudioCover } from '../../../src/newgen/styled';
+import { ErrorMessage } from '../../../src/newgen/error';
+import Button from '@atlaskit/button';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -66,12 +64,22 @@ describe('Audio viewer', () => {
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
-  it('shows error if there is an error', async () => {
+  it('shows error message with a download button if there is an error displaying the preview', async () => {
     const authPromise = Promise.reject(new Error('test error'));
     const { el } = createFixture(authPromise);
     await awaitError(authPromise, 'test error');
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      "We couldn't generate a preview for this file",
+    );
+
+    // download button
+    expect(errorMessage.text()).toContain(
+      'Try downloading the file to view it',
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
   describe('cover', () => {

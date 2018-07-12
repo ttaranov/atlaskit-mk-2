@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 4.7.0
+- [minor] Add support for i18n. No translations available yet. [bf66767](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf66767)
+
 ## 4.6.3
 - [patch] Move tests under src and club unit, integration, visual regression [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)
 - [none] Updated dependencies [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)

@@ -40,6 +40,8 @@ export interface SharedProps {
   onCancelComment?: (conversationId: string, commentId: string) => void;
   onCancel?: () => void;
   onHighlightComment?: (commentId: string) => void;
+  onEditorOpen?: () => void;
+  onEditorClose?: () => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -260,6 +262,8 @@ export default class Comment extends React.Component<Props, State> {
       renderEditor,
       disableScrollTo,
       allowFeedbackAndHelpButtons,
+      onEditorClose,
+      onEditorOpen,
     } = this.props;
     const { isEditing } = this.state;
 
@@ -275,6 +279,8 @@ export default class Comment extends React.Component<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
+          onClose={onEditorClose}
+          onOpen={onEditorOpen}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -309,6 +315,8 @@ export default class Comment extends React.Component<Props, State> {
       renderEditor,
       containerId,
       disableScrollTo,
+      onEditorClose,
+      onEditorOpen,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -324,6 +332,8 @@ export default class Comment extends React.Component<Props, State> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        onEditorClose={onEditorClose}
+        onEditorOpen={onEditorOpen}
         onRevertComment={onRevertComment}
         onHighlightComment={onHighlightComment}
         onRetry={onRetry}
@@ -350,6 +360,8 @@ export default class Comment extends React.Component<Props, State> {
       renderEditor,
       disableScrollTo,
       allowFeedbackAndHelpButtons,
+      onEditorClose,
+      onEditorOpen,
     } = this.props;
 
     return (
@@ -358,6 +370,8 @@ export default class Comment extends React.Component<Props, State> {
         onCancel={this.onCancelReply}
         onSave={this.onSaveReply}
         dataProviders={dataProviders}
+        onOpen={onEditorOpen}
+        onClose={onEditorClose}
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}

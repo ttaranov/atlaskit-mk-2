@@ -1,5 +1,5 @@
-import { shallow } from 'enzyme';
 import * as React from 'react';
+import { shallow, mount } from 'enzyme';
 import GlobalQuickSearchWithAnalytics, {
   GlobalQuickSearch,
   Props,
@@ -22,13 +22,13 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
-  return shallow<Props>(<GlobalQuickSearch {...props} />);
+  return shallow(<GlobalQuickSearch {...props} />);
 }
 
 describe('GlobalQuickSearch', () => {
   describe('GlobalQuickSearchWithAnalytics', () => {
     it('should render GlobalQuickSearch with a createAnalyticsEvent prop', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <GlobalQuickSearchWithAnalytics {...DEFAULT_PROPS} />,
       );
       expect(

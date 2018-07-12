@@ -4,6 +4,7 @@ import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { withFeedbackButton } from '../src/index';
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 const Outer = styled.div`
   height: 100vh;
@@ -18,11 +19,13 @@ export default class extends React.Component {
       <Outer>
         <BasicNavigation
           searchDrawerContent={
-            <GlobalQuickSearchWithFeedback
-              cloudId="cloudId"
-              context="confluence"
-              feedbackCollectorId="a0d6de4d"
-            />
+            <LocaleIntlProvider>
+              <GlobalQuickSearchWithFeedback
+                cloudId="cloudId"
+                context="confluence"
+                feedbackCollectorId="a0d6de4d"
+              />
+            </LocaleIntlProvider>
           }
         />
       </Outer>

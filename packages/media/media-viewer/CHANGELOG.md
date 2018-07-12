@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 15.1.15
+- [patch] Add error views to MediaViewer NG [66ac5d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66ac5d4)
+
 ## 15.1.14
 - [patch] Fancy video player improvements 3.0 [bb2b947](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb2b947)
 

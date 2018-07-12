@@ -1,5 +1,28 @@
 # @atlaskit/conversation
 
+## 8.3.1
+
+
+
+- [patch] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [none] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+
+## 8.3.0
+- [minor] Adds beforeunload warning dialog when a Conversation has an open editor [aabd327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aabd327)
+
 ## 8.2.13
 
 

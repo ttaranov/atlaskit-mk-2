@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
-    <title>icons/vid-play</title>
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>play-updated</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/vid-play" fill="#42526E">
-            <path d="M8.79109287,4.59668533 C8.35418434,4.26714512 8,4.44463086 8,5.00087166 L8,18.9991283 C8,19.5518945 8.36598969,19.7437007 8.82678783,19.4210079 L18.1732122,12.8757912 C18.6298345,12.5560227 18.6464688,12.0301467 18.2089071,11.7001138 L8.79109287,4.59668533 Z" id="Page-1"></path>
-        </g>
+    <g id="play-updated" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M8.59498513,19.5222317 C7.16181442,20.3640705 6,19.7014713 6,18.0387151 L6,5.9625234 C6,4.30136105 7.15750265,3.63463536 8.59498513,4.47900686 L19.6782471,10.9892709 C20.6291426,11.5478232 20.6363076,12.4492067 19.6782471,13.0119676 L8.59498513,19.5222317 Z" id="Triangle-Copy" fill="#42526E"></path>
     </g>
 </svg>

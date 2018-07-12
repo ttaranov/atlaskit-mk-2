@@ -5,13 +5,8 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { createContext } from '../_stubs';
 import { Subject } from 'rxjs';
-import {
-  MediaItem,
-  MediaItemType,
-  MediaType,
-  FileItem,
-} from '@atlaskit/media-core';
-import Header, { createDownloadUrl } from '../../src/newgen/header';
+import { MediaItem, MediaItemType, MediaType } from '@atlaskit/media-core';
+import Header from '../../src/newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { LeftHeader } from '../../src/newgen/styled';
@@ -312,29 +307,6 @@ describe('<Header />', () => {
       el.update();
       el.find(DownloadIcon).simulate('click');
       expect(context.config.authProvider).toHaveBeenCalled();
-    });
-
-    it('should generate a valid download link', async () => {
-      const context = createContext();
-      const item: FileItem = {
-        type: 'file',
-        details: {
-          id: '123',
-        },
-      };
-      const url = await createDownloadUrl(item, context);
-      const urlWithCollection = await createDownloadUrl(
-        item,
-        context,
-        'some-collection',
-      );
-
-      expect(url).toEqual(
-        'some-service-host/file/123/binary?client=some-client-id&token=some-token&dl=true',
-      );
-      expect(urlWithCollection).toEqual(
-        'some-service-host/file/123/binary?client=some-client-id&collection=some-collection&token=some-token&dl=true',
-      );
     });
   });
 });

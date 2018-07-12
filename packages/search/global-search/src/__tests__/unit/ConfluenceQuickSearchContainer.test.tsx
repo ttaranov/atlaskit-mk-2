@@ -1,6 +1,5 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-// import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   ConfluenceQuickSearchContainer,
   Props,
@@ -33,6 +32,7 @@ import {
   makeConfluenceClient,
 } from './mocks/_mockConfluenceClient';
 import * as SearchResults from '../../components/confluence/ConfluenceSearchResults';
+import { shallowWithIntl } from './helpers/_intl-enzyme-test-helper';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
@@ -52,18 +52,6 @@ async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   wrapper.update();
 }
 
-// enum Group {
-//   Objects = 'objects',
-//   Spaces = 'spaces',
-//   People = 'people',
-// }
-
-// function findGroup(group: Group, wrapper: ShallowWrapper) {
-//   return wrapper
-//     .find(ResultItemGroup)
-//     .findWhere(n => n.key() === group.valueOf());
-// }
-
 function render(partialProps?: Partial<Props>) {
   const props: Props = {
     confluenceClient: noResultsConfluenceClient,
@@ -72,7 +60,8 @@ function render(partialProps?: Partial<Props>) {
     ...partialProps,
   };
 
-  return shallow<Props>(<ConfluenceQuickSearchContainer {...props} />);
+  // @ts-ignore - doesn't recognise injected intl prop
+  return shallowWithIntl(<ConfluenceQuickSearchContainer {...props} />);
 }
 
 describe('ConfluenceQuickSearchContainer', () => {
@@ -235,7 +224,7 @@ describe('ConfluenceQuickSearchContainer', () => {
       .spyOn(searchResultsUtil, 'redirectToConfluenceAdvancedSearch')
       .mockImplementation(() => {});
 
-    onSearchSubmit();
+    onSearchSubmit!();
     expect(mockRedirect).toHaveBeenCalledWith('query');
   });
 
