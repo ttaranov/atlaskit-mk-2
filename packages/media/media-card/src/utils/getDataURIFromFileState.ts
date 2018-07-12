@@ -1,7 +1,6 @@
 import VideoSnapshot from 'video-snapshot';
 import { FileState } from '@atlaskit/media-core';
 
-// TODO: add tests
 export const getDataURIFromFileState = async (
   state: FileState,
 ): Promise<string | undefined> => {
