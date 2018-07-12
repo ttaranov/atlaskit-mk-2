@@ -3,7 +3,7 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
-import { borderRadius, colors, layers } from '@atlaskit/theme';
+import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
@@ -52,6 +52,8 @@ type Props = {
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing?: 'compact' | 'default',
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** Indicates current value is invalid & changes border color */
@@ -91,15 +93,37 @@ const arrowKeys = {
 };
 
 const StyledMenu = styled.div`
-  background-color: ${colors.N0};
-  border: 1px solid ${colors.N40};
+  background-color: ${colors.N20};
+  border: 0 0 1px solid ${colors.N60A};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
-  margin: 7px 0;
+  ${elevation.e200} margin: 8px 0 0 0;
   overflow: hidden;
   text-align: center;
   z-index: ${layers.dialog};
 `;
+
+const Menu = ({ innerProps: menuInnerProps, selectProps }: Object) => (
+  <StyledMenu>
+    <Calendar
+      {...isoToObj(selectProps.calendarValue)}
+      {...isoToObj(selectProps.calendarView)}
+      disabled={selectProps.calendarDisabled}
+      onChange={selectProps.onCalendarChange}
+      onSelect={selectProps.onCalendarSelect}
+      // $FlowFixMe - Calendar is not a react component
+      ref={selectProps.calendarRef}
+      selected={[selectProps.selectedCalendarValue]}
+      innerProps={menuInnerProps}
+    />
+  </StyledMenu>
+);
+
+const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
+  <FixedLayer
+    containerRef={selectProps.calendarContainerRef}
+    content={<Menu {...props} selectProps={selectProps} />}
+  />
+);
 
 export default class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
@@ -119,6 +143,7 @@ export default class DatePicker extends Component<Props, State> {
     onFocus: () => {},
     innerProps: {},
     selectProps: {},
+    spacing: 'default',
     id: '',
     defaultIsOpen: false,
     defaultValue: '',
@@ -142,6 +167,13 @@ export default class DatePicker extends Component<Props, State> {
       ...this.state,
       ...pick(this.props, ['value', 'isOpen']),
     };
+  };
+
+  /**
+   * Checks if a date is one of the disabled
+   */
+  isDateDisabled = (date: String) => {
+    return this.props.disabled.indexOf(date) > -1;
   };
 
   onCalendarChange = ({ iso }: { iso: string }) => {
@@ -202,7 +234,12 @@ export default class DatePicker extends Component<Props, State> {
     } else if (key === 'Backspace') {
       this.setState({ selectedValue: '' });
       this.triggerChange('');
-    } else if (key === 'Enter' || key === 'Tab') {
+
+      // Dates may be disabled
+    } else if (
+      !this.isDateDisabled(view) &&
+      (key === 'Enter' || key === 'Tab')
+    ) {
       this.triggerChange(view);
       this.setState({ isOpen: false, selectedValue: view });
     }
@@ -246,6 +283,7 @@ export default class DatePicker extends Component<Props, State> {
       isDisabled,
       name,
       selectProps,
+      spacing,
       dateFormat,
       placeholder,
     } = this.props;
@@ -255,32 +293,23 @@ export default class DatePicker extends Component<Props, State> {
       this.props.appearance === 'subtle' || this.props.hideIcon
         ? null
         : this.props.icon;
-    const Menu = ({ innerProps: menuInnerProps }) => (
-      <StyledMenu>
-        <Calendar
-          {...isoToObj(value)}
-          {...isoToObj(view)}
-          disabled={disabled}
-          onChange={this.onCalendarChange}
-          onSelect={this.onCalendarSelect}
-          // $FlowFixMe
-          ref={this.refCalendar}
-          selected={[this.state.selectedValue]}
-          innerProps={menuInnerProps}
-        />
-      </StyledMenu>
-    );
 
-    const FixedLayeredMenu = props => (
-      <FixedLayer
-        containerRef={this.containerRef}
-        content={<Menu {...props} />}
-      />
-    );
+    const calendarProps = {
+      calendarContainerRef: this.containerRef,
+      calendarRef: this.refCalendar,
+      calendarDisabled: disabled,
+      calendarValue: value,
+      calendarView: view,
+      dropdownIndicatorIcon: icon,
+      onCalendarChange: this.onCalendarChange,
+      onCalendarSelect: this.onCalendarSelect,
+      selectedCalendarValue: this.state.selectedValue,
+    };
+
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
       this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
-
+    const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
     return (
       <div
         {...innerProps}
@@ -303,13 +332,14 @@ export default class DatePicker extends Component<Props, State> {
           onFocus={this.onSelectFocus}
           components={{
             ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            DropdownIndicator,
             Menu: FixedLayeredMenu,
           }}
           styles={mergeStyles(selectStyles, {
             control: base => ({
               ...base,
               ...controlStyles,
+              ...disabledStyle,
             }),
           })}
           placeholder={placeholder}
@@ -320,6 +350,8 @@ export default class DatePicker extends Component<Props, State> {
             }
           }
           {...selectProps}
+          {...calendarProps}
+          spacing={spacing}
           validationState={validationState}
         />
       </div>

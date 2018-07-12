@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dynamic-table",
-  "version": "9.2.3",
+  "version": "9.2.6",
   "description": "Table component with pagination and sorting functionality",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -35,10 +35,10 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^11.2.0",
-    "@atlaskit/button": "^8.2.3",
+    "@atlaskit/avatar": "^13.0.0",
+    "@atlaskit/button": "^8.2.5",
     "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/dropdown-menu": "^5.1.0",
+    "@atlaskit/dropdown-menu": "^5.2.3",
     "@atlaskit/toggle": "^4.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }

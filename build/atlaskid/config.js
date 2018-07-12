@@ -31,6 +31,7 @@ const atlaskitTeam = [
 const editorTeam = [
   'imsysoev',
   'jyotiatl',
+  'atlasmarco',
   'ed919',
   'scottsidwell',
   'rifat_nabi',
@@ -72,7 +73,12 @@ const mediaTeam = [
   'iloire-atlassian',
   'ivandemchenko',
 ];
-const searchAndSmartsTeam = ['drichard', 'pteen', 'ashwini_rattihalli'];
+const searchAndSmartsTeam = [
+  'drichard',
+  'pteen',
+  'ashwini_rattihalli',
+  'fo2ad',
+];
 const kitkatTeam = [
   'kamil-kaczmarczyk',
   'mszerszynski',

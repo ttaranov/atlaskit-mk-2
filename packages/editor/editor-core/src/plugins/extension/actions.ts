@@ -1,7 +1,7 @@
 import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
-import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
+import { Slice, Fragment, Schema } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
   removeSelectedNode,
@@ -12,6 +12,7 @@ import {
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
+import { hasOpenEnd } from '../../utils';
 
 export const updateExtensionLayout = layout => (
   state: EditorState,
@@ -44,10 +45,12 @@ export const updateExtensionLayout = layout => (
 
   const pluginState = pluginKey.getState(state);
 
-  tr.setNodeMarkup(extPosition, undefined, {
-    ...extNode!.attrs,
-    layout,
-  }).setMeta(pluginKey, { ...pluginState, layout });
+  tr
+    .setNodeMarkup(extPosition, undefined, {
+      ...extNode!.attrs,
+      layout,
+    })
+    .setMeta(pluginKey, { ...pluginState, layout });
 
   dispatch(tr);
 
@@ -94,20 +97,18 @@ export const removeExtension = (
   return true;
 };
 
-export const removeBodiedExtensionWrapper = (
-  state: EditorState,
+export const transformSliceToRemoveOpenBodiedExtension = (
   slice: Slice,
+  schema: Schema,
 ) => {
-  const {
-    schema: {
-      nodes: { bodiedExtension },
-    },
-  } = state;
-  const {
-    content: { firstChild: wrapper },
-  } = slice;
+  const { bodiedExtension } = schema.nodes;
+  const wrapper = slice.content.firstChild;
 
-  if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
+  if (
+    slice.content.childCount !== 1 ||
+    wrapper!.type !== bodiedExtension ||
+    !hasOpenEnd(slice)
+  ) {
     return slice;
   }
 
@@ -116,29 +117,4 @@ export const removeBodiedExtensionWrapper = (
     Math.max(0, slice.openStart - 1),
     Math.max(0, slice.openEnd - 1),
   );
-};
-
-export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
-  slice: Slice,
-  state: EditorState,
-) => {
-  const {
-    selection,
-    schema: {
-      nodes: { bodiedExtension },
-    },
-  } = state;
-
-  if (hasParentNodeOfType(bodiedExtension)(selection)) {
-    const nodes: PmNode[] = [];
-    slice.content.forEach(child => {
-      if (child.type !== bodiedExtension) {
-        nodes.push(child);
-      }
-    });
-
-    return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
-  }
-
-  return slice;
 };

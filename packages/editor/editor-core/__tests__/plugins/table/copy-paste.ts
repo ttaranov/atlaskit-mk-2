@@ -1,6 +1,6 @@
 import {
   TablePluginState,
-  stateKey as tablePluginKey,
+  pluginKey as tablePluginKey,
 } from '../../../src/plugins/table/pm-plugins/main';
 import {
   doc,

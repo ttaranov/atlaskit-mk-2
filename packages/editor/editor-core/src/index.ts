@@ -14,6 +14,11 @@ export { default as ToolbarFeedback } from './ui/ToolbarFeedback';
 export { default as WithPluginState } from './ui/WithPluginState';
 
 export {
+  QuickInsertProvider,
+  QuickInsertItem,
+} from './plugins/quick-insert/types';
+
+export {
   ErrorReporter,
   ErrorReportingHandler,
   JSONDocNode,
@@ -35,10 +40,15 @@ export {
 } from './plugins/text-formatting/pm-plugins/main';
 export { blockPluginStateKey, BlockTypeState } from './plugins';
 export {
-  ListsState,
-  stateKey as listsStateKey,
+  ListsPluginState as ListsState,
+  pluginKey as listsStateKey,
 } from './plugins/lists/pm-plugins/main';
-export { indentList, outdentList } from './commands';
+export {
+  indentList,
+  outdentList,
+  toggleOrderedList,
+  toggleBulletList,
+} from './plugins/lists/commands';
 // Used in editor-test-helpers
 
 export { keyCodes } from './keymaps';

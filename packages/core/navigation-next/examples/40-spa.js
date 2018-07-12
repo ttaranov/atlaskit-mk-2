@@ -51,7 +51,10 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
               >
                 <div style={{ padding: 30 }}>
                   <Switch>
-                    <Route path="/projects/endeavour" component={BacklogView} />
+                    <Route
+                      path="/projects/:projectId"
+                      component={BacklogView}
+                    />
                     <Route path="/projects" component={ProjectsView} />
                     <Route path="/issues/search" component={SearchIssuesView} />
                     <Route path="/" component={DashboardsView} />

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
 
@@ -18,11 +17,7 @@ import {
 import UiToolbarButton from '../../../../ui/ToolbarButton';
 import UiSeparator from '../../../../ui/Separator';
 import UiFloatingToolbar from '../../../../ui/FloatingToolbar';
-import {
-  availablePanelType,
-  PanelState,
-  PanelType,
-} from '../../pm-plugins/main';
+import { availablePanelType, PanelState } from '../../pm-plugins/main';
 
 const icons = {
   info: InfoIcon,
@@ -43,12 +38,8 @@ const titles = {
 export interface Props {
   editorView: EditorView;
   pluginState: PanelState;
-}
-
-export interface State {
-  toolbarVisible: boolean | undefined;
-  target?: HTMLElement;
-  activePanelType?: string | undefined;
+  onRemove: () => void;
+  onPanelChange: (type) => void;
 }
 
 const ToolbarButton = styled(UiToolbarButton)`
@@ -86,71 +77,37 @@ const ToolbarButtonDestructive = styled(ToolbarButton)`
   }
 `;
 
-export default class PanelEdit extends PureComponent<Props, State> {
-  state: State = { toolbarVisible: false };
+function noOp() {}
 
-  constructor(props: Props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-  }
-
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-  }
-
-  render() {
-    const { target, activePanelType, toolbarVisible } = this.state;
-    if (toolbarVisible) {
-      return (
-        <FloatingToolbar target={target} offset={[0, 12]} fitHeight={32}>
-          {availablePanelType.map((panelType, index) => {
-            const Icon = icons[panelType.panelType];
-            return (
-              <ToolbarButton
-                spacing="compact"
-                key={index}
-                selected={activePanelType === panelType.panelType}
-                onClick={this.handleSelectPanelType.bind(this, panelType)}
-                title={titles[panelType.panelType]}
-                iconBefore={
-                  <Icon label={`Change panel type to ${panelType.panelType}`} />
-                }
-              />
-            );
-          })}
-          <Separator />
-          <ToolbarButtonDestructive
+export default props => {
+  const {
+    element: target,
+    activePanelType,
+    toolbarVisible,
+  } = props.pluginState;
+  const { onRemove = noOp, onPanelChange = noOp } = props;
+  return toolbarVisible ? (
+    <FloatingToolbar target={target} offset={[0, 12]} fitHeight={32}>
+      {availablePanelType.map((panelType, index) => {
+        const Icon = icons[panelType];
+        return (
+          <ToolbarButton
             spacing="compact"
-            onClick={this.handleRemovePanel}
-            title="Remove panel"
-            iconBefore={<RemoveIcon label="Remove panel" />}
+            key={index}
+            selected={activePanelType === panelType}
+            onClick={onPanelChange.bind(null, { panelType })}
+            title={titles[panelType]}
+            iconBefore={<Icon label={`Change panel type to ${panelType}`} />}
           />
-        </FloatingToolbar>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  private handlePluginStateChange = (pluginState: PanelState) => {
-    const { element: target, activePanelType, toolbarVisible } = pluginState;
-    this.setState({
-      toolbarVisible,
-      target,
-      activePanelType,
-    });
-  };
-
-  private handleSelectPanelType = (panelType: PanelType, event) => {
-    const { editorView } = this.props;
-    this.props.pluginState.changePanelType(editorView, panelType);
-  };
-
-  private handleRemovePanel = () => {
-    const { editorView } = this.props;
-    this.props.pluginState.removePanel(editorView);
-  };
-}
+        );
+      })}
+      <Separator />
+      <ToolbarButtonDestructive
+        spacing="compact"
+        onClick={onRemove}
+        title="Remove panel"
+        iconBefore={<RemoveIcon label="Remove panel" />}
+      />
+    </FloatingToolbar>
+  ) : null;
+};

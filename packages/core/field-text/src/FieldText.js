@@ -37,8 +37,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
         {...this.props}
         value={this.state.value}
         onChange={this.handleOnChange}
-        ref={fieldRef => {
-          // $FlowFixMe - `FieldTextStateless` is incompatible with `HTMLInputElement`
+        innerRef={(fieldRef: ?HTMLInputElement) => {
           this.input = fieldRef;
         }}
       />

@@ -46,7 +46,7 @@ function elementCropDirection(el: HTMLElement) {
     direction = 'top';
   }
   if (
-    // $FlowFixMe
+    // $FlowFixMe - cannot call null on a number for document.documentElement
     rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)
   ) {
     direction = 'bottom';

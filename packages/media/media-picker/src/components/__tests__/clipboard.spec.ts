@@ -52,4 +52,11 @@ describe('Clipboard', () => {
     document.dispatchEvent(new MockClipboardEvent('paste', [new MockFile()]));
     expect(addFiles).toHaveBeenCalledTimes(0);
   });
+
+  it('should not trigger errors when event.clipboardData is undefined', () => {
+    const event = new MockClipboardEvent('paste', [new MockFile()]);
+    delete event.clipboardData;
+    document.dispatchEvent(event);
+    expect(addFiles).toHaveBeenCalledTimes(0);
+  });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "5.3.1",
+  "version": "5.4.4",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -22,11 +22,11 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/calendar": "^6.1.2",
+    "@atlaskit/calendar": "^6.2.2",
     "@atlaskit/field-base": "^10.1.2",
-    "@atlaskit/icon": "^12.1.2",
+    "@atlaskit/icon": "^12.6.1",
     "@atlaskit/layer": "^4.0.3",
-    "@atlaskit/select": "^4.2.3",
+    "@atlaskit/select": "^4.5.0",
     "@atlaskit/theme": "^4.0.4",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
@@ -37,11 +37,11 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.1.2",
+    "@atlaskit/button": "^8.2.4",
     "@atlaskit/docs": "^4.1.0",
     "@atlaskit/field-range": "^4.0.3",
-    "@atlaskit/field-text": "^6.0.4",
-    "@atlaskit/modal-dialog": "^5.2.2",
+    "@atlaskit/field-text": "^6.1.1",
+    "@atlaskit/modal-dialog": "^5.2.6",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.3.0",

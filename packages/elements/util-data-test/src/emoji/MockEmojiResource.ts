@@ -14,6 +14,7 @@ import {
   EmojiProvider,
   UploadingEmojiProvider,
   EmojiRepository,
+  CategoryId,
 } from '@atlaskit/emoji';
 
 import {
@@ -53,13 +54,15 @@ export interface MockEmojiResourceConfig {
   currentUser?: User;
 }
 
-export class MockNonUploadingEmojiResource extends AbstractResource<
-  string,
-  EmojiSearchResult,
-  any,
-  undefined,
-  SearchOptions
-> implements EmojiProvider {
+export class MockNonUploadingEmojiResource
+  extends AbstractResource<
+    string,
+    EmojiSearchResult,
+    any,
+    undefined,
+    SearchOptions
+  >
+  implements EmojiProvider {
   protected emojiRepository: EmojiRepository;
   protected promiseBuilder: PromiseBuilder<any>;
   protected lastQuery: string = '';
@@ -127,7 +130,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<
     return this.promiseBuilder(emoji, 'findById');
   }
 
-  findInCategory(categoryId: string): Promise<EmojiDescription[]> {
+  findInCategory(categoryId: CategoryId): Promise<EmojiDescription[]> {
     const emojis = this.emojiRepository.findInCategory(categoryId);
     return this.promiseBuilder(emojis, 'findInCategory');
   }

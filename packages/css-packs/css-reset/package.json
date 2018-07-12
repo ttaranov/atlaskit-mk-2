@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/css-reset",
-  "version": "2.0.6",
+  "version": "2.0.8",
   "description": "ak-css-reset webcomponent",
   "license": "Apache-2.0",
   "main": "dist/bundle.css",

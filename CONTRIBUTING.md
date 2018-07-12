@@ -205,10 +205,10 @@ instead of a relative path.
 
 ```js
 import React from 'react';
-import { AvatarGroup } from '@atlaskit/avatar';
+import { Presence } from '@atlaskit/avatar';
 
 export default function Example() {
-  return <AvatarGroup appearance="grid" data={...}/>;
+  return <Presence presence="online" />;
 }
 ```
 

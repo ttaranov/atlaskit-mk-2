@@ -18,6 +18,13 @@ export type FileProcessingStatus =
   | 'succeeded'
   | 'failed';
 
+export interface MediaArtifact {
+  processingStatus?: FileProcessingStatus;
+  url?: string;
+}
+
+export type Artifacts = { [name: string]: MediaArtifact };
+
 export interface FileDetails {
   id: string;
   name?: string;
@@ -26,7 +33,7 @@ export interface FileDetails {
   mediaType?: MediaType;
   creationDate?: number; // timestamp in milliseconds from EPOCH
   processingStatus?: FileProcessingStatus;
-  artifacts?: Object;
+  artifacts?: Artifacts;
 }
 
 export interface LinkItem {

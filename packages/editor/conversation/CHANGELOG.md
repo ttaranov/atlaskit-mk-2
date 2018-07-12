@@ -1,5 +1,64 @@
 # @atlaskit/conversation
 
+## 8.3.0
+- [minor] Adds beforeunload warning dialog when a Conversation has an open editor [aabd327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aabd327)
+
+## 8.2.13
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/editor-core@74.0.8
+  - @atlaskit/single-select@5.2.5
+  - @atlaskit/comment@5.0.6
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/editor-core@74.0.8
+  - @atlaskit/single-select@5.2.5
+  - @atlaskit/comment@5.0.6
+
+## 8.2.12
+- [patch] Updated dependencies [ddcc42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ddcc42f)
+  - @atlaskit/reactions@12.2.0
+
+## 8.2.11
+- [patch] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+  - @atlaskit/editor-core@74.0.0
+  - @atlaskit/comment@5.0.5
+
+## 8.2.10
+
+
+- [none] Updated dependencies [40095d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40095d6)
+  - @atlaskit/editor-core@73.9.29
+- [patch] Updated dependencies [d520a6f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d520a6f)
+  - @atlaskit/editor-core@73.9.29
+
+## 8.2.9
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/editor-core@73.9.19
+  - @atlaskit/single-select@5.2.4
+  - @atlaskit/comment@5.0.4
+
+## 8.2.8
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/util-data-test@9.1.15
+  - @atlaskit/renderer@18.2.9
+  - @atlaskit/reactions@12.1.5
+  - @atlaskit/editor-common@11.3.8
+  - @atlaskit/editor-core@73.9.5
+  - @atlaskit/comment@5.0.3
+
+## 8.2.7
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/util-data-test@9.1.14
+  - @atlaskit/renderer@18.2.7
+  - @atlaskit/reactions@12.1.4
+  - @atlaskit/editor-core@73.9.2
+  - @atlaskit/comment@5.0.2
+  - @atlaskit/editor-common@11.3.7
+
 ## 8.2.6
 
 

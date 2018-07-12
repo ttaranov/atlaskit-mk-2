@@ -123,6 +123,56 @@ describe('extension', () => {
           ),
         );
       });
+
+      describe('when nested in bodiedExtension', () => {
+        it('should replace selected inlineExtension node with a new inlineExtension node', async () => {
+          const { editorView } = editor(
+            doc(
+              bodiedExtension(extensionAttrs)(
+                paragraph(
+                  inlineExtension(inlineExtensionData[0].attrs)(),
+                  'two',
+                ),
+              ),
+            ),
+          );
+          editorView.dispatch(
+            editorView.state.tr.setSelection(
+              NodeSelection.create(editorView.state.doc, 2),
+            ),
+          );
+          const macroProviderPromise = Promise.resolve(
+            new MockMacroProvider(inlineExtensionData[1]),
+          );
+          const provider = await macroProviderPromise;
+          editExtension(provider)(editorView);
+          await sleep(0);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              bodiedExtension(extensionAttrs)(
+                paragraph(
+                  inlineExtension(inlineExtensionData[1].attrs)(),
+                  'two',
+                ),
+              ),
+            ),
+          );
+        });
+      });
+
+      it('should preserve the extension breakout mode on edit', async () => {
+        const { editorView } = editor(
+          doc(
+            bodiedExtension({ ...extensionAttrs, layout: 'full-width' })(
+              paragraph('te{<>}xt'),
+            ),
+          ),
+        );
+        const pluginState = pluginKey.getState(editorView.state);
+        const provider = await macroProviderPromise;
+        expect(editExtension(provider)(editorView)).toBe(true);
+        expect(pluginState.node.node.attrs.layout).toEqual('full-width');
+      });
     });
 
     describe('removeExtension', () => {
