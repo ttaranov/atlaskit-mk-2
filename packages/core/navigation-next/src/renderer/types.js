@@ -36,7 +36,7 @@ type SharedGroupTypeProps = {
 
 export type GroupProps = SharedGroupTypeProps & {
   hasSeparator: boolean,
-  title?: string,
+  heading?: string,
 };
 
 export type SectionProps = SharedGroupTypeProps & {

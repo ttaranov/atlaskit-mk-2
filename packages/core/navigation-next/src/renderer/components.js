@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -18,6 +18,7 @@ import {
   ItemPrimitive,
   Section as SectionComponent,
   Separator,
+  Group as GroupComponent,
   GroupHeading as GroupHeadingComponent,
   Switcher,
   ViewStateSubscriber,
@@ -132,13 +133,16 @@ const Debug = props => (
  */
 
 // Group
-const Group = ({ customComponents, hasSeparator, items, title }: GroupProps) =>
+const Group = ({
+  customComponents,
+  hasSeparator,
+  heading,
+  items,
+}: GroupProps) =>
   items.length ? (
-    <Fragment>
-      {title ? <GroupHeading text={title} /> : null}
+    <GroupComponent heading={heading} hasSeparator={hasSeparator}>
       <ItemsRenderer items={items} customComponents={customComponents} />
-      {hasSeparator && <Separator />}
-    </Fragment>
+    </GroupComponent>
   ) : null;
 
 // Section
