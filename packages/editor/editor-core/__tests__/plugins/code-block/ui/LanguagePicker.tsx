@@ -33,9 +33,8 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   describe('Tracking selection', () => {
     it('should track the selected language', () => {
       const trackSpy = jest.spyOn(analyticsService, 'trackEvent');
-      (languagePicker
-        .find(Select)
-        .instance() as any).select.select.selectOption({
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
         label: 'Javascript',
         value: 'javascript',
       });
