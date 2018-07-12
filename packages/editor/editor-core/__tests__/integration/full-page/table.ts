@@ -13,7 +13,7 @@ for (let i = 0; i < 80; i++) {
 
 BrowserTestCase(
   'Table floating toolbar should be visible even after table scrolls',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie', 'safari', 'chrome'] },
   async client => {
     const insertTableMenu = '[aria-label="Insert table"]';
     const tableControls = '[aria-label="Table floating controls"]';

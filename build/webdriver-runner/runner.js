@@ -41,6 +41,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
             if (client.isReady) {
               client.isReady = false;
               await client.driver.end();
+              await client.driver.quit();
             }
             continue;
           }
@@ -63,7 +64,7 @@ afterAll(async function() {
   for (let client of clients) {
     if (client) {
       client.isReady = false;
-      await client.driver.quit();
+      await client.driver.end();
     }
   }
 });
@@ -161,9 +162,9 @@ function setBrowserStackClients() {
     },
     safari: {
       os: 'OS X',
-      os_version: 'Sierra',
+      os_version: 'High Sierra',
       browserName: 'safari',
-      browser_version: '10.1',
+      browser_version: '11.0',
       resolution: '1920x1080',
     },
     edge: {
@@ -173,7 +174,6 @@ function setBrowserStackClients() {
       browser_version: '16',
       resolution: '1440x900',
     },
-    maxInstances: 10,
   };
 
   let clis = [];
@@ -191,8 +191,9 @@ function setBrowserStackClients() {
         project: 'Atlaskit MK2',
         build: process.env.BITBUCKET_BRANCH,
         'browserstack.local': true,
-        'browserstack.debug': true,
+        // 'browserstack.debug': true,
         'browserstack.localIdentifier': commit,
+        'browserstack.idleTimeout': 60,
         project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',

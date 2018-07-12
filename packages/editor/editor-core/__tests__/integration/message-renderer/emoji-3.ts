@@ -48,7 +48,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should render emoji inside codeblock',
-  { skip: ['ie'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -64,7 +64,7 @@ BrowserTestCase(
 // BUG on IE
 BrowserTestCase(
   'Emoji: should render emoji inside action',
-  { skip: ['ie'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -79,7 +79,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should not show typeahead with text: ',
-  { skip: ['ie'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -91,7 +91,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: ":<space>" does not show the picker',
-  { skip: ['ie'] },
+  { skip: ['ie', 'safari'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
