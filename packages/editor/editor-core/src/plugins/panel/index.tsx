@@ -2,10 +2,8 @@ import * as React from 'react';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { createPlugin, pluginKey, PanelState } from './pm-plugins/main';
-import PanelEdit from './ui/PanelEdit';
-import WithPluginState from '../../ui/WithPluginState';
-import { removePanel, changePanelType } from './actions';
+import { createPlugin } from './pm-plugins/main';
+import { getToolbarConfig } from './toolbar';
 
 const panelPlugin: EditorPlugin = {
   nodes() {
@@ -14,28 +12,6 @@ const panelPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [{ rank: 1110, plugin: createPlugin }];
-  },
-
-  contentComponent({ editorView }) {
-    return (
-      <WithPluginState
-        plugins={{
-          panelState: pluginKey,
-        }}
-        render={({ panelState = {} as PanelState }) => (
-          <PanelEdit
-            editorView={editorView}
-            pluginState={panelState}
-            onRemove={() =>
-              removePanel()(editorView.state, editorView.dispatch)
-            }
-            onPanelChange={panelType =>
-              changePanelType(panelType)(editorView.state, editorView.dispatch)
-            }
-          />
-        )}
-      />
-    );
   },
 
   pluginsOptions: {
@@ -53,6 +29,7 @@ const panelPlugin: EditorPlugin = {
         },
       },
     ],
+    floatingToolbar: getToolbarConfig,
   },
 };
 

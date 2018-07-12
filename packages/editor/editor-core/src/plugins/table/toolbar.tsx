@@ -99,7 +99,8 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
     const isLayoutSupported = supportsTableLayout(state);
     return {
       title: 'Table floating controls',
-      target: tableState.tableRef,
+      getDomRef: () => tableState.tableRef!,
+      nodeType: state.schema.nodes.table,
       items: [
         {
           type: 'dropdown',
