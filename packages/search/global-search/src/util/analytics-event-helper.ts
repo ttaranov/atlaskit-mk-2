@@ -1,3 +1,4 @@
+import * as Rusha from 'rusha';
 import {
   sanitizeSearchQuery,
   ShownAnalyticsAttributes,
@@ -118,9 +119,14 @@ const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
   type: eventData.contentType,
   sectionId: eventData.type,
   sectionIndex: eventData.sectionIndex,
-  globalInde: eventData.index,
+  globalIndex: eventData.index,
   indexWithinSection: eventData.indexWithinSection,
 });
+
+const hash = (str: string): string =>
+  Rusha.createHash()
+    .update(str)
+    .digest('hex');
 
 export interface SearchResultEvent {
   resultId: string;
@@ -141,7 +147,7 @@ export interface SelectedSearchResultEvent extends SearchResultEvent {
 }
 
 export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
-  queryHash: string;
+  query: string;
   queryVersion: number;
   queryId: null | string;
   wasOnNoResultsScreen: boolean;
@@ -165,7 +171,7 @@ export function fireSelectedSearchResult(
     'selected',
     'navigationItem',
     'searchResult',
-    'ui',
+    'track',
     {
       trigger: method,
       searchSessionId: searchSessionId,
@@ -180,19 +186,21 @@ export function fireSelectedAdvancedSearch(
   searchSessionId: string,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  const { method, newTab, queryHash, queryVersion } = eventData;
+  const { method, newTab, query, queryVersion } = eventData;
+  const sanitizedQuery = query ? sanitizeSearchQuery(query) : '';
   fireGasEvent(
     createAnalyticsEvent,
     'selected',
     'navigationItem',
     'confluenceAdvancedSearchLink',
-    'ui',
+    'track',
     {
       trigger: method,
       searchSessionId: searchSessionId,
       newTab,
-      queryHash,
+      queryHash: sanitizedQuery ? hash(sanitizedQuery) : '',
       queryVersion,
+      queryLength: sanitizedQuery.length,
       queryId: null,
       wasOnNoResultsScreen:
         +eventData.index === 0 && +eventData.sectionIndex === 1,

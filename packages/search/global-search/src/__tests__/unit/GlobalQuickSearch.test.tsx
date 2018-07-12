@@ -2,12 +2,12 @@ import * as React from 'react';
 import GlobalQuickSearchWithAnalytics, {
   GlobalQuickSearch,
   Props,
-} from '../../../src/components/GlobalQuickSearch';
+} from '../../components/GlobalQuickSearch';
 import {
   shallowWithIntl,
   mountWithIntl,
 } from './helpers/_intl-enzyme-test-helper';
-import * as AnalyticsHelper from '../../../src/util/analytics-event-helper';
+import * as AnalyticsHelper from '../../util/analytics-event-helper';
 import { ADVANCED_SEARCH_RESULT_ID } from '../../../src/components/SearchResultsUtil';
 
 const noop = () => {};

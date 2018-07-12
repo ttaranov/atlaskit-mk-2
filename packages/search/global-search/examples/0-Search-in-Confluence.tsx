@@ -9,7 +9,8 @@ const logEvent = event => {
   const { eventType, action, actionSubject, actionSubjectId } = event.payload;
   console.log(
     `${eventType} | ${action} ${actionSubject} ${actionSubjectId}`,
-    event,
+    event.payload.attributes,
+    event.payload,
   );
 };
 

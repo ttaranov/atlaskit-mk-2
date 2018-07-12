@@ -70,12 +70,12 @@ export class GlobalQuickSearch extends React.Component<
   }
 
   fireSearchResultSelectedEvent = (eventData: SearchResultEvent) => {
-    const { createAnalyticsEvent, searchSessionId } = this.props;
+    const { createAnalyticsEvent, searchSessionId, query } = this.props;
     if (eventData.resultId === ADVANCED_SEARCH_RESULT_ID) {
       fireSelectedAdvancedSearch(
         {
           ...eventData,
-          queryHash: '',
+          query,
           queryVersion: this.queryVersion,
         } as AdvancedSearchSelectedEvent,
         searchSessionId,

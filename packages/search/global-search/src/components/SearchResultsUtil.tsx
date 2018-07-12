@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
 import {
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
@@ -17,12 +16,6 @@ import {
 } from '../model/Result';
 import AdvancedSearchResult from './AdvancedSearchResult';
 import ObjectResultComponent from './ObjectResult';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import {
-  DEFAULT_GAS_CHANNEL,
-  DEFAULT_GAS_SOURCE,
-  DEFAULT_GAS_ATTRIBUTES,
-} from '../util/analytics-util';
 
 export const ADVANCED_SEARCH_RESULT_ID = 'search_confluence';
 
@@ -47,42 +40,6 @@ export interface PersonResultProps extends BaseResultProps {
   presenceMessage?: string;
 }
 
-function createAndFireSearchResultSelectedEvent(createEvent, props): void {
-  const event = createEvent(); // created empty to initialise with context
-  const searchSessionId = event.context[0]
-    ? event.context[0].searchSessionId
-    : null;
-  event.update({
-    action: 'selected',
-    actionSubject: 'navigationItem',
-    actionSubjectId: 'searchResult',
-    eventType: 'track',
-    source: DEFAULT_GAS_SOURCE,
-    attributes: {
-      searchSessionId: searchSessionId,
-      resultType: props.type,
-      ...DEFAULT_GAS_ATTRIBUTES,
-    },
-  });
-  event.fire(DEFAULT_GAS_CHANNEL);
-}
-
-const searchResultsAnalyticsEvents = {
-  onClick: createAndFireSearchResultSelectedEvent,
-};
-
-export const ObjectResultWithAnalytics: ComponentType<
-  ObjectResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ObjectResultComponent);
-
-export const PersonResultWithAnalytics: ComponentType<
-  PersonResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(PersonResultComponent);
-
-export const ContainerResultWithAnalytics: ComponentType<
-  ContainerResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ContainerResultComponent);
-
 export function renderResults(results: Result[]) {
   return results.map(result => {
     const resultType: ResultType = result.resultType;
@@ -92,7 +49,7 @@ export function renderResults(results: Result[]) {
         const confluenceResult = result as ConfluenceObjectResult;
 
         return (
-          <ObjectResultWithAnalytics
+          <ObjectResultComponent
             key={confluenceResult.resultId}
             resultId={confluenceResult.resultId}
             name={confluenceResult.name}
@@ -107,7 +64,7 @@ export function renderResults(results: Result[]) {
         const jiraResult = result as JiraObjectResult;
 
         return (
-          <ObjectResultWithAnalytics
+          <ObjectResultComponent
             key={jiraResult.resultId}
             resultId={jiraResult.resultId}
             name={jiraResult.name}
@@ -123,7 +80,7 @@ export function renderResults(results: Result[]) {
         const containerResult = result as ContainerResult;
 
         return (
-          <ContainerResultWithAnalytics
+          <ContainerResultComponent
             key={containerResult.resultId}
             resultId={containerResult.resultId}
             name={containerResult.name}
@@ -137,7 +94,7 @@ export function renderResults(results: Result[]) {
         const personResult = result as PersonResult;
 
         return (
-          <PersonResultWithAnalytics
+          <PersonResultComponent
             key={personResult.resultId}
             resultId={personResult.resultId}
             name={personResult.name}
