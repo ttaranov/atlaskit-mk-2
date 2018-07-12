@@ -124,7 +124,7 @@ interface AnalyticsEventCreator<TOwnProps> {
   (
     create: CreateUIAnalyticsEventSignature,
     props: TOwnProps,
-  ): UIAnalyticsEventInterface;
+  ): UIAnalyticsEventInterface | void;
 }
 
 export interface EventMap<TOwnProps> {
