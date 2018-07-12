@@ -17,7 +17,7 @@ const webdriverio = require('webdriverio');
 process.env.USER = process.env.USER || 'no_user';
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
-  : process.env.USER + '_local';
+  : process.env.USER;
 let clients /*: Array<?Object>*/ = [];
 let skipForBrowser /*:?Object */ = {};
 

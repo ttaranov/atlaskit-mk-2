@@ -10,7 +10,7 @@ const bsKey = process.env.BROWSERSTACK_KEY;
 process.env.USER = process.env.USER || 'no_user';
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
-  : process.env.USER + '_local';
+  : process.env.USER;
 
 async function startBrowserStack() {
   return new Promise((resolve, reject) => {
