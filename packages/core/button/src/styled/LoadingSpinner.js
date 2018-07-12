@@ -11,7 +11,7 @@ type Props = {
 };
 
 const LoadingDiv = styled.div`
-  margin-top: ${({ spacing }) => (spacing === 'none' ? '2px' : '4px')};
+  display: flex;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -28,9 +28,14 @@ export default class LoadingSpinner extends Component<Props, *> {
   };
 
   render() {
+    const { spacing } = this.props;
+    let spinnerSize = 'medium';
+    if (spacing !== 'default') {
+      spinnerSize = 'small';
+    }
     return (
       <LoadingDiv spacing={this.props.spacing}>
-        <Spinner invertColor={this.invertSpinner()} />
+        <Spinner size={spinnerSize} invertColor={this.invertSpinner()} />
       </LoadingDiv>
     );
   }
