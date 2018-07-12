@@ -1,3 +1,7 @@
+---
+title: Component design
+---
+
 # Component design
 
 Related reading:

@@ -1,3 +1,7 @@
+---
+title: Directory structure
+---
+
 # Directory structure
 
 Related reading:
