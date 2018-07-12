@@ -8,7 +8,9 @@ import {
   MediaItem,
   BlobService,
   Auth,
+  DataUriService,
 } from '@atlaskit/media-core';
+import { Subscriber } from '../node_modules/rxjs';
 
 export class Stubs {
   static mediaViewer(overrides: any) {
@@ -70,11 +72,20 @@ export class Stubs {
     };
   }
 
+  static dataUriService() {
+    return {
+      fetchOriginalDataUri: jest.fn(() => Promise.resolve('')),
+      fetchImageDataUri: jest.fn(() => Promise.resolve('')),
+    };
+  }
+
   static context(
     config: ContextConfig,
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
     blobService?: BlobService,
+    dataUriService?: DataUriService,
+    getArtifactUrl?: () => Promise<string>,
   ) {
     return {
       config,
@@ -85,6 +96,8 @@ export class Stubs {
         () => mediaItemProvider || Stubs.mediaItemProvider(),
       ),
       getBlobService: jest.fn(() => blobService || Stubs.blobService()),
+      getArtifactUrl: jest.fn(getArtifactUrl),
+      getDataUriService: jest.fn(() => dataUriService || Stubs.dataUriService),
     };
   }
 }
@@ -94,6 +107,8 @@ export interface CreateContextOptions {
   provider?: MediaCollectionProvider;
   authPromise?: Promise<Auth>;
   blobService?: BlobService;
+  dataUriService?: DataUriService;
+  getArtifactUrl?: () => Promise<string>;
 }
 
 export const createContext = (options?: CreateContextOptions) => {
@@ -105,8 +120,17 @@ export const createContext = (options?: CreateContextOptions) => {
       clientId: 'some-client-id',
     }),
     blobService: undefined,
+    dataUriService: undefined,
+    getArtifactUrl: () => Promise.resolve('http://empty-url'),
   };
-  const { subject, provider, authPromise, blobService } =
+  const {
+    subject,
+    provider,
+    authPromise,
+    blobService,
+    dataUriService,
+    getArtifactUrl,
+  } =
     options || defaultOptions;
   const serviceHost = 'some-service-host';
   const authProvider = jest.fn(() => authPromise);
@@ -119,5 +143,7 @@ export const createContext = (options?: CreateContextOptions) => {
     provider || Stubs.mediaCollectionProvider(subject),
     Stubs.mediaItemProvider(subject),
     blobService,
+    dataUriService,
+    getArtifactUrl,
   ) as any;
 };

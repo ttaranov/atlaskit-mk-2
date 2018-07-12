@@ -13,6 +13,7 @@ import {
   ContextConfig,
   MediaApiConfig,
   UploadController,
+  createUrl,
 } from '@atlaskit/media-store';
 
 import {
@@ -30,7 +31,7 @@ import { BlobService, MediaBlobService } from '../services/blobService';
 import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
-import { FileItem } from '../item';
+import { FileItem, MediaArtifactType } from '../item';
 import {
   GetFileOptions,
   FileState,
@@ -79,6 +80,12 @@ export interface Context {
     file: UploadableFile,
     controller?: UploadController,
   ): Observable<FileState>;
+
+  getArtifactUrl(
+    id: string,
+    artifactType: MediaArtifactType,
+    collectionName?: string,
+  ): Promise<string>;
 
   readonly config: ContextConfig;
 }
@@ -244,6 +251,25 @@ class ContextImpl implements Context {
       this.apiConfig,
       url,
     );
+  }
+
+  async getArtifactUrl(
+    id: string,
+    artifactType: MediaArtifactType,
+    collectionName?: string,
+  ): Promise<string> {
+    const file = await this.mediaStore.getFile(id, {
+      collection: collectionName,
+    });
+    if (
+      !file.data.artifacts[artifactType] ||
+      !file.data.artifacts[artifactType].url
+    ) {
+      throw new Error(`Artifact of type {artifactType} not found for ID ${id}`);
+    }
+    const artifactUrl = file.data.artifacts[artifactType].url;
+    const auth = await this.config.authProvider({ collectionName });
+    return createUrl(`${this.config.serviceHost}${artifactUrl}`, { auth });
   }
 
   addLinkItem(

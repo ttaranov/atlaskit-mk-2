@@ -18,6 +18,7 @@ export type FileProcessingStatus =
   | 'succeeded'
   | 'failed';
 
+export type MediaArtifactType = 'audio.mp3';
 export interface MediaArtifact {
   processingStatus?: FileProcessingStatus;
   url?: string;

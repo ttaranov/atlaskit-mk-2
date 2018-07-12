@@ -10,5 +10,7 @@ export {
   UploadFileResult,
 } from './uploader';
 
+export { createUrl } from './utils/request';
+
 // Remove this export as soon as we deprecate oldUploadService
 export { createHasher } from './utils/hashing/hasherCreator';

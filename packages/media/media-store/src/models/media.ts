@@ -1,6 +1,6 @@
 export type MediaFileArtifacts = {
   readonly [artifactName: string]: {
-    readonly href: string;
+    readonly url: string;
     readonly processingStatus: string;
   };
 };

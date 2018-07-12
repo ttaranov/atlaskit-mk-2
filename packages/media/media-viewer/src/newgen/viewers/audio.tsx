@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
-import { constructAuthTokenUrl } from '../util';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
 import {
@@ -36,12 +35,10 @@ const getCoverUrl = (
   item: FileItem,
   context: Context,
   collectionName?: string,
-): Promise<string> =>
-  constructAuthTokenUrl(
-    `/file/${item.details.id}/image`,
-    context,
-    collectionName,
-  );
+): Promise<string> => {
+  const dataUriService = context.getDataUriService(collectionName);
+  return dataUriService.fetchImageDataUri(item, { width: 400, height: 210 });
+};
 
 export class AudioViewer extends React.Component<Props, State> {
   state: State = { src: { status: 'PENDING' } };
@@ -90,7 +87,9 @@ export class AudioViewer extends React.Component<Props, State> {
     const { previewCount } = this.props;
     return (
       <AudioPlayer>
+        cover
         {this.renderCover()}
+        end cover
         <Audio
           autoPlay={previewCount === 0}
           controls
@@ -115,7 +114,6 @@ export class AudioViewer extends React.Component<Props, State> {
   private setCoverUrl = async () => {
     const { context, item, collectionName } = this.props;
     const coverUrl = await getCoverUrl(item, context, collectionName);
-
     try {
       await this.loadCover(coverUrl);
       this.setState({ coverUrl });
@@ -124,17 +122,17 @@ export class AudioViewer extends React.Component<Props, State> {
 
   private async init() {
     const { context, item, collectionName } = this.props;
-    const audioUrl = getAudioArtifactUrl(item);
-    if (!audioUrl) {
-      return;
-    }
-
     try {
+      const audioUrl = await context.getArtifactUrl(
+        item.details.id,
+        'audio.mp3',
+        collectionName,
+      );
       this.setCoverUrl();
       this.setState({
         src: {
           status: 'SUCCESSFUL',
-          data: await constructAuthTokenUrl(audioUrl, context, collectionName),
+          data: audioUrl,
         },
       });
     } catch (err) {
@@ -151,14 +149,4 @@ export class AudioViewer extends React.Component<Props, State> {
     const { item, context, collectionName } = this.props;
     return renderDownloadButton(item, context, collectionName);
   }
-}
-
-function getAudioArtifactUrl(fileItem: FileItem) {
-  const artifact = 'audio.mp3';
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
 }
