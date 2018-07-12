@@ -2,9 +2,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import FieldRangeWithAnalytics, {
-  FieldRangeWithoutAnalytics as FieldRange,
-} from '../FieldRange';
+import FieldRange from '../FieldRange';
 
 // We need to simulate a real event on the DOM element due IE compatibility
 const simulateValueChange = (range, value) => {
@@ -131,24 +129,5 @@ describe('FieldRange', () => {
       fieldRange.setProps({ value: 25 });
       expect(fieldRange.find('InputRange').prop('valuePercent')).toBe('25.00');
     });
-  });
-});
-
-describe('FieldRangeWithAnalytics', () => {
-  beforeEach(() => {
-    jest.spyOn(global.console, 'warn');
-    jest.spyOn(global.console, 'error');
-  });
-  afterEach(() => {
-    global.console.warn.mockRestore();
-    global.console.error.mockRestore();
-  });
-
-  it('should mount without errors', () => {
-    mount(<FieldRangeWithAnalytics value={20.12} />);
-    /* eslint-disable no-console */
-    expect(console.warn).not.toHaveBeenCalled();
-    expect(console.error).not.toHaveBeenCalled();
-    /* eslint-enable no-console */
   });
 });

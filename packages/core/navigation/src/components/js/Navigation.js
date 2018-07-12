@@ -473,16 +473,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-
-    onToggleEnd: createAndFireEventOnAtlaskit({
-      action: 'toggled',
-      actionSubject: 'navigationSidebar',
-
-      attributes: {
-        componentName: 'navigation',
-        packageName,
-        packageVersion,
-      },
-    }),
   })(Navigation),
 );
