@@ -54,7 +54,8 @@ function buildIssuerBasedUrl(
 }
 
 function buildUrl(host: string, url: string, query: Object) {
-  return `${host}${url}?${stringify(query)}`;
+  const separator = url.indexOf('?') > -1 ? '&' : '?';
+  return `${host}${url}${separator}${stringify(query)}`;
 }
 
 export const toIdentifier = (
