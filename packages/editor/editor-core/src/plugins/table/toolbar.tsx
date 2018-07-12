@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { splitCell, mergeCells } from 'prosemirror-tables';
-
+import { hasParentNodeOfType } from 'prosemirror-utils';
 import {
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
@@ -26,7 +26,7 @@ import {
   FloatingToolbarHandler,
   RenderOptionsProps,
 } from '../floating-toolbar/types';
-import { pluginKey, TablePluginState, PluginConfig } from './pm-plugins/main';
+import { pluginKey, TablePluginState } from './pm-plugins/main';
 import {
   hoverTable,
   deleteTable,
@@ -72,12 +72,19 @@ const withAnalytics = (
   return command(state, dispatch);
 };
 
-const supportsTableLayout = (pluginConfig: PluginConfig) => (
+export const supportsTableLayout = (state: EditorState) => (
   layoutName: TableLayout,
-) =>
-  pluginConfig.permittedLayouts === 'all' ||
-  (pluginConfig.permittedLayouts &&
-    pluginConfig.permittedLayouts.indexOf(layoutName) > -1);
+) => {
+  const {
+    pluginConfig: { permittedLayouts },
+  } = pluginKey.getState(state);
+  const { bodiedExtension, layoutSection } = state.schema.nodes;
+  return (
+    !hasParentNodeOfType([layoutSection, bodiedExtension])(state.selection) &&
+    (permittedLayouts === 'all' ||
+      (permittedLayouts && permittedLayouts.indexOf(layoutName) > -1))
+  );
+};
 
 export const getToolbarConfig: FloatingToolbarHandler = state => {
   const tableState: TablePluginState | undefined = pluginKey.getState(state);
@@ -89,7 +96,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
   ) {
     const currentLayout = getTableLayout(tableState);
     const { pluginConfig } = tableState;
-    const isLayoutSupported = supportsTableLayout(pluginConfig);
+    const isLayoutSupported = supportsTableLayout(state);
     return {
       title: 'Table floating controls',
       target: tableState.tableRef,
