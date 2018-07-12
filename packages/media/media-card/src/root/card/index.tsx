@@ -1,4 +1,3 @@
-import VideoSnapshot from 'video-snapshot';
 import * as React from 'react';
 import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
@@ -9,9 +8,7 @@ import {
   UrlPreviewProvider,
   ImageResizeMode,
   MediaItemDetails,
-  FileState,
 } from '@atlaskit/media-core';
-import { MediaStore } from '@atlaskit/media-store';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs';
 import {
@@ -19,11 +16,13 @@ import {
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
+  OnLoadingChangeState,
 } from '../..';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
+import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -62,30 +61,8 @@ export interface CardState {
   metadata?: MediaItemDetails;
   dataURI?: string;
   progress?: number;
+  readonly error?: Error;
 }
-
-// TODO: should this logic live in media-core to allow MediaViewer to benefit from it?
-const getDataURIFromFileState = async (
-  state: FileState,
-): Promise<string | undefined> => {
-  if (state.status === 'error' || !state.preview) {
-    return undefined;
-  }
-  const type = state.preview.blob.type;
-  const blob = state.preview.blob;
-
-  if (type.indexOf('image/') === 0) {
-    return URL.createObjectURL(blob);
-  }
-
-  if (type.indexOf('video/') === 0) {
-    const snapshoter = new VideoSnapshot(blob);
-    const src = await snapshoter.takeSnapshot();
-
-    // TODO: revoke => snapshoter.end()
-    return src;
-  }
-};
 
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
@@ -123,13 +100,33 @@ export class Card extends Component<CardProps, CardState> {
 
   componentWillUnmount() {
     this.unsubscribe();
-    // TODO: revokeObjectUrl
+    this.releaseDataURI();
   }
+
+  releaseDataURI = () => {
+    const { dataURI } = this.state;
+    if (dataURI) {
+      URL.revokeObjectURL(dataURI);
+    }
+  };
+
+  private onLoadingChangeCallback = () => {
+    const { onLoadingChange } = this.props;
+    if (onLoadingChange) {
+      const { status, error, metadata } = this.state;
+      const state = {
+        type: status,
+        payload: error || metadata,
+      };
+      onLoadingChange(state);
+    }
+  };
 
   subscribe(identifier: Identifier) {
     if (identifier.mediaItemType !== 'file') {
       return;
     }
+    const { onLoadingChangeCallback } = this;
     const { context } = this.props;
     const { id, collectionName } = identifier;
 
@@ -140,29 +137,36 @@ export class Card extends Component<CardProps, CardState> {
 
         if (!currentDataURI) {
           const dataURI = await getDataURIFromFileState(state);
-          // TODO: revoke
-          this.setState({ dataURI });
+
+          this.setState({ dataURI }, onLoadingChangeCallback);
         }
+
         if (state.status === 'uploading') {
           const { progress, id, name, size, mediaType } = state;
-          this.setState({
-            status: 'uploading',
-            progress,
-            metadata: {
-              id,
-              name,
-              size,
-              mediaType,
+          this.setState(
+            {
+              status: 'uploading',
+              progress,
+              metadata: {
+                id,
+                name,
+                size,
+                mediaType,
+              },
             },
-          });
+            onLoadingChangeCallback,
+          );
         }
 
         if (state.status === 'processing') {
           // TODO: should we set "metadata" here too? It might be possible that the first time you ask for and id is already 'processing'
-          this.setState({
-            progress: 1,
-            status: 'complete',
-          });
+          this.setState(
+            {
+              progress: 1,
+              status: 'complete',
+            },
+            onLoadingChangeCallback,
+          );
         }
 
         if (state.status === 'processed') {
@@ -181,22 +185,29 @@ export class Card extends Component<CardProps, CardState> {
           });
           const dataURI = URL.createObjectURL(blob);
 
-          this.setState({
-            dataURI,
-            status: 'complete',
-            metadata: {
-              id,
-              name,
-              size,
-              mediaType,
+          this.setState(
+            {
+              dataURI,
+              status: 'complete',
+              metadata: {
+                id,
+                name,
+                size,
+                mediaType,
+              },
             },
-          });
+            onLoadingChangeCallback,
+          );
         }
       },
       error: error => {
-        this.setState({
-          status: 'error',
-        });
+        this.setState(
+          {
+            error,
+            status: 'error',
+          },
+          onLoadingChangeCallback,
+        );
       },
     });
   }
@@ -247,7 +258,6 @@ export class Card extends Component<CardProps, CardState> {
       onClick,
       onMouseEnter,
       onSelectChange,
-      onLoadingChange,
       disableOverlay,
     } = this.props;
     const { status, progress, metadata, dataURI } = this.state;
@@ -270,7 +280,6 @@ export class Card extends Component<CardProps, CardState> {
           onSelectChange={onSelectChange}
           disableOverlay={disableOverlay}
           progress={progress}
-          onLoadingChange={onLoadingChange} // TODO: Implement here
         />
       </AnalyticsContext>
     );

@@ -42,7 +42,11 @@ class Example extends Component<ComponentProps, ComponentState> {
       return (
         <CardWrapper key={id}>
           <CardTitle>{id}</CardTitle>
-          <Card context={context} identifier={identifier} />
+          <Card
+            context={context}
+            identifier={identifier}
+            onLoadingChange={this.onLoadingChange}
+          />
         </CardWrapper>
       );
     });
@@ -50,9 +54,13 @@ class Example extends Component<ComponentProps, ComponentState> {
     return <CardsWrapper>{cards}</CardsWrapper>;
   }
 
+  onLoadingChange = state => {
+    console.log('onLoadingChange', state);
+  };
+
   cancelUpload = () => {
     if (this.uploadController) {
-      this.uploadController.cancel();
+      this.uploadController.abort();
     }
   };
 
