@@ -46,12 +46,12 @@ describe('Tooltip', () => {
     };
   });
 
-  describe('onTooltipHide', () => {
-    it("should onTooltipHide when the tooltip's hide function is called", () => {
+  describe('onHide', () => {
+    it("should onHide when the tooltip's hide function is called", () => {
       const spy = jest.fn();
 
       const wrapper = shallow(
-        <Tooltip content="Tooltip content" onTooltipHide={spy}>
+        <Tooltip content="Tooltip content" onHide={spy}>
           <div>foo</div>
         </Tooltip>,
       );
@@ -62,12 +62,12 @@ describe('Tooltip', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
-  describe('onTooltipShow', () => {
-    it("should onTooltipShow when the tooltip's show function is called", () => {
+  describe('onShow', () => {
+    it("should onShow when the tooltip's show function is called", () => {
       const spy = jest.fn();
 
       const wrapper = shallow(
-        <Tooltip content="Tooltip content" onTooltipShow={spy}>
+        <Tooltip content="Tooltip content" onShow={spy}>
           <div>foo</div>
         </Tooltip>,
       );

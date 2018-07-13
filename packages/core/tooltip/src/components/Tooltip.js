@@ -34,15 +34,15 @@ type Props = {
   */
   mousePosition: PositionTypeBase,
   /**
-    Function to be called when the target will be shown. It is called when the
+    Function to be called when the tooltip will be shown. It is called when the
     tooltip begins to animate in.
   */
-  onTooltipShow?: () => void,
+  onShow?: () => void,
   /**
-    Function to be called when the target will be hidden. It is called after the
+    Function to be called when the tooltip will be hidden. It is called after the
     delay, when the tooltip begins to animate out.
   */
-  onTooltipHide?: () => void,
+  onHide?: () => void,
   /**
     Where the tooltip should appear relative to its target. If set to 'mouse',
     tooltip will display next to the mouse instead.
@@ -184,23 +184,23 @@ export default class Tooltip extends Component<Props, State> {
   }
 
   show = ({ immediate }: { immediate: boolean }) => {
-    const { onTooltipShow } = this.props;
+    const { onShow } = this.props;
     this.setState({
       immediatelyShow: immediate,
       isVisible: true,
       coordinates: null,
     });
-    if (onTooltipShow) onTooltipShow();
+    if (onShow) onShow();
   };
   // eslint-disable-next-line react/no-unused-prop-types
   hide = ({ immediate }: { immediate: boolean }) => {
-    const { onTooltipHide } = this.props;
+    const { onHide } = this.props;
     // Update state twice to allow for the updated `immediate` prop to pass through
     // to the Transition component before the tooltip is removed
     this.setState({ immediatelyHide: immediate }, () => {
       this.setState({ isVisible: false, coordinates: null });
     });
-    if (onTooltipHide) onTooltipHide();
+    if (onHide) onHide();
   };
 
   handleMouseOver = (event: MouseEvent) => {

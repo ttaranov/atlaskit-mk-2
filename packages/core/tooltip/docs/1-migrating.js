@@ -21,8 +21,8 @@ export default md`
 
   The new props are:
 
-  \`onMouseOver\` --> \`onTooltipShow\`
-  \`onMouseOut\` --> \`onTooltipHide\`
+  \`onMouseOver\` --> \`onShow\`
+  \`onMouseOut\` --> \`onHide\`
 
   For the most part, these should be a 1 to 1 translation, with the major difference
   being since these are not tied to a mouse event, so the function has no arguments.
