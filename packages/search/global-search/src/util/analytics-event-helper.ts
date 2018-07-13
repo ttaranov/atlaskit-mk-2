@@ -196,7 +196,7 @@ export function fireSelectedAdvancedSearch(
     createAnalyticsEvent,
     'selected',
     'navigationItem',
-    'confluenceAdvancedSearchLink',
+    `advanced_${eventData.resultId}`,
     'track',
     {
       trigger: method,

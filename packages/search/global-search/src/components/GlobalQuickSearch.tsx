@@ -23,7 +23,11 @@ import {
 } from '../util/analytics-event-helper';
 
 import { CreateAnalyticsEventFn } from './analytics/types';
-import { ADVANCED_SEARCH_RESULT_ID } from './SearchResultsUtil';
+import { isAdvancedSearchResult } from './SearchResultsUtil';
+
+const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
+const QS_ANALYTICS_EV_KB_CTRLS_USED = `${ATLASKIT_QUICKSEARCH_NS}.keyboard-controls-used`;
+const QS_ANALYTICS_EV_SUBMIT = `${ATLASKIT_QUICKSEARCH_NS}.submit`;
 
 export interface Props {
   onMount();
@@ -70,7 +74,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   fireSearchResultSelectedEvent = (eventData: SearchResultEvent) => {
     const { createAnalyticsEvent, searchSessionId, query } = this.props;
-    if (eventData.resultId === ADVANCED_SEARCH_RESULT_ID) {
+    if (isAdvancedSearchResult(eventData.resultId)) {
       fireSelectedAdvancedSearch(
         {
           ...eventData,
@@ -89,11 +93,10 @@ export class GlobalQuickSearch extends React.Component<Props> {
     }
   };
 
-  fireQuickSearchEvents = (eventName: string, eventData: SearchResultEvent) => {
-    const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
-    const QS_ANALYTICS_EV_KB_CTRLS_USED = `${ATLASKIT_QUICKSEARCH_NS}.keyboard-controls-used`;
-    const QS_ANALYTICS_EV_SUBMIT = `${ATLASKIT_QUICKSEARCH_NS}.submit`;
-
+  fireSearchResultEvents = (
+    eventName: string,
+    eventData: SearchResultEvent,
+  ) => {
     const { createAnalyticsEvent, searchSessionId } = this.props;
     if (eventName === QS_ANALYTICS_EV_SUBMIT) {
       this.fireSearchResultSelectedEvent(eventData);
@@ -127,7 +130,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
     const QuickSearchWithAnalytics = withAnalytics(
       QuickSearch,
       {
-        firePrivateAnalyticsEvent: this.fireQuickSearchEvents,
+        firePrivateAnalyticsEvent: this.fireSearchResultEvents,
       },
       {},
     );

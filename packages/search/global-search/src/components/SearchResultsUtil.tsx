@@ -17,7 +17,16 @@ import {
 import AdvancedSearchResult from './AdvancedSearchResult';
 import ObjectResultComponent from './ObjectResult';
 
-export const ADVANCED_SEARCH_RESULT_ID = 'search_confluence';
+const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
+const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
+const ADVANCED_PEOPLE_SEARCH_RESULT_ID = 'search_people';
+
+export const isAdvancedSearchResult = (resultId: string) =>
+  [
+    ADVANCED_CONFLUENCE_SEARCH_RESULT_ID,
+    ADVANCED_JIRA_SEARCH_RESULT_ID,
+    ADVANCED_PEOPLE_SEARCH_RESULT_ID,
+  ].some(advancedResultId => advancedResultId === resultId);
 
 export interface BaseResultProps {
   type: string;
@@ -128,7 +137,7 @@ export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
   <AdvancedSearchResult
     href={getConfluenceAdvancedSearchLink(props.query)}
     key="search_confluence"
-    resultId={ADVANCED_SEARCH_RESULT_ID}
+    resultId={ADVANCED_CONFLUENCE_SEARCH_RESULT_ID}
     text={props.text}
     icon={props.icon}
     type={AnalyticsType.AdvancedSearchConfluence}
@@ -141,7 +150,7 @@ export const searchJiraItem = (query: string) => (
     href={`/issues/?jql=${encodeURIComponent(`text ~ "${query}"`)}`}
     icon={<JiraIcon size="medium" label="Search Jira" />}
     key="search_jira"
-    resultId="search_jira"
+    resultId={ADVANCED_JIRA_SEARCH_RESULT_ID}
     text="Search for more Jira issues"
     type={AnalyticsType.AdvancedSearchJira}
   />
@@ -152,7 +161,7 @@ export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
     href={`/people/search?q=${encodeURIComponent(props.query)}`}
     icon={props.icon}
     key="search_people"
-    resultId="search_people"
+    resultId={ADVANCED_PEOPLE_SEARCH_RESULT_ID}
     text={props.text}
     type={AnalyticsType.AdvancedSearchPeople}
   />
