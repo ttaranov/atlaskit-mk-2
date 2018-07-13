@@ -46,8 +46,8 @@ const globalNavPrimaryItems = [
             <button
               className={className}
               onClick={onClick}
-              onMouseEnter={navigation.hint}
-              onMouseLeave={navigation.unHint}
+              onMouseEnter={navigation.peekHint}
+              onMouseLeave={navigation.unPeekHint}
             >
               {children}
             </button>

@@ -14,7 +14,7 @@ import type {
 import { CONTENT_NAV_WIDTH } from '../common/constants';
 
 const defaultState = {
-  isHinting: false,
+  isPeekHinting: false,
   isPeeking: false,
   isResizing: false,
   isCollapsed: false,
@@ -82,14 +82,14 @@ export default class UIState extends Container<UIStateShape>
     });
   };
 
-  hint = () => {
-    this.storeState({ isHinting: true });
+  peekHint = () => {
+    this.storeState({ isPeekHinting: true });
   };
-  unHint = () => {
-    this.storeState({ isHinting: false });
+  unPeekHint = () => {
+    this.storeState({ isPeekHinting: false });
   };
-  toggleHint = () => {
-    const toggle = this.state.isHinting ? this.unHint : this.hint;
+  togglePeekHint = () => {
+    const toggle = this.state.isPeekHinting ? this.unPeekHint : this.peekHint;
     toggle();
   };
 

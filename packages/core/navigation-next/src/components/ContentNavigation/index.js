@@ -33,7 +33,7 @@ export default class ContentNavigation extends PureComponent<
     const {
       container: Container,
       isDragging,
-      isHinting,
+      isPeekHinting,
       isPeeking,
       onOverlayClick,
       transitionState,
@@ -64,7 +64,7 @@ export default class ContentNavigation extends PureComponent<
             <ContainerNavigation
               isEntering={state === 'entering'}
               isExiting={state === 'exiting'}
-              isHinting={isHinting}
+              isPeekHinting={isPeekHinting}
               isPeeking={isPeeking}
             >
               <Fragment>

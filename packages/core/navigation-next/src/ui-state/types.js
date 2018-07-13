@@ -8,14 +8,14 @@ import UIState from './UIState';
  * UIState
  */
 export type InitialUIStateShape = {
-  isHinting?: boolean,
+  isPeekHinting?: boolean,
   isPeeking?: boolean,
   isCollapsed?: boolean,
   productNavWidth?: number,
 };
 
 export type UIStateShape = {
-  isHinting: boolean,
+  isPeekHinting: boolean,
   isPeeking: boolean,
   isCollapsed: boolean,
   productNavWidth: number,
@@ -38,9 +38,9 @@ export interface UIStateInterface {
   expand: () => void;
   toggleCollapse: () => void;
 
-  hint: () => void;
-  unHint: () => void;
-  toggleHint: () => void;
+  peekHint: () => void;
+  unPeekHint: () => void;
+  togglePeekHint: () => void;
 
   peek: () => void;
   unPeek: () => void;

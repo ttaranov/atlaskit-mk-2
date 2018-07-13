@@ -60,11 +60,11 @@ class PeekToggle extends Component<PeekToggleProps, PeekToggleState> {
   };
 
   handleMouseEnter = () => {
-    this.props.navigationUI.hint();
+    this.props.navigationUI.peekHint();
   };
 
   handleMouseLeave = () => {
-    this.props.navigationUI.unHint();
+    this.props.navigationUI.unPeekHint();
   };
 
   handleClick = () => {

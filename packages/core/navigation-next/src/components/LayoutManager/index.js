@@ -52,7 +52,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
     width,
   }) {
     const { navigationUI, productNavigation, containerNavigation } = this.props;
-    const { isHinting, isPeeking } = navigationUI.state;
+    const { isPeekHinting, isPeeking } = navigationUI.state;
 
     const isVisible = transitionState !== 'exited';
 
@@ -67,7 +67,7 @@ class LayoutManager extends Component<LayoutManagerProps> {
           <ContentNavigation
             container={containerNavigation}
             isDragging={isDragging}
-            isHinting={isHinting}
+            isPeekHinting={isPeekHinting}
             isPeeking={isPeeking}
             key="product-nav"
             onOverlayClick={navigationUI.unPeek}

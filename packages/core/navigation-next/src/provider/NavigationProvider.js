@@ -14,7 +14,7 @@ function defaultGetCache(): UIStateShape {
   return stored
     ? JSON.parse(stored)
     : {
-        isHinting: false,
+        isPeekHinting: false,
         isPeeking: false,
         isCollapsed: false,
         productNavWidth: CONTENT_NAV_WIDTH,

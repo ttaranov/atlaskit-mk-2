@@ -91,12 +91,12 @@ const slideIn = keyframes`
 const ContainerNavigationPrimitive = withTheme({
   mode: light,
   context: 'container',
-})(({ children, isEntering, isExiting, isHinting, isPeeking, theme }) => {
+})(({ children, isEntering, isExiting, isPeekHinting, isPeeking, theme }) => {
   let animationName;
   if (isEntering) animationName = slideIn;
 
   let transform = null;
-  if (isHinting) transform = 'translateX(16px)';
+  if (isPeekHinting) transform = 'translateX(16px)';
   if (isPeeking) transform = 'translateX(calc(100% - 32px))';
   if (isExiting) transform = 'translateX(100%)';
 
