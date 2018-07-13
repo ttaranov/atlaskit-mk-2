@@ -386,6 +386,7 @@ import ShortcutIcon from '../glyph/shortcut';
 import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
+import StarLargeIcon from '../glyph/star-large';
 import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
@@ -2692,6 +2693,12 @@ export default {
     component: StarFilledIcon,
     componentName: 'StarFilledIcon',
     package: '@atlaskit/icon/glyph/star-filled',
+  },
+  'star-large': {
+    keywords: ['star-large', 'starlarge'],
+    component: StarLargeIcon,
+    componentName: 'StarLargeIcon',
+    package: '@atlaskit/icon/glyph/star-large',
   },
   star: {
     keywords: ['star'],
