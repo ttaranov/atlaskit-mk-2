@@ -1,5 +1,5 @@
 'use strict';
-//@flow
+// @flow
 
 /*
 * Setup webdriver clients depending on environment on which the test is run against.
@@ -11,9 +11,10 @@
 // take a while depending on the number of threads executing.
 
 // increase this time out to handle queuing on browserstack
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
 
 const webdriverio = require('webdriverio');
+
 process.env.USER = process.env.USER || 'no_user';
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
@@ -40,7 +41,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
           if (skipForBrowser && skipForBrowser[browserName]) {
             if (client.isReady) {
               client.isReady = false;
-              await client.driver.quit();
+              await client.driver.end();
             }
             continue;
           }
@@ -177,12 +178,11 @@ function setBrowserStackClients() {
 
   let clis = [];
   if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
   }
 
   Object.keys(launchers).forEach(key => {
     const option = {
-      maxInstances: 10,
       desiredCapabilities: {
         os: launchers[key].os,
         os_version: launchers[key].os_version,
@@ -190,11 +190,11 @@ function setBrowserStackClients() {
         browser_version: launchers[key].browser_version,
         build: process.env.BITBUCKET_BRANCH,
         project: 'Atlaskit MK-2 Webdriver Tests',
-        'browserstack.debug': false,
-        'browserstack.video': false,
+        'browserstack.debug': false, // Put it to false to experiment the impact on the test runs
+        'browserstack.video': false, // Put it to false to experiment the impact on the test runs
+        'browserstack.idleTimeout': 60,
         'browserstack.local': true,
         'browserstack.localIdentifier': commit,
-        'browerstack.idleTimeout': 60,
       },
       host: 'hub.browserstack.com',
       port: 80,

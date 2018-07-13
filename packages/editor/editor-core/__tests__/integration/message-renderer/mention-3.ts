@@ -104,7 +104,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Mention: users with same first name should not be selected if space',
-  { skip: ['ie', 'safari'] },
+  { skip: ['ie'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);

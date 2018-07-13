@@ -1,18 +1,17 @@
 const axios = require('axios');
+const util = require('util');
 /**
  * NOTE: This utility will manage the browserstack build queues.
  * It checks the number of build running in BS and if the number is greater than the X limit, it will retry after Y time.
  * The goal is to prevent Browserstack to be hammered and reduce the number of timeout for users.
  * */
 const numberOfTries = process.env.BS_RETRY || 5;
-const numberOfBuildsAllowed = process.env.BS_BUILD_ALLOWED || 3;
+const numberOfBuildsAllowed = process.env.BS_BUILD_ALLOWED || 3; // Depending on the number of tests running each build even 3 may hammer BS
 const auth = Buffer.from(
   `${process.env.BROWSERSTACK_USERNAME}:${process.env.BROWSERSTACK_KEY}`,
 ).toString('base64');
 
-async function sleep(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
+const sleep = util.promisify(setTimeout);
 
 function checkBSBuildQueues() {
   return axios

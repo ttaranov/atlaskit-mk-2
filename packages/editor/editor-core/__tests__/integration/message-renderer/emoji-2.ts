@@ -91,7 +91,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'Emoji: should be able to change text with emoji into decisions',
-  { skip: ['ie', 'safari'] },
+  { skip: ['ie'] },
   async client => {
     const decisions = 'span[aria-label="Decision"]';
     const createDecisions = '[aria-label="Create decision"]';
