@@ -4,12 +4,7 @@ import GlobalQuickSearchWithAnalytics, {
   GlobalQuickSearch,
   Props,
 } from '../../components/GlobalQuickSearch';
-import {
-  shallowWithIntl,
-  mountWithIntl,
-} from './helpers/_intl-enzyme-test-helper';
 import * as AnalyticsHelper from '../../util/analytics-event-helper';
-import { ADVANCED_SEARCH_RESULT_ID } from '../../../src/components/SearchResultsUtil';
 
 const noop = () => {};
 const DEFAULT_PROPS = {
@@ -184,7 +179,7 @@ describe('GlobalQuickSearch', () => {
     it('should fire advanced search event', () => {
       const firePrivateAnalyticsEvent = deepRender();
       const eventData = {
-        resultId: ADVANCED_SEARCH_RESULT_ID,
+        resultId: 'search_confluence',
         type: 'recent-result',
         contentType: 'confluence-page',
         sectionIndex: 2,
