@@ -310,7 +310,6 @@ export class QuickSearch extends Component<Props, State> {
         if (typeof firePrivateAnalyticsEvent === 'function') {
           this.fireKeyboardControlEvent(this.state.selectedResultId);
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
-            // index: this.flatResults.indexOf(result),
             ...result.props.analyticsData,
             method: 'returnKey',
             resultId: result.props.resultId,
