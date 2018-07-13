@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 16.0.1
+- [patch] Fix constructAuthTokenUrl [f435228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f435228)
+
 ## 16.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
