@@ -11,7 +11,7 @@
 // take a while depending on the number of threads executing.
 
 // increase this time out to handle queuing on browserstack
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
 
 const webdriverio = require('webdriverio');
 process.env.USER = process.env.USER || 'no_user';
@@ -40,7 +40,6 @@ function BrowserTestCase(...args /*:Array<any> */) {
           if (skipForBrowser && skipForBrowser[browserName]) {
             if (client.isReady) {
               client.isReady = false;
-              await client.driver.end();
               await client.driver.quit();
             }
             continue;
@@ -183,18 +182,19 @@ function setBrowserStackClients() {
 
   Object.keys(launchers).forEach(key => {
     const option = {
+      maxInstances: 10,
       desiredCapabilities: {
         os: launchers[key].os,
         os_version: launchers[key].os_version,
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
-        project: 'Atlaskit MK2',
         build: process.env.BITBUCKET_BRANCH,
-        'browserstack.local': true,
-        // 'browserstack.debug': true,
-        'browserstack.localIdentifier': commit,
-        'browserstack.idleTimeout': 60,
         project: 'Atlaskit MK-2 Webdriver Tests',
+        'browserstack.debug': false,
+        'browserstack.video': false,
+        'browserstack.local': true,
+        'browserstack.localIdentifier': commit,
+        'browerstack.idleTimeout': 60,
       },
       host: 'hub.browserstack.com',
       port: 80,
