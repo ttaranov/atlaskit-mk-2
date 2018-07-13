@@ -214,7 +214,7 @@ describe('<ResourcedItemList/>', () => {
         lastUpdateDate: datePlus(3),
         content: content('t1update'),
       });
-      const recentUpdatesResponse = buildItemResponse([d2, t1update]);
+      const recentUpdatesResponse = buildItemResponse([d2, t1update, d1]);
 
       const renderer = doc => doc.content[0].content[0].text;
 
@@ -289,7 +289,7 @@ describe('<ResourcedItemList/>', () => {
         lastUpdateDate: datePlus(3),
         content: content('t1update'),
       });
-      const recentUpdatesResponse = buildItemResponse([d2, t1update]);
+      const recentUpdatesResponse = buildItemResponse([d2, t1update, d1]);
 
       const renderer = doc => doc.content[0].content[0].text;
 
