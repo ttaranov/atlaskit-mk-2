@@ -7,14 +7,14 @@ import {
   createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
-import { Card, FileIdentifier } from '../src';
+import { Card, FileIdentifier, OnLoadingChangeState } from '../src';
 import { UploadController, FileState } from '@atlaskit/media-core';
 import { Observable } from 'rxjs';
 import {
-  CardTitle,
   CardWrapper,
   CardFlowHeader,
   CardsWrapper,
+  CardState,
 } from '../example-helpers/styled';
 
 const context = createUploadContext();
@@ -22,17 +22,20 @@ const context = createUploadContext();
 export interface ComponentProps {}
 export interface ComponentState {
   fileIds: string[];
+  cardStates: { [name: string]: OnLoadingChangeState | undefined };
 }
 
 class Example extends Component<ComponentProps, ComponentState> {
   uploadController?: UploadController;
   state: ComponentState = {
     fileIds: [genericFileId.id],
+    cardStates: {},
   };
 
   renderCards() {
-    const { fileIds } = this.state;
+    const { fileIds, cardStates } = this.state;
     const cards = fileIds.map(id => {
+      const state = cardStates[id];
       const identifier: FileIdentifier = {
         id,
         mediaItemType: 'file',
@@ -41,12 +44,13 @@ class Example extends Component<ComponentProps, ComponentState> {
 
       return (
         <CardWrapper key={id}>
-          <CardTitle>{id}</CardTitle>
+          {/* <CardTitle>{id}</CardTitle> */}
           <Card
             context={context}
             identifier={identifier}
-            onLoadingChange={this.onLoadingChange}
+            onLoadingChange={this.onLoadingChange(id)}
           />
+          {this.renderCardState(state)}
         </CardWrapper>
       );
     });
@@ -54,8 +58,27 @@ class Example extends Component<ComponentProps, ComponentState> {
     return <CardsWrapper>{cards}</CardsWrapper>;
   }
 
-  onLoadingChange = state => {
-    console.log('onLoadingChange', state);
+  renderCardState = (state?: OnLoadingChangeState) => {
+    if (!state) {
+      return;
+    }
+
+    return (
+      <CardState>
+        <div>Type: {state.type}</div>
+        <pre>{JSON.stringify(state.payload, undefined, 2)}</pre>
+      </CardState>
+    );
+  };
+
+  onLoadingChange = (id: string) => (state: OnLoadingChangeState) => {
+    const { cardStates } = this.state;
+
+    cardStates[id] = state;
+
+    this.setState({
+      cardStates,
+    });
   };
 
   cancelUpload = () => {

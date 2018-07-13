@@ -9,8 +9,8 @@ import {
   ImageResizeMode,
   MediaItemDetails,
   FileState,
-  MediaType,
   FileDetails,
+  MediaType,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs';
@@ -68,9 +68,10 @@ export interface CardState {
 
 const extendMetadata = (
   state: FileState,
-  metadata?: MediaItemDetails,
+  metadata?: FileDetails,
 ): FileDetails => {
   const { id } = state;
+  const currentMediaType = metadata && metadata.mediaType;
   let name: string | undefined,
     size: number | undefined,
     mediaType: MediaType | undefined;
@@ -78,7 +79,10 @@ const extendMetadata = (
   if (state.status !== 'error') {
     name = state.name;
     size = state.size;
-    mediaType = state.mediaType;
+    mediaType =
+      currentMediaType && currentMediaType !== 'unknown'
+        ? currentMediaType
+        : state.mediaType;
   }
 
   return {
@@ -162,8 +166,8 @@ export class Card extends Component<CardProps, CardState> {
           dataURI: currentDataURI,
           metadata: currentMetadata,
         } = this.state;
-        const metadata = extendMetadata(state, currentMetadata);
-        console.log({ currentMetadata, metadata });
+        const metadata = extendMetadata(state, currentMetadata as FileDetails);
+
         if (!currentDataURI) {
           const dataURI = await getDataURIFromFileState(state);
 
