@@ -80,7 +80,7 @@ describe('GlobalQuickSearch', () => {
       jest.resetAllMocks();
     });
 
-    const deepRender = () =>
+    const deepRender = (): Function =>
       render({ searchSessionId })
         .dive()
         .dive()
