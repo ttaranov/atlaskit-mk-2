@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "4.5.2",
+  "version": "5.0.0",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -24,10 +24,10 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^2.1.8",
-    "@atlaskit/icon": "^12.6.2",
-    "@atlaskit/spinner": "^8.0.0",
-    "@atlaskit/theme": "^4.0.4",
+    "@atlaskit/analytics-next": "^3.0.0",
+    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/spinner": "^9.0.0",
+    "@atlaskit/theme": "^5.0.0",
     "focus-trap": "^2.4.5",
     "memoize-one": "^3.0.1",
     "react-fast-compare": "^2.0.1",
@@ -42,12 +42,12 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.2.2",
-    "@atlaskit/checkbox": "^3.1.2",
-    "@atlaskit/docs": "^4.2.0",
-    "@atlaskit/form": "2.1.5",
-    "@atlaskit/modal-dialog": "^5.2.5",
-    "@atlaskit/tooltip": "^10.3.1",
+    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/checkbox": "^4.0.0",
+    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/form": "3.0.0",
+    "@atlaskit/modal-dialog": "^6.0.0",
+    "@atlaskit/tooltip": "^11.0.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-value": "^0.2.0"
