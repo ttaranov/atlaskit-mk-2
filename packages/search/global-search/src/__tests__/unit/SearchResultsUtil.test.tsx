@@ -6,11 +6,14 @@ import {
   AdvancedSearchItemProps,
   searchJiraItem,
   renderResults,
-  ObjectResultWithAnalytics,
-  PersonResultWithAnalytics,
-  ContainerResultWithAnalytics,
   handlePromiseError,
 } from '../../components/SearchResultsUtil';
+import {
+  PersonResult as PersonResultComponent,
+  ContainerResult as ContainerResultComponent,
+} from '@atlaskit/quick-search';
+import ObjectResultComponent from '../../components/ObjectResult';
+
 import {
   JiraObjectResult,
   ContainerResult,
@@ -108,7 +111,7 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(jiraResults)}</span>);
 
-    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-jira',
@@ -129,7 +132,7 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(peopleResults)}</span>);
 
-    expect(wrapper.find(PersonResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(PersonResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-person',
@@ -150,7 +153,7 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(confluenceResults)}</span>);
 
-    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-confluence',
@@ -172,7 +175,7 @@ describe('renderResults', () => {
       <span>{renderResults(confluenceSpaceResults)}</span>,
     );
 
-    expect(wrapper.find(ContainerResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(ContainerResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-confluence',

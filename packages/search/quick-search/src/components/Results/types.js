@@ -32,6 +32,8 @@ type CommonResultProps = {
   resultId: string | number,
   /** Type of the result. This is passed as a parameter to certain callbacks. */
   type: string,
+  /** Type of the result content. This is passed as a parameter to certain callbacks. */
+  contentType?: string,
 };
 
 export type ResultType = CommonResultProps & {
