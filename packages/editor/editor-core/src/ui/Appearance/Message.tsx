@@ -1,6 +1,5 @@
 import * as React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { akColorR100 } from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
@@ -9,24 +8,7 @@ import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-
 import { pluginKey as isMultilineContentPluginKey } from '../../plugins/is-multiline-content';
 import { AddonToolbar, ClickAreaInline } from '../Addon';
 import { scrollbarStyles } from '../styles';
-
-const pulseBackground = keyframes`
-  50% {
-    background-color: ${akColorR100};
-  }
-`;
-
-const pulseBackgroundReverse = keyframes`
-  0% {
-    background-color: ${akColorR100};
-  }
-  50% {
-    background-color: auto;
-  }
-  100% {
-    background-color: ${akColorR100};
-  }
-`;
+import WithFlash from '../WithFlash';
 
 export interface MessageEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -45,14 +27,6 @@ const MessageEditor: any = styled.div`
   min-height: 34px;
   box-sizing: border-box;
   word-wrap: break-word;
-  animation: ${(props: MessageEditorProps) =>
-    props.isMaxContentSizeReached
-      ? `.25s ease-in-out ${pulseBackground}`
-      : 'none'};
-
-  &.-flash {
-    animation: 0.25s ease-in-out ${pulseBackgroundReverse};
-  }
 
   div > .ProseMirror {
     outline: none;
@@ -97,7 +71,6 @@ export default class Editor extends React.Component<
 > {
   static displayName = 'MessageEditor';
 
-  private flashToggle = false;
   private appearance: EditorAppearance = 'message';
 
   private focusEditor = e => {
@@ -126,53 +99,53 @@ export default class Editor extends React.Component<
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
-    this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <MessageEditor
-        className={this.flashToggle ? '-flash' : ''}
-        isMaxContentSizeReached={maxContentSizeReached}
-        onClick={this.focusEditor}
-      >
-        <ContentArea maxHeight={maxHeight} isMultiline={isMultilineContent}>
-          {customContentComponents}
-          <PluginSlot
-            disabled={!!disabled}
-            editorView={editorView}
-            editorActions={editorActions}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={contentComponents}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
-            popupsScrollableElement={popupsScrollableElement}
-          />
-          {editorDOMElement}
-        </ContentArea>
-        <ToolbarArea isMultiline={isMultilineContent}>
-          <ClickAreaInline editorView={editorView} />
-          <SecondaryToolbarContainer>
+      <WithFlash animate={maxContentSizeReached}>
+        <MessageEditor
+          onClick={this.focusEditor}
+          isMaxContentSizeReached={maxContentSizeReached}
+        >
+          <ContentArea maxHeight={maxHeight} isMultiline={isMultilineContent}>
+            {customContentComponents}
             <PluginSlot
-              disabled={disabled || maxContentSizeReached}
+              disabled={!!disabled}
               editorView={editorView}
               editorActions={editorActions}
               eventDispatcher={eventDispatcher}
               providerFactory={providerFactory}
               appearance={this.appearance}
-              items={secondaryToolbarComponents}
+              items={contentComponents}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}
             />
-            {customSecondaryToolbarComponents}
-            <AddonToolbar
-              dropdownItems={addonToolbarComponents}
-              isReducedSpacing={true}
-            />
-          </SecondaryToolbarContainer>
-        </ToolbarArea>
-      </MessageEditor>
+            {editorDOMElement}
+          </ContentArea>
+          <ToolbarArea isMultiline={isMultilineContent}>
+            <ClickAreaInline editorView={editorView} />
+            <SecondaryToolbarContainer>
+              <PluginSlot
+                disabled={disabled || maxContentSizeReached}
+                editorView={editorView}
+                editorActions={editorActions}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={secondaryToolbarComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+                popupsScrollableElement={popupsScrollableElement}
+              />
+              {customSecondaryToolbarComponents}
+              <AddonToolbar
+                dropdownItems={addonToolbarComponents}
+                isReducedSpacing={true}
+              />
+            </SecondaryToolbarContainer>
+          </ToolbarArea>
+        </MessageEditor>
+      </WithFlash>
     );
   };
 

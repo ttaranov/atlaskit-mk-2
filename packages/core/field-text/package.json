@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "6.1.1",
+  "version": "6.1.3",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

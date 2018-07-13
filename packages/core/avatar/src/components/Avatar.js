@@ -42,7 +42,7 @@ class Avatar extends Component<AvatarPropTypes> {
 
     if (isDisabled || typeof onClick !== 'function') return;
 
-    const item: {} = omit(this.props, ...propsOmittedFromClickData);
+    const item = omit(this.props, ...propsOmittedFromClickData);
 
     onClick({ item, event });
   };

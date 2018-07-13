@@ -102,6 +102,9 @@ export interface ContainerProps {
   };
   isExpanded?: boolean;
   onCancel?: () => void;
+  showBeforeUnloadWarning?: boolean;
+  onEditorOpen?: () => void;
+  onEditorClose?: () => void;
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
   disableScrollTo?: boolean;
@@ -117,7 +120,10 @@ class ConversationContainer extends React.Component<ContainerProps, any> {
   }
 
   render() {
-    const { props, state: { localId } } = this;
+    const {
+      props,
+      state: { localId },
+    } = this;
     const { store } = props.provider;
 
     return (

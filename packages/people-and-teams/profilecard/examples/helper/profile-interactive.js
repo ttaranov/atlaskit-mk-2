@@ -128,6 +128,7 @@ export default class ProfilecardInteractive extends Component<Props, State> {
         <input
           checked={this.state.presence === attribute}
           id={id}
+          // $FlowFixMe - Cannot call `this.setState` with object literal bound to `partialState`
           onChange={() => this.setState({ presence: attribute })}
           type="radio"
         />

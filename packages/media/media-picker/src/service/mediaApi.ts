@@ -2,7 +2,11 @@
 // Do not use this class for anything. Use media-store instead
 
 import * as uuid from 'uuid';
-import { FileDetails } from '@atlaskit/media-core';
+import {
+  FileDetails,
+  FileProcessingStatus,
+  Artifacts,
+} from '@atlaskit/media-core';
 import {
   MediaClient,
   MediaClientRequest,
@@ -11,15 +15,10 @@ import {
 import { retryTask } from '../util/promises';
 import { SourceFile } from '../popup/domain';
 
-export interface MediaArtifact {
-  processingStatus: string;
-  url?: string;
-}
-
 export interface MediaFileData {
   id: string;
-  processingStatus?: string;
-  artifacts?: { [name: string]: MediaArtifact };
+  processingStatus?: FileProcessingStatus;
+  artifacts?: Artifacts;
 }
 
 export class MediaApi {

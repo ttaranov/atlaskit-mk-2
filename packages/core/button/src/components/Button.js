@@ -40,8 +40,6 @@ const createStyledComponent = () => {
   // Override pseudo-state specificity.
   // This is necessary because we don't know what DOM element the custom component will render.
   const component = styled(
-    /* CustomComponentProxy is absolutely valid here, so this seems a problem with styled-components flow definitions */
-    // $FlowFixMe
     CustomComponentProxy,
   )`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
   component.displayName = 'StyledCustomComponent';

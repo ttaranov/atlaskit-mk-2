@@ -4,7 +4,9 @@ import {
   imageFileId,
   wideImageFileId,
   videoFileId,
+  videoProcessingFailedId,
   defaultCollectionName,
+  genericLinkId,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
 import Button from '@atlaskit/button';
@@ -34,6 +36,18 @@ const invalidItem: MediaViewerItem = {
   type: 'file',
   id: 'invalid-id',
   occurrenceKey: 'invalid-key',
+};
+
+const itemProcessingFailed: MediaViewerItem = {
+  type: 'file',
+  id: videoProcessingFailedId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const linkItem: MediaViewerItem = {
+  type: 'link',
+  id: genericLinkId.id,
+  occurrenceKey: 'testOccurrenceKey',
 };
 
 export type State = {
@@ -67,6 +81,39 @@ export default class Example extends React.Component<{}, State> {
           }
         >
           Invalid ID
+        </Button>
+
+        <Button
+          onClick={() =>
+            this.setState({
+              selectedItem: itemProcessingFailed,
+              dataSource: { list: [itemProcessingFailed] },
+            })
+          }
+        >
+          Video processing failed
+        </Button>
+
+        <Button
+          onClick={() =>
+            this.setState({
+              selectedItem: itemProcessingFailed,
+              dataSource: { collectionName: 'invalid-name' },
+            })
+          }
+        >
+          Collection failed to load
+        </Button>
+
+        <Button
+          onClick={() =>
+            this.setState({
+              selectedItem: linkItem,
+              dataSource: { list: [linkItem] },
+            })
+          }
+        >
+          Links are not supported
         </Button>
 
         {this.state.selectedItem &&

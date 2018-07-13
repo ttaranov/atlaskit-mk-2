@@ -8,13 +8,12 @@ import {
   akEditorTableToolbar,
   akEditorWideLayoutWidth,
   akEditorTableNumberColumnWidth,
+  akEditorBreakoutPadding,
 } from './consts';
 
 export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
-
-const CONTROLLER_PADDING = 74;
 
 const tableSharedStyle = css`
   .table-container {
@@ -87,12 +86,12 @@ export const calcTableWidth = (
     case 'full-width':
       return containerWidth
         ? `${containerWidth -
-            (addControllerPadding ? CONTROLLER_PADDING : 0)}px`
+            (addControllerPadding ? akEditorBreakoutPadding : 0)}px`
         : '100%';
     case 'wide':
       if (containerWidth) {
         const targetWidth =
-          containerWidth - (addControllerPadding ? CONTROLLER_PADDING : 0);
+          containerWidth - (addControllerPadding ? akEditorBreakoutPadding : 0);
         return targetWidth < akEditorWideLayoutWidth
           ? `${targetWidth}px`
           : `${akEditorWideLayoutWidth}px`;

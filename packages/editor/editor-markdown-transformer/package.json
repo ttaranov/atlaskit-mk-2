@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-markdown-transformer",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Editor Markdown transformer",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/editor-core": "^73.9.5",
-    "@atlaskit/editor-test-helpers": "^4.1.9"
+    "@atlaskit/editor-core": "^74.0.0",
+    "@atlaskit/editor-test-helpers": "^4.2.2"
   },
   "peerDependencies": {
     "styled-components": "^3.2.6"

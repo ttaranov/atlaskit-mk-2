@@ -1,5 +1,30 @@
 # @atlaskit/emoji
 
+## 37.0.2
+- [patch] Move emoji tests [0c6d1c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c6d1c7)
+- [none] Updated dependencies [0c6d1c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c6d1c7)
+
+## 37.0.1
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-service-support@2.0.12
+  - @atlaskit/util-data-test@9.1.18
+
+## 37.0.0
+- [major] FS-2011 change EmojiRepository to use CategoryId [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+- [minor] FS-2011 fix scroll to user custom upload section [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+- [none] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/util-data-test@9.1.17
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/util-data-test@9.1.17
+
+## 36.0.2
+
+
+- [none] Updated dependencies [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-core@21.0.0
+
 ## 36.0.1
 - [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
   - @atlaskit/media-picker@8.1.6

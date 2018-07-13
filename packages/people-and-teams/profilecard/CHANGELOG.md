@@ -1,5 +1,21 @@
 # @atlaskit/profilecard
 
+## 3.13.4
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/dynamic-table@9.2.6
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/button@8.2.5
+  - @atlaskit/dynamic-table@9.2.6
+
+## 3.13.3
+- [patch] Fix flow config and add back flow fix me [107da09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107da09)
+- [none] Updated dependencies [107da09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107da09)
+
 ## 3.13.2
 - [patch] Update package.json to point to correct build directories [2362f0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2362f0b)
 - [none] Updated dependencies [2362f0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2362f0b)

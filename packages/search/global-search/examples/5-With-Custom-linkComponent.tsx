@@ -2,6 +2,7 @@ import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 interface Props {
   className: string;
@@ -40,11 +41,13 @@ export default class extends React.Component {
     return (
       <BasicNavigation
         searchDrawerContent={
-          <GlobalQuickSearch
-            cloudId="cloudId"
-            context="confluence"
-            linkComponent={AlertLinkComponent}
-          />
+          <LocaleIntlProvider>
+            <GlobalQuickSearch
+              cloudId="cloudId"
+              context="confluence"
+              linkComponent={AlertLinkComponent}
+            />
+          </LocaleIntlProvider>
         }
       />
     );

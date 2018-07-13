@@ -1,5 +1,28 @@
 # @atlaskit/datetime-picker
 
+## 5.4.5
+- [patch] Updated dependencies [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
+  - @atlaskit/select@4.5.2
+
+## 5.4.4
+- [patch] atlaskit/select now invokes a makeAnimated function to wrap passed in components in default animated behaviour. As this invocation returns a new set of react components each time, we've also implemented a lightweight component cache using memoize-one and react-fast-compare. Additionally updates made to datetime-picker to not instantiate a new component on render everytime (for performance reasons as well as to satisfy our caching logic), we now also pass relevant state values through the select as props to be ingested by our custom components, instead of directly capturing them within lexical scope.  [9b01264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b01264)
+- [patch] Updated dependencies [9b01264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b01264)
+  - @atlaskit/select@4.5.0
+
+## 5.4.3
+- [patch] Fix disabled dates could be selected with keyboard [832b4ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/832b4ab)
+- [patch] Updated dependencies [832b4ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/832b4ab)
+
+## 5.4.2
+- [patch] Fix Calendar width increasing for some months [29ffb24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29ffb24)
+- [patch] Updated dependencies [29ffb24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29ffb24)
+  - @atlaskit/calendar@6.2.2
+
+## 5.4.1
+- [patch] Calendar chevrons use large versions [a973ac3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a973ac3)
+- [patch] Updated dependencies [a973ac3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a973ac3)
+  - @atlaskit/calendar@6.2.1
+
 ## 5.4.0
 - [minor] Visual changes to match ADG3 guidelines [059d111](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/059d111)
 - [minor] Updated dependencies [059d111](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/059d111)

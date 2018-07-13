@@ -16,7 +16,7 @@ describe('Shortcut', () => {
   });
 
   it('should de-register the key event listener on unmount', done => {
-    document.removeEventListener = name => {
+    document.removeEventListener = (name: string) => {
       expect(name).toEqual('keydown');
       done();
     };
