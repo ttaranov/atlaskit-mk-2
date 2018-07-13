@@ -8,6 +8,9 @@ import {
   UrlPreviewProvider,
   ImageResizeMode,
   MediaItemDetails,
+  FileState,
+  MediaType,
+  FileDetails,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs';
@@ -16,7 +19,6 @@ import {
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
-  OnLoadingChangeState,
 } from '../..';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
@@ -63,6 +65,29 @@ export interface CardState {
   progress?: number;
   readonly error?: Error;
 }
+
+const extendMetadata = (
+  state: FileState,
+  metadata?: MediaItemDetails,
+): FileDetails => {
+  const { id } = state;
+  let name: string | undefined,
+    size: number | undefined,
+    mediaType: MediaType | undefined;
+
+  if (state.status !== 'error') {
+    name = state.name;
+    size = state.size;
+    mediaType = state.mediaType;
+  }
+
+  return {
+    id,
+    name,
+    size,
+    mediaType,
+  };
+};
 
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
@@ -133,8 +158,12 @@ export class Card extends Component<CardProps, CardState> {
     this.unsubscribe();
     this.subscription = context.getFile(id, { collectionName }).subscribe({
       next: async state => {
-        const { dataURI: currentDataURI } = this.state;
-
+        const {
+          dataURI: currentDataURI,
+          metadata: currentMetadata,
+        } = this.state;
+        const metadata = extendMetadata(state, currentMetadata);
+        console.log({ currentMetadata, metadata });
         if (!currentDataURI) {
           const dataURI = await getDataURIFromFileState(state);
 
@@ -142,35 +171,29 @@ export class Card extends Component<CardProps, CardState> {
         }
 
         if (state.status === 'uploading') {
-          const { progress, id, name, size, mediaType } = state;
+          const { progress } = state;
           this.setState(
             {
               status: 'uploading',
               progress,
-              metadata: {
-                id,
-                name,
-                size,
-                mediaType,
-              },
+              metadata,
             },
             onLoadingChangeCallback,
           );
         }
 
         if (state.status === 'processing') {
-          // TODO: should we set "metadata" here too? It might be possible that the first time you ask for and id is already 'processing'
           this.setState(
             {
               progress: 1,
               status: 'complete',
+              metadata,
             },
             onLoadingChangeCallback,
           );
         }
 
         if (state.status === 'processed') {
-          const { id, name, size, mediaType } = state;
           const options = {
             appearance: this.props.appearance,
             dimensions: this.props.dimensions,
@@ -189,12 +212,7 @@ export class Card extends Component<CardProps, CardState> {
             {
               dataURI,
               status: 'complete',
-              metadata: {
-                id,
-                name,
-                size,
-                mediaType,
-              },
+              metadata,
             },
             onLoadingChangeCallback,
           );

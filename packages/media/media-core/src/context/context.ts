@@ -313,6 +313,7 @@ class ContextImpl implements Context {
             id,
             name,
             size,
+            mediaType,
             status: 'processing',
           });
           observer.complete();

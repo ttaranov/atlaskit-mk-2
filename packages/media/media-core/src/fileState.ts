@@ -33,6 +33,7 @@ export interface ProcessingFileState {
   id: string;
   name: string;
   size: number;
+  mediaType: MediaType;
   preview?: FilePreview;
 }
 export interface ProcessedFileState {
@@ -98,6 +99,7 @@ export const mapMediaFileToFileState = (
         status,
         name,
         size,
+        mediaType,
       };
     case 'processed':
       return {
