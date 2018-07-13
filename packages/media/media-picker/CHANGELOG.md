@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 10.0.0
+- [major] Remove old analytics client, context and tracker code [daf6227](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/daf6227)
+
 ## 9.0.1
 - [patch] [MSW-847 ] Fix Safari issue with not selecting files in MediaPicker recents [6f51fdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f51fdb)
 

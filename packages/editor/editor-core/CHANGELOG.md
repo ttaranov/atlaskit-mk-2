@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 74.0.18
+- [patch] Updated dependencies [daf6227](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/daf6227)
+  - @atlaskit/media-picker@10.0.0
+
 ## 74.0.17
 
 - [patch] Refactor existing 'paste' slice handling code, to use common utilities. Remove unused linkifySlice export from editor-common. [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
