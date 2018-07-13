@@ -3,7 +3,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
-import { ProgressDots } from '../../..';
+import { ProgressDots as ProgressDotsWithAnalytics } from '../../..';
+import { ProgressDotsWithoutAnalytics as ProgressDots } from '../../Dots';
 import { IndicatorButton, IndicatorDiv } from '../../../styled/Dots';
 
 // NOTE: "StubComponent" saves duplicating required props; avoids errors in the logs
@@ -83,5 +84,29 @@ describe('Progress Indicator', () => {
           .prop('selected'),
       ).toBe(true);
     });
+  });
+});
+
+describe('ProgressDotsWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <ProgressDotsWithAnalytics
+        selectedIndex={0}
+        values={['one', 'two', 'three', 'four', 'five']}
+      />,
+    );
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });
