@@ -244,11 +244,12 @@ export const MetadataFileName = styled.div`
 export const MetadataSubText = styled.div`
   color: ${colors.DN400};
   ${ellipsis()};
+  font-weight: normal;
 `;
 
 export const MetadataIconWrapper = styled.div`
   padding-top: 4px;
-  padding-right: 12px;
+  padding-right: 8px;
 `;
 
 export interface IconWrapperProps {
