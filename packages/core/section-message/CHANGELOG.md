@@ -1,5 +1,8 @@
 # @atlaskit/section-message
 
+## 1.0.1
+- [patch] Change icon used by 'change' section-message [06ac04c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06ac04c)
+
 ## 1.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
