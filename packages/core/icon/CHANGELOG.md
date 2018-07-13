@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 12.8.0
+- [minor] Add new media viewer icons  and replace existing ones [623a2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623a2a0)
+- [none] Updated dependencies [623a2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623a2a0)
+
 ## 12.7.0
 - [minor] Add chevron large icons [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
 - [none] Updated dependencies [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)

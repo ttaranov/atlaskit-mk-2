@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 8.2.7
+- [patch] Fixed spinner position and size for isLoading state of buttons [d6fb3c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6fb3c9)
+- [none] Updated dependencies [d6fb3c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6fb3c9)
+
 ## 8.2.6
 - [patch] Updated prop description for button. Added button label props for inline-edit accessibility. [11205df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11205df)
 - [none] Updated dependencies [11205df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11205df)

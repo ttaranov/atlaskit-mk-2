@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 8.2.0
+- [minor] Reduce autodismiss flag duration from 15 seconds to 8 seconds [5f6ec84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f6ec84)
+
 ## 8.1.5
 - [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
 - [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)

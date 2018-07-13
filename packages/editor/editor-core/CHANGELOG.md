@@ -1,5 +1,52 @@
 # @atlaskit/editor-core
 
+## 74.0.17
+
+- [patch] Refactor existing 'paste' slice handling code, to use common utilities. Remove unused linkifySlice export from editor-common. [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+- [none] Updated dependencies [5f6ec84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f6ec84)
+  - @atlaskit/editor-test-helpers@4.2.4
+  - @atlaskit/renderer@18.2.18
+  - @atlaskit/task-decision@7.1.14
+  - @atlaskit/editor-common@12.0.0
+  - @atlaskit/editor-markdown-transformer@1.2.8
+  - @atlaskit/editor-json-transformer@3.1.8
+  - @atlaskit/editor-bitbucket-transformer@3.2.9
+- [patch] Updated dependencies [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+  - @atlaskit/editor-test-helpers@4.2.4
+  - @atlaskit/renderer@18.2.18
+  - @atlaskit/task-decision@7.1.14
+  - @atlaskit/editor-common@12.0.0
+  - @atlaskit/editor-markdown-transformer@1.2.8
+  - @atlaskit/editor-json-transformer@3.1.8
+  - @atlaskit/editor-bitbucket-transformer@3.2.9
+
+## 74.0.16
+
+- [patch] code improvements and MentionContextIdentifier attributes made mandatory to sync with editor-common ContextIdentifier [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+
+- [patch] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-test-helpers@4.2.3
+  - @atlaskit/editor-common@11.4.6
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-test-helpers@4.2.3
+  - @atlaskit/editor-common@11.4.6
+- [none] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-test-helpers@4.2.3
+  - @atlaskit/editor-common@11.4.6
+
+## 74.0.15
+- [patch] Rename deindent to outdent, reword analytic event to be consistent ED-4865 [33ab33b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33ab33b)
+- [none] Updated dependencies [33ab33b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33ab33b)
+
 ## 74.0.14
 - [patch] Split out non-core style and minor refactors in anticipation of hyperlink refactor [d1c7461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1c7461)
 - [none] Updated dependencies [d1c7461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1c7461)

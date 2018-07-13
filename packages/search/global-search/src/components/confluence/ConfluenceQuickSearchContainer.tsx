@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
@@ -59,26 +60,22 @@ export interface State {
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
 export class ConfluenceQuickSearchContainer extends React.Component<
-  Props,
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-      isError: false,
-      query: '',
-      searchSessionId: uuid(), // unique id for search attribution
-      recentlyViewedPages: [],
-      recentlyViewedSpaces: [],
-      recentlyInteractedPeople: [],
-      objectResults: [],
-      spaceResults: [],
-      peopleResults: [],
-      keepRecentActivityResults: true,
-    };
-  }
+  state = {
+    isLoading: false,
+    isError: false,
+    query: '',
+    searchSessionId: uuid(), // unique id for search attribution
+    recentlyViewedPages: [],
+    recentlyViewedSpaces: [],
+    recentlyInteractedPeople: [],
+    objectResults: [],
+    spaceResults: [],
+    peopleResults: [],
+    keepRecentActivityResults: true,
+  };
 
   handleSearch = (query: string) => {
     if (this.state.query !== query) {
@@ -368,6 +365,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         onSearch={this.handleSearch}
         onSearchSubmit={this.handleSearchSubmit}
         isLoading={isLoading}
+        placeholder={this.props.intl.formatMessage({
+          id: 'global-search.confluence.search-placeholder',
+        })}
         query={query}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
@@ -391,6 +391,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 }
 
-export default withAnalyticsEvents()(
-  withAnalytics(ConfluenceQuickSearchContainer, {}, {}),
+export default injectIntl<Props>(
+  withAnalyticsEvents()(withAnalytics(ConfluenceQuickSearchContainer, {}, {})),
 );
