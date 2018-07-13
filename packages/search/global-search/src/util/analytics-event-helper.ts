@@ -54,20 +54,26 @@ export function firePreQueryShownEvent(
   );
 }
 
+const getQueryAttributes = query => {
+  const sanitizedQuery = sanitizeSearchQuery(query);
+  return {
+    queryLength: sanitizedQuery.length,
+    wordCount:
+      sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
+    queryHash: sanitizedQuery ? hash(sanitizedQuery) : '',
+  };
+};
+
 export function fireTextEnteredEvent(
   query: string,
   searchSessionId: string,
   queryVersion: number,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  // TODO ask why length of sanitizedQuery
-  const sanitizedQuery = sanitizeSearchQuery(query);
   fireGasEvent(createAnalyticsEvent, 'entered', 'text', '', 'track', {
     queryId: null,
     queryVersion: queryVersion,
-    queryLength: sanitizedQuery.length,
-    wordCount:
-      sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
+    ...getQueryAttributes(query),
     searchSessionId: searchSessionId,
   });
 }
@@ -88,12 +94,12 @@ export function fireDismissedEvent(
 export function firePostQueryShownEvent(
   resultsDetails: ShownAnalyticsAttributes,
   elapsedMs: number,
+  quickNavElapsedMs: number,
   searchSessionId: string,
   query: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
   const event = createAnalyticsEvent();
-  const sanitizedQuery = sanitizeSearchQuery(query);
 
   const payload: GasPayload = {
     action: 'shown',
@@ -102,11 +108,10 @@ export function firePostQueryShownEvent(
     eventType: 'ui',
     source: DEFAULT_GAS_SOURCE,
     attributes: {
-      queryCharacterCount: sanitizedQuery.length,
-      queryWordCount:
-        sanitizedQuery.length > 0 ? sanitizedQuery.split(/\s/).length : 0,
+      ...getQueryAttributes(query),
       postQueryRequestDurationMs: elapsedMs,
-      searchSessionId: searchSessionId,
+      searchSessionId,
+      quickNavElapsedMs,
       ...resultsDetails,
       ...DEFAULT_GAS_ATTRIBUTES,
     },
@@ -187,7 +192,6 @@ export function fireSelectedAdvancedSearch(
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
   const { method, newTab, query, queryVersion } = eventData;
-  const sanitizedQuery = query ? sanitizeSearchQuery(query) : '';
   fireGasEvent(
     createAnalyticsEvent,
     'selected',
@@ -198,10 +202,9 @@ export function fireSelectedAdvancedSearch(
       trigger: method,
       searchSessionId: searchSessionId,
       newTab,
-      queryHash: sanitizedQuery ? hash(sanitizedQuery) : '',
       queryVersion,
-      queryLength: sanitizedQuery.length,
       queryId: null,
+      ...getQueryAttributes(query),
       wasOnNoResultsScreen:
         +eventData.index === 0 && +eventData.sectionIndex === 1,
       ...transformSearchResultEventData(eventData),
