@@ -15,13 +15,7 @@ import { hidePopup } from '../popup/actions/hidePopup';
 import { createStore } from '../store';
 import { UploadComponent, UploadEventEmitter } from './component';
 
-import {
-  MPPopupLoaded,
-  MPPopupShown,
-  MPPopupHidden,
-} from '../outer/analytics/events';
 import { defaultUploadParams } from '../domain/uploadParams';
-import { MediaPickerContext } from '../domain/context';
 import { UploadParams } from '../domain/config';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
@@ -34,11 +28,7 @@ export interface PopupConfig {
 export const USER_RECENTS_COLLECTION = 'recents';
 
 export interface PopupConstructor {
-  new (
-    analyticsContext: MediaPickerContext,
-    context: Context,
-    config: PopupConfig,
-  ): Popup;
+  new (context: Context, config: PopupConfig): Popup;
 }
 
 export type PopupUploadEventPayloadMap = UploadEventPayloadMap & {
@@ -56,7 +46,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private uploadParams: UploadParams;
 
   constructor(
-    anlyticsContext: MediaPickerContext,
     readonly context: Context,
     {
       container = document.body,
@@ -64,9 +53,8 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       useNewUploadService,
     }: PopupConfig,
   ) {
-    super(anlyticsContext);
+    super();
 
-    this.analyticsContext.trackEvent(new MPPopupLoaded());
     this.store = createStore(this, context, useNewUploadService);
 
     this.uploadParams = {
@@ -99,7 +87,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         this.store.dispatch(getConnectedRemoteAccounts());
 
         this.store.dispatch(showPopup());
-        this.analyticsContext.trackEvent(new MPPopupShown());
       });
   }
 
@@ -130,7 +117,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
   public emitClosed(): void {
     this.emit('closed', undefined);
-    this.analyticsContext.trackEvent(new MPPopupHidden());
   }
 
   private renderPopup(): HTMLElement {

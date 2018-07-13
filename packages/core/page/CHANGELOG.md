@@ -1,5 +1,19 @@
 # @atlaskit/page
 
+## 8.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/banner@7.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/navigation@33.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/banner@7.0.0
+  - @atlaskit/docs@5.0.0
+
 ## 7.2.1
 - [patch] Fixed typo in grid component [c1fda8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1fda8b)
 - [none] Updated dependencies [c1fda8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1fda8b)

@@ -115,10 +115,6 @@ export const mockWsConnectionHolder = () => ({
   send: jest.fn(),
 });
 
-export const mockMediaPickerContext = () => ({
-  trackEvent: jest.fn(),
-});
-
 export const mockEventEmiter = () => ({
   once: jest.fn(),
   on: jest.fn(),

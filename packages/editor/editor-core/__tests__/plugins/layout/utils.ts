@@ -11,12 +11,13 @@ import {
   unwrapContentFromLayout,
   removeLayoutFromFirstChild,
   removeLayoutFromLastChild,
-  removeLayoutFromAllChildren,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../../src/plugins/layout/utils';
 
-const array = (...args): Node[] => args.map(i => i(defaultSchema));
-const fragment = (...args) => Fragment.from(args.map(i => i(defaultSchema)));
+const removeRef = node => Node.fromJSON(defaultSchema, node.toJSON());
+const array = (...args): Node[] => args.map(i => removeRef(i(defaultSchema)));
+const fragment = (...args) =>
+  Fragment.from(args.map(i => removeRef(i(defaultSchema))));
 
 describe('layout', () => {
   describe('#flatmap', () => {
@@ -56,15 +57,17 @@ describe('layout', () => {
 
   describe('#unwrapContentFromLayout', () => {
     it('should ignore any node that is not a layoutSection', () => {
-      const node = p('hello world!')(defaultSchema);
-      expect(unwrapContentFromLayout(node)).toBe(node);
+      const node = array(p('hello world!'))[0];
+      expect(unwrapContentFromLayout(node)).toEqual([node]);
     });
 
     it('should unwrap any content inside a layoutSection', () => {
       const columnA = layoutColumn(p('Column A'), hr());
       const columnB = layoutColumn(p('Column B'));
       const columnC = layoutColumn(hr(), p('Column C'), hr());
-      const layout = layoutSection()(columnA, columnB, columnC)(defaultSchema);
+      const layout = removeRef(
+        layoutSection()(columnA, columnB, columnC)(defaultSchema),
+      );
 
       const expected = array(
         p('Column A'),
@@ -91,7 +94,9 @@ describe('layout', () => {
     it('should unwrap the layout when it is the first child of a node', () => {
       const columnA = layoutColumn(p('Column A'));
       const columnB = layoutColumn(p('Column B'));
-      const layout = layoutSection()(columnA, columnB)(defaultSchema);
+      const layout = removeRef(
+        layoutSection()(columnA, columnB)(defaultSchema),
+      );
 
       const expected = array(p('Column A'), p('Column B'));
       expect(removeLayoutFromFirstChild(layout, 0)).toEqual(expected);
@@ -131,17 +136,6 @@ describe('layout', () => {
       expect(
         removeLayoutFromLastChild(sliceFragment.child(1), 1, sliceFragment),
       ).toEqualDocument(layout);
-    });
-  });
-
-  describe('#removeLayoutFromAllChildren', () => {
-    it('should unwrap a layout regardless of position', () => {
-      const columnA = layoutColumn(p('Column A'));
-      const columnB = layoutColumn(p('Column B'));
-      const layout = layoutSection()(columnA, columnB)(defaultSchema);
-
-      const expected = array(p('Column A'), p('Column B'));
-      expect(removeLayoutFromAllChildren(layout)).toEqual(expected);
     });
   });
 
