@@ -7,12 +7,12 @@ import {
   hr,
 } from '@atlaskit/editor-test-helpers';
 import {
-  flatmap,
   unwrapContentFromLayout,
   removeLayoutFromFirstChild,
   removeLayoutFromLastChild,
   transformSliceToRemoveOpenLayoutNodes,
 } from '../../../src/plugins/layout/utils';
+import { flatmap } from '../../../src/utils/slice';
 
 const removeRef = node => Node.fromJSON(defaultSchema, node.toJSON());
 const array = (...args): Node[] => args.map(i => removeRef(i(defaultSchema)));
