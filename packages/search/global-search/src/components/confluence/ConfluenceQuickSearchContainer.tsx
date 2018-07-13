@@ -190,6 +190,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   fireShownPostQueryEvent(
     requestStartTime: number,
+    quickNavElapsedTime: number,
     resultsDetails: ShownAnalyticsAttributes,
   ) {
     const { createAnalyticsEvent } = this.props;
@@ -199,6 +200,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       firePostQueryShownEvent(
         resultsDetails,
         elapsedMs,
+        quickNavElapsedTime,
         this.state.searchSessionId,
         this.state.query,
         createAnalyticsEvent,
@@ -227,6 +229,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   doSearch = async (query: string) => {
     const startTime = performanceNow();
+    let quickNavTime;
 
     this.setState({
       isLoading: true,
@@ -236,6 +239,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       // rethrow to fail the promise
       throw error;
     });
+    quickNavPromise.then(() => (quickNavTime = performanceNow() - startTime));
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query),
       new Map<Scope, Result[]>(),
@@ -275,6 +279,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
       this.fireShownPostQueryEvent(
         startTime,
+        quickNavTime,
         buildShownEventDetails(
           take(searchResult.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
           take(searchResult.spaceResults, MAX_SPACES),
