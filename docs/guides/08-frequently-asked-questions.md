@@ -1,3 +1,7 @@
+---
+title: Frequently Asked Questions
+---
+
 # Frequently Asked Questions
 
 We will use this page to answer any frequently asked questions or common pitfalls / mistakes when developing.

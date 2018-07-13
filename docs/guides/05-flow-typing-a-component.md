@@ -1,3 +1,7 @@
+---
+title: Flow typing a component
+---
+
 # Flow typing a component
 
 Related reading:

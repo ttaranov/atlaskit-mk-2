@@ -1,3 +1,7 @@
+---
+title: HoC vs props
+---
+
 # When to use a HoC vs render props
 
 Related resources:

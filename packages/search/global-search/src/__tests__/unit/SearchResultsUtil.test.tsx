@@ -6,11 +6,14 @@ import {
   AdvancedSearchItemProps,
   searchJiraItem,
   renderResults,
-  ObjectResultWithAnalytics,
-  PersonResultWithAnalytics,
-  ContainerResultWithAnalytics,
   handlePromiseError,
 } from '../../components/SearchResultsUtil';
+import {
+  ObjectResult as ObjectResultComponent,
+  PersonResult as PersonResultComponent,
+  ContainerResult as ContainerResultComponent,
+} from '@atlaskit/quick-search';
+
 import {
   JiraObjectResult,
   ContainerResult,
@@ -109,7 +112,7 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(jiraResults)}</span>);
 
-    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-jira',
@@ -130,7 +133,7 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(peopleResults)}</span>);
 
-    expect(wrapper.find(PersonResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(PersonResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-person',
@@ -151,19 +154,19 @@ describe('renderResults', () => {
 
     const wrapper = shallow(<span>{renderResults(confluenceResults)}</span>);
 
-    expect(wrapper.find(ObjectResultWithAnalytics).props()).toEqual(
-      expect.objectContaining({
-        href: 'href',
-        resultId: 'resultId',
-        type: 'result-confluence',
-        name: 'name',
-        containerName: 'containerName',
-        contentType: ContentType.ConfluencePage,
-      }),
-    );
-    expect(wrapper.find(ObjectResultWithAnalytics).prop('avatar').type).toEqual(
-      Objects24Object24PageIcon,
-    );
+    expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
+      href: 'href',
+      resultId: 'resultId',
+      type: 'result-confluence',
+      name: 'name',
+      containerName: 'containerName',
+      contentType: ContentType.ConfluencePage,
+    });
+
+    const avatar: { type: string } = wrapper
+      .find(ObjectResultComponent)
+      .prop('avatar');
+    expect(avatar.type).toEqual(Objects24Object24PageIcon);
   });
 
   it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
@@ -178,7 +181,7 @@ describe('renderResults', () => {
       <span>{renderResults(confluenceSpaceResults)}</span>,
     );
 
-    expect(wrapper.find(ContainerResultWithAnalytics).props()).toEqual({
+    expect(wrapper.find(ContainerResultComponent).props()).toMatchObject({
       href: 'href',
       resultId: 'resultId',
       type: 'result-confluence',

@@ -1,3 +1,7 @@
+---
+title: Naming props
+---
+
 # Naming props
 
 We all know naming is the hardest thing in this industry, so this is designed to help with that in the context of props.

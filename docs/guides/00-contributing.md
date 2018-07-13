@@ -1,3 +1,7 @@
+---
+title: Contributing
+---
+
 # Contributing
 
 Related reading:
