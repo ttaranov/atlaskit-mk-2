@@ -10,7 +10,10 @@ export const toggleStrikethrough = makeKeyMapWithCommon(
   'Mod-Shift-s',
 );
 export const toggleCode = makeKeyMapWithCommon('Code', 'Mod-Shift-m');
-export const pastePlainText = makeKeyMapWithCommon('Paste Plain Text', 'Mod-Shift-v');
+export const pastePlainText = makeKeyMapWithCommon(
+  'Paste Plain Text',
+  'Mod-Shift-v',
+);
 export const clearFormatting = makeKeyMapWithCommon(
   'Clear formatting',
   'Mod-\\',
