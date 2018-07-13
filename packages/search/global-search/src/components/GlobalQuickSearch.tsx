@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import * as debounce from 'lodash.debounce';
 import { QuickSearch } from '@atlaskit/quick-search';
 import { LinkComponent } from './GlobalQuickSearchWrapper';
@@ -21,6 +22,7 @@ export interface Props {
   onSearchSubmit?();
 
   isLoading: boolean;
+  placeholder?: string;
   query: string;
   searchSessionId: string;
   children: React.ReactNode;
@@ -98,6 +100,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
     const {
       query,
       isLoading,
+      placeholder,
       linkComponent,
       children,
       onSearchSubmit,
@@ -108,6 +111,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
         <QuickSearch
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
+          placeholder={placeholder}
           value={query}
           linkComponent={linkComponent}
           onSearchSubmit={onSearchSubmit}

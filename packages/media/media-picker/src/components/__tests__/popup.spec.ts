@@ -1,10 +1,8 @@
 import { Popup, PopupConfig } from '../popup';
-import { MPPopupLoaded } from '../../outer/analytics/events';
 import { UploadParams } from '../..';
 import { ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaPickerPopup', () => {
-  const fakeContext = { trackEvent: jest.fn() };
   const context = ContextFactory.create({
     serviceHost: 'some-api-url',
     authProvider: () => Promise.resolve({ clientId: '', token: '' }),
@@ -21,17 +19,8 @@ describe('MediaPickerPopup', () => {
   };
 
   describe('constructor', () => {
-    it('fires the media picker popup loaded event ', () => {
-      // tslint:disable-next-line:no-unused-expression
-      new Popup(fakeContext, context, popupConfig);
-      const { trackEvent } = fakeContext;
-
-      expect(trackEvent).toHaveBeenCalled();
-      expect(trackEvent.mock.calls[0][0]).toEqual(new MPPopupLoaded());
-    });
-
     it('sets uploadParams to the default when none are supplied', () => {
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
+      const mediaPicker = new Popup(context, popupConfig);
 
       const expectedUploadParams: UploadParams = {
         collection: '',
@@ -45,7 +34,7 @@ describe('MediaPickerPopup', () => {
       const newUploadParams: UploadParams = {
         collection: 'hello-world',
       };
-      const mediaPicker = new Popup(fakeContext, context, {
+      const mediaPicker = new Popup(context, {
         ...popupConfig,
         uploadParams: newUploadParams,
       });
@@ -61,7 +50,7 @@ describe('MediaPickerPopup', () => {
       const collection = 'some-collection-name';
       const newUploadParams: UploadParams = { collection };
 
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
+      const mediaPicker = new Popup(context, popupConfig);
       mediaPicker.setUploadParams(newUploadParams);
 
       expect(
@@ -72,7 +61,7 @@ describe('MediaPickerPopup', () => {
 
   describe('hide', () => {
     it('fires a closed event when the popup is hidden', () => {
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
+      const mediaPicker = new Popup(context, popupConfig);
       const emitSpy = jest.fn();
 
       mediaPicker.emit = emitSpy;
@@ -85,7 +74,7 @@ describe('MediaPickerPopup', () => {
 
   describe('cancel', () => {
     it('should blow up with empty argument', () => {
-      const mediaPicker = new Popup(fakeContext, context, popupConfig);
+      const mediaPicker = new Popup(context, popupConfig);
       expect(() => mediaPicker.cancel()).toThrow();
     });
   });

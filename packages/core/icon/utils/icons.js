@@ -281,6 +281,8 @@ import MediaServicesButtonOptionIcon from '../glyph/media-services/button-option
 import MediaServicesCodeIcon from '../glyph/media-services/code';
 import MediaServicesDocumentIcon from '../glyph/media-services/document';
 import MediaServicesFilterIcon from '../glyph/media-services/filter';
+import MediaServicesFitToPageIcon from '../glyph/media-services/fit-to-page';
+import MediaServicesFullScreenIcon from '../glyph/media-services/full-screen';
 import MediaServicesGridIcon from '../glyph/media-services/grid';
 import MediaServicesImageIcon from '../glyph/media-services/image';
 import MediaServicesLineThicknessIcon from '../glyph/media-services/line-thickness';
@@ -405,6 +407,7 @@ import VidAudioMutedIcon from '../glyph/vid-audio-muted';
 import VidAudioOnIcon from '../glyph/vid-audio-on';
 import VidBackwardIcon from '../glyph/vid-backward';
 import VidCameraOffIcon from '../glyph/vid-camera-off';
+import VidCameraOnIcon from '../glyph/vid-camera-on';
 import VidConnectionCircleIcon from '../glyph/vid-connection-circle';
 import VidForwardIcon from '../glyph/vid-forward';
 import VidFullScreenOffIcon from '../glyph/vid-full-screen-off';
@@ -416,6 +419,9 @@ import VidPlayIcon from '../glyph/vid-play';
 import VidRaisedHandIcon from '../glyph/vid-raised-hand';
 import VidShareScreenIcon from '../glyph/vid-share-screen';
 import VidSpeakingCircleIcon from '../glyph/vid-speaking-circle';
+import VidVolumeFullIcon from '../glyph/vid-volume-full';
+import VidVolumeHalfIcon from '../glyph/vid-volume-half';
+import VidVolumeMutedIcon from '../glyph/vid-volume-muted';
 import VideoCircleIcon from '../glyph/video-circle';
 import VideoFilledIcon from '../glyph/video-filled';
 import WarningIcon from '../glyph/warning';
@@ -2057,6 +2063,18 @@ export default {
     componentName: 'MediaServicesFilterIcon',
     package: '@atlaskit/icon/glyph/media-services/filter',
   },
+  'media-services/fit-to-page': {
+    keywords: ['media-services/fit-to-page', 'mediaservicesfittopage'],
+    component: MediaServicesFitToPageIcon,
+    componentName: 'MediaServicesFitToPageIcon',
+    package: '@atlaskit/icon/glyph/media-services/fit-to-page',
+  },
+  'media-services/full-screen': {
+    keywords: ['media-services/full-screen', 'mediaservicesfullscreen'],
+    component: MediaServicesFullScreenIcon,
+    componentName: 'MediaServicesFullScreenIcon',
+    package: '@atlaskit/icon/glyph/media-services/full-screen',
+  },
   'media-services/grid': {
     keywords: ['media-services/grid', 'mediaservicesgrid', 'table'],
     component: MediaServicesGridIcon,
@@ -2801,6 +2819,12 @@ export default {
     componentName: 'VidCameraOffIcon',
     package: '@atlaskit/icon/glyph/vid-camera-off',
   },
+  'vid-camera-on': {
+    keywords: ['vid-camera-on', 'vidcameraon'],
+    component: VidCameraOnIcon,
+    componentName: 'VidCameraOnIcon',
+    package: '@atlaskit/icon/glyph/vid-camera-on',
+  },
   'vid-connection-circle': {
     keywords: ['vid-connection-circle', 'vidconnectioncircle', 'signal', 'bar'],
     component: VidConnectionCircleIcon,
@@ -2866,6 +2890,24 @@ export default {
     component: VidSpeakingCircleIcon,
     componentName: 'VidSpeakingCircleIcon',
     package: '@atlaskit/icon/glyph/vid-speaking-circle',
+  },
+  'vid-volume-full': {
+    keywords: ['vid-volume-full', 'vidvolumefull'],
+    component: VidVolumeFullIcon,
+    componentName: 'VidVolumeFullIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-full',
+  },
+  'vid-volume-half': {
+    keywords: ['vid-volume-half', 'vidvolumehalf'],
+    component: VidVolumeHalfIcon,
+    componentName: 'VidVolumeHalfIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-half',
+  },
+  'vid-volume-muted': {
+    keywords: ['vid-volume-muted', 'vidvolumemuted'],
+    component: VidVolumeMutedIcon,
+    componentName: 'VidVolumeMutedIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-muted',
   },
   'video-circle': {
     keywords: ['video-circle', 'videocircle', 'video', 'camera'],

@@ -1,5 +1,61 @@
 # @atlaskit/conversation
 
+## 9.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/renderer@19.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/reactions@13.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/comment@6.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/renderer@19.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/reactions@13.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/comment@6.0.0
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 8.3.2
+
+
+- [none] Updated dependencies [5f6ec84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f6ec84)
+  - @atlaskit/editor-core@74.0.17
+  - @atlaskit/renderer@18.2.18
+  - @atlaskit/editor-common@12.0.0
+- [patch] Updated dependencies [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+  - @atlaskit/editor-core@74.0.17
+  - @atlaskit/renderer@18.2.18
+  - @atlaskit/editor-common@12.0.0
+
+## 8.3.1
+
+
+
+- [patch] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [none] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/util-data-test@9.1.19
+  - @atlaskit/renderer@18.2.17
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+
 ## 8.3.0
 - [minor] Adds beforeunload warning dialog when a Conversation has an open editor [aabd327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aabd327)
 

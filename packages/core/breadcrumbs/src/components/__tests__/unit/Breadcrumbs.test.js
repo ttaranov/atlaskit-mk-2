@@ -5,7 +5,11 @@ import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import cases from 'jest-in-case';
 
-import { BreadcrumbsStateless, BreadcrumbsItem as Item } from '../../..';
+import BreadcrumbsStatelessWithAnalytics, {
+  BreadcrumbsItem as Item,
+} from '../../..';
+import { BreadcrumbsStatelessWithoutAnalytics as BreadcrumbsStateless } from '../../BreadcrumbsStateless';
+
 import EllipsisItem from '../../EllipsisItem';
 
 describe('BreadcrumbsStateless', () => {
@@ -14,7 +18,6 @@ describe('BreadcrumbsStateless', () => {
       expect(BreadcrumbsStateless).not.toBe(undefined);
       expect(Item).not.toBe(undefined);
       expect(new BreadcrumbsStateless()).toBeInstanceOf(Component);
-      expect(new Item()).toBeInstanceOf(Component);
     });
   });
 
@@ -67,7 +70,7 @@ describe('BreadcrumbsStateless', () => {
 
     describe('with enough items to collapse', () => {
       const firstItem = <Item hasSeparator text="item1" />;
-      const lastItem = <Item text="item2" />;
+      const lastItem = <Item text="item5" />;
       const expandSpy = jest.fn();
       let wrapper;
 
@@ -85,9 +88,10 @@ describe('BreadcrumbsStateless', () => {
         });
 
         it('renders only the first and last items, and an ellipsis item', () => {
-          expect(wrapper.find(Item).length).toBe(2);
-          expect(wrapper.contains(firstItem)).toBe(true);
-          expect(wrapper.contains(lastItem)).toBe(true);
+          expect(wrapper.find(Item).map(item => item.prop('text'))).toEqual([
+            'item1',
+            'item5',
+          ]);
           expect(wrapper.find(EllipsisItem).length).toBe(1);
         });
 
@@ -193,3 +197,22 @@ cases(
     },
   ],
 );
+
+describe('BreadcrumbsStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<BreadcrumbsStatelessWithAnalytics onExpand={() => {}} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
+  });
+});

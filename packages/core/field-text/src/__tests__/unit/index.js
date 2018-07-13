@@ -3,7 +3,10 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Base from '@atlaskit/field-base';
 
-import FieldText, { FieldTextStateless } from '../..';
+import FieldText from '../..';
+import FieldTextStatelessWithAnalytics, {
+  FieldTextStatelessWithoutAnalytics as FieldTextStateless,
+} from '../../FieldTextStateless';
 import Input from '../../styled/Input';
 
 describe('FieldTextStateless', () => {
@@ -210,5 +213,24 @@ describe('FieldTextStateless', () => {
       wrapper.instance().focus();
       expect(focusSpy).toHaveBeenCalledTimes(1);
     });
+  });
+});
+
+describe('FieldTextStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<FieldTextStatelessWithAnalytics label="" />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });
