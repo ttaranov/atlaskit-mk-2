@@ -22,6 +22,7 @@ import {
   buildTypeAheadCancelPayload,
   buildTypeAheadInsertedPayload,
 } from '../analytics';
+import { promiseAllWithNonFailFast } from '../../../../utils/promise-util';
 
 export interface Props {
   editorView?: EditorView;
@@ -65,10 +66,12 @@ export class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    Promise.all([
-      this.props.mentionProvider,
-      this.props.contextIdentifierProvider,
-    ]).then(([mentionProvider, contextIdentifierProvider]) => {
+    const errors: any[] = [];
+
+    promiseAllWithNonFailFast(
+      [this.props.mentionProvider, this.props.contextIdentifierProvider],
+      error => errors.push(error),
+    ).then(([mentionProvider, contextIdentifierProvider]) => {
       this.resolveResourceProvider(mentionProvider, contextIdentifierProvider);
     });
   }
@@ -102,12 +105,20 @@ export class MentionPicker extends PureComponent<Props, State> {
       contextIdProviderPromise !== this.props.contextIdentifierProvider ||
       mentionProviderPromise !== this.props.mentionProvider
     ) {
-      Promise.all([contextIdProviderPromise, mentionProviderPromise]).then(
-        ([contextIdentifierProvider, mentionProvider]) =>
-          this.resolveResourceProvider(
-            mentionProvider,
-            contextIdentifierProvider,
-          ),
+      promiseAllWithNonFailFast(
+        [contextIdProviderPromise, mentionProviderPromise],
+        error => {
+          // tslint:disable-next-line:no-console
+          console.warn(
+            'MentionPicker - some promise failed [ContextIdentifierProvider, MentionProvider]: ',
+            error ? error.toString() : 'N/A',
+          );
+        },
+      ).then(([contextIdentifierProvider, mentionProvider]) =>
+        this.resolveResourceProvider(
+          mentionProvider,
+          contextIdentifierProvider || this.state.contextIdentifierProvider,
+        ),
       );
     }
   }
@@ -323,13 +334,7 @@ export class MentionPicker extends PureComponent<Props, State> {
     const { accessLevel } = mention;
     const lastQuery = this.pluginState && this.pluginState.lastQuery;
 
-    const contextIdentifier = this.state.contextIdentifierProvider
-      ? ({
-          objectId: this.state.contextIdentifierProvider.objectId,
-          containerId: this.state.contextIdentifierProvider.containerId,
-        } as ContextIdentifierProvider)
-      : {};
-
+    const contextIdentifier = this.state.contextIdentifierProvider || {};
     const mode: InsertType = this.insertType || InsertType.SELECTED;
     analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
       mode,
