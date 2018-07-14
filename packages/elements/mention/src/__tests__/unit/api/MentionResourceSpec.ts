@@ -63,6 +63,7 @@ function checkOrder(expected, actual) {
 const FULL_CONTEXT = {
   containerId: 'someContainerId',
   objectId: 'someObjectId',
+  childObjectId: 'someChildObjectId',
 };
 
 describe('MentionResource', () => {
@@ -141,6 +142,7 @@ describe('MentionResource', () => {
 
         expect(queryParams.containerId).toBe('someContainerId');
         expect(queryParams.objectId).toBe('someObjectId');
+        expect(queryParams.childObjectId).toBe('someChildObjectId');
         expect(requestData.credentials).toEqual('include');
         done();
       });
@@ -482,6 +484,7 @@ describe('MentionResource', () => {
           );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
+          expect(queryParams.childObjectId).toBe('someChildObjectId');
           expect(fetchMock.called('record')).toBe(true);
           done();
         });
