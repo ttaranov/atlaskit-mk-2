@@ -1,7 +1,3 @@
----
-title: Linting styles
----
-
 # Linting Styles
 
 Our [styled-components](https://www.styled-components.com) are now linted via [styledlint](https://stylelint.io/).

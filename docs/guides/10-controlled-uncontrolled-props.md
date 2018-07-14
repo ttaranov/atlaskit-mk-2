@@ -1,7 +1,3 @@
----
-title: Controlled / uncontrolled props
----
-
 # Controlled / uncontrolled props
 
 Related reading:

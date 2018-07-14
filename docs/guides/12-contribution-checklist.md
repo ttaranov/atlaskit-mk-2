@@ -1,7 +1,3 @@
----
-title: Contribution checklist
----
-
 # Contribution checklist
 
 Prior to contributing, please make sure you have created an issue to discuss the contribution following our [guide](./contributing).

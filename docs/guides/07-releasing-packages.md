@@ -1,7 +1,3 @@
----
-title: Releasing packages
----
-
 # Committing code & releasing packages
 
 Related reading:
