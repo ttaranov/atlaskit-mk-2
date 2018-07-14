@@ -105,15 +105,30 @@ describe('MentionPicker', () => {
       });
     });
 
-    it('should update contextIdentifiers after contextIds changed', () => {
-      expect(component.state().contextIdentifierProvider).toEqual({
-        containerId: CONTAINER_ID,
-        objectId: OBJECT_ID,
+    it('should update mentionProvider in the state even if contextIdenfierProvider fails after component is mounted', () => {
+      const _component = shallow(
+        <MentionPicker
+          mentionProvider={mentionProvider}
+          contextIdentifierProvider={Promise.reject(new Error('Boo failure'))}
+          pluginKey={pluginKey}
+          editorView={editorView}
+          createAnalyticsEvent={createAnalyticsEvent}
+        />,
+      );
+      return new Promise(resolve => setTimeout(resolve)).then(() => {
+        expect(_component.state().contextIdentifierProvider).toEqual(undefined);
+        expect(
+          _component.state().mentionProvider instanceof MentionResource,
+        ).toBeTruthy();
       });
+    });
+
+    it('should update contextIdentifiers after contextIds changed', () => {
       component.setProps({
         contextIdentifierProvider: Promise.resolve({
           containerId: 'whatever',
           objectId: 'boo',
+          childObjectId: 'boo child',
         }),
       });
 
@@ -129,10 +144,12 @@ describe('MentionPicker', () => {
         ).toEqual({
           containerId: 'whatever',
           objectId: 'boo',
+          childObjectId: 'boo child',
         });
         expect(component.state().contextIdentifierProvider).toEqual({
           containerId: 'whatever',
           objectId: 'boo',
+          childObjectId: 'boo child',
         });
       });
     });
@@ -163,14 +180,8 @@ describe('MentionPicker', () => {
     });
 
     it('should update state after both contextIds/mentionProvider changed', () => {
-      expect(component.state().contextIdentifierProvider).toEqual({
-        containerId: CONTAINER_ID,
-        objectId: OBJECT_ID,
-      });
       component.setProps({
         mentionProvider: Promise.resolve(newMentionResource),
-      });
-      component.setProps({
         contextIdentifierProvider: Promise.resolve({
           containerId: 'Foo',
           objectId: 'Boo',
@@ -193,6 +204,32 @@ describe('MentionPicker', () => {
         expect(component.state().contextIdentifierProvider).toEqual({
           containerId: 'Foo',
           objectId: 'Boo',
+        });
+      });
+    });
+
+    it('should update state with mentionProvider after both contextIds/mentionProvider changed and contextIdentifierProvider failed', () => {
+      component.setProps({
+        mentionProvider: Promise.resolve(newMentionResource),
+        contextIdentifierProvider: Promise.reject(new Error('Boo again')),
+      });
+
+      // To be able to see the proper expect failure and not a timeout, the expectation is wrappered in the code bellow to run verify the result in the next tick
+      // given the setState() triggered in the MentionPicker.componentWillReceiveProps is async
+      return new Promise(resolve => setTimeout(resolve)).then(() => {
+        expect(
+          component.state().mentionProvider instanceof ContextMentionResource,
+        ).toBeTruthy();
+        expect(
+          (component.state()
+            .mentionProvider as ContextMentionResource).getContextIdentifier(),
+        ).toEqual({
+          containerId: CONTAINER_ID,
+          objectId: OBJECT_ID,
+        });
+        expect(component.state().contextIdentifierProvider).toEqual({
+          containerId: CONTAINER_ID,
+          objectId: OBJECT_ID,
         });
       });
     });
