@@ -1,7 +1,3 @@
----
-title: Getting Started
----
-
 # Getting Started
 
 _Everything you need to know to get up and running with Atlaskit_
