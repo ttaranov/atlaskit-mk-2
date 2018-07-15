@@ -6,7 +6,6 @@ import {
   doc,
   p,
   RefsNode,
-  hardBreak,
   hr,
 } from '@atlaskit/editor-test-helpers';
 import { enforceLayoutColumnConstraints } from '../../../src/plugins/layout';
