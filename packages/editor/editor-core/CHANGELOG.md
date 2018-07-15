@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 75.0.3
+- [patch] ED-5004: unwrap content from table on paste [0ab457a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ab457a)
+- [none] Updated dependencies [0ab457a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ab457a)
+
 ## 75.0.2
 - [patch] ED-5064: disable layout options when table is nested [efda6f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efda6f5)
 - [none] Updated dependencies [efda6f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efda6f5)
