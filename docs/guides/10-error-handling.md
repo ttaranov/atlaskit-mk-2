@@ -1,7 +1,3 @@
----
-title: Error handling
----
-
 # Error handling
 
 Related reading:

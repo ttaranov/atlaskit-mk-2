@@ -1,7 +1,3 @@
----
-title: Testing in Atlaskit
----
-
 # Testing in Atlaskit
 
 We encourage adding tests to all components on **Atlaskit**.

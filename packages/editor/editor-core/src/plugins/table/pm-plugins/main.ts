@@ -3,7 +3,7 @@ import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { findTable, findParentDomRefOfType } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
-import { TableLayout } from '@atlaskit/editor-common';
+import { browser, TableLayout } from '@atlaskit/editor-common';
 
 import {
   isElementInTableCell,
@@ -49,6 +49,8 @@ export const defaultTableSelection = {
   isTableHovered: false,
   hoverDecoration: DecorationSet.empty,
 };
+
+const isIE11 = browser.ie_version === 11;
 
 export const createPlugin = (
   dispatch: Dispatch,
@@ -154,7 +156,10 @@ export const createPlugin = (
       handleDOMEvents: {
         blur(view: EditorView, event) {
           const { state, dispatch } = view;
-          setPluginState({ editorHasFocus: false })(state, dispatch);
+          // fix for issue ED-4665
+          if (!isIE11) {
+            setPluginState({ editorHasFocus: false })(state, dispatch);
+          }
           event.preventDefault();
           return false;
         },

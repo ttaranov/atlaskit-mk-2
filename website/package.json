@@ -73,7 +73,6 @@
     "commonmark-react-renderer": "^4.3.3",
     "connect-history-api-fallback": "^1.5.0",
     "ldclient-js": "^2.3.1",
-    "gray-matter": "^4.0.1",
     "lodash.debounce": "^4.0.8",
     "minimatch": "^3.0.4",
     "prismjs": "^1.6.0",

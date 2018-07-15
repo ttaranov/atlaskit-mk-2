@@ -1,7 +1,3 @@
----
-title: Component vs PureComponent
----
-
 # Component vs PureComponent
 
 Related reading:

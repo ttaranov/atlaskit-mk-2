@@ -2,10 +2,8 @@
 
 import React, { type Node } from 'react';
 import CommonMark from 'commonmark';
-import grayMatter from 'gray-matter';
 import ReactRenderer from 'commonmark-react-renderer';
 import { AkCodeBlock, AkCode } from '@atlaskit/code';
-import { Helmet } from 'react-helmet';
 import Heading from './Markdown/Heading';
 
 type Props = {
@@ -29,17 +27,5 @@ const renderer = new ReactRenderer({
 });
 
 export default function Markdown({ children }: { children: Node }) {
-  const { data: markdownMetaData, content: markdownContent } = grayMatter(
-    children,
-  );
-  return (
-    <div>
-      <Helmet>
-        <title>
-          {markdownMetaData.title} - {BASE_TITLE}
-        </title>
-      </Helmet>
-      {renderer.render(parser.parse(markdownContent))}
-    </div>
-  );
+  return <div>{renderer.render(parser.parse(children))}</div>;
 }

@@ -1,7 +1,3 @@
----
-title: Versioning
----
-
 # Versioning
 
 Related reading:

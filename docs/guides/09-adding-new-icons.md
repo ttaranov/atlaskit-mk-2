@@ -1,7 +1,3 @@
----
-title: Adding New Icons
----
-
 # Adding New Icons
 
 !!IMPORTANT
