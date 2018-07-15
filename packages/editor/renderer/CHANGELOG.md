@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 19.0.1
+- [patch] Updated dependencies [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
+  - @atlaskit/editor-common@13.0.1
+
 ## 19.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

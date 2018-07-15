@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
 import {
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
@@ -17,12 +16,17 @@ import {
 } from '../model/Result';
 import AdvancedSearchResult from './AdvancedSearchResult';
 import ObjectResultComponent from './ObjectResult';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import {
-  DEFAULT_GAS_CHANNEL,
-  DEFAULT_GAS_SOURCE,
-  DEFAULT_GAS_ATTRIBUTES,
-} from '../util/analytics-util';
+
+const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
+const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
+const ADVANCED_PEOPLE_SEARCH_RESULT_ID = 'search_people';
+
+export const isAdvancedSearchResult = (resultId: string) =>
+  [
+    ADVANCED_CONFLUENCE_SEARCH_RESULT_ID,
+    ADVANCED_JIRA_SEARCH_RESULT_ID,
+    ADVANCED_PEOPLE_SEARCH_RESULT_ID,
+  ].some(advancedResultId => advancedResultId === resultId);
 
 export interface BaseResultProps {
   type: string;
@@ -45,42 +49,6 @@ export interface PersonResultProps extends BaseResultProps {
   presenceMessage?: string;
 }
 
-function createAndFireSearchResultSelectedEvent(createEvent, props): void {
-  const event = createEvent(); // created empty to initialise with context
-  const searchSessionId = event.context[0]
-    ? event.context[0].searchSessionId
-    : null;
-  event.update({
-    action: 'selected',
-    actionSubject: 'navigationItem',
-    actionSubjectId: 'searchResult',
-    eventType: 'track',
-    source: DEFAULT_GAS_SOURCE,
-    attributes: {
-      searchSessionId: searchSessionId,
-      resultType: props.type,
-      ...DEFAULT_GAS_ATTRIBUTES,
-    },
-  });
-  event.fire(DEFAULT_GAS_CHANNEL);
-}
-
-const searchResultsAnalyticsEvents = {
-  onClick: createAndFireSearchResultSelectedEvent,
-};
-
-export const ObjectResultWithAnalytics: ComponentType<
-  ObjectResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ObjectResultComponent);
-
-export const PersonResultWithAnalytics: ComponentType<
-  PersonResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(PersonResultComponent);
-
-export const ContainerResultWithAnalytics: ComponentType<
-  ContainerResultProps
-> = withAnalyticsEvents(searchResultsAnalyticsEvents)(ContainerResultComponent);
-
 export function renderResults(results: Result[]) {
   return results.map(result => {
     const resultType: ResultType = result.resultType;
@@ -90,7 +58,7 @@ export function renderResults(results: Result[]) {
         const confluenceResult = result as ConfluenceObjectResult;
 
         return (
-          <ObjectResultWithAnalytics
+          <ObjectResultComponent
             key={confluenceResult.resultId}
             resultId={confluenceResult.resultId}
             name={confluenceResult.name}
@@ -105,7 +73,7 @@ export function renderResults(results: Result[]) {
         const jiraResult = result as JiraObjectResult;
 
         return (
-          <ObjectResultWithAnalytics
+          <ObjectResultComponent
             key={jiraResult.resultId}
             resultId={jiraResult.resultId}
             name={jiraResult.name}
@@ -121,7 +89,7 @@ export function renderResults(results: Result[]) {
         const containerResult = result as ContainerResult;
 
         return (
-          <ContainerResultWithAnalytics
+          <ContainerResultComponent
             key={containerResult.resultId}
             resultId={containerResult.resultId}
             name={containerResult.name}
@@ -135,7 +103,7 @@ export function renderResults(results: Result[]) {
         const personResult = result as PersonResult;
 
         return (
-          <PersonResultWithAnalytics
+          <PersonResultComponent
             key={personResult.resultId}
             resultId={personResult.resultId}
             name={personResult.name}
@@ -169,7 +137,7 @@ export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
   <AdvancedSearchResult
     href={getConfluenceAdvancedSearchLink(props.query)}
     key="search_confluence"
-    resultId="search_confluence"
+    resultId={ADVANCED_CONFLUENCE_SEARCH_RESULT_ID}
     text={props.text}
     icon={props.icon}
     type={AnalyticsType.AdvancedSearchConfluence}
@@ -182,7 +150,7 @@ export const searchJiraItem = (query: string) => (
     href={`/issues/?jql=${encodeURIComponent(`text ~ "${query}"`)}`}
     icon={<JiraIcon size="medium" label="Search Jira" />}
     key="search_jira"
-    resultId="search_jira"
+    resultId={ADVANCED_JIRA_SEARCH_RESULT_ID}
     text="Search for more Jira issues"
     type={AnalyticsType.AdvancedSearchJira}
   />
@@ -193,7 +161,7 @@ export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
     href={`/people/search?q=${encodeURIComponent(props.query)}`}
     icon={props.icon}
     key="search_people"
-    resultId="search_people"
+    resultId={ADVANCED_PEOPLE_SEARCH_RESULT_ID}
     text={props.text}
     type={AnalyticsType.AdvancedSearchPeople}
   />

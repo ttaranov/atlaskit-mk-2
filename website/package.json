@@ -83,6 +83,7 @@
     "react-codesandboxer": "^2.1.0",
     "react-dom": "^16.4.0",
     "react-ga": "^2.3.5",
+    "react-helmet": "^5.2.0",
     "react-loadable": "^5.1.0",
     "react-markdown": "^2.5.0",
     "react-router": "^4.2.0",
