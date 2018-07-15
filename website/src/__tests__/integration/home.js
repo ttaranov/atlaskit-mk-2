@@ -20,12 +20,12 @@ BrowserTestCase(
     const homeTest = await new Page(client);
     await homeTest.goto(urlHome);
     await homeTest.waitForSelector(app);
-    const title = await homeTest.getText(atlaskitTitle);
+    const subHeaderTitle = await homeTest.getText(atlaskitTitle);
     const logo = await homeTest.isVisible(atlaskitLogo);
     const pageIsVisible = await homeTest.isVisible(atlaskitLayer);
 
     expect(logo).toBe(true);
-    expect(title).toBe('Atlaskit');
+    expect(subHeaderTitle).toBe('Atlaskit');
     expect(pageIsVisible).toBe(true);
     if (homeTest.log('browser').value) {
       homeTest.log('browser').value.forEach(val => {

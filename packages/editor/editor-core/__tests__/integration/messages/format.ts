@@ -12,8 +12,6 @@ BrowserTestCase(
   async client => {
     const sample = await new Page(client);
     await sample.goto(messageEditor);
-    const title = await sample.title();
-    expect(title).toBe('Atlaskit by Atlassian');
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '[link](https://hello.com) ');
 
