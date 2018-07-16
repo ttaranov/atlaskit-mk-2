@@ -3,8 +3,8 @@
 /*
 * server side renderer utilities helper to return all the examples and filter by packages
 */
-import Loadable from 'react-loadable';
 const glob = require('glob');
+const cwd = process.cwd();
 
 // get all examples from the code sync
 function getAllExamplesSync() /*: Array<Object> */ {
@@ -21,22 +21,13 @@ function getAllExamplesSync() /*: Array<Object> */ {
           .replace('.js', '')
           .replace('.tsx', '')
           .replace(/^\d+\-\s*/, ''),
+        examplePath: `${cwd}/${file}`,
       };
     });
-}
-async function getFileContent(example: string) /*: any */ {
-  return Loadable({
-    // $FlowFixMe
-    loader: () => import(example),
-    loading() {
-      // $FlowFixMe
-      return <div>Loading...</div>;
-    },
-  });
 }
 
 function getExamplesFor(pkgName /*: string */) /*: Array<Object> */ {
   return getAllExamplesSync().filter(obj => obj.package === pkgName);
 }
 
-module.exports = { getExamplesFor, getFileContent };
+module.exports = { getExamplesFor };

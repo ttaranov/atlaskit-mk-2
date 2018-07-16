@@ -5,7 +5,7 @@
 */
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { getExamplesFor, getFileContent } from './helper';
+import { getExamplesFor } from './helper';
 
 function testSSR(example: string, reactComponent: React$Element<*>) {
   describe(example, () => {
@@ -17,9 +17,10 @@ function testSSR(example: string, reactComponent: React$Element<*>) {
   });
 }
 
-async function testSSRAll(pkg: string) {
-  return getExamplesFor(pkg).forEach(async examples => {
-    testSSR(examples.exampleName, await examples.exampleName);
+function testSSRAll(pkg: string) {
+  return getExamplesFor(pkg).forEach(examples => {
+    // $FlowFixMe - string litteral
+    testSSR(examples.exampleName, require(examples.examplePath).default);
   });
 }
 
