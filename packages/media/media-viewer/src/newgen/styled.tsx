@@ -15,7 +15,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { colors, layers } from '@atlaskit/theme';
 
-const overlayZindex = layers.blanket();
+const overlayZindex = layers.modal() + 10;
 
 export const mediaTypeIconColors = {
   image: akColorY200,
