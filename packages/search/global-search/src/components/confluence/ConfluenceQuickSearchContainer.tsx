@@ -14,6 +14,7 @@ import renderSearchResults, {
   MAX_PAGES_BLOGS_ATTACHMENTS,
   MAX_SPACES,
   MAX_PEOPLE,
+  ScreenCounter,
 } from './ConfluenceSearchResults';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import {
@@ -42,6 +43,21 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
 }
 
+class SearchScreenCounter implements ScreenCounter {
+  count = 0;
+  constructor() {
+    this.count = 0;
+  }
+
+  getCount() {
+    return this.count;
+  }
+
+  increment() {
+    this.count++;
+  }
+}
+
 export interface State {
   query: string;
   searchSessionId: string;
@@ -63,6 +79,15 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps,
   State
 > {
+  preQueryScreenCounter: ScreenCounter;
+  postQueryScreenCounter: ScreenCounter;
+
+  constructor(props) {
+    super(props);
+    this.preQueryScreenCounter = new SearchScreenCounter();
+    this.postQueryScreenCounter = new SearchScreenCounter();
+  }
+
   state = {
     isLoading: false,
     isError: false,
@@ -385,6 +410,10 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyInteractedPeople,
           keepRecentActivityResults,
           searchSessionId,
+          screenCounters: {
+            preQueryScreenCounter: this.preQueryScreenCounter,
+            postQueryScreenCounter: this.postQueryScreenCounter,
+          },
         })}
       </GlobalQuickSearch>
     );

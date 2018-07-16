@@ -106,7 +106,7 @@ export function buildScreenEvent(
     actionSubject: screen,
     eventType: 'screen',
     source: DEFAULT_GAS_SOURCE,
-    name: `viewed${screen}`,
+    name: screen,
     attributes: {
       timesViewed: timesViewed,
       searchSessionId: searchSessionId,
