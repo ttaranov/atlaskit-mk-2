@@ -106,8 +106,9 @@ export function buildScreenEvent(
     actionSubject: screen,
     eventType: 'screen',
     source: DEFAULT_GAS_SOURCE,
-    name: screen,
+    name: DEFAULT_GAS_SOURCE,
     attributes: {
+      subscreen: screen,
       timesViewed: timesViewed,
       searchSessionId: searchSessionId,
       ...DEFAULT_GAS_ATTRIBUTES,

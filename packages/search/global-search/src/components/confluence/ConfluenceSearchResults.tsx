@@ -264,8 +264,12 @@ const render = (props: Props) => {
     screenCounters,
   } = props;
 
-  const { preQueryScreenCounter = null, postQueryScreenCounter = null } =
-    screenCounters || {};
+  const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
+    ? screenCounters
+    : {
+        preQueryScreenCounter: undefined,
+        postQueryScreenCounter: undefined,
+      };
 
   if (isError) {
     return <SearchError onRetryClick={retrySearch} />;
