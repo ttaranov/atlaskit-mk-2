@@ -3,7 +3,7 @@
 import { colors, gridSize } from '@atlaskit/theme';
 
 import contentNavThemes from '../ContentNavigation/styles';
-import type { ThemedProductComponentStyles } from '../../theme/types';
+import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 
 const scrollHintHeight = 2;
 const scrollHintSpacing = gridSize() * 2;
@@ -68,7 +68,7 @@ const light = () => ({
       },
     },
   },
-  root: {
+  product: {
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -80,7 +80,7 @@ const light = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.light().root.backgroundColor,
+        backgroundColor: contentNavThemes.light().product.backgroundColor,
       },
     },
   },
@@ -103,7 +103,7 @@ const dark = () => ({
       },
     },
   },
-  root: {
+  product: {
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -115,7 +115,7 @@ const dark = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.dark().root.backgroundColor,
+        backgroundColor: contentNavThemes.dark().product.backgroundColor,
       },
     },
   },
@@ -138,7 +138,7 @@ const settings = () => ({
       },
     },
   },
-  root: {
+  product: {
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -150,11 +150,15 @@ const settings = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.settings().root.backgroundColor,
+        backgroundColor: contentNavThemes.settings().product.backgroundColor,
       },
     },
   },
 });
 
-const themes: ThemedProductComponentStyles<void> = { dark, light, settings };
+const themes: ThemedContentNavigationComponentStyles<void> = {
+  dark,
+  light,
+  settings,
+};
 export default themes;

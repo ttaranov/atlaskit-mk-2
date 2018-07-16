@@ -8,38 +8,41 @@ import type { ItemPresentationProps } from '../components/Item/types';
  */
 type ObjectType = { [string]: * };
 
-type ProductComponentThemeObject = { container: ObjectType, root: ObjectType };
-
-type GlobalComponentTheme<Props: {} | void> = Props => ObjectType;
-
-type ProductComponentTheme<
-  Props: {} | void,
-> = Props => ProductComponentThemeObject;
-
-// Every component which responds to theming should export a
-// ThemedGlobalComponentStyles or ThemedProductComponentStyles object from
-// /styles.js
-export type ThemedGlobalComponentStyles<Props> = {
-  light: GlobalComponentTheme<Props>,
-  dark: GlobalComponentTheme<Props>,
-  settings: GlobalComponentTheme<Props>,
+type ContentNavigationComponentThemeObject = {
+  container: ObjectType,
+  product: ObjectType,
 };
 
-export type ThemedProductComponentStyles<Props> = {
-  light: ProductComponentTheme<Props>,
-  dark: ProductComponentTheme<Props>,
-  settings: ProductComponentTheme<Props>,
+type GlobalNavigationComponentTheme<Props: {} | void> = Props => ObjectType;
+
+type ContentNavigationComponentTheme<
+  Props: {} | void,
+> = Props => ContentNavigationComponentThemeObject;
+
+// Every component which responds to theming should export a
+// ThemedGlobalNavigationComponentStyles or ThemedContentNavigationComponentStyles object from
+// /styles.js
+export type ThemedGlobalNavigationComponentStyles<Props> = {
+  light: GlobalNavigationComponentTheme<Props>,
+  dark: GlobalNavigationComponentTheme<Props>,
+  settings: GlobalNavigationComponentTheme<Props>,
+};
+
+export type ThemedContentNavigationComponentStyles<Props> = {
+  light: ContentNavigationComponentTheme<Props>,
+  dark: ContentNavigationComponentTheme<Props>,
+  settings: ContentNavigationComponentTheme<Props>,
 };
 
 // This is the shape of a theme 'mode', e.g. light, dark and settings modes
 export type Mode = {
-  globalItem: GlobalComponentTheme<GlobalItemPresentationProps>,
-  globalNav: GlobalComponentTheme<void>,
-  heading: ProductComponentTheme<void>,
-  item: ProductComponentTheme<ItemPresentationProps>,
-  contentNav: ProductComponentTheme<void>,
-  scrollHint: ProductComponentTheme<void>,
-  separator: ProductComponentTheme<void>,
+  globalItem: GlobalNavigationComponentTheme<GlobalItemPresentationProps>,
+  globalNav: GlobalNavigationComponentTheme<void>,
+  heading: ContentNavigationComponentTheme<void>,
+  item: ContentNavigationComponentTheme<ItemPresentationProps>,
+  contentNav: ContentNavigationComponentTheme<void>,
+  scrollHint: ContentNavigationComponentTheme<void>,
+  separator: ContentNavigationComponentTheme<void>,
 };
 
 export type ProductTheme = {

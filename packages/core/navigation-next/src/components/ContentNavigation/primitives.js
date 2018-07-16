@@ -52,19 +52,20 @@ const ScrollProvider = (props: any) => (
 /**
  * ProductNavigation
  */
-const ProductNavigationPrimitive = withTheme({ mode: light, context: 'root' })(
-  ({ children, theme = { mode: light } }) => (
-    <div css={theme.mode.contentNav().root}>
-      <ScrollProvider>{children}</ScrollProvider>
-    </div>
-  ),
-);
+const ProductNavigationPrimitive = withTheme({
+  mode: light,
+  context: 'product',
+})(({ children, theme = { mode: light } }) => (
+  <div css={theme.mode.contentNav().product}>
+    <ScrollProvider>{children}</ScrollProvider>
+  </div>
+));
 
 type ProductNavigationProps = { children: Node };
 
 export const ProductNavigation = (props: ProductNavigationProps) => (
   <ThemeProvider
-    theme={oldTheme => ({ mode: light, ...oldTheme, context: 'root' })}
+    theme={oldTheme => ({ mode: light, ...oldTheme, context: 'product' })}
   >
     <ProductNavigationPrimitive {...props} />
   </ThemeProvider>

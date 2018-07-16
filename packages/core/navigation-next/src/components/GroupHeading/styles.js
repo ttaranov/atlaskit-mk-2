@@ -2,7 +2,7 @@
 
 import { colors, gridSize } from '@atlaskit/theme';
 
-import type { ThemedProductComponentStyles } from '../../theme/types';
+import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 
 const fontSize = 11;
 
@@ -36,7 +36,7 @@ const light = () => ({
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.N200 },
   },
-  root: {
+  product: {
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.B75 },
   },
@@ -47,7 +47,7 @@ const dark = () => ({
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
   },
-  root: {
+  product: {
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
   },
@@ -58,11 +58,15 @@ const settings = () => ({
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.N70 },
   },
-  root: {
+  product: {
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.N70 },
   },
 });
 
-const themes: ThemedProductComponentStyles<void> = { dark, light, settings };
+const themes: ThemedContentNavigationComponentStyles<void> = {
+  dark,
+  light,
+  settings,
+};
 export default themes;
