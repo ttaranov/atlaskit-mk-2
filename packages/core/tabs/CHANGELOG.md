@@ -1,5 +1,13 @@
 # @atlaskit/tabs
 
+## 8.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/tooltip@12.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+
 ## 8.0.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

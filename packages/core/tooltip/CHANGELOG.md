@@ -1,5 +1,12 @@
 # @atlaskit/tooltip
 
+## 12.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/docs@5.0.1
+
 ## 12.0.0
 - [major] Replace the `onMouseOver` function in tooltip with `onTooltipShow`, and `onMouseOut` function with `onTooltipHide` to give consumers more useful methods. [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
 - [none] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)

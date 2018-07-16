@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/lozenge",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -31,7 +31,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/docs": "^5.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.0",
     "react-test-renderer": "^16.3.0"

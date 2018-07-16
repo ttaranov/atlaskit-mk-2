@@ -1,5 +1,16 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [patch] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/tooltip@12.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/lozenge@6.1.1
+  - @atlaskit/docs@5.0.1
+  - @atlaskit/droplist@7.0.2
+  - @atlaskit/avatar@14.0.2
+
 ## 6.1.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0
