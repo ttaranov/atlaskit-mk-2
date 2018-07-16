@@ -15,7 +15,7 @@
   ],
   "atlaskit": {
     "name": "Atlaskit docs",
-    "team": "elements"
+    "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
