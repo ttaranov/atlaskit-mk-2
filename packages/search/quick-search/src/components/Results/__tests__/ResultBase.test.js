@@ -1,13 +1,29 @@
 // @flow
 import { mount } from 'enzyme';
 import React from 'react';
-import ResultBase from '../ResultBase';
+import { ResultBase } from '../ResultBase';
+import { type Context } from '../types';
 
 describe('Result Base', () => {
   let resultWrapper;
   beforeEach(() => {
+    const context: Context = {
+      isDirty: false,
+      registerResult: () => {},
+      onMouseEnter: () => {},
+      onMouseLeave: () => {},
+      sendAnalytics: () => {},
+      getIndex: n => Number(n),
+    };
+
     resultWrapper = mount(
-      <ResultBase text="" resultId="testResult" type="base" name="test" />,
+      <ResultBase
+        text=""
+        resultId="testResult"
+        type="base"
+        name="test"
+        context={context}
+      />,
     );
   });
 
@@ -20,7 +36,7 @@ describe('Result Base', () => {
 
   it('should pass { `resultId`,  `type` } to onMouseEnter handler', () => {
     const spy = jest.fn();
-    resultWrapper.setProps({ onMouseEnter: spy });
+    resultWrapper.setProps({ context: { onMouseEnter: spy } });
     resultWrapper.simulate('mouseenter');
     expect(spy).toBeCalledWith({ resultId: 'testResult', type: 'base' });
   });

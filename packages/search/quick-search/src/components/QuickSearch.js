@@ -158,7 +158,9 @@ export class QuickSearch extends Component<Props, State> {
     const setDirtyContext = (isDirty: boolean) => ({
       context: { ...this.state.context, isDirty },
     });
-    this.setState(setDirtyContext(true), () => setDirtyContext(false));
+    this.setState(setDirtyContext(true), () =>
+      this.setState(setDirtyContext(false)),
+    );
   }
 
   componentDidMount() {
@@ -183,6 +185,15 @@ export class QuickSearch extends Component<Props, State> {
       });
     }
 
+    // keep context state in sync
+    this.setState({
+      context: {
+        ...this.state.context,
+        sendAnalytics: nextProps.firePrivateAnalyticsEvent,
+        linkComponent: nextProps.linkComponent,
+      },
+    });
+
     /**
      * Capture whether user needed to query in order to find their target result.
      * Only fire once per mount. Only fire when a search term is entered and the previous search
@@ -205,7 +216,7 @@ export class QuickSearch extends Component<Props, State> {
         props: {},
       };
       firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
-        ...result.props.analyticsData,
+        ...result.props.analyticsData, // TODO
         key: this.lastKeyPressed,
         resultId: result.props.resultId,
         contentType: result.props.contentType,

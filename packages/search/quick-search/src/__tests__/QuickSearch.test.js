@@ -134,7 +134,6 @@ describe('<QuickSearch />', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
         const eventData = getLastEventFired()[1];
         expect(eventData).toMatchObject({
-          index: expect.any(Number),
           queryLength: expect.any(Number),
           resultCount: expect.any(Number),
           type: expect.any(String),
