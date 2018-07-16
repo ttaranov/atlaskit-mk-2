@@ -13,15 +13,21 @@ const BOLD_END = '\u001b[22m';
 const IMPORTANT_MESSAGE_START = `${RED_START}${BOLD_START}`;
 const IMPORTANT_MESSAGE_END = `${BOLD_END}${RED_END}`;
 
-async function fetchJSONSchema(version: string) {
-  const url = `https://unpkg.com/@atlaskit/editor-common@${version}/dist/json-schema/v1/full.json`;
+async function fetchJSONSchema(url: string) {
   const res = await axios.get(url);
-
   return res.data;
 }
 
-function fetchLatestJSONSchema() {
-  return fetchJSONSchema('latest');
+function fetchLastPublishedJSONSchema() {
+  return fetchJSONSchema(
+    `https://unpkg.com/@atlaskit/editor-common@lastest/dist/json-schema/v1/full.json`,
+  );
+}
+
+function fetchMasterJSONSchema() {
+  return fetchJSONSchema(
+    `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/master/packages/editor/editor-common/json-schema/v1/full.json`,
+  );
 }
 
 expect.extend({
@@ -49,7 +55,7 @@ describe('JSON schema', () => {
     let existingSchema: any;
 
     try {
-      existingSchema = await fetchJSONSchema(version);
+      existingSchema = await fetchMasterJSONSchema();
     } catch (err) {
       // if package with this version doesn't exist test against the latest version
       // this can happen when you manually bump version in package.json
@@ -59,7 +65,7 @@ describe('JSON schema', () => {
         );
       }
 
-      existingSchema = await fetchLatestJSONSchema();
+      existingSchema = await fetchLastPublishedJSONSchema();
     }
 
     try {

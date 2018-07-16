@@ -6,24 +6,24 @@ import {
   isError,
 } from '@atlaskit/media-core';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
-import { ErrorMessage } from './styled';
+import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
 import { Subscription } from 'rxjs';
 import { toIdentifier } from './util';
 import { Spinner } from './loading';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
-  selectedItem?: Identifier;
+  defaultSelectedItem?: Identifier;
   showControls?: () => void;
-  readonly featureFlags?: MediaViewerFeatureFlags;
+  featureFlags?: MediaViewerFeatureFlags;
   collectionName: string;
   context: Context;
   pageSize: number;
-};
+}>;
 
 export type State = {
-  items: Outcome<MediaCollectionItem[], Error>;
+  items: Outcome<MediaCollectionItem[], MediaViewerError>;
 };
 
 const initialState: State = { items: { status: 'PENDING' } };
@@ -31,10 +31,10 @@ const initialState: State = { items: { status: 'PENDING' } };
 export class Collection extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
-  private provider: MediaCollectionProvider;
+  private subscription?: Subscription;
+  private provider?: MediaCollectionProvider;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -51,7 +51,7 @@ export class Collection extends React.Component<Props, State> {
 
   render() {
     const {
-      selectedItem,
+      defaultSelectedItem,
       context,
       onClose,
       collectionName,
@@ -62,18 +62,18 @@ export class Collection extends React.Component<Props, State> {
       case 'PENDING':
         return <Spinner />;
       case 'FAILED':
-        return <ErrorMessage>Error loading collection</ErrorMessage>;
+        return <ErrorMessage error={items.err} />;
       case 'SUCCESSFUL':
         const identifiers = items.data.map(x =>
           toIdentifier(x, collectionName),
         );
-        const item = selectedItem
-          ? { ...selectedItem, collectionName }
+        const item = defaultSelectedItem
+          ? { ...defaultSelectedItem, collectionName }
           : identifiers[0];
         return (
           <List
             items={identifiers}
-            selectedItem={item}
+            defaultSelectedItem={item}
             context={context}
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}
@@ -85,7 +85,7 @@ export class Collection extends React.Component<Props, State> {
 
   private init(props: Props) {
     this.setState(initialState);
-    const { collectionName, context, selectedItem, pageSize } = props;
+    const { collectionName, context, defaultSelectedItem, pageSize } = props;
     this.provider = context.getMediaCollectionProvider(
       collectionName,
       pageSize,
@@ -98,7 +98,7 @@ export class Collection extends React.Component<Props, State> {
           this.setState({
             items: {
               status: 'FAILED',
-              err: collection,
+              err: createError('metadataFailed', undefined, collection),
             },
           });
         } else {
@@ -108,8 +108,10 @@ export class Collection extends React.Component<Props, State> {
               data: collection.items.filter(collectionFileItemFilter),
             },
           });
-          if (selectedItem && this.shouldLoadNext(selectedItem)) {
-            this.provider.loadNextPage();
+          if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
+            if (this.provider) {
+              this.provider.loadNextPage();
+            }
           }
         }
       },
@@ -130,7 +132,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private onNavigationChange = (item: Identifier) => {
-    if (this.shouldLoadNext(item)) {
+    if (this.shouldLoadNext(item) && this.provider) {
       this.provider.loadNextPage();
     }
   };

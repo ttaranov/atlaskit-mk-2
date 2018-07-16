@@ -7,10 +7,10 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { NodeSpec, Node } from 'prosemirror-model';
-import { Definition as Paragraph } from './paragraph';
-import { Definition as OrderedList } from './ordered-list';
-import { Definition as BulletList } from './bullet-list';
-import { Definition as Heading } from './heading';
+import { ParagraphDefinition as Paragraph } from './paragraph';
+import { OrderedListDefinition as OrderedList } from './ordered-list';
+import { BulletListDefinition as BulletList } from './bullet-list';
+import { HeadingDefinition as Heading } from './heading';
 
 export type PanelType =
   | 'info'
@@ -20,16 +20,16 @@ export type PanelType =
   | 'error'
   | 'success';
 
-export interface Attributes {
+export interface PanelAttributes {
   panelType: PanelType;
 }
 
 /**
  * @name panel_node
  */
-export interface Definition {
+export interface PanelDefinition {
   type: 'panel';
-  attrs: Attributes;
+  attrs: PanelAttributes;
   /**
    * @minItems 1
    */

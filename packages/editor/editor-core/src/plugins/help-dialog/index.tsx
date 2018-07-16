@@ -22,7 +22,7 @@ export const closeHelpCommand = (tr: Transaction, dispatch: Function): void => {
 
 export const stopPropagationCommand = (e: any): void => e.stopPropagation();
 
-export function createPlugin(dispatch: Function, imageEnabled: boolean ) {
+export function createPlugin(dispatch: Function, imageEnabled: boolean) {
   return new Plugin({
     key: pluginKey,
     state: {
@@ -46,7 +46,11 @@ export function createPlugin(dispatch: Function, imageEnabled: boolean ) {
 const helpDialog: EditorPlugin = {
   pmPlugins() {
     return [
-      { rank: 2200, plugin: ({ dispatch, props: { legacyImageUploadProvider } }) => createPlugin(dispatch, !!legacyImageUploadProvider) },
+      {
+        rank: 2200,
+        plugin: ({ dispatch, props: { legacyImageUploadProvider } }) =>
+          createPlugin(dispatch, !!legacyImageUploadProvider),
+      },
       { rank: 2210, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },

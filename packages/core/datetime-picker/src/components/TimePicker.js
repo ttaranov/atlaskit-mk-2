@@ -8,7 +8,17 @@ import Select, {
 import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import {
   ClearIndicator,
@@ -56,6 +66,8 @@ type Props = {
   onFocus: () => void,
   /** Props to apply to the select. */
   selectProps: Object,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing: 'compact' | 'default',
   /** The times to show in the dropdown. */
   times: Array<string>,
   /** Allow users to edit the input and add a time */
@@ -77,10 +89,13 @@ type State = {
   value: string,
   isFocused: boolean,
 };
-
+/** Returns a formatted DT string if valid or empty string if not valid */
 function formatTime(time: string, timeFormat: string): string {
   const date = parseTime(time);
-  return isValid(date) ? format(date, timeFormat) : time;
+  if (date instanceof Date) {
+    return isValid(date) ? format(date, timeFormat) : time;
+  }
+  return '';
 }
 
 const menuStyles = {
@@ -90,7 +105,16 @@ const menuStyles = {
   overflowY: 'auto',
 };
 
-export default class TimePicker extends Component<Props, State> {
+const FixedLayerMenu = ({ selectProps, ...props }: Object) => {
+  return (
+    <FixedLayer
+      containerRef={selectProps.fixedLayerRef}
+      content={<components.Menu {...props} scrollMenuIntoView={false} />}
+    />
+  );
+};
+
+class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
@@ -103,6 +127,7 @@ export default class TimePicker extends Component<Props, State> {
     onFocus: () => {},
     times: defaultTimes,
     selectProps: {},
+    spacing: 'default',
     innerProps: {},
     id: '',
     defaultIsOpen: false,
@@ -205,6 +230,7 @@ export default class TimePicker extends Component<Props, State> {
       selectProps,
       timeFormat,
       placeholder,
+      spacing,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -212,14 +238,6 @@ export default class TimePicker extends Component<Props, State> {
       this.props.appearance === 'subtle' || this.props.hideIcon
         ? null
         : this.props.icon;
-    const FixedLayerMenu = props => {
-      return (
-        <FixedLayer
-          containerRef={this.containerRef}
-          content={<components.Menu {...props} scrollMenuIntoView={false} />}
-        />
-      );
-    };
 
     const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
     const controlStyles =
@@ -238,7 +256,7 @@ export default class TimePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           components={{
             ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            DropdownIndicator,
             Menu: FixedLayerMenu,
           }}
           instanceId={id}
@@ -278,10 +296,35 @@ export default class TimePicker extends Component<Props, State> {
               value,
             }
           }
-          {...otherSelectProps}
+          spacing={spacing}
+          dropdownIndicatorIcon={icon}
+          fixedLayerRef={this.containerRef}
           validationState={validationState}
+          {...otherSelectProps}
         />
       </div>
     );
   }
 }
+
+export { TimePicker as TimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'timePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'selectedTime',
+      actionSubject: 'timePicker',
+
+      attributes: {
+        componentName: 'timePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(TimePicker),
+);

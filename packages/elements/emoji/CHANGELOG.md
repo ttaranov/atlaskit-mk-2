@@ -1,5 +1,75 @@
 # @atlaskit/emoji
 
+## 38.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+
+## 37.0.2
+- [patch] Move emoji tests [0c6d1c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c6d1c7)
+- [none] Updated dependencies [0c6d1c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c6d1c7)
+
+## 37.0.1
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-service-support@2.0.12
+  - @atlaskit/util-data-test@9.1.18
+
+## 37.0.0
+- [major] FS-2011 change EmojiRepository to use CategoryId [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+- [minor] FS-2011 fix scroll to user custom upload section [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+- [none] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/util-data-test@9.1.17
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/util-data-test@9.1.17
+
+## 36.0.2
+
+
+- [none] Updated dependencies [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-core@21.0.0
+
+## 36.0.1
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/media-picker@8.1.6
+  - @atlaskit/util-data-test@9.1.15
+
+## 36.0.0
+- [major] remove MediaPicker and use media-core to upload files [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/util-data-test@9.1.14
+
+## 35.1.4
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-picker@8.1.4
+  - @atlaskit/media-core@20.0.0
+
 ## 35.1.3
 - [patch] FS-2056 defer input focus in EmojiPickerListSearch [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)
 - [none] Updated dependencies [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)

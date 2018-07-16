@@ -23,6 +23,10 @@ describe(`${name}/schema taskItem node`, () => {
     const listItem = doc.firstChild!.firstChild!;
     expect(listItem.type.name).toEqual('listItem');
   });
+
+  it('taskItem requires defining to be true', () => {
+    expect(schema.nodes.taskItem.spec.defining).toBe(true);
+  });
 });
 
 function makeSchema() {

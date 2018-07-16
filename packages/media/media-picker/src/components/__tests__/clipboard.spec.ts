@@ -1,15 +1,9 @@
 import { ContextFactory } from '@atlaskit/media-core';
-import { MediaPickerContext } from '../../domain/context';
-import { UserEvent } from '../../outer/analytics/events';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
 import { Clipboard } from '../clipboard';
 import { UploadService } from '../../service/uploadServiceFactory';
 
 jest.mock('../../service/uploadServiceFactory');
-
-class MockContext implements MediaPickerContext {
-  trackEvent(event: UserEvent) {}
-}
 
 describe('Clipboard', () => {
   let clipboard: Clipboard;
@@ -20,7 +14,7 @@ describe('Clipboard', () => {
   });
 
   beforeEach(done => {
-    clipboard = new Clipboard(new MockContext(), context);
+    clipboard = new Clipboard(context);
     clipboard.activate();
     document.dispatchEvent(new Event('DOMContentLoaded'));
 
@@ -50,6 +44,13 @@ describe('Clipboard', () => {
   it('should not call this.uploadService.addFiles() when deactivated and a paste event is dispatched a single file', () => {
     clipboard.deactivate();
     document.dispatchEvent(new MockClipboardEvent('paste', [new MockFile()]));
+    expect(addFiles).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not trigger errors when event.clipboardData is undefined', () => {
+    const event = new MockClipboardEvent('paste', [new MockFile()]);
+    delete event.clipboardData;
+    document.dispatchEvent(event);
     expect(addFiles).toHaveBeenCalledTimes(0);
   });
 });

@@ -154,6 +154,23 @@ describe('selectItem', () => {
     );
   });
 
+  it('should accept text', () => {
+    const plugin = createTypeAheadPlugin();
+    const { editorView } = createEditor({
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      editorPlugins: [plugin, datePlugin],
+    });
+    selectItem(
+      {
+        trigger: '/',
+        selectItem: (state, item, insert) => insert('some text'),
+        getItems: () => [],
+      },
+      { title: '1' },
+    )(editorView.state, editorView.dispatch);
+    expect(editorView.state.doc).toEqualDocument(doc(p('some text')));
+  });
+
   it('should not add a space when replacing a type ahead query with a text node', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({

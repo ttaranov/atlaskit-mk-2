@@ -1,5 +1,98 @@
 # @atlaskit/navigation
 
+## 33.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/logo@9.0.0
+  - @atlaskit/quick-search@4.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/page@8.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/size-detector@5.0.0
+  - @atlaskit/polyfills@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/blanket@7.0.0
+  - @atlaskit/item@8.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/dropdown-menu@6.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/quick-search@4.0.0
+  - @atlaskit/page@8.0.0
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/logo@9.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/size-detector@5.0.0
+  - @atlaskit/polyfills@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/blanket@7.0.0
+  - @atlaskit/item@8.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/dropdown-menu@6.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 32.3.3
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/item@7.0.8
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/single-select@5.2.5
+  - @atlaskit/dropdown-menu@5.2.3
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/button@8.2.5
+  - @atlaskit/single-select@5.2.5
+  - @atlaskit/item@7.0.8
+  - @atlaskit/dropdown-menu@5.2.3
+
+## 32.3.2
+
+
+- [patch] Updated dependencies [8bf8e51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8bf8e51)
+  - @atlaskit/quick-search@3.0.0
+- [none] Updated dependencies [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+  - @atlaskit/quick-search@3.0.0
+
+## 32.3.1
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/quick-search@2.3.4
+  - @atlaskit/single-select@5.2.4
+  - @atlaskit/item@7.0.7
+  - @atlaskit/dropdown-menu@5.2.2
+
+## 32.3.0
+- [minor] Drawer content is scrollable. Drawer header stays fixed in position. [d4b23f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b23f1)
+- [none] Updated dependencies [d4b23f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b23f1)
+
+## 32.2.4
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/dropdown-menu@5.2.1
+  - @atlaskit/avatar@11.2.2
+
 ## 32.2.3
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

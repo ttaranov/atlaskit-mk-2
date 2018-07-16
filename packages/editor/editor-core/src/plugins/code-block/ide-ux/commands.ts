@@ -1,10 +1,12 @@
+import { EditorState, TextSelection } from 'prosemirror-state';
 import {
   getLinesFromSelection,
   getLineInfo,
   forEachLine,
   getStartOfCurrentLine,
 } from './line-handling';
-import { EditorState, TextSelection } from 'prosemirror-state';
+
+import { analyticsService } from '../../../analytics';
 
 export function indent(state: EditorState, dispatch) {
   const { text, start } = getLinesFromSelection(state);
@@ -12,7 +14,7 @@ export function indent(state: EditorState, dispatch) {
   forEachLine(text, (line, offset) => {
     const { indentText, indentToken } = getLineInfo(line);
     const indentToAdd = indentToken.token.repeat(
-      indentToken.size - (indentText.length % indentToken.size) ||
+      indentToken.size - indentText.length % indentToken.size ||
         indentToken.size,
     );
     tr.insertText(indentToAdd, tr.mapping.map(start + offset, -1));
@@ -25,10 +27,11 @@ export function indent(state: EditorState, dispatch) {
     );
   });
   dispatch(tr);
+  analyticsService.trackEvent(`atlassian.editor.codeblock.indent`);
   return true;
 }
 
-export function deindent(state: EditorState, dispatch) {
+export function outdent(state: EditorState, dispatch) {
   const { text, start } = getLinesFromSelection(state);
   const { tr } = state;
   forEachLine(text, (line, offset) => {
@@ -43,6 +46,7 @@ export function deindent(state: EditorState, dispatch) {
     }
   });
   dispatch(tr);
+  analyticsService.trackEvent('atlassian.editor.codeblock.outdent');
   return true;
 }
 
@@ -50,10 +54,11 @@ export function insertIndent(state: EditorState, dispatch) {
   const { text: textAtStartOfLine } = getStartOfCurrentLine(state);
   const { indentToken } = getLineInfo(textAtStartOfLine);
   const indentToAdd = indentToken.token.repeat(
-    indentToken.size - (textAtStartOfLine.length % indentToken.size) ||
+    indentToken.size - textAtStartOfLine.length % indentToken.size ||
       indentToken.size,
   );
   dispatch(state.tr.insertText(indentToAdd));
+  analyticsService.trackEvent('atlassian.editor.codeblock.indent.insert');
   return true;
 }
 

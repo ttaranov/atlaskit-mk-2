@@ -1,5 +1,5 @@
 'use strict';
-//@flow
+// @flow
 
 /*
 * Setup webdriver clients depending on environment on which the test is run against.
@@ -14,6 +14,7 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
 
 const webdriverio = require('webdriverio');
+
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
   : process.env.USER;
@@ -160,9 +161,9 @@ function setBrowserStackClients() {
     },
     safari: {
       os: 'OS X',
-      os_version: 'Sierra',
+      os_version: 'High Sierra',
       browserName: 'safari',
-      browser_version: '10.1',
+      browser_version: '11.0',
       resolution: '1920x1080',
     },
     edge: {
@@ -176,7 +177,7 @@ function setBrowserStackClients() {
 
   let clis = [];
   if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
   }
 
   Object.keys(launchers).forEach(key => {
@@ -186,13 +187,13 @@ function setBrowserStackClients() {
         os_version: launchers[key].os_version,
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
-        project: 'Atlaskit MK2',
         build: process.env.BITBUCKET_BRANCH,
-        'browserstack.local': true,
-        'browserstack.debug': true,
-        'browserstack.idleTimeout': 300,
-        'browserstack.localIdentifier': commit,
         project: 'Atlaskit MK-2 Webdriver Tests',
+        'browserstack.debug': true,
+        'browserstack.video': false, // Put it to false to experiment the impact on the test runs
+        'browserstack.idleTimeout': 60,
+        'browserstack.local': true,
+        'browserstack.localIdentifier': commit,
       },
       host: 'hub.browserstack.com',
       port: 80,

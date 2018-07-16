@@ -12,20 +12,22 @@ const date =
   '[aria-label="calendar"] > table > tbody > tr:nth-child(5) > td:nth-child(6)';
 const dateValue = `${datepickerDefault} > div > div > div`;
 const timepickerDefault = '#examples > div > div > div > div:nth-child(16)';
-const timePickerMenu = '[role="listbox"]';
+const timePickerMenu = '.timepicker-select__menu-list';
 const timeValue = `${timepickerDefault} > div > div > div`;
 const timeOption = '[role="option"]';
 
 BrowserTestCase(
   'When DatePicker is focused & backspace pressed, the input should be cleared',
+  { skip: ['firefox', 'ie', 'edge'] },
   async client => {
     const dateTimePickerTest = await new Page(client);
     await dateTimePickerTest.goto(urlDateTimePicker);
     await dateTimePickerTest.click(datepickerDefault);
     await dateTimePickerTest.waitForSelector(datepickerMenu);
     await dateTimePickerTest.click(date);
-    dateTimePickerTest.keys(['Backspace']);
-    expect(await dateTimePickerTest.getText(dateValue)).not.toBe('');
+    const previousDate = await dateTimePickerTest.getText(dateValue);
+    await dateTimePickerTest.keys(['Backspace']);
+    expect(await dateTimePickerTest.getText(dateValue)).not.toBe(previousDate);
     if (dateTimePickerTest.log('browser').value) {
       dateTimePickerTest.log('browser').value.forEach(val => {
         assert.notEqual(
@@ -40,6 +42,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
+  { skip: ['firefox'] },
   async client => {
     const dateTimePickerTest = await new Page(client);
     await dateTimePickerTest.goto(urlDateTimePicker);
@@ -47,8 +50,10 @@ BrowserTestCase(
     await dateTimePickerTest.waitForSelector(datepickerMenu);
     await dateTimePickerTest.click(date);
     const previousDate = await dateTimePickerTest.getText(dateValue);
-    dateTimePickerTest.keys(['ArrowLeft']);
-    dateTimePickerTest.keys(['ArrowLeft']);
+    await dateTimePickerTest.click(datepickerDefault);
+    await dateTimePickerTest.keys(['ArrowLeft']);
+    await dateTimePickerTest.keys(['ArrowLeft']);
+    await dateTimePickerTest.keys(['Enter']);
     expect(await dateTimePickerTest.getText(dateValue)).not.toBe(previousDate);
     if (dateTimePickerTest.log('browser').value) {
       dateTimePickerTest.log('browser').value.forEach(val => {

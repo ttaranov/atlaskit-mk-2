@@ -1,5 +1,64 @@
 # @atlaskit/media-viewer
 
+## 16.0.1
+- [patch] Fix constructAuthTokenUrl [f435228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f435228)
+
+## 16.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 15.1.15
+- [patch] Add error views to MediaViewer NG [66ac5d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66ac5d4)
+
+## 15.1.14
+- [patch] Fancy video player improvements 3.0 [bb2b947](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb2b947)
+
+## 15.1.13
+- [patch] allow dev override to override feature flag [468bbfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468bbfe)
+
+## 15.1.12
+- [patch] Use media.tsconfig in MediaViewer [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-test-helpers@14.0.6
+  - @atlaskit/media-core@21.0.0
+
+## 15.1.11
+- [patch] Fix passing feature flags down the List component [ae107ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae107ed)
+
+## 15.1.10
+- [patch] Autoplay video and audio files when they are the selected media items [99c6b85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99c6b85)
+
+## 15.1.9
+- [patch] CHANGESET: Use theme/layers's z-index for the Blanket component [186ff55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/186ff55)
+
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+  - @atlaskit/icon@12.5.1
+
+## 15.1.8
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-test-helpers@14.0.4
+  - @atlaskit/media-core@20.0.0
+
 ## 15.1.7
 - [patch] MSW-776: allow selection of top and bottom of documents [d62c079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d62c079)
 

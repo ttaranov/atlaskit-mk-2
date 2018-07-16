@@ -3,9 +3,19 @@
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
@@ -56,6 +66,8 @@ type Props = {
   times?: Array<string>,
   /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing?: 'compact' | 'default',
 };
 
 type State = {
@@ -130,7 +142,7 @@ function formatDateTimeZoneIntoIso(
   return `${date}T${time}${zone}`;
 }
 
-export default class DateTimePicker extends Component<Props, State> {
+class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
@@ -150,6 +162,7 @@ export default class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     timeFormat: defaultTimeFormat,
     dateFormat: defaultDateFormat,
+    spacing: 'default',
   };
 
   state = {
@@ -241,6 +254,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
       appearance: this.props.appearance,
+      spacing: this.props.spacing,
     };
 
     const { styles: datePickerStyles = {} } = (datePickerSelectProps: any);
@@ -293,3 +307,25 @@ export default class DateTimePicker extends Component<Props, State> {
     );
   }
 }
+
+export { DateTimePicker as DateTimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'dateTimePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'dateTimePicker',
+
+      attributes: {
+        componentName: 'dateTimePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(DateTimePicker),
+);

@@ -1,5 +1,58 @@
 # @atlaskit/icon
 
+## 13.1.0
+- [minor] Add a new star large icon [5dd7d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5dd7d0e)
+- [none] Updated dependencies [5dd7d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5dd7d0e)
+
+## 13.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+
+## 12.8.0
+- [minor] Add new media viewer icons  and replace existing ones [623a2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623a2a0)
+- [none] Updated dependencies [623a2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623a2a0)
+
+## 12.7.0
+- [minor] Add chevron large icons [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+- [none] Updated dependencies [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+
+## 12.6.2
+- [patch] Prevent icons shrinking when they are flex-children [a78cd4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78cd4d)
+- [none] Updated dependencies [a78cd4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78cd4d)
+
+## 12.6.1
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/modal-dialog@5.2.6
+
+## 12.6.0
+- [minor] Add a new badge id: department and suitcase [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+- [none] Updated dependencies [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+
+## 12.5.1
+- [patch] Update to select-clear icon to allow for primaryColor and secondaryColor configuration [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+
+## 12.5.0
+- [minor] Added select-clear icon  [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
+- [none] Updated dependencies [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
+
 ## 12.4.0
 - [minor] Add the new app-switcher icon [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
 - [none] Updated dependencies [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)

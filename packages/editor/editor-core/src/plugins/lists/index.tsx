@@ -3,9 +3,10 @@ import { orderedList, bulletList, listItem } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { ToolbarSize } from '../../ui/Toolbar';
 import ToolbarLists from './ui/ToolbarLists';
-import { plugin, stateKey } from './pm-plugins/main';
+import { createPlugin, pluginKey } from './pm-plugins/main';
 import inputRulePlugin from './pm-plugins/input-rule';
 import keymapPlugin from './pm-plugins/keymap';
+import WithPluginState from '../../ui/WithPluginState';
 
 const listPlugin: EditorPlugin = {
   nodes() {
@@ -18,7 +19,7 @@ const listPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 600, plugin: () => plugin },
+      { rank: 600, plugin: ({ dispatch }) => createPlugin(dispatch) },
       { rank: 620, plugin: ({ schema }) => inputRulePlugin(schema) },
       { rank: 640, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
@@ -34,23 +35,32 @@ const listPlugin: EditorPlugin = {
     disabled,
     isToolbarReducedSpacing,
   }) {
-    const pluginState = stateKey.getState(editorView.state);
     const isSmall = toolbarSize < ToolbarSize.L;
     const isSeparator = toolbarSize >= ToolbarSize.S;
+
     return (
-      <ToolbarLists
-        isSmall={isSmall}
-        isSeparator={isSeparator}
-        isReducedSpacing={isToolbarReducedSpacing}
-        disabled={disabled}
-        editorView={editorView}
-        pluginState={pluginState}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-        popupsScrollableElement={popupsScrollableElement}
-        enableTaskToolbar={
-          !!editorView.state.schema.nodes.taskItem && appearance === 'full-page'
-        }
+      <WithPluginState
+        plugins={{ listsState: pluginKey }}
+        render={({ listsState }) => (
+          <ToolbarLists
+            isSmall={isSmall}
+            isSeparator={isSeparator}
+            isReducedSpacing={isToolbarReducedSpacing}
+            disabled={disabled}
+            editorView={editorView}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+            popupsScrollableElement={popupsScrollableElement}
+            allowTasks={
+              !!editorView.state.schema.nodes.taskItem &&
+              appearance === 'full-page'
+            }
+            bulletListActive={listsState.bulletListActive}
+            bulletListDisabled={listsState.bulletListDisabled}
+            orderedListActive={listsState.orderedListActive}
+            orderedListDisabled={listsState.orderedListDisabled}
+          />
+        )}
       />
     );
   },

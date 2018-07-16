@@ -1,20 +1,20 @@
 import { MarkSpec, Mark } from 'prosemirror-model';
 import { FONT_STYLE } from '../groups';
 
-export interface Attributes {
+export interface SubSupAttributes {
   type: 'sub' | 'sup';
 }
 
 /**
  * @name subsup_mark
  */
-export interface Definition {
+export interface SubSupDefinition {
   type: 'subsup';
-  attrs: Attributes;
+  attrs: SubSupAttributes;
 }
 
 export interface SubSupMark extends Mark {
-  attrs: Attributes;
+  attrs: SubSupAttributes;
 }
 
 export const subsup: MarkSpec = {

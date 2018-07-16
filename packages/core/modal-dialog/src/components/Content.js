@@ -120,7 +120,7 @@ export default class Content extends Component<Props, State> {
   componentDidMount() {
     this._isMounted = true;
 
-    // $FlowFixMe
+    // $FlowFixMe - issue with document.addEventListener - Enum incompatible
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('keyup', this.handleKeyUp, false);
 
@@ -146,7 +146,7 @@ export default class Content extends Component<Props, State> {
   componentWillUnmount() {
     this._isMounted = false;
 
-    // $FlowFixMe
+    // $FlowFixMe - issue with document.addEventListener - Enum incompatible
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('keyup', this.handleKeyUp, false);
 

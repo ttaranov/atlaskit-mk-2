@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "8.1.4",
+  "version": "9.0.0",
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,23 +18,24 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^12.3.1",
-    "@atlaskit/layer-manager": "^4.2.1",
-    "@atlaskit/theme": "^4.0.4",
+    "@atlaskit/analytics-next": "^3.0.0",
+    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/layer-manager": "^5.0.0",
+    "@atlaskit/theme": "^5.0.0",
     "babel-runtime": "^6.26.0",
     "react-transition-group": "^2.2.1",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.2.3",
-    "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/field-radio-group": "^3.1.2",
-    "@atlaskit/spinner": "^8.0.0",
-    "@atlaskit/theme": "^4.0.4",
+    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/field-radio-group": "^4.0.0",
+    "@atlaskit/spinner": "^9.0.0",
+    "@atlaskit/theme": "^5.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [

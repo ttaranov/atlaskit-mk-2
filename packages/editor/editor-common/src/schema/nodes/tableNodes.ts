@@ -144,7 +144,7 @@ export interface TableAttributes {
 /**
  * @name table_node
  */
-export interface Table {
+export interface TableDefinition {
   type: 'table';
   attrs?: TableAttributes;
   /**

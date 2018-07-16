@@ -100,23 +100,27 @@ export const preprocessDoc = (
   }
 
   const content: Node[] = [];
-  origDoc.content.forEach((node, index) => {
+  // A flag to indicate if the element in the array is the last paragraph
+  let isLastParagraph = true;
+
+  for (let i = origDoc.content.childCount - 1; i >= 0; i--) {
+    const node = origDoc.content.child(i);
     const { taskList, decisionList } = schema.nodes;
     if (
       !(
         node.type.name === 'paragraph' &&
         node.content.size === 0 &&
-        index === origDoc.childCount - 1 &&
-        origDoc.childCount > 1
+        isLastParagraph
       ) &&
       ((node.type !== taskList && node.type !== decisionList) ||
         node.textContent)
     ) {
       content.push(node);
+      isLastParagraph = false;
     }
-  });
+  }
 
-  return schema.nodes.doc.create({}, Fragment.fromArray(content));
+  return schema.nodes.doc.create({}, Fragment.fromArray(content.reverse()));
 };
 
 export function processRawValue(

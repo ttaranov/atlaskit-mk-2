@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
 import { selectColumn, isTableSelected } from 'prosemirror-utils';
+import { browser } from '@atlaskit/editor-common';
 import {
   ColumnContainer,
   ColumnInner,
@@ -12,7 +14,11 @@ import { toolbarSize } from '../styles';
 import { tableDeleteColumnButtonSize } from '../../styles';
 import InsertColumnButton from './InsertColumnButton';
 import DeleteColumnButton from './DeleteColumnButton';
-import { findColumnSelection, TableSelection } from '../utils';
+import {
+  findColumnSelection,
+  TableSelection,
+  isSelectionUpdated,
+} from '../utils';
 import {
   resetHoverSelection,
   hoverColumns,
@@ -22,13 +28,45 @@ import {
 
 export interface Props {
   editorView: EditorView;
+  selection?: Selection;
   tableRef?: HTMLElement;
   isTableHovered: boolean;
   isTableInDanger?: boolean;
+  numberOfColumns?: number;
 }
 
 export default class ColumnControls extends Component<Props, any> {
   state: { dangerColumns: number[] } = { dangerColumns: [] };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const {
+      tableRef,
+      isTableHovered,
+      isTableInDanger,
+      selection,
+      numberOfColumns,
+    } = this.props;
+
+    if (nextProps.tableRef) {
+      const controls = nextProps.tableRef.parentNode!.firstChild as HTMLElement;
+      // checks if controls width is different from table width
+      // 1px difference is acceptible and occurs in some situations due to the browser rendering specifics
+      const shouldUpdate =
+        Math.abs(controls.offsetWidth - nextProps.tableRef.offsetWidth) > 1;
+      if (shouldUpdate) {
+        return true;
+      }
+    }
+
+    return (
+      tableRef !== nextProps.tableRef ||
+      isTableHovered !== nextProps.isTableHovered ||
+      isTableInDanger !== nextProps.isTableInDanger ||
+      numberOfColumns !== nextProps.numberOfColumns ||
+      this.state.dangerColumns !== nextState.dangerColumns ||
+      isSelectionUpdated(selection, nextProps.selection)
+    );
+  }
 
   createDeleteColumnButton(
     selection: TableSelection,
@@ -179,7 +217,12 @@ export default class ColumnControls extends Component<Props, any> {
   };
 
   private selectColumn = (column: number) => {
-    const { state, dispatch } = this.props.editorView;
+    const { editorView } = this.props;
+    const { state, dispatch } = editorView;
+    // fix for issue ED-4665
+    if (browser.ie_version === 11) {
+      (editorView.dom as HTMLElement).blur();
+    }
     dispatch(selectColumn(column)(state.tr));
   };
 

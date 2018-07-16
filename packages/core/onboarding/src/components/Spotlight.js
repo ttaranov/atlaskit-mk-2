@@ -8,9 +8,19 @@ import React, {
   type Node,
 } from 'react';
 import { ThemeProvider } from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import { getSpotlightTheme } from './theme';
 import type { ActionsType } from '../types';
@@ -106,11 +116,10 @@ class Spotlight extends Component<Props> {
   };
 
   renderTargetClone() {
-    // NOTE: `clone` & `rect` are NOT public API
     const {
-      // $FlowFixMe
+      // $FlowFixMe - `clone` & `rect` are NOT public API
       clone, // eslint-disable-line react/prop-types
-      // $FlowFixMe
+      // $FlowFixMe - `clone` & `rect` are NOT public API
       rect, // eslint-disable-line react/prop-types
       pulse,
       target,
@@ -154,10 +163,10 @@ class Spotlight extends Component<Props> {
       footer,
       header,
       heading,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       in: transitionIn, // eslint-disable-line react/prop-types
       image,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       scrollY, // eslint-disable-line react/prop-types
     } = this.props;
 
@@ -214,4 +223,24 @@ const portalConfig = { target: 'spotlight', withTransitionGroup: true };
 const portal = comp => withRenderTarget(portalConfig, comp);
 const enhance = compose(withSpotlightState, withScrollMeasurements, portal);
 
-export default enhance(Spotlight);
+export const SpotlightWithoutAnalytics = enhance(Spotlight);
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'spotlight',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    targetOnClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'spotlight',
+
+      attributes: {
+        componentName: 'spotlight',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(SpotlightWithoutAnalytics),
+);

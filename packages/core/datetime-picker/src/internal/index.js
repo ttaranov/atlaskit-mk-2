@@ -30,7 +30,9 @@ export const defaultTimes = [
 export const defaultTimeFormat = 'h:mma';
 export const defaultDateFormat = 'YYYY/MM/DD';
 
-export const DropdownIndicator = ({ icon: Icon }: { icon?: any } = {}) =>
+export const DropdownIndicator = ({
+  selectProps: { dropdownIndicatorIcon: Icon },
+}: { selectProps: { dropdownIndicatorIcon?: any } } = {}) =>
   Icon ? (
     <span role="img">
       <Icon />

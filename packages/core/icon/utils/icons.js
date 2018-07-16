@@ -61,8 +61,10 @@ import CheckboxIcon from '../glyph/checkbox';
 import ChevronDownCircleIcon from '../glyph/chevron-down-circle';
 import ChevronDownIcon from '../glyph/chevron-down';
 import ChevronLeftCircleIcon from '../glyph/chevron-left-circle';
+import ChevronLeftLargeIcon from '../glyph/chevron-left-large';
 import ChevronLeftIcon from '../glyph/chevron-left';
 import ChevronRightCircleIcon from '../glyph/chevron-right-circle';
+import ChevronRightLargeIcon from '../glyph/chevron-right-large';
 import ChevronRightIcon from '../glyph/chevron-right';
 import ChevronUpCircleIcon from '../glyph/chevron-up-circle';
 import ChevronUpIcon from '../glyph/chevron-up';
@@ -77,6 +79,7 @@ import CrossCircleIcon from '../glyph/cross-circle';
 import CrossIcon from '../glyph/cross';
 import DashboardIcon from '../glyph/dashboard';
 import DecisionIcon from '../glyph/decision';
+import DepartmentIcon from '../glyph/department';
 import DetailViewIcon from '../glyph/detail-view';
 import DiscoverFilledIcon from '../glyph/discover-filled';
 import DiscoverIcon from '../glyph/discover';
@@ -278,6 +281,8 @@ import MediaServicesButtonOptionIcon from '../glyph/media-services/button-option
 import MediaServicesCodeIcon from '../glyph/media-services/code';
 import MediaServicesDocumentIcon from '../glyph/media-services/document';
 import MediaServicesFilterIcon from '../glyph/media-services/filter';
+import MediaServicesFitToPageIcon from '../glyph/media-services/fit-to-page';
+import MediaServicesFullScreenIcon from '../glyph/media-services/full-screen';
 import MediaServicesGridIcon from '../glyph/media-services/grid';
 import MediaServicesImageIcon from '../glyph/media-services/image';
 import MediaServicesLineThicknessIcon from '../glyph/media-services/line-thickness';
@@ -372,6 +377,7 @@ import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
 import ScreenIcon from '../glyph/screen';
 import SearchIcon from '../glyph/search';
+import SelectClearIcon from '../glyph/select-clear';
 import SendIcon from '../glyph/send';
 import SettingsIcon from '../glyph/settings';
 import ShareIcon from '../glyph/share';
@@ -380,10 +386,12 @@ import ShortcutIcon from '../glyph/shortcut';
 import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
+import StarLargeIcon from '../glyph/star-large';
 import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
 import SubtaskIcon from '../glyph/subtask';
+import SuitcaseIcon from '../glyph/suitcase';
 import SwitcherIcon from '../glyph/switcher';
 import TableIcon from '../glyph/table';
 import TaskIcon from '../glyph/task';
@@ -400,6 +408,7 @@ import VidAudioMutedIcon from '../glyph/vid-audio-muted';
 import VidAudioOnIcon from '../glyph/vid-audio-on';
 import VidBackwardIcon from '../glyph/vid-backward';
 import VidCameraOffIcon from '../glyph/vid-camera-off';
+import VidCameraOnIcon from '../glyph/vid-camera-on';
 import VidConnectionCircleIcon from '../glyph/vid-connection-circle';
 import VidForwardIcon from '../glyph/vid-forward';
 import VidFullScreenOffIcon from '../glyph/vid-full-screen-off';
@@ -411,6 +420,9 @@ import VidPlayIcon from '../glyph/vid-play';
 import VidRaisedHandIcon from '../glyph/vid-raised-hand';
 import VidShareScreenIcon from '../glyph/vid-share-screen';
 import VidSpeakingCircleIcon from '../glyph/vid-speaking-circle';
+import VidVolumeFullIcon from '../glyph/vid-volume-full';
+import VidVolumeHalfIcon from '../glyph/vid-volume-half';
+import VidVolumeMutedIcon from '../glyph/vid-volume-muted';
 import VideoCircleIcon from '../glyph/video-circle';
 import VideoFilledIcon from '../glyph/video-filled';
 import WarningIcon from '../glyph/warning';
@@ -732,6 +744,12 @@ export default {
     componentName: 'ChevronLeftCircleIcon',
     package: '@atlaskit/icon/glyph/chevron-left-circle',
   },
+  'chevron-left-large': {
+    keywords: ['chevron-left-large', 'chevronleftlarge'],
+    component: ChevronLeftLargeIcon,
+    componentName: 'ChevronLeftLargeIcon',
+    package: '@atlaskit/icon/glyph/chevron-left-large',
+  },
   'chevron-left': {
     keywords: ['chevron-left', 'chevronleft', 'back', 'previous'],
     component: ChevronLeftIcon,
@@ -743,6 +761,12 @@ export default {
     component: ChevronRightCircleIcon,
     componentName: 'ChevronRightCircleIcon',
     package: '@atlaskit/icon/glyph/chevron-right-circle',
+  },
+  'chevron-right-large': {
+    keywords: ['chevron-right-large', 'chevronrightlarge'],
+    component: ChevronRightLargeIcon,
+    componentName: 'ChevronRightLargeIcon',
+    package: '@atlaskit/icon/glyph/chevron-right-large',
   },
   'chevron-right': {
     keywords: ['chevron-right', 'chevronright', 'forward', 'next'],
@@ -827,6 +851,12 @@ export default {
     component: DecisionIcon,
     componentName: 'DecisionIcon',
     package: '@atlaskit/icon/glyph/decision',
+  },
+  department: {
+    keywords: ['department'],
+    component: DepartmentIcon,
+    componentName: 'DepartmentIcon',
+    package: '@atlaskit/icon/glyph/department',
   },
   'detail-view': {
     keywords: ['detail-view', 'detailview'],
@@ -2034,6 +2064,18 @@ export default {
     componentName: 'MediaServicesFilterIcon',
     package: '@atlaskit/icon/glyph/media-services/filter',
   },
+  'media-services/fit-to-page': {
+    keywords: ['media-services/fit-to-page', 'mediaservicesfittopage'],
+    component: MediaServicesFitToPageIcon,
+    componentName: 'MediaServicesFitToPageIcon',
+    package: '@atlaskit/icon/glyph/media-services/fit-to-page',
+  },
+  'media-services/full-screen': {
+    keywords: ['media-services/full-screen', 'mediaservicesfullscreen'],
+    component: MediaServicesFullScreenIcon,
+    componentName: 'MediaServicesFullScreenIcon',
+    package: '@atlaskit/icon/glyph/media-services/full-screen',
+  },
   'media-services/grid': {
     keywords: ['media-services/grid', 'mediaservicesgrid', 'table'],
     component: MediaServicesGridIcon,
@@ -2598,6 +2640,12 @@ export default {
     componentName: 'SearchIcon',
     package: '@atlaskit/icon/glyph/search',
   },
+  'select-clear': {
+    keywords: ['select-clear', 'selectclear'],
+    component: SelectClearIcon,
+    componentName: 'SelectClearIcon',
+    package: '@atlaskit/icon/glyph/select-clear',
+  },
   send: {
     keywords: ['send', 'mail'],
     component: SendIcon,
@@ -2646,6 +2694,12 @@ export default {
     componentName: 'StarFilledIcon',
     package: '@atlaskit/icon/glyph/star-filled',
   },
+  'star-large': {
+    keywords: ['star-large', 'starlarge'],
+    component: StarLargeIcon,
+    componentName: 'StarLargeIcon',
+    package: '@atlaskit/icon/glyph/star-large',
+  },
   star: {
     keywords: ['star'],
     component: StarIcon,
@@ -2669,6 +2723,12 @@ export default {
     component: SubtaskIcon,
     componentName: 'SubtaskIcon',
     package: '@atlaskit/icon/glyph/subtask',
+  },
+  suitcase: {
+    keywords: ['suitcase'],
+    component: SuitcaseIcon,
+    componentName: 'SuitcaseIcon',
+    package: '@atlaskit/icon/glyph/suitcase',
   },
   switcher: {
     keywords: ['switcher'],
@@ -2766,6 +2826,12 @@ export default {
     componentName: 'VidCameraOffIcon',
     package: '@atlaskit/icon/glyph/vid-camera-off',
   },
+  'vid-camera-on': {
+    keywords: ['vid-camera-on', 'vidcameraon'],
+    component: VidCameraOnIcon,
+    componentName: 'VidCameraOnIcon',
+    package: '@atlaskit/icon/glyph/vid-camera-on',
+  },
   'vid-connection-circle': {
     keywords: ['vid-connection-circle', 'vidconnectioncircle', 'signal', 'bar'],
     component: VidConnectionCircleIcon,
@@ -2831,6 +2897,24 @@ export default {
     component: VidSpeakingCircleIcon,
     componentName: 'VidSpeakingCircleIcon',
     package: '@atlaskit/icon/glyph/vid-speaking-circle',
+  },
+  'vid-volume-full': {
+    keywords: ['vid-volume-full', 'vidvolumefull'],
+    component: VidVolumeFullIcon,
+    componentName: 'VidVolumeFullIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-full',
+  },
+  'vid-volume-half': {
+    keywords: ['vid-volume-half', 'vidvolumehalf'],
+    component: VidVolumeHalfIcon,
+    componentName: 'VidVolumeHalfIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-half',
+  },
+  'vid-volume-muted': {
+    keywords: ['vid-volume-muted', 'vidvolumemuted'],
+    component: VidVolumeMutedIcon,
+    componentName: 'VidVolumeMutedIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-muted',
   },
   'video-circle': {
     keywords: ['video-circle', 'videocircle', 'video', 'camera'],

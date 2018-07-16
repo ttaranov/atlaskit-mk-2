@@ -67,7 +67,7 @@ export function isNextLineEmpty(input: string) {
   while (index < input.length) {
     const length = parseWhitespaceAndNewLine(input);
 
-    if (parseWhitespaceAndNewLine(input) === 0) {
+    if (length === 0) {
       return false;
     }
     if (parseNewlineOnly(input)) {

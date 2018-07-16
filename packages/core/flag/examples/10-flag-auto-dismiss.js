@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors, gridSize, math } from '@atlaskit/theme';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import { AutoDismissFlag, FlagGroup } from '../src';
 
@@ -45,8 +45,7 @@ export default class AutoDismissExample extends Component<void, State> {
   render() {
     return (
       <div>
-        {/* // $FlowFixMe - cannot perform arithmetic operation */}
-        <p style={{ padding: `${gridSize * 2}px` }}>
+        <p style={{ padding: `${math.multiply(gridSize, 2).toString()}px` }}>
           <Button appearance="primary" onClick={this.addFlag}>
             Add another Flag
           </Button>
@@ -67,7 +66,7 @@ export default class AutoDismissExample extends Component<void, State> {
                 }
                 key={flagId}
                 title={`Flag #${flagId}`}
-                description="I will auto dismiss after 15 seconds"
+                description="I will auto dismiss after 8 seconds"
               />
             );
           })}

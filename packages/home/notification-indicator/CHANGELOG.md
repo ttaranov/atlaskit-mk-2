@@ -1,5 +1,17 @@
 # @atlaskit/notification-indicator
 
+## 4.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/badge@9.0.0
+  - @atlaskit/notification-log-client@3.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/notification-log-client@3.0.0
+  - @atlaskit/badge@9.0.0
+  - @atlaskit/docs@5.0.0
+
 ## 3.2.0
 - [minor] Update NotificationIndicator with new features that will be used to reduce backend calls [803ed1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/803ed1f)
 - [minor] Updated dependencies [803ed1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/803ed1f)

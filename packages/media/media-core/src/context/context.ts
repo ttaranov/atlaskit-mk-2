@@ -1,16 +1,18 @@
+import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/publishReplay';
 
 import {
   MediaStore,
   uploadFile,
   UploadableFile,
-  UploadFileCallbacks,
   ContextConfig,
   MediaApiConfig,
-  UploadFileResult,
+  UploadController,
 } from '@atlaskit/media-store';
 
 import {
@@ -73,11 +75,10 @@ export interface Context {
   refreshCollection(collectionName: string, pageSize: number): void;
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-
   uploadFile(
     file: UploadableFile,
-    callbacks?: UploadFileCallbacks,
-  ): UploadFileResult;
+    controller?: UploadController,
+  ): Observable<FileState>;
 
   readonly config: ContextConfig;
 }
@@ -256,9 +257,61 @@ class ContextImpl implements Context {
 
   uploadFile(
     file: UploadableFile,
-    callbacks?: UploadFileCallbacks,
-  ): UploadFileResult {
-    return uploadFile(file, this.apiConfig, callbacks);
+    controller?: UploadController,
+  ): Observable<FileState> {
+    let fileId: string;
+    // TODO [MSW-796]: get file size for base64
+    const size = file.content instanceof Blob ? file.content.size : 0;
+    // TODO [MSW-678]: remove when id upfront is exposed
+    const tempFileId = uuid.v4();
+    const fileStream = new Observable<FileState>(observer => {
+      const name = file.name || '';
+      // TODO send local preview
+      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
+        onProgress: progress => {
+          observer.next({
+            id: tempFileId,
+            progress,
+            status: 'uploading',
+            name,
+            size,
+          });
+        },
+      });
+
+      if (controller) {
+        controller.setAbort(cancel);
+      }
+
+      deferredFileId
+        .then(id => {
+          fileId = id;
+          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
+          this.fileStreamsCache.set(id, fileStream);
+          observer.next({
+            id,
+            status: 'processing',
+            name,
+            size,
+          });
+          observer.complete();
+        })
+        .catch(error => {
+          // we can't use .catch(observer.error) due that will change the Subscriber context
+          observer.error(error);
+        });
+    })
+      .concat(
+        Observable.defer(() =>
+          this.createDownloadFileStream(fileId, file.collection),
+        ),
+      )
+      .publishReplay(1)
+      .refCount();
+
+    this.fileStreamsCache.set(tempFileId, fileStream);
+
+    return fileStream;
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {

@@ -45,6 +45,7 @@ export interface RecentPage {
   title: string;
   type: string;
   url: string;
+  iconClass: string;
 }
 
 export interface RecentSpace {
@@ -63,7 +64,8 @@ export interface QuickNavResult {
   href: string;
   name: string;
   id?: string; // null for spaces
-  spaceName?: string; // null for spaces
+  spaceName?: string; // null for spaces,
+  spaceKey?: string; // null for spaces
 }
 
 export default class ConfluenceClientImpl implements ConfluenceClient {
@@ -154,6 +156,8 @@ function recentPageToResult(
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.ConfluenceObjectResult,
     contentType: `confluence-${recentPage.contentType}` as ContentType,
+    iconClass: recentPage.iconClass,
+    containerId: recentPage.spaceKey,
   } as ConfluenceObjectResult;
 }
 
@@ -191,6 +195,8 @@ function quickNavResultToObjectResult(
     containerName: unescapeHtml(quickNavResult.spaceName!), // never null for pages, blogs & attachments
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.ConfluenceObjectResult,
+    containerId: quickNavResult.spaceKey!,
+    iconClass: quickNavResult.className,
   };
 }
 

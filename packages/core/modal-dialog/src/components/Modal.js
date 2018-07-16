@@ -1,7 +1,17 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import type {
   AppearanceType,
@@ -35,10 +45,8 @@ const Positioner = ({ scrollBehavior, ...props }) => {
 function getScrollDistance() {
   return (
     window.pageYOffset ||
-    // $FlowFixMe
-    document.documentElement.scrollTop ||
-    // $FlowFixMe
-    document.body.scrollTop ||
+    (document.documentElement && document.documentElement.scrollTop) ||
+    (document.body && document.body.scrollTop) ||
     0
   );
 }
@@ -221,7 +229,7 @@ class Modal extends Component<Props, State> {
       footer,
       header,
       height,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
       isHeadingMultiline,
@@ -306,10 +314,31 @@ class Modal extends Component<Props, State> {
   }
 }
 
-export default withRenderTarget(
+export const ModalDialogWithoutAnalytics = withRenderTarget(
   {
     target: 'modal',
     withTransitionGroup: true,
   },
   Modal,
+);
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'modalDialog',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClose: createAndFireEventOnAtlaskit({
+      action: 'closed',
+      actionSubject: 'modalDialog',
+
+      attributes: {
+        componentName: 'modalDialog',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ModalDialogWithoutAnalytics),
 );
