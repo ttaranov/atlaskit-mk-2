@@ -5,11 +5,11 @@ import Lozenge from '@atlaskit/lozenge';
 import {
   Editor,
   EditorContext,
-  WithPluginState,
   getPropsPreset,
   mediaPluginKey,
   mentionPluginKey,
 } from '../src';
+import WithPluginState from '../src/ui/WithPluginState';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 
 const SAVE_ACTION = () => console.log('Save');

@@ -26,8 +26,8 @@ import {
   h1,
 } from '@atlaskit/editor-test-helpers';
 
-import { setTextSelection, setGapCursorSelection } from '../../../src';
-
+import { setTextSelection } from '../../../src';
+import { setGapCursorSelection } from '../../../src/utils';
 import gapCursorPlugin, {
   GapCursorSelection,
   Side,
