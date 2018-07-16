@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "A component used for navigation, with each item acting as a link",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -21,7 +21,7 @@
     "@atlaskit/analytics-next": "^3.0.0",
     "@atlaskit/button": "^9.0.0",
     "@atlaskit/theme": "^5.0.0",
-    "@atlaskit/tooltip": "^11.0.0",
+    "@atlaskit/tooltip": "^12.0.0",
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.0",
-    "@atlaskit/icon": "^13.0.0",
-    "@atlaskit/select": "^5.0.0",
+    "@atlaskit/icon": "^13.1.1",
+    "@atlaskit/select": "^5.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
     "react-router": "^4.2.0",

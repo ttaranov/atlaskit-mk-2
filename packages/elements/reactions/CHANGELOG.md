@@ -1,5 +1,11 @@
 # @atlaskit/reactions
 
+## 13.0.2
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/emoji@38.0.1
+  - @atlaskit/icon@13.1.1
+
 ## 13.0.1
 - [patch] Ensure reactions wrap if insufficient horizontal space [bb7129d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7129d)
 
