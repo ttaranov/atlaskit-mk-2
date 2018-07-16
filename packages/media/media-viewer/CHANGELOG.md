@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 16.0.3
+- [patch] Open MediaViewer in top of the modal dialog [49683a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49683a6)
+
 ## 16.0.2
 - [patch] Prevent image from being selectable [63650bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63650bc)
 
