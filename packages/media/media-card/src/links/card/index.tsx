@@ -21,9 +21,7 @@ export const defaultLinkCardAppearance: CardAppearance = 'square';
 
 export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
-    const {
-      resources: { smartCard, app, player },
-    } = this;
+    const { resources: { smartCard, app, player } } = this;
     const { appearance } = this.props;
 
     switch (appearance) {
@@ -122,9 +120,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   }
 
   private renderSmartCard(): JSX.Element {
-    const {
-      resources: { smartCard },
-    } = this;
+    const { resources: { smartCard } } = this;
 
     // this check is just to silence TS - this method should never be called if we don't have
     // data for a smart-card

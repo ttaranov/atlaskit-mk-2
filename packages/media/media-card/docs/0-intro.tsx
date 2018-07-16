@@ -5,9 +5,9 @@ export default md`
 
   Exports 3 components:
 
-  1.  Card
-  2.  CardView
-  3.  CardList
+  1. Card
+  2. CardView
+  3. CardList
 
   ## Installation
 

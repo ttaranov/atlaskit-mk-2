@@ -124,9 +124,7 @@ export default class Counter extends React.PureComponent<Props, State> {
 
     const enterClass = increase
       ? slideUpStyle
-      : decrease
-        ? slideDownStyle
-        : undefined;
+      : decrease ? slideDownStyle : undefined;
 
     const className = cx(countStyle, classNameProp);
 

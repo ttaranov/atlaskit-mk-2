@@ -27,16 +27,16 @@ export const Wrapper: ComponentClass<
   line-height: 18px;
   pointer-events: all;
   ${borderRadiusBottom} ${({ type }: WrapperProps) => {
-    if (type === 'failure') {
-      return `
+      if (type === 'failure') {
+        return `
         color: ${akColorN600};
         background-color: ${akColorY300};
       `;
-    } else {
-      return `
+      } else {
+        return `
         color: ${akColorN0};
         background-color: ${akColorG300};
       `;
-    }
-  }};
+      }
+    }};
 `;

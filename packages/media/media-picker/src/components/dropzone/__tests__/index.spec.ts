@@ -91,16 +91,16 @@ describe('Dropzone', () => {
 
         await dropzone.activate();
         expect(
-          container
-            .querySelector('.mediaPickerDropzone')!
-            .classList.contains('active'),
+          container.querySelector('.mediaPickerDropzone')!.classList.contains(
+            'active',
+          ),
         ).toEqual(false);
 
         container.dispatchEvent(dragOver);
         expect(
-          container
-            .querySelector('.mediaPickerDropzone')!
-            .classList.contains('active'),
+          container.querySelector('.mediaPickerDropzone')!.classList.contains(
+            'active',
+          ),
         ).toEqual(true);
       });
 
@@ -112,16 +112,16 @@ describe('Dropzone', () => {
         await dropzone.activate();
         container.dispatchEvent(dragOver);
         expect(
-          container
-            .querySelector('.mediaPickerDropzone')!
-            .classList.contains('active'),
+          container.querySelector('.mediaPickerDropzone')!.classList.contains(
+            'active',
+          ),
         ).toEqual(true);
 
         container.dispatchEvent(dragLeave);
         expect(
-          container
-            .querySelector('.mediaPickerDropzone')!
-            .classList.contains('active'),
+          container.querySelector('.mediaPickerDropzone')!.classList.contains(
+            'active',
+          ),
         ).toEqual(false);
       });
     });

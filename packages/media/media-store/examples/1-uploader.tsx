@@ -119,9 +119,7 @@ class UploaderExample extends Component<
   };
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { files },
-    } = e;
+    const { currentTarget: { files } } = e;
     if (!files) {
       return;
     }
