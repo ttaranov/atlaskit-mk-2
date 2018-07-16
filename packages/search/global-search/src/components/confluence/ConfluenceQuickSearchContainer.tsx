@@ -44,9 +44,9 @@ export interface Props {
 }
 
 class SearchScreenCounter implements ScreenCounter {
-  count = 0;
+  count = 1;
   constructor() {
-    this.count = 0;
+    this.count = 1;
   }
 
   getCount() {
