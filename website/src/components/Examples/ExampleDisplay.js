@@ -18,17 +18,23 @@ type Props = {
 
 export default class ExampleDisplay extends Component<Props> {
   iframeRef: ElementRef<iframe>;
+  constructor(props) {
+    super(props);
+    this.buildExampleComponents(props);
+  }
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src && this.iframeRef) {
-      this.iframeRef.contentWindow.unmountApp();
+      if (this.iframeRef) {
+        this.iframeRef.contentWindow.unmountApp();
+      }
+      this.buildExampleComponents(nextProps);
     }
   }
   componentWillUnmount() {
     this.iframeRef.contentWindow.unmountApp();
   }
-  getIframeRef = ref => (this.iframeRef = ref);
-  render() {
-    const ExampleCode = Loadable({
+  buildExampleComponents = props => {
+    this.ExampleCode = Loadable({
       loader: () => this.props.example.contents(),
       loading: Loading,
       render(loaded) {
@@ -37,14 +43,7 @@ export default class ExampleDisplay extends Component<Props> {
         );
       },
     });
-    if (!this.props.src) {
-      console.error(
-        'No source url provided for the examples iframe',
-        this.props.src,
-      );
-      return;
-    }
-    const Example = () => (
+    this.Example = () => (
       <iframe
         ref={this.getIframeRef}
         title="example"
@@ -56,7 +55,21 @@ export default class ExampleDisplay extends Component<Props> {
         src={this.props.src}
       />
     );
+  };
+  getIframeRef = ref => (this.iframeRef = ref);
+  render() {
+    if (!this.props.src) {
+      console.error(
+        'No source url provided for the examples iframe',
+        this.props.src,
+      );
+      return;
+    }
 
-    return this.props.children(ExampleCode, Example, this.props.displayCode);
+    return this.props.children(
+      this.ExampleCode,
+      this.Example,
+      this.props.displayCode,
+    );
   }
 }
