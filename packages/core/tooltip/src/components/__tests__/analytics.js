@@ -29,7 +29,7 @@ describe('Tooltip', () => {
 
   it('should be wrapped with analytics events', () => {
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
-      onMouseOver: {
+      onShow: {
         action: 'displayed',
         actionSubject: 'tooltip',
         attributes: {
@@ -38,7 +38,7 @@ describe('Tooltip', () => {
           packageVersion,
         },
       },
-      onMouseOut: {
+      onHide: {
         action: 'hidden',
         actionSubject: 'tooltip',
         attributes: {

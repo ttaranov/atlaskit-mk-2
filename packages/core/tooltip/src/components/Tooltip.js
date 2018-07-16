@@ -12,6 +12,7 @@ import React, {
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -120,23 +121,6 @@ class Tooltip extends Component<Props, State> {
     // handle case where truncate is changed while visible
     if (truncate !== this.props.truncate) {
       this.setState({ coordinates: null });
-    }
-  }
-
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    // AK-4959 - can move logic to withAnalyticsEvents hoc when we have handlers for tooltip visibility
-    /* eslint-disable react/prop-types */
-    if (
-      !prevState.isVisible &&
-      this.state.isVisible &&
-      // This prop doesn't exist in exported component so we don't want it to be documented
-      // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
-      this.props.createAnalyticsEvent
-    ) {
-      // $FlowFixMe
-      const event = this.props.createAnalyticsEvent(hoveredPayload);
-      /* eslint-enable */
-      event.fire('atlaskit');
     }
   }
 
@@ -280,6 +264,7 @@ class Tooltip extends Component<Props, State> {
 }
 
 export { Tooltip as TooltipWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export type TooltipType = Tooltip;
 
@@ -289,7 +274,7 @@ export default withAnalyticsContext({
   packageVersion,
 })(
   withAnalyticsEvents({
-    onMouseOver: hoveredPayload,
-    onMouseOut: unhoveredPayload,
+    onHide: unhoveredPayload,
+    onShow: createAndFireEventOnAtlaskit({ ...hoveredPayload }),
   })(Tooltip),
 );
