@@ -24,6 +24,7 @@ const reactionStyle = style({
 
 const reactionsStyle = style({
   display: 'flex',
+  flexWrap: 'wrap',
   position: 'relative',
   background: 'white',
   alignItems: 'center',

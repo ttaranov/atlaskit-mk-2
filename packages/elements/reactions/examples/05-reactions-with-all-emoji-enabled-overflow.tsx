@@ -13,7 +13,12 @@ const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 export default function Example() {
   enableLogger(true);
   return (
-    <div>
+    <div
+      style={{
+        width: '300px',
+        border: '1px solid #777',
+      }}
+    >
       <p>This is a message with some reactions</p>
       <Reactions
         containerAri={containerAri}
