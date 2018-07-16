@@ -48,7 +48,7 @@ export type ItemProps = {
   /** A function which will be passed the default styles object for the Item as
    * well as its current state, and should return a new styles object. Allows
    * you to patch and customise the Item's appearance. */
-  styles: StyleReducer<ItemPresentationProps>,
+  styles: StyleReducer,
   /** The string to render as a 'description' under the main text content in the
    * Item. */
   subText?: string,

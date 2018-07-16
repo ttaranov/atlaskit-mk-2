@@ -3,7 +3,7 @@
 import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
 import type { ItemPrimitiveProps, ItemRenderComponentProps } from './types';
 
 const getItemBase = (
@@ -97,6 +97,4 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   }
 }
 
-export default withTheme({ mode: light, context: 'container' })(
-  NavigationItemPrimitive,
-);
+export default withContentTheme(NavigationItemPrimitive);

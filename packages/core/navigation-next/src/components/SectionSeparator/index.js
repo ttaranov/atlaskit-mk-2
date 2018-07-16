@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { light, withTheme } from '../../theme';
+import { withContentTheme } from '../../theme';
 import type { SectionSeparatorProps } from './types';
 
 const SectionSeparator = ({ theme }: SectionSeparatorProps) => {
@@ -11,6 +11,4 @@ const SectionSeparator = ({ theme }: SectionSeparatorProps) => {
   return <div css={styles} />;
 };
 
-export default withTheme({ mode: light, context: 'container' })(
-  SectionSeparator,
-);
+export default withContentTheme(SectionSeparator);

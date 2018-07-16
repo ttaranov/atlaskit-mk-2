@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { light, withTheme } from '../../theme';
+import { withContentTheme } from '../../theme';
 import type { SectionTitlePrimitiveProps } from './types';
 
 const SectionTitle = ({
@@ -25,4 +25,4 @@ const SectionTitle = ({
   );
 };
 
-export default withTheme({ mode: light, context: 'container' })(SectionTitle);
+export default withContentTheme(SectionTitle);

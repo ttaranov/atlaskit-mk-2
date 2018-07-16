@@ -10,7 +10,11 @@ export { default as modeGenerator } from './modeGenerator';
 export { default as styleReducerNoOp } from './styleReducerNoOp';
 
 // withTheme
-export { default as withTheme } from './withTheme';
+export {
+  default as withTheme,
+  withContentTheme,
+  withGlobalTheme,
+} from './withTheme';
 
 // Types
 export { GlobalTheme } from './types';

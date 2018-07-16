@@ -51,7 +51,7 @@ export type GlobalItemProps = {
   /** A function which will be passed the default styles object for the Item,
    * and should return a new styles object. Allows you to patch and customise
    * the GlobalItem's appearance. */
-  styles?: StyleReducer<GlobalItemPresentationProps>,
+  styles?: StyleReducer,
   /** The HTML target attribute. Will only be used if href is also set. */
   target?: string,
   /** A string/Node to render in a tooltip which will appear when the GlobalItem

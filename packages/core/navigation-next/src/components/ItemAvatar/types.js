@@ -10,7 +10,7 @@ export type ItemAvatarProps = {
   /** ItemAvatar inherits its border color from the style of its parent Item.
    * This function will be passed the default styles object for the Item, and
    * should return a new styles object. */
-  styles: StyleReducer<ItemPresentationProps>,
+  styles: StyleReducer,
 };
 
 export type ItemAvatarPrimitiveProps = ItemAvatarProps & {

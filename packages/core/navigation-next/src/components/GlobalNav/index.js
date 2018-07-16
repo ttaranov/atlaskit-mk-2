@@ -8,7 +8,7 @@
 import React from 'react';
 import GlobalItem from '../GlobalItem';
 
-import { light, withTheme } from '../../theme';
+import { withGlobalTheme } from '../../theme';
 import {
   FirstPrimaryItemWrapper,
   PrimaryItemsList,
@@ -59,4 +59,4 @@ const GlobalNav = ({
   );
 };
 
-export default withTheme({ mode: light, context: 'expanded' })(GlobalNav);
+export default withGlobalTheme(GlobalNav);

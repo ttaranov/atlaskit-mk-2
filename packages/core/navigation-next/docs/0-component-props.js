@@ -33,10 +33,68 @@ ${(
 
 # UI component props
 
+${
+  // <Props
+  //   heading="ContainerHeader"
+  //   props={require('!!extract-react-types-loader!../src/components/ContainerHeader')}
+  // />
+  null
+}
+
+${(
+  <Props
+    heading="GlobalItem"
+    props={require('!!extract-react-types-loader!../src/components/GlobalItem')}
+  />
+)}
+
+${(
+  <Props
+    heading="GlobalNav"
+    props={require('!!extract-react-types-loader!../src/components/GlobalNav')}
+  />
+)}
+
+${(
+  <Props
+    heading="Item"
+    props={require('!!extract-react-types-loader!../src/components/Item')}
+  />
+)}
+
+${
+  // <Props
+  //   heading="ItemAvatar"
+  //   props={require('!!extract-react-types-loader!../src/components/ItemAvatar')}
+  // />
+  null
+}
+
 ${(
   <Props
     heading="LayoutManager"
     props={require('!!extract-react-types-loader!../src/components/LayoutManager')}
+  />
+)}
+
+${(
+  <Props
+    heading="Section"
+    props={require('!!extract-react-types-loader!../src/components/Section')}
+  />
+)}
+
+${(
+  <Props
+    heading="SectionSeparator"
+    props={require('!!extract-react-types-loader!../src/components/SectionSeparator')}
+  />
+)}
+
+${(
+  <Props
+    heading="SectionTitle"
+    props={require('!!extract-react-types-loader!../src/components/SectionTitle')}
   />
 )}
 `;

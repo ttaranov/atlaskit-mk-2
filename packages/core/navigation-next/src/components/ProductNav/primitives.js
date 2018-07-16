@@ -12,7 +12,7 @@ import {
   transitionTimingFunction,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
-import { light, withTheme } from '../../theme';
+import { light, withContentTheme } from '../../theme';
 
 const animationFade = state => {
   const defaultStyle = {
@@ -52,7 +52,7 @@ const ScrollProvider = (props: any) => (
 /**
  * RootNav
  */
-const RootNavPrimitive = withTheme({ mode: light, context: 'root' })(
+const RootNavPrimitive = withContentTheme(
   ({ children, theme = { mode: light } }) => (
     <div css={theme.mode.productNav().root}>
       <ScrollProvider>{children}</ScrollProvider>
@@ -88,7 +88,7 @@ const slideOutFromPeek = keyframes`
 /**
  * ContainerNav
  */
-const ContainerNavPrimitive = withTheme({ mode: light, context: 'container' })(
+const ContainerNavPrimitive = withContentTheme(
   ({ children, isEntering, isExiting, isHinting, isPeeking, theme }) => {
     let animationName;
     if (isEntering) animationName = slideIn;

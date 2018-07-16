@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Avatar from '@atlaskit/avatar';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
 import type { ItemAvatarPrimitiveProps } from './types';
 
 class ItemAvatar extends Component<ItemAvatarPrimitiveProps> {
@@ -21,4 +21,4 @@ class ItemAvatar extends Component<ItemAvatarPrimitiveProps> {
   }
 }
 
-export default withTheme({ mode: light, context: 'container' })(ItemAvatar);
+export default withContentTheme(ItemAvatar);
