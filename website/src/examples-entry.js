@@ -1,8 +1,14 @@
 // @flow
 import React from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import '@atlaskit/css-reset';
 
 import ExamplesLoader from './pages/Examples/loader';
+const componentNode = document.getElementById('examples');
+if (typeof window !== 'undefined') {
+  window.unmountApp = function unmountApp() {
+    return unmountComponentAtNode(componentNode);
+  };
+}
 
-render(<ExamplesLoader />, document.getElementById('examples'));
+render(<ExamplesLoader />, componentNode);
