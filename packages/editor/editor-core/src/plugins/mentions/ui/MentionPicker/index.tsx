@@ -117,7 +117,7 @@ export class MentionPicker extends PureComponent<Props, State> {
       ).then(([contextIdentifierProvider, mentionProvider]) =>
         this.resolveResourceProvider(
           mentionProvider,
-          contextIdentifierProvider || this.state.contextIdentifierProvider,
+          contextIdentifierProvider,
         ),
       );
     }
@@ -166,8 +166,8 @@ export class MentionPicker extends PureComponent<Props, State> {
     contextIdentifierProvider?: ContextIdentifierProvider,
   ) {
     if (mentionProvider) {
-      // note: because state.contextIdentifierProvider is optional, we are playing safe here
-      //        despite props.contextIdentifierProvider is not
+      // Note: if contextIdentifierProvider is undefined (maybe due to promise failure) then no MentionContextIdentifier will be passed to the
+      //       Mention service endpoints and the containerId from MentionResourceConfig will be used as fallback if any
       const wrappedMentionProvider = contextIdentifierProvider
         ? new ContextMentionResource(mentionProvider, contextIdentifierProvider)
         : mentionProvider;
