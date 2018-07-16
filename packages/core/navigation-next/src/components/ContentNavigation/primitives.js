@@ -76,16 +76,6 @@ const slideIn = keyframes`
   to { transform: translateX(0); }
 `;
 
-// const slideOut = keyframes`
-//   from { transform: translateX(0); }
-//   to { transform: translateX(100%); }
-// `;
-
-// const slideOutFromPeek = keyframes`
-//   from { transform: translateX(calc(100% - 32px)); }
-//   to { transform: translateX(100%); }
-// `;
-
 /**
  * ContainerNavigation
  */

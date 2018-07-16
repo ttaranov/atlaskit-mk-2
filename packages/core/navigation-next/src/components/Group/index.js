@@ -8,7 +8,7 @@ import type { GroupProps } from './types';
 export default ({ children, hasSeparator, heading }: GroupProps) => {
   return React.Children.count(children) ? (
     <Fragment>
-      {heading ? <GroupHeading>{heading}</GroupHeading> : null}
+      {heading && <GroupHeading>{heading}</GroupHeading>}
       {children}
       {hasSeparator && <Separator />}
     </Fragment>
