@@ -105,7 +105,7 @@ describe('MentionPicker', () => {
       });
     });
 
-    it('should update mentionProvider in the state even if contextIdenfierProvider fails after component is mounted', () => {
+    it('should fallback mentionProvider to MentionResource in the state if contextIdenfierProvider fails after component is mounted', () => {
       const _component = shallow(
         <MentionPicker
           mentionProvider={mentionProvider}
@@ -218,19 +218,9 @@ describe('MentionPicker', () => {
       // given the setState() triggered in the MentionPicker.componentWillReceiveProps is async
       return new Promise(resolve => setTimeout(resolve)).then(() => {
         expect(
-          component.state().mentionProvider instanceof ContextMentionResource,
+          component.state().mentionProvider instanceof MentionResource,
         ).toBeTruthy();
-        expect(
-          (component.state()
-            .mentionProvider as ContextMentionResource).getContextIdentifier(),
-        ).toEqual({
-          containerId: CONTAINER_ID,
-          objectId: OBJECT_ID,
-        });
-        expect(component.state().contextIdentifierProvider).toEqual({
-          containerId: CONTAINER_ID,
-          objectId: OBJECT_ID,
-        });
+        expect(component.state().contextIdentifierProvider).toEqual(undefined);
       });
     });
 
