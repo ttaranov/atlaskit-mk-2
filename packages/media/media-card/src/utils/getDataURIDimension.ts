@@ -1,3 +1,4 @@
+import { Component } from 'react';
 import { isRetina } from './isRetina';
 import { CardDimensions, CardAppearance } from '..';
 import { ElementDimension, getElementDimension } from './getElementDimension';
@@ -5,15 +6,15 @@ import { getCardMinHeight, defaultImageCardDimensions } from './cardDimensions';
 import { isValidPercentageUnit } from './isValidPercentageUnit';
 import { containsPixelUnit } from './containsPixelUnit';
 
-export type getDataURIDimension = {
-  component: React.Component;
+export type getDataURIDimensionOptions = {
+  component: Component;
   dimensions?: CardDimensions;
   appearance?: CardAppearance;
 };
 
 export const getDataURIDimension = (
   dimension: ElementDimension,
-  options: getDataURIDimension,
+  options: getDataURIDimensionOptions,
 ): number => {
   const retinaFactor = isRetina() ? 2 : 1;
   const isSmall = options.appearance === 'small';
