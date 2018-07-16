@@ -23,7 +23,7 @@ export default class ExampleDisplay extends Component<Props> {
     this.buildExampleComponents(props);
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.src !== nextProps.src && this.iframeRef) {
+    if (this.props.src !== nextProps.src) {
       if (this.iframeRef) {
         this.iframeRef.contentWindow.unmountApp();
       }
@@ -31,7 +31,9 @@ export default class ExampleDisplay extends Component<Props> {
     }
   }
   componentWillUnmount() {
-    this.iframeRef.contentWindow.unmountApp();
+    if (this.iframeRef) {
+      this.iframeRef.contentWindow.unmountApp();
+    }
   }
   buildExampleComponents = props => {
     this.ExampleCode = Loadable({
