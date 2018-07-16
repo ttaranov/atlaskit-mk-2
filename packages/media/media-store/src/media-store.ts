@@ -170,7 +170,7 @@ export class MediaStore {
     });
   };
 
-  getImage = async (
+  getImage = (
     id: string,
     params: MediaStoreGetFileImageParams = defaultImageOptions,
   ): Promise<Blob> => {

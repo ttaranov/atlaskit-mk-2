@@ -174,52 +174,53 @@ export class Card extends Component<CardProps, CardState> {
           this.setState({ dataURI }, onLoadingChangeCallback);
         }
 
-        if (state.status === 'uploading') {
-          const { progress } = state;
-          this.setState(
-            {
-              status: 'uploading',
-              progress,
-              metadata,
-            },
-            onLoadingChangeCallback,
-          );
-        }
+        switch (state.status) {
+          case 'uploading':
+            const { progress } = state;
+            this.setState(
+              {
+                status: 'uploading',
+                progress,
+                metadata,
+              },
+              onLoadingChangeCallback,
+            );
+            break;
+          case 'processing':
+            this.setState(
+              {
+                progress: 1,
+                status: 'complete',
+                metadata,
+              },
+              onLoadingChangeCallback,
+            );
+            break;
+          case 'processed':
+            const options = {
+              appearance: this.props.appearance,
+              dimensions: this.props.dimensions,
+              component: this,
+            };
+            const width = getDataURIDimension('width', options);
+            const height = getDataURIDimension('height', options);
+            const blob = await context.mediaStore.getImage(state.id, {
+              collection: collectionName,
+              height,
+              width,
+            });
+            const dataURI = URL.createObjectURL(blob);
 
-        if (state.status === 'processing') {
-          this.setState(
-            {
-              progress: 1,
-              status: 'complete',
-              metadata,
-            },
-            onLoadingChangeCallback,
-          );
-        }
-
-        if (state.status === 'processed') {
-          const options = {
-            appearance: this.props.appearance,
-            dimensions: this.props.dimensions,
-            component: this,
-          };
-          const width = getDataURIDimension('width', options);
-          const height = getDataURIDimension('height', options);
-          const blob = await context.mediaStore.getImage(state.id, {
-            collection: collectionName,
-            height,
-            width,
-          });
-          const dataURI = URL.createObjectURL(blob);
-
-          this.setState(
-            {
-              dataURI,
-              status: 'complete',
-              metadata,
-            },
-            onLoadingChangeCallback,
-          );
+            this.releaseDataURI();
+            this.setState(
+              {
+                dataURI,
+                status: 'complete',
+                metadata,
+              },
+              onLoadingChangeCallback,
+            );
+            break;
         }
       },
       error: error => {

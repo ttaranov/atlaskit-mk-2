@@ -15,7 +15,7 @@ describe('getMediaTypeFromUploadableFile()', () => {
     };
   };
 
-  it('should return unknow for non Blob files', () => {
+  it('should return unknown for non Blob files', () => {
     const { base64File } = setup();
 
     expect(getMediaTypeFromUploadableFile(base64File)).toEqual('unknown');
