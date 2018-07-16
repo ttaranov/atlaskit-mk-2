@@ -160,14 +160,14 @@ describe('<QuickSearch />', () => {
         expect(calls[calls.length - 2][0]).toBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
-      it('should only fire once per mount', () => {
+      it('should fire event every press', () => {
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         const kbCtrlsUsedEventsFired = onAnalyticsEventSpy.mock.calls.filter(
           call => call[0] === QS_ANALYTICS_EV_KB_CTRLS_USED,
         );
-        expect(kbCtrlsUsedEventsFired).toHaveLength(1);
+        expect(kbCtrlsUsedEventsFired).toHaveLength(3);
       });
     });
     describe('query-entered event', () => {

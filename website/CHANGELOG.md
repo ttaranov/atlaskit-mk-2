@@ -1,5 +1,65 @@
 # @atlaskit/website
 
+## 3.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/media-filmstrip@10.0.0
+  - @atlaskit/logo@9.0.0
+  - @atlaskit/inline-dialog@8.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/quick-search@4.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-listeners@3.0.0
+  - @atlaskit/page@8.0.0
+  - @atlaskit/tag@6.0.0
+  - @atlaskit/tag-group@6.0.0
+  - @atlaskit/flag@9.0.0
+  - @atlaskit/dynamic-table@10.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/lozenge@6.0.0
+  - @atlaskit/code@7.0.0
+  - @atlaskit/badge@9.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/css-reset@3.0.0
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/layer-manager@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/quick-search@4.0.0
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/page@8.0.0
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/media-filmstrip@10.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/analytics-listeners@3.0.0
+  - @atlaskit/css-reset@3.0.0
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/logo@9.0.0
+  - @atlaskit/inline-dialog@8.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/tag@6.0.0
+  - @atlaskit/tag-group@6.0.0
+  - @atlaskit/flag@9.0.0
+  - @atlaskit/dynamic-table@10.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/lozenge@6.0.0
+  - @atlaskit/code@7.0.0
+  - @atlaskit/badge@9.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/layer-manager@5.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 2.1.8
 
 

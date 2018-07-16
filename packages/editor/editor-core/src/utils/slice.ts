@@ -50,3 +50,25 @@ export function mapSlice(
   const fragment = mapFragment(slice.content, callback);
   return new Slice(fragment, slice.openStart, slice.openEnd);
 }
+
+export type FlatMapCallback = (
+  node: Node,
+  index: number,
+  fragment: Fragment,
+) => Node | Node[];
+
+export function flatmap(
+  fragment: Fragment,
+  callback: FlatMapCallback,
+): Fragment {
+  const fragmentContent = [] as Node[];
+  for (let i = 0; i < fragment.childCount; i++) {
+    const child = callback(fragment.child(i), i, fragment);
+    if (Array.isArray(child)) {
+      fragmentContent.push(...child);
+    } else {
+      fragmentContent.push(child);
+    }
+  }
+  return Fragment.fromArray(fragmentContent);
+}

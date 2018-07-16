@@ -1,5 +1,19 @@
 # @atlaskit/lozenge
 
+## 6.1.0
+- [minor] Improve behavior when using a narrow container [ebf6b97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf6b97)
+- [none] Updated dependencies [ebf6b97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf6b97)
+
+## 6.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+
 ## 5.0.4
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

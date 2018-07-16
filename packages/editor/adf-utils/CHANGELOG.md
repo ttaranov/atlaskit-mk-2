@@ -1,5 +1,15 @@
 # @atlaskit/adf-utils
 
+## 2.0.0
+
+
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/docs@5.0.0
+
 ## 1.0.1
 - [patch] Fix failing master build [1e2faf4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e2faf4)
 

@@ -1,5 +1,27 @@
 # @atlaskit/media-avatar-picker
 
+## 9.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 8.1.3
 - [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
   - @atlaskit/spinner@8.0.0

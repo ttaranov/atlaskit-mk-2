@@ -3,8 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { shallow, mount, ReactWrapper } from 'enzyme';
-import Tooltip, { marshal } from '../../Tooltip';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import TooltipWithAnalytics, {
+  TooltipWithoutAnalytics as Tooltip,
+  marshal,
+} from '../../Tooltip';
 import getPosition from '../../utils/getPosition';
+import { hoveredPayload } from '../../utils/analytics-payloads';
 
 // Variables starting with mock are executed before jest.mock's hoisting
 // See https://facebook.github.io/jest/docs/en/es6-class-mocks.html#calling-jestmock-jest-docs-en-jest-objecthtml-jestmockmodulename-factory-options-with-the-module-factory-parameter
@@ -558,5 +563,49 @@ describe('Tooltip', () => {
       expect(tooltip.find('span')).toHaveStyleRule('background', 'pink');
       expect(tooltip).toMatchSnapshot();
     });
+  });
+});
+
+describe('TooltipWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+    jest.useFakeTimers();
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it('should mount without errors', () => {
+    mount(
+      <TooltipWithAnalytics content="Tooltip content">
+        <div>foo</div>
+      </TooltipWithAnalytics>,
+    );
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
+  });
+
+  it('should send analytics event when tooltip becomes visible', () => {
+    const Foo = () => <div>foo</div>;
+    const spy = jest.fn();
+    const wrapper = mount(
+      <AnalyticsListener channel="atlaskit" onEvent={spy}>
+        <TooltipWithAnalytics content="Tooltip content">
+          <Foo />
+        </TooltipWithAnalytics>
+      </AnalyticsListener>,
+    );
+    wrapper.find(Foo).simulate('mouseover');
+    jest.runTimersToTime(301);
+    wrapper.find(Foo).simulate('mouseout');
+    jest.runTimersToTime(300);
+    expect(spy).toHaveBeenCalledTimes(1);
+    const [[{ payload }]] = spy.mock.calls;
+    expect(payload).toEqual(hoveredPayload);
   });
 });

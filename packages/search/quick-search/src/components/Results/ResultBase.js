@@ -25,18 +25,22 @@ export default class ResultBase extends PureComponent<Props> {
     type: BASE_RESULT_TYPE,
   };
 
-  handleClick = () => {
+  handleClick = (e: ?MouseEvent) => {
     const {
       analyticsData,
       onClick,
       resultId,
       sendAnalytics,
       type,
+      contentType,
     } = this.props;
     sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
       ...analyticsData,
       method: 'click',
+      resultId,
+      contentType,
       type,
+      newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
     });
     onClick({ resultId, type });
   };

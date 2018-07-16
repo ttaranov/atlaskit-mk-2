@@ -3,13 +3,13 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import renderSearchResults, {
   Props,
 } from '../../components/confluence/ConfluenceSearchResults';
-// import { ResultItemGroup } from '@atlaskit/quick-search';
 
 import {
-  ObjectResultWithAnalytics,
-  ContainerResultWithAnalytics,
-  PersonResultWithAnalytics,
-} from '../../components/SearchResultsUtil';
+  ObjectResult as ObjectResultComponent,
+  PersonResult as PersonResultComponent,
+  ContainerResult as ContainerResultComponent,
+} from '@atlaskit/quick-search';
+
 import AnalyticsEventFiredOnMount from '../../components/analytics/AnalyticsEventFiredOnMount';
 import SearchError from '../../components/SearchError';
 import NoResults from '../../components/NoResults';
@@ -90,7 +90,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.people.recent-people-heading" />,
     );
-    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(PersonResultComponent).prop('name')).toEqual('name');
   });
 
   describe('empty state', () => {
@@ -207,7 +207,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
     );
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResultComponent).prop('name')).toEqual('name');
   });
 
   it('should render spaces when there are results', () => {
@@ -226,9 +226,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.confluence.spaces-heading" />,
     );
-    expect(group.find(ContainerResultWithAnalytics).prop('name')).toEqual(
-      'name',
-    );
+    expect(group.find(ContainerResultComponent).prop('name')).toEqual('name');
   });
 
   it('should render people results when there are results', () => {
@@ -243,7 +241,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.people.people-heading" />,
     );
-    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(PersonResultComponent).prop('name')).toEqual('name');
   });
 
   it('should not render people results when there are no results in the group', () => {

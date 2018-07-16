@@ -2,7 +2,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
-import Pagination from '../../..';
+import PaginationWithAnalytics from '../../..';
+import { PaginationWithoutAnalytics as Pagination } from '../../Pagination';
 import { Ellipsis, ButtonActive } from '../../../styled';
 
 import { name } from '../../../../package.json';
@@ -150,5 +151,24 @@ describe(name, () => {
     const wrapper = mount(<Consumer />);
     wrapper.setState({ page: 6 });
     expect(wrapper.find(ButtonActive).text()).toBe('6');
+  });
+});
+
+describe('PaginationWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<PaginationWithAnalytics total={0} value={0} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

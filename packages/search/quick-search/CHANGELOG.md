@@ -1,5 +1,31 @@
 # @atlaskit/quick-search
 
+## 4.0.1
+- [patch] Add extra analytics event for highlight and selection of a search result [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
+- [patch] Updated dependencies [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
+
+## 4.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/item@8.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/item@8.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+
 ## 3.0.2
 - [patch] Move tests under src and club unit, integration, visual regression [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)
 - [none] Updated dependencies [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)

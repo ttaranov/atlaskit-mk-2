@@ -1,5 +1,35 @@
 # @atlaskit/datetime-picker
 
+## 6.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/select@5.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/calendar@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/select@5.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/calendar@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 5.4.5
 - [patch] Updated dependencies [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
   - @atlaskit/select@4.5.2

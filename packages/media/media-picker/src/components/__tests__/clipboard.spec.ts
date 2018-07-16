@@ -1,15 +1,9 @@
 import { Auth, ContextFactory } from '@atlaskit/media-core';
-import { MediaPickerContext } from '../../domain/context';
-import { UserEvent } from '../../outer/analytics/events';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
 import { Clipboard } from '../clipboard';
 import { UploadService } from '../../service/uploadServiceFactory';
 
 jest.mock('../../service/uploadServiceFactory');
-
-class MockContext implements MediaPickerContext {
-  trackEvent(event: UserEvent) {}
-}
 
 describe('Clipboard', () => {
   let clipboard: Clipboard;
@@ -24,7 +18,7 @@ describe('Clipboard', () => {
   });
 
   beforeEach(done => {
-    clipboard = new Clipboard(new MockContext(), context);
+    clipboard = new Clipboard(context);
     clipboard.activate();
     document.dispatchEvent(new Event('DOMContentLoaded'));
 

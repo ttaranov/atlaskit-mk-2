@@ -6,6 +6,8 @@ import {
 import { stringify } from 'query-string';
 import { Identifier } from './domain';
 
+// We want to remove constructAuthTokenUrl and use mediaStore instead
+// https://product-fabric.atlassian.net/browse/MSW-869
 export async function constructAuthTokenUrl(
   url: string,
   context: Context,
@@ -53,7 +55,8 @@ function buildIssuerBasedUrl(
 }
 
 function buildUrl(host: string, url: string, query: Object) {
-  return `${host}${url}?${stringify(query)}`;
+  const separator = url.indexOf('?') > -1 ? '&' : '?';
+  return `${host}${url}${separator}${stringify(query)}`;
 }
 
 export const toIdentifier = (

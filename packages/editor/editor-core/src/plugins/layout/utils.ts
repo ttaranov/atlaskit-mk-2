@@ -1,27 +1,5 @@
 import { Fragment, Node, Slice, Schema } from 'prosemirror-model';
-import { mapFragment } from '../../utils/slice';
-
-export type FlatMapCallback = (
-  node: Node,
-  index: number,
-  fragment: Fragment,
-) => Node | Node[];
-
-export function flatmap(
-  fragment: Fragment,
-  callback: FlatMapCallback,
-): Fragment {
-  const fragmentContent = [] as Node[];
-  for (let i = 0; i < fragment.childCount; i++) {
-    const child = callback(fragment.child(i), i, fragment);
-    if (Array.isArray(child)) {
-      fragmentContent.push(...child);
-    } else {
-      fragmentContent.push(child);
-    }
-  }
-  return Fragment.fromArray(fragmentContent);
-}
+import { flatmap, mapFragment } from '../../utils/slice';
 
 const isLayoutNode = (node: Node) =>
   node.type === node.type.schema.nodes.layoutSection ||

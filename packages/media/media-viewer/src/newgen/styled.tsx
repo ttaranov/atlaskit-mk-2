@@ -151,6 +151,7 @@ export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   transform-origin: center;
   max-width: 100%;
   max-height: 100%;
+  user-select: none;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`

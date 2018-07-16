@@ -1,5 +1,35 @@
 # @atlaskit/media-viewer
 
+## 16.0.2
+- [patch] Prevent image from being selectable [63650bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63650bc)
+
+## 16.0.1
+- [patch] Fix constructAuthTokenUrl [f435228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f435228)
+
+## 16.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 15.1.15
 - [patch] Add error views to MediaViewer NG [66ac5d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66ac5d4)
 

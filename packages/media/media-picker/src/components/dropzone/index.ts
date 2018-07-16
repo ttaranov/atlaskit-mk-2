@@ -1,8 +1,6 @@
 import { AuthProvider, Context } from '@atlaskit/media-core';
 
 import { LocalUploadComponent, LocalUploadConfig } from '../localUpload';
-import { MPDropzoneLoaded } from '../../outer/analytics/events';
-import { MediaPickerContext } from '../../domain/context';
 import { whenDomReady } from '../../util/documentReady';
 import dropzoneUI from './dropzoneUI';
 import { UploadEventPayloadMap } from '../..';
@@ -14,11 +12,7 @@ export interface DropzoneConfig extends LocalUploadConfig {
 }
 
 export interface DropzoneConstructor {
-  new (
-    analyticsContext: MediaPickerContext,
-    context: Context,
-    dropzoneConfig: DropzoneConfig,
-  ): Dropzone;
+  new (context: Context, dropzoneConfig: DropzoneConfig): Dropzone;
 }
 
 export interface DropzoneDragEnterEventPayload {
@@ -41,18 +35,12 @@ export class Dropzone extends LocalUploadComponent<
   private headless: boolean;
   private uiActive: boolean;
 
-  constructor(
-    analyticsContext: MediaPickerContext,
-    context: Context,
-    config: DropzoneConfig = { uploadParams: {} },
-  ) {
-    super(analyticsContext, context, config);
+  constructor(context: Context, config: DropzoneConfig = { uploadParams: {} }) {
+    super(context, config);
     const { container, headless } = config;
     this.container = container || document.body;
     this.headless = headless || false;
     this.uiActive = false;
-
-    this.analyticsContext.trackEvent(new MPDropzoneLoaded());
   }
 
   public activate(): Promise<void> {

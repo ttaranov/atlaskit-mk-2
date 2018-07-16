@@ -1,5 +1,29 @@
 # @atlaskit/editor-mobile-bridge
 
+## 2.0.1
+
+
+- [none] Updated dependencies [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
+  - @atlaskit/editor-core@76.0.0
+  - @atlaskit/editor-json-transformer@4.0.1
+- [patch] Updated dependencies [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)
+  - @atlaskit/editor-core@76.0.0
+  - @atlaskit/editor-json-transformer@4.0.1
+
+## 2.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/media-core@22.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/media-core@22.0.0
+
 ## 1.0.8
 
 

@@ -24,7 +24,10 @@ function replaceTextUsingCaptureGroup(
       );
     }
 
-    let { tr, selection: { $to } } = state;
+    let {
+      tr,
+      selection: { $to },
+    } = state;
     tr.replaceWith(start, end, state.schema.text(replacement, $to.marks()));
     tr.setSelection(Selection.near(tr.doc.resolve(tr.selection.to)));
     return tr;

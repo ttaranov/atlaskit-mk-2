@@ -1,5 +1,35 @@
 # @atlaskit/editor-common
 
+## 13.0.2
+- [patch] ED-4676, text in table header should be bold y default. [1bf849c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bf849c)
+- [patch] Updated dependencies [1bf849c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bf849c)
+
+## 13.0.1
+- [patch] ED-5063 always render tables to full width of container [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
+- [none] Updated dependencies [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
+
+## 13.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/profilecard@4.0.0
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/editor-test-helpers@5.0.0
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/emoji@38.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/profilecard@4.0.0
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/emoji@38.0.0
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/editor-test-helpers@5.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 12.0.0
 
 - [major] Refactor existing 'paste' slice handling code, to use common utilities. Remove unused linkifySlice export from editor-common. [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)

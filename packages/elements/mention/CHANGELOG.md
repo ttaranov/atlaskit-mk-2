@@ -1,5 +1,31 @@
 # @atlaskit/mention
 
+## 14.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/lozenge@6.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/analytics-gas-types@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/lozenge@6.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/analytics-gas-types@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+
 ## 13.1.10
 - [patch] fixed typescript build errors [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
 - [patch] code improvements and MentionContextIdentifier attributes made mandatory to sync with editor-common ContextIdentifier [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)

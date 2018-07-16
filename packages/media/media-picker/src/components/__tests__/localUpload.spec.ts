@@ -12,9 +12,6 @@ describe('MediaLocalUpload', () => {
     publicId: 'some-public-id',
   };
   const setup = () => {
-    const analyticsContext = {
-      trackEvent: jest.fn(),
-    };
     const context = ContextFactory.create({
       authProvider: () =>
         Promise.resolve<Auth>({ clientId: '', baseUrl: '', token: '' }),
@@ -24,11 +21,7 @@ describe('MediaLocalUpload', () => {
         collection: '',
       },
     };
-    const localUpload = new LocalUploadComponent(
-      analyticsContext,
-      context,
-      config,
-    );
+    const localUpload = new LocalUploadComponent(context, config);
     const uploadService = localUpload['uploadService'];
     const emitUploadServiceEvent = uploadService['emit'];
     const emitter = localUpload['emitter'];

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import styled from 'styled-components';
 
 import { FieldTextStateless } from '@atlaskit/field-text';
@@ -46,14 +46,15 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
     isModalOpen: false,
   };
 
-  ref: ?FieldTextStateless;
+  ref: ?ElementRef<typeof FieldTextStateless>;
   input: ?HTMLInputElement;
   importCodeField: ?HTMLElement;
 
-  setInputRef = (ref: ?FieldTextStateless) => {
+  setInputRef = (ref: ?ElementRef<typeof FieldTextStateless>) => {
     const isSet = Boolean(this.ref);
 
     console.log(ref);
+    // $FlowFixMe
     this.input = ref ? ref.input : null;
 
     if (this.input && !isSet) {
