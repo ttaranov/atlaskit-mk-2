@@ -16,7 +16,7 @@ import {
 } from '../ide-ux/line-handling';
 import {
   insertIndent,
-  deindent,
+  outdent,
   indent,
   insertNewlineWithIndent,
 } from '../ide-ux/commands';
@@ -80,7 +80,7 @@ export default new Plugin({
         insertNewlineWithIndent,
       ),
       'Mod-]': filter(isSelectionEntirelyInsideCodeBlock, indent),
-      'Mod-[': filter(isSelectionEntirelyInsideCodeBlock, deindent),
+      'Mod-[': filter(isSelectionEntirelyInsideCodeBlock, outdent),
       Tab: filter(
         isSelectionEntirelyInsideCodeBlock,
         (state: EditorState, dispatch) => {
@@ -90,7 +90,7 @@ export default new Plugin({
           return indent(state, dispatch);
         },
       ),
-      'Shift-Tab': filter(isSelectionEntirelyInsideCodeBlock, deindent),
+      'Shift-Tab': filter(isSelectionEntirelyInsideCodeBlock, outdent),
       'Mod-a': (state: EditorState, dispatch) => {
         if (isSelectionEntirelyInsideCodeBlock(state)) {
           const { $from, $to } = state.selection;

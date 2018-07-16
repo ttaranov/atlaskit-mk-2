@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Loadable from 'react-loadable';
+import { Helmet } from 'react-helmet';
 
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 
@@ -182,6 +183,11 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={640}
       >
+        <Helmet>
+          <title>
+            Changelog - {fs.titleize(pkgId)} - {BASE_TITLE}
+          </title>
+        </Helmet>
         <ModalBody>
           {isInvalid ? (
             <NoMatch>Invalid range &mdash; please try again.</NoMatch>

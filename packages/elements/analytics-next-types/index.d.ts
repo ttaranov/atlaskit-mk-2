@@ -1,4 +1,4 @@
-// For version "2.1.9"
+// For version "3.0.0"
 import * as React from 'react';
 
 // This is not needed for classes UIAnalyticsEvent and AnalyticsEvent,
@@ -120,13 +120,15 @@ export type CreateUIAnalyticsEventSignature = (
   payload: AnalyticsEventPayload,
 ) => UIAnalyticsEventInterface;
 
+interface AnalyticsEventCreator<TOwnProps> {
+  (
+    create: CreateUIAnalyticsEventSignature,
+    props: TOwnProps,
+  ): UIAnalyticsEventInterface;
+}
+
 export interface EventMap<TOwnProps> {
-  [k: string]:
-    | AnalyticsEventPayload
-    | ((
-        create: CreateUIAnalyticsEventSignature,
-        props: TOwnProps,
-      ) => UIAnalyticsEventInterface | void);
+  [k: string]: AnalyticsEventPayload | AnalyticsEventCreator<TOwnProps>;
 }
 
 export interface WithAnalyticsEventProps {

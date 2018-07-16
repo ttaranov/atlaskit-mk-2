@@ -6,6 +6,7 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import InfoIcon from '@atlaskit/icon/glyph/info';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
 
@@ -95,7 +96,7 @@ describe('SectionMessage', () => {
       },
       {
         name: 'change',
-        icon: InfoIcon,
+        icon: QuestionCircleIcon,
       },
     ],
   );

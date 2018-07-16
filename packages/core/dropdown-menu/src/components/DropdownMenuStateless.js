@@ -3,9 +3,18 @@
 import React, { Component, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemClickManager from './context/DropdownItemClickManager';
@@ -27,7 +36,7 @@ type State = {
   id: string,
 };
 
-export default class DropdownMenuStateless extends Component<
+class DropdownMenuStateless extends Component<
   DropdownMenuStatelessProps,
   State,
 > {
@@ -425,6 +434,11 @@ export default class DropdownMenuStateless extends Component<
           trigger={this.renderTrigger()}
           onPositioned={onPositioned}
           {...deprecatedProps}
+          analyticsContext={{
+            componentName: 'dropdownMenu',
+            packageName,
+            packageVersion,
+          }}
         >
           {isDeprecated ? (
             this.renderDeprecated()
@@ -449,3 +463,19 @@ export default class DropdownMenuStateless extends Component<
     );
   }
 }
+
+export { DropdownMenuStateless as DropdownMenuStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsEvents({
+  onOpenChange: createAndFireEventOnAtlaskit({
+    action: 'toggled',
+    actionSubject: 'dropdownMenu',
+
+    attributes: {
+      componentName: 'dropdownMenu',
+      packageName,
+      packageVersion,
+    },
+  }),
+})(DropdownMenuStateless);

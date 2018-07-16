@@ -1,26 +1,35 @@
-import {
-  TablePluginState,
-  pluginKey as tablePluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
+import { getCellsInTable, selectColumn } from 'prosemirror-utils';
+import { CellSelection } from 'prosemirror-tables';
+import { Node as ProsemirrorNode, Fragment, Slice } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
+// @ts-ignore
+import { __serializeForClipboard } from 'prosemirror-view';
 import {
   doc,
   p,
+  defaultSchema,
   createEditor,
   table,
   tr,
   td,
   th,
+  code_block,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
+import {
+  TablePluginState,
+  pluginKey as tablePluginKey,
+} from '../../../src/plugins/table/pm-plugins/main';
 import tablesPlugin from '../../../src/plugins/table';
+import {
+  unwrapContentFromTable,
+  removeTableFromFirstChild,
+  removeTableFromLastChild,
+  transformSliceToRemoveOpenTable,
+} from '../../../src/plugins/table/utils/paste';
 
-// @ts-ignore
-import { __serializeForClipboard } from 'prosemirror-view';
-
-import { getCellsInTable, selectColumn } from 'prosemirror-utils';
-import { CellSelection } from 'prosemirror-tables';
-import { Node as ProsemirrorNode } from 'prosemirror-model';
-import { TextSelection } from 'prosemirror-state';
+const array = (...args): Node[] => args.map(i => i(defaultSchema));
+const fragment = (...args) => Fragment.from(args.map(i => i(defaultSchema)));
 
 const selectCell = (cell: {
   pos: number;
@@ -142,6 +151,213 @@ describe('table plugin', () => {
             ),
           ),
         );
+      });
+    });
+  });
+
+  describe('copy-pasting table content', () => {
+    describe('unwrapContentFromTable()', () => {
+      it('should ignore any node that is not a table', () => {
+        const tableNode = p('text')(defaultSchema);
+        expect(unwrapContentFromTable(tableNode)).toBe(tableNode);
+      });
+
+      it('should unwrap any content inside a table', () => {
+        const tableNode = table()(
+          tr(th()(p('1')), th()(p('2'))),
+          tr(td()(code_block()('3')), td()(p('4'))),
+        )(defaultSchema);
+
+        const expected = array(p('1'), p('2'), code_block()('3'), p('4'));
+        expect(unwrapContentFromTable(tableNode)).toEqual(expected);
+      });
+    });
+
+    describe('removeTableFromFirstChild()', () => {
+      it('should unwrap the table when it is the first child of a node', () => {
+        const tableNode = table()(
+          tr(th()(p('1')), th()(p('2'))),
+          tr(td()(code_block()('3')), td()(p('4'))),
+        )(defaultSchema);
+
+        const expected = array(p('1'), p('2'), code_block()('3'), p('4'));
+        expect(removeTableFromFirstChild(tableNode, 0)).toEqual(expected);
+      });
+
+      it('should do nothing when the table is not the first child of a node', () => {
+        const tableNode = table()(
+          tr(th()(p('1')), th()(p('2'))),
+          tr(td()(code_block()('3')), td()(p('4'))),
+        )(defaultSchema);
+        expect(removeTableFromFirstChild(tableNode, 1)).toEqual(tableNode);
+      });
+    });
+
+    describe('removeTableFromLastChild()', () => {
+      it('should unwrap the table when it is the last child of a node', () => {
+        const tableNode = table()(
+          tr(th()(p('1')), th()(p('2'))),
+          tr(td()(code_block()('3')), td()(p('4'))),
+        );
+        const sliceFragment = fragment(p('Start'), tableNode);
+
+        const expected = array(p('1'), p('2'), code_block()('3'), p('4'));
+        expect(
+          removeTableFromLastChild(
+            sliceFragment.lastChild!,
+            sliceFragment.childCount - 1,
+            sliceFragment,
+          ),
+        ).toEqual(expected);
+      });
+
+      it('should do nothing when the table is not the last child of a node', () => {
+        const tableNode = table()(
+          tr(th()(p('1')), th()(p('2'))),
+          tr(td()(code_block()('3')), td()(p('4'))),
+        );
+        const sliceFragment = fragment(p('Start'), tableNode, p('End'));
+
+        expect(
+          removeTableFromLastChild(sliceFragment.child(1), 1, sliceFragment),
+        ).toEqualDocument(tableNode);
+      });
+    });
+
+    describe('transformSliceToRemoveOpenTable()', () => {
+      describe('when a slice contains only one table', () => {
+        it('should ignore the table if the node is closed', () => {
+          const slice = new Slice(
+            fragment(
+              table()(
+                tr(th()(p('1')), th()(p('2'))),
+                tr(td()(code_block()('3')), td()(p('4'))),
+              ),
+            ),
+            0,
+            0,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toBe(
+            slice,
+          );
+        });
+
+        it('should unwrap the table if the node is open', () => {
+          const slice = new Slice(
+            fragment(
+              table()(
+                tr(th()(p('1')), th()(p('2'))),
+                tr(td()(code_block()('3')), td()(p('4'))),
+              ),
+            ),
+            4,
+            4,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toEqual(
+            new Slice(
+              fragment(p('1'), p('2'), code_block()('3'), p('4')),
+              1,
+              1,
+            ),
+          );
+        });
+      });
+
+      describe('when a slice begins with a table', () => {
+        it('should ignore the table if the node is closed', () => {
+          const slice = new Slice(
+            fragment(
+              table()(
+                tr(th()(p('1')), th()(p('2'))),
+                tr(td()(code_block()('3')), td()(p('4'))),
+              ),
+              p('End'),
+            ),
+            0,
+            0,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toBe(
+            slice,
+          );
+        });
+
+        it('should unwrap the table if the node is open', () => {
+          const slice = new Slice(
+            fragment(
+              table()(
+                tr(th()(p('1')), th()(p('2'))),
+                tr(td()(code_block()('3')), td()(p('4'))),
+              ),
+              p('End'),
+            ),
+            4,
+            0,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toEqual(
+            new Slice(
+              fragment(p('1'), p('2'), code_block()('3'), p('4'), p('End')),
+              1,
+              0,
+            ),
+          );
+        });
+      });
+
+      describe('when a slice ends with a table', () => {
+        it('should ignore the table if the node is closed', () => {
+          const slice = new Slice(
+            fragment(
+              p('Start'),
+              table()(
+                tr(th()(p('1')), th()(p('2'))),
+                tr(td()(code_block()('3')), td()(p('4'))),
+              ),
+            ),
+            0,
+            0,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toBe(
+            slice,
+          );
+        });
+
+        it('should unwrap the table if the node is open', () => {
+          const slice = new Slice(
+            fragment(
+              p('Start'),
+              table()(
+                tr(th()(p('1')), th()(p('2'))),
+                tr(td()(code_block()('3')), td()(p('4'))),
+              ),
+            ),
+            0,
+            4,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toEqual(
+            new Slice(
+              fragment(p('Start'), p('1'), p('2'), code_block()('3'), p('4')),
+              0,
+              1,
+            ),
+          );
+        });
+      });
+
+      describe('when a slice starts in one table and ends in another', () => {
+        it('should ignore the table if the slice is closed', () => {
+          const tableNode = table()(
+            tr(th()(p('1')), th()(p('2'))),
+            tr(td()(code_block()('3')), td()(p('4'))),
+          );
+          const slice = new Slice(
+            fragment(tableNode, p('Middle'), tableNode),
+            0,
+            0,
+          );
+          expect(transformSliceToRemoveOpenTable(slice, defaultSchema)).toBe(
+            slice,
+          );
+        });
       });
     });
   });

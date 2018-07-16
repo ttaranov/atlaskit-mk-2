@@ -35,7 +35,7 @@ type Props = {
   minMenuWidth: number,
   maxMenuWidth: number,
   maxMenuHeight: number,
-  onChange?: Object => void,
+  onChange?: (value: Object, actionMeta: Object) => void,
   onOpen?: () => void,
   onClose?: () => void,
   options: Array<Object>,
@@ -134,10 +134,10 @@ export default class PopupSelect extends PureComponent<Props, State> {
       this.open();
     }
   };
-  handleSelectChange = (value: Object) => {
+  handleSelectChange = (value: Object, actionMeta: Object) => {
     const { closeMenuOnSelect, onChange } = this.props;
     if (closeMenuOnSelect) this.close();
-    if (onChange) onChange(value);
+    if (onChange) onChange(value, actionMeta);
   };
 
   // Internal Lifecycle
