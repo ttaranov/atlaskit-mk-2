@@ -5,10 +5,10 @@ import renderSearchResults, {
 } from '../../components/confluence/ConfluenceSearchResults';
 
 import {
+  ObjectResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
-import ObjectResultComponent from '../../components/ObjectResult';
 
 import AnalyticsEventFiredOnMount from '../../components/analytics/AnalyticsEventFiredOnMount';
 import SearchError from '../../components/SearchError';

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  ObjectResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
@@ -15,7 +16,7 @@ import {
   ContentType,
 } from '../model/Result';
 import AdvancedSearchResult from './AdvancedSearchResult';
-import ObjectResultComponent from './ObjectResult';
+import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
 
 const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
 const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
@@ -34,6 +35,7 @@ export interface BaseResultProps {
   resultId: string;
   href: string;
   avatarUrl?: string;
+  avatar?: JSX.Element;
 }
 
 export interface ObjectResultProps extends BaseResultProps {
@@ -66,6 +68,7 @@ export function renderResults(results: Result[]) {
             type={confluenceResult.analyticsType}
             contentType={confluenceResult.contentType}
             containerName={confluenceResult.containerName}
+            avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
           />
         );
       }

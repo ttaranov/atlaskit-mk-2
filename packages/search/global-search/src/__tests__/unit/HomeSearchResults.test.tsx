@@ -2,8 +2,10 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import searchResults, { Props } from '../../components/home/HomeSearchResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
-import { PersonResult as PersonResultComponent } from '@atlaskit/quick-search';
-import ObjectResultComponent from '../../components/ObjectResult';
+import {
+  ObjectResult as ObjectResultComponent,
+  PersonResult as PersonResultComponent,
+} from '@atlaskit/quick-search';
 
 import SearchError from '../../components/SearchError';
 import NoResults from '../../components/NoResults';

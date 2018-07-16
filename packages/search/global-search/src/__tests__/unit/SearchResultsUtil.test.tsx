@@ -9,10 +9,10 @@ import {
   handlePromiseError,
 } from '../../components/SearchResultsUtil';
 import {
+  ObjectResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
-import ObjectResultComponent from '../../components/ObjectResult';
 
 import {
   JiraObjectResult,
@@ -28,6 +28,7 @@ import {
   makePersonResult,
   makeJiraObjectResult,
 } from './_test-util';
+import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {
@@ -161,6 +162,11 @@ describe('renderResults', () => {
       containerName: 'containerName',
       contentType: ContentType.ConfluencePage,
     });
+
+    const avatar: { type: string } = wrapper
+      .find(ObjectResultComponent)
+      .prop('avatar');
+    expect(avatar.type).toEqual(Objects24Object24PageIcon);
   });
 
   it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
