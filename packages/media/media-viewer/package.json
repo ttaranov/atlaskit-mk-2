@@ -45,6 +45,7 @@
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/media-core": "^22.0.0",
     "@atlaskit/media-test-helpers": "^15.0.0",
+    "@atlaskit/modal-dialog": "^6.0.0",
     "@types/enzyme": "^3.1.6",
     "@types/jquery": "^2.0.41",
     "@types/query-string": "^4.3.1",
