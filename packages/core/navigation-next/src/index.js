@@ -12,6 +12,7 @@ export { default as Group } from './components/Group';
 export { default as GroupHeading } from './components/GroupHeading';
 export { default as ItemPrimitive } from './components/Item/primitives';
 export { default as ItemAvatar } from './components/ItemAvatar';
+export { default as PeekToggleItem } from './components/PeekToggleItem';
 export { default as LayoutManager } from './components/LayoutManager';
 export {
   default as ScrollableSectionInner,

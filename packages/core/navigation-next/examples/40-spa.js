@@ -6,12 +6,11 @@ import { HashRouter } from 'react-router-dom';
 import { Label } from '@atlaskit/field-base';
 import { ToggleStateless } from '@atlaskit/toggle';
 
-import { ViewStateSubscriber, LayoutManager, NavigationProvider } from '../src';
+import { NavigationProvider } from '../src';
 
 import {
   DefaultGlobalNavigation,
-  ProductContainer,
-  ProductRoot,
+  ConnectedLayoutManager,
 } from './shared/components';
 
 import {
@@ -36,34 +35,21 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
     return (
       <HashRouter>
         <NavigationProvider debug={isDebugEnabled}>
-          <ViewStateSubscriber>
-            {containerView => (
-              <LayoutManager
-                globalNavigation={DefaultGlobalNavigation}
-                productNavigation={ProductRoot}
-                containerNavigation={
-                  containerView.state.containerViewId ? ProductContainer : null
-                }
-              >
-                <div style={{ padding: 30 }}>
-                  <Switch>
-                    <Route
-                      path="/projects/:projectId"
-                      component={BacklogView}
-                    />
-                    <Route path="/projects" component={ProjectsView} />
-                    <Route path="/issues/search" component={SearchIssuesView} />
-                    <Route path="/" component={DashboardsView} />
-                  </Switch>
-                  <Label label="Toggle debug logger" />
-                  <ToggleStateless
-                    isChecked={isDebugEnabled}
-                    onChange={this.onDebugToggle}
-                  />
-                </div>
-              </LayoutManager>
-            )}
-          </ViewStateSubscriber>
+          <ConnectedLayoutManager globalNavigation={DefaultGlobalNavigation}>
+            <div style={{ padding: 30 }}>
+              <Switch>
+                <Route path="/projects/:projectId" component={BacklogView} />
+                <Route path="/projects" component={ProjectsView} />
+                <Route path="/issues/search" component={SearchIssuesView} />
+                <Route path="/" component={DashboardsView} />
+              </Switch>
+              <Label label="Toggle debug logger" />
+              <ToggleStateless
+                isChecked={isDebugEnabled}
+                onChange={this.onDebugToggle}
+              />
+            </div>
+          </ConnectedLayoutManager>
         </NavigationProvider>
       </HashRouter>
     );

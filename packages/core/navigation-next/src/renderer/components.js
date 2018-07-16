@@ -21,7 +21,8 @@ import {
   Group as GroupComponent,
   GroupHeading as GroupHeadingComponent,
   Switcher,
-  ViewStateSubscriber,
+  withNavigationUI,
+  withNavigationViews,
 } from '../';
 import type {
   GoToItemProps,
@@ -50,27 +51,43 @@ const gridSize = gridSizeFn();
  */
 
 // GoToItem
-const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
+const GoToItemBase = ({
+  after: afterProp,
+  goTo,
+  navigationUI,
+  navigationViews,
+  ...rest
+}: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
-    after = ({ isHover }: *) =>
-      isHover ? <ArrowRightIcon size="small" /> : null;
+    after = ({ isActive, isHover }: *) =>
+      isActive || isHover ? <ArrowRightIcon size="small" /> : null;
   }
 
   const props = { ...rest, after };
-  const handleClick = (e, viewState) => {
+  const handleClick = e => {
     e.preventDefault();
-    viewState.setView(goTo);
+
+    const { activeView } = navigationViews.state;
+
+    if (navigationUI.state.isPeeking) {
+      if (activeView && goTo === activeView.id) {
+        // If we're peeking and goTo points to the active view, unpeek.
+        navigationUI.unPeek();
+      } else {
+        // If we're peeking and goTo does not point to the active view, update
+        // the peek view.
+        navigationViews.setPeekView(goTo);
+      }
+    } else {
+      // If we're not peeking, update the active view.
+      navigationViews.setView(goTo);
+    }
   };
 
-  return (
-    <ViewStateSubscriber>
-      {viewState => (
-        <Item onClick={e => handleClick(e, viewState)} {...props} />
-      )}
-    </ViewStateSubscriber>
-  );
+  return <Item onClick={e => handleClick(e)} {...props} />;
 };
+const GoToItem = withNavigationUI(withNavigationViews(GoToItemBase));
 
 // Item
 const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {

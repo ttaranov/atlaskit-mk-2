@@ -7,36 +7,11 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
-import { UIStateSubscriber } from '../../src';
+import { PeekToggleItem } from '../../src';
 
 export const globalNavPrimaryItems = [
-  {
-    key: 'jira',
-    component: ({ className, children }: *) => (
-      <UIStateSubscriber>
-        {navigation => {
-          function onClick() {
-            if (navigation.state.isCollapsed) {
-              navigation.expand();
-            }
-            navigation.togglePeek();
-          }
-          return (
-            <button
-              className={className}
-              onClick={onClick}
-              onMouseEnter={navigation.peekHint}
-              onMouseLeave={navigation.unPeekHint}
-            >
-              {children}
-            </button>
-          );
-        }}
-      </UIStateSubscriber>
-    ),
-    icon: JiraIcon,
-    label: 'Jira',
-  },
+  { key: 'jira', icon: JiraIcon, label: 'Jira' },
+  { key: 'peek-toggle', component: PeekToggleItem },
   { key: 'search', icon: SearchIcon },
   { key: 'create', icon: AddIcon },
 ];

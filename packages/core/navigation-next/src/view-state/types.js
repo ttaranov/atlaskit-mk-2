@@ -34,11 +34,22 @@ type ViewGroupArgs = {
 
 export type ViewData = Array<ViewItemArgs | ViewGroupArgs>;
 export type ViewID = string;
-export type ViewLayer = 'product' | 'container';
+type ViewLayer = 'product' | 'container';
+type GetItemsSignature = () => Promise<ViewData> | ViewData;
+
 export type View = {
   id: ViewID,
   type: ViewLayer,
-  getItems: () => ViewData,
+  getItems: GetItemsSignature,
+};
+type ActiveView = {
+  id: ViewID,
+  type: ViewLayer,
+  data: ViewData,
+};
+type IncomingView = {
+  id: ViewID,
+  type: ?ViewLayer,
 };
 
 export type Reducer = ViewData => ViewData;
@@ -48,18 +59,10 @@ export type ViewStateProps = {
 };
 
 export type ViewStateState = {
-  // Product layer
-  productViewId: ?ViewID,
-  productViewData: ?ViewData,
-  incomingProductViewId: ?ViewID,
-
-  // Container layer
-  containerViewId: ?ViewID,
-  containerViewData: ?ViewData,
-  incomingContainerViewId: ?ViewID,
-
-  // Product home view
-  homeViewId: ?ViewID,
+  activeView: ?ActiveView,
+  incomingView: ?IncomingView,
+  activePeekView: ?ActiveView,
+  incomingPeekView: ?IncomingView,
 };
 
 export interface ViewStateInterface {
@@ -67,6 +70,7 @@ export interface ViewStateInterface {
   state: ViewStateState;
   views: { [ViewID]: View };
   reducers: { [ViewID]: Reducer[] };
+  initialPeekViewId: ?ViewID;
   isDebugEnabled: boolean;
 
   /** Methods */
@@ -75,8 +79,7 @@ export interface ViewStateInterface {
   setView: ViewID => void;
   addReducer: (ViewID, Reducer) => void;
   removeReducer: (ViewID, Reducer) => void;
-  clearContainerView: () => void;
-  setHomeView: ViewID => void;
+  setInitialPeekViewId: ViewID => void;
   updateActiveView: (ViewID | void) => void;
   setIsDebugEnabled: (isDebugEnabled: boolean) => void;
 }

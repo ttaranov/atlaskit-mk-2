@@ -17,109 +17,40 @@ type PeekToggleProps = {
   navigationViews: ViewState,
 };
 
-type PeekToggleState = {
-  isPeeking: boolean,
-};
-
-class PeekToggle extends Component<PeekToggleProps, PeekToggleState> {
+class PeekToggle extends Component<PeekToggleProps> {
   static defaultProps = {
     label: 'Main menu',
     tooltip: 'Main menu',
   };
 
-  state = {
-    isPeeking: this.props.isPeeking,
-  };
-
-  nestedRootView: ?string = null;
-
-  componentDidUpdate(prevProps: PeekToggleProps) {
-    const { isPeeking } = this.props;
-    const { isPeeking: wasPeeking } = prevProps;
-    if (isPeeking !== wasPeeking) {
-      if (isPeeking) {
-        this.peek();
-      } else {
-        this.unPeek();
-      }
+  getIsHomeViewActive() {
+    const { activeView, activePeekView } = this.props.navigationViews.state;
+    if (!activeView || !activePeekView) {
+      return false;
     }
+    return activeView.id === activePeekView.id;
   }
-
-  peek = () => {
-    const { navigationUI } = this.props;
-    navigationUI.peek();
-    this.setState({ isPeeking: true });
-    this.activateHomeView();
-  };
-
-  unPeek = () => {
-    const { navigationUI } = this.props;
-    navigationUI.unPeek();
-    this.setState({ isPeeking: false });
-    this.deactivateHomeView();
-  };
-
-  handleMouseEnter = () => {
-    this.props.navigationUI.peekHint();
-  };
-
-  handleMouseLeave = () => {
-    this.props.navigationUI.unPeekHint();
-  };
 
   handleClick = () => {
-    const { isPeeking } = this.state;
-    if (isPeeking) {
-      this.unPeek();
-    } else {
-      this.peek();
+    const { isPeeking, navigationUI, navigationViews } = this.props;
+    if (!isPeeking && navigationViews.initialPeekViewId) {
+      navigationViews.setPeekView(navigationViews.initialPeekViewId);
     }
+    navigationUI.togglePeek();
   };
 
-  activateHomeView() {
-    const { navigationViews } = this.props;
-    const { productViewId, homeViewId } = navigationViews.state;
-    if (homeViewId && homeViewId !== productViewId) {
-      navigationViews.setView(homeViewId);
-      this.nestedRootView = productViewId;
-    }
-  }
-
-  deactivateHomeView() {
-    const { navigationViews } = this.props;
-    if (this.nestedRootView) {
-      navigationViews.setView(this.nestedRootView);
-    }
-    this.nestedRootView = null;
-  }
-
-  getIsHomeViewActive() {
-    const {
-      containerViewId,
-      homeViewId,
-      productViewId,
-    } = this.props.navigationViews.state;
-    return (
-      !containerViewId &&
-      homeViewId &&
-      productViewId &&
-      homeViewId === productViewId
-    );
-  }
-
-  renderIcon = () =>
-    this.props.navigationUI.state.isPeeking ? ArrowLeftIcon : MenuIcon;
+  renderIcon = () => (this.props.isPeeking ? ArrowLeftIcon : MenuIcon);
 
   renderComponent = ({ className, children }) => {
     const isHomeViewActive = this.getIsHomeViewActive();
-    const { isPeeking } = this.state;
+    const { isPeeking, navigationUI } = this.props;
 
     return (
       <button
         className={className}
         onClick={isHomeViewActive && !isPeeking ? null : this.handleClick}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
+        onMouseEnter={navigationUI.peekHint}
+        onMouseLeave={navigationUI.unPeekHint}
       >
         {children}
       </button>
@@ -128,7 +59,7 @@ class PeekToggle extends Component<PeekToggleProps, PeekToggleState> {
 
   render() {
     const { label, tooltip } = this.props;
-    const { isPeeking } = this.state;
+    const { isPeeking } = this.props;
     const isHomeViewActive = this.getIsHomeViewActive();
 
     return (

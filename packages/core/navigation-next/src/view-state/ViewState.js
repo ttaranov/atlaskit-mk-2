@@ -3,58 +3,36 @@
 import { Container } from 'unstated';
 
 import type {
+  Reducer,
+  View,
+  ViewData,
+  ViewID,
   ViewStateInterface,
   ViewStateProps,
   ViewStateState,
-  ViewID,
-  ViewLayer,
-  ViewData,
-  View,
-  Reducer,
 } from './types';
-
-const stateKeys = {
-  container: {
-    id: 'containerViewId',
-    data: 'containerViewData',
-    incomingId: 'incomingContainerViewId',
-  },
-  product: {
-    id: 'productViewId',
-    data: 'productViewData',
-    incomingId: 'incomingProductViewId',
-  },
-};
-/**
- * Helper function for getting the keys in the state object for the active ID,
- * active data, and incoming ID for the given layer.
- */
-const getStateKeysForLayer = (viewType: ViewLayer) => stateKeys[viewType];
 
 const defaultProps: ViewStateProps = {
   isDebugEnabled: false,
 };
 
+type StateKeys =
+  | { active: 'activeView', incoming: 'incomingView' }
+  | { active: 'activePeekView', incoming: 'incomingPeekView' };
+
 export default class ViewState extends Container<ViewStateState>
   implements ViewStateInterface {
   state = {
-    // Product layer
-    productViewId: null,
-    productViewData: null,
-    incomingProductViewId: null,
-
-    // Container layer
-    containerViewId: null,
-    containerViewData: null,
-    incomingContainerViewId: null,
-
-    // Product home view
-    homeViewId: null,
+    activeView: null,
+    incomingView: null,
+    activePeekView: null,
+    incomingPeekView: null,
   };
 
   reducers: { [ViewID]: Reducer[] } = {};
   views: { [ViewID]: View } = {};
   isDebugEnabled: boolean = false;
+  initialPeekViewId: ?ViewID = null;
 
   constructor({ isDebugEnabled }: ViewStateProps = defaultProps) {
     super();
@@ -62,37 +40,54 @@ export default class ViewState extends Container<ViewStateState>
   }
 
   /**
-   * Check whether the given view ID is currently active.
+   * DRY function for setting a view. Can be configred to set either the active
+   * view, or the active peek view.
    */
-  _viewIsActive = (viewId: ViewID) => {
-    const { containerViewId, productViewId } = this.state;
-    return viewId === containerViewId || viewId === productViewId;
+  _setViewInternals = (stateKeys: StateKeys) => (viewId: ViewID) => {
+    const updateViewState = this._updateViewState(stateKeys);
+    const { incoming } = stateKeys;
+    const view = this.views[viewId];
+
+    // The view has been added
+    if (view) {
+      const { id, type, getItems } = view;
+      const returnedItems = getItems();
+
+      // This view returned a Promise
+      if (returnedItems instanceof Promise) {
+        // Enter a temporary loading state
+        this.setState({ [incoming]: { id, type } });
+
+        // Wait for the Promise to resolve
+        returnedItems.then(data => {
+          updateViewState(view, data);
+        });
+        return;
+      }
+
+      // The view returned data
+      updateViewState(view, returnedItems);
+      return;
+    }
+
+    // The view has not been added yet. We enter an indefinite loading state
+    // until the view is added or another view is set.
+    this.setState({ [incoming]: { id: viewId, type: null } });
   };
 
   /**
    * Helper function for reducing a view's data and updating the state.
    */
-  _updateViewState = (view: View, initialData: ViewData) => {
-    const reducers = this.reducers[view.id] || [];
-    const reducedData = reducers.reduce(
-      (d, reducer) => reducer(d),
-      initialData,
-    );
+  _updateViewState = (stateKeys: StateKeys) => (
+    view: View,
+    initialData: ViewData,
+  ) => {
+    const { active, incoming } = stateKeys;
+    const { id, type } = view;
+    const reducers = this.reducers[id] || [];
+    const data = reducers.reduce((d, reducer) => reducer(d), initialData);
 
-    const l = getStateKeysForLayer(view.type);
-
-    this.setState({
-      [l.id]: view.id,
-      [l.data]: reducedData,
-      [l.incomingId]: null,
-    });
-
-    // If we're setting a container view we reset the product view to the
-    // default home view.
-    const { homeViewId } = this.state;
-    if (homeViewId && view.type === 'container' && view.id !== homeViewId) {
-      this.setView(homeViewId);
-    }
+    this.setState({ [active]: { id, type, data }, [incoming]: null });
   };
 
   /**
@@ -130,18 +125,31 @@ export default class ViewState extends Container<ViewStateState>
    * of data, or a Promise which will resolve to an array of data.
    */
   addView = (view: View) => {
-    const { id, type } = view;
-    const { id: activeId, incomingId } = getStateKeysForLayer(type);
-
+    const { id } = view;
     this.views = { ...this.views, [id]: view };
 
-    // We need to call setView again for the following cases:
-    // 1. The added view matches the activeView (if it returns a Promise we want
-    //    to temporarily enter a loading state while it resolves).
+    // We need to call setView or setPeekView again for the following cases:
+    // 1. The added view matches the active view (if it returns a Promise we
+    //    want to temporarily enter a loading state while it resolves).
     // 2. The added view matches the expected incoming view and we want to
     //    resolve it.
-    if (id === this.state[activeId] || id === this.state[incomingId]) {
+    const {
+      activeView,
+      incomingView,
+      activePeekView,
+      incomingPeekView,
+    } = this.state;
+    if (
+      (activeView && id === activeView.id) ||
+      (incomingView && id === this.state.incomingView)
+    ) {
       this.setView(id);
+    }
+    if (
+      (activePeekView && id === activePeekView.id) ||
+      (incomingPeekView && id === this.state.incomingPeekView)
+    ) {
+      this.setPeekView(id);
     }
   };
 
@@ -154,60 +162,27 @@ export default class ViewState extends Container<ViewStateState>
   };
 
   /**
-   * Set the registered view with the given ID as the active view for its layer.
+   * Set the registered view with the given ID as the active view.
    */
-  setView = (viewId: ViewID) => {
-    const view = this.views[viewId];
-
-    // The view has been added
-    if (view) {
-      const returnedItems = view.getItems();
-      const { incomingId } = getStateKeysForLayer(view.type);
-
-      // This view returned a Promise
-      if (returnedItems instanceof Promise) {
-        // Enter a temporary loading state
-        this.setState({
-          [incomingId]: view.id,
-        });
-
-        // Wait for the Promise to resolve
-        returnedItems.then(data => {
-          this._updateViewState(view, data);
-        });
-        return;
-      }
-
-      // The view returned data
-      this._updateViewState(view, returnedItems);
-      return;
-    }
-
-    // The view has not been added yet. We enter an indefinite loading state
-    // until the view is added or another view is set. We don't know what layer
-    // this view is in yet so we set the incoming view ID for both layers.
-    this.setState({
-      incomingContainerViewId: viewId,
-      incomingProductViewId: viewId,
-    });
-  };
+  setView = this._setViewInternals({
+    active: 'activeView',
+    incoming: 'incomingView',
+  });
 
   /**
-   * Remove the container layer.
+   * Set the registered view with the given ID as the active peek view.
    */
-  clearContainerView = () => {
-    this.setState({
-      containerViewId: null,
-      containerViewData: null,
-      incomingContainerViewId: null,
-    });
-  };
+  setPeekView = this._setViewInternals({
+    active: 'activePeekView',
+    incoming: 'incomingPeekView',
+  });
 
   /**
-   * Specify which view should be treated as the root 'home' view.
+   * Specify which view should be treated as the initial peek view.
    */
-  setHomeView = (viewId: ViewID) => {
-    this.setState({ homeViewId: viewId });
+  setInitialPeekViewId = (viewId: ViewID) => {
+    this.initialPeekViewId = viewId;
+    this.setPeekView(viewId);
   };
 
   /**
@@ -215,11 +190,14 @@ export default class ViewState extends Container<ViewStateState>
    * view ID to only re-resolve if the given ID matches the active view.
    */
   updateActiveView = (maybeViewId?: ViewID) => {
-    const { containerViewId, productViewId } = this.state;
+    const { activeView } = this.state;
+    if (!activeView) {
+      return;
+    }
 
     // If a view ID has been provided and it matches an active view, reset that
     // view.
-    if (maybeViewId && this._viewIsActive(maybeViewId)) {
+    if (maybeViewId && maybeViewId === activeView) {
       this.setView(maybeViewId);
       return;
     }
@@ -227,12 +205,7 @@ export default class ViewState extends Container<ViewStateState>
     // If a view ID hasn't been provided reset the active container and product
     // views.
     if (!maybeViewId) {
-      if (containerViewId) {
-        this.setView(containerViewId);
-      }
-      if (productViewId) {
-        this.setView(productViewId);
-      }
+      this.setView(activeView.id);
     }
   };
 

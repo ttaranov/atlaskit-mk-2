@@ -2,6 +2,7 @@
 
 import type { ComponentType } from 'react';
 
+import { UIState, ViewState } from '../';
 import type { ViewData } from '../../src/view-state/types';
 
 /**
@@ -20,6 +21,8 @@ export type GoToItemProps = {
   ...ItemProps,
   after?: ?ComponentType<*>,
   goTo: string,
+  navigationUI: UIState,
+  navigationViews: ViewState,
 };
 
 export type GroupHeadingProps = {

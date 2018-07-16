@@ -13,39 +13,30 @@ import {
 import { containerViews, rootViews } from './mock-data';
 import ShortcutsPlugin from './shortcuts-plugin';
 
-class SetHomeViewBase extends Component<{
+class SetInitialPeekViewBase extends Component<{
   id: string,
   navigationViews: *,
 }> {
   componentDidMount() {
     const { id, navigationViews } = this.props;
-    navigationViews.setHomeView(id);
+    navigationViews.setInitialPeekViewId(id);
   }
   render() {
     return null;
   }
 }
-const SetHomeView = withNavigationViews(SetHomeViewBase);
+const SetInitialPeekView = withNavigationViews(SetInitialPeekViewBase);
 
 class SetActiveViewBase extends Component<{
   id: string,
   navigationUI: *,
   navigationViews: *,
-  shouldClearContainer: boolean,
 }> {
   componentDidMount() {
-    const {
-      id,
-      navigationUI,
-      navigationViews,
-      shouldClearContainer,
-    } = this.props;
+    const { id, navigationUI, navigationViews } = this.props;
     const { containerViewId, productViewId } = navigationViews.state;
     if (id !== containerViewId && id !== productViewId) {
       navigationViews.setView(id);
-    }
-    if (shouldClearContainer) {
-      navigationViews.clearContainerView();
     }
     navigationUI.unPeek();
   }
@@ -81,7 +72,7 @@ const ContainerViews = () => (
 const CoreViews = () => (
   <Fragment>
     <RootViews />
-    <SetHomeView id="root/index" />
+    <SetInitialPeekView id="root/index" />
   </Fragment>
 );
 
@@ -91,7 +82,7 @@ const CoreViews = () => (
 export const DashboardsView = () => (
   <Fragment>
     <CoreViews />
-    <SetActiveView id="root/index" shouldClearContainer />
+    <SetActiveView id="root/index" />
     <h1>Dashboards</h1>
     <p>Hello here are your dashboards.</p>
   </Fragment>
@@ -100,7 +91,7 @@ export const DashboardsView = () => (
 export const ProjectsView = () => (
   <Fragment>
     <CoreViews />
-    <SetActiveView id="root/index" shouldClearContainer />
+    <SetActiveView id="root/index" />
     <h1>Projects</h1>
     <p>Hello here are your projects.</p>
     <h3>
@@ -112,7 +103,7 @@ export const ProjectsView = () => (
 export const SearchIssuesView = () => (
   <Fragment>
     <CoreViews />
-    <SetActiveView id="root/issues" shouldClearContainer />
+    <SetActiveView id="root/issues" />
     <h1>Search issues</h1>
     <p>Hello search for your issues here.</p>
   </Fragment>
