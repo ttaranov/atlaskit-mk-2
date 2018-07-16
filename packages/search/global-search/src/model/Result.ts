@@ -24,6 +24,7 @@ export interface ConfluenceObjectResult extends Result {
   containerId: string;
   contentType?: ContentType;
   resultType: ResultType.ConfluenceObjectResult;
+  iconClass?: string;
 }
 
 export interface JiraObjectResult extends Result {

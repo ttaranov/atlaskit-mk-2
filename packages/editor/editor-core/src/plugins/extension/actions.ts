@@ -1,7 +1,7 @@
 import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
-import { Slice, Fragment, Schema } from 'prosemirror-model';
+import { Slice, Schema } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
   removeSelectedNode,
@@ -12,7 +12,7 @@ import {
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
-import { hasOpenEnd } from '../../utils';
+import { mapFragment } from '../../utils/slice';
 
 export const updateExtensionLayout = layout => (
   state: EditorState,
@@ -97,24 +97,39 @@ export const removeExtension = (
   return true;
 };
 
+/**
+ * Lift content out of "open" top-level bodiedExtensions.
+ * Will not work if bodiedExtensions are nested, or when bodiedExtensions are not in the top level
+ */
 export const transformSliceToRemoveOpenBodiedExtension = (
   slice: Slice,
   schema: Schema,
 ) => {
   const { bodiedExtension } = schema.nodes;
-  const wrapper = slice.content.firstChild;
 
-  if (
-    slice.content.childCount !== 1 ||
-    wrapper!.type !== bodiedExtension ||
-    !hasOpenEnd(slice)
-  ) {
-    return slice;
-  }
+  const fragment = mapFragment(slice.content, (node, parent, index) => {
+    if (node.type === bodiedExtension && !parent) {
+      const currentNodeIsAtStartAndIsOpen = slice.openStart && index === 0;
+      const currentNodeIsAtEndAndIsOpen =
+        slice.openEnd && index + 1 === slice.content.childCount;
 
+      if (currentNodeIsAtStartAndIsOpen || currentNodeIsAtEndAndIsOpen) {
+        return node.content;
+      }
+    }
+    return node;
+  });
+
+  // If the first/last child has changed - then we know we've removed a bodied extension & to decrement the open depth
   return new Slice(
-    Fragment.from(wrapper!.content),
-    Math.max(0, slice.openStart - 1),
-    Math.max(0, slice.openEnd - 1),
+    fragment,
+    fragment.firstChild &&
+    fragment.firstChild!.type !== slice.content.firstChild!.type
+      ? slice.openStart - 1
+      : slice.openStart,
+    fragment.lastChild &&
+    fragment.lastChild!.type !== slice.content.lastChild!.type
+      ? slice.openEnd - 1
+      : slice.openEnd,
   );
 };

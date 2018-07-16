@@ -9,6 +9,15 @@ import React, {
   type ComponentType,
 } from 'react';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
@@ -16,6 +25,7 @@ import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
 import { getPosition } from './utils';
+import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
 type Props = {
   /** A single element, either Component or DOM node */
@@ -56,6 +66,7 @@ type Props = {
   /** Show only one line of text, and truncate when too long */
   truncate?: boolean,
 };
+
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
@@ -83,8 +94,7 @@ function getInitialState(props): State {
   };
 }
 
-/* eslint-disable react/sort-comp */
-export default class Tooltip extends Component<Props, State> {
+class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
@@ -110,6 +120,23 @@ export default class Tooltip extends Component<Props, State> {
     // handle case where truncate is changed while visible
     if (truncate !== this.props.truncate) {
       this.setState({ coordinates: null });
+    }
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    // AK-4959 - can move logic to withAnalyticsEvents hoc when we have handlers for tooltip visibility
+    /* eslint-disable react/prop-types */
+    if (
+      !prevState.isVisible &&
+      this.state.isVisible &&
+      // This prop doesn't exist in exported component so we don't want it to be documented
+      // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
+      this.props.createAnalyticsEvent
+    ) {
+      // $FlowFixMe
+      const event = this.props.createAnalyticsEvent(hoveredPayload);
+      /* eslint-enable */
+      event.fire('atlaskit');
     }
   }
 
@@ -252,4 +279,17 @@ export default class Tooltip extends Component<Props, State> {
   }
 }
 
+export { Tooltip as TooltipWithoutAnalytics };
+
 export type TooltipType = Tooltip;
+
+export default withAnalyticsContext({
+  componentName: 'tooltip',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onMouseOver: hoveredPayload,
+    onMouseOut: unhoveredPayload,
+  })(Tooltip),
+);

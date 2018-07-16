@@ -1,7 +1,7 @@
-import { keyCodes } from '@atlaskit/editor-core';
 import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { TestingEditorView } from './types/prosemirror';
+import keyCodes from './key-codes';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.

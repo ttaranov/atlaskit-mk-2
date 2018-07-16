@@ -1,5 +1,6 @@
 // // @flow
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { gridSize, math, colors } from '@atlaskit/theme';
 import Cards from './Cards';
@@ -60,6 +61,9 @@ export default class HomePage extends Component {
   render() {
     return (
       <HomePageWrapper>
+        <Helmet>
+          <title>{BASE_TITLE}</title>
+        </Helmet>
         <Style />
         <Title>Atlaskit</Title>
         <Intro>

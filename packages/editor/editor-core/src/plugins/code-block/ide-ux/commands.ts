@@ -31,7 +31,7 @@ export function indent(state: EditorState, dispatch) {
   return true;
 }
 
-export function deindent(state: EditorState, dispatch) {
+export function outdent(state: EditorState, dispatch) {
   const { text, start } = getLinesFromSelection(state);
   const { tr } = state;
   forEachLine(text, (line, offset) => {
@@ -46,7 +46,7 @@ export function deindent(state: EditorState, dispatch) {
     }
   });
   dispatch(tr);
-  analyticsService.trackEvent('atlassian.editor.codeblock.deindent');
+  analyticsService.trackEvent('atlassian.editor.codeblock.outdent');
   return true;
 }
 
@@ -58,7 +58,7 @@ export function insertIndent(state: EditorState, dispatch) {
       indentToken.size,
   );
   dispatch(state.tr.insertText(indentToAdd));
-  analyticsService.trackEvent('atlassian.editor.codeblock.insert.indent');
+  analyticsService.trackEvent('atlassian.editor.codeblock.indent.insert');
   return true;
 }
 

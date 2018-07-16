@@ -19,7 +19,10 @@ export default styled.span`
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
-  max-width: 200px;
+  max-width: ${props =>
+    typeof props.maxWidth === 'number'
+      ? `${props.maxWidth}px`
+      : props.maxWidth};
   padding: 2px ${HORIZONTAL_SPACING} 3px ${HORIZONTAL_SPACING};
   text-transform: uppercase;
   vertical-align: baseline;

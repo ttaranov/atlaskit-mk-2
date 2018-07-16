@@ -100,7 +100,7 @@ export const svgStyles = css`
       props.size,
     )}`;
 
-    const spinUpOpacity = `0.2s ease-in-out ${keyframes.enterOpacity}`;
+    const spinUpOpacity = `0.2s ease-in-out ${keyframeNames.enterOpacity}`;
 
     const activeAnimations = [idleRotation];
     if (props.phase === 'ENTER') {

@@ -8,7 +8,17 @@ import Select, {
 import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import {
   ClearIndicator,
@@ -95,7 +105,16 @@ const menuStyles = {
   overflowY: 'auto',
 };
 
-export default class TimePicker extends Component<Props, State> {
+const FixedLayerMenu = ({ selectProps, ...props }: Object) => {
+  return (
+    <FixedLayer
+      containerRef={selectProps.fixedLayerRef}
+      content={<components.Menu {...props} scrollMenuIntoView={false} />}
+    />
+  );
+};
+
+class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
@@ -219,14 +238,6 @@ export default class TimePicker extends Component<Props, State> {
       this.props.appearance === 'subtle' || this.props.hideIcon
         ? null
         : this.props.icon;
-    const FixedLayerMenu = props => {
-      return (
-        <FixedLayer
-          containerRef={this.containerRef}
-          content={<components.Menu {...props} scrollMenuIntoView={false} />}
-        />
-      );
-    };
 
     const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
     const controlStyles =
@@ -245,7 +256,7 @@ export default class TimePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           components={{
             ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            DropdownIndicator,
             Menu: FixedLayerMenu,
           }}
           instanceId={id}
@@ -285,11 +296,35 @@ export default class TimePicker extends Component<Props, State> {
               value,
             }
           }
-          {...otherSelectProps}
           spacing={spacing}
+          dropdownIndicatorIcon={icon}
+          fixedLayerRef={this.containerRef}
           validationState={validationState}
+          {...otherSelectProps}
         />
       </div>
     );
   }
 }
+
+export { TimePicker as TimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'timePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'selectedTime',
+      actionSubject: 'timePicker',
+
+      attributes: {
+        componentName: 'timePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(TimePicker),
+);
