@@ -116,6 +116,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
     }
   };
   handleClick = ({ target }: MouseEvent) => {
+    const { closeMenuOnSelect } = this.props;
     const { isOpen } = this.state;
 
     // appease flow
@@ -124,7 +125,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
     // NOTE: Why not use the <Blanket /> component to close?
     // We don't want to interupt the user's flow. Taking this approach allows
     // user to click "through" to other elements and close the popout.
-    if (isOpen && !this.menuRef.contains(target)) {
+    if (isOpen && !this.menuRef.contains(target) && closeMenuOnSelect) {
       this.close();
     }
 

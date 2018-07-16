@@ -1,7 +1,8 @@
 // @flow
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import Checkbox from '@atlaskit/checkbox';
+import DownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import { PopupSelect } from '../src';
 
 const options = [
@@ -55,16 +56,27 @@ class MultiPopupSelectExample extends Component<*, State> {
       controlShouldRenderValue,
     } = this.state;
     return (
-      <Fragment>
-        <PopupSelect
-          {...defaults}
-          controlShouldRenderValue={controlShouldRenderValue}
-          hideSelectedOptions={false}
-          onChange={this.onChange}
-          value={values}
-          target={<Button>{valuesString || placeholder}</Button>}
-          isMulti
-        />
+      <div>
+        <div
+          style={{
+            display: 'inline-block',
+            maxWidth: '250px',
+          }}
+        >
+          <PopupSelect
+            {...defaults}
+            controlShouldRenderValue={controlShouldRenderValue}
+            closeMenuOnSelect={false}
+            onChange={this.onChange}
+            value={values}
+            target={
+              <Button iconAfter={<DownIcon />}>
+                {valuesString || placeholder}
+              </Button>
+            }
+            isMulti
+          />
+        </div>
         <div>
           <Checkbox
             value="show value in search"
@@ -73,7 +85,7 @@ class MultiPopupSelectExample extends Component<*, State> {
             label="show value in search"
           />
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
