@@ -1,0 +1,14 @@
+{
+  "name": "@atlaskit/test-ssr",
+  "version": "0.0.1",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "react": "^16.4.0"
+  },
+  "devDependencies": {
+    "react-dom": "^16.4.0"
+  }
+}
