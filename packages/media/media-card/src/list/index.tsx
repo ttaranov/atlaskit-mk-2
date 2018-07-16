@@ -7,7 +7,6 @@ import {
   MediaCollection,
   MediaCollectionItem,
   Context,
-  DataUriService,
   isError,
   isCollectionNotFoundError,
 } from '@atlaskit/media-core';
@@ -19,7 +18,7 @@ import {
 } from '../utils';
 import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { Provider, MediaCard, CardView } from '../root';
+import { CardView, Card, FileIdentifier } from '../root';
 import { CollectionAction } from '../actions';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
@@ -57,7 +56,6 @@ export interface CardListState {
   error?: Error;
 }
 
-// FIXME: these aren't "components", they're actually "elements"... we should rename these or change the signature to be a "component" e.g. () => (<Spinner.../>);. Will clean up the tests a bit too.
 const LoadingComponent = (
   <Spinner className="spinner" style={{ width: '100%', height: '100%' }}>
     loading...
@@ -85,9 +83,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     shouldAnimate: false,
   };
 
-  providersByMediaItemId: { [id: string]: Provider } = {};
-  private dataURIService: DataUriService;
-
   private unsubscribe() {
     const { subscription } = this.state;
     if (subscription) {
@@ -95,9 +90,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
-  handleNextItems(nextProps: CardListProps) {
-    const { collectionName, context } = nextProps;
-
+  handleNextItems() {
     return (value: MediaCollection | Error) => {
       if (isError(value)) {
         this.setState({ collection: undefined, error: value, loading: false });
@@ -108,22 +101,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           : undefined;
         const shouldAnimate =
           !!firstItemKey && firstItemKey !== newFirstItemKey;
-        this.providersByMediaItemId = {};
-        value.items.forEach(mediaItem => {
-          if (!mediaItem.details) {
-            return;
-          }
-
-          this.providersByMediaItemId[
-            mediaItem.details.id
-          ] = context.getMediaItemProvider(
-            mediaItem.details.id,
-            mediaItem.type,
-            collectionName,
-            mediaItem,
-          );
-        });
-
+        // console.log({shouldAnimate})
         this.setState({
           collection: value,
           shouldAnimate,
@@ -144,7 +122,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     );
 
     const subscription = provider.observable().subscribe({
-      next: this.handleNextItems(nextProps),
+      next: this.handleNextItems(),
     });
 
     this.setState({ subscription });
@@ -167,8 +145,6 @@ export class CardList extends Component<CardListProps, CardListState> {
     );
 
     this.unsubscribe();
-
-    this.dataURIService = context.getDataUriService(collectionName);
 
     // Setting the subscription after the state has been applied
     this.setState(
@@ -250,15 +226,13 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private renderList(): JSX.Element {
     const { collection, shouldAnimate } = this.state;
+    const { cardWidth, dimensions, handleCardClick, placeholder } = this;
     const {
-      cardWidth,
-      dimensions,
-      providersByMediaItemId,
-      dataURIService,
-      handleCardClick,
-      placeholder,
-    } = this;
-    const { cardAppearance, shouldLazyLoadCards } = this.props;
+      cardAppearance,
+      shouldLazyLoadCards,
+      collectionName,
+      context,
+    } = this.props;
     const actions = this.props.actions || [];
     const cardActions = (collectionItem: MediaCollectionItem) =>
       actions.map(action => {
@@ -275,6 +249,11 @@ export class CardList extends Component<CardListProps, CardListState> {
     const cards = collection
       ? collection.items.filter(item => item.type === 'file').map(mediaItem => {
           const key = this.getItemKey(mediaItem);
+          const identifier: FileIdentifier = {
+            id: mediaItem.details.id,
+            collectionName,
+            mediaItemType: 'file',
+          };
           const cardListItem = (
             <CSSTransition
               key={key}
@@ -288,11 +267,12 @@ export class CardList extends Component<CardListProps, CardListState> {
                 shouldAnimate={shouldAnimate}
                 cardWidth={cardWidth}
               >
-                <MediaCard
-                  provider={providersByMediaItemId[mediaItem.details.id]}
-                  dataURIService={dataURIService}
+                <Card
+                  context={context}
+                  identifier={identifier}
                   appearance={cardAppearance}
                   dimensions={dimensions}
+                  isLazy={false}
                   onClick={handleCardClick.bind(this, mediaItem)}
                   actions={cardActions(mediaItem)}
                 />
@@ -301,6 +281,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           );
           // We don't want to wrap new items into LazyContent aka lazy load new items
           const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
+
           return useLazyContent ? (
             <LazyContent key={key} placeholder={placeholder}>
               {cardListItem}

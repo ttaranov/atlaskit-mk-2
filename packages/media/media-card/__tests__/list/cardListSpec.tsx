@@ -13,10 +13,10 @@ import {
 } from '@atlaskit/media-core';
 
 import { CardList, CardListProps, CardListState } from '../../src/list';
-import { MediaCard } from '../../src/root/mediaCard';
 import { InfiniteScroll } from '../../src/list/infiniteScroll';
 import { LazyContent } from '../../src/utils/lazyContent';
 import { TransitionGroup } from 'react-transition-group';
+import { Card } from '../../src/root/card';
 
 describe('CardList', () => {
   const setup = () => {
@@ -95,51 +95,13 @@ describe('CardList', () => {
       },
     },
   });
-  it('should create a MediaItemProvider for each MediaItem in the collection', () => {
+  it('should call getMediaCollectionProvider', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName} />);
 
     expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(
       expectedMediaItems.length,
     );
-    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(
-      expectedMediaItems.length,
-    );
-    expect(context.getMediaItemProvider).toBeCalledWith(
-      expectedMediaItems[0].details.id,
-      expectedMediaItems[0].type,
-      collectionName,
-      expectedMediaItems[0],
-    );
-    expect(context.getMediaItemProvider).toBeCalledWith(
-      expectedMediaItems[1].details.id,
-      expectedMediaItems[1].type,
-      collectionName,
-      expectedMediaItems[1],
-    );
-  });
-
-  it('should pass a provider to MediaCard', () => {
-    const collection = { items: expectedMediaItems };
-    const context = contextWithInclusiveStartKey;
-    const cardList = mount(
-      <CardList
-        context={context}
-        collectionName={collectionName}
-        shouldLazyLoadCards={false}
-      />,
-    );
-
-    cardList.setState({ loading: false, error: undefined, collection });
-    // re-render now that we've subscribed (relying on the stubbed provider being synchronous)
-    expect(cardList.find(MediaCard)).toHaveLength(1);
-    cardList
-      .find(MediaCard)
-      .forEach(mediaCard =>
-        expect((mediaCard.prop('provider').observable() as any).value).toBe(
-          expectedMediaItemProvider,
-        ),
-      );
   });
 
   it('should be loading=true when mounted', () => {
@@ -303,7 +265,7 @@ describe('CardList', () => {
     ) as any;
     wrapper.setState({ loading: false, error: undefined, collection });
     wrapper
-      .find(MediaCard)
+      .find(Card)
       .first()
       .simulate('click', { mediaItemDetails: newItemDetails });
 
@@ -445,6 +407,7 @@ describe('CardList', () => {
         shouldAnimate: true,
         collection,
       });
+
       expect(list.find(LazyContent)).toHaveLength(0);
     });
 
@@ -461,7 +424,7 @@ describe('CardList', () => {
 
       cardList.setState({ loading: false, error: undefined, collection });
       cardList.update();
-      expect(cardList.find(MediaCard)).toHaveLength(0);
+      expect(cardList.find(Card)).toHaveLength(0);
     });
 
     it('should render empty component when there are no items in the collection', () => {
