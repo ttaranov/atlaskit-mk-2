@@ -1,4 +1,4 @@
-import { EditorState, TextSelection } from 'prosemirror-state';
+import { EditorState, TextSelection, PluginSpec } from 'prosemirror-state';
 import {
   layoutSection,
   layoutColumn,
@@ -7,9 +7,16 @@ import {
   p,
   RefsNode,
   hr,
+  createEditor,
 } from '@atlaskit/editor-test-helpers';
-import { enforceLayoutColumnConstraints } from '../../../src/plugins/layout';
+import {
+  default as layoutPlugin,
+  pluginKey,
+  enforceLayoutColumnConstraints,
+} from '../../../../src/plugins/layout/pm-plugins/main';
 
+const editor = doc =>
+  createEditor({ doc, editorProps: { UNSAFE_allowLayouts: true } });
 const toState = (node: RefsNode) =>
   EditorState.create({
     doc: node,
@@ -19,6 +26,80 @@ const toState = (node: RefsNode) =>
   });
 
 describe('layout', () => {
+  describe('plugin', () => {
+    describe('#init', () => {
+      it('should set pos when selection in layout', () => {
+        const document = doc(
+          layoutSection({ layoutType: 'two_equal' })(
+            layoutColumn(p('{<>}')),
+            layoutColumn(p('')),
+          ),
+        )(defaultSchema);
+        const state = toState(document);
+        const pluginState = (layoutPlugin.spec as PluginSpec).state!.init(
+          {},
+          state,
+        );
+        expect(pluginState).toEqual({ pos: 0 });
+      });
+      it('should set pos to null when selection is not in layout', () => {
+        const document = doc(p('{<>}'))(defaultSchema);
+        const state = toState(document);
+        const pluginState = (layoutPlugin.spec as PluginSpec).state!.init(
+          {},
+          state,
+        );
+        expect(pluginState).toEqual({ pos: null });
+      });
+    });
+
+    describe('#apply', () => {
+      it('should set pos when selection in layout', () => {
+        const {
+          editorView,
+          refs: { layoutPos },
+        } = editor(
+          doc(
+            p('{<>}'),
+            layoutSection({ layoutType: 'two_equal' })(
+              layoutColumn(p('{layoutPos}')),
+              layoutColumn(p('')),
+            ),
+          ),
+        );
+        editorView.dispatch(
+          editorView.state.tr.setSelection(
+            TextSelection.create(editorView.state.doc, layoutPos),
+          ),
+        );
+        expect(pluginKey.getState(editorView.state)).toEqual({
+          pos: 2,
+        });
+      });
+      it('should set pos to null when selection is not in layout', () => {
+        const {
+          editorView,
+          refs: { pPos },
+        } = editor(
+          doc(
+            p('{pPos}'),
+            layoutSection({ layoutType: 'two_equal' })(
+              layoutColumn(p('{<>}')),
+              layoutColumn(p('')),
+            ),
+          ),
+        );
+        editorView.dispatch(
+          editorView.state.tr.setSelection(
+            TextSelection.create(editorView.state.doc, pPos),
+          ),
+        );
+        expect(pluginKey.getState(editorView.state)).toEqual({
+          pos: null,
+        });
+      });
+    });
+  });
   describe('#enforceLayoutColumnConstraints', () => {
     ['two-equal', 'two-left-sidebar', 'two-right-sidebar'].forEach(
       layoutType => {
