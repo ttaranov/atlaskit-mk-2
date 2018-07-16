@@ -12,9 +12,6 @@ describe('MediaLocalUpload', () => {
     publicId: 'some-public-id',
   };
   const setup = () => {
-    const analyticsContext = {
-      trackEvent: jest.fn(),
-    };
     const context = ContextFactory.create({
       serviceHost: 'some-api-url',
       authProvider: jest.fn(),
@@ -24,11 +21,7 @@ describe('MediaLocalUpload', () => {
         collection: '',
       },
     };
-    const localUpload = new LocalUploadComponent(
-      analyticsContext,
-      context,
-      config,
-    );
+    const localUpload = new LocalUploadComponent(context, config);
     const uploadService = localUpload['uploadService'];
     const emitUploadServiceEvent = uploadService['emit'];
     const emitter = localUpload['emitter'];
@@ -85,7 +78,7 @@ describe('MediaLocalUpload', () => {
 
     emitUploadServiceEvent('file-converted', {
       file: imageFile,
-      metadata: { id: 'some-id' },
+      public: { id: 'some-id' },
     });
 
     expect(emitter.emit).toHaveBeenCalledTimes(1);

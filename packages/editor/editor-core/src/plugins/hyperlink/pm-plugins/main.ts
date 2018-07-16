@@ -1,4 +1,4 @@
-import { Mark, Node, Schema, Slice } from 'prosemirror-model';
+import { Mark, Node, Schema } from 'prosemirror-model';
 import {
   EditorState,
   Plugin,
@@ -13,8 +13,9 @@ import { EditorProps } from '../../../types/editor-props';
 import {
   addFakeTextCursor,
   removeFakeTextCursor,
+  FakeTextCursorSelection,
 } from '../../../plugins/fake-text-cursor/cursor';
-import { Match, getLinkMatch, normalizeUrl, linkifyContent } from '../utils';
+import { Match, getLinkMatch, normalizeUrl } from '../utils';
 
 export const hyperlinkPluginKey = new PluginKey('hyperlinkPlugin');
 
@@ -135,6 +136,14 @@ export class HyperlinkState {
       dirty = true;
     }
 
+    if (
+      !(state.selection instanceof FakeTextCursorSelection) &&
+      this.showToolbarPanel
+    ) {
+      this.showToolbarPanel = false;
+      dirty = true;
+    }
+
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.activeLinkNode = nodeInfo && nodeInfo.node;
       this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
@@ -242,7 +251,7 @@ export class HyperlinkState {
       };
     };
     return translateCoordinates(
-      editorView.coordsAtPos(pos),
+      editorView.coordsAtPos(this.activeLinkStartPos || pos),
       left,
       top - cursorHeight,
     );
@@ -454,31 +463,6 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
           event.preventDefault();
           return false;
         },
-      },
-      /**
-       * As we are adding linkifyContent, linkifyText can in fact be removed.
-       * But leaving it there so that later it can be enhanced to include markdown parsing.
-       */
-      handlePaste(view: EditorView, event: any, slice: Slice) {
-        const { clipboardData } = event;
-        const html = clipboardData && clipboardData.getData('text/html');
-        if (html) {
-          const sizeBeforePaste = view.state.doc.nodeSize;
-          const contentSlices = linkifyContent(view.state.schema, slice);
-          if (contentSlices) {
-            const { dispatch } = view;
-            dispatch(view.state.tr.replaceSelection(contentSlices));
-            const sizeAfterPaste = view.state.doc.nodeSize;
-            // Following if condition is to ensure that second transaction is executed only if first one
-            // is successful. Paste can fail if size of pasted content is larger then maxContentSize of the editor.
-            // In that case execution of second transaction is not required and can create wrong results. Ref: #ED-3189.
-            if (sizeBeforePaste !== sizeAfterPaste) {
-              dispatch(view.state.tr.setStoredMarks([]));
-            }
-            return true;
-          }
-        }
-        return false;
       },
     },
     state: {

@@ -15,3 +15,10 @@ export default function getRuleNodeView(
     return rule.createChecked();
   }
 }
+
+export function createRuleNode(input: string, schema: Schema): PMNode[] {
+  const { rule } = schema.nodes;
+
+  const ruleNode = rule.createChecked();
+  return [ruleNode];
+}

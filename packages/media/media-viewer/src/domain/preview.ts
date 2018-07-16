@@ -14,9 +14,9 @@ export interface BackBoneModel {
 //
 // Since we are in the process of rewritting this component and deprecating MediaViewer Classic and this wrapper,
 // we judged there was not much of a point on dramatically refactoring both components.
-export const isPreviewGenerated = (MediaViewer: any) => (
-  file: BackBoneModel,
-): JQueryPromise<boolean> => {
+export const isPreviewGenerated = (MediaViewer: any) => (): JQueryPromise<
+  boolean
+> => {
   const deferred: JQueryDeferred<boolean> = MediaViewer.require(
     'wrappers/jquery',
   ).Deferred();

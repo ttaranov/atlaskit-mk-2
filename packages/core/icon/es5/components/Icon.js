@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.size = exports.IconWrapper = exports.spanStyles = undefined;
+exports.size = exports.IconWrapper = undefined;
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
@@ -41,8 +41,7 @@ var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiter
 
 var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
 
-var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n  ', ' color: ', ';\n  display: inline-block;\n  fill: ', ';\n  line-height: 1;\n\n  > svg {\n    ', ' max-height: 100%;\n    max-width: 100%;\n    overflow: hidden;\n    vertical-align: bottom;\n  }\n  /* Stop-color doesn\'t properly apply in chrome when the inherited/current color changes.\n   * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS\n   * rule) and then override it with currentColor for the color changes to be picked up.\n   */\n  stop {\n    stop-color: currentColor;\n  }\n'], ['\n  ', ' color: ', ';\n  display: inline-block;\n  fill: ', ';\n  line-height: 1;\n\n  > svg {\n    ', ' max-height: 100%;\n    max-width: 100%;\n    overflow: hidden;\n    vertical-align: bottom;\n  }\n  /* Stop-color doesn\'t properly apply in chrome when the inherited/current color changes.\n   * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS\n   * rule) and then override it with currentColor for the color changes to be picked up.\n   */\n  stop {\n    stop-color: currentColor;\n  }\n']),
-    _templateObject2 = (0, _taggedTemplateLiteral3.default)(['\n  ', ';\n'], ['\n  ', ';\n']);
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n  ', ' color: ', ';\n  display: inline-block;\n  fill: ', ';\n  flex-shrink: 0;\n  line-height: 1;\n\n  > svg {\n    ', ' max-height: 100%;\n    max-width: 100%;\n    overflow: hidden;\n    vertical-align: bottom;\n  }\n  /* Stop-color doesn\'t properly apply in chrome when the inherited/current color changes.\n   * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS\n   * rule) and then override it with currentColor for the color changes to be picked up.\n   */\n  stop {\n    stop-color: currentColor;\n  }\n'], ['\n  ', ' color: ', ';\n  display: inline-block;\n  fill: ', ';\n  flex-shrink: 0;\n  line-height: 1;\n\n  > svg {\n    ', ' max-height: 100%;\n    max-width: 100%;\n    overflow: hidden;\n    vertical-align: bottom;\n  }\n  /* Stop-color doesn\'t properly apply in chrome when the inherited/current color changes.\n   * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS\n   * rule) and then override it with currentColor for the color changes to be picked up.\n   */\n  stop {\n    stop-color: currentColor;\n  }\n']);
 
 var _react = require('react');
 
@@ -62,10 +61,6 @@ var _constants = require('../constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// NOTE: spanStyles is exported for testing
-// Once styled-components is bumped > 2.X.X we can enjoy `toHaveStyleRule` from
-// https://github.com/styled-components/jest-styled-components#tohavestylerule
-
 var getSize = function getSize(props) {
   if (props.size) {
     return 'height: ' + _constants.sizes[props.size] + '; width: ' + _constants.sizes[props.size] + ';';
@@ -73,13 +68,11 @@ var getSize = function getSize(props) {
   return null;
 };
 
-var spanStyles = exports.spanStyles = (0, _styledComponents.css)(_templateObject, getSize, function (p) {
+var IconWrapper = exports.IconWrapper = _styledComponents2.default.span(_templateObject, getSize, function (p) {
   return p.primaryColor || 'currentColor';
 }, function (p) {
   return p.secondaryColor || _theme.colors.background;
 }, getSize);
-
-var IconWrapper = exports.IconWrapper = _styledComponents2.default.span(_templateObject2, spanStyles);
 
 var Icon = function (_Component) {
   (0, _inherits3.default)(Icon, _Component);

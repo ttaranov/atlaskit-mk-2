@@ -11,14 +11,24 @@ import {
   akColorY50,
   akColorB50,
   akColorY400,
+  akColorR50,
+  akColorR400,
 } from '@atlaskit/util-shared-styles';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
+import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
+import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import styled from 'styled-components';
 
-export type PanelType = 'info' | 'note' | 'tip' | 'warning';
+export type PanelType =
+  | 'info'
+  | 'note'
+  | 'tip'
+  | 'success'
+  | 'warning'
+  | 'error';
 
 export interface Props {
   panelType: PanelType;
@@ -40,10 +50,20 @@ const config = {
     background: akColorG50,
     iconColor: akColorG400,
   },
+  success: {
+    icon: SuccessIcon,
+    background: akColorG50,
+    iconColor: akColorG400,
+  },
   warning: {
     icon: WarningIcon,
     background: akColorY50,
     iconColor: akColorY400,
+  },
+  error: {
+    icon: ErrorIcon,
+    background: akColorR50,
+    iconColor: akColorR400,
   },
 };
 

@@ -244,11 +244,13 @@ export class ConversationResource extends AbstractConversationResource {
     meta: any,
   ): Promise<Conversation> {
     const { dispatch } = this;
+    const isMain = !meta || Object.keys(meta).length === 0;
     const tempConversation = this.createConversation(
       localId,
       containerId,
       value,
       meta,
+      isMain,
     );
     let result: Conversation;
 
@@ -274,6 +276,7 @@ export class ConversationResource extends AbstractConversationResource {
                 adf: value,
               },
             },
+            isMain,
           }),
         },
       );
@@ -467,6 +470,7 @@ export class ConversationResource extends AbstractConversationResource {
     containerId: string,
     value: any,
     meta: any,
+    isMain?: boolean,
   ): Conversation {
     return {
       localId,
@@ -474,6 +478,7 @@ export class ConversationResource extends AbstractConversationResource {
       meta,
       conversationId: localId,
       comments: [this.createComment(localId, localId, value)],
+      isMain,
     };
   }
 
@@ -483,8 +488,11 @@ export class ConversationResource extends AbstractConversationResource {
     doc: any,
     localId: string = <string>uuid.generate(),
   ): Comment {
+    const { store } = this;
+    const state = store.getState();
+
     return {
-      createdBy: this.config.user!,
+      createdBy: state!.user || { id: 'unknown' },
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),
       document: {

@@ -52,9 +52,9 @@ export default class MediaImageLoader {
         this.pendingRequests.delete(url);
         return result;
       })
-      .catch((result: string) => {
+      .catch(error => {
         this.pendingRequests.delete(url);
-        return result;
+        throw error;
       });
 
     this.pendingRequests.set(url, pending);

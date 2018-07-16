@@ -28,6 +28,29 @@ const getPlaceholderColor = css`
   color: ${colors.placeholderText};
 `;
 
+// Safari puts on some difficult to remove styles, mainly for disabled inputs
+// but we want full control so need to override them in all cases
+const overrideSafariDisabledStyles = `
+  -webkit-text-fill-color: unset;
+  -webkit-opacity: 1;
+`;
+
+const getMinimumRowsHeight = ({ minimumRows }) =>
+  `min-height: ${20 * minimumRows}px;`;
+
+const getResizeStyles = ({ enableResize }) => {
+  if (!enableResize) {
+    return `resize: none;`;
+  }
+  if (enableResize === 'horizontal') {
+    return `resize: horizontal;`;
+  }
+  if (enableResize === 'vertical') {
+    return `resize: vertical;`;
+  }
+  return null;
+};
+
 const TextArea = styled.textarea`
   background: transparent;
   padding: 0;
@@ -36,25 +59,26 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
+  font-family: inherit;
   font-size: ${fontSize}px;
   line-height: ${20 / fontSize()};
   outline: none;
   width: 100%;
-  ${({ minimumRows }) =>
-    css`
-      min-height: ${20 * minimumRows}px;
-    `} ${({ enableResize }) =>
-      enableResize
-        ? ''
-        : css`
-            resize: none;
-          `} &::-ms-clear {
+
+  [disabled] {
+    ${overrideSafariDisabledStyles};
+  }
+
+  ${getMinimumRowsHeight} ${getResizeStyles}
+
+  &::-ms-clear {
     display: none;
   }
 
   &:invalid {
     box-shadow: none;
   }
+
   ${getPlaceholderStyle(getPlaceholderColor)};
 `;
 

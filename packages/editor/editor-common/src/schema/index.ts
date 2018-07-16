@@ -16,6 +16,7 @@ export {
   default as createJIRASchema,
   isSchemaWithLists,
   isSchemaWithMentions,
+  isSchemaWithEmojis,
   isSchemaWithLinks,
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,

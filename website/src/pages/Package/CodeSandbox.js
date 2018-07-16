@@ -36,6 +36,24 @@ document.getElementById('root')
   },
 });
 
+/*
+  The css packs use loaders, which are not needed in prod. This is incredibly not
+  ideal. This handles these to create valid sandboxes.
+
+  We only apply this creative solution because these examples are not recommended
+  usages in any case.
+*/
+const cssLoaderExceptions = (pkgJSONName, groupId, packageId) => [
+  ['!!style-loader!css-loader!../src/bundle.css', pkgJSONName],
+  [`packages/${groupId}/${packageId}/src/index.less`, pkgJSONName],
+  [
+    '!!raw-loader!../src/icons-sprite.svg',
+    `${pkgJSONName}/dist/icons-sprite.svg`,
+  ],
+];
+
+const tsMatch = /.+(\.ts|\.tsx)/;
+
 export default class CodeSandbox extends Component<{}, {}> {
   state = { parameters: '' };
 
@@ -48,6 +66,7 @@ export default class CodeSandbox extends Component<{}, {}> {
       loadingButton,
       packageId,
       pkgJSON,
+      afterDeployError,
     } = this.props;
 
     const name = example.id
@@ -55,11 +74,14 @@ export default class CodeSandbox extends Component<{}, {}> {
       .slice(0, -1)
       .join('-');
 
+    if (tsMatch.test(example.id)) return null;
+
     return (
       <CodeSandboxer
         examplePath={getExamplePath(groupId, packageId, example.id)}
         pkgJSON={pkgJSON}
         name={`${pkgJSON.name}-${name}`}
+        afterDeployError={afterDeployError}
         gitInfo={{
           account: 'atlassian',
           repository: 'atlaskit-mk-2',
@@ -69,14 +91,22 @@ export default class CodeSandbox extends Component<{}, {}> {
         importReplacements={[
           [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
           ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
+          ...cssLoaderExceptions(pkgJSON.name, groupId, packageId),
         ]}
         dependencies={{
           '@atlaskit/css-reset': 'latest',
+          'styled-components':
+            pkgJSON.peerDependencies &&
+            pkgJSON.peerDependencies['styled-components']
+              ? pkgJSON.peerDependencies['styled-components']
+              : 'latest',
           [pkgJSON.name]: pkgJSON.version,
         }}
         providedFiles={baseFiles(groupId, packageId, example.id)}
       >
-        {({ isLoading }) => (isLoading ? loadingButton() : deployButton({}))}
+        {({ isLoading, error }) =>
+          isLoading ? loadingButton() : deployButton({ error })
+        }
       </CodeSandboxer>
     );
   }

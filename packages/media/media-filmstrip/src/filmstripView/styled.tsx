@@ -55,20 +55,6 @@ export const FilmStripListItem: ComponentClass<
   vertical-align: middle;
   /* Fixes issue with child Cards using inline-block */
   font-size: 0;
-
-  &:first-child {
-    /* align the first card flush with the left edge (the editor adds their own padding) */
-    padding-left: 0;
-  }
-
-  &:last-child {
-    /*
-      align the last card flush with the right edge (the editor adds their own padding) - but we
-      need 2px in-order to show the media-card card shadow (which means we add extra padding for
-      all other element)
-    */
-    padding-right: 2px;
-  }
 `;
 
 export const ArrowWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`

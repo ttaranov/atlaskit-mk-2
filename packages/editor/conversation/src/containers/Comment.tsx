@@ -19,7 +19,8 @@ const mapStateToProps = (state: State, ownProps: Props) => {
     ownProps.comment.commentId,
   );
 
-  const isHighlighted = getHighlighted(state) === ownProps.comment.commentId;
+  const isHighlighted =
+    getHighlighted(state) === ownProps.comment.commentId.toString();
 
   return {
     ...ownProps,

@@ -1,80 +1,167 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
+import { selectRow } from 'prosemirror-utils';
+import { browser } from '@atlaskit/editor-common';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
+import NumberColumn from './NumberColumn';
 import { Container } from './styles';
-import { Command } from '../../../../types';
+import { isSelectionUpdated } from './utils';
+import {
+  resetHoverSelection,
+  hoverRows,
+  insertRow,
+  deleteSelectedRows,
+} from '../../actions';
 
 export interface State {
-  scroll: number;
+  dangerRows: number[];
+  hoveredRows: number[];
 }
 
 export interface Props {
   editorView: EditorView;
-  tableElement?: HTMLElement;
+  selection?: Selection;
+  tableRef?: HTMLElement;
+  tableActive?: boolean;
   isTableHovered?: boolean;
-  resetHoverSelection?: Command;
-  hoverTable?: Command;
-  hoverRow?: (row: number) => Command;
-  hoverColumn?: (column: number) => Command;
-  insertColumn?: (column: number) => Command;
-  insertRow?: (row: number) => Command;
+  isTableInDanger?: boolean;
+  isHeaderColumnEnabled?: boolean;
+  isHeaderRowEnabled?: boolean;
+  isNumberColumnEnabled?: boolean;
+  hasHeaderRow?: boolean;
+  tableHeight?: number;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
   state: State = {
-    scroll: 0,
+    dangerRows: [],
+    hoveredRows: [],
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const {
+      tableRef,
+      isTableHovered,
+      isTableInDanger,
+      isHeaderRowEnabled,
+      isHeaderColumnEnabled,
+      isNumberColumnEnabled,
+      selection,
+      tableHeight,
+    } = this.props;
+    return (
+      tableRef !== nextProps.tableRef ||
+      tableHeight !== nextProps.tableHeight ||
+      isTableHovered !== nextProps.isTableHovered ||
+      isTableInDanger !== nextProps.isTableInDanger ||
+      this.state.dangerRows !== nextState.dangerRows ||
+      this.state.hoveredRows !== nextState.hoveredRows ||
+      isHeaderRowEnabled !== nextProps.isHeaderRowEnabled ||
+      isHeaderColumnEnabled !== nextProps.isHeaderColumnEnabled ||
+      isNumberColumnEnabled !== nextProps.isNumberColumnEnabled ||
+      isSelectionUpdated(selection, nextProps.selection)
+    );
+  }
 
   render() {
     const {
       editorView,
-      hoverRow,
-      resetHoverSelection,
-      tableElement,
-      insertColumn,
-      insertRow,
-      hoverTable,
+      tableRef,
       isTableHovered,
+      isTableInDanger,
+      isNumberColumnEnabled,
+      isHeaderColumnEnabled,
+      isHeaderRowEnabled,
+      tableActive,
+      hasHeaderRow,
     } = this.props;
 
-    if (!tableElement) {
+    if (!tableRef) {
       return null;
     }
 
     return (
       <Container onMouseDown={this.handleMouseDown}>
+        {isNumberColumnEnabled ? (
+          <NumberColumn
+            state={editorView.state}
+            hoverRows={this.hoverRows}
+            resetHoverSelection={this.resetHoverSelection}
+            tableRef={tableRef}
+            tableActive={tableActive}
+            dangerRows={this.state.dangerRows}
+            hoveredRows={this.state.hoveredRows}
+            hasHeaderRow={hasHeaderRow}
+            isTableHovered={isTableHovered}
+            isTableInDanger={isTableInDanger}
+            selectRow={this.selectRow}
+          />
+        ) : null}
         <CornerControls
           editorView={editorView}
-          tableElement={tableElement}
-          insertColumn={insertColumn!}
-          insertRow={insertRow!}
-          hoverTable={hoverTable!}
-          resetHoverSelection={resetHoverSelection!}
-          updateScroll={this.updateScroll}
-          scroll={this.state.scroll}
+          selection={editorView.state.selection}
+          tableRef={tableRef}
+          resetHoverSelection={this.resetHoverSelection}
+          isTableInDanger={isTableInDanger}
+          isHeaderColumnEnabled={isHeaderColumnEnabled}
+          isHeaderRowEnabled={isHeaderRowEnabled}
+          isNumberColumnEnabled={isNumberColumnEnabled}
         />
         <RowControls
           editorView={editorView}
-          tableElement={tableElement}
+          tableRef={tableRef}
           isTableHovered={isTableHovered!}
-          insertRow={insertRow!}
-          hoverRow={hoverRow!}
-          resetHoverSelection={resetHoverSelection!}
-          updateScroll={this.updateScroll}
-          scroll={this.state.scroll}
+          deleteSelectedRows={this.deleteSelectedRows}
+          hoverRows={this.hoverRows}
+          dangerRows={this.state.dangerRows}
+          hoveredRows={this.state.hoveredRows}
+          resetHoverSelection={this.resetHoverSelection}
+          isTableInDanger={isTableInDanger}
+          selectRow={this.selectRow}
+          insertRow={this.insertRow}
         />
       </Container>
     );
   }
 
-  handleMouseDown = event => {
-    event.preventDefault();
+  private resetHoverSelection = () => {
+    const { state, dispatch } = this.props.editorView;
+    this.setState({ dangerRows: [], hoveredRows: [] });
+    resetHoverSelection(state, dispatch);
   };
 
-  updateScroll = () => {
-    const { parentElement } = this.props.tableElement!;
-    this.setState({ scroll: parentElement!.scrollLeft });
+  private selectRow = (row: number) => {
+    const { editorView } = this.props;
+    const { state, dispatch } = editorView;
+    // fix for issue ED-4665
+    if (browser.ie_version === 11) {
+      (editorView.dom as HTMLElement).blur();
+    }
+    dispatch(selectRow(row)(state.tr));
+    this.resetHoverSelection();
+  };
+
+  private insertRow = (row: number) => {
+    const { state, dispatch } = this.props.editorView;
+    insertRow(row)(state, dispatch);
+  };
+
+  private hoverRows = (rows, danger) => {
+    this.setState({ dangerRows: danger ? rows : [], hoveredRows: rows });
+    const { state, dispatch } = this.props.editorView;
+    hoverRows(rows, danger)(state, dispatch);
+  };
+
+  private deleteSelectedRows = () => {
+    const { state, dispatch } = this.props.editorView;
+    deleteSelectedRows(state, dispatch);
+    this.resetHoverSelection();
+  };
+
+  private handleMouseDown = event => {
+    event.preventDefault();
   };
 }

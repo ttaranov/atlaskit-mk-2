@@ -5,7 +5,6 @@ import { EditorView } from 'prosemirror-view';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
-import AttachmentIcon from '@atlaskit/icon/glyph/editor/attachment';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
@@ -40,11 +39,12 @@ import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
 import { MacroProvider } from '../../../macro/types';
-import tableCommands from '../../../table/commands';
+import { createTable } from '../../../table/actions';
 import { insertDate, openDatePicker } from '../../../date/actions';
 import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/actions';
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
+import { insertLayoutColumns } from '../../../layout/actions';
 
 export interface Props {
   buttons: number;
@@ -52,8 +52,6 @@ export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
-  tableActive?: boolean;
-  tableHidden?: boolean;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
   mentionsSupported?: boolean;
@@ -66,6 +64,7 @@ export interface Props {
   dateEnabled?: boolean;
   horizontalRuleEnabled?: boolean;
   placeholderTextEnabled?: boolean;
+  layoutSectionEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -251,6 +250,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
             disabled={isDisabled || btn.isDisabled}
             iconBefore={btn.elemBefore}
             selected={btn.isActive}
+            title={btn.content}
             onClick={() => this.onItemActivated({ item: btn })}
           />
         ))}
@@ -281,8 +281,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
 
   private createItems = () => {
     const {
-      tableHidden,
-      tableActive,
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
@@ -300,6 +298,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       dateEnabled,
       placeholderTextEnabled,
       horizontalRuleEnabled,
+      layoutSectionEnabled,
     } = this.props;
     let items: any[] = [];
 
@@ -319,7 +318,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         value: { name: 'media' },
         tooltipDescription: 'Files and Images',
         tooltipPosition: 'right',
-        elemBefore: <AttachmentIcon label="Insert files and images" />,
+        elemBefore: <EditorImageIcon label="Insert files and images" />,
       });
     }
     if (imageUploadSupported) {
@@ -357,8 +356,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       items.push({
         content: 'Table',
         value: { name: 'table' },
-        isDisabled: tableHidden,
-        isActive: tableActive,
         tooltipDescription: tooltip(toggleTable),
         tooltipPosition: 'right',
         elemBefore: <TableIcon label="Insert table" />,
@@ -410,6 +407,16 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       });
     }
 
+    if (layoutSectionEnabled) {
+      items.push({
+        content: 'Columns',
+        value: { name: 'layout' },
+        tooltipDescription: 'Insert columns',
+        tooltipPosition: 'right',
+        elemBefore: <PlaceholderTextIcon label="Insert columns" />,
+      });
+    }
+
     if (insertMenuItems) {
       items = items.concat(insertMenuItems);
       // keeping this here for backwards compatibility so confluence
@@ -444,7 +451,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   @analyticsDecorator('atlassian.editor.format.table.button')
   private createTable = (): boolean => {
     const { editorView } = this.props;
-    tableCommands.createTable()(editorView.state, editorView.dispatch);
+    createTable(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -463,6 +470,13 @@ export default class ToolbarInsertBlock extends React.PureComponent<
   private createPlaceholderText = (): boolean => {
     const { editorView } = this.props;
     showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+    return true;
+  };
+
+  @analyticsDecorator('atlassian.editor.format.layout.button')
+  private insertLayoutColumns = (): boolean => {
+    const { editorView } = this.props;
+    insertLayoutColumns(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -547,6 +561,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       case 'placeholder text':
         this.createPlaceholderText();
         break;
+      case 'layout':
+        this.insertLayoutColumns();
+        break;
       default:
         if (item && item.onClick) {
           item.onClick(editorActions);
@@ -554,5 +571,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         }
     }
     this.setState({ isOpen: false });
+    if (!editorView.hasFocus()) {
+      editorView.focus();
+    }
   };
 }

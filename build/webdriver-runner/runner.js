@@ -1,11 +1,25 @@
 'use strict';
-//@flow
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 300e3;
+// @flow
+
+/*
+* Setup webdriver clients depending on environment on which the test is run against.
+* BrowserTestCase is customized wrapper over jest-test-runner handling test setup, execution and 
+* teardown for webdriver tests .
+*/
+
+// increase default jasmine timeout not to fail on webdriver tests as tests run can
+// take a while depending on the number of threads executing.
+
+// increase this time out to handle queuing on browserstack
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
+
 const webdriverio = require('webdriverio');
+
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT
   : process.env.USER;
 let clients /*: Array<?Object>*/ = [];
+let skipForBrowser /*:?Object */ = {};
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
@@ -17,10 +31,12 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeEach(async function() {
+    beforeAll(async function() {
       for (let client of clients) {
         if (client) {
-          const browserName = client.driver.desiredCapabilities.browserName;
+          const browserName /*: string */ =
+            client.driver.desiredCapabilities.browserName;
+
           if (skipForBrowser && skipForBrowser[browserName]) {
             if (client.isReady) {
               client.isReady = false;
@@ -104,9 +120,6 @@ function setLocalClients() {
         args: ['--headless', '--disable-gpu'],
       },
     },
-    safari: {
-      browserName: 'safari',
-    },
     firefox: {
       browserName: 'firefox',
       'moz:firefoxOptions': {
@@ -127,30 +140,35 @@ function setBrowserStackClients() {
   const launchers = {
     chrome: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'Chrome',
-      browser_version: '64.0',
+      browser_version: '65.0',
       resolution: '1440x900',
     },
     firefox: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'firefox',
-      browser_version: '58',
+      browser_version: '60',
       resolution: '1440x900',
     },
     ie: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'ie',
       browser_version: '11',
       resolution: '1440x900',
     },
     safari: {
       os: 'OS X',
+      os_version: 'High Sierra',
       browserName: 'safari',
-      browser_version: '10.1',
+      browser_version: '11.0',
       resolution: '1920x1080',
     },
     edge: {
       os: 'Windows',
+      os_version: '10',
       browserName: 'edge',
       browser_version: '16',
       resolution: '1440x900',
@@ -159,22 +177,23 @@ function setBrowserStackClients() {
 
   let clis = [];
   if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
   }
 
   Object.keys(launchers).forEach(key => {
     const option = {
       desiredCapabilities: {
         os: launchers[key].os,
+        os_version: launchers[key].os_version,
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
-        project: 'Atlaskit MK2',
         build: process.env.BITBUCKET_BRANCH,
-        'browserstack.local': true,
-        'browserstack.debug': true,
-        'browserstack.idleTimeout': 300,
-        'browserstack.localIdentifier': commit,
         project: 'Atlaskit MK-2 Webdriver Tests',
+        'browserstack.debug': true,
+        'browserstack.video': false, // Put it to false to experiment the impact on the test runs
+        'browserstack.idleTimeout': 60,
+        'browserstack.local': true,
+        'browserstack.localIdentifier': commit,
       },
       host: 'hub.browserstack.com',
       port: 80,

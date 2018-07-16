@@ -1,12 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { themed, colors } from '@atlaskit/theme';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import { HiddenInput, IconWrapper, Label, Wrapper } from './styled/Radio';
 import type { RadioBasePropTypes } from './types';
-
-const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
-const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
 type State = {
   isHovered: boolean,
@@ -41,45 +37,6 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
   onMouseEnter = () => this.setState({ isHovered: true });
   onMouseUp = () => this.setState({ isActive: false, mouseIsDown: false });
   onMouseDown = () => this.setState({ isActive: true, mouseIsDown: true });
-
-  // The secondary color represents the inner circle
-  getSecondaryColor = (): string => {
-    const { isSelected, isDisabled, ...rest } = this.props;
-    const { isActive } = this.state;
-
-    let color = themed({ light: colors.N0, dark: colors.DN10 });
-
-    if (isDisabled && isSelected) {
-      color = themed({ light: colors.N70, dark: colors.DN10 });
-    } else if (isActive && isSelected && !isDisabled) {
-      color = themed({ light: colors.B400, dark: colors.DN10 });
-    } else if (!isSelected) {
-      color = transparent;
-    }
-    // $FlowFixMe TEMPORARY
-    return color(rest);
-  };
-  // The secondary color represents the outer circle
-  getPrimaryColor = (): string => {
-    const { isSelected, isDisabled, ...rest } = this.props;
-    const { isHovered, isActive } = this.state;
-    let color = backgroundColor;
-    if (isDisabled && isSelected) {
-      color = themed({ light: colors.B75, dark: colors.DN200 });
-    } else if (isDisabled) {
-      color = themed({ light: colors.N20A, dark: colors.DN10 });
-    } else if (isActive) {
-      color = themed({ light: colors.B75, dark: colors.B200 });
-    } else if (isHovered && isSelected) {
-      color = themed({ light: colors.B300, dark: colors.B75 });
-    } else if (isHovered) {
-      color = themed({ light: colors.N50A, dark: colors.DN30 });
-    } else if (isSelected) {
-      color = colors.blue;
-    }
-    // $FlowFixMe TEMPORARY
-    return color(rest);
-  };
 
   render() {
     const {
@@ -121,9 +78,11 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
             isHovered={isHovered}
           >
             <RadioIcon
-              primaryColor={this.getPrimaryColor()}
-              secondaryColor={this.getSecondaryColor()}
-              label="radioIcon"
+              primaryColor="inherit"
+              secondaryColor="inherit"
+              isHovered={this.state.isHovered}
+              isActive={this.state.isActive}
+              label=""
             />
           </IconWrapper>
           <span>{children}</span>

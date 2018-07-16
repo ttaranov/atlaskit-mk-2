@@ -1,6 +1,7 @@
 // @flow
 
 import React, { type Node } from 'react';
+import { toClass } from 'recompose';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
@@ -19,7 +20,7 @@ type RouterLinkProps = {
 };
 
 const SubNavWrapper = styled.div`
-  padding: 0 0 0 ${() => gridSize() * 2}px;
+  padding: 0 0 0 ${() => gridSize() * 4}px;
 `;
 
 export function isSubNavExpanded(to: string, pathname: string): boolean {
@@ -63,14 +64,14 @@ const RouterLink = ({
 export const RouterNavigationItem = (props: any) => {
   return (
     <AkNavigationItem
-      linkComponent={linkProps => (
+      linkComponent={toClass(linkProps => (
         <RouterLink
           onClick={props.onClick}
           pathname={props.pathname}
           subNav={props.subNav}
           {...linkProps}
         />
-      )}
+      ))}
       {...props}
     />
   );

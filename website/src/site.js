@@ -4,9 +4,7 @@ import type { Directory } from './types';
 // SITE_DATA is dynamically generated at runtime by bolt-fs-loader.
 // Configuration for bolt-fs-loader is in webpack.config.js since it needs to be dynamically created
 // depending on the subset of packages we want to represent on the website.
-// $FlowFixMe
 import data from './SITE_DATA';
-// $FlowFixMe
 import NAV_DATA from './NAV_DATA';
 import * as fs from './utils/fs';
 
@@ -35,7 +33,8 @@ const packageDirs: Directory = fs.getById(dirs, 'packages');
 
 for (const child of fs.getDirectories(packageDirs.children)) {
   const children = child.children.filter(pkg => !isInternal(child.id, pkg.id));
-  publicPackages.children.push(Object.assign({}, child, { children }));
+  if (children.length > 0)
+    publicPackages.children.push(Object.assign({}, child, { children }));
 }
 
 export const getConfig = (groupId: string, pkgId: string) => {

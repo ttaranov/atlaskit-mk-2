@@ -196,4 +196,31 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
     ).to.equal('This is the original content');
     extension.unmount();
   });
+
+  it('extension handler should receive type = bodiedExtension', () => {
+    const extensionHandler = jest.fn();
+    const extensionHandlers: ExtensionHandlers = {
+      'com.atlassian.fabric': extensionHandler,
+    };
+
+    const extension = mount(
+      <BodiedExtension
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="com.atlassian.fabric"
+        extensionKey="react"
+      />,
+    );
+
+    expect(extensionHandler.mock.calls[0][0]).to.eql({
+      type: 'bodiedExtension',
+      extensionType: 'com.atlassian.fabric',
+      extensionKey: 'react',
+      parameters: undefined,
+      content: undefined,
+    });
+
+    extension.unmount();
+  });
 });

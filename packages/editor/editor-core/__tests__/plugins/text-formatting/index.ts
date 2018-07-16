@@ -18,20 +18,36 @@ import {
   TextFormattingState,
   stateKey as textFormattingPluginKey,
 } from '../../../src/plugins/text-formatting/pm-plugins/main';
-import mentionsPlugin from '../../../src/plugins/mentions';
-import codeBlockPlugin from '../../../src/plugins/code-block';
 
 describe('text-formatting', () => {
   let trackEvent;
   const editor = (doc: any) =>
     createEditor<TextFormattingState>({
       doc,
-      editorPlugins: [mentionsPlugin, codeBlockPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
+        allowCodeBlocks: true,
+        mentionProvider: new Promise(() => {}),
       },
       pluginKey: textFormattingPluginKey,
     });
+
+  describe('plugin', () => {
+    it('should disable smart autocompletion if option given', () => {
+      const { editorView, sel } = createEditor({
+        doc: doc(p('{<>}')),
+        editorProps: { textFormatting: { disableSmartTextCompletion: true } },
+      });
+      insertText(editorView, '-- ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('-- ')));
+    });
+
+    it('should enable smart autocompletion by default', () => {
+      const { editorView, sel } = createEditor({ doc: doc(p('{<>}')) });
+      insertText(editorView, '-- ', sel);
+      expect(editorView.state.doc).toEqualDocument(doc(p('– ')));
+    });
+  });
 
   describe('keymap', () => {
     beforeEach(() => {
@@ -221,6 +237,60 @@ describe('text-formatting', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(pluginState);
+  });
+
+  describe('code', () => {
+    it('should be able to toggle code on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleCode(editorView));
+      expect(editorView.state.doc).toEqualDocument(doc(p(code('t'), 'ext')));
+      expect(pluginState.toggleCode(editorView));
+      expect(editorView.state.doc).toEqualDocument(doc(p('text')));
+    });
+
+    it('should expose whether code is active on an empty selection', () => {
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+
+      expect(pluginState.codeActive).toBe(false);
+      expect(pluginState.toggleCode(editorView));
+      expect(pluginState.codeActive).toBe(true);
+    });
+
+    it('should expose whether code is active on a text selection', () => {
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
+
+      expect(pluginState.codeActive).toBe(false);
+      expect(pluginState.toggleCode(editorView));
+      expect(pluginState.codeActive).toBe(true);
+    });
+
+    it('exposes code as disabled when the mark cannot be applied', () => {
+      const { pluginState } = editor(doc(code_block()('te{<>}xt')));
+
+      expect(pluginState.codeDisabled).toBe(true);
+    });
+
+    it('exposes code as not disabled when the mark can be applied', () => {
+      const { pluginState } = editor(doc(p('te{<>}xt')));
+
+      expect(pluginState.codeDisabled).toBe(false);
+    });
+
+    it('should convert smart characters to normal ascii', () => {
+      const { editorView, pluginState } = editor(
+        doc(p('{<}… → ← – “ ” ‘ ’{>}')),
+      );
+
+      expect(pluginState.toggleCode(editorView));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(code('... -> <- -- " " \' \''))),
+      );
+      expect(pluginState.toggleCode(editorView));
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('... -> <- -- " " \' \'')),
+      );
+    });
   });
 
   describe('em', () => {

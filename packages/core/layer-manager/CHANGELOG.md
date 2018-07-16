@@ -1,5 +1,113 @@
 # @atlaskit/layer-manager
 
+## 5.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/onboarding@5.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/onboarding@5.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 4.3.1
+- [patch] Replaces implementation of ScrollLock with [react-scrolllock](https://github.com/jossmac/react-scrolllock). Deprecates ScrollLock export in @atlaskit/layer-manager. [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
+- [none] Updated dependencies [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
+  - @atlaskit/onboarding@4.1.4
+  - @atlaskit/modal-dialog@5.2.4
+
+## 4.3.0
+- [minor] Adds autoFocus prop to FocusLock. Fixes scrolling bug in onboarding. [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
+- [none] Updated dependencies [c9d606b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9d606b)
+  - @atlaskit/onboarding@4.1.3
+
+## 4.2.1
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/tooltip@10.2.1
+  - @atlaskit/modal-dialog@5.2.2
+  - @atlaskit/onboarding@4.1.2
+  - @atlaskit/button@8.1.2
+  - @atlaskit/icon@12.1.2
+
+## 4.2.0
+- [minor] Deprecates the ability to pass a function to the autoFocus prop. Changes implementation of FocusLock to use [react-focus-lock](https://github.com/theKashey/react-focus-lock). [5b1ab0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ab0b)
+- [minor] Deprecates ability to pass function to autoFocus prop in FocusLock. Implementation of FocusLock based on react-focus-lock. [de9690b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de9690b)
+- [none] Updated dependencies [5b1ab0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1ab0b)
+  - @atlaskit/modal-dialog@5.2.0
+- [none] Updated dependencies [de9690b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de9690b)
+  - @atlaskit/modal-dialog@5.2.0
+
+## 4.1.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/onboarding@4.1.1
+  - @atlaskit/modal-dialog@5.1.1
+  - @atlaskit/icon@12.1.1
+  - @atlaskit/analytics-next@2.1.8
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
+## 4.1.0
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/modal-dialog@5.1.0
+  - @atlaskit/onboarding@4.1.0
+  - @atlaskit/tooltip@10.2.0
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/analytics-next@2.1.7
+  - @atlaskit/button@8.1.0
+
+## 4.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/tooltip@10.0.1
+  - @atlaskit/onboarding@4.0.1
+  - @atlaskit/modal-dialog@5.0.1
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/analytics-next@2.1.5
+  - @atlaskit/button@8.0.1
+  - @atlaskit/docs@4.0.1
+
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/tooltip@10.0.0
+  - @atlaskit/onboarding@4.0.0
+  - @atlaskit/modal-dialog@5.0.0
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/analytics-next@2.1.4
+  - @atlaskit/button@8.0.0
+  - @atlaskit/docs@4.0.0
+
+## 3.0.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/tooltip@9.2.1
+  - @atlaskit/onboarding@3.1.3
+  - @atlaskit/modal-dialog@4.0.5
+  - @atlaskit/analytics-next@2.1.1
+  - @atlaskit/button@7.2.5
+  - @atlaskit/docs@3.0.4
+
+## 3.0.3
+- [patch] Fix race condition in layer manager's portal where portalled contents would still display after unmounting if they were quickly mounted and then unmounted [23ef141](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23ef141)
+
+## 3.0.2
+- [patch] support new property "targetNode" on spotlight component [48397b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48397b6)
+
 ## 3.0.1
 - [patch] AK-4416 changes meaning of autofocus prop values [c831a3d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c831a3d)
 
@@ -51,20 +159,9 @@
 ## 2.5.5
 - [patch] AK-4064 ensure unmountComponentAtNode is called for components rendered via ReactDOM.render [e3153c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3153c3)
 
-## 2.5.4
-
-## 2.5.3
-
-## 2.5.2
-
-## 2.5.1
-
 ## 2.5.0
 - [minor] support context via HOC from layer-manager [333a8de](333a8de)
 
-## 2.4.1
-
 ## 2.4.0 (2017-11-14)
-
 * add flow types
 * feature; add support for flags ([a451a73](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a451a73))

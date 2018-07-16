@@ -18,6 +18,7 @@ export {
   default as AkNavigationItem,
 } from './components/ResultItem/ResultItem';
 export { default as AkQuickSearch } from './components/QuickSearch';
+export { default as AkSearch } from './components/Search/Search';
 export { resultTypes as quickSearchResultTypes };
 
 // API v1 Exports:

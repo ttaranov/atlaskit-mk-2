@@ -1,16 +1,117 @@
 import { toolbarSize } from './styles';
+import { EditorState, Selection } from 'prosemirror-state';
+import {
+  isRowSelected,
+  isColumnSelected,
+  isCellSelection,
+} from 'prosemirror-utils';
+import { checkIfNumberColumnEnabled } from '../../utils';
 
 const TABLE_PADDING = 10;
 
 export const getLineMarkerWidth = (
-  tableElement: HTMLElement,
+  tableRef: HTMLElement,
   scroll: number,
 ): number => {
-  const { parentElement, offsetWidth } = tableElement;
+  const { parentElement, offsetWidth } = tableRef;
   const diff = offsetWidth - parentElement!.offsetWidth;
   const scrollDiff = scroll - diff > 0 ? scroll - diff : 0;
+
+  const wrapper = parentElement!.parentElement!;
+  const paddingString = getComputedStyle(wrapper).paddingLeft;
+  const wrapperPadding =
+    paddingString !== null
+      ? Number(paddingString.substr(0, paddingString.length - 2))
+      : 0;
+
   return Math.min(
-    offsetWidth + toolbarSize,
-    parentElement!.offsetWidth + TABLE_PADDING - scrollDiff,
+    offsetWidth + toolbarSize + wrapperPadding,
+    parentElement!.offsetWidth + TABLE_PADDING + wrapperPadding - scrollDiff,
   );
 };
+
+export type TableSelection = {
+  startIdx: number | null;
+  endIdx: number | null;
+  count: number;
+  hasMultipleSelection: boolean;
+  inSelection: (idx: number) => boolean;
+  frontOfSelection: (idx: number) => boolean;
+};
+
+// collect a range of selected rows, to figure out where to draw the delete button
+// and hide the insert row buttons between
+//
+// assumes only a single contiguous range of rows can be selected
+const findTableSelection = <T extends Element>(
+  state: EditorState,
+  elems: NodeListOf<T> | HTMLCollection,
+  isTableObjSelected: (idx: number) => (sel: Selection) => boolean,
+  ignoreNumberColumn: boolean,
+): TableSelection => {
+  let startIdx: number | null = null;
+  let endIdx: number | null = null;
+  const inSelection = idx => {
+    if (startIdx === null) {
+      return false;
+    }
+
+    return idx >= startIdx! && idx <= endIdx!;
+  };
+
+  const frontOfSelection = idx => {
+    if (startIdx === null) {
+      return false;
+    }
+
+    return idx >= startIdx! && idx < endIdx!;
+  };
+
+  for (
+    let i = ignoreNumberColumn && checkIfNumberColumnEnabled(state) ? 1 : 0,
+      len = elems.length;
+    i < len;
+    i++
+  ) {
+    if (isTableObjSelected(i)(state.selection)) {
+      if (startIdx === null) {
+        startIdx = i;
+      }
+    } else if (startIdx !== null && endIdx === null) {
+      endIdx = i - 1;
+    }
+  }
+
+  if (startIdx !== null && endIdx === null) {
+    endIdx = elems.length - 1;
+  }
+
+  return {
+    startIdx,
+    endIdx,
+    count: startIdx === null ? 0 : endIdx! - startIdx + 1,
+    hasMultipleSelection: startIdx !== null && startIdx !== endIdx,
+    inSelection,
+    frontOfSelection,
+  };
+};
+
+export const findRowSelection = (
+  state: EditorState,
+  elems: NodeListOf<HTMLTableRowElement>,
+) => {
+  return findTableSelection(state, elems, isRowSelected, false);
+};
+
+export const findColumnSelection = (
+  state: EditorState,
+  elems: HTMLCollection,
+) => {
+  return findTableSelection(state, elems, isColumnSelected, false);
+};
+
+export const isSelectionUpdated = (oldSelection, newSelection) =>
+  isCellSelection(oldSelection!) !== isCellSelection(newSelection) ||
+  (isCellSelection(oldSelection!) &&
+    isCellSelection(newSelection) &&
+    oldSelection!.ranges !== newSelection.ranges);

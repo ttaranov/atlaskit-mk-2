@@ -53,7 +53,7 @@ export type State = {
 export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
     hasJquery: false,
-    isExpanded: false,
+    isExpanded: true,
   };
 
   componentDidMount() {
@@ -85,6 +85,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
             )}
           />
           <ToolsDrawer
+            imageUploadProvider="resolved"
             renderEditor={({
               mentionProvider,
               emojiProvider,
@@ -107,7 +108,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     analyticsHandler={analyticsHandler}
                     allowCodeBlocks={true}
                     allowLists={true}
-                    allowMentions={true}
                     allowTables={{
                       isHeaderRowRequired: true,
                     }}
@@ -124,6 +124,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
+                    quickInsert={true}
                     primaryToolbarComponents={[
                       <ToolbarFeedback
                         packageVersion={version}

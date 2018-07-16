@@ -6,9 +6,17 @@ import {
   MentionsState,
   TextFormattingState,
   EditorActions,
+  CustomMediaPicker,
+  BlockTypeState,
+  ListsState,
+  indentList,
+  outdentList,
+  toggleOrderedList,
+  toggleBulletList,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
+import { rejectPromise, resolvePromise } from '../cross-platform-promise';
 
 export default class WebBridgeImpl implements NativeToWebBridge {
   textFormattingPluginState: TextFormattingState | null = null;
@@ -16,6 +24,9 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   editorView: EditorView | null = null;
   transformer: JSONTransformer = new JSONTransformer();
   editorActions: EditorActions = new EditorActions();
+  mediaPicker: CustomMediaPicker | undefined;
+  blockState: BlockTypeState | undefined;
+  listState: ListsState | undefined;
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -90,5 +101,46 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   setTextFormattingStateAndSubscribe(state: TextFormattingState) {
     this.textFormattingPluginState = state;
+  }
+  onMediaPicked(eventName: string, payload: string) {
+    if (this.mediaPicker) {
+      this.mediaPicker.emit(eventName, JSON.parse(payload));
+    }
+  }
+  onPromiseResolved(uuid: string, paylaod: string) {
+    resolvePromise(uuid, JSON.parse(paylaod));
+  }
+
+  onPromiseRejected(uuid: string) {
+    rejectPromise(uuid);
+  }
+
+  onBlockSelected(blockType: string) {
+    if (this.blockState && this.editorView) {
+      this.blockState.setBlockType(blockType, this.editorView);
+    }
+  }
+
+  onOrderedListSelected() {
+    if (this.listState && this.editorView) {
+      toggleOrderedList(this.editorView);
+    }
+  }
+  onBulletListSelected() {
+    if (this.listState && this.editorView) {
+      toggleBulletList(this.editorView);
+    }
+  }
+
+  onIndentList() {
+    if (this.listState && this.editorView) {
+      indentList()(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  onOutdentList() {
+    if (this.listState && this.editorView) {
+      outdentList()(this.editorView.state, this.editorView.dispatch);
+    }
   }
 }

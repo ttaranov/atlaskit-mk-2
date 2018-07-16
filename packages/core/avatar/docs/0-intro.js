@@ -1,21 +1,47 @@
 // @flow
 import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
+import { colors } from '@atlaskit/theme';
+
+const Warning = p => (
+  <div
+    style={{
+      backgroundColor: colors.Y75,
+      boxShadow: `-4px 0 0 ${colors.Y200}`,
+      marginBottom: '1.4em',
+      padding: '1em 1.2em',
+    }}
+    {...p}
+  />
+);
 
 export default md`
   ### Usage
 
-  This package exports an number of different Avatar related components
+  ${(
+    <Warning>
+      <p>
+        <strong>
+          The previous export of `AvatarGroup` has been moved to its own package
+          `@atlaskit/avatar-group`.
+        </strong>
+      </p>
+      <p>
+        Please update your dependencies to use the @atlaskit/avatar-group
+        package.
+      </p>
+    </Warning>
+  )}
 
-  ~~~js
-  import Avatar, {
-    AvatarGroup,
-    AvatarItem,
-    Presence,
-    Status,
-    Skeleton,
-  } from '@atlaskit/avatar';
-  ~~~
+  This package exports an number of different Avatar related components:
+
+  - Avatar (Default Export)
+  - [AvatarItem](/packages/core/avatar/docs/avatar-item)
+  - [Presence](/packages/core/avatar/docs/presence)
+  - [Status](/packages/core/avatar/docs/status)
+  - [Skeleton](/packages/core/avatar/docs/skeleton)
+
+  ## Avatar - Default Export
 
   Use the \`Avatar\` component to represent users with their profile picture.
   Optionally, a presence to indicate online status can also be displayed.
@@ -32,83 +58,9 @@ export default md`
   )}
 
   ${(
-    <Example
-      Component={require('../examples/02-basicAvatarGroup').default}
-      title="AvatarGroup"
-      source={require('!!raw-loader!../examples/02-basicAvatarGroup')}
-    />
-  )}
-
-  ${(
-    <Example
-      Component={require('../examples/03-basicAvatarItem').default}
-      title="Presence"
-      source={require('!!raw-loader!../examples/03-basicAvatarItem')}
-    />
-  )}
-
-  ${(
-    <Example
-      Component={require('../examples/04-basicPresence').default}
-      title="Presence"
-      source={require('!!raw-loader!../examples/04-basicPresence')}
-    />
-  )}
-
-  ${(
-    <Example
-      Component={require('../examples/05-basicStatus').default}
-      title="Status"
-      source={require('!!raw-loader!../examples/05-basicStatus')}
-    />
-  )}
-
-  ## Base Props
-
-  ${(
     <Props
+      heading="Avatar Props"
       props={require('!!extract-react-types-loader!../src/components/Avatar')}
     />
   )}
-
-  ## Avatar Item Props
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/AvatarItem')}
-    />
-  )}
-
-## Presence Props
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/Presence')}
-    />
-  )}
-
-  ## Status Props
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/Status')}
-    />
-  )}
-  
-  ## Skeleton Props
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/Skeleton')}
-    />
-  )}
-
 `;
-
-// ## Avatar Group Props
-//
-//   ${(
-//     <Props
-//       props={require('!!extract-react-types-loader!../src/components/AvatarGroup')}
-//     />
-//   )}

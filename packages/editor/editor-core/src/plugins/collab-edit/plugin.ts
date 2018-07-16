@@ -1,8 +1,7 @@
-import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { Plugin, PluginKey, Transaction, Selection } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Step, ReplaceStep } from 'prosemirror-transform';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { isChromeWithSelectionBug } from '../../utils';
 import { Dispatch } from '../../event-dispatcher';
 import {
   getSendableSelection,
@@ -134,6 +133,15 @@ export const createPlugin = (
 
 const isReplaceStep = (step: Step) => step instanceof ReplaceStep;
 
+/**
+ * Returns position where it's possible to place a decoration.
+ */
+const getValidPos = (tr: Transaction, pos: number) => {
+  const resolvedPos = tr.doc.resolve(pos);
+  const validSelection = Selection.findFrom(resolvedPos, -1, true);
+  return validSelection ? validSelection.$anchor.pos : pos;
+};
+
 export class PluginState {
   private decorationSet: DecorationSet;
   private participants: Participants;
@@ -200,28 +208,30 @@ export class PluginState {
 
     if (telepointerData) {
       const { sessionId } = telepointerData;
-      if (sessionId && sessionId !== sid) {
+      if (participants.get(sessionId) && sessionId !== sid) {
         const oldPointers = findPointers(
           telepointerData.sessionId,
           decorationSet,
         );
+
         if (oldPointers) {
           remove = remove.concat(oldPointers);
         }
 
         const { anchor, head } = telepointerData.selection;
-        const from = anchor < head ? anchor : head;
-        const to = anchor >= head ? anchor : head;
+        const rawFrom = anchor < head ? anchor : head;
+        const rawTo = anchor >= head ? anchor : head;
+        const isSelection = rawTo - rawFrom > 0;
 
-        const isSelection = to - from > 0;
-        // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
-        if (!isSelection && isChromeWithSelectionBug) {
-          document.getSelection().empty();
-        }
+        const from = getValidPos(
+          tr,
+          isSelection ? Math.max(rawFrom - 1, 0) : rawFrom,
+        );
+        const to = isSelection ? getValidPos(tr, rawTo) : from;
 
         add = add.concat(
           createTelepointers(
-            from - (isSelection ? 0 : 1),
+            from,
             to,
             sessionId,
             isSelection,
@@ -240,10 +250,18 @@ export class PluginState {
             const step = tr.steps.filter(isReplaceStep)[0];
             if (step) {
               const { sessionId } = spec.pointer;
-              const { slice: { content: { size } }, from } = step as any;
-              const pos = size
-                ? Math.min(from + size, tr.doc.nodeSize - 3)
-                : Math.max(from, 1);
+              const {
+                slice: {
+                  content: { size },
+                },
+                from,
+              } = step as any;
+              const pos = getValidPos(
+                tr,
+                size
+                  ? Math.min(from + size, tr.doc.nodeSize - 3)
+                  : Math.max(from, 1),
+              );
 
               add = add.concat(
                 createTelepointers(

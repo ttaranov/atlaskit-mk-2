@@ -1,5 +1,45 @@
 # @atlaskit/css-reset
 
+## 3.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/docs@5.0.0
+
+## 2.0.8
+- [patch] Fix flow config and add back flow fix me [107da09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107da09)
+- [none] Updated dependencies [107da09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107da09)
+
+## 2.0.7
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+
+## 2.0.6
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+
+## 2.0.5
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/docs@4.1.1
+
+## 2.0.4
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+
+## 2.0.3
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/docs@4.0.0
+
+## 2.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/docs@3.0.4
+
+## 2.0.1
+- [patch] Remove negative spacing [ac73181](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac73181)
+
 ## 2.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
@@ -19,7 +59,6 @@
 - [patch] migrated css reset from ak to ak-mk2 [53ce5eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53ce5eb)
 
 ## 1.1.6 (2017-11-30)
-
 * bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
 
 

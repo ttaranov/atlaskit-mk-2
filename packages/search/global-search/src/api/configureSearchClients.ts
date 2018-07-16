@@ -7,23 +7,27 @@ import CrossProductSearchClientImpl, {
 import PeopleSearchClientImpl, {
   PeopleSearchClient,
 } from './PeopleSearchClient';
+import ConfluenceClientImpl, { ConfluenceClient } from './ConfluenceClient';
 
 export interface SearchClients {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
+  confluenceClient: ConfluenceClient;
 }
 
 export interface Config {
   activityServiceUrl: string;
   searchAggregatorServiceUrl: string;
   directoryServiceUrl: string;
+  confluenceUrl: string;
 }
 
 const defaultConfig: Config = {
   activityServiceUrl: '/gateway/api/activity',
   searchAggregatorServiceUrl: '/gateway/api/xpsearch-aggregator',
   directoryServiceUrl: '/gateway/api/directory',
+  confluenceUrl: '/wiki',
 };
 
 export default function configureSearchClients(
@@ -48,5 +52,6 @@ export default function configureSearchClients(
       config.directoryServiceUrl,
       cloudId,
     ),
+    confluenceClient: new ConfluenceClientImpl(config.confluenceUrl, cloudId),
   };
 }

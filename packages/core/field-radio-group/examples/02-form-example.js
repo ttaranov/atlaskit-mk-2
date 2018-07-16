@@ -34,7 +34,7 @@ export default class FormExample extends Component<void, void> {
           <AkRadio
             name="standalone"
             value="single-radio"
-            onRadioChange={this.onRadioChange}
+            onChange={this.onRadioChange}
           >
             Single Radio button
           </AkRadio>
@@ -42,6 +42,7 @@ export default class FormExample extends Component<void, void> {
             items={colorItems}
             label="Pick a color:"
             onRadioChange={this.onRadioChange}
+            isRequired
           />
           <FieldRadioGroup
             items={fruitItems}

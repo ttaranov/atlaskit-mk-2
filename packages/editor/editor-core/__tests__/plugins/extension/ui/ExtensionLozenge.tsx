@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
-import { inlineExtensionData } from '@atlaskit/editor-test-helpers';
+import { shallow, mount } from 'enzyme';
+import {
+  inlineExtensionData,
+  bodiedExtensionData,
+} from '@atlaskit/editor-test-helpers';
 
 import Lozenge, {
   ICON_SIZE,
@@ -19,6 +22,14 @@ describe('@atlaskit/editor-core/ui/Extension/Lozenge', () => {
     expect(img).toHaveLength(1);
     expect(img.props()).toHaveProperty('height', ICON_SIZE);
     expect(img.props()).toHaveProperty('width', ICON_SIZE);
+  });
+
+  it('should have title when title is provided', () => {
+    const lozenges = mount(<Lozenge node={bodiedExtensionData[1] as any} />);
+    const extTitleWrapper = lozenges.find('.extension-title');
+    const extTitle = extTitleWrapper.text();
+    expect(extTitleWrapper).toHaveLength(1);
+    expect(extTitle).toEqual('Expand');
   });
 
   it("should render PlaceholderFallback if extension doesn't have an image param", () => {

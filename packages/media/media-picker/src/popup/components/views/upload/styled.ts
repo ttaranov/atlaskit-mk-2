@@ -70,15 +70,18 @@ export const RecentUploadsTitle: ComponentClass<
 `;
 
 export const CardsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: 100%;
-  & > div {
-    width: auto;
-    float: left;
-    padding: 0 12px 12px 0;
-  }
+  display: flex;
+  flex-wrap: wrap;
+`;
 
-  & > div:nth-child(4n) {
-    padding-right: 0;
+export const CardWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin: 6px 0;
+  margin-right: 12px;
+  outline: none;
+
+  /* Cards are displayed in rows of 4, line up last card with edge of dropzone border */
+  &:nth-child(4n) {
+    margin-right: 0;
   }
 `;
 

@@ -39,7 +39,6 @@ export interface EmojiCacheStrategy {
  */
 export class BrowserCacheStrategy implements EmojiCacheStrategy {
   private cachedImageUrls: Set<string> = new Set<string>();
-  private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
   private static browser: string = new UAParser()
     .getBrowser()
@@ -67,10 +66,6 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
       return emoji;
     }
 
-    if (this.invalidImageUrls.has(mediaPath)) {
-      return undefined;
-    }
-
     return this.mediaImageLoader
       .loadMediaImage(mediaPath)
       .then(() => {
@@ -79,7 +74,6 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
         return emoji;
       })
       .catch(() => {
-        this.invalidImageUrls.add(mediaPath);
         return undefined;
       });
   }
@@ -137,7 +131,6 @@ const maxImageSize = 10000;
  */
 export class MemoryCacheStrategy implements EmojiCacheStrategy {
   private dataURLCache: LRUCache<string, string>;
-  private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
 
   constructor(mediaImageLoader: MediaImageLoader) {
@@ -163,11 +156,6 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
       return convertMediaToImageEmoji(emoji, dataURL, useAlt);
     }
 
-    if (this.invalidImageUrls.has(mediaPath)) {
-      // Already cached
-      return undefined;
-    }
-
     // Not cached, load
     return this.mediaImageLoader
       .loadMediaImage(mediaPath)
@@ -187,7 +175,6 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
         return loadedEmoji;
       })
       .catch(() => {
-        this.invalidImageUrls.add(mediaPath);
         return undefined;
       });
   }

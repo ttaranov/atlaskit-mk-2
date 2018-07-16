@@ -10,6 +10,7 @@ import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
+import Date from './date';
 import Doc from './doc';
 import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
@@ -27,6 +28,7 @@ import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
+import Placeholder from './placeholder';
 import Rule from './rule';
 import TaskItem from './taskItem';
 import TaskList from './taskList';
@@ -43,6 +45,7 @@ export const nodeToReact = {
   blockquote: Blockquote,
   bulletList: BulletList,
   codeBlock: CodeBlock,
+  date: Date,
   decisionItem: DecisionItem,
   decisionList: DecisionList,
   doc: Doc,
@@ -61,6 +64,7 @@ export const nodeToReact = {
   orderedList: OrderedList,
   panel: Panel,
   paragraph: Paragraph,
+  placeholder: Placeholder,
   rule: Rule,
   taskItem: TaskItem,
   taskList: TaskList,
@@ -91,7 +95,7 @@ export interface NodeSimple {
 }
 
 /*
- *  Wraps adjecent textnodes in a textWrapper
+ *  Wraps adjacent textnodes in a textWrapper
  *
  *  Input:
  *  [
@@ -221,6 +225,7 @@ export {
   BodiedExtensionProps,
   BulletList,
   CodeBlock,
+  Date,
   DecisionItem,
   DecisionItemProps,
   DecisionList,
@@ -241,6 +246,7 @@ export {
   OrderedList,
   Panel,
   Paragraph,
+  Placeholder,
   Rule,
   TaskItem,
   TaskList,

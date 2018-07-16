@@ -14,7 +14,7 @@
   ],
   "env": {
     "production:cjs": {
-      "presets": [["env", {"modules": "commonjs"}], "react", "flow"],
+      "presets": [["env", { "modules": "commonjs" }], "react", "flow"],
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",

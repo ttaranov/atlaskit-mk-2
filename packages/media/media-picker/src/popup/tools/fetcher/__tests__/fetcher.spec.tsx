@@ -127,6 +127,54 @@ describe('Fetcher', () => {
     });
   });
 
+  describe('getRecentFiles()', () => {
+    it('should not return empty files', async () => {
+      querySpy.mockReturnValue(
+        Promise.resolve({
+          data: {
+            contents: [
+              {
+                details: {
+                  size: 100,
+                },
+              },
+              {
+                details: {
+                  size: 0,
+                },
+              },
+              {
+                details: {},
+              },
+              {
+                details: {
+                  size: 1,
+                },
+              },
+            ],
+            nextInclusiveStartKey: 'next-key',
+          },
+        }),
+      );
+      fetcher['query'] = querySpy;
+      const recents = await fetcher.getRecentFiles(apiUrl, auth, 30, 'desc');
+
+      expect(recents.nextInclusiveStartKey).toEqual('next-key');
+      expect(recents.contents).toEqual([
+        {
+          details: {
+            size: 100,
+          },
+        },
+        {
+          details: {
+            size: 1,
+          },
+        },
+      ]);
+    });
+  });
+
   describe('GIPHY methods', () => {
     const gifId = 'some-gif-id';
     const gifSlug = `file-slug-${gifId}`;
@@ -160,17 +208,15 @@ describe('Fetcher', () => {
     };
 
     describe('fetchTrendingGifs()', () => {
-      it('should ignore the offset when it is 0', () => {
+      it('should pass rating=pg as a query parameter', () => {
         const offset = 0;
         const fetcher = new MediaApiFetcher();
 
         fetcher.fetchTrendingGifs(offset);
         expect(axios.request).toHaveBeenCalledTimes(1);
-        expect(
-          (axios.request as any).mock.calls[0][0].url.indexOf(
-            `&offset=${offset}`,
-          ),
-        ).toBe(-1);
+        expect((axios.request as any).mock.calls[0][0].params.rating).toEqual(
+          'pg',
+        );
       });
 
       it('should append passed in offset to the query string when it is greater than 0', () => {
@@ -214,18 +260,15 @@ describe('Fetcher', () => {
     });
 
     describe('fetchGifsRelevantToSearch()', () => {
-      it('should ignore the offset when it is 0', () => {
+      it('should pass rating=pg as a query parameter', () => {
         const queryString = 'some-gif-search';
-        const offset = 0;
         const fetcher = new MediaApiFetcher();
 
-        fetcher.fetchGifsRelevantToSearch(queryString, offset);
+        fetcher.fetchGifsRelevantToSearch(queryString);
         expect(axios.request).toHaveBeenCalledTimes(1);
-        expect(
-          (axios.request as any).mock.calls[0][0].url.indexOf(
-            `&offset=${offset}`,
-          ),
-        ).toBe(-1);
+        expect((axios.request as any).mock.calls[0][0].params.rating).toEqual(
+          'pg',
+        );
       });
 
       it('should append passed in query string to the queried url', () => {

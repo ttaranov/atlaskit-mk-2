@@ -410,7 +410,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   border: 0;
   margin: 0;
   min-width: 0;
-  padding: 20px 0 0 0;
+  padding: 16px 0 0 0;
 }
 .ak-field-group > label,
 .ak-field-group > legend {
@@ -420,7 +420,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   font-weight: 600;
   line-height: 1;
   padding: 0;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .ak-field-group > legend {
   float: left;
@@ -440,9 +440,9 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
 .ak-field-password,
 .ak-field-select,
 .ak-field-textarea {
-  background-color: #F4F5F7;
-  border-radius: 5px;
-  border: 1px solid #DFE1E6;
+  background-color: #FAFBFC;
+  border-radius: 3px;
+  border: 2px solid #DFE1E6;
   box-shadow: none;
   box-sizing: border-box;
   color: #172B4D;
@@ -451,7 +451,7 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   line-height: 20px;
   max-width: 100%;
   outline: none;
-  padding: 9px 7px;
+  padding: 8px 6px;
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
   width: 100%;
 }
@@ -488,8 +488,6 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
 .ak-field-textarea:focus {
   background-color: #FFFFFF;
   border-color: #4C9AFF;
-  border-width: 2px;
-  padding: 8px 6px;
 }
 .ak-field-text:focus:invalid,
 .ak-field-date:focus:invalid,
@@ -550,9 +548,10 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
 .ak-field-select[disabled]:hover,
 .ak-field-textarea[disabled]:hover {
   background-color: #F4F5F7;
-  border-color: #F4F5F7;
-  color: #C1C7D0;
+  border-color: transparent;
+  color: #A5ADBA;
   cursor: not-allowed;
+  resize: none;
 }
 .ak-field-text::-webkit-input-placeholder,
 .ak-field-date::-webkit-input-placeholder,
@@ -619,7 +618,17 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   color: #7A869A;
 }
 .ak-field-textarea {
+  display: block;
   overflow: auto;
+}
+.ak-field__resize-none {
+  resize: none;
+}
+.ak-field__resize-horizontal {
+  resize: both;
+}
+.ak-field__resize-vertical {
+  resize: both;
 }
 .ak-field-search {
   -moz-appearance: textfield;
@@ -630,20 +639,18 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   -webkit-appearance: none;
 }
 .ak-field-color {
-  background-color: #F4F5F7;
-  border-radius: 5px;
-  border: 1px solid #DFE1E6;
+  background-color: #FAFBFC;
+  border-radius: 3px;
+  border: 2px solid #DFE1E6;
   box-sizing: border-box;
   height: 40px;
-  padding: 7px 5px;
+  padding: 6px 4px;
   transition: border-color 0.2s ease-in-out;
 }
 .ak-field-color:focus {
-  outline: none;
   background-color: #FFFFFF;
   border-color: #4C9AFF;
-  border-width: 2px;
-  padding: 6px 4px;
+  outline: none;
 }
 .ak-field-color:focus:invalid {
   border-color: #DE350B;
@@ -672,26 +679,19 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   background-repeat: no-repeat;
   padding-right: 35px;
 }
-.ak-field-select:not([multiple]):focus {
-  padding-right: 34px;
-  background-position-x: calc(100% - 6px);
-}
 .ak-field-select[multiple] {
   overflow-y: auto;
   padding: 1px;
 }
 .ak-field-select[multiple] > option {
   box-sizing: border-box;
-  line-height: 1.428571428571429;
   height: 24px;
+  line-height: 1.428571428571429;
   padding: 2px 6px;
 }
 .ak-field-select[multiple] > option:checked {
   background-color: #DFE1E6;
   color: inherit;
-}
-.ak-field-select[multiple]:focus {
-  padding: 0;
 }
 .ak-field-select[multiple]:focus > option:checked {
   background-color: #4C9AFF;
@@ -709,14 +709,14 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   position: relative;
 }
 .ak-field-checkbox > input[type='checkbox'] {
-  position: absolute;
-  outline: none;
-  width: 12px;
+  left: 0;
   margin: 0 8px;
   opacity: 0;
-  left: 0;
+  outline: none;
+  position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  width: 12px;
 }
 .ak-field-checkbox > input[type='checkbox'] + label {
   box-sizing: border-box;
@@ -726,47 +726,56 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   width: 100%;
 }
 .ak-field-checkbox > input[type='checkbox'] + label::after {
-  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22rgba(9%2C%2030%2C%2066%2C%200.13)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A") no-repeat 0 0;
-  border-color: transparent;
-  border-radius: 5px;
-  border-style: solid;
-  border-width: 2px;
+  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22%23FAFBFC%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A") no-repeat 50% 50%;
+  border-radius: 3px;
+  border: 2px solid #DFE1E6;
+  box-sizing: border-box;
   content: '';
-  height: 12px;
-  left: 8px;
+  height: 14px;
+  left: 7px;
   position: absolute;
+  top: 6px;
   transition: border-color 0.2s ease-in-out;
-  top: 7px;
-  width: 12px;
-}
-.ak-field-checkbox > input[type='checkbox']:focus + label::after {
-  border-color: #4C9AFF;
+  width: 14px;
 }
 .ak-field-checkbox > input[type='checkbox']:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%23EBECF0%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A");
+  border-color: #DFE1E6;
 }
 .ak-field-checkbox > input[type='checkbox'][disabled] + label {
-  opacity: 0.5;
+  color: #A5ADBA;
+}
+.ak-field-checkbox > input[type='checkbox'][disabled] + label::after {
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%23F4F5F7%22%3E%3C%2Frect%3E%0A%3C%2Fsvg%3E%0A");
+  border-color: transparent;
+  cursor: not-allowed;
 }
 .ak-field-checkbox > input[type='checkbox']:checked + label::after {
   background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%230052CC%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
+  border-color: transparent;
 }
 .ak-field-checkbox > input[type='checkbox']:checked:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%230065FF%22%20stroke%3D%22%234C9AFF%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%230065FF%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
+}
+.ak-field-checkbox > input[type='checkbox']:checked[disabled] + label::after {
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Crect%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%20%22%23F4F5F7%22%3E%3C%2Frect%3E%0A%20%20%3Cpath%20fill%3D%22%23A5ADBA%22%20d%3D%22M9.374%204.914L5.456%208.832a.769.769%200%200%201-1.088%200L2.626%207.091a.769.769%200%201%201%201.088-1.089L4.912%207.2l3.374-3.374a.769.769%200%201%201%201.088%201.088%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A");
+}
+.ak-field-checkbox > input[type='checkbox']:focus + label::after {
+  border-color: #4C9AFF !important;
 }
 .ak-field-radio {
   clear: both;
   position: relative;
 }
 .ak-field-radio > input[type='radio'] {
-  position: absolute;
-  outline: none;
-  width: 12px;
+  left: 0;
   margin: 0 8px;
   opacity: 0;
-  left: 0;
+  outline: none;
+  position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  width: 12px;
 }
 .ak-field-radio > input[type='radio'] + label {
   box-sizing: border-box;
@@ -776,33 +785,42 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   width: 100%;
 }
 .ak-field-radio > input[type='radio'] + label::after {
-  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22rgba(9%2C%2030%2C%2066%2C%200.13)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A") no-repeat 0 0;
-  border-color: transparent;
+  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%23FAFBFC%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A") no-repeat 50% 50%;
   border-radius: 50%;
-  border-style: solid;
-  border-width: 2px;
+  border: 2px solid #DFE1E6;
+  box-sizing: border-box;
   content: '';
-  height: 12px;
-  left: 8px;
+  height: 14px;
+  left: 7px;
   position: absolute;
   transition: border-color 0.2s ease-in-out;
-  top: 7px;
-  width: 12px;
-}
-.ak-field-radio > input[type='radio']:focus + label::after {
-  border-color: #4C9AFF;
+  top: 6px;
+  width: 14px;
 }
 .ak-field-radio > input[type='radio']:not([disabled]) + label:hover::after {
-  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20stroke%3D%22rgba(9%2C%2030%2C%2066%2C%200.25)%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%20%22%23EBECF0%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+  border-color: #DFE1E6;
 }
 .ak-field-radio > input[type='radio'][disabled] + label {
-  opacity: 0.5;
+  color: #A5ADBA;
+}
+.ak-field-radio > input[type='radio'][disabled] + label::after {
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%20%22%23F4F5F7%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+  border-color: transparent;
+  cursor: not-allowed;
 }
 .ak-field-radio > input[type='radio']:checked + label::after {
   background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%230052CC%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%20%20%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%222%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+  border-color: transparent;
 }
 .ak-field-radio > input[type='radio']:checked:not([disabled]) + label:hover::after {
   background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%230065FF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%20%20%3Ccircle%20fill%3D%22%23FFFFFF%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%222%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+}
+.ak-field-radio > input[type='radio']:checked[disabled] + label::after {
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Ccircle%20fill%3D%22%23F4F5F7%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%226%22%3E%3C%2Fcircle%3E%0A%20%20%3Ccircle%20fill%3D%22%23A5ADBA%22%20cx%3D%226%22%20cy%3D%226%22%20r%3D%222%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E%0A");
+}
+.ak-field-radio > input[type='radio']:focus + label::after {
+  border-color: #4C9AFF !important;
 }
 .ak-field__width-xsmall {
   max-width: 80px;
@@ -814,10 +832,10 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   max-width: 240px;
 }
 .ak-field__width-large {
-  max-width: 344px;
+  max-width: 320px;
 }
 .ak-field__width-xlarge {
-  max-width: 496px;
+  max-width: 480px;
 }
 .ak-icon {
   fill: white;
@@ -842,4 +860,67 @@ button[data-ak-tooltip][data-ak-tooltip-position='left']::after {
   height: 48px;
   width: 48px;
   max-width: 48px;
+}
+.ak-lozenge {
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  max-width: 200px;
+  overflow: hidden;
+  padding: 2px 4px 3px 4px;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+.ak-lozenge__appearance-default {
+  background-color: #DFE1E6;
+  color: #42526E;
+}
+.ak-lozenge__appearance-default-bold {
+  background-color: #42526E;
+  color: #FFFFFF;
+}
+.ak-lozenge__appearance-inprogress {
+  background-color: #DEEBFF;
+  color: #0747A6;
+}
+.ak-lozenge__appearance-inprogress-bold {
+  background-color: #0052CC;
+  color: #FFFFFF;
+}
+.ak-lozenge__appearance-moved {
+  background-color: #FFF0B3;
+  color: #172B4D;
+}
+.ak-lozenge__appearance-moved-bold {
+  background-color: #FF8B00;
+  color: #172B4D;
+}
+.ak-lozenge__appearance-new {
+  background-color: #EAE6FF;
+  color: #403294;
+}
+.ak-lozenge__appearance-new-bold {
+  background-color: #5243AA;
+  color: #FFFFFF;
+}
+.ak-lozenge__appearance-removed {
+  background-color: #FFEBE6;
+  color: #BF2600;
+}
+.ak-lozenge__appearance-removed-bold {
+  background-color: #DE350B;
+  color: #FFFFFF;
+}
+.ak-lozenge__appearance-success {
+  background-color: #E3FCEF;
+  color: #006644;
+}
+.ak-lozenge__appearance-success-bold {
+  background-color: #00875A;
+  color: #FFFFFF;
 }

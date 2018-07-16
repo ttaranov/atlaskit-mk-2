@@ -2,7 +2,10 @@ import { deleteSelection, splitBlock } from 'prosemirror-commands';
 import { Node as PMNode, ResolvedPos, Fragment } from 'prosemirror-model';
 import { EditorState, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { createParagraphNear } from '../../../commands';
+import {
+  createParagraphNear,
+  createNewParagraphBelow,
+} from '../../../commands';
 import {
   moveLeft,
   atTheBeginningOfDoc,
@@ -21,7 +24,7 @@ export const posOfMediaGroupNearby = (
   return (
     posOfParentMediaGroup(state) ||
     posOfFollowingMediaGroup(state) ||
-    posOfPreceedingMediaGroup(state)
+    posOfPrecedingMediaGroup(state)
   );
 };
 
@@ -31,7 +34,7 @@ export const isSelectionNonMediaBlockNode = (state: EditorState): boolean => {
   return node && node.type !== state.schema.nodes.media && node.isBlock;
 };
 
-export const posOfPreceedingMediaGroup = (
+export const posOfPrecedingMediaGroup = (
   state: EditorState,
 ): number | undefined => {
   if (!atTheBeginningOfBlock(state)) {
@@ -212,10 +215,11 @@ export const splitMediaGroup = (view: EditorView): boolean => {
 
   deleteSelection(view.state, view.dispatch);
 
-  // if selected media node is the last one, no need to insert a new p or split the block, prosemirror handled it.
   if (selection.$to.nodeAfter) {
     splitBlock(view.state, view.dispatch);
     createParagraphNear(false)(view.state, view.dispatch);
+  } else {
+    createNewParagraphBelow(view.state, view.dispatch);
   }
 
   return true;

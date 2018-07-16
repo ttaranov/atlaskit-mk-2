@@ -1,5 +1,5 @@
+import { AuthProvider } from '@atlaskit/media-store';
 import { MediaItem } from '../';
-import { AuthProvider } from '../auth';
 import { MediaBlobService, FetchImageOptions } from './blobService';
 
 export type DataUri = string;

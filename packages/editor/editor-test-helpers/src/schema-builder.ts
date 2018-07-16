@@ -1,4 +1,5 @@
 import {
+  ExternalMediaAttributes,
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
@@ -6,6 +7,7 @@ import {
   CellAttributes,
   LinkAttributes,
   TableAttributes,
+  CardAttributes,
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -260,6 +262,27 @@ export const fragment = (...content: BuilderContent[]) =>
 export const slice = (...content: BuilderContent[]) =>
   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
+/**
+ * Builds a 'clean' version of the nodes, without Refs or RefTrackers
+ */
+export const clean = (content: BuilderContentFn) => (schema: Schema) => {
+  const node = content(schema);
+  if (Array.isArray(node)) {
+    return node.reduce(
+      (acc, next) => {
+        if (next instanceof Node) {
+          acc.push(Node.fromJSON(schema, next.toJSON()));
+        }
+        return acc;
+      },
+      [] as Node[],
+    );
+  }
+  return node instanceof Node
+    ? Node.fromJSON(schema, node.toJSON())
+    : undefined;
+};
+
 //
 // Nodes
 //
@@ -335,16 +358,21 @@ export const inlineExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
 }) => nodeFactory(sampleSchema.nodes.inlineExtension, attrs);
 export const extension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
+  layout?: string;
 }) => nodeFactory(sampleSchema.nodes.extension, attrs);
 export const bodiedExtension = (attrs: {
   extensionKey: string;
   extensionType: string;
   parameters?: object;
+  text?: string;
+  layout?: string;
 }) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
 export const date = (attrs: { timestamp: string | number }) =>
   nodeFactory(sampleSchema.nodes.date, attrs)();
@@ -352,12 +380,18 @@ export const mediaSingle = (
   attrs: MediaSingleAttributes = { layout: 'center' },
 ) => nodeFactory(sampleSchema.nodes.mediaSingle, attrs);
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
-export const media = (attrs: MediaAttributes) =>
+export const media = (attrs: MediaAttributes | ExternalMediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
 export const applicationCard = (attrs: ApplicationCardAttributes) =>
   nodeFactory(sampleSchema.nodes.applicationCard, attrs);
 export const placeholder = (attrs: { text: string }) =>
   nodeFactory(sampleSchema.nodes.placeholder, attrs)();
+export const layoutSection = (
+  attrs: { layoutType: string } = { layoutType: 'two-equal' },
+) => nodeFactory(sampleSchema.nodes.layoutSection, attrs);
+export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
+export const inlineCard = (attrs: CardAttributes) =>
+  nodeFactory(sampleSchema.nodes.inlineCard, attrs);
 
 //
 // Marks
@@ -374,6 +408,8 @@ export const mentionQuery = (attrs = { active: true }) =>
 export const a = (attrs: LinkAttributes) =>
   markFactory(sampleSchema.marks.link, attrs);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
+export const typeAheadQuery = (attrs = { trigger: '' }) =>
+  markFactory(sampleSchema.marks.typeAheadQuery, attrs);
 export const textColor = (attrs: { color: string }) =>
   markFactory(sampleSchema.marks.textColor, attrs);
 export const confluenceInlineComment = (attrs: { reference: string }) =>

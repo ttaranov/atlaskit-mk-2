@@ -20,6 +20,9 @@ const ButtonWrapper = ({
 const ButtonOptions = () => (
   <div>
     <ButtonWrapper>
+      <Button autoFocus>Auto focused button</Button>
+    </ButtonWrapper>
+    <ButtonWrapper>
       <Button iconBefore={Icon}>Icon Before</Button>
     </ButtonWrapper>
     <ButtonWrapper>

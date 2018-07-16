@@ -1,13 +1,13 @@
 // @flow
 
 import React from 'react';
-import type { Node } from 'react';
+import type { Element } from 'react';
 
 import Spinner from '@atlaskit/spinner';
+import { ButtonGroup } from '@atlaskit/button';
 
 import {
   ActionsContainer,
-  ButtonGroup,
   Container,
   Description,
   Header,
@@ -29,11 +29,11 @@ type Props = {
   /** Maximum height (in pixels) of the image, default value is 160. */
   maxImageHeight?: number,
   /** Primary action button for the page, usually it will be something like "Create" (or "Retry" for error pages). */
-  primaryAction?: Node,
+  primaryAction?: Element<any>,
   /** Secondary action button for the page. */
-  secondaryAction?: Node,
+  secondaryAction?: Element<any>,
   /** Button with link to some external resource like documentation or tutorial, it will be opened in a new tab. */
-  tertiaryAction?: Node,
+  tertiaryAction?: Element<any>,
   /** Shows spinner next to the action buttons. Primary and secondary action buttons are disabled when this prop is set to true. */
   isLoading?: boolean,
 };

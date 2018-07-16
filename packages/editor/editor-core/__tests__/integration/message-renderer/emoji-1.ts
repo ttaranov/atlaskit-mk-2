@@ -93,7 +93,7 @@ BrowserTestCase(
   'Emoji: should be able to click on the emoji button and select emoji',
   { skip: ['ie'] },
   async client => {
-    const emojiButton = '[aria-label="Insert emoji (:)"]';
+    const emojiButton = '[aria-label="Insert emoji :"]';
     const sweatSmile = '[aria-label=":sweat_smile:"]';
     const browser = await new Page(client);
     await browser.goto(messageEditor);
@@ -110,16 +110,17 @@ BrowserTestCase(
 // skipping safari since char    is stored in snapshot
 // skipping firefox as it doesn't handle ArrowLeft on webdriver
 // unable to navigate between emojis on IE - file issue
+// Edge: ED-4908
 BrowserTestCase(
   'Emoji: should be able to navigate between emojis',
-  { skip: ['firefox', 'safari', 'ie'] },
+  { skip: ['firefox', 'safari', 'ie', 'edge'] },
   async client => {
     const browser = await new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');
     await insertEmoji(browser, 'a');
-    await insertEmoji(browser, 'lol');
+    await insertEmoji(browser, 'light_bulb_on');
     await browser.waitForSelector(emojiItem('a'));
     await browser.type(editable, ['ArrowLeft', 'ArrowLeft']);
     await browser.type(editable, ' that ');

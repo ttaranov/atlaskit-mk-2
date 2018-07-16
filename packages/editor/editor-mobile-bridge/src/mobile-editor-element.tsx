@@ -4,11 +4,18 @@ import {
   Editor,
   mentionPluginKey,
   textFormattingStateKey,
+  blockPluginStateKey,
+  ListsState,
+  listsStateKey,
 } from '@atlaskit/editor-core';
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
-import { valueOf } from './web-to-native/markState';
+import { valueOf as valueOfMarkState } from './web-to-native/markState';
+import { valueOf as valueOfListState } from './web-to-native/listState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
+import { ContextFactory } from '@atlaskit/media-core';
+import { createPromise } from './cross-platform-promise';
+import MobilePicker from './MobileMediaPicker';
 
 /**
  * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
@@ -16,13 +23,17 @@ import WebBridgeImpl from './native-to-web';
  */
 export class MentionProviderImpl implements MentionProvider {
   filter(query?: string): void {}
+
   recordMentionSelection(mention: MentionDescription): void {}
+
   shouldHighlightMention(mention: MentionDescription): boolean {
     return false;
   }
+
   isFiltering(query: string): boolean {
     return false;
   }
+
   subscribe(
     key: string,
     callback?,
@@ -30,6 +41,7 @@ export class MentionProviderImpl implements MentionProvider {
     infoCallback?,
     allResultsCallback?,
   ): void {}
+
   unsubscribe(key: string): void {}
 }
 
@@ -42,14 +54,16 @@ class EditorWithState extends Editor {
     transformer?: any;
   }) {
     super.onEditorCreated(instance);
-    bridge.editorView = instance.view;
-    bridge.editorActions._privateRegisterEditor(
-      instance.view,
-      instance.eventDispatcher,
-    );
-
-    subscribeForMentionStateChanges(instance.view);
-    subscribeForTextFormatChanges(instance.view);
+    const { eventDispatcher, view } = instance;
+    bridge.editorView = view;
+    bridge.editorActions._privateRegisterEditor(view, eventDispatcher);
+    if (this.props.media && this.props.media.customMediaPicker) {
+      bridge.mediaPicker = this.props.media.customMediaPicker;
+    }
+    subscribeForMentionStateChanges(view, eventDispatcher);
+    subscribeForTextFormatChanges(view, eventDispatcher);
+    subscribeForBlockStateChanges(view, eventDispatcher);
+    subscribeForListStateChanges(view, eventDispatcher);
   }
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
@@ -61,13 +75,17 @@ class EditorWithState extends Editor {
   }
 }
 
-function subscribeForMentionStateChanges(view) {
+function subscribeForMentionStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
   let mentionsPluginState = mentionPluginKey.getState(view.state);
   bridge.mentionsPluginState = mentionsPluginState;
   if (mentionsPluginState) {
     mentionsPluginState.subscribe(state => sendToNative(state));
   }
 }
+
 function sendToNative(state) {
   if (state.queryActive) {
     toNativeBridge.showMentions(state.query || '');
@@ -75,14 +93,56 @@ function sendToNative(state) {
     toNativeBridge.dismissMentions();
   }
 }
-function subscribeForTextFormatChanges(view: EditorView) {
+
+function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
   if (textFormattingPluginState) {
     textFormattingPluginState.subscribe(state =>
-      toNativeBridge.updateTextFormat(JSON.stringify(valueOf(state))),
+      toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state))),
     );
   }
+}
+
+function subscribeForBlockStateChanges(view: EditorView, eventDispatcher: any) {
+  let blockState = blockPluginStateKey.getState(view.state);
+  bridge.blockState = blockState;
+  if (blockState) {
+    blockState.subscribe(state =>
+      toNativeBridge.updateBlockState(state.currentBlockType.name),
+    );
+  }
+}
+
+function subscribeForListStateChanges(view: EditorView, eventDispatcher: any) {
+  const listState: ListsState = listsStateKey.getState(view.state);
+  bridge.listState = listState;
+  eventDispatcher.on(listsStateKey, state => {
+    toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
+  });
+}
+
+function getToken(context?: any) {
+  return createPromise<any>('getAuth', context.collectionName).submit();
+}
+
+function getUploadContext(): Promise<any> {
+  return Promise.resolve(
+    ContextFactory.create({
+      serviceHost: toNativeBridge.getServiceHost(),
+      authProvider: getToken,
+    }),
+  );
+}
+
+function createMediaProvider() {
+  return {
+    viewContext: getUploadContext(),
+    uploadContext: getUploadContext(),
+    uploadParams: {
+      collection: toNativeBridge.getCollection(),
+    },
+  };
 }
 
 export default function mobileEditor() {
@@ -90,6 +150,11 @@ export default function mobileEditor() {
     <EditorWithState
       appearance="mobile"
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
+      media={{
+        customMediaPicker: new MobilePicker(),
+        provider: Promise.resolve(createMediaProvider()),
+      }}
+      allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}

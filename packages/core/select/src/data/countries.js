@@ -1,12 +1,14 @@
 // @flow
 
-export const allCountries: Array<{
+type Country = {
   abbr: string,
   code: string,
   icon: string,
   name: string,
   suggested?: boolean,
-}> = [
+};
+
+export const allCountries: Array<Country> = [
   { icon: '🇦🇫', name: 'Afghanistan', abbr: 'AF', code: '93' },
   { icon: '🇦🇱', name: 'Albania', abbr: 'AL', code: '355' },
   { icon: '🇩🇿', name: 'Algeria', abbr: 'DZ', code: '213' },
@@ -312,7 +314,10 @@ export const allCountries: Array<{
 ];
 
 // separate countries into groups
-export const groupedCountries = [
+export const groupedCountries: Array<{
+  label: string,
+  options: Array<Country>,
+}> = [
   {
     label: 'Suggested',
     options: allCountries.filter(c => c.suggested),

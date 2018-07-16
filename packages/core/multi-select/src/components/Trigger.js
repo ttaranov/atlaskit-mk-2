@@ -88,7 +88,7 @@ export default class Trigger extends PureComponent<Props, {}> {
           <Content>
             <TagGroup ref={tagGroupRefFunction}>
               {selectedItems.map(item => (
-                // $FlowFixMe TEMPORARY
+                // $FlowFixMe - issue with appearance as string litteral
                 <Tag
                   appearance={item.tag ? item.tag.appearance : undefined}
                   elemBefore={item.tag ? item.tag.elemBefore : undefined}

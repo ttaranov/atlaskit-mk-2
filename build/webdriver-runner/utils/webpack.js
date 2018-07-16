@@ -1,5 +1,10 @@
 //@flow
 'use strict';
+/* 
+* util module to build webpack-dev-server for running integration test.
+* const CHANGED_PACKAGES accepts environment variable which is used to 
+* identify changed packages and return changed packages containing webdriverTests to be built.
+*/
 
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
@@ -33,31 +38,56 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 const HOST = 'localhost';
 const PORT = 9000;
 const WEBPACK_BUILD_TIMEOUT = 10000;
+const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 
 let server;
 let config;
 
-async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
+const pattern = process.argv[2] || '';
+
+function packageIsInPatternOrChanged(workspace) {
+  if (!workspace.files.matchedTests.length) return false;
+  if (pattern === '' && !CHANGED_PACKAGES) return true;
+
+  /**
+   * If the CHANGED_PACKAGES variable is set,
+   * parsing it to get an array of changed packages and only
+   * build those packages
+   */
+  if (CHANGED_PACKAGES) {
+    return JSON.parse(CHANGED_PACKAGES).some(pkg =>
+      workspace.dir.includes(pkg),
+    );
+  }
+
+  /* Match and existing pattern is passed through the command line */
+  return pattern.length < workspace.dir.length
+    ? workspace.dir.includes(pattern)
+    : pattern.includes(workspace.dir);
+}
+
+async function getPackagesWithTests() /*: Promise<Array<string>> */ {
+  let testPattern = process.env.VISUAL_REGRESSION
+    ? 'visual-regression'
+    : 'integration';
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
-    workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
+    workspaceFiles: {
+      matchedTests: `{src/**/__tests__,__tests__}/${testPattern}/*.+(js|ts|tsx)`,
+    },
   });
   return project.workspaces
-    .filter(
-      workspace =>
-        process.argv.slice(2)[1]
-          ? workspace.dir.includes(process.argv.slice(2)[1])
-          : workspace,
-    )
-    .filter(workspace => workspace.files.webdriver.length)
+    .filter(packageIsInPatternOrChanged)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }
+
 //
 // Creating webpack instance
 //
 async function startDevServer() {
-  const workspacesGlob = await getPackagesWithWebdriverTests();
+  const workspacesGlob = await getPackagesWithTests();
   const env = 'production';
+  const websiteEnv = 'production';
   const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
@@ -72,13 +102,8 @@ async function startDevServer() {
     : utils.createDefaultGlob();
 
   if (!globs.length) {
-    print(
-      errorMsg({
-        title: 'Nothing to run',
-        msg: `Pattern doesn't match anything.`,
-      }),
-    );
-    process.exit(2);
+    console.info('Nothing to run or pattern does not match!');
+    process.exit(0);
   }
 
   config = createConfig({
@@ -86,6 +111,7 @@ async function startDevServer() {
     host: HOST,
     port: PORT,
     globs,
+    websiteEnv,
     includePatterns,
     env,
     cwd: path.join(__dirname, '../../..', 'website'),
@@ -111,6 +137,10 @@ async function startDevServer() {
     //change stats to verbose to get detailed information
     stats: 'minimal',
     clientLogLevel: 'none',
+
+    // disable hot reload for tests - they don't need it for running
+    hot: false,
+    inline: false,
   });
 
   return new Promise((resolve, reject) => {

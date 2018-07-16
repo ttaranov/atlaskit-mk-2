@@ -1,7 +1,6 @@
-import { Node as PMNode, NodeType } from 'prosemirror-model';
+import { Node as PMNode, NodeType, Fragment } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
 import {
   atTheEndOfDoc,
   atTheEndOfBlock,
@@ -13,16 +12,16 @@ import {
   isTableCell,
   isInListItem,
 } from '../../../utils';
-import analyticsService from '../../../analytics/service';
 import { MediaState } from '../types';
 import {
-  posOfPreceedingMediaGroup,
+  posOfPrecedingMediaGroup,
   posOfMediaGroupNearby,
   posOfParentMediaGroup,
   isSelectionNonMediaBlockNode,
   isInsidePotentialEmptyParagraph,
   copyOptionalAttrsFromMediaState,
 } from './media-common';
+import { safeInsert } from 'prosemirror-utils';
 
 /** These nodes don't allow non images to exist inside them */
 const nonImagesBannedNodes = ['listItem'];
@@ -38,7 +37,6 @@ export const insertMediaGroupNode = (
   collection?: string,
 ): void => {
   const { state, dispatch } = view;
-  const { $to } = state.selection;
   const { tr, schema } = state;
   const { media, paragraph } = schema.nodes;
 
@@ -46,49 +44,67 @@ export const insertMediaGroupNode = (
     return;
   }
 
-  // Don't support media in unsupported node types
-  if (unsupportedNodeTypesForMediaCards.has($to.parent.type.name)) {
-    analyticsService.trackEvent('atlassian.editor.media.file.unsupported.node');
-    return;
-  }
+  const mediaNodes = createMediaFileNodes(mediaStates, collection, media);
+  const mediaInsertPos = findMediaInsertPos(state);
+  const resolvedInsertPos = tr.doc.resolve(mediaInsertPos);
+  const parent = resolvedInsertPos.parent;
+  const grandParent = state.selection.$from.node(-1);
+  const selectionParent = state.selection.$anchor.node();
 
-  const nodes = createMediaFileNodes(mediaStates, collection, media);
+  const shouldSplit =
+    selectionParent &&
+    selectionParent.type !== schema.nodes.mediaGroup &&
+    grandParent &&
+    grandParent.type.validContent(
+      Fragment.from(
+        state.schema.nodes.mediaGroup.createChecked({}, mediaNodes),
+      ),
+    );
 
   // insert a paragraph after if reach the end of doc
   // and there is no media group in the front or selection is a non media block node
-  if (
+  const shouldAppendParagraph =
     isTableCell(state) ||
     isInListItem(state) ||
     (atTheEndOfDoc(state) &&
-      (!posOfPreceedingMediaGroup(state) ||
-        isSelectionNonMediaBlockNode(state)))
-  ) {
-    const paragraphInsertPos = isSelectionNonMediaBlockNode(state)
-      ? $to.pos
-      : $to.pos + 1;
-    tr.insert(paragraphInsertPos, paragraph.create());
+      (!posOfPrecedingMediaGroup(state) ||
+        isSelectionNonMediaBlockNode(state)));
+
+  if (shouldSplit) {
+    const content: PMNode[] = shouldAppendParagraph
+      ? mediaNodes.concat(paragraph.create())
+      : mediaNodes;
+
+    // delete the selection or empty paragraph
+    const deleteRange = findDeleteRange(state);
+
+    if (!deleteRange) {
+      tr.insert(mediaInsertPos, content);
+    } else if (mediaInsertPos <= deleteRange.start) {
+      tr
+        .deleteRange(deleteRange.start, deleteRange.end)
+        .insert(mediaInsertPos, content);
+    } else {
+      tr
+        .insert(mediaInsertPos, content)
+        .deleteRange(deleteRange.start, deleteRange.end);
+    }
+    dispatch(tr);
+    setSelectionAfterMediaInsertion(view, mediaInsertPos);
+    return;
   }
 
-  const mediaInsertPos = findMediaInsertPos(state);
+  const content =
+    parent.type === schema.nodes.mediaGroup
+      ? mediaNodes // If parent is a mediaGroup do not wrap items again.
+      : [schema.nodes.mediaGroup.createChecked({}, mediaNodes)];
 
-  // delete the selection or empty paragraph
-  const deleteRange = findDeleteRange(state);
-
-  if (!deleteRange) {
-    tr.insert(mediaInsertPos, nodes);
-  } else if (mediaInsertPos <= deleteRange.start) {
-    tr
-      .deleteRange(deleteRange.start, deleteRange.end)
-      .insert(mediaInsertPos, nodes);
-  } else {
-    tr
-      .insert(mediaInsertPos, nodes)
-      .deleteRange(deleteRange.start, deleteRange.end);
+  // Don't append new paragraph when adding media to a existing mediaGroup
+  if (shouldAppendParagraph && parent.type !== schema.nodes.mediaGroup) {
+    content.push(paragraph.create());
   }
 
-  dispatch(tr);
-
-  setSelectionAfterMediaInsertion(view, mediaInsertPos);
+  dispatch(safeInsert(Fragment.fromArray(content), mediaInsertPos)(tr));
 };
 
 const createMediaFileNodes = (
@@ -112,7 +128,11 @@ const findMediaInsertPos = (state: EditorState): number => {
 
   const nearbyMediaGroupPos = posOfMediaGroupNearby(state);
 
-  if (nearbyMediaGroupPos) {
+  if (
+    nearbyMediaGroupPos &&
+    (!isSelectionNonMediaBlockNode(state) ||
+      ($from.pos < nearbyMediaGroupPos && $to.pos < nearbyMediaGroupPos))
+  ) {
     return nearbyMediaGroupPos;
   }
 
@@ -171,6 +191,6 @@ const setSelectionAfterMediaInsertion = (
   }
 };
 
-export const isNonImagesBanned = (node: PMNode) => {
-  return nonImagesBannedNodes.indexOf(node.type.name) > -1;
+export const isNonImagesBanned = (node?: PMNode) => {
+  return node && nonImagesBannedNodes.indexOf(node.type.name) > -1;
 };

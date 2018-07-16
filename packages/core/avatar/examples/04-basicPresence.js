@@ -1,18 +1,21 @@
 // @flow
 import React from 'react';
 import { Presence } from '../src';
-import { Block, Dot } from '../examples-util/helpers';
+import { Block, ShrinkWrap } from '../examples-util/helpers';
 
 export default () => (
   <Block>
-    <Dot>
+    <ShrinkWrap>
       <Presence presence="online" />
-    </Dot>
-    <Dot>
+    </ShrinkWrap>
+    <ShrinkWrap>
       <Presence presence="busy" />
-    </Dot>
-    <Dot>
+    </ShrinkWrap>
+    <ShrinkWrap>
+      <Presence presence="focus" />
+    </ShrinkWrap>
+    <ShrinkWrap>
       <Presence presence="offline" />
-    </Dot>
+    </ShrinkWrap>
   </Block>
 );

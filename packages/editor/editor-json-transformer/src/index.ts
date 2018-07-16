@@ -1,13 +1,15 @@
 import {
   codeBlockToJSON,
   defaultSchema,
+  linkToJSON,
   mediaToJSON,
   mentionToJSON,
+  tableToJSON,
   toJSONTableCell,
   toJSONTableHeader,
   Transformer,
 } from '@atlaskit/editor-common';
-import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode, Mark as PMMark } from 'prosemirror-model';
 
 export type JSONNode = {
   type: string;
@@ -27,24 +29,47 @@ const isCodeBlock = (node: PMNode) => node.type.name === 'codeBlock';
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
 const isMentionNode = (node: PMNode) => node.type.name === 'mention';
 const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
+const isTable = (node: PMNode) => node.type.name === 'table';
 const isTableCell = (node: PMNode) => node.type.name === 'tableCell';
 const isTableHeader = (node: PMNode) => node.type.name === 'tableHeader';
+const isLinkMark = (mark: PMMark) => mark.type.name === 'link';
+
+const filterNull = subject => {
+  return Object.keys(subject).reduce((acc, key) => {
+    let current = subject[key];
+
+    if (current === null) {
+      return acc;
+    }
+
+    if (typeof current === 'object') {
+      current = filterNull(current);
+    }
+
+    return { ...acc, [key]: current };
+  }, {});
+};
 
 const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
-
   if (isMediaNode(node)) {
     obj.attrs = mediaToJSON(node).attrs;
   } else if (isMentionNode(node)) {
     obj.attrs = mentionToJSON(node).attrs;
   } else if (isCodeBlock(node)) {
     obj.attrs = codeBlockToJSON(node).attrs;
+  } else if (isTable(node)) {
+    obj.attrs = tableToJSON(node).attrs;
   } else if (isTableCell(node)) {
     obj.attrs = toJSONTableCell(node).attrs;
   } else if (isTableHeader(node)) {
     obj.attrs = toJSONTableHeader(node).attrs;
   } else if (Object.keys(node.attrs).length) {
     obj.attrs = node.attrs;
+  }
+
+  if (obj.attrs) {
+    obj.attrs = filterNull(obj.attrs);
   }
 
   if (node.isText) {
@@ -62,7 +87,12 @@ const toJSON = (node: PMNode): JSONNode => {
   }
 
   if (node.marks.length) {
-    obj.marks = node.marks.map(n => n.toJSON());
+    obj.marks = node.marks.map(n => {
+      if (isLinkMark(n)) {
+        return linkToJSON(n);
+      }
+      return n.toJSON();
+    });
   }
   return obj;
 };

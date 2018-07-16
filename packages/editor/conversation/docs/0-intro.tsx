@@ -199,6 +199,7 @@ const props = {
               kind: 'generic',
               value: {
                 kind: 'function',
+                parameters: [],
                 returnType: {
                   kind: 'void',
                 },
@@ -282,6 +283,27 @@ const props = {
                 type: 'commentBlock',
                 value:
                   'Optionally set the placeholder text for the editor. Defaults to "What do you want to say?"',
+              },
+            ],
+          },
+          {
+            key: {
+              kind: 'id',
+              name: 'allowFeedbackAndHelpButtons',
+            },
+            kind: 'property',
+            optional: true,
+            value: {
+              kind: 'generic',
+              value: {
+                kind: 'boolean',
+              },
+            },
+            leadingComments: [
+              {
+                type: 'commentBlock',
+                value:
+                  'Optionally allow the feedback and help buttons in the editor. The feedback button requires jQuery to be loaded on the page.',
               },
             ],
           },

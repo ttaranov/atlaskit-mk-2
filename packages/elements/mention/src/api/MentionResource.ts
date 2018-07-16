@@ -4,7 +4,12 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 
-import { MentionDescription, isAppMention, MentionsResult } from '../types';
+import {
+  MentionDescription,
+  isAppMention,
+  isTeamMention,
+  MentionsResult,
+} from '../types';
 import debug from '../util/logger';
 import { SearchIndex, mentionDescriptionComparator } from '../util/searchIndex';
 
@@ -62,6 +67,11 @@ export interface ResourceProvider<Result> {
    */
   unsubscribe(key: string): void;
 }
+
+export type MentionContextIdentifier = {
+  containerId: string;
+  objectId: string;
+};
 
 export interface MentionProvider
   extends ResourceProvider<MentionDescription[]> {
@@ -262,25 +272,28 @@ class MentionResource extends AbstractMentionResource {
     }
   }
 
-  filter(query?: string): void {
+  filter(query?: string, contextIdentifier?: MentionContextIdentifier): void {
     const searchTime = Date.now();
 
     if (!query) {
-      this.initialState().then(
+      this.initialState(contextIdentifier).then(
         results => this.notify(searchTime, results, query),
         error => this.notifyError(error, query),
       );
     } else {
       this.activeSearches.add(query);
-      this.search(query).then(
+      this.search(query, contextIdentifier).then(
         results => this.notify(searchTime, results, query),
         error => this.notifyError(error, query),
       );
     }
   }
 
-  recordMentionSelection(mention: MentionDescription): Promise<void> {
-    return this.recordSelection(mention).then(
+  recordMentionSelection(
+    mention: MentionDescription,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<void> {
+    return this.recordSelection(mention, contextIdentifier).then(
       () => {},
       error => debug(`error recording mention selection: ${error}`, error),
     );
@@ -290,8 +303,10 @@ class MentionResource extends AbstractMentionResource {
     return this.activeSearches.has(query);
   }
 
-  private initialState(): Promise<MentionsResult> {
-    return this.remoteInitialState();
+  private initialState(
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
+    return this.remoteInitialState(contextIdentifier);
   }
 
   private getUserIdsInContext(): Promise<Set<string>> {
@@ -306,14 +321,7 @@ class MentionResource extends AbstractMentionResource {
     return Promise.resolve(new Set());
   }
 
-  /**
-   * Returns the initial mention display list before a search is performed for the specified
-   * container.
-   *
-   * @param containerId
-   * @returns Promise
-   */
-  private remoteInitialState(): Promise<MentionsResult> {
+  private getConfigParams(): KeyValues {
     const queryParams: KeyValues = {};
 
     if (this.config.containerId) {
@@ -323,10 +331,24 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.productId) {
       queryParams['productIdentifier'] = this.config.productId;
     }
+    return queryParams;
+  }
 
+  /**
+   * Returns the initial mention display list before a search is performed for the specified
+   * container.
+   *
+   * @param contextIdentifier
+   * @returns Promise
+   */
+  private remoteInitialState(
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
+    const queryParams: KeyValues = this.getConfigParams();
     const options = {
       path: 'bootstrap',
       queryParams,
+      ...contextIdentifier,
     };
 
     return serviceUtils
@@ -338,11 +360,14 @@ class MentionResource extends AbstractMentionResource {
       });
   }
 
-  private search(query: string): Promise<MentionsResult> {
+  private search(
+    query: string,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
     if (this.searchIndex.hasDocuments()) {
       return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query).then(
+        this.remoteSearch(query, contextIdentifier).then(
           result => {
             this.activeSearches.delete(query);
             this.notify(searchTime, result, query);
@@ -357,7 +382,7 @@ class MentionResource extends AbstractMentionResource {
       });
     }
 
-    return this.remoteSearch(query).then(result => {
+    return this.remoteSearch(query, contextIdentifier).then(result => {
       this.searchIndex.indexResults(result.mentions);
       return result;
     });
@@ -376,23 +401,18 @@ class MentionResource extends AbstractMentionResource {
     });
   }
 
-  private remoteSearch(query: string): Promise<MentionsResult> {
-    const queryParams = {
-      query,
-      limit: MAX_QUERY_ITEMS,
-    };
-
-    if (this.config.containerId) {
-      queryParams['containerId'] = this.config.containerId;
-    }
-
-    if (this.config.productId) {
-      queryParams['productIdentifier'] = this.config.productId;
-    }
-
+  private remoteSearch(
+    query: string,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
     const options = {
       path: 'search',
-      queryParams,
+      queryParams: {
+        query,
+        limit: MAX_QUERY_ITEMS,
+        ...this.getConfigParams(),
+        ...contextIdentifier,
+      },
     };
 
     return serviceUtils
@@ -406,6 +426,8 @@ class MentionResource extends AbstractMentionResource {
       const weight = mention.weight !== undefined ? mention.weight : index;
       if (isAppMention(mention)) {
         lozenge = mention.userType;
+      } else if (isTeamMention(mention)) {
+        lozenge = mention.userType;
       }
 
       return { ...mention, lozenge, weight };
@@ -414,18 +436,17 @@ class MentionResource extends AbstractMentionResource {
     return { ...result, mentions };
   }
 
-  private recordSelection(mention: MentionDescription): Promise<void> {
-    const queryParams = {
-      selectedUserId: mention.id,
-    };
-
-    if (this.config.productId) {
-      queryParams['productIdentifier'] = this.config.productId;
-    }
-
+  private recordSelection(
+    mention: MentionDescription,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<void> {
     const options = {
       path: 'record',
-      queryParams,
+      queryParams: {
+        selectedUserId: mention.id,
+        ...this.getConfigParams(),
+        ...contextIdentifier,
+      },
       requestInit: {
         method: 'POST',
       },

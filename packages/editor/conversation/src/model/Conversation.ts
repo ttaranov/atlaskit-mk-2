@@ -9,4 +9,5 @@ export interface Conversation {
     [key: string]: any;
   };
   error?: Error;
+  isMain?: boolean;
 }

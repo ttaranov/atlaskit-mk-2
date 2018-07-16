@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
-import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
+import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 import styled from 'styled-components';
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 import { AnalyticsListener } from '@atlaskit/analytics';
 
@@ -56,6 +57,13 @@ export default class extends React.Component<any, any> {
     }));
   };
 
+  onAnalyticsNextEvent(event) {
+    this.onEvent(
+      `${event.payload.actionSubject} ${event.payload.action}`,
+      event.payload,
+    );
+  }
+
   render() {
     const events = this.state.events;
 
@@ -66,9 +74,19 @@ export default class extends React.Component<any, any> {
           <Bordered>
             <AnalyticsListener onEvent={this.onEvent}>
               <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
-                <AtlaskitThemeProvider mode="light">
-                  <GlobalQuickSearch cloudId="cloudId" />
-                </AtlaskitThemeProvider>
+                <AnalyticsNextListener
+                  channel="fabric-elements"
+                  onEvent={e => this.onAnalyticsNextEvent(e)}
+                >
+                  <AtlaskitThemeProvider mode="light">
+                    <LocaleIntlProvider>
+                      <GlobalQuickSearch
+                        cloudId="cloudId"
+                        context="confluence"
+                      />
+                    </LocaleIntlProvider>
+                  </AtlaskitThemeProvider>
+                </AnalyticsNextListener>
               </AnalyticsListener>
             </AnalyticsListener>
           </Bordered>
@@ -78,8 +96,8 @@ export default class extends React.Component<any, any> {
           <h2>Analytics Events</h2>
           <Bordered>
             <EventsList>
-              {events.map(event => (
-                <li>
+              {events.map((event, i) => (
+                <li key={i}>
                   <strong>Event:</strong> {event.name} | <strong>Data:</strong>{' '}
                   {JSON.stringify(event.data)}
                 </li>

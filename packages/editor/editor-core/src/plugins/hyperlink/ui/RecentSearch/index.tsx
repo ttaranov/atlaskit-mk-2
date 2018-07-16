@@ -9,13 +9,11 @@ import PanelTextInput from '../../../../ui/PanelTextInput';
 import { HyperlinkState } from '../../pm-plugins/main';
 import RecentList from './RecentList';
 
-// tslint:disable-next-line:variable-name
 const Container = styled.span`
   width: 420px;
-  padding-left: 4px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow: auto;
 `;
 
 export interface Props {
@@ -28,7 +26,7 @@ export interface State {
   activityProvider?: ActivityProvider;
   items?: Array<ActivityItem>;
   selectedIndex: number;
-  input?: string;
+  text: string;
   linkAdded: boolean;
   isLoading: boolean;
 }
@@ -38,21 +36,18 @@ export default class RecentSearch extends PureComponent<Props, State> {
     selectedIndex: -1,
     linkAdded: false,
     isLoading: false,
-  };
+    text: '',
+    items: [],
+  } as State;
 
   async resolveProvider() {
     const activityProvider = await this.props.activityProvider;
-
-    this.setState({
-      activityProvider: activityProvider,
-    });
-
+    this.setState({ activityProvider });
     return activityProvider;
   }
 
   async componentDidMount() {
     const activityProvider = await this.resolveProvider();
-
     this.loadRecentItems(activityProvider);
   }
 
@@ -66,9 +61,7 @@ export default class RecentSearch extends PureComponent<Props, State> {
   }
 
   private updateInput = async (input: string) => {
-    this.setState({
-      input: input,
-    });
+    this.setState({ text: input });
 
     if (this.state.activityProvider) {
       if (input.length === 0) {
@@ -129,7 +122,7 @@ export default class RecentSearch extends PureComponent<Props, State> {
   };
 
   private handleSubmit = () => {
-    const { items, input, selectedIndex } = this.state;
+    const { items, text, selectedIndex } = this.state;
 
     // add the link selected in the dropdown if there is one, otherwise submit the value of the input field
     if (items && items.length > 0 && selectedIndex > -1) {
@@ -138,8 +131,8 @@ export default class RecentSearch extends PureComponent<Props, State> {
       this.trackAutoCompleteAnalyticsEvent(
         'atlassian.editor.format.hyperlink.autocomplete.keyboard',
       );
-    } else if (input && input.length > 0) {
-      this.addLink(input);
+    } else if (text && text.length > 0) {
+      this.addLink(text);
       this.trackAutoCompleteAnalyticsEvent(
         'atlassian.editor.format.hyperlink.autocomplete.notselected',
       );
@@ -202,7 +195,7 @@ export default class RecentSearch extends PureComponent<Props, State> {
   };
 
   private trackAutoCompleteAnalyticsEvent(name: string) {
-    const numChars = this.state.input ? this.state.input.length : 0;
+    const numChars = this.state.text ? this.state.text.length : 0;
 
     analyticsService.trackEvent(name, { numChars: numChars });
   }

@@ -69,6 +69,12 @@ export default class EditorActions {
   }
 
   _privateSubscribe(cb: ContextUpdateHandler): void {
+    // If editor is registered and somebody is trying to add a listener,
+    // just call it first.
+    if (this.editorView && this.eventDispatcher) {
+      cb(this.editorView, this.eventDispatcher);
+    }
+
     this.listeners.push(cb);
   }
 
@@ -82,6 +88,7 @@ export default class EditorActions {
     }
 
     this.editorView.focus();
+    this.editorView.dispatch(this.editorView.state.tr.scrollIntoView());
     return true;
   }
 

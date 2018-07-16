@@ -14,8 +14,7 @@ export const transparentFallbackBackground =
 export const ImageViewWrapper: ComponentClass<
   HTMLAttributes<{}> & ImageViewWrapperProps
 > = styled.div`
-  ${size()} border-radius: inherit;
-  background-repeat: no-repeat, repeat;
+  ${size()} background-repeat: no-repeat, repeat;
   background-position: center, center;
   background-size: contain, auto;
 

@@ -4,12 +4,17 @@ import {
   doc,
   p,
   hr,
+  date,
   text,
+  li,
   mention,
   code_block,
   decisionList,
   decisionItem,
   defaultSchema as schema,
+  hardBreak,
+  mediaSingle,
+  media,
 } from '@atlaskit/editor-test-helpers';
 import {
   isEmptyNode,
@@ -17,11 +22,12 @@ import {
   isEmptyDocument,
   preprocessDoc,
   processRawValue,
+  hasVisibleContent,
 } from '../../src/utils/document';
 
 describe(name, () => {
   describe('Utils -> Document', () => {
-    describe('#isEmptyParagraph', () => {
+    describe('isEmptyParagraph', () => {
       it('should return true if paragraph is empty', () => {
         expect(isEmptyParagraph(p('')(schema))).toBe(true);
       });
@@ -31,7 +37,7 @@ describe(name, () => {
       });
     });
 
-    describe('#isEmptyNode', () => {
+    describe('isEmptyNode', () => {
       it('should return true if node is empty', () => {
         expect(isEmptyNode(p('')(schema))).toBe(true);
       });
@@ -52,6 +58,43 @@ describe(name, () => {
         expect(isEmptyNode(doc(p(''), p('some text'), p(''))(schema))).toBe(
           false,
         );
+      });
+    });
+
+    describe('hasVisibleContent', () => {
+      const nodesWithVisibleContent = [
+        p('', hardBreak(), date({ timestamp: Date.now() })),
+        p(mention({ id: '123' })()),
+        date({ timestamp: Date.now() }),
+        mention({ id: '123' })(),
+        mediaSingle({ layout: 'center' })(
+          media({ id: 'id', type: 'file', collection: 'collection' })(),
+        ),
+      ];
+      const nodesWithoutVisibleContent = [
+        p(''),
+        li(p('')),
+        p('', hardBreak()),
+        p(' ', hardBreak(), ' '),
+        hardBreak(),
+      ];
+
+      nodesWithVisibleContent.forEach(nodeBuilder => {
+        const node = nodeBuilder(schema);
+        it(`should return true for none empty node: ${JSON.stringify(
+          node.toJSON(),
+        )}`, () => {
+          expect(hasVisibleContent(node)).toBe(true);
+        });
+      });
+
+      nodesWithoutVisibleContent.forEach(nodeBuilder => {
+        const node = nodeBuilder(schema);
+        it(`should return false for empty node: ${JSON.stringify(
+          node.toJSON(),
+        )}`, () => {
+          expect(hasVisibleContent(node)).toBe(false);
+        });
       });
     });
 

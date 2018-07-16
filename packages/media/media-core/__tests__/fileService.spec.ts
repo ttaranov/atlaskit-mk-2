@@ -3,7 +3,7 @@ import { LRUCache } from 'lru-fast';
 
 import { MediaFileService } from '../src/services/fileService';
 import { FileDetails, FileItem } from '../src/item';
-import { AuthProvider } from '../src/auth';
+import { AuthProvider } from '@atlaskit/media-store';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
@@ -188,9 +188,13 @@ describe('MediaFileService', () => {
         processingStatus: 'pending',
         size: 12345,
         artifacts: {
-          'document.pdf': { href: `/file/${fileId}/artifact/document.pdf` },
+          'document.pdf': {
+            url: `/file/${fileId}/artifact/document.pdf`,
+            processingStatus: 'pending',
+          },
           'presentation.ppt': {
-            href: `/file/${fileId}/artifact/presentation.ppt`,
+            url: `/file/${fileId}/artifact/presentation.ppt`,
+            processingStatus: 'pending',
           },
         },
       };

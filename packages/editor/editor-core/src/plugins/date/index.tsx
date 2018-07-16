@@ -1,10 +1,17 @@
 import * as React from 'react';
+import EditorDateIcon from '@atlaskit/icon/glyph/editor/date';
 import { date } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { insertDate, selectElement } from './actions';
-import createPlugin, { DateState, pluginKey } from './plugin';
+import createDatePlugin, { DateState, pluginKey } from './plugin';
 import DatePicker from './ui/DatePicker';
+
+export type DateType = {
+  year: number;
+  month: number;
+  day?: number;
+};
 
 const datePlugin: EditorPlugin = {
   nodes() {
@@ -15,8 +22,7 @@ const datePlugin: EditorPlugin = {
     return [
       {
         rank: 2410,
-        plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+        plugin: createDatePlugin,
       },
     ];
   },
@@ -32,9 +38,7 @@ const datePlugin: EditorPlugin = {
           dateState.element ? (
             <DatePicker
               element={dateState.element}
-              onSelect={({ iso }) =>
-                insertDate(iso)(editorView.state, dispatch)
-              }
+              onSelect={date => insertDate(date)(editorView.state, dispatch)}
               onClickOutside={() =>
                 selectElement(null)(editorView.state, dispatch)
               }
@@ -43,6 +47,21 @@ const datePlugin: EditorPlugin = {
         }
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Date',
+        keywords: ['time', '/'],
+        icon: () => <EditorDateIcon label="Date" />,
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.date.createChecked({ timestamp: Date.now() }),
+          );
+        },
+      },
+    ],
   },
 };
 

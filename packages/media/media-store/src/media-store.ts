@@ -1,4 +1,3 @@
-import { AuthProvider, AuthContext } from './models/auth-provider';
 import {
   MediaFile,
   MediaCollection,
@@ -6,6 +5,12 @@ import {
   MediaUpload,
   MediaChunksProbe,
 } from './models/media';
+import {
+  AsapBasedAuth,
+  AuthContext,
+  ClientAltBasedAuth,
+  MediaApiConfig,
+} from './models/auth';
 import {
   request,
   createUrl,
@@ -16,18 +21,16 @@ import {
   mapResponseToVoid,
 } from './utils/request';
 
-export interface MediaStoreConfig {
-  readonly apiUrl: string;
-  readonly authProvider: AuthProvider;
-}
-
 export class MediaStore {
-  constructor(private readonly config: MediaStoreConfig) {}
+  constructor(private readonly config: MediaApiConfig) {}
 
-  createCollection(name: string): Promise<MediaStoreResponse<MediaCollection>> {
+  createCollection(
+    collectionName: string,
+  ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.request('/collection', {
       method: 'POST',
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name: collectionName }),
+      authContext: { collectionName },
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -39,6 +42,7 @@ export class MediaStore {
     collectionName: string,
   ): Promise<MediaStoreResponse<MediaCollection>> {
     return this.request(`/collection/${collectionName}`, {
+      authContext: { collectionName },
       headers: {
         Accept: 'application/json',
       },
@@ -50,6 +54,7 @@ export class MediaStore {
     params: MediaStoreGetCollectionItemsPrams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
+      authContext: { collectionName },
       params,
       headers: {
         Accept: 'application/json',
@@ -97,6 +102,7 @@ export class MediaStore {
   ): Promise<MediaStoreResponse<MediaFile>> {
     return this.request('/file/upload', {
       method: 'POST',
+      authContext: { collectionName: params.collection },
       params,
       body: JSON.stringify(body),
       headers: {
@@ -106,20 +112,54 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
+  createFile(
+    params: MediaStoreCreateFileParams = {},
+  ): Promise<MediaStoreResponse<EmptyFile>> {
+    return this.request('/file', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+      params,
+      authContext: { collectionName: params.collection },
+    }).then(mapResponseToJson);
+  }
+
+  createFileFromBinary(
+    blob: Blob,
+    params: MediaStoreCreateFileFromBinaryParams = {},
+  ): Promise<MediaStoreResponse<MediaFile>> {
+    return this.request('/file/binary', {
+      method: 'POST',
+      body: blob,
+      params,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': blob.type,
+      },
+      authContext: { collectionName: params.collection },
+    }).then(mapResponseToJson);
+  }
+
   getFile = (
     fileId: string,
     params: MediaStoreGetFileParams = {},
   ): Promise<MediaStoreResponse<MediaFile>> => {
-    return this.request(`/file/${fileId}`, { params }).then(mapResponseToJson);
+    return this.request(`/file/${fileId}`, {
+      params,
+      authContext: { collectionName: params.collection },
+    }).then(mapResponseToJson);
   };
 
   getFileImageURL = async (
     id: string,
     params?: MediaStoreGetFileImageParams,
   ): Promise<string> => {
-    return createUrl(`${this.config.apiUrl}/file/${id}/image`, {
+    const auth = await this.config.authProvider();
+
+    return createUrl(`${this.config.serviceHost}/file/${id}/image`, {
       params,
-      auth: await this.config.authProvider(),
+      auth,
     });
   };
 
@@ -137,18 +177,34 @@ export class MediaStore {
     }).then(mapResponseToVoid);
   }
 
+  copyFileWithToken(
+    body: MediaStoreCopyFileWithTokenBody,
+    params: MediaStoreCopyFileWithTokenParams,
+  ): Promise<void> {
+    return this.request('/file/copy/withToken', {
+      method: 'POST',
+      authContext: { collectionName: params.collection }, // Contains collection name to write to
+      body: JSON.stringify(body), // Contains collection name to read from
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      params, // Contains collection name to write to
+    }).then(mapResponseToVoid);
+  }
+
   async request(
     path: string,
     options: MediaStoreRequestOptions = {
       method: 'GET',
     },
   ): Promise<Response> {
-    const { apiUrl, authProvider } = this.config;
+    const { serviceHost, authProvider } = this.config;
     const { method, authContext, params, headers, body } = options;
 
     const auth = await authProvider(authContext);
 
-    return request(`${apiUrl}${path}`, {
+    return request(`${serviceHost}${path}`, {
       method,
       auth,
       params,
@@ -178,6 +234,20 @@ export type MediaStoreCreateFileFromUploadParams = {
   readonly skipConversions?: boolean;
 };
 
+export type MediaStoreCreateFileParams = {
+  readonly occurrenceKey?: string;
+  readonly collection?: string;
+};
+
+export type MediaStoreCreateFileFromBinaryParams = {
+  readonly replaceFileId?: string;
+  readonly collection?: string;
+  readonly occurrenceKey?: string;
+  readonly expireAfter?: number;
+  readonly skipConversions?: boolean;
+  readonly name?: string;
+};
+
 export type MediaStoreCreateFileFromUploadConditions = {
   readonly hash: string;
   readonly size: number;
@@ -198,7 +268,7 @@ export type MediaStoreGetFileParams = {
 
 export type MediaStoreGetFileImageParams = {
   readonly version?: number;
-  readonly collection?: number;
+  readonly collection?: string;
   readonly width?: number;
   readonly height?: number;
   readonly mode?: 'fit' | 'full-fit' | 'crop';
@@ -215,9 +285,27 @@ export type MediaStoreGetCollectionItemsPrams = {
   readonly details?: 'minimal' | 'full';
 };
 
+export type MediaStoreCopyFileWithTokenBody = {
+  sourceFile: {
+    id: string;
+    owner: ClientAltBasedAuth | AsapBasedAuth;
+    collection?: string;
+    version?: number;
+  };
+};
+
+export type MediaStoreCopyFileWithTokenParams = {
+  readonly collection?: string;
+};
+
 export type AppendChunksToUploadRequestBody = {
   readonly chunks: string[];
 
   readonly hash?: string;
   readonly offset?: number;
 };
+
+export interface EmptyFile {
+  readonly id: string;
+  readonly createdAt: number;
+}

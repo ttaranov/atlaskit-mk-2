@@ -6,21 +6,12 @@ import {
   defaultMediaPickerCollectionName,
   userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
-import Button from '@atlaskit/button';
-import { MediaPicker, BinaryUploader } from '../src';
+import { MediaPicker, BinaryUploader, BinaryConfig } from '../src';
 import { ContextFactory } from '@atlaskit/media-core';
 
-export interface BinaryWrapperState {
-  finalizeCallback: any;
-}
-
-class BinaryWrapper extends Component<{}, BinaryWrapperState> {
+class BinaryWrapper extends Component<{}> {
   binary: BinaryUploader;
   dropzoneContainer: HTMLDivElement;
-
-  state: BinaryWrapperState = {
-    finalizeCallback: null,
-  };
 
   componentDidMount() {
     this.createBinary();
@@ -31,9 +22,8 @@ class BinaryWrapper extends Component<{}, BinaryWrapperState> {
       serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
     });
-    const config = {
+    const config: BinaryConfig = {
       uploadParams: {
-        autoFinalize: false,
         collection: defaultMediaPickerCollectionName,
       },
     };
@@ -45,33 +35,12 @@ class BinaryWrapper extends Component<{}, BinaryWrapperState> {
       'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=',
       'screen-capture.gif',
     );
-    binary.on('upload-finalize-ready', data => {
-      console.log('upload finalize ready:', data);
-
-      this.setState({ finalizeCallback: data.finalize });
-    });
     binary.on('upload-end', mpFile => console.log(mpFile));
     binary.on('upload-error', mpError => console.log(mpError));
   }
 
-  onFinalize = () => {
-    const { finalizeCallback } = this.state;
-
-    finalizeCallback();
-  };
-
   render() {
-    const { finalizeCallback } = this.state;
-
-    return (
-      <Button
-        appearance="primary"
-        onClick={this.onFinalize}
-        isDisabled={!finalizeCallback}
-      >
-        Finalize
-      </Button>
-    );
+    return <div>See the console</div>;
   }
 }
 

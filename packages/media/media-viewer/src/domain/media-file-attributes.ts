@@ -35,6 +35,8 @@ export class MediaFileAttributesFactory {
       if (details.mimeType === 'image/jpeg') {
         return `/file/${details.id}/image`;
       }
+
+      return undefined;
     };
 
     const artifact = artifactFormat && getArtifactUrl(artifactFormat.name);
@@ -80,7 +82,7 @@ export class MediaFileAttributesFactory {
     serviceHost: string,
   ): MediaFileAttributes {
     const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
-      id: item.details.id as string,
+      id: item.details.id,
       occurrenceKey: item.occurrenceKey,
       type: 'file',
     });
@@ -92,7 +94,7 @@ export class MediaFileAttributesFactory {
     serviceHost: string,
   ): MediaFileAttributes {
     const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
-      id: item.details.id as string,
+      id: item.details.id,
       occurrenceKey: item.details.occurrenceKey,
       type: 'file',
     });
@@ -116,9 +118,9 @@ export class MediaFileAttributesFactory {
       item.type === 'file';
     return collection.items
       .filter(collectionFileItemFilter)
-      .map((item: MediaCollectionFileItem) =>
+      .map((item: MediaCollectionItem) =>
         MediaFileAttributesFactory.fromMediaCollectionFileItem(
-          item,
+          item as MediaCollectionFileItem,
           serviceHost,
         ),
       );

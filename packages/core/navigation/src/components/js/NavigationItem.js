@@ -2,8 +2,17 @@
 import React, { PureComponent } from 'react';
 import type { ComponentType, Node } from 'react';
 import { withTheme } from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
 
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import NavigationItemAction from '../styled/NavigationItemAction';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemCaption from '../styled/NavigationItemCaption';
@@ -37,7 +46,8 @@ type Props = {
   /** Target frame for item `href` link to be aimed at. */
   target?: string,
   /** React element to appear to the left of the text. This should be an
-   @atlaskit/icon component. */
+   @atlaskit/icon component. For accessibility reasons, set the label for the icon to an empty string if providing
+   a text prop for this item. */
   icon?: Node,
   /** Element displayed to the right of the item. The dropIcon should generally be
    an appropriate @atlaskit icon, such as the ExpandIcon. */
@@ -166,7 +176,24 @@ class NavigationItem extends PureComponent<Props> {
   }
 }
 
-// TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
-// possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
-// $FlowFixMe
-export default withTheme(NavigationItem);
+export const NavigationItemWithoutAnalytics = withTheme(NavigationItem);
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'navigationItem',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'navigationItem',
+
+      attributes: {
+        componentName: 'navigationItem',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(NavigationItemWithoutAnalytics),
+);

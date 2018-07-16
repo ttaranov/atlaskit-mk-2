@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import rafSchedule from 'raf-schd';
-import { ScrollLock } from '@atlaskit/layer-manager';
+import ScrollLock from 'react-scrolllock';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -120,7 +120,7 @@ export default class Content extends Component<Props, State> {
   componentDidMount() {
     this._isMounted = true;
 
-    // $FlowFixMe
+    // $FlowFixMe - issue with document.addEventListener - Enum incompatible
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('keyup', this.handleKeyUp, false);
 
@@ -146,7 +146,7 @@ export default class Content extends Component<Props, State> {
   componentWillUnmount() {
     this._isMounted = false;
 
-    // $FlowFixMe
+    // $FlowFixMe - issue with document.addEventListener - Enum incompatible
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('keyup', this.handleKeyUp, false);
 

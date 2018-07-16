@@ -1,4 +1,3 @@
-import { image } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, ImageUploadHandler } from './pm-plugins/main';
 import inputRulePlugin from './pm-plugins/input-rule';
@@ -6,10 +5,6 @@ import inputRulePlugin from './pm-plugins/input-rule';
 export { ImageUploadHandler };
 
 const imageUpload: EditorPlugin = {
-  nodes() {
-    return [{ name: 'image', rank: 1699, node: image }];
-  },
-
   pmPlugins() {
     return [
       {

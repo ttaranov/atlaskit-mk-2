@@ -1,3 +1,7 @@
+/*
+* wrapper on top of webdriver-io apis to give a feel of puppeeteer api
+*/
+
 //TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
 const WAIT_TIMEOUT = 5000;
@@ -75,6 +79,12 @@ export default class Page {
         `return (${pageFunction}(document.querySelector("${selector}")))`,
       )
       .then(obj => obj.value);
+  }
+
+  count(selector) {
+    return this.$$(selector).then(function(result) {
+      return result.value.length;
+    });
   }
 
   type(selector, text) {
@@ -179,9 +189,17 @@ export default class Page {
     return this.browser.waitForVisible(selector, ms, reverse);
   }
 
+  waitUntil(predicate) {
+    return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
+  }
+
   // Window
   setViewPort(size, type) {
     return this.browser.setViewPort(size, type);
+  }
+
+  chooseFile(selector, localPath) {
+    return this.browser.chooseFile(selector, localPath);
   }
 }
 //TODO: Maybe wrapping all functions?

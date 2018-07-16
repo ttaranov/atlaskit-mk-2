@@ -1,4 +1,4 @@
-import { MediaApiConfig } from '../auth';
+import { MediaApiConfig } from '@atlaskit/media-store';
 import { MediaCollectionItem } from '../collection';
 import { Resources } from '../item';
 import createRequest from './util/createRequest';

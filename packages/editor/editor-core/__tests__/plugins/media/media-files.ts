@@ -9,10 +9,7 @@ import {
   mention,
   code_block,
   randomId,
-  decisionItem,
-  decisionList,
-  taskItem,
-  taskList,
+  panel,
 } from '@atlaskit/editor-test-helpers';
 import { insertMediaGroupNode } from '../../../src/plugins/media/utils/media-files';
 import { setNodeSelection } from '../../../src/utils';
@@ -20,7 +17,7 @@ import mediaPlugin from '../../../src/plugins/media';
 import mentionsPlugin from '../../../src/plugins/mentions';
 import codeBlockPlugin from '../../../src/plugins/code-block';
 import rulePlugin from '../../../src/plugins/rule';
-import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
+import { panelPlugin } from '../../../src/plugins';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -32,9 +29,9 @@ describe('media-files', () => {
       editorPlugins: [
         mediaPlugin(),
         mentionsPlugin,
-        codeBlockPlugin,
+        codeBlockPlugin(),
         rulePlugin,
-        tasksAndDecisionsPlugin,
+        panelPlugin,
       ],
     });
 
@@ -349,7 +346,7 @@ describe('media-files', () => {
         });
 
         describe('when there is an existing media group nearby', () => {
-          it('prepand media to the media group after parent', () => {
+          it('prepend media to the media group after parent', () => {
             const { editorView } = editor(
               doc(
                 mediaGroup(
@@ -437,7 +434,7 @@ describe('media-files', () => {
           editorView.destroy();
         });
 
-        it('prepends to exisiting media group after parent', () => {
+        it('prepends to existing media group after parent', () => {
           const { editorView } = editor(
             doc(
               p('te{<}xt{>}'),
@@ -515,7 +512,7 @@ describe('media-files', () => {
       });
 
       describe('when selection is a media node', () => {
-        it('prepends to the existsing media group', () => {
+        it('prepends to the existing media group', () => {
           const { editorView } = editor(
             doc(
               mediaGroup(
@@ -559,6 +556,48 @@ describe('media-files', () => {
           editorView.destroy();
         });
 
+        it('prepends to the existing media group - w/o any following paragraph', () => {
+          const { editorView } = editor(
+            doc(
+              mediaGroup(
+                media({
+                  id: temporaryFileId,
+                  __key: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+              ),
+            ),
+          );
+          setNodeSelection(editorView, 1);
+
+          insertMediaGroupNode(
+            editorView,
+            [{ id: 'new one', status: 'uploading' }],
+            testCollectionName,
+          );
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              mediaGroup(
+                media({
+                  id: 'new one',
+                  __key: 'new one',
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+                media({
+                  id: temporaryFileId,
+                  __key: temporaryFileId,
+                  type: 'file',
+                  collection: testCollectionName,
+                })(),
+              ),
+            ),
+          );
+          editorView.destroy();
+        });
+
         it('sets cursor to the paragraph after', () => {
           const { editorView } = editor(
             doc(
@@ -573,7 +612,7 @@ describe('media-files', () => {
               p('text'),
             ),
           );
-          setNodeSelection(editorView, 0);
+          setNodeSelection(editorView, 1);
 
           insertMediaGroupNode(
             editorView,
@@ -595,14 +634,16 @@ describe('media-files', () => {
             })(),
           )(editorView.state.schema).nodeSize;
 
-          expect(editorView.state.selection.from).toEqual(mediaGroupNodeSize);
+          expect(editorView.state.selection.from).toEqual(
+            mediaGroupNodeSize + 1,
+          );
           editorView.destroy();
         });
       });
 
       describe('when selection is a non media block node', () => {
-        describe('when no exisiting media group', () => {
-          it('replaces selection with a media node', () => {
+        describe('when no existing media group', () => {
+          it('append a media node under selected node', () => {
             const { editorView } = editor(doc(hr()));
             setNodeSelection(editorView, 0);
 
@@ -614,6 +655,7 @@ describe('media-files', () => {
 
             expect(editorView.state.doc).toEqualDocument(
               doc(
+                hr(),
                 mediaGroup(
                   media({
                     id: temporaryFileId,
@@ -630,8 +672,8 @@ describe('media-files', () => {
         });
 
         describe('when there are exisiting media group', () => {
-          describe('when media group is in the front', () => {
-            it('prepend media to the exisiting media group before', () => {
+          describe('when media group is in the front of selected node', () => {
+            it('append media below selected node', () => {
               const { editorView } = editor(
                 doc(
                   mediaGroup(
@@ -665,14 +707,17 @@ describe('media-files', () => {
                 doc(
                   mediaGroup(
                     media({
-                      id: 'new one',
-                      __key: 'new one',
+                      id: temporaryFileId,
+                      __key: temporaryFileId,
                       type: 'file',
                       collection: testCollectionName,
                     })(),
+                  ),
+                  hr(),
+                  mediaGroup(
                     media({
-                      id: temporaryFileId,
-                      __key: temporaryFileId,
+                      id: 'new one',
+                      __key: 'new one',
                       type: 'file',
                       collection: testCollectionName,
                     })(),
@@ -709,6 +754,7 @@ describe('media-files', () => {
 
               expect(editorView.state.doc).toEqualDocument(
                 doc(
+                  hr(),
                   mediaGroup(
                     media({
                       id: 'new one',
@@ -778,6 +824,7 @@ describe('media-files', () => {
                       collection: testCollectionName,
                     })(),
                   ),
+                  hr(),
                   mediaGroup(
                     media({
                       id: 'new one',
@@ -871,6 +918,7 @@ describe('media-files', () => {
       });
     });
   });
+
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView } = editor(doc(h1('text{<>}')));
 
@@ -1127,39 +1175,29 @@ describe('media-files', () => {
     });
   });
 
-  describe('when selection is in a task or decision block', () => {
-    it('media insertion ignored for task item', () => {
-      const itemDoc = doc(
-        taskList({ localId: 'id' })(taskItem({ localId: 'id' })('{<>}')),
-      );
-      const { editorView } = editor(itemDoc);
-
+  describe('when selections is inside panel', () => {
+    it('should append media below panel', () => {
+      const panelDoc = doc(panel({})(p('{<>}')));
+      const { editorView } = editor(panelDoc);
       insertMediaGroupNode(
         editorView,
         [{ id: temporaryFileId, status: 'uploading' }],
         testCollectionName,
       );
-
-      expect(editorView.state.doc).toEqualDocument(itemDoc);
-      editorView.destroy();
-    });
-
-    it('media insertion ignored for decision item', () => {
-      const decisionDoc = doc(
-        decisionList({ localId: 'id' })(
-          decisionItem({ localId: 'id' })('{<>}'),
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          panel({})(p('')),
+          mediaGroup(
+            media({
+              id: temporaryFileId,
+              __key: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+            })(),
+          ),
+          p(''),
         ),
       );
-      const { editorView } = editor(decisionDoc);
-
-      insertMediaGroupNode(
-        editorView,
-        [{ id: temporaryFileId, status: 'uploading' }],
-        testCollectionName,
-      );
-
-      expect(editorView.state.doc).toEqualDocument(decisionDoc);
-      editorView.destroy();
     });
   });
 });

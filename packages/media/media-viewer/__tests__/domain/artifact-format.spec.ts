@@ -47,12 +47,13 @@ describe('ArtifactFormat', () => {
 class Mocks {
   static partialFile: FileItem = {
     type: 'file',
-    details: {},
+    details: { id: 'id' },
   };
 
   static gifFile: FileItem = {
     type: 'file',
     details: {
+      id: 'id',
       mimeType: 'image/gif',
     },
   };

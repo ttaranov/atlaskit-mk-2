@@ -202,7 +202,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
           items,
           'Underline',
           'underline',
-          tooltip(toggleUnderline),
+          tooltip(toggleUnderline, true),
         );
       }
       if (!strikeHidden) {
@@ -210,27 +210,17 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
           items,
           'Strikethrough',
           'strike',
-          tooltip(toggleStrikethrough),
+          tooltip(toggleStrikethrough, true),
         );
       }
       if (!codeHidden) {
-        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode));
+        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode, true));
       }
       if (!subscriptHidden) {
-        this.addRecordToItems(
-          items,
-          'Subscript',
-          'subscript',
-          'Toggle subscript',
-        );
+        this.addRecordToItems(items, 'Subscript', 'subscript');
       }
       if (!superscriptHidden) {
-        this.addRecordToItems(
-          items,
-          'Superscript',
-          'superscript',
-          'Toggle superscript',
-        );
+        this.addRecordToItems(items, 'Superscript', 'superscript');
       }
     }
     if (pluginStateClearFormatting) {
@@ -238,7 +228,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         items,
         'Clear Formatting',
         'clearFormatting',
-        tooltip(clearFormatting),
+        tooltip(clearFormatting, true),
       );
     }
     return [
@@ -248,7 +238,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     ];
   };
 
-  private addRecordToItems = (items, content, value, tooltipDescription) => {
+  private addRecordToItems = (items, content, value, tooltipDescription?) => {
     items.push({
       content,
       value,

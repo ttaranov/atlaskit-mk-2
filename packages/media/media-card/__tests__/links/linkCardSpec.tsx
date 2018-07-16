@@ -11,7 +11,6 @@ import {
 
 import { LinkCard, LinkCardGenericView } from '../../src/links';
 import { A } from '../../src/links/card/styled';
-import { LinkCardImageView } from '../../src/links/cardImageView';
 import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
 import { URLEmbedCard } from '../../src/links/embed/urlEmbedCard';
 import { HTMLEmbedCard } from '../../src/links/embed/htmlEmbedCard';
@@ -30,7 +29,7 @@ describe('LinkCard', () => {
       expect(card.find(CardGenericViewSmall).exists()).toBeTruthy();
     });
 
-    it('should render LinkCardImageView when appearance="image"', () => {
+    it('should render LinkCardGenericView when appearance="image"', () => {
       const card = shallow(
         <LinkCard
           status="complete"
@@ -38,7 +37,7 @@ describe('LinkCard', () => {
           details={genericLinkDetails}
         />,
       );
-      expect(card.find(LinkCardImageView).exists()).toBeTruthy();
+      expect(card.find(LinkCardGenericView).exists()).toBeTruthy();
     });
 
     it('should render LinkCardGenericView when appearance="horizontal" and details do not contain a smartCard', () => {

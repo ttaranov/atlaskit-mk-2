@@ -33,24 +33,25 @@ BrowserTestCase(
   },
 );
 
-// TODO: Unskip when FS-1697 util-data-test migration has completed
-// BrowserTestCase(
-//   'Mention: should not insert on space if multiple exact nickname match',
-//   async client => {
-//     const browser = await new Page(client);
-//     await browser.goto(messageEditor);
-//     await browser.waitForSelector(editable);
-//     await browser.type(editable, '@');
-//     await browser.waitForSelector(picker);
-//     await browser.type(editable, 'gill');
-//     await browser.isVisible('[data-mention-name=pgill]');
-//     await browser.isVisible('[data-mention-name=jjackson]');
-//     await browser.type(editable, ' some');
-//     await browser.type(editable, ' text');
-//     const doc = await browser.$eval(editable, getDocFromElement);
-//     expect(doc).toMatchDocSnapshot();
-//   },
-// );
+// IE still has mentionQuery true at this point
+BrowserTestCase(
+  'Mention: should not insert on space if multiple exact nickname match',
+  { skip: ['ie'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitForSelector(editable);
+    await browser.type(editable, '@');
+    await browser.waitForSelector(picker);
+    await browser.type(editable, 'gill');
+    await browser.isVisible('[data-mention-name=pgill]');
+    await browser.isVisible('[data-mention-name=jjackson]');
+    await browser.type(editable, ' some');
+    await browser.type(editable, ' text ');
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
 
 BrowserTestCase(
   'Mention: inserted if space on single match',

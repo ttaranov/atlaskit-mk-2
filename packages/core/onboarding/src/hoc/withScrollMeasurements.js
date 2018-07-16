@@ -1,14 +1,16 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { type ComponentType } from '../types';
+import React, { Component, type ComponentType } from 'react';
 
-import SpotlightRegistry from '../components/SpotlightRegistry';
+import { type RegistryType } from '../components/SpotlightRegistry';
 
 const SCROLLABLE = /auto|scroll/;
 
-type Props = { target: string };
+type Props = {
+  spotlightRegistry: RegistryType,
+  target?: string,
+  targetNode?: HTMLElement,
+};
 type State = {
   clone?: string, // string representation of HTMLElement
   scrollY: number,
@@ -44,7 +46,7 @@ function elementCropDirection(el: HTMLElement) {
     direction = 'top';
   }
   if (
-    // $FlowFixMe
+    // $FlowFixMe - cannot call null on a number for document.documentElement
     rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)
   ) {
     direction = 'bottom';
@@ -62,39 +64,57 @@ function getScrollY(node = window) {
   return scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
 }
 
-export default function withScrollMeasurements(
-  WrappedComponent: ComponentType,
+function updateAttribute(
+  node: HTMLElement,
+  attribute: string,
+  update: string => string,
 ) {
-  return class SpotlightWrapper extends Component<Props, State> {
-    state: State = { scrollY: 0 };
-    static contextTypes = {
-      spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
-    };
-    componentWillMount() {
-      const { target } = this.props;
-      const { spotlightRegistry } = this.context;
+  const current = node.getAttribute(attribute);
+  node.setAttribute(attribute, update(current || ''));
+  return node;
+}
 
-      if (!spotlightRegistry) {
-        throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
-      }
-      spotlightRegistry.mount(target);
-      const node = spotlightRegistry.get(target);
+export default function withScrollMeasurements(
+  WrappedComponent: ComponentType<*>,
+) {
+  return class SpotlightMeasurer extends Component<Props, State> {
+    state: State = { scrollY: 0 };
+    componentWillMount() {
+      const { spotlightRegistry } = this.props;
+      const node = this.getNode();
+
+      // let the registry know that there's a spotlight mounted so it can
+      // render a blanket, lock scroll etc.
+      spotlightRegistry.mount(node);
+
+      // this feels hacky, might need to refactor
       this.setState({ scrollY: getScrollY(node) }, () => {
         this.measureAndScroll(node);
       });
     }
     componentWillUnmount() {
-      const { target } = this.props;
-      const { spotlightRegistry } = this.context;
-      spotlightRegistry.unmount(target);
+      const { spotlightRegistry } = this.props;
+      const node = this.getNode();
+      spotlightRegistry.unmount(node);
     }
-    measureAndScroll = (node: HTMLElement) => {
-      if (!node) {
-        throw new Error(`
-          It looks like you're trying to render a spotlight dialog without a
-          target, or before the target has rendered.
-        `);
+    getNode = () => {
+      const { spotlightRegistry, target, targetNode } = this.props;
+
+      let node;
+      if (targetNode) {
+        node = targetNode;
+      } else if (target) {
+        node = spotlightRegistry.get(target);
       }
+
+      // can't do anything without the node, bail
+      if (!node) {
+        throw new Error('You must provide a `target`, or `targetNode`.');
+      }
+
+      return node;
+    };
+    measureAndScroll = (node: HTMLElement) => {
       const {
         height,
         left,
@@ -136,9 +156,18 @@ export default function withScrollMeasurements(
         scrollParent.scrollTop += offsetY;
       }
 
-      // get adjusted measurements after scrolling
+      // ensure positioning of cloned node is static
+      const clonedNode = updateAttribute(
+        node.cloneNode(true),
+        'style',
+        style =>
+          style.indexOf('position') > -1
+            ? style.replace(/position: (.*);/, 'position: static;')
+            : `${style} position: static;`,
+      );
+
       this.setState({
-        clone: node.outerHTML,
+        clone: clonedNode.outerHTML,
         rect: { height, left, top, width },
         scrollY: getScrollY(),
       });

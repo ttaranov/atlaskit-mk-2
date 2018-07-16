@@ -18,6 +18,7 @@ import {
   isPastDate,
 } from '@atlaskit/editor-common';
 import { selectElement } from '../actions';
+import { defaultEditorFontStyles } from '../../../styles';
 
 const Overlay = styled.div`
   background: transparent;
@@ -32,6 +33,8 @@ const Overlay = styled.div`
 `;
 
 const DateNode = styled.span`
+  ${defaultEditorFontStyles};
+
   background: ${akColorN30A};
   border-radius: ${akBorderRadius};
   color: ${akColorN800};
@@ -40,6 +43,8 @@ const DateNode = styled.span`
   position: relative;
   cursor: pointer;
   transition: background 0.3s;
+  white-space: nowrap;
+
   &:hover {
     background: ${akColorN40};
   }
@@ -64,8 +69,14 @@ export interface Props {
 
 export default class DateNodeView extends React.Component<Props, any> {
   render() {
-    const { attrs: { timestamp } } = this.props.node;
-    const { view: { state: { schema, selection } } } = this.props;
+    const {
+      attrs: { timestamp },
+    } = this.props.node;
+    const {
+      view: {
+        state: { schema, selection },
+      },
+    } = this.props;
     const withinTask = selection.$from.parent.type === schema.nodes.taskItem;
 
     return (

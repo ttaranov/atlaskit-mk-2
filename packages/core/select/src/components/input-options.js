@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Component, type Element, type Ref } from 'react';
-import styled from 'styled-components';
+import React, { Component, type Element } from 'react';
 import { components } from 'react-select';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import { colors, themed } from '@atlaskit/theme';
+import { colors, themed, gridSize } from '@atlaskit/theme';
+import type { CommonProps, fn, InnerProps } from './types';
 
 // maintains function shape
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
@@ -26,7 +26,7 @@ const getPrimaryColor = ({
   isFocused,
   isSelected,
   ...rest
-}: ControlProps): string => {
+}: ControlProps): string | number => {
   let color = backgroundColor;
   if (isDisabled && isSelected) {
     color = themed({ light: colors.B75, dark: colors.DN200 });
@@ -41,7 +41,7 @@ const getPrimaryColor = ({
   } else if (isSelected) {
     color = colors.blue;
   }
-  // $FlowFixMe: TEMPORARY
+  // $FlowFixMe - theme is not found in props
   return color(rest);
 };
 
@@ -51,7 +51,7 @@ const getSecondaryColor = ({
   isDisabled,
   isSelected,
   ...rest
-}: ControlProps): string => {
+}: ControlProps): string | number => {
   let color = themed({ light: colors.N0, dark: colors.DN10 });
 
   if (isDisabled && isSelected) {
@@ -61,25 +61,16 @@ const getSecondaryColor = ({
   } else if (!isSelected) {
     color = transparent;
   }
-  // $FlowFixMe: TEMPORARY
+  // $FlowFixMe - theme is not found in props
   return color(rest);
 };
 
-type fn = any => any;
-type OptionProops = {
+type OptionProps = CommonProps & {
+  [string]: any,
   children: Element<*>,
   getStyles: fn,
   Icon: CheckboxIcon | RadioIcon,
-  innerProps: {
-    'aria-selected': boolean,
-    id: string,
-    innerRef: Ref<*>,
-    key: string,
-    onClick: MouseEventHandler,
-    onMouseOver: MouseEventHandler,
-    role: 'option',
-    tabIndex: number,
-  },
+  innerProps: InnerProps,
   isDisabled: boolean,
   isFocused: boolean,
   isSelected: boolean,
@@ -87,7 +78,8 @@ type OptionProops = {
   label: string,
 };
 type OptionState = { isActive?: boolean };
-class ControlOption extends Component<OptionProops, OptionState> {
+
+class ControlOption extends Component<OptionProps, OptionState> {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });
   onMouseUp = () => this.setState({ isActive: false });
@@ -118,7 +110,7 @@ class ControlOption extends Component<OptionProops, OptionState> {
     };
 
     // prop assignment
-    const props = {
+    const props: InnerProps = {
       ...innerProps,
       onMouseDown: this.onMouseDown,
       onMouseUp: this.onMouseUp,
@@ -135,16 +127,27 @@ class ControlOption extends Component<OptionProops, OptionState> {
         getStyles={getStyles}
         innerProps={props}
       >
-        <Icon
-          primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
-          secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
-        />
-        <Truncate>{children}</Truncate>
+        <div css={iconWrapperCSS()}>
+          <Icon
+            primaryColor={getPrimaryColor({ ...this.props, ...this.state })}
+            secondaryColor={getSecondaryColor({ ...this.props, ...this.state })}
+          />
+        </div>
+        <div css={truncateCSS()}>{children}</div>
       </components.Option>
     );
   }
 }
+
+const iconWrapperCSS = () => ({
+  alignItems: 'center',
+  display: 'flex ',
+  'flex-shrink': 0,
+  paddingRight: '4px',
+});
+
 /* TODO:
+  to be removed
   the label of an option in the menu
   should ideally be something we can customise
   as part of the react-select component API
@@ -154,12 +157,25 @@ class ControlOption extends Component<OptionProops, OptionState> {
   by users who buy into radio / checkbox select.
 */
 
-const Truncate = styled.div`
-  text-overflow: ellipsis;
-  overflow-x: hidden;
-  flex: 1;
-  white-space: nowrap;
-`;
+const truncateCSS = () => ({
+  textOverflow: 'ellipsis',
+  'overflow-x': 'hidden',
+  'flex-grow': 1,
+  whiteSpace: 'nowrap',
+});
+
+export const inputOptionStyles = (css: Object, { isFocused }: Object) => ({
+  ...css,
+  backgroundColor: isFocused ? colors.N30 : 'transparent',
+  color: 'inherit',
+  cursor: 'pointer',
+  paddingLeft: `${gridSize() * 2}px`,
+  paddingTop: '4px',
+  paddingBottom: '4px',
+  ':active': {
+    backgroundColor: colors.B50,
+  },
+});
 
 export const CheckboxOption = (props: any) => (
   <ControlOption Icon={CheckboxIcon} {...props} />

@@ -21,7 +21,6 @@ import { ContextFactory } from '@atlaskit/media-core';
 
 export interface ClipboardWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: any[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
@@ -34,7 +33,6 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
 
   state: ClipboardWrapperState = {
     isConnectedToUsersCollection: true,
-    previewsData: [],
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],
@@ -133,9 +131,15 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
     }
 
     return lastItems.map((item, key) => {
+      const { id, details } = item;
+
+      // details are not always present in the response
+      const name = details ? details.name : '<no-details>';
+      const mediaType = details ? details.mediaType : '<no-details>';
+
       return (
         <div key={key}>
-          {item.id} | {item.details.name} | {item.details.mediaType}
+          {id} | {name} | {mediaType}
         </div>
       );
     });

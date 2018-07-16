@@ -1,12 +1,17 @@
 import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
-import {
-  EditorState,
-  TextSelection,
-  Transaction,
-  Plugin,
-} from 'prosemirror-state';
+import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
+
+// tries to find a valid cursor position
+const setTextSelection = (pos: number) => (tr: Transaction) => {
+  const newSelection = Selection.findFrom(tr.doc.resolve(pos), -1, true);
+  if (newSelection) {
+    tr.setSelection(newSelection);
+  }
+  return tr;
+};
+
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction) => {
     return tr.delete($from.before($from.depth) - 1, $from.end($from.depth) + 1);
@@ -26,7 +31,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
    */
   const keymaps = {
     Backspace: (state: EditorState, dispatch) => {
-      const { selection, schema: { nodes }, tr } = state;
+      const {
+        selection,
+        schema: { nodes },
+        tr,
+      } = state;
       const { decisionList, decisionItem, taskList, taskItem } = nodes;
 
       if ((!decisionItem || !decisionList) && (!taskList || !taskItem)) {
@@ -54,7 +63,9 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         return false;
       }
 
-      const previousPos = tr.doc.resolve(Math.max(0, $from.before(1) - 1));
+      const previousPos = tr.doc.resolve(
+        Math.max(0, $from.before($from.depth) - 1),
+      );
 
       if (previousPos.pos === 0 && !isFirstItemInList) {
         return false;
@@ -70,40 +81,35 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
 
       if (previousNodeIsList && !parentNodeIsList) {
         const content = $from.node($from.depth).content;
-
-        deleteCurrentItem($from, tr)
-          .insert(previousPos.pos - 1, content)
-          .setSelection(new TextSelection(tr.doc.resolve(previousPos.pos - 1)))
-          .scrollIntoView();
-
-        dispatch(tr);
-
+        const insertPos = previousPos.pos - 1;
+        deleteCurrentItem($from, tr).insert(insertPos, content);
+        dispatch(setTextSelection(insertPos)(tr).scrollIntoView());
         return true;
       } else if (isFirstItemInList) {
         const content = schema.nodes.paragraph.create(
           {},
           $from.node($from.depth).content,
         );
-        const insertPos = previousPos.pos > 0 ? previousPos.pos + 1 : 0;
         const isOnlyChild = $from.node($from.depth - 1).childCount === 1;
+        const insertPos = previousPos.pos > 0 ? previousPos.pos + 1 : 0;
 
         if (!isOnlyChild) {
           deleteCurrentItem($from, tr).insert(insertPos, content);
         } else {
           deleteList($from, tr, content);
         }
-
-        tr
-          .setSelection(new TextSelection(tr.doc.resolve(insertPos + 1)))
-          .scrollIntoView();
-
-        dispatch(tr);
-
+        dispatch(setTextSelection(insertPos)(tr).scrollIntoView());
         return true;
       }
+
+      return false;
     },
     Enter: (state: EditorState, dispatch) => {
-      const { selection, tr, schema: { nodes } } = state;
+      const {
+        selection,
+        tr,
+        schema: { nodes },
+      } = state;
       const { $from } = selection;
       const node = $from.node($from.depth);
       const nodeType = node && node.type;

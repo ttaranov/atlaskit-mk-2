@@ -9,9 +9,7 @@ import {
   akColorN0,
   akColorN20,
   akColorN800,
-  akColorN900,
 } from '@atlaskit/util-shared-styles';
-import { colorWithAlpha } from '../../utils/colorWithAlpha';
 import { cardShadow } from '../../styles';
 import { borderRadius } from '@atlaskit/media-ui';
 
@@ -61,10 +59,7 @@ const cardOverlay = ({ background }: CardProps) => {
         background-position: center;
       }
       &::after {
-        ${positionedBehindCard} background-color: ${colorWithAlpha(
-      akColorN900,
-      0.5,
-    )};
+        ${positionedBehindCard} background-color: rgba(9,30,66,.5);
       }
     `;
   } else {

@@ -3,17 +3,17 @@ import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 /**
  * @name applicationCard_node
  */
-export interface Definition {
+export interface ApplicationCardDefinition {
   type: 'applicationCard';
-  attrs: Attributes;
+  attrs: ApplicationCardAttributes;
 }
 
-export interface Attributes {
+export interface ApplicationCardAttributes {
   text: string;
   textUrl?: string;
   link?: {
     /**
-     * @pattern "^https:\/\/|^data:image\/"
+     * @pattern "^https?:\/\/|^data:image\/"
      */
     url: string;
   };
@@ -125,7 +125,10 @@ export const applicationCard: NodeSpec = {
     {
       tag: 'div[data-node-type="media"]',
       getAttrs: (dom: HTMLElement) => {
-        const attrs: Attributes = { text: '', title: { text: '' } };
+        const attrs: ApplicationCardAttributes = {
+          text: '',
+          title: { text: '' },
+        };
 
         Object.keys(defaultAttrs).forEach(key => {
           attrs[key] = dom.dataset[key];

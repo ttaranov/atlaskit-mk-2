@@ -1,101 +1,71 @@
 import { EmojiId } from '@atlaskit/emoji';
 
-import { equalEmojiId, findIndex } from './internal/helpers';
 import {
   default as AbstractReactionsProvider,
   ObjectReactionKey,
+  ReactionsState,
+  Reactions,
+  ReactionSummary,
 } from './reactions-resource';
-import { Reactions, ReactionSummary } from './reactions-resource';
 import { defaultReactionsByShortName } from './internal/selector';
 
+const user = (id: string, displayName: string) => ({ id, displayName });
+
+const containerAri: string = 'ari:cloud:owner:demo-cloud-id:container/1';
+const ari: string = 'ari:cloud:owner:demo-cloud-id:item/1';
+const reaction = (shortName: string, count: number, reacted: boolean) => ({
+  ari,
+  containerAri,
+  emojiId: (defaultReactionsByShortName.get(shortName) as EmojiId).id!,
+  count,
+  reacted,
+});
+
 export default class MockReactionsProvider extends AbstractReactionsProvider {
+  public mockData: {
+    readonly [key: string]: ReactionSummary[];
+  };
+
   constructor() {
     super();
-    this.cachedReactions = {
-      [this.objectReactionKey(
-        'ari:cloud:owner:demo-cloud-id:container/1',
-        'ari:cloud:owner:demo-cloud-id:item/1',
-      )]: [
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':grinning:') as EmojiId)
-            .id!,
-          count: 1,
-          reacted: true,
-        },
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':thumbsup:') as EmojiId)
-            .id!,
-          count: 5,
-          reacted: false,
-        },
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':thumbsdown:') as EmojiId)
-            .id!,
-          count: 5,
-          reacted: false,
-        },
-        {
-          ari: 'ari:cloud:owner:demo-cloud-id:item/1',
-          containerAri: 'ari:cloud:owner:demo-cloud-id:container/1',
-          emojiId: (defaultReactionsByShortName.get(':heart:') as EmojiId).id!,
-          count: 100,
-          reacted: false,
-        },
+
+    this.mockData = {
+      [this.objectReactionKey(containerAri, ari)]: [
+        reaction(':fire:', 1, true),
+        reaction(':thumbsup:', 9, false),
+        reaction(':thumbsdown:', 5, false),
+        reaction(':heart_eyes:', 100, false),
       ],
     };
   }
 
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
-      keys.forEach(key => {
-        if (
-          !this.cachedReactions[
-            this.objectReactionKey(key.containerAri, key.ari)
-          ]
-        ) {
-          this.cachedReactions[
-            this.objectReactionKey(key.containerAri, key.ari)
-          ] = [];
-        }
-      });
-
-      const results = {};
-      Object.keys(this.cachedReactions).forEach(cacheKey => {
-        const objectReactions = this.cachedReactions[cacheKey];
-        const ari = cacheKey.split('|')[1];
-        results[ari] = objectReactions;
-      });
-
-      resolve(results);
+      resolve(
+        keys.reduce((results, key) => {
+          const reactionKey = this.objectReactionKey(key.containerAri, key.ari);
+          results[key.ari] = this.mockData[reactionKey] || [];
+          return results;
+        }, {}),
+      );
     });
   }
 
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
     return new Promise<ReactionSummary>((resolve, reject) => {
       const users = [
-        {
-          id: 'oscar',
-          displayName: 'Oscar Wallhult',
-        },
-        {
-          id: 'julien',
-          displayName: 'Julien Michel Hoarau',
-        },
-        {
-          id: 'craig',
-          displayName: 'Craig Petchell',
-        },
-        {
-          id: 'jerome',
-          displayName: 'Jerome Touffe-Blin',
-        },
-      ].slice(0, Math.floor(Math.random() * 3) + 1);
+        user('oscar', 'Oscar Wallhult'),
+        user('julien', 'Julien Michel Hoarau'),
+        user('craig', 'Craig Petchell'),
+        user('jerome', 'Jerome Touffe-Blin'),
+        user('esoares', 'Eduardo Soares'),
+        user('lpereira', 'Luiz Pereira'),
+        user('pcurren', 'Paul Curren'),
+        user('ttjandra', 'Tara Tjandra'),
+        user('severington', 'Ste Everington'),
+        user('sguillope', 'Sylvain Guillope'),
+        user('alunnon', 'Alex Lunnon'),
+      ].slice(Math.floor(Math.random() * 4), Math.floor(Math.random() * 9) + 4);
 
       resolve({
         ...reaction,
@@ -108,25 +78,8 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     const { containerAri, ari, emojiId } = reaction;
     return new Promise<ReactionSummary>((resolve, reject) => {
       this.getDetailedReaction(reaction).then(reactionDetails => {
-        if (!this.cachedReactions[ari]) {
-          this.cachedReactions[ari] = [];
-        }
-
-        const key = this.objectReactionKey(containerAri, ari);
-        const index = findIndex(
-          this.cachedReactions[key],
-          r => r.emojiId === emojiId,
-        );
-
-        setTimeout(() => {
-          if (index !== -1) {
-            this.cachedReactions[key][index] = reactionDetails;
-          } else {
-            this.cachedReactions[key].push(reactionDetails);
-          }
-          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
-          resolve(reactionDetails);
-        }, 1000);
+        this.updateEmojiState(containerAri, ari, emojiId, reactionDetails);
+        resolve(reactionDetails);
       });
     });
   }
@@ -135,28 +88,17 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     containerAri: string,
     ari: string,
     emojiId: string,
-  ): Promise<ReactionSummary[]> {
-    return new Promise<ReactionSummary[]>((resolve, reject) => {
-      const key = this.objectReactionKey(containerAri, ari);
-      const index = findIndex(this.cachedReactions[key], reaction =>
-        equalEmojiId(reaction.emojiId, emojiId),
+  ): Promise<ReactionsState> {
+    return new Promise<ReactionsState>((resolve, reject) => {
+      resolve(
+        this.updateEmojiState(containerAri, ari, emojiId, reaction => {
+          return {
+            ...reaction,
+            count: reaction.count + 1,
+            reacted: true,
+          };
+        }),
       );
-
-      if (index !== -1) {
-        const reaction = this.cachedReactions[key][index];
-        reaction.reacted = true;
-        reaction.count++;
-      } else {
-        this.cachedReactions[key].push({
-          ari: ari,
-          containerAri: containerAri,
-          emojiId: emojiId,
-          count: 1,
-          reacted: true,
-        });
-      }
-
-      resolve(this.cachedReactions[key]);
     });
   }
 
@@ -164,22 +106,17 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     containerAri: string,
     ari: string,
     emojiId: string,
-  ): Promise<ReactionSummary[]> {
-    return new Promise<ReactionSummary[]>((resolve, reject) => {
-      const key = this.objectReactionKey(containerAri, ari);
-      const index = findIndex(this.cachedReactions[key], reaction =>
-        equalEmojiId(reaction.emojiId, emojiId),
+  ): Promise<ReactionsState> {
+    return new Promise<ReactionsState>((resolve, reject) => {
+      resolve(
+        this.updateEmojiState(containerAri, ari, emojiId, reaction => {
+          return {
+            ...reaction,
+            count: reaction.count - 1,
+            reacted: false,
+          };
+        }),
       );
-      const reaction = this.cachedReactions[key][index];
-
-      reaction.reacted = false;
-      reaction.count--;
-
-      if (reaction.count < 1) {
-        this.cachedReactions[key].splice(index, 1);
-      }
-
-      resolve(this.cachedReactions[key]);
     });
   }
 }

@@ -47,6 +47,9 @@ export default createSchema({
     'bodiedExtension',
     'date',
     'placeholder',
+    'layoutSection',
+    'layoutColumn',
+    'inlineCard',
   ],
   marks: [
     'em',
@@ -58,6 +61,7 @@ export default createSchema({
     'mentionQuery',
     'subsup',
     'emojiQuery',
+    'typeAheadQuery',
     'textColor',
     'confluenceInlineComment',
   ],

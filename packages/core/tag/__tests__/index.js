@@ -2,20 +2,16 @@
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import styled from 'styled-components';
 
 import Chrome from '../src/Chrome';
 import Content from '../src/Content';
 import Remove from '../src/RemoveButton';
-import Tag from '../src/Tag';
+import { TagWithoutAnalytics as Tag } from '../src/Tag';
 
 import Before from '../src/Tag/styledBefore';
 import Container from '../src/Tag/styledContainer';
-
-// TODO: Revisit all these tests. AK-1975
-// Large parts of the API are not tested (hrefs should render anchors, truncation should occur, etc)
-// Most of these tests are testing React behaviour (setting props) where they should be testing
-// props + state => expectedRenderedOutput
-// They also don't follow the normal naming standards for describe and it blocks
+import { Link, Text } from '../src/Content/styled';
 
 describe('Tag component', () => {
   const atlassianHref = 'https://www.atlassian.com';
@@ -197,6 +193,25 @@ describe('Tag component', () => {
     });
   });
 
+  describe('linkComponent prop', () => {
+    it('should default to our link component', () => {
+      const wrapper = mount(<Tag text="foo" href="/something" />);
+      expect(wrapper.find(Link).length).toBe(1);
+    });
+    it('should default to our Text component when there is no href and a linkComponent', () => {
+      const wrapper = mount(<Tag text="foo" linkComponent={styled.a``} />);
+      expect(wrapper.find(Text).length).toBe(1);
+    });
+    it('should use our linkComponent when there is a href', () => {
+      const A = styled.a``;
+      const wrapper = mount(
+        <Tag text="foo" href="/something" linkComponent={A} />,
+      );
+      expect(wrapper.find(Link).length).toBe(0);
+      expect(wrapper.find(A).length).toBe(1);
+    });
+  });
+
   describe('onAfterRemoveAction prop', () => {
     it('should be called after remove animation is completed', () => {
       const spy = jest.fn();
@@ -237,12 +252,6 @@ describe('Tag component', () => {
     it('should render the standard color option if no color option is provided', () => {
       const wrapper = mount(<Tag text="default" />);
       expect(wrapper.props().color).toBe('standard');
-    });
-
-    it('should render the standard color option if missing color option is provided', () => {
-      // $FlowFixMe
-      const wrapper = mount(<Tag text="gibberish" color="gibberish" />);
-      expect(wrapper.find(Chrome).props().color).toBe('standard');
     });
   });
 });

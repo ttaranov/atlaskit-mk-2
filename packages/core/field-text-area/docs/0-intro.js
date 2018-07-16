@@ -1,52 +1,43 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   Provides a standard way to create a text-based form input with an associated label.
 
-  ~~~js
-  import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text-area';
-  ~~~
+${code`
+import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+`}
 
   Text Field Area exports both a stateful default component, and a stateless
   component. The stateful component manages the value of the input for you
   and passes all other props on to the stateless version.
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/00-basic-usage').default}
-        title="Basic"
-        source={require('!!raw-loader!../examples/00-basic-usage')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/01-stateless-example').default}
-        title="Stateless Example"
-        source={require('!!raw-loader!../examples/01-stateless-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/01-stateless-example').default}
+      title="Stateless Example"
+      source={require('!!raw-loader!../examples/01-stateless-example')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/02-form-example').default}
-        title="Form Example"
-        source={require('!!raw-loader!../examples/02-form-example')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/02-form-example').default}
+      title="Form Example"
+      source={require('!!raw-loader!../examples/02-form-example')}
+    />
+  )}
 
   ${(
     <Props

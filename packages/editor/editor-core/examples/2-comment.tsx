@@ -15,6 +15,7 @@ import { name, version } from '../package.json';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import { DevTools } from '../example-helpers/DevTools';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -111,6 +112,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
+                    quickInsert={true}
                     allowTasksAndDecisions={true}
                     allowCodeBlocks={true}
                     allowTextColor={true}
@@ -118,6 +120,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowRule={true}
                     allowTables={true}
                     allowHelpDialog={true}
+                    allowGapCursor={true}
                     disabled={disabled}
                     activityProvider={activityProvider}
                     mentionProvider={mentionProvider}
@@ -128,15 +131,17 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}
-                    primaryToolbarComponents={[
-                      <ToolbarFeedback
-                        product={'bitbucket'}
-                        packageVersion={version}
-                        packageName={name}
-                        key="toolbar-feedback"
-                      />,
-                      <ToolbarHelp key="toolbar-help" />,
-                    ]}
+                    primaryToolbarComponents={
+                      <>
+                        <ToolbarFeedback
+                          product={'bitbucket'}
+                          packageVersion={version}
+                          packageName={name}
+                          key="toolbar-feedback"
+                        />
+                        <ToolbarHelp key="toolbar-help" />
+                      </>
+                    }
                     allowExtension={true}
                     insertMenuItems={customInsertMenuItems}
                     extensionHandlers={extensionHandlers}
@@ -152,6 +157,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               </div>
             )}
           />
+          <DevTools />
         </div>
       </EditorContext>
     );

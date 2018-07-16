@@ -1,6 +1,7 @@
 // @flow
 
 import themed from './utils/themed';
+import type { colorPaletteType } from './types';
 
 // Reds
 export const R50 = '#FFEBE6';
@@ -142,11 +143,16 @@ export const DN10A = 'rgba(13, 20, 36, 0.97)';
 
 // Themed colors
 export const background = themed({ light: N0, dark: DN30 });
+export const backgroundActive = themed({ light: B50, dark: B75 });
+export const backgroundHover = themed({ light: N30, dark: DN70 });
+export const backgroundOnLayer = themed({ light: N0, dark: DN50 });
 export const text = themed({ light: N900, dark: DN600 });
-export const subtleText = themed({ light: N300, dark: DN300 });
+export const textHover = themed({ light: N800, dark: DN600 });
+export const textActive = themed({ light: B400, dark: B400 });
+export const subtleText = themed({ light: N200, dark: DN300 });
 export const placeholderText = themed({ light: N100, dark: DN200 });
 export const heading = themed({ light: N800, dark: DN600 });
-export const subtleHeading = themed({ light: N300, dark: DN300 });
+export const subtleHeading = themed({ light: N200, dark: DN300 });
 export const codeBlock = themed({ light: N20, dark: DN50 });
 export const link = themed({ light: B400, dark: B100 });
 export const linkHover = themed({ light: B300, dark: B200 });
@@ -159,3 +165,52 @@ export const purple = themed({ light: P300, dark: P100 });
 export const red = themed({ light: R300, dark: R300 });
 export const yellow = themed({ light: Y300, dark: Y300 });
 export const green = themed({ light: G300, dark: G300 });
+
+// Jira Portfolio
+export const colorPalette8 = [
+  { background: N800, text: N0 },
+  { background: R400, text: N0 },
+  { background: P400, text: P50 },
+  { background: B400, text: B75 },
+  { background: T300, text: N800 },
+  { background: G400, text: N0 },
+  { background: Y400, text: N800 },
+  { background: N70, text: N800 },
+];
+
+export const colorPalette16 = [
+  ...colorPalette8,
+  { background: N500, text: N0 },
+  { background: R100, text: N800 },
+  { background: P75, text: N800 },
+  { background: B100, text: N800 },
+  { background: T100, text: N800 },
+  { background: G100, text: G500 },
+  { background: Y200, text: N800 },
+  { background: N0, text: N800 },
+];
+
+export const colorPalette24 = [
+  ...colorPalette16,
+  { background: N100, text: N0 },
+  { background: N40, text: N800 },
+  { background: N50, text: R500 },
+  { background: P50, text: P500 },
+  { background: B50, text: B500 },
+  { background: T75, text: N800 },
+  { background: G50, text: G500 },
+  { background: Y75, text: N800 },
+];
+
+export const colorPalette = (palette: colorPaletteType = '8') => {
+  switch (palette) {
+    case '8':
+      return colorPalette8;
+    case '16':
+      return colorPalette16;
+    case '24':
+      return colorPalette24;
+    default:
+      throw new Error('The only available color palette is 8, 16, 24');
+  }
+};

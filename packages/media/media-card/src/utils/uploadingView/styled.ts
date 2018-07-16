@@ -1,21 +1,19 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import { akColorN0, akColorN900 } from '@atlaskit/util-shared-styles';
+import { akColorN0 } from '@atlaskit/util-shared-styles';
 import { absolute, size } from '@atlaskit/media-ui';
-import { colorWithAlpha } from '../colorWithAlpha';
 
 const bodyHeight = 26;
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   height: inherit;
-  border-radius: inherit;
 `;
 
 export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${absolute()} ${size()} border-radius: inherit;
-  background-color: ${colorWithAlpha(akColorN900, 0.5)};
+  background-color: rgba(9, 30, 66, 0.5);
 `;
 
 export const Title: ComponentClass<HTMLAttributes<{}>> = styled.div`

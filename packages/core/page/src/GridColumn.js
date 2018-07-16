@@ -1,6 +1,10 @@
 // @flow
 import React, { Component, type Node } from 'react';
-import { ThemeProvider, withTheme } from 'styled-components';
+import {
+  ThemeProvider,
+  withTheme,
+  type ThemeProviderProps,
+} from 'styled-components';
 
 import { defaultGridColumns } from './internal/vars';
 import GridColumn from './internal/GridColumnElement';
@@ -10,7 +14,7 @@ const defaultSpacing = 'cosy';
 type Props = {
   medium?: number,
   children?: Node,
-};
+} & ThemeProviderProps;
 
 export default withTheme(
   class AkGridColumn extends Component<Props, void> {

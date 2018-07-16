@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Usage
 
   Blanket provides the overlay layer for components such as a modal dialog or a tooltip.
 
-  ~~~js
-  import Blanket from '@atlaskit/blanket';
-  ~~~
+${code`
+import Blanket from '@atlaskit/blanket';
+`}
 
   The blanket component is designed to be used with a modal or popup, and
   overlay the rest of the page. It provides an onBlanketClicked option that is designed to catch clicks
@@ -19,27 +19,21 @@ export default md`
   shown or hidden with its parent element.
 
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/00-basic-usage').default}
-        title="Basic"
-        source={require('!!raw-loader!../examples/00-basic-usage')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Basic"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
 
-  ${
-    (
-      // $FlowFixMe TEMPORARY
-      <Example
-        Component={require('../examples/01-click-through').default}
-        title="With click through enabled"
-        source={require('!!raw-loader!../examples/01-click-through')}
-      />
-    )
-  }
+  ${(
+    <Example
+      Component={require('../examples/01-click-through').default}
+      title="With click through enabled"
+      source={require('!!raw-loader!../examples/01-click-through')}
+    />
+  )}
 
 
   ${(

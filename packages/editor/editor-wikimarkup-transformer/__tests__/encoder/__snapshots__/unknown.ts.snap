@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ADF => WikiMarkup - Unknown Nodes should convert custom emoji into {adf} 1`] = `"Hello {adf:display=inline}{\\"type\\":\\"emoji\\",\\"attrs\\":{\\"shortName\\":\\":wtf:\\",\\"id\\":\\"wtf\\",\\"text\\":\\":wtf:\\"}}{adf}"`;
+
+exports[`ADF => WikiMarkup - Unknown Nodes should convert decision into {adf} 1`] = `
+"{adf:display=block}
+{\\"type\\":\\"decisionList\\",\\"attrs\\":{\\"localId\\":\\"\\"},\\"content\\":[{\\"type\\":\\"decisionItem\\",\\"attrs\\":{\\"localId\\":\\"\\",\\"state\\":\\"DECIDED\\"},\\"content\\":[{\\"type\\":\\"text\\",\\"text\\":\\"This is a decision\\"}]}]}
+{adf}"
+`;

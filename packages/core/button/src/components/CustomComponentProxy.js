@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
+import { cleanProps } from '@atlaskit/analytics-next';
 
 /**
  * Styling a button is complicated and there are a number of properties which inform its appearance.
@@ -8,31 +9,33 @@ import React from 'react';
  * acts as a layer which catches the appearance-related properties so that they can be used by
  * styled-components, then passes the rest of the props on to the custom component.
  */
-/* eslint-disable react/prop-types, no-unused-vars */
 import type { DerivedButtonProps } from '../types';
 
-const CustomComponentProxy = (props: DerivedButtonProps) => {
-  const {
-    appearance,
-    children,
-    component,
-    isActive,
-    isDisabled,
-    isFocus,
-    isHover,
-    isSelected,
-    shouldFitContainer,
-    fit,
-    ...proxiedProps
-  } = props;
-  if (!component)
-    throw new Error(
-      'No custom component provided while trying to use custom button component',
-    );
-  const ProxiedComponent = component;
-  // $FlowFixMe
-  return <ProxiedComponent {...proxiedProps}>{children}</ProxiedComponent>;
-};
-/* eslint-enable */
+class CustomComponentProxy extends Component<DerivedButtonProps> {
+  render() {
+    const {
+      appearance,
+      children,
+      component,
+      isActive,
+      isDisabled,
+      isFocus,
+      isHover,
+      isSelected,
+      shouldFitContainer,
+      fit,
+      iconBefore,
+      iconAfter,
+      isLoading,
+      ...proxiedProps
+    } = cleanProps(this.props);
+    if (!component)
+      throw new Error(
+        'No custom component provided while trying to use custom button component',
+      );
+    const ProxiedComponent = component;
+    return <ProxiedComponent {...proxiedProps}>{children}</ProxiedComponent>;
+  }
+}
 
 export default CustomComponentProxy;

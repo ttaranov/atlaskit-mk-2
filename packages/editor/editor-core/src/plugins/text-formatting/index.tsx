@@ -17,8 +17,10 @@ import {
   plugin as clearFormattingPlugin,
   stateKey as clearFormattingStateKey,
 } from './pm-plugins/clear-formatting';
+import textFormattingCursorPlugin from './pm-plugins/cursor';
 import textFormattingInputRulePlugin from './pm-plugins/input-rule';
 import clearFormattingKeymapPlugin from './pm-plugins/clear-formatting-keymap';
+import textFormattingSmartInputRulePlugin from './pm-plugins/smart-input-rule';
 import ToolbarTextFormatting from './ui/ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from './ui/ToolbarAdvancedTextFormatting';
 
@@ -26,16 +28,11 @@ export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
   disableUnderline?: boolean;
   disableCode?: boolean;
+  disableSmartTextCompletion?: boolean;
 }
 
-const textFormatting: EditorPlugin = {
-  marks({ allowTextFormatting, textFormatting }) {
-    const options = textFormatting
-      ? textFormatting
-      : allowTextFormatting === true || !allowTextFormatting
-        ? {}
-        : allowTextFormatting;
-
+const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
+  marks() {
     return [
       { name: 'em', mark: em, rank: 200 },
       { name: 'strong', mark: strong, rank: 300 },
@@ -59,9 +56,17 @@ const textFormatting: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 800, plugin: () => textFormattingPlugin },
+      { rank: 805, plugin: () => textFormattingCursorPlugin },
       {
         rank: 810,
         plugin: ({ schema }) => textFormattingInputRulePlugin(schema),
+      },
+      {
+        rank: 811,
+        plugin: ({ schema }) =>
+          !options.disableSmartTextCompletion
+            ? textFormattingSmartInputRulePlugin
+            : undefined,
       },
       { rank: 820, plugin: () => clearFormattingPlugin },
       {
@@ -105,6 +110,6 @@ const textFormatting: EditorPlugin = {
       </ButtonGroup>
     );
   },
-};
+});
 
 export default textFormatting;

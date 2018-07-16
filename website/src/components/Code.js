@@ -4,11 +4,9 @@ import styled from 'styled-components';
 import Prism from 'prismjs';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 
-// NOTE: stop prism.js classes from being obfuscated
-// $FlowFixMe
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
-import { replaceImports } from 'react-codesandboxer';
+import { replaceImports } from 'codesandboxer';
 
 const Code = styled.pre`
   border-radius: 3px;

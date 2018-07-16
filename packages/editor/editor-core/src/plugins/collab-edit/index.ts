@@ -1,7 +1,8 @@
 import { EditorPlugin } from '../../types';
 import { createPlugin, CollabEditProvider, pluginKey } from './plugin';
+import { CollabEditOptions } from './types';
 
-export { CollabEditProvider, pluginKey };
+export { CollabEditOptions, CollabEditProvider, pluginKey };
 
 const collabEditPlugin: EditorPlugin = {
   pmPlugins() {

@@ -7,7 +7,7 @@ const baseUrl = config.baseUrl;
 (async () => {
   console.log('Unlocking...');
   const response = await axios.post(`${baseUrl}/api/unlock`);
-  if (!response || !esponse.data || response.data.locked !== false) {
+  if (!response || !response.data || response.data.locked !== false) {
     console.log(
       'Something may have gone wrong... Try doing this manually instead.',
     );

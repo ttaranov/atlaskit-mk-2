@@ -42,9 +42,9 @@ const getFocusedStyles = ({ isFocused, color, ...rest }) => {
   return null;
 };
 
-export const Link = styled.a`
+export const linkStyles = css`
   ${COMMON_STYLES} ${getFocusedStyles} text-decoration: ${({ color }) =>
-      color === 'standard' ? 'none' : 'underline'};
+  color === 'standard' ? 'none' : 'underline'};
 
   &:hover {
     color: ${colors.linkHover};
@@ -55,4 +55,8 @@ export const Link = styled.a`
             color: inherit;
           `};
   }
+`;
+
+export const Link = styled.a`
+  ${linkStyles};
 `;

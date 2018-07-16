@@ -9,13 +9,12 @@ import { Wrapper } from './styles';
 export interface Props {
   node: PmNode;
   macroProvider?: MacroProvider;
-  onClick: (event: React.SyntheticEvent<any>) => void;
   children?: React.ReactNode;
 }
 
 export default class InlineExtension extends Component<Props, any> {
   render() {
-    const { node, onClick, children } = this.props;
+    const { node, children } = this.props;
 
     const hasChildren = !!children;
 
@@ -24,7 +23,7 @@ export default class InlineExtension extends Component<Props, any> {
       : 'with-overlay';
 
     return (
-      <Wrapper onClick={onClick} className={className}>
+      <Wrapper className={`extension-container ${className}`}>
         <Overlay className="extension-overlay" />
         {children ? children : <ExtensionLozenge node={node} />}
       </Wrapper>

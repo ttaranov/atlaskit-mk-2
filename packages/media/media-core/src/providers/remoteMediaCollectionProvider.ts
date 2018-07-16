@@ -8,14 +8,15 @@ import {
   SortDirection,
 } from '../services/collectionService';
 import { MediaCollectionProvider } from './mediaCollectionProvider';
-import { Subscription } from 'rxjs/Subscription';
+import { AxiosError } from 'axios';
+import { CollectionNotFoundError } from '../index';
 
 export type MediaCollectionItemPredicate = (
   item: MediaCollectionItem,
 ) => boolean;
 
 export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
-  private readonly subject = new Subject<MediaCollection>();
+  private readonly subject = new Subject<MediaCollection | Error>();
   private readonly connectableObservable = this.subject.publishReplay(1);
 
   private items: Array<MediaCollectionItem> = [];
@@ -32,27 +33,8 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
     this.loadNextPage();
   }
 
-  observable(): Observable<MediaCollection> {
+  observable(): Observable<MediaCollection | Error> {
     return this.connectableObservable;
-  }
-
-  loadNextPageUntil(predicate: MediaCollectionItemPredicate): void {
-    if (!this.items.some(predicate)) {
-      const subscription: Subscription = this.connectableObservable.subscribe({
-        next: collection => {
-          // an `undefined` `nextInclusiveStartKey` is how we know we've reached the end of a collection
-          // (since the `Observable`'s `complete` callback is NEVER called so we can notify the
-          // consumer when the list has changed)
-          if (!this.nextInclusiveStartKey || collection.items.some(predicate)) {
-            subscription.unsubscribe();
-          } else {
-            this.loadNextPage();
-          }
-        },
-        complete: () => subscription.unsubscribe(),
-        error: () => subscription.unsubscribe(),
-      });
-    }
   }
 
   loadNextPage(): void {
@@ -70,24 +52,19 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
         this.sortDirection,
         'full',
       )
-      .then(
-        response => {
-          this.isLoading = false;
-          this.items.push(...response.items);
+      .then(response => {
+        this.isLoading = false;
+        this.items.push(...response.items);
 
-          const mediaCollection = {
-            id: this.collectionName,
-            items: this.items,
-          };
+        const mediaCollection = {
+          id: this.collectionName,
+          items: this.items,
+        };
 
-          this.nextInclusiveStartKey = response.nextInclusiveStartKey;
-          this.subject.next(mediaCollection);
-        },
-        error => {
-          this.isLoading = false;
-          this.subject.error(error);
-        },
-      );
+        this.nextInclusiveStartKey = response.nextInclusiveStartKey;
+        this.subject.next(mediaCollection);
+      })
+      .catch(this.onAxiosError);
   }
 
   refresh() {
@@ -113,44 +90,50 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
           this.sortDirection,
           'full',
         )
-        .then(
-          res => {
-            let reachedFirstOldItem = false;
-            for (let newItem of res.items) {
-              const { details: { id, occurrenceKey } } = newItem;
-              const reachedFirstItemAlreadyInCollection =
-                id === oldFirstItemId &&
-                occurrenceKey === oldFirstItemOccurrenceKey;
+        .then(res => {
+          let reachedFirstOldItem = false;
+          for (let newItem of res.items) {
+            const {
+              details: { id, occurrenceKey },
+            } = newItem;
+            const reachedFirstItemAlreadyInCollection =
+              id === oldFirstItemId &&
+              occurrenceKey === oldFirstItemOccurrenceKey;
 
-              if (reachedFirstItemAlreadyInCollection) {
-                reachedFirstOldItem = true;
-                break;
-              }
-
-              newItems.push(newItem);
+            if (reachedFirstItemAlreadyInCollection) {
+              reachedFirstOldItem = true;
+              break;
             }
 
-            if (reachedFirstOldItem) {
-              this.isLoading = false;
+            newItems.push(newItem);
+          }
 
-              this.items = [...newItems, ...this.items];
-
-              this.subject.next({
-                id: this.collectionName,
-                items: this.items,
-              });
-            } else if (res.nextInclusiveStartKey) {
-              nextInclusiveStartKey = res.nextInclusiveStartKey;
-              fetchNewItems();
-            }
-          },
-          error => {
+          if (reachedFirstOldItem) {
             this.isLoading = false;
-            this.subject.error(error);
-          },
-        );
+
+            this.items = [...newItems, ...this.items];
+
+            this.subject.next({
+              id: this.collectionName,
+              items: this.items,
+            });
+          } else if (res.nextInclusiveStartKey) {
+            nextInclusiveStartKey = res.nextInclusiveStartKey;
+            fetchNewItems();
+          }
+        })
+        .catch(this.onAxiosError);
     };
 
     fetchNewItems();
   }
+
+  private onAxiosError = (error: AxiosError): void => {
+    this.isLoading = false;
+    if (error.response && error.response.status === 404) {
+      this.subject.next(new CollectionNotFoundError());
+    } else {
+      this.subject.next(error);
+    }
+  };
 }

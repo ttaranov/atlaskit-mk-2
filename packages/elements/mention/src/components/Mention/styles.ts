@@ -7,6 +7,7 @@ import {
   akColorN20,
   akColorN30A,
   akColorN500,
+  akFontSizeDefault,
 } from '@atlaskit/util-shared-styles';
 import { MentionType } from '../../types';
 
@@ -44,6 +45,8 @@ export const MentionStyle: ComponentClass<
   padding: 0 4px 2px 3px;
   white-space: nowrap;
   line-height: 16px;
+  font-size: ${akFontSizeDefault};
+  font-weight: normal;
 `};
 `;
 

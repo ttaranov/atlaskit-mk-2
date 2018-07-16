@@ -1,177 +1,175 @@
-import { shallow, mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
-import Select from '@atlaskit/single-select';
-import {
-  code_block,
-  doc,
-  p,
-  createEditor,
-  createEvent,
-} from '@atlaskit/editor-test-helpers';
-import {
-  CodeBlockState,
-  stateKey as codeBlockPluginKey,
-} from '../../../../src/plugins/code-block/pm-plugins/main';
+import Select from '@atlaskit/select';
+import Button from '@atlaskit/button';
 import { TrashToolbarButton } from '../../../../src/plugins/code-block/ui/LanguagePicker/styles';
-import LanguagePicker from '../../../../src/plugins/code-block/ui/LanguagePicker';
-import FloatingToolbar from '../../../../src/ui/FloatingToolbar';
-import codeBlockPlugin from '../../../../src/plugins/code-block';
+import LanguagePickerWithOutsideListeners, {
+  LanguagePicker,
+} from '../../../../src/plugins/code-block/ui/LanguagePicker';
+import { analyticsService } from '../../../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
-  const event = createEvent('event');
-  const editor = (doc: any) =>
-    createEditor<CodeBlockState>({
-      doc,
-      editorPlugins: [codeBlockPlugin],
-      pluginKey: codeBlockPluginKey,
-    });
+  let languagePicker: ReactWrapper<any, any>;
+  let setLanguageStub, deleteCodeBlockStub;
+  let dom: HTMLElement;
 
-  describe('when toolbarVisible is false', () => {
-    it('does not render toolbar', () => {
-      const { editorView, pluginState } = editor(doc(code_block()('text')));
-
-      const languagePicker = shallow(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-      languagePicker.setState({ toolbarVisible: false });
-
-      expect(languagePicker.find(FloatingToolbar).length).toBe(0);
-    });
+  beforeEach(() => {
+    setLanguageStub = jest.fn();
+    deleteCodeBlockStub = jest.fn();
+    dom = document.createElement('div');
+    languagePicker = mount(
+      <LanguagePicker
+        activeCodeBlockDOM={dom}
+        deleteCodeBlock={deleteCodeBlockStub}
+        setLanguage={setLanguageStub}
+      />,
+    );
   });
 
-  describe('when toolbarVisible is true', () => {
-    it('renders toolbar', () => {
-      const { editorView, pluginState } = editor(doc(code_block()('text')));
-
-      const languagePicker = shallow(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-      languagePicker.setState({ toolbarVisible: true });
-
-      expect(languagePicker.find(FloatingToolbar).length).toBe(1);
-    });
+  afterEach(() => {
+    languagePicker.unmount();
   });
 
-  describe('when languageSelectFocused is true', () => {
-    it('renders toolbar', () => {
-      const { editorView, pluginState } = editor(doc(code_block()('text')));
-
-      const languagePicker = shallow(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-      languagePicker.setState({
-        languageSelectFocused: true,
-        toolbarVisible: false,
+  describe('Tracking selection', () => {
+    it('should track the selected language', () => {
+      const trackSpy = jest.spyOn(analyticsService, 'trackEvent');
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
+        label: 'Javascript',
+        value: 'javascript',
       });
-
-      expect(languagePicker.find(Select).length).toBe(1);
+      expect(trackSpy).toHaveBeenCalledWith(
+        'atlassian.editor.codeblock.language.set',
+        { language: 'javascript' },
+      );
     });
   });
 
-  describe('click on a code block element', () => {
-    it('sets toolbarVisible to be true', () => {
-      const { editorView, plugin, pluginState, sel } = editor(
-        doc(code_block()('text')),
-      );
-      const languagePicker = mount(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
+  describe('#shouldComponentUpdate', () => {
+    it('should not re-render if setLanguage prop changes', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      languagePicker.setProps({ setLanguage: () => {} });
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+    });
 
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      plugin.props.handleClick!(editorView, sel, event);
+    it('should not re-render if deleteCodeBlock prop changes', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      languagePicker.setProps({ deleteCodeBlock: () => {} });
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+    });
 
-      expect(languagePicker.state('toolbarVisible')).toBe(true);
-      languagePicker.unmount();
+    it('should not re-render if activeCodeBlockDOM height/width has not changed', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      languagePicker.setProps({ activeCodeBlockDOM: dom });
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('should re-render if activeLanguage prop changes', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      languagePicker.setProps({ activeLanguage: 'javascript' });
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should re-render if activeCodeBlockDOM prop changes', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      languagePicker.setProps({ activeCodeBlockDOM: document.head });
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should re-render if activeCodeBlockDOM width has changed', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      Object.defineProperty(dom, 'clientWidth', { value: 100 });
+      languagePicker.setProps({ activeCodeBlockDOM: dom });
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should re-render if activeCodeBlockDOM height has changed', () => {
+      const renderSpy = jest.spyOn(languagePicker.instance(), 'render');
+      Object.defineProperty(dom, 'clientHeight', { value: 100 });
+      languagePicker.setProps({ activeCodeBlockDOM: dom });
+      expect(renderSpy).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('click on a non code block element', () => {
-    it('sets current code-block element to be undefined', () => {
-      const { editorView, plugin, pluginState, sel } = editor(doc(p('text')));
-      const languagePicker = mount(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-
-      plugin.props.handleClick!(editorView, sel, event);
-
-      expect(languagePicker.state('element')).toBe(undefined);
-      languagePicker.unmount();
-    });
-  });
-
-  describe('editor is blur', () => {
-    it('LanguagePicker produce null HTML', () => {
-      const { editorView, plugin, pluginState, sel } = editor(
-        doc(p('paragraph'), code_block()('{<}codeBlock{>}')),
-      );
-
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      plugin.props.handleClick!(editorView, sel, event);
-
-      const languagePicker = mount(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-
-      expect(languagePicker.html()).not.toBe(null);
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(languagePicker.html()).toEqual(null);
-      languagePicker.unmount();
-    });
-  });
-
-  describe('when code block has a language', () => {
-    it('shows the formatted language', () => {
-      const { editorView, pluginState } = editor(
-        doc(code_block({ language: 'js' })('text')),
-      );
-      const languagePicker = mount(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-
-      expect(languagePicker.state('activeLanguage').name).toEqual('JavaScript');
-      languagePicker.unmount();
+  describe('#render', () => {
+    it('should call deleteCodeBlock when trash icon clicked', () => {
+      expect(deleteCodeBlockStub).toHaveBeenCalledTimes(0);
+      languagePicker
+        .find(TrashToolbarButton)
+        .find(Button)
+        .simulate('click');
+      expect(deleteCodeBlockStub).toHaveBeenCalledTimes(1);
     });
 
-    it('updates plugin with the formatted langauge', () => {
-      const { editorView, pluginState } = editor(
-        doc(code_block({ language: 'js' })('text')),
-      );
-      const languagePicker = mount(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-
-      expect(pluginState.language).toEqual('javascript');
-      languagePicker.unmount();
-    });
-  });
-
-  describe('when code block has no language set', () => {
-    it('shows no specific language', () => {
-      const { editorView, pluginState } = editor(doc(code_block()('text')));
-      const languagePicker = mount(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-
-      expect(languagePicker.state('language')).toBe(undefined);
-      languagePicker.unmount();
-    });
-  });
-
-  describe('TrashIcon', () => {
-    it('should be rendered in language picker floating toolbar', () => {
-      const { editorView, pluginState } = editor(
-        doc(code_block({ language: 'js' })('text')),
-      );
-
-      const languagePicker = shallow(
-        <LanguagePicker pluginState={pluginState} editorView={editorView} />,
-      );
-      languagePicker.setState({
-        languageSelectFocused: true,
-        toolbarVisible: false,
+    it('should show active language by default in select', () => {
+      languagePicker.setProps({ activeLanguage: 'javascript' });
+      const defaultValue = languagePicker.find(Select).prop('value');
+      expect(defaultValue).toEqual({
+        label: 'JavaScript',
+        value: 'javascript',
       });
-
-      expect(languagePicker.find(TrashToolbarButton).length).toBe(1);
     });
+
+    it('should call setLanguage when dropdown item selected', () => {
+      expect(setLanguageStub).toHaveBeenCalledTimes(0);
+      console.log(languagePicker.find(Select).instance());
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
+        label: 'Javascript',
+        value: 'javascript',
+      });
+      expect(setLanguageStub).toHaveBeenCalledTimes(1);
+      expect(setLanguageStub).toHaveBeenCalledWith('javascript');
+    });
+  });
+});
+
+describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
+  let wrapper: ReactWrapper;
+  let instance: LanguagePickerWithOutsideListeners;
+  const getElementInsideToolbar = () =>
+    wrapper
+      .find(LanguagePicker)
+      .find(Select)
+      .getDOMNode() as HTMLElement;
+  beforeEach(() => {
+    wrapper = mount(
+      <LanguagePickerWithOutsideListeners
+        activeCodeBlockDOM={document.body}
+        deleteCodeBlock={jest.fn()}
+        setLanguage={jest.fn()}
+        isEditorFocused
+      />,
+    );
+    instance = wrapper.instance() as LanguagePickerWithOutsideListeners;
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
+  it('should show the toolber when the editor is focused', () => {
+    wrapper.setProps({ isEditorFocused: true });
+    expect(wrapper.find(LanguagePicker).exists()).toBe(true);
+  });
+
+  it('should not show the toolbar when the editor has lost focus', () => {
+    wrapper.setProps({ isEditorFocused: false });
+    expect(wrapper.find(LanguagePicker).exists()).toBe(false);
+  });
+
+  it('should keep showing the toolbar if toolbar clicked before editor has lost focus', () => {
+    // invoke click handler directly since enzyme & EventListeners don't play nice
+    instance.handleClick({ target: getElementInsideToolbar() } as any);
+    wrapper.setProps({ isEditorFocused: false });
+    expect(wrapper.find(LanguagePicker).exists()).toBe(true);
+  });
+
+  it('should hide toolbar if user clicks outside when `isToolbarFocused` is true', () => {
+    wrapper.setState({ isToolbarFocused: true });
+    wrapper.setProps({ isEditorFocused: false });
+    instance.handleClick({ target: document.head } as any);
+    wrapper.update();
+    expect(wrapper.find(LanguagePicker).exists()).toBe(false);
   });
 });

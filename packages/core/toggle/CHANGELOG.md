@@ -1,5 +1,58 @@
 # @atlaskit/toggle
 
+## 5.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 4.0.3
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/button@8.1.2
+  - @atlaskit/theme@4.0.4
+  - @atlaskit/icon@12.1.2
+
+## 4.0.2
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/icon@12.1.0
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+  - @atlaskit/button@8.1.0
+
+## 4.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/icon@12.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/docs@4.0.1
+
+## 4.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/icon@12.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
+## 3.0.2
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/icon@11.3.0
+  - @atlaskit/button@7.2.5
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
 ## 3.0.0
 - [major] Bump to React 16.3. [4251858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4251858)
 
@@ -24,10 +77,6 @@
 ## 2.8.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
-## 2.7.3
-
-## 2.7.2
-
 ## 2.7.1
 - [patch] Fix toggle icon alignment [bafb82b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bafb82b)
 
@@ -35,118 +84,69 @@
 - [minor] Adding flow types and moving to new repo [c9f3246](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9f3246)
 
 ## 2.6.4 (2017-11-17)
-
 * bug fix; bumping internal dependencies to latest version ([a19b26d](https://bitbucket.org/atlassian/atlaskit/commits/a19b26d))
+
 ## 2.6.3 (2017-10-26)
-
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+
 ## 2.6.2 (2017-10-22)
-
 * bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
-## 2.6.1 (2017-09-28)
 
+## 2.6.1 (2017-09-28)
 * bug fix; active state is now properly applied ([c1ee840](https://bitbucket.org/atlassian/atlaskit/commits/c1ee840))
 * bug fix; use withTheme to get theme for icon color ([1b554a1](https://bitbucket.org/atlassian/atlaskit/commits/1b554a1))
 * bug fix; update toggle darkmode colors ([e2e4727](https://bitbucket.org/atlassian/atlaskit/commits/e2e4727))
+
 ## 2.6.0 (2017-09-18)
-
 * feature; add dark mode to toggle ([ec57939](https://bitbucket.org/atlassian/atlaskit/commits/ec57939))
+
 ## 2.5.0 (2017-09-13)
-
 * feature; update dependencies for toggle ([ae1a0ca](https://bitbucket.org/atlassian/atlaskit/commits/ae1a0ca))
-## 2.4.3 (2017-08-11)
 
+## 2.4.3 (2017-08-11)
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
 
-
-
-
-
-
-
-
 ## 2.4.2 (2017-07-27)
-
-
 * fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
 ## 2.4.1 (2017-07-25)
-
-
 * fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 
 ## 2.1.0 (2017-07-17)
-
-## 2.1.0 (2017-07-17)
-
-## 2.1.0 (2017-07-17)
-
-
 * fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
-
-## 2.1.0 (2017-07-17)
-
-
 * feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 
 ## 2.0.5 (2017-07-13)
-
-
 * fix; add prop-types as a dependency to avoid React 15.x warnings ([92598eb](https://bitbucket.org/atlassian/atlaskit/commits/92598eb))
 
 ## 2.0.4 (2017-05-18)
-
-
 * fix; remove state from ToggleStateless ([631252c](https://bitbucket.org/atlassian/atlaskit/commits/631252c))
 
 ## 2.0.3 (2017-04-27)
-
-
 * fix; update legal copy to be more clear. Not all modules include ADG license. ([f3a945e](https://bitbucket.org/atlassian/atlaskit/commits/f3a945e))
 
 ## 2.0.2 (2017-04-26)
-
-
 * fix; update legal copy and fix broken links for component README on npm. New contribution and ([0b3e454](https://bitbucket.org/atlassian/atlaskit/commits/0b3e454))
 
 ## 2.0.1 (2017-04-11)
-
-
 * fix; update toggle readme story with new readme component ([31f7e4a](https://bitbucket.org/atlassian/atlaskit/commits/31f7e4a))
 
 ## 2.0.0 (2017-04-03)
-
-
 * fix; refactor the toggle component to use styled-components ([c735164](https://bitbucket.org/atlassian/atlaskit/commits/c735164))
-
-
 * breaking; added peerDependency "styled-components”, removed dependency “classnames”
-
-ISSUES CLOSED: AK-2004
+* ISSUES CLOSED: AK-2004
 
 ## 1.0.6 (2017-03-23)
-
-
 * fix; Empty commit to release the component ([49c08ee](https://bitbucket.org/atlassian/atlaskit/commits/49c08ee))
 
 ## 1.0.4 (2017-03-21)
-
-## 1.0.4 (2017-03-21)
-
-
 * fix; maintainers for all the packages were added ([261d00a](https://bitbucket.org/atlassian/atlaskit/commits/261d00a))
 
 ## 1.0.3 (2017-02-16)
-
-
 * fix; refactor stories to use // rather than http:// ([a0826cf](https://bitbucket.org/atlassian/atlaskit/commits/a0826cf))
 
 ## 1.0.2 (2017-02-09)
-
-
 * fix; avoiding binding render to this ([40c9951](https://bitbucket.org/atlassian/atlaskit/commits/40c9951))
 
 ## 1.0.1 (2017-02-07)
-
-
 * fix; Updates package to use scoped ak packages ([4923aa0](https://bitbucket.org/atlassian/atlaskit/commits/4923aa0))

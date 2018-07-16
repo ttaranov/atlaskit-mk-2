@@ -18,7 +18,7 @@ describe('inputrules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [listPlugin, codeBlockPlugin],
+      editorPlugins: [listPlugin, codeBlockPlugin()],
       editorProps: { analyticsHandler: trackEvent },
     });
   beforeEach(() => {
@@ -88,7 +88,7 @@ describe('inputrules', () => {
   });
 
   describe('ordered list rule', () => {
-    it('should convert "[number]. " to a ordered list item', () => {
+    it('should convert "1. " to a ordered list item', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '1. ', sel);
@@ -98,7 +98,7 @@ describe('inputrules', () => {
       );
     });
 
-    it('should convert "[number]. " after shift+enter to a ordered list item', () => {
+    it('should convert "1. " after shift+enter to a ordered list item', () => {
       const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
       insertText(editorView, '1. ', sel);
       expect(editorView.state.doc).toEqualDocument(doc(p('test'), ol(li(p()))));
@@ -107,7 +107,7 @@ describe('inputrules', () => {
       );
     });
 
-    it('should convert "[number]. " after multiple shift+enter to a ordered list item', () => {
+    it('should convert "1. " after multiple shift+enter to a ordered list item', () => {
       const { editorView, sel } = editor(
         doc(p('test', hardBreak(), hardBreak(), '{<>}')),
       );
@@ -120,7 +120,7 @@ describe('inputrules', () => {
       );
     });
 
-    it('should convert "[number]) " to a ordered list item', () => {
+    it('should convert "1) " to a ordered list item', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '1) ', sel);
@@ -130,11 +130,50 @@ describe('inputrules', () => {
       );
     });
 
-    it('should always begin a new list on 1', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+    describe('for numbers other than 1', () => {
+      it('should not convert "2. " to a ordered list item', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
 
-      insertText(editorView, '3. ', sel);
-      expect(editorView.state.doc).toEqualDocument(doc(ol(li(p()))));
+        insertText(editorView, '2. ', sel);
+        expect(editorView.state.doc).toEqualDocument(doc(p('2. ')));
+        expect(trackEvent).not.toHaveBeenCalledWith(
+          'atlassian.editor.format.list.numbered.autoformatting',
+        );
+      });
+
+      it('should not convert "2. " after shift+enter to a ordered list item', () => {
+        const { editorView, sel } = editor(doc(p('test', hardBreak(), '{<>}')));
+        insertText(editorView, '2. ', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('test', hardBreak(), '2. ')),
+        );
+        expect(trackEvent).not.toHaveBeenCalledWith(
+          'atlassian.editor.format.list.numbered.autoformatting',
+        );
+      });
+
+      it('should not convert "2. " after multiple shift+enter to a ordered list item', () => {
+        const { editorView, sel } = editor(
+          doc(p('test', hardBreak(), hardBreak(), '{<>}')),
+        );
+        insertText(editorView, '2. ', sel);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('test', hardBreak(), hardBreak(), '2. ')),
+        );
+        expect(trackEvent).not.toHaveBeenCalledWith(
+          'atlassian.editor.format.list.numbered.autoformatting',
+        );
+      });
+
+      it('should not convert "2) " to a ordered list item', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+
+        insertText(editorView, '2) ', sel);
+        expect(editorView.state.doc).toEqualDocument(doc(p('2) ')));
+        expect(trackEvent).not.toHaveBeenCalledWith(
+          'atlassian.editor.format.list.numbered.autoformatting',
+        );
+      });
     });
 
     it('should not be possible to convert code block to bullet list item', () => {

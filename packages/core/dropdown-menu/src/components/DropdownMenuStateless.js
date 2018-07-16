@@ -1,11 +1,20 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemClickManager from './context/DropdownItemClickManager';
@@ -27,7 +36,7 @@ type State = {
   id: string,
 };
 
-export default class DropdownMenuStateless extends Component<
+class DropdownMenuStateless extends Component<
   DropdownMenuStatelessProps,
   State,
 > {
@@ -48,11 +57,12 @@ export default class DropdownMenuStateless extends Component<
     onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
+    isMenuFixed: false,
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
     shouldFlip: true,
-    triggerButtonProps: {},
     triggerType: 'default',
+    onPositioned: () => {},
   };
 
   state = {
@@ -253,6 +263,7 @@ export default class DropdownMenuStateless extends Component<
     if (
       triggerContainer &&
       triggerContainer.contains(target) &&
+      // $FlowFixMe - disabled is not in Element
       target.disabled !== true
     ) {
       const { isOpen } = this.props;
@@ -335,7 +346,7 @@ export default class DropdownMenuStateless extends Component<
     );
   };
 
-  renderItems = (items: DeprecatedItem[]) =>
+  renderItems = (items: DeprecatedItem[]): Node[] =>
     items.map((item: DeprecatedItem, itemIndex: number) => (
       <Item
         {...item}
@@ -348,7 +359,7 @@ export default class DropdownMenuStateless extends Component<
       </Item>
     ));
 
-  renderGroups = (groups: DeprecatedItemGroup[]) =>
+  renderGroups = (groups: DeprecatedItemGroup[]): Node[] =>
     groups.map((group, groupIndex) => (
       <Group
         heading={group.heading}
@@ -389,9 +400,11 @@ export default class DropdownMenuStateless extends Component<
       isOpen,
       onOpenChange,
       position,
+      isMenuFixed,
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
+      onPositioned,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
@@ -415,10 +428,17 @@ export default class DropdownMenuStateless extends Component<
           onClick={this.handleClick}
           onOpenChange={onOpenChange}
           position={position}
+          isMenuFixed={isMenuFixed}
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
+          onPositioned={onPositioned}
           {...deprecatedProps}
+          analyticsContext={{
+            componentName: 'dropdownMenu',
+            packageName,
+            packageVersion,
+          }}
         >
           {isDeprecated ? (
             this.renderDeprecated()
@@ -443,3 +463,19 @@ export default class DropdownMenuStateless extends Component<
     );
   }
 }
+
+export { DropdownMenuStateless as DropdownMenuStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsEvents({
+  onOpenChange: createAndFireEventOnAtlaskit({
+    action: 'toggled',
+    actionSubject: 'dropdownMenu',
+
+    attributes: {
+      componentName: 'dropdownMenu',
+      packageName,
+      packageVersion,
+    },
+  }),
+})(DropdownMenuStateless);

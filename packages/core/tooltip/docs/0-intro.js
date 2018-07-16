@@ -5,11 +5,11 @@ import { md, Example, Props } from '@atlaskit/docs';
 export default md`
   This package exports \`Tooltip\` and \`TooltipPrimitive\` components.
 
-  You can wrap \`Tooltip\` around any other React component to display the given 
+  You can wrap \`Tooltip\` around any other React component to display the given
   \`content\` when the user hovers over the wrapped component.
 
   You can extend \`TooltipPrimitive\` to create a custom tooltip. It is
-  a component with basic styles required by the tooltip. You can then pass this 
+  a component with basic styles required by the tooltip. You can then pass this
   custom tooltip in \`component\` prop to display it when user hovers over wrapper
   content of \`Tooltip\`.
 
@@ -21,31 +21,49 @@ export default md`
     />
   )}
 
-  ### Fixes in \`7.0.0\`
+  Above is a basic example of how to use tooltip.
 
-  We have completely rewritten the logic for positioning tooltips, which now
-  use our \`layer-manager\` component and portals to render above all other DOM
-  elements on the page.
+  ${(
+    <Example
+      Component={require('../examples/position').default}
+      source={require('!!raw-loader!../examples/position')}
+      title="Position"
+      componentProps={{ test: true }}
+    />
+  )}
 
-  This means that previous issues where tooltips are clipped by other UI should
-  be comprehensively fixed; it also means we're not depending on Popper.js,
-  which dramatically improves package weight and performance.
+  Tooltips have four standard positions available; "top", "right", "bottom", and "left".
+  Each standard position center-aligns itself along the appropriate axis and appears outside the target element.
 
-  ### Breaking Changes in \`7.0.0\`
+  A "mouse" position is also available that displays the tooltip relative to the mouse rather than the target. Click the target
+  above to see each position.
 
-  #### Stateless version removed
+  ${(
+    <Example
+      Component={require('../examples/hover-intent').default}
+      source={require('!!raw-loader!../examples/hover-intent')}
+      title="Intent"
+    />
+  )}
 
-  Tooltip previously exported both the \`Tooltip\` component, and a stateless
-  version as a named export \`TooltipStateless\`. The stateless version has been
-  removed as of version \`7.0.0\`.
+  Tooltips should only appear when the user has paused on the target element.
+  They should remain visible if the user briefly moves the mouse off and back
+  on to the target.
 
-  #### Changes to Props
+  Similarly tooltips should not immediately disappear, unless the user hovers
+  over another element with a tooltip.
 
-  * \`description\` has been renamed to \`content\`
+  When the user scrolls, their attention is no longer on the tooltip. We take this
+  opportunity to immediately hide the tooltip.
 
-  In \`7.0.0\` the old props are still supported for backwards-compatibility,
-  but will log a deprecation warning. Support will be removed from version
-  \`8.0.0\` onwards.
+    * Mouse over, then off, a single target for a fade transition.
+    * Mouse between each target for an immediate transition.
+    * Mouse over, off briefly, then back over &mdash; there will be no transition.
+    * Mouse over a target then scroll, the tooltip will be removed immediately.
+
+  Note that when using the 'mouse' position, mousing between targets will not cause an
+  immediate transition as this would display the tooltip at the target boundary
+  rather than a more natural position.
 
   ${(
     <Props

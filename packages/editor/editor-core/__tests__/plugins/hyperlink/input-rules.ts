@@ -16,7 +16,7 @@ describe('hyperlink', () => {
   const editor = (doc: any, trackEvent?: () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin],
+      editorPlugins: [codeBlockPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -87,6 +87,66 @@ describe('hyperlink', () => {
         'https://www.atlassian.com/',
       );
       expect(editorView.state.doc).toEqualDocument(doc(p(a, ' ')));
+    });
+
+    ['?', '!', ')', '(', '[', ']', ';', '{', '}', ',', '.'].forEach(
+      punctuation => {
+        it(`should not convert trailing '${punctuation}' in "https://www.atlassian.com${punctuation}" to hyperlink`, () => {
+          const { editorView, sel } = editor(doc(p('{<>}')));
+          insertText(
+            editorView,
+            `https://www.atlassian.com${punctuation} `,
+            sel,
+            sel,
+          );
+
+          const a = link({ href: 'https://www.atlassian.com' })(
+            'https://www.atlassian.com',
+          );
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(a, `${punctuation} `)),
+          );
+        });
+      },
+    );
+
+    ['?', '!', ')', '(', '[', ']', '{', '}', ',', '.'].forEach(punctuation => {
+      it(`should not convert trailing '${punctuation}' in "https://www.atlassian.com/${punctuation}" to hyperlink`, () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(
+          editorView,
+          `https://www.atlassian.com/${punctuation} `,
+          sel,
+          sel,
+        );
+
+        const a = link({ href: 'https://www.atlassian.com/' })(
+          'https://www.atlassian.com/',
+        );
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(a, `${punctuation} `)),
+        );
+      });
+    });
+
+    it('should convert only the link in "?https://www.atlassian.com?" to hyperlink', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '?https://www.atlassian.com? ', sel, sel);
+
+      const a = link({ href: 'https://www.atlassian.com' })(
+        'https://www.atlassian.com',
+      );
+      expect(editorView.state.doc).toEqualDocument(doc(p('?', a, '? ')));
+    });
+
+    it('should convert only the link in "?https://www.atlassian.com" to hyperlink', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '?https://www.atlassian.com ', sel, sel);
+
+      const a = link({ href: 'https://www.atlassian.com' })(
+        'https://www.atlassian.com',
+      );
+      expect(editorView.state.doc).toEqualDocument(doc(p('?', a, ' ')));
     });
 
     it('should not convert "https://www.atlassian.com" to hyperlink inside a code_block', () => {

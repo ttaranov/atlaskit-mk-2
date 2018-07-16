@@ -11,6 +11,7 @@ import {
   code,
   mentionQuery,
   emojiQuery,
+  typeAheadQuery,
   textColor,
   confluenceInlineComment,
   action,
@@ -53,6 +54,11 @@ import {
   bodiedExtension,
   date,
   placeholder,
+  layoutSection,
+  layoutColumn,
+  inlineCard,
+  unsupportedBlock,
+  unsupportedInline,
 } from './nodes';
 
 function addItems(
@@ -134,6 +140,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'mediaGroup', spec: mediaGroup },
   { name: 'mediaSingle', spec: mediaSingle },
   { name: 'placeholder', spec: placeholder },
+  { name: 'layoutSection', spec: layoutSection },
+  { name: 'layoutColumn', spec: layoutColumn },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
   { name: 'table', spec: table },
@@ -152,7 +160,10 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'extension', spec: extension },
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },
+  { name: 'inlineCard', spec: inlineCard },
   { name: 'unknownBlock', spec: unknownBlock },
+  { name: 'unsupportedBlock', spec: unsupportedBlock },
+  { name: 'unsupportedInline', spec: unsupportedInline },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [
@@ -165,6 +176,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'code', spec: code },
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
+  { name: 'typeAheadQuery', spec: typeAheadQuery },
   { name: 'textColor', spec: textColor },
   { name: 'action', spec: action },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },

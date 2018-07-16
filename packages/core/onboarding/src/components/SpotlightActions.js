@@ -1,13 +1,13 @@
 // @flow
-import React from 'react';
+import React, { type Element } from 'react';
 import Button from '@atlaskit/button';
 
 import { Actions, ActionItems, ActionItem } from '../styled/Dialog';
-import type { ActionsType, ElementType } from '../types';
+import type { ActionsType } from '../types';
 
 type Props = {|
   /** An optional element rendered beside the actions */
-  beforeElement?: ElementType,
+  beforeElement?: Element<*>,
   /** Buttons to render */
   items: ActionsType,
 |};

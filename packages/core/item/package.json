@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/item",
-  "version": "6.0.0",
+  "version": "8.0.0",
   "description": "A generic item component to be used within other components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -11,30 +11,29 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sean C"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^3.0.0",
+    "@atlaskit/theme": "^5.0.0",
     "prop-types": "^15.5.10",
     "react-addons-text-content": "^0.0.4",
-    "styled-components": "1.4.6 - 3",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.0",
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/dropdown-menu": "^4.0.0",
-    "@atlaskit/droplist": "^5.0.0",
-    "@atlaskit/icon": "^11.0.0",
-    "@atlaskit/lozenge": "^4.0.0",
-    "@atlaskit/page": "^6.0.0",
-    "@atlaskit/tooltip": "^9.0.0",
-    "enzyme": "^3.3.0",
+    "@atlaskit/avatar": "^14.0.0",
+    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/lozenge": "^6.0.0",
+    "@atlaskit/tooltip": "^11.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "polished": "1.5.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

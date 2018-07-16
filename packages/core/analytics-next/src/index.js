@@ -18,5 +18,6 @@ export { default as withAnalyticsContext } from './withAnalyticsContext';
 // createAnalyticsEvent HOC
 export type { WithAnalyticsEventsProps } from './withAnalyticsEvents';
 export { default as withAnalyticsEvents } from './withAnalyticsEvents';
-// create and fire helper
+// Helper functions
 export { default as createAndFireEvent } from './createAndFireEvent';
+export { default as cleanProps } from './cleanProps';

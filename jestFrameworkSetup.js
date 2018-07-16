@@ -2,6 +2,7 @@
 import 'jest-styled-components';
 import snakeCase from 'snake-case';
 import { toMatchSnapshot } from 'jest-snapshot';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 
 let consoleError;
 let consoleWarn;
@@ -10,6 +11,10 @@ let consoleLog;
 // URL is not available for non Node environment
 if (global.URL) {
   global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
+}
+
+if (!global.WEBSITE_ENV) {
+  global.WEBSITE_ENV = 'local';
 }
 
 /*
@@ -251,6 +256,36 @@ expect.extend({
   },
 });
 
+// Copied from react-beautiful-dnd/test/setup.js
+if (typeof document !== 'undefined') {
+  // overriding these properties in jsdom to allow them to be controlled
+  Object.defineProperties(document.documentElement, {
+    clientWidth: {
+      writable: true,
+      value: document.documentElement.clientWidth,
+    },
+    clientHeight: {
+      writable: true,
+      value: document.documentElement.clientHeight,
+    },
+    scrollWidth: {
+      writable: true,
+      value: document.documentElement.scrollWidth,
+    },
+    scrollHeight: {
+      writable: true,
+      value: document.documentElement.scrollHeight,
+    },
+  });
+}
+
+// Setting initial viewport
+// Need to set clientWidth and clientHeight as jsdom does not set these properties
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  document.documentElement.clientWidth = window.innerWidth;
+  document.documentElement.clientHeight = window.innerHeight;
+}
+
 if (process.env.CI) {
   beforeEach(() => {
     consoleError = console.error;
@@ -266,4 +301,31 @@ if (process.env.CI) {
     console.warn = consoleWarn;
     console.log = consoleLog;
   });
+}
+
+// set up for visual regression
+if (process.env.VISUAL_REGRESSION) {
+  const puppeteer = require('puppeteer');
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+
+  beforeAll(async () => {
+    global.browser = await puppeteer.launch({
+      // run test in headless mode
+      headless: true,
+      slowMo: 100,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+    global.page = await global.browser.newPage();
+  }, jasmine.DEFAULT_TIMEOUT_INTERVAL);
+
+  afterAll(async () => {
+    await global.browser.close();
+  });
+
+  const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
+    customDiffConfig: { threshold: 0.2 },
+    noColors: true,
+  });
+
+  expect.extend({ toMatchProdImageSnapshot });
 }

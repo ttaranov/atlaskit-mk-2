@@ -58,8 +58,13 @@ export default class Slider extends Component<Props, State> {
 
   state: State;
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.setState({ value: nextProps.value });
+  componentWillReceiveProps({ value: nextValue, min, max }: Props) {
+    const { value: currentValue } = this.props;
+
+    if (currentValue !== nextValue) {
+      const valuePercent = this.getPercentValue(nextValue, min, max);
+      this.setState({ value: nextValue, valuePercent });
+    }
   }
 
   componentWillUnmount() {

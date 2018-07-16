@@ -1,9 +1,9 @@
+import { AuthProvider } from '@atlaskit/media-store';
 import createRequest, {
   CreateRequestFunc,
   Response,
 } from './util/createRequest';
 import { MediaItem } from '../';
-import { AuthProvider } from '../auth';
 
 export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
 

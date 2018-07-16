@@ -36,7 +36,6 @@ export function DefaultImage({
       role="img"
       aria-label={title}
     >
-      {!!title && <title>{title}</title>}
       {appearance === 'circle' ? (
         <ShapeGroup>
           <circle cx="64" cy="64" r="64" />

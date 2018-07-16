@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Props } from '@atlaskit/docs';
+import { md, Props, code } from '@atlaskit/docs';
 
 export default md`
   # Concepts
@@ -89,6 +89,23 @@ export default md`
   which takes in two arguments, text and background. This function generates
   a theme object for you based on the provided text colour and background colour.
 
-  ${<Props props={require('!!extract-react-types-loader!../src/')} />}
+  ## Breaking Changes in \`31.0.0\`
+
+  ### quick-search has been removed
+
+  The quick-search component has been extracted and moved to a separate package.
+  If you used AkQuickSearch, AkSearch or quickSearchResultTypes before you will
+  have to add the @atlaskit/quick-search dependency and update your imports:
+
+  ${code`
+  // Before
+  import { AkQuickSearch, AkSearch, quickSearchResultTypes } from '@atlaskit/navigation'
+
+  // After
+  import { AkQuickSearch, AkSearch, quickSearchResultTypes } from '@atlaskit/quick-search'
+  `}
+  
+
+  ${<Props props={require('!!extract-react-types-loader!../src')} />}
 
 `;

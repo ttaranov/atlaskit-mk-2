@@ -12,7 +12,7 @@ import {
 import { MediaCard } from '../src/root/mediaCard';
 import { LazyContent } from '../src/utils/lazyContent';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { UIAnalyticsEventInterface } from '../src/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {
@@ -316,7 +316,7 @@ describe('Card', () => {
         fetchImageDataUri: fetchImageDataUriSpy,
       },
     });
-    mount(
+    const card = mount(
       <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
         <Card
           context={context}
@@ -326,6 +326,8 @@ describe('Card', () => {
         />
       </AnalyticsListener>,
     );
+
+    card.simulate('click');
 
     expect(analyticsEventHandler).toHaveBeenCalledTimes(1);
     const actualFiredEvent: UIAnalyticsEventInterface =
@@ -350,5 +352,22 @@ describe('Card', () => {
 
     expect(context.getLocalPreview).toHaveBeenCalledWith('some-random-id');
     expect(card.find(MediaCard).prop('preview')).toEqual('local-preview-src');
+  });
+
+  it('should pass "disableOverlay" to MediaCard', () => {
+    const context = fakeContext();
+    const card = shallow(
+      <Card
+        context={context}
+        identifier={fileIdentifier}
+        isLazy={false}
+        resizeMode="full-fit"
+        disableOverlay={true}
+      />,
+      { disableLifecycleMethods: true },
+    );
+
+    const mediaCard = card.find(MediaCard);
+    expect(mediaCard.props().disableOverlay).toBe(true);
   });
 });

@@ -1,7 +1,10 @@
 import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
-
 import { request } from '../../src/utils/request';
+
+const throwExpectedToFail = () => {
+  throw new Error(`Expected to fail, but resolved instead`);
+};
 
 describe('request', () => {
   const url = 'http://some-url';
@@ -70,5 +73,27 @@ describe('request', () => {
         });
       },
     );
+  });
+
+  it('should fail if response is 400', () => {
+    fetchMock.restore();
+    fetchMock.mock('*', {
+      status: 400,
+      body: 'There was a problem',
+    });
+    return request(url).then(throwExpectedToFail, (response: Response) => {
+      return response.text().then(responseText => {
+        expect(responseText).toEqual('There was a problem');
+      });
+    });
+  });
+
+  it('should not fail if response is 300', () => {
+    fetchMock.restore();
+    fetchMock.mock('*', {
+      status: 300,
+      __redirectUrl: 'http://other-url',
+    });
+    return request(url);
   });
 });

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { akElevationMixins } from '@atlaskit/util-shared-styles';
 
 import CodeIcon from '@atlaskit/icon/glyph/code';
@@ -61,10 +62,6 @@ const ModalContent = styled.div`
   ${akElevationMixins.e200} flex: 1 1 auto;
   min-height: 240px;
 `;
-
-// This seems to be an issue with styledComponent flow type compatibility
-// intersection type incompatible with expected param type of React.Component.
-// $FlowFixMe:
 const ModalHeader = styled(OgModalHeader)`
   margin-left: 20px;
   margin-right: 20px;
@@ -218,13 +215,13 @@ const ModalHeaderComp = ({
               Loading...
             </Button>
           )}
-          deployButton={({ isDisabled }) => (
+          deployButton={({ isDisabled, error }) => (
             <Button
               type="submit"
               isDisabled={isDisabled}
               iconBefore={<CodeSandboxLogo />}
             >
-              Sandbox
+              {error ? error.name : 'Sandbox'}
             </Button>
           )}
         />
@@ -353,6 +350,7 @@ export default class ExamplesModal extends Component<Props, State> {
     }
     return (
       <Modal
+        autoFocus={false}
         body={ModalBody}
         header={({ showKeyline }) => (
           <ModalHeaderComp
@@ -373,6 +371,12 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={1180}
       >
+        <Helmet>
+          <title>
+            Example - {fs.titleize(exampleId)} - {fs.titleize(packageId)} -{' '}
+            {BASE_TITLE}
+          </title>
+        </Helmet>
         <ContentBody>
           <ExampleNavigation
             groupId={groupId}

@@ -1,6 +1,6 @@
 import { uuid } from '@atlaskit/editor-common';
 import { inputRules, InputRule } from 'prosemirror-inputrules';
-import { Schema } from 'prosemirror-model';
+import { Schema, NodeType, Node } from 'prosemirror-model';
 import {
   NodeSelection,
   Plugin,
@@ -12,16 +12,17 @@ import {
   createInputRule,
   leafNodeReplacementCharacter,
 } from '../../../utils/input-rules';
+import { canInsert } from 'prosemirror-utils';
 
 const createListRule = (
   regex: RegExp,
   name: string,
-  list: any,
-  item: any,
+  list: NodeType,
+  item: NodeType,
   schema: Schema,
   analyticType: string,
 ) => {
-  const { paragraph, hardBreak, tableCell, tableHeader } = schema.nodes;
+  const { paragraph, hardBreak } = schema.nodes;
 
   return createInputRule(
     regex,
@@ -31,7 +32,10 @@ const createListRule = (
       start: number,
       end: number,
     ) => {
-      const { tr, selection: { $from } } = state;
+      const {
+        tr,
+        selection: { $from },
+      } = state;
 
       const content = $from.node($from.depth).content;
       let shouldBreakNode = false;
@@ -41,13 +45,13 @@ const createListRule = (
         }
       });
 
-      // Only allow creating list from top-level paragraphs in beginning or after shift+enter
-      // or inside table.
+      const $end = state.doc.resolve(end);
+      const $endOfParent = state.doc.resolve($end.after());
+      // Only allow creating list in nodes that support them.
+      // Parent must be a paragraph as we don't want this applying to headings
       if (
-        ($from.node(1).type !== paragraph &&
-          $from.node($from.depth - 1).type !== tableCell &&
-          $from.node($from.depth - 1).type !== tableHeader) ||
-        (shouldBreakNode && $from.node(1).type !== paragraph)
+        $end.parent.type !== paragraph ||
+        !canInsert($endOfParent, list.createAndFill() as Node)
       ) {
         return;
       }

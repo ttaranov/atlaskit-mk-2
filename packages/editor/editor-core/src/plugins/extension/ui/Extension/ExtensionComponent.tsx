@@ -1,21 +1,18 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
 import { selectParentNodeOfType } from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import { ExtensionHandlers } from '@atlaskit/editor-common';
+import { setNodeSelection } from '../../../../utils';
 
 export interface Props {
   editorView: EditorView;
   macroProvider?: Promise<MacroProvider>;
   node: PMNode;
-  setExtensionElement: (
-    element: HTMLElement | null,
-  ) => (state: EditorState, dispatch: (tr: Transaction) => void) => void;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   extensionHandlers: ExtensionHandlers;
 }
@@ -57,7 +54,7 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   render() {
     const { macroProvider } = this.state;
-    const { node, handleContentDOMRef } = this.props;
+    const { node, handleContentDOMRef, editorView } = this.props;
     const extensionHandlerResult = this.tryExtensionHandler();
 
     switch (node.type.name) {
@@ -67,20 +64,16 @@ export default class ExtensionComponent extends Component<Props, State> {
           <Extension
             node={node}
             macroProvider={macroProvider}
-            onClick={this.handleClick}
             handleContentDOMRef={handleContentDOMRef}
             onSelectExtension={this.handleSelectExtension}
+            view={editorView}
           >
             {extensionHandlerResult}
           </Extension>
         );
       case 'inlineExtension':
         return (
-          <InlineExtension
-            node={node}
-            macroProvider={macroProvider}
-            onClick={this.handleClick}
-          >
+          <InlineExtension node={node} macroProvider={macroProvider}>
             {extensionHandlerResult}
           </InlineExtension>
         );
@@ -95,20 +88,20 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   };
 
-  private handleClick = (event: React.SyntheticEvent<any>) => {
-    if (event.nativeEvent.defaultPrevented) {
-      return;
-    }
-    event.nativeEvent.preventDefault();
-    const { state, dispatch } = this.props.editorView;
-    this.props.setExtensionElement(event.currentTarget)(state, dispatch);
-  };
+  private handleSelectExtension = hasBody => {
+    const {
+      state,
+      state: { selection, schema },
+      dispatch,
+    } = this.props.editorView;
+    let { tr } = state;
 
-  private handleSelectExtension = () => {
-    const { state, dispatch } = this.props.editorView;
-    dispatch(
-      selectParentNodeOfType(state.schema.nodes.bodiedExtension)(state.tr),
-    );
+    if (hasBody) {
+      tr = selectParentNodeOfType([schema.nodes.bodiedExtension])(state.tr);
+      dispatch(tr);
+    } else {
+      setNodeSelection(this.props.editorView, selection.$from.pos - 1);
+    }
   };
 
   private tryExtensionHandler() {

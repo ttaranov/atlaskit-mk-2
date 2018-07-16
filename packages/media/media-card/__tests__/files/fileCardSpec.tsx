@@ -4,10 +4,12 @@ import { FileDetails } from '@atlaskit/media-core';
 
 import { FileCard, FileCardImageView } from '../../src/files';
 import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
+import { toHumanReadableMediaSize } from '../../src/utils';
 
 describe('FileCard', () => {
   it('should render cardFileView with details passed through to props', function() {
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -22,7 +24,7 @@ describe('FileCard', () => {
 
       mediaName: details.name,
       mediaType: details.mediaType,
-      mediaSize: details.size,
+      fileSize: toHumanReadableMediaSize(details.size as number),
     };
 
     const card = shallow(<FileCard status="complete" details={details} />);
@@ -34,6 +36,7 @@ describe('FileCard', () => {
 
   it('should render CardGenericViewSmall with file details passed through to props', () => {
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -62,6 +65,7 @@ describe('FileCard', () => {
     const fakeDataUri: string = 'l33tdatauri';
 
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -82,6 +86,7 @@ describe('FileCard', () => {
     const fakeDataUri: string = 'l33tdatauri';
 
     const details: FileDetails = {
+      id: 'id',
       mediaType: 'image',
       mimeType: 'image/jpeg',
       name: 'some-image.jpg',
@@ -119,5 +124,13 @@ describe('FileCard', () => {
     expect(card.find(FileCardImageView).props().error).toEqual(
       'Failed to load',
     );
+  });
+
+  it('should pass "disableOverlay" prop to <FileCardImageView /> when appearance is "image"', () => {
+    const card = shallow(
+      <FileCard appearance="image" status="complete" disableOverlay={true} />,
+    );
+
+    expect(card.find(FileCardImageView).props().disableOverlay).toEqual(true);
   });
 });

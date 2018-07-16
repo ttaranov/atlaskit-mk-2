@@ -1,31 +1,41 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { colors, fontSize, themed } from '@atlaskit/theme';
 
-const getPlaceholderStyle = style => css`
+const getPlaceholderColor = ({ disabled }) => {
+  if (disabled) {
+    return themed({ light: colors.N70, dark: colors.DN90 });
+  }
+  return themed({ light: colors.N100, dark: colors.DN90 });
+};
+
+// can't group these placeholder styles into one block because browsers drop
+// entire style blocks when any single selector fails to parse
+const getPlaceholderStyle = () => css`
   &::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */
-    ${style};
+    color: ${getPlaceholderColor};
   }
   &::-moz-placeholder {
     /* Mozilla Firefox 19+ */
-    ${style} opacity: 1;
+    color: ${getPlaceholderColor};
+    opacity: 1;
   }
   &::-ms-input-placeholder {
     /* Microsoft Edge */
-    ${style};
-  }
-  &:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    ${style} opacity: 1;
+    color: ${getPlaceholderColor};
   }
   &:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    ${style};
+    color: ${getPlaceholderColor};
   }
 `;
-const getPlaceholderColor = css`
-  color: ${colors.placeholderText};
+
+// Safari puts on some difficult to remove styles, mainly for disabled inputs
+// but we want full control so need to override them in all cases
+const overrideSafariDisabledStyles = `
+  -webkit-text-fill-color: unset;
+  -webkit-opacity: 1;
 `;
 
 const InputElement = styled.input`
@@ -34,9 +44,14 @@ const InputElement = styled.input`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-size: 14px;
+  font-family: inherit;
+  font-size: ${fontSize}px;
   outline: none;
   width: 100%;
+
+  [disabled] {
+    ${overrideSafariDisabledStyles};
+  }
 
   &::-ms-clear {
     display: none;
@@ -45,7 +60,7 @@ const InputElement = styled.input`
   &:invalid {
     box-shadow: none;
   }
-  ${getPlaceholderStyle(getPlaceholderColor)};
+  ${getPlaceholderStyle};
 `;
 
 export default InputElement;

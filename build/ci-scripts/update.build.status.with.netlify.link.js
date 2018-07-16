@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const updateBuildStatus = require('../utils/updateBuildStatus');
 
-const pathToNetlifyOutputFile = path.join(__dirname, '..', '..', 'output.txt');
+const netlifyLogFilePath = './netlify-build.txt';
 
 try {
-  const logFile = fs.readFileSync(pathToNetlifyOutputFile, 'utf-8');
+  const logFile = fs.readFileSync(netlifyLogFilePath, 'utf-8');
   const lines = logFile.split('\n');
   const indexOfLineBeforeUrl = lines.findIndex(
     line => line.indexOf('Deploy is live (permalink):') > -1,
@@ -14,8 +14,7 @@ try {
     /http:\/\/.+?.netlify.com/,
   );
   if (!permalinkUrlMatch) {
-    console.error('Unable to find permalinkUrl in output.txt');
-    process.exit(1);
+    throw new Error(`Unable to find permalinkUrl in ${netlifyLogFilePath}`);
   }
   const permalinkUrl = permalinkUrlMatch[0];
   const buildStatusOpts = {
@@ -24,7 +23,8 @@ try {
     url: permalinkUrl,
     state: 'SUCCESSFUL',
   };
-  console.log('Updating build status...');
+
+  console.log('Updating build status with link: ', permalinkUrl);
   updateBuildStatus(buildStatusOpts);
 } catch (e) {
   console.error('Unable to update build status');

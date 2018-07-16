@@ -16,14 +16,21 @@ export function createLinkInputRule(
       if (state.doc.rangeHasMark(start, end, schema.marks.link)) {
         return;
       }
+      const [link] = match;
 
-      const markType = schema.mark('link', { href: match[0].url });
+      const markType = schema.mark('link', { href: link.url });
 
       analyticsService.trackEvent(
         'atlassian.editor.format.hyperlink.autoformatting',
       );
 
-      return state.tr.addMark(start, end, markType).insertText(' ');
+      return state.tr
+        .addMark(
+          start - (link.input!.length - link.lastIndex),
+          end - (link.input!.length - link.lastIndex),
+          markType,
+        )
+        .insertText(' ');
     },
   );
 }
@@ -43,7 +50,8 @@ export function createInputRulePlugin(schema: Schema): Plugin | undefined {
     /(^|[^!])\[(.*?)\]\((\S+)\)$/,
     (state, match, start, end) => {
       const { schema } = state;
-      const url = normalizeUrl(match[3]);
+      const [, prefix, linkText, linkUrl] = match;
+      const url = normalizeUrl(linkUrl);
       const markType = schema.mark('link', { href: url });
 
       analyticsService.trackEvent(
@@ -51,9 +59,9 @@ export function createInputRulePlugin(schema: Schema): Plugin | undefined {
       );
 
       return state.tr.replaceWith(
-        start + match[1].length,
+        start + prefix.length,
         end,
-        schema.text(match[2], [markType]),
+        schema.text(linkText, [markType]),
       );
     },
   );

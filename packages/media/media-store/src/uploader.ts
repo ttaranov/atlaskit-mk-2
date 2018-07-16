@@ -1,8 +1,10 @@
+import * as uuid from 'uuid';
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
-import * as Rusha from 'rusha';
-import * as PQueue from 'p-queue';
 
-import { MediaStoreConfig, MediaStore } from './media-store';
+import { MediaStore } from './media-store';
+import { MediaApiConfig } from './models/auth';
+import { createHasher } from './utils/hashing/hasherCreator';
+
 // TODO: Allow to pass multiple files
 export type UploadableFile = {
   content: ChunkinatorFile;
@@ -11,29 +13,17 @@ export type UploadableFile = {
   collection?: string;
 };
 
-export type Callbacks = {
+export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
 };
 
-// TODO: Replace custom FileReader by Rusha.createHash().update(blob)
-// Currently Rusha can't handle blobs directly so we need to do the conversion
-// https://github.com/srijs/rusha/issues/55
+export interface UploadFileResult {
+  deferredFileId: Promise<string>;
+  cancel: () => void;
+}
+
 const hashingFunction = (blob: Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.readAsArrayBuffer(blob);
-
-    reader.onload = () => {
-      resolve(
-        Rusha.createHash()
-          .update(reader.result)
-          .digest('hex'),
-      );
-    };
-
-    reader.onerror = reject;
-  });
+  return createHasher().hash(blob);
 };
 
 const createProbingFunction = (store: MediaStore) => async (
@@ -45,22 +35,37 @@ const createProbingFunction = (store: MediaStore) => async (
   return (Object as any).values(results).map((result: any) => result.exists);
 };
 
-export const uploadFile = async (
+const createUploadingFunction = (store: MediaStore) => {
+  return (chunk: Chunk) => store.uploadChunk(chunk.hash, chunk.blob);
+};
+
+const createProcessingFunction = (
+  store: MediaStore,
+  deferredUploadId: Promise<string>,
+) => {
+  let offset = 0;
+  return async (chunks: Chunk[]) => {
+    await store.appendChunksToUpload(await deferredUploadId, {
+      chunks: hashedChunks(chunks),
+      offset,
+    });
+    offset += chunks.length;
+  };
+};
+
+export const uploadFile = (
   file: UploadableFile,
-  config: MediaStoreConfig,
-  callbacks?: Callbacks,
-): Promise<string> => {
+  config: MediaApiConfig,
+  callbacks?: UploadFileCallbacks,
+): UploadFileResult => {
   const { content, collection, name, mimeType } = file;
+  const occurrenceKey = uuid.v4();
   const store = new MediaStore(config);
   const deferredUploadId = store
     .createUpload()
     .then(response => response.data[0].id);
-  const uploadingFunction = (chunk: Chunk) =>
-    store.uploadChunk(chunk.hash, chunk.blob);
-  let offset = 0;
-  const queue = new PQueue({ concurrency: 1 });
-
-  await chunkinator(
+  const deferredEmptyFile = store.createFile({ collection, occurrenceKey });
+  const { response, cancel } = chunkinator(
     content,
     {
       hashingFunction,
@@ -68,21 +73,13 @@ export const uploadFile = async (
       probingBatchSize: 100,
       chunkSize: 4 * 1024 * 1024,
       uploadingConcurrency: 3,
-      progressBatchSize: 1000,
-      uploadingFunction,
+      uploadingFunction: createUploadingFunction(store),
       probingFunction: createProbingFunction(store),
+      processingBatchSize: 1000,
+      processingFunction: createProcessingFunction(store, deferredUploadId),
     },
     {
-      async onProgress(progress, chunks) {
-        queue.add(async () => {
-          await store.appendChunksToUpload(await deferredUploadId, {
-            chunks: hashedChunks(chunks),
-            offset,
-          });
-
-          offset += chunks.length;
-        });
-
+      onProgress(progress: number) {
         if (callbacks && callbacks.onProgress) {
           callbacks.onProgress(progress);
         }
@@ -90,16 +87,26 @@ export const uploadFile = async (
     },
   );
 
-  const [uploadId] = await Promise.all([deferredUploadId, queue.onIdle()]);
+  const fileId = Promise.all([
+    deferredUploadId,
+    deferredEmptyFile,
+    response,
+  ]).then(([uploadId, emptyFile]) => {
+    const fileId = emptyFile.data.id;
 
-  const { data: { id: fileId } } = await store.createFileFromUpload(
-    { uploadId, name, mimeType },
-    {
-      collection,
-    },
-  );
+    return store
+      .createFileFromUpload(
+        { uploadId, name, mimeType },
+        {
+          occurrenceKey,
+          collection,
+          replaceFileId: fileId,
+        },
+      )
+      .then(() => fileId);
+  });
 
-  return fileId;
+  return { deferredFileId: fileId, cancel };
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);

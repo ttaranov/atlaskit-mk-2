@@ -10,7 +10,7 @@ import {
   MediaViewerConfig,
 } from '../mediaviewer';
 import { MediaViewerItem } from './media-viewer';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { generatePreview, isPreviewGenerated } from '../domain/preview';
 
 export interface MediaFileListViewerProps {
@@ -54,7 +54,9 @@ export class MediaFileListViewer extends Component<
       generatePreview: generatePreview(MediaViewer),
     };
 
-    const { config: { authProvider } } = context;
+    const {
+      config: { authProvider },
+    } = context;
 
     this.state = {
       mediaViewer: new MediaViewer({
@@ -78,7 +80,7 @@ export class MediaFileListViewer extends Component<
     const filesToProcess = list.filter(item => item.type === 'file'); // for now we only support files
 
     const erroredObservable = (file: MediaViewerItem) => {
-      return Observable.create(observer => {
+      return Observable.create((observer: Observer<any>) => {
         // a media item with no processingStatus will be treated as error downstream
         // so we will be able to provide the correct error handling
         observer.next({
@@ -98,7 +100,7 @@ export class MediaFileListViewer extends Component<
       );
       return provider
         .observable()
-        .catch((error: Error) => erroredObservable(file))
+        .catch(() => erroredObservable(file))
         .map(item => item as FileItem);
     };
 

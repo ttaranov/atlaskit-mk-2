@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "2.0.1",
+  "version": "6.0.0",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,26 +17,35 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/avatar": "^10.0.0",
-    "@atlaskit/badge": "^7.0.0",
-    "@atlaskit/button": "^7.0.0",
-    "@atlaskit/dropdown-menu": "^4.0.0",
-    "@atlaskit/icon": "^11.0.0",
-    "@atlaskit/lozenge": "^4.0.0",
-    "@atlaskit/media-ui": "^2.0.1",
-    "@atlaskit/spinner": "^5.0.0",
-    "@atlaskit/tooltip": "^9.0.0",
+    "@atlaskit/avatar": "^14.0.0",
+    "@atlaskit/avatar-group": "^2.0.0",
+    "@atlaskit/badge": "^9.0.0",
+    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/dropdown-menu": "^6.0.0",
+    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/lozenge": "^6.0.0",
+    "@atlaskit/media-ui": "^4.0.0",
+    "@atlaskit/spinner": "^9.0.0",
+    "@atlaskit/theme": "^5.0.0",
+    "@atlaskit/tooltip": "^11.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "@types/prop-types": "^15.5.1",
     "lodash.debounce": "^4.0.8",
     "prop-types": "^15.5.10",
     "react-lazily-render": "^1.0.1",
-    "react-transition-group": "^2.2.1",
-    "styled-components": "1.4.6 - 3"
+    "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^3.0.0"
+    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/field-range": "^5.0.0",
+    "@atlaskit/field-text": "^7.0.0",
+    "@atlaskit/inline-message": "^6.0.0",
+    "@atlaskit/page": "^8.0.0",
+    "brace": "^0.11.1",
+    "react-ace": "^6.1.0"
   }
 }

@@ -17,7 +17,7 @@ const getItemState = stateName => ({ theme }) => {
   `;
 };
 
-const getPadding = ({ isCompact, theme }) => {
+const getPadding = ({ isCompact, theme, description }) => {
   const paddingKey = isCompact ? 'compact' : 'default';
   const { bottom = 0, left = 0, right = 0, top = 0 } = getThemeStyle(
     theme[themeNamespace],
@@ -25,8 +25,16 @@ const getPadding = ({ isCompact, theme }) => {
     'padding',
   );
 
+  let adjustedTop = typeof top === 'function' ? top() : top;
+  let adjustedBottom = typeof bottom === 'function' ? bottom() : bottom;
+
+  // Subtract the 1px padding-bottom added to the content and description elements
+  // to maintain original height
+  adjustedTop = Math.max(description ? adjustedTop - 1 : adjustedTop, 0);
+  adjustedBottom = Math.max(adjustedBottom - 1, 0);
+
   return css`
-    padding: ${top}px ${right}px ${bottom}px ${left}px;
+    padding: ${adjustedTop}px ${right}px ${adjustedBottom}px ${left}px;
   `;
 };
 

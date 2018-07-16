@@ -7,22 +7,7 @@ import { defaultSchema } from '../../src/schema';
 import * as v1schema from '../../json-schema/v1/full.json';
 import * as Ajv from 'ajv';
 import { NodeType, MarkType, Node } from 'prosemirror-model';
-
-/**
- * Folowing nodes produce null atribute values which fail JSON validation.
- * 'table', 'mention', 'codeBlock', 'extension', 'inlineExtension',
- * 'bodiedExtension', 'mediaSingle', 'mediaGroup', 'applicationCard'.
- */
-const removeNulls = json => {
-  for (let key in json) {
-    if (json[key] === null) {
-      delete json[key];
-    } else if (typeof json[key] === 'object') {
-      removeNulls(json[key]);
-    }
-  }
-  return json;
-};
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
 /**
  * Check if JSON is valid according to JSON schema.
@@ -30,7 +15,6 @@ const removeNulls = json => {
 const ajv = new Ajv();
 const validate = ajv.compile(v1schema);
 const isValidJSONSchema = json => {
-  removeNulls(json);
   json.version = 1;
   validate(json);
   return validate.errors === null;
@@ -39,12 +23,17 @@ const isValidJSONSchema = json => {
 const unsupportedNodes = [
   'confluenceUnsupportedBlock',
   'confluenceUnsupportedInline',
+  'unsupportedBlock',
+  'unsupportedInline',
   'confluenceJiraIssue',
   'unknownBlock',
 
   // following nodes do not have schema defined
   'image',
   'placeholder',
+  'layoutSection',
+  'layoutColumn',
+  'inlineCard',
 ];
 
 const unsupportedMarks = [
@@ -156,17 +145,13 @@ const getDisplayName = (node: Node) => {
 describe('ProseMirror and JSON schema tests', () => {
   // create node test data upto 2 level depths.
   const dataSet = getNodeMatches(defaultSchema.nodes.doc, 4, 4);
+  const transformer = new JSONTransformer();
+
   dataSet.forEach(editorData => {
     const editorDoc = editorData(defaultSchema);
+    const editorJson = transformer.encode(editorDoc);
     it(`should validate JSON schema for ${getDisplayName(editorDoc)}`, () => {
-      if (!isValidJSONSchema(editorDoc.toJSON())) {
-        // tslint:disable-next-line:no-console
-        console.warn(
-          `Breaking JSON for ${getDisplayName(editorDoc)}`,
-          JSON.stringify(editorDoc.toJSON()),
-        );
-      }
-      expect(isValidJSONSchema(editorDoc.toJSON())).toEqual(true);
+      expect(isValidJSONSchema(editorJson)).toEqual(true);
     });
   });
 });

@@ -9,6 +9,13 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
   WrapperDefault,
 )`
   margin: 12px 0;
+
+  /* extension container breakout */
+  &[data-layout='full-width'],
+  &[data-layout='wide'] {
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
 `;
 
 export const Header: ComponentClass<HTMLAttributes<{}>> = styled.div`

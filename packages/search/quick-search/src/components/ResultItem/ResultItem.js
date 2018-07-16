@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import type { Node } from 'react';
+import type { Node, ComponentType } from 'react';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
 
 import {
@@ -9,6 +9,7 @@ import {
   ResultItemCaption,
   ResultItemIcon,
   ResultItemTextAfter,
+  ResultItemSubText,
 } from './styled';
 
 const Item = withItemClick(withItemFocus(baseItem));
@@ -43,6 +44,8 @@ type Props = {
   text?: Node,
   /** React component to be placed to the right of the main text. */
   textAfter?: Node,
+  /** React component to be used for rendering links */
+  linkComponent?: ComponentType<*>,
 };
 
 class ResultItem extends PureComponent<Props> {
@@ -71,6 +74,10 @@ class ResultItem extends PureComponent<Props> {
       <ResultItemCaption>{this.props.caption}</ResultItemCaption>
     ) : null;
 
+    const wrappedSubText = this.props.subText ? (
+      <ResultItemSubText>{this.props.subText}</ResultItemSubText>
+    ) : null;
+
     const interactiveWrapperProps = {
       onClick: this.props.onClick,
       onMouseEnter: this.props.onMouseEnter,
@@ -82,10 +89,11 @@ class ResultItem extends PureComponent<Props> {
       <Item
         elemBefore={icon}
         elemAfter={after}
-        description={this.props.subText}
+        description={wrappedSubText}
         isSelected={this.props.isSelected}
         isCompact={this.props.isCompact}
         target={this.props.target}
+        linkComponent={this.props.linkComponent}
         {...interactiveWrapperProps}
       >
         {this.props.text}

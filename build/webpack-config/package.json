@@ -5,7 +5,7 @@
     "webpack-dev": "./bin/dev.js",
     "webpack-build": "./bin/build.js"
   },
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Configurations for webpack used in Atlaskit",
   "main": "config/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-loader": "^7.1.2",
-    "bolt": "^0.19.2",
+    "bolt": "^0.20.6",
     "bolt-fs-loader": "^0.0.0",
     "nav-info-loader": "^0.0.0",
     "chalk": "^2.1.0",

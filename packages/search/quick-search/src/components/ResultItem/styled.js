@@ -4,7 +4,7 @@ import { colors, gridSize } from '@atlaskit/theme';
 
 export const ResultItemGroupHeader = styled.div`
   display: flex;
-  margin-left: -${gridSize()}px;
+  margin-left: -${gridSize() * 1.5}px;
   margin-top: ${gridSize() * 1.5}px;
 `;
 
@@ -22,12 +22,18 @@ export const ResultItemAfterWrapper = styled.div`
   display: flex;
 `;
 
-export const ResultItemCaption = styled.span`
-  color: ${colors.N300};
-  margin-left: ${gridSize() * 2}px;
+export const ResultItemCaption = styled.small`
+  color: ${colors.N200};
+  margin-left: ${gridSize()}px;
+`;
+
+export const ResultItemSubText = styled.small`
+  font-size: 12px;
+  color: ${colors.N200};
 `;
 
 export const ResultItemIcon = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;

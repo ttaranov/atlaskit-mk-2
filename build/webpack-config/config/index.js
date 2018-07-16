@@ -7,6 +7,16 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
+
+// const vendorLibraries = [
+//   'react',
+//   'react-dom',
+//   'styled-components',
+//   'highlight.js',
+//   'react-router',
+//   'react-router-dom',
+// ];
+
 module.exports = function createWebpackConfig(
   {
     entry,
@@ -15,6 +25,7 @@ module.exports = function createWebpackConfig(
     globs = createDefaultGlob(),
     includePatterns = false,
     env = 'development',
+    websiteEnv = 'local',
     cwd = process.cwd(),
     noMinimize = false,
     report = false,
@@ -26,12 +37,23 @@ module.exports = function createWebpackConfig(
     cwd?: string,
     includePatterns: boolean,
     env: string,
+    websiteEnv: string,
     noMinimize?: boolean,
     report?: boolean,
   }*/,
-) {
+) /*: {
+  entry: {},
+  output: {},
+  devtool: boolean | string,
+  module: {},
+  resolve: {},
+  resolveLoader: {},
+  plugins: any[],
+}*/ {
   return {
     entry: {
+      // TODO: ideally we should have a vendor chunk, with just external library dependencies.
+      // vendor: vendorLibraries,
       main:
         env === 'development' && host && port
           ? [
@@ -50,14 +72,6 @@ module.exports = function createWebpackConfig(
               path.join(process.cwd(), './src/examples-entry.js'),
             ]
           : path.join(cwd, './src/examples-entry.js'),
-      vendor: [
-        'react',
-        'react-dom',
-        'styled-components',
-        'highlight.js',
-        'react-router',
-        'react-router-dom',
-      ],
     },
     output: {
       filename: '[name].js',
@@ -171,7 +185,7 @@ module.exports = function createWebpackConfig(
         'node_modules',
       ],
     },
-    plugins: plugins({ cwd, env, noMinimize, report }),
+    plugins: plugins({ cwd, env, websiteEnv, noMinimize, report }),
   };
 };
 
@@ -179,9 +193,10 @@ function plugins(
   {
     cwd,
     env,
+    websiteEnv,
     noMinimize,
     report,
-  } /*: { cwd: string, env: string, noMinimize: boolean, report: boolean } */,
+  } /*: { cwd: string, env: string, websiteEnv: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
     new webpack.NamedChunksPlugin(
@@ -200,11 +215,26 @@ function plugins(
         return (
           count === 1 &&
           (context &&
-            // We're intentionally excluding p-queue and rxjs-async-map from this chunk as it currently breaks our build
-            // These two packages are being used by the media-store package. Unfortunately neither of them are transpiled, and are thus breaking in ie11.
-            !context.includes('node_modules/p-queue') &&
+            // We're intentionally excluding rxjs-async-map from this chunk as it currently breaks our build
+            // This package is being used by the media-store package. Unfortunately it's not transpiled, and is thus breaking in ie11.
             (context && !context.includes('node_modules/rxjs-async-map')))
         );
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'shared-async-deps',
+      minChunks(module, count) {
+        let context = module.context;
+        if (
+          context &&
+          context.includes('node_modules') &&
+          !context.includes('@atlaskit')
+        ) {
+          return count >= 2;
+        }
+
+        return false;
       },
     }),
 
@@ -237,6 +267,14 @@ function plugins(
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
+      async: 'people-and-teams-packages',
+      minChunks(module, count) {
+        const context = module.context;
+        return context && context.includes('packages/people-and-teams');
+      },
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
       async: 'core-packages',
       minChunks(module, count) {
         const context = module.context;
@@ -255,19 +293,31 @@ function plugins(
 
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
-      favicon: path.join(cwd, 'public/favicon.ico'),
+      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
+      favicon: path.join(
+        cwd,
+        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
+      ),
       excludeChunks: ['examples'],
     }),
 
     new HtmlWebpackPlugin({
       filename: 'examples.html',
+      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
       template: path.join(cwd, 'public/examples.html.ejs'),
-      favicon: path.join(cwd, 'public/favicon.ico'),
+      favicon: path.join(
+        cwd,
+        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
+      ),
       excludeChunks: ['main'],
     }),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${env}"`,
+      WEBSITE_ENV: `"${websiteEnv}"`,
+      BASE_TITLE: `"Atlaskit by Atlassian ${
+        env === 'development' ? '- DEV' : ''
+      }"`,
     }),
   ];
 
@@ -275,8 +325,9 @@ function plugins(
     plugins.push(
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
-        openAnalyzer: true,
+        statsOptions: { source: false },
         generateStatsFile: true,
+        openAnalyzer: true,
         logLevel: 'error',
       }),
     );

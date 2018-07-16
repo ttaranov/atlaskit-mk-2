@@ -42,6 +42,7 @@ import {
   SpinnerWrapper,
   CardsWrapper,
   RecentUploadsTitle,
+  CardWrapper,
 } from './styled';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
@@ -104,8 +105,8 @@ export class StatelessUploadView extends Component<
   };
 
   render() {
-    const { isLoading } = this.props;
-    const cards = this.cards();
+    const { isLoading, mpBrowser } = this.props;
+    const cards = this.renderCards();
     const isEmpty = !isLoading && cards.length === 0;
 
     let contentPart: JSX.Element | null = null;
@@ -117,7 +118,7 @@ export class StatelessUploadView extends Component<
 
     return (
       <Wrapper>
-        <Dropzone isEmpty={isEmpty} mpBrowser={this.props.mpBrowser} />
+        <Dropzone isEmpty={isEmpty} mpBrowser={mpBrowser} />
         {contentPart}
       </Wrapper>
     );
@@ -166,13 +167,19 @@ export class StatelessUploadView extends Component<
     </FlagGroup>
   );
 
-  private cards() {
+  private renderCards() {
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-    return uploadingFilesCards.concat(recentFilesCards);
+    return uploadingFilesCards
+      .concat(recentFilesCards)
+      .map(({ key, el: card }) => (
+        <CardWrapper tabIndex={0} className="e2e-recent-upload-card" key={key}>
+          {card}
+        </CardWrapper>
+      ));
   }
 
-  private uploadingFilesCards() {
+  private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
     const { uploads, onFileClick, onEditorShowImage } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
@@ -217,8 +224,9 @@ export class StatelessUploadView extends Component<
         mediaType,
       };
 
-      return (
-        <div key={id}>
+      return {
+        key: id,
+        el: (
           <CardView
             status={status}
             progress={progress || undefined}
@@ -231,12 +239,12 @@ export class StatelessUploadView extends Component<
             onClick={onClick}
             actions={actions}
           />
-        </div>
-      );
+        ),
+      };
     });
   }
 
-  private recentFilesCards(): JSX.Element[] {
+  private recentFilesCards(): { key: string; el: JSX.Element }[] {
     const {
       context,
       recents,
@@ -253,7 +261,7 @@ export class StatelessUploadView extends Component<
 
     const onClick = ({ mediaItemDetails }: CardEvent) => {
       const fileDetails = mediaItemDetails as FileDetails;
-      if (fileDetails && fileDetails.id) {
+      if (fileDetails) {
         onFileClick(
           {
             id: fileDetails.id,
@@ -270,19 +278,17 @@ export class StatelessUploadView extends Component<
       if (mediaItem.type === 'file') {
         const { id, name } = mediaItem.details;
 
-        if (id) {
-          if (isWebGLAvailable()) {
-            onEditRemoteImage(
-              {
-                id,
-                name: name || '',
-              },
-              recentsCollection,
-            );
-          } else {
-            // WebGL not available - show warning flag
-            this.showWebGLWarningFlag();
-          }
+        if (isWebGLAvailable()) {
+          onEditRemoteImage(
+            {
+              id,
+              name: name || '',
+            },
+            recentsCollection,
+          );
+        } else {
+          // WebGL not available - show warning flag
+          this.showWebGLWarningFlag();
         }
       }
     };
@@ -296,23 +302,25 @@ export class StatelessUploadView extends Component<
         actions.push(createEditCardAction(editHandler));
       }
 
-      return (
-        <Card
-          key={`${occurrenceKey}-${id}`}
-          context={context}
-          identifier={{
-            mediaItemType: 'file',
-            id: id,
-            collectionName: recentsCollection,
-          }}
-          dimensions={cardDimension}
-          selectable={true}
-          selected={selected}
-          onClick={onClick}
-          actions={actions}
-          onLoadingChange={onLoadingChange}
-        />
-      );
+      return {
+        key: `${occurrenceKey}-${id}`,
+        el: (
+          <Card
+            context={context}
+            identifier={{
+              mediaItemType: 'file',
+              id: id,
+              collectionName: recentsCollection,
+            }}
+            dimensions={cardDimension}
+            selectable={true}
+            selected={selected}
+            onClick={onClick}
+            actions={actions}
+            onLoadingChange={onLoadingChange}
+          />
+        ),
+      };
     });
   }
 
@@ -324,12 +332,7 @@ export class StatelessUploadView extends Component<
     const payload = cardLoadingState.payload as FileDetails;
     const type = cardLoadingState.type;
 
-    if (
-      type === 'complete' &&
-      payload &&
-      payload.mediaType === 'image' &&
-      payload.id
-    ) {
+    if (type === 'complete' && payload && payload.mediaType === 'image') {
       const imageIds = this.state.imageIds.concat(payload.id);
       this.setState({ imageIds });
     }

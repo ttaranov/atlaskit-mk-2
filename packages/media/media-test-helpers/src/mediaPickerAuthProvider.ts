@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Auth, AuthContext } from '@atlaskit/media-core';
 
 const cachedAuths: { [key: string]: Promise<Auth> } = {};
@@ -10,6 +9,8 @@ const accessUrns: { [key: string]: Access } = {
     'urn:filestore:chunk:*': ['create', 'read'],
     'urn:filestore:upload': ['create'],
     'urn:filestore:upload:*': ['read', 'update'],
+    'urn:filestore:file': ['create'],
+    'urn:filestore:file:*': ['read', 'update'],
   },
   'mediapicker-test': {
     'urn:filestore:collection': ['create'],
@@ -17,6 +18,8 @@ const accessUrns: { [key: string]: Access } = {
     'urn:filestore:chunk:*': ['create', 'read'],
     'urn:filestore:upload': ['create'],
     'urn:filestore:upload:*': ['read', 'update'],
+    'urn:filestore:file': ['create'],
+    'urn:filestore:file:*': ['read', 'update'],
   },
 };
 
@@ -43,13 +46,12 @@ const requestAuthProvider = async (
   return response.json();
 };
 
-export const mediaPickerAuthProvider = (
-  component: React.Component<any, any>,
-) => (context: AuthContext) => {
+export const mediaPickerAuthProvider = (authEnvironment: string = 'asap') => (
+  context?: AuthContext,
+) => {
   const collectionName =
     (context && context.collectionName) || 'MediaServicesSample';
-  const authEnvironment =
-    component.state.authEnvironment === 'asap' ? 'asap' : '';
+  authEnvironment = authEnvironment === 'asap' ? 'asap' : '';
   const cacheKey = `${collectionName}:${authEnvironment}`;
 
   if (!cachedAuths[cacheKey]) {

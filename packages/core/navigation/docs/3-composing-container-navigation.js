@@ -57,7 +57,7 @@ export default md`
   ${(
     <Props
       shouldCollapseProps
-      heading="AkContainerTitleDropdown"
+      heading="AkContainerNavigation"
       props={require('!!extract-react-types-loader!../src/components/js/ContainerNavigation.js')}
     />
   )}
@@ -65,7 +65,7 @@ export default md`
   ${(
     <Props
       shouldCollapseProps
-      heading="AkContainerTitleDropdown"
+      heading="AkContainerNavigationNested"
       props={require('!!extract-react-types-loader!../src/components/js/nested/ContainerNavigationNested.js')}
     />
   )}

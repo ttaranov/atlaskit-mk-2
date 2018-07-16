@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   ### Icons 🎉
@@ -9,15 +9,15 @@ export default md`
   property. Generally, you won't need this unless you're using your own custom
   icon.
 
-  ~~~
-  "import Icon from '@atlaskit/icon';"
-  ~~~
+${code`
+import Icon from '@atlaskit/icon';
+`}
 
   To use one of Atlaskit's built-in icons you should import it directly.
 
-  ~~~
-  "import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';"
-  ~~~
+${code`
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+`}
 
   You can explore all of our icons in the example below.
 

@@ -1,45 +1,55 @@
 // @flow
-import { codeFontFamily, borderRadius, gridSize } from '@atlaskit/theme';
+import {
+  codeFontFamily,
+  borderRadius,
+  gridSize,
+  fontSize,
+} from '@atlaskit/theme';
 
 import { defaultColors } from './defaultTheme';
 
+export type ThemeModes = 'light' | 'dark';
+export type ThemeProps = {
+  __ATLASKIT_THEME__: { mode: ThemeModes },
+};
+
 export type Theme = {
-  lineNumberColor?: string,
-  lineNumberBgColor?: string,
-  backgroundColor?: string,
-  textColor?: string,
-  substringColor?: string,
-  keywordColor?: string,
-  attributeColor?: string,
-  selectorTagColor?: string,
-  docTagColor?: string,
-  nameColor?: string,
-  builtInColor?: string,
-  literalColor?: string,
-  bulletColor?: string,
-  codeColor?: string,
-  additionColor?: string,
-  regexpColor?: string,
-  symbolColor?: string,
-  variableColor?: string,
-  templateVariableColor?: string,
-  linkColor?: string,
-  selectorAttributeColor?: string,
-  selectorPseudoColor?: string,
-  typeColor?: string,
-  stringColor?: string,
-  selectorIdColor?: string,
-  selectorClassColor?: string,
-  quoteColor?: string,
-  templateTagColor?: string,
-  deletionColor?: string,
-  titleColor?: string,
-  sectionColor?: string,
-  commentColor?: string,
-  metaKeywordColor?: string,
-  metaColor?: string,
-  functionColor?: string,
-  numberColor?: string,
+  lineNumberColor?: string | number,
+  lineNumberBgColor?: string | number,
+  backgroundColor?: string | number,
+  textColor?: string | number,
+  substringColor?: string | number,
+  keywordColor?: string | number,
+  attributeColor?: string | number,
+  selectorTagColor?: string | number,
+  docTagColor?: string | number,
+  nameColor?: string | number,
+  builtInColor?: string | number,
+  literalColor?: string | number,
+  bulletColor?: string | number,
+  codeColor?: string | number,
+  additionColor?: string | number,
+  regexpColor?: string | number,
+  symbolColor?: string | number,
+  variableColor?: string | number,
+  templateVariableColor?: string | number,
+  linkColor?: string | number,
+  selectorAttributeColor?: string | number,
+  selectorPseudoColor?: string | number,
+  typeColor?: string | number,
+  stringColor?: string | number,
+  selectorIdColor?: string | number,
+  selectorClassColor?: string | number,
+  quoteColor?: string | number,
+  templateTagColor?: string | number,
+  deletionColor?: string | number,
+  titleColor?: string | number,
+  sectionColor?: string | number,
+  commentColor?: string | number,
+  metaKeywordColor?: string | number,
+  metaColor?: string | number,
+  functionColor?: string | number,
+  numberColor?: string | number,
 };
 
 const codeContainerStyle = {
@@ -53,7 +63,7 @@ const codeContainerStyle = {
 };
 
 const lineNumberContainerStyle = (theme: Theme) => ({
-  fontSize: '12px',
+  fontSize: `${fontSize()}px`,
   lineHeight: '20px',
   color: theme.lineNumberColor,
   backgroundColor: theme.lineNumberBgColor,
@@ -201,8 +211,8 @@ const inlineCodeStyle = (theme: Theme) => ({
   },
 });
 
-export function applyTheme(theme: Theme = {}) {
-  const newTheme = { ...defaultColors, ...theme };
+export function applyTheme(theme: ThemeProps | Theme = {}) {
+  const newTheme = { ...defaultColors(theme), ...theme };
   return {
     lineNumberContainerStyle: lineNumberContainerStyle(newTheme),
     codeBlockStyle: codeBlockStyle(newTheme),

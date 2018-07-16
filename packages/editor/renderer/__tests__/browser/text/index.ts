@@ -553,19 +553,98 @@ describe('Renderer - TextSerializer', () => {
     expect(render(doc)).to.equal('information');
   });
 
-  it('should render tables', () => {
+  it('should render content in the table', () => {
     const doc = {
       type: 'doc',
       version: 1,
       content: [
         {
           type: 'table',
-          content: [],
+          content: [
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableHeader',
+                  attrs: {
+                    colspan: 2,
+                    colwidth: [233, 100],
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'header',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableHeader',
+                  attrs: {
+                    background: '#DEEBFF',
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'header',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableCell',
+                  attrs: {
+                    colspan: 1,
+                    rowspan: 1,
+                    background: null,
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'cell',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableCell',
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'cell',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
     };
 
-    expect(render(doc)).to.equal('{table}');
+    expect(render(doc)).to.equal('|header|header|\n|cell|cell|');
   });
 
   it('should ignore empty paragraphs', () => {
@@ -589,5 +668,155 @@ describe('Renderer - TextSerializer', () => {
     };
 
     expect(render(doc)).to.equal('foo\nbar');
+  });
+
+  it('should render unsupported node with the node type', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'bodiedExtension',
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('[bodiedExtension]');
+  });
+
+  it('should add a space between mention and text', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: '1',
+                accessLevel: 'CONTAINER',
+                text: '@this',
+              },
+            },
+            {
+              type: 'text',
+              text: 'is Sparta',
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('@this is Sparta');
+  });
+
+  it('should not add a space between text nodes', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'This',
+            },
+            {
+              type: 'text',
+              text: 'is Sparta',
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('Thisis Sparta');
+  });
+
+  it('should render task', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'taskList',
+          attrs: {
+            localId: 'empty-list-should-not-render',
+          },
+          content: [
+            {
+              type: 'taskItem',
+              attrs: {
+                localId: 'task-1',
+                state: 'TODO',
+              },
+              content: [
+                {
+                  type: 'text',
+                  text: 'Could you please do this ',
+                },
+                {
+                  type: 'mention',
+                  attrs: {
+                    id: '0',
+                    text: '@Carolyn',
+                    accessLevel: 'CONTAINER',
+                  },
+                },
+                {
+                  type: 'text',
+                  text: ' ',
+                },
+                {
+                  type: 'emoji',
+                  attrs: {
+                    shortName: ':wink:',
+                    id: '1f609',
+                    text: '😉',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('[] Could you please do this @Carolyn 😉');
+  });
+
+  it('should render decision', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'decisionList',
+          attrs: {
+            localId: '',
+          },
+          content: [
+            {
+              type: 'decisionItem',
+              attrs: {
+                localId: '',
+                state: 'DECIDED',
+              },
+              content: [
+                {
+                  type: 'text',
+                  text: 'This is a decision ',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).to.equal('<> This is a decision');
   });
 });

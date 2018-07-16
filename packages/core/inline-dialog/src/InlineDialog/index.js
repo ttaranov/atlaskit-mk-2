@@ -2,8 +2,17 @@
 
 import React, { Component, type Node as NodeType } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import { gridSize } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { Container } from './styled';
 import type { PositionType, FlipPositionsType } from '../types';
 
@@ -41,8 +50,7 @@ type Props = {
   shouldFlip?: boolean | Array<FlipPositionsType>,
 };
 
-// TODO: expose applicable props from Layer and pull in here
-export default class InlineDialog extends Component<Props, {}> {
+class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
     isOpen: false,
     onContentBlur: () => {},
@@ -93,7 +101,7 @@ export default class InlineDialog extends Component<Props, {}> {
     // on (top or bottom aligned would move left/right) and the second is on the
     // perpendicular axis (how far 'away' you are from the target) both are measured
     // in pixels
-    // $FlowFixMe TEMPORARY
+    // $FlowFixMe - no arguments are expected by function
     const dialogOffset = `0 ${gridSize(this.props)}`;
 
     const layerContent = isOpen ? (
@@ -120,3 +128,25 @@ export default class InlineDialog extends Component<Props, {}> {
     );
   }
 }
+
+export { InlineDialog as InlineDialogWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'inlineDialog',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClose: createAndFireEventOnAtlaskit({
+      action: 'closed',
+      actionSubject: 'inlineDialog',
+
+      attributes: {
+        componentName: 'inlineDialog',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(InlineDialog),
+);

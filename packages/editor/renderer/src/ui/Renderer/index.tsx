@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { Schema } from 'prosemirror-model';
 import {
+  ADFStage,
   UnsupportedBlock,
   ProviderFactory,
   defaultSchema,
@@ -11,6 +12,14 @@ import {
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
+
+export type RendererAppearance =
+  | 'message'
+  | 'inline-comment'
+  | 'comment'
+  | 'full-page'
+  | 'mobile'
+  | undefined;
 
 export interface Extension<T> {
   extensionKey: string;
@@ -28,6 +37,8 @@ export interface Props {
   rendererContext?: RendererContext;
   schema?: Schema;
   useNewApplicationCard?: boolean;
+  appearance?: RendererAppearance;
+  adfStage?: ADFStage;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -73,23 +84,24 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { document, onComplete, schema } = this.props;
+    const { document, onComplete, schema, appearance, adfStage } = this.props;
 
     try {
       const { result, stat } = renderDocument(
         document,
         this.serializer,
         schema || defaultSchema,
+        adfStage,
       );
 
       if (onComplete) {
         onComplete(stat);
       }
 
-      return <Wrapper>{result}</Wrapper>;
+      return <Wrapper appearance={appearance}>{result}</Wrapper>;
     } catch (ex) {
       return (
-        <Wrapper>
+        <Wrapper appearance={appearance}>
           <UnsupportedBlock />
         </Wrapper>
       );

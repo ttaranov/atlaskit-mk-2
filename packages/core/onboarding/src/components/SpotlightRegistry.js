@@ -1,61 +1,86 @@
 // @flow
-import { type Node } from 'react';
+import { Container } from 'unstated';
 
-export default class SpotlightRegistry {
-  store = {};
-  mounted = [];
-  eventListeners = {};
+type State = {
+  /* Stored nodes against keys when consumers use SpotlightTarget */
+  stored: { [key: string]: HTMLElement },
+  /* All mounted spotlights (whether with or without SpotlightTarget), used to display Blanket etc. */
+  mounted: Array<HTMLElement>,
+};
 
-  notifyChange(name: string, ...args: any) {
-    if (this.eventListeners[name]) {
-      this.eventListeners[name].forEach(fn => {
-        fn(...args);
-      });
-    }
-  }
-  addChangeListener(name: string, fn: () => void) {
-    if (!this.eventListeners[name]) {
-      this.eventListeners[name] = [];
-    }
+export default class SpotlightRegistry extends Container<State> {
+  state = {
+    stored: {},
+    mounted: [],
+  };
+  activeElement: HTMLElement | null = null;
 
-    this.eventListeners[name].push(fn);
-  }
-  removeChangeListener(name: string, fn: () => void) {
-    if (this.eventListeners[name]) {
-      this.eventListeners[name] = this.eventListeners[name].filter(
-        i => fn !== i,
-      );
-    }
-  }
+  // ==============================
+  // ADD & REMOVE
+  // ==============================
 
-  add(name: string, node: Node) {
-    if (this.store[name]) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `SpotlightRegistry already has an entry for "${name}". Please try something else.`,
-      ); // eslint-disable-line no-console
+  add(name: string, node: HTMLElement) {
+    const stored = Object.assign({}, this.state.stored);
+    if (stored[name]) {
+      console.warn(`SpotlightRegistry already has an entry for "${name}".`); // eslint-disable-line no-console
       return;
     }
+    stored[name] = node;
 
-    this.store[name] = node;
-    this.notifyChange('add', name);
-  }
-  get(name: string) {
-    return this.store[name];
+    this.setState({ stored });
   }
   remove(name: string) {
-    if (this.store[name]) {
-      delete this.store[name];
-      this.notifyChange('remove', name);
+    const stored = Object.assign({}, this.state.stored);
+    if (!stored[name]) {
+      console.warn(`SpotlightRegistry has no entry for "${name}".`); // eslint-disable-line no-console
+      return;
     }
+    delete stored[name];
+    this.setState({ stored });
+  }
+  get(name: string) {
+    return this.state.stored[name];
   }
 
-  mount(name: string) {
-    this.mounted.push(name);
-    this.notifyChange('mount', name);
+  // ==============================
+  // MOUNT & UNMOUNT
+  // ==============================
+
+  mount(node: HTMLElement) {
+    if (this.state.mounted.length === 0) {
+      this.activeElement = document.activeElement;
+    }
+    const mounted = this.state.mounted.slice(0);
+    mounted.push(node);
+    this.setState({ mounted });
   }
-  unmount(name: string) {
-    this.mounted = this.mounted.filter(i => name !== i);
-    this.notifyChange('unmount', name);
+  unmount(node: HTMLElement) {
+    const mounted = this.state.mounted.slice(0).filter(i => node !== i);
+    if (mounted.length === 0) {
+      setTimeout(() => {
+        if (this.activeElement) {
+          this.activeElement.focus();
+          this.activeElement = null;
+        }
+      }, 0);
+    }
+    this.setState({ mounted });
+  }
+  hasMounted() {
+    return Boolean(this.state.mounted.length);
+  }
+  countMounted() {
+    return this.state.mounted.length;
   }
 }
+
+export type RegistryType = {
+  state: State,
+  add: (name: string, node: HTMLElement) => void,
+  remove: (name: string) => void,
+  get: (name: string) => HTMLElement,
+  mount: (node: HTMLElement) => void,
+  unmount: (node: HTMLElement) => void,
+  hasMounted: () => boolean,
+  countMounted: () => number,
+};

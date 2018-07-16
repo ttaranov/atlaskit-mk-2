@@ -60,6 +60,12 @@ class Controlled extends Component<Props, State> {
     });
   };
 
+  onFocus = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
+
   render() {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -84,15 +90,14 @@ export default () => {
 
       <Label
         htmlFor="react-select-datepicker-2--input"
-        label="controlled (value, isOpen)"
+        label="controlled (value)"
       />
       <Controlled initialValue="2018-01-02">
-        {({ value, onValueChange, isOpen, onBlur }) => (
+        {({ value, onValueChange, onBlur }) => (
           <DatePicker
             id="datepicker-2"
             value={value}
             onChange={onValueChange}
-            isOpen={isOpen}
             onBlur={onBlur}
           />
         )}
@@ -110,7 +115,11 @@ export default () => {
 
       <h3>Time picker</h3>
       <Label htmlFor="react-select-timepicker-1--input" label="default" />
-      <TimePicker id="timepicker-1" onChange={console.log} />
+      <TimePicker
+        id="timepicker-1"
+        onChange={console.log}
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
+      />
 
       <Label
         htmlFor="react-select-timepicker-2--input"
@@ -119,11 +128,12 @@ export default () => {
       <Controlled initialValue="14:30">
         {({ value, onValueChange, isOpen, onBlur }) => (
           <TimePicker
+            selectProps={{ classNamePrefix: 'timepicker-select' }}
             id="timepicker-2"
             value={value}
             onChange={onValueChange}
-            isOpen={isOpen}
             onBlur={onBlur}
+            isOpen={isOpen}
           />
         )}
       </Controlled>
@@ -133,9 +143,22 @@ export default () => {
         label="uncontrolled (defaultValue)"
       />
       <TimePicker
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
         id="timepicker-3"
         defaultValue="14:30"
         onChange={console.log}
+      />
+
+      <Label
+        htmlFor="react-select-timepicker-4--input"
+        label="editable times"
+      />
+      <TimePicker
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
+        id="timepicker-4"
+        defaultValue="14:30"
+        onChange={console.log}
+        timeIsEditable
       />
 
       <h3>Date / time picker</h3>
@@ -164,6 +187,17 @@ export default () => {
         id="datetimepicker-3"
         defaultValue="2018-01-02T14:30+10:00"
         onChange={console.log}
+      />
+
+      <Label
+        htmlFor="react-select-datetimepicker-4--input"
+        label="editable times (UTC+10:00)"
+      />
+      <DateTimePicker
+        id="datetimepicker-4"
+        defaultValue="2018-01-02T14:30+10:00"
+        onChange={console.log}
+        timeIsEditable
       />
     </div>
   );

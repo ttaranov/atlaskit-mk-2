@@ -4,7 +4,7 @@ import { FONT_STYLE } from '../groups';
 /**
  * @name strike_mark
  */
-export interface Definition {
+export interface StrikeDefinition {
   type: 'strike';
 }
 

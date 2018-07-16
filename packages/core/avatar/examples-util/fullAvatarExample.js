@@ -1,8 +1,7 @@
 // @flow
 import React from 'react';
 import { gridSize } from '@atlaskit/theme';
-import Avatar from '../src/';
-import WithAllAvatarSizes from './withAllAvatarSizes';
+import Avatar from '../src';
 import { Block, Code, Note } from '../examples-util/helpers';
 import type { AppearanceType } from '../src/types';
 
@@ -30,7 +29,6 @@ export default ({
       <Code>online</Code>
     </Note>
     <Block>
-      <Avatar appearance={appearance} src={src} size="large" />
       <Avatar appearance={appearance} src={src} size="large" presence="busy" />
       <Avatar appearance={appearance} src={src} size="large" presence="focus" />
       <Avatar
@@ -51,7 +49,19 @@ export default ({
     <Note>
       Sizes <Code>xsmall</Code> and <Code>xxlarge</Code> do NOT support Presence
     </Note>
-    <WithAllAvatarSizes src={src} presence="online" />
+    <Block>
+      <Avatar appearance={appearance} src={src} size="xxlarge" />
+      <Avatar appearance={appearance} src={src} size="xlarge" presence="busy" />
+      <Avatar appearance={appearance} src={src} size="large" presence="focus" />
+      <Avatar appearance={appearance} src={src} presence="offline" />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="small"
+        presence="online"
+      />
+      <Avatar appearance={appearance} src={src} size="xsmall" />
+    </Block>
 
     <h2>Status</h2>
     <h4>Status Types</h4>
@@ -60,7 +70,6 @@ export default ({
       <Code>locked</Code>
     </Note>
     <Block>
-      <Avatar appearance={appearance} src={src} size="large" />
       <Avatar
         appearance={appearance}
         src={src}
@@ -80,6 +89,28 @@ export default ({
     <Note>
       Sizes <Code>xsmall</Code> and <Code>xxlarge</Code> do NOT support Status
     </Note>
-    <WithAllAvatarSizes appearance={appearance} src={src} status="approved" />
+    <Block>
+      <Avatar appearance={appearance} src={src} size="xxlarge" />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="xlarge"
+        status="approved"
+      />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="large"
+        status="declined"
+      />
+      <Avatar appearance={appearance} src={src} status="locked" />
+      <Avatar
+        appearance={appearance}
+        src={src}
+        size="small"
+        status="declined"
+      />
+      <Avatar appearance={appearance} src={src} size="xsmall" />
+    </Block>
   </div>
 );

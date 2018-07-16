@@ -1,17 +1,19 @@
 import {
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
+  unsupportedBlock,
+  unsupportedInline,
 } from '@atlaskit/editor-common';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
-import { EditorPlugin } from '../../types';
-import { nodeViewFactory } from '../../nodeviews';
+import { EditorPlugin, PMPluginFactory } from '../../types';
+import { ReactNodeView } from '../../nodeviews';
 import ReactUnsupportedBlockNode from './nodeviews/unsupported-block';
 import ReactUnsupportedInlineNode from './nodeviews/unsupported-inline';
 import { traverseNode } from './utils';
 
 export const pluginKey = new PluginKey('unsupportedContentPlugin');
 
-const createPlugin = (schema, providerFactory) => {
+const createPlugin: PMPluginFactory = ({ schema, portalProviderAPI }) => {
   return new Plugin({
     state: {
       init(config, state: EditorState) {
@@ -24,14 +26,22 @@ const createPlugin = (schema, providerFactory) => {
     key: pluginKey,
     props: {
       nodeViews: {
-        confluenceUnsupportedBlock: nodeViewFactory(
-          providerFactory,
-          { confluenceUnsupportedBlock: ReactUnsupportedBlockNode },
-          true,
+        confluenceUnsupportedBlock: ReactNodeView.fromComponent(
+          ReactUnsupportedBlockNode,
+          portalProviderAPI,
         ),
-        confluenceUnsupportedInline: nodeViewFactory(providerFactory, {
-          confluenceUnsupportedInline: ReactUnsupportedInlineNode,
-        }),
+        confluenceUnsupportedInline: ReactNodeView.fromComponent(
+          ReactUnsupportedInlineNode,
+          portalProviderAPI,
+        ),
+        unsupportedBlock: ReactNodeView.fromComponent(
+          ReactUnsupportedBlockNode,
+          portalProviderAPI,
+        ),
+        unsupportedInline: ReactNodeView.fromComponent(
+          ReactUnsupportedInlineNode,
+          portalProviderAPI,
+        ),
       },
     },
   });
@@ -50,15 +60,24 @@ const unsupportedContentPlugin: EditorPlugin = {
         name: 'confluenceUnsupportedInline',
         node: confluenceUnsupportedInline,
       },
+      {
+        rank: 1320,
+        name: 'unsupportedBlock',
+        node: unsupportedBlock,
+      },
+      {
+        rank: 1330,
+        name: 'unsupportedInline',
+        node: unsupportedInline,
+      },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 1320,
-        plugin: ({ schema, providerFactory }) =>
-          createPlugin(schema, providerFactory),
+        rank: 1340,
+        plugin: createPlugin,
       },
     ];
   },

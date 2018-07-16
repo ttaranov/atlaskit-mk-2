@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "6.0.0",
+  "version": "8.0.0",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,25 +12,29 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Ajay N Mathur",
-    "Luke B"
+    "Sean C",
+    "Charles L",
+    "Mike G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/layer": "^3.0.0",
-    "@atlaskit/theme": "^3.0.0",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/analytics-next": "^3.0.0",
+    "@atlaskit/layer": "^5.0.0",
+    "@atlaskit/theme": "^5.0.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.0.0",
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/icon": "^11.0.0",
-    "@atlaskit/single-select": "^4.0.0",
-    "enzyme": "^3.3.0"
+    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/datetime-picker": "^6.0.0",
+    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/select": "^5.0.0",
+    "@atlaskit/single-select": "^6.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

@@ -24,7 +24,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     createEditor({
       doc,
       pluginKey: stateKey,
-      editorPlugins: [panelPlugin, listPlugin, codeBlockPlugin],
+      editorPlugins: [panelPlugin, listPlugin, codeBlockPlugin()],
     });
 
   it('should render disabled ToolbarButton if isDisabled property is true', () => {
@@ -87,15 +87,6 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('spacing')).toBe('none');
-    toolbarOption.unmount();
-  });
-
-  it('should have spacing of toolbar button set to default if property isReducedSpacing=false', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarBlockType pluginState={pluginState} editorView={editorView} />,
-    );
-    expect(toolbarOption.find(ToolbarButton).prop('spacing')).toBe('default');
     toolbarOption.unmount();
   });
 

@@ -1,7 +1,16 @@
 // @flow
 import React, { Component } from 'react';
 import type { Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
 import AvatarImage from './AvatarImage';
@@ -42,7 +51,7 @@ class Avatar extends Component<AvatarPropTypes> {
 
     if (isDisabled || typeof onClick !== 'function') return;
 
-    const item: Object = omit(this.props, ...propsOmittedFromClickData);
+    const item = omit(this.props, ...propsOmittedFromClickData);
 
     onClick({ item, event });
   };
@@ -119,6 +128,7 @@ class Avatar extends Component<AvatarPropTypes> {
       size,
       src,
       stackIndex,
+      onClick,
     } = this.props;
 
     // distill props from context, props, and state
@@ -133,7 +143,7 @@ class Avatar extends Component<AvatarPropTypes> {
         <Inner
           innerRef={this.setRef}
           {...enhancedProps}
-          onClick={this.guardedClick}
+          onClick={onClick != null ? this.guardedClick : undefined}
         >
           <AvatarImage
             alt={name}
@@ -155,18 +165,33 @@ class Avatar extends Component<AvatarPropTypes> {
   }
 }
 
-/**
- *  1. Higher order components seem to ignore default properties. Mapping
- *     `appearance` explicity here circumvents the issue.
- *  2. The withPseudoState HOC should remain generic so rather than pass on
- *     `enableTooltip` we map it to `isInteractive`.
- *  3. Handle keyboard/mouse events and pass props to the wrapped component:
- *     - isActive
- *     - isFocus
- *     - isHover
- */
-export default mapProps({
+export const AvatarWithoutAnalytics = mapProps({
   appearance: props => props.appearance || Avatar.defaultProps.appearance, // 1
   isInteractive: props =>
-    props.enableTooltip || Avatar.defaultProps.enableTooltip, // 2
-})(withPseudoState(Avatar)); // 3
+    Boolean(
+      (typeof props.enableTooltip !== 'undefined'
+        ? props.enableTooltip
+        : Avatar.defaultProps.enableTooltip) && props.name,
+    ), // 2
+})(withPseudoState(Avatar));
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'avatar',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'avatar',
+
+      attributes: {
+        componentName: 'avatar',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(AvatarWithoutAnalytics),
+);

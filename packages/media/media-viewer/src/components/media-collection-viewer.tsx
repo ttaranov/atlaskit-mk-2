@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Context, MediaCollectionProvider } from '@atlaskit/media-core';
+import {
+  Context,
+  MediaCollectionProvider,
+  isError,
+} from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
@@ -49,7 +53,9 @@ export class MediaCollectionViewer extends Component<
       MediaViewer,
       mediaViewerConfiguration,
     } = props;
-    const { config: { authProvider } } = context;
+    const {
+      config: { authProvider },
+    } = context;
     const pageSize =
       this.props.pageSize || MediaCollectionViewer.defaultPageSize;
 
@@ -81,20 +87,24 @@ export class MediaCollectionViewer extends Component<
     mediaViewer.on('fv.changeFile', this.loadNextPageIfRequired);
 
     this.subscription = provider.observable().subscribe({
-      next: collection => {
-        const files = MediaFileAttributesFactory.fromMediaCollection(
-          collection,
-          serviceHost,
-        );
-        if (files.length > 0) {
-          if (mediaViewer.isOpen()) {
-            mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
-          } else {
-            const id = selectedItem
-              ? MediaFileAttributesFactory.getUniqueMediaViewerId(selectedItem)
-              : files[0].id;
-            mediaViewer.setFiles(files);
-            mediaViewer.open({ id });
+      next: value => {
+        if (!isError(value)) {
+          const files = MediaFileAttributesFactory.fromMediaCollection(
+            value,
+            serviceHost,
+          );
+          if (files.length > 0) {
+            if (mediaViewer.isOpen()) {
+              mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
+            } else {
+              const id = selectedItem
+                ? MediaFileAttributesFactory.getUniqueMediaViewerId(
+                    selectedItem,
+                  )
+                : files[0].id;
+              mediaViewer.setFiles(files);
+              mediaViewer.open({ id });
+            }
           }
         }
       },

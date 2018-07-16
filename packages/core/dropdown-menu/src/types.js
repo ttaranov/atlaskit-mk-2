@@ -1,6 +1,7 @@
 // @flow
 
 import { type Element, type Node } from 'react';
+import { type ButtonProps } from '@atlaskit/button';
 
 export type ItemId = string;
 export type GroupId = string;
@@ -64,6 +65,9 @@ type DropdownMenuBaseProps = {
   onItemActivated: OnItemActivatedArgs => void,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
   position: string,
+  /** Determines if the dropdown menu should be positioned fixed. Useful for breaking out of overflow scroll/hidden containers, however, extra layout
+   management will be required to control scroll behaviour when this property is enabled as the menu will not update position with the target on scroll. */
+  isMenuFixed: boolean,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
    */
@@ -77,12 +81,14 @@ type DropdownMenuBaseProps = {
    * to easily get a button trigger. */
   trigger?: Node | string,
   /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
-  triggerButtonProps: {},
+  triggerButtonProps?: ButtonProps,
   /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows
    * you to supply your own trigger component. Setting this prop to `button` will render a
    * Button component with an 'expand' icon, and the `trigger` prop contents inside the
    * button. */
   triggerType: 'default' | 'button',
+  /** Callback to know when the menu is correctly positioned after it is opened */
+  onPositioned?: Function,
 };
 
 export type OnOpenChangeArgs = {

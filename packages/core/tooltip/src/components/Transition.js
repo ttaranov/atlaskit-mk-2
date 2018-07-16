@@ -4,7 +4,7 @@
 import React, { Component, type ComponentType } from 'react';
 import { withRenderTarget } from '@atlaskit/layer-manager';
 import { Slide } from './Animation';
-import type { CoordinatesType, PositionType } from '../types';
+import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 
 type Props = {
   children: string,
@@ -12,6 +12,7 @@ type Props = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   position: PositionType,
+  mousePosition: PositionTypeBase,
   // eslint-disable-next-line react/no-unused-prop-types
   coordinates: CoordinatesType,
   truncate: boolean,
@@ -25,6 +26,7 @@ class Tip extends Component<Props> {
       coordinates,
       immediatelyHide,
       immediatelyShow,
+      mousePosition,
       position,
       truncate,
     } = this.props;
@@ -38,6 +40,7 @@ class Tip extends Component<Props> {
         immediatelyHide={immediatelyHide}
         immediatelyShow={immediatelyShow}
         in={transitionIn}
+        mousePosition={mousePosition}
         position={position}
         style={coordinates}
         truncate={truncate}
@@ -53,6 +56,5 @@ export default withRenderTarget(
     target: 'tooltip',
     withTransitionGroup: true,
   },
-  // $FlowFixMe TEMPORARY
   Tip,
 );

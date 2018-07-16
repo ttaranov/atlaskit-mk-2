@@ -4,10 +4,6 @@ import DynamicTableStateless from './Stateless';
 import type { SortOrderType, StatelessProps, RankEnd, RowType } from '../types';
 import { reorderRows } from '../internal/helpers';
 
-// We are disabling prop validation, as the rest of the props passed in are
-// handled by validation of the stateless verion.
-/* eslint-disable react/prop-types */
-
 type Props = {
   defaultPage: number,
   defaultSortKey?: string,
@@ -41,7 +37,6 @@ export default class DynamicTable extends Component<Props, State> {
 
   componentWillReceiveProps(newProps: Props) {
     this.setState({
-      // $FlowFixMe
       page: newProps.page,
       sortKey: newProps.defaultSortKey,
       sortOrder: newProps.defaultSortOrder,
@@ -96,10 +91,13 @@ export default class DynamicTable extends Component<Props, State> {
       isRankable,
       isRankingDisabled,
       rowsPerPage,
+      paginationi18n,
+      onRankStart,
     } = this.props;
 
     return (
       <DynamicTableStateless
+        paginationi18n={paginationi18n}
         caption={caption}
         emptyView={emptyView}
         head={head}
@@ -116,7 +114,7 @@ export default class DynamicTable extends Component<Props, State> {
         isRankable={isRankable}
         isRankingDisabled={isRankingDisabled}
         onRankEnd={this.onRankEnd}
-        onRankStart={this.props.onRankStart}
+        onRankStart={onRankStart}
       />
     );
   }

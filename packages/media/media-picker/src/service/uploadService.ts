@@ -1,40 +1,42 @@
+/**
+ * TODO
+ * This is deprecated code. It will be removed soon (MSW-691)
+ * Please remove this file and rename newUploadServiceImpl.ts to uploadServiceImpl.ts
+ */
 import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
 import { AuthProvider, MediaType } from '@atlaskit/media-core';
+import { createHasher } from '@atlaskit/media-store';
+import { Context, FileDetails } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
 import { sliceByChunks } from '../util/sliceByChunks';
-import { mapAuthToQueryParameters } from '../domain/auth';
-import { MediaError, MediaErrorName } from '../domain/error';
-import { MediaFile, validateMediaFile, PublicMediaFile } from '../domain/file';
-import { SmartMediaProgress } from '../domain/progress';
-import { defaultUploadParams } from '../domain/uploadParams';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
-
-import { createHasher } from './hashing/hasherCreator';
+import { mapAuthToQueryParameters } from '../domain/auth';
+import { MediaErrorName } from '../domain/error';
+import { SmartMediaProgress } from '../domain/progress';
+import { defaultUploadParams } from '../domain/uploadParams';
+import { MediaFile, PublicMediaFile, UploadParams } from '..';
 
 import { MediaClient, MediaApiError, isTokenError } from './mediaClient';
 import { MediaClientPool } from './mediaClientPool';
-import { MediaApi, MediaFileData } from './mediaApi';
-import { Preview } from '../domain/preview';
-import { UploadParams } from '../domain/config';
+import { MediaApi } from './mediaApi';
 import {
   SourceFile,
   mapAuthToSourceFileOwner,
 } from '../popup/domain/source-file';
+import {
+  UploadService,
+  UploadServiceEventListener,
+  UploadServiceEventPayloadTypes,
+} from './uploadServiceFactory';
 
 type UploadId = string;
 type ChunkId = string;
 
 const MAX_RETRY_COUNT = 1;
-
-export type FileFinalize = () => void;
-
-export interface UploadRequestParams {
-  collection?: string;
-}
 
 interface ClientBasedUploadQueryParameters {
   hash: string;
@@ -52,60 +54,12 @@ type UploadQueryParameters =
   | ClientBasedUploadQueryParameters
   | AsapBasedUploadQueryParameters;
 
-export interface FilesAddedEventPayload {
-  readonly files: MediaFile[];
-}
-
-export interface FilePreviewUpdateEventPayload {
-  readonly file: MediaFile;
-  readonly preview: Preview;
-}
-
-export interface FileUploadingEventPayload {
-  readonly file: MediaFile;
-  readonly progress: SmartMediaProgress;
-}
-
-export interface FileFinalizeReadyEventPayload {
-  readonly file: MediaFile;
-  readonly finalize: FileFinalize;
-}
-
-export interface FileConvertingEventPayload {
-  readonly file: PublicMediaFile;
-}
-
-export interface FileConvertedEventPayload {
-  readonly file: PublicMediaFile;
-  readonly metadata: MediaFileData;
-}
-
-export interface FileUploadErrorEventPayload {
-  readonly file: MediaFile;
-  readonly error: MediaError;
-}
-
-export type UploadServiceEventPayloadTypes = {
-  readonly 'files-added': FilesAddedEventPayload;
-  readonly 'file-preview-update': FilePreviewUpdateEventPayload;
-  readonly 'file-uploading': FileUploadingEventPayload;
-  readonly 'file-finalize-ready': FileFinalizeReadyEventPayload;
-  readonly 'file-converting': FileConvertingEventPayload;
-  readonly 'file-converted': FileConvertedEventPayload;
-  readonly 'file-upload-error': FileUploadErrorEventPayload;
-  readonly 'file-dropped': DragEvent;
-};
-
-export type UploadServiceEventListener<
-  E extends keyof UploadServiceEventPayloadTypes
-> = (payload: UploadServiceEventPayloadTypes[E]) => void;
-
 interface Upload {
   readonly creationDate: number;
   readonly uploadParams: UploadParams;
 }
 
-export class UploadService {
+export class OldUploadServiceImpl implements UploadService {
   private static hasher = createHasher();
 
   private readonly resumable: Resumable;
@@ -122,12 +76,11 @@ export class UploadService {
   private uploadParams: UploadParams;
   private retry: number = 0;
 
-  constructor(
-    url: string,
-    authProvider: AuthProvider,
-    uploadParams?: UploadParams,
-    userAuthProvider?: AuthProvider,
-  ) {
+  constructor(context: Context, uploadParams?: UploadParams) {
+    const url = context.config.serviceHost;
+    const authProvider = context.config.authProvider;
+    const userAuthProvider = context.config.userAuthProvider;
+
     this.emitter = new EventEmitter2();
 
     this.uploadChunkUrl = `${url}/chunk`;
@@ -158,7 +111,7 @@ export class UploadService {
       method: 'octet',
       minFileSize: 0,
       query: this.getQueryParameters,
-      preprocess: chunk => UploadService.hasher.hash(chunk),
+      preprocess: chunk => this.hashResumableChunk(chunk),
       generateUniqueIdentifier: () => uuid.v4(),
     });
 
@@ -207,8 +160,8 @@ export class UploadService {
     this.dropzoneElement = undefined;
   }
 
-  addFile(file: File): void {
-    this.resumable.addFile(file);
+  addFiles(files: File[]): void {
+    files.forEach(file => this.resumable.addFile(file));
   }
 
   cancel(uniqueIdentifier?: string): void {
@@ -267,6 +220,22 @@ export class UploadService {
       throw new Error('auth required');
     }
   };
+
+  // Hasher API has changed, so we need some glue
+  private hashResumableChunk(chunk) {
+    const { file } = chunk.fileObj;
+    const chunkBlob = file.slice(chunk.startByte, chunk.endByte);
+
+    OldUploadServiceImpl.hasher.hash(chunkBlob).then(
+      hash => {
+        chunk.hash = hash;
+        chunk.preprocessFinished();
+      },
+      error => {
+        this.onError(chunk, 'upload_fail', error);
+      },
+    );
+  }
 
   // Generates URL to upload a chunk
   private generateTarget = (rawParams: Array<string>): string => {
@@ -429,21 +398,9 @@ export class UploadService {
   };
 
   private onFileSuccess = (resumableFile: ResumableFile): void => {
-    const { autoFinalize } = this.getResumableFileUploadParams(resumableFile);
-
     this.emitLastUploadingPercentage(resumableFile);
 
-    if (autoFinalize) {
-      this.finalizeFile(resumableFile);
-      return;
-    }
-
-    this.emit('file-finalize-ready', {
-      file: this.mapResumableFileToMediaFile(resumableFile),
-      finalize: () => {
-        this.finalizeFile(resumableFile);
-      },
-    });
+    this.finalizeFile(resumableFile);
   };
 
   private onFileError = (
@@ -575,7 +532,7 @@ export class UploadService {
 
         this.emit('file-converted', {
           file,
-          metadata,
+          public: metadata,
         });
       })
       .catch(error => {
@@ -587,19 +544,13 @@ export class UploadService {
     mediaClient: MediaClient,
     publicId: string,
     resumableFile: ResumableFile,
-  ): Promise<MediaFileData> {
-    const { collection, fetchMetadata } = this.getResumableFileUploadParams(
-      resumableFile,
-    );
+  ): Promise<FileDetails> {
+    const { collection } = this.getResumableFileUploadParams(resumableFile);
 
-    if (fetchMetadata) {
-      this.emit('file-converting', {
-        file: this.mapResumableFileToPublicMediaFile(resumableFile, publicId),
-      });
-      return this.api.pollForFileMetadata(mediaClient, publicId, collection);
-    }
-
-    return Promise.resolve({ id: publicId });
+    this.emit('file-converting', {
+      file: this.mapResumableFileToPublicMediaFile(resumableFile, publicId),
+    });
+    return this.api.pollForFileMetadata(mediaClient, publicId, collection);
   }
 
   // Error handling
@@ -695,8 +646,6 @@ export class UploadService {
       type: resumableFile.file.type,
       creationDate: this.getResumableFileCreationDate(resumableFile),
     };
-
-    validateMediaFile(file);
 
     return file;
   };

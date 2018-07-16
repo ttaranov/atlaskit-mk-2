@@ -10,7 +10,8 @@ const spawndamnit = require('spawndamnit');
  * This is a helper to run a script if a certaing package changed.
  * It works by returning a zero code if a tool should be run, so that the normal usage becomes:
  *
- * `node build/ci-scripts/run.tool.if.needed.js @full/package-name -- yarn toolName`.
+ * `node build/ci-scripts/run.if.package.changed @full/package-name -- yarn toolName`.
+ * `node build/ci-scripts/run.if.package.changed @full/package-name @another/package-name -- yarn toolName`.
  */
 (async () => {
   let cwd = process.cwd();
@@ -31,11 +32,13 @@ const spawndamnit = require('spawndamnit');
   // Take packages that are going to be released,
   // because using only files is not enough in cases where pacakges is only dependent of other package
   let unpublishedChangesets = await git.getUnpublishedChangesetCommits();
-  let packagesToRelease = unpublishedChangesets.reduce(
-    (acc, changeset) =>
-      acc.concat(changeset.releases).concat(changeset.dependents),
-    [],
-  );
+  let packagesToRelease = unpublishedChangesets
+    .reduce(
+      (acc, changeset) =>
+        acc.concat(changeset.releases).concat(changeset.dependents),
+      [],
+    )
+    .filter(change => change.type !== 'none');
 
   // Take changed files since a commit or master branch
   let branch = await git.getBranchName();

@@ -1,21 +1,41 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { EditorView } from 'prosemirror-view';
-import Avatar, { AvatarGroup } from '@atlaskit/avatar';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import Avatar from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
+import { akGridSizeUnitless, akColorN20 } from '@atlaskit/util-shared-styles';
+import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { pluginKey as collabEditPluginKey, PluginState } from '../plugin';
 import { getAvatarColor } from '../utils';
+import ToolbarButton from '../../../ui/ToolbarButton';
 
 export interface Props {
+  inviteToEditHandler?: (event: Event) => void;
+  isInviteToEditButtonSelected?: boolean;
   editorView?: EditorView;
   eventDispatcher?: EventDispatcher;
 }
 
 const AvatarContainer = styled.div`
   margin-right: ${akGridSizeUnitless}px;
+  display: flex;
+  align-items: center;
+  div:last-child > button {
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    padding: 2px;
+  }
+`;
+
+const InviteTeamWrapper = styled.div`
+  background: ${akColorN20};
+  border-radius: 50%;
+  min-width: ${akGridSizeUnitless * 4}px;
+  margin-left: -${akGridSizeUnitless / 2}px;
 `;
 
 const itemAppear = keyframes`
@@ -116,6 +136,17 @@ export default class Avatars extends React.Component<Props, any> {
           onAvatarClick={this.onAvatarClick}
           avatar={Item}
         />
+        {this.props.inviteToEditHandler && (
+          <InviteTeamWrapper>
+            <ToolbarButton
+              onClick={this.props.inviteToEditHandler}
+              selected={this.props.isInviteToEditButtonSelected}
+              title="Invite to edit"
+              titlePosition="bottom"
+              iconBefore={<InviteTeamIcon label="Invite to edit" />}
+            />
+          </InviteTeamWrapper>
+        )}
       </AvatarContainer>
     );
   };
@@ -125,6 +156,7 @@ export default class Avatars extends React.Component<Props, any> {
       <WithPluginState
         plugins={{ data: collabEditPluginKey }}
         render={this.renderAvatars}
+        editorView={this.props.editorView}
       />
     );
   }

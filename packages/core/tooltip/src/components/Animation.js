@@ -3,7 +3,7 @@
 
 import React, { type ComponentType, type Node } from 'react';
 import { Transition } from 'react-transition-group';
-import type { PositionType } from '../types';
+import type { PositionType, PositionTypeBase } from '../types';
 
 const ENTER_DURATION = 120;
 const EXIT_DURATION = 120;
@@ -117,18 +117,21 @@ export const Slide = ({
   immediatelyHide,
   immediatelyShow,
   position,
+  mousePosition,
   ...props
 }: {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   position: PositionType,
+  mousePosition: PositionTypeBase,
   props?: any,
   children: Node,
   in: boolean,
   style: Object,
 }) => {
-  const horizontalOffset = xPos[position];
-  const verticalOffset = yPos[position];
+  const truePosition = position === 'mouse' ? mousePosition : position;
+  const horizontalOffset = xPos[truePosition];
+  const verticalOffset = yPos[truePosition];
 
   const restingTransform = 'translate3d(0, 0, 0)';
   const timeout = {

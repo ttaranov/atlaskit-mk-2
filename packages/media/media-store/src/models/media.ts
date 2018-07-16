@@ -5,7 +5,7 @@ export type MediaFileArtifacts = {
   };
 };
 
-export type MediaFileProcessingStatus = 'pending' | 'succeeded';
+export type MediaFileProcessingStatus = 'pending' | 'succeeded' | 'failed';
 
 export type MediaFile = {
   readonly id: string;
@@ -41,8 +41,12 @@ export type MediaCollectionItemMinimalDetails = {
 };
 
 export type MediaCollectionItemFullDetails = {
+  readonly mediaType: string;
+  readonly mimeType: string;
   readonly name: string;
+  readonly processingStatus: MediaFileProcessingStatus;
   readonly size: number;
+  readonly artifacts: MediaFileArtifacts;
 };
 
 export type MediaCollectionItemDetails =

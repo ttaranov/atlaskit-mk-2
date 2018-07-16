@@ -33,4 +33,21 @@ describe('WithEditorActions', () => {
     expect(actions._privateGetEditorView()).toBe(mockEditorView);
     wrapper.unmount();
   });
+
+  it('should render component with editor actions even if they were registered before WithEditorActions component renders', () => {
+    const mockEditorView: any = {};
+    const editorActions = new EditorActions();
+    const component = jest.fn(() => null);
+    editorActions._privateRegisterEditor(mockEditorView, {} as any);
+    const wrapper = mount(
+      <EditorContext editorActions={editorActions}>
+        <WithEditorActions render={component} />
+      </EditorContext>,
+    );
+    wrapper.update();
+    const lastCall: any = component.mock.calls.pop();
+    const [actions]: [EditorActions] = lastCall;
+    expect(actions._privateGetEditorView()).toBe(mockEditorView);
+    wrapper.unmount();
+  });
 });

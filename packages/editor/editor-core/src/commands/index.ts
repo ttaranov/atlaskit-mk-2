@@ -6,13 +6,10 @@ import {
   TextSelection,
   Transaction,
 } from 'prosemirror-state';
-import { findWrapping, liftTarget } from 'prosemirror-transform';
+import { findWrapping } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
-import * as baseCommand from 'prosemirror-commands';
-import * as baseListCommand from 'prosemirror-schema-list';
 import * as blockTypes from '../plugins/block-type/types';
 import {
-  isRangeOfType,
   canMoveDown,
   canMoveUp,
   atTheEndOfDoc,
@@ -22,7 +19,7 @@ import {
 
 import { hyperlinkPluginKey } from '../plugins/hyperlink';
 
-export function toggleBlockType(view: EditorView, name: string): boolean {
+export function setBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
   switch (name) {
     case blockTypes.NORMAL_TEXT.name:
@@ -32,32 +29,32 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
       break;
     case blockTypes.HEADING_1.name:
       if (nodes.heading) {
-        return toggleHeading(1)(view.state, view.dispatch);
+        return setHeading(1)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_2.name:
       if (nodes.heading) {
-        return toggleHeading(2)(view.state, view.dispatch);
+        return setHeading(2)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_3.name:
       if (nodes.heading) {
-        return toggleHeading(3)(view.state, view.dispatch);
+        return setHeading(3)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_4.name:
       if (nodes.heading) {
-        return toggleHeading(4)(view.state, view.dispatch);
+        return setHeading(4)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_5.name:
       if (nodes.heading) {
-        return toggleHeading(5)(view.state, view.dispatch);
+        return setHeading(5)(view.state, view.dispatch);
       }
       break;
     case blockTypes.HEADING_6.name:
       if (nodes.heading) {
-        return toggleHeading(6)(view.state, view.dispatch);
+        return setHeading(6)(view.state, view.dispatch);
       }
       break;
   }
@@ -66,169 +63,32 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
 
 export function setNormalText(): Command {
   return function(state, dispatch) {
-    const { tr, selection: { $from, $to }, schema } = state;
+    const {
+      tr,
+      selection: { $from, $to },
+      schema,
+    } = state;
     dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
     return true;
   };
 }
 
-export function toggleHeading(level: number): Command {
+export function setHeading(level: number): Command {
   return function(state, dispatch) {
-    const { tr, selection: { $from, $to }, schema } = state;
-    const currentBlock = $from.parent;
-    if (
-      currentBlock.type !== schema.nodes.heading ||
-      currentBlock.attrs['level'] !== level
-    ) {
-      dispatch(
-        tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
-      );
-    } else {
-      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
-    }
+    const {
+      tr,
+      selection: { $from, $to },
+      schema,
+    } = state;
+    dispatch(
+      tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
+    );
     return true;
   };
-}
-
-/**
- * Sometimes a selection in the editor can be slightly offset, for example:
- * it's possible for a selection to start or end at an empty node at the very end of
- * a line. This isn't obvious by looking at the editor and it's likely not what the
- * user intended - so we need to adjust the seletion a bit in scenarios like that.
- */
-export function adjustSelectionInList(
-  doc,
-  selection: TextSelection,
-): TextSelection {
-  let { $from, $to } = selection;
-
-  const isSameLine = $from.pos === $to.pos;
-
-  if (isSameLine) {
-    $from = doc.resolve($from.start($from.depth));
-    $to = doc.resolve($from.end($from.depth));
-  }
-
-  let startPos = $from.pos;
-  let endPos = $to.pos;
-
-  if (isSameLine && startPos === doc.nodeSize - 3) {
-    // Line is empty, don't do anything
-    return selection;
-  }
-
-  // Selection started at the very beginning of a line and therefor points to the previous line.
-  if ($from.nodeBefore && !isSameLine) {
-    startPos++;
-    let node = doc.nodeAt(startPos);
-    while (!node || (node && !node.isText)) {
-      startPos++;
-      node = doc.nodeAt(startPos);
-    }
-  }
-
-  if (endPos === startPos) {
-    return new TextSelection(doc.resolve(startPos));
-  }
-
-  return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
 }
 
 export function preventDefault(): Command {
   return function(state, dispatch) {
-    return true;
-  };
-}
-
-export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
-  return function(
-    state: EditorState,
-    dispatch: (tr: Transaction) => void,
-    view: EditorView,
-  ): boolean {
-    dispatch(
-      state.tr.setSelection(
-        adjustSelectionInList(state.doc, state.selection as TextSelection),
-      ),
-    );
-    state = view.state;
-
-    const { $from, $to } = state.selection;
-    const parent = $from.node(-2);
-    const grandgrandParent = $from.node(-3);
-    const isRangeOfSingleType = isRangeOfType(
-      state.doc,
-      $from,
-      $to,
-      state.schema.nodes[listType],
-    );
-
-    if (
-      ((parent && parent.type === state.schema.nodes[listType]) ||
-        (grandgrandParent &&
-          grandgrandParent.type === state.schema.nodes[listType])) &&
-      isRangeOfSingleType
-    ) {
-      // Untoggles list
-      return liftListItems()(state, dispatch);
-    } else {
-      // Wraps selection in list and converts list type e.g. bullet_list -> ordered_list if needed
-      if (!isRangeOfSingleType) {
-        liftListItems()(state, dispatch);
-        state = view.state;
-      }
-      return wrapInList(state.schema.nodes[listType])(state, dispatch);
-    }
-  };
-}
-
-export function toggleBulletList(): Command {
-  return toggleList('bulletList');
-}
-
-export function toggleOrderedList(): Command {
-  return toggleList('orderedList');
-}
-
-export function wrapInList(nodeType): Command {
-  return baseCommand.autoJoin(
-    baseListCommand.wrapInList(nodeType),
-    (before, after) => before.type === after.type && before.type === nodeType,
-  );
-}
-
-export function liftListItems(): Command {
-  return function(state, dispatch) {
-    const { tr } = state;
-    const { $from, $to } = state.selection;
-
-    tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      // Following condition will ensure that block types paragraph, heading, codeBlock, blockquote, panel are lifted.
-      // isTextblock is true for paragraph, heading, codeBlock.
-      if (
-        node.isTextblock ||
-        node.type.name === 'blockquote' ||
-        node.type.name === 'panel'
-      ) {
-        const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
-        const range = sel.$from.blockRange(sel.$to);
-
-        if (!range || sel.$from.parent.type !== state.schema.nodes.listItem) {
-          return false;
-        }
-
-        const target = range && liftTarget(range);
-
-        if (target === undefined || target === null) {
-          return false;
-        }
-
-        tr.lift(range, target);
-      }
-    });
-
-    dispatch(tr);
-
     return true;
   };
 }
@@ -314,20 +174,24 @@ export function showLinkPanel(): Command {
 export function insertNewLine(): Command {
   return function(state, dispatch) {
     const { $from } = state.selection;
-    const node = $from.parent;
+    const parent = $from.parent;
     const { hardBreak } = state.schema.nodes;
 
     if (hardBreak) {
       const hardBreakNode = hardBreak.create();
 
-      if (node.type.validContent(Fragment.from(hardBreakNode))) {
+      if (parent && parent.type.validContent(Fragment.from(hardBreakNode))) {
         dispatch(state.tr.replaceSelectionWith(hardBreakNode));
         return true;
       }
     }
 
-    dispatch(state.tr.insertText('\n'));
-    return true;
+    if (state.selection instanceof TextSelection) {
+      dispatch(state.tr.insertText('\n'));
+      return true;
+    }
+
+    return false;
   };
 }
 
@@ -344,36 +208,18 @@ export function insertRule(): Command {
   };
 }
 
-export function indentList(): Command {
-  return function(state, dispatch) {
-    const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
-    if ($from.node(-1).type === listItem) {
-      return baseListCommand.sinkListItem(listItem)(state, dispatch);
-    }
-    return false;
-  };
+export function shouldAppendParagraphAfterBlockNode(state) {
+  return (
+    (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) || isTableCell(state)
+  );
 }
 
-export function outdentList(): Command {
-  return function(state, dispatch) {
-    const { listItem } = state.schema.nodes;
-    const { $from } = state.selection;
-    if ($from.node(-1).type === listItem) {
-      return baseListCommand.liftListItem(listItem)(state, dispatch);
-    }
-    return false;
-  };
-}
 export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   return function(state, dispatch) {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
 
-    if (
-      (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) ||
-      isTableCell(state)
-    ) {
+    if (shouldAppendParagraphAfterBlockNode(state)) {
       nodes.push(paragraph.create());
     }
 
@@ -411,7 +257,9 @@ export function createNewParagraphBelow(
 }
 
 function canCreateParagraphNear(state: EditorState): boolean {
-  const { selection: { $from } } = state;
+  const {
+    selection: { $from },
+  } = state;
   const node = $from.node($from.depth);
   const insideCodeBlock = !!node && node.type === state.schema.nodes.codeBlock;
   const isNodeSelection = state.selection instanceof NodeSelection;
@@ -489,14 +337,37 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
   );
 }
 
+export const removeEmptyHeadingAtStartOfDocument: Command = (
+  state,
+  dispatch,
+) => {
+  const { $cursor } = state.selection as TextSelection;
+  if (
+    $cursor &&
+    !$cursor.nodeBefore &&
+    !$cursor.nodeAfter &&
+    $cursor.pos === 1
+  ) {
+    if ($cursor.parent.type === state.schema.nodes.heading) {
+      return setNormalText()(state, dispatch);
+    }
+  }
+  return false;
+};
+
 export function createParagraphAtEnd(): Command {
   return function(state, dispatch) {
-    const { doc, tr, schema: { nodes } } = state;
-    const lastPos = doc.resolve(doc.content.size - 1);
-    const lastNode = lastPos.node(1);
+    const {
+      doc,
+      tr,
+      schema: { nodes },
+    } = state;
     if (
-      lastNode &&
-      !(lastNode.type === nodes.paragraph && lastNode.content.size === 0)
+      doc.lastChild &&
+      !(
+        doc.lastChild.type === nodes.paragraph &&
+        doc.lastChild.content.size === 0
+      )
     ) {
       tr.insert(doc.content.size, nodes.paragraph.createAndFill()!);
     }

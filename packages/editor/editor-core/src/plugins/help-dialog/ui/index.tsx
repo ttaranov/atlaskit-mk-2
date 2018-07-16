@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { browser } from '@atlaskit/editor-common';
-import CloseIcon from '@atlaskit/icon/glyph/editor/close';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Modal from '@atlaskit/modal-dialog';
 import {
   Header,
+  Footer,
   ContentWrapper,
   Line,
   Content,
@@ -29,6 +30,7 @@ export interface Format {
   type: string;
   keymap?: Function;
   autoFormatting?: Function;
+  imageEnabled?: boolean;
 }
 
 export const formatting: Format[] = [
@@ -72,16 +74,16 @@ export const formatting: Format[] = [
     type: 'heading',
     autoFormatting: () => (
       <span>
-        <CodeSm>#</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>#</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Heading 5',
+    name: 'Heading 2',
     type: 'heading',
     autoFormatting: () => (
       <span>
-        <CodeLg>#####</CodeLg> + <CodeLg>space</CodeLg>
+        <CodeLg>##</CodeLg> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -91,7 +93,7 @@ export const formatting: Format[] = [
     keymap: () => keymaps.toggleOrderedList,
     autoFormatting: () => (
       <span>
-        <CodeSm>1.</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>1.</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -101,7 +103,7 @@ export const formatting: Format[] = [
     keymap: () => keymaps.toggleBulletList,
     autoFormatting: () => (
       <span>
-        <CodeSm>*</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>*</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -111,7 +113,7 @@ export const formatting: Format[] = [
     keymap: () => keymaps.toggleBlockQuote,
     autoFormatting: () => (
       <span>
-        <CodeLg>></CodeLg> + <CodeLg>space</CodeLg>
+        <CodeLg>></CodeLg> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -160,7 +162,7 @@ export const formatting: Format[] = [
     type: 'taskItem',
     autoFormatting: () => (
       <span>
-        <CodeSm>[]</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>[]</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -169,7 +171,7 @@ export const formatting: Format[] = [
     type: 'decisionItem',
     autoFormatting: () => (
       <span>
-        <CodeSm>&lt;&gt;</CodeSm> + <CodeLg>space</CodeLg>
+        <CodeSm>&lt;&gt;</CodeSm> <CodeLg>space</CodeLg>
       </span>
     ),
   },
@@ -193,30 +195,70 @@ export const formatting: Format[] = [
   },
 ];
 
-export const getSupportedFormatting = (schema: Schema): Format[] => {
-  return formatting.filter(
+const otherFormatting = [
+  {
+    name: 'Clear formatting',
+    type: 'clearFormatting',
+    keymap: () => keymaps.clearFormatting,
+  },
+  {
+    name: 'Undo',
+    type: 'undo',
+    keymap: () => keymaps.undo,
+  },
+  {
+    name: 'Redo',
+    type: 'redo',
+    keymap: () => keymaps.redo,
+  },
+  {
+    name: 'Paste plain text',
+    type: 'paste',
+    keymap: () => keymaps.pastePlainText,
+  },
+];
+
+const imageAutoFormat = {
+  name: 'Image',
+  type: 'image',
+  autoFormatting: () => (
+    <span>
+      <CodeLg>![Alt Text](http://www.image.com)</CodeLg>
+    </span>
+  ),
+};
+
+export const getSupportedFormatting = (
+  schema: Schema,
+  imageEnabled?: boolean,
+): Format[] => {
+  const supportedBySchema = formatting.filter(
     format => schema.nodes[format.type] || schema.marks[format.type],
   );
+  if (imageEnabled) {
+    supportedBySchema.push(imageAutoFormat);
+  }
+  return supportedBySchema.concat(otherFormatting);
 };
 
 export const getComponentFromKeymap = (keymap): any => {
-  const currentMap = keymap[browser.mac ? 'mac' : 'windows'];
-  const keyParts = currentMap.replace(/\-(?=.)/g, ' + ').split(' ');
+  const shortcut: string = keymap[browser.mac ? 'mac' : 'windows'];
+  const keyParts = shortcut.replace(/\-(?=.)/g, ' + ').split(' ');
   return (
     <span>
       {keyParts.map((part, index) => {
         if (part === '+') {
-          return <span key={`${currentMap}-${index}`}>{' + '}</span>;
+          return <span key={`${shortcut}-${index}`}>{' + '}</span>;
         } else if (part === 'Cmd') {
-          return <CodeSm key={`${currentMap}-${index}`}>⌘</CodeSm>;
+          return <CodeSm key={`${shortcut}-${index}`}>⌘</CodeSm>;
         } else if (
           ['ctrl', 'alt', 'opt', 'shift'].indexOf(part.toLowerCase()) >= 0
         ) {
-          return (
-            <CodeMd key={`${currentMap}-${index}`}>{part.toLowerCase()}</CodeMd>
-          );
+          return <CodeMd key={`${shortcut}-${index}`}>{part}</CodeMd>;
         }
-        return <CodeSm key={`${currentMap}-${index}`}>{part}</CodeSm>;
+        return (
+          <CodeSm key={`${shortcut}-${index}`}>{part.toUpperCase()}</CodeSm>
+        );
       })}
     </span>
   );
@@ -226,6 +268,7 @@ export interface Props {
   editorView: EditorView;
   isVisible: boolean;
   appearance?: string;
+  imageEnabled?: boolean;
 }
 
 // tslint:disable-next-line:variable-name
@@ -236,10 +279,19 @@ const ModalHeader = ({ onClose, showKeyline }) => (
       <ToolbarButton
         onClick={onClose}
         title="Close help dialog"
-        iconBefore={<CloseIcon label="Close help dialog" size="large" />}
+        spacing="compact"
+        iconBefore={<CrossIcon label="Close help dialog" size="medium" />}
       />
     </div>
   </Header>
+);
+
+// tslint:disable-next-line:variable-name
+const ModalFooter = ({ onClose, showKeyline }) => (
+  <Footer showKeyline={showKeyline}>
+    Press {getComponentFromKeymap(keymaps.openHelp)} to quickly open this dialog
+    at any time
+  </Footer>
 );
 
 export default class HelpDialog extends React.Component<Props, any> {
@@ -248,11 +300,14 @@ export default class HelpDialog extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     const { schema } = this.props.editorView.state;
-    this.formatting = getSupportedFormatting(schema);
+    this.formatting = getSupportedFormatting(schema, this.props.imageEnabled);
   }
 
   closeDialog = () => {
-    const { state: { tr }, dispatch } = this.props.editorView;
+    const {
+      state: { tr },
+      dispatch,
+    } = this.props.editorView;
     closeHelpCommand(tr, dispatch);
   };
 
@@ -280,6 +335,7 @@ export default class HelpDialog extends React.Component<Props, any> {
         width="large"
         onClose={this.closeDialog}
         header={ModalHeader}
+        footer={ModalFooter}
       >
         <ContentWrapper>
           <Line />

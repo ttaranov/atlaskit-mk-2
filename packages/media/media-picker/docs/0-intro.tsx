@@ -65,7 +65,6 @@ export default md`
       }),
     uploadParams: {
       collection: 'collection-id',
-      fetchMetadata: true,
     },
   };
   ~~~
@@ -80,20 +79,10 @@ export default md`
 
   MediaPicker uses this parameter to get a client id and JWT token used for authorization against the Media API.
 
-  ### uploadParams? <_{collection: string, fetchMetadata: boolean, autoFinalize: boolean})_>
+  ### uploadParams? <_{collection: string})_>
 
   **collection** <_string_> —
   The name of the collection where files should be uploaded to
-
-  **fetchMetadata** <_boolean_> —
-  If true, MediaPicker will wait until all file processing is done and will return file objects with metadata (which includes links to previews, file size, etc.).
-
-  Default is true.
-
-  **autoFinalize** <_boolean_> —
-  If true, the file will be finalized automatically. If false, the file should be finalized by handling the event **upload-finalize-ready**.
-
-  Default is true.
 
   ---
 
@@ -135,10 +124,6 @@ export default md`
 
   Emitted when upload is in action
 
-  #### upload-finalize-ready _{file: MediaFile, finalize: function () => void}_
-
-  Emitted when the chunks were uploaded, but **autoFinalize** in the upload parameters is false. To create the file call **finalize()**.
-
   #### upload-processing _{file: MediaFile}_
 
   Emitted when server got all the chunks and started to process the file
@@ -163,7 +148,7 @@ export default md`
 
   Allows user to drag & drop files into the page. Has a design first seen in [https://enso.me/](Enso).
 
-  ![alt text](./dropzone.png "Dropzone")
+  ![alt text](./dropzone.png 'Dropzone')
 
   #### Usage
 
@@ -254,7 +239,7 @@ export default md`
 
   Opens native Operating System file browser window.
 
-  ![alt text](./browser.png "Browser")
+  ![alt text](./browser.png 'Browser')
 
   #### Usage
 
@@ -338,7 +323,7 @@ export default md`
 
   The popup component requires userAuthProvider (in addition to the authProvider because it displays files from and uploads files to the user's recent file collection). You will be need to cache this token returned by userAuthProvider because the popup will call this provider on every request to the media api concerning the users collection and cloud accounts. You cannot use the popup component if you can't obtain a token for the user's collection - use the Browser component instead.
 
-  ![alt text](./popup.png "Popup")
+  ![alt text](./popup.png 'Popup')
 
   #### Usage
 

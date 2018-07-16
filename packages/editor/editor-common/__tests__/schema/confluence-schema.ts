@@ -22,6 +22,8 @@ describe(`${name}/schema Confluence schema`, () => {
     expect(confluenceSchema.nodes).toHaveProperty(
       'confluenceUnsupportedInline',
     );
+    expect(confluenceSchema.nodes).toHaveProperty('unsupportedBlock');
+    expect(confluenceSchema.nodes).toHaveProperty('unsupportedInline');
     expect(confluenceSchema.nodes).toHaveProperty('media');
     expect(confluenceSchema.nodes).toHaveProperty('rule');
     // Marks

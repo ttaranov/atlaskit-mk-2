@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
 
 /* When dropdown contains more than 9 elements (droplist items, droplist groups),
  * it should have scroll and cut off half of the 10th item to indicate that there are more
@@ -28,7 +28,7 @@ export default styled.div`
   `};
 `;
 
-const backgroundColor = themed({ light: colors.N0, dark: colors.DN50 });
+const backgroundColor = colors.backgroundOnLayer;
 const boxShadow = css`
   box-shadow: 0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(
         gridSize,
@@ -55,7 +55,6 @@ export const SpinnerContainer = styled.div`
 `;
 
 export const Trigger = styled.div`
-  cursor: pointer;
   display: inline-flex;
   transition-duration: 0.2s;
   transition: box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);

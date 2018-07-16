@@ -1,4 +1,6 @@
-import { ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
+import styled from 'styled-components';
+
 import {
   akColorB300,
   akColorB400,
@@ -6,16 +8,29 @@ import {
   akColorN40,
   akColorN300,
   akColorN30A,
+  akColorR50,
+  akColorR500,
   akGridSizeUnitless,
   akTypographyMixins,
   akFontFamily,
   akFontSizeDefault,
+  akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
+import { tableSharedStyle } from '@atlaskit/editor-common';
+import { RendererAppearance } from './';
 
-// tslint:disable-next-line:variable-name
-export const Wrapper: ComponentClass<any> = styled.div`
+export interface Props {
+  appearance?: RendererAppearance;
+}
+
+const getLineHeight = ({ appearance }: Props) => {
+  return `line-height: ${appearance === 'message' ? 20 : 24}px`;
+};
+
+export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  ${getLineHeight};
   color: ${akColorN800};
+  word-wrap: break-word;
 
   & span.akActionMark {
     color: ${akColorB400};
@@ -59,9 +74,23 @@ export const Wrapper: ComponentClass<any> = styled.div`
     font-family: ${akFontFamily};
     font-size: ${akFontSizeDefault};
     font-weight: 400;
-    line-height: 24px;
     white-space: pre-wrap;
     word-wrap: break-word;
+  }
+
+  & span.date-node {
+    background: ${akColorN30A};
+    border-radius: ${akBorderRadius};
+    color: ${akColorN800};
+    padding: 2px 4px;
+    margin: 0 1px;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+
+  & span.date-node-highlighted {
+    background: ${akColorR50};
+    color: ${akColorR500};
   }
 
   & ul {
@@ -72,6 +101,18 @@ export const Wrapper: ComponentClass<any> = styled.div`
     }
 
     & ul ul {
+      list-style-type: square;
+    }
+
+    & ul ul ul {
+      list-style-type: disc;
+    }
+
+    & ul ul ul ul {
+      list-style-type: circle;
+    }
+
+    & ul ul ul ul ul {
       list-style-type: square;
     }
   }
@@ -118,42 +159,42 @@ export const Wrapper: ComponentClass<any> = styled.div`
   }
 
   & h1 {
-    ${akTypographyMixins.h800};
+    ${akTypographyMixins.h800 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h2 {
-    ${akTypographyMixins.h700};
+    ${akTypographyMixins.h700 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h3 {
-    ${akTypographyMixins.h600};
+    ${akTypographyMixins.h600 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h4 {
-    ${akTypographyMixins.h500};
+    ${akTypographyMixins.h500 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h5 {
-    ${akTypographyMixins.h400};
+    ${akTypographyMixins.h400 as any};
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h6 {
-    ${akTypographyMixins.h300};
+    ${akTypographyMixins.h300 as any};
     &:first-child {
       margin-top: 0;
     }
@@ -168,6 +209,46 @@ export const Wrapper: ComponentClass<any> = styled.div`
 
   & img {
     max-width: 100%;
+  }
+
+  & div > .media-wrapped + .media-wrapped + *:not(.media-wrapped) {
+    clear: both;
+  }
+
+  & .media-wrapped + div:not(.media-wrapped) {
+    clear: both;
+  }
+
+  & .CodeBlock,
+  & blockquote,
+  & hr,
+  & > div > div:not(.media-wrapped) {
+    clear: both;
+  }
+
+  & .media-wrapped {
+    & + h1,
+    & + h2,
+    & + h3,
+    & + h4,
+    & + h5,
+    & + h6 {
+      margin-top: 8px;
+    }
+  }
+
+  & .wrap-left + .wrap-right,
+  & .wrap-right + .wrap-left {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  ${tableSharedStyle} & .table-container {
+    transition: all 0.1s linear;
+    table {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   /*

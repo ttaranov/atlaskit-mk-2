@@ -1,4 +1,5 @@
 import * as React from 'react';
+import EditorQuoteIcon from '@atlaskit/icon/glyph/editor/quote';
 import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { ToolbarSize } from '../../ui/Toolbar';
@@ -60,6 +61,24 @@ const blockType: EditorPlugin = {
       />
     );
   },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Block quote',
+        icon: () => <EditorQuoteIcon label="Block quote" />,
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.blockquote.createChecked(
+              {},
+              state.schema.nodes.paragraph.createChecked(),
+            ),
+          );
+        },
+      },
+    ],
+  },
 };
 
 export default blockType;
+export { stateKey, BlockTypeState } from './pm-plugins/main';

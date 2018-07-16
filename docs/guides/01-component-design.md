@@ -2,9 +2,15 @@
 
 Related reading:
 
-* [naming props](./naming-props)
-* https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627
-* https://flow.org/en/docs/react/types/
+* [Naming props](./naming-props)
+* [Higher-order-components vs render props](./hoc-vs-props)
+* [`Component` vs `PureComponent`](./component-vs-pure-component)
+* [Flow-typing a component](./flow-typing-a-component)
+* [Error handling](./error-handling)
+* [Testing](./testing)
+* [Linting styles](./linting-styles)
+* <https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627>
+* <https://flow.org/en/docs/react/types/>
 
 ## Problem
 

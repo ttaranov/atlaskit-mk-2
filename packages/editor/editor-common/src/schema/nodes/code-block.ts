@@ -1,12 +1,12 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 import { browser } from '../../utils';
-import { Definition as Text } from './text';
+import { TextDefinition as Text } from './text';
 import { NoMark } from './doc';
 
 /**
  * @name codeBlock_node
  */
-export interface Definition {
+export interface CodeBlockDefinition {
   type: 'codeBlock';
   content?: Array<Text & NoMark>;
   attrs?: {
@@ -122,6 +122,14 @@ export const codeBlock: NodeSpec = {
   defining: true,
   parseDOM: [
     {
+      tag: 'pre > code',
+      preserveWhitespace: 'full',
+      getAttrs: (dom: HTMLElement) => {
+        const language = dom.getAttribute('data-language')!;
+        return { language };
+      },
+    },
+    {
       tag: 'pre',
       preserveWhitespace: 'full',
       getAttrs: (dom: HTMLElement) => {
@@ -165,8 +173,7 @@ export const codeBlock: NodeSpec = {
     const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
     return [
       'pre',
-      { 'data-language': node.attrs.language, class: className },
-      0,
+      ['code', { 'data-language': node.attrs.language, class: className }, 0],
     ];
   },
 };

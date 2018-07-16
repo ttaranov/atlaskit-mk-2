@@ -21,6 +21,7 @@ const objectStyle = {
   left: 0,
   height: '100%',
   width: '100%',
+  opacity: 0,
   overflow: 'hidden',
   pointerEvents: 'none',
   zIndex: -1,
@@ -36,6 +37,8 @@ type Props = {
   children: SizeMetrics => Node,
   /** Optional styles object to be applied to the containing element */
   containerStyle?: Object,
+  /** Called when the component is resized. */
+  onResize?: SizeMetrics => void,
 };
 
 type State = {
@@ -66,12 +69,18 @@ export default class SizeDetector extends Component<Props, State> {
       return;
     }
 
+    const sizeMetrics = {
+      width: container.offsetWidth,
+      height: container.offsetHeight,
+    };
+
     this.setState({
-      sizeMetrics: {
-        width: container.offsetWidth,
-        height: container.offsetHeight,
-      },
+      sizeMetrics,
     });
+
+    if (this.props.onResize) {
+      this.props.onResize(sizeMetrics);
+    }
   });
 
   componentDidMount() {

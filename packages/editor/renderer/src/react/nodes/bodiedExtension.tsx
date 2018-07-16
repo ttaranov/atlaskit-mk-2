@@ -27,7 +27,13 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const extensionContent = extensionHandlers[extensionType](
-        { extensionKey, extensionType, parameters, content },
+        {
+          type: 'bodiedExtension',
+          extensionKey,
+          extensionType,
+          parameters,
+          content,
+        },
         rendererContext.adDoc,
       );
 

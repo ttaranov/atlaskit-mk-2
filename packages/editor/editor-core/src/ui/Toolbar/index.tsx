@@ -61,6 +61,11 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
     return (
       nextProps.toolbarSize !== this.props.toolbarSize ||
       nextProps.disabled !== this.props.disabled ||
+      nextProps.popupsMountPoint === this.props.popupsMountPoint ||
+      nextProps.popupsBoundariesElement ===
+        this.props.popupsBoundariesElement ||
+      nextProps.popupsScrollableElement ===
+        this.props.popupsScrollableElement ||
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
   }

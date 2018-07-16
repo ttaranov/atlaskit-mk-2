@@ -8,11 +8,6 @@ export const MOCK_USERS: User[] = [
     avatarUrl: 'https://api.adorable.io/avatars/80/oscarwallhult.png',
   },
   {
-    id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user2',
-    name: 'Jarred Mack',
-    avatarUrl: 'https://api.adorable.io/avatars/80/jarredmack.png',
-  },
-  {
     id: 'ari:cloud:identity::user/3f000e23-3588-4e5d-aa4b-99mock_user3',
     name: 'Tong Li',
     avatarUrl: 'https://api.adorable.io/avatars/80/tongli.png',

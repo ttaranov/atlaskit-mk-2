@@ -7,8 +7,8 @@ describe('isLinkDetails()', () => {
   });
 
   it('should return false for something random', () => {
-    expect(isLinkDetails('test' as FileDetails)).toBe(false);
-    expect(isLinkDetails(2.2 as FileDetails)).toBe(false);
+    expect(isLinkDetails('test' as any)).toBe(false);
+    expect(isLinkDetails(2.2 as any)).toBe(false);
   });
 
   it('should return true for a UrlPreview', () => {
@@ -32,6 +32,7 @@ describe('isLinkDetails()', () => {
 
   it('should return true for a FileDetails', () => {
     const file: FileDetails = {
+      id: 'id',
       name: 'foobar.jpg',
       size: 14000,
     };

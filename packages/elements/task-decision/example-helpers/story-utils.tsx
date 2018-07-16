@@ -49,24 +49,28 @@ export const createRenderer = (provider: TaskDecisionProvider) => {
   return renderDocument;
 };
 
-export const MessageContainer = styled.div`
+export const MessageContainer: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   border: 10px solid #fcc;
   width: 585px;
 `;
 
-export const SidebarContainer = styled.div`
+export const SidebarContainer: React.ComponentClass<
+  React.HTMLAttributes<{}>
+> = styled.div`
   border: 10px solid #fcc;
   width: 240px;
   overflow-x: hidden;
 `;
 
-export const Grid = styled.div`
+export const Grid: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 `;
 
-export const Item = styled.div`
+export const Item: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   flex: 1 1 0;
   margin: 10px;
 `;

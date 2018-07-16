@@ -16,6 +16,7 @@ export const IconWrapper = styled.span`
   ${getSize} color: ${p => p.primaryColor || 'currentColor'};
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
+  flex-shrink: 0;
   line-height: 1;
 
   > svg {
@@ -39,7 +40,7 @@ type Props = {
   /** More performant than the glyph prop, but potentially dangerous if the SVG string hasn't
    been "sanitised" */
   dangerouslySetGlyph?: string,
-  /** String to apply as the SVG title element */
+  /** String to use as the aria-label for the icon. Set to an empty string if you are rendering the icon with visible text to prevent accessibility label duplication. */
   label: string,
   /** onClick handler for the icon element */
   onClick?: () => mixed,

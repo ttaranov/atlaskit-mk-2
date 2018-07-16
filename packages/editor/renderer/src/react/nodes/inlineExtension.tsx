@@ -26,7 +26,13 @@ const InlineExtension: React.StatelessComponent<Props> = ({
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
       const content = extensionHandlers[extensionType](
-        { extensionKey, extensionType, parameters, content: text },
+        {
+          type: 'inlineExtension',
+          extensionKey,
+          extensionType,
+          parameters,
+          content: text,
+        },
         rendererContext.adDoc,
       );
 

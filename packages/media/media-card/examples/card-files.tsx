@@ -9,7 +9,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
-import { UIAnalyticsEventInterface } from '../src/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { Card, FileIdentifier } from '../src';
 import { createApiCards, actions } from '../example-helpers';
@@ -126,6 +126,34 @@ const lazyLoadCards = [
   },
 ];
 
+// no hover state cards
+const noHoverStateCards = [
+  {
+    title: 'Overlay disabled',
+    content: (
+      <Card
+        identifier={successIdentifier}
+        context={context}
+        appearance="image"
+        disableOverlay={true}
+      />
+    ),
+  },
+  {
+    title: 'Selected',
+    content: (
+      <Card
+        identifier={successIdentifier}
+        context={context}
+        appearance="image"
+        disableOverlay={true}
+        selectable={true}
+        selected={true}
+      />
+    ),
+  },
+];
+
 // collection and no collection configuration of files
 const fileWithNoCollection: FileIdentifier = {
   mediaItemType: 'file',
@@ -172,6 +200,9 @@ export default () => (
 
         <h3>Collection configurations</h3>
         <StoryList>{collectionConfigCards}</StoryList>
+
+        <h3>Overlay disabled</h3>
+        <StoryList>{noHoverStateCards}</StoryList>
       </div>
     </div>
   </AnalyticsListener>

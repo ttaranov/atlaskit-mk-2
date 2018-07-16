@@ -1,19 +1,21 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example, Props, code } from '@atlaskit/docs';
 
 export default md`
   The analytics package exports several components and functions that work together
   to enable other components to fire analytics, extend event data, and process events.
 
-  ~~~js
-  import {
-    AnalyticsDecorator,
-    AnalyticsListener,
-    cleanProps,
-    withAnalytics
-  } from '@atlaskit/analytics';
-  ~~~
+**Usage**:
+
+${code`
+import {
+  AnalyticsDecorator,
+  AnalyticsListener,
+  cleanProps,
+  withAnalytics
+} from '@atlaskit/analytics';
+`}
 
   Using this library components can fire public and private events:
 

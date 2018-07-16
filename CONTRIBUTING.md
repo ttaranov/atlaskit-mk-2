@@ -4,6 +4,8 @@
 
 This project is bound by a [Code of Conduct][codeofconduct].
 
+Lots more information about contributing to this project can also be found on our website. See [getting-started][getting-started] for more.
+
 ## Reporting Issues
 
 This section guides you through submitting a bug report for Atlaskit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
@@ -139,26 +141,6 @@ bolt workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 > Note that there are additional restrictions to dependencies in Bolt than there
 > are in Yarn, so you should not use `yarn` to manage dependencies.
 
-## Unit testing your code
-
-You can run the unit tests by running:
-
-```sh
-yarn jest
-```
-
-If you want to run them continuously, you can run:
-
-```sh
-yarn jest --watch
-```
-
-You can also choose to only run the tests under certain directories by passing a path in as well
-
-```sh
-yarn jest packages/core/
-```
-
 ## Type checking your code
 
 We use both [Flow](https://flow.org/) and
@@ -223,10 +205,10 @@ instead of a relative path.
 
 ```js
 import React from 'react';
-import { AvatarGroup } from '@atlaskit/avatar';
+import { Presence } from '@atlaskit/avatar';
 
 export default function Example() {
-  return <AvatarGroup appearance="grid" data={...}/>;
+  return <Presence presence="online" />;
 }
 ```
 
@@ -242,9 +224,75 @@ To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment
 ATLASKIT_DEV_PORT=9001 bolt start
 ```
 
-## Browser testing your code
+### Running only a subset
 
-> This is internally supported, please review this link [Adding webdriver][addingwebdriver]
+Sometimes you really only want to run a small subset of examples. Depending on what you are trying to achieve the following scripts might be useful:
+
+```sh
+bolt start:core # start the website only for packages under packages/core
+bolt start:media # start the website only for packages under packages/media
+bolt start:editor # start the website only for packages under packages/editor
+# etc
+```
+
+If you need even more fine grained control you might even like to set up an alias like this in your `.bashrc` or equivalent.
+
+```sh
+function atlastart() {
+    yarn run projector ./projector.js start --packages "$1"
+}
+```
+
+No you can start the website with the specific packages you want rather than entire directories at a time
+
+```sh
+atlastart flag,tooltip
+```
+
+## Testing your code
+### Running tests
+ - unit tests
+ ```sh
+  yarn jest
+ ```
+ - browser unit tests
+ ```sh
+  yarn run test:browser
+ ```
+ - webdriver tests
+ ```sh
+  yarn run test:webriver
+ ```
+
+Please refer to [testing in atlaskit][testing] for more information about testing.
+
+### Building and linking packages
+
+You should almost never have to worry about this as everything is handled automatically in CI, but if for whatever reason you need to manually build packages (e.g you are trying to link them in another project) you *can* do this, but it can be a little tricky.
+
+How you do this will completely depend on what *exactly* you are trying to achieve and with which packages. A single command would never be able to handle each of these edge cases safely.
+
+> **"Can't you just give me a command to run though?"**
+>
+> Okay.
+>
+> If your package is a flow package run:
+>
+> NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only "@atlaskit/pkgName" -- babel src -d dist/cjs
+>
+> **or** if you know that you are consuming the package as a module:
+>
+> NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only "@atlaskit/pkgName" -- babel src -d dist/esm
+>
+> If your package is written in TS:
+> NODE_ENV=production bolt workspaces exec --only "@atlaskit/pkgName" -- tsc --project ./build/es5
+> **or** if you know that you are consuming the package as a module:
+> NODE_ENV=production bolt workspaces exec --only "@atlaskit/pkgName" -- tsc --project ./build/es2015
+>
+> **THESE WILL NOT COVER 100% OF USE CASES AND ARE PROVIDED WITHOUT WARRANTY**
+>
+> In certain circumstances you'll need to have a dependency be built, in others you'll need to make sure you've run `build:pkg` to copy the package.json's into `dist/`, in others, you will need to generate certain schema files.
+
 
 ## Documenting your code
 
@@ -291,8 +339,6 @@ change for each of these releases (`patch`, `minor` or `major`).
 The `summary` used during the creation of a changeset will also be used to
 create the changelog entry for each package being released.
 
-> **Soon:** You will be able to see which packages will be released at which
-> versions from the Pull Request screen, similar to the way it used to work
 
 > **How does this work?** Running the `yarn changeset` command creates a commit
 > with all the information required to release a package. When a branch is
@@ -300,7 +346,12 @@ create the changelog entry for each package being released.
 > calculated, packages and dependencies are updated, changelogs are generated
 > and packages are released
 
+More information about this can be found [here][releasing-packages] and in the [faq][faq]
+
 [codeofconduct]: ./CODE_OF_CONDUCT.md
 [issuetracker]: https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open
 [atlassianbug]: http://go/ak-bug
-[addingwebdriver]: https://extranet.atlassian.com/pages/viewpage.action?pageId=3791427559&moved=true
+[testing]: https://atlaskit.atlassian.com/docs/guides/testing
+[releasing-packages]: https://atlaskit.atlassian.com/docs/guides/releasing-packages
+[getting-started]: https://atlaskit.atlassian.com/docs/getting-started
+[faq]: https://atlaskit.atlassian.com/docs/guides/frequently-asked-questions

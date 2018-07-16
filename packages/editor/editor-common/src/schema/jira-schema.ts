@@ -4,6 +4,7 @@ import { Schema } from 'prosemirror-model';
 export interface JIRASchemaConfig {
   allowLists?: boolean;
   allowMentions?: boolean;
+  allowEmojis?: boolean;
   allowLinks?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowCodeBlock?: boolean;
@@ -29,6 +30,10 @@ export default function makeSchema(config: JIRASchemaConfig) {
   if (config.allowMentions) {
     nodes.push('mention');
     marks.push('mentionQuery');
+  }
+
+  if (config.allowEmojis) {
+    nodes.push('emoji');
   }
 
   if (config.allowAdvancedTextFormatting) {
@@ -68,6 +73,10 @@ export function isSchemaWithLists(schema: Schema): boolean {
 
 export function isSchemaWithMentions(schema: Schema): boolean {
   return !!schema.nodes.mention;
+}
+
+export function isSchemaWithEmojis(schema: Schema): boolean {
+  return !!schema.nodes.emoji;
 }
 
 export function isSchemaWithLinks(schema: Schema): boolean {

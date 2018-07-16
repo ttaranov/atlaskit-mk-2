@@ -17,7 +17,8 @@ import { version } from '../package.json';
 
 const PLATFORM = 'WEB';
 
-const MAX_RETRY = 3;
+export const RETRY_STEP_IN_MILLISECONDS = 1000;
+export const MAX_RETRY = 10;
 const SUBSCRIBE_DEBOUNCE_TIME_IN_MILLISECONDS = 10;
 
 export class Client implements ActionablePubSubClient {
@@ -189,8 +190,14 @@ export class Client implements ActionablePubSubClient {
       return;
     }
 
-    this.retryCount++;
-    return this.subscribeToCurrentChannels().then(() => this);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.subscribeToCurrentChannels()
+          .then(() => resolve(this))
+          .catch(reject);
+      }, RETRY_STEP_IN_MILLISECONDS * 2 ** this.retryCount);
+      this.retryCount++;
+    });
   };
 
   private onNetworkUp = () => {

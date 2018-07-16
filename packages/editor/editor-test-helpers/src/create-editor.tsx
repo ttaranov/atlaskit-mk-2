@@ -13,6 +13,11 @@ import { RefsNode, Refs } from './schema-builder';
 import { Schema } from 'prosemirror-model';
 import { PluginKey } from 'prosemirror-state';
 import patchEditorViewForJSDOM from './jsdom-fixtures';
+import {
+  PortalProvider,
+  PortalProviderAPI,
+  PortalRenderer,
+} from '../../editor-core/src/ui/PortalProvider';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
@@ -38,27 +43,41 @@ export default function createEditorForTests<T = any>({
   providerFactory,
   pluginKey,
 }: Options): EditorInstance & {
+  portalProviderAPI: PortalProviderAPI;
   refs: Refs;
   sel: number;
   plugin: any;
   pluginState: T;
 } {
   const plugins = editorPlugins
-    ? [...getDefaultPluginsList(), ...editorPlugins]
+    ? [...getDefaultPluginsList(editorProps), ...editorPlugins]
     : undefined;
   const place = document.body.appendChild(document.createElement('div'));
-  const editor = mount(
-    <TestReactEditorView
-      editorProps={editorProps}
-      providerFactory={
-        providerFactory ? providerFactory : new ProviderFactory()
-      }
-      onEditorCreated={() => {}}
-      onEditorDestroyed={() => {}}
-      plugins={plugins}
+  let portalProviderAPI;
+  const wrapper = mount(
+    <PortalProvider
+      render={portalProvider => {
+        portalProviderAPI = portalProvider;
+        return (
+          <>
+            <TestReactEditorView
+              editorProps={editorProps}
+              portalProviderAPI={portalProvider}
+              providerFactory={
+                providerFactory ? providerFactory : new ProviderFactory()
+              }
+              onEditorCreated={() => {}}
+              onEditorDestroyed={() => {}}
+              plugins={plugins}
+            />
+            <PortalRenderer portalProviderAPI={portalProviderAPI} />
+          </>
+        );
+      }}
     />,
     { attachTo: place },
   );
+  const editor = wrapper.find(TestReactEditorView);
 
   // Work around JSDOM/Node not supporting DOM Selection API
   if (
@@ -109,8 +128,8 @@ export default function createEditorForTests<T = any>({
   }
 
   afterEach(() => {
-    editor.unmount();
-    editor.detach();
+    wrapper.unmount();
+    wrapper.detach();
     if (place && place.parentNode) {
       place.parentNode.removeChild(place);
     }
@@ -125,6 +144,7 @@ export default function createEditorForTests<T = any>({
     },
   } = editor.instance() as ReactEditorView;
   return {
+    portalProviderAPI,
     editorView: editorView!,
     eventDispatcher,
     contentComponents,

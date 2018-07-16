@@ -18,10 +18,10 @@ export const AvatarSectionDiv = styled.div`
   /* stylelint-enable */
   grid-area: avatar-area;
   /* Unfortunately it's still easier to use a margin here until MS supports grid-gap */
-  margin-right: ${gridSize() * 2}px;
+  margin-right: ${gridSize()}px;
 
   [dir='rtl'] & {
-    margin-left: ${gridSize() * 2}px;
+    margin-left: ${gridSize()}px;
     margin-right: 0;
   }
 `;

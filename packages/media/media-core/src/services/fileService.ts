@@ -21,7 +21,7 @@ export class MediaFileService implements FileService {
     } else {
       const request = createRequest({
         config: this.config,
-        collectionName: collectionName,
+        collectionName,
         preventPreflight: true,
       });
 

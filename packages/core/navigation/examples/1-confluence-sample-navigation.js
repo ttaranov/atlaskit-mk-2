@@ -24,6 +24,7 @@ import Tooltip from '@atlaskit/tooltip';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import WorldIcon from '@atlaskit/icon/glyph/world';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
+import { AkSearch } from '@atlaskit/quick-search';
 
 import { getProvided } from '../src/theme/util';
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
@@ -33,7 +34,6 @@ import Navigation, {
   AkCreateDrawer,
   AkNavigationItemGroup,
   AkNavigationItem,
-  AkSearch,
   AkSearchDrawer,
   presetThemes,
 } from '../src';

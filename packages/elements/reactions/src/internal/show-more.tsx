@@ -33,16 +33,15 @@ const separatorStyle = style({
   display: 'inline-block',
 });
 
+export type CommonProps<T> = {
+  container?: T;
+  button?: T;
+};
+
 export type Props = {
   onClick?: React.MouseEventHandler<HTMLElement>;
-  style?: {
-    container?: React.CSSProperties;
-    button?: React.CSSProperties;
-  };
-  className?: {
-    container?: string;
-    button?: string;
-  };
+  style?: CommonProps<React.CSSProperties>;
+  className?: CommonProps<string>;
 };
 
 export default class ShowMore extends React.PureComponent<Props> {

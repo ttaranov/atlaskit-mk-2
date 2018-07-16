@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "10.0.0",
+  "version": "14.0.0",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -13,25 +13,27 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Joss M"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/dropdown-menu": "^4.0.0",
-    "@atlaskit/item": "^6.0.0",
-    "@atlaskit/theme": "^3.0.0",
-    "@atlaskit/tooltip": "^9.0.0",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/analytics-next": "^3.0.0",
+    "@atlaskit/theme": "^5.0.0",
+    "@atlaskit/tooltip": "^11.0.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.0.0",
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/icon": "^11.0.0",
-    "@atlaskit/lozenge": "^4.0.0",
-    "enzyme": "^3.3.0"
+    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/field-base": "^11.0.0",
+    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/toggle": "^5.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "keywords": [
     "atlaskit",

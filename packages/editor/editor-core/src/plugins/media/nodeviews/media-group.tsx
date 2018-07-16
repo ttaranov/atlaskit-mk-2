@@ -1,8 +1,10 @@
 import * as assert from 'assert';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import styled from 'styled-components';
+import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import {
@@ -12,6 +14,7 @@ import {
 
 export interface MediaGroupNodeProps {
   view: EditorView;
+  node: PMNode;
 }
 
 export interface MediaGroupNodeState {
@@ -24,13 +27,10 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   &&& ul {
     padding: 0;
-    & li:first-child {
-      padding-left: 2px;
-    }
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<
+export default class MediaGroupNode extends Component<
   MediaGroupNodeProps,
   MediaGroupNodeState
 > {
@@ -58,6 +58,30 @@ export default class MediaGroupNode extends PureComponent<
    */
   componentDidMount() {
     this.mediaNodesIds = this.getMediaNodesIds(this.props.children);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const children = this.getMediaNodesIds(this.props.children);
+    const nextChildren = this.getMediaNodesIds(nextProps.children);
+
+    let tempMediaId = this.props.node.firstChild!.attrs.__key;
+    const firstItemState = this.mediaPluginState.getMediaNodeState(tempMediaId);
+    const hasCustomMediaPicker = !!this.mediaPluginState.getMediaOptions()
+      .customMediaPicker;
+
+    // Need this for mobile bridge. Re-render if there's no `thumbnail`
+    if (hasCustomMediaPicker && firstItemState && !firstItemState.thumbnail) {
+      return true;
+    }
+
+    if (
+      children.length === nextChildren.length &&
+      tempMediaId === nextProps.node.firstChild!.attrs.__key &&
+      this.state.offset === nextState.offset
+    ) {
+      return false;
+    }
+    return true;
   }
 
   /**

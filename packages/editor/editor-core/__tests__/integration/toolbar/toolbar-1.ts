@@ -3,12 +3,13 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, editors, editable } from '../_helpers';
 
 const input = 'helloworld ';
+// https://product-fabric.atlassian.net/browse/ED-4531
 editors.forEach(editor => {
   BrowserTestCase(
     `Toolbar: should be able to select normal text, bold, italics, underline style for ${
       editor.name
     } editor`,
-    { skip: ['ie'] },
+    { skip: ['ie', 'safari', 'edge'] },
     async client => {
       const browser = await new Page(client);
       const bold = '[aria-label="Bold"]';

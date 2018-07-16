@@ -7,6 +7,7 @@ export interface PasteContent {
   plain?: string;
   html?: string;
   types?: Array<string>;
+  files?: Array<File>;
 }
 
 /**
@@ -17,7 +18,10 @@ export interface PasteContent {
  *         plain: 'copied text'
  *     });
  */
-export default (editorView: EditorView, content: PasteContent) => {
+export default (
+  editorView: EditorView,
+  content: PasteContent,
+): Event | false => {
   const event = createEvent('paste');
 
   const clipboardData = {
@@ -30,6 +34,7 @@ export default (editorView: EditorView, content: PasteContent) => {
       }
     },
     types: content.types || [],
+    files: content.files || [],
   };
 
   // Skiping IE < 15
@@ -47,5 +52,5 @@ export default (editorView: EditorView, content: PasteContent) => {
   }
 
   (editorView as TestingEditorView).dispatchEvent(event);
-  return true;
+  return event;
 };

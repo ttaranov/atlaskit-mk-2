@@ -1,4 +1,5 @@
 import { EditorState } from 'prosemirror-state';
+import { CollabEditProvider } from './provider';
 
 export interface Participant {
   lastActive: number;
@@ -37,4 +38,10 @@ export interface SendableSelection {
   type: 'textSelection' | 'nodeSelection';
   anchor: number;
   head: number;
+}
+
+export interface CollabEditOptions {
+  provider?: Promise<CollabEditProvider>;
+  inviteToEditHandler?: (event: Event) => void;
+  isInviteToEditButtonSelected?: boolean;
 }

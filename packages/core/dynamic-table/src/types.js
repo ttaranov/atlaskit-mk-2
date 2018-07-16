@@ -6,6 +6,11 @@ export type RowCellType = {
   content: Node,
 };
 
+type i18nShape = {
+  prev: string,
+  next: string,
+};
+
 export type StatelessProps = {
   caption?: Node,
   head?: HeadType,
@@ -24,6 +29,7 @@ export type StatelessProps = {
   isRankingDisabled?: boolean,
   onRankStart?: RankStart => void,
   onRankEnd?: RankEnd => void,
+  paginationi18n?: i18nShape,
 };
 
 export type RowType = {
@@ -33,7 +39,12 @@ export type RowType = {
 
 export type SortOrderType = 'ASC' | 'DESC';
 
-export type SpinnerSizeType = 'small' | 'medium' | 'large' | 'xlarge';
+export type SpinnerSizeType =
+  | 'xsmall'
+  | 'small'
+  | 'medium'
+  | 'large'
+  | 'xlarge';
 
 export type LoadingSpinnerSizeType = 'small' | 'large';
 

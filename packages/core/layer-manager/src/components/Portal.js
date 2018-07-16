@@ -14,6 +14,7 @@ const FirstChild = ({ children }) => Children.toArray(children)[0] || null;
 
 class Portal extends Component<Props> {
   portalElement = null;
+  mountTimeout = null;
   componentDidMount() {
     const node = document.createElement('span');
     if (document.body) {
@@ -24,7 +25,7 @@ class Portal extends Component<Props> {
       // applying scroll / focus locks). Because the unmounting of other portals
       // happens asynchronously, we wait for a moment before mounting new
       // portals to avoid race conditions in unmount handlers
-      setTimeout(() => this.componentDidUpdate(), 1);
+      this.mountTimeout = setTimeout(() => this.componentDidUpdate(), 1);
     }
   }
   componentDidUpdate() {
@@ -38,6 +39,9 @@ class Portal extends Component<Props> {
     // re-render an empty react tree into the portal element so that any
     // mounted components get cleaned up and have a chance to complete their
     // lifecycle before the portal is removed from the dom entirely
+    if (this.mountTimeout) {
+      clearTimeout(this.mountTimeout);
+    }
     if (this.portalElement) {
       const portal = this.portalElement;
       render(this.renderChildren(), portal, () => {

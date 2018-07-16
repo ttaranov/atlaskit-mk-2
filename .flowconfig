@@ -4,11 +4,15 @@
 .*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
 .*/website/.*
+.*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
 .*/packages/elements/icon/es5/.*
 .*/node_modules/stylelint/.*
 .*/node_modules/babel-flow-types/.*
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
+.*/.git/.*
+[untyped]
+.*/node_modules/react-select
 
 [include]
 
@@ -28,6 +32,7 @@ module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/package
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/jira/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/marketplace/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/media/\1/src/index'
+module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/people-and-teams/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/pipelines/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/purchasing/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/search/\1/src/index'
@@ -36,10 +41,12 @@ module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/package
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/stride/\1/src/index'
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/trello/\1/src/index'
 
+module.name_mapper='\!\!style-loader\!css-loader\!.*' -> '<PROJECT_ROOT>/typings/style-loader-css-loader.js'
 module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/typings/raw-loader.js'
 module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/typings/extract-react-types-loader.js'
 module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/typings/extract-react-types.js'
 module.name_mapper='.*\.md' -> '<PROJECT_ROOT>/typings/md.js'
+module.name_mapper.extension='less' -> 'empty/object'
 
 suppress_comment=\\(.\\|\n\\)*\\$ExpectError
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe

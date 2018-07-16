@@ -3,8 +3,8 @@
 export type ItemId = string;
 
 type ItemState = {
-  background: string,
-  text: string,
+  background: string | Function,
+  text: string | Function,
   secondaryText: string,
 };
 

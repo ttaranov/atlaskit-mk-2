@@ -13,9 +13,8 @@ import {
 export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   height: 24px;
-  min-width: 65px;
-  padding: 0 5px;
-  align-items: center;
+  line-height: 24px;
+  min-width: 70px;
 `;
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
@@ -35,7 +34,6 @@ export const ConfirmationPopup: ComponentClass<HTMLAttributes<{}>> = styled.div`
   max-height: none;
   height: 410px;
   width: 280px;
-  align-items: center;
 `;
 
 export const ConfirmationText: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -45,6 +43,9 @@ export const ConfirmationText: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${akColorN400};
   margin-top: 30px;
   padding: 20px;
+  & > div {
+    width: 240px;
+  }
   & > div:first-of-type {
     margin-bottom: 12px;
   }
@@ -66,6 +67,6 @@ export const ConfirmationImg: ComponentClass<
   ImgHTMLAttributes<{}>
 > = styled.img`
   width: 100px;
-  position: absolute;
-  top: 25px;
+  display: block;
+  margin: 25px auto 0 auto;
 `;

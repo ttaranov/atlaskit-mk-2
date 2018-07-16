@@ -1,14 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
+import EditorDecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import {
   decisionItem,
   decisionList,
   taskItem,
   taskList,
+  uuid,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
-import pastePlugin from './pm-plugins/paste-plugin';
 import inputRulePlugin from './pm-plugins/input-rules';
 import keymap from './pm-plugins/keymaps';
 import ToolbarDecision from './ui/ToolbarDecision';
@@ -31,12 +33,15 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
         rank: 500,
-        plugin: ({ schema, props, dispatch, providerFactory }) => {
+        plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {
           const { delegateAnalyticsEvent } = props;
-          return createPlugin({ delegateAnalyticsEvent }, providerFactory);
+          return createPlugin(
+            portalProviderAPI,
+            { delegateAnalyticsEvent },
+            providerFactory,
+          );
         },
       },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
@@ -59,6 +64,40 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
         />
       </TaskDecisionToolbarGroup>
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Action',
+        keywords: ['task'],
+        icon: () => <EditorTaskIcon label="Action" />,
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.taskList.createChecked(
+              { localId: uuid.generate() },
+              state.schema.nodes.taskItem.createChecked({
+                localId: uuid.generate(),
+              }),
+            ),
+          );
+        },
+      },
+      {
+        title: 'Decision',
+        icon: () => <EditorDecisionIcon label="Insert Decision" />,
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.decisionList.createChecked(
+              { localId: uuid.generate() },
+              state.schema.nodes.decisionItem.createChecked({
+                localId: uuid.generate(),
+              }),
+            ),
+          );
+        },
+      },
+    ],
   },
 };
 

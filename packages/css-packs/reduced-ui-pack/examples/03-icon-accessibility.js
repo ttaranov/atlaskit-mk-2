@@ -4,14 +4,14 @@ import React from 'react';
 // eslint-disable-next-line
 import icons from '!!raw-loader!../src/icons-sprite.svg';
 // eslint-disable-next-line
-import reducedStyles from '!!raw-loader!../src/bundle.css';
-
+import stuff from '!!style-loader!css-loader!../src/bundle.css';
+import Warning from './utils/warning';
 // eslint-disable-next-line react/no-danger
 const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
 
 export default () => (
   <div>
-    <style>{reducedStyles}</style>
+    <Warning />
     <Spritemap />
     <div className="ak-field-group">
       <label htmlFor="dummy">Dummy input</label>

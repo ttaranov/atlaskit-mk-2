@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import FullPage from '../../src/ui/Appearance/FullPage';
-import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
+import { createEditor, doc, p, extension } from '@atlaskit/editor-test-helpers';
 import { mount } from 'enzyme';
 
 const editor = (doc: any) =>
   createEditor({
     doc,
+    editorProps: { allowExtension: true },
   });
 
 describe('full page editor', () => {
@@ -24,6 +25,32 @@ describe('full page editor', () => {
       .simulate('click', { clientY: 200 });
     expect(editorView.state.doc).toEqualDocument(
       doc(p('Hello world'), p('Hello world'), p('')),
+    );
+  });
+
+  it('should create empty terminal empty paragraph when clicked outside editor even if last block is extension', () => {
+    const { editorView } = editor(
+      doc(
+        p('Hello world'),
+        extension({ extensionKey: '123', extensionType: 'BLOCK' })(),
+      ),
+    );
+    const fullPage = mount(
+      <FullPage
+        editorView={editorView}
+        providerFactory={{} as any}
+        editorDOMElement={<div />}
+      />,
+    );
+    fullPage
+      .findWhere(elm => elm.name() === 'ClickWrapper')
+      .simulate('click', { clientY: 200 });
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        p('Hello world'),
+        extension({ extensionKey: '123', extensionType: 'BLOCK' })(),
+        p(''),
+      ),
     );
   });
 

@@ -10,7 +10,7 @@ export interface Props {
   href?: string;
   iconAfter?: ReactElement<any>;
   iconBefore?: ReactElement<any>;
-  onClick?: () => void;
+  onClick?: (event: Event) => void;
   selected?: boolean;
   spacing?: 'default' | 'compact' | 'none';
   target?: string;
@@ -61,11 +61,11 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     );
   }
 
-  private handleClick = () => {
+  private handleClick = (event: Event) => {
     const { disabled, onClick } = this.props;
 
     if (!disabled && onClick) {
-      onClick();
+      onClick(event);
     }
   };
 }

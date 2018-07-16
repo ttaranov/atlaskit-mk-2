@@ -2,18 +2,41 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import LazilyRender from 'react-lazily-render';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import { fakeContext } from '@atlaskit/media-test-helpers';
-import { MediaCollectionFileItem, FileDetails } from '@atlaskit/media-core';
+import {
+  MediaCollectionFileItem,
+  FileDetails,
+  CollectionNotFoundError,
+} from '@atlaskit/media-core';
 
 import { CardList, CardListProps, CardListState } from '../../src/list';
 import { MediaCard } from '../../src/root/mediaCard';
 import { InfiniteScroll } from '../../src/list/infiniteScroll';
 import { LazyContent } from '../../src/utils/lazyContent';
+import { TransitionGroup } from 'react-transition-group';
 
 describe('CardList', () => {
+  const setup = () => {
+    const subject = new Subject();
+    const context = fakeContext({
+      getMediaCollectionProvider: {
+        observable() {
+          return subject;
+        },
+      },
+    });
+
+    return {
+      context,
+      subject,
+      ErrorComponent: () => <div>Error</div>,
+      EmptyComponent: () => <div>Empty</div>,
+    };
+  };
+
   const collectionName = 'MyMedia';
   const expectedMediaItemProvider = 'the media item provider';
   const oldItem: MediaCollectionFileItem = {
@@ -25,22 +48,29 @@ describe('CardList', () => {
     },
   };
   const collection = { items: [oldItem] };
-  const expectedMediaItems = [
-    {
+  const linkItem1 = {
+    type: 'link',
+    details: {
+      id: 'abcd',
       type: 'link',
-      details: {
-        id: 'abcd',
-        type: 'link',
-      },
     },
-    {
+  };
+  const linkItem2 = {
+    type: 'link',
+    details: {
+      id: '1234',
+      type: 'link',
+    },
+  };
+  const fileItem = {
+    type: 'file',
+    details: {
+      id: 'efgh',
       type: 'file',
-      details: {
-        id: 'efgh',
-        type: 'file',
-      },
     },
-  ];
+  };
+  const expectedMediaItems = [linkItem1, fileItem];
+  const linksOnlyItems = [linkItem1, linkItem2];
   const contextWithInclusiveStartKey = fakeContext({
     getMediaCollectionProvider: {
       observable() {
@@ -92,7 +122,7 @@ describe('CardList', () => {
   it('should pass a provider to MediaCard', () => {
     const collection = { items: expectedMediaItems };
     const context = contextWithInclusiveStartKey;
-    const card = mount(
+    const cardList = mount(
       <CardList
         context={context}
         collectionName={collectionName}
@@ -100,10 +130,10 @@ describe('CardList', () => {
       />,
     );
 
-    card.setState({ loading: false, error: undefined, collection });
+    cardList.setState({ loading: false, error: undefined, collection });
     // re-render now that we've subscribed (relying on the stubbed provider being synchronous)
-    expect(card.find(MediaCard)).toHaveLength(2);
-    card
+    expect(cardList.find(MediaCard)).toHaveLength(1);
+    cardList
       .find(MediaCard)
       .forEach(mediaCard =>
         expect((mediaCard.prop('provider').observable() as any).value).toBe(
@@ -114,21 +144,21 @@ describe('CardList', () => {
 
   it('should be loading=true when mounted', () => {
     const context = fakeContext();
-    const card = shallow<CardListProps, CardListState>(
+    const cardList = shallow(
       <CardList context={context} collectionName={collectionName} />,
       { disableLifecycleMethods: true },
     );
-    expect(card.state().loading).toBe(true);
+    expect(cardList.state().loading).toBe(true);
   });
 
   it('should be loading=false when we start loading the next page', () => {
     const context = contextWithInclusiveStartKey;
-    const card = shallow<CardListProps, CardListState>(
+    const cardList = shallow(
       <CardList context={context} collectionName={collectionName} />,
-    ) as any;
-    card.setState({ loading: false, loadNextPage: jest.fn() });
-    card.instance().loadNextPage();
-    expect(card.state().loading).toBe(false);
+    );
+    cardList.setState({ loading: false, loadNextPage: jest.fn() });
+    (cardList.instance() as CardList).loadNextPage();
+    expect(cardList.state().loading).toBe(false);
   });
 
   it('should not animate items the first time', () => {
@@ -227,6 +257,7 @@ describe('CardList', () => {
 
   it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
     const newItemDetails: FileDetails = {
+      id: 'id',
       processingStatus: 'succeeded',
     };
 
@@ -296,13 +327,13 @@ describe('CardList', () => {
       expect(list.children().text()).toContain('loading...');
     });
 
-    it('should render the empty view when the list is not loading and the error is an axios response with a status of 404', () => {
+    it('should render the empty view when the list is not loading and the error is a CollectionNotFoundError', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(
         <CardList context={context} collectionName={collectionName} />,
         { disableLifecycleMethods: true },
       ) as any;
-      list.setState({ loading: false, error: { response: { status: 404 } } });
+      list.setState({ loading: false, error: new CollectionNotFoundError() });
       expect(list.children().text()).toContain('No items');
     });
 
@@ -344,7 +375,7 @@ describe('CardList', () => {
       list.setState({
         loading: false,
         error: undefined,
-        collection: { items: [] },
+        collection: { items: [fileItem] },
       });
       expect(list.is(InfiniteScroll)).toBe(true);
     });
@@ -415,6 +446,101 @@ describe('CardList', () => {
         collection,
       });
       expect(list.find(LazyContent)).toHaveLength(0);
+    });
+
+    it('should not render link items', () => {
+      const collection = { items: linksOnlyItems };
+      const context = contextWithInclusiveStartKey;
+      const cardList = mount(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          shouldLazyLoadCards={false}
+        />,
+      );
+
+      cardList.setState({ loading: false, error: undefined, collection });
+      cardList.update();
+      expect(cardList.find(MediaCard)).toHaveLength(0);
+    });
+
+    it('should render empty component when there are no items in the collection', () => {
+      const { EmptyComponent } = setup();
+      const collection = { items: [] };
+      const context = contextWithInclusiveStartKey;
+      const cardList = mount(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          shouldLazyLoadCards={false}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      cardList.setState({ loading: false, error: undefined, collection });
+      cardList.update();
+      expect(cardList.find(EmptyComponent)).toHaveLength(1);
+    });
+  });
+
+  describe('Errors', () => {
+    it('should render <EmptyComponent /> given CollectionNotFoundError', () => {
+      const { context, subject, ErrorComponent, EmptyComponent } = setup();
+      const wrapper = shallow(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          errorComponent={<ErrorComponent />}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      subject.next(new CollectionNotFoundError());
+      wrapper.update();
+
+      expect(wrapper.find(EmptyComponent)).toHaveLength(1);
+    });
+
+    it('should render <ErrorComponent /> given other Error', () => {
+      const { context, subject, ErrorComponent, EmptyComponent } = setup();
+      const wrapper = shallow(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          errorComponent={<ErrorComponent />}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      subject.next(new Error());
+      wrapper.update();
+
+      expect(wrapper.find(ErrorComponent)).toHaveLength(1);
+    });
+
+    it('should recover from error given provider emits valid value after error', () => {
+      const { context, subject, ErrorComponent, EmptyComponent } = setup();
+      const wrapper = shallow(
+        <CardList
+          context={context}
+          collectionName={collectionName}
+          errorComponent={<ErrorComponent />}
+          emptyComponent={<EmptyComponent />}
+        />,
+      );
+
+      subject.next(new Error());
+      wrapper.update();
+
+      expect(wrapper.find(TransitionGroup)).toHaveLength(0);
+      expect(wrapper.find(ErrorComponent)).toHaveLength(1);
+
+      subject.next({ id: 'some-collection', items: [fileItem] });
+      wrapper.update();
+
+      // TransitionGroup is rendered when we want to show a card list
+      expect(wrapper.find(TransitionGroup)).toHaveLength(1);
+      expect(wrapper.find(ErrorComponent)).toHaveLength(0);
     });
   });
 });

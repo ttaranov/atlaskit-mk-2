@@ -1,77 +1,88 @@
 import { ResumableFile, ResumableChunk } from 'resumablejs';
 import * as Resumable from 'resumablejs';
-import { Hasher } from '../hashing/hasher';
-import * as hasherCreatorModule from '../hashing/hasherCreator';
 import { UploadParams } from '../../domain/config';
+import { AuthProvider, ContextConfig } from '@atlaskit/media-core';
+import { fakeContext } from '@atlaskit/media-test-helpers';
+// Keep the order! It's important
+import * as mediaStore from '@atlaskit/media-store';
 
-// We need this mocking to happen before importing uploadService
-const createHasher = hasherCreatorModule.createHasher;
-const createHasherSpy = jest.spyOn(hasherCreatorModule, 'createHasher');
-let hasherHashSpy: jest.SpyInstance<Hasher['hash']>;
-
-createHasherSpy.mockImplementation(() => {
-  const hasher = createHasher();
-  hasherHashSpy = jest.spyOn(hasher, 'hash');
-  return hasher;
-});
+const hasherHashSpy = jest.fn();
+const createHasher = jest.spyOn(mediaStore, 'createHasher');
+createHasher.mockReturnValue({ hash: hasherHashSpy });
 
 import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
-import { UploadService } from '../uploadService';
-import { AuthProvider } from '@atlaskit/media-core';
+import { OldUploadServiceImpl as UploadService } from '../uploadService';
 
 describe('UploadService', () => {
-  const apiUrl = 'some-api-url';
+  const apiUrl = 'some-service-host';
   const clientId = 'some-client-id';
   const asapIssuer = 'some-asap-issuer';
   const token = 'some-token';
   const collection = 'some-collection';
-  const clientBasedAuthProvider = () => Promise.resolve({ clientId, token });
-  const issuerBasedAuthProvider = () => Promise.resolve({ asapIssuer, token });
+
+  const clientBasedAuthProvider = jest.fn(() =>
+    Promise.resolve({ clientId, token }),
+  );
+  const issuerBasedAuthProvider = jest.fn(() =>
+    Promise.resolve({ asapIssuer, token }),
+  );
+
+  const clientBasedConfig: ContextConfig = {
+    serviceHost: apiUrl,
+    authProvider: clientBasedAuthProvider,
+  };
+  const issuerBasedConfig: ContextConfig = {
+    serviceHost: apiUrl,
+    authProvider: issuerBasedAuthProvider,
+  };
 
   beforeEach(() => {
     hasherHashSpy.mockReset();
+    hasherHashSpy.mockReturnValue(Promise.resolve());
+    clientBasedAuthProvider.mockClear();
+    issuerBasedAuthProvider.mockClear();
   });
 
   describe('setUploadParams', () => {
-    const setup = () => ({
-      uploadService: new UploadService(apiUrl, clientBasedAuthProvider, {
-        collection: '',
-      }),
-    });
+    const setup = () => {
+      const context = fakeContext();
+      return {
+        uploadService: new UploadService(context, {
+          collection: '',
+        }),
+        context,
+      };
+    };
 
     it('should apply defaultUploadParams', () => {
       const { uploadService } = setup();
 
-      uploadService.setUploadParams({ collection: '' });
+      uploadService.setUploadParams({});
 
       expect(uploadService.getUploadParams()).toEqual({
         collection: '',
-        fetchMetadata: true,
-        autoFinalize: true,
       });
     });
 
     it('should combine default uploadParams given new upload parameters', () => {
       const { uploadService } = setup();
-      const newUploadParams = {
+      const newUploadParams: UploadParams = {
         collection,
-        autoFinalize: false,
       };
 
       uploadService.setUploadParams(newUploadParams);
 
       expect(uploadService.getUploadParams()).toEqual({
         collection,
-        fetchMetadata: true,
-        autoFinalize: false,
       });
     });
   });
 
   describe('dropzone', () => {
     const setup = () => {
-      const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
+      const context = fakeContext();
+      const uploadService = new UploadService(context, {
         collection: '',
       });
       const resumable = uploadService['resumable'];
@@ -86,6 +97,7 @@ describe('UploadService', () => {
         uploadService,
         resumable,
         element,
+        context,
       };
     };
 
@@ -191,7 +203,8 @@ describe('UploadService', () => {
 
   describe('cancel', () => {
     const setup = () => {
-      const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
+      const context = fakeContext();
+      const uploadService = new UploadService(context, {
         collection: '',
       });
       const resumable = uploadService['resumable'];
@@ -253,14 +266,20 @@ describe('UploadService', () => {
     });
   });
 
-  const setupForSpy = (authProvider: AuthProvider): Promise<Resumable> => {
-    const uploadService = new UploadService(apiUrl, authProvider, {
+  const setupForSpy = (
+    isClientBasedAuth: boolean = true,
+  ): Promise<Resumable> => {
+    const context = fakeContext(
+      {},
+      isClientBasedAuth ? clientBasedConfig : issuerBasedConfig,
+    );
+    const uploadService = new UploadService(context, {
       collection: '',
     });
     const resumable: Resumable = uploadService['resumable'];
 
     const file = { size: 1000, type: 'image/png', name: 'some-file-name' };
-    uploadService.addFile(file as File);
+    uploadService.addFiles([file as File]);
     resumable.upload();
     return new Promise(resolve => {
       resumable.on('uploadStart', () => resolve(resumable));
@@ -269,21 +288,21 @@ describe('UploadService', () => {
 
   describe('query', () => {
     it('should have client based auth parameters', () =>
-      setupForSpy(clientBasedAuthProvider).then((resumable: Resumable) => {
+      setupForSpy(true).then((resumable: Resumable) => {
         const queryResult = (resumable.opts.query as any)(
           resumable.files[0],
           resumable.files[0].chunks[0],
         );
         expect(queryResult).toEqual(
           expect.objectContaining({
-            client: clientId,
-            token,
+            client: 'some-client-id',
+            token: 'some-token',
           }),
         );
       }));
 
     it('should have issuer based auth parameters', () =>
-      setupForSpy(issuerBasedAuthProvider).then((resumable: Resumable) => {
+      setupForSpy(false).then((resumable: Resumable) => {
         const queryResult = (resumable.opts.query as any)(
           resumable.files[0],
           resumable.files[0].chunks[0],
@@ -299,7 +318,7 @@ describe('UploadService', () => {
 
   describe('target', () => {
     it('should have client based auth parameters', () =>
-      setupForSpy(clientBasedAuthProvider).then((resumable: Resumable) => {
+      setupForSpy(true).then((resumable: Resumable) => {
         const rawParams: Array<string> = [
           `client=${clientId}`,
           `token=${token}`,
@@ -313,7 +332,7 @@ describe('UploadService', () => {
       }));
 
     it('should have issuer based auth parameters', () =>
-      setupForSpy(issuerBasedAuthProvider).then((resumable: Resumable) => {
+      setupForSpy().then((resumable: Resumable) => {
         const rawParams: Array<string> = [
           `issuer=${asapIssuer}`,
           `token=${token}`,
@@ -335,8 +354,8 @@ describe('UploadService', () => {
       (getPreviewFromVideo.getPreviewFromVideo as any) = jest
         .fn()
         .mockReturnValue(Promise.resolve());
-
-      const uploadService = new UploadService(apiUrl, clientBasedAuthProvider, {
+      const context = fakeContext();
+      const uploadService = new UploadService(context, {
         collection: '',
       });
 
@@ -353,7 +372,12 @@ describe('UploadService', () => {
       const { uploadService: uploadService1, resumable: resumable1 } = setup();
       const { uploadService: uploadService2, resumable: resumable2 } = setup();
 
-      const file = { size: 100, name: 'some-filename', type: '' };
+      const file = {
+        size: 100,
+        name: 'some-filename',
+        type: '',
+        slice: jest.fn(),
+      };
 
       const promise1 = new Promise(resolve =>
         resumable1.on('filesAdded', () => resolve()),
@@ -362,12 +386,12 @@ describe('UploadService', () => {
         resumable2.on('filesAdded', () => resolve()),
       );
 
-      uploadService1.addFile(file as File);
-      uploadService2.addFile(file as File);
+      uploadService1.addFiles([file as any]);
+      uploadService2.addFiles([file as any]);
 
       return Promise.all([promise1, promise2]).then(() => {
         expect(hasherHashSpy).toHaveBeenCalledTimes(2);
-        expect(createHasherSpy).toHaveBeenCalledTimes(1);
+        expect(createHasher).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -375,7 +399,7 @@ describe('UploadService', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'image/png' };
 
-      uploadService.addFile(file as File);
+      uploadService.addFiles([file as File]);
       return filesAddedPromise.then(() => {
         expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(1);
       });
@@ -385,7 +409,7 @@ describe('UploadService', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'unknown' };
 
-      uploadService.addFile(file as File);
+      uploadService.addFiles([file as File]);
       return filesAddedPromise.then(() => {
         expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
       });
@@ -395,7 +419,7 @@ describe('UploadService', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 10e7, name: 'some-filename', type: 'image/png' };
 
-      uploadService.addFile(file as File);
+      uploadService.addFiles([file as File]);
       return filesAddedPromise.then(() => {
         expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledTimes(0);
       });
@@ -405,7 +429,7 @@ describe('UploadService', () => {
       const { uploadService, filesAddedPromise } = setup();
       const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
 
-      uploadService.addFile(file as File);
+      uploadService.addFiles([file as File]);
       await filesAddedPromise;
 
       expect(getPreviewFromVideo.getPreviewFromVideo).toHaveBeenCalledTimes(1);
@@ -417,9 +441,9 @@ describe('UploadService', () => {
     const setup = (
       config: { uploadParams?: UploadParams; progress?: number } = {},
     ) => {
+      const context = fakeContext();
       const uploadService = new UploadService(
-        apiUrl,
-        clientBasedAuthProvider,
+        context,
         config.uploadParams || { collection: '' },
       );
       const resumable = uploadService['resumable'];
@@ -510,9 +534,9 @@ describe('UploadService', () => {
       );
     });
 
-    it('should finalize file automatically if finalizeFile in uploadParams is true', () => {
+    it('should finalize file automatically', () => {
       const { uploadService, resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: true },
+        uploadParams: { collection },
       });
 
       resumable.fire('fileSuccess', resumableFile as any, '');
@@ -524,7 +548,7 @@ describe('UploadService', () => {
 
     it('should emit a 100% upload percentage when the file has been uploaded', () => {
       const { resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: true },
+        uploadParams: { collection },
       });
 
       resumable.fire('fileSuccess', resumableFile as any, '');
@@ -540,32 +564,6 @@ describe('UploadService', () => {
           }),
         }),
       );
-    });
-
-    it('should emit "file-finalize-ready" if finalizeFile in uploadParams is false', () => {
-      const { uploadService, resumable, resumableFile, emitter } = setup({
-        uploadParams: { collection, autoFinalize: false },
-      });
-
-      resumable.fire('fileSuccess', resumableFile as any, '');
-
-      expect(emitter.emit).toHaveBeenCalledTimes(2);
-      expect(emitter.emit).toHaveBeenCalledWith(
-        'file-finalize-ready',
-        expect.objectContaining({
-          file: expect.objectContaining({
-            name: resumableFile.file.name,
-          }),
-        }),
-      );
-      expect(uploadService['finalizeFile']).not.toHaveBeenCalled();
-
-      const { finalize } = (emitter.emit as jest.Mock<void>).mock.calls[1][1];
-
-      finalize();
-
-      expect(uploadService['finalizeFile']).toHaveBeenCalledTimes(1);
-      expect(uploadService['finalizeFile']).toHaveBeenCalledWith(resumableFile);
     });
 
     it('should fire "file-upload-error" with associated file and error', () => {
@@ -598,9 +596,9 @@ describe('UploadService', () => {
       config: { uploadParams?: UploadParams; progress?: number } = {},
     ) => {
       const collectionNameStub = 'some-collection-name';
+      const context = fakeContext();
       const uploadService = new UploadService(
-        apiUrl,
-        clientBasedAuthProvider,
+        context,
         config.uploadParams || { collection: collectionNameStub },
       );
 
@@ -654,8 +652,6 @@ describe('UploadService', () => {
   });
 
   describe('#copyFileToUsersCollection()', () => {
-    const authProvider = jest.fn().mockReturnValue(Promise.resolve({}));
-
     const setup = (config: {
       uploadParams?: UploadParams;
       progress?: number;
@@ -663,11 +659,16 @@ describe('UploadService', () => {
       copyFileToCollectionSpy: Function;
     }) => {
       const collectionNameStub = 'some-collection-name';
+      const context = fakeContext(
+        {},
+        {
+          ...clientBasedConfig,
+          userAuthProvider: config.userAuthProvider,
+        },
+      );
       const uploadService = new UploadService(
-        apiUrl,
-        authProvider,
+        context,
         config.uploadParams || { collection: collectionNameStub },
-        config.userAuthProvider,
       );
 
       (uploadService as any).api = {
@@ -675,13 +676,11 @@ describe('UploadService', () => {
       };
 
       const sourceFileId = 'some-source-file-id';
-      const sourceFileCollection = collectionNameStub;
-
       return {
         uploadService,
-        authProvider,
+        authProvider: context.config.authProvider,
         sourceFileId,
-        sourceFileCollection,
+        sourceFileCollection: collectionNameStub,
       };
     };
 

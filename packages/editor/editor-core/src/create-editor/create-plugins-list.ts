@@ -1,45 +1,52 @@
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
-  placeholderPlugin,
   blockTypePlugin,
-  mentionsPlugin,
+  clearMarksOnChangeToEmptyDocumentPlugin,
+  codeBlockPlugin,
+  collabEditPlugin,
+  confluenceInlineComment,
+  datePlugin,
   emojiPlugin,
-  tasksAndDecisionsPlugin,
+  extensionPlugin,
+  fakeTextCursorPlugin,
+  helpDialogPlugin,
+  hyperlinkPlugin,
+  imageUploadPlugin,
+  insertBlockPlugin,
+  isMultilineContentPlugin,
+  jiraIssuePlugin,
+  layoutPlugin,
+  listsPlugin,
+  macroPlugin,
+  maxContentSizePlugin,
+  mediaPlugin,
+  mentionsPlugin,
+  panelPlugin,
+  pastePlugin,
+  placeholderPlugin,
+  placeholderTextPlugin,
+  rulePlugin,
   saveOnEnterPlugin,
   submitEditorPlugin,
-  mediaPlugin,
-  imageUploadPlugin,
-  maxContentSizePlugin,
-  isMultilineContentPlugin,
-  codeBlockPlugin,
-  pastePlugin,
-  listsPlugin,
-  textColorPlugin,
-  insertBlockPlugin,
   tablesPlugin,
-  collabEditPlugin,
-  helpDialogPlugin,
-  jiraIssuePlugin,
-  unsupportedContentPlugin,
-  panelPlugin,
-  macroPlugin,
-  confluenceInlineComment,
-  fakeTextCursorPlugin,
-  extensionPlugin,
-  rulePlugin,
-  clearMarksOnChangeToEmptyDocumentPlugin,
-  datePlugin,
-  placeholderTextPlugin,
-  hyperlinkPlugin,
+  tasksAndDecisionsPlugin,
+  textColorPlugin,
   textFormattingPlugin,
+  unsupportedContentPlugin,
   widthPlugin,
+  typeAheadPlugin,
+  quickInsertPlugin,
+  gapCursorPlugin,
+  inlineActionPlugin,
+  cardPlugin,
+  floatingToolbarPlugin,
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
-export function getDefaultPluginsList(): EditorPlugin[] {
+export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
   return [
     pastePlugin,
     basePlugin,
@@ -47,8 +54,9 @@ export function getDefaultPluginsList(): EditorPlugin[] {
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
     hyperlinkPlugin,
-    textFormattingPlugin,
+    textFormattingPlugin(props.textFormatting || {}),
     widthPlugin,
+    typeAheadPlugin,
   ];
 }
 
@@ -56,7 +64,15 @@ export function getDefaultPluginsList(): EditorPlugin[] {
  * Maps EditorProps to EditorPlugins
  */
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
-  const plugins = getDefaultPluginsList();
+  const plugins = getDefaultPluginsList(props);
+
+  if (props.quickInsert) {
+    plugins.push(quickInsertPlugin);
+  }
+
+  if (props.allowInlineAction) {
+    plugins.push(inlineActionPlugin);
+  }
 
   if (props.allowTextColor) {
     plugins.push(textColorPlugin);
@@ -75,7 +91,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.allowCodeBlocks) {
-    plugins.push(codeBlockPlugin);
+    const options = props.allowCodeBlocks !== true ? props.allowCodeBlocks : {};
+    plugins.push(codeBlockPlugin(options));
   }
 
   if (props.mentionProvider) {
@@ -104,9 +121,18 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.legacyImageUploadProvider) {
     plugins.push(imageUploadPlugin);
+
+    if (!props.media && !props.mediaProvider) {
+      plugins.push(
+        mediaPlugin({
+          allowMediaSingle: { disableLayout: true },
+          allowMediaGroup: false,
+        }),
+      );
+    }
   }
 
-  if (props.collabEditProvider) {
+  if (props.collabEdit || props.collabEditProvider) {
     plugins.push(collabEditPlugin);
   }
 
@@ -144,10 +170,22 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowTemplatePlaceholders) {
     const options =
-      props.allowTemplatePlaceholders === true
-        ? {}
-        : props.allowTemplatePlaceholders;
+      props.allowTemplatePlaceholders !== true
+        ? props.allowTemplatePlaceholders
+        : {};
     plugins.push(placeholderTextPlugin(options));
+  }
+
+  if (props.UNSAFE_allowLayouts) {
+    plugins.push(layoutPlugin);
+  }
+
+  if (props.allowGapCursor) {
+    plugins.push(gapCursorPlugin);
+  }
+
+  if (props.UNSAFE_cards) {
+    plugins.push(cardPlugin);
   }
 
   // UI only plugins
@@ -160,6 +198,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
+  plugins.push(floatingToolbarPlugin);
 
   if (props.appearance === 'message') {
     plugins.push(isMultilineContentPlugin);

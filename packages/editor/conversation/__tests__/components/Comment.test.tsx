@@ -49,7 +49,11 @@ describe('Comment', () => {
     it('should render avatar', () => {
       expect(comment.first().props()).toHaveProperty(
         'avatar',
-        <AkAvatar src={mockComment.createdBy.avatarUrl} />,
+        <AkAvatar
+          src={mockComment.createdBy.avatarUrl}
+          name={mockComment.createdBy.name}
+          enableTooltip={true}
+        />,
       );
     });
 

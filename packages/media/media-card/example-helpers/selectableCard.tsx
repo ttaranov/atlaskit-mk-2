@@ -32,6 +32,7 @@ export class SelectableCard extends Component<
         selected={selected}
         onClick={this.onClick}
         onSelectChange={onSelectChange}
+        actions={[{ label: 'add', handler: () => {} }]}
       />
     );
   }

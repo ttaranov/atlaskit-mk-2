@@ -1,4 +1,4 @@
-import { MediaType, MediaItemType } from '@atlaskit/media-core';
+import { MediaItemType } from '@atlaskit/media-core';
 
 export type Identifier = {
   type: MediaItemType;
@@ -6,6 +6,10 @@ export type Identifier = {
   occurrenceKey: string;
   collectionName?: string;
 };
+
+export type ItemSource =
+  | { kind: 'COLLECTION'; collectionName: string; pageSize: number }
+  | { kind: 'ARRAY'; items: Identifier[] };
 
 export type Outcome<Data, Err> =
   | {
@@ -20,28 +24,57 @@ export type Outcome<Data, Err> =
       err: Err;
     };
 
-export type FileDetails = {
-  mediaType: MediaType;
+export type MediaViewerFeatureFlags = {
+  nextGen?: boolean;
+  customVideoPlayer?: boolean;
 };
 
-export type ObjectUrl = string;
+export class ZoomLevel {
+  private static readonly ZOOM_LEVELS = [
+    0.06,
+    0.12,
+    0.24,
+    0.48,
+    1,
+    1.5,
+    2,
+    4,
+    6,
+    8,
+  ];
+  public static readonly MIN = ZoomLevel.ZOOM_LEVELS[0];
+  public static readonly MAX = ZoomLevel.ZOOM_LEVELS.slice(-1)[0];
 
-export type ImagePreview = {
-  viewer: 'IMAGE';
-  objectUrl: ObjectUrl;
-};
-export type VideoPreview = {
-  viewer: 'VIDEO';
-  src: string;
-};
-export type FilePreview = ImagePreview | VideoPreview;
+  constructor(public readonly value: number = 1) {
+    if (value < ZoomLevel.MIN) {
+      this.value = ZoomLevel.MIN;
+    }
+    if (value > ZoomLevel.MAX) {
+      this.value = ZoomLevel.MAX;
+    }
+  }
 
-export type Model = {
-  fileDetails: Outcome<FileDetails, Error>;
-  previewData: Outcome<FilePreview, Error>;
-};
+  get asPercentage(): string {
+    return `${this.value * 100} %`;
+  }
 
-export const initialModel: Model = {
-  fileDetails: { status: 'PENDING' },
-  previewData: { status: 'PENDING' },
-};
+  zoomIn(): ZoomLevel {
+    const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
+    const nextValue = ZoomLevel.ZOOM_LEVELS[index + 1];
+    return nextValue ? new ZoomLevel(nextValue) : this;
+  }
+
+  zoomOut(): ZoomLevel {
+    const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
+    const nextValue = ZoomLevel.ZOOM_LEVELS[index - 1];
+    return nextValue ? new ZoomLevel(nextValue) : this;
+  }
+
+  get canZoomIn(): boolean {
+    return this.value < ZoomLevel.MAX;
+  }
+
+  get canZoomOut(): boolean {
+    return this.value > ZoomLevel.MIN;
+  }
+}

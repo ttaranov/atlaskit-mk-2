@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Schema for Atlassian Editor documents.",
+  "description": "Schema for Atlassian Document Format.",
   "$ref": "#/definitions/doc_node",
   "definitions": {
     "paragraph_node": {
@@ -55,38 +55,66 @@
           ]
         },
         "attrs": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "minLength": 1
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "link",
+                    "file"
+                  ]
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "collection": {
+                  "type": "string"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "occurrenceKey": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "collection"
+              ],
+              "additionalProperties": false
             },
-            "type": {
-              "enum": [
-                "link",
-                "file"
-              ]
-            },
-            "collection": {
-              "type": "string"
-            },
-            "height": {
-              "type": "number"
-            },
-            "width": {
-              "type": "number"
-            },
-            "occurrenceKey": {
-              "type": "string",
-              "minLength": 1
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "external"
+                  ]
+                },
+                "url": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "height": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "type",
+                "url"
+              ],
+              "additionalProperties": false
             }
-          },
-          "required": [
-            "id",
-            "type",
-            "collection"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
@@ -513,33 +541,6 @@
       ],
       "additionalProperties": false
     },
-    "inline_comment_marker": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "confluenceInlineComment"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "reference": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "reference"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
     "action_mark": {
       "type": "object",
       "properties": {
@@ -697,7 +698,9 @@
           "type": "string",
           "minLength": 1
         },
-        "marks": {}
+        "marks": {
+          "type": "array"
+        }
       },
       "required": [
         "type",
@@ -743,6 +746,7 @@
             },
             "layout": {
               "enum": [
+                "wide",
                 "full-width",
                 "default"
               ]
@@ -895,7 +899,7 @@
               "properties": {
                 "url": {
                   "type": "string",
-                  "pattern": "^https://|^data:image/"
+                  "pattern": "^https?://|^data:image/"
                 }
               },
               "required": [
@@ -1353,6 +1357,13 @@
             "parameters": {},
             "text": {
               "type": "string"
+            },
+            "layout": {
+              "enum": [
+                "wide",
+                "full-width",
+                "default"
+              ]
             }
           },
           "required": [
@@ -1427,6 +1438,13 @@
             "parameters": {},
             "text": {
               "type": "string"
+            },
+            "layout": {
+              "enum": [
+                "wide",
+                "full-width",
+                "default"
+              ]
             }
           },
           "required": [
@@ -1763,6 +1781,9 @@
             "$ref": "#/definitions/taskList_node"
           },
           {
+            "$ref": "#/definitions/extension_node"
+          },
+          {
             "$ref": "#/definitions/codeBlock_node"
           }
         ]
@@ -1813,25 +1834,6 @@
         }
       ]
     },
-    "link_text_inline_node": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/text_node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "marks": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/link_mark"
-              }
-            }
-          },
-          "additionalProperties": true
-        }
-      ]
-    },
     "code_inline_node": {
       "allOf": [
         {
@@ -1843,33 +1845,18 @@
             "marks": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/code_mark"
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/code_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/link_mark"
+                  }
+                ]
               }
             }
           },
           "additionalProperties": true
-        }
-      ]
-    },
-    "atomic_inline_node": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/hardBreak_node"
-        },
-        {
-          "$ref": "#/definitions/emoji_node"
-        },
-        {
-          "$ref": "#/definitions/mention_node"
-        },
-        {
-          "$ref": "#/definitions/inlineExtension_node"
-        },
-        {
-          "$ref": "#/definitions/date_node"
-        },
-        {
-          "$ref": "#/definitions/placeholder_node"
         }
       ]
     },

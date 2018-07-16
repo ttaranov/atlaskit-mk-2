@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@atlaskit/theme';
@@ -6,7 +7,9 @@ import Badge from '../src';
 
 const Item = styled.div`
   align-items: center;
+  background: ${props => (props.inverted ? colors.B400 : 'none')};
   border-radius: ${borderRadius}px;
+  color: ${props => (props.inverted ? colors.N0 : 'inherit')};
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
@@ -14,7 +17,7 @@ const Item = styled.div`
   padding: 0.6em 1em;
 
   &:hover {
-    background-color: ${colors.N20};
+    background-color: ${props => (props.inverted ? colors.B500 : colors.N20)};
   }
 `;
 
@@ -23,27 +26,33 @@ export default function Example() {
     <div>
       <Item>
         <p>Default</p>
-        <Badge value={5} />
+        <Badge>{5}</Badge>
       </Item>
       <Item>
         <p>Primary</p>
-        <Badge appearance="primary" value={-5} />
-      </Item>
-      <Item>
-        <p>Primary Inverted</p>
-        <Badge appearance="primaryInverted" value={-5} />
+        <Badge appearance="primary">{-5}</Badge>
       </Item>
       <Item>
         <p>Important</p>
-        <Badge appearance="important" value={25} />
+        <Badge appearance="important">{25}</Badge>
+      </Item>
+      <Item inverted>
+        <p>Primary Inverted</p>
+        <Badge appearance="primaryInverted">{5}</Badge>
       </Item>
       <Item>
         <p>Added (no theme change)</p>
-        <Badge appearance="added" max={99} value={3000} />
+        <Badge appearance="added" max={99}>
+          {3000}
+        </Badge>
       </Item>
       <Item>
         <p>Removed (no theme change)</p>
-        <Badge appearance="removed" />
+        <Badge appearance="removed">{100}</Badge>
+      </Item>
+      <Item>
+        <p>Infinity (∞)</p>
+        <Badge max={Infinity}>{Infinity}</Badge>
       </Item>
     </div>
   );

@@ -1,17 +1,16 @@
 const constants = require('karma').constants;
+const puppeteer = require('puppeteer');
 const ChromiumRevision = require('puppeteer/package.json').puppeteer
   .chromium_revision;
-const Downloader = require('puppeteer/utils/ChromiumDownloader');
+
 const boltQuery = require('bolt-query');
 const path = require('path');
 const babelPolyfill = require.resolve('babel-polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
+const browserFetcher = puppeteer.createBrowserFetcher();
+const revisionInfo = browserFetcher.download(ChromiumRevision);
 
-const revisionInfo = Downloader.revisionInfo(
-  Downloader.currentPlatform(),
-  ChromiumRevision,
-);
 process.env.CHROME_BIN = revisionInfo.executablePath;
 
 const webpackConfig = {
@@ -115,7 +114,12 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         os_version: '8.1',
         browser_version: '11',
       },
-      iphone: { os: 'ios', os_version: '9.1', device: 'iPhone 6S' },
+      iphone: {
+        os: 'ios',
+        os_version: '11.0',
+        device: 'iPhone 8',
+        real_mobile: false,
+      },
       chrome_latest_osx: {
         browser: 'chrome',
         os: 'OS X',
@@ -126,10 +130,11 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         os: 'WINDOWS',
         os_version: '10',
       },
-      firefox_latest_osx: {
-        browser: 'firefox',
+      safari_latest: {
+        browser: 'Safari',
         os: 'OS X',
-        os_version: 'El Capitan',
+        os_version: 'High Sierra',
+        browser_version: '11.1',
       },
       edge_latest: { browser: 'edge', os: 'WINDOWS', os_version: '10' },
     };
@@ -148,6 +153,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         retryLimit: 5,
         startTunnel: true,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
+        localIdentifier: `${process.env.BITBUCKET_COMMIT}_unit_tests`,
         project: 'Atlaskit',
         build: `${process.env.BITBUCKET_BRANCH} ${time} ${
           process.env.BITBUCKET_COMMIT
@@ -171,7 +177,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
 async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: __dirname,
-    workspaceFiles: { karma: 'tests/browser/**/*.+(js|ts|tsx)' },
+    workspaceFiles: { karma: '__tests-karma__/**/*.+(js|ts|tsx)' },
   });
 
   return project.workspaces

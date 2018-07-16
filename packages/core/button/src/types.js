@@ -2,8 +2,6 @@
 import type { Node, Element, ElementType } from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
-type Func = () => any;
-
 export type ButtonAppearances =
   | 'default'
   | 'danger'
@@ -16,11 +14,13 @@ export type ButtonAppearances =
 
 export type ButtonProps = {
   /** The base styling to apply to the button. */
-  appearance: ButtonAppearances,
+  appearance?: ButtonAppearances,
   /** Pass aria-controls to underlying html button. */
   ariaControls?: string,
   /** Pass aria-expanded to underlying html button. */
   ariaExpanded?: boolean,
+  /** Pass aria-label to underlying html button. */
+  ariaLabel?: string,
   /** Pass aria-haspopup to underlying html button. */
   ariaHaspopup?: boolean,
   /** This button's child nodes. */
@@ -38,11 +38,17 @@ export type ButtonProps = {
   /** Places an icon within the button, before the button's text. */
   iconBefore?: Element<*>,
   /** Pass a reference on to the styled component */
-  innerRef?: Func,
+  innerRef?: HTMLElement => mixed,
   /** Provide a unique id to the button. */
   id?: string,
   /** Set if the button is disabled. */
   isDisabled: boolean,
+  /**
+    Set if the button is loading. When isLoading is true, text is hidden, and
+    a spinner is shown in its place. The button maintains the width that it would
+    have if the text were visible.
+  */
+  isLoading: boolean,
   /** Change the style to indicate the button is selected. */
   isSelected: boolean,
   /** Handler to be called on blur */
@@ -61,6 +67,8 @@ export type ButtonProps = {
   type: 'button' | 'submit',
   /** Option to fit button width to its parent width */
   shouldFitContainer: boolean,
+  /** Set the button to autofocus on mount. */
+  autoFocus: boolean,
 };
 
 export type DerivedButtonProps = {

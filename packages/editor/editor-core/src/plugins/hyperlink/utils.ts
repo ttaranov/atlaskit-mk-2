@@ -1,5 +1,6 @@
-import { Slice, Fragment, Node, Schema } from 'prosemirror-model';
+import { Slice, Node, Schema } from 'prosemirror-model';
 import * as LinkifyIt from 'linkify-it';
+import { mapSlice } from '../../utils/slice';
 
 export const LINK_REGEXP = /(https?|ftp):\/\/[^\s]+/;
 
@@ -11,6 +12,7 @@ export interface Match {
   text: string;
   url: string;
   length?: number;
+  input?: string;
 }
 
 const linkify = LinkifyIt();
@@ -41,14 +43,16 @@ export function getLinkMatch(str: string): Match | LinkifyMatch | null {
  * Extending it directly from class Regex was introducing some issues, thus that has been avoided.
  */
 export class LinkMatcher {
-  exec(str): Match[] | null {
-    if (str[str.length - 1] === ' ') {
-      const strSplit: string = str.slice(0, str.length - 1).split(' ');
-      const match: Match[] = linkify.match(strSplit[strSplit.length - 1]);
-      if (match && match.length > 0) {
-        const lastMatch: Match = match[match.length - 1];
-        lastMatch.length = lastMatch.lastIndex - lastMatch.index + 1;
-        return [lastMatch];
+  exec(str: string): Match[] | null {
+    if (str.endsWith(' ')) {
+      const chunks = str.slice(0, str.length - 1).split(' ');
+      const lastChunk = chunks[chunks.length - 1];
+      const links: Match[] = linkify.match(lastChunk);
+      if (links && links.length > 0) {
+        const lastLink: Match = links[links.length - 1];
+        lastLink.input = lastChunk;
+        lastLink.length = lastLink.lastIndex - lastLink.index + 1;
+        return [lastLink];
       }
     }
     return null;
@@ -66,54 +70,37 @@ export function normalizeUrl(url: string) {
   return (match && match.url) || url;
 }
 
-export function linkifyContent(
-  schema: Schema,
-  slice: Slice,
-): Slice | undefined {
-  const fragment = linkinfyFragment(schema, slice.content);
-  if (fragment) {
-    return new Slice(fragment, slice.openStart, slice.openEnd);
-  }
-}
-
-function linkinfyFragment(
-  schema: Schema,
-  fragment: Fragment,
-): Fragment | undefined {
-  const linkified: Node[] = [];
-  for (let i = 0, len = fragment.childCount; i < len; i++) {
-    const child: Node = fragment.child(i);
-    if (child.type === schema.nodes.table) {
-      return;
-    }
-    if (child.isText) {
-      const text = child.textContent as string;
-      const link = child.type.schema.marks['link'];
+export function linkifyContent(schema: Schema, slice: Slice): Slice {
+  return mapSlice(slice, (node, parent) => {
+    const isAllowedInParent = !parent || parent.type !== schema.nodes.codeBlock;
+    if (isAllowedInParent && node.isText) {
+      const linkified = [] as Node[];
+      const link = node.type.schema.marks['link'];
+      const text = node.text!;
       const matches: any[] = findLinkMatches(text);
       let pos = 0;
       matches.forEach(match => {
         if (match.start > 0) {
-          linkified.push(child.cut(pos, match.start));
+          linkified.push(node.cut(pos, match.start));
         }
         linkified.push(
-          child
+          node
             .cut(match.start, match.end)
             .mark(
               link
                 .create({ href: normalizeUrl(match.href) })
-                .addToSet(child.marks),
+                .addToSet(node.marks),
             ),
         );
         pos = match.end;
       });
       if (pos < text.length) {
-        linkified.push(child.cut(pos));
+        linkified.push(node.cut(pos));
       }
-    } else {
-      linkified.push(child.copy(linkinfyFragment(schema, child.content)));
+      return linkified;
     }
-  }
-  return Fragment.fromArray(linkified);
+    return node;
+  });
 }
 
 interface LinkMatch {

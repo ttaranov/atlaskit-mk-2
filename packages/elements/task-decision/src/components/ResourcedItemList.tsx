@@ -132,20 +132,16 @@ export default class ResourcedItemList extends PureComponent<Props, State> {
 
   private loadLatest = (recentUpdateContext: RecentUpdateContext) => {
     const { initialQuery, taskDecisionProvider } = this.props;
-    const { items } = this.state;
     taskDecisionProvider.then(provider => {
-      loadLatestItems(
-        initialQuery,
-        items || [],
-        provider,
-        recentUpdateContext,
-      ).then(latestItems => {
-        if (this.mounted) {
-          this.setState({
-            items: latestItems,
-          });
-        }
-      });
+      loadLatestItems(initialQuery, provider, recentUpdateContext).then(
+        latestItems => {
+          if (this.mounted) {
+            this.setState({
+              items: latestItems,
+            });
+          }
+        },
+      );
     });
   };
 

@@ -9,7 +9,6 @@ import { FeatureFlags } from '../../featureFlags';
 import HistoryFetcher from './pubNubHistoryFetcher';
 
 const REQUEST_MESSAGE_COUNT_THRESHOLD = 100;
-const DEBOUNCE_TIME_IN_MILLISECONDS = 50;
 
 export default class PubNubProtocol implements Protocol {
   private pubNubClient?: PubNub;
@@ -27,8 +26,6 @@ export default class PubNubProtocol implements Protocol {
   // @ts-ignore: We will need that at some point
   private featureFlags: FeatureFlags;
 
-  private accessDeniedDebounced: number | null = null;
-
   constructor(featureFlags: FeatureFlags) {
     this.featureFlags = featureFlags;
     this.connectionState = ConnectionState.OFFLINE;
@@ -44,33 +41,14 @@ export default class PubNubProtocol implements Protocol {
 
   public subscribe(config: PubNubProtocolConfig) {
     logDebug('Subscribing');
+    this.connectionState = ConnectionState.CONNECTING;
     if (
       !this.pubNubClient ||
       config.subscribeKey !== this.config.subscribeKey
     ) {
-      this.pubNubClient = new PubNub({
-        subscribeKey: config.subscribeKey,
-        authKey: config.authKey,
-        uuid: config.userUuid,
-        dedupeOnSubscribe: true,
-        restore: true,
-        ssl: true,
-        requestMessageCountThreshold: REQUEST_MESSAGE_COUNT_THRESHOLD,
-      });
-      this.historyFetcher = new HistoryFetcher({
-        pubNubClient: this.pubNubClient,
-        messageHandler: this.onMessageEvent,
-        tooMuchHistoryHandler: () =>
-          this.eventEmitter.emit(EventType.RECONNECT),
-      });
-
-      this.pubNubClient.addListener({
-        message: this.onMessageEvent,
-        status: this.onStatusEvent,
-      });
+      this.pubNubClient = this.initializeClient(config);
     } else {
-      this.pubNubClient.setAuthKey(config.authKey);
-      this.pubNubClient.setUUID(config.userUuid);
+      this.updateClientConfig(config);
     }
 
     this.config = config;
@@ -121,6 +99,37 @@ export default class PubNubProtocol implements Protocol {
     return this.connectionState;
   }
 
+  private updateClientConfig(config: PubNubProtocolConfig) {
+    if (this.pubNubClient) {
+      this.pubNubClient.setAuthKey(config.authKey);
+      this.pubNubClient.setUUID(config.userUuid);
+    }
+  }
+
+  private initializeClient(config: PubNubProtocolConfig) {
+    const pubNubClient = new PubNub({
+      subscribeKey: config.subscribeKey,
+      authKey: config.authKey,
+      uuid: config.userUuid,
+      dedupeOnSubscribe: true,
+      restore: true,
+      ssl: true,
+      requestMessageCountThreshold: REQUEST_MESSAGE_COUNT_THRESHOLD,
+    });
+    this.historyFetcher = new HistoryFetcher({
+      pubNubClient: pubNubClient,
+      messageHandler: this.onMessageEvent,
+      tooMuchHistoryHandler: () => this.eventEmitter.emit(EventType.RECONNECT),
+    });
+
+    pubNubClient.addListener({
+      message: this.onMessageEvent,
+      status: this.onStatusEvent,
+    });
+
+    return pubNubClient;
+  }
+
   private onMessageEvent = (messageEvent: MessageEvent) => {
     if (!this.lastTimeToken || this.lastTimeToken < messageEvent.timetoken) {
       this.lastTimeToken = messageEvent.timetoken;
@@ -160,6 +169,7 @@ export default class PubNubProtocol implements Protocol {
   private onConnected() {
     logDebug('Connected');
     this.connectionState = ConnectionState.CONNECTED;
+    this.eventEmitter.emit(EventType.NETWORK_UP, {});
   }
 
   private onNetworkDown() {
@@ -183,15 +193,14 @@ export default class PubNubProtocol implements Protocol {
   }
 
   private onAccessDenied() {
-    logDebug('Access denied');
-    this.connectionState = ConnectionState.ACCESS_DENIED;
-    if (this.accessDeniedDebounced) {
-      window.clearTimeout(this.accessDeniedDebounced);
+    if (this.connectionState === ConnectionState.ACCESS_DENIED) {
+      // We've already signaled the access denied error. Nothing to do here
+      return;
     }
 
-    this.accessDeniedDebounced = window.setTimeout(() => {
-      this.eventEmitter.emit(EventType.ACCESS_DENIED, {});
-    }, DEBOUNCE_TIME_IN_MILLISECONDS);
+    logDebug('Access denied');
+    this.connectionState = ConnectionState.ACCESS_DENIED;
+    this.eventEmitter.emit(EventType.ACCESS_DENIED, {});
   }
 
   private onReconnect() {

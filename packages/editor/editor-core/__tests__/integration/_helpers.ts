@@ -16,7 +16,7 @@ export const editors = [
   {
     name: 'fullpage',
     path: getExampleUrl('editor', 'editor-core', 'full-page'),
-    placeholder: 'p',
+    placeholder: '.ProseMirror',
   },
 ];
 
@@ -25,3 +25,8 @@ export const clipboardHelper = getExampleUrl(
   'editor-core',
   'clipboard-helper',
 );
+
+export const clipboardInput = '#input';
+
+export const copyAsPlaintextButton = '#copy-as-plaintext';
+export const copyAsHTMLButton = '#copy-as-html';

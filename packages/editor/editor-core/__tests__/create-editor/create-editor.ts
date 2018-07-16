@@ -5,6 +5,7 @@ import {
   sortByRank,
   fixExcludes,
   createPMPlugins,
+  processPluginsList,
 } from '../../src/create-editor/create-editor';
 
 describe(name, () => {
@@ -71,17 +72,38 @@ describe(name, () => {
           ],
         };
         expect(
-          createPMPlugins(
-            editorConfig as any,
-            {} as any,
-            {} as any,
-            () => {},
-            {} as any,
-            {} as any,
-            {} as any,
-          ).length,
+          createPMPlugins({
+            editorConfig: editorConfig as any,
+            schema: {} as any,
+            props: {} as any,
+            dispatch: () => {},
+            eventDispatcher: {} as any,
+            providerFactory: {} as any,
+            errorReporter: {} as any,
+            portalProviderAPI: { render() {}, remove() {} } as any,
+          }).length,
         ).toEqual(1);
       });
+    });
+  });
+
+  describe('#processPluginsList', () => {
+    it('should pass plugin options to a corresponding plugin', () => {
+      const spy = jest.fn(() => []);
+      const options = { foo: 'bar' };
+      const plugins = [
+        {
+          name: 'test',
+          pmPlugins: spy,
+        },
+        {
+          pluginsOptions: {
+            test: options,
+          },
+        },
+      ];
+      processPluginsList(plugins, {});
+      expect(spy).toHaveBeenCalledWith([options]);
     });
   });
 

@@ -14,7 +14,7 @@ export interface Props {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
-  text?: string;
+  objectCreationTimestamp?: number;
 }
 
 export interface State {
@@ -58,10 +58,15 @@ export default class ResourcedReactionPicker extends PureComponent<
   }
 
   private handleReactionPickerSelection = emojiId => {
-    const { containerAri, ari } = this.props;
+    const { containerAri, ari, objectCreationTimestamp } = this.props;
     const { reactionsProvider } = this.state;
     if (reactionsProvider) {
-      reactionsProvider.toggleReaction(containerAri, ari, emojiId);
+      reactionsProvider.toggleReaction(
+        containerAri,
+        ari,
+        emojiId,
+        objectCreationTimestamp,
+      );
     }
   };
 
@@ -78,7 +83,6 @@ export default class ResourcedReactionPicker extends PureComponent<
       miniMode,
       className,
       allowAllEmojis,
-      text,
     } = this.props;
 
     return (
@@ -89,7 +93,6 @@ export default class ResourcedReactionPicker extends PureComponent<
         boundariesElement={boundariesElement}
         className={className}
         allowAllEmojis={allowAllEmojis}
-        text={text}
       />
     );
   }

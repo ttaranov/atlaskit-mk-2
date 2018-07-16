@@ -42,15 +42,19 @@ export interface UrlPreviewIdentifier {
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
   readonly identifier: Identifier;
-  isLazy?: boolean;
-  resizeMode?: ImageResizeMode;
+  readonly isLazy?: boolean;
+  readonly resizeMode?: ImageResizeMode;
+
+  // only relevant to file card with image appearance
+  readonly disableOverlay?: boolean;
 }
 
 export class Card extends Component<CardProps, {}> {
-  static defaultProps = {
+  static defaultProps: Partial<CardProps> = {
     appearance: 'auto',
-    isLazy: true,
     resizeMode: 'crop',
+    isLazy: true,
+    disableOverlay: false,
   };
 
   private provider: Provider;
@@ -149,6 +153,7 @@ export class Card extends Component<CardProps, {}> {
       onMouseEnter,
       onSelectChange,
       onLoadingChange,
+      disableOverlay,
     } = this.props;
     const {
       mediaItemType,
@@ -175,6 +180,7 @@ export class Card extends Component<CardProps, {}> {
           onSelectChange={onSelectChange}
           onLoadingChange={onLoadingChange}
           preview={preview}
+          disableOverlay={disableOverlay}
         />
       </AnalyticsContext>
     );

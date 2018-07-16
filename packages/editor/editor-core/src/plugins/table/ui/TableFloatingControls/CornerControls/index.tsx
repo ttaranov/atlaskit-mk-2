@@ -2,35 +2,40 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isTableSelected, selectTable } from 'prosemirror-utils';
+import { Selection } from 'prosemirror-state';
 import { toolbarSize } from '../styles';
 import { CornerContainer, CornerButton } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
-import { Command } from '../../../../../types';
+import { hoverTable, insertColumn, insertRow } from '../../../actions';
 import { getLineMarkerWidth } from '../utils';
-import {
-  checkIfHeaderColumnEnabled,
-  checkIfHeaderRowEnabled,
-  checkIfNumberColumnEnabled,
-} from '../../../utils';
 
 export interface Props {
   editorView: EditorView;
-  tableElement: HTMLElement;
-  insertColumn: (column: number) => Command;
-  insertRow: (row: number) => Command;
-  hoverTable: Command;
-  resetHoverSelection: Command;
-  scroll: number;
-  updateScroll: () => void;
+  selection?: Selection;
+  tableRef: HTMLElement;
+  resetHoverSelection: () => void;
+  isTableInDanger?: boolean;
+  isHeaderColumnEnabled?: boolean;
+  isHeaderRowEnabled?: boolean;
+  isNumberColumnEnabled?: boolean;
 }
 
 export default class CornerControls extends Component<Props, any> {
-  render() {
-    const { tableElement, editorView: { state }, scroll } = this.props;
-    const tableHeight = tableElement.offsetHeight;
-    const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
+  static defaultProps = {
+    scroll: 0,
+  };
 
+  render() {
+    const {
+      tableRef,
+      editorView: { state },
+      isTableInDanger,
+      isHeaderRowEnabled,
+      isHeaderColumnEnabled,
+      isNumberColumnEnabled,
+    } = this.props;
+    const tableHeight = tableRef.offsetHeight;
     return (
       <CornerContainer
         className={isTableSelected(state.selection) ? 'active' : ''}
@@ -38,22 +43,24 @@ export default class CornerControls extends Component<Props, any> {
         <CornerButton
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
-          onMouseOut={this.resetHoverSelection}
+          onMouseOut={this.props.resetHoverSelection}
+          className={isTableInDanger ? 'danger' : ''}
         />
-        {!checkIfHeaderColumnEnabled(state) &&
-          !checkIfNumberColumnEnabled(state) && (
+        {!isHeaderColumnEnabled &&
+          !isNumberColumnEnabled && (
             <InsertColumnButton
-              style={{ right: -toolbarSize, top: -toolbarSize - 8 }}
               onClick={this.insertColumn}
               lineMarkerHeight={tableHeight + toolbarSize}
             />
           )}
-        {!checkIfHeaderRowEnabled(state) && (
+        {!isHeaderRowEnabled && (
           <InsertRowButton
-            style={{ bottom: -toolbarSize, left: -toolbarSize - 8 }}
+            style={{ top: 2 }}
             onClick={this.insertRow}
-            lineMarkerWidth={lineMarkerWidth}
-            onMouseOver={this.props.updateScroll}
+            lineMarkerWidth={getLineMarkerWidth(
+              tableRef,
+              (tableRef.parentNode as HTMLElement).scrollLeft,
+            )}
           />
         )}
       </CornerContainer>
@@ -67,21 +74,16 @@ export default class CornerControls extends Component<Props, any> {
 
   private hoverTable = () => {
     const { state, dispatch } = this.props.editorView;
-    this.props.hoverTable(state, dispatch);
-  };
-
-  private resetHoverSelection = () => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.resetHoverSelection(state, dispatch);
+    hoverTable()(state, dispatch);
   };
 
   private insertColumn = () => {
     const { state, dispatch } = this.props.editorView;
-    this.props.insertColumn(0)(state, dispatch);
+    insertColumn(0)(state, dispatch);
   };
 
   private insertRow = () => {
     const { state, dispatch } = this.props.editorView;
-    this.props.insertRow(0)(state, dispatch);
+    insertRow(0)(state, dispatch);
   };
 }

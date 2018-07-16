@@ -2,66 +2,67 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
+import { tableBorderDeleteColor, tableToolbarDeleteColor } from '../../styles';
+import { LineMarkerDefault, Button } from '../styles';
+import {
+  tableInsertColumnButtonSize,
+  tableToolbarSize,
+  tableBorderColor,
+  tableBorderRadiusSize,
+  tableBorderSelectedColor,
+  tableToolbarSelectedColor,
+  tableToolbarColor,
+} from '../../styles';
 import {
   akEditorTableToolbarSize,
-  akEditorTableBorder,
-  akEditorTableBorderRadius,
-  akEditorTableBorderSelected,
-  akEditorTableToolbarSelected,
-} from '../../../../../styles';
-import { LineMarkerDefault } from '../styles';
+  akEditorTableNumberColumnWidth,
+} from '@atlaskit/editor-common';
 
 export const CornerContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  position: absolute;
-  top: -${akEditorTableToolbarSize}px;
-  left: -${akEditorTableToolbarSize}px;
-  width: ${akEditorTableToolbarSize}px;
-  height: ${akEditorTableToolbarSize}px;
+  width: ${tableToolbarSize + 1}px;
+  height: ${tableToolbarSize + 1}px;
 
   display: none;
 
   .ProseMirror .with-controls & {
     display: block;
   }
+
+  .table-container[data-number-column='true'] & {
+    width: ${akEditorTableToolbarSize + akEditorTableNumberColumnWidth}px;
+  }
 `;
 
-export const CornerButton: ComponentClass<
-  ButtonHTMLAttributes<{}>
-> = styled.button`
+export const CornerButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
+  Button,
+)`
   position: absolute;
-  right: -1px;
-  bottom: -1px;
-  width: ${akEditorTableToolbarSize}px;
-  height: ${akEditorTableToolbarSize}px;
-  background-image: linear-gradient(
-    to bottom right,
-    #fff 0,
-    #fff 49%,
-    ${akEditorTableBorder} 50%,
-    ${akEditorTableBorder} 100%
-  );
-  box-shadow: inset 0 0 0 1px #fff;
-  border: 1px solid ${akEditorTableBorder};
+  top: 0;
+  width: ${tableToolbarSize + 1}px;
+  height: ${tableToolbarSize + 1}px;
+  border: 1px solid ${tableBorderColor};
   border-radius: 0;
-  border-top-left-radius: ${akEditorTableBorderRadius};
+  border-top-left-radius: ${tableBorderRadiusSize}px;
+  background: ${tableToolbarColor};
   cursor: pointer;
   padding: 0;
 
   &:hover,
   .active > &,
   .tableHovered & {
-    background-image: linear-gradient(
-      to bottom right,
-      #fff 0,
-      #fff 49%,
-      ${akEditorTableToolbarSelected} 50%,
-      ${akEditorTableToolbarSelected} 100%
-    );
-    border-color: ${akEditorTableBorderSelected};
-    z-index: 1;
+    border-color: ${tableBorderSelectedColor};
+    background: ${tableToolbarSelectedColor};
   }
   &:focus {
     outline: none;
+  }
+  &.danger {
+    border-color: ${tableBorderDeleteColor};
+    background: ${tableToolbarDeleteColor};
+  }
+
+  .table-container[data-number-column='true'] & {
+    width: ${akEditorTableToolbarSize + akEditorTableNumberColumnWidth}px;
   }
 `;
 
@@ -70,7 +71,7 @@ export const ColumnLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   width: 2px;
   left: 8px;
-  top: 20px;
+  top: ${tableInsertColumnButtonSize}px;
 `;
 
 export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
@@ -78,5 +79,5 @@ export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   height: 2px;
   top: 8px;
-  left: 20px;
+  left: ${tableInsertColumnButtonSize}px;
 `;

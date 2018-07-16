@@ -1,12 +1,14 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {
   Popup,
-  timestampToDate,
-  timestampToIso,
+  timestampToUTCDate,
+  timestampToIsoFormat,
 } from '@atlaskit/editor-common';
 import Calendar from '@atlaskit/calendar';
 import { akColorN60A, akBorderRadius } from '@atlaskit/util-shared-styles';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
+import { DateType } from '../../index';
 
 const PopupWithListeners = withOuterListeners(Popup);
 
@@ -19,7 +21,7 @@ const calendarStyle = {
 export interface Props {
   element: HTMLElement | null;
   onClickOutside: () => void;
-  onSelect: ({ iso: string }) => void;
+  onSelect: (date: DateType) => void;
 }
 
 export interface State {
@@ -35,9 +37,9 @@ export default class DatePicker extends React.Component<Props, State> {
 
     const timestamp = props.element!.getAttribute('timestamp');
     if (timestamp) {
-      const { day, month, year } = timestampToDate(timestamp);
+      const { day, month, year } = timestampToUTCDate(timestamp);
       this.state = {
-        selected: [timestampToIso(timestamp)],
+        selected: [timestampToIsoFormat(timestamp)],
         day,
         month,
         year,
@@ -79,8 +81,9 @@ export default class DatePicker extends React.Component<Props, State> {
   };
 
   private handleRef = (ref?: HTMLElement) => {
-    if (ref) {
-      ref.focus();
+    const elm = ref && (ReactDOM.findDOMNode(ref) as HTMLElement);
+    if (elm) {
+      elm.focus();
     }
   };
 }

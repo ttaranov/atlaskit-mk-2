@@ -6,11 +6,17 @@ import {
   akColorR300,
   akColorT300,
   akColorY400,
+  akColorY500,
+  akColorT500,
+  akColorG500,
+  akColorP500,
+  akColorN90,
+  akColorR500,
 } from '@atlaskit/util-shared-styles';
 import { COLOR } from '../groups';
 import { rgbToHex } from '../../utils';
 
-export interface Attributes {
+export interface TextColorAttributes {
   /**
    * @pattern "^#[0-9a-f]{6}$"
    */
@@ -20,20 +26,30 @@ export interface Attributes {
 /**
  * @name textColor_mark
  */
-export interface Definition {
+export interface TextColorDefinition {
   type: 'textColor';
-  attrs: Attributes;
+  attrs: TextColorAttributes;
 }
 
 export interface TextColorMark extends Mark {
-  attrs: Attributes;
+  attrs: TextColorAttributes;
 }
+
+/** New borders for colors in the color picker */
+export const borderColorPalette = {
+  orange: akColorY500,
+  teal: akColorT500,
+  red: akColorR500,
+  'light-grey': akColorN90,
+  purple: akColorP500,
+  green: akColorG500,
+};
 
 // @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/55979455/Colour+picker+decisions#Colourpickerdecisions-Visualdesigndecisions
 export const colorPalette = new Map<string, string>();
 [
   // [akColorN800, default],
-  [akColorN80, 'Light grey'],
+  [akColorN80, 'Light-grey'],
   [akColorP300, 'Purple'],
   [akColorT300, 'Teal'],
   [akColorG300, 'Green'],

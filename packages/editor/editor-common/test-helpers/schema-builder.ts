@@ -6,7 +6,7 @@ import {
   Schema,
   Slice /*MediaAttributes */,
 } from 'prosemirror-model';
-import { Attributes as MediaAttributes } from '../src/schema/nodes/media';
+import { MediaAttributes } from '../src/schema/nodes/media';
 import matches from './matches';
 import sampleSchema from './schema';
 import {
@@ -321,3 +321,7 @@ export const confluenceJiraIssue = (attrs: {
   server?: string;
   serverId?: string;
 }) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);
+export const unsupportedBlock = (originalValue: object) =>
+  nodeFactory(sampleSchema.nodes.unsupportedBlock, { originalValue })();
+export const unsupportedInline = (originalValue: object) =>
+  nodeFactory(sampleSchema.nodes.unsupportedInline, { originalValue })();

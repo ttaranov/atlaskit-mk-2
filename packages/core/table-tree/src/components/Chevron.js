@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
@@ -14,7 +14,7 @@ type Props = {
   collapseLabel: string,
 };
 
-export default class Chevron extends PureComponent<Props> {
+export default class Chevron extends Component<Props> {
   static defaultProps = {
     expandLabel: 'Expand',
     collapseLabel: 'Collapse',

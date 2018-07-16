@@ -43,6 +43,7 @@ export default class ExtensionLozenge extends Component<Props, any> {
   private renderFallback(lozengeData?: LozengeData) {
     const { parameters, extensionKey } = this.props.node.attrs;
     const params = parameters && parameters.macroParams;
+    const title = (parameters && parameters.extensionTitle) || extensionKey;
 
     return (
       <PlaceholderFallback>
@@ -53,12 +54,14 @@ export default class ExtensionLozenge extends Component<Props, any> {
             ...lozengeData,
           })
         ) : (
-          <EditorFileIcon label={extensionKey} />
+          <EditorFileIcon label={title} />
         )}
-        {capitalizeFirstLetter(extensionKey)}
+        <span className="extension-title">{capitalizeFirstLetter(title)}</span>
         {params && (
           <PlaceholderFallbackParams>
-            {Object.keys(params).map(key => ` | ${key} = ${params[key].value}`)}
+            {Object.keys(params).map(
+              key => key && ` | ${key} = ${params[key].value}`,
+            )}
           </PlaceholderFallbackParams>
         )}
       </PlaceholderFallback>

@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
+import { Node as PMNode, Schema, Node } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import {
@@ -13,11 +13,7 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import {
-  copyPrivateMediaAttributes,
-  MediaType,
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -42,8 +38,9 @@ import {
   MediaStateManager,
 } from '../types';
 import DefaultMediaStateManager from '../default-state-manager';
-import { insertMediaSingleNode } from './media-single';
+import { insertMediaSingleNode } from '../utils/media-single';
 
+import { hasParentNodeOfType } from 'prosemirror-utils';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -63,15 +60,12 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacade[] = [];
-  public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public allUploadsFinished: boolean = true;
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
-
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
   private options: MediaPluginOptions;
@@ -81,11 +75,16 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
+
+  public pickers: PickerFacade[] = [];
+  public binaryPicker?: PickerFacade;
   private popupPicker?: PickerFacade;
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
+  private customPicker?: PickerFacade;
+
   private linkRanges: Array<URLInfo>;
-  private editorAppearance: EditorAppearance;
+  public editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
 
   constructor(
@@ -102,8 +101,8 @@ export class MediaPluginState {
 
     const { nodes } = state.schema;
     assert(
-      nodes.media && nodes.mediaGroup,
-      'Editor: unable to init media plugin - media or mediaGroup node absent in schema',
+      nodes.media && (nodes.mediaGroup || nodes.mediaSingle),
+      'Editor: unable to init media plugin - media or mediaGroup/mediaSingle node absent in schema',
     );
 
     this.stateManager = new DefaultMediaStateManager();
@@ -215,6 +214,8 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
+  getMediaOptions = () => this.options;
+
   updateElement(): void {
     let newElement;
     if (this.selectedMediaNode() && this.isMediaSingle()) {
@@ -261,11 +262,11 @@ export class MediaPluginState {
   private getDomElement(docView: any): HTMLElement | undefined {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node, offset } = docView.domFromPos(from);
+      const { node } = docView.domFromPos(from);
       if (!node.childNodes.length) {
         return node.parentNode;
       }
-      return node.childNodes[offset].querySelector('.wrapper');
+      return node.querySelector('.wrapper');
     }
   }
 
@@ -295,7 +296,8 @@ export class MediaPluginState {
 
     const grandParentNode = this.view.state.selection.$from.node(-1);
 
-    if (isNonImagesBanned(grandParentNode)) {
+    // in case of gap cursor, selection might be at depth=0
+    if (grandParentNode && isNonImagesBanned(grandParentNode)) {
       nonImageAttachements = [];
     }
 
@@ -303,19 +305,11 @@ export class MediaPluginState {
       this.stateManager.on(mediaState.id, this.handleMediaState),
     );
 
-    const allowMediaSingle =
-      mediaSingle &&
-      grandParentNode.type.validContent(Fragment.from(mediaSingle.create()));
-
-    if (
-      this.editorAppearance !== 'message' &&
-      allowMediaSingle &&
-      mediaSingle
-    ) {
-      imageAttachments.forEach(mediaState =>
-        this.stateManager.on(mediaState.id, this.handleMediaSingleInsertion),
-      );
+    if (this.editorAppearance !== 'message' && mediaSingle) {
       insertMediaGroupNode(this.view, nonImageAttachements, collection);
+      imageAttachments.forEach(mediaState => {
+        insertMediaSingleNode(this.view, mediaState, collection);
+      });
     } else {
       insertMediaGroupNode(this.view, mediaStates, collection);
     }
@@ -344,14 +338,6 @@ export class MediaPluginState {
     if (!view.hasFocus()) {
       view.focus();
     }
-  };
-
-  handleMediaSingleInsertion = (state: MediaState) => {
-    if (state.status === 'preview') {
-      const collection = this.collectionFromProvider();
-      insertMediaSingleNode(this.view, state, collection);
-    }
-    this.stateManager.off(state.id, this.handleMediaSingleInsertion);
   };
 
   insertLinks = async () => {
@@ -501,7 +487,11 @@ export class MediaPluginState {
       return false;
     }
 
-    const { selection: { from }, schema, tr } = this.view.state;
+    const {
+      selection: { from },
+      schema,
+      tr,
+    } = this.view.state;
 
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
@@ -579,6 +569,7 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
     this.clipboardPicker = undefined;
     this.dropzonePicker = undefined;
+    this.customPicker = undefined;
   };
 
   private initPickers(
@@ -597,60 +588,74 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
+      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
+        useNewUploadService: !!(
+          featureFlags && featureFlags.useNewUploadService
+        ),
         uploadParams,
       };
 
-      if (context.config.userAuthProvider) {
+      if (this.options.customMediaPicker) {
         pickers.push(
-          (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-            userAuthProvider: context.config.userAuthProvider,
-            ...defaultPickerConfig,
-          })),
+          (this.customPicker = new Picker(
+            'customMediaPicker',
+            pickerFacadeConfig,
+            this.options.customMediaPicker,
+          )),
         );
       } else {
+        if (context.config.userAuthProvider) {
+          pickers.push(
+            (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
+              userAuthProvider: context.config.userAuthProvider,
+              ...defaultPickerConfig,
+            })),
+          );
+        } else {
+          pickers.push(
+            (this.popupPicker = new Picker(
+              'browser',
+              pickerFacadeConfig,
+              defaultPickerConfig,
+            )),
+          );
+        }
+
         pickers.push(
-          (this.popupPicker = new Picker(
-            'browser',
+          (this.binaryPicker = new Picker(
+            'binary',
             pickerFacadeConfig,
             defaultPickerConfig,
           )),
         );
+
+        pickers.push(
+          (this.clipboardPicker = new Picker(
+            'clipboard',
+            pickerFacadeConfig,
+            defaultPickerConfig,
+          )),
+        );
+
+        pickers.push(
+          (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
+            container: this.options.customDropzoneContainer,
+            headless: true,
+            ...defaultPickerConfig,
+          })),
+        );
+
+        this.dropzonePicker.onDrag(this.handleDrag);
+        this.removeOnCloseListener = this.popupPicker.onClose(
+          this.onPopupPickerClose,
+        );
       }
-
-      pickers.push(
-        (this.binaryPicker = new Picker(
-          'binary',
-          pickerFacadeConfig,
-          defaultPickerConfig,
-        )),
-      );
-
-      pickers.push(
-        (this.clipboardPicker = new Picker(
-          'clipboard',
-          pickerFacadeConfig,
-          defaultPickerConfig,
-        )),
-      );
-
-      pickers.push(
-        (this.dropzonePicker = new Picker('dropzone', pickerFacadeConfig, {
-          container: this.options.customDropzoneContainer,
-          headless: true,
-          ...defaultPickerConfig,
-        })),
-      );
 
       pickers.forEach(picker => {
         picker.onNewMedia(this.insertFiles);
         picker.onNewMedia(this.trackNewMediaEvent(picker.type));
       });
-
-      this.dropzonePicker.onDrag(this.handleDrag);
-      this.removeOnCloseListener = this.popupPicker.onClose(
-        this.onPopupPickerClose,
-      );
     }
 
     if (this.popupPicker) {
@@ -693,16 +698,31 @@ export class MediaPluginState {
         }
         break;
 
+      case 'preview':
+        this.replaceTemporaryNode(state);
+        if (state.ready) {
+          this.stateManager.off(state.id, this.handleMediaState);
+        }
+        break;
+
       case 'processing':
-      case 'ready':
         if (state.thumbnail && state.publicId) {
           const viewContext = await this.mediaProvider.viewContext;
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
+        if (state.publicId) {
+          this.replaceTemporaryNode(state);
+        }
+        break;
 
-        this.stateManager.off(state.id, this.handleMediaState);
-        this.replaceTemporaryNode(state);
+      case 'ready':
+        if (state.publicId && this.nodeHasNoPublicId(state)) {
+          this.replaceTemporaryNode(state);
+        }
+        if (state.preview) {
+          this.stateManager.off(state.id, this.handleMediaState);
+        }
         break;
     }
   };
@@ -711,7 +731,21 @@ export class MediaPluginState {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
   };
 
-  private removeNodeById = (id: string) => {
+  nodeHasNoPublicId = (state: MediaState) => {
+    const { id } = state;
+    const mediaNodeWithPos = this.findMediaNode(id);
+    if (!mediaNodeWithPos) {
+      return;
+    }
+    const {
+      node: {
+        attrs: { id: mediaNodeId },
+      },
+    } = mediaNodeWithPos;
+    return mediaNodeId.match(/^temporary:/);
+  };
+
+  removeNodeById = (id: string) => {
     // TODO: we would like better error handling and retry support here.
     const mediaNodeWithPos = this.findMediaNode(id);
     if (mediaNodeWithPos) {
@@ -728,14 +762,11 @@ export class MediaPluginState {
     if (!view) {
       return;
     }
-
-    const { id, publicId, thumbnail } = state;
-
+    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
     }
-
     const { width, height } = (thumbnail && thumbnail.dimensions) || {
       width: undefined,
       height: undefined,
@@ -743,13 +774,13 @@ export class MediaPluginState {
     const { getPos, node: mediaNode } = mediaNodeWithPos;
     const newNode = view.state.schema.nodes.media!.create({
       ...mediaNode.attrs,
-      id: publicId,
+      id: publicId || id,
       width,
       height,
+      __fileName: fileName,
+      __fileSize: fileSize,
+      __fileMimeType: fileMimeType,
     });
-
-    // Copy all optional attributes from old node
-    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -771,14 +802,29 @@ export class MediaPluginState {
     return false;
   };
 
-  selectedMediaNode(): PMNode | undefined {
+  selectedMediaNode(): Node | undefined {
     const { selection, schema } = this.view.state;
     if (
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return selection.node;
+      const node = selection.node;
+      return node;
     }
+  }
+
+  isLayoutSupported(): boolean {
+    const { selection, schema } = this.view.state;
+    if (
+      selection instanceof NodeSelection &&
+      selection.node.type === schema.nodes.media
+    ) {
+      return (
+        !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection) &&
+        !hasParentNodeOfType(schema.nodes.layoutSection)(selection)
+      );
+    }
+    return false;
   }
 
   /**
@@ -786,10 +832,12 @@ export class MediaPluginState {
    * stateManager contains no information for public ids
    */
   private getMediaNodeStateStatus = (id: string) => {
-    const { stateManager } = this;
-    const state = stateManager.getState(id);
-
+    const state = this.getMediaNodeState(id);
     return (state && state.status) || 'ready';
+  };
+
+  getMediaNodeState = (id: string) => {
+    return this.stateManager.getState(id);
   };
 
   private handleDrag = (dragState: 'enter' | 'leave') => {
@@ -889,7 +937,10 @@ export const createPlugin = (
           return;
         }
 
-        const { schema, selection: { $anchor } } = state;
+        const {
+          schema,
+          selection: { $anchor },
+        } = state;
         // When a media is already selected
         if (state.selection instanceof NodeSelection) {
           return;

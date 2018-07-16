@@ -10,19 +10,21 @@ import {
   MetadataWrapper,
   PreviewWrapper,
   Wrapper,
+  FileInput,
 } from '../example-helpers/styled';
-import { uploadFile, MediaStore } from '../src/';
+import { uploadFile, MediaStore } from '../src';
 
 type UploaderExampleProps = {};
 export interface UploaderExampleState {
   uploadingProgress: number;
+  processingStatus?: string;
   fileURL?: string;
   fileMetadata?: any;
   error?: any;
 }
 
 const store = new MediaStore({
-  apiUrl: defaultServiceHost,
+  serviceHost: defaultServiceHost,
   authProvider: defaultMediaPickerAuthProvider,
 });
 
@@ -39,6 +41,8 @@ class UploaderExample extends Component<
       const fileMetadata = response.data;
       const { processingStatus } = fileMetadata;
 
+      this.setState({ processingStatus });
+
       if (processingStatus === 'pending') {
         setTimeout(() => this.fetchFile(id), 1000);
       } else {
@@ -53,21 +57,22 @@ class UploaderExample extends Component<
   };
 
   render() {
-    const { fileURL, uploadingProgress } = this.state;
+    const { fileURL, uploadingProgress, processingStatus } = this.state;
 
     return (
       <Wrapper>
         <PreviewWrapper>
           <div>
-            Upload a file <input type="file" onChange={this.onChange} />
+            File <FileInput type="file" onChange={this.onChange} />
           </div>
           <div>
-            or
-            <button onClick={this.onUploadStringClick}>Upload a string</button>
+            String
+            <button onClick={this.onUploadStringClick}>Upload</button>
           </div>
           <div>
             <progress value={uploadingProgress} max="1" />
           </div>
+          <div>Processing status: {processingStatus}</div>
           <div>
             {fileURL ? <ImagePreview src={fileURL} alt="preview" /> : null}
           </div>
@@ -88,7 +93,7 @@ class UploaderExample extends Component<
     );
   }
 
-  onProgress = uploadingProgress => {
+  onProgress = (uploadingProgress: number) => {
     this.setState({
       uploadingProgress,
     });
@@ -98,36 +103,41 @@ class UploaderExample extends Component<
     uploadFile(
       { content: tallImage },
       {
-        apiUrl: defaultServiceHost,
+        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .deferredFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 
-  onError = error => {
+  onError = (error: any) => {
     this.setState({ error });
   };
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { currentTarget: { files } } = e;
+    const {
+      currentTarget: { files },
+    } = e;
+    if (!files) {
+      return;
+    }
     const file = files[0];
 
     uploadFile(
       { content: file, name: file.name, mimeType: file.type },
       {
-        apiUrl: defaultServiceHost,
+        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .deferredFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 }

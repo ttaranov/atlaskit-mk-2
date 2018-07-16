@@ -39,6 +39,9 @@ export const Tooltip = styled(TooltipPrimitive)`
   max-width: 240px;
   padding: 2px 6px;
   top: 0;
+  /* Edge does not support overflow-wrap */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   ${truncate};
 `;
 

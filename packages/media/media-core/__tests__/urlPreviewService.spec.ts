@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 
 import { MediaUrlPreviewService } from '../src/services/urlPreviewService';
-import { AuthProvider } from '../src/auth';
+import { AuthProvider } from '@atlaskit/media-store';
 
 const serviceHost = 'some-host';
 const token = 'some-token';

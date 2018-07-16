@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Element } from 'react';
+import React, { Component, type ComponentType, type Element } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { type ResultData, type Context } from './Results/types';
@@ -95,6 +95,8 @@ type Props = {
   selectedResultId: number | string,
   // Internal: injected by withAnalytics(). Fire a private analytics event
   firePrivateAnalyticsEvent: (eventName: string, eventData?: {}) => {},
+  /** React component to be used for rendering links */
+  linkComponent?: ComponentType<*>,
 };
 
 type State = {
@@ -117,6 +119,7 @@ export class QuickSearch extends Component<Props, State> {
   flatResults = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
+  lastKeyPressed: string = '';
 
   constructor(props: Props) {
     super(props);
@@ -135,6 +138,7 @@ export class QuickSearch extends Component<Props, State> {
         getIndex: (resultId: string | number) => {
           return getResultIndexById(this.flatResults, resultId);
         },
+        linkComponent: this.props.linkComponent,
       },
     };
   }
@@ -194,6 +198,23 @@ export class QuickSearch extends Component<Props, State> {
     }
   }
 
+  fireKeyboardControlEvent(selectedResultId: number | string | null) {
+    const { firePrivateAnalyticsEvent } = this.props;
+    if (firePrivateAnalyticsEvent) {
+      const result = getResultById(this.flatResults, selectedResultId) || {
+        props: {},
+      };
+      firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
+        ...result.props.analyticsData,
+        key: this.lastKeyPressed,
+        resultId: result.props.resultId,
+        contentType: result.props.contentType,
+        type: result.props.type,
+      });
+    }
+    this.lastKeyPressed = '';
+  }
+
   /**
    * Uses the virtual list, this.flatResults, to move the selection across grouped results as if
    * results were in a single, circular list.
@@ -213,9 +234,13 @@ export class QuickSearch extends Component<Props, State> {
       currentIndex,
       adjustment,
     );
+    const selectedResultId = getResultIdByIndex(this.flatResults, newIndex);
     this.setState({
-      selectedResultId: getResultIdByIndex(this.flatResults, newIndex),
+      selectedResultId,
     });
+    if (selectedResultId) {
+      this.fireKeyboardControlEvent(selectedResultId);
+    }
   };
 
   /** Select next result */
@@ -258,7 +283,7 @@ export class QuickSearch extends Component<Props, State> {
    * Down - Select next result
    * Enter - Submit selected result
    */
-  handleSearchKeyDown = (event: Event) => {
+  handleSearchKeyDown = (event: Event | KeyboardEvent) => {
     const { firePrivateAnalyticsEvent } = this.props;
     this.props.onSearchKeyDown(event);
 
@@ -268,12 +293,7 @@ export class QuickSearch extends Component<Props, State> {
       event.key === 'ArrowDown' ||
       event.key === 'Enter'
     ) {
-      if (!this.hasKeyDownEventFired) {
-        this.hasKeyDownEventFired = true;
-        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
-          key: event.key,
-        });
-      }
+      this.lastKeyPressed = event.key;
     }
 
     if (event.key === 'ArrowUp') {
@@ -283,8 +303,10 @@ export class QuickSearch extends Component<Props, State> {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectNext();
     } else if (event.key === 'Enter') {
-      // If an item is selected
-      if (this.state.selectedResultId) {
+      // shift key pressed or no result selected
+      if (event.shiftKey || !this.state.selectedResultId) {
+        this.props.onSearchSubmit();
+      } else {
         event.preventDefault(); // Don't fire submit event from input
         const result = getResultById(
           this.flatResults,
@@ -297,10 +319,14 @@ export class QuickSearch extends Component<Props, State> {
 
         // Capture when users are using the keyboard to submit
         if (typeof firePrivateAnalyticsEvent === 'function') {
+          this.fireKeyboardControlEvent(this.state.selectedResultId);
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
-            index: this.flatResults.indexOf(result),
-            method: 'keyboard',
+            ...result.props.analyticsData,
+            method: 'returnKey',
+            resultId: result.props.resultId,
             type: result.props.type,
+            contentType: result.props.contentType,
+            newTab: false, // enter always open in the same tab
           });
         }
 
@@ -313,9 +339,6 @@ export class QuickSearch extends Component<Props, State> {
         if (result.props.href) {
           window.location.assign(result.props.href);
         }
-        // If nothing is selected
-      } else {
-        this.props.onSearchSubmit();
       }
     }
   };

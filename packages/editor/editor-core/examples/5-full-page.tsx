@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN300 } from '@atlaskit/util-shared-styles';
+import { akColorN90 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -11,6 +11,7 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
+  cardProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -18,14 +19,8 @@ import { EmojiProvider } from '@atlaskit/emoji';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
-
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
+import { DevTools } from '../example-helpers/DevTools';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -35,7 +30,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN300};
+    color: ${akColorN90};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -60,15 +55,6 @@ export const Content: any = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-
-  & .ProseMirror {
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
-  }
 `;
 Content.displayName = 'Content';
 
@@ -100,7 +86,9 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {};
+export type Props = {
+  defaultValue?: Object;
+};
 export type State = { disabled: boolean };
 
 const providers = {
@@ -115,11 +103,14 @@ const providers = {
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
 };
+
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
 
-export default class Example extends React.Component<Props, State> {
+const quickInsertProvider = quickInsertProviderFactory();
+
+export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
 
   componentDidMount() {
@@ -135,57 +126,66 @@ export default class Example extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Content>
-          <EditorContext>
-            <Editor
-              appearance="full-page"
-              analyticsHandler={analyticsHandler}
-              allowTasksAndDecisions={true}
-              allowCodeBlocks={true}
-              allowLists={true}
-              allowTextColor={true}
-              allowTables={{
-                allowColumnResizing: true,
-                allowMergeCells: true,
-                allowNumberColumn: true,
-                allowBackgroundColor: true,
-                allowHeaderRow: true,
-                allowHeaderColumn: true,
-                permittedLayouts: 'all',
-              }}
-              allowJiraIssue={true}
-              allowUnsupportedContent={true}
-              allowPanel={true}
-              allowExtension={true}
-              allowRule={true}
-              allowDate={true}
-              allowTemplatePlaceholders={{ allowInserting: true }}
-              {...providers}
-              media={{ provider: mediaProvider, allowMediaSingle: true }}
-              placeholder="Write something..."
-              shouldFocus={false}
-              disabled={this.state.disabled}
-              contentComponents={
-                <TitleInput
-                  placeholder="Give this page a title..."
-                  // tslint:disable-next-line:jsx-no-lambda
-                  innerRef={this.handleTitleRef}
-                  onFocus={this.handleTitleOnFocus}
-                  onBlur={this.handleTitleOnBlur}
-                />
-              }
-              primaryToolbarComponents={
-                <WithEditorActions
-                  // tslint:disable-next-line:jsx-no-lambda
-                  render={actions => (
-                    <SaveAndCancelButtons editorActions={actions} />
-                  )}
-                />
-              }
-              onSave={SAVE_ACTION}
-              insertMenuItems={customInsertMenuItems}
-              extensionHandlers={extensionHandlers}
-            />
-          </EditorContext>
+          <Editor
+            defaultValue={this.props.defaultValue}
+            appearance="full-page"
+            analyticsHandler={analyticsHandler}
+            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
+            delegateAnalyticsEvent={(...args) => console.log(args)}
+            allowTasksAndDecisions={true}
+            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
+            allowLists={true}
+            allowTextColor={true}
+            allowTables={{
+              allowColumnResizing: true,
+              allowMergeCells: true,
+              allowNumberColumn: true,
+              allowBackgroundColor: true,
+              allowHeaderRow: true,
+              allowHeaderColumn: true,
+              permittedLayouts: 'all',
+              stickToolbarToBottom: true,
+            }}
+            allowJiraIssue={true}
+            allowUnsupportedContent={true}
+            allowPanel={true}
+            allowExtension={{
+              allowBreakout: true,
+            }}
+            allowRule={true}
+            allowDate={true}
+            UNSAFE_allowLayouts={true}
+            allowGapCursor={true}
+            allowTemplatePlaceholders={{ allowInserting: true }}
+            UNSAFE_cards={{
+              provider: Promise.resolve(cardProvider),
+            }}
+            {...providers}
+            media={{ provider: mediaProvider, allowMediaSingle: true }}
+            placeholder="Write something..."
+            shouldFocus={false}
+            disabled={this.state.disabled}
+            contentComponents={
+              <TitleInput
+                placeholder="Give this page a title..."
+                // tslint:disable-next-line:jsx-no-lambda
+                innerRef={this.handleTitleRef}
+                onFocus={this.handleTitleOnFocus}
+                onBlur={this.handleTitleOnBlur}
+              />
+            }
+            primaryToolbarComponents={
+              <WithEditorActions
+                // tslint:disable-next-line:jsx-no-lambda
+                render={actions => (
+                  <SaveAndCancelButtons editorActions={actions} />
+                )}
+              />
+            }
+            onSave={SAVE_ACTION}
+            insertMenuItems={customInsertMenuItems}
+            extensionHandlers={extensionHandlers}
+          />
         </Content>
       </Wrapper>
     );
@@ -198,4 +198,15 @@ export default class Example extends React.Component<Props, State> {
       ref.focus();
     }
   };
+}
+
+export default function Example(defaultValue) {
+  return (
+    <EditorContext>
+      <div style={{ height: '100%' }}>
+        <DevTools />
+        <ExampleEditor defaultValue={defaultValue} />
+      </div>
+    </EditorContext>
+  );
 }

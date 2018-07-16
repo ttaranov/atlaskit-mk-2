@@ -7,16 +7,17 @@ import {
   MediaItemProvider,
   MediaItem,
   BlobService,
+  Auth,
 } from '@atlaskit/media-core';
 
 export class Stubs {
-  static mediaViewer(overrides) {
+  static mediaViewer(overrides: any) {
     const noop = () => {};
     const emitter = new events.EventEmitter();
     const mediaViewer = {
       on: noop,
       off: noop,
-      trigger: event => emitter.emit(event),
+      trigger: (event: string) => emitter.emit(event),
       isOpen: jest.fn(),
       open: overrides.open || jest.fn(),
       setFiles: overrides.setFiles || jest.fn(),
@@ -45,7 +46,6 @@ export class Stubs {
       observable: jest.fn(() => subject || new Subject<MediaCollection>()),
       refresh: jest.fn(),
       loadNextPage: jest.fn(),
-      loadNextPageUntil: jest.fn(),
     };
   }
 
@@ -88,3 +88,36 @@ export class Stubs {
     };
   }
 }
+
+export interface CreateContextOptions {
+  subject?: Subject<any>;
+  provider?: MediaCollectionProvider;
+  authPromise?: Promise<Auth>;
+  blobService?: BlobService;
+}
+
+export const createContext = (options?: CreateContextOptions) => {
+  const defaultOptions = {
+    subject: undefined,
+    provider: undefined,
+    authPromise: Promise.resolve({
+      token: 'some-token',
+      clientId: 'some-client-id',
+    }),
+    blobService: undefined,
+  };
+  const { subject, provider, authPromise, blobService } =
+    options || defaultOptions;
+  const serviceHost = 'some-service-host';
+  const authProvider = jest.fn(() => authPromise);
+  const contextConfig = {
+    serviceHost,
+    authProvider,
+  };
+  return Stubs.context(
+    contextConfig,
+    provider || Stubs.mediaCollectionProvider(subject),
+    Stubs.mediaItemProvider(subject),
+    blobService,
+  ) as any;
+};

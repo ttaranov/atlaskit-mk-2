@@ -10,6 +10,10 @@ import {
   EditorProps,
   WithEditorActions,
   CollapsedEditor,
+  ToolbarFeedback,
+  ToolbarHelp,
+  name as packageName,
+  version as packageVersion,
 } from '@atlaskit/editor-core';
 
 import { User } from '../model';
@@ -19,6 +23,8 @@ export interface Props {
   isExpanded?: boolean;
   onCancel?: () => void;
   onSave?: (value: any) => void;
+  onClose?: () => void;
+  onOpen?: () => void;
   isEditing?: boolean;
 
   // Provider
@@ -28,6 +34,8 @@ export interface Props {
   // Editor
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
+  disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface State {
@@ -62,7 +70,7 @@ const AvatarSection: React.ComponentClass<
   -ms-grid-column: 1;
   /* stylelint-enable */
   grid-area: avatar-area;
-  margin-right: 16px;
+  margin-right: 8px;
 `;
 
 const EditorSection: React.ComponentClass<
@@ -73,7 +81,6 @@ const EditorSection: React.ComponentClass<
   -ms-grid-column: 2;
   /* stylelint-enable */
   grid-area: editor-area;
-  margin-right: 16px;
 `;
 
 export default class Editor extends React.Component<Props, State> {
@@ -84,6 +91,30 @@ export default class Editor extends React.Component<Props, State> {
       isExpanded: props.isExpanded,
       isEditing: props.isEditing,
     };
+  }
+
+  UNSAFE_componentWillUpdate(nextProps: Props, nextState: State) {
+    if (nextState.isExpanded && !this.state.isExpanded && this.props.onOpen) {
+      this.props.onOpen();
+    } else if (
+      !nextState.isExpanded &&
+      this.state.isExpanded &&
+      this.props.onClose
+    ) {
+      this.props.onClose();
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.isExpanded && this.props.onOpen) {
+      this.props.onOpen();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
   }
 
   private onFocus = () =>
@@ -106,6 +137,10 @@ export default class Editor extends React.Component<Props, State> {
 
       if (value && value.content.some(n => n.content && n.content.length)) {
         this.props.onSave(value);
+        actions.clear();
+      } else {
+        this.onCancel();
+        return;
       }
     }
 
@@ -113,8 +148,16 @@ export default class Editor extends React.Component<Props, State> {
       isExpanded: false,
       isEditing: false,
     });
+  };
 
-    actions.clear();
+  private handleRef = (node: HTMLDivElement) => {
+    if (!this.props.disableScrollTo && this.props.isExpanded && node) {
+      if ((node as any).scrollIntoViewIfNeeded) {
+        (node as any).scrollIntoViewIfNeeded({ behavior: 'smooth' });
+      } else if (node.scrollIntoView) {
+        node.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   private renderEditor = (actions: EditorActions) => {
@@ -123,6 +166,7 @@ export default class Editor extends React.Component<Props, State> {
       renderEditor,
       defaultValue,
       placeholder,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     let providers = {};
 
@@ -141,21 +185,34 @@ export default class Editor extends React.Component<Props, State> {
       onSave: () => this.onSave(actions),
       onCancel: this.onCancel,
       defaultValue,
+      allowHelpDialog: allowFeedbackAndHelpButtons,
+      primaryToolbarComponents: allowFeedbackAndHelpButtons
+        ? [
+            <ToolbarFeedback
+              key="feedback"
+              packageName={packageName}
+              packageVersion={packageVersion}
+            />,
+            <ToolbarHelp key="help" />,
+          ]
+        : undefined,
       ...providers,
     };
 
     return (
-      <CollapsedEditor
-        placeholder={placeholder}
-        isExpanded={this.state.isExpanded}
-        onFocus={this.onFocus}
-      >
-        {renderEditor ? (
-          renderEditor(AkEditor, defaultProps)
-        ) : (
-          <AkEditor {...defaultProps} />
-        )}
-      </CollapsedEditor>
+      <div ref={this.handleRef}>
+        <CollapsedEditor
+          placeholder={placeholder}
+          isExpanded={this.state.isExpanded}
+          onFocus={this.onFocus}
+        >
+          {renderEditor ? (
+            renderEditor(AkEditor, defaultProps)
+          ) : (
+            <AkEditor {...defaultProps} />
+          )}
+        </CollapsedEditor>
+      </div>
     );
   };
 

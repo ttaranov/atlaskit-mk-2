@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
-import { CardEvent, Identifier } from '@atlaskit/media-card';
+import { CardEvent, Identifier, LinkIdentifier } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { EventHandlers, CardSurroundings } from '@atlaskit/editor-common';
 import { MediaProps } from './media';
@@ -85,7 +85,7 @@ export default class MediaGroup extends PureComponent<
               return;
             }
             const surroundings: CardSurroundings = {
-              collectionName: child.props.collection,
+              collectionName: child.props.collection!,
               list: surroundingItems,
             };
             this.props.eventHandlers.media.onClick(
@@ -137,15 +137,22 @@ export default class MediaGroup extends PureComponent<
     switch (type) {
       case 'file':
         return {
-          id,
+          id: id!,
           mediaItemType: type,
           occurrenceKey,
           collectionName: collection,
         };
       case 'link':
         return {
-          id,
+          id: id!,
           mediaItemType: type,
+          occurrenceKey,
+          collectionName: collection,
+        } as LinkIdentifier;
+      case 'external':
+        return {
+          id: id!,
+          mediaItemType: 'file',
           occurrenceKey,
           collectionName: collection,
         };

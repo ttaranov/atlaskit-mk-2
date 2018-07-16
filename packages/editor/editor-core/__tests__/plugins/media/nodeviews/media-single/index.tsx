@@ -7,6 +7,7 @@ import { defaultSchema } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
+  DefaultMediaStateManager,
 } from '../../../../../src/plugins/media/pm-plugins/main';
 import MediaSingle from '../../../../../src/plugins/media/nodeviews/media-single';
 
@@ -22,14 +23,20 @@ class Media extends React.Component<MediaProps, {}> {
 
 describe('nodeviews/mediaSingle', () => {
   let pluginState;
+  const stateManager = new DefaultMediaStateManager();
   const mediaNode = media({
     id: 'foo',
     type: 'file',
     collection: 'collection',
   })();
+  const externalMediaNode = media({
+    type: 'external',
+    url: 'http://image.jpg',
+  })();
 
   beforeEach(() => {
     pluginState = {} as MediaPluginState;
+    pluginState.stateManager = stateManager;
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
   });
 
@@ -74,6 +81,24 @@ describe('nodeviews/mediaSingle', () => {
     wrapper.setProps({ node: updatedMediaSingleNode });
 
     expect(updateLayoutSpy).toHaveBeenCalledWith('center');
+  });
+
+  it('sets "onExternalImageLoaded" for external images', () => {
+    const view = {} as EditorView;
+    const mediaSingleNode = mediaSingle()(externalMediaNode);
+
+    const wrapper = shallow(
+      <MediaSingle
+        view={view}
+        node={mediaSingleNode(defaultSchema)}
+        width={680}
+      >
+        <Media node={externalMediaNode(defaultSchema)} />
+      </MediaSingle>,
+    );
+
+    const child = wrapper.childAt(0);
+    expect(child && child.props().onExternalImageLoaded).toBeDefined();
   });
 
   afterEach(() => {

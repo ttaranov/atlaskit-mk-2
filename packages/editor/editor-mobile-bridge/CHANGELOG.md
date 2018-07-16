@@ -1,13 +1,165 @@
 # @atlaskit/editor-mobile-bridge
 
-## 0.0.18
+## 2.0.1
+
+
+- [none] Updated dependencies [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
+  - @atlaskit/editor-core@76.0.0
+  - @atlaskit/editor-json-transformer@4.0.1
+- [patch] Updated dependencies [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)
+  - @atlaskit/editor-core@76.0.0
+  - @atlaskit/editor-json-transformer@4.0.1
+
+## 2.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/media-core@22.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/media-core@22.0.0
+
+## 1.0.8
+
+
+
+- [patch] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/editor-core@74.0.16
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/editor-core@74.0.16
+- [patch] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/editor-core@74.0.16
+
+## 1.0.7
+- [patch] ED-4964: refactor lists state [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
+- [none] Updated dependencies [81f1a95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81f1a95)
+  - @atlaskit/editor-core@74.0.1
+
+## 1.0.6
+- [patch] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+  - @atlaskit/editor-core@74.0.0
+  - @atlaskit/editor-json-transformer@3.1.7
+
+## 1.0.5
+
+
+- [none] Updated dependencies [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+  - @atlaskit/editor-core@73.9.26
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-core@21.0.0
+  - @atlaskit/editor-core@73.9.26
+
+## 1.0.4
+- [patch] Updated dependencies [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
+  - @atlaskit/mention@13.1.4
+  - @atlaskit/editor-core@73.9.10
+
+## 1.0.3
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/mention@13.1.3
+  - @atlaskit/editor-json-transformer@3.1.5
+  - @atlaskit/editor-core@73.9.5
+
+## 1.0.2
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/mention@13.1.2
+  - @atlaskit/editor-json-transformer@3.1.4
+  - @atlaskit/editor-core@73.9.2
+
+## 1.0.1
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/editor-core@73.8.19
+  - @atlaskit/media-core@20.0.0
+
+## 1.0.0
+- [major] Added support for blocks and lists [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+- [none] Updated dependencies [b5a920b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5a920b)
+  - @atlaskit/editor-core@73.8.12
+
+## 0.2.4
+- [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+- [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+  - @atlaskit/editor-core@73.8.3
+
+## 0.2.3
+- [patch] ED-4489 Fix can't submit with enter using Korean and Japanese IME [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
+- [none] Updated dependencies [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
+  - @atlaskit/editor-core@73.7.8
+
+## 0.2.2
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/mention@13.1.1
+  - @atlaskit/editor-json-transformer@3.1.2
+  - @atlaskit/editor-core@73.7.5
+  - @atlaskit/media-core@19.1.3
+
+## 0.2.1
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/editor-json-transformer@3.1.1
+  - @atlaskit/editor-core@73.7.1
+  - @atlaskit/media-core@19.1.2
+
+## 0.2.0
+- [none] Updated dependencies [7217164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7217164)
+  - @atlaskit/editor-core@73.5.0
+  - @atlaskit/mention@13.1.0
+  - @atlaskit/editor-json-transformer@3.1.0
+
+## 0.1.9
+- [patch] Provided bridge implementation to support Media on iOS. [43875e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43875e6)
+
+## 0.1.8
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/mention@13.0.0
+  - @atlaskit/editor-json-transformer@3.0.9
+  - @atlaskit/editor-core@73.0.0
+  - @atlaskit/media-core@19.0.0
+
+## 0.1.7
+- [patch] Updated dependencies [1c87e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c87e5a)
+  - @atlaskit/mention@12.0.3
+  - @atlaskit/editor-json-transformer@3.0.8
+  - @atlaskit/editor-core@72.2.2
+
+## 0.1.6
+- [patch] Updated dependencies [639ae5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/639ae5e)
+  - @atlaskit/mention@12.0.2
+  - @atlaskit/editor-core@72.1.8
+
+## 0.1.5
+- [none] Updated dependencies [ba702bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba702bc)
+  - @atlaskit/mention@12.0.0
+  - @atlaskit/editor-core@72.0.6
+
+## 0.1.4
+- [none] Updated dependencies [febc44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/febc44d)
+  - @atlaskit/editor-core@72.0.0
+  - @atlaskit/editor-json-transformer@3.0.7
+
+## 0.1.3
+- [none] Updated dependencies [8fd4dd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fd4dd1)
+  - @atlaskit/mention@11.1.4
+  - @atlaskit/editor-json-transformer@3.0.6
+  - @atlaskit/editor-core@71.4.0
+
+## 0.1.2
+- [patch] Bump to prosemirror-view@1.3.0 [faea319](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faea319)
+
+## 0.1.0
+- [minor] Media APIs exposed to mobile clients and can be used by native media components [31c66f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31c66f4)
 
 ## 0.0.17
 - [patch] Added missing dependencies and added lint rule to catch them all [0672503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0672503)
-
-## 0.0.16
-
-## 0.0.15
 
 ## 0.0.14
 - [patch] enabled minimization @ mobile bridge [95703e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95703e3)
@@ -15,26 +167,14 @@
 ## 0.0.13
 - [patch] Implemented setContent for editor mobile native-to-web bridge [b5c150b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5c150b)
 
-## 0.0.12
-
 ## 0.0.11
 - [patch] Fix running 'run.if.package.changed' script in cases like master branch or package being dependent only [d90ab10](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d90ab10)
-
-## 0.0.10
 
 ## 0.0.9
 - [patch] Small changes in build process for editor-mobile-bridge [78d543a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/78d543a)
 
 ## 0.0.8
 - [patch] Upgrading ProseMirror Libs [35d14d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d14d5)
-
-## 0.0.7
-
-## 0.0.6
-
-## 0.0.5
-
-## 0.0.4
 
 ## 0.0.3
 - [patch] Fix dependency [d4bcbf4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4bcbf4)

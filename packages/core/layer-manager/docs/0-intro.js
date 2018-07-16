@@ -1,6 +1,19 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { code, md, Example, Props } from '@atlaskit/docs';
+import { colors } from '@atlaskit/theme';
+
+const Warning = p => (
+  <div
+    style={{
+      backgroundColor: colors.R75,
+      boxShadow: `-4px 0 0 ${colors.R200}`,
+      marginBottom: '1.4em',
+      padding: '1em 1.2em',
+    }}
+    {...p}
+  />
+);
 
 export default md`
   ## Why?
@@ -16,19 +29,19 @@ export default md`
   Super simple to use, just wrap your app with the default export -- we'll listen
   to the context it broadcasts, and inject your components where they belong.
 
-  \`\`\`
-  import LayerManager from '@atlaskit/layer-manager';
+${code`
+import LayerManager from '@atlaskit/layer-manager';
 
-  export default class App extends Component {
-    render() {
-      return (
-        <LayerManager>
-          ...
-        </LayerManager>
-      );
-    }
+export default class App extends Component {
+  render() {
+    return (
+      <LayerManager>
+        ...
+      </LayerManager>
+    );
   }
-  \`\`\`
+}
+`}
 
   ${(
     <Example
@@ -38,18 +51,10 @@ export default md`
     />
   )}
 
-  ## Helpers
-  There are a few patterns that are common among the supported packages, and have
-  been abstracted into discrete components. While primarily for use internally,
-  they're available as named exports from \`@atlaskit/layer-manager\`.
+  ## Focus Lock
 
-  ${(
-    <Example
-      Component={require('../examples/1-scroll-lock').default}
-      source={require('!!raw-loader!../examples/1-scroll-lock')}
-      title="Scroll Lock"
-    />
-  )}
+  This component is used to trap focus inside an area of the screen. The main use
+  case for this FocusLock component is to keep focus inside modal dialogs.
 
   ${(
     <Example
@@ -58,6 +63,64 @@ export default md`
       title="Focus Lock"
     />
   )}
+
+  ${(
+    <Props
+      heading="Focus Lock Props"
+      props={require('!!extract-react-types-loader!../src/components/FocusLock')}
+    />
+  )}
+
+  ### Auto focusing an element
+
+  There are a couple of options to focus an element that is not focused by default.
+  The first is to use the autoFocus attribute on React dom elements. In the example below,
+  'button one' is the default but 'button two' will have focus.
+
+${code`
+const App = () => (
+  <FocusLock>
+    <button>button one</button>
+    <button autoFocus>button two</button>
+  </FocusLock>
+)
+`}
+
+  The other option is to attach a ref to the dom element and imperatively call \`focus()\`.
+  This technique is described in [this section](https://reactjs.org/docs/refs-and-the-dom.html#adding-a-ref-to-a-dom-element)
+  of the React documentation.
+
+  ## Scroll Lock
+
+  Component used to lock scroll positioning.
+
+  ${(
+    <React.Fragment>
+      <Warning>
+        <p>
+          <strong>ScrollLock is deprecated.</strong>
+        </p>
+        <p>
+          Please use{' '}
+          <a href="https://github.com/jossmac/react-scrolllock">
+            react-scrolllock
+          </a>{' '}
+          instead.
+        </p>
+      </Warning>
+      <Example
+        Component={require('../examples/1-scroll-lock').default}
+        source={require('!!raw-loader!../examples/1-scroll-lock')}
+        title="Scroll Lock - DEPRECATED"
+      />
+    </React.Fragment>
+  )}
+
+  ## Other Helpers
+
+  There are a few patterns that are common among the supported packages, and have
+  been abstracted into discrete components. While primarily for use internally,
+  they're available as named exports from \`@atlaskit/layer-manager\`.
 
   ${(
     <Example

@@ -2,13 +2,14 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
-import { AxiosError } from 'axios';
 import {
   MediaItem,
   MediaCollection,
   MediaCollectionItem,
   Context,
   DataUriService,
+  isError,
+  isCollectionNotFoundError,
 } from '@atlaskit/media-core';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -53,7 +54,7 @@ export interface CardListState {
   subscription?: Subscription;
   loadNextPage?: () => void;
   collection?: MediaCollection;
-  error?: AxiosError;
+  error?: Error;
 }
 
 // FIXME: these aren't "components", they're actually "elements"... we should rename these or change the signature to be a "component" e.g. () => (<Spinner.../>);. Will clean up the tests a bit too.
@@ -97,34 +98,40 @@ export class CardList extends Component<CardListProps, CardListState> {
   handleNextItems(nextProps: CardListProps) {
     const { collectionName, context } = nextProps;
 
-    return (collection: MediaCollection) => {
-      const { firstItemKey } = this.state;
-      const newFirstItemKey = collection.items[0]
-        ? this.getItemKey(collection.items[0])
-        : undefined;
-      const shouldAnimate = !!firstItemKey && firstItemKey !== newFirstItemKey;
-      this.providersByMediaItemId = {};
-      collection.items.forEach(mediaItem => {
-        if (!mediaItem.details || !mediaItem.details.id) {
-          return;
-        }
+    return (value: MediaCollection | Error) => {
+      if (isError(value)) {
+        this.setState({ collection: undefined, error: value, loading: false });
+      } else {
+        const { firstItemKey } = this.state;
+        const newFirstItemKey = value.items[0]
+          ? this.getItemKey(value.items[0])
+          : undefined;
+        const shouldAnimate =
+          !!firstItemKey && firstItemKey !== newFirstItemKey;
+        this.providersByMediaItemId = {};
+        value.items.forEach(mediaItem => {
+          if (!mediaItem.details) {
+            return;
+          }
 
-        this.providersByMediaItemId[
-          mediaItem.details.id
-        ] = context.getMediaItemProvider(
-          mediaItem.details.id,
-          mediaItem.type,
-          collectionName,
-          mediaItem,
-        );
-      });
+          this.providersByMediaItemId[
+            mediaItem.details.id
+          ] = context.getMediaItemProvider(
+            mediaItem.details.id,
+            mediaItem.type,
+            collectionName,
+            mediaItem,
+          );
+        });
 
-      this.setState({
-        collection,
-        shouldAnimate,
-        loading: false,
-        firstItemKey: newFirstItemKey,
-      });
+        this.setState({
+          collection: value,
+          shouldAnimate,
+          loading: false,
+          firstItemKey: newFirstItemKey,
+          error: undefined,
+        });
+      }
     };
   }
 
@@ -138,9 +145,6 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const subscription = provider.observable().subscribe({
       next: this.handleNextItems(nextProps),
-      error: (error: AxiosError): void => {
-        this.setState({ collection: undefined, error, loading: false });
-      },
     });
 
     this.setState({ subscription });
@@ -196,26 +200,39 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.loadNextPage();
   };
 
-  render(): JSX.Element {
-    const { height } = this.props;
+  get isEmpty(): boolean {
+    const { collection } = this.state;
+
+    return !!(collection && collection.items.length === 0);
+  }
+
+  render() {
+    const {
+      height,
+      emptyComponent,
+      loadingComponent,
+      errorComponent,
+    } = this.props;
     const { loading, error, collection } = this.state;
-    const emptyComponent = this.props.emptyComponent || EmptyComponent;
-    const loadingComponent = this.props.loadingComponent || LoadingComponent;
-    const errorComponent = this.props.errorComponent || ErrorComponent;
 
     if (loading) {
       return loadingComponent;
     }
 
     if (error) {
-      if (error.response && error.response.status === 404) {
+      if (isCollectionNotFoundError(error)) {
         return emptyComponent;
+      } else {
+        return errorComponent;
       }
-      return errorComponent;
     }
 
     if (!collection) {
       return loadingComponent;
+    }
+
+    if (this.isEmpty) {
+      return emptyComponent;
     }
 
     if (this.useInfiniteScroll) {
@@ -256,10 +273,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       });
 
     const cards = collection
-      ? collection.items.map((mediaItem: MediaCollectionItem) => {
-          if (!mediaItem.details || !mediaItem.details.id) {
-            return null;
-          }
+      ? collection.items.filter(item => item.type === 'file').map(mediaItem => {
           const key = this.getItemKey(mediaItem);
           const cardListItem = (
             <CSSTransition

@@ -43,8 +43,8 @@ export const defaultTheme: ItemTheme = {
     },
   },
   default: {
-    background: colors.N0,
-    text: colors.N500,
+    background: colors.background,
+    text: colors.text,
     secondaryText: colors.N200,
   },
   selected: {
@@ -53,13 +53,13 @@ export const defaultTheme: ItemTheme = {
     secondaryText: colors.N200,
   },
   active: {
-    background: colors.B75,
-    text: colors.N800,
+    background: colors.backgroundActive,
+    text: colors.textActive,
     secondaryText: colors.N200,
   },
   hover: {
-    background: colors.N20,
-    text: colors.N800,
+    background: colors.backgroundHover,
+    text: colors.textHover,
     secondaryText: colors.N200,
   },
   disabled: {
@@ -75,6 +75,9 @@ export const defaultTheme: ItemTheme = {
   },
 };
 
+const isValidCssValue = value =>
+  value !== undefined && value !== null && value !== '';
+
 // Returns the theme that contains the requested theme key(s), preferring the user-supplied
 // theme if it is provided.
 export const themeWithKeys = (
@@ -83,11 +86,15 @@ export const themeWithKeys = (
   parentKey?: string,
 ) => {
   if (parentKey) {
-    return maybeTheme && maybeTheme[parentKey] && maybeTheme[parentKey][key]
+    return maybeTheme &&
+      maybeTheme[parentKey] &&
+      isValidCssValue(maybeTheme[parentKey][key])
       ? maybeTheme
       : defaultTheme;
   }
-  return maybeTheme && maybeTheme[key] ? maybeTheme : defaultTheme;
+  return maybeTheme && isValidCssValue(maybeTheme[key])
+    ? maybeTheme
+    : defaultTheme;
 };
 
 // Returns the theme value for the requested key(s), falling back to the default theme if the

@@ -1,47 +1,49 @@
 // @flow
-import PropTypes from 'prop-types';
-import { Children, Component } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { Component, type ElementType } from 'react';
+import NodeResolver from 'react-node-resolver';
 
-import type { ElementType } from '../types';
-import SpotlightRegistry from './SpotlightRegistry';
+import { withSpotlightState } from './SpotlightManager';
+import { type RegistryType } from './SpotlightRegistry';
 
 type Props = {
   /** a single child */
   children: ElementType,
   /** the name to reference from Spotlight */
   name: string,
+  /** the name to reference from Spotlight */
+  spotlightRegistry: RegistryType,
 };
 
 const errorMessage =
   '`SpotlightTarget` requires `SpotlightManager` as an ancestor.';
 
-export default class SpotlightTarget extends Component<Props> {
-  static contextTypes = {
-    spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
-  };
-
+class SpotlightTarget extends Component<Props> {
+  node: HTMLElement;
   componentDidMount() {
-    const { name } = this.props;
-    const { spotlightRegistry } = this.context;
+    const { name, spotlightRegistry } = this.props;
 
     if (!spotlightRegistry) {
-      throw Error(errorMessage);
+      throw new Error(errorMessage);
     } else {
-      spotlightRegistry.add(name, findDOMNode(this)); // eslint-disable-line
+      spotlightRegistry.add(name, this.node);
     }
   }
   componentWillUnmount() {
-    const { name } = this.props;
-    const { spotlightRegistry } = this.context;
+    const { name, spotlightRegistry } = this.props;
 
     if (!spotlightRegistry) {
-      throw Error(errorMessage);
+      throw new Error(errorMessage);
     } else {
       spotlightRegistry.remove(name);
     }
   }
+  getNode = (ref: HTMLElement) => {
+    this.node = ref;
+  };
   render() {
-    return Children.only(this.props.children);
+    return (
+      <NodeResolver innerRef={this.getNode}>{this.props.children}</NodeResolver>
+    );
   }
 }
+export default withSpotlightState(SpotlightTarget);

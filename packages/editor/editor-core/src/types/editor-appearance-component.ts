@@ -7,6 +7,7 @@ import {
   ReactElement,
   InsertMenuCustomItem,
 } from '../types';
+import { CollabEditOptions } from '../plugins/collab-edit';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
@@ -40,4 +41,6 @@ export interface EditorAppearanceComponentProps {
   extensionHandlers?: ExtensionHandlers;
 
   disabled?: boolean;
+
+  collabEdit?: CollabEditOptions;
 }

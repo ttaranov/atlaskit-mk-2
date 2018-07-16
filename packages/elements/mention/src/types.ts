@@ -63,6 +63,7 @@ enum UserType {
   DEFAULT,
   SPECIAL,
   APP,
+  TEAM,
   SYSTEM,
 }
 
@@ -72,12 +73,16 @@ export function isRestricted(accessLevel) {
   );
 }
 
-export function isSpecialMention(mention: MentionDescription) {
-  return mention.userType && mention.userType === UserType[UserType.SPECIAL];
+export function isSpecialMention(mention: MentionDescription): boolean {
+  return !!mention.userType && mention.userType === UserType[UserType.SPECIAL];
 }
 
 export function isAppMention(mention: MentionDescription) {
   return mention.userType && mention.userType === UserType[UserType.APP];
+}
+
+export function isTeamMention(mention: MentionDescription) {
+  return mention.userType && mention.userType === UserType[UserType.TEAM];
 }
 
 export function isSpecialMentionText(mentionText: string) {

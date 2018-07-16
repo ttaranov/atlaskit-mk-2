@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { isRowSelected, selectRow } from 'prosemirror-utils';
+import { isRowSelected, isTableSelected } from 'prosemirror-utils';
 import {
   RowInner,
   RowContainer,
@@ -9,59 +9,166 @@ import {
   HeaderButton,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
-import { Command } from '../../../../../types';
-import { getLineMarkerWidth } from '../utils';
+import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
+import DeleteRowButton from './DeleteRowButton';
 
 export interface Props {
   editorView: EditorView;
-  tableElement: HTMLElement;
+  tableRef: HTMLElement;
   isTableHovered: boolean;
-  insertRow: (row: number) => Command;
-  hoverRow: (row: number) => Command;
-  resetHoverSelection: Command;
-  scroll: number;
-  updateScroll: () => void;
+  selectRow: (row: number) => void;
+  insertRow: (row: number) => void;
+  deleteSelectedRows: () => void;
+  hoverRows: (rows: number[], danger?: boolean) => void;
+  dangerRows?: number[];
+  hoveredRows?: number[];
+  resetHoverSelection: () => void;
+  isTableInDanger?: boolean;
 }
 
 export default class RowControls extends Component<Props, any> {
-  render() {
+  static defaultProps = {
+    dangerRows: [],
+    hoveredRows: [],
+  };
+
+  createDeleteRowButton(selection, offsetHeight, selectionHeight) {
+    const selectedRowIdxs: number[] = [];
+    for (let i = 0; i < selection.count; i++) {
+      selectedRowIdxs.push(selection.startIdx! + i);
+    }
+
+    return (
+      <DeleteRowButton
+        key="delete"
+        onClick={this.props.deleteSelectedRows}
+        onMouseEnter={() => {
+          this.props.hoverRows(selectedRowIdxs, true);
+        }}
+        onMouseLeave={() => this.props.hoverRows(selectedRowIdxs)}
+        style={{
+          top: offsetHeight + selectionHeight / 2 + 2,
+        }}
+      />
+    );
+  }
+
+  createDeleteRowButtonForSelection(selection: TableSelection, rows) {
+    // find the offset before
+    let selectionGroupOffset = 0;
+    let selectionGroupHeight = 0;
+    for (let i = 0; i < selection.startIdx!; i++) {
+      selectionGroupOffset += (rows[i] as HTMLElement).offsetHeight;
+    }
+
+    // find the height of the selected rows
+    for (let i = selection.startIdx!; i <= selection.endIdx!; i++) {
+      selectionGroupHeight += (rows[i] as HTMLElement).offsetHeight;
+    }
+
+    return this.createDeleteRowButton(
+      selection,
+      selectionGroupOffset,
+      selectionGroupHeight,
+    );
+  }
+
+  private classNamesForRow(i, len) {
+    const classNames = ['table-row'];
     const {
-      tableElement,
       editorView: { state },
       isTableHovered,
-      scroll,
+      isTableInDanger,
     } = this.props;
-    if (!tableElement) {
+
+    if (
+      isTableHovered ||
+      isRowSelected(i)(state.selection) ||
+      this.props.hoveredRows!.indexOf(i) !== -1
+    ) {
+      classNames.push('active');
+    }
+
+    if (this.props.dangerRows!.indexOf(i) !== -1 || isTableInDanger) {
+      classNames.push('danger');
+    }
+
+    // since we can't use :last selector with class name selector (.table-row),
+    // create a class-based selector instead
+    if (i === len - 1) {
+      classNames.push('last');
+    }
+
+    return classNames;
+  }
+
+  render() {
+    const {
+      editorView: { state },
+      tableRef,
+    } = this.props;
+    if (!tableRef) {
       return null;
     }
-    const tbody = tableElement.querySelector('tbody')!;
+    const tbody = tableRef.querySelector('tbody');
+    if (!tbody) {
+      return null;
+    }
+
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
-    const lineMarkerWidth = getLineMarkerWidth(tableElement, scroll);
+    let prevRowHeights = 0;
+
+    const selection = findRowSelection(state, rows);
 
     for (let i = 0, len = rows.length; i < len; i++) {
-      const className =
-        isTableHovered || isRowSelected(i)(state.selection) ? 'active' : '';
+      const onlyThisRowSelected =
+        selection.inSelection(i) &&
+        !isTableSelected(state.selection) &&
+        !selection.hasMultipleSelection;
+
       nodes.push(
         <RowControlsButtonWrap
           key={i}
-          className={`${className} table-row`}
-          style={{ height: (rows[i] as HTMLElement).offsetHeight + 1 }}
+          className={this.classNamesForRow(i, len).join(' ')}
+          style={{
+            height: (rows[i] as HTMLElement).offsetHeight + 1,
+          }}
         >
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
-            onClick={() => this.selectRow(i)}
-            onMouseOver={() => this.hoverRow(i)}
-            onMouseOut={this.resetHoverSelection}
+            onClick={() => this.props.selectRow(i)}
+            onMouseOver={() => this.props.hoverRows([i])}
+            onMouseOut={() => this.props.resetHoverSelection()}
           />
           {/* tslint:enable:jsx-no-lambda */}
-          <InsertRowButton
-            onClick={() => this.insertRow(i + 1)}
-            lineMarkerWidth={lineMarkerWidth}
-            onMouseOver={this.props.updateScroll}
-          />
+          {!(
+            selection.hasMultipleSelection && selection.frontOfSelection(i)
+          ) ? (
+            <InsertRowButton
+              onClick={() => this.props.insertRow(i + 1)}
+              lineMarkerWidth={getLineMarkerWidth(
+                tableRef,
+                (tableRef.parentNode as HTMLElement).scrollLeft,
+              )}
+            />
+          ) : null}
         </RowControlsButtonWrap>,
+        onlyThisRowSelected
+          ? this.createDeleteRowButton(
+              selection,
+              prevRowHeights,
+              (rows[i] as HTMLElement).offsetHeight,
+            )
+          : null,
       );
+
+      prevRowHeights += (rows[i] as HTMLElement).offsetHeight;
+    }
+
+    // in the case for a multiple selection, draw a single button at the end instead
+    if (selection.hasMultipleSelection && !isTableSelected(state.selection)) {
+      nodes.push(this.createDeleteRowButtonForSelection(selection, rows));
     }
 
     return (
@@ -70,24 +177,4 @@ export default class RowControls extends Component<Props, any> {
       </RowContainer>
     );
   }
-
-  private selectRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    dispatch(selectRow(row)(state.tr));
-  };
-
-  private hoverRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.hoverRow(row)(state, dispatch);
-  };
-
-  private resetHoverSelection = () => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.resetHoverSelection(state, dispatch);
-  };
-
-  private insertRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    this.props.insertRow(row)(state, dispatch);
-  };
 }

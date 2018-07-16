@@ -7,6 +7,7 @@ const messageEditorPropsPreset: EditorProps = {
 
   allowLists: true,
   allowTextColor: true,
+  allowInlineAction: true,
   allowCodeBlocks: true,
   allowTasksAndDecisions: true,
   allowHelpDialog: true,

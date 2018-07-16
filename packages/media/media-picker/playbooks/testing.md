@@ -41,8 +41,4 @@ interfaces between components. Data should be extended with large files and a la
     * Media editor functions as it should: adds annotations, saves a new file on Save, cancels the progress on Cancel
     * **teardown** function works
         * should remove popup iframe from the dom
-    * **autoFinalize** option works
-        * when unchecked, popup should not automatically copy file to tenant's collection
-    * **fetchMetadata** option works
-        * when unchecked, popup should not fetch file metadata
     * throttling the network doesn't cause advese effects

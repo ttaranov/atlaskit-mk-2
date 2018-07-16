@@ -84,8 +84,9 @@ export const getStrokeColor = ({
   ...props
 }: {
   invertColor?: boolean,
-  // $FlowFixMe TEMPORARY
-}): string => (invertColor ? spinnerColorInverted(props) : spinnerColor(props));
+}): string | number =>
+  // $FlowFixMe - theme is not found in props
+  invertColor ? spinnerColorInverted(props) : spinnerColor(props);
 
 export const svgStyles = css`
   ${(props: StyleParams) => {
@@ -99,7 +100,7 @@ export const svgStyles = css`
       props.size,
     )}`;
 
-    const spinUpOpacity = `0.2s ease-in-out ${keyframes.enterOpacity}`;
+    const spinUpOpacity = `0.2s ease-in-out ${keyframeNames.enterOpacity}`;
 
     const activeAnimations = [idleRotation];
     if (props.phase === 'ENTER') {

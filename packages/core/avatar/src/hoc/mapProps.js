@@ -1,34 +1,40 @@
 // @flow
-import React, { Component } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementConfig,
+  type ElementRef,
+} from 'react';
 import { getDisplayName } from '../utils';
-import type { ComponentType, ElementType, FunctionType } from '../types';
 
-export default function mapProps(mapping: {}) {
-  return (DecoratedComponent: ComponentType) =>
+export default function mapProps(mapping: { [string]: any }) {
+  return <Props: {}, WrappedComponent: ComponentType<Props>>(
+    DecoratedComponent: WrappedComponent,
+  ): ComponentType<ElementConfig<WrappedComponent>> =>
     // TODO: type this correctly
     class MapProps extends Component<*> {
       static displayName: string | void | null = getDisplayName(
         'mapProps',
         DecoratedComponent,
       );
-      static DecoratedComponent: ComponentType = DecoratedComponent;
+      static DecoratedComponent = DecoratedComponent;
 
-      component: { blur?: FunctionType, focus?: FunctionType };
+      component: ?ElementRef<*>;
 
       // expose blur/focus to consumers via ref
       blur = () => {
-        if (this.component.blur) this.component.blur();
+        if (this.component && this.component.blur) this.component.blur();
       };
       focus = () => {
-        if (this.component.focus) this.component.focus();
+        if (this.component && this.component.focus) this.component.focus();
       };
 
-      setComponent = (component: ElementType) => {
+      setComponent = (component: ?ElementRef<*>) => {
         this.component = component;
       };
 
       render() {
-        const mapped: {} = {
+        const mapped: { [string]: any } = {
           ...this.props,
           ...Object.keys(mapping).reduce(
             (acc, key) => ({

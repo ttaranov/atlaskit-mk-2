@@ -1,18 +1,29 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
-import React, { Component } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementType,
+  type Element,
+  type Node,
+} from 'react';
 import { ThemeProvider } from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import { getSpotlightTheme } from './theme';
-import type {
-  ActionsType,
-  ComponentType,
-  ChildrenType,
-  ElementType,
-} from '../types';
+import type { ActionsType } from '../types';
 
 import {
   Dialog,
@@ -25,15 +36,16 @@ import {
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import { Fade } from './Animation';
 import Actions from './SpotlightActions';
-import withScrollMeasurements from '../hoc/withScrollMeasurements';
+import { withSpotlightState } from './SpotlightManager';
+import { compose, withScrollMeasurements } from '../hoc';
 
-type Props = {|
+type Props = {
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** An optional element rendered beside the footer actions */
-  actionsBeforeElement?: ElementType,
+  actionsBeforeElement?: Element<*>,
   /** The elements rendered in the modal */
-  children: ChildrenType,
+  children: Node,
   /** Where the dialog should appear, relative to the contents of the children. */
   dialogPlacement?:
     | 'top left'
@@ -61,21 +73,23 @@ type Props = {|
   /** Whether or not to display a pulse animation around the spotlighted element */
   pulse?: boolean,
   /** The name of the SpotlightTarget */
-  target: string,
+  target?: string,
+  /** The spotlight target node */
+  targetNode?: HTMLElement,
   /** The background color of the element being highlighted */
   targetBgColor?: string,
   /** Function to fire when a user clicks on the cloned target */
-  targetOnClick?: ({ event: MouseEvent, target: string }) => void,
+  targetOnClick?: ({ event: MouseEvent, target?: string }) => void,
   /** The border-radius of the element being highlighted */
   targetRadius?: number,
   /** Alternative element to render than the wrapped target */
-  targetReplacement?: ComponentType,
-|};
+  targetReplacement?: ComponentType<*>,
+};
 
 type FillProps = {
   in: boolean,
   scrollDistance: number,
-  children: ChildrenType,
+  children: Node,
 };
 
 const Fill = (props: FillProps) => <Fade component={FillScreen} {...props} />;
@@ -102,22 +116,23 @@ class Spotlight extends Component<Props> {
   };
 
   renderTargetClone() {
-    // NOTE: `clone` & `rect` are NOT public API
     const {
-      // $FlowFixMe
+      // $FlowFixMe - `clone` & `rect` are NOT public API
       clone, // eslint-disable-line react/prop-types
-      // $FlowFixMe
+      // $FlowFixMe - `clone` & `rect` are NOT public API
       rect, // eslint-disable-line react/prop-types
       pulse,
       target,
       targetBgColor,
       targetOnClick,
+      targetNode,
       targetRadius,
       targetReplacement: Replacement,
     } = this.props;
 
-    if (!target) {
-      throw Error(`Spotlight couldn't find a target matching "${target}".`);
+    if (!target && !targetNode) {
+      const targetText = target ? ` matching "${target}".` : '.';
+      throw Error(`Spotlight couldn't find a target${targetText}.`);
     }
 
     return Replacement ? (
@@ -148,10 +163,10 @@ class Spotlight extends Component<Props> {
       footer,
       header,
       heading,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       in: transitionIn, // eslint-disable-line react/prop-types
       image,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       scrollY, // eslint-disable-line react/prop-types
     } = this.props;
 
@@ -175,12 +190,10 @@ class Spotlight extends Component<Props> {
     // build the dialog before passing it to Layer
     const dialog = (
       <ThemeProvider theme={getSpotlightTheme}>
-        <FocusLock enabled={transitionIn} autoFocus>
+        <FocusLock enabled={transitionIn} returnFocus={false}>
           <Dialog width={dialogWidth} tabIndex="-1">
             {headerElement}
-            {/* // $FlowFixMe TEMPORARY */}
             <DialogBody>
-              {/* // $FlowFixMe TEMPORARY */}
               {heading && <Heading>{heading}</Heading>}
               {children}
             </DialogBody>
@@ -197,8 +210,7 @@ class Spotlight extends Component<Props> {
           content={dialog}
           offset="0 8"
           position={dialogPlacement}
-          // $FlowFixMe TEMPORARY
-          zIndex={layers.spotlight(this.props)}
+          zIndex={layers.spotlight()}
         >
           {this.renderTargetClone()}
         </Layer>
@@ -207,13 +219,28 @@ class Spotlight extends Component<Props> {
   }
 }
 
-export default withScrollMeasurements(
-  withRenderTarget(
-    {
-      target: 'spotlight',
-      withTransitionGroup: true,
-    },
-    // $FlowFixMe TEMPORARY
-    Spotlight,
-  ),
+const portalConfig = { target: 'spotlight', withTransitionGroup: true };
+const portal = comp => withRenderTarget(portalConfig, comp);
+const enhance = compose(withSpotlightState, withScrollMeasurements, portal);
+
+export const SpotlightWithoutAnalytics = enhance(Spotlight);
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'spotlight',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    targetOnClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'spotlight',
+
+      attributes: {
+        componentName: 'spotlight',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(SpotlightWithoutAnalytics),
 );

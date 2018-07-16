@@ -45,14 +45,25 @@ class ResultBase extends PureComponent<Props> {
     this.registerResult();
   }
 
-  handleClick = () => {
-    const { onClick, resultId, type, context } = this.props;
+  handleClick = (e: ?MouseEvent) => {
+    const {
+      analyticsData,
+      onClick,
+      resultId,
+      type,
+      contentType,
+      context,
+    } = this.props;
     const index = context.getIndex(this.props.resultId);
 
     this.props.context.sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
-      index,
+      ...analyticsData,
+      index, // ?
       method: 'click',
+      resultId,
+      contentType,
       type,
+      newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
     });
     onClick({ resultId, type });
   };
@@ -75,6 +86,7 @@ class ResultBase extends PureComponent<Props> {
       subText,
       text,
       resultId,
+      linkComponent,
     } = this.props;
 
     return (
@@ -93,6 +105,7 @@ class ResultBase extends PureComponent<Props> {
             subText={subText}
             text={text}
             textAfter={elemAfter}
+            linkComponent={linkComponent}
           />
         )}
       </SelectedResultIdContext.Consumer>

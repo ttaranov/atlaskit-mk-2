@@ -1,20 +1,23 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { EditorView } from 'prosemirror-view';
+import styled from 'styled-components';
+
 import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
-import ToolbarButton from '../../../../ui/ToolbarButton';
-import Separator from '../../../../ui/Separator';
-import FloatingToolbar from '../../../../ui/FloatingToolbar';
 import {
-  availablePanelType,
-  PanelState,
-  PanelType,
-} from '../../pm-plugins/main';
+  akColorN70,
+  akColorR300,
+  akColorR400,
+} from '@atlaskit/util-shared-styles';
+
+import UiToolbarButton from '../../../../ui/ToolbarButton';
+import UiSeparator from '../../../../ui/Separator';
+import UiFloatingToolbar from '../../../../ui/FloatingToolbar';
+import { availablePanelType, PanelState } from '../../pm-plugins/main';
 
 const icons = {
   info: InfoIcon,
@@ -24,79 +27,87 @@ const icons = {
   error: ErrorIcon,
 };
 
+const titles = {
+  info: 'Info',
+  note: 'Note',
+  success: 'Success',
+  warning: 'Warning',
+  error: 'Error',
+};
+
 export interface Props {
   editorView: EditorView;
   pluginState: PanelState;
+  onRemove: () => void;
+  onPanelChange: (type) => void;
 }
 
-export interface State {
-  toolbarVisible: boolean | undefined;
-  target?: HTMLElement | undefined;
-  activePanelType?: string | undefined;
-}
+const ToolbarButton = styled(UiToolbarButton)`
+  width: 24px;
+  padding: 0;
+  margin: 0 2px;
+`;
 
-export default class PanelEdit extends PureComponent<Props, State> {
-  state: State = { toolbarVisible: false };
+const Separator = styled(UiSeparator)`
+  margin: 2px 6px;
+`;
 
-  constructor(props: Props) {
-    super(props);
+// `line-height: 1` to fix extra 1px height from toolbar wrapper
+const FloatingToolbar = styled(UiFloatingToolbar)`
+  & > div {
+    line-height: 1;
   }
-
-  componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
+  & > div:first-child > button {
+    margin-left: 0;
   }
-
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+  & > div:last-child > button {
+    margin-right: 0;
   }
+`;
 
-  render() {
-    const { target, activePanelType, toolbarVisible } = this.state;
-    if (toolbarVisible) {
-      return (
-        <FloatingToolbar target={target} offset={[0, 3]} fitHeight={32}>
-          {availablePanelType.map((panelType, index) => {
-            // tslint:disable-next-line:variable-name
-            const Icon = icons[panelType.panelType];
-            return (
-              <ToolbarButton
-                key={index}
-                selected={activePanelType === panelType.panelType}
-                onClick={this.handleSelectPanelType.bind(this, panelType)}
-                iconBefore={
-                  <Icon label={`Change panel type to ${panelType.panelType}`} />
-                }
-              />
-            );
-          })}
-          <Separator />
+const ToolbarButtonDestructive = styled(ToolbarButton)`
+  &:hover {
+    color: ${akColorR300} !important;
+  }
+  &:active {
+    color: ${akColorR400} !important;
+  }
+  &[disabled]:hover {
+    color: ${akColorN70} !important;
+  }
+`;
+
+function noOp() {}
+
+export default props => {
+  const {
+    element: target,
+    activePanelType,
+    toolbarVisible,
+  } = props.pluginState;
+  const { onRemove = noOp, onPanelChange = noOp } = props;
+  return toolbarVisible ? (
+    <FloatingToolbar target={target} offset={[0, 12]} fitHeight={32}>
+      {availablePanelType.map((panelType, index) => {
+        const Icon = icons[panelType];
+        return (
           <ToolbarButton
-            onClick={this.handleRemovePanel}
-            iconBefore={<RemoveIcon label="Remove panel type" />}
+            spacing="compact"
+            key={index}
+            selected={activePanelType === panelType}
+            onClick={onPanelChange.bind(null, { panelType })}
+            title={titles[panelType]}
+            iconBefore={<Icon label={`Change panel type to ${panelType}`} />}
           />
-        </FloatingToolbar>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  private handlePluginStateChange = (pluginState: PanelState) => {
-    const { element: target, activePanelType, toolbarVisible } = pluginState;
-    this.setState({
-      toolbarVisible,
-      target,
-      activePanelType,
-    });
-  };
-
-  private handleSelectPanelType = (panelType: PanelType, event) => {
-    const { editorView } = this.props;
-    this.props.pluginState.changePanelType(editorView, panelType);
-  };
-
-  private handleRemovePanel = () => {
-    const { editorView } = this.props;
-    this.props.pluginState.removePanel(editorView);
-  };
-}
+        );
+      })}
+      <Separator />
+      <ToolbarButtonDestructive
+        spacing="compact"
+        onClick={onRemove}
+        title="Remove panel"
+        iconBefore={<RemoveIcon label="Remove panel" />}
+      />
+    </FloatingToolbar>
+  ) : null;
+};
