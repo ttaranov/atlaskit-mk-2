@@ -13,7 +13,7 @@ const BASE_RESULT_TYPE = 'base';
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-export class ResultBase extends PureComponent<Props> {
+class ResultBase extends PureComponent<Props> {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
@@ -81,8 +81,6 @@ export class ResultBase extends PureComponent<Props> {
       context,
     } = this.props;
 
-    // console.log(context);
-
     return (
       <SelectedResultIdContext.Consumer>
         {selectedResultId => (
@@ -109,6 +107,6 @@ export class ResultBase extends PureComponent<Props> {
 
 export default (props: Props) => (
   <ResultContext.Consumer>
-    {context => <ResultBase {...props} context={context} />}
+    {context => <ResultBase context={context} {...props} />}
   </ResultContext.Consumer>
 );

@@ -1,7 +1,7 @@
 // @flow
 import { mount } from 'enzyme';
 import React from 'react';
-import { ResultBase } from '../ResultBase';
+import ResultBase from '../ResultBase';
 import { type Context } from '../types';
 
 describe('Result Base', () => {

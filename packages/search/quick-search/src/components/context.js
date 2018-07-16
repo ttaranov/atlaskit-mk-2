@@ -8,9 +8,7 @@ const defaultState: Context = {
   onMouseEnter: () => {},
   onMouseLeave: () => {},
   registerResult: () => {},
-  getIndex: n => {
-    return null;
-  },
+  getIndex: n => Number(n),
 };
 
 // $FlowFixMe
