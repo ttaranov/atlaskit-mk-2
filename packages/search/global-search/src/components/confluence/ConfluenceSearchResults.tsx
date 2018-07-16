@@ -264,7 +264,7 @@ const render = (props: Props) => {
     screenCounters,
   } = props;
 
-  const { preQueryScreenCounter, postQueryScreenCounter } =
+  const { preQueryScreenCounter = null, postQueryScreenCounter = null } =
     screenCounters || {};
 
   if (isError) {
