@@ -18,7 +18,9 @@ import {
 } from './styled';
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
-import { constructAuthTokenUrl } from './util';
+import { downloadItem } from './domain/download';
+import { MediaViewerError, createError } from './error';
+
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
@@ -26,22 +28,7 @@ export type Props = {
 };
 
 export type State = {
-  item: Outcome<FileItem, Error>;
-};
-
-export const createDownloadUrl = async (
-  item: FileItem,
-  context: Context,
-  collectionName?: string,
-): Promise<string> => {
-  const url = `/file/${item.details.id}/binary`;
-  const tokenizedUrl = await constructAuthTokenUrl(
-    url,
-    context,
-    collectionName,
-  );
-
-  return `${tokenizedUrl}&dl=true`;
+  item: Outcome<FileItem, MediaViewerError>;
 };
 
 const initialState: State = {
@@ -90,7 +77,7 @@ export default class Header extends React.Component<Props, State> {
             this.setState({
               item: {
                 status: 'FAILED',
-                err: new Error('links are not supported'),
+                err: createError('linksNotSupported'),
               },
             });
           }
@@ -99,7 +86,7 @@ export default class Header extends React.Component<Props, State> {
           this.setState({
             item: {
               status: 'FAILED',
-              err,
+              err: createError('metadataFailed', undefined, err),
             },
           });
         },
@@ -107,25 +94,9 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
-  downloadItem = (item: FileItem) => async () => {
-    const { identifier, context } = this.props;
-    const link = document.createElement('a');
-    const name = item.details.name || 'download';
-    const href = await createDownloadUrl(
-      item,
-      context,
-      identifier.collectionName,
-    );
-
-    link.href = href;
-    link.download = name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   private renderDownload = () => {
     const { item } = this.state;
+    const { identifier, context } = this.props;
     const icon = <DownloadIcon label="Download" />;
     if (item.status !== 'SUCCESSFUL') {
       return (
@@ -141,7 +112,7 @@ export default class Header extends React.Component<Props, State> {
         <Button
           label="Download"
           appearance="toolbar"
-          onClick={this.downloadItem(item.data)}
+          onClick={downloadItem(item.data, context, identifier.collectionName)}
           iconBefore={icon}
         />
       );

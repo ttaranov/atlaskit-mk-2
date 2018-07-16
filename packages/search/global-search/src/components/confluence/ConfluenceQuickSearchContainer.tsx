@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
@@ -59,26 +60,22 @@ export interface State {
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
 export class ConfluenceQuickSearchContainer extends React.Component<
-  Props,
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-      isError: false,
-      query: '',
-      searchSessionId: uuid(), // unique id for search attribution
-      recentlyViewedPages: [],
-      recentlyViewedSpaces: [],
-      recentlyInteractedPeople: [],
-      objectResults: [],
-      spaceResults: [],
-      peopleResults: [],
-      keepRecentActivityResults: true,
-    };
-  }
+  state = {
+    isLoading: false,
+    isError: false,
+    query: '',
+    searchSessionId: uuid(), // unique id for search attribution
+    recentlyViewedPages: [],
+    recentlyViewedSpaces: [],
+    recentlyInteractedPeople: [],
+    objectResults: [],
+    spaceResults: [],
+    peopleResults: [],
+    keepRecentActivityResults: true,
+  };
 
   handleSearch = (query: string) => {
     if (this.state.query !== query) {
@@ -190,6 +187,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   fireShownPostQueryEvent(
     requestStartTime: number,
+    quickNavElapsedTime: number,
     resultsDetails: ShownAnalyticsAttributes,
   ) {
     const { createAnalyticsEvent } = this.props;
@@ -199,6 +197,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       firePostQueryShownEvent(
         resultsDetails,
         elapsedMs,
+        quickNavElapsedTime,
         this.state.searchSessionId,
         this.state.query,
         createAnalyticsEvent,
@@ -227,6 +226,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   doSearch = async (query: string) => {
     const startTime = performanceNow();
+    let quickNavTime;
 
     this.setState({
       isLoading: true,
@@ -236,6 +236,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       // rethrow to fail the promise
       throw error;
     });
+    quickNavPromise.then(() => (quickNavTime = performanceNow() - startTime));
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query),
       new Map<Scope, Result[]>(),
@@ -275,6 +276,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
       this.fireShownPostQueryEvent(
         startTime,
+        quickNavTime,
         buildShownEventDetails(
           take(searchResult.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
           take(searchResult.spaceResults, MAX_SPACES),
@@ -363,6 +365,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         onSearch={this.handleSearch}
         onSearchSubmit={this.handleSearchSubmit}
         isLoading={isLoading}
+        placeholder={this.props.intl.formatMessage({
+          id: 'global-search.confluence.search-placeholder',
+        })}
         query={query}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
@@ -386,6 +391,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 }
 
-export default withAnalyticsEvents()(
-  withAnalytics(ConfluenceQuickSearchContainer, {}, {}),
+export default injectIntl<Props>(
+  withAnalyticsEvents()(withAnalytics(ConfluenceQuickSearchContainer, {}, {})),
 );

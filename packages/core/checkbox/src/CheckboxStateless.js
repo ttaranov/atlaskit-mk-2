@@ -1,9 +1,18 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import { ThemeProvider } from 'styled-components';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
 
 type Props = {|
@@ -42,7 +51,7 @@ type State = {|
 
 const emptyTheme = {};
 
-export default class CheckboxStateless extends Component<Props, State> {
+class CheckboxStateless extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   state: State = {
     isActive: false,
@@ -180,3 +189,25 @@ export default class CheckboxStateless extends Component<Props, State> {
     );
   }
 }
+
+export { CheckboxStateless as CheckboxStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'checkbox',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'checkbox',
+
+      attributes: {
+        componentName: 'checkbox',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(CheckboxStateless),
+);

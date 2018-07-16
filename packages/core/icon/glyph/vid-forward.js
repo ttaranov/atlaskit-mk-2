@@ -17,6 +17,6 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VidForwardIcon = function VidForwardIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill="currentColor" fill-rule="evenodd"><path d="M3.768 4.189C3.344 3.833 3 3.996 3 4.55v14.888c0 .556.348.736.785.395l8.88-6.914c.433-.338.437-.903.016-1.256L3.768 4.19z"/><path d="M11.768 4.189c-.424-.356-.768-.193-.768.362v14.888c0 .556.348.736.785.395l8.88-6.914c.433-.338.437-.903.016-1.256L11.768 4.19z"/></g></svg>' }, props));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M10.97 13.87l-6.273 3.858C3.76 18.305 3 17.883 3 16.773V7.226c0-1.104.757-1.533 1.697-.956l6.273 3.858V7.226c0-1.104.757-1.533 1.697-.956l7.62 4.686c.936.576.939 1.509 0 2.087l-7.62 4.685c-.937.577-1.697.155-1.697-.955V13.87z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
 exports.default = VidForwardIcon;

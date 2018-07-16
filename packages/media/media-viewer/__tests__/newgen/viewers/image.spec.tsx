@@ -9,6 +9,7 @@ import {
 } from '../../../src/newgen/viewers/image';
 import { ZoomControls } from '../../../src/newgen/zoomControls';
 import { awaitError } from '@atlaskit/media-test-helpers';
+import { ErrorMessage } from '../../../src/newgen/error';
 
 const collectionName = 'some-collection';
 const imageItem: FileItem = {
@@ -52,13 +53,27 @@ describe('ImageViewer', () => {
     expect(el.state().objectUrl.data).toBeDefined();
   });
 
-  it('shows an error when the image could not be fetched', async () => {
+  it('shows an error and download button when there is an error with the preview', async () => {
     const response = Promise.reject(new Error('test_error'));
     const { el } = createFixture(response);
 
     await awaitError(response, 'test_error');
 
     expect(el.state().objectUrl.err).toBeDefined();
+    el.update();
+
+    const errorMessage = el.find(ErrorMessage);
+
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      "We couldn't generate a preview for this file",
+    );
+
+    // download button
+    expect(errorMessage.text()).toContain(
+      'Try downloading the file to view it',
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
   it('does not update state when image fetch request is cancelled', async () => {

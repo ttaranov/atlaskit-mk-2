@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { Context, MediaItemType, MediaCollection } from '@atlaskit/media-core';
 import { Stubs, createContext } from '../_stubs';
 import { Collection } from '../../src/newgen/collection';
-import { ErrorMessage } from '../../src/newgen/styled';
+import { ErrorMessage } from '../../src/newgen/error';
 import { Identifier } from '../../src/newgen/domain';
 import Spinner from '@atlaskit/spinner';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
@@ -103,7 +103,11 @@ describe('<Collection />', () => {
     const el = createFixture(createContext({ subject }), identifier);
     subject.next(new Error('error'));
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      'Something went wrong.It might just be a hiccup.',
+    );
   });
 
   it('should reset the component when the collection prop changes', () => {

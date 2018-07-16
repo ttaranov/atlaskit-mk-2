@@ -9,7 +9,7 @@ import {
   selectionCell,
   TableMap,
 } from 'prosemirror-tables';
-import { Node, Slice, Fragment, Schema } from 'prosemirror-model';
+import { Node, Slice, Schema } from 'prosemirror-model';
 import {
   findTable,
   getCellsInColumn,
@@ -39,7 +39,6 @@ import {
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
-  containsTable,
   getSelectionRect,
   isHeaderRowSelected,
   isIsolating,
@@ -47,6 +46,7 @@ import {
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { outdentList } from '../lists/commands';
+import { mapSlice } from '../../utils/slice';
 
 export const resetHoverSelection: Command = (
   state: EditorState,
@@ -263,49 +263,32 @@ export function transformSliceToAddTableHeaders(
   slice: Slice,
   schema: Schema,
 ): Slice {
-  if (!containsTable(schema, slice)) {
-    return slice;
-  }
-  const nodes: Node[] = [];
   const { table, tableHeader, tableRow } = schema.nodes;
 
-  // walk the slice content
-  slice.content.forEach((node, _offset, _index) => {
-    if (node.type === table) {
-      const rows: Node[] = [];
-
-      node.forEach((oldRow, _, rowIdx) => {
-        if (rowIdx === 0) {
-          // if it's the first row, make everything a header cell
-          const headerCols: Node[] = [];
-          oldRow.forEach((oldCol, _a, _b) => {
-            headerCols.push(
-              tableHeader.createChecked(
-                oldCol.attrs,
-                oldCol.content,
-                oldCol.marks,
-              ),
-            );
-          });
-
-          // construct a new row that holds the header cells
-          rows.push(
-            tableRow.createChecked(oldRow.attrs, headerCols, oldRow.marks),
+  return mapSlice(slice, maybeTable => {
+    if (maybeTable.type === table) {
+      const firstRow = maybeTable.firstChild;
+      if (firstRow) {
+        const headerCols = [] as Node[];
+        firstRow.forEach(oldCol => {
+          headerCols.push(
+            tableHeader.createChecked(
+              oldCol.attrs,
+              oldCol.content,
+              oldCol.marks,
+            ),
           );
-        } else {
-          // keep remainder of table unmodified
-          rows.push(oldRow);
-        }
-      });
-
-      nodes.push(table.createChecked(node.attrs, rows, node.marks));
-    } else {
-      // node wasn't a table, keep unmodified
-      nodes.push(node);
+        });
+        const headerRow = tableRow.createChecked(
+          firstRow.attrs,
+          headerCols,
+          firstRow.marks,
+        );
+        return maybeTable.copy(maybeTable.content.replaceChild(0, headerRow));
+      }
     }
+    return maybeTable;
   });
-
-  return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
 }
 
 export const deleteTable: Command = (

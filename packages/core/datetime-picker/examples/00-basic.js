@@ -115,7 +115,11 @@ export default () => {
 
       <h3>Time picker</h3>
       <Label htmlFor="react-select-timepicker-1--input" label="default" />
-      <TimePicker id="timepicker-1" onChange={console.log} />
+      <TimePicker
+        id="timepicker-1"
+        onChange={console.log}
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
+      />
 
       <Label
         htmlFor="react-select-timepicker-2--input"
@@ -124,6 +128,7 @@ export default () => {
       <Controlled initialValue="14:30">
         {({ value, onValueChange, isOpen, onBlur }) => (
           <TimePicker
+            selectProps={{ classNamePrefix: 'timepicker-select' }}
             id="timepicker-2"
             value={value}
             onChange={onValueChange}
@@ -138,6 +143,7 @@ export default () => {
         label="uncontrolled (defaultValue)"
       />
       <TimePicker
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
         id="timepicker-3"
         defaultValue="14:30"
         onChange={console.log}
@@ -148,6 +154,7 @@ export default () => {
         label="editable times"
       />
       <TimePicker
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
         id="timepicker-4"
         defaultValue="14:30"
         onChange={console.log}

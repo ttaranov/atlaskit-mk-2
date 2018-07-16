@@ -1,21 +1,10 @@
-import { Node as PmNode, Schema, Slice } from 'prosemirror-model';
+import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { findTable } from 'prosemirror-utils';
 
 export const isIsolating = (node: PmNode): boolean => {
   return !!node.type.spec.isolating;
-};
-
-export const containsTable = (schema: Schema, slice: Slice): boolean => {
-  const { table } = schema.nodes;
-  let contains = false;
-  slice.content.forEach(node => {
-    if (node.type === table) {
-      contains = true;
-    }
-  });
-  return contains;
 };
 
 export const containsHeaderColumn = (
