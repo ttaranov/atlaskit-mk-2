@@ -22,6 +22,7 @@ import {
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
+import { MediaStoreCopyFileWithTokenBody } from '../../../media-store/src/media-store';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
@@ -43,7 +44,6 @@ export class NewUploadServiceImpl implements UploadService {
 
     if (context.config.userAuthProvider) {
       this.userMediaStore = new MediaStore({
-        serviceHost: context.config.serviceHost,
         authProvider: context.config.userAuthProvider,
       });
     }
@@ -295,7 +295,7 @@ export class NewUploadServiceImpl implements UploadService {
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
-        const body = {
+        const body: MediaStoreCopyFileWithTokenBody = {
           sourceFile: {
             id: sourceFileId,
             collection: sourceCollection,

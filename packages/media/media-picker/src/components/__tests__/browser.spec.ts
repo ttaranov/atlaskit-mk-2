@@ -19,7 +19,6 @@ describe('Browser', () => {
     document.createElement = createElement;
 
     context = ContextFactory.create({
-      serviceHost: '',
       authProvider: {} as any,
     });
     browseConfig = {

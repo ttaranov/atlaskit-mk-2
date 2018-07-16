@@ -25,10 +25,8 @@ export const requestRecentFiles = (
   userAuthProvider: AuthProvider,
   store: Store<State>,
 ): Promise<void> => {
-  const { apiUrl } = store.getState();
-
   return userAuthProvider()
-    .then(auth => fetcher.getRecentFiles(apiUrl, auth, 30, 'desc'))
+    .then(auth => fetcher.getRecentFiles(auth, 30, 'desc'))
     .then(({ contents, nextInclusiveStartKey }) => {
       store.dispatch(
         getFilesInRecentsFullfilled(contents, nextInclusiveStartKey),

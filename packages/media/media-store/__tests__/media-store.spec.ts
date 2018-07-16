@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
 import { stringify } from 'query-string';
 
-import { AuthProvider, MediaStore } from '../src';
+import { Auth, AuthProvider, MediaStore } from '../src';
 import {
   MediaUpload,
   MediaChunksProbe,
@@ -13,14 +13,14 @@ import {
 import { MediaStoreGetFileParams, EmptyFile } from '../src/media-store';
 
 describe('MediaStore', () => {
-  const serviceHost = 'http://some-host';
+  const baseUrl = 'http://some-host';
 
   afterEach(() => fetchMock.restore());
 
   describe('given auth provider resolves', () => {
     const clientId = 'some-client-id';
     const token = 'some-token';
-    const auth = { clientId, token };
+    const auth: Auth = { clientId, token, baseUrl };
     let authProvider: jest.Mock<AuthProvider>;
     let mediaStore: MediaStore;
 
@@ -28,7 +28,6 @@ describe('MediaStore', () => {
       authProvider = jest.fn();
       authProvider.mockReturnValue(Promise.resolve(auth));
       mediaStore = new MediaStore({
-        serviceHost,
         authProvider,
       });
     });
@@ -40,7 +39,7 @@ describe('MediaStore', () => {
           { id: 'some-upload-id', created: 123, expires: 456 },
         ];
 
-        fetchMock.mock(`begin:${serviceHost}/upload`, {
+        fetchMock.mock(`begin:${baseUrl}/upload`, {
           body: {
             data,
           },
@@ -50,7 +49,7 @@ describe('MediaStore', () => {
         return mediaStore.createUpload(createUpTo).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${serviceHost}/upload?createUpTo=${createUpTo}`,
+            `${baseUrl}/upload?createUpTo=${createUpTo}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
@@ -70,12 +69,12 @@ describe('MediaStore', () => {
         const etag = 'some-etag';
         const blob = new Blob(['some-blob']);
 
-        fetchMock.mock(`begin:${serviceHost}/chunk`, {
+        fetchMock.mock(`begin:${baseUrl}/chunk`, {
           status: 201,
         });
 
         return mediaStore.uploadChunk(etag, blob).then(() => {
-          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/chunk/${etag}`);
+          expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/chunk/${etag}`);
           expect(fetchMock.lastOptions()).toEqual({
             method: 'PUT',
             headers: {
@@ -100,7 +99,7 @@ describe('MediaStore', () => {
           },
         };
 
-        fetchMock.mock(`begin:${serviceHost}/chunk/probe`, {
+        fetchMock.mock(`begin:${baseUrl}/chunk/probe`, {
           body: {
             data,
           },
@@ -109,7 +108,7 @@ describe('MediaStore', () => {
 
         return mediaStore.probeChunks(chunks).then(response => {
           expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/chunk/probe`);
+          expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/chunk/probe`);
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
             headers: {
@@ -152,7 +151,7 @@ describe('MediaStore', () => {
           artifacts: {},
         };
 
-        fetchMock.mock(`begin:${serviceHost}/file/upload`, {
+        fetchMock.mock(`begin:${baseUrl}/file/upload`, {
           body: {
             data,
           },
@@ -162,7 +161,7 @@ describe('MediaStore', () => {
         return mediaStore.createFileFromUpload(body, params).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${serviceHost}/file/upload?${stringify(params)}`,
+            `${baseUrl}/file/upload?${stringify(params)}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
@@ -201,7 +200,7 @@ describe('MediaStore', () => {
           artifacts: {},
         };
 
-        fetchMock.mock(`begin:${serviceHost}/file/binary`, {
+        fetchMock.mock(`begin:${baseUrl}/file/binary`, {
           body: {
             data,
           },
@@ -211,7 +210,7 @@ describe('MediaStore', () => {
         return mediaStore.createFileFromBinary(body, params).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${serviceHost}/file/binary?${stringify(params)}`,
+            `${baseUrl}/file/binary?${stringify(params)}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
@@ -247,7 +246,7 @@ describe('MediaStore', () => {
           artifacts: {},
         };
 
-        fetchMock.mock(`begin:${serviceHost}/file/${fileId}`, {
+        fetchMock.mock(`begin:${baseUrl}/file/${fileId}`, {
           body: {
             data: responseData,
           },
@@ -257,7 +256,7 @@ describe('MediaStore', () => {
         return mediaStore.getFile(fileId, params).then(response => {
           expect(response).toEqual({ data: responseData });
           expect(fetchMock.lastUrl()).toEqual(
-            `${serviceHost}/file/${fileId}?client=${clientId}&collection=${collectionName}&token=${token}`,
+            `${baseUrl}/file/${fileId}?client=${clientId}&collection=${collectionName}&token=${token}`,
           );
           expect(fetchMock.lastOptions()).toEqual(
             expect.objectContaining({
@@ -281,13 +280,13 @@ describe('MediaStore', () => {
           offset: 0,
         };
 
-        fetchMock.mock(`begin:${serviceHost}/upload`, {
+        fetchMock.mock(`begin:${baseUrl}/upload`, {
           status: 200,
         });
 
         return mediaStore.appendChunksToUpload(uploadId, body).then(() => {
           expect(fetchMock.lastUrl()).toEqual(
-            `${serviceHost}/upload/${uploadId}/chunks`,
+            `${baseUrl}/upload/${uploadId}/chunks`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'PUT',
@@ -311,7 +310,7 @@ describe('MediaStore', () => {
           createdAt: Date.now(),
         };
 
-        fetchMock.mock(`begin:${serviceHost}/collection`, {
+        fetchMock.mock(`begin:${baseUrl}/collection`, {
           body: {
             data,
           },
@@ -320,7 +319,7 @@ describe('MediaStore', () => {
 
         return mediaStore.createCollection(collectionName).then(response => {
           expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${serviceHost}/collection`);
+          expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/collection`);
           expect(fetchMock.lastOptions()).toEqual({
             method: 'POST',
             headers: {
@@ -344,7 +343,7 @@ describe('MediaStore', () => {
           createdAt: Date.now(),
         };
 
-        fetchMock.mock(`begin:${serviceHost}/collection/${collectionName}`, {
+        fetchMock.mock(`begin:${baseUrl}/collection/${collectionName}`, {
           body: {
             data,
           },
@@ -354,7 +353,7 @@ describe('MediaStore', () => {
         return mediaStore.getCollection(collectionName).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${serviceHost}/collection/${collectionName}?client=${clientId}&token=${token}`,
+            `${baseUrl}/collection/${collectionName}?client=${clientId}&token=${token}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'GET',
@@ -375,7 +374,7 @@ describe('MediaStore', () => {
           contents: [],
         };
 
-        fetchMock.mock(`begin:${serviceHost}/collection/${collectionName}`, {
+        fetchMock.mock(`begin:${baseUrl}/collection/${collectionName}`, {
           body: {
             data,
           },
@@ -392,7 +391,7 @@ describe('MediaStore', () => {
           .then(response => {
             expect(response).toEqual({ data });
             expect(fetchMock.lastUrl()).toEqual(
-              `${serviceHost}/collection/some-collection-name/items?client=${clientId}&details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc&token=${token}`,
+              `${baseUrl}/collection/some-collection-name/items?client=${clientId}&details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc&token=${token}`,
             );
             expect(fetchMock.lastOptions()).toEqual({
               method: 'GET',
@@ -412,7 +411,7 @@ describe('MediaStore', () => {
           createdAt: 999,
         };
 
-        fetchMock.mock(`begin:${serviceHost}/file`, {
+        fetchMock.mock(`begin:${baseUrl}/file`, {
           body: {
             data,
           },
@@ -424,7 +423,7 @@ describe('MediaStore', () => {
           .then(response => {
             expect(response).toEqual({ data });
             expect(fetchMock.lastUrl()).toEqual(
-              `${serviceHost}/file?collection=some-collection`,
+              `${baseUrl}/file?collection=some-collection`,
             );
             expect(fetchMock.lastOptions()).toEqual({
               method: 'POST',
@@ -447,7 +446,6 @@ describe('MediaStore', () => {
     describe('request', () => {
       it('should reject with some error', () => {
         const mediaStore = new MediaStore({
-          serviceHost,
           authProvider,
         });
 

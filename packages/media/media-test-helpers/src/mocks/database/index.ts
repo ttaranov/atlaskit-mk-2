@@ -9,7 +9,6 @@ import { createCollection } from './collection';
 import { CollectionItem, createCollectionItem } from './collection-item';
 import { createUpload, Upload } from './upload';
 import { Chunk } from './chunk';
-import { defaultServiceHost } from '../..';
 
 export * from './collection';
 export * from './collection-item';
@@ -17,11 +16,13 @@ export * from './collection-item';
 export const tenantAuth: ClientBasedAuth = {
   clientId: uuid.v4(),
   token: 'some-tenant-token',
+  baseUrl: 'some-base-url',
 };
 
 export const userAuth: ClientBasedAuth = {
   clientId: uuid.v4(),
   token: 'some-user-token',
+  baseUrl: 'some-base-url',
 };
 
 export const userAuthProvider = () => Promise.resolve(userAuth);
@@ -47,7 +48,6 @@ export function createDatabase(): Database<DatabaseSchema> {
 
 export function generateUserData(): void {
   const mediaStore = new MediaStore({
-    serviceHost: defaultServiceHost,
     authProvider: userAuthProvider,
   });
 
@@ -65,7 +65,6 @@ export function generateUserData(): void {
 
 export function generateTenantData(): void {
   const mediaStore = new MediaStore({
-    serviceHost: defaultServiceHost,
     authProvider: tenantAuthProvider,
   });
 

@@ -7,6 +7,7 @@ jest.mock('uuid', () => ({
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {
+  AuthProvider,
   MediaItem,
   MediaItemProvider,
   UploadableFile,
@@ -14,17 +15,17 @@ import {
 } from '../src';
 import { ContextFactory } from '../src/context/context';
 
-import { uploadFile } from '@atlaskit/media-store';
+import { uploadFile, MediaApiConfig } from '@atlaskit/media-store';
 
-const authProvider = () =>
+const authProvider: AuthProvider = () =>
   Promise.resolve({
     token: 'some-token-that-does-not-really-matter-in-this-tests',
     clientId: 'some-clientId',
+    baseUrl: 'some-base-url',
   });
 
 const createFakeContext = () => {
   return ContextFactory.create({
-    serviceHost: 'service-host',
     authProvider,
   });
 };
@@ -489,9 +490,8 @@ describe('Context', () => {
             expect(uploadFile).toHaveBeenCalled();
             expect(uploadFileMock.mock.calls[0][0]).toBe(file);
             expect(uploadFileMock.mock.calls[0][1]).toEqual({
-              serviceHost: 'service-host',
               authProvider,
-            });
+            } as MediaApiConfig);
             resolve();
           },
         });

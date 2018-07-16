@@ -115,7 +115,6 @@ export class App extends Component<AppProps, AppState> {
 
     // We can't just use the given context since the Cards in the recents view needs a different authProvider
     this.mpContext = ContextFactory.create({
-      serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
     });
 

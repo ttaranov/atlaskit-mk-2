@@ -1,4 +1,4 @@
-import { ContextFactory } from '@atlaskit/media-core';
+import { Auth, ContextFactory } from '@atlaskit/media-core';
 import { MediaPickerContext } from '../../domain/context';
 import { UserEvent } from '../../outer/analytics/events';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
@@ -15,8 +15,12 @@ describe('Clipboard', () => {
   let clipboard: Clipboard;
   let addFiles: any;
   const context = ContextFactory.create({
-    serviceHost: '',
-    authProvider: {} as any,
+    authProvider: () =>
+      Promise.resolve<Auth>({
+        clientId: '',
+        token: '',
+        baseUrl: '',
+      }),
   });
 
   beforeEach(done => {

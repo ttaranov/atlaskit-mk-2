@@ -14,7 +14,6 @@ import {
 import { LocalUpload, LocalUploads, Tenant } from '../../domain';
 import { RECENTS_COLLECTION } from '../../config';
 import { finalizeUpload } from '../../actions/finalizeUpload';
-import { Auth } from '@atlaskit/media-core';
 import { startImport } from '../../actions/startImport';
 import { resetView } from '../../actions/resetView';
 import {
@@ -192,9 +191,7 @@ describe('importFiles middleware', () => {
 
     const wsConnectionHolder = mockWsConnectionHolder();
     const mockWsProvider = {
-      getWsConnectionHolder: jest.fn(
-        (apiUrl: string, auth: Auth) => wsConnectionHolder,
-      ),
+      getWsConnectionHolder: jest.fn(() => wsConnectionHolder),
     } as any;
     const nextDispatch = jest.fn();
 

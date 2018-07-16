@@ -3,7 +3,6 @@ import { Component, SyntheticEvent } from 'react';
 import {
   videoProcessingFailedId,
   imageFileId,
-  defaultServiceHost,
   defaultCollectionName,
   mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
@@ -18,7 +17,6 @@ export interface ComponentState {
 }
 
 const mediaContext = ContextFactory.create({
-  serviceHost: defaultServiceHost,
   authProvider: mediaPickerAuthProvider('asap'),
 });
 

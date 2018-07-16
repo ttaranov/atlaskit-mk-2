@@ -1,5 +1,6 @@
 import { MockRequest, MockResponse } from 'xhr-mock';
 import { exactMatch, fillInResponse, MockContext } from '../';
+import { userAuthProviderBaseURL } from '../../userAuthProvider';
 
 export const userAuth = (context: () => MockContext) => (
   req: MockRequest,
@@ -35,7 +36,11 @@ export const userAuth = (context: () => MockContext) => (
       },
       body: JSON.stringify({ token: token, clientId: clientId }),
     };
-    context().userContext.auth = { clientId: clientId, token: token };
+    context().userContext.auth = {
+      clientId: clientId,
+      token: token,
+      baseUrl: userAuthProviderBaseURL,
+    };
     fillInResponse(res, resdata);
     return res;
   }

@@ -1,5 +1,5 @@
 import { LocalUploadComponent } from '../localUpload';
-import { ContextFactory } from '@atlaskit/media-core';
+import { Auth, ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaLocalUpload', () => {
   const imagePreviewSrc = 'some-image-src';
@@ -16,8 +16,8 @@ describe('MediaLocalUpload', () => {
       trackEvent: jest.fn(),
     };
     const context = ContextFactory.create({
-      serviceHost: 'some-api-url',
-      authProvider: jest.fn(),
+      authProvider: () =>
+        Promise.resolve<Auth>({ clientId: '', baseUrl: '', token: '' }),
     });
     const config = {
       uploadParams: {

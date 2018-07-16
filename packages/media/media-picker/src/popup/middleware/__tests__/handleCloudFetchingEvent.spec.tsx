@@ -14,7 +14,6 @@ describe('handleCloudFetchingEvent', () => {
   const fileId = 'file-id';
   const bytes = 50;
   const fileSize = 1000;
-  const apiUrl = 'some-api-url';
   const client = { id: 'some-client-id', token: 'some-client-token' };
   const tenant = { id: 'some-tenant-id', token: 'some-tenant-token' };
   const description = 'some-error-description';
@@ -77,7 +76,7 @@ describe('handleCloudFetchingEvent', () => {
       'some-upload-id': { tenant },
     };
 
-    store.getState.mockReturnValue({ apiUrl, client, remoteUploads });
+    store.getState.mockReturnValue({ client, remoteUploads });
 
     handleCloudFetchingEvent(store)(next)(action);
 

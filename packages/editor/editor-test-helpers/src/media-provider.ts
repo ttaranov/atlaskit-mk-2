@@ -3,14 +3,11 @@ import {
   defaultCollectionName,
   StoryBookAuthProvider,
   userAuthProvider,
-  defaultServiceHost,
-  userAuthProviderBaseURL,
   mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { MediaProvider, MediaStateManager } from '@atlaskit/editor-core';
 
 export interface MediaProviderFactoryConfig {
-  serviceHost?: string;
   collectionName?: string;
   stateManager?: MediaStateManager;
   dropzoneContainer?: HTMLElement;
@@ -35,7 +32,6 @@ export function storyMediaProviderFactory(
   } = mediaProviderFactoryConfig;
   const collection = collectionName || defaultCollectionName;
   const context = ContextFactory.create({
-    serviceHost: userAuthProviderBaseURL,
     authProvider: mediaPickerAuthProvider(),
     userAuthProvider:
       includeUserAuthProvider === false ? undefined : userAuthProvider,
@@ -56,7 +52,6 @@ export function storyMediaProviderFactory(
       ? undefined
       : Promise.resolve<Context>(
           ContextFactory.create({
-            serviceHost: defaultServiceHost,
             authProvider: StoryBookAuthProvider.create(false, {
               [`urn:filestore:collection:${collection}`]: ['read', 'update'],
               'urn:filestore:file:*': ['read'],

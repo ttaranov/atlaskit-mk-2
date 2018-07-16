@@ -5,9 +5,9 @@ export default md`
 
   Exports 3 components:
 
-  1. Card
-  2. CardView
-  3. CardList
+  1.  Card
+  2.  CardView
+  3.  CardList
 
   ## Installation
 
@@ -29,8 +29,6 @@ export default md`
   import { ContextFactory } from '@atlaskit/media-core';
 
   const context = ContextFactory.create({
-    clientId,
-    serviceHost,
     tokenProvider,
   });
 

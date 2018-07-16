@@ -1,3 +1,5 @@
+import { Auth } from '../../../../../../media-store/src';
+
 jest.mock('../../randomInt');
 
 import {
@@ -46,10 +48,10 @@ interface FakeWebSocket {
 }
 
 describe('Ws', () => {
-  const apiUrl = 'https://media.api';
+  const baseUrl = 'https://media.api';
   const clientId = 'some-id';
   const token = 'some-token';
-  const auth = { clientId, token };
+  const auth: Auth = { clientId, token, baseUrl };
 
   let onDataReceived: jest.Mock<WebsocketDataReceivedHandler>;
   let onConnectionLost: jest.Mock<ConnectionLostHandler>;
@@ -93,7 +95,7 @@ describe('Ws', () => {
     onConnectionLost = jest.fn<ConnectionLostHandler>();
 
     (randomInt as any).mockReturnValue(30 * 1000);
-    ws = new Ws(apiUrl, auth, onDataReceived, onConnectionLost);
+    ws = new Ws(auth, onDataReceived, onConnectionLost);
   });
 
   afterEach(() => {

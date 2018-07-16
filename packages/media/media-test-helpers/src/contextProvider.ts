@@ -2,21 +2,19 @@ import { StoryBookAuthProvider } from './authProvider';
 import { collectionNames } from './collectionNames';
 import { ContextFactory, Context } from '@atlaskit/media-core';
 
-export const defaultServiceHost = 'https://dt-api.dev.atl-paas.net';
+export const defaultBaseUrl = 'https://dt-api.dev.atl-paas.net';
 
 export const defaultParams = {
   clientId: '5a9812fc-d029-4a39-8a46-d3cc36eed7ab',
   asapIssuer: 'micros/media-playground',
-  serviceHost: defaultServiceHost,
+  baseUrl: defaultBaseUrl,
 };
 
 export interface AuthParameter {
-  serviceHost: string;
   authType: 'client' | 'asap';
 }
 
 const defaultAuthParameter: AuthParameter = {
-  serviceHost: defaultParams.serviceHost,
   authType: 'client',
 };
 
@@ -41,7 +39,6 @@ export const createStorybookContext = (
   const authProvider = StoryBookAuthProvider.create(isAsapEnvironment, scopes);
 
   return ContextFactory.create({
-    serviceHost: authParameter.serviceHost,
     authProvider,
   });
 };

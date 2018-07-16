@@ -1,13 +1,14 @@
 jest.mock('../ws');
 
+import { Auth } from '@atlaskit/media-core';
 import { WsConnection } from '../wsConnection';
 import { Ws, ConnectionLostHandler, WebsocketDataReceivedHandler } from '../ws';
 
 jest.useFakeTimers();
 
 describe('WsConnection', () => {
-  const apiUrl = 'some-api';
-  const auth = { clientId: 'some-id', token: 'some-token' };
+  const baseUrl = 'some-api';
+  const auth: Auth = { clientId: 'some-id', token: 'some-token', baseUrl };
 
   let onDataReceived: WebsocketDataReceivedHandler;
   let onConnectionLost: ConnectionLostHandler;
@@ -23,14 +24,13 @@ describe('WsConnection', () => {
 
   it('should make only one call to Ws constructor if it returns successfully', () => {
     // tslint:disable-next-line:no-unused-expression
-    new WsConnection(apiUrl, auth, onDataReceived, onConnectionLost);
+    new WsConnection(auth, onDataReceived, onConnectionLost);
     const ws: any = Ws;
 
     jest.runTimersToTime(30 * 1000);
 
     expect(ws).toHaveBeenCalledTimes(1);
-    expect(ws.mock.calls[0][0]).toEqual(apiUrl);
-    expect(ws.mock.calls[0][1]).toEqual(auth);
+    expect(ws.mock.calls[0][0]).toEqual(auth);
   });
 
   it('should make only 4 calls to Ws constructor with 1 second interval if it returns successfully only on the fourth call', () => {
@@ -39,7 +39,7 @@ describe('WsConnection', () => {
     });
 
     // tslint:disable-next-line:no-unused-expression
-    new WsConnection(apiUrl, auth, onDataReceived, onConnectionLost);
+    new WsConnection(auth, onDataReceived, onConnectionLost);
     expect(Ws).toHaveBeenCalledTimes(1);
 
     jest.runTimersToTime(1000);
@@ -62,7 +62,7 @@ describe('WsConnection', () => {
     });
 
     // tslint:disable-next-line:no-unused-expression
-    new WsConnection(apiUrl, auth, onDataReceived, onConnectionLost);
+    new WsConnection(auth, onDataReceived, onConnectionLost);
 
     jest.runTimersToTime(60 * 1000);
     expect(Ws).toHaveBeenCalledTimes(10);
@@ -74,7 +74,6 @@ describe('WsConnection', () => {
     });
 
     const wsConnection = new WsConnection(
-      apiUrl,
       auth,
       onDataReceived,
       onConnectionLost,
@@ -90,7 +89,7 @@ describe('WsConnection', () => {
 
   it('should report about the connection as lost after 5 minutes of idle', () => {
     // tslint:disable-next-line:no-unused-expression
-    new WsConnection(apiUrl, auth, onDataReceived, onConnectionLost);
+    new WsConnection(auth, onDataReceived, onConnectionLost);
 
     expect(Ws).toHaveBeenCalledTimes(1);
 
@@ -101,8 +100,8 @@ describe('WsConnection', () => {
 
   it('should reset idle timeout when data comes to the websocket', () => {
     // tslint:disable-next-line:no-unused-expression
-    new WsConnection(apiUrl, auth, onDataReceived, onConnectionLost);
-    const dataReceivedHandler = (Ws as any).mock.calls[0][2];
+    new WsConnection(auth, onDataReceived, onConnectionLost);
+    const dataReceivedHandler = (Ws as any).mock.calls[0][1];
 
     jest.runTimersToTime(2 * 60 * 1000);
     dataReceivedHandler({});
@@ -127,7 +126,6 @@ describe('WsConnection', () => {
     (Ws as any).mockImplementation(() => fakeWs);
 
     const wsConnection = new WsConnection(
-      apiUrl,
       auth,
       onDataReceived,
       onConnectionLost,
@@ -145,7 +143,6 @@ describe('WsConnection', () => {
     (Ws as any).mockImplementation(() => fakeWs);
 
     const wsConnection = new WsConnection(
-      apiUrl,
       auth,
       onDataReceived,
       onConnectionLost,
@@ -165,7 +162,6 @@ describe('WsConnection', () => {
     (Ws as any).mockImplementation(() => fakeWs);
 
     const wsConnection = new WsConnection(
-      apiUrl,
       auth,
       onDataReceived,
       onConnectionLost,
