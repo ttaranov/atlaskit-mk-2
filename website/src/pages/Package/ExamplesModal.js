@@ -395,7 +395,8 @@ export default class ExamplesModal extends Component<Props, State> {
                 example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
                 src={loaderUrl}
-                render={(ExampleCode, ExampleComponent, displayCode) => {
+              >
+                {(ExampleCode, ExampleComponent, displayCode) => {
                   if (displayCode) {
                     return (
                       <Content>
@@ -407,7 +408,7 @@ export default class ExamplesModal extends Component<Props, State> {
                   }
                   return <ExampleComponent />;
                 }}
-              />
+              </ExampleDisplay>
             ) : (
               <Content>
                 <ErrorMessage>

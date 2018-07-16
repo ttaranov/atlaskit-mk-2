@@ -40,5 +40,5 @@ export default (props: Props) => {
     />
   );
 
-  return props.render(ExampleCode, Example, props.displayCode);
+  return props.children(ExampleCode, Example, props.displayCode);
 };
