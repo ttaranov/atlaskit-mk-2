@@ -13,12 +13,18 @@ const Deprecated = ({ children }: { children: Node }) => (
   </h3>
 );
 
+const Experimental = ({ children }: { children: Node }) => (
+  <h3>
+    {children} <Lozenge appearance="moved">experimental</Lozenge>
+  </h3>
+);
+
 export default md`
   The theme package is a combined component and utility set, exporting abstractions for creating and consuming themes, as well as utilities for both audiences.
 
   ## For component consumers
 
-  ### \`Reset\`
+  ${<Experimental>Reset</Experimental>}
 
   The \`Reset\` component applies CSS reset styles to select descendant nodes according to the ADG.
 
@@ -72,17 +78,17 @@ export default md`
 
   ## For component authors
 
-  ### Consumer
+  ${<Experimental>Consumer</Experimental>}
 
   The raw \`Consumer\` returned by \`React.createContext()\`.
 
   To see the usage of a \`Consumer\` with a \`Theme\`, see the \`Theme\` API. We do export a raw \`Provider\` but it's likely you'll want the \`Theme\` component instead.
 
-  ### Provider
+  ${<Experimental>Provider</Experimental>}
 
   The raw \`Provider\` returned by \`React.createContext()\`.
 
-  ### Theme
+  ${<Experimental>Theme</Experimental>}
 
   The \`Theme\` component is at the center of the theming API.
 
