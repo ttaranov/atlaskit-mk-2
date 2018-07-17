@@ -38,7 +38,7 @@ exports[`reset 1`] = `
   color: #6B778C;
 }
 
-<Component>
+<Reset>
   <styled.div
     backgroundColor="#FFFFFF"
     headingColor="#172B4D"
@@ -54,7 +54,7 @@ exports[`reset 1`] = `
       className="c0"
     />
   </styled.div>
-</Component>
+</Reset>
 `;
 
 exports[`themed reset 1`] = `
@@ -95,12 +95,13 @@ exports[`themed reset 1`] = `
   color: #6B778C;
 }
 
-<Component
+<Theme
   backgroundColor="#000"
   linkColor="blue"
   textColor="#fff"
+  values={Object {}}
 >
-  <Component>
+  <Reset>
     <styled.div
       backgroundColor="#FFFFFF"
       headingColor="#172B4D"
@@ -116,6 +117,6 @@ exports[`themed reset 1`] = `
         className="c0"
       />
     </styled.div>
-  </Component>
-</Component>
+  </Reset>
+</Theme>
 `;
