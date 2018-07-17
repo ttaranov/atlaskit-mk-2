@@ -3,31 +3,27 @@
 /*
 * server side renderer utilities helper to return all the examples and filter by packages
 */
+const boltQuery = require('bolt-query');
 const glob = require('glob');
-const cwd = process.cwd();
+const path = require('path');
 
-// get all examples from the code sync
-function getAllExamplesSync() /*: Array<Object> */ {
-  return glob
-    .sync('**/packages/**/examples/*.+(js|ts|tsx)', {
-      ignore: '**/node_modules/**',
-    })
-    .map(file => {
-      const reverseExamplePath = file.split('/').reverse();
-      return {
-        team: reverseExamplePath[3],
-        package: reverseExamplePath[2],
-        exampleName: reverseExamplePath[0]
-          .replace('.js', '')
-          .replace('.tsx', '')
-          .replace(/^\d+\-\s*/, ''),
-        examplePath: `${cwd}/${file}`,
-      };
-    });
-}
-
-function getExamplesFor(pkgName /*: string */) /*: Array<Object> */ {
-  return getAllExamplesSync().filter(obj => obj.package === pkgName);
+// Get all examples for a specified package using Bolt-Query
+async function getExamplesFor(
+  pkgName /*: string */,
+) /*: Promise<Array<string>> */ {
+  const project /*: any */ = await boltQuery({
+    cwd: path.join(__dirname, '..'),
+    workspaceFiles: {
+      examples: 'examples/*.+(js|ts|tsx)',
+    },
+  });
+  let examples = [];
+  project.workspaces.forEach(workspace => {
+    if (workspace.pkg && workspace.pkg.name.split('/')[1] === pkgName) {
+      examples.push(...workspace.files.examples);
+    }
+  });
+  return examples;
 }
 
 module.exports = { getExamplesFor };

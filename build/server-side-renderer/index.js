@@ -7,21 +7,37 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { getExamplesFor } from './helper';
 
-function testSSR(example: string, reactComponent: React$Element<*>) {
-  describe(example, () => {
-    it(`should be possible to create a server side friendly component for this ${example}`, () => {
+let allExamples;
+
+/* This test takes the example name and a react component. It will throw an error if the component is not SSR friendly
+* Usage: 
+* import { testSSR } from '@atlaskit/test-ssr';
+* import { Example } from 'yourPath';
+*  */
+function testSSR(example: string, reactComponent: () => React$Element<*>) {
+  test(`this example: ${example} should be server side friendly`, () => {
+    expect(() =>
+      ReactDOMServer.renderToString(reactComponent),
+    ).not.toThrowError();
+  });
+}
+
+/* This test takes a package name and will get all the examples for this package. It will throw an error if the component is not SSR friendly
+* Usage: 
+* import { testSSRAll } from '@atlaskit/test-ssr';
+*  */
+async function testSSRAll(pkg: string) {
+  // $FlowFixMe - ForEach not define in Promise
+  beforeAll(async () => {
+    allExamples = await getExamplesFor(pkg);
+  });
+  test(pkg, async () => {
+    allExamples.forEach(examples => {
       expect(() =>
-        ReactDOMServer.renderToString(reactComponent),
+        // $FlowFixMe - string literal
+        ReactDOMServer.renderToString(require(examples.filePath).default),
       ).not.toThrowError();
     });
   });
 }
-
-function testSSRAll(pkg: string) {
-  return getExamplesFor(pkg).forEach(examples => {
-    // $FlowFixMe - string litteral
-    testSSR(examples.exampleName, require(examples.examplePath).default);
-  });
-}
-
 module.exports = { testSSR, testSSRAll };
