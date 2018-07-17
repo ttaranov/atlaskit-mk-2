@@ -14,6 +14,7 @@ import {
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 import { colors, layers } from '@atlaskit/theme';
+import { ellipsis } from '@atlaskit/media-ui';
 
 const overlayZindex = layers.blanket();
 
@@ -195,7 +196,8 @@ export const Header = styled.div`
 `;
 
 export const LeftHeader = styled.div`
-  flex: 0.8;
+  flex: 1;
+  overflow: hidden;
   > * {
     pointer-events: all;
   }
@@ -209,6 +211,11 @@ export const ImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+export const MedatadataTextWrapper = styled.div`
+  overflow: hidden;
+`;
+
 export const MetadataWrapper = styled.div`
   display: flex;
 `;
@@ -217,10 +224,12 @@ export const MetadataFileName = styled.div`
   &::first-letter {
     text-transform: uppercase;
   }
+  ${ellipsis()};
 `;
 
 export const MetadataSubText = styled.div`
   color: ${colors.DN400};
+  ${ellipsis()};
 `;
 
 export const MetadataIconWrapper = styled.div`
@@ -241,10 +250,9 @@ export const IconWrapper: ComponentClass<
 `;
 
 export const RightHeader = styled.div`
-  flex: 0.2;
-  flex-basis: 200px;
   text-align: right;
   margin-right: 40px;
+  min-width: 200px;
   > * {
     pointer-events: all;
   }
