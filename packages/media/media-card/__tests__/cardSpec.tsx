@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { fakeContext } from '@atlaskit/media-test-helpers';
-
+import { Context } from '@atlaskit/media-core';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
   Card,
   UrlPreviewIdentifier,
@@ -10,10 +12,7 @@ import {
   CardEvent,
   CardView,
 } from '../src';
-import { MediaCard } from '../src/root/mediaCard';
 import { LazyContent } from '../src/utils/lazyContent';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {
@@ -25,6 +24,17 @@ describe('Card', () => {
     id: 'some-random-id',
     mediaItemType: 'file',
     collectionName: 'some-collection-name',
+  };
+
+  const setup = (context: Context = fakeContext()) => {
+    const component = shallow(
+      <Card context={context} identifier={fileIdentifier} />,
+    );
+
+    return {
+      component,
+      context,
+    };
   };
 
   // TODO: Add test to check that we are rendering LinkCard
@@ -63,7 +73,6 @@ describe('Card', () => {
       <Card context={firstContext} identifier={fileIdentifier} />,
     );
     card.setProps({ context: secondContext, fileIdentifier });
-    const mediaCard = card.find(MediaCard);
 
     const { id, mediaItemType, collectionName } = fileIdentifier;
     expect(secondContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
@@ -73,8 +82,7 @@ describe('Card', () => {
       collectionName,
     );
 
-    expect(mediaCard).toHaveLength(1);
-    expect(mediaCard.props().provider).toBe(dummyProvider);
+    expect(card.find(CardView)).toHaveLength(1);
   });
 
   // TODO: Adapt to new api
@@ -92,7 +100,6 @@ describe('Card', () => {
       <Card context={context} identifier={firstIdentifier} />,
     );
     card.setProps({ context, identifier: secondIdentifier });
-    const mediaCard = card.find(MediaCard);
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
@@ -102,8 +109,7 @@ describe('Card', () => {
       collectionName,
     );
 
-    expect(mediaCard).toHaveLength(1);
-    expect(mediaCard.props().provider).toBe(dummyProvider);
+    expect(card.find(CardView)).toHaveLength(1);
   });
 
   it('should fire onClick when passed in as a prop and CardView fires onClick', () => {
@@ -116,14 +122,14 @@ describe('Card', () => {
         onClick={clickHandler}
       />,
     );
-    const mediaCardOnClick = card.find(CardView).props().onClick;
+    const cardViewOnClick = card.find(CardView).props().onClick;
 
-    if (!mediaCardOnClick) {
-      throw new Error('MediaCard onClick was undefined');
+    if (!cardViewOnClick) {
+      throw new Error('CardView onClick was undefined');
     }
 
     expect(clickHandler).not.toHaveBeenCalled();
-    mediaCardOnClick({} as any, {} as any);
+    cardViewOnClick({} as any, {} as any);
     expect(clickHandler).toHaveBeenCalledTimes(1);
   });
 
@@ -288,4 +294,15 @@ describe('Card', () => {
 
     expect(card.find(CardView).prop('disableOverlay')).toBe(true);
   });
+
+  it('should use context.getFile to fetch file data', () => {
+    const { context } = setup();
+
+    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.getFile).toBeCalledWith('some-random-id', {
+      collectionName: 'some-collection-name',
+    });
+  });
+
+  it.skip('should cleanup resources when unmounting', () => {});
 });
