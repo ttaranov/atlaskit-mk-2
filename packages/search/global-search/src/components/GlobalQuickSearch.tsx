@@ -48,6 +48,10 @@ export interface Props {
  * Presentational component that renders the search input and search results.
  */
 export class GlobalQuickSearch extends React.Component<Props> {
+  public static defaultProps: Partial<Props> = {
+    isSendSearchTermsEnabled: false,
+  };
+
   queryVersion: number = 0;
 
   componentDidMount() {
