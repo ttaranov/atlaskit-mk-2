@@ -2,6 +2,7 @@
 
 import React, { PureComponent, type Node } from 'react';
 import { Transition } from 'react-transition-group';
+import type { CollapseListener } from './types';
 
 const DURATION = 300;
 
@@ -43,6 +44,10 @@ type Props = {
   properties: Array<string>,
   from: Array<number | string>,
   to: Array<number | string>,
+  onExpandStart: CollapseListener,
+  onExpandEnd: CollapseListener,
+  onCollapseStart: CollapseListener,
+  onCollapseEnd: CollapseListener,
 };
 
 export default class ResizeTransition extends PureComponent<Props> {
@@ -55,10 +60,26 @@ export default class ResizeTransition extends PureComponent<Props> {
   };
 
   render() {
-    const { userIsDragging, properties, from, to } = this.props;
+    const {
+      userIsDragging,
+      properties,
+      from,
+      to,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
+    } = this.props;
 
     return (
-      <Transition in={this.props.in} timeout={DURATION}>
+      <Transition
+        onEnter={onExpandStart}
+        onEntered={onExpandEnd}
+        onExit={onCollapseStart}
+        onExited={onCollapseEnd}
+        in={this.props.in}
+        timeout={DURATION}
+      >
         {transitionState => {
           // transitions interupt manual resize behaviour
           const cssTransition = !userIsDragging

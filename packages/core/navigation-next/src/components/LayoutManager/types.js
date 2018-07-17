@@ -4,6 +4,8 @@ import type { ComponentType, Node } from 'react';
 
 import UIController from '../../ui-controller/UIController';
 
+export type CollapseListener = number => void;
+
 export type ConnectedLayoutManagerProps = {
   /** Your page content. */
   children: Node,
@@ -17,4 +19,8 @@ export type ConnectedLayoutManagerProps = {
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {
   navigationUIController: UIController,
+  onExpandStart: CollapseListener,
+  onExpandEnd: CollapseListener,
+  onCollapseStart: CollapseListener,
+  onCollapseEnd: CollapseListener,
 };
