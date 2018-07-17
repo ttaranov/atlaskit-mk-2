@@ -69,12 +69,11 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - echo "Run browser unit tests using Karma"
+              - echo "Run browser unit tests using Karma + Browserstack"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-              - echo "Check the browserstack queues"
-              - node build/ci-scripts/browserstack.queues.js BS_RETRY=5 BS_BUILD_ALLOWED=3
               - echo "Run browser integration tests using Webdriver"
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
+              # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
+              - BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- (node build/ci-scripts/wait.for.browserstack.resource.js && yarn test:webdriver:browserstack:changed)
             caches:
               - node
         - step:
