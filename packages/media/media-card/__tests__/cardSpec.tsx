@@ -12,6 +12,7 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
   Card,
+  CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
   LinkIdentifier,
@@ -33,9 +34,12 @@ describe('Card', () => {
     collectionName: 'some-collection-name',
   };
 
-  const setup = (context: Context = fakeContext()) => {
+  const setup = (
+    context: Context = fakeContext(),
+    props?: Partial<CardProps>,
+  ) => {
     const component = shallow(
-      <Card context={context} identifier={fileIdentifier} />,
+      <Card context={context} identifier={fileIdentifier} {...props} />,
     );
 
     return {
@@ -405,18 +409,40 @@ describe('Card', () => {
     });
   });
 
-  it('should render error card if there was an error fetching the file', () => {});
+  it('should render error card when getFile resolves with status=error', async () => {
+    // TODO: create context where getFile trows directly
+    const context = fakeContext({
+      getFile: Observable.of({ status: 'error' }),
+    });
+    const { component } = setup(context);
 
-  it.only('should fetch remote preview when file is processed', async () => {
+    await context.getFile;
+    component.update();
+    expect(component.find(CardView).prop('status')).toEqual('error');
+  });
+
+  it('should render error card when getFile fails', async () => {
+    const getFile = new Observable(subscriber => {
+      subscriber.error('some-error');
+    });
+    const context = fakeContext({
+      getFile,
+    });
+    const { component } = setup(context);
+
+    await context.getFile;
+    expect(component.state('error')).toEqual('some-error');
+    component.update();
+    expect(component.find(CardView).prop('status')).toEqual('error');
+  });
+
+  it('should fetch remote preview when file is processed', async () => {
     const getImage = jest.fn();
     const context = {
       getFile: () =>
         Observable.of({
           id: '123',
           status: 'processed',
-          // mediaType: 'image',
-          // size: 10,
-          // name: 'me.png'
         }),
       mediaStore: {
         getImage,
@@ -435,34 +461,79 @@ describe('Card', () => {
     });
   });
 
-  it('should render CardView with expected props', () => {});
+  it('should render CardView with expected props', async () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          status: 'processed',
+          mediaType: 'image',
+          name: 'file-name',
+          size: 10,
+        }),
+      mediaStore: {
+        getImage,
+      },
+    } as any;
 
-  it('should cleanup resources when unmounting', () => {});
-
-  describe.skip('Retry', () => {
-    it('should reset the state when onRetry method is called', () => {
-      // const successResponse = { foo: 1 };
-      // const error = 'some error';
-      // const provider = {
-      //   observable: () => Observable.throw(new Error(error)),
-      // } as any;
-      // const element = shallow(<MediaCard provider={provider} />);
-      // expect(element.prop('status')).toEqual('error');
-      // provider.observable = () => Observable.of(successResponse);
-      // element.simulate('retry');
-      // expect(element.prop('status')).toEqual('complete');
-      // expect(element.prop('metadata')).toEqual(successResponse);
+    const { component } = setup(context, {
+      dimensions: { width: 10, height: 20 },
+      selectable: true,
+      selected: true,
+      resizeMode: 'fit',
+      disableOverlay: true,
     });
 
+    await context.getFile;
+    await context.mediaStore.getImage;
+    component.update();
+
+    expect(component.find(CardView).props()).toEqual(
+      expect.objectContaining({
+        appearance: 'auto',
+        dataURI: 'mock result of URL.createObjectURL()',
+        dimensions: { width: 10, height: 20 },
+        disableOverlay: true,
+        mediaItemType: 'file',
+        progress: undefined,
+        resizeMode: 'fit',
+        selectable: true,
+        selected: true,
+        status: 'complete',
+      }),
+    );
+
+    expect(component.find(CardView).prop('metadata')).toEqual({
+      id: '123',
+      mediaType: 'image',
+      name: 'file-name',
+      size: 10,
+    });
+  });
+
+  it('should cleanup resources when unmounting', () => {
+    const unsubscribe = jest.fn();
+    const releaseDataURI = jest.fn();
+    const { component } = setup();
+    const instance = component.instance() as Card;
+
+    instance.unsubscribe = unsubscribe;
+    instance.releaseDataURI = releaseDataURI;
+
+    component.unmount();
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(releaseDataURI).toHaveBeenCalledTimes(1);
+  });
+
+  describe('Retry', () => {
     it('should pass down "onRetry" prop when an error occurs', () => {
-      // const provider = {
-      //   observable: () => Observable.throw(new Error('some error')),
-      // };
-      // const element = mount(<MediaCard provider={provider} />);
-      // const instance = element.instance();
-      // expect(element.find(CardOverlay).prop('onRetry')).toEqual(
-      //   instance[/* prettier-ignore */ 'onRetry'],
-      // );
+      const { component, context } = setup();
+      const cardViewOnError = component.find(CardView).prop('onRetry')!;
+
+      expect(context.getFile).toHaveBeenCalledTimes(1);
+      cardViewOnError();
+      expect(context.getFile).toHaveBeenCalledTimes(2);
     });
   });
 });
