@@ -170,6 +170,16 @@ export const PDFWrapper = styled.div`
 
 export const Arrow = styled.span`
   cursor: pointer;
+
+  > span {
+    color: rgba(27, 38, 56, 0.5);
+    fill: #9fb0cc;
+    filter: drop-shadow(1px 1px 1px rgba(27, 38, 56, 0.2));
+
+    &:hover {
+      color: #fff;
+    }
+  }
 `;
 
 const ArrowWrapper = styled.div`
