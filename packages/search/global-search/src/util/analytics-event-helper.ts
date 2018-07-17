@@ -16,7 +16,7 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
-  nonPrivacySafeAttributes?: object | undefined,
+  nonPrivacySafeAttributes?: object,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
@@ -31,10 +31,7 @@ const fireGasEvent = (
         ...DEFAULT_GAS_ATTRIBUTES,
       },
     };
-    if (
-      typeof nonPrivacySafeAttributes !== 'undefined' &&
-      nonPrivacySafeAttributes
-    ) {
+    if (nonPrivacySafeAttributes) {
       payload.nonPrivacySafeAttributes = nonPrivacySafeAttributes;
     }
     event.update(payload).fire(DEFAULT_GAS_CHANNEL);
@@ -72,7 +69,9 @@ const getQueryAttributes = query => {
 };
 
 const getQueryString = query => {
-  return sanitizeSearchQuery(query);
+  return {
+    query: sanitizeSearchQuery(query),
+  };
 };
 
 export function fireTextEnteredEvent(
