@@ -22,6 +22,9 @@ describe('Result Base', () => {
         resultId="testResult"
         type="base"
         name="test"
+        isSelected={false}
+        isCompact={false}
+        onClick={() => {}}
         context={context}
       />,
     );
