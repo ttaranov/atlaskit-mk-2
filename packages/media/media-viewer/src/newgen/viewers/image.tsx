@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
-import { Outcome, ZoomLevel } from '../domain';
+import { Outcome } from '../domain';
 import { Img, ImageWrapper } from '../styled';
 import { Spinner } from '../loading';
 import { ZoomControls } from '../zoomControls';
 import { closeOnDirectClick } from '../utils/closeOnDirectClick';
 import { ErrorMessage, createError, MediaViewerError } from '../error';
 import { renderDownloadButton } from '../domain/download';
+import { ZoomLevel } from '../domain/zoomLevel';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';

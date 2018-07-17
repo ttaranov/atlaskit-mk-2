@@ -1,4 +1,4 @@
-import { ZoomLevel } from '../../src/newgen/domain';
+import { ZoomLevel } from '../../../src/newgen/domain/zoomLevel';
 
 describe('ZoomLevel', () => {
   it('begins with a zoom level of 1 or 100%', () => {
