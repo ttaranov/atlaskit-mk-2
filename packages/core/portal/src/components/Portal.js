@@ -6,12 +6,19 @@ import ReactDOM from 'react-dom';
 // 1. Portals it's children using React.createPortal
 // 2. Manages the DOM nodes so each layer stacks correctly
 
-type Layer = 'default' | 'tooltip';
+type Layer = 'default' | 'spotlight' | 'flag' | 'tooltip';
 
 type Props = {
+  /* The layer to render the children into. */
   layer: Layer,
+  /* Children to render in the React Portal. */
   children: Node,
+  /* Given a layer return the DOM element to use as the container for the React Portal. */
   getLayer: Layer => ?HTMLElement,
+  /*
+    Given an array of layers return an Object of layer to DOM elements. These DOM elements
+    will be used as the container for each React Portal.
+  */
   createLayers: (Layer[]) => { [layer: Layer]: HTMLElement },
 };
 
@@ -19,7 +26,7 @@ type State = {
   container: ?HTMLElement,
 };
 
-const atlaskitLayers: Layer[] = ['default', 'tooltip'];
+const atlaskitLayers: Layer[] = ['default', 'spotlight', 'flag', 'tooltip'];
 
 const defaultGetLayer = (layer: Layer) =>
   document.querySelector(`body > div#${layer}`);

@@ -53,6 +53,8 @@ it('should stack sibiling portals', () => {
 it('should layer portals', () => {
   const layers = {
     default: document.createElement('div'),
+    spotlight: document.createElement('div'),
+    flag: document.createElement('div'),
     tooltip: document.createElement('div'),
   };
   const getLayer = layer => layers[layer];
