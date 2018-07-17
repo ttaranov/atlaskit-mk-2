@@ -14,7 +14,7 @@ export type ThemedValue = (props: ?ThemeProps) => string | number;
 export type colorPaletteType = '8' | '16' | '24';
 
 // New types
-export type ThemeBaseValue = boolean | number | string;
+export type ThemeBaseValue = boolean | number | string | void;
 export type ThemeInput = { [string]: ThemeInputValue };
 export type ThemeInputFunction = (*, ThemeOutput) => *;
 export type ThemeInputValue = ThemeInputFunction | ThemeBaseValue;
