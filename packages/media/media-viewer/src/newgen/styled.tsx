@@ -15,7 +15,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { colors, layers } from '@atlaskit/theme';
 
-const overlayZindex = layers.blanket();
+const overlayZindex = layers.modal() + 10;
 
 export const mediaTypeIconColors = {
   image: akColorY200,
@@ -151,6 +151,7 @@ export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   transform-origin: center;
   max-width: 100%;
   max-height: 100%;
+  user-select: none;
 `;
 
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
@@ -169,6 +170,16 @@ export const PDFWrapper = styled.div`
 
 export const Arrow = styled.span`
   cursor: pointer;
+
+  > span {
+    color: rgba(27, 38, 56, 0.5);
+    fill: #9fb0cc;
+    filter: drop-shadow(1px 1px 1px rgba(27, 38, 56, 0.2));
+
+    &:hover {
+      color: #fff;
+    }
+  }
 `;
 
 const ArrowWrapper = styled.div`

@@ -1,5 +1,10 @@
 # @atlaskit/lozenge
 
+## 6.1.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/docs@5.0.1
+
 ## 6.1.0
 - [minor] Improve behavior when using a narrow container [ebf6b97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf6b97)
 - [none] Updated dependencies [ebf6b97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebf6b97)

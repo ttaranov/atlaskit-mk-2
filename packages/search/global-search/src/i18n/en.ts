@@ -2,7 +2,7 @@
 export default {
   "global-search.confluence.recent-pages-heading": "Recent pages and blogs",
   "global-search.confluence.recent-spaces-heading": "Recent spaces",
-  "global-search.confluence.search-placeholder": "Search Confluence...",
+  "global-search.confluence.search-placeholder": "Search Confluence",
   "global-search.confluence.spaces-heading": "Spaces",
   "global-search.confluence.confluence-objects-heading": "Pages, blogs and attachments",
   "global-search.confluence.advanced-search": "Advanced search",
@@ -14,7 +14,7 @@ export default {
   "global-search.no-results-body": "Try a different query, or use more specialized searches below.",
   "global-search.people.recent-people-heading": "Recently worked with",
   "global-search.people.people-heading": "People",
-  "global-search.people.advanced-search": "Search in People",
+  "global-search.people.advanced-search": "Search people",
   "global-search.search-error-title": "We're having trouble searching.",
   "global-search.search-error-body": "It might just be hiccup. Best thing is to {link}.",
   "global-search.search-error-body.link": "try again",

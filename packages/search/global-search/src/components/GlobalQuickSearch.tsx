@@ -48,6 +48,7 @@ export interface Props {
  */
 export class GlobalQuickSearch extends React.Component<Props> {
   queryVersion: number = 0;
+  resultSelected: boolean = false;
 
   componentDidMount() {
     this.props.onMount();
@@ -74,6 +75,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   fireSearchResultSelectedEvent = (eventData: SearchResultEvent) => {
     const { createAnalyticsEvent, searchSessionId, query } = this.props;
+    this.resultSelected = true;
     if (isAdvancedSearchResult(eventData.resultId)) {
       fireSelectedAdvancedSearch(
         {
@@ -113,6 +115,9 @@ export class GlobalQuickSearch extends React.Component<Props> {
   };
 
   componentWillUnmount() {
+    if (this.resultSelected) {
+      return;
+    }
     const { createAnalyticsEvent, searchSessionId } = this.props;
     fireDismissedEvent(searchSessionId, createAnalyticsEvent);
   }

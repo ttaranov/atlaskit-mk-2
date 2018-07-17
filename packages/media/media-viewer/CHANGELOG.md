@@ -1,5 +1,14 @@
 # @atlaskit/media-viewer
 
+## 16.0.4
+- [patch] Fix navigation buttons style [2deabc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2deabc2)
+
+## 16.0.3
+- [patch] Open MediaViewer in top of the modal dialog [49683a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49683a6)
+
+## 16.0.2
+- [patch] Prevent image from being selectable [63650bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63650bc)
+
 ## 16.0.1
 - [patch] Fix constructAuthTokenUrl [f435228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f435228)
 

@@ -51,10 +51,7 @@ const listPlugin: EditorPlugin = {
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
             popupsScrollableElement={popupsScrollableElement}
-            allowTasks={
-              !!editorView.state.schema.nodes.taskItem &&
-              appearance === 'full-page'
-            }
+            allowTasks={!!editorView.state.schema.nodes.taskItem}
             bulletListActive={listsState.bulletListActive}
             bulletListDisabled={listsState.bulletListDisabled}
             orderedListActive={listsState.orderedListActive}
