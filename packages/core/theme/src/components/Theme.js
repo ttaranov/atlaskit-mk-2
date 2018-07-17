@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
 import type {
   ThemeInput,
@@ -12,7 +12,7 @@ import type {
 
 type Props = {
   children: ((*) => Node) | Node,
-  values?: ThemeInput,
+  values: ThemeInput,
 };
 
 const noop = () => null;
@@ -55,15 +55,23 @@ function simplifyThemeFunction(
     });
 }
 
-export default ({ children, values: childTheme = {} }: Props) => (
-  <Consumer>
-    {(parentTheme: ThemeOutput) => {
-      const merged = mergeParentAndChildTheme(parentTheme, childTheme);
-      return typeof children === 'function' ? (
-        children(merged)
-      ) : (
-        <Provider value={merged}>{children}</Provider>
-      );
-    }}
-  </Consumer>
-);
+export default class Theme extends Component<Props> {
+  static defaultProps = {
+    values: {},
+  };
+  render() {
+    const { children, values: childTheme } = this.props;
+    return (
+      <Consumer>
+        {(parentTheme: ThemeOutput) => {
+          const merged = mergeParentAndChildTheme(parentTheme, childTheme);
+          return typeof children === 'function' ? (
+            children(merged)
+          ) : (
+            <Provider value={merged}>{children}</Provider>
+          );
+        }}
+      </Consumer>
+    );
+  }
+}

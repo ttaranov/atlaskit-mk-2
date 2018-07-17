@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type Node } from 'react';
+import React, { Component, type Node } from 'react';
 import styled, { css } from 'styled-components';
 import * as colors from '../colors';
 import { Consumer } from './Context';
@@ -57,12 +57,16 @@ type Props = {
   children?: Node,
 };
 
-export default ({ children, ...props }: Props) => (
-  <Consumer>
-    {theme => (
-      <Div {...defaultTheme} {...theme} {...props}>
-        {children}
-      </Div>
-    )}
-  </Consumer>
-);
+export default class Reset extends Component<Props> {
+  render() {
+    return (
+      <Consumer>
+        {theme => (
+          <Div {...defaultTheme} {...theme} {...this.props}>
+            {this.props.children}
+          </Div>
+        )}
+      </Consumer>
+    );
+  }
+}
