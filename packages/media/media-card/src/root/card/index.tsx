@@ -93,6 +93,10 @@ const extendMetadata = (
   };
 };
 
+const isPreviewableType = (type: MediaType): boolean => {
+  return ['audio', 'video', 'image'].indexOf(type) > -1;
+};
+
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
   static defaultProps: Partial<CardProps> = {
@@ -155,7 +159,6 @@ export class Card extends Component<CardProps, CardState> {
     if (identifier.mediaItemType !== 'file') {
       return;
     }
-    const { onLoadingChangeCallback } = this;
     const { context } = this.props;
     const { id, collectionName } = identifier;
 
@@ -170,75 +173,75 @@ export class Card extends Component<CardProps, CardState> {
 
         if (!currentDataURI) {
           const dataURI = await getDataURIFromFileState(state);
-
-          this.setState({ dataURI }, onLoadingChangeCallback);
+          this.notifyStateChange({ dataURI });
         }
 
         switch (state.status) {
           case 'uploading':
             const { progress } = state;
-            this.setState(
-              {
-                status: 'uploading',
-                progress,
-                metadata,
-              },
-              onLoadingChangeCallback,
-            );
+            this.notifyStateChange({
+              status: 'uploading',
+              progress,
+              metadata,
+            });
             break;
           case 'processing':
-            this.setState(
-              {
-                progress: 1,
-                status: 'complete',
-                metadata,
-              },
-              onLoadingChangeCallback,
-            );
+            this.notifyStateChange({
+              progress: 1,
+              status: 'complete',
+              metadata,
+            });
             break;
           case 'processed':
-            const options = {
-              appearance: this.props.appearance,
-              dimensions: this.props.dimensions,
-              component: this,
-            };
-            const width = getDataURIDimension('width', options);
-            const height = getDataURIDimension('height', options);
-            const blob = await context.mediaStore.getImage(state.id, {
-              collection: collectionName,
-              height,
-              width,
-            });
-            const dataURI = URL.createObjectURL(blob);
-
-            this.releaseDataURI();
-            this.setState(
-              {
-                dataURI,
-                status: 'complete',
-                metadata,
-              },
-              onLoadingChangeCallback,
-            );
+            if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
+              const { appearance, dimensions } = this.props;
+              const options = {
+                appearance,
+                dimensions,
+                component: this,
+              };
+              const width = getDataURIDimension('width', options);
+              const height = getDataURIDimension('height', options);
+              try {
+                const blob = await context.mediaStore.getImage(state.id, {
+                  collection: collectionName,
+                  height,
+                  width,
+                });
+                const dataURI = URL.createObjectURL(blob);
+                this.releaseDataURI();
+                this.setState({ dataURI });
+              } catch (e) {
+                // We don't want to set status=error if the preview fails, we still want to display the metadata
+              }
+            }
+            this.notifyStateChange({ status: 'complete', metadata });
             break;
+          case 'error':
+            this.notifyStateChange({ status: 'error' });
         }
       },
       error: error => {
-        this.setState(
-          {
-            error,
-            status: 'error',
-          },
-          onLoadingChangeCallback,
-        );
+        this.notifyStateChange({ error, status: 'error' });
       },
     });
   }
+
+  notifyStateChange = (state: Partial<CardState>) => {
+    this.setState(state as any, this.onLoadingChangeCallback);
+  };
 
   unsubscribe = () => {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  };
+
+  // This method is called when card fails and user press 'Retry'
+  private onRetry = () => {
+    const { identifier } = this.props;
+
+    this.subscribe(identifier);
   };
 
   private isUrlPreviewIdentifier(
@@ -284,7 +287,7 @@ export class Card extends Component<CardProps, CardState> {
       disableOverlay,
     } = this.props;
     const { status, progress, metadata, dataURI } = this.state;
-    const { mediaItemType, placeholder, analyticsContext } = this;
+    const { mediaItemType, placeholder, analyticsContext, onRetry } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
@@ -303,6 +306,7 @@ export class Card extends Component<CardProps, CardState> {
           onSelectChange={onSelectChange}
           disableOverlay={disableOverlay}
           progress={progress}
+          onRetry={onRetry}
         />
       </AnalyticsContext>
     );

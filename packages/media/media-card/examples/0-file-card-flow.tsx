@@ -4,6 +4,15 @@ import { Component, SyntheticEvent } from 'react';
 import {
   defaultCollectionName,
   genericFileId,
+  audioFileId,
+  audioNoCoverFileId,
+  videoFileId,
+  videoProcessingFailedId,
+  docFileId,
+  largePdfFileId,
+  archiveFileId,
+  unknownFileId,
+  errorFileId,
   createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
@@ -25,10 +34,22 @@ export interface ComponentState {
   cardStates: { [name: string]: OnLoadingChangeState | undefined };
 }
 
+const fileIds = [
+  genericFileId.id,
+  audioFileId.id,
+  audioNoCoverFileId.id,
+  videoFileId.id,
+  videoProcessingFailedId.id,
+  docFileId.id,
+  largePdfFileId.id,
+  archiveFileId.id,
+  unknownFileId.id,
+  errorFileId.id,
+];
 class Example extends Component<ComponentProps, ComponentState> {
   uploadController?: UploadController;
   state: ComponentState = {
-    fileIds: [genericFileId.id],
+    fileIds,
     cardStates: {},
   };
 
@@ -44,12 +65,13 @@ class Example extends Component<ComponentProps, ComponentState> {
 
       return (
         <CardWrapper key={id}>
-          {/* <CardTitle>{id}</CardTitle> */}
-          <Card
-            context={context}
-            identifier={identifier}
-            onLoadingChange={this.onLoadingChange(id)}
-          />
+          <div>
+            <Card
+              context={context}
+              identifier={identifier}
+              onLoadingChange={this.onLoadingChange(id)}
+            />
+          </div>
           {this.renderCardState(state)}
         </CardWrapper>
       );

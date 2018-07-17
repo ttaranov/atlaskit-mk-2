@@ -1,3 +1,9 @@
+jest.mock('../src/utils/getDataURIFromFileState', () => {
+  return {
+    getDataURIFromFileState: jest.fn().mockReturnValue('some-data-uri'),
+  };
+});
+import { Observable } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { fakeContext } from '@atlaskit/media-test-helpers';
@@ -13,6 +19,7 @@ import {
   CardView,
 } from '../src';
 import { LazyContent } from '../src/utils/lazyContent';
+import { getDataURIFromFileState } from '../src/utils/getDataURIFromFileState';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {
@@ -304,5 +311,158 @@ describe('Card', () => {
     });
   });
 
-  it.skip('should cleanup resources when unmounting', () => {});
+  it('should set dataURI only if its not present', async () => {
+    const { component } = setup();
+
+    expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
+    await getDataURIFromFileState;
+    expect(component.state('dataURI')).toEqual('some-data-uri');
+  });
+
+  it('should set right state when file is uploading', async () => {
+    const context = fakeContext({
+      getFile: Observable.of({
+        id: '123',
+        status: 'uploading',
+        progress: 0.2,
+        mediaType: 'image',
+        size: 10,
+        name: 'me.png',
+      }),
+    });
+    const { component } = setup(context);
+
+    await context.getFile;
+    expect(component.state()).toEqual({
+      status: 'uploading',
+      dataURI: 'some-data-uri',
+      progress: 0.2,
+      metadata: {
+        id: '123',
+        mediaType: 'image',
+        name: 'me.png',
+        size: 10,
+      },
+    });
+  });
+
+  it('should set right state when file is processing', async () => {
+    const context = fakeContext({
+      getFile: Observable.of({
+        id: '123',
+        status: 'uploading',
+        mediaType: 'image',
+        size: 10,
+        name: 'me.png',
+      }),
+    });
+    const { component } = setup(context);
+
+    await context.getFile;
+    expect(component.state()).toEqual({
+      status: 'uploading',
+      dataURI: 'some-data-uri',
+      progress: undefined,
+      metadata: {
+        id: '123',
+        mediaType: 'image',
+        name: 'me.png',
+        size: 10,
+      },
+    });
+  });
+
+  it('should set right state when file is processed', async () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          status: 'processed',
+          mediaType: 'image',
+          size: 10,
+          name: 'me.png',
+        }),
+      mediaStore: {
+        getImage,
+      },
+    } as any;
+    const { component } = setup(context);
+
+    await context.getFile;
+    await context.mediaStore.getImage;
+
+    expect(component.state()).toEqual({
+      status: 'complete',
+      dataURI: 'mock result of URL.createObjectURL()',
+      progress: undefined,
+      metadata: {
+        id: '123',
+        mediaType: 'image',
+        name: 'me.png',
+        size: 10,
+      },
+    });
+  });
+
+  it('should render error card if there was an error fetching the file', () => {});
+
+  it.only('should fetch remote preview when file is processed', async () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          status: 'processed',
+          // mediaType: 'image',
+          // size: 10,
+          // name: 'me.png'
+        }),
+      mediaStore: {
+        getImage,
+      },
+    } as any;
+    setup(context);
+
+    await context.getFile;
+    await context.mediaStore.getImage;
+
+    expect(getImage).toHaveBeenCalledTimes(1);
+    expect(getImage).toBeCalledWith(123, {
+      collection: 'some-collection-name',
+      height: 125,
+      width: 156,
+    });
+  });
+
+  it('should render CardView with expected props', () => {});
+
+  it('should cleanup resources when unmounting', () => {});
+
+  describe.skip('Retry', () => {
+    it('should reset the state when onRetry method is called', () => {
+      // const successResponse = { foo: 1 };
+      // const error = 'some error';
+      // const provider = {
+      //   observable: () => Observable.throw(new Error(error)),
+      // } as any;
+      // const element = shallow(<MediaCard provider={provider} />);
+      // expect(element.prop('status')).toEqual('error');
+      // provider.observable = () => Observable.of(successResponse);
+      // element.simulate('retry');
+      // expect(element.prop('status')).toEqual('complete');
+      // expect(element.prop('metadata')).toEqual(successResponse);
+    });
+
+    it('should pass down "onRetry" prop when an error occurs', () => {
+      // const provider = {
+      //   observable: () => Observable.throw(new Error('some error')),
+      // };
+      // const element = mount(<MediaCard provider={provider} />);
+      // const instance = element.instance();
+      // expect(element.find(CardOverlay).prop('onRetry')).toEqual(
+      //   instance[/* prettier-ignore */ 'onRetry'],
+      // );
+    });
+  });
 });

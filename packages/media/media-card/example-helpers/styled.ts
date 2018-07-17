@@ -100,10 +100,11 @@ export const CardWrapper = styled.div`
   border: 1px solid;
   padding: 10px;
   margin: 5px;
-  display: flex;
   flex-direction: column;
-  max-width: 310px;
+  width: 310px;
+  height: 280px;
   overflow: auto;
+  display: inline-block;
 `;
 
 export const CardFlowHeader = styled.div`
@@ -112,9 +113,7 @@ export const CardFlowHeader = styled.div`
   padding: 10px 0;
 `;
 
-export const CardsWrapper = styled.div`
-  display: flex;
-`;
+export const CardsWrapper = styled.div``;
 
 export const CardState = styled.div`
   margin-top: 10px;
