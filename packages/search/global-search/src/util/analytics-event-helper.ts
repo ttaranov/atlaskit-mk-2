@@ -80,6 +80,7 @@ export function fireTextEnteredEvent(
   searchSessionId: string,
   queryVersion: number,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
+  isSendSearchTermsEnabled: boolean,
 ) {
   fireGasEvent(
     createAnalyticsEvent,
@@ -93,7 +94,7 @@ export function fireTextEnteredEvent(
       ...getQueryAttributes(query),
       searchSessionId: searchSessionId,
     },
-    getQueryString(query),
+    isSendSearchTermsEnabled ? getQueryString(query) : null,
   );
 }
 

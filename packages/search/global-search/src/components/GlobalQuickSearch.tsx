@@ -41,6 +41,7 @@ export interface Props {
   children: React.ReactNode;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
+  isSendSearchTermsEnabled?: boolean;
 }
 
 /**
@@ -61,13 +62,19 @@ export class GlobalQuickSearch extends React.Component<Props> {
   debouncedSearch = debounce(this.doSearch, 350);
 
   doSearch(query: string) {
-    const { onSearch, searchSessionId, createAnalyticsEvent } = this.props;
+    const {
+      onSearch,
+      searchSessionId,
+      createAnalyticsEvent,
+      isSendSearchTermsEnabled,
+    } = this.props;
     onSearch(query);
     fireTextEnteredEvent(
       query,
       searchSessionId,
       this.queryVersion,
       createAnalyticsEvent,
+      isSendSearchTermsEnabled,
     );
     this.queryVersion++;
   }
