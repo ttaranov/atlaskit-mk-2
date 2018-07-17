@@ -1,5 +1,5 @@
 import VideoSnapshot from 'video-snapshot';
-import { FileState } from '@atlaskit/media-core';
+import { FileState, getMediaTypeFromMimeType } from '@atlaskit/media-core';
 
 export const getDataURIFromFileState = async (
   state: FileState,
@@ -9,12 +9,13 @@ export const getDataURIFromFileState = async (
   }
   const type = state.preview.blob.type;
   const blob = state.preview.blob;
+  const mediaType = getMediaTypeFromMimeType(type);
 
-  if (type.indexOf('image/') === 0) {
+  if (mediaType === 'image') {
     return URL.createObjectURL(blob);
   }
 
-  if (type.indexOf('video/') === 0) {
+  if (mediaType === 'video') {
     const snapshoter = new VideoSnapshot(blob);
     const src = await snapshoter.takeSnapshot();
 

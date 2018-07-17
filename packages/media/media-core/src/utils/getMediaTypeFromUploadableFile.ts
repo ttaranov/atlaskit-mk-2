@@ -1,4 +1,5 @@
 import { UploadableFile, MediaType } from '@atlaskit/media-store';
+import { getMediaTypeFromMimeType } from './getMediaTypeFromMimeType';
 
 export const getMediaTypeFromUploadableFile = (
   file: UploadableFile,
@@ -6,13 +7,7 @@ export const getMediaTypeFromUploadableFile = (
   if (file.content instanceof Blob) {
     const type = file.content.type;
 
-    if (type.indexOf('image/') === 0) {
-      return 'image';
-    } else if (type.indexOf('video/') === 0) {
-      return 'video';
-    } else {
-      return 'unknown';
-    }
+    return getMediaTypeFromMimeType(type);
   } else {
     return 'unknown';
   }
