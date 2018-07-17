@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 16.0.5
+- [patch] Handle the case where no audio or video artifacts were found [c83dda5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83dda5)
+
 ## 16.0.4
 - [patch] Fix navigation buttons style [2deabc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2deabc2)
 
