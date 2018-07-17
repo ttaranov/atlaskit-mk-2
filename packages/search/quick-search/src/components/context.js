@@ -11,7 +11,7 @@ const defaultState: Context = {
   getIndex: n => Number(n),
 };
 
-// $FlowFixMe
+// $FlowFixMe - flow outdated. does not support createContext yet.
 export const ResultContext = React.createContext(defaultState);
-// $FlowFixMe
+// $FlowFixMe - flow outdated. does not support createContext yet.
 export const SelectedResultIdContext = React.createContext(null);
