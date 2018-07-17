@@ -82,8 +82,8 @@ const mentionsPlugin: EditorPlugin = {
         icon: () => <MentionIcon label="Mention" />,
         action(insert, state) {
           const mark = state.schema.mark('mentionQuery');
-          const emojiText = state.schema.text('@', [mark]);
-          return insert(emojiText);
+          const mentionText = state.schema.text('@', [mark]);
+          return insert(mentionText);
         },
       },
     ],
