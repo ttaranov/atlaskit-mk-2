@@ -2,13 +2,13 @@
 
 import type { ComponentType } from 'react';
 
-export type ProductNavProps = {
+export type ContentNavigationProps = {
   container?: ?ComponentType<{}>,
   isDragging: boolean,
-  isHinting: boolean,
+  isPeekHinting: boolean,
   isPeeking: boolean,
   onOverlayClick?: Event => void,
-  root: ComponentType<{}>,
+  product: ComponentType<{}>,
   transitionState: 'entered' | 'entering' | 'exited' | 'exiting',
   width: number,
 };

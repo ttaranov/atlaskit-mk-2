@@ -225,10 +225,10 @@ const variations: Array<VariationCategory> = [
       },
       {
         before: ConfiguredAvatar,
-        text: 'Light mode, root context',
+        text: 'Light mode, product context',
         subText: 'Sub text',
         themeMode: 'light',
-        themeContext: 'root',
+        themeContext: 'product',
       },
       {
         before: ConfiguredAvatar,
@@ -239,10 +239,10 @@ const variations: Array<VariationCategory> = [
       },
       {
         before: ConfiguredAvatar,
-        text: 'Dark mode, root context',
+        text: 'Dark mode, product context',
         subText: 'Sub text',
         themeMode: 'dark',
-        themeContext: 'root',
+        themeContext: 'product',
       },
       {
         before: ConfiguredAvatar,
@@ -253,10 +253,10 @@ const variations: Array<VariationCategory> = [
       },
       {
         before: ConfiguredAvatar,
-        text: 'Settings mode, root context',
+        text: 'Settings mode, product context',
         subText: 'Sub text',
         themeMode: 'settings',
-        themeContext: 'root',
+        themeContext: 'product',
       },
     ],
   },

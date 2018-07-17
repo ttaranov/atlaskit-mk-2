@@ -30,20 +30,31 @@ export default ({ background, text }: Args): Mode => {
         color: text,
       };
     },
-    productNav: () => {
-      const { container, root } = light.productNav();
+    contentNav: () => {
+      const { container, product } = light.contentNav();
       return {
         container: {
           ...container,
           backgroundColor: background,
           color: text,
         },
-        root: {
-          ...root,
+        product: {
+          ...product,
           backgroundColor: background,
           color: text,
         },
       };
+    },
+    heading: () => {
+      const { product } = light.heading();
+      const productStyles = {
+        ...product,
+        titleBase: {
+          ...product.titleBase,
+          color: chromatism.brightness(20, text).hex,
+        },
+      };
+      return { container: productStyles, product: productStyles };
     },
     item: ({
       isActive,
@@ -51,16 +62,16 @@ export default ({ background, text }: Args): Mode => {
       isSelected,
       spacing,
     }: ItemPresentationProps) => {
-      const { root } = light.item({
+      const { product } = light.item({
         isActive,
         isHover,
         isSelected,
         spacing,
       });
-      const rootStyles = {
-        ...root,
+      const productStyles = {
+        ...product,
         itemBase: {
-          ...root.itemBase,
+          ...product.itemBase,
           backgroundColor: (() => {
             if (isActive) return backgroundColorActive;
             if (isSelected) return backgroundColorSelected;
@@ -69,52 +80,41 @@ export default ({ background, text }: Args): Mode => {
           })(),
         },
         textWrapper: {
-          ...root.textWrapper,
+          ...product.textWrapper,
           color: text,
         },
         subTextWrapper: {
-          ...root.subTextWrapper,
+          ...product.subTextWrapper,
           color: chromatism.brightness(20, text).hex,
         },
       };
-      return { container: rootStyles, root: rootStyles };
-    },
-    sectionTitle: () => {
-      const { root } = light.sectionTitle();
-      const rootStyles = {
-        ...root,
-        titleBase: {
-          ...root.titleBase,
-          color: chromatism.brightness(20, text).hex,
-        },
-      };
-      return { container: rootStyles, root: rootStyles };
-    },
-    sectionSeparator: () => {
-      const { root } = light.sectionSeparator();
-      const rootStyles = { ...root, backgroundColor: colors.N80A };
-      return { container: rootStyles, root: rootStyles };
+      return { container: productStyles, product: productStyles };
     },
     scrollHint: () => {
-      const { root } = light.scrollHint();
-      const rootStyles = {
-        ...root,
+      const { product } = light.scrollHint();
+      const productStyles = {
+        ...product,
         wrapper: {
-          ...root.wrapper,
+          ...product.wrapper,
           '&::before': {
-            ...root.wrapper['&::before'],
+            ...product.wrapper['&::before'],
             backgroundColor: colors.N80A,
           },
         },
         inner: {
-          ...root.inner,
+          ...product.inner,
           '&::before': {
-            ...root.inner['&::before'],
+            ...product.inner['&::before'],
             backgroundColor: background,
           },
         },
       };
-      return { container: rootStyles, root: rootStyles };
+      return { container: productStyles, product: productStyles };
+    },
+    separator: () => {
+      const { product } = light.separator();
+      const productStyles = { ...product, backgroundColor: colors.N80A };
+      return { container: productStyles, product: productStyles };
     },
   };
 };

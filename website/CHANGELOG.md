@@ -1,5 +1,8 @@
 # @atlaskit/website
 
+## 3.0.2
+- [patch] Update examples iframe loader to be more performant and unmount unused react dom trees [c42f300](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c42f300)
+
 ## 3.0.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

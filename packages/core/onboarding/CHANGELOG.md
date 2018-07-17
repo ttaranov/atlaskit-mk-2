@@ -1,5 +1,9 @@
 # @atlaskit/onboarding
 
+## 5.1.0
+- [minor] round corners for onboarding modal image [785e99a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/785e99a)
+- [none] Updated dependencies [785e99a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/785e99a)
+
 ## 5.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

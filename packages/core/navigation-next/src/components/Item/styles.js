@@ -2,7 +2,7 @@
 
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import type { ThemedProductComponentStyles } from '../../theme/types';
+import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 import type { ItemPresentationProps } from './types';
 
 const gridSize = gridSizeFn();
@@ -152,7 +152,7 @@ const light = ({
       ...layoutStyles[spacing].afterWrapper,
     },
   },
-  root: {
+  product: {
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
@@ -225,7 +225,7 @@ const dark = ({
       ...layoutStyles[spacing].afterWrapper,
     },
   },
-  root: {
+  product: {
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
@@ -297,7 +297,7 @@ const settings = ({
       ...layoutStyles[spacing].afterWrapper,
     },
   },
-  root: {
+  product: {
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
@@ -328,7 +328,7 @@ const settings = ({
   },
 });
 
-const themes: ThemedProductComponentStyles<ItemPresentationProps> = {
+const themes: ThemedContentNavigationComponentStyles<ItemPresentationProps> = {
   dark,
   light,
   settings,
