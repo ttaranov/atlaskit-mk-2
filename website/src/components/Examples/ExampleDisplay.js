@@ -37,7 +37,7 @@ export default class ExampleDisplay extends Component<Props> {
   }
   buildExampleComponents = props => {
     this.ExampleCode = Loadable({
-      loader: () => this.props.example.contents(),
+      loader: () => props.example.contents(),
       loading: Loading,
       render(loaded) {
         return <CodeBlock grammar="jsx" content={loaded} name={props.name} />;
@@ -52,7 +52,7 @@ export default class ExampleDisplay extends Component<Props> {
           height: '100%',
           border: 'none',
         }}
-        src={this.props.src}
+        src={props.src}
       />
     );
   };
