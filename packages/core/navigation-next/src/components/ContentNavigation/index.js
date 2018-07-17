@@ -5,16 +5,16 @@ import interpolate, { clamp } from 'interpolate-range';
 import { Transition } from 'react-transition-group';
 
 import {
-  PRODUCT_NAV_WIDTH,
+  CONTENT_NAV_WIDTH,
   transitionDurationMs,
 } from '../../common/constants';
 import {
-  ContainerNav,
+  ContainerNavigation,
   ContainerOverlay,
   InnerShadow,
-  RootNav,
+  ProductNavigation,
 } from './primitives';
-import type { ProductNavProps } from './types';
+import type { ContentNavigationProps } from './types';
 
 function interpolateBlanketOpacity({ floor, ceil, val }) {
   const lerp = interpolate({
@@ -26,21 +26,23 @@ function interpolateBlanketOpacity({ floor, ceil, val }) {
   return lerp(val);
 }
 
-export default class ProductNav extends PureComponent<ProductNavProps> {
+export default class ContentNavigation extends PureComponent<
+  ContentNavigationProps,
+> {
   render() {
     const {
       container: Container,
       isDragging,
-      isHinting,
+      isPeekHinting,
       isPeeking,
       onOverlayClick,
       transitionState,
-      root: Root,
+      product: Product,
       width,
     } = this.props;
 
     const opacity = interpolateBlanketOpacity({
-      floor: PRODUCT_NAV_WIDTH,
+      floor: CONTENT_NAV_WIDTH,
       ceil: 0,
       val: width,
     });
@@ -49,10 +51,9 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
 
     return (
       <Fragment>
-        <RootNav>
-          <Root />
-        </RootNav>
-
+        <ProductNavigation>
+          <Product />
+        </ProductNavigation>
         <Transition
           in={!!Container}
           timeout={transitionDurationMs}
@@ -60,10 +61,10 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
           unmountOnExit
         >
           {state => (
-            <ContainerNav
+            <ContainerNavigation
               isEntering={state === 'entering'}
               isExiting={state === 'exiting'}
-              isHinting={isHinting}
+              isPeekHinting={isPeekHinting}
               isPeeking={isPeeking}
             >
               <Fragment>
@@ -74,7 +75,7 @@ export default class ProductNav extends PureComponent<ProductNavProps> {
                   style={overlayStyle}
                 />
               </Fragment>
-            </ContainerNav>
+            </ContainerNavigation>
           )}
         </Transition>
         <InnerShadow isVisible={isPeeking} />

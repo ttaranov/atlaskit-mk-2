@@ -30,8 +30,8 @@ const animationFade = state => {
 
 /**
  * Component tree structure
- *  - RootNav
- *  - ContainerNav
+ *  - ProductNavigation
+ *  - ContainerNavigation
  *    - ContainerOverlay
  *  - InnerShadow
  */
@@ -50,23 +50,24 @@ const ScrollProvider = (props: any) => (
 );
 
 /**
- * RootNav
+ * ProductNavigation
  */
-const RootNavPrimitive = withTheme({ mode: light, context: 'root' })(
-  ({ children, theme = { mode: light } }) => (
-    <div css={theme.mode.productNav().root}>
-      <ScrollProvider>{children}</ScrollProvider>
-    </div>
-  ),
-);
+const ProductNavigationPrimitive = withTheme({
+  mode: light,
+  context: 'product',
+})(({ children, theme = { mode: light } }) => (
+  <div css={theme.mode.contentNav().product}>
+    <ScrollProvider>{children}</ScrollProvider>
+  </div>
+));
 
-type RootNavProps = { children: Node };
+type ProductNavigationProps = { children: Node };
 
-export const RootNav = (props: RootNavProps) => (
+export const ProductNavigation = (props: ProductNavigationProps) => (
   <ThemeProvider
-    theme={oldTheme => ({ mode: light, ...oldTheme, context: 'root' })}
+    theme={oldTheme => ({ mode: light, ...oldTheme, context: 'product' })}
   >
-    <RootNavPrimitive {...props} />
+    <ProductNavigationPrimitive {...props} />
   </ThemeProvider>
 );
 
@@ -75,61 +76,51 @@ const slideIn = keyframes`
   to { transform: translateX(0); }
 `;
 
-const slideOut = keyframes`
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
-`;
-
-const slideOutFromPeek = keyframes`
-  from { transform: translateX(calc(100% - 32px)); }
-  to { transform: translateX(100%); }
-`;
-
 /**
- * ContainerNav
+ * ContainerNavigation
  */
-const ContainerNavPrimitive = withTheme({ mode: light, context: 'container' })(
-  ({ children, isEntering, isExiting, isHinting, isPeeking, theme }) => {
-    let animationName;
-    if (isEntering) animationName = slideIn;
-    if (isExiting) animationName = slideOut;
-    if (isPeeking && isExiting) animationName = slideOutFromPeek;
+const ContainerNavigationPrimitive = withTheme({
+  mode: light,
+  context: 'container',
+})(({ children, isEntering, isExiting, isPeekHinting, isPeeking, theme }) => {
+  let animationName;
+  if (isEntering) animationName = slideIn;
 
-    let transform = null;
-    if (isHinting) transform = 'translateX(16px)';
-    if (isPeeking) transform = 'translateX(calc(100% - 32px))';
+  let transform = null;
+  if (isPeekHinting) transform = 'translateX(16px)';
+  if (isPeeking) transform = 'translateX(calc(100% - 32px))';
+  if (isExiting) transform = 'translateX(100%)';
 
-    return (
-      <div
-        css={{
-          ...theme.mode.productNav().container,
-          animationName,
-          animationDuration: transitionDuration,
-          animationFillMode: 'forwards',
-          animationTimingFunction: transitionTimingFunction,
-          transitionProperty: 'boxShadow, transform',
-          transitionDuration,
-          transitionTimingFunction,
-          transform,
-        }}
-      >
-        <Shadow isBold={isPeeking} isOverDarkBg />
-        <ScrollProvider>{children}</ScrollProvider>
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      css={{
+        ...theme.mode.contentNav().container,
+        animationName,
+        animationDuration: transitionDuration,
+        animationFillMode: 'forwards',
+        animationTimingFunction: transitionTimingFunction,
+        transitionProperty: 'boxShadow, transform',
+        transitionDuration,
+        transitionTimingFunction,
+        transform,
+      }}
+    >
+      <Shadow isBold={isPeeking} isOverDarkBg />
+      <ScrollProvider>{children}</ScrollProvider>
+    </div>
+  );
+});
 
-type ContainerNavProps = {
+type ContainerNavigationProps = {
   children: Node,
   isPeeking: boolean,
 };
 
-export const ContainerNav = (props: ContainerNavProps) => (
+export const ContainerNavigation = (props: ContainerNavigationProps) => (
   <ThemeProvider
     theme={oldTheme => ({ mode: light, ...oldTheme, context: 'container' })}
   >
-    <ContainerNavPrimitive {...props} />
+    <ContainerNavigationPrimitive {...props} />
   </ThemeProvider>
 );
 

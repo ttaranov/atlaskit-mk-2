@@ -2,6 +2,6 @@
 
 import type { ProductTheme } from '../../theme/types';
 
-export type SectionSeparatorProps = {
+export type SeparatorProps = {
   theme: ProductTheme,
 };

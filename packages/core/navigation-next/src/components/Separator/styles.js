@@ -2,7 +2,7 @@
 
 import { colors, gridSize } from '@atlaskit/theme';
 
-import type { ThemedProductComponentStyles } from '../../theme/types';
+import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 
 const dividerLineHeight = 2;
 const dividerTotalHeight = gridSize() * 5;
@@ -16,18 +16,22 @@ const baseStyles = {
 
 const light = () => ({
   container: { ...baseStyles, backgroundColor: colors.N30A },
-  root: { ...baseStyles, backgroundColor: colors.N80A },
+  product: { ...baseStyles, backgroundColor: colors.N80A },
 });
 
 const dark = () => ({
   container: { ...baseStyles, backgroundColor: colors.DN50 },
-  root: { ...baseStyles, backgroundColor: colors.DN50 },
+  product: { ...baseStyles, backgroundColor: colors.DN50 },
 });
 
 const settings = () => ({
   container: { ...baseStyles, backgroundColor: colors.N900 },
-  root: { ...baseStyles, backgroundColor: colors.N900 },
+  product: { ...baseStyles, backgroundColor: colors.N900 },
 });
 
-const themes: ThemedProductComponentStyles<void> = { dark, light, settings };
+const themes: ThemedContentNavigationComponentStyles<void> = {
+  dark,
+  light,
+  settings,
+};
 export default themes;
