@@ -34,7 +34,10 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
 
     return (
       <HashRouter>
-        <NavigationProvider debug={isDebugEnabled}>
+        <NavigationProvider
+          initialPeekViewId="root/index"
+          isDebugEnabled={isDebugEnabled}
+        >
           <ConnectedLayoutManager globalNavigation={DefaultGlobalNavigation}>
             <div style={{ padding: 30 }}>
               <Switch>

@@ -34,6 +34,7 @@ export default class NavigationProvider extends Component<
       get: defaultGetCache,
       set: defaultSetCache,
     },
+    initialPeekViewId: null,
     isDebugEnabled: false,
   };
   uiState: UIState;
@@ -42,9 +43,9 @@ export default class NavigationProvider extends Component<
   constructor(props: NavigationProviderProps) {
     super(props);
 
-    const { cache, initialState, isDebugEnabled } = props;
-    this.uiState = new UIState(initialState, cache);
-    this.viewState = new ViewState({ isDebugEnabled: isDebugEnabled || false });
+    const { cache, initialPeekViewId, initialUIState, isDebugEnabled } = props;
+    this.uiState = new UIState(initialUIState, cache);
+    this.viewState = new ViewState({ isDebugEnabled, initialPeekViewId });
   }
 
   componentDidUpdate(prevProps: NavigationProviderProps) {

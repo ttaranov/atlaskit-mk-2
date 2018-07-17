@@ -55,6 +55,7 @@ type IncomingView = {
 export type Reducer = ViewData => ViewData;
 
 export type ViewStateProps = {
+  initialPeekViewId: ?ViewID,
   isDebugEnabled: boolean,
 };
 

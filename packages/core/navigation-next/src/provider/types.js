@@ -10,6 +10,7 @@ import type { InitialUIStateShape, UIStateCache } from '../ui-state/types';
 export type NavigationProviderProps = {
   children: Element<*>,
   cache: UIStateCache | false,
-  initialState?: InitialUIStateShape,
-  isDebugEnabled?: boolean,
+  initialPeekViewId: ?string,
+  initialUIState?: InitialUIStateShape,
+  isDebugEnabled: boolean,
 };

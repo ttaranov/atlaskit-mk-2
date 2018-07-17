@@ -13,20 +13,6 @@ import {
 import { containerViews, rootViews } from './mock-data';
 import ShortcutsPlugin from './shortcuts-plugin';
 
-class SetInitialPeekViewBase extends Component<{
-  id: string,
-  navigationViews: *,
-}> {
-  componentDidMount() {
-    const { id, navigationViews } = this.props;
-    navigationViews.setInitialPeekViewId(id);
-  }
-  render() {
-    return null;
-  }
-}
-const SetInitialPeekView = withNavigationViews(SetInitialPeekViewBase);
-
 class SetActiveViewBase extends Component<{
   id: string,
   navigationUI: *,
@@ -69,12 +55,7 @@ const ContainerViews = () => (
     {containerViews.map(view => <ViewRegistrar key={view.id} view={view} />)}
   </Fragment>
 );
-const CoreViews = () => (
-  <Fragment>
-    <RootViews />
-    <SetInitialPeekView id="root/index" />
-  </Fragment>
-);
+const CoreViews = () => <RootViews />;
 
 /**
  * Root-level routes

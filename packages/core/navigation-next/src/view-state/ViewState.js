@@ -13,6 +13,7 @@ import type {
 } from './types';
 
 const defaultProps: ViewStateProps = {
+  initialPeekViewId: null,
   isDebugEnabled: false,
 };
 
@@ -34,9 +35,15 @@ export default class ViewState extends Container<ViewStateState>
   isDebugEnabled: boolean = false;
   initialPeekViewId: ?ViewID = null;
 
-  constructor({ isDebugEnabled }: ViewStateProps = defaultProps) {
+  constructor({
+    initialPeekViewId,
+    isDebugEnabled,
+  }: ViewStateProps = defaultProps) {
     super();
     this.isDebugEnabled = isDebugEnabled;
+    if (initialPeekViewId) {
+      this.setInitialPeekViewId(initialPeekViewId);
+    }
   }
 
   /**
@@ -141,13 +148,13 @@ export default class ViewState extends Container<ViewStateState>
     } = this.state;
     if (
       (activeView && id === activeView.id) ||
-      (incomingView && id === this.state.incomingView)
+      (incomingView && id === incomingView.id)
     ) {
       this.setView(id);
     }
     if (
       (activePeekView && id === activePeekView.id) ||
-      (incomingPeekView && id === this.state.incomingPeekView)
+      (incomingPeekView && id === incomingPeekView.id)
     ) {
       this.setPeekView(id);
     }
