@@ -1,3 +1,5 @@
+export type Vector2 = { x: number; y: number };
+
 export class Rectangle {
   constructor(public readonly width: number, public readonly height: number) {}
 
@@ -24,5 +26,17 @@ export class Rectangle {
     } else {
       return heightRatio;
     }
+  }
+
+  // Computes the difference between the centers of the two
+  // given rectangles. The vector describes how far the other
+  // rectangle has to be translated so that the centers of both
+  // rectangles overlap (assuming they initially align on their
+  // top left corners).
+  differenceOfCenters(other: Rectangle): Vector2 {
+    return {
+      x: this.width / 2 - other.width / 2,
+      y: this.height / 2 - other.height / 2,
+    };
   }
 }
