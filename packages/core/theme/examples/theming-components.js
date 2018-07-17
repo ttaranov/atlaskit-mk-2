@@ -64,7 +64,9 @@ const CustomButtonTheme = (props: MyTheme) => (
 );
 
 type Props = {
+  // eslint-disable-next-line react/no-unused-prop-types
   children: Node,
+  // eslint-disable-next-line react/no-unused-prop-types
   theme: ComponentType<MyTheme>,
 };
 
