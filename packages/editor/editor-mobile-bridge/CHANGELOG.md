@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 2.0.2
+- [patch] Fixing CSS issues [93d3ccf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93d3ccf)
+
 ## 2.0.1
 
 
