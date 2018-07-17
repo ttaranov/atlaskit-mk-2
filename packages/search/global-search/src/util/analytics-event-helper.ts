@@ -16,6 +16,7 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
+  nonPrivacySafeAttributes: object | undefined,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
@@ -30,6 +31,12 @@ const fireGasEvent = (
         ...DEFAULT_GAS_ATTRIBUTES,
       },
     };
+    if (
+      typeof nonPrivacySafeAttributes !== 'undefined' &&
+      nonPrivacySafeAttributes
+    ) {
+      payload.nonPrivacySafeAttributes = nonPrivacySafeAttributes;
+    }
     event.update(payload).fire(DEFAULT_GAS_CHANNEL);
   }
 };
@@ -64,18 +71,30 @@ const getQueryAttributes = query => {
   };
 };
 
+const getQueryString = query => {
+  return sanitizeSearchQuery(query);
+};
+
 export function fireTextEnteredEvent(
   query: string,
   searchSessionId: string,
   queryVersion: number,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  fireGasEvent(createAnalyticsEvent, 'entered', 'text', '', 'track', {
-    queryId: null,
-    queryVersion: queryVersion,
-    ...getQueryAttributes(query),
-    searchSessionId: searchSessionId,
-  });
+  fireGasEvent(
+    createAnalyticsEvent,
+    'entered',
+    'text',
+    '',
+    'track',
+    {
+      queryId: null,
+      queryVersion: queryVersion,
+      ...getQueryAttributes(query),
+      searchSessionId: searchSessionId,
+    },
+    getQueryString(query),
+  );
 }
 
 export function fireDismissedEvent(
