@@ -1,4 +1,5 @@
-image: atlassianlabs/atlaskit-mk-2
+# Note: This image can be found in build/pipelines/docker-image
+image: atlassianlabs/atlaskit-mk-2:1.0.3
 # This ensures we do a full clone on each build which prevents issues when cross referencing
 # changesets and releases
 clone:

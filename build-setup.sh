@@ -2,12 +2,14 @@
 
 # These are used to sign commits when pushing back to Bitbucket
 # No auth is required as we use ssh from pipelines instead
+echo -e "\e[32m  Setting git configs..."
 git config --global user.email "$BOT_ACCOUNT_EMAIL"
 git config --global user.name "$BOT_ACCOUNT_NAME"
 git config --global push.default simple
 
 # We fetch and checkout master here so that we have a local reference to "master" in other commands
 # (avoids the "ambiguous argument 'master': unknown revision or path not in the working tree" error)
+echo -e "\e[32m  Fetching master so that we have a reference to it..."
 git fetch origin master
 git checkout master # (master doesn't exist until we do this checkout)
 git checkout - # checks out the previous ref
@@ -17,10 +19,11 @@ git checkout - # checks out the previous ref
 # starting and this rebase will get pulled in and released in this build. This is much
 # better than the alternative of pulling later and not testing the code
 if [ "$BITBUCKET_BRANCH" = "master" ]; then
-  echo "Rebasing on master to ensure we have all release commits from master..."
+  echo -e "\e[32m  Rebasing on master to ensure we have all release commits from master..."
   git pull --rebase origin master
 fi
 
+  echo -e "\e[32m  Setting npm registry token"
 # $NPM_TOKEN is the auth token for the "atlaskit" user
 npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 # For some reason, the npm dist-tag commands are hitting yarnpkg and not npmjs
