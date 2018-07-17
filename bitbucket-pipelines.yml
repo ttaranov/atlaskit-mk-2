@@ -1,4 +1,4 @@
-image: node:8.4.0
+image: atlassianlabs/atlaskit-mk-2
 # This ensures we do a full clone on each build which prevents issues when cross referencing
 # changesets and releases
 clone:

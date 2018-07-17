@@ -1,0 +1,17 @@
+{
+  "name": "@atlaskit/pipelines-docker-image",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Docker image used to set up the Atlaskit repo in pipelines",
+  "scripts": {
+    "build-image": "docker build -t atlassianlabs/atlaskit-mk-2 ."
+  },
+  "author": "Luke Batchelor",
+  "license": "Apache-2.0",
+  "devDependencies": {
+
+  },
+  "dependencies": {
+
+  }
+}

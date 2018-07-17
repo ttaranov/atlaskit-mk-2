@@ -21,23 +21,6 @@ if [ "$BITBUCKET_BRANCH" = "master" ]; then
   git pull --rebase origin master
 fi
 
-# We curl the yarnpkg download first to see if we are going to get an error
-echo "Checking if yarn is up..."
-curl -I https://yarnpkg.com/downloads/1.2.1/yarn-v1.2.1.tar.gz
-
-
-# NOTE: the node image comes with a version of yarn installed already in /opt/yarn
-# We put our yarn path at the front of the PATH var so that we use our version instead of theirs
-curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
-export PATH=$HOME/.yarn/bin:$PATH
-
-## Installing bolt - we grab the range specified in the package.json so that we install the latest
-## version that satisfies that
-BOLT_VERSION=`node -e 'console.log(require("./package.json").bolt.version)'`
-echo "Installing bolt@$BOLT_VERSION"
-yarn global add "bolt@$BOLT_VERSION"
-
-
 # $NPM_TOKEN is the auth token for the "atlaskit" user
 npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 # For some reason, the npm dist-tag commands are hitting yarnpkg and not npmjs
@@ -47,6 +30,3 @@ npm set //registry.yarnpkg.com/:_authToken=$NPM_TOKEN
 export FORCE_COLOR=1
 yarn config set color always
 
-# zip for website deploy
-apt-get -y update
-apt-get -y install zip
