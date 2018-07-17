@@ -38,7 +38,6 @@ export interface AuthContext {
 
 export type AuthProvider = (context?: AuthContext) => Promise<Auth>;
 
-// TODO Do we need this Class at all now?
 export type MediaApiConfig = {
   authProvider: AuthProvider;
 };

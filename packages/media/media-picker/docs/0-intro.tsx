@@ -91,8 +91,6 @@ export default md`
    
   Third is an optional parameter where you can configure some of the parameters:
   
-  // TODO
-  
   ---
   
 

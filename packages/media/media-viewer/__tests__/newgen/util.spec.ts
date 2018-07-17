@@ -31,7 +31,7 @@ describe('utils', () => {
         'mycollection',
       );
       expect(url).toEqual(
-        'some-service-host/file/3333-4444-5555?version=1&client=some-client-id&collection=mycollection&token=some-token',
+        'some-base-url/file/3333-4444-5555?version=1&client=some-client-id&collection=mycollection&token=some-token',
       );
     });
 

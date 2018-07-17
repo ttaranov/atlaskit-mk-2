@@ -43,12 +43,6 @@ export class Browser extends LocalUploadComponent {
 
   private addEvents() {
     this.browseElement.addEventListener('change', this.onFilePicked);
-    // if (this.config.useNewUploadService) {
-    // } else {
-    //   (this.uploadService as OldUploadServiceImpl).addBrowse(
-    //     this.browseElement,
-    //   );
-    // }
   }
 
   private removeEvents() {

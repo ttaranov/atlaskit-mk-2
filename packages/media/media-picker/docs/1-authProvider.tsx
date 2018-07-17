@@ -1,7 +1,5 @@
 import { md } from '@atlaskit/docs';
 
-// TODO Update that old stuff
-
 export default md`
 
 ``

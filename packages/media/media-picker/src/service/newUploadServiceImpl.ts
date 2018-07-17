@@ -5,7 +5,11 @@ import {
   MediaType,
   FileItem,
 } from '@atlaskit/media-core';
-import { MediaStore, UploadController } from '@atlaskit/media-store';
+import {
+  MediaStore,
+  MediaStoreCopyFileWithTokenBody,
+  UploadController,
+} from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
@@ -22,7 +26,6 @@ import {
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
-import { MediaStoreCopyFileWithTokenBody } from '../../../media-store/src/media-store';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;

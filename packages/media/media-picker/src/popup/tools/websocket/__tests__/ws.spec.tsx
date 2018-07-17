@@ -1,7 +1,6 @@
-import { Auth } from '../../../../../../media-store/src';
-
 jest.mock('../../randomInt');
 
+import { Auth } from '@atlaskit/media-core';
 import {
   getWsUrl,
   Ws,
