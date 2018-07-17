@@ -6,7 +6,8 @@ import React, {
   type ComponentType,
   type Node,
 } from 'react';
-import { Theme, type ThemeDefinition } from '../src';
+import { Theme } from '../src';
+import type { ThemeDefinition } from '../src/types';
 
 type MyTheme = ThemeDefinition<{
   // eslint-disable-next-line react/no-unused-prop-types

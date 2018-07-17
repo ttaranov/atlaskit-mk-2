@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { Theme, type ThemeDefinition } from '../src';
+import { Theme } from '../src';
+import type { ThemeDefinition } from '../src/types';
 
 const CustomTheme = ({
   children,
