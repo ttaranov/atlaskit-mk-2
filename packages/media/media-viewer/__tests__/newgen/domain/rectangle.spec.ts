@@ -58,4 +58,27 @@ describe('Rectangle', () => {
       },
     );
   });
+
+  describe('centering rectangles', () => {
+    jsc.property(
+      'the distances between opposite sides always match',
+      sideLenGenerator(),
+      sideLenGenerator(),
+      sideLenGenerator(),
+      sideLenGenerator(),
+      (w1, h1, w2, h2) => {
+        const rect1 = new Rectangle(w1, h1);
+        const rect2 = new Rectangle(w2, h2);
+        const difference = rect1.differenceOfCenters(rect2);
+        const distanceLeft = difference.x;
+        const distanceRight = rect1.width - (rect2.width + difference.x);
+        const distanceTop = difference.y;
+        const distanceBottom = rect1.height - (rect2.height + difference.y);
+        return (
+          distanceLeft - distanceRight <= ACCEPTABLE_FLOATING_ERROR &&
+          distanceTop - distanceBottom <= ACCEPTABLE_FLOATING_ERROR
+        );
+      },
+    );
+  });
 });
