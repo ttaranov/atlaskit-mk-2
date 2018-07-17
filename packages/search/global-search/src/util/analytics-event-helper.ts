@@ -68,7 +68,7 @@ const getQueryAttributes = query => {
   };
 };
 
-const getQueryString = query => {
+const getNonPrivacySafeAttributes = query => {
   return {
     query: sanitizeSearchQuery(query),
   };
@@ -93,7 +93,7 @@ export function fireTextEnteredEvent(
       ...getQueryAttributes(query),
       searchSessionId: searchSessionId,
     },
-    isSendSearchTermsEnabled ? getQueryString(query) : null,
+    isSendSearchTermsEnabled ? getNonPrivacySafeAttributes(query) : null,
   );
 }
 
