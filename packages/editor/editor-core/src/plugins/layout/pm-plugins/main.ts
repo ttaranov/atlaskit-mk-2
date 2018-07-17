@@ -1,4 +1,4 @@
-import { Fragment, Node } from 'prosemirror-model';
+import { Slice, Node } from 'prosemirror-model';
 import { PluginKey, Plugin, EditorState, Transaction } from 'prosemirror-state';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { isEmptyDocument } from '../../../utils';
@@ -16,14 +16,24 @@ export function enforceLayoutColumnConstraints(
       ) {
         const thirdColumn = node.content.child(2);
         const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
-        tr.replaceWith(
-          tr.mapping.map(
-            /* Inside right edge of second column */
-            insideRightEdgeOfLayoutSection - thirdColumn.nodeSize - 1,
-          ),
-          tr.mapping.map(insideRightEdgeOfLayoutSection),
-          isEmptyDocument(thirdColumn) ? Fragment.empty : thirdColumn.content,
-        );
+        const thirdColumnPos =
+          insideRightEdgeOfLayoutSection - thirdColumn.nodeSize;
+        if (isEmptyDocument(thirdColumn)) {
+          tr.replaceRange(
+            // end pos of second column
+            tr.mapping.map(thirdColumnPos - 1),
+            tr.mapping.map(insideRightEdgeOfLayoutSection),
+            Slice.empty,
+          );
+        } else {
+          tr.replaceRange(
+            // end pos of second column
+            tr.mapping.map(thirdColumnPos - 1),
+            // start pos of third column
+            tr.mapping.map(thirdColumnPos + 1),
+            Slice.empty,
+          );
+        }
       } else if (
         node.attrs.layoutType &&
         (node.attrs.layoutType as string).startsWith('three') &&

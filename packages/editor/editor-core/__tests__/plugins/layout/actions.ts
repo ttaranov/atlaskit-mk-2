@@ -30,6 +30,7 @@ describe('layout actions', () => {
           layoutSection({ layoutType: 'three_equal' })(
             layoutColumn(p('')),
             layoutColumn(p('')),
+            layoutColumn(p('')),
           ),
         ),
       );
