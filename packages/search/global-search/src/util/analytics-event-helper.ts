@@ -16,11 +16,11 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
-  nonPrivacySafeAttributes?: object,
+  nonPrivacySafeAttributes?: object | null,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
-    const payload = {
+    const payload: GasPayload = {
       action,
       actionSubject,
       actionSubjectId,
@@ -78,7 +78,7 @@ export function fireTextEnteredEvent(
   query: string,
   searchSessionId: string,
   queryVersion: number,
-  isSendSearchTermsEnabled: boolean,
+  isSendSearchTermsEnabled?: boolean,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
   fireGasEvent(

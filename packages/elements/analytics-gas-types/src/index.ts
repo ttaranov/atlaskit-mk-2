@@ -19,7 +19,7 @@ export type GasPayload = {
     [key: string]: any;
   };
   nonPrivacySafeAttributes?: {
-    query: string;
+    [key: string]: any;
   };
   tags?: Array<string>;
   source: string;
