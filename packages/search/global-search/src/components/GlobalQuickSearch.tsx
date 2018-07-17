@@ -77,8 +77,8 @@ export class GlobalQuickSearch extends React.Component<Props> {
       query,
       searchSessionId,
       this.queryVersion,
-      createAnalyticsEvent,
       isSendSearchTermsEnabled,
+      createAnalyticsEvent,
     );
     this.queryVersion++;
   }

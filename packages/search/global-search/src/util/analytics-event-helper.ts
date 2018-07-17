@@ -78,8 +78,8 @@ export function fireTextEnteredEvent(
   query: string,
   searchSessionId: string,
   queryVersion: number,
-  createAnalyticsEvent?: CreateAnalyticsEventFn,
   isSendSearchTermsEnabled: boolean,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
   fireGasEvent(
     createAnalyticsEvent,
