@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component, type ElementType, type Node } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Modal from '@atlaskit/modal-dialog';
@@ -34,7 +35,7 @@ function makeFnComp(element) {
 function noop() {}
 
 export default class OnboardingModal extends Component<Props> {
-  headerComponent = props => {
+  headerComponent = (props: Props) => {
     const { header: headerElement, heading, image: src } = props;
 
     const imageElement = <Image alt={heading} src={src} />;
@@ -43,7 +44,7 @@ export default class OnboardingModal extends Component<Props> {
 
     return header || image;
   };
-  footerComponent = props => {
+  footerComponent = (props: Props) => {
     const { footer: footerElement, actions: actionList } = props;
 
     const actionsElement = actionList ? (
