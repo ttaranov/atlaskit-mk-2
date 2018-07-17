@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/onboarding",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "Highlight elements of the UI to the user and display a complementary dialog.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
