@@ -29,12 +29,26 @@ const audioItem: FileItem = {
   },
 };
 
-function createFixture(authPromise: Promise<Auth>, collectionName?: string) {
+const audioItemWithNoArtifacts: FileItem = {
+  type: 'file',
+  details: {
+    id: 'some-id',
+    processingStatus: 'succeeded',
+    mediaType: 'audio',
+    artifacts: {},
+  },
+};
+
+function createFixture(
+  authPromise: Promise<Auth>,
+  collectionName?: string,
+  item?: FileItem,
+) {
   const context = createContext({ authPromise });
   const el = mount(
     <AudioViewer
       context={context}
-      item={audioItem}
+      item={item || audioItem}
       collectionName={collectionName}
       previewCount={0}
     />,
@@ -80,6 +94,21 @@ describe('Audio viewer', () => {
       'Try downloading the file to view it',
     );
     expect(errorMessage.find(Button)).toHaveLength(1);
+  });
+
+  it('shows error if no audio artifacts found', async () => {
+    const authPromise: any = new Promise(() => {});
+    const { el } = createFixture(
+      authPromise,
+      undefined,
+      audioItemWithNoArtifacts,
+    );
+    el.update();
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      "We couldn't generate a preview for this file",
+    );
   });
 
   describe('cover', () => {
