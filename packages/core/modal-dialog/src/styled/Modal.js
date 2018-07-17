@@ -104,6 +104,7 @@ export const Dialog = styled.div`
   height: ${dialogHeight};
   ${flexMaxHeightIEFix};
   outline: 0;
+  overflow: hidden;
 `;
 
 PositionerAbsolute.displayName = 'PositionerAbsolute';

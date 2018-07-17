@@ -21,7 +21,7 @@ export const Heading = styled.h4`
 
 export const Image = styled.img`
   height: auto;
-  max-width: 100%;
+  width: 100%;
 `;
 export const Actions = styled.div`
   display: flex;

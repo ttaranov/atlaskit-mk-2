@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="450px" height="195px" viewBox="0 0 450 195" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>Screen 1@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="450" height="166.304348"></rect>
+        <linearGradient x1="-0.446428571%" y1="50%" x2="100.446429%" y2="50%" id="linearGradient-3">
+            <stop stop-color="#00C7E5" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#14CCE7" stop-opacity="0.17" offset="10%"></stop>
+            <stop stop-color="#33D2EA" stop-opacity="0.42" offset="26%"></stop>
+            <stop stop-color="#4CD8ED" stop-opacity="0.63" offset="42%"></stop>
+            <stop stop-color="#5FDCEF" stop-opacity="0.79" offset="56%"></stop>
+            <stop stop-color="#6DDFF1" stop-opacity="0.9" offset="69%"></stop>
+            <stop stop-color="#76E1F2" stop-opacity="0.98" offset="81%"></stop>
+            <stop stop-color="#79E2F2" offset="90%"></stop>
+            <stop stop-color="#B3F5FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-0.390625%" y1="-50%" x2="100.390625%" y2="-50%" id="linearGradient-4">
+            <stop stop-color="#00C7E5" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#14CCE7" stop-opacity="0.17" offset="10%"></stop>
+            <stop stop-color="#33D2EA" stop-opacity="0.42" offset="26%"></stop>
+            <stop stop-color="#4CD8ED" stop-opacity="0.63" offset="42%"></stop>
+            <stop stop-color="#5FDCEF" stop-opacity="0.79" offset="56%"></stop>
+            <stop stop-color="#6DDFF1" stop-opacity="0.9" offset="69%"></stop>
+            <stop stop-color="#76E1F2" stop-opacity="0.98" offset="81%"></stop>
+            <stop stop-color="#79E2F2" offset="90%"></stop>
+            <stop stop-color="#B3F5FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50.0029259%" y1="55.5555556%" x2="50.0029259%" y2="-47.3189964%" id="linearGradient-5">
+            <stop stop-color="#00C7E5" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#14CCE7" stop-opacity="0.17" offset="10%"></stop>
+            <stop stop-color="#33D2EA" stop-opacity="0.42" offset="26%"></stop>
+            <stop stop-color="#4CD8ED" stop-opacity="0.63" offset="42%"></stop>
+            <stop stop-color="#5FDCEF" stop-opacity="0.79" offset="56%"></stop>
+            <stop stop-color="#6DDFF1" stop-opacity="0.9" offset="69%"></stop>
+            <stop stop-color="#76E1F2" stop-opacity="0.98" offset="81%"></stop>
+            <stop stop-color="#79E2F2" offset="90%"></stop>
+            <stop stop-color="#B3F5FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-0.666666667%" y1="-50%" x2="100.666667%" y2="-50%" id="linearGradient-6">
+            <stop stop-color="#00C7E5" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#14CCE7" stop-opacity="0.17" offset="10%"></stop>
+            <stop stop-color="#33D2EA" stop-opacity="0.42" offset="26%"></stop>
+            <stop stop-color="#4CD8ED" stop-opacity="0.63" offset="42%"></stop>
+            <stop stop-color="#5FDCEF" stop-opacity="0.79" offset="56%"></stop>
+            <stop stop-color="#6DDFF1" stop-opacity="0.9" offset="69%"></stop>
+            <stop stop-color="#76E1F2" stop-opacity="0.98" offset="81%"></stop>
+            <stop stop-color="#79E2F2" offset="90%"></stop>
+            <stop stop-color="#B3F5FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-0.666666667%" y1="-6400%" x2="100.666667%" y2="-6400%" id="linearGradient-7">
+            <stop stop-color="#00C7E5" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#14CCE7" stop-opacity="0.17" offset="10%"></stop>
+            <stop stop-color="#33D2EA" stop-opacity="0.42" offset="26%"></stop>
+            <stop stop-color="#4CD8ED" stop-opacity="0.63" offset="42%"></stop>
+            <stop stop-color="#5FDCEF" stop-opacity="0.79" offset="56%"></stop>
+            <stop stop-color="#6DDFF1" stop-opacity="0.9" offset="69%"></stop>
+            <stop stop-color="#76E1F2" stop-opacity="0.98" offset="81%"></stop>
+            <stop stop-color="#79E2F2" offset="90%"></stop>
+            <stop stop-color="#B3F5FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="-1.79937022%" y1="-6400%" x2="101.79937%" y2="-6400%" id="linearGradient-8">
+            <stop stop-color="#00C7E5" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#14CCE7" stop-opacity="0.17" offset="10%"></stop>
+            <stop stop-color="#33D2EA" stop-opacity="0.42" offset="26%"></stop>
+            <stop stop-color="#4CD8ED" stop-opacity="0.63" offset="42%"></stop>
+            <stop stop-color="#5FDCEF" stop-opacity="0.79" offset="56%"></stop>
+            <stop stop-color="#6DDFF1" stop-opacity="0.9" offset="69%"></stop>
+            <stop stop-color="#76E1F2" stop-opacity="0.98" offset="81%"></stop>
+            <stop stop-color="#79E2F2" offset="90%"></stop>
+            <stop stop-color="#B3F5FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50.0010108%" y1="100.5935%" x2="50.0010108%" y2="1.4059568%" id="linearGradient-9">
+            <stop stop-color="#091E42" stop-opacity="0.1" offset="0%"></stop>
+            <stop stop-color="#091E42" offset="77%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0.00010989011%" x2="50%" y2="100.00011%" id="linearGradient-10">
+            <stop stop-color="#FFC400" offset="23%"></stop>
+            <stop stop-color="#FFAB00" offset="89%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Screen-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Background">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Rectangle-path" fill="#00B8D9" fill-rule="nonzero" xlink:href="#path-1"></use>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="0 36.6847826 0 35.7065217 450 35.7065217 450 36.6847826"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="0 67.9891304 0 67.0108696 450 67.0108696 450 67.9891304"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="0 99.2934783 0 98.3152174 450 98.3152174 450 99.2934783"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="0 130.597826 0 129.619565 450 129.619565 450 130.597826"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="302.771739 0 303.75 0 303.75 166.304348 302.771739 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="271.467391 0 272.445652 0 272.445652 166.304348 271.467391 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="240.163043 0 241.141304 0 241.141304 166.304348 240.163043 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="208.858696 0 209.836957 0 209.836957 166.304348 208.858696 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="177.554348 0 178.532609 0 178.532609 166.304348 177.554348 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="146.25 0 147.228261 0 147.228261 166.304348 146.25 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="427.98913 0 428.967391 0 428.967391 166.304348 427.98913 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="396.684783 0 397.663043 0 397.663043 166.304348 396.684783 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="365.380435 0 366.358696 0 366.358696 166.304348 365.380435 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="334.076087 0 335.054348 0 335.054348 166.304348 334.076087 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="302.771739 0 303.75 0 303.75 166.304348 302.771739 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="146.25 0 147.228261 0 147.228261 166.304348 146.25 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="114.945652 0 115.923913 0 115.923913 166.304348 114.945652 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="83.6413043 0 84.6195652 0 84.6195652 166.304348 83.6413043 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="52.3369565 0 53.3152174 0 53.3152174 166.304348 52.3369565 166.304348"></polygon>
+            <polygon id="Shape" fill="#00C7E5" fill-rule="nonzero" mask="url(#mask-2)" points="21.0326087 0 22.0108696 0 22.0108696 166.304348 21.0326087 166.304348"></polygon>
+            <path d="M210.326087,131.086957 L210.326087,167.282609 L115.434783,167.282609 C114.894504,167.282609 114.456522,166.844626 114.456522,166.304348 C114.456522,165.764069 114.894504,165.326087 115.434783,165.326087 L208.369565,165.326087 L208.369565,129.130435 L334.565217,129.130435 C335.105496,129.130435 335.543478,129.568417 335.543478,130.108696 C335.543478,130.648974 335.105496,131.086957 334.565217,131.086957 L210.326087,131.086957 Z" id="Shape" fill="url(#linearGradient-3)" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            <path d="M272.934783,37.173913 L272.934783,68.4782609 L146.73913,68.4782609 C146.198852,68.4782609 145.76087,68.0402786 145.76087,67.5 C145.76087,66.9597214 146.198852,66.5217391 146.73913,66.5217391 L270.978261,66.5217391 L270.978261,35.2173913 L397.173913,35.2173913 C397.714192,35.2173913 398.152174,35.6553736 398.152174,36.1956522 C398.152174,36.7359307 397.714192,37.173913 397.173913,37.173913 L272.934783,37.173913 Z" id="Shape" fill="url(#linearGradient-4)" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            <path d="M83.1521739,-0.591847826 C83.1521739,-1.13212639 83.5901562,-1.5701087 84.1304348,-1.5701087 C84.6707133,-1.5701087 85.1086957,-1.13212639 85.1086957,-0.591847826 L85.1086957,68.6201087 L0.542934783,68.6201087 C0.00265622299,68.6201087 -0.435326087,68.1821264 -0.435326087,67.6418478 C-0.435326087,67.1015693 0.00265622299,66.663587 0.542934783,66.663587 L83.1521739,66.663587 L83.1521739,-0.591847826 Z" id="Shape" fill="url(#linearGradient-5)" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            <path d="M364.891304,68.4782609 L303.26087,68.4782609 C302.720591,68.4782609 302.282609,68.0402786 302.282609,67.5 C302.282609,66.9597214 302.720591,66.5217391 303.26087,66.5217391 L366.847826,66.5217391 L366.847826,97.826087 L450,97.826087 C450.540279,97.826087 450.978261,98.2640693 450.978261,98.8043478 C450.978261,99.3446264 450.540279,99.7826087 450,99.7826087 L364.891304,99.7826087 L364.891304,68.4782609 Z" id="Shape" fill="url(#linearGradient-6)" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            <path d="M0.542934783,99.7826087 C0.00265622299,99.7826087 -0.435326087,99.3446264 -0.435326087,98.8043478 C-0.435326087,98.2640693 0.00265622299,97.826087 0.542934783,97.826087 L147.282065,97.826087 C147.822344,97.826087 148.260326,98.2640693 148.260326,98.8043478 C148.260326,99.3446264 147.822344,99.7826087 147.282065,99.7826087 L0.542934783,99.7826087 Z" id="Shape" fill="url(#linearGradient-7)" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            <path d="M0.542934783,131.086957 C0.00265622299,131.086957 -0.435326087,130.648974 -0.435326087,130.108696 C-0.435326087,129.568417 0.00265622299,129.130435 0.542934783,129.130435 L54.9097826,129.130435 C55.4500612,129.130435 55.8880435,129.568417 55.8880435,130.108696 C55.8880435,130.648974 55.4500612,131.086957 54.9097826,131.086957 L0.542934783,131.086957 Z" id="Shape" fill="url(#linearGradient-8)" fill-rule="nonzero" mask="url(#mask-2)"></path>
+        </g>
+        <g id="Spot" transform="translate(168.000000, 66.000000)" fill-rule="nonzero">
+            <path d="M14.5788462,68.6192308 L14.6336538,8.16634615 C6.85096154,8.16634615 0.219230769,14.4692308 0.219230769,22.2519231 L0.219230769,82.7048077 C0.219230769,74.9221154 6.85096154,68.6192308 14.5788462,68.6192308 Z" id="Shape" fill="#2684FF"></path>
+            <path d="M99.6403846,27.4586538 L14.5788462,27.4586538 L14.5788462,68.6192308 C6.79615385,68.4548077 0.383653846,74.6480769 0.219230769,82.4307692 C0.0548076923,90.2134615 6.24807692,96.6259615 14.0307692,96.7903846 C14.1951923,96.7903846 14.4144231,96.7903846 14.5788462,96.7903846 L99.5855769,96.7903846 C107.368269,96.7903846 113.671154,103.093269 113.671509,110.875962 L113.671154,41.5442308 C113.725962,33.7615385 107.423077,27.4586538 99.6403846,27.4586538 Z" id="_Clipping_Path_2" fill="#0065FF"></path>
+            <path d="M100.024038,47.6826923 C107.039423,47.6826923 112.849038,52.9990385 113.671154,59.7951923 L113.671154,55.6298077 C111.369231,50.3134615 106.107692,46.5865385 100.024038,46.5865385 L99.9144231,46.5865385 L99.9144231,27.4586538 L98.8182692,27.4586538 L98.8182692,46.5865385 L71.6884615,46.5865385 L71.6884615,27.4586538 L70.5923077,27.4586538 L70.5923077,46.5865385 L42.6951923,46.5865385 L42.6951923,27.4586538 L41.5990385,27.4586538 L41.5990385,46.5865385 L14.5788462,46.5865385 L14.5788462,47.6826923 L41.5990385,47.6826923 L41.5990385,76.0182692 L1.97307692,76.0182692 C1.75384615,76.3471154 1.58942308,76.7307692 1.425,77.1144231 L41.5990385,77.1144231 L41.5990385,96.7903846 L42.6951923,96.7903846 L42.6951923,77.1144231 L70.5923077,77.1144231 L70.5923077,96.7903846 L71.6884615,96.7903846 L71.6884615,77.1144231 L98.8182692,77.1144231 L98.8182692,96.7903846 L99.9144231,96.7903846 L99.9144231,77.1144231 L99.9692308,77.1144231 C107.149038,77.1144231 113.068269,82.7048077 113.671154,89.7201923 L113.671154,85.1711538 C111.424038,79.8 106.107692,76.0182692 99.9692308,76.0182692 L99.9144231,76.0182692 L99.9144231,47.6826923 L100.024038,47.6826923 Z M70.5923077,76.0182692 L42.6951923,76.0182692 L42.6951923,47.6826923 L70.5923077,47.6826923 L70.5923077,76.0182692 Z M98.8182692,76.0182692 L71.6884615,76.0182692 L71.6884615,47.6826923 L98.8182692,47.6826923 L98.8182692,76.0182692 Z" id="Shape" fill="#4C9AFF"></path>
+            <path d="M99.3663462,96.7903846 L99.3663462,124.961538 C107.149038,125.125962 113.561538,118.932692 113.725962,111.15 C113.890385,103.367308 107.697115,96.9548077 99.9144231,96.7903846 C99.6951923,96.7903846 99.5307692,96.7903846 99.3663462,96.7903846 Z" id="Shape" fill="#0052CC"></path>
+            <path d="M13.0990385,96.7355769 L14.5788462,96.7355769 L14.5788462,68.6192308 C6.79615385,68.4548077 0.383653846,74.6480769 0.219230769,82.4307692 C0.0548076923,89.8846154 5.75480769,96.0778846 13.0990385,96.7355769 Z" id="Shape" fill="url(#linearGradient-9)" opacity="0.15"></path>
+            <polygon id="Shape" fill="#091E42" opacity="0.14" points="74.5384615 96.8451923 83.0336538 88.35 72.3461538 77.6625 70.6471154 75.9634615 49.7105769 96.8451923"></polygon>
+            <g id="Group" transform="translate(24.115385, 0.000000)">
+                <polygon id="Shape" fill="#091E42" opacity="0.14" points="2.24711538 27.4586538 1.425 29.2673077 0.493269231 48.3951923 5.64519231 42.75 13.4278846 34.2548077 16.4423077 27.4586538"></polygon>
+                <polygon id="_Path_" fill="#FEEFD3" points="0.493269231 48.3951923 17.5932692 39.8451923 8.22115385 30.8567308"></polygon>
+                <polygon id="Shape" fill="#0052CC" points="3.5625 41.4346154 0.493269231 48.3951923 7.28942308 44.9971154"></polygon>
+                <polygon id="Shape" fill="#FDC150" points="8.22115385 30.8567308 17.5932692 39.8451923 45.9836538 11.2355769 36.5567308 2.30192308"></polygon>
+                <polygon id="Shape" fill="#FFD740" points="12.8798077 35.3509615 17.5932692 39.8451923 45.9836538 11.2355769 41.2701923 6.79615385"></polygon>
+                <polygon id="Shape" fill="#FCB123" points="8.22115385 30.8567308 12.8798077 35.3509615 41.2701923 6.74134615 36.5567308 2.30192308"></polygon>
+                <path d="M44.2298077,13.0990385 L34.8028846,4.16538462 L36.8307692,2.02788462 C39.2971154,-0.548076923 43.4076923,-0.657692308 45.9836538,1.80865385 C48.5596154,4.275 48.6692308,8.38557692 46.2028846,10.9615385 L44.2298077,13.0990385 Z" id="Shape" fill="#0052CC"></path>
+            </g>
+            <g id="Group" opacity="0.7" transform="translate(20.278846, 33.980769)" fill="#B2D4FF">
+                <circle id="Oval" transform="translate(8.277189, 28.165289) rotate(-13.285796) translate(-8.277189, -28.165289) " cx="8.27718923" cy="28.1652894" r="6.4670693"></circle>
+                <circle id="Oval" transform="translate(35.901784, 28.170841) rotate(-67.499572) translate(-35.901784, -28.170841) " cx="35.9017843" cy="28.1708414" r="6.46747099"></circle>
+                <circle id="Oval" cx="64.7826923" cy="28.1711538" r="6.46730769"></circle>
+                <circle id="Oval" cx="64.7826923" cy="19.6211538" r="1"></circle>
+                <circle id="Oval" cx="41.7634615" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="61.4942308" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="38.475" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="64.7826923" cy="6.46730769" r="1"></circle>
+                <circle id="Oval" cx="64.7826923" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="64.7826923" cy="9.75576923" r="1"></circle>
+                <circle id="Oval" cx="64.7826923" cy="13.0442308" r="1"></circle>
+                <circle id="Oval" cx="64.7826923" cy="16.3326923" r="1"></circle>
+                <circle id="Oval" cx="54.9173077" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="48.3403846" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="45.0519231" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="58.2057692" cy="3.17884615" r="1"></circle>
+                <circle id="Oval" cx="51.6288462" cy="3.17884615" r="1"></circle>
+                <polygon id="Shape" points="37.4336538 5.09711538 35.5153846 3.17884615 37.4336538 1.26057692 36.6663462 0.493269231 33.9807692 3.17884615 36.6663462 5.86442308"></polygon>
+                <circle id="Oval" cx="28.1163462" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="11.6740385" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="34.6932692" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="24.8278846" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="18.2509615" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="31.4048077" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="14.9625" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="8.27596154" cy="36.3923077" r="1"></circle>
+                <circle id="Oval" cx="8.27596154" cy="46.2576923" r="1"></circle>
+                <circle id="Oval" cx="8.27596154" cy="42.9692308" r="1"></circle>
+                <circle id="Oval" cx="8.27596154" cy="49.5461538" r="1"></circle>
+                <circle id="Oval" cx="8.27596154" cy="39.6807692" r="1"></circle>
+                <circle id="Oval" cx="21.5394231" cy="52.725" r="1"></circle>
+                <circle id="Oval" cx="8.38557692" cy="52.725" r="1"></circle>
+                <polygon id="Shape" points="36.1182692 50.8067308 38.0365385 52.725 36.1182692 54.6432692 36.8855769 55.4105769 39.5711538 52.725 36.8855769 50.0394231"></polygon>
+                <polygon id="Shape" points="43.9009615 50.4230769 42.4211538 51.9576923 40.8865385 50.4230769 40.1192308 51.1903846 41.5990385 52.725 40.1192308 54.2596154 40.8865385 55.0269231 42.4211538 53.4923077 43.9009615 55.0269231 44.6682692 54.2596154 43.1884615 52.725 44.6682692 51.1903846"></polygon>
+            </g>
+            <g id="Group" transform="translate(46.586538, 72.346154)">
+                <polygon id="Shape" fill="url(#linearGradient-10)" points="51.6836538 12.7153846 12.4961538 51.9576923 1.86346154 41.2701923 41.0509615 2.08269231"></polygon>
+                <rect id="Rectangle-path" fill="#FF8B00" transform="translate(20.611806, 20.783672) rotate(-45.000000) translate(-20.611806, -20.783672) " x="-7.12062072" y="19.5505103" width="55.4648527" height="2.4663225"></rect>
+                <polygon id="Shape" fill="#FF8B00" points="49.0567797 15.3970665 48.2816819 16.1721643 46.4182203 14.3087028 47.1933181 13.5336049"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="46.9740874 17.4797588 46.1989896 18.2548566 44.335528 16.3913951 45.1106258 15.6162972"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="44.894533 19.5656146 44.1131594 20.3343854 40.7698901 16.9363085 41.5512637 16.1675377"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="42.8144433 21.6509702 42.0278644 22.4144144 40.2192106 20.5509529 41.0057894 19.7875087"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="40.7260104 23.7278357 39.9509126 24.5029335 38.0874511 22.639472 38.8625489 21.8643742"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="38.646456 25.8136915 37.8650824 26.5824623 34.5218132 23.1843854 35.3031868 22.4156146"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="36.5663663 27.8990471 35.7797875 28.6624913 33.9711337 26.7990298 34.7577125 26.0355856"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="34.483674 29.9817395 33.6970952 30.7451836 31.8884414 28.8817221 32.6750202 28.1182779"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="32.3952412 32.0037972 31.6201434 32.7788951 28.2768742 29.4356258 29.051972 28.660528"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="30.3125489 34.0864896 29.5374511 34.8615874 27.7287972 33.0529335 28.5038951 32.2778357"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="28.2298566 36.1691819 27.4547588 36.9442797 25.6461049 35.1356258 26.4212028 34.360528"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="26.1471643 38.2518742 25.3720665 39.026972 22.0287972 35.6837028 22.8038951 34.9086049"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="24.064472 40.3345665 23.2893742 41.1096643 21.4807203 39.3010104 22.2558181 38.5259126"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="21.9817797 42.4172588 21.2066819 43.1923566 19.398028 41.3837028 20.1731258 40.6086049"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="19.8990874 44.4999511 19.1239896 45.2750489 15.7807203 41.9317797 16.5558181 41.1566819"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="17.8163951 46.5826434 17.0412972 47.3577412 15.2326434 45.5490874 16.0077412 44.7739896"></polygon>
+                <polygon id="Shape" fill="#FF8B00" points="15.7337028 48.6653357 14.9586049 49.4404335 13.1499511 47.6317797 13.9250489 46.8566819"></polygon>
+                <polygon id="Shape" fill="#FFAB00" points="43.3492605 4.38044959 44.1238165 5.15608887 4.88150876 44.3435889 4.10695278 43.5679496"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
