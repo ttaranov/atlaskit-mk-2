@@ -11,7 +11,7 @@
 // take a while depending on the number of threads executing.
 
 // increase this time out to handle queuing on browserstack
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 3 * 1200e3;
 
 const webdriverio = require('webdriverio');
 
