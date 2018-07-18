@@ -2,13 +2,9 @@ import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { Outcome } from '../../domain';
-import { ImageWrapper } from '../../styled';
 import { Spinner } from '../../loading';
-import { ZoomControls } from '../../zoomControls';
-import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
-import { ZoomLevel } from '../../domain/zoomLevel';
 import { InteractiveImg } from './interactive-img';
 
 export type ObjectUrl = string;
@@ -23,12 +19,10 @@ export type ImageViewerProps = {
 
 export type ImageViewerState = {
   objectUrl: Outcome<ObjectUrl, MediaViewerError>;
-  zoomLevel: ZoomLevel;
 };
 
 const initialState: ImageViewerState = {
   objectUrl: { status: 'PENDING' },
-  zoomLevel: new ZoomLevel(),
 };
 
 export class ImageViewer extends React.Component<
@@ -52,26 +46,14 @@ export class ImageViewer extends React.Component<
     }
   }
 
-  private onZoomChange = (zoomLevel: ZoomLevel) => {
-    this.setState({ zoomLevel });
-  };
-
   render() {
-    const { objectUrl, zoomLevel } = this.state;
+    const { objectUrl } = this.state;
     const { onClose } = this.props;
     switch (objectUrl.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return (
-          <ImageWrapper onClick={closeOnDirectClick(onClose)}>
-            <InteractiveImg src={objectUrl.data} zoomLevel={zoomLevel} />
-            <ZoomControls
-              zoomLevel={this.state.zoomLevel}
-              onChange={this.onZoomChange}
-            />
-          </ImageWrapper>
-        );
+        return <InteractiveImg src={objectUrl.data} onClose={onClose} />;
       case 'FAILED':
         return (
           <ErrorMessage error={objectUrl.err}>
