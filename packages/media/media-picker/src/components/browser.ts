@@ -46,9 +46,7 @@ export class Browser extends LocalUploadComponent {
   }
 
   private removeEvents() {
-    if (this.config.useNewUploadService) {
-      this.browseElement.removeEventListener('change', this.onFilePicked);
-    }
+    this.browseElement.removeEventListener('change', this.onFilePicked);
   }
 
   private onFilePicked = () => {

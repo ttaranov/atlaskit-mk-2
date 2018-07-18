@@ -65,14 +65,14 @@ export const tenantAuth = (context: () => MockContext) => (
         'content-type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify(<Auth>{
-        token: token,
-        clientId: clientId,
+        token,
+        clientId,
         baseUrl: userAuthProviderBaseURL,
       }),
     };
     context().tenantContext.auth = {
-      clientId: clientId,
-      token: token,
+      clientId,
+      token,
       baseUrl: userAuthProviderBaseURL,
     };
     fillInResponse(res, resdata);

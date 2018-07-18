@@ -1,3 +1,4 @@
+import { Auth } from '@atlaskit/media-core';
 import { MockRequest, MockResponse } from 'xhr-mock';
 import { exactMatch, fillInResponse, MockContext } from '../';
 import { userAuthProviderBaseURL } from '../../userAuthProvider';
@@ -34,11 +35,15 @@ export const userAuth = (context: () => MockContext) => (
         'content-length': '678',
         'content-type': 'application/json; charset=utf-8',
       },
-      body: JSON.stringify({ token: token, clientId: clientId }),
+      body: JSON.stringify(<Auth>{
+        token,
+        clientId,
+        baseUrl: userAuthProviderBaseURL,
+      }),
     };
     context().userContext.auth = {
-      clientId: clientId,
-      token: token,
+      clientId,
+      token,
       baseUrl: userAuthProviderBaseURL,
     };
     fillInResponse(res, resdata);

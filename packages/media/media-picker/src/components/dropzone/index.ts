@@ -59,10 +59,6 @@ export class Dropzone extends LocalUploadComponent<
       });
   }
 
-  private addDropzone() {
-    this.container.addEventListener('drop', this.onFileDropped);
-  }
-
   private readonly onFileDropped = (dragEvent: DragEvent) => {
     dragEvent.preventDefault();
     dragEvent.stopPropagation();
@@ -76,6 +72,10 @@ export class Dropzone extends LocalUploadComponent<
     this.container.removeEventListener('dragover', this.onDragOver, false);
     this.container.removeEventListener('dragleave', this.onDragLeave, false);
     this.removeDropzone();
+  }
+
+  private addDropzone() {
+    this.container.addEventListener('drop', this.onFileDropped);
   }
 
   private removeDropzone() {

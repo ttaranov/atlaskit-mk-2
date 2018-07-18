@@ -30,7 +30,11 @@ describe('WsConnection', () => {
     jest.runTimersToTime(30 * 1000);
 
     expect(ws).toHaveBeenCalledTimes(1);
-    expect(ws.mock.calls[0][0]).toEqual(auth);
+    expect(ws).toHaveBeenCalledWith(
+      auth,
+      expect.any(Function),
+      expect.any(Function),
+    );
   });
 
   it('should make only 4 calls to Ws constructor with 1 second interval if it returns successfully only on the fourth call', () => {

@@ -1,8 +1,6 @@
 import { md } from '@atlaskit/docs';
 
 export default md`
-
-``
   # Documentation
 
   ## Table of contents
@@ -39,7 +37,7 @@ export default md`
     token: 'your-generated-token',
     baseUrl: 'https://media-api.atlassian.io'
   });
-  
+
   const context = ContextFactory.create({authProvider});
 
   const browser = MediaPicker('browser', context);
@@ -50,53 +48,54 @@ export default md`
   browser.browse();
   ~~~
 
-  This little app will let the user browse a file on his hard drive and upload it by clicking the button. 
-  The upload-end event provides the file selected/uploaded, with a new public id. 
+  This little app will let the user browse a file on his hard drive and upload it by clicking the button.
+  The upload-end event provides the file selected/uploaded, with a new public id.
   You can read more detailed documentation of the MediaPickerBrowser component below.
 
   ---
+
   ## Arguments
-  
+
   There are two required and 1 optional arguments:
-  ~~~javascript
+
+  ~~~~javascript
   const browser = MediaPicker(typeOfPicker, context, config);
   ~~
 
   ### Type of picker
-  
+
   First argument is a <_string_>. It defined what kind of picker will be created:
-  
+
   - **binary**: allows you to upload object of type File
   - **browser**: will open browser default file dialog for user to choose file from
   - **clipboard**: allows user to paste a file from clipboard
   - **dropzone**: allows user to drag and drop a file
   - **popup**: will open a custom rich user experience for picking file from multiple sources
-  
+
   ### Context object
-  
+
   Second argument is all about providing authentication. To create object of this type special factory
   needs to be used:
-  
+
   ~~~javascript
   const context = ContextFactory.create({
     authProvider, // Required property. See bellow
     userAuthProvider, // Optional property. Required if popup type is chosen.
     cacheSize  // Optional property. Number of items cached. Default ios 200
   });
-  ~~~
-  
+  ~~~~
+
   authProvider and userAuthProvider are of type <_[AuthProvider](./authProvider.md)_>
-  
+
   ### Config object
-   
+
   Third is an optional parameter where you can configure some of the parameters:
-  
+
   ---
-  
 
   ## Component creation
 
-  All MediaPicker components are created the same way. The first parameter is always the name of the component, 
+  All MediaPicker components are created the same way. The first parameter is always the name of the component,
   the second is the general MediaPicker context and the third is the component-specific config
 
   ~~~javascript
@@ -105,12 +104,12 @@ export default md`
   });
   ~~~
 
-  Please note that you don't need to specify the **new** keyword before creating a component. 
+  Please note that you don't need to specify the **new** keyword before creating a component.
   MediaPicker will do it internally.
 
   #### Typescript
 
-  MediaPicker is fully written in Typescript, and it exports all its public types and interfaces. 
+  MediaPicker is fully written in Typescript, and it exports all its public types and interfaces.
   We refer to some of those objects in the docs, if you want to know more about those please have a look into:
 
   * media-picker/src/domain
@@ -128,7 +127,7 @@ export default md`
 
   #### upload-preview-update _{file: MediaFile, preview: Preview}_
 
-  Emitted when MediaPicker has a preview. Will not be raised if a preview could not be generated, 
+  Emitted when MediaPicker has a preview. Will not be raised if a preview could not be generated,
   therefore preview will always have a value.
 
   #### upload-status-update _{file: MediaFile, progress: MediaProgress}_
@@ -159,7 +158,7 @@ export default md`
 
   Allows user to drag & drop files into the page. Has a design first seen in [https://enso.me/](Enso).
 
-  ![alt text](./dropzone.png "Dropzone")
+  ![alt text](./dropzone.png 'Dropzone')
 
   #### Usage
 
@@ -169,7 +168,7 @@ export default md`
       Promise.resolve({
         clientId: 'your-app-client-id',
         token: 'your-generated-token',
-        baseUrl: 'https://media-api.atlassian.io'
+        baseUrl: 'https://media-api.atlassian.io',
       }),
   });
 
@@ -187,7 +186,7 @@ export default md`
   **container?** <_HTML Element | JQuery Selector_> —
   Element where the popup should be placed. The default value is the document Body.
 
-  **headless?** <_boolean_> — If true, no UI will be shown. The integrator should listen 
+  **headless?** <_boolean_> — If true, no UI will be shown. The integrator should listen
   to drag-enter and drag-leave events to show custom UI.
 
   #### Methods
@@ -198,7 +197,7 @@ export default md`
 
   #### Dropzone Events
 
-  **drag-enter** <_{ length: number }_> — Emitted when user dragged file over the container and 
+  **drag-enter** <_{ length: number }_> — Emitted when user dragged file over the container and
   contains the number of dragged files
 
   > Special cases
@@ -229,8 +228,8 @@ export default md`
       Promise.resolve({
         clientId: 'your-app-client-id',
         token: 'your-generated-token',
-        baseUrl: 'https://media-api.atlassian.io'
-      })
+        baseUrl: 'https://media-api.atlassian.io',
+      }),
   });
 
   const clipboard = MediaPicker('clipboard', context);
@@ -252,7 +251,7 @@ export default md`
 
   Opens native Operating System file browser window.
 
-  ![alt text](./browser.png "Browser")
+  ![alt text](./browser.png 'Browser')
 
   #### Usage
 
@@ -334,13 +333,13 @@ export default md`
 
   Lets user pick files from their local computer or cloud storage.
 
-  The popup component requires userAuthProvider (in addition to the authProvider because it displays 
-  files from and uploads files to the user's recent file collection). You will be need to cache this 
-  token returned by userAuthProvider because the popup will call this provider on every request 
-  to the media api concerning the users collection and cloud accounts. You cannot use the popup component 
+  The popup component requires userAuthProvider (in addition to the authProvider because it displays
+  files from and uploads files to the user's recent file collection). You will be need to cache this
+  token returned by userAuthProvider because the popup will call this provider on every request
+  to the media api concerning the users collection and cloud accounts. You cannot use the popup component
   if you can't obtain a token for the user's collection - use the Browser component instead.
 
-  ![alt text](./popup.png "Popup")
+  ![alt text](./popup.png 'Popup')
 
   #### Usage
 
@@ -385,4 +384,4 @@ export default md`
   #### Special events
 
   **closed** - emitted when the popup its disappears, this can happen when its either closed or submitted.
-```;
+`;

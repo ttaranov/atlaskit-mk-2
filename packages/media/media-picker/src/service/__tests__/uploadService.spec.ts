@@ -275,10 +275,7 @@ describe('UploadService', () => {
       );
 
       uploadService1.addFiles([file as any]);
-      await Promise.resolve(); // Next tick
       uploadService2.addFiles([file as any]);
-      await Promise.resolve(); // Next tick
-      await Promise.resolve(); // Next tick
 
       await Promise.all([promise1, promise2]);
 
