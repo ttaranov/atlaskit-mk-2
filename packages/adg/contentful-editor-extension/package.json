@@ -1,5 +1,5 @@
 {
-  "name": "contentful-editor-extension",
+  "name": "ce",
   "version": "0.0.0",
   "description": "editor extension for contentful",
   "license": "Apache-2.0",
@@ -26,6 +26,7 @@
     "@atlaskit/editor-common": "^13.0.2",
     "@atlaskit/editor-confluence-transformer": "^5.0.1",
     "@atlaskit/editor-core": "^76.0.2",
+    "@atlaskit/editor-json-transformer": "^4.0.1",
     "@atlaskit/editor-markdown-transformer": "^2.0.1",
     "@atlaskit/icon": "^13.1.1",
     "@atlaskit/media-core": "^22.0.0",

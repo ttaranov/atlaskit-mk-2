@@ -1,7 +1,6 @@
 import React from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import examples from '../../examples';
-console.log(examples);
 
 export const customInsertMenuItems = examples.map(({ key, component }) => ({
   content: key,
@@ -16,7 +15,7 @@ export const customInsertMenuItems = examples.map(({ key, component }) => ({
         extensionType: 'com.ajay.test',
         extensionKey: 'block-eh',
         parameters: {
-          tag: component,
+          tag: key,
           props: {
             name: 'xlarge',
             size: 'xlarge',
