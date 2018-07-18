@@ -32,6 +32,7 @@ const resultBoxStyle = {
 type State = {
   validateOnChange: boolean,
   eventResult: string,
+  title: string,
 };
 
 // CUSTOM VALIDATOR EXAMPLES
@@ -100,6 +101,7 @@ export default class ValidatorsExample extends PureComponent<void, State> {
     validateOnChange: true,
     eventResult:
       'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',
+    title: '',
   };
 
   formRef: any;
@@ -111,7 +113,9 @@ export default class ValidatorsExample extends PureComponent<void, State> {
     console.log('onSubmitHandler');
     // Do any custom data handling & validation
 
-    const validatedForm = this.formRef.validate();
+    const validateResult = this.formRef.validate();
+    console.log(this.formRef.getForm().fields.invalidFields.length);
+    console.log(validateResult);
     // Now call submit when your done
     this.formRef.submit();
   };
@@ -143,6 +147,9 @@ export default class ValidatorsExample extends PureComponent<void, State> {
     this.formRef.validate();
   };
 
+  onStatelessChangeHandler = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ title: event.currentTarget.value });
+  };
   render() {
     return (
       <div
@@ -235,18 +242,38 @@ export default class ValidatorsExample extends PureComponent<void, State> {
             </Field>
 
             <Field
-              label="Send to an Atlassian"
+              label="Name"
+              validateOnChange
+              description="validateOnChange using stateless component"
+              validators={[
+                <Validator
+                  func={value => value.trim && !!value.trim()}
+                  invalid="This can't be empty"
+                  valid="Thanks!"
+                />,
+              ]}
+            >
+              <FieldText
+                name="title"
+                id="title"
+                value={this.state.title}
+                onChange={this.onChangeHandler}
+              />
+            </Field>
+
+            <Field
+              label="Atlassian Email"
               helperText="Uses a custom validator & isEmail"
               validators={[
                 <Validator
                   func={isEmail}
                   invalid="Must be a valid email."
-                  valid=""
+                  valid="Valid Email"
                 />,
                 <Validator
                   func={isAtlassian}
                   invalid="And it must be an Atlassian address."
-                  valid="Ready to Send"
+                  valid="Atlassian address too!"
                 />,
               ]}
             >
