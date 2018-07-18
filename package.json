@@ -56,7 +56,7 @@
     "start:jira": "                          yarn run website:start **/packages/jira/**",
     "start:marketplace": "                   yarn run website:start **/packages/marketplace/**",
     "start:media": "                         yarn run website:start **/packages/media/**",
-    "start:people-and-teams": "                     yarn run website:start **/packages/people-and-teams/**",
+    "start:people-and-teams": "              yarn run website:start **/packages/people-and-teams/**",
     "start:pipelines": "                     yarn run website:start **/packages/pipelines/**",
     "start:purchasing": "                    yarn run website:start **/packages/purchasing/**",
     "start:search": "                        yarn run website:start **/packages/search/**",
