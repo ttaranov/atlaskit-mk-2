@@ -53,6 +53,17 @@ const isSelectionInsideLink = (state: EditorState | Transaction): boolean => {
     : false;
 };
 
+const isSelectionAroundLink = (state: EditorState | Transaction): boolean => {
+  const { $from, $to } = state.selection;
+  const node = $from.nodeAfter;
+  if (node && $from.textOffset === 0 && $to.pos - $from.pos === node.nodeSize) {
+    if (state.doc.type.schema.marks.link.isInSet(node.marks)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const mapTransactionToState = (
   state: LinkToolbarState,
   tr: Transaction,
@@ -145,6 +156,12 @@ const getActiveLinkMark = (state: EditorState | Transaction) => {
     const node = state.doc.nodeAt(pos);
     return node && node.isText ? { node, pos } : undefined;
   }
+  if (isSelectionAroundLink(state)) {
+    const { $from } = state.selection;
+    const pos = $from.pos - $from.textOffset;
+    const node = state.doc.nodeAt(pos);
+    return node && node.isText ? { node, pos } : undefined;
+  }
   return undefined;
 };
 
@@ -198,7 +215,7 @@ export const plugin = (dispatch: Dispatch) =>
           };
         }
 
-        if (!oldState.selection.map(tr.doc, tr.mapping).eq(tr.selection)) {
+        if (tr.selectionSet) {
           state = {
             canInsertLink: canLinkBeCreatedInRange(
               newState.selection.from,

@@ -274,10 +274,19 @@ describe('hyperlink', () => {
         });
       });
 
-      it('should not show the edit toolbar when there is a selection across the link', () => {
-        const { pluginState } = editor(
+      it('should show the edit toolbar when there is a selection across the link', () => {
+        const { editorView, pluginState } = editor(
           doc(p(a({ href: 'google.com' })('{<}link{>}'))),
         );
+        expect(pluginState.activeLinkMark).toEqual({
+          type: InsertStatus.EDIT_LINK_TOOLBAR,
+          pos: 1,
+          node: editorView.state.doc.nodeAt(1),
+        });
+      });
+
+      it('should not show the edit toolbar when there is a selection across a text node', () => {
+        const { pluginState } = editor(doc(p('{<}link{>}')));
         expect(pluginState.activeLinkMark).toBeUndefined();
       });
     });
