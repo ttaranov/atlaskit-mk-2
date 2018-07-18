@@ -14,7 +14,11 @@ type DocProps = {
   match: RouterMatch,
 };
 
-export default function Document({ match: { params: { docId } } }: DocProps) {
+export default function Document({
+  match: {
+    params: { docId },
+  },
+}: DocProps) {
   if (!docId) {
     const found = fs.getFiles(docs.children)[0];
     if (!found) return <FourOhFour />;

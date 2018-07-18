@@ -8,6 +8,8 @@ describe('Renderer - React/Nodes/Image', () => {
 
   it('should render a <img>-tag', () => {
     expect(image.getDOMNode().tagName).to.equal('DIV');
-    expect(image.findWhere(n => n.getDOMNode().tagName === 'IMG').length).to.equal(1);
+    expect(
+      image.findWhere(n => n.getDOMNode().tagName === 'IMG').length,
+    ).to.equal(1);
   });
 });

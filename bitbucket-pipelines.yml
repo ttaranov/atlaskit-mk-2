@@ -38,6 +38,7 @@ pipelines:
               - bolt install --pure-lockfile
               - yarn build
               - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
+              - yarn prettier --no-editorconfig "{packages,build,website}/**/*.{js,ts,tsx}" --list-different
             caches:
               - node
         - step:

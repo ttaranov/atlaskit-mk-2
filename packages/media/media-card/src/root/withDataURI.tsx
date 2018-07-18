@@ -50,10 +50,9 @@ export function withDataURI<TOwnProps>(
   Component: React.ComponentClass<TOwnProps & WithDataURIProps>,
 ): React.ComponentClass<TOwnProps & WithDataURIServiceProps> {
   type WithDataURIImplProps = TOwnProps & WithDataURIServiceProps;
-  class WithDataURIImpl extends React.Component<
-    WithDataURIImplProps,
-    WithDataURIState
-  > implements WithDataURI<TOwnProps> {
+  class WithDataURIImpl
+    extends React.Component<WithDataURIImplProps, WithDataURIState>
+    implements WithDataURI<TOwnProps> {
     state: WithDataURIState = {};
 
     componentDidMount(): void {
