@@ -6,9 +6,9 @@ import InteractionStateManager from '../InteractionStateManager';
 import type { InteractionState } from '../InteractionStateManager/types';
 import { styleReducerNoOp } from '../../theme';
 import ItemPrimitive from './primitives';
-import type { ItemProps } from './types';
+import type { ConnectedItemProps } from './types';
 
-export default class Item extends PureComponent<ItemProps> {
+export default class ConnectedItem extends PureComponent<ConnectedItemProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
     isSelected: false,

@@ -5,15 +5,15 @@ import type { GlobalTheme } from '../../theme/types';
 
 type ItemDataShape = GlobalItemProps & { key?: string };
 
-export type GlobalNavProps = {
-  /** An array of objects to render as GlobalItems at the top of the GlobalNav
+export type ConnectedGlobalNavigationProps = {
+  /** An array of objects to render as GlobalItems at the top of the GlobalNavigation
    * bar. */
-  primaryItems: Array<ItemDataShape>,
+  primaryItems: ItemDataShape[],
   /** An array of objects to render as GlobalItems at the bottom of the
-   * GlobalNav bar. */
-  secondaryItems: Array<ItemDataShape>,
+   * GlobalNavigation bar. */
+  secondaryItems: ItemDataShape[],
 };
 
-export type GlobalNavPrimitiveProps = GlobalNavProps & {
+export type GlobalNavigationProps = GlobalNavigationProps & {
   theme: GlobalTheme,
 };

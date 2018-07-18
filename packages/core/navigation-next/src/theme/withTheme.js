@@ -12,7 +12,7 @@ type State = { theme: GlobalTheme | ProductTheme | void };
 const withTheme = (defaultTheme: GlobalTheme | ProductTheme | void) => (
   WrappedComponent: ComponentType<*>,
 ) => {
-  return class WithTheme extends Component<{}, State> {
+  return class WithTheme extends Component<*, State> {
     static contextTypes = {
       [channel]: PropTypes.object,
     };

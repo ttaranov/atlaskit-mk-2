@@ -156,7 +156,7 @@ const RenderSection = ({ section }: *) => (
           <div
             css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
           >
-            {items.map(({ type: Component, ...props }) => (
+            {items.map(({ type: Component, ...props }: any) => (
               <Component {...props} />
             ))}
           </div>

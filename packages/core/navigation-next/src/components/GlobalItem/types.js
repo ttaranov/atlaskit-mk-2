@@ -41,13 +41,13 @@ export type GlobalItemProps = {
   /** A component which should render the main content of this GlobalItem. There
    * is an assumption that this will typically be an Atlaskit Icon component, so
    * it will be passed `label`, `secondaryColor`, and `size` props. */
-  icon: ComponentType<GlobalItemIconProps>,
+  icon: ?ComponentType<GlobalItemIconProps>,
   /** A label to pass to the `icon` component. */
-  label: string,
+  label?: string,
   /** A handler which will be called when the GlobalItem is clicked. */
-  onClick?: (SyntheticEvent<MouseEvent>) => void,
+  onClick?: (SyntheticEvent<HTMLElement>) => void,
   /** The size of the GlobalItem. */
-  size: Size,
+  size?: Size,
   /** A function which will be passed the default styles object for the Item,
    * and should return a new styles object. Allows you to patch and customise
    * the GlobalItem's appearance. */

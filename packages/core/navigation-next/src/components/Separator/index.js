@@ -1,14 +1,18 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 
 import { withContentTheme } from '../../theme';
-import type { SeparatorProps } from './types';
+import type { ConnectedSeparatorProps, SeparatorProps } from './types';
 
-const Separator = ({ theme }: SeparatorProps) => {
+const SeparatorWithTheme = withContentTheme(({ theme }: SeparatorProps) => {
   const { mode, context } = theme;
   const styles = mode.separator()[context];
   return <div css={styles} />;
-};
+});
 
-export default withContentTheme(Separator);
+export default class Separator extends Component<ConnectedSeparatorProps> {
+  render() {
+    return <SeparatorWithTheme {...this.props} />;
+  }
+}
