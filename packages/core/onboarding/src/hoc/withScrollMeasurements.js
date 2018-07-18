@@ -68,7 +68,7 @@ function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
   const shouldCloneChildren = true;
   const clonedNode = node.cloneNode(shouldCloneChildren);
 
-  clonedNode.style.margin = 0;
+  clonedNode.style.margin = '0';
   clonedNode.style.position = 'static';
   // The target may have other transforms applied. Avoid unintended side effects
   // by zeroing out "translate" rather than applying a value of "none".
