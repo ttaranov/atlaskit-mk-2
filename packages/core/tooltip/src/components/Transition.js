@@ -1,13 +1,12 @@
 // @flow
 /* eslint-disable react/prefer-stateless-function */
 
-import React, { Component, type ComponentType } from 'react';
-import { withRenderTarget } from '@atlaskit/layer-manager';
+import React, { Component, type ComponentType, type Node } from 'react';
 import { Slide } from './Animation';
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 
 type Props = {
-  children: string,
+  children: Node,
   component: ComponentType<*>,
   immediatelyHide: boolean,
   immediatelyShow: boolean,
@@ -51,10 +50,4 @@ class Tip extends Component<Props> {
   }
 }
 
-export default withRenderTarget(
-  {
-    target: 'tooltip',
-    withTransitionGroup: true,
-  },
-  Tip,
-);
+export default Tip;
