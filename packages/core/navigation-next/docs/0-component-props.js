@@ -70,12 +70,15 @@ ${
   null
 }
 
-${(
-  <Props
-    heading="LayoutManager"
-    props={require('!!extract-react-types-loader!../src/components/LayoutManager')}
-  />
-)}
+${
+  (
+    <Props
+      heading="LayoutManager"
+      props={require('!!extract-react-types-loader!../src/components/LayoutManager')}
+    />
+    // null
+  )
+}
 
 ${(
   <Props
@@ -86,15 +89,15 @@ ${(
 
 ${(
   <Props
-    heading="SectionSeparator"
-    props={require('!!extract-react-types-loader!../src/components/SectionSeparator')}
+    heading="Separator"
+    props={require('!!extract-react-types-loader!../src/components/Separator')}
   />
 )}
 
 ${(
   <Props
-    heading="SectionTitle"
-    props={require('!!extract-react-types-loader!../src/components/SectionTitle')}
+    heading="GroupHeading"
+    props={require('!!extract-react-types-loader!../src/components/GroupHeading')}
   />
 )}
 `;

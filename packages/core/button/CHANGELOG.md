@@ -1,5 +1,12 @@
 # @atlaskit/button
 
+## 9.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [patch] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+
 ## 9.0.1
 - [patch] Updated dependencies [619ab41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/619ab41)
   - @atlaskit/spinner@9.0.1

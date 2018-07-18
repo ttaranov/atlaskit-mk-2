@@ -51,6 +51,39 @@ describe('Tooltip', () => {
     };
   });
 
+  describe('onHide', () => {
+    it("should onHide when the tooltip's hide function is called", () => {
+      const spy = jest.fn();
+
+      const wrapper = shallow(
+        <Tooltip content="Tooltip content" onHide={spy}>
+          <div>foo</div>
+        </Tooltip>,
+      );
+
+      expect(spy).not.toHaveBeenCalled();
+      const instance = wrapper.instance();
+      instance.hide({ immediate: true });
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+  describe('onShow', () => {
+    it("should onShow when the tooltip's show function is called", () => {
+      const spy = jest.fn();
+
+      const wrapper = shallow(
+        <Tooltip content="Tooltip content" onShow={spy}>
+          <div>foo</div>
+        </Tooltip>,
+      );
+
+      expect(spy).not.toHaveBeenCalled();
+      const instance = wrapper.instance();
+      instance.show({ immediate: true });
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
   describe('unmount', () => {
     it("should call marshal's unmount method on unmount", () => {
       const spy = jest.spyOn(marshal, 'unmount');
@@ -209,22 +242,6 @@ describe('Tooltip', () => {
       spy.mockRestore();
     });
 
-    it('should call onMouseOver prop callback', () => {
-      const spy = jest.fn();
-      const event = {
-        target: {},
-      };
-      const wrapper = shallow(
-        <Tooltip content="required content" onMouseOver={spy}>
-          <div>foo</div>
-        </Tooltip>,
-      );
-
-      expect(spy).not.toHaveBeenCalled();
-      wrapper.simulate('mouseOver', event);
-      expect(spy).toHaveBeenCalledWith(event);
-    });
-
     it('should have no effect if mouse over target is wrapper', () => {
       const mouseOverSpy = jest.fn();
       const marshalSpy = jest.spyOn(marshal, 'show');
@@ -264,22 +281,6 @@ describe('Tooltip', () => {
       });
       expect(spy).toHaveBeenCalledWith(instance);
       spy.mockRestore();
-    });
-
-    it('should call onMouseOut prop callback', () => {
-      const spy = jest.fn();
-      const event = {
-        target: {},
-      };
-      const wrapper = shallow(
-        <Tooltip content="required content" onMouseOut={spy}>
-          <div>foo</div>
-        </Tooltip>,
-      );
-
-      expect(spy).not.toHaveBeenCalled();
-      wrapper.simulate('mouseOut', event);
-      expect(spy).toHaveBeenCalledWith(event);
     });
 
     it('should have no effect if mouse out target is wrapper', () => {

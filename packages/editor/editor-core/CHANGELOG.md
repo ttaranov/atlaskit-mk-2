@@ -1,5 +1,37 @@
 # @atlaskit/editor-core
 
+## 76.0.2
+- [patch] ED-4956, moving decision menu item to insert menu drop-down. [4e11c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e11c66)
+- [none] Updated dependencies [4e11c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e11c66)
+
+## 76.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/media-card@30.0.1
+  - @atlaskit/mention@14.0.1
+  - @atlaskit/emoji@38.0.1
+  - @atlaskit/select@5.0.1
+  - @atlaskit/layer-manager@5.0.1
+  - @atlaskit/item@8.0.1
+  - @atlaskit/icon@13.1.1
+  - @atlaskit/droplist@7.0.1
+  - @atlaskit/avatar-group@2.0.1
+  - @atlaskit/avatar@14.0.1
+
+## 76.0.0
+- [minor] Add styles for all different page-layout options. Add appendTransaction handler to ensure that only validate page-layouts ever get added to the document. ED-4197 [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
+- [major] ED-3701: editor exports cleanup [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)
+- [none] Updated dependencies [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
+  - @atlaskit/editor-test-helpers@5.0.1
+  - @atlaskit/editor-markdown-transformer@2.0.1
+  - @atlaskit/editor-json-transformer@4.0.1
+  - @atlaskit/editor-bitbucket-transformer@4.0.1
+- [none] Updated dependencies [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)
+  - @atlaskit/editor-test-helpers@5.0.1
+  - @atlaskit/editor-markdown-transformer@2.0.1
+  - @atlaskit/editor-json-transformer@4.0.1
+  - @atlaskit/editor-bitbucket-transformer@4.0.1
+
 ## 75.0.3
 - [patch] ED-5004: unwrap content from table on paste [0ab457a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ab457a)
 - [none] Updated dependencies [0ab457a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ab457a)

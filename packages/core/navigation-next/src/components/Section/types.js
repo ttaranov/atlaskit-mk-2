@@ -3,6 +3,7 @@
 import type { Node } from 'react';
 
 export type RenderProvided = {
+  className: string,
   css: {},
 };
 

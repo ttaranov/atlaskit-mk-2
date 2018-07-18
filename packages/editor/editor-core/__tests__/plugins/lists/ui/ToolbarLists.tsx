@@ -87,15 +87,5 @@ describe('ToolbarLists', () => {
         'atlassian.fabric.action.trigger.button',
       );
     });
-
-    it('should trigger analyticsService.trackEvent when decision list button is clicked', () => {
-      toolbarOption
-        .find(AkButton)
-        .filterWhere(node => node.html().indexOf('Create decision') > 0)
-        .simulate('click');
-      expect(trackEvent).toHaveBeenCalledWith(
-        'atlassian.fabric.decision.trigger.button',
-      );
-    });
   });
 });

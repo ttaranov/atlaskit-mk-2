@@ -154,6 +154,8 @@ export default function mobileEditor() {
         customMediaPicker: new MobilePicker(),
         provider: Promise.resolve(createMediaProvider()),
       }}
+      allowPanel={true}
+      allowCodeBlocks={true}
       allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());

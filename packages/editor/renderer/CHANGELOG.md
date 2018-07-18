@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 19.0.2
+- [patch] ED-5046, fixing image rendering in renderer. [1c70502](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c70502)
+- [none] Updated dependencies [1c70502](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c70502)
+
 ## 19.0.1
 - [patch] Updated dependencies [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
   - @atlaskit/editor-common@13.0.1

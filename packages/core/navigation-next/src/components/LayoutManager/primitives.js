@@ -13,7 +13,7 @@ export const LayoutContainer = (props: {}) => (
   />
 );
 
-export const NavContainer = (props: {}) => (
+export const NavigationContainer = (props: {}) => (
   <div
     css={{
       bottom: 0,
@@ -42,9 +42,9 @@ export function applyDisabledProperties(disableInteraction: boolean) {
     : null;
 }
 
-// Product Nav
+// Content navigation
 
-export const ProductNavWrapper = ({
+export const ContentNavigationWrapper = ({
   innerRef,
   disableInteraction,
   ...props
@@ -59,7 +59,7 @@ export const ProductNavWrapper = ({
     {...props}
   />
 );
-export const ContainerNavMask = (props: any) => (
+export const ContainerNavigationMask = (props: any) => (
   <div
     css={{
       display: 'flex',
