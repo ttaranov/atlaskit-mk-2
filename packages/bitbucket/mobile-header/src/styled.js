@@ -1,0 +1,78 @@
+// @flow
+import styled, { css, keyframes } from 'styled-components';
+import {
+  colors,
+  gridSize as akGridSize,
+  layers as akLayers,
+} from '@atlaskit/theme';
+
+const gridSize = akGridSize();
+
+// @atlaskit/navigation has a specific z-index, so we need to layer the header
+// components relative to that.
+const navLayer = akLayers.navigation();
+const layers = {
+  header: navLayer - 10,
+  blanket: navLayer - 5,
+  slider: navLayer + 5,
+};
+
+const xPositioning = ({ side, isOpen }) =>
+  side === 'right'
+    ? css`
+        right: 0;
+        transform: translateX(${isOpen ? '0' : '100vw'});
+      `
+    : css`
+        left: 0;
+        transform: translateX(${isOpen ? '0' : '-100vw'});
+      `;
+
+export const MobileNavSlider = styled.div`
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  transition: transform 0.2s ease-out;
+  z-index: ${layers.slider};
+  ${xPositioning};
+`;
+
+export const MobilePageHeader = styled.header`
+  align-items: center;
+  background-color: ${colors.N20};
+  display: flex;
+  font-size: 16px;
+  font-weight: 500;
+  padding: ${gridSize * 1.5}px;
+  position: sticky;
+  top: 0;
+  z-index: ${layers.header};
+`;
+
+const opacityIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+const opacityOut = keyframes`
+  from { opacity: 1; }
+  to { opacity: 0; }
+`;
+
+// @atlaskit/blanket has a z-index *higher* than @atlaskit/navigation,
+// so we can't display the AK blanket underneath the navigation.
+export const FakeBlanket = styled.div`
+  background: ${colors.N100A};
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: ${layers.blanket};
+  animation: ${p => (p.isOpen ? opacityIn : opacityOut)} 0.2s ease-out;
+`;
+
+export const PageHeading = styled.span`
+  flex-grow: 1;
+  margin-left: ${gridSize}px;
+`;
