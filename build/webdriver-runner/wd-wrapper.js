@@ -4,7 +4,7 @@
 
 //TODO :move this to a new npm-pkg
 const webdriverio = require('webdriverio');
-const WAIT_TIMEOUT = 5000;
+const WAIT_TIMEOUT = 20000;
 
 const TODO = () => {
   throw new Error('To be implemented!');

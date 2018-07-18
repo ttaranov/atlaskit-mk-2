@@ -11,7 +11,8 @@
 // take a while depending on the number of threads executing.
 
 // increase this time out to handle queuing on browserstack
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
+//jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 const webdriverio = require('webdriverio');
 
@@ -191,7 +192,7 @@ function setBrowserStackClients() {
         project: 'Atlaskit MK-2 Webdriver Tests',
         'browserstack.debug': true,
         'browserstack.video': false, // Put it to false to experiment the impact on the test runs
-        'browserstack.idleTimeout': 60,
+        'browserstack.idleTimeout': 120,
         'browserstack.local': true,
         'browserstack.localIdentifier': commit,
       },
