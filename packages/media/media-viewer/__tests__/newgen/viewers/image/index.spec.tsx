@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { FileItem } from '@atlaskit/media-core';
+import { awaitError } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
-import { Stubs, createContext } from '../../_stubs';
+import { Stubs, createContext } from '../../../_stubs';
 import {
   ImageViewer,
   REQUEST_CANCELLED,
-} from '../../../src/newgen/viewers/image';
-import { ZoomControls } from '../../../src/newgen/zoomControls';
-import { awaitError } from '@atlaskit/media-test-helpers';
-import { ErrorMessage } from '../../../src/newgen/error';
+} from '../../../../src/newgen/viewers/image';
+import { ZoomControls } from '../../../../src/newgen/zoomControls';
+
+import { ErrorMessage } from '../../../../src/newgen/error';
 
 const collectionName = 'some-collection';
 const imageItem: FileItem = {
