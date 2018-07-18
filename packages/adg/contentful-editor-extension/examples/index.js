@@ -4,7 +4,7 @@ import Skeleton from './Skeleton';
 export default [
   {
     key: 'Basic Avatar',
-    component: BasicAvatar,
+    component: require('../../../core/avatar/examples/01-basicAvatar'),
   },
   {
     key: 'Avatar Skeleton',

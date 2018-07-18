@@ -8,11 +8,13 @@ import Avatar from '@atlaskit/avatar';
 import { customInsertMenuItems } from './EditorExtraMenuItems';
 import MarkdownTransformer from '../utils/markdownTransformer';
 import { ConfluenceTransformer } from '@atlaskit/editor-confluence-transformer';
-import examples from '../../examples';
+import examples from '../../test';
+import Avatar1 from '../../../../../packages/core/avatar';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
 function getExampleComponent(key) {
-  return examples.filter(example => example.key === key)[0].component;
+  return require(examples.filter(example => example.key === key)[0].component)
+    .default;
 }
 
 export default class Example extends React.PureComponent {
@@ -45,6 +47,9 @@ export default class Example extends React.PureComponent {
           extensionHandlers={{
             'com.ajay.test': (ext, doc) => {
               const Tag = getExampleComponent(ext.parameters.tag);
+
+              console.log(Tag);
+              console.log(ext.parameters.tag);
               return <Tag />;
             },
           }}
