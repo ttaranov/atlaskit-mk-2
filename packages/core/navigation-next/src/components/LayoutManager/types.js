@@ -2,13 +2,12 @@
 
 import type { ComponentType, Node } from 'react';
 
-export type WrappedLayoutManagerProps = {
-  children: Node,
-  globalNavigation: ComponentType<*>,
-  productRootNavigation: ComponentType<{}>,
-  productContainerNavigation: ?ComponentType<{}>,
-};
+import { UIState } from '../../';
 
-export type LayoutManagerProps = WrappedLayoutManagerProps & {
-  navigation: Object,
+export type LayoutManagerProps = {
+  children: Node,
+  containerNavigation: ?ComponentType<{}>,
+  globalNavigation: ComponentType<{}>,
+  navigationUI: UIState,
+  productNavigation: ComponentType<{}>,
 };

@@ -9,6 +9,16 @@ import React, {
   type ComponentType,
 } from 'react';
 
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
@@ -16,6 +26,7 @@ import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
 import { getPosition } from './utils';
+import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
 type Props = {
   /** A single element, either Component or DOM node */
@@ -28,19 +39,35 @@ type Props = {
   delay: number,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
-  /** Where the tooltip should appear relative to the mouse. Only used when the `position` prop is set to 'mouse' */
+  /**
+    Where the tooltip should appear relative to the mouse. Only used when the
+    `position` prop is set to 'mouse'
+  */
   mousePosition: PositionTypeBase,
-  /** Function to be called when a mouse leaves the target */
-  onMouseOut?: MouseEvent => void,
-  /** Function to be called when a mouse enters the target */
-  onMouseOver?: MouseEvent => void,
-  /** Where the tooltip should appear relative to its target. If set to 'mouse', tooltip will display next to the mouse instead. */
+  /**
+    Function to be called when the tooltip will be shown. It is called when the
+    tooltip begins to animate in.
+  */
+  onShow?: () => void,
+  /**
+    Function to be called when the tooltip will be hidden. It is called after the
+    delay, when the tooltip begins to animate out.
+  */
+  onHide?: () => void,
+  /**
+    Where the tooltip should appear relative to its target. If set to 'mouse',
+    tooltip will display next to the mouse instead.
+  */
   position: PositionType,
-  /** Replace the wrapping element */
+  /**
+    Replace the wrapping element. This accepts the name of a html tag which will
+    be used to wrap the element.
+  */
   tag: string,
   /** Show only one line of text, and truncate when too long */
   truncate?: boolean,
 };
+
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
@@ -68,8 +95,7 @@ function getInitialState(props): State {
   };
 }
 
-/* eslint-disable react/sort-comp */
-export default class Tooltip extends Component<Props, State> {
+class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
@@ -169,39 +195,36 @@ export default class Tooltip extends Component<Props, State> {
   }
 
   show = ({ immediate }: { immediate: boolean }) => {
+    const { onShow } = this.props;
     this.setState({
       immediatelyShow: immediate,
       isVisible: true,
       coordinates: null,
     });
+    if (onShow) onShow();
   };
   // eslint-disable-next-line react/no-unused-prop-types
   hide = ({ immediate }: { immediate: boolean }) => {
+    const { onHide } = this.props;
     // Update state twice to allow for the updated `immediate` prop to pass through
     // to the Transition component before the tooltip is removed
     this.setState({ immediatelyHide: immediate }, () => {
       this.setState({ isVisible: false, coordinates: null });
     });
+    if (onHide) onHide();
   };
 
   handleMouseOver = (event: MouseEvent) => {
-    const { onMouseOver } = this.props;
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
     marshal.show(this);
-
-    if (onMouseOver) onMouseOver(event);
   };
   handleMouseOut = (event: MouseEvent) => {
-    const { onMouseOut } = this.props;
-
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
     marshal.hide(this);
-
-    if (onMouseOut) onMouseOut(event);
   };
 
   // Update mouse coordinates, used when position is 'mouse'.
@@ -240,4 +263,18 @@ export default class Tooltip extends Component<Props, State> {
   }
 }
 
+export { Tooltip as TooltipWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export type TooltipType = Tooltip;
+
+export default withAnalyticsContext({
+  componentName: 'tooltip',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onHide: unhoveredPayload,
+    onShow: createAndFireEventOnAtlaskit({ ...hoveredPayload }),
+  })(Tooltip),
+);

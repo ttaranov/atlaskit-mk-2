@@ -1,9 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Button from '@atlaskit/button';
 
-import { CommentAction } from '../../..';
+import CommentActionWithAnalytics, {
+  CommentActionWithoutAnalytics as CommentAction,
+} from '../../ActionItem';
 
 describe('@atlaskit comments', () => {
   describe('CommentAction', () => {
@@ -40,5 +42,24 @@ describe('@atlaskit comments', () => {
         });
       });
     });
+  });
+});
+
+describe('CommentActionWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<CommentActionWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

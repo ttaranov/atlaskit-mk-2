@@ -3,8 +3,9 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Layer from '@atlaskit/layer';
 
-import InlineDialog from '../../..';
-import { Container } from '../../../InlineDialog/styled';
+import InlineDialogWithAnalytics from '../../..';
+import { InlineDialogWithoutAnalytics as InlineDialog } from '../..';
+import { Container } from '../../styled';
 
 describe('inline-dialog', () => {
   describe('default', () => {
@@ -199,5 +200,24 @@ describe('inline-dialog', () => {
 
       expect(spy).not.toHaveBeenCalled();
     });
+  });
+});
+
+describe('InlineDialogWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<InlineDialogWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

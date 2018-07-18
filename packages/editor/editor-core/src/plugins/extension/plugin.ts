@@ -1,10 +1,11 @@
-import {
-  Plugin,
-  PluginKey,
-} from 'prosemirror-state';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
-import { ProviderFactory, ExtensionHandlers, ExtensionLayout } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  ExtensionHandlers,
+  ExtensionLayout,
+} from '@atlaskit/editor-common';
 import { Dispatch } from '../../event-dispatcher';
 import { PortalProviderAPI } from '../../ui/PortalProvider';
 import ExtensionNodeView from './nodeviews/extension';

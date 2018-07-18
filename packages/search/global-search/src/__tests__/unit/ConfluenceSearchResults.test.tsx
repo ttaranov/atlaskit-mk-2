@@ -2,14 +2,15 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import renderSearchResults, {
   Props,
+  ScreenCounter,
 } from '../../components/confluence/ConfluenceSearchResults';
-// import { ResultItemGroup } from '@atlaskit/quick-search';
 
 import {
-  ObjectResultWithAnalytics,
-  ContainerResultWithAnalytics,
-  PersonResultWithAnalytics,
-} from '../../components/SearchResultsUtil';
+  ObjectResult as ObjectResultComponent,
+  PersonResult as PersonResultComponent,
+  ContainerResult as ContainerResultComponent,
+} from '@atlaskit/quick-search';
+
 import AnalyticsEventFiredOnMount from '../../components/analytics/AnalyticsEventFiredOnMount';
 import SearchError from '../../components/SearchError';
 import NoResults from '../../components/NoResults';
@@ -90,7 +91,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.people.recent-people-heading" />,
     );
-    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(PersonResultComponent).prop('name')).toEqual('name');
   });
 
   describe('empty state', () => {
@@ -171,24 +172,78 @@ describe('ConfluenceSearchResults', () => {
     expect(group.childAt(0).prop('resultId')).toEqual('search_people');
   });
 
-  it('should render the pre query screen analytics event when there are results', () => {
-    const props: Partial<Props> = {
-      query: 'foo bar',
-      objectResults: [makeConfluenceObjectResult({ name: 'name' })],
+  describe('Screen analytics', () => {
+    let screenCounters;
+
+    beforeEach(() => {
+      screenCounters = {
+        preQueryScreenCounter: {
+          name: 'preQueryScreenCounter',
+          increment: jest.fn(),
+          getCount: jest.fn(() => 101),
+        } as ScreenCounter,
+        postQueryScreenCounter: {
+          name: 'postQueryScreenCounter',
+          increment: jest.fn(),
+          getCount: jest.fn(() => 1),
+        } as ScreenCounter,
+      };
+    });
+
+    afterEach(() => {
+      screenCounters = null;
+    });
+
+    const assertAnalyticsComponent = wrapper => {
+      const analyticsComponent = wrapper.find(AnalyticsEventFiredOnMount);
+      expect(analyticsComponent).toHaveLength(1);
+      const { onEventFired, payloadProvider } = analyticsComponent.props();
+      onEventFired();
+      payloadProvider();
     };
 
-    const wrapper = render(props);
-    expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
-  });
-
-  it('should render the post query screen analytics event when there are results', () => {
-    const props: Partial<Props> = {
-      query: '',
-      recentlyViewedPages: [makeConfluenceObjectResult({ name: 'name' })],
+    const assertCounters = ({ preQueryCalled, postQueryCalled }) => {
+      const preQueryCallCount = preQueryCalled ? 1 : 0;
+      const postQueryCallCount = postQueryCalled ? 1 : 0;
+      expect(
+        screenCounters.preQueryScreenCounter.increment.mock.calls.length,
+      ).toBe(preQueryCallCount);
+      expect(
+        screenCounters.preQueryScreenCounter.getCount.mock.calls.length,
+      ).toBe(preQueryCallCount);
+      expect(
+        screenCounters.postQueryScreenCounter.increment.mock.calls.length,
+      ).toBe(postQueryCallCount);
+      expect(
+        screenCounters.postQueryScreenCounter.getCount.mock.calls.length,
+      ).toBe(postQueryCallCount);
     };
 
-    const wrapper = render(props);
-    expect(wrapper.find(AnalyticsEventFiredOnMount)).toHaveLength(1);
+    it('should render the post query screen analytics event when there are results', () => {
+      const props: Partial<Props> = {
+        query: 'foo bar',
+        objectResults: [makeConfluenceObjectResult({ name: 'name' })],
+        screenCounters,
+      };
+
+      const wrapper = render(props);
+      assertAnalyticsComponent(wrapper);
+
+      assertCounters({ preQueryCalled: false, postQueryCalled: true });
+    });
+
+    it('should render the pre query screen analytics event when there are results', () => {
+      const props: Partial<Props> = {
+        query: '',
+        recentlyViewedPages: [makeConfluenceObjectResult({ name: 'name' })],
+        screenCounters,
+      };
+
+      const wrapper = render(props);
+      assertAnalyticsComponent(wrapper);
+
+      assertCounters({ preQueryCalled: true, postQueryCalled: false });
+    });
   });
 
   it('should render objects when there are results', () => {
@@ -207,7 +262,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
     );
-    expect(group.find(ObjectResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(ObjectResultComponent).prop('name')).toEqual('name');
   });
 
   it('should render spaces when there are results', () => {
@@ -226,9 +281,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.confluence.spaces-heading" />,
     );
-    expect(group.find(ContainerResultWithAnalytics).prop('name')).toEqual(
-      'name',
-    );
+    expect(group.find(ContainerResultComponent).prop('name')).toEqual('name');
   });
 
   it('should render people results when there are results', () => {
@@ -243,7 +296,7 @@ describe('ConfluenceSearchResults', () => {
     expect(group.prop('title')).toEqual(
       <FormattedMessage id="global-search.people.people-heading" />,
     );
-    expect(group.find(PersonResultWithAnalytics).prop('name')).toEqual('name');
+    expect(group.find(PersonResultComponent).prop('name')).toEqual('name');
   });
 
   it('should not render people results when there are no results in the group', () => {

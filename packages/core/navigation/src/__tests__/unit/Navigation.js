@@ -5,7 +5,9 @@ import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import Navigation from '../../components/js/Navigation';
+import NavigationWithAnalytics, {
+  NavigationWithoutAnalytics as Navigation,
+} from '../../components/js/Navigation';
 import ContainerNavigationChildren from '../../components/js/ContainerNavigationChildren';
 import Drawer from '../../components/js/Drawer';
 import GlobalNavigation from '../../components/js/GlobalNavigation';
@@ -584,5 +586,24 @@ describe('<Navigation />', () => {
         );
       }).not.toThrow();
     });
+  });
+});
+
+describe('NavigationWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<NavigationWithAnalytics isOpen />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

@@ -4,10 +4,20 @@ import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import {
   ClearIndicator,
@@ -125,7 +135,7 @@ const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
   />
 );
 
-export default class DatePicker extends Component<Props, State> {
+class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
   containerRef: ?HTMLElement;
@@ -245,7 +255,7 @@ export default class DatePicker extends Component<Props, State> {
     }
   };
 
-  refCalendar = (ref: ElementRef<Calendar>) => {
+  refCalendar = (ref: ElementRef<typeof Calendar>) => {
     this.calendar = ref;
   };
 
@@ -358,3 +368,25 @@ export default class DatePicker extends Component<Props, State> {
     );
   }
 }
+
+export { DatePicker as DatePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'datePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'selectedDate',
+      actionSubject: 'datePicker',
+
+      attributes: {
+        componentName: 'datePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(DatePicker),
+);

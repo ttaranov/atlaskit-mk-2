@@ -1,5 +1,59 @@
 # @atlaskit/form
 
+## 3.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/select@5.0.1
+  - @atlaskit/icon@13.1.1
+  - @atlaskit/droplist@7.0.1
+  - @atlaskit/dropdown-menu@6.1.1
+
+## 3.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/select@5.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/multi-select@11.0.0
+  - @atlaskit/inline-edit@7.0.0
+  - @atlaskit/field-text-area@4.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/calendar@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/field-radio-group@4.0.0
+  - @atlaskit/datetime-picker@6.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/droplist@7.0.0
+  - @atlaskit/dropdown-menu@6.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/select@5.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/single-select@6.0.0
+  - @atlaskit/multi-select@11.0.0
+  - @atlaskit/inline-edit@7.0.0
+  - @atlaskit/field-text-area@4.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/calendar@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/field-radio-group@4.0.0
+  - @atlaskit/datetime-picker@6.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/droplist@7.0.0
+  - @atlaskit/dropdown-menu@6.0.0
+
 ## 2.1.5
 - [patch] fix styled-components syntax error [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
 - [none] Updated dependencies [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)

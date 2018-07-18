@@ -20,6 +20,17 @@ describe(`${name}/schema layout-section node`, () => {
     const doc = fromHTML('<div data-layout-type="two_equal" />', schema);
     const node = doc.firstChild!;
     expect(node.type.name).toEqual('layoutSection');
+    expect(node.attrs.layoutType).toEqual('two_equal');
+  });
+
+  it('matches <div data-layout-type="*" /> and defaults to `two_equal` when unknown layout_type', () => {
+    const doc = fromHTML(
+      '<div data-layout-type="five_hundred_equal" />',
+      schema,
+    );
+    const node = doc.firstChild!;
+    expect(node.type.name).toEqual('layoutSection');
+    expect(node.attrs.layoutType).toEqual('two_equal');
   });
 
   it('should not match <div data-layout-type="*" /> when pasted inside layoutSection', () => {

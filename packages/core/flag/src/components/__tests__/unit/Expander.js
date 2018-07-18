@@ -3,7 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Description, DismissButton, Title } from '../../Flag/styledFlag';
-import Flag from '../../..';
+import { FlagWithoutAnalytics as Flag } from '../../Flag';
 import ExpanderInternal from '../../Expander/styledExpander';
 
 describe('Flag Expander', () => {

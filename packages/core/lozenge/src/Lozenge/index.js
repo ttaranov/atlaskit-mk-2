@@ -19,6 +19,8 @@ type Props = {
   isBold?: boolean,
   /** The appearance type. */
   appearance: Appearances,
+  /** max-width of lozenge container. Default to 200px. */
+  maxWidth?: number | string,
   /** Elements to be rendered inside the lozenge. This should ideally be just
    a word or two. */
   children?: Node,
@@ -28,10 +30,11 @@ export default class Lozenge extends PureComponent<Props> {
   static defaultProps = {
     isBold: false,
     appearance: 'default',
+    maxWidth: 200,
   };
 
   render() {
-    const { appearance, isBold, children } = this.props;
+    const { appearance, isBold, maxWidth, children } = this.props;
 
     return (
       <Appearance
@@ -39,7 +42,7 @@ export default class Lozenge extends PureComponent<Props> {
         theme={isBold ? boldStyles : defaultStyles}
       >
         {styleProps => (
-          <Container {...styleProps} isBold={isBold}>
+          <Container {...styleProps} maxWidth={maxWidth} isBold={isBold}>
             <Content>{children}</Content>
           </Container>
         )}

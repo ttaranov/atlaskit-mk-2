@@ -38,4 +38,25 @@ export const layoutStyles = css`
       border-color: ${akColorB200};
     }
   }
+
+  .ProseMirror [data-layout-type='two_equal'],
+  .ProseMirror [data-layout-type='three_equal'] {
+    /** do nothing */
+  }
+  .ProseMirror [data-layout-type='two_left_sidebar'] {
+    & > *:first-child {
+      flex-grow: 0.5;
+    }
+  }
+  .ProseMirror [data-layout-type='two_right_sidebar'] {
+    & > *:last-child {
+      flex-grow: 0.5;
+    }
+  }
+  .ProseMirror [data-layout-type='three_with_sidebars'] {
+    & > *:last-child,
+    & > *:first-child {
+      flex-grow: 0.5;
+    }
+  }
 `;

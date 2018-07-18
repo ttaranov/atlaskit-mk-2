@@ -20,6 +20,20 @@ describe('utils', () => {
       );
     });
 
+    it('should work with urls with params', async () => {
+      const clientId = 'some-client-id';
+      const authPromise = Promise.resolve({ token, clientId });
+      const context = createContext({ authPromise });
+      const url = await constructAuthTokenUrl(
+        '/file/3333-4444-5555?version=1',
+        context,
+        'mycollection',
+      );
+      expect(url).toEqual(
+        'some-service-host/file/3333-4444-5555?version=1&client=some-client-id&collection=mycollection&token=some-token',
+      );
+    });
+
     it('should add the auth token to the url when auth type is ASAP', async () => {
       const issuer = 'some-issuer'; // issuer gets send through the headers, so it shouldn't show up in the url
       const authPromise = Promise.resolve({ token, asapIssuer: issuer });
