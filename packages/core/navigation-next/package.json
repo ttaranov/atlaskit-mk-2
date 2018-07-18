@@ -43,6 +43,7 @@
     "@atlaskit/logo": "^9.0.0",
     "@atlaskit/lozenge": "^6.0.0",
     "@atlaskit/toggle": "^5.0.0",
+    "@atlaskit/webdriver-runner": "^0.0.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   }
