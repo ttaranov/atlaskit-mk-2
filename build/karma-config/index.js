@@ -86,7 +86,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
     webpackMiddleware: {
       stats: 'errors-only',
     },
-    logLevel: constants.LOG_DEBUG,
+    logLevel: constants.LOG_ERROR,
     reportSlowerThan: 500,
     mime: {
       'application/javascript': ['ts', 'tsx'],
