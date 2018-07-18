@@ -97,7 +97,7 @@ describe('getDataURIDimension()', () => {
   });
 
   it('should return double size dimensions when is retina factor', () => {
-    (isRetina as any).mockReturnValueOnce(true);
+    (isRetina as any).mockReturnValue(true);
     const { component } = setup();
 
     const width = getDataURIDimension('width', {
