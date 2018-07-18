@@ -1,6 +1,6 @@
 import React from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import examples from '../../examples';
+import examples from '../../test';
 
 export const customInsertMenuItems = examples.map(({ key, component }) => ({
   content: key,
