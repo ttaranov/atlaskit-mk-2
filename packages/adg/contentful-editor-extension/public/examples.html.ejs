@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- Polyfills -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6,Array.prototype.includes,fetch"></script>
+    <script>
+      // Allow to use react devtools inside the examples
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+    </script>
+  </head>
+  <body>
+    <div id="examples"></div>
+  </body>
+</html>
