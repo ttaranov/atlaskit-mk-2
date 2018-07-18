@@ -11,6 +11,8 @@ import {
   FileState,
   FileDetails,
   MediaType,
+  LinkDetails,
+  UrlPreview,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs';
@@ -97,6 +99,47 @@ const isPreviewableType = (type: MediaType): boolean => {
   return ['audio', 'video', 'image'].indexOf(type) > -1;
 };
 
+const isUrlPreviewIdentifier = (
+  identifier: Identifier,
+): identifier is UrlPreviewIdentifier => {
+  const preview = identifier as UrlPreviewIdentifier;
+  return preview && preview.url !== undefined;
+};
+
+const getLinkMetadata = (
+  identifier: LinkIdentifier | UrlPreviewIdentifier,
+  context: Context,
+): Promise<LinkDetails | UrlPreview> => {
+  return new Promise((resolve, reject) => {
+    if (isUrlPreviewIdentifier(identifier)) {
+      const observable = context
+        .getUrlPreviewProvider(identifier.url)
+        .observable();
+
+      observable.subscribe({
+        next: resolve,
+        error: reject,
+      });
+    } else {
+      const { id, mediaItemType, collectionName } = identifier;
+      const observable = context
+        .getMediaItemProvider(id, mediaItemType, collectionName)
+        .observable();
+
+      observable.subscribe({
+        next(item) {
+          if (item.type === 'file') {
+            reject();
+          } else {
+            resolve(item.details);
+          }
+        },
+        error: reject,
+      });
+    }
+  });
+};
+
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
   static defaultProps: Partial<CardProps> = {
@@ -155,13 +198,28 @@ export class Card extends Component<CardProps, CardState> {
     }
   };
 
-  subscribe(identifier: Identifier) {
+  async subscribe(identifier: Identifier) {
+    const { context } = this.props;
+
     if (identifier.mediaItemType !== 'file') {
+      try {
+        const metadata = await getLinkMetadata(identifier, context);
+
+        this.notifyStateChange({
+          status: 'complete',
+          metadata: metadata,
+        });
+      } catch (error) {
+        this.notifyStateChange({
+          error,
+          status: 'error',
+        });
+      }
+
       return;
     }
-    const { context } = this.props;
-    const { id, collectionName } = identifier;
 
+    const { id, collectionName } = identifier;
     this.unsubscribe();
     this.subscription = context.getFile(id, { collectionName }).subscribe({
       next: async state => {
@@ -244,13 +302,6 @@ export class Card extends Component<CardProps, CardState> {
     this.subscribe(identifier);
   };
 
-  private isUrlPreviewIdentifier(
-    identifier: Identifier,
-  ): identifier is UrlPreviewIdentifier {
-    const preview = identifier as UrlPreviewIdentifier;
-    return preview && preview.url !== undefined;
-  }
-
   get placeholder(): JSX.Element {
     const { appearance, dimensions } = this.props;
 
@@ -266,7 +317,7 @@ export class Card extends Component<CardProps, CardState> {
 
   get analyticsContext(): CardAnalyticsContext {
     const { identifier } = this.props;
-    const id = this.isUrlPreviewIdentifier(identifier)
+    const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
       : identifier.id;
     return getBaseAnalyticsContext('Card', id);
