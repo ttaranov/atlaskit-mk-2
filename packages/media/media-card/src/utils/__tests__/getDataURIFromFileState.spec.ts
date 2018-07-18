@@ -27,6 +27,7 @@ describe('getDataURIFromFileState()', () => {
       id: '1',
       name: '',
       size: 1,
+      mediaType: 'doc',
       preview: {
         blob: new File([], 'filename', { type: 'text/plain' }),
       },

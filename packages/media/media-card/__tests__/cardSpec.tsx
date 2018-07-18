@@ -1,13 +1,9 @@
-jest.mock('../src/utils/getDataURIFromFileState', () => {
-  return {
-    getDataURIFromFileState: jest.fn().mockReturnValue('some-data-uri'),
-  };
-});
+jest.mock('../src/utils/getDataURIFromFileState');
 import { Observable } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { fakeContext } from '@atlaskit/media-test-helpers';
-import { Context } from '@atlaskit/media-core';
+import { Context, UrlPreview } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
@@ -23,6 +19,10 @@ import { LazyContent } from '../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../src/utils/getDataURIFromFileState';
 
 describe('Card', () => {
+  const urlIdentifier: UrlPreviewIdentifier = {
+    mediaItemType: 'link',
+    url: 'some-url',
+  };
   const linkIdentifier: LinkIdentifier = {
     id: 'some-random-id',
     mediaItemType: 'link',
@@ -33,11 +33,17 @@ describe('Card', () => {
     mediaItemType: 'file',
     collectionName: 'some-collection-name',
   };
-
+  const linkDetails: UrlPreview = {
+    type: 'link',
+    url: 'some-url',
+    title: 'some-title',
+  };
   const setup = (
     context: Context = fakeContext(),
     props?: Partial<CardProps>,
   ) => {
+    (getDataURIFromFileState as any).mockReset();
+    (getDataURIFromFileState as any).mockReturnValue('some-data-uri');
     const component = shallow(
       <Card context={context} identifier={fileIdentifier} {...props} />,
     );
@@ -48,8 +54,7 @@ describe('Card', () => {
     };
   };
 
-  // TODO: Add test to check that we are rendering LinkCard
-  it.skip('should render media card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
+  it('should render media card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
     const dummyUrl = 'http://some.url.com';
     const mediaItemType = 'link';
     const identifier: UrlPreviewIdentifier = {
@@ -66,54 +71,84 @@ describe('Card', () => {
     expect(context.getUrlPreviewProvider).toHaveBeenCalledTimes(1);
     expect(context.getUrlPreviewProvider).toBeCalledWith(dummyUrl);
     expect(card.find(CardView)).toHaveLength(1);
+    expect(card.find(CardView).prop('mediaItemType')).toEqual('link');
   });
 
-  // TODO: Adapt to the new api
-  it.skip('should use the new context to create the subscription when context prop changes', () => {
-    const dummyProvider = 'second provider';
-
-    const firstContext = fakeContext({
-      getMediaItemProvider: 'first provider',
+  it('should render a CardView with the right metadata when using a LinkIdentifier', async () => {
+    const context = fakeContext({
+      getMediaItemProvider: {
+        observable: () =>
+          Observable.of({
+            details: linkDetails,
+          }),
+      },
     });
+    const card = shallow(
+      <Card context={context} identifier={linkIdentifier} />,
+    );
 
-    const secondContext = fakeContext({
-      getMediaItemProvider: dummyProvider,
-    }) as any;
+    await context.getMediaItemProvider;
+    await Promise.resolve();
+    card.update();
 
+    expect(card.find(CardView)).toHaveLength(1);
+    expect(card.find(CardView).prop('status')).toEqual('complete');
+    expect(card.find(CardView).prop('metadata')).toEqual({
+      type: 'link',
+      title: 'some-title',
+      url: 'some-url',
+    });
+  });
+
+  it('should render a CardView with the right metadata when using a UrlPreviewIdentifier', async () => {
+    const context = fakeContext({
+      getUrlPreviewProvider: { observable: () => Observable.of(linkDetails) },
+    });
+    const card = shallow(<Card context={context} identifier={urlIdentifier} />);
+
+    await context.getUrlPreviewProvider;
+    await Promise.resolve();
+    card.update();
+
+    expect(card.find(CardView)).toHaveLength(1);
+    expect(card.find(CardView).prop('status')).toEqual('complete');
+    expect(card.find(CardView).prop('metadata')).toEqual({
+      type: 'link',
+      title: 'some-title',
+      url: 'some-url',
+    });
+  });
+
+  it('should use the new context to create the subscription when context prop changes', () => {
+    const firstContext = fakeContext({});
+    const secondContext = fakeContext({}) as any;
     const card = shallow(
       <Card context={firstContext} identifier={fileIdentifier} />,
     );
     card.setProps({ context: secondContext, fileIdentifier });
 
-    const { id, mediaItemType, collectionName } = fileIdentifier;
-    expect(secondContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
-    expect(secondContext.getMediaItemProvider).toBeCalledWith(
-      id,
-      mediaItemType,
-      collectionName,
-    );
-
+    const { id, collectionName } = fileIdentifier;
+    expect(secondContext.getFile).toHaveBeenCalledTimes(1);
+    expect(secondContext.getFile).toBeCalledWith(id, { collectionName });
     expect(card.find(CardView)).toHaveLength(1);
   });
 
-  // TODO: Adapt to new api
-  it.skip('should create a new subscription when the identifier changes', () => {
+  it('should create a new subscription when the identifier changes', () => {
     const firstIdentifier: FileIdentifier = fileIdentifier;
     const secondIdentifier: LinkIdentifier = linkIdentifier;
-
     const dummyProvider = { observable: 'dummy provider ftw!' };
-
     const context = fakeContext({
       getMediaItemProvider: dummyProvider,
     }) as any;
-
     const card = shallow(
       <Card context={context} identifier={firstIdentifier} />,
     );
     card.setProps({ context, identifier: secondIdentifier });
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
-    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+
+    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toBeCalledWith(
       id,
       mediaItemType,
@@ -317,9 +352,8 @@ describe('Card', () => {
 
   it('should set dataURI only if its not present', async () => {
     const { component } = setup();
-
     expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
-    await getDataURIFromFileState;
+    await Promise.resolve();
     expect(component.state('dataURI')).toEqual('some-data-uri');
   });
 
@@ -442,6 +476,7 @@ describe('Card', () => {
       getFile: () =>
         Observable.of({
           id: '123',
+          mediaType: 'image',
           status: 'processed',
         }),
       mediaStore: {
@@ -454,7 +489,7 @@ describe('Card', () => {
     await context.mediaStore.getImage;
 
     expect(getImage).toHaveBeenCalledTimes(1);
-    expect(getImage).toBeCalledWith(123, {
+    expect(getImage).toBeCalledWith('123', {
       collection: 'some-collection-name',
       height: 125,
       width: 156,

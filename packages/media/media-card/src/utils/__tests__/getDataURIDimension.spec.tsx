@@ -84,7 +84,7 @@ describe('getDataURIDimension()', () => {
     expect(appearanceHeight).toEqual(125);
   });
 
-  it.only('should use component dimensions to calculate percentage', () => {
+  it('should use component dimensions to calculate percentage', () => {
     (getElementDimension as any).mockReturnValueOnce(50);
     const { component } = setup();
     const width = getDataURIDimension('width', {
