@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
-import { constructAuthTokenUrl } from '../../util';
+import { constructAuthTokenUrl } from '../../utils';
 import { Outcome, MediaViewerFeatureFlags } from '../../domain';
 import { Spinner } from '../../loading';
 import { Video } from '../../styled';

@@ -9,7 +9,7 @@ import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
 import { Subscription } from 'rxjs';
-import { toIdentifier } from './util';
+import { toIdentifier } from './utils';
 import { Spinner } from './loading';
 
 export type Props = Readonly<{

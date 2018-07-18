@@ -1,4 +1,4 @@
-import * as util from '../../../../src/newgen/util';
+import * as util from '../../../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
