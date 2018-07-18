@@ -1,5 +1,7 @@
 // @flow
 'use strict';
+// Setup the timestamp to have uniqueIdentifier
+process.env.LOCAL_IDENTIFIER = new Date().getTime().toString();
 
 const child = require('child_process');
 const browserstack = require('./utils/browserstack');
@@ -17,8 +19,8 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
 function runTests() {
   return new Promise((resolve, reject) => {
-    /* maxWorkers set to 2 will create 2 threads */
-    let cmd = `INTEGRATION_TESTS=true jest --maxWorkers=2`;
+    /* maxWorkers set to 4 will create 4 threads */
+    let cmd = `INTEGRATION_TESTS=true jest --maxWorkers=4`;
 
     const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',
