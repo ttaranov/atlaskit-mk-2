@@ -13,7 +13,7 @@ const isReachable = require('is-reachable');
 * and run and wait for webdriver tests complete
 */
 
-const JEST_WAIT_FOR_INPUT_TIMEOUT = 30000;
+const JEST_WAIT_FOR_INPUT_TIMEOUT = 1200e3;
 
 function runTests() {
   return new Promise((resolve, reject) => {
