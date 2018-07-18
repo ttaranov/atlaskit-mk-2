@@ -8,35 +8,27 @@ import Avatar from '@atlaskit/avatar';
 import { customInsertMenuItems } from './EditorExtraMenuItems';
 import MarkdownTransformer from '../utils/markdownTransformer';
 import { ConfluenceTransformer } from '@atlaskit/editor-confluence-transformer';
+import examples from '../../examples';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
+
+function getExampleComponent(key) {
+  return examples.filter(example => example.key === key)[0].component;
+}
 
 export default class Example extends React.PureComponent {
-  state = { src: '' };
+  state = { adf: {} };
+  transformer = new JSONTransformer();
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.props.actions.replaceDocument(this.state.src);
-    });
-  }
+  handleChangeInTheEditor = editorView => {
+    const adf = this.transformer.encode(editorView.state.doc);
 
-  handleUpdateToSource = e => {
-    const value = e.currentTarget.innerText;
-    this.setState({ src: value }, () =>
-      this.props.actions.replaceDocument(value),
-    );
-  };
-
-  textUpdated = () => {
-    const adf = this.props.actions.getValue().then(val =>
-      this.setState({
-        src: val,
-      }),
-    );
+    this.setState({ adf });
   };
 
   render() {
     return (
       <div>
-        <div>{this.state.src}</div>
+        <pre>{JSON.stringify(this.state.adf, null, 2)}</pre>
         <Editor
           appearance="comment"
           allowTasksAndDecisions={true}
@@ -45,17 +37,14 @@ export default class Example extends React.PureComponent {
           allowRule={true}
           allowTables={true}
           allowExtension
-          onChange={this.textUpdated}
+          onChange={this.handleChangeInTheEditor}
           insertMenuItems={customInsertMenuItems}
           media={{
             allowMediaSingle: true,
           }}
-          contentTransformerProvider={schema =>
-            new ConfluenceTransformer(schema)
-          }
           extensionHandlers={{
             'com.ajay.test': (ext, doc) => {
-              const Tag = ext.parameters.tag;
+              const Tag = getExampleComponent(ext.parameters.tag);
               return <Tag />;
             },
           }}

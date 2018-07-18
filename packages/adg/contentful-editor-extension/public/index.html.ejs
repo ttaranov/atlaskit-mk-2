@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/contentful-ui-extensions-sdk@3"></script>
     <title><%= htmlWebpackPlugin.options.title %></title>
     <!-- Polyfills -->
     <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6,Array.prototype.includes,fetch"></script>
@@ -15,5 +16,22 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      'use strict';
+
+      // When UI Extensions SDK is loaded the callback will be executed.
+      window.contentfulExtension.init(initExtension);
+
+      function initExtension (extensionsApi) {
+        // "extensionsApi" is providing an interface documented here:
+        // TODO : need to read this
+        // https://github.com/contentful/ui-extensions-sdk/blob/master/docs/ui-extensions-sdk-frontend.md
+
+        // Automatically adjust UI Extension size in the Web App.
+        extensionsApi.window.startAutoResizer();
+
+        
+      }
+    </script>
   </body>
 </html>
