@@ -31,7 +31,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeAll(async function() {
+    beforeEach(async function() {
       for (let client of clients) {
         if (client) {
           const browserName /*: string */ =
@@ -191,7 +191,7 @@ function setBrowserStackClients() {
         project: 'Atlaskit MK-2 Webdriver Tests',
         'browserstack.debug': true,
         'browserstack.video': false, // Put it to false to experiment the impact on the test runs
-        'browserstack.idleTimeout': 60,
+        'browserstack.idleTimeout': 90,
         'browserstack.local': true,
         'browserstack.localIdentifier': commit,
       },
