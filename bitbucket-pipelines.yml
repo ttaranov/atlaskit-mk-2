@@ -38,7 +38,8 @@ pipelines:
               - bolt install --pure-lockfile
               - yarn build
               - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
-              - yarn prettier --no-editorconfig "{packages,build,website}/**/*.{js,ts,tsx}" --list-different
+              # The below runs prettier over all changed files and fails if anyone of them don't match prettier's rules
+              - yarn prettier --no-editorconfig "{$(git diff --name-only $(git merge-base master head) -- 'packages' 'build' 'website' | tr '\n' ',')}" --list-different
             caches:
               - node
         - step:
