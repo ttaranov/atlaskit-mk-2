@@ -2,13 +2,14 @@ import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { Outcome } from '../../domain';
-import { Img, ImageWrapper } from '../../styled';
+import { ImageWrapper } from '../../styled';
 import { Spinner } from '../../loading';
 import { ZoomControls } from '../../zoomControls';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { ZoomLevel } from '../../domain/zoomLevel';
+import { InteractiveImg } from './interactive-img';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -55,37 +56,22 @@ export class ImageViewer extends React.Component<
     this.setState({ zoomLevel });
   };
 
-  renderImage(src: string) {
-    const { onClose } = this.props;
-    const { zoomLevel } = this.state;
-    // We need to set new border value every time the zoom changes
-    // to force a re layout in Chrome.
-    // https://stackoverflow.com/questions/16687023/bug-with-transform-scale-and-overflow-hidden-in-chrome
-    const border = `${zoomLevel.value / 100}px solid transparent`;
-    // We use style attr instead of SC prop for perf reasons
-    const imgStyle = {
-      transform: `scale(${zoomLevel.value})`,
-      border,
-    };
-
-    return (
-      <ImageWrapper onClick={closeOnDirectClick(onClose)}>
-        <Img src={src} style={imgStyle} />
-        <ZoomControls
-          zoomLevel={this.state.zoomLevel}
-          onChange={this.onZoomChange}
-        />
-      </ImageWrapper>
-    );
-  }
-
   render() {
-    const { objectUrl } = this.state;
+    const { objectUrl, zoomLevel } = this.state;
+    const { onClose } = this.props;
     switch (objectUrl.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
-        return this.renderImage(objectUrl.data);
+        return (
+          <ImageWrapper onClick={closeOnDirectClick(onClose)}>
+            <InteractiveImg src={objectUrl.data} zoomLevel={zoomLevel} />
+            <ZoomControls
+              zoomLevel={this.state.zoomLevel}
+              onChange={this.onZoomChange}
+            />
+          </ImageWrapper>
+        );
       case 'FAILED':
         return (
           <ErrorMessage error={objectUrl.err}>
