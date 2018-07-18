@@ -128,8 +128,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     }
   };
 
-  handleSearchSubmit = () => {
-    const { query } = this.state;
+  handleSearchSubmit = ({ target }) => {
+    const query = target.value;
     redirectToConfluenceAdvancedSearch(query);
   };
 
