@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import { AtlaskitThemeProvider } from '../src';
@@ -20,6 +21,7 @@ export default class extends Component<Props, State> {
       <AtlaskitThemeProvider mode={themeMode}>
         <div style={{ padding: 8 }}>
           <Button onClick={this.switchTheme}>Switch theme ({themeMode})</Button>
+          <p>This is the old theming API</p>
         </div>
       </AtlaskitThemeProvider>
     );

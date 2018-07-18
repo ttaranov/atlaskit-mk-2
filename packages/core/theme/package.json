@@ -26,7 +26,10 @@
   "devDependencies": {
     "@atlaskit/button": "^9.0.0",
     "@atlaskit/docs": "^5.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "@atlaskit/lozenge": "^6.1.0",
+    "color": "^3.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.0"
   },
   "keywords": [
     "atlaskit",
