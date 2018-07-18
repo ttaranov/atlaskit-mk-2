@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "14.0.0",
+  "version": "14.0.1",
   "config": {
     "access": "public"
   },
@@ -23,10 +23,10 @@
     "@atlaskit/analytics": "^4.0.0",
     "@atlaskit/analytics-gas-types": "^3.0.0",
     "@atlaskit/analytics-next": "^3.0.0",
-    "@atlaskit/avatar": "^14.0.0",
-    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/avatar": "^14.0.1",
+    "@atlaskit/icon": "^13.1.1",
     "@atlaskit/lozenge": "^6.0.0",
-    "@atlaskit/tooltip": "^11.0.0",
+    "@atlaskit/tooltip": "^12.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^3.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

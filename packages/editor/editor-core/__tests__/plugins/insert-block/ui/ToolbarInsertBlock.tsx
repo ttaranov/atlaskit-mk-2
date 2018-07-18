@@ -8,8 +8,11 @@ import {
   p,
   createEditor,
   code_block,
+  decisionList,
+  decisionItem,
 } from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { uuid } from '@atlaskit/editor-common';
 
 import { stateKey as blockTypePluginKey } from '../../../../src/plugins/block-type/pm-plugins/main';
 import DropdownMenu from '../../../../src/ui/DropdownMenu';
@@ -41,6 +44,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         UNSAFE_allowLayouts: true,
         allowLists: true,
         allowPanel: true,
+        allowTasksAndDecisions: true,
       },
       providerFactory,
     });
@@ -284,6 +288,38 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       'atlassian.editor.format.blockquote.button',
     );
     toolbarOption.unmount();
+  });
+
+  it('should insert decision when decision option is clicked', () => {
+    uuid.setStatic('local-highlight');
+    const { editorView } = editor(
+      doc(p('text')),
+    );
+    const toolbarOption = mount(
+      <ToolbarInsertBlock
+        decisionSupported={true}
+        editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
+      />,
+    );
+    toolbarOption.find(ToolbarButton).simulate('click');
+    const decisionButton = toolbarOption
+      .find(Item)
+      .filterWhere(n => n.text().indexOf('Decision') >= 0);
+    decisionButton.simulate('click');
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        decisionList({ localId: 'local-highlight' })(
+          decisionItem({ localId: 'local-highlight' })('text'),
+        ),
+      ),
+    );
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.editor.format.decision.button',
+    );
+    toolbarOption.unmount();
+    uuid.setStatic(false);
   });
 
   it('should track table creation event when table menu is clicked option is clicked', () => {

@@ -12,6 +12,7 @@ import React, {
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -38,15 +39,30 @@ type Props = {
   delay: number,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
-  /** Where the tooltip should appear relative to the mouse. Only used when the `position` prop is set to 'mouse' */
+  /**
+    Where the tooltip should appear relative to the mouse. Only used when the
+    `position` prop is set to 'mouse'
+  */
   mousePosition: PositionTypeBase,
-  /** Function to be called when a mouse leaves the target */
-  onMouseOut?: MouseEvent => void,
-  /** Function to be called when a mouse enters the target */
-  onMouseOver?: MouseEvent => void,
-  /** Where the tooltip should appear relative to its target. If set to 'mouse', tooltip will display next to the mouse instead. */
+  /**
+    Function to be called when the tooltip will be shown. It is called when the
+    tooltip begins to animate in.
+  */
+  onShow?: () => void,
+  /**
+    Function to be called when the tooltip will be hidden. It is called after the
+    delay, when the tooltip begins to animate out.
+  */
+  onHide?: () => void,
+  /**
+    Where the tooltip should appear relative to its target. If set to 'mouse',
+    tooltip will display next to the mouse instead.
+  */
   position: PositionType,
-  /** Replace the wrapping element */
+  /**
+    Replace the wrapping element. This accepts the name of a html tag which will
+    be used to wrap the element.
+  */
   tag: string,
   /** Show only one line of text, and truncate when too long */
   truncate?: boolean,
@@ -105,23 +121,6 @@ class Tooltip extends Component<Props, State> {
     // handle case where truncate is changed while visible
     if (truncate !== this.props.truncate) {
       this.setState({ coordinates: null });
-    }
-  }
-
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    // AK-4959 - can move logic to withAnalyticsEvents hoc when we have handlers for tooltip visibility
-    /* eslint-disable react/prop-types */
-    if (
-      !prevState.isVisible &&
-      this.state.isVisible &&
-      // This prop doesn't exist in exported component so we don't want it to be documented
-      // $FlowFixMe - createAnalyticsEvent is injected by withAnalyticsEvents hoc
-      this.props.createAnalyticsEvent
-    ) {
-      // $FlowFixMe
-      const event = this.props.createAnalyticsEvent(hoveredPayload);
-      /* eslint-enable */
-      event.fire('atlaskit');
     }
   }
 
@@ -196,39 +195,36 @@ class Tooltip extends Component<Props, State> {
   }
 
   show = ({ immediate }: { immediate: boolean }) => {
+    const { onShow } = this.props;
     this.setState({
       immediatelyShow: immediate,
       isVisible: true,
       coordinates: null,
     });
+    if (onShow) onShow();
   };
   // eslint-disable-next-line react/no-unused-prop-types
   hide = ({ immediate }: { immediate: boolean }) => {
+    const { onHide } = this.props;
     // Update state twice to allow for the updated `immediate` prop to pass through
     // to the Transition component before the tooltip is removed
     this.setState({ immediatelyHide: immediate }, () => {
       this.setState({ isVisible: false, coordinates: null });
     });
+    if (onHide) onHide();
   };
 
   handleMouseOver = (event: MouseEvent) => {
-    const { onMouseOver } = this.props;
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
     marshal.show(this);
-
-    if (onMouseOver) onMouseOver(event);
   };
   handleMouseOut = (event: MouseEvent) => {
-    const { onMouseOut } = this.props;
-
     // bail if over the wrapper, we only want to target the first child.
     if (event.target === this.wrapper) return;
 
     marshal.hide(this);
-
-    if (onMouseOut) onMouseOut(event);
   };
 
   // Update mouse coordinates, used when position is 'mouse'.
@@ -268,6 +264,7 @@ class Tooltip extends Component<Props, State> {
 }
 
 export { Tooltip as TooltipWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export type TooltipType = Tooltip;
 
@@ -277,7 +274,7 @@ export default withAnalyticsContext({
   packageVersion,
 })(
   withAnalyticsEvents({
-    onMouseOver: hoveredPayload,
-    onMouseOut: unhoveredPayload,
+    onHide: unhoveredPayload,
+    onShow: createAndFireEventOnAtlaskit({ ...hoveredPayload }),
   })(Tooltip),
 );

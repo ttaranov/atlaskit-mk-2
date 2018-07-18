@@ -33,12 +33,26 @@ const videoItem: FileItem = {
   },
 };
 
-function createFixture(authPromise: Promise<Auth>, props?: Partial<Props>) {
+const videoItemWithNoArtifacts: FileItem = {
+  type: 'file',
+  details: {
+    id: 'some-id',
+    processingStatus: 'succeeded',
+    mediaType: 'video',
+    artifacts: {},
+  },
+};
+
+function createFixture(
+  authPromise: Promise<Auth>,
+  props?: Partial<Props>,
+  item?: FileItem,
+) {
   const context = createContext({ authPromise });
   const el = mount(
     <VideoViewer
       context={context}
-      item={videoItem}
+      item={item || videoItem}
       {...props}
       previewCount={0}
     />,
@@ -86,6 +100,26 @@ describe('Video viewer', () => {
       'Try downloading the file to view it.',
     );
     expect(errorMessage.find(Button)).toHaveLength(1);
+  });
+
+  it('shows error message when there are not video artifacts in the media item', async () => {
+    const authPromise = Promise.resolve({ token, clientId });
+    const { el } = createFixture(
+      authPromise,
+      {
+        featureFlags: { customVideoPlayer: true },
+      },
+      videoItemWithNoArtifacts,
+    );
+
+    await (el as any).instance()['init']();
+    el.update();
+
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      "We couldn't generate a preview for this file",
+    );
   });
 
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {

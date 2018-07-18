@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 5.0.3
+- [patch] fix analytics bugs [30be100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30be100)
+
+## 5.0.2
+- [patch] Wording update [43ebe0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43ebe0e)
+
 ## 5.0.1
 - [patch] Add extra analytics event for highlight and selection of a search result [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
 - [patch] Updated dependencies [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
