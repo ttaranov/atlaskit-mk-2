@@ -8,7 +8,9 @@ import React, {
   type Element,
   type ComponentType,
 } from 'react';
+import { TransitionGroup } from 'react-transition-group';
 
+import Portal from '@atlaskit/portal';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -22,7 +24,6 @@ import {
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
-import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
 import { getPosition } from './utils';
@@ -169,7 +170,7 @@ class Tooltip extends Component<Props, State> {
     if (!coordinates) {
       const MeasurableTooltip = component;
       return (
-        <Portal>
+        <Portal layer="tooltip">
           <MeasurableTooltip
             innerRef={this.handleMeasureRef}
             style={{ visibility: 'hidden' }}
@@ -257,7 +258,7 @@ class Tooltip extends Component<Props, State> {
         ref={this.handleWrapperRef}
       >
         {Children.only(children)}
-        {this.renderTooltip()}
+        <TransitionGroup>{this.renderTooltip()}</TransitionGroup>
       </Tag>
     );
   }
