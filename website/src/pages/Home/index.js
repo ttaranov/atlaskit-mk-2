@@ -15,7 +15,7 @@ const Title = styled.h1`
   font-family: 'Charlie_Display_Semibold', ${fonts}; /* stylelint-disable-line */
   font-size: 52px;
   margin: 80px 0 0 !important;
-  letter-spacing: initial;
+  letter-spacing: 0;
 `;
 const Intro = styled.div`
   color: ${colors.N0};
@@ -26,7 +26,7 @@ const Intro = styled.div`
   margin-bottom: 80px;
   margin-top: 24px;
   max-width: 640px;
-  letter-spacing: initial;
+  letter-spacing: 0;
 
   a {
     color: ${colors.B75};
