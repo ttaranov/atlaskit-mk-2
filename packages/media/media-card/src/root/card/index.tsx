@@ -74,9 +74,9 @@ const extendMetadata = (
 ): FileDetails => {
   const { id } = state;
   const currentMediaType = metadata && metadata.mediaType;
-  let name: string | undefined,
-    size: number | undefined,
-    mediaType: MediaType | undefined;
+  let name: string | undefined;
+  let size: number | undefined;
+  let mediaType: MediaType | undefined;
 
   if (state.status !== 'error') {
     name = state.name;
@@ -154,9 +154,9 @@ export class Card extends Component<CardProps, CardState> {
   };
 
   componentDidMount() {
-    const { identifier } = this.props;
+    const { identifier, context } = this.props;
 
-    this.subscribe(identifier);
+    this.subscribe(identifier, context);
   }
 
   componentWillReceiveProps(nextProps: CardProps) {
@@ -170,7 +170,7 @@ export class Card extends Component<CardProps, CardState> {
       currentContext !== nextContext ||
       !deepEqual(currentIdentifier, nextIdenfifier)
     ) {
-      this.subscribe(nextIdenfifier);
+      this.subscribe(nextIdenfifier, nextContext);
     }
   }
 
@@ -198,13 +198,10 @@ export class Card extends Component<CardProps, CardState> {
     }
   };
 
-  async subscribe(identifier: Identifier) {
-    const { context } = this.props;
-
+  async subscribe(identifier: Identifier, context: Context) {
     if (identifier.mediaItemType !== 'file') {
       try {
         const metadata = await getLinkMetadata(identifier, context);
-
         this.notifyStateChange({
           status: 'complete',
           metadata: metadata,
@@ -297,9 +294,9 @@ export class Card extends Component<CardProps, CardState> {
 
   // This method is called when card fails and user press 'Retry'
   private onRetry = () => {
-    const { identifier } = this.props;
+    const { identifier, context } = this.props;
 
-    this.subscribe(identifier);
+    this.subscribe(identifier, context);
   };
 
   get placeholder(): JSX.Element {
