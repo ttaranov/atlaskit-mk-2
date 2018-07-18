@@ -13,14 +13,24 @@ const commit = process.env.BITBUCKET_COMMIT
 
 async function startBrowserStack() {
   return new Promise((resolve, reject) => {
-    bsLocal.start({ key: bsKey, localIdentifier: commit }, error => {
-      if (error) {
-        return reject(error);
-      }
-      resolve();
-      if (commit)
-        console.log(`Connected to browserstack with identifier: ${commit}`);
-    });
+    bsLocal.start(
+      {
+        key: bsKey,
+        localIdentifier: commit,
+        verbose: 'true',
+        logFile: './browserstacklogs.txt',
+        force: 'true',
+        onlyAutomate: 'true',
+      },
+      error => {
+        if (error) {
+          return reject(error);
+        }
+        resolve();
+        if (commit)
+          console.log(`Connected to browserstack with identifier: ${commit}`);
+      },
+    );
   });
 }
 

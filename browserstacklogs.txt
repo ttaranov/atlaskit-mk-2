@@ -1,0 +1,34 @@
+
+
+BrowserStackLocal v7.0
+
+Setting output as verbose
+You can now access your local server(s) in our remote browser.
+
+
+Connecting to BrowserStack using WebSocket protocol...
+Platform supports WebSocket connections.
+
+
+Connecting to BrowserStack using WebSocket protocol...
+Platform supports WebSocket connections.
+
+
+Connecting to BrowserStack using WebSocket protocol...
+Platform supports WebSocket connections.
+
+
+Connecting to BrowserStack using WebSocket protocol...
+Platform supports WebSocket connections.
+
+
+Connecting to BrowserStack using WebSocket protocol...
+Platform supports WebSocket connections.
+
+
+Connecting to BrowserStack using WebSocket protocol...
+Press Ctrl-C to exit
+
+
+Platform supports WebSocket connections.
+
