@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { ELEMENTS_CONTEXT } from '@atlaskit/analytics-namespaced-context';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
-import { sendEvent } from './analytics-web-client-wrapper';
-import { ListenerProps } from './types';
+import { ELEMENTS_CONTEXT } from '../../../analytics-namespaced-context';
+import { GasPayload } from '../../../analytics-gas-types/dist/es5';
+import { sendEvent } from '../analytics-web-client-wrapper';
+import { ListenerProps } from '../types';
 import * as merge from 'lodash.merge';
 
 export const ELEMENTS_CHANNEL = 'fabric-elements';
 export const ELEMENTS_TAG = 'fabricElements';
+
+export const EDITOR_CHANNEL = 'fabric-editor';
+export const EDITOR_TAG = 'fabricEditor';
 
 export type ListenerFunction = (
   event: { payload: GasPayload; context: Array<{}> },
@@ -38,26 +41,48 @@ const updatePayloadWithContext = (event: {
 export default class FabricElementsListener extends React.Component<
   ListenerProps
 > {
-  listenerHandler: ListenerFunction = event => {
+  static analyticsHandler(client, logger, event, tag) {
+    const payload = updatePayloadWithContext(event);
+
+    const tags: Set<string> = new Set(payload.tags || []);
+    tags.add(tag);
+    payload.tags = Array.from(tags);
+
+    sendEvent(client, logger)(payload);
+  }
+
+  fabricElementsListenerHandler: ListenerFunction = event => {
     const { client, logger } = this.props;
-    if (event.payload) {
-      const payload = updatePayloadWithContext(event);
+    return FabricElementsListener.analyticsHandler(
+      client,
+      logger,
+      event,
+      ELEMENTS_TAG,
+    );
+  };
 
-      const tags: Set<string> = new Set(payload.tags || []);
-      tags.add(ELEMENTS_TAG);
-      payload.tags = Array.from(tags);
-
-      sendEvent(client, logger)(payload);
-    }
+  fabricEditorListenerHandler: ListenerFunction = event => {
+    const { client, logger } = this.props;
+    return FabricElementsListener.analyticsHandler(
+      client,
+      logger,
+      event,
+      EDITOR_TAG,
+    );
   };
 
   render() {
     return (
       <AnalyticsListener
-        onEvent={this.listenerHandler}
+        onEvent={this.fabricElementsListenerHandler}
         channel={ELEMENTS_CHANNEL}
       >
-        {this.props.children}
+        <AnalyticsListener
+          onEvent={this.fabricEditorListenerHandler}
+          channel={EDITOR_CHANNEL}
+        >
+          {this.props.children}
+        </AnalyticsListener>
       </AnalyticsListener>
     );
   }

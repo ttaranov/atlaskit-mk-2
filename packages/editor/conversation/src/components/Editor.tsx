@@ -123,12 +123,12 @@ export default class Editor extends React.Component<Props, State> {
   private onCancel = () => {
     if (this.props.onCancel) {
       this.props.onCancel();
-    } else {
-      this.setState({
-        isExpanded: false,
-        isEditing: false,
-      });
     }
+
+    this.setState({
+      isExpanded: false,
+      isEditing: false,
+    });
   };
 
   private onSave = async (actions: any) => {

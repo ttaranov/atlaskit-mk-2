@@ -8,6 +8,7 @@ export const getConversation = (
   state.conversations.filter(
     c => c.conversationId === conversationId || c.localId === conversationId,
   )[0];
+
 export const getComments = (
   state: State,
   conversationId: string,

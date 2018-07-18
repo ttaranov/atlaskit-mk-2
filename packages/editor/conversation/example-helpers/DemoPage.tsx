@@ -8,6 +8,7 @@ import { State } from '../src/internal/store';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { selectAll } from 'prosemirror-commands';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 const DUMMY_CODE = `
 class Main() {
@@ -153,6 +154,9 @@ class File extends React.Component<FileProps, { addAt?: number }> {
     );
   }
 }
+
+const analyticsHandler = (action, channel) =>
+  console.log(`analytics action: ${action.payload.action}`, action);
 
 export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
@@ -318,31 +322,35 @@ export class Demo extends React.Component<
     );
 
     return (
-      <div style={{ margin: '20px' }}>
-        {this.renderOptions()}
-        {this.renderConversations(prConversations)}
-        {prConversations.length === 0 ? (
-          <Conversation
+      <AnalyticsListener channel="editor" onEvent={analyticsHandler}>
+        <div style={{ margin: '20px' }}>
+          {this.renderOptions()}
+          {this.renderConversations(prConversations)}
+          {prConversations.length === 0 ? (
+            <Conversation
+              provider={provider}
+              dataProviders={dataProviders}
+              containerId={containerId}
+            />
+          ) : null}
+          <File
+            name="main.js"
+            code={DUMMY_CODE}
             provider={provider}
+            conversations={conversations.filter(c => c.meta.name === 'main.js')}
             dataProviders={dataProviders}
-            containerId={containerId}
           />
-        ) : null}
-        <File
-          name="main.js"
-          code={DUMMY_CODE}
-          provider={provider}
-          conversations={conversations.filter(c => c.meta.name === 'main.js')}
-          dataProviders={dataProviders}
-        />
-        <File
-          name="stuff.js"
-          code={DUMMY_CODE}
-          provider={provider}
-          conversations={conversations.filter(c => c.meta.name === 'stuff.js')}
-          dataProviders={dataProviders}
-        />
-      </div>
+          <File
+            name="stuff.js"
+            code={DUMMY_CODE}
+            provider={provider}
+            conversations={conversations.filter(
+              c => c.meta.name === 'stuff.js',
+            )}
+            dataProviders={dataProviders}
+          />
+        </div>
+      </AnalyticsListener>
     );
   }
 }

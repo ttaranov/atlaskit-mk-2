@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import FabricElementsListener, {
   ELEMENTS_CHANNEL,
   ELEMENTS_TAG,
-} from '../../FabricElementsListener';
+} from '../../fabric/FabricListeners';
 import {
   DummyComponentWithAnalytics,
   TaggedDummyComponentWithAnalytics,
@@ -12,7 +12,7 @@ import {
 } from '../../../examples/helpers';
 import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../../types';
-import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { FabricElementsAnalyticsContext } from '../../../../analytics-namespaced-context';
 
 describe('<FabricElementsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;

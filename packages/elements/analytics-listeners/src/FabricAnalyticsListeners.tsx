@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { AnalyticsWebClient } from './types';
-import FabricElementsListener from './FabricElementsListener';
+import FabricListeners from './fabric/FabricListeners';
 import AtlaskitListener from './atlaskit/AtlaskitListener';
 import Logger from './helpers/logger';
 
@@ -32,9 +32,9 @@ class FabricAnalyticsListeners extends React.Component<Props> {
     }
     return (
       <AtlaskitListener client={client} logger={this.logger}>
-        <FabricElementsListener client={client} logger={this.logger}>
+        <FabricListeners client={client} logger={this.logger}>
           {children}
-        </FabricElementsListener>
+        </FabricListeners>
       </AtlaskitListener>
     );
   }

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { GasPayload } from '../../../analytics-gas-types/dist/es5';
 import Button from '@atlaskit/button';
 
 import {
   ELEMENTS_CHANNEL,
   ELEMENTS_TAG,
-} from '../../src/FabricElementsListener';
+} from '../../src/fabric/FabricListeners';
 
 export type Props = {
   text?: string;

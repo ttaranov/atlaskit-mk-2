@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '../../FabricAnalyticsListeners';
-import FabricElementsListener from '../../FabricElementsListener';
+import FabricElementsListener from '../../fabric/FabricListeners';
 import {
   DummyComponentWithAnalytics,
   DummyComponent,

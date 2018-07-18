@@ -6,7 +6,9 @@ import AkComment, {
   CommentAction,
   CommentTime,
 } from '@atlaskit/comment';
+
 import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
+
 import { WithProviders, ProviderFactory } from '@atlaskit/editor-common';
 import { ResourcedReactions } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
@@ -15,6 +17,7 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { HttpError } from '../api/HttpError';
+import { fireEvent } from '../internal/analytics';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -59,6 +62,7 @@ export interface SharedProps {
   placeholder?: string;
   disableScrollTo?: boolean;
   allowFeedbackAndHelpButtons?: boolean;
+  sendAnalyticsEvent: (action: string) => void;
 }
 
 export interface Props extends SharedProps {
@@ -167,14 +171,18 @@ export default class Comment extends React.Component<Props, State> {
     }
   };
 
-  private onReply = () => {
+  private onReply = (value: any, analyticsEvent) => {
+    fireEvent('commentCreateStart', analyticsEvent);
+
     this.setState({
       isReplying: true,
     });
   };
 
   private onSaveReply = async (value: any) => {
-    const { conversationId, comment } = this.props;
+    const { conversationId, comment, sendAnalyticsEvent } = this.props;
+
+    sendAnalyticsEvent('commentCreateSave');
 
     this.dispatch('onAddComment', conversationId, comment.commentId, value);
 
@@ -184,25 +192,32 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelReply = () => {
+    this.props.sendAnalyticsEvent('commentCreateCancel');
     this.setState({
       isReplying: false,
     });
   };
 
-  private onDelete = () => {
+  private onDelete = (value: any, analyticsEvent) => {
     const { conversationId, comment } = this.props;
+
+    fireEvent('commentDelete', analyticsEvent);
 
     this.dispatch('onDeleteComment', conversationId, comment.commentId);
   };
 
-  private onEdit = () => {
+  private onEdit = (value: any, analyticsEvent) => {
+    fireEvent('commentEditStart', analyticsEvent);
+
     this.setState({
       isEditing: true,
     });
   };
 
   private onSaveEdit = async (value: any) => {
-    const { conversationId, comment } = this.props;
+    const { conversationId, comment, sendAnalyticsEvent } = this.props;
+
+    sendAnalyticsEvent('commentEditSave');
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -212,12 +227,14 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelEdit = () => {
+    this.props.sendAnalyticsEvent('commentEditCancel');
+
     this.setState({
       isEditing: false,
     });
   };
 
-  private onRequestCancel = () => {
+  private onRequestCancel = (value: any, analyticsEvent) => {
     const { comment, onCancel } = this.props;
 
     // Invoke optional onCancel hook
@@ -225,16 +242,20 @@ export default class Comment extends React.Component<Props, State> {
       onCancel();
     }
 
+    fireEvent('commentRequestCancel', analyticsEvent);
+
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
 
-  private onRequestRetry = () => {
+  private onRequestRetry = (value: any, analyticsEvent) => {
     const { lastDispatch } = this.state;
     const { onRetry, comment } = this.props;
 
     if (onRetry && comment.isPlaceholder) {
       return onRetry(comment.localId);
     }
+
+    fireEvent('commentRequestRetry', analyticsEvent);
 
     if (!lastDispatch) {
       return;
@@ -317,6 +338,7 @@ export default class Comment extends React.Component<Props, State> {
       disableScrollTo,
       onEditorClose,
       onEditorOpen,
+      sendAnalyticsEvent,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -344,6 +366,7 @@ export default class Comment extends React.Component<Props, State> {
         renderEditor={renderEditor}
         containerId={containerId}
         disableScrollTo={disableScrollTo}
+        sendAnalyticsEvent={sendAnalyticsEvent}
       />
     ));
   }
