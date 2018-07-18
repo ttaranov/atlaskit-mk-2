@@ -4,7 +4,7 @@ import Comment from '../components/Comment';
 import Editor from './Editor';
 import { Conversation as ConversationType } from '../model';
 import { SharedProps } from './Comment';
-import { createAnalyticsEvent } from './types';
+import { ANALYTICS_CHANNEL, createAnalyticsEvent } from '../internal/analytics';
 
 // See https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
 // https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
@@ -72,9 +72,9 @@ export default class Conversation extends React.PureComponent<Props, State> {
   */
   sendAnalyticsEvent = eventName => {
     const analyticsEvent = this.props.createAnalyticsEvent({
-      action: eventName,
+      actionSubjectId: eventName,
     });
-    analyticsEvent.fire('editor');
+    analyticsEvent.fire(ANALYTICS_CHANNEL);
   };
 
   private renderComments() {

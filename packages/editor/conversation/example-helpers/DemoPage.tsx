@@ -156,7 +156,7 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 }
 
 const analyticsHandler = (action, channel) =>
-  console.log(`analytics action: ${action.payload.action}`, action);
+  console.log(`analytics action: ${action.payload.actionSubjectId}`, action);
 
 export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
@@ -322,7 +322,7 @@ export class Demo extends React.Component<
     );
 
     return (
-      <AnalyticsListener channel="editor" onEvent={analyticsHandler}>
+      <AnalyticsListener channel="fabric-editor" onEvent={analyticsHandler}>
         <div style={{ margin: '20px' }}>
           {this.renderOptions()}
           {this.renderConversations(prConversations)}
