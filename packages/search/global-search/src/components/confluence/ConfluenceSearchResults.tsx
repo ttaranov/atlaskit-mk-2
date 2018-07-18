@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import PeopleIconGlyph from '../../assets/PeopleIconGlyph';
+import Icon from '@atlaskit/icon';
 import { FormattedMessage } from 'react-intl';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
@@ -67,7 +69,7 @@ const renderSearchConfluenceItem = (query: string, text: JSX.Element) =>
 const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
-    icon: <SearchIcon size="medium" label="Search People" />,
+    icon: <Icon glyph={PeopleIconGlyph} size="medium" label="Search people" />,
     text: <FormattedMessage id="global-search.people.advanced-search" />,
   });
 

@@ -214,6 +214,23 @@ describe('ConfluenceQuickSearchContainer', () => {
 
   it('should redirect to confluence advanced search on search submit', async () => {
     const wrapper = render();
+
+    const onSearchSubmit: Function = wrapper
+      .find(GlobalQuickSearch)
+      .prop('onSearchSubmit');
+
+    const mockRedirect = jest
+      .spyOn(searchResultsUtil, 'redirectToConfluenceAdvancedSearch')
+      .mockImplementation(() => {});
+
+    onSearchSubmit!({ target: { value: 'query' } });
+    expect(mockRedirect).toHaveBeenCalledWith('query');
+  });
+
+  it('should redirect to confluence advanced search with full query without waiting for debounce', async () => {
+    const wrapper = render();
+
+    // do a search and let it debounce first
     searchFor('query', wrapper);
 
     const onSearchSubmit: Function = wrapper
@@ -224,8 +241,11 @@ describe('ConfluenceQuickSearchContainer', () => {
       .spyOn(searchResultsUtil, 'redirectToConfluenceAdvancedSearch')
       .mockImplementation(() => {});
 
-    onSearchSubmit!();
-    expect(mockRedirect).toHaveBeenCalledWith('query');
+    // now call submit with a different value
+    onSearchSubmit!({ target: { value: 'query123' } });
+
+    // assert that we don't redirect with a stale value
+    expect(mockRedirect).toHaveBeenCalledWith('query123');
   });
 
   it('should render object results', async () => {

@@ -1,5 +1,9 @@
 # @atlaskit/onboarding
 
+## 5.1.1
+- [patch] onboarding spotlight: fix margin affecting target position [0e33c70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e33c70)
+- [none] Updated dependencies [0e33c70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e33c70)
+
 ## 5.1.0
 - [minor] round corners for onboarding modal image [785e99a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/785e99a)
 - [none] Updated dependencies [785e99a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/785e99a)
