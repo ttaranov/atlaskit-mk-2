@@ -4,15 +4,10 @@ import * as deepEqual from 'deep-equal';
 import {
   Context,
   MediaItemType,
-  MediaItemProvider,
-  UrlPreviewProvider,
   ImageResizeMode,
   MediaItemDetails,
-  FileState,
   FileDetails,
   MediaType,
-  LinkDetails,
-  UrlPreview,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs';
@@ -22,33 +17,14 @@ import {
   CardAnalyticsContext,
   CardStatus,
 } from '../..';
+import { Identifier } from '../domain';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
-
-export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
-export type Provider = MediaItemProvider | UrlPreviewProvider;
-
-export interface FileIdentifier {
-  readonly mediaItemType: 'file';
-  readonly id: string;
-  readonly occurrenceKey?: string;
-  readonly collectionName?: string; // files can exist outside of a collection
-}
-
-export interface LinkIdentifier {
-  readonly mediaItemType: 'link';
-  readonly id: string;
-  readonly occurrenceKey?: string;
-  readonly collectionName: string; // links always exist within a collection
-}
-
-export interface UrlPreviewIdentifier {
-  readonly mediaItemType: 'link';
-  readonly url: string;
-}
+import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
+import { isUrlPreviewIdentifier } from '../../utils/identifier';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -68,76 +44,8 @@ export interface CardState {
   readonly error?: Error;
 }
 
-const extendMetadata = (
-  state: FileState,
-  metadata?: FileDetails,
-): FileDetails => {
-  const { id } = state;
-  const currentMediaType = metadata && metadata.mediaType;
-  let name: string | undefined;
-  let size: number | undefined;
-  let mediaType: MediaType | undefined;
-
-  if (state.status !== 'error') {
-    name = state.name;
-    size = state.size;
-    mediaType =
-      currentMediaType && currentMediaType !== 'unknown'
-        ? currentMediaType
-        : state.mediaType;
-  }
-
-  return {
-    id,
-    name,
-    size,
-    mediaType,
-  };
-};
-
 const isPreviewableType = (type: MediaType): boolean => {
   return ['audio', 'video', 'image'].indexOf(type) > -1;
-};
-
-const isUrlPreviewIdentifier = (
-  identifier: Identifier,
-): identifier is UrlPreviewIdentifier => {
-  const preview = identifier as UrlPreviewIdentifier;
-  return preview && preview.url !== undefined;
-};
-
-const getLinkMetadata = (
-  identifier: LinkIdentifier | UrlPreviewIdentifier,
-  context: Context,
-): Promise<LinkDetails | UrlPreview> => {
-  return new Promise((resolve, reject) => {
-    if (isUrlPreviewIdentifier(identifier)) {
-      const observable = context
-        .getUrlPreviewProvider(identifier.url)
-        .observable();
-
-      observable.subscribe({
-        next: resolve,
-        error: reject,
-      });
-    } else {
-      const { id, mediaItemType, collectionName } = identifier;
-      const observable = context
-        .getMediaItemProvider(id, mediaItemType, collectionName)
-        .observable();
-
-      observable.subscribe({
-        next(item) {
-          if (item.type === 'file') {
-            reject();
-          } else {
-            resolve(item.details);
-          }
-        },
-        error: reject,
-      });
-    }
-  });
 };
 
 export class Card extends Component<CardProps, CardState> {
