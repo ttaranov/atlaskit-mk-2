@@ -26,9 +26,9 @@ ${code`
   /** A component which will render the global navigation layer. */
   globalNavigation: ComponentType<{}>,
   /** A component which will render the product navigation layer. */
-  productRootNavigation: ComponentType<{}>,
+  productNavigation: ComponentType<{}>,
   /** A component which will render the container navigation layer. */
-  productContainerNavigation: ?ComponentType<{}>,
+  containerNavigation: ?ComponentType<{}>,
   /** The page layer. */
   children: Node,
 }
@@ -125,16 +125,16 @@ The container layer can be composed using the same primitives as the product lay
 If you try you'll notice that you can expand, collapse, and resize your navigation right now, and this state will be controlled by the component. What if we want to manage or respond to this state somewhere in our application? Introducing the \`UIStateSubscriber\`.
 
 ${code`
-import { NavigationSubscriber } from '@atlaskit/navigation-next';
+import { UIStateSubscriber } from '@atlaskit/navigation-next';
 
 const ExpandToggleButton = () => (
-  <NavigationSubscriber>
-    {ui => (
-      <button onClick={ui.toggleProductNav}>
-        {ui.state.productNavIsCollapsed ? 'Expand' : 'Collapse'} product navigation
+  <UIStateSubscriber>
+    {navigationUI => (
+      <button onClick={navigationUI.toggleProductNav}>
+        {navigationUI.state.productNavIsCollapsed ? 'Expand' : 'Collapse'} product navigation
       </button>
     )}
-  </NavigationSubscriber>
+  </UIStateSubscriber>
 );
 `}
 
