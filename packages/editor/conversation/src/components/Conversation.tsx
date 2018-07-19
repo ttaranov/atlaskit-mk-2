@@ -4,7 +4,12 @@ import Comment from '../components/Comment';
 import Editor from './Editor';
 import { Conversation as ConversationType } from '../model';
 import { SharedProps } from './Comment';
-import { ANALYTICS_CHANNEL, createAnalyticsEvent } from '../internal/analytics';
+import {
+  ANALYTICS_CHANNEL,
+  createAnalyticsEvent,
+  analyticsEvents,
+  fireEvent,
+} from '../internal/analytics';
 
 // See https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
 // https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
@@ -70,11 +75,9 @@ export default class Conversation extends React.PureComponent<Props, State> {
     Once editor is instrumented use the analyticsEvent passed in by editor instead
     @deprecated
   */
-  sendAnalyticsEvent = eventName => {
-    const analyticsEvent = this.props.createAnalyticsEvent({
-      actionSubjectId: eventName,
-    });
-    analyticsEvent.fire(ANALYTICS_CHANNEL);
+  sendAnalyticsEvent = (eventName: analyticsEvents) => {
+    const analyticsEvent = this.props.createAnalyticsEvent({});
+    fireEvent(eventName, this.props.containerId, analyticsEvent);
   };
 
   private renderComments() {
@@ -130,7 +133,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
   }
 
   private onCancel = () => {
-    this.sendAnalyticsEvent('conversationCreateCancel');
+    this.sendAnalyticsEvent(analyticsEvents.commentCreateCancel);
 
     if (this.props.onCancel) {
       this.props.onCancel();
@@ -138,7 +141,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
   };
 
   private onOpen = () => {
-    this.sendAnalyticsEvent('conversationCreateStart');
+    this.sendAnalyticsEvent(analyticsEvents.commentCreateStart);
     this.onEditorOpen();
   };
   private renderConversationsEditor() {
@@ -191,7 +194,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       conversation,
     } = this.props;
 
-    this.sendAnalyticsEvent('conversationCreateSave');
+    this.sendAnalyticsEvent(analyticsEvents.commentCreateStart);
 
     if (!id && !commentLocalId && onCreateConversation) {
       onCreateConversation(localId!, containerId, value, meta);

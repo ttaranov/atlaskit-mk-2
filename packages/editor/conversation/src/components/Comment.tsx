@@ -17,7 +17,7 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { HttpError } from '../api/HttpError';
-import { fireEvent } from '../internal/analytics';
+import { fireEvent, analyticsEvents } from '../internal/analytics';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -172,7 +172,11 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onReply = (value: any, analyticsEvent) => {
-    fireEvent('commentCreateStart', analyticsEvent);
+    fireEvent(
+      analyticsEvents.commentCreateStart,
+      this.props.containerId,
+      analyticsEvent,
+    );
 
     this.setState({
       isReplying: true,
@@ -201,13 +205,21 @@ export default class Comment extends React.Component<Props, State> {
   private onDelete = (value: any, analyticsEvent) => {
     const { conversationId, comment } = this.props;
 
-    fireEvent('commentDelete', analyticsEvent);
+    fireEvent(
+      analyticsEvents.commentDelete,
+      this.props.containerId,
+      analyticsEvent,
+    );
 
     this.dispatch('onDeleteComment', conversationId, comment.commentId);
   };
 
   private onEdit = (value: any, analyticsEvent) => {
-    fireEvent('commentEditStart', analyticsEvent);
+    fireEvent(
+      analyticsEvents.commentEditStart,
+      this.props.containerId,
+      analyticsEvent,
+    );
 
     this.setState({
       isEditing: true,
@@ -217,7 +229,7 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent('commentEditSave');
+    sendAnalyticsEvent(analyticsEvents.commentEditSave);
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -227,7 +239,7 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelEdit = () => {
-    this.props.sendAnalyticsEvent('commentEditCancel');
+    this.props.sendAnalyticsEvent(analyticsEvents.commentEditCancel);
 
     this.setState({
       isEditing: false,
@@ -242,7 +254,11 @@ export default class Comment extends React.Component<Props, State> {
       onCancel();
     }
 
-    fireEvent('commentRequestCancel', analyticsEvent);
+    fireEvent(
+      analyticsEvents.commentEditCancel,
+      this.props.containerId,
+      analyticsEvent,
+    );
 
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
@@ -255,7 +271,11 @@ export default class Comment extends React.Component<Props, State> {
       return onRetry(comment.localId);
     }
 
-    fireEvent('commentRequestRetry', analyticsEvent);
+    fireEvent(
+      analyticsEvents.commentRequestRetry,
+      this.props.containerId,
+      analyticsEvent,
+    );
 
     if (!lastDispatch) {
       return;
