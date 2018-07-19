@@ -71,6 +71,7 @@ export interface ResourceProvider<Result> {
 export type MentionContextIdentifier = {
   containerId: string;
   objectId: string;
+  childObjectId?: string;
 };
 
 export interface MentionProvider
@@ -321,17 +322,33 @@ class MentionResource extends AbstractMentionResource {
     return Promise.resolve(new Set());
   }
 
-  private getConfigParams(): KeyValues {
-    const queryParams: KeyValues = {};
+  private getQueryParams(
+    contextIdentifier?: MentionContextIdentifier,
+  ): KeyValues {
+    const configParams: KeyValues = {};
+    const contextParams: KeyValues = {};
 
     if (this.config.containerId) {
-      queryParams['containerId'] = this.config.containerId;
+      configParams['containerId'] = this.config.containerId;
     }
 
     if (this.config.productId) {
-      queryParams['productIdentifier'] = this.config.productId;
+      configParams['productIdentifier'] = this.config.productId;
     }
-    return queryParams;
+
+    if (contextIdentifier) {
+      if (contextIdentifier.containerId) {
+        contextParams['containerId'] = contextIdentifier.containerId;
+      }
+      if (contextIdentifier.objectId) {
+        contextParams['objectId'] = contextIdentifier.objectId;
+      }
+      if (contextIdentifier.childObjectId) {
+        contextParams['childObjectId'] = contextIdentifier.childObjectId;
+      }
+    }
+    // if contextParams exist then it will override configParams for containerId
+    return { ...configParams, ...contextParams };
   }
 
   /**
@@ -344,11 +361,10 @@ class MentionResource extends AbstractMentionResource {
   private remoteInitialState(
     contextIdentifier?: MentionContextIdentifier,
   ): Promise<MentionsResult> {
-    const queryParams: KeyValues = this.getConfigParams();
+    const queryParams: KeyValues = this.getQueryParams(contextIdentifier);
     const options = {
       path: 'bootstrap',
       queryParams,
-      ...contextIdentifier,
     };
 
     return serviceUtils
@@ -410,8 +426,7 @@ class MentionResource extends AbstractMentionResource {
       queryParams: {
         query,
         limit: MAX_QUERY_ITEMS,
-        ...this.getConfigParams(),
-        ...contextIdentifier,
+        ...this.getQueryParams(contextIdentifier),
       },
     };
 
@@ -444,8 +459,7 @@ class MentionResource extends AbstractMentionResource {
       path: 'record',
       queryParams: {
         selectedUserId: mention.id,
-        ...this.getConfigParams(),
-        ...contextIdentifier,
+        ...this.getQueryParams(contextIdentifier),
       },
       requestInit: {
         method: 'POST',
