@@ -82,6 +82,11 @@ module.exports = function createWebpackConfig(
     module: {
       rules: [
         {
+          test: /DESIGN_EXAMPLES/,
+          exclude: /node_modules/,
+          loader: require.resolve('design-examples-loader'),
+        },
+        {
           test: /SITE_DATA$/,
           loader: require.resolve('bolt-fs-loader'),
           options: {
