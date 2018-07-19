@@ -1,0 +1,7 @@
+{
+    "name": "design-examples-loader",
+    "version": "0.0.0",
+    "dependencies": {
+        "sentence-case": "^2.1.1"
+    }
+}

@@ -1,21 +1,11 @@
 import React from 'react';
-import {
-  Editor,
-  EditorContext,
-  WithEditorActions,
-} from '@atlaskit/editor-core';
-import Avatar from '@atlaskit/avatar';
-import { customInsertMenuItems } from './EditorExtraMenuItems';
-import MarkdownTransformer from '../utils/markdownTransformer';
-import { ConfluenceTransformer } from '@atlaskit/editor-confluence-transformer';
-import examples from '../../test';
-import Avatar1 from '../../../../../packages/core/avatar';
+import { Editor } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
+import quickInsertProviderFactory, {
+  customInsertMenuItems,
+} from './EditorExtraMenuItems';
 
-function getExampleComponent(key) {
-  return require(examples.filter(example => example.key === key)[0].component)
-    .default;
-}
+const quickInsertProvider = quickInsertProviderFactory();
 
 export default class Example extends React.PureComponent {
   state = { adf: {} };
@@ -41,15 +31,13 @@ export default class Example extends React.PureComponent {
           allowExtension
           onChange={this.handleChangeInTheEditor}
           insertMenuItems={customInsertMenuItems}
+          quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
           media={{
             allowMediaSingle: true,
           }}
           extensionHandlers={{
             'com.ajay.test': (ext, doc) => {
-              const Tag = getExampleComponent(ext.parameters.tag);
-
-              console.log(Tag);
-              console.log(ext.parameters.tag);
+              const Tag = ext.parameters.tag;
               return <Tag />;
             },
           }}
