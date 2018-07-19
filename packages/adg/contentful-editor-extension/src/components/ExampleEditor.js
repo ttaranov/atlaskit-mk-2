@@ -4,44 +4,56 @@ import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import quickInsertProviderFactory, {
   customInsertMenuItems,
 } from './EditorExtraMenuItems';
-
+import ImperativeContentfulUIExtension from './ImperativeContentfulUiExtension';
+import Test from '../../DESIGN_EXAMPLES';
 const quickInsertProvider = quickInsertProviderFactory();
 
+function getTheMatchingComponent(path) {
+  return Test.filter(example => example.componentPath === path)[0].component
+    .default;
+}
+
 export default class Example extends React.PureComponent {
-  state = { adf: {} };
   transformer = new JSONTransformer();
 
-  handleChangeInTheEditor = editorView => {
+  handleChangeInTheEditor = (editorView, updateContentfulFieldValue) => {
     const adf = this.transformer.encode(editorView.state.doc);
-
-    this.setState({ adf });
+    updateContentfulFieldValue(JSON.parse(JSON.stringify(adf)));
   };
 
   render() {
     return (
       <div>
-        <pre>{JSON.stringify(this.state.adf, null, 2)}</pre>
-        <Editor
-          appearance="comment"
-          allowTasksAndDecisions={true}
-          allowCodeBlocks={true}
-          allowLists={true}
-          allowRule={true}
-          allowTables={true}
-          allowExtension
-          onChange={this.handleChangeInTheEditor}
-          insertMenuItems={customInsertMenuItems}
-          quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-          media={{
-            allowMediaSingle: true,
-          }}
-          extensionHandlers={{
-            'com.ajay.test': (ext, doc) => {
-              const Tag = ext.parameters.tag;
-              return <Tag />;
-            },
-          }}
-        />
+        <ImperativeContentfulUIExtension actions={this.props.actions}>
+          {({ updateContentfulFieldValue }) => (
+            <Editor
+              appearance="comment"
+              allowTasksAndDecisions={true}
+              allowCodeBlocks={true}
+              allowLists={true}
+              allowRule={true}
+              allowTables={true}
+              allowExtension
+              onChange={editorView =>
+                this.handleChangeInTheEditor(
+                  editorView,
+                  updateContentfulFieldValue,
+                )
+              }
+              insertMenuItems={customInsertMenuItems}
+              quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
+              media={{
+                allowMediaSingle: true,
+              }}
+              extensionHandlers={{
+                'com.ajay.test': (ext, doc) => {
+                  const Tag = getTheMatchingComponent(ext.parameters.tag);
+                  return <Tag />;
+                },
+              }}
+            />
+          )}
+        </ImperativeContentfulUIExtension>
       </div>
     );
   }
