@@ -1,79 +1,55 @@
 // @flow
 import React, { type Node } from 'react';
-import ReactDOM from 'react-dom';
-
-// This component does two things:
-// 1. Portals it's children using React.createPortal
-// 2. Creates a DOM node so each layer stacks correctly
+import PortalBase from './PortalBase';
 
 type Layer = 'default' | 'spotlight' | 'flag' | 'tooltip';
 
+type ZIndexMap = { [Layer]: number };
+
+const create = (): ZIndexMap => ({
+  default: 1,
+  spotlight: 100,
+  flag: 200,
+  tooltip: 300,
+});
+
+const add = (map: ZIndexMap, layer: Layer, offset: number) => ({
+  ...map,
+  [layer]: map[layer] + offset,
+});
+
 type Props = {
-  /* The layer to render the children into. */
-  layer: Layer,
   /* Children to render in the React Portal. */
   children: Node,
+  /* The layer to render the children into. */
+  layer: Layer,
 };
 
-type State = {
-  container: ?HTMLElement,
-};
+const { Provider, Consumer } = React.createContext(create());
 
-const atlaskitLayers: Layer[] = ['default', 'spotlight', 'flag', 'tooltip'];
+// This is an opinionated Atlaskit wrapper on PortalBase
 
-const createContainer = (layer: Layer) => {
-  const container = document.createElement('div');
-  container.setAttribute('class', `atlaskit-portal-${layer}`);
-  container.setAttribute(
-    'style',
-    `z-index: ${atlaskitLayers.indexOf(layer) + 1};`,
-  );
-  return container;
-};
-
-const canUseDOM = () =>
-  !!(
-    typeof global.window !== 'undefined' &&
-    global.window.document &&
-    global.window.document.createElement
-  );
-
-class Portal extends React.Component<Props, State> {
+class Portal extends React.Component<Props> {
   static defaultProps = {
     layer: 'default',
   };
 
-  state = {
-    container: canUseDOM() ? createContainer(this.props.layer) : undefined,
-  };
-
-  componentDidUpdate(prevProps: Props) {
-    const { container } = this.state;
-    const { layer } = this.props;
-    if (container && prevProps.layer !== layer) {
-      const newContainer = createContainer(layer);
-      document.body.replaceChild(container, newContainer);
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ container: newContainer });
-    }
-  }
-  componentDidMount() {
-    const { container } = this.state;
-    if (container) {
-      document.body.appendChild(container);
-    }
-  }
-  componentWillUnmount() {
-    const { container } = this.state;
-    if (container) {
-      document.body.removeChild(container);
-    }
-  }
   render() {
-    const { container } = this.state;
-    return container
-      ? ReactDOM.createPortal(this.props.children, container)
-      : null;
+    const { layer, children } = this.props;
+    return (
+      <Consumer>
+        {zIndexMap => (
+          <Provider value={add(zIndexMap, layer, 1)}>
+            <PortalBase
+              className={`atlaskit-portal-${layer}`}
+              zIndex={zIndexMap[layer]}
+            >
+              {children}
+            </PortalBase>
+          </Provider>
+        )}
+      </Consumer>
+    );
   }
 }
 
