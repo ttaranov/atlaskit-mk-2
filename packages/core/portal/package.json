@@ -17,16 +17,16 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^9.0.2",
-    "@atlaskit/icon": "^13.1.1"
   },
   "peerDependencies": {
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
   },
   "devDependencies": {
+    "@atlaskit/button": "^9.0.2",
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/flag": "^9.0.1",
+    "@atlaskit/icon": "^13.1.1",
     "@atlaskit/inline-dialog": "^8.0.0",
     "@atlaskit/modal-dialog": "^6.0.1",
     "@atlaskit/onboarding": "^5.1.0",
