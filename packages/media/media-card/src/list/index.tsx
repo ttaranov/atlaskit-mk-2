@@ -101,7 +101,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           : undefined;
         const shouldAnimate =
           !!firstItemKey && firstItemKey !== newFirstItemKey;
-        // console.log({shouldAnimate})
+
         this.setState({
           collection: value,
           shouldAnimate,
