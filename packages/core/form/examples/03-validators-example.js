@@ -11,7 +11,6 @@ import Form, {
   FormFooter,
   Validator,
 } from '../src';
-//import type { FormRef } from '../src/Form';
 
 const resultBoxStyle = {
   width: '95%',
@@ -74,7 +73,6 @@ const isMojitoIngredient = (value: {
   label: string,
   value: string,
 }): boolean => {
-  console.log(JSON.stringify(value));
   return mojitoIngredients.map(item => item.value).indexOf(value.value) > -1;
 };
 
@@ -108,16 +106,19 @@ export default class ValidatorsExample extends PureComponent<void, State> {
 
   // Form Event Handlers
 
-  // Provide submit
+  // If you provide a submit handler you can do any custom data handling & validation
   onSubmitHandler = () => {
     console.log('onSubmitHandler');
-    // Do any custom data handling & validation
-
+    // Calling validate on the form will update it's fields state
     const validateResult = this.formRef.validate();
-    console.log(this.formRef.getForm().fields.invalidFields.length);
     console.log(validateResult);
-    // Now call submit when your done
-    this.formRef.submit();
+
+    if (validateResult.isInvalid) {
+      console.log('onSubmitHandler = Form Fields Invalid');
+    } else {
+      // Now call submit when your done
+      this.formRef.submit();
+    }
   };
 
   onValidateHandler = () => {

@@ -315,7 +315,6 @@ export default class Field extends Component<Props, State> {
   /** If a parent Form exists we update this fields state  */
   updateFormState = (fieldState?: FieldState) => {
     if (this.props.form && this.props.form.setFieldState) {
-      //console.log(this.state.fieldState);
       this.props.form.setFieldState(fieldState || this.state.fieldState);
     }
   };

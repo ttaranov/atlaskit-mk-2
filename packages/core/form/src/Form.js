@@ -192,9 +192,6 @@ export default class Form extends Component<Props, State> {
     };
   };
 
-  /**  */
-  updateInvalidFields = () => {};
-
   /** Remove field from form */
   unregisterField = (name: string) => {
     const { fieldStates, ...rest } = this.fields;
