@@ -14,7 +14,7 @@ import {
 } from './_task-decision-helpers';
 
 /*
- * Safari adds special characters that end up in the snapshot 
+ * Safari adds special characters that end up in the snapshot
 */
 
 // Cannot paste rich text in IE/Edge
@@ -50,7 +50,7 @@ BrowserTestCase(
     await browser.isVisible(clipboardInput);
     await browser.type(
       clipboardInput,
-      '<p>this is a link <a href="http://www.google.com">www.google.com</a></p><p>more elements with some <strong>format</strong></p><p>some addition<em> formatting</em></p>',
+      'this is a link http://www.google.com more elements with some **format** some addition *formatting*',
     );
     await browser.click(copyAsPlaintextButton);
     await browser.goto(messageEditor);
