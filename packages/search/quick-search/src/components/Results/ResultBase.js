@@ -1,11 +1,16 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Component } from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
-import type { ResultType as Props } from './types';
+import type { AnalyticsData, ResultType as Props } from './types';
 import { ResultContext, SelectedResultIdContext } from '../context';
 
 const BASE_RESULT_TYPE = 'base';
+
+interface HasAnalyticsData {
+  getAnalyticsData(): AnalyticsData;
+}
+export type ResultBaseType = Component<Props> & HasAnalyticsData;
 
 // ==========================================================================================
 // This class enforces a standard set of props and behaviour for all result types to support.
@@ -13,7 +18,7 @@ const BASE_RESULT_TYPE = 'base';
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-class ResultBase extends PureComponent<Props> {
+class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
   static defaultProps = {
     isCompact: false,
     isSelected: false,

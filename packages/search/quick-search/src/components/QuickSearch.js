@@ -2,9 +2,9 @@
 import React, { Component, type ComponentType } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
-import { type ResultData, type Context } from './Results/types';
+import type { ResultData, Context, ResultType } from './Results/types';
 import AkSearch from './Search/Search';
-import ResultBase from './Results/ResultBase';
+import { type ResultBaseType } from './Results/ResultBase';
 import { ResultContext, SelectedResultIdContext } from './context';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
@@ -117,7 +117,7 @@ export class QuickSearch extends Component<Props, State> {
     value: '',
   };
 
-  flatResults: Array<ResultBase> = [];
+  flatResults: Array<ResultBaseType> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
   lastKeyPressed: string = '';
@@ -130,7 +130,7 @@ export class QuickSearch extends Component<Props, State> {
       selectedResultId: this.props.selectedResultId || null,
       context: {
         isDirty: false,
-        registerResult: (result: ResultBase) => {
+        registerResult: (result: ResultBaseType) => {
           this.flatResults.push(result);
         },
         onMouseEnter: this.handleResultMouseEnter,

@@ -1,7 +1,7 @@
 // @flow
 import type { Node, Element, ComponentType } from 'react';
 
-type AnalyticsData = {
+export type AnalyticsData = {
   [key: string]: string | number,
 };
 
