@@ -5,6 +5,8 @@ import Portal from '../..';
 
 const App = ({ children }: { children: Node }) => <div>{children}</div>;
 
+const zIndex = (elem: HTMLElement) => parseInt(elem.style['z-index'], 10);
+
 let wrapper: any;
 
 afterEach(() => wrapper && wrapper.unmount());
@@ -21,10 +23,9 @@ test('should create a portal', () => {
   expect(wrapper.find(App).html()).toBe('<div></div>');
   expect(elements).toHaveLength(1);
   expect(elements[0].innerHTML).toBe('<div>Hi</div>');
-  wrapper.unmount();
 });
 
-test('should stack nested portals', () => {
+test('should use z-index to stack nested portals', () => {
   wrapper = mount(
     <App>
       <Portal>
@@ -36,13 +37,12 @@ test('should stack nested portals', () => {
     </App>,
   );
   const elements = document.getElementsByClassName('atlaskit-portal-default');
-  expect(wrapper.find(App).html()).toBe('<div></div>');
   expect(elements).toHaveLength(2);
-  expect(elements[0].innerHTML).toBe('<div>back</div>');
-  expect(elements[1].innerHTML).toBe('<div>front</div>');
+  const [front, back] = elements;
+  expect(zIndex(front)).toBeGreaterThan(zIndex(back));
 });
 
-test('should stack sibiling portals', () => {
+test('should use DOM ordering to stack sibiling portals', () => {
   wrapper = mount(
     <App>
       <Portal>
@@ -54,10 +54,10 @@ test('should stack sibiling portals', () => {
     </App>,
   );
   const elements = document.getElementsByClassName('atlaskit-portal-default');
-  expect(wrapper.find(App).html()).toBe('<div></div>');
   expect(elements).toHaveLength(2);
-  expect(elements[0].innerHTML).toBe('<div>back</div>');
-  expect(elements[1].innerHTML).toBe('<div>front</div>');
+  const [back, front] = elements;
+  expect(zIndex(front)).toEqual(zIndex(back));
+  expect(back.nextSibling).toBe(front);
 });
 
 test('should layer portals', () => {
@@ -77,9 +77,9 @@ test('should layer portals', () => {
   const tooltipElements = document.getElementsByClassName(
     'atlaskit-portal-tooltip',
   );
-  expect(wrapper.find(App).html()).toBe('<div></div>');
   expect(defaultElements).toHaveLength(1);
   expect(tooltipElements).toHaveLength(1);
-  expect(defaultElements[0].innerHTML).toBe('<div>back</div>');
-  expect(tooltipElements[0].innerHTML).toBe('<div>front</div>');
+  expect(zIndex(tooltipElements[0])).toBeGreaterThan(
+    zIndex(defaultElements[0]),
+  );
 });
