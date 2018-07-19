@@ -241,7 +241,7 @@ export const getSupportedFormatting = (
   return supportedBySchema.concat(otherFormatting);
 };
 
-export const getComponentFromKeymap = (keymap): any => {
+export const getComponentFromKeymap = keymap => {
   const shortcut: string = keymap[browser.mac ? 'mac' : 'windows'];
   const keyParts = shortcut.replace(/\-(?=.)/g, ' + ').split(' ');
   return (
