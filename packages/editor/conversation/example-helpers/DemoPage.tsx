@@ -156,7 +156,10 @@ class File extends React.Component<FileProps, { addAt?: number }> {
 }
 
 const analyticsHandler = (action, channel) =>
-  console.log(`analytics action: ${action.payload.actionSubjectId}`, action);
+  console.log(
+    `analytics actionSubjectId: ${action.payload.actionSubjectId}`,
+    action,
+  );
 
 export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
