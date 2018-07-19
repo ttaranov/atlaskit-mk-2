@@ -16,7 +16,7 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
-  nonPrivacySafeAttributes?: object | null,
+  nonPrivacySafeAttributes?: object,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
@@ -93,7 +93,7 @@ export function fireTextEnteredEvent(
       ...getQueryAttributes(query),
       searchSessionId: searchSessionId,
     },
-    isSendSearchTermsEnabled ? getNonPrivacySafeAttributes(query) : null,
+    isSendSearchTermsEnabled ? getNonPrivacySafeAttributes(query) : undefined,
   );
 }
 
