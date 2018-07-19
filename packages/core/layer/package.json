@@ -20,6 +20,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "raf-schd": "^2.1.0",
     "react-scrolllock": "^3.0.1"
   },
   "peerDependencies": {
@@ -28,7 +29,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "raf-stub": "^2.0.1"
   },
   "atlaskit": {
     "internal": true
