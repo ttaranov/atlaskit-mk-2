@@ -1,10 +1,10 @@
 // @flow
 
-import { Appearance } from '@atlaskit/theme';
+import { Appearance, Theme } from '@atlaskit/theme';
 import React, { Component } from 'react';
 import Container from './Container';
 import Format from './Format';
-import * as theme from '../theme';
+import DefaultTheme, * as theme from '../theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
@@ -31,6 +31,13 @@ type Props = {
     newValue: number,
   }) => any,
 
+  theme: ThemeDefinition<{
+    badge: ({ appearance: string | {} }) => {
+      backgroundColor: string,
+      textColor: string,
+    },
+  }>,
+
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
 };
@@ -42,6 +49,7 @@ export default class Badge extends Component<Props> {
     children: 0,
     max: 99,
     onValueUpdated: () => {},
+    theme: DefaultTheme,
     value: undefined,
   };
 
@@ -68,13 +76,13 @@ export default class Badge extends Component<Props> {
   render() {
     const { appearance, children, max, value } = this.props;
     return (
-      <Appearance props={appearance} theme={theme}>
-        {style => (
-          <Container {...style}>
+      <this.props.theme>
+        {t => (
+          <Container {...t.badge({ appearance })}>
             <Format max={max}>{value || children}</Format>
           </Container>
         )}
-      </Appearance>
+      </this.props.theme>
     );
   }
 }
