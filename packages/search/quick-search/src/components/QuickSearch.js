@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ComponentType, type Element } from 'react';
+import React, { Component, type ComponentType } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { type ResultData, type Context } from './Results/types';
@@ -117,7 +117,7 @@ export class QuickSearch extends Component<Props, State> {
     value: '',
   };
 
-  flatResults = [];
+  flatResults: Array<ResultBase> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
   lastKeyPressed: string = '';
@@ -210,7 +210,7 @@ export class QuickSearch extends Component<Props, State> {
     }
   }
 
-  fireKeyboardControlEvent(selectedResultId: number | string) {
+  fireKeyboardControlEvent(selectedResultId: number | string | null) {
     const { firePrivateAnalyticsEvent } = this.props;
     if (firePrivateAnalyticsEvent) {
       const result = getResultById(this.flatResults, selectedResultId);
