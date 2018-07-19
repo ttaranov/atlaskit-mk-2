@@ -40,6 +40,7 @@
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/dropdown-menu": "^6.1.1",
     "@atlaskit/field-base": "^11.0.0",
+    "@atlaskit/global-navigation": "^3.0.0",
     "@atlaskit/logo": "^9.0.0",
     "@atlaskit/lozenge": "^6.0.0",
     "@atlaskit/toggle": "^5.0.0",

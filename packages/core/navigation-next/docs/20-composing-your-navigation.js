@@ -1,6 +1,26 @@
 // @flow
 
-import { code, md } from '@atlaskit/docs';
+import React from 'react';
+import { code, Example, md } from '@atlaskit/docs';
+
+const IframeExample = ({ source, title, url }: *) => (
+  <Example
+    Component={() => (
+      <iframe
+        src={url}
+        style={{
+          border: 0,
+          height: '500px',
+          overflow: 'hidden',
+          width: '100%',
+        }}
+        title={title}
+      />
+    )}
+    source={source}
+    title={title}
+  />
+);
 
 export default md`
 This guide will introduce you to many of the components exported by \`@atlaskit/navigation-next\`, and will walk you through composing a simple navigation.
@@ -36,9 +56,13 @@ ${code`
 
 The \`LayoutManager\` will position these layers and handle UI state concerns such as resizing, collapsing, peeking, etc. out of the box. This state container can be accessed via context and we will explore how this works later on. For now, it means we'll need one more component before we can render anything - the \`NavigationProvider\`. With this, we can render the bare bones of an Atlassian application:
 
-&nbsp;
-
-<iframe src="https://codesandbox.io/embed/995jow9vp?fontsize=12&module=%2Fsrc%2FApp.js&view=editor" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+${(
+  <IframeExample
+    source={require('!!raw-loader!../examples/9999-getting-started-layoutmanager')}
+    title="The LayoutManager component"
+    url="/examples.html?groupId=core&packageId=navigation-next&exampleId=getting-started-layoutmanager"
+  />
+)}
 
 <a name="configuring-the-global-navigation"></a>
 ## Configuring the global navigation
@@ -59,9 +83,13 @@ const MyGlobalNavigation = () => (
 
 We can then plug this component into our \`LayoutManager\` to render the global layer.
 
-&nbsp;
-
-<iframe src="https://codesandbox.io/embed/m3r4jz91l9?fontsize=12&module=%2Fsrc%2FApp.js&view=editor" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+${(
+  <IframeExample
+    source={require('!!raw-loader!../examples/9999-getting-started-configuring-the-global-navigation')}
+    title="Configuring the global navigation"
+    url="/examples.html?groupId=core&packageId=navigation-next&exampleId=getting-started-configuring-the-global-navigation"
+  />
+)}
 
 <a name="composing-the-product-navigation"></a>
 ## Composing the product navigation
@@ -73,7 +101,7 @@ We can render basically anything we want in this section. All of the typical pri
 ${code`
 import styled from 'styled-components';
 import { AtlassianWordmark } from '@atlaskit/logo';
-import { Item, Section, SectionTitle, SectionSeparator } from '@atlaskit/navigation-next';
+import { GroupHeading, Item, Section, Separator } from '@atlaskit/navigation-next';
 
 const ProductNavigationWrapper = styled.div({ padding: '16px 0' });
 
@@ -92,8 +120,8 @@ const MyProductNavigation = () => (
           <Item text="Dashboard" />
           <Item text="Things" />
           <Item text="Settings" />
-          <SectionSeparator />
-          <SectionTitle>Add-ons</SectionTitle>
+          <Separator />
+          <GroupHeading>Add-ons</GroupHeading>
           <Item text="My plugin" />
         </div>
       )}
@@ -108,16 +136,26 @@ Read the Component docs for more information about the \`Section\`, along with e
 
 Putting it all together we can now render a somewhat complete navigation!
 
-&nbsp;
-<iframe src="https://codesandbox.io/embed/8ywxz261p2?fontsize=12&module=%2Fsrc%2FApp.js&view=editor" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+${(
+  <IframeExample
+    source={require('!!raw-loader!../examples/9999-getting-started-composing-the-product-navigation')}
+    title="Composing the product navigation"
+    url="/examples.html?groupId=core&packageId=navigation-next&exampleId=getting-started-composing-the-product-navigation"
+  />
+)}
 
 <a name="composing-the-container-navigation"></a>
 ## Composing the container navigation
 
 The container layer can be composed using the same primitives as the product layer. Let's add a few items to it so that we can see the full navigation in action.
 
-&nbsp;
-<iframe src="https://codesandbox.io/embed/qvzzy71m46?fontsize=12&module=%2Fsrc%2FApp.js&view=editor" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+${(
+  <IframeExample
+    source={require('!!raw-loader!../examples/9999-getting-started-composing-the-container-navigation')}
+    title="Composing the container navigation"
+    url="/examples.html?groupId=core&packageId=navigation-next&exampleId=getting-started-composing-the-container-navigation"
+  />
+)}
 
 <a name="managing-the-ui-state"></a>
 ## Managing the UI state
@@ -130,8 +168,8 @@ import { UIStateSubscriber } from '@atlaskit/navigation-next';
 const ExpandToggleButton = () => (
   <UIStateSubscriber>
     {navigationUI => (
-      <button onClick={navigationUI.toggleProductNav}>
-        {navigationUI.state.productNavIsCollapsed ? 'Expand' : 'Collapse'} product navigation
+      <button onClick={navigationUI.toggleCollapse}>
+        {navigationUI.state.isCollapsed ? 'Expand' : 'Collapse'} product navigation
       </button>
     )}
   </UIStateSubscriber>
@@ -140,8 +178,13 @@ const ExpandToggleButton = () => (
 
 This component provides its children with access to the state of the navigation, along with methods which can be called to modify the state. It will re-render whenever the state changes. This container manages behaviours such as collapsing/expanding, peeking, peek hinting, and resizing. Read the component's documentation for a complete list of methods and properties.
 
-&nbsp;
-<iframe src="https://codesandbox.io/embed/my9lj0kpl8?fontsize=12&module=%2Fsrc%2FApp.js&view=editor" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+${(
+  <IframeExample
+    source={require('!!raw-loader!../examples/9999-getting-started-managing-the-ui-state')}
+    title="Managing the UI state"
+    url="/examples.html?groupId=core&packageId=navigation-next&exampleId=getting-started-managing-the-ui-state"
+  />
+)}
 
 <a name="theming"></a>
 ## Theming
