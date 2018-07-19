@@ -54,7 +54,7 @@ export const mention: NodeSpec = {
       },
     },
   ],
-  toDOM(node: any) {
+  toDOM(node) {
     const { id, accessLevel, text, userType } = node.attrs;
     const attrs = {
       'data-mention-id': id,

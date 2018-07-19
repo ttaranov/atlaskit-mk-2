@@ -1,5 +1,10 @@
 # @atlaskit/form
 
+## 3.1.0
+- [minor] Improvements & fixes for Form validation & state management [e33f19d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e33f19d)
+- [minor] Updated dependencies [e33f19d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e33f19d)
+  - @atlaskit/select@5.0.3
+
 ## 3.0.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

@@ -6,11 +6,11 @@ export const typeAheadQuery: MarkSpec = {
   inclusive: true,
   group: SEARCH_QUERY,
   parseDOM: [{ tag: 'span[data-type-ahead-query]' }],
-  toDOM(node): [string, any] {
+  toDOM(node) {
     return [
       'span',
       {
-        'data-type-ahead-query': true,
+        'data-type-ahead-query': 'true',
         'data-trigger': node.attrs.trigger,
       },
     ];

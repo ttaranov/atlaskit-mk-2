@@ -106,6 +106,12 @@ describe('BitbucketTransformer: serializer', () => {
     );
   });
 
+  it('should not escape lone pipe characters', () => {
+    expect(
+      markdownSerializer.serialize(doc(p(` | | `))(defaultSchema)),
+    ).toEqual(` | | `);
+  });
+
   describe('mentions', () => {
     it('should serialize mentions', () => {
       const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' })()))(
