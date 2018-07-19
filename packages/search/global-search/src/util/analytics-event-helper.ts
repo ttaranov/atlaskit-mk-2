@@ -16,7 +16,7 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
-  nonPrivacySafeAttributes?: object,
+  nonPrivacySafeAttributes?: object | null,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
