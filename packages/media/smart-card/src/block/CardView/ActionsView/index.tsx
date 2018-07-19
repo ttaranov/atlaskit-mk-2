@@ -74,7 +74,7 @@ export default class ActionsView extends React.Component<ActionsViewProps> {
       firstAction = limitedActions[0];
       otherActions = limitedActions.slice(1);
     }
-
+    console.log({ otherActions });
     return (
       <Wrapper>
         <ButtonGroup>
