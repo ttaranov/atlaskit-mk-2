@@ -1,7 +1,5 @@
 // @flow
 'use strict';
-// Setup the timestamp to have uniqueIdentifier
-process.env.LOCAL_IDENTIFIER = new Date().getTime().toString();
 
 const child = require('child_process');
 const browserstack = require('./utils/browserstack');
