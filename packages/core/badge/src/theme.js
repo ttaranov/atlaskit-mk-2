@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { colors, Theme } from '@atlaskit/theme';
+import { colors, Theme, type ThemeDefinition } from '@atlaskit/theme';
 
 export const backgroundColors = {
   added: { light: colors.G50, dark: colors.G50 },
@@ -24,19 +24,30 @@ export const textColors = {
   removed: { light: colors.R500, dark: colors.R500 },
 };
 
-export default props => (
+export default (props: DefaultThemeProps) => (
   <Theme
     values={{
-      badge({ appearance }, { mode }) {
-        return typeof appearance === 'object'
-          ? appearance
+      badge: (state, theme) => ({
+        ...(typeof state.appearance === 'object'
+          ? state.appearance
           : {
-              backgroundColor: backgroundColors[appearance][mode],
-              textColor: textColors[appearance][mode],
-            };
-      },
+              backgroundColor: backgroundColors[state.appearance][theme.mode],
+              textColor: textColors[state.appearance][theme.mode],
+            }),
+        ...theme.badge(state),
+      }),
       mode: 'light',
+      ...props.values,
     }}
-    {...props}
-  />
+  >
+    {props.children}
+  </Theme>
 );
+
+export type DefaultThemeProps = ThemeDefinition<{
+  badge: ({ appearance: string | {} }) => {
+    backgroundColor: string,
+    textColor: string,
+  },
+  mode: string,
+}>;
