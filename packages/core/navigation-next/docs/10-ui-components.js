@@ -3,7 +3,8 @@
 import React from 'react';
 import { Example, md, Props } from '@atlaskit/docs';
 
-export default md`
+export default md`## Contents
+
 * [ContainerHeader](#ContainerHeader)
 * [GlobalItem](#GlobalItem)
 * [GlobalNav](#GlobalNav)
@@ -14,6 +15,10 @@ export default md`
 * [LayoutManager](#LayoutManager)
 * [Section](#Section)
 * [Separator](#Separator)
+
+&nbsp;
+
+***
 
 <a name="ContainerHeader"></a>
 # ContainerHeader
@@ -33,6 +38,8 @@ ${(
 ## ContainerHeader props
 
 See [Item](#Item).
+
+&nbsp;
 
 ***
 

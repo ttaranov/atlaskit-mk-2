@@ -38,5 +38,5 @@ export { default as ViewRenderer } from './renderer';
 export { dark, light, settings, modeGenerator } from './theme';
 
 /** Types */
-export { GlobalItemProps } from './components/GlobalItem';
+export { GlobalItemProps } from './components/GlobalItem/types';
 export { GlobalTheme } from './theme';
