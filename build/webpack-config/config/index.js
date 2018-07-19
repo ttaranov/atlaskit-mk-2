@@ -157,7 +157,7 @@ module.exports = function createWebpackConfig(
           ],
         },
         {
-          test: /\.(gif|jpe?g|png|ico)$/,
+          test: /\.(gif|jpe?g|png|ico|woff|woff2)$/,
           loader: 'url-loader?limit=10000',
         },
         {

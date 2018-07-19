@@ -1,5 +1,14 @@
 # @atlaskit/comment
 
+## 6.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/lozenge@6.1.1
+  - @atlaskit/docs@5.0.1
+  - @atlaskit/avatar@14.0.2
+
 ## 6.0.1
 
 

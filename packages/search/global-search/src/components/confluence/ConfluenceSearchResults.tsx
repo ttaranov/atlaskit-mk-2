@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import PeopleIconGlyph from '../../assets/PeopleIconGlyph';
+import Icon from '@atlaskit/icon';
 import { FormattedMessage } from 'react-intl';
 import { Result } from '../../model/Result';
 import SearchError from '../SearchError';
@@ -22,9 +24,6 @@ import { buildScreenEvent, Screen } from '../../util/analytics-util';
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
-
-let preQueryScreenCounter = 0;
-let postQueryScreenCounter = 0;
 
 const renderObjectsGroup = (
   title: JSX.Element,
@@ -70,7 +69,7 @@ const renderSearchConfluenceItem = (query: string, text: JSX.Element) =>
 const renderSearchPeopleItem = (query: string) =>
   searchPeopleItem({
     query: query,
-    icon: <SearchIcon size="medium" label="Search People" />,
+    icon: <Icon glyph={PeopleIconGlyph} size="medium" label="Search people" />,
     text: <FormattedMessage id="global-search.people.advanced-search" />,
   });
 
@@ -118,6 +117,11 @@ const renderAdvancedSearchGroup = (query: string) => {
   ];
 };
 
+export interface ScreenCounter {
+  getCount(): number;
+  increment();
+}
+
 export interface Props {
   query: string;
   isError: boolean;
@@ -131,6 +135,10 @@ export interface Props {
   peopleResults: Result[];
   keepRecentActivityResults: boolean;
   searchSessionId: string;
+  screenCounters?: {
+    preQueryScreenCounter: ScreenCounter;
+    postQueryScreenCounter: ScreenCounter;
+  };
 }
 
 const renderRecentActivities = (
@@ -139,6 +147,7 @@ const renderRecentActivities = (
   recentlyViewedSpaces: Result[],
   recentlyInteractedPeople: Result[],
   searchSessionId: string,
+  screenCounter?: ScreenCounter,
 ) => [
   renderObjectsGroup(
     <FormattedMessage id="global-search.confluence.recent-pages-heading" />,
@@ -156,13 +165,19 @@ const renderRecentActivities = (
     query,
   ),
   renderAdvancedSearchGroup(query),
-  <AnalyticsEventFiredOnMount
-    key="preQueryScreenEvent"
-    onEventFired={() => preQueryScreenCounter++}
-    payloadProvider={() =>
-      buildScreenEvent(Screen.PRE_QUERY, preQueryScreenCounter, searchSessionId)
-    }
-  />,
+  screenCounter ? (
+    <AnalyticsEventFiredOnMount
+      key="preQueryScreenEvent"
+      onEventFired={() => screenCounter.increment()}
+      payloadProvider={() =>
+        buildScreenEvent(
+          Screen.PRE_QUERY,
+          screenCounter.getCount(),
+          searchSessionId,
+        )
+      }
+    />
+  ) : null,
 ];
 
 const renderSearchResults = (
@@ -171,6 +186,7 @@ const renderSearchResults = (
   spaceResults: Result[],
   peopleResults: Result[],
   searchSessionId: string,
+  screenCounter?: ScreenCounter,
 ) => {
   return [
     renderObjectsGroup(
@@ -190,17 +206,19 @@ const renderSearchResults = (
     ),
     renderAdvancedSearchGroup(query),
 
-    <AnalyticsEventFiredOnMount
-      key="postQueryScreenEvent"
-      onEventFired={() => postQueryScreenCounter++}
-      payloadProvider={() =>
-        buildScreenEvent(
-          Screen.POST_QUERY,
-          postQueryScreenCounter,
-          searchSessionId,
-        )
-      }
-    />,
+    screenCounter ? (
+      <AnalyticsEventFiredOnMount
+        key="postQueryScreenEvent"
+        onEventFired={() => screenCounter.increment()}
+        payloadProvider={() =>
+          buildScreenEvent(
+            Screen.POST_QUERY,
+            screenCounter.getCount(),
+            searchSessionId,
+          )
+        }
+      />
+    ) : null,
   ];
 };
 
@@ -210,6 +228,7 @@ const renderNoQuery = (
   recentlyViewedSpaces: Result[],
   recentlyInteractedPeople: Result[],
   searchSessionId,
+  screenCounter?: ScreenCounter,
 ) => {
   if (
     [recentlyInteractedPeople, recentlyViewedPages, recentlyViewedSpaces].every(
@@ -226,6 +245,7 @@ const renderNoQuery = (
     recentlyViewedSpaces,
     recentlyInteractedPeople,
     searchSessionId,
+    screenCounter,
   );
 };
 
@@ -243,7 +263,15 @@ const render = (props: Props) => {
     retrySearch,
     keepRecentActivityResults,
     searchSessionId,
+    screenCounters,
   } = props;
+
+  const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
+    ? screenCounters
+    : {
+        preQueryScreenCounter: undefined,
+        postQueryScreenCounter: undefined,
+      };
 
   if (isError) {
     return <SearchError onRetryClick={retrySearch} />;
@@ -258,6 +286,7 @@ const render = (props: Props) => {
           recentlyViewedSpaces,
           recentlyInteractedPeople,
           searchSessionId,
+          preQueryScreenCounter,
         );
   }
 
@@ -269,6 +298,7 @@ const render = (props: Props) => {
           recentlyViewedSpaces,
           recentlyInteractedPeople,
           searchSessionId,
+          preQueryScreenCounter,
         )
       : renderNoResults(query);
   }
@@ -279,6 +309,7 @@ const render = (props: Props) => {
     spaceResults,
     peopleResults,
     searchSessionId,
+    postQueryScreenCounter,
   );
 };
 

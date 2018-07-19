@@ -1,4 +1,5 @@
-image: node:8.4.0
+# Note: This image can be found in build/pipelines/docker-image
+image: atlassianlabs/atlaskit-mk-2:1.0.3
 # This ensures we do a full clone on each build which prevents issues when cross referencing
 # changesets and releases
 clone:
@@ -50,7 +51,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 132
+              - source build/ci-scripts/count-flowfixme.sh 124
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
             caches:
               - node
@@ -68,12 +69,13 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - echo "Run browser unit tests using Karma"
+              - echo "Run browser unit tests using Karma + Browserstack"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-              - echo "Check the browserstack queues"
-              - node build/ci-scripts/browserstack.queues.js BS_RETRY=5 BS_BUILD_ALLOWED=3
-              - echo "Run browser integration tests using Webdriver"
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed
+              - echo "Due to an issue with Webdriver and Browserstack - tests are disabled - please run it from your local branch or check your changes manually"
+              # https://product-fabric.atlassian.net/browse/ED-5080
+              # - echo "Run browser integration tests using Webdriver + Browserstack"
+              # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
+              # - BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
             caches:
               - node
         - step:
@@ -105,8 +107,10 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
+            # https://product-fabric.atlassian.net/browse/ED-5080
+            # Due to an issue with browserstack - this step is disable
             # This is a sanity check to make sure the website renders on all browsers without error
-            - yarn test:webdriver:browserstack website
+            # - yarn test:webdriver:browserstack website
           caches:
             - node
 

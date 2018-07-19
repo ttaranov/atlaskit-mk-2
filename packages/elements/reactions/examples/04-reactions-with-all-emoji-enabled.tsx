@@ -22,6 +22,7 @@ export default function Example() {
         reactionsProvider={reactionsProvider as ReactionsProvider}
         onReactionClick={(emojiId: string): any => {
           debug('onReactionClick: ', emojiId);
+          reactionsProvider.toggleReaction(containerAri, demoAri, emojiId);
         }}
         allowAllEmojis={true}
       />

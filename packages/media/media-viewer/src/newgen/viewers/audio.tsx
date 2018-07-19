@@ -125,11 +125,10 @@ export class AudioViewer extends React.Component<Props, State> {
   private async init() {
     const { context, item, collectionName } = this.props;
     const audioUrl = getAudioArtifactUrl(item);
-    if (!audioUrl) {
-      return;
-    }
-
     try {
+      if (!audioUrl) {
+        throw new Error('No audio artifacts found');
+      }
       this.setCoverUrl();
       this.setState({
         src: {

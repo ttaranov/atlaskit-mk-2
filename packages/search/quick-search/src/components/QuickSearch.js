@@ -86,7 +86,7 @@ type Props = {
   /** onKeyDown callback for search input */
   onSearchKeyDown: (event: Event) => mixed,
   /** Called when the user submits the search form without selecting a result */
-  onSearchSubmit: () => void,
+  onSearchSubmit: (event: Event) => void,
   /** Placeholder text for search input field */
   placeholder: string,
   /** Value of the search input field */
@@ -316,7 +316,7 @@ export class QuickSearch extends Component<Props, State> {
     } else if (event.key === 'Enter') {
       // shift key pressed or no result selected
       if (event.shiftKey || !this.state.selectedResultId) {
-        this.props.onSearchSubmit();
+        this.props.onSearchSubmit(event);
       } else {
         event.preventDefault(); // Don't fire submit event from input
         const result = getResultById(

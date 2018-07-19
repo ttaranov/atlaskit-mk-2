@@ -1,5 +1,16 @@
 # @atlaskit/global-search
 
+## 5.0.4
+- [patch] Passes the keyboard event from quick search to the submit event handler to ensure global search redirects with the complete search query. [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
+- [none] Updated dependencies [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
+  - @atlaskit/quick-search@4.1.0
+
+## 5.0.3
+- [patch] fix analytics bugs [30be100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30be100)
+
+## 5.0.2
+- [patch] Wording update [43ebe0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43ebe0e)
+
 ## 5.0.1
 - [patch] Add extra analytics event for highlight and selection of a search result [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
 - [patch] Updated dependencies [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)

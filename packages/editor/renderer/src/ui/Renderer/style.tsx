@@ -211,6 +211,10 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     max-width: 100%;
   }
 
+  & .img-wrapper {
+    margin: ${akGridSizeUnitless * 3}px 0;
+  }
+
   & div > .media-wrapped + .media-wrapped + *:not(.media-wrapped) {
     clear: both;
   }

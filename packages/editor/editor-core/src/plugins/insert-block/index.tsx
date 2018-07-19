@@ -47,6 +47,7 @@ export interface InsertBlockOptions {
 const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
+    appearance,
     editorActions,
     eventDispatcher,
     providerFactory,
@@ -94,6 +95,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               editorView={editorView}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
+              decisionSupported={!!editorView.state.schema.nodes.decisionItem}
               dateEnabled={!!dateState}
               placeholderTextEnabled={
                 placeholderTextState && placeholderTextState.allowInserting

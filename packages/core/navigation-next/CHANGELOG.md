@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 2.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/select@5.0.1
+  - @atlaskit/icon@13.1.1
+  - @atlaskit/dropdown-menu@6.1.1
+  - @atlaskit/avatar@14.0.1
+
 ## 2.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

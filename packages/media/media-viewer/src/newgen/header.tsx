@@ -12,6 +12,7 @@ import {
   RightHeader,
   MetadataWrapper,
   MetadataSubText,
+  MedatadataTextWrapper,
   MetadataIconWrapper,
   MetadataFileName,
   hideControlsClassName,
@@ -149,13 +150,13 @@ export default class Header extends React.Component<Props, State> {
         <MetadataIconWrapper>
           {this.getMediaIcon(item.details.mediaType)}
         </MetadataIconWrapper>
-        <div>
+        <MedatadataTextWrapper>
           <MetadataFileName>{item.details.name || 'unknown'}</MetadataFileName>
           <MetadataSubText>
             {this.renderFileTypeText(item.details.mediaType)}
             {this.renderSize(item)}
           </MetadataSubText>
-        </div>
+        </MedatadataTextWrapper>
       </MetadataWrapper>
     );
   }
