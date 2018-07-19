@@ -6,6 +6,7 @@ import { createInputRulePlugin } from './pm-plugins/input-rule';
 import { createKeymapPlugin } from './pm-plugins/keymap';
 import { plugin, stateKey, HyperlinkState } from './pm-plugins/main';
 import fakeCursorToolbarPlugin from './pm-plugins/fake-cursor-for-toolbar';
+import syncTextAndUrlPlugin from './pm-plugins/sync-text-and-url';
 import HyperlinkToolbar from './ui';
 
 const hyperlinkPlugin: EditorPlugin = {
@@ -15,6 +16,11 @@ const hyperlinkPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
+      {
+        rank: 900,
+        plugin: ({ props: { appearance } }) =>
+          appearance === 'message' ? syncTextAndUrlPlugin : undefined,
+      },
       { rank: 900, plugin: ({ dispatch }) => plugin(dispatch) },
       { rank: 905, plugin: () => fakeCursorToolbarPlugin },
       { rank: 910, plugin: ({ schema }) => createInputRulePlugin(schema) },

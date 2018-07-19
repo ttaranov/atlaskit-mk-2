@@ -46,23 +46,5 @@ describe('hyperlink', () => {
         doc(p(a({ href: 'google.com' })('web-site'))),
       );
     });
-    it('should not update both href and text on edit if they were same before', () => {
-      const { editorView, sel } = editor(
-        doc(p(a({ href: 'http://google.com' })('http://goo{<>}gle.com'))),
-      );
-      insertText(editorView, 'ooo', sel);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(p(a({ href: 'http://google.com' })('http://gooooogle.com'))),
-      );
-    });
-    it('should not update both href and scheme-less url text on edit if they were same before', () => {
-      const { editorView, sel } = editor(
-        doc(p(a({ href: 'http://google.com' })('goo{<>}gle.com'))),
-      );
-      insertText(editorView, 'ooo', sel);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(p(a({ href: 'http://google.com' })('gooooogle.com'))),
-      );
-    });
   });
 });
