@@ -32,7 +32,7 @@ export {
   MentionDefinition,
 } from './mention';
 export { listItem, ListItemArray, ListItemDefinition } from './list-item';
-export { panel, PanelAttributes, PanelDefinition } from './panel';
+export { panel, PanelAttributes, PanelDefinition, PanelType } from './panel';
 export { text, TextDefinition } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {

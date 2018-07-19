@@ -47,7 +47,6 @@ export default class Popup extends React.Component<Props, State> {
     overflowScrollParent: false,
   };
 
-  private scheduledResizeFrame: number | null = null;
   private placement: [string, string] = ['', ''];
 
   /**
@@ -138,18 +137,18 @@ export default class Popup extends React.Component<Props, State> {
     this.initPopup(popup);
   };
 
-  private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
-
-  private handleReposition = () => {
-    this.scheduledResizeFrame = this.scheduledUpdatePosition();
-  };
+  private scheduledUpdatePosition = rafSchedule(props =>
+    this.updatePosition(props),
+  );
 
   componentWillReceiveProps(newProps: Props) {
-    this.updatePosition(newProps);
+    // We are delaying `updatePosition` otherwise it happens before the children
+    // get rendered and we end up with a wrong position
+    this.scheduledUpdatePosition(newProps);
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleReposition);
+    window.addEventListener('resize', this.scheduledUpdatePosition);
 
     const { stickToBottom } = this.props;
 
@@ -159,19 +158,22 @@ export default class Popup extends React.Component<Props, State> {
       this.scrollElement = this.props.scrollableElement;
     }
     if (this.scrollElement) {
-      this.scrollElement.addEventListener('scroll', this.handleReposition);
+      this.scrollElement.addEventListener(
+        'scroll',
+        this.scheduledUpdatePosition,
+      );
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleReposition);
-    if (this.scheduledResizeFrame) {
-      cancelAnimationFrame(this.scheduledResizeFrame);
-    }
-
+    window.removeEventListener('resize', this.scheduledUpdatePosition);
     if (this.scrollElement) {
-      this.scrollElement.removeEventListener('scroll', this.handleReposition);
+      this.scrollElement.removeEventListener(
+        'scroll',
+        this.scheduledUpdatePosition,
+      );
     }
+    this.scheduledUpdatePosition.cancel();
   }
 
   private renderPopup() {
