@@ -132,17 +132,10 @@ export class GlobalQuickSearch extends React.Component<Props> {
       onSearchSubmit,
     } = this.props;
 
-    const QuickSearchWithAnalytics = withAnalytics(
-      QuickSearch,
-      {
-        firePrivateAnalyticsEvent: this.fireSearchResultEvents,
-      },
-      {},
-    );
-
     return (
       <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
-        <QuickSearchWithAnalytics
+        <QuickSearch
+          firePrivateAnalyticsEvent={this.fireSearchResultEvents}
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           placeholder={placeholder}
@@ -151,7 +144,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           onSearchSubmit={onSearchSubmit}
         >
           {children}
-        </QuickSearchWithAnalytics>
+        </QuickSearch>
       </AnalyticsContext>
     );
   }
