@@ -13,7 +13,7 @@ const BASE_RESULT_TYPE = 'base';
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-export class ResultBase extends PureComponent<Props> {
+class ResultBase extends PureComponent<Props> {
   static defaultProps = {
     isCompact: false,
     isSelected: false,

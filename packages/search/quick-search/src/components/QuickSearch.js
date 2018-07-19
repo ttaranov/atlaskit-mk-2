@@ -4,6 +4,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 
 import { type ResultData, type Context } from './Results/types';
 import AkSearch from './Search/Search';
+import ResultBase from './Results/ResultBase';
 import { ResultContext, SelectedResultIdContext } from './context';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
@@ -14,7 +15,6 @@ import {
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
 } from './constants';
-import { ResultBase } from './Results/ResultBase';
 
 const noOp = () => {};
 
