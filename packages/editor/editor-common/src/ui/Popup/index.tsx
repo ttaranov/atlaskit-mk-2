@@ -148,7 +148,7 @@ export default class Popup extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.scheduledUpdatePosition);
+    window.addEventListener('resize', () => this.scheduledUpdatePosition());
 
     const { stickToBottom } = this.props;
 
@@ -158,9 +158,8 @@ export default class Popup extends React.Component<Props, State> {
       this.scrollElement = this.props.scrollableElement;
     }
     if (this.scrollElement) {
-      this.scrollElement.addEventListener(
-        'scroll',
-        this.scheduledUpdatePosition,
+      this.scrollElement.addEventListener('scroll', () =>
+        this.scheduledUpdatePosition(),
       );
     }
   }
