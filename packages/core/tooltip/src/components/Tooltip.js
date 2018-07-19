@@ -7,6 +7,7 @@ import React, {
   type Node,
   type Element,
   type ComponentType,
+  type Ref,
 } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
@@ -100,6 +101,7 @@ class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
+  tooltipRef: HTMLElement | null;
   static defaultProps = {
     component: StyledTooltip,
     delay: 300,
@@ -133,8 +135,8 @@ class Tooltip extends Component<Props, State> {
     this.wrapper = ref;
   };
 
-  handleMeasureRef = (tooltip: HTMLElement) => {
-    if (!tooltip || !this.wrapper) return;
+  handleMeasureRef = () => {
+    if (!this.tooltipRef || !this.wrapper) return;
 
     const { position, mousePosition } = this.props;
     const { mouseCoordinates } = this;
@@ -145,7 +147,7 @@ class Tooltip extends Component<Props, State> {
     const positionData = getPosition({
       position,
       target,
-      tooltip,
+      tooltip: this.tooltipRef,
       mouseCoordinates,
       mousePosition,
     });
@@ -170,9 +172,11 @@ class Tooltip extends Component<Props, State> {
     if (!coordinates) {
       const MeasurableTooltip = component;
       return (
-        <Portal layer="tooltip">
+        <Portal layer="tooltip" ref={this.handleMeasureRef}>
           <MeasurableTooltip
-            innerRef={this.handleMeasureRef}
+            innerRef={ref => {
+              this.tooltipRef = ref;
+            }}
             style={{ visibility: 'hidden' }}
           >
             {content}
