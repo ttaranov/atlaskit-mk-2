@@ -14,6 +14,7 @@ import {
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
 } from './constants';
+import { ResultBase } from './Results/ResultBase';
 
 const noOp = () => {};
 
@@ -129,7 +130,7 @@ export class QuickSearch extends Component<Props, State> {
       selectedResultId: this.props.selectedResultId || null,
       context: {
         isDirty: false,
-        registerResult: (result: Element<*>) => {
+        registerResult: (result: ResultBase) => {
           this.flatResults.push(result);
         },
         onMouseEnter: this.handleResultMouseEnter,
@@ -209,19 +210,16 @@ export class QuickSearch extends Component<Props, State> {
     }
   }
 
-  fireKeyboardControlEvent(selectedResultId: number | string | null) {
+  fireKeyboardControlEvent(selectedResultId: number | string) {
     const { firePrivateAnalyticsEvent } = this.props;
     if (firePrivateAnalyticsEvent) {
-      const result = getResultById(this.flatResults, selectedResultId) || {
-        props: {},
-      };
-      firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
-        ...result.props.analyticsData, // TODO
-        key: this.lastKeyPressed,
-        resultId: result.props.resultId,
-        contentType: result.props.contentType,
-        type: result.props.type,
-      });
+      const result = getResultById(this.flatResults, selectedResultId);
+      if (result) {
+        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
+          ...result.getAnalyticsData(),
+          key: this.lastKeyPressed,
+        });
+      }
     }
     this.lastKeyPressed = '';
   }
@@ -332,11 +330,8 @@ export class QuickSearch extends Component<Props, State> {
         if (typeof firePrivateAnalyticsEvent === 'function') {
           this.fireKeyboardControlEvent(this.state.selectedResultId);
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
-            ...result.props.analyticsData,
+            ...result.getAnalyticsData(),
             method: 'returnKey',
-            resultId: result.props.resultId,
-            type: result.props.type,
-            contentType: result.props.contentType,
             newTab: false, // enter always open in the same tab
           });
         }

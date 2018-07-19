@@ -1,7 +1,9 @@
 // @flow
 import type { Node, Element, ComponentType } from 'react';
 
-type AnalyticsData = {};
+type AnalyticsData = {
+  [key: string]: string | number,
+};
 
 // The data that's passed to the Click and MouseEnter events
 export type ResultData = {|
@@ -28,8 +30,6 @@ type CommonResultProps = {
   resultId: string | number,
   /** Type of the result. This is passed as a parameter to certain callbacks. */
   type: string,
-  /** Type of the result content. This is passed as a parameter to certain callbacks. */
-  contentType?: string,
 };
 
 export type Context = {
@@ -60,6 +60,8 @@ export type ResultType = CommonResultProps & {
   text: Element<any> | string,
   /** The context provided by QuickSearch. */
   context: Context,
+  /** key/value pairs of attributes to be send in analytics events. */
+  analyticsData?: AnalyticsData,
 };
 
 export type ContainerResultType = CommonResultProps & {

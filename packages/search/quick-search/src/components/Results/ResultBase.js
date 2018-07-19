@@ -13,7 +13,7 @@ const BASE_RESULT_TYPE = 'base';
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-class ResultBase extends PureComponent<Props> {
+export class ResultBase extends PureComponent<Props> {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
@@ -27,6 +27,7 @@ class ResultBase extends PureComponent<Props> {
       sendAnalytics: () => {},
       getIndex: () => {},
     },
+    analyticsData: {},
   };
 
   registerResult() {
@@ -45,16 +46,22 @@ class ResultBase extends PureComponent<Props> {
     this.registerResult();
   }
 
+  getAnalyticsData() {
+    const { resultId, analyticsData, type, context } = this.props;
+    return {
+      index: context.getIndex(resultId),
+      type,
+      resultId,
+      ...analyticsData,
+    };
+  }
+
   handleClick = (e: ?MouseEvent) => {
-    const { onClick, resultId, type, contentType, context } = this.props;
-    const index = context.getIndex(this.props.resultId);
+    const { onClick, resultId, type } = this.props;
 
     this.props.context.sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
-      index, // ? TODO analytics
+      ...this.getAnalyticsData(),
       method: 'click',
-      resultId,
-      contentType,
-      type,
       newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
     });
     onClick({ resultId, type });

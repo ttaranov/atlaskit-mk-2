@@ -28,33 +28,33 @@ export const MAX_PEOPLE = 3;
 const renderObjectsGroup = (
   title: JSX.Element,
   results: Result[],
-  query: string,
+  sectionIndex: number,
 ) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="objects">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   ) : null;
 
 const renderSpacesGroup = (
   title: JSX.Element,
   results: Result[],
-  query: string,
+  sectionIndex: number,
 ) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="spaces">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   ) : null;
 
 const renderPeopleGroup = (
   title: JSX.Element,
   results: Result[],
-  query: string,
+  sectionIndex: number,
 ) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="people">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   ) : null;
 
@@ -148,37 +148,40 @@ const renderRecentActivities = (
   recentlyInteractedPeople: Result[],
   searchSessionId: string,
   screenCounter?: ScreenCounter,
-) => [
-  renderObjectsGroup(
-    <FormattedMessage id="global-search.confluence.recent-pages-heading" />,
-    take(recentlyViewedPages, 8),
-    query,
-  ),
-  renderSpacesGroup(
-    <FormattedMessage id="global-search.confluence.recent-spaces-heading" />,
-    take(recentlyViewedSpaces, MAX_SPACES),
-    query,
-  ),
-  renderPeopleGroup(
-    <FormattedMessage id="global-search.people.recent-people-heading" />,
-    take(recentlyInteractedPeople, MAX_PEOPLE),
-    query,
-  ),
-  renderAdvancedSearchGroup(query),
-  screenCounter ? (
-    <AnalyticsEventFiredOnMount
-      key="preQueryScreenEvent"
-      onEventFired={() => screenCounter.increment()}
-      payloadProvider={() =>
-        buildScreenEvent(
-          Screen.PRE_QUERY,
-          screenCounter.getCount(),
-          searchSessionId,
-        )
-      }
-    />
-  ) : null,
-];
+) => {
+  let sectionIndex = 0;
+  return [
+    renderObjectsGroup(
+      <FormattedMessage id="global-search.confluence.recent-pages-heading" />,
+      take(recentlyViewedPages, 8),
+      sectionIndex++,
+    ),
+    renderSpacesGroup(
+      <FormattedMessage id="global-search.confluence.recent-spaces-heading" />,
+      take(recentlyViewedSpaces, MAX_SPACES),
+      sectionIndex++,
+    ),
+    renderPeopleGroup(
+      <FormattedMessage id="global-search.people.recent-people-heading" />,
+      take(recentlyInteractedPeople, MAX_PEOPLE),
+      sectionIndex++,
+    ),
+    renderAdvancedSearchGroup(query),
+    screenCounter ? (
+      <AnalyticsEventFiredOnMount
+        key="preQueryScreenEvent"
+        onEventFired={() => screenCounter.increment()}
+        payloadProvider={() =>
+          buildScreenEvent(
+            Screen.PRE_QUERY,
+            screenCounter.getCount(),
+            searchSessionId,
+          )
+        }
+      />
+    ) : null,
+  ];
+};
 
 const renderSearchResults = (
   query: string,
@@ -188,21 +191,22 @@ const renderSearchResults = (
   searchSessionId: string,
   screenCounter?: ScreenCounter,
 ) => {
+  let sectionIndex = 0;
   return [
     renderObjectsGroup(
       <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
       take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
-      query,
+      sectionIndex++,
     ),
     renderSpacesGroup(
       <FormattedMessage id="global-search.confluence.spaces-heading" />,
       take(spaceResults, MAX_SPACES),
-      query,
+      sectionIndex++,
     ),
     renderPeopleGroup(
       <FormattedMessage id="global-search.people.people-heading" />,
       take(peopleResults, MAX_PEOPLE),
-      query,
+      sectionIndex++,
     ),
     renderAdvancedSearchGroup(query),
 
@@ -239,6 +243,7 @@ const renderNoQuery = (
       <NoRecentActivity advancedSearchUrl={getConfluenceAdvancedSearchLink()} />
     );
   }
+
   return renderRecentActivities(
     query,
     recentlyViewedPages,
