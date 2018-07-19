@@ -17,7 +17,7 @@ export const customInsertMenuItems = Test.map(
           extensionType: 'com.ajay.test',
           extensionKey: 'block-eh',
           parameters: {
-            tag: component.default,
+            tag: componentPath,
             props: {
               name: 'xlarge',
               size: 'xlarge',
@@ -35,7 +35,7 @@ export const customInsertMenuItems = Test.map(
           extensionType: 'com.ajay.test',
           extensionKey: 'block-eh',
           parameters: {
-            tag: component.default,
+            tag: componentPath,
             props: {
               name: 'xlarge',
               size: 'xlarge',

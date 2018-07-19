@@ -16,22 +16,5 @@
   </head>
   <body>
     <div id="app"></div>
-    <script>
-      'use strict';
-
-      // When UI Extensions SDK is loaded the callback will be executed.
-      window.contentfulExtension.init(initExtension);
-
-      function initExtension (extensionsApi) {
-        // "extensionsApi" is providing an interface documented here:
-        // TODO : need to read this
-        // https://github.com/contentful/ui-extensions-sdk/blob/master/docs/ui-extensions-sdk-frontend.md
-
-        // Automatically adjust UI Extension size in the Web App.
-        extensionsApi.window.startAutoResizer();
-
-        
-      }
-    </script>
   </body>
 </html>
