@@ -4,7 +4,7 @@ import type { ItemPresentationProps } from '../Item/types';
 
 import type { StyleReducer, ProductTheme } from '../../theme/types';
 
-export type ItemAvatarProps = {
+export type ConnectedItemAvatarProps = {
   /** The current UI state of the Item which this ItemAvatar is within. This should be provided to you by the `after` or `before` prop  */
   itemState: ItemPresentationProps,
   /** ItemAvatar inherits its border color from the style of its parent Item.
@@ -13,6 +13,6 @@ export type ItemAvatarProps = {
   styles: StyleReducer,
 };
 
-export type ItemAvatarPrimitiveProps = ItemAvatarProps & {
+export type ItemAvatarProps = ConnectedItemAvatarProps & {
   theme: ProductTheme,
 };
