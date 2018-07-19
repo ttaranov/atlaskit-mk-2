@@ -29,6 +29,8 @@ const generateOuterBacktickChain: (
 })();
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
+  context = { insideTable: false };
+
   renderContent(parent: PMNode): void {
     parent.forEach((child: PMNode, offset: number, index: number) => {
       if (
@@ -327,7 +329,11 @@ const editorNodes = {
     for (let i = 0; i < lines.length; i++) {
       const startOfLine = state.atBlank() || !!state.closed;
       state.write();
-      state.out += escapeMarkdown(lines[i], startOfLine);
+      state.out += escapeMarkdown(
+        lines[i],
+        startOfLine,
+        state.context.insideTable,
+      );
       if (i !== lines.length - 1) {
         if (
           lines[i] &&
