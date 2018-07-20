@@ -52,12 +52,11 @@ export interface PersonResultProps extends BaseResultProps {
 }
 
 export function renderResults(results: Result[], sectionIndex: number) {
-  let indexWithinSection = 0;
-  return results.map(result => {
+  return results.map((result, index) => {
     const resultType: ResultType = result.resultType;
     const analyticsData = {
       sectionIndex,
-      indexWithinSection: indexWithinSection++,
+      indexWithinSection: index,
     };
 
     switch (resultType) {
