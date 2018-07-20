@@ -6,9 +6,7 @@ import { shallow, mount, ReactWrapper } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import TooltipWithAnalytics, {
   TooltipWithoutAnalytics as Tooltip,
-  marshal,
 } from '../../Tooltip';
-import getPosition from '../../utils/getPosition';
 import { hoveredPayload } from '../../utils/analytics-payloads';
 
 // Variables starting with mock are executed before jest.mock's hoisting
@@ -38,8 +36,6 @@ function getPortalContents(wrapper) {
 
 describe('Tooltip', () => {
   beforeEach(() => {
-    // $FlowFixMe - mocked import
-    getPosition.mockClear();
     mockStatus = 'exited';
     mockPosition = {
       coordinates: {
@@ -100,10 +96,7 @@ describe('Tooltip', () => {
       instance.hide({ immediate: true });
       wrapper.update();
 
-      expect(marshal.unmount).not.toHaveBeenCalled();
-
       wrapper.unmount();
-      expect(marshal.unmount).toHaveBeenCalled();
       spy.mockRestore();
     });
   });
