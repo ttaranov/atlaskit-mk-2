@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 76.0.13
+- [patch] FS-2816 - Prevent clicks in pop ups from triggering focus of the message editor [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+- [none] Updated dependencies [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+  - @atlaskit/editor-common@13.0.8
+
 ## 76.0.12
 - [patch] Fix floating toolbar dropdown poisitoning [9f8dd6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8dd6a)
 - [none] Updated dependencies [9f8dd6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8dd6a)
