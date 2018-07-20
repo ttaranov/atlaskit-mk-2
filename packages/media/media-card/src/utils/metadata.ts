@@ -4,7 +4,6 @@ import {
   UrlPreview,
   FileState,
   FileDetails,
-  MediaType,
 } from '@atlaskit/media-core';
 import { LinkIdentifier, UrlPreviewIdentifier } from '../root';
 import { isUrlPreviewIdentifier } from './identifier';
@@ -48,23 +47,19 @@ export const extendMetadata = (
 ): FileDetails => {
   const { id } = state;
   const currentMediaType = metadata && metadata.mediaType;
-  let name: string | undefined;
-  let size: number | undefined;
-  let mediaType: MediaType | undefined;
-
   if (state.status !== 'error') {
-    name = state.name;
-    size = state.size;
-    mediaType =
-      currentMediaType && currentMediaType !== 'unknown'
-        ? currentMediaType
-        : state.mediaType;
+    return {
+      id,
+      name: state.name,
+      size: state.size,
+      mediaType:
+        currentMediaType && currentMediaType !== 'unknown'
+          ? currentMediaType
+          : state.mediaType,
+    };
+  } else {
+    return {
+      id,
+    };
   }
-
-  return {
-    id,
-    name,
-    size,
-    mediaType,
-  };
 };
