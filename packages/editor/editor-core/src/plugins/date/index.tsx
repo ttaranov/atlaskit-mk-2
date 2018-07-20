@@ -53,7 +53,7 @@ const datePlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Date',
-        keywords: ['time', '/'],
+        keywords: ['time', '/', 'today'],
         icon: () => <EditorDateIcon label="Date" />,
         action(insert, state) {
           return insert(

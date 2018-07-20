@@ -72,6 +72,7 @@ const tablesPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Table',
+        keywords: ['|'],
         icon: () => <TableIcon label="Table" />,
         action(insert, state) {
           return insert(createTable(state.schema));

@@ -70,7 +70,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Action',
-        keywords: ['task'],
+        keywords: ['task', 'checkbox'],
         icon: () => <EditorTaskIcon label="Action" />,
         action(insert, state) {
           return insert(

@@ -18,6 +18,7 @@ const panelPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Panel',
+        keywords: ['info', 'note', 'tip', 'warning', 'error', 'success'],
         icon: () => <InfoIcon label="Panel" />,
         action(insert, state) {
           return insert(
