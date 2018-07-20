@@ -5,6 +5,8 @@ import EditorActions from '../../src/actions';
 import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
 import { mount } from 'enzyme';
 
+import * as utils from '../../src/utils';
+
 const editor = (doc: any) =>
   createEditor({
     doc,
@@ -58,8 +60,10 @@ describe('message editor', () => {
   describe('focus', () => {
     let editorActionsFocusSpy;
     let messageFocusEditor;
+    let closestElementSpy;
 
     beforeEach(() => {
+      closestElementSpy = jest.spyOn(utils, 'closestElement');
       editorActionsFocusSpy = jest.fn();
       const editorActions = {
         focus: editorActionsFocusSpy,
@@ -78,29 +82,35 @@ describe('message editor', () => {
       messageFocusEditor = (message.instance() as any).focusEditor;
     });
 
+    afterEach(() => {
+      closestElementSpy.mockRestore();
+    });
+
     it('should focus when clicking anywhere but a popup', () => {
-      const closest = jest.fn();
       // no popup
-      closest.mockReturnValue(undefined);
+      (closestElementSpy as any).mockReturnValue(undefined);
+      const target = {};
       messageFocusEditor({
-        target: {
-          closest,
-        },
+        target,
       });
-      expect(closest).toHaveBeenCalledWith('[data-editor-popup]');
+      expect(closestElementSpy).toHaveBeenCalledWith(
+        target,
+        '[data-editor-popup]',
+      );
       expect(editorActionsFocusSpy).toHaveBeenCalled();
     });
 
     it('should not focus when clicking within a popup', () => {
-      const closest = jest.fn();
       // found popup
-      closest.mockReturnValue({});
+      (closestElementSpy as any).mockReturnValue({});
+      const target = {};
       messageFocusEditor({
-        target: {
-          closest,
-        },
+        target,
       });
-      expect(closest).toHaveBeenCalledWith('[data-editor-popup]');
+      expect(utils.closestElement).toHaveBeenCalledWith(
+        target,
+        '[data-editor-popup]',
+      );
       expect(editorActionsFocusSpy).not.toHaveBeenCalled();
     });
   });
