@@ -115,7 +115,7 @@ export interface Props {
   imageUploadProvider?: ProviderState;
 }
 
-export type ProviderState = 'resolved' | 'ppending' | 'rejected' | 'undefined';
+export type ProviderState = 'resolved' | 'pending' | 'rejected' | 'undefined';
 
 export default class ToolsDrawer extends React.Component<Props & any, State> {
   constructor(props: Props) {

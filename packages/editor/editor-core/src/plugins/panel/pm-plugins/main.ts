@@ -1,14 +1,10 @@
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { panelNodeView } from '../nodeviews/panel';
 import {
   findParentDomRefOfType,
   findParentNodeOfType,
 } from 'prosemirror-utils';
-
-export interface PanelType {
-  panelType: 'info' | 'note' | 'success' | 'warning' | 'error';
-}
+import { panelNodeView } from '../nodeviews/panel';
 
 export type PanelState = {
   element?: HTMLElement;

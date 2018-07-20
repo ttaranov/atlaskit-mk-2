@@ -3,7 +3,7 @@ import { Context, FileItem } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { Spinner } from '../../loading';
-import { constructAuthTokenUrl } from '../../util';
+import { constructAuthTokenUrl } from '../../utils';
 import { Props as RendererProps } from './pdfRenderer';
 import { ComponentClass } from 'react';
 import { renderDownloadButton } from '../../domain/download';

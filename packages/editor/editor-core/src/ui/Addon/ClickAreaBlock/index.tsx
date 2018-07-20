@@ -16,10 +16,10 @@ export interface Props {
   children?: any;
 }
 
-// we ignore all of the clicks made inside <div class="content-area" /> (but not clicks on the node itself)
+// we ignore all of the clicks made inside <div class="ak-editor-content-area" /> (but not clicks on the node itself)
 const insideContentArea = (ref: HTMLElement): boolean => {
   while (ref) {
-    if (ref.classList && ref.classList.contains('content-area')) {
+    if (ref.classList && ref.classList.contains('ak-editor-content-area')) {
       return true;
     }
     ref = ref.parentNode as HTMLElement;
@@ -30,7 +30,9 @@ const insideContentArea = (ref: HTMLElement): boolean => {
 export default class ClickAreaBlock extends React.Component<Props> {
   private handleClick = event => {
     const { editorView: view } = this.props;
-    const contentArea = event.currentTarget.querySelector('.content-area');
+    const contentArea = event.currentTarget.querySelector(
+      '.ak-editor-content-area',
+    );
 
     // @see https://product-fabric.atlassian.net/browse/ED-4287
     // click event gets triggered twice on a checkbox (on <label> first and then on <input>)
