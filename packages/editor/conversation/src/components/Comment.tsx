@@ -62,7 +62,7 @@ export interface SharedProps {
   placeholder?: string;
   disableScrollTo?: boolean;
   allowFeedbackAndHelpButtons?: boolean;
-  sendAnalyticsEvent: (action: string) => void;
+  sendAnalyticsEvent: (action: string, commentLevel?: number) => void;
 }
 
 export interface Props extends SharedProps {
@@ -172,10 +172,13 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onReply = (value: any, analyticsEvent) => {
+    const { containerId, comment: parentComment } = this.props;
+
     fireEvent(
       analyticsEvents.commentCreateStart,
-      this.props.containerId,
+      containerId,
       analyticsEvent,
+      (parentComment.commentLevel || 0) + 1,
     );
 
     this.setState({
@@ -184,11 +187,23 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onSaveReply = async (value: any) => {
-    const { conversationId, comment, sendAnalyticsEvent } = this.props;
+    const {
+      conversationId,
+      comment: parentComment,
+      sendAnalyticsEvent,
+    } = this.props;
 
-    sendAnalyticsEvent('commentCreateSave');
+    sendAnalyticsEvent(
+      'commentCreateSave',
+      (parentComment.commentLevel || 0) + 1,
+    );
 
-    this.dispatch('onAddComment', conversationId, comment.commentId, value);
+    this.dispatch(
+      'onAddComment',
+      conversationId,
+      parentComment.commentId,
+      value,
+    );
 
     this.setState({
       isReplying: false,
@@ -196,29 +211,45 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelReply = () => {
-    this.props.sendAnalyticsEvent('commentCreateCancel');
+    const { comment: parentComment } = this.props;
+
+    this.props.sendAnalyticsEvent(
+      'commentCreateCancel',
+      (parentComment.commentLevel || 0) + 1,
+    );
     this.setState({
       isReplying: false,
     });
   };
 
   private onDelete = (value: any, analyticsEvent) => {
-    const { conversationId, comment } = this.props;
+    const {
+      comment: { commentLevel, commentId },
+      containerId,
+      conversationId,
+    } = this.props;
 
     fireEvent(
       analyticsEvents.commentDelete,
-      this.props.containerId,
+      containerId,
       analyticsEvent,
+      commentLevel,
     );
 
-    this.dispatch('onDeleteComment', conversationId, comment.commentId);
+    this.dispatch('onDeleteComment', conversationId, commentId);
   };
 
   private onEdit = (value: any, analyticsEvent) => {
+    const {
+      comment: { commentLevel },
+      containerId,
+    } = this.props;
+
     fireEvent(
       analyticsEvents.commentEditStart,
-      this.props.containerId,
+      containerId,
       analyticsEvent,
+      commentLevel,
     );
 
     this.setState({
@@ -229,7 +260,7 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent(analyticsEvents.commentEditSave);
+    sendAnalyticsEvent(analyticsEvents.commentEditSave, comment.commentLevel);
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -239,7 +270,10 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelEdit = () => {
-    this.props.sendAnalyticsEvent(analyticsEvents.commentEditCancel);
+    this.props.sendAnalyticsEvent(
+      analyticsEvents.commentEditCancel,
+      this.props.comment.commentLevel,
+    );
 
     this.setState({
       isEditing: false,
@@ -247,7 +281,12 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onRequestCancel = (value: any, analyticsEvent) => {
-    const { comment, onCancel } = this.props;
+    const {
+      comment,
+      onCancel,
+      containerId,
+      comment: { commentLevel },
+    } = this.props;
 
     // Invoke optional onCancel hook
     if (onCancel) {
@@ -256,8 +295,9 @@ export default class Comment extends React.Component<Props, State> {
 
     fireEvent(
       analyticsEvents.commentEditCancel,
-      this.props.containerId,
+      containerId,
       analyticsEvent,
+      commentLevel,
     );
 
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
@@ -265,16 +305,21 @@ export default class Comment extends React.Component<Props, State> {
 
   private onRequestRetry = (value: any, analyticsEvent) => {
     const { lastDispatch } = this.state;
-    const { onRetry, comment } = this.props;
+    const {
+      containerId,
+      onRetry,
+      comment: { commentLevel, localId, isPlaceholder },
+    } = this.props;
 
-    if (onRetry && comment.isPlaceholder) {
-      return onRetry(comment.localId);
+    if (onRetry && isPlaceholder) {
+      return onRetry(localId);
     }
 
     fireEvent(
       analyticsEvents.commentRequestRetry,
-      this.props.containerId,
+      containerId,
       analyticsEvent,
+      commentLevel,
     );
 
     if (!lastDispatch) {
