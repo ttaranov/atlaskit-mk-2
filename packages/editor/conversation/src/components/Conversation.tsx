@@ -6,7 +6,7 @@ import { Conversation as ConversationType } from '../model';
 import { SharedProps } from './Comment';
 import {
   createAnalyticsEvent,
-  analyticsEvents,
+  actionSubjectIds,
   fireEvent,
 } from '../internal/analytics';
 
@@ -79,14 +79,20 @@ export default class Conversation extends React.PureComponent<Props, State> {
     @deprecated
   */
   sendEditorAnalyticsEvent = (
-    eventName: analyticsEvents,
+    actionSubjectId: actionSubjectIds,
     commentLevel: number = 0,
   ) => {
     const analyticsEvent = this.props.createAnalyticsEvent({
       actionSubject: 'editor',
+      action: 'clicked',
     });
 
-    fireEvent(eventName, this.props.containerId, analyticsEvent, commentLevel);
+    fireEvent(
+      analyticsEvent,
+      actionSubjectId,
+      this.props.containerId,
+      commentLevel,
+    );
   };
 
   private renderComments() {
@@ -142,7 +148,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
   }
 
   private onCancel = () => {
-    this.sendEditorAnalyticsEvent(analyticsEvents.commentCreateCancel);
+    this.sendEditorAnalyticsEvent(actionSubjectIds.commentCreateCancel);
 
     if (this.props.onCancel) {
       this.props.onCancel();
@@ -150,7 +156,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
   };
 
   private onOpen = () => {
-    this.sendEditorAnalyticsEvent(analyticsEvents.commentCreateStart);
+    this.sendEditorAnalyticsEvent(actionSubjectIds.commentCreateStart);
     this.onEditorOpen();
   };
   private renderConversationsEditor() {
@@ -203,7 +209,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       conversation,
     } = this.props;
 
-    this.sendEditorAnalyticsEvent(analyticsEvents.commentCreateSave);
+    this.sendEditorAnalyticsEvent(actionSubjectIds.commentCreateSave);
 
     if (!id && !commentLocalId && onCreateConversation) {
       onCreateConversation(localId!, containerId, value, meta);
