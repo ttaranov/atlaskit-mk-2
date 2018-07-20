@@ -53,6 +53,22 @@ describe('Card', () => {
       context,
     };
   };
+  const createContextWithGetFile = () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'image',
+          status: 'processed',
+        }),
+      mediaStore: {
+        getImage,
+      },
+    } as any;
+
+    return context;
+  };
 
   it('should render card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
     const dummyUrl = 'http://some.url.com';
@@ -472,29 +488,55 @@ describe('Card', () => {
   });
 
   it('should fetch remote preview when file is processed', async () => {
-    const getImage = jest.fn();
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'image',
-          status: 'processed',
-        }),
-      mediaStore: {
-        getImage,
-      },
-    } as any;
+    const context = createContextWithGetFile();
     setup(context);
 
     await nextTick();
     await nextTick();
 
-    expect(getImage).toHaveBeenCalledTimes(1);
-    expect(getImage).toBeCalledWith('123', {
+    expect(context.mediaStore.getImage).toHaveBeenCalledTimes(1);
+    expect(context.mediaStore.getImage).toBeCalledWith('123', {
       collection: 'some-collection-name',
       height: 125,
       width: 156,
+      allowAnimated: true,
+      mode: 'crop',
     });
+  });
+
+  it('should use allowAnimated=false for small cards', async () => {
+    const context = createContextWithGetFile();
+    setup(context, {
+      appearance: 'small',
+    });
+
+    await nextTick();
+    await nextTick();
+
+    expect(context.mediaStore.getImage).toBeCalledWith('123', {
+      collection: 'some-collection-name',
+      height: 32,
+      width: 32,
+      allowAnimated: false,
+      mode: 'crop',
+    });
+  });
+
+  it('should pass resize mode down to getImage call', async () => {
+    const context = createContextWithGetFile();
+    setup(context, {
+      resizeMode: 'full-fit',
+    });
+
+    await nextTick();
+    await nextTick();
+
+    expect(context.mediaStore.getImage).toBeCalledWith(
+      '123',
+      expect.objectContaining({
+        mode: 'full-fit',
+      }),
+    );
   });
 
   it('should render CardView with expected props', async () => {

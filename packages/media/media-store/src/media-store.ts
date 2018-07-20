@@ -28,6 +28,12 @@ const defaultImageOptions: MediaStoreGetFileImageParams = {
   mode: 'full-fit',
 };
 
+const extendImageParams = (
+  params?: MediaStoreGetFileImageParams,
+): MediaStoreGetFileImageParams => {
+  return { ...defaultImageOptions, ...params };
+};
+
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
 
@@ -160,22 +166,22 @@ export class MediaStore {
 
   getFileImageURL = async (
     id: string,
-    params: MediaStoreGetFileImageParams = defaultImageOptions,
+    params?: MediaStoreGetFileImageParams,
   ): Promise<string> => {
     const auth = await this.config.authProvider();
 
     return createUrl(`${this.config.serviceHost}/file/${id}/image`, {
-      params,
+      params: extendImageParams(params),
       auth,
     });
   };
 
   getImage = (
     id: string,
-    params: MediaStoreGetFileImageParams = defaultImageOptions,
+    params?: MediaStoreGetFileImageParams,
   ): Promise<Blob> => {
     return this.request(`/file/${id}/image`, {
-      params,
+      params: extendImageParams(params),
       authContext: { collectionName: params && params.collection },
     }).then(mapResponseToBlob);
   };

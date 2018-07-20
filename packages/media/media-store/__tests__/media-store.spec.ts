@@ -446,6 +446,24 @@ describe('MediaStore', () => {
         );
         expect(image).toBeInstanceOf(Blob);
       });
+
+      it('should merge default params with given ones', async () => {
+        fetchMock.mock(`begin:${serviceHost}/file`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        await mediaStore.getImage('123', {
+          mode: 'crop',
+          version: 2,
+          upscale: true,
+        });
+        expect(fetchMock.lastUrl()).toEqual(
+          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token&upscale=true&version=2`,
+        );
+      });
     });
   });
 

@@ -1,4 +1,8 @@
-import { MediaItemProvider, UrlPreviewProvider } from '@atlaskit/media-core';
+import {
+  MediaItemProvider,
+  UrlPreviewProvider,
+  MediaType,
+} from '@atlaskit/media-core';
 
 export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
@@ -21,3 +25,7 @@ export interface UrlPreviewIdentifier {
   readonly mediaItemType: 'link';
   readonly url: string;
 }
+
+export const isPreviewableType = (type: MediaType): boolean => {
+  return ['audio', 'video', 'image'].indexOf(type) > -1;
+};

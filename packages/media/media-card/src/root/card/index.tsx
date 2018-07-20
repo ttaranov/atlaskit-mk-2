@@ -7,7 +7,6 @@ import {
   ImageResizeMode,
   MediaItemDetails,
   FileDetails,
-  MediaType,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs';
@@ -17,7 +16,7 @@ import {
   CardAnalyticsContext,
   CardStatus,
 } from '../..';
-import { Identifier } from '../domain';
+import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
@@ -43,10 +42,6 @@ export interface CardState {
   progress?: number;
   readonly error?: Error;
 }
-
-const isPreviewableType = (type: MediaType): boolean => {
-  return ['audio', 'video', 'image'].indexOf(type) > -1;
-};
 
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
@@ -112,7 +107,7 @@ export class Card extends Component<CardProps, CardState> {
         const metadata = await getLinkMetadata(identifier, context);
         this.notifyStateChange({
           status: 'complete',
-          metadata: metadata,
+          metadata,
         });
       } catch (error) {
         this.notifyStateChange({
@@ -125,6 +120,7 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     const { id, collectionName } = identifier;
+
     this.unsubscribe();
     this.subscription = context.getFile(id, { collectionName }).subscribe({
       next: async state => {
@@ -157,7 +153,7 @@ export class Card extends Component<CardProps, CardState> {
             break;
           case 'processed':
             if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
-              const { appearance, dimensions } = this.props;
+              const { appearance, dimensions, resizeMode } = this.props;
               const options = {
                 appearance,
                 dimensions,
@@ -166,10 +162,13 @@ export class Card extends Component<CardProps, CardState> {
               const width = getDataURIDimension('width', options);
               const height = getDataURIDimension('height', options);
               try {
+                const allowAnimated = appearance !== 'small';
                 const blob = await context.mediaStore.getImage(state.id, {
                   collection: collectionName,
+                  mode: resizeMode,
                   height,
                   width,
+                  allowAnimated,
                 });
                 const dataURI = URL.createObjectURL(blob);
                 this.releaseDataURI();
