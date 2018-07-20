@@ -7,9 +7,10 @@ import React, {
   type Node,
   type Element,
   type ComponentType,
-  type Ref,
 } from 'react';
-import { TransitionGroup } from 'react-transition-group';
+import { Manager, Reference, Popper } from 'react-popper';
+import NodeResolver from 'react-node-resolver';
+import { TransitionGroup, Transition } from 'react-transition-group';
 
 import Portal from '@atlaskit/portal';
 import {
@@ -24,10 +25,8 @@ import {
 
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
+import Animation from './Animation';
 
-import TooltipMarshal from './Marshal';
-import Transition from './Transition';
-import { getPosition } from './utils';
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
 type Props = {
@@ -73,35 +72,34 @@ type Props = {
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
-  isFlipped: boolean,
   isVisible: boolean,
-  /** This is used for the slide transition of tooltips. */
-  position: PositionType,
   mousePosition: PositionTypeBase,
-  coordinates: CoordinatesType | null,
 };
-
-// global tooltip marshal
-// export for testing purposes
-export const marshal = new TooltipMarshal();
 
 function getInitialState(props): State {
   return {
     immediatelyHide: false,
     immediatelyShow: false,
     isVisible: false,
-    isFlipped: false,
-    position: props.position,
     mousePosition: props.mousePosition,
-    coordinates: null,
   };
 }
 
+const recentlyOpen = false;
+
+const showTooltip = (fn: boolean => void, defaultDelay: number) => {
+  return setTimeout(() => fn(false), defaultDelay);
+};
+
+const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
+  return setTimeout(() => fn(false), defaultDelay);
+};
+
 class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
-  wrapper: HTMLElement | null;
+  wrapperRef: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
-  tooltipRef: HTMLElement | null;
+  timer: TimeoutID;
   static defaultProps = {
     component: StyledTooltip,
     delay: 300,
@@ -110,160 +108,108 @@ class Tooltip extends Component<Props, State> {
     tag: 'div',
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { position, truncate, mousePosition } = nextProps;
-
-    // handle case where position is changed while visible
-    if (
-      position !== this.props.position ||
-      mousePosition !== this.props.mousePosition
-    ) {
-      this.setState({ position, mousePosition, coordinates: null });
+  handleMouseOver = (e: SyntheticMouseEvent<>) => {
+    if (e.target === this.wrapperRef) return;
+    clearTimeout(this.timer);
+    if (!this.state.isVisible) {
+      this.timer = showTooltip(immediatelyShow => {
+        this.setState({ isVisible: true, immediatelyShow });
+        if (this.props.onShow) {
+          this.props.onShow();
+        }
+      }, this.props.delay);
+      //
+      // if (getRecentlyOpen()) {
+      //   this.setState({ isVisible: true, immediatelyShow: true });
+      //   if (this.props.onShow) {
+      //     this.props.onShow();
+      //   }
+      // } else {
+      //   this.timer = setTimeout(() => {
+      //     this.setState({ isVisible: true, immediatelyShow: false });
+      //     if (this.props.onShow) {
+      //       this.props.onShow();
+      //     }
+      //   }, this.props.delay);
+      // }
     }
+  };
 
-    // handle case where truncate is changed while visible
-    if (truncate !== this.props.truncate) {
-      this.setState({ coordinates: null });
+  handleMouseLeave = (e: SyntheticMouseEvent<>) => {
+    if (e.target === this.wrapperRef) return;
+    clearTimeout(this.timer);
+    if (this.state.isVisible) {
+      this.timer = hideTooltip(immediatelyHide => {
+        this.setState({ isVisible: false, immediatelyHide });
+        if (this.props.onHide) {
+          this.props.onHide();
+        }
+      }, this.props.delay);
+      // this.timer = setTimeout(() => {
+      //   this.setState({ isVisible: false });
+      //   if (this.props.onHide) {
+      //     this.props.onHide();
+      //   }
+      // }, this.props.delay);
     }
-  }
-
-  componentWillUnmount() {
-    marshal.unmount(this);
-  }
-
-  handleWrapperRef = (ref: HTMLElement | null) => {
-    this.wrapper = ref;
-  };
-
-  handleMeasureRef = () => {
-    if (!this.tooltipRef || !this.wrapper) return;
-
-    const { position, mousePosition } = this.props;
-    const { mouseCoordinates } = this;
-    const target = this.wrapper.children.length
-      ? this.wrapper.children[0]
-      : this.wrapper;
-
-    const positionData = getPosition({
-      position,
-      target,
-      tooltip: this.tooltipRef,
-      mouseCoordinates,
-      mousePosition,
-    });
-    this.setState(positionData);
-  };
-
-  renderTooltip() {
-    const { content, truncate, component } = this.props;
-    const {
-      immediatelyHide,
-      immediatelyShow,
-      isVisible,
-      mousePosition,
-      position,
-      coordinates,
-    } = this.state;
-
-    // bail immediately when not visible, or when there is no content
-    if (!isVisible || !content) return null;
-
-    // render node for measuring in alternate tree via portal
-    if (!coordinates) {
-      const MeasurableTooltip = component;
-      return (
-        <Portal layer="tooltip" ref={this.handleMeasureRef}>
-          <MeasurableTooltip
-            innerRef={ref => {
-              this.tooltipRef = ref;
-            }}
-            style={{ visibility: 'hidden' }}
-          >
-            {content}
-          </MeasurableTooltip>
-        </Portal>
-      );
-    }
-
-    // render and animate tooltip when coordinates available
-    const transitionProps = {
-      component,
-      immediatelyHide,
-      immediatelyShow,
-      mousePosition,
-      position,
-      coordinates,
-      truncate,
-    };
-
-    return <Transition {...transitionProps}>{content}</Transition>;
-  }
-
-  show = ({ immediate }: { immediate: boolean }) => {
-    const { onShow } = this.props;
-    this.setState({
-      immediatelyShow: immediate,
-      isVisible: true,
-      coordinates: null,
-    });
-    if (onShow) onShow();
-  };
-  // eslint-disable-next-line react/no-unused-prop-types
-  hide = ({ immediate }: { immediate: boolean }) => {
-    const { onHide } = this.props;
-    // Update state twice to allow for the updated `immediate` prop to pass through
-    // to the Transition component before the tooltip is removed
-    this.setState({ immediatelyHide: immediate }, () => {
-      this.setState({ isVisible: false, coordinates: null });
-    });
-    if (onHide) onHide();
-  };
-
-  handleMouseOver = (event: MouseEvent) => {
-    // bail if over the wrapper, we only want to target the first child.
-    if (event.target === this.wrapper) return;
-
-    marshal.show(this);
-  };
-  handleMouseOut = (event: MouseEvent) => {
-    // bail if over the wrapper, we only want to target the first child.
-    if (event.target === this.wrapper) return;
-
-    marshal.hide(this);
-  };
-
-  // Update mouse coordinates, used when position is 'mouse'.
-  // We are not debouncing/throttling this function because we aren't causing any
-  // re-renders or performaing any intensive calculations, we're just updating a value.
-  // React also doesn't play nice debounced DOM event handlers because they pool their
-  // SyntheticEvent objects. Need to use event.persist as a workaround - https://stackoverflow.com/a/24679479/893630
-  handleMouseMove = (event: MouseEvent) => {
-    this.mouseCoordinates = {
-      left: event.clientX,
-      top: event.clientY,
-    };
-  };
-
-  handleClick = () => {
-    const { hideTooltipOnClick } = this.props;
-
-    if (hideTooltipOnClick) this.hide({ immediate: true });
   };
 
   render() {
-    const { children, tag: Tag } = this.props;
-
+    const {
+      children,
+      content,
+      position,
+      truncate,
+      component: TooltipContainer,
+      tag: TargetContainer,
+    } = this.props;
+    const { isVisible, immediatelyShow, immediatelyHide } = this.state;
     return (
-      <Tag
-        onClick={this.handleClick}
-        onMouseMove={this.handleMouseMove}
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-        ref={this.handleWrapperRef}
-      >
-        {Children.only(children)}
-        <TransitionGroup>{this.renderTooltip()}</TransitionGroup>
-      </Tag>
+      <Manager>
+        <TargetContainer
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseLeave}
+          ref={wrapperRef => {
+            this.wrapperRef = wrapperRef;
+          }}
+        >
+          <Reference>
+            {({ ref }) => (
+              <NodeResolver innerRef={ref}>
+                {Children.only(children)}
+              </NodeResolver>
+            )}
+          </Reference>
+        </TargetContainer>
+        <TransitionGroup>
+          {isVisible && (
+            <Animation
+              immediatelyShow={immediatelyShow}
+              immediatelyHide={immediatelyHide}
+            >
+              {animationStyles => (
+                <Portal layer="tooltip">
+                  <Popper placement={position}>
+                    {({ placement, ref, style }) => (
+                      <TooltipContainer
+                        innerRef={ref}
+                        style={{
+                          ...style,
+                          ...animationStyles,
+                        }}
+                        truncate={truncate}
+                        data-placement={placement}
+                      >
+                        {content}
+                      </TooltipContainer>
+                    )}
+                  </Popper>
+                </Portal>
+              )}
+            </Animation>
+          )}
+        </TransitionGroup>
+      </Manager>
     );
   }
 }
