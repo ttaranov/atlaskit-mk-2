@@ -23,6 +23,7 @@ import {
   mockConversation as mockConversationClean,
   mockComment2 as mockComment2Clean,
   mockComment as mockCommentClean,
+  mockReplyComment,
 } from '../../example-helpers/MockData';
 
 describe('Reducers', () => {
@@ -64,8 +65,11 @@ describe('Reducers', () => {
     it('should add conversations to state on SUCCESS', () => {
       dispatch({
         type: FETCH_CONVERSATIONS_SUCCESS,
-        payload: mockConversation,
+        payload: [mockConversation],
       });
+
+      mockConversation.comments[0].commentLevel = 0;
+      mockConversation.comments[1].commentLevel = 0;
 
       expect(store.getState()).toEqual({
         conversations: [mockConversation],
@@ -166,6 +170,33 @@ describe('Reducers', () => {
                 ...mockComment2,
                 state: 'SAVING',
                 isPlaceholder: true,
+                commentLevel: 0,
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('When replying it should assign the right commentLevel', () => {
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        payload: mockReplyComment,
+      });
+
+      const { comments } = mockConversation;
+
+      expect(store.getState()).toEqual({
+        conversations: [
+          {
+            ...mockConversation,
+            comments: [
+              ...comments,
+              {
+                ...mockReplyComment,
+                state: 'SAVING',
+                isPlaceholder: true,
+                commentLevel: 1,
               },
             ],
           },
@@ -179,6 +210,7 @@ describe('Reducers', () => {
         payload: {
           ...mockComment2,
           localId: undefined, // Will update existing if defined
+          commentLevel: 0,
         },
       });
 
@@ -196,6 +228,7 @@ describe('Reducers', () => {
                 oldDocument: undefined,
                 isPlaceholder: false,
                 localId: undefined,
+                commentLevel: 0,
               },
             ],
           },
@@ -227,6 +260,7 @@ describe('Reducers', () => {
                 state: 'ERROR',
                 oldDocument: mockComment2.document,
                 isPlaceholder: true,
+                commentLevel: 0,
               },
             ],
           },
