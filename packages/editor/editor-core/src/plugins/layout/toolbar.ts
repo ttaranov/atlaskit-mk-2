@@ -7,6 +7,7 @@ import { Command } from '../../../src/types';
 import {
   FloatingToolbarConfig,
   FloatingToolbarItem,
+  Icon,
 } from '../../../src/plugins/floating-toolbar/types';
 import { setActiveLayoutType, deleteActiveLayoutNode } from './actions';
 
@@ -31,7 +32,7 @@ const LAYOUT_TYPES = [
 ];
 
 const buildLayoutButton = (
-  item: { type: string; text: string; icon: any },
+  item: { type: string; text: string; icon: Icon },
   active: Node,
 ): FloatingToolbarItem<Command> => ({
   type: 'button',
@@ -49,7 +50,8 @@ export const buildToolbar = (
   if (node) {
     return {
       title: 'Columns floating controls',
-      getDomRef: view => findDomRefAtPos(pos, view.domAtPos.bind(view)) as HTMLElement,
+      getDomRef: view =>
+        findDomRefAtPos(pos, view.domAtPos.bind(view)) as HTMLElement,
       nodeType: state.schema.nodes.layoutSection,
       items: [
         ...LAYOUT_TYPES.map(i => buildLayoutButton(i, node)),
@@ -64,5 +66,4 @@ export const buildToolbar = (
       ],
     };
   }
-  return undefined;
 };

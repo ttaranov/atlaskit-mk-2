@@ -3,25 +3,27 @@ import { Node } from 'prosemirror-model';
 import { Command } from '../../types';
 import { pluginKey, LayoutState } from './pm-plugins/main';
 
-export const insertLayoutColumns = ((state, dispatch) => {
+export const insertLayoutColumns: Command = (state, dispatch) => {
   const { layoutSection } = state.schema.nodes;
   dispatch(safeInsert(layoutSection.createAndFill() as Node)(state.tr));
   return true;
-}) as Command;
+};
 
 // We just change the attribute value here
 // Merging the layouts is handled by the appendTransaction
-export const setActiveLayoutType = (layoutType: string) =>
-  ((state, dispatch) => {
-    const { pos } = pluginKey.getState(state) as LayoutState;
-    if (pos !== null) {
-      dispatch(state.tr.setNodeMarkup(pos, undefined, { layoutType }));
-      return true;
-    }
-    return false;
-  }) as Command;
+export const setActiveLayoutType = (layoutType: string): Command => (
+  state,
+  dispatch,
+) => {
+  const { pos } = pluginKey.getState(state) as LayoutState;
+  if (pos !== null) {
+    dispatch(state.tr.setNodeMarkup(pos, undefined, { layoutType }));
+    return true;
+  }
+  return false;
+};
 
-export const deleteActiveLayoutNode = ((state, dispatch) => {
+export const deleteActiveLayoutNode: Command = (state, dispatch) => {
   const { pos } = pluginKey.getState(state) as LayoutState;
   if (pos !== null) {
     const node = state.doc.nodeAt(pos) as Node;
@@ -29,4 +31,4 @@ export const deleteActiveLayoutNode = ((state, dispatch) => {
     return true;
   }
   return false;
-}) as Command;
+};
