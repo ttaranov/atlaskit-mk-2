@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 4.0.2
+- [patch] Don't escape pipe characters when outside table [018de18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/018de18)
+- [none] Updated dependencies [018de18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/018de18)
+
 ## 4.0.1
 
 

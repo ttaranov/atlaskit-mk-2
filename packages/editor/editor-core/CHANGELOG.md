@@ -1,5 +1,32 @@
 # @atlaskit/editor-core
 
+## 76.0.6
+- [patch] Obfuscate internal editor class-name "content-area" to prevent clashes with product css [7ddf1eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ddf1eb)
+- [none] Updated dependencies [7ddf1eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ddf1eb)
+
+## 76.0.5
+- [patch] New floating toolbar for Panel [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+- [none] Updated dependencies [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+  - @atlaskit/renderer@19.0.3
+  - @atlaskit/editor-common@13.0.5
+
+## 76.0.4
+- [patch] Fallback to use containerId from MentionResourceConfig if ContextIdentifier promise fails [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+- [patch] add support for childObjectId in ContextIdentifiers and pass it to the mention service endpoints [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+- [none] Updated dependencies [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+  - @atlaskit/editor-common@13.0.4
+- [patch] Updated dependencies [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+  - @atlaskit/editor-common@13.0.4
+
+## 76.0.3
+- [patch] Improves type coverage by removing casts to any [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+- [none] Updated dependencies [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+  - @atlaskit/editor-common@13.0.3
+
 ## 76.0.2
 - [patch] ED-4956, moving decision menu item to insert menu drop-down. [4e11c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e11c66)
 - [none] Updated dependencies [4e11c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e11c66)

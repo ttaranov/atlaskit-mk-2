@@ -1034,6 +1034,11 @@ System.out.println("There are " + count + " values >= 5");`,
             title: 'Google!',
           },
         },
+        {
+          type: 'text',
+          text:
+            'Do not use this image node; it may be removed at any time without notice.',
+        },
       ],
     },
     {

@@ -20,7 +20,7 @@ export const closeHelpCommand = (tr: Transaction, dispatch: Function): void => {
   dispatch(tr);
 };
 
-export const stopPropagationCommand = (e: any): void => e.stopPropagation();
+export const stopPropagationCommand = (e: Event): void => e.stopPropagation();
 
 export function createPlugin(dispatch: Function, imageEnabled: boolean) {
   return new Plugin({
@@ -78,7 +78,7 @@ const keymapPlugin = (schema: Schema): Plugin => {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.openHelp.common!,
-    (state: any, dispatch: Function): boolean => {
+    (state, dispatch) => {
       let { tr } = state;
       const isVisible = tr.getMeta(pluginKey);
       if (!isVisible) {

@@ -172,7 +172,7 @@ export default class Editor extends React.Component<
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
           <ClickAreaBlock editorView={editorView}>
-            <ContentArea className="content-area">
+            <ContentArea className="ak-editor-content-area">
               {customContentComponents}
               <PluginSlot
                 editorView={editorView}

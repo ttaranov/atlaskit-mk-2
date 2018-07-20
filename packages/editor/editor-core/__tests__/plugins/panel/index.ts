@@ -49,10 +49,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.activePanelType).toEqual('info');
       expect(pluginState.element).not.toBe(undefined);
       expect(pluginState.activePanelType).not.toBe(undefined);
-      changePanelType({ panelType: 'note' })(
-        editorView.state,
-        editorView.dispatch,
-      );
+      changePanelType('note')(editorView.state, editorView.dispatch);
       //Wait till the dispatch cycle finishes and the state updates
       setTimeout(() => {
         expect(pluginState.activePanelType).toEqual('note');
@@ -61,10 +58,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     it('should be able to change panel type using function changeType for panel with multiple blocks', () => {
       const { editorView } = editor(doc(panel()(p('te{<>}xt'), p('text'))));
-      changePanelType({ panelType: 'note' })(
-        editorView.state,
-        editorView.dispatch,
-      );
+      changePanelType('note')(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(panelNote(p('text'), p('text'))),
       );
@@ -148,10 +142,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('text'), ol(li(p('te{<>}xt'))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      changePanelType({ panelType: 'note' })(
-        editorView.state,
-        editorView.dispatch,
-      );
+      changePanelType('note')(editorView.state, editorView.dispatch);
       //Wait till the dispatch cycle finishes and the state updates
       setTimeout(() => {
         expect(pluginState.activePanelType).toEqual('note');

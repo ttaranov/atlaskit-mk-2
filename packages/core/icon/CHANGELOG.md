@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 13.2.0
+- [minor] Add Layout Type icons for the Editor. ED-4196 [259ef37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/259ef37)
+- [none] Updated dependencies [259ef37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/259ef37)
+
 ## 13.1.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

@@ -57,7 +57,7 @@ export default class ToolbarBlockType extends React.PureComponent<
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  private onOpenChange = (attrs: any) => {
+  private onOpenChange = (attrs: { isOpen: boolean }) => {
     this.setState({
       active: attrs.isOpen,
     });
@@ -137,17 +137,24 @@ export default class ToolbarBlockType extends React.PureComponent<
 
   private createItems = () => {
     const { currentBlockType, availableBlockTypes } = this.state;
-    let items: any[] = [];
-    availableBlockTypes.forEach((blockType, blockTypeNo) => {
-      items.push({
-        content: blockType.title,
-        value: blockType,
-        // ED-2853, hiding tooltips as shortcuts are not working atm.
-        // tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
-        // tooltipPosition: 'right',
-        isActive: currentBlockType === blockType,
-      });
-    });
+    const items = availableBlockTypes.reduce(
+      (acc, blockType, blockTypeNo) => {
+        acc.push({
+          content: blockType.title,
+          value: blockType,
+          // ED-2853, hiding tooltips as shortcuts are not working atm.
+          // tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
+          // tooltipPosition: 'right',
+          isActive: currentBlockType === blockType,
+        });
+        return acc;
+      },
+      [] as Array<{
+        content: string;
+        value: BlockType;
+        isActive: boolean;
+      }>,
+    );
     return [
       {
         items,

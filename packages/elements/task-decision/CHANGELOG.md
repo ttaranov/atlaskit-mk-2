@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 8.1.1
+- [patch] FS-1712 - Ensure empty state loading spinner is not taller than container [4defa84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4defa84)
+- [none] Updated dependencies [4defa84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4defa84)
+
 ## 8.1.0
 - [minor] Refreshing of a ResourcedItemList now replaces all content rather than merging. This is required as actions may now be deleted. [edcbf25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edcbf25)
 - [none] Updated dependencies [edcbf25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edcbf25)

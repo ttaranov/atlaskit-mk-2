@@ -120,6 +120,11 @@ import EditorImageIcon from '../glyph/editor/image';
 import EditorIndentIcon from '../glyph/editor/indent';
 import EditorInfoIcon from '../glyph/editor/info';
 import EditorItalicIcon from '../glyph/editor/italic';
+import EditorLayoutThreeEqualIcon from '../glyph/editor/layout-three-equal';
+import EditorLayoutThreeWithSidebarsIcon from '../glyph/editor/layout-three-with-sidebars';
+import EditorLayoutTwoEqualIcon from '../glyph/editor/layout-two-equal';
+import EditorLayoutTwoLeftSidebarIcon from '../glyph/editor/layout-two-left-sidebar';
+import EditorLayoutTwoRightSidebarIcon from '../glyph/editor/layout-two-right-sidebar';
 import EditorLinkIcon from '../glyph/editor/link';
 import EditorMediaCenterIcon from '../glyph/editor/media-center';
 import EditorMediaFullWidthIcon from '../glyph/editor/media-full-width';
@@ -1097,6 +1102,36 @@ export default {
     component: EditorItalicIcon,
     componentName: 'EditorItalicIcon',
     package: '@atlaskit/icon/glyph/editor/italic',
+  },
+  'editor/layout-three-equal': {
+    keywords: ['editor/layout-three-equal', 'editorlayoutthreeequal'],
+    component: EditorLayoutThreeEqualIcon,
+    componentName: 'EditorLayoutThreeEqualIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-three-equal',
+  },
+  'editor/layout-three-with-sidebars': {
+    keywords: ['editor/layout-three-with-sidebars', 'editorlayoutthreewithsidebars'],
+    component: EditorLayoutThreeWithSidebarsIcon,
+    componentName: 'EditorLayoutThreeWithSidebarsIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-three-with-sidebars',
+  },
+  'editor/layout-two-equal': {
+    keywords: ['editor/layout-two-equal', 'editorlayouttwoequal'],
+    component: EditorLayoutTwoEqualIcon,
+    componentName: 'EditorLayoutTwoEqualIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-equal',
+  },
+  'editor/layout-two-left-sidebar': {
+    keywords: ['editor/layout-two-left-sidebar', 'editorlayouttwoleftsidebar'],
+    component: EditorLayoutTwoLeftSidebarIcon,
+    componentName: 'EditorLayoutTwoLeftSidebarIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-left-sidebar',
+  },
+  'editor/layout-two-right-sidebar': {
+    keywords: ['editor/layout-two-right-sidebar', 'editorlayouttworightsidebar'],
+    component: EditorLayoutTwoRightSidebarIcon,
+    componentName: 'EditorLayoutTwoRightSidebarIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-right-sidebar',
   },
   'editor/link': {
     keywords: ['editor/link', 'editorlink'],
