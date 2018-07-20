@@ -17,7 +17,11 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { HttpError } from '../api/HttpError';
-import { fireEvent, actionSubjectIds } from '../internal/analytics';
+import {
+  fireEvent,
+  actionSubjectIds,
+  analyticsEvent,
+} from '../internal/analytics';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -171,7 +175,7 @@ export default class Comment extends React.Component<Props, State> {
     }
   };
 
-  private onReply = (value: any, analyticsEvent) => {
+  private onReply = (value: any, analyticsEvent: analyticsEvent) => {
     const { containerId, comment: parentComment } = this.props;
 
     fireEvent(
@@ -222,7 +226,7 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
-  private onDelete = (value: any, analyticsEvent) => {
+  private onDelete = (value: any, analyticsEvent: analyticsEvent) => {
     const {
       comment: { commentLevel, commentId },
       containerId,
@@ -239,7 +243,7 @@ export default class Comment extends React.Component<Props, State> {
     this.dispatch('onDeleteComment', conversationId, commentId);
   };
 
-  private onEdit = (value: any, analyticsEvent) => {
+  private onEdit = (value: any, analyticsEvent: analyticsEvent) => {
     const {
       comment: { commentLevel },
       containerId,
@@ -280,7 +284,7 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
-  private onRequestCancel = (value: any, analyticsEvent) => {
+  private onRequestCancel = (value: any, analyticsEvent: analyticsEvent) => {
     const {
       comment,
       onCancel,
@@ -303,7 +307,7 @@ export default class Comment extends React.Component<Props, State> {
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
 
-  private onRequestRetry = (value: any, analyticsEvent) => {
+  private onRequestRetry = (value: any, analyticsEvent: analyticsEvent) => {
     const { lastDispatch } = this.state;
     const {
       containerId,

@@ -82,17 +82,14 @@ export default class Conversation extends React.PureComponent<Props, State> {
     actionSubjectId: actionSubjectIds,
     commentLevel: number = 0,
   ) => {
-    const analyticsEvent = this.props.createAnalyticsEvent({
+    const { createAnalyticsEvent, containerId } = this.props;
+
+    const analyticsEvent = createAnalyticsEvent({
       actionSubject: 'editor',
       action: 'clicked',
     });
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectId,
-      this.props.containerId,
-      commentLevel,
-    );
+    fireEvent(analyticsEvent, actionSubjectId, containerId, commentLevel);
   };
 
   private renderComments() {
