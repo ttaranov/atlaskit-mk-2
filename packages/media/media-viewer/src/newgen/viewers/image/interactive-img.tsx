@@ -31,6 +31,7 @@ const initialState: State = {
 export class InteractiveImg extends React.Component<Props, State> {
   state: State = initialState;
   private wrapper?: HTMLDivElement;
+  private saveWrapperRef = (ref: HTMLDivElement) => (this.wrapper = ref);
 
   componentDidMount() {
     this.state = initialState;
@@ -55,7 +56,7 @@ export class InteractiveImg extends React.Component<Props, State> {
     return (
       <ImageWrapper
         onClick={closeOnDirectClick(onClose)}
-        innerRef={ref => (this.wrapper = ref)}
+        innerRef={this.saveWrapperRef}
       >
         <Img src={src} style={imgStyle} onLoad={this.onImgLoad} />
         {/*
