@@ -1,0 +1,7 @@
+
+{
+    "id": "atlaskit",
+    "name": "Atlaskit",
+    "srcdoc": "index.html",
+    "fieldTypes": ["Object"]
+  }

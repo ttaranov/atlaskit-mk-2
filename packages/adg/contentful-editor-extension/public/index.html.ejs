@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://unpkg.com/contentful-ui-extensions-sdk@3"></script>
+    <link href="https://unpkg.com/@atlaskit/css-reset@3.0.0/dist/bundle.css" type="stylesheet"/>
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <!-- Polyfills -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6,Array.prototype.includes,fetch"></script>
     <style>
-      #app {
-        min-height: 30em;
+      html, body{
+        height: auto !important;
       }
     </style>
+    <!-- Polyfills -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6,Array.prototype.includes,fetch"></script>
   </head>
   <body>
     <div id="app"></div>
