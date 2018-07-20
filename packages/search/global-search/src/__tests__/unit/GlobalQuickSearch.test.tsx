@@ -83,7 +83,6 @@ describe('GlobalQuickSearch', () => {
     const deepRender = (): Function =>
       render({ searchSessionId })
         .dive()
-        .dive()
         .prop('firePrivateAnalyticsEvent');
 
     ['ArrowUp', 'ArrowDown'].forEach(key => {

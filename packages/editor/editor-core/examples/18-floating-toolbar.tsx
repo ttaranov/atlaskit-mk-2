@@ -28,10 +28,6 @@ const Container = styled.div`
   height: calc(100vh - 96px);
 `;
 
-const ColorPaletteContainer = styled.div`
-  width: 144px;
-`;
-
 const RedIcon = () => <Skeleton weight="strong" color={colors.R500} />;
 const YellowIcon = () => <Skeleton weight="strong" color={colors.Y500} />;
 const GreenIcon = () => <Skeleton weight="strong" color={colors.G500} />;
@@ -114,8 +110,8 @@ const DROPDOWNS: Array<FloatingToolbarItem<Function>> = [
     type: 'dropdown',
     title: 'Green dropdown',
     icon: GreenIcon,
-    options: ({ hide }) => (
-      <ColorPaletteContainer>
+    options: {
+      render: ({ hide }) => (
         <ColorPalette
           palette={tableBackgroundColorPalette}
           borderColors={tableBackgroundBorderColors}
@@ -124,8 +120,10 @@ const DROPDOWNS: Array<FloatingToolbarItem<Function>> = [
             hide();
           }}
         />
-      </ColorPaletteContainer>
-    ),
+      ),
+      width: 146,
+      height: 72,
+    },
   },
 ];
 

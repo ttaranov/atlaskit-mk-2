@@ -94,6 +94,16 @@ export default class extends React.Component<any, any> {
 
         <Panel>
           <h2>Analytics Events</h2>
+          <a
+            href="#"
+            onClick={() => {
+              this.setState({
+                events: [],
+              });
+            }}
+          >
+            clear
+          </a>
           <Bordered>
             <EventsList>
               {events.map((event, i) => (
