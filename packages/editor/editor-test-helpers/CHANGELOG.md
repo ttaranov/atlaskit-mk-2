@@ -1,5 +1,15 @@
 # @atlaskit/editor-test-helpers
 
+## 5.0.2
+- [patch] Fallback to use containerId from MentionResourceConfig if ContextIdentifier promise fails [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+
+- [none] Updated dependencies [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+  - @atlaskit/editor-core@76.0.4
+  - @atlaskit/editor-common@13.0.4
+- [none] Updated dependencies [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+  - @atlaskit/editor-core@76.0.4
+  - @atlaskit/editor-common@13.0.4
+
 ## 5.0.1
 
 

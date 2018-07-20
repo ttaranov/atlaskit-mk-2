@@ -54,7 +54,7 @@ export const action: MarkSpec = {
       },
     },
   ],
-  toDOM(node): [string, any] {
+  toDOM(node) {
     const { title, key, target } = node.attrs;
     return [
       'span',

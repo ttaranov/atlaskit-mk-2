@@ -5,9 +5,10 @@ import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
-import { Outcome, ZoomLevel } from '../../domain';
+import { Outcome } from '../../domain';
 import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
+import { ZoomLevel } from '../../domain/zoomLevel';
 
 export const pdfViewerClassName = 'pdfViewer';
 

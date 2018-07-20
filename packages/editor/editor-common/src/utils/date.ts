@@ -1,4 +1,5 @@
 import * as isBefore from 'date-fns/is_before';
+import * as differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 
 const ISO_FORMAT = 'YYYY-MM-DD';
 const DEFAULT_FORMAT = 'DD MMM YYYY';
@@ -87,7 +88,8 @@ export const isPastDate = (timestamp: string | number): boolean => {
 export const timestampToTaskContext = (timestamp: string | number): string => {
   const curDate = new Date();
   const givenDate = new Date(Number(timestamp));
-  const distance = Math.abs(givenDate.getUTCDay() - curDate.getUTCDay());
+
+  const distance = differenceInCalendarDays(givenDate, curDate);
   let pattern = '';
 
   if (
@@ -107,6 +109,5 @@ export const timestampToTaskContext = (timestamp: string | number): string => {
   } else {
     return 'Today';
   }
-
   return timestampToString(timestamp, pattern);
 };

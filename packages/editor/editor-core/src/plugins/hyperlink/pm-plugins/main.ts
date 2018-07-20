@@ -123,9 +123,9 @@ export class HyperlinkState {
     }
   }
 
-  // TODO: Fix types (ED-2987)
-  update(editorView: EditorView & { docView?: any }, dirty: boolean = false) {
-    const { state, docView } = editorView;
+  update(editorView: EditorView, dirty: boolean = false) {
+    const { state } = editorView;
+    const domAtPos = editorView.domAtPos.bind(editorView);
     this.state = state;
 
     const nodeInfo = this.getActiveLinkNodeInfo();
@@ -153,8 +153,8 @@ export class HyperlinkState {
       this.active = !!nodeInfo;
       dirty = true;
     }
-    this.element = this.getDomElement(docView);
-    this.activeElement = this.getActiveDomElement(state.selection, docView);
+    this.element = this.getDomElement(domAtPos);
+    this.activeElement = this.getActiveDomElement(state.selection, domAtPos);
 
     if (dirty) {
       this.triggerOnChange();
@@ -174,7 +174,7 @@ export class HyperlinkState {
     }
   }
 
-  showLinkPanel = (editorView: EditorView & { docView?: any }) => {
+  showLinkPanel = (editorView: EditorView) => {
     if (this.linkable) {
       if (!(this.showToolbarPanel || editorView.hasFocus())) {
         editorView.focus();
@@ -205,16 +205,13 @@ export class HyperlinkState {
     removeFakeTextCursor(state, dispatch);
   }
 
-  getCoordinates(
-    editorView: EditorView & { docView?: any },
-    offsetParent: Element,
-  ): Coordinates {
+  getCoordinates(editorView: EditorView, offsetParent: Element): Coordinates {
     if (editorView.hasFocus()) {
       editorView.focus();
     }
     const { pos } = this.state.selection.$from;
     const { left, top, height } = offsetParent.getBoundingClientRect();
-    const { node } = editorView.docView.domFromPos(pos);
+    const { node } = editorView.domAtPos(pos);
 
     const cursorNode =
       node.nodeType === 3 // Node.TEXT_NODE = 3
@@ -300,9 +297,11 @@ export class HyperlinkState {
     return (linkMarks as Mark[])[0];
   }
 
-  private getDomElement(docView: any): HTMLElement | undefined {
+  private getDomElement(
+    domAtPos: EditorView['domAtPos'],
+  ): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
+      const { node, offset } = domAtPos(this.activeLinkStartPos);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;
@@ -318,13 +317,13 @@ export class HyperlinkState {
    */
   private getActiveDomElement(
     selection,
-    docView: any,
+    domAtPos: EditorView['domAtPos'],
   ): HTMLElement | undefined {
     if (selection.$from.pos !== selection.$to.pos) {
       return;
     }
 
-    const { node } = docView.domFromPos(selection.$from.pos);
+    const { node } = domAtPos(selection.$from.pos);
 
     return node as HTMLElement;
   }
@@ -474,15 +473,12 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) =>
       },
     },
     key: hyperlinkPluginKey,
-    view: (view: EditorView & { docView?: any }) => {
+    view: (view: EditorView) => {
       const pluginState = hyperlinkPluginKey.getState(view.state);
       pluginState.update(view, true);
 
       return {
-        update: (
-          view: EditorView & { docView?: any },
-          prevState: EditorState,
-        ) => {
+        update: (view: EditorView, prevState: EditorState) => {
           pluginState.update(view);
         },
       };

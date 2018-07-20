@@ -41,6 +41,7 @@ export interface Props {
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
+  isSendSearchTermsEnabled?: boolean;
 }
 
 class SearchScreenCounter implements ScreenCounter {
@@ -148,8 +149,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       query,
       this.state.searchSessionId,
       [
-        /* 
-        TEMPORARILY DISABLED: XPSRCH-861 
+        /*
+        TEMPORARILY DISABLED: XPSRCH-861
         ----------------------------------
         Scope.ConfluencePageBlogAttachment,
         */
@@ -369,7 +370,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   render() {
-    const { linkComponent } = this.props;
+    const { linkComponent, isSendSearchTermsEnabled } = this.props;
     const {
       query,
       isLoading,
@@ -396,6 +397,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         query={query}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
+        isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       >
         {renderSearchResults({
           retrySearch: this.retrySearch,

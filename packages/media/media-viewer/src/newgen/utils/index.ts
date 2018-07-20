@@ -4,7 +4,7 @@ import {
   MediaCollectionItem,
 } from '@atlaskit/media-core';
 import { stringify } from 'query-string';
-import { Identifier } from './domain';
+import { Identifier } from '../domain';
 
 // We want to remove constructAuthTokenUrl and use mediaStore instead
 // https://product-fabric.atlassian.net/browse/MSW-869
