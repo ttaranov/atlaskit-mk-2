@@ -1,7 +1,87 @@
-import { extendMetadata } from '../metadata';
-import { FileState, FileDetails } from '@atlaskit/media-core';
+import { getLinkMetadata, extendMetadata } from '../metadata';
+import {
+  FileState,
+  FileDetails,
+  UrlPreview,
+  LinkItem,
+  FileItem,
+} from '@atlaskit/media-core';
+import { UrlPreviewIdentifier, LinkIdentifier } from '../../root/domain';
+import { Observable } from 'rxjs';
 
 describe('metadata utils', () => {
+  describe('getLinkMetadata()', () => {
+    const urlPreview: UrlPreview = {
+      type: 'link',
+      url: 'some-url',
+      title: 'some-title',
+    };
+    const linkItem: LinkItem = {
+      type: 'link',
+      details: {
+        id: '12',
+        ...urlPreview,
+      },
+    };
+    const fileItem: FileItem = {
+      type: 'file',
+      details: {
+        id: '12',
+      },
+    };
+
+    it('should return metadata for url preview indentifier', async () => {
+      const identifier: UrlPreviewIdentifier = {
+        url: 'some-url',
+        mediaItemType: 'link',
+      };
+      const context = {
+        getUrlPreviewProvider: () => ({
+          observable: () => Observable.of(urlPreview),
+        }),
+      } as any;
+      const metadata = await getLinkMetadata(identifier, context);
+
+      expect(metadata).toEqual(urlPreview);
+    });
+
+    it('should return metadata for link indentifier', async () => {
+      const identifier: LinkIdentifier = {
+        id: '12',
+        collectionName: 'some-collection',
+        mediaItemType: 'link',
+      };
+      const context = {
+        getMediaItemProvider: () => ({
+          observable: () => Observable.of(linkItem),
+        }),
+      } as any;
+      const metadata = await getLinkMetadata(identifier, context);
+
+      expect(metadata).toEqual({
+        id: '12',
+        ...urlPreview,
+      });
+    });
+
+    it('should reject if link id is not a valid link', async () => {
+      const identifier: LinkIdentifier = {
+        id: '12',
+        collectionName: 'some-collection',
+        mediaItemType: 'link',
+      };
+      const context = {
+        getMediaItemProvider: () => ({
+          observable: () => Observable.of(fileItem),
+        }),
+      } as any;
+
+      return expect(getLinkMetadata(identifier, context)).rejects.toBe(
+        '12 is not a valid link id',
+      );
+    });
+  });
+
   describe('extendMetadata()', () => {
     it('should not extend when its error state', () => {
       const state: FileState = {

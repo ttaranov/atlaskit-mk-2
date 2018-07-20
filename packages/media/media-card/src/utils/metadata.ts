@@ -30,7 +30,7 @@ export const getLinkMetadata = (
       observable.subscribe({
         next(item) {
           if (item.type === 'file') {
-            reject();
+            reject(`${id} is not a valid link id`);
           } else {
             resolve(item.details);
           }
