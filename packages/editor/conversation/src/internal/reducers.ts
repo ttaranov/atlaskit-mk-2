@@ -211,17 +211,16 @@ export const reducers = createReducer(initialState, {
 
   [FETCH_CONVERSATIONS_SUCCESS](state: State, action: Action) {
     const leveledConversations: Conversation[] = action.payload.map(
-      conversation => {
+      (conversation: Conversation) => {
         if (!conversation.comments) {
           return {
             ...conversation,
-            level: 0,
           };
         }
 
         conversation.comments = conversation.comments.map(comment => ({
           ...comment,
-          level: getCommentLevel(conversation, comment.parentId),
+          commentLevel: getCommentLevel(conversation, comment.parentId),
         }));
 
         return conversation;
