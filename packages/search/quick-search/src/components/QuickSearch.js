@@ -34,7 +34,7 @@ const flattenChildren = children =>
                   ...child.props,
                   analyticsData: {
                     ...child.props.analyticsData,
-                    index: flatArray.length,
+                    index: flatArray.length + indexWithinSection,
                     sectionIndex,
                     indexWithinSection,
                   },
@@ -165,7 +165,7 @@ export class QuickSearch extends Component<Props, State> {
 
   /** Update flatResults array whenever `children` prop changes */
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.children) {
+    if (nextProps.children !== this.props.children) {
       this.flatResults = flattenChildren(nextProps.children);
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
