@@ -11,7 +11,7 @@ type MobileHeaderProps = {
   onDrawerClose: () => void,
   drawerState: 'navigation' | 'sidebar' | 'none',
   secondaryContent?: Node,
-  pageHeading: Node,
+  pageHeading: string,
   menuIconLabel: string,
 };
 

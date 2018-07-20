@@ -4,6 +4,7 @@ import {
   colors,
   gridSize as akGridSize,
   layers as akLayers,
+  typography,
 } from '@atlaskit/theme';
 
 const gridSize = akGridSize();
@@ -41,8 +42,6 @@ export const MobilePageHeader = styled.header`
   align-items: center;
   background-color: ${colors.N20};
   display: flex;
-  font-size: 16px;
-  font-weight: 500;
   padding: ${gridSize * 1.5}px;
   position: sticky;
   top: 0;
@@ -72,7 +71,12 @@ export const FakeBlanket = styled.div`
   animation: ${p => (p.isOpen ? opacityIn : opacityOut)} 0.2s ease-out;
 `;
 
-export const PageHeading = styled.span`
+// use proper h1 and header styles but for mobile we don't want a top margin
+export const PageHeading = styled.h1`
   flex-grow: 1;
   margin-left: ${gridSize}px;
+  ${typography.h500};
+  && {
+    margin-top: 0;
+  }
 `;
