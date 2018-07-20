@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { GasPayload } from '../../../analytics-gas-types/dist/es5';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
 
 import {

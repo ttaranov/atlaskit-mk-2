@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ELEMENTS_CONTEXT } from '../../../analytics-namespaced-context';
-import { GasPayload } from '../../../analytics-gas-types/dist/es5';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { sendEvent } from '../analytics-web-client-wrapper';
 import { ListenerProps } from '../types';
 import * as merge from 'lodash.merge';
