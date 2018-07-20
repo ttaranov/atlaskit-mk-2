@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, ReactElement } from 'react';
 import styled from 'styled-components';
 import DropList from '@atlaskit/droplist';
 import Item, { ItemGroup } from '@atlaskit/item';
@@ -21,7 +21,7 @@ export interface Props {
   fitHeight?: number;
   items: Array<{
     items: Array<{
-      content: string;
+      content: string | ReactElement<any>;
       elemBefore?: React.ReactNode;
       tooltipDescription?: string;
       tooltipPosition?: string;

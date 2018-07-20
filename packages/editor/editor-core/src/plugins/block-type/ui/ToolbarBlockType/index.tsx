@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement, createElement } from 'react';
 import { EditorView } from 'prosemirror-view';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
@@ -140,8 +141,9 @@ export default class ToolbarBlockType extends React.PureComponent<
     const items = availableBlockTypes.reduce(
       (acc, blockType, blockTypeNo) => {
         acc.push({
-          content: blockType.title,
+          content: (createElement(blockType.tagName || 'p', {}, blockType.title)),
           value: blockType,
+          key: `${blockType}-${blockTypeNo}`,
           // ED-2853, hiding tooltips as shortcuts are not working atm.
           // tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
           // tooltipPosition: 'right',
@@ -150,7 +152,8 @@ export default class ToolbarBlockType extends React.PureComponent<
         return acc;
       },
       [] as Array<{
-        content: string;
+        content: ReactElement<any>;
+        key: string;
         value: BlockType;
         isActive: boolean;
       }>,
