@@ -8,8 +8,6 @@ import {
   AnalyticsContext,
 } from '@atlaskit/analytics-next';
 
-import { withAnalytics } from '@atlaskit/analytics';
-
 import {
   fireSelectedSearchResult,
   fireHighlightedSearchResult,
