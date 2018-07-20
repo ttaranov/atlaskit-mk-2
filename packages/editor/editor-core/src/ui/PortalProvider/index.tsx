@@ -10,6 +10,10 @@ export type PortalProviderProps = {
   render: (portalProviderAPI: PortalProviderAPI) => React.ReactChild | null;
 };
 
+var a = 0;
+a++;
+console.log(a);
+
 export type PortalRendererState = {
   portals: Map<HTMLElement, React.ReactChild>;
 };
