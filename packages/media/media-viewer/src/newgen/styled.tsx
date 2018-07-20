@@ -18,14 +18,6 @@ import { ellipsis } from '@atlaskit/media-ui';
 
 const overlayZindex = layers.modal() + 10;
 
-export const mediaTypeIconColors = {
-  image: akColorY200,
-  audio: akColorP200,
-  video: '#ff7143',
-  doc: akColorB300,
-  unknown: '#3dc7dc',
-};
-
 export const blanketColor = colors.DN30;
 
 export const hideControlsClassName = 'mvng-hide-controls';
@@ -249,7 +241,7 @@ export const MetadataSubText = styled.div`
 
 export const MetadataIconWrapper = styled.div`
   padding-top: 4px;
-  padding-right: 8px;
+  padding-right: 12px;
 `;
 
 export interface IconWrapperProps {
@@ -260,8 +252,6 @@ export const IconWrapper: ComponentClass<
   HTMLAttributes<{}> & IconWrapperProps
 > = styled.div`
   display: inline-flex;
-  color: ${({ type }: IconWrapperProps) =>
-    mediaTypeIconColors[type] || mediaTypeIconColors.unknown};
 `;
 
 export const RightHeader = styled.div`

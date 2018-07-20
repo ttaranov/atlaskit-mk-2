@@ -1,19 +1,19 @@
 /* tslint:disable:variable-collectionName */
 import * as React from 'react';
-import ImageIcon from '@atlaskit/icon/glyph/media-services/image';
-import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
-import VideoIcon from '@atlaskit/icon/glyph/media-services/video';
-import DocIcon from '@atlaskit/icon/glyph/media-services/document';
-import UnknownIcon from '@atlaskit/icon/glyph/media-services/unknown';
+import FileTypes24File24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
+import FileTypes24File24AudioIcon from '@atlaskit/icon/glyph/file-types/24/file-24-audio';
+import FileTypes24File24VideoIcon from '@atlaskit/icon/glyph/file-types/24/file-24-video';
+import FileTypes24File24DocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-document';
+import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/file-24-generic';
 import { MediaType } from '@atlaskit/media-core';
 import { IconWrapper } from './styled';
 
 const icons = {
-  image: ImageIcon,
-  audio: AudioIcon,
-  video: VideoIcon,
-  doc: DocIcon,
-  unknown: UnknownIcon,
+  image: FileTypes24File24ImageIcon,
+  audio: FileTypes24File24AudioIcon,
+  video: FileTypes24File24VideoIcon,
+  doc: FileTypes24File24DocumentIcon,
+  unknown: FileTypes24File24GenericIcon,
 };
 
 export interface FileIconProps {
@@ -34,7 +34,7 @@ export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
 
     return (
       <IconWrapper type={typeWithDefault}>
-        <Icon label="media-type" size="large" />
+        <Icon secondaryColor="#fff" label="media-type" size="medium" />
       </IconWrapper>
     );
   }
