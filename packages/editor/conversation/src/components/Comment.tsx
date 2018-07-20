@@ -17,7 +17,7 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { HttpError } from '../api/HttpError';
-import { fireEvent, analyticsEvents } from '../internal/analytics';
+import { fireEvent, actionSubjectIds } from '../internal/analytics';
 
 /**
  * Props which are passed down from the parent Conversation/Comment
@@ -175,9 +175,9 @@ export default class Comment extends React.Component<Props, State> {
     const { containerId, comment: parentComment } = this.props;
 
     fireEvent(
-      analyticsEvents.commentCreateStart,
-      containerId,
       analyticsEvent,
+      actionSubjectIds.commentCreateStart,
+      containerId,
       (parentComment.commentLevel || 0) + 1,
     );
 
@@ -230,9 +230,9 @@ export default class Comment extends React.Component<Props, State> {
     } = this.props;
 
     fireEvent(
-      analyticsEvents.commentDelete,
-      containerId,
       analyticsEvent,
+      actionSubjectIds.commentDelete,
+      containerId,
       commentLevel,
     );
 
@@ -246,9 +246,9 @@ export default class Comment extends React.Component<Props, State> {
     } = this.props;
 
     fireEvent(
-      analyticsEvents.commentEditStart,
-      containerId,
       analyticsEvent,
+      actionSubjectIds.commentEditStart,
+      containerId,
       commentLevel,
     );
 
@@ -260,7 +260,7 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent(analyticsEvents.commentEditSave, comment.commentLevel);
+    sendAnalyticsEvent(actionSubjectIds.commentEditSave, comment.commentLevel);
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -271,7 +271,7 @@ export default class Comment extends React.Component<Props, State> {
 
   private onCancelEdit = () => {
     this.props.sendAnalyticsEvent(
-      analyticsEvents.commentEditCancel,
+      actionSubjectIds.commentEditCancel,
       this.props.comment.commentLevel,
     );
 
@@ -294,9 +294,9 @@ export default class Comment extends React.Component<Props, State> {
     }
 
     fireEvent(
-      analyticsEvents.commentEditCancel,
-      containerId,
       analyticsEvent,
+      actionSubjectIds.commentEditCancel,
+      containerId,
       commentLevel,
     );
 
@@ -316,9 +316,9 @@ export default class Comment extends React.Component<Props, State> {
     }
 
     fireEvent(
-      analyticsEvents.commentRequestRetry,
-      containerId,
       analyticsEvent,
+      actionSubjectIds.commentRequestRetry,
+      containerId,
       commentLevel,
     );
 

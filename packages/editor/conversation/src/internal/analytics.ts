@@ -4,7 +4,7 @@ export type createAnalyticsEvent = (
   event: object,
 ) => { fire: (channel: string) => void };
 
-export enum analyticsEvents {
+export enum actionSubjectIds {
   commentCreateStart = 'commentCreateStart',
   commentEditStart = 'commentEditStart',
   commentRequestCancel = 'commentRequestCancel',
@@ -17,14 +17,13 @@ export enum analyticsEvents {
 }
 
 export function fireEvent(
-  action: analyticsEvents,
-  containerId: string = '',
   analyticsEvent: any,
+  actionSubjectId: actionSubjectIds,
+  containerId: string = '',
   commentLevel?: number,
 ) {
   analyticsEvent.update({
-    actionSubjectId: action,
-    action: 'clicked',
+    actionSubjectId: actionSubjectId,
     containerId: containerId,
     attributes: {
       ...analyticsEvent.attributes,
