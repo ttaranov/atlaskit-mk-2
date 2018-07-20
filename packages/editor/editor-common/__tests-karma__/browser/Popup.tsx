@@ -587,15 +587,23 @@ describe('Popup', () => {
       popup.unmount();
     });
 
-    it('should call onPositionCalculated everytime position changes', () => {
+    it('should call onPositionCalculated everytime position changes', async () => {
       const onPositionCalculated = sinon.stub().returns({});
       const popup = mount(
         <Popup target={target} onPositionCalculated={onPositionCalculated} />,
       );
+
       expect(onPositionCalculated.calledOnce).to.eq(true);
+
       popup.setProps({ fitHeight: 10 });
-      expect(onPositionCalculated.calledTwice).to.eq(true);
-      popup.unmount();
+
+      return new Promise(resolve => {
+        setTimeout(() => {
+          expect(onPositionCalculated.calledTwice).to.eq(true);
+          popup.unmount();
+          resolve();
+        }, 0);
+      });
     });
 
     it('should replace position with a result of onPositionCalculated callback', () => {
