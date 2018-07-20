@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 19.0.6
+- [patch] ED-5123: fix getText util when passing ADNode [195e6e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/195e6e0)
+- [none] Updated dependencies [195e6e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/195e6e0)
+
 ## 19.0.5
 - [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
   - @atlaskit/editor-common@13.0.7
