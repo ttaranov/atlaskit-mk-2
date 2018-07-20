@@ -22,8 +22,7 @@
   "dependencies": {
     "@atlaskit/button": "^9.0.2",
     "@atlaskit/icon": "^13.1.1",
-    "@atlaskit/theme": "^5.0.0",
-    "react-intl": "^2.4.0"
+    "@atlaskit/theme": "^5.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",
