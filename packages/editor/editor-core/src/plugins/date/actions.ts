@@ -36,10 +36,9 @@ export const selectElement = (element: HTMLElement | null) => (
   return true;
 };
 
-export const openDatePicker = (domAtPos: (pos: number) => any) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const openDatePicker = (
+  domAtPos: (pos: number) => { node: Node; offset: number },
+) => (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
   const { $from } = state.selection;
   const start =
     $from.parent.childAfter($from.parentOffset).offset +

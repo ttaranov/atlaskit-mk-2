@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
-import { constructAuthTokenUrl } from '../util';
+import { constructAuthTokenUrl } from '../utils';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
 import {

@@ -1,17 +1,17 @@
-import * as util from '../../../src/newgen/util';
+import * as util from '../../../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import { createContext } from '../../_stubs';
 import { FileItem, Auth } from '@atlaskit/media-core';
-import { VideoViewer, Props } from '../../../src/newgen/viewers/video';
-import { Video } from '../../../src/newgen/styled';
 import Spinner from '@atlaskit/spinner';
-import { ErrorMessage } from '../../../src/newgen/error';
-import { CustomVideo } from '../../../src/newgen/viewers/video/customVideo';
 import { awaitError } from '@atlaskit/media-test-helpers';
+import { createContext } from '../../../_stubs';
+import { VideoViewer, Props } from '../../../../src/newgen/viewers/video';
+import { Video } from '../../../../src/newgen/styled';
+import { ErrorMessage } from '../../../../src/newgen/error';
+import { CustomVideo } from '../../../../src/newgen/viewers/video/customVideo';
 
 const token = 'some-token';
 const clientId = 'some-client-id';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
-import { PureComponent, ReactInstance, SyntheticEvent } from 'react';
+import { PureComponent, ReactInstance } from 'react';
 import { MentionProvider, ResourcedMention } from '@atlaskit/mention';
 
 import { MentionUserType as UserType } from '../../schema';
@@ -106,7 +106,7 @@ export default class MentionWithProfileCard extends PureComponent<
     return actions.map(action => {
       return {
         ...action,
-        callback: (evt: SyntheticEvent<any>) => {
+        callback: () => {
           this.setState({ visible: false });
           action.callback();
         },

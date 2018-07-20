@@ -79,10 +79,9 @@ pipelines:
               - echo "Run browser unit tests using Karma + Browserstack"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
               - echo "Due to an issue with Webdriver and Browserstack - tests are disabled - please run it from your local branch or check your changes manually"
-              # https://product-fabric.atlassian.net/browse/ED-5080
-              # - echo "Run browser integration tests using Webdriver + Browserstack"
+              - echo "Run browser integration tests using Webdriver + Browserstack"
               # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
-              # - BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
+              -  LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
             caches:
               - node
         - step:
@@ -114,10 +113,8 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
             - (cd website && yarn deploy)
-            # https://product-fabric.atlassian.net/browse/ED-5080
-            # Due to an issue with browserstack - this step is disable
             # This is a sanity check to make sure the website renders on all browsers without error
-            # - yarn test:webdriver:browserstack website
+            - yarn test:webdriver:browserstack website
           caches:
             - node
 

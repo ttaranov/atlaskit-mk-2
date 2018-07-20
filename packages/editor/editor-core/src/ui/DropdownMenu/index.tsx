@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import DropList from '@atlaskit/droplist';
 import Item, { ItemGroup } from '@atlaskit/item';
 import Tooltip from '@atlaskit/tooltip';
-import { Popup } from '@atlaskit/editor-common';
+import {
+  Popup,
+  akEditorToolbarDropdownMenuZIndex,
+} from '@atlaskit/editor-common';
 import withOuterListeners from '../with-outer-listeners';
 
 export interface Props {
@@ -131,6 +134,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
         onPlacementChanged={this.updatePopupPlacement}
         fitHeight={fitHeight}
         fitWidth={fitWidth}
+        zIndex={akEditorToolbarDropdownMenuZIndex}
       >
         <DropListWithOutsideListeners
           isOpen={true}

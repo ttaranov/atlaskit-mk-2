@@ -103,7 +103,7 @@ class PanelComponent extends React.Component<PanelComponentProps> {
 }
 
 class Panel extends ReactNodeView {
-  getDomRef() {
+  createDomRef() {
     const domRef = document.createElement('div');
     domRef.setAttribute('data-panel-type', this.node.attrs.panelType);
     return domRef;
