@@ -5,7 +5,6 @@ import Editor from './Editor';
 import { Conversation as ConversationType } from '../model';
 import { SharedProps } from './Comment';
 import {
-  ANALYTICS_CHANNEL,
   createAnalyticsEvent,
   analyticsEvents,
   fireEvent,
@@ -72,12 +71,22 @@ export default class Conversation extends React.PureComponent<Props, State> {
   /*
     TODO: Remove me when editor is instrumented
     Only use this method when instrumenting something that isn't instrumented itself (like Editor)
-    Once editor is instrumented use the analyticsEvent passed in by editor instead
+    Once editor is instrumented use the analyticsEvent passed in by editor instead.
+
+    CommentLevel is always 0 when using the save handlers in this file. 
+    Because a new comment created on the conversation itself is always going to be the top comment.
+
     @deprecated
   */
-  sendAnalyticsEvent = (eventName: analyticsEvents) => {
-    const analyticsEvent = this.props.createAnalyticsEvent({});
-    fireEvent(eventName, this.props.containerId, analyticsEvent);
+  sendEditorAnalyticsEvent = (
+    eventName: analyticsEvents,
+    commentLevel: number = 0,
+  ) => {
+    const analyticsEvent = this.props.createAnalyticsEvent({
+      actionSubject: 'editor',
+    });
+
+    fireEvent(eventName, this.props.containerId, analyticsEvent, commentLevel);
   };
 
   private renderComments() {
@@ -127,13 +136,13 @@ export default class Conversation extends React.PureComponent<Props, State> {
         containerId={containerId}
         placeholder={placeholder}
         disableScrollTo={disableScrollTo}
-        sendAnalyticsEvent={this.sendAnalyticsEvent}
+        sendAnalyticsEvent={this.sendEditorAnalyticsEvent}
       />
     ));
   }
 
   private onCancel = () => {
-    this.sendAnalyticsEvent(analyticsEvents.commentCreateCancel);
+    this.sendEditorAnalyticsEvent(analyticsEvents.commentCreateCancel);
 
     if (this.props.onCancel) {
       this.props.onCancel();
@@ -141,7 +150,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
   };
 
   private onOpen = () => {
-    this.sendAnalyticsEvent(analyticsEvents.commentCreateStart);
+    this.sendEditorAnalyticsEvent(analyticsEvents.commentCreateStart);
     this.onEditorOpen();
   };
   private renderConversationsEditor() {
@@ -194,7 +203,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       conversation,
     } = this.props;
 
-    this.sendAnalyticsEvent(analyticsEvents.commentCreateStart);
+    this.sendEditorAnalyticsEvent(analyticsEvents.commentCreateSave);
 
     if (!id && !commentLocalId && onCreateConversation) {
       onCreateConversation(localId!, containerId, value, meta);

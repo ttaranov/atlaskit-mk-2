@@ -20,11 +20,16 @@ export function fireEvent(
   action: analyticsEvents,
   containerId: string = '',
   analyticsEvent: any,
+  commentLevel?: number,
 ) {
   analyticsEvent.update({
     actionSubjectId: action,
     action: 'clicked',
     containerId: containerId,
+    attributes: {
+      ...analyticsEvent.attributes,
+      commentLevel,
+    },
   });
   analyticsEvent.fire(ANALYTICS_CHANNEL);
 }
