@@ -2,7 +2,7 @@
 import React, { Component, type ComponentType } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
-import type { ResultData, Context, ResultType } from './Results/types';
+import type { ResultData, Context } from './Results/types';
 import AkSearch from './Search/Search';
 import { type ResultBaseType } from './Results/ResultBase';
 import { ResultContext, SelectedResultIdContext } from './context';
