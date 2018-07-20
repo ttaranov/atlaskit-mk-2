@@ -207,11 +207,9 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     border-radius: 1px;
   }
 
-  & img {
+  & .renderer-image {
     max-width: 100%;
-  }
-
-  & .img-wrapper {
+    display: block;
     margin: ${akGridSizeUnitless * 3}px 0;
   }
 
