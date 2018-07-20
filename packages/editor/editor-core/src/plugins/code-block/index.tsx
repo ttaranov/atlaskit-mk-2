@@ -2,7 +2,7 @@ import * as React from 'react';
 import EditorCodeIcon from '@atlaskit/icon/glyph/editor/code';
 import { codeBlock } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey, CodeBlockState } from './pm-plugins/main';
+import { plugin, stateKey, ActiveCodeBlock } from './pm-plugins/main';
 import keymap from './pm-plugins/keymaps';
 import ideUX from './pm-plugins/ide-ux';
 import LanguagePicker from './ui/LanguagePicker';
@@ -46,16 +46,19 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       };
       return (
         <WithPluginState
-          plugins={{ codeBlockState: stateKey, isEditorFocused: focusStateKey }}
+          plugins={{
+            activeCodeBlock: stateKey,
+            isEditorFocused: focusStateKey,
+          }}
           render={({
-            codeBlockState,
+            activeCodeBlock,
             isEditorFocused,
           }: {
-            codeBlockState: CodeBlockState;
+            activeCodeBlock: ActiveCodeBlock;
             isEditorFocused: boolean;
           }) => {
-            if (codeBlockState.activeCodeBlock) {
-              const { pos, node } = codeBlockState.activeCodeBlock;
+            if (activeCodeBlock) {
+              const { pos, node } = activeCodeBlock;
               const codeBlockDOM = domAtPos(pos) as HTMLElement;
               const setLanguage = (language: string) => {
                 setNodeAttributes(pos, { language })(view.state, view.dispatch);
