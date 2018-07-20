@@ -1,10 +1,10 @@
 // @flow
 
 import React, { Component } from 'react';
-import { RootViewSubscriber } from '../../../../../src';
+import { ViewStateSubscriber } from '../../../../../src';
 import ProjectsProvider from '../../../providers/projects-provider';
 
-const getItems = projects => [
+const getItems = projects => () => [
   {
     type: 'Group',
     id: 'header',
@@ -20,16 +20,20 @@ const getItems = projects => [
     id: 'menu',
     items: [
       { id: 'back', type: 'LinkItem', text: 'Back to home', to: '/' },
-      { id: 'projects-title', type: 'Title', text: 'Projects' },
+      { id: 'projects-title', type: 'GroupHeading', text: 'Projects' },
       ...projects.map(({ name }) => ({ type: 'Item', text: name, id: name })),
     ],
   },
 ];
 
-class RootProjectsView extends Component<{ rootView: *, projects: * }> {
+class RootProjectsView extends Component<{ navigationViews: *, projects: * }> {
   componentDidMount() {
-    const { projects, rootView } = this.props;
-    rootView.addView('root/projects', () => getItems(projects));
+    const { projects, navigationViews } = this.props;
+    navigationViews.addView({
+      id: 'root/projects',
+      type: 'product',
+      getItems: getItems(projects),
+    });
   }
 
   render() {
@@ -41,11 +45,14 @@ export default () => (
   <ProjectsProvider>
     {({ data: projects }) =>
       projects ? (
-        <RootViewSubscriber>
-          {rootView => (
-            <RootProjectsView rootView={rootView} projects={projects} />
+        <ViewStateSubscriber>
+          {navigationViews => (
+            <RootProjectsView
+              navigationViews={navigationViews}
+              projects={projects}
+            />
           )}
-        </RootViewSubscriber>
+        </ViewStateSubscriber>
       ) : null
     }
   </ProjectsProvider>

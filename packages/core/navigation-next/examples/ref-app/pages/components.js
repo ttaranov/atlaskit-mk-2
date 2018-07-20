@@ -4,40 +4,27 @@
 
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { ContainerViewSubscriber, RootViewSubscriber } from '../../../src';
+import { withNavigationViews } from '../../../src';
 
 export const Page = (p: *) => <div style={{ padding: 32 }} {...p} />;
 
 type Props = {
   id: string,
-  setView: any => void,
+  navigationViews: *,
 };
 
-class SetNavViewLifecycleProvider extends Component<Props> {
+class SetNavView extends Component<Props> {
   componentDidMount() {
-    this.props.setView(this.props.id);
+    this.props.navigationViews.setView(this.props.id);
   }
   render() {
     return null;
   }
 }
 
-export const SetNavView = (props: *) => (
-  <RootViewSubscriber>
-    {something => <SetNavViewLifecycleProvider {...props} {...something} />}
-  </RootViewSubscriber>
-);
-
-export const SetContainerNavView = (props: *) => (
-  <ContainerViewSubscriber>
-    {something => <SetNavViewLifecycleProvider {...props} {...something} />}
-  </ContainerViewSubscriber>
-);
+export const ViewSetter = withNavigationViews(SetNavView);
 
 export const PageView = ({ children, currentNavView }: *) => {
-  const ViewSetter = currentNavView.startsWith('root/')
-    ? SetNavView
-    : SetContainerNavView;
   return (
     <Page>
       <ViewSetter id={currentNavView} />
@@ -59,7 +46,6 @@ class ProjectSwitcherWithRouter extends Component<*, *> {
   };
 
   render() {
-    console.log(this.props);
     const { items } = this.props;
     const { value } = this.state;
     return (

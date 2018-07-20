@@ -21,6 +21,7 @@ const fetchData = () =>
   );
 
 export default class ProjectsProvider extends Component<Props, State> {
+  mounted = false;
   state = {
     data: null,
     loading: true,
@@ -28,9 +29,15 @@ export default class ProjectsProvider extends Component<Props, State> {
   };
 
   componentDidMount() {
-    fetchData().then(data =>
-      this.setState({ data, loading: false, error: null }),
-    );
+    this.mounted = true;
+    fetchData().then(data => {
+      if (!this.mounted) return;
+      this.setState({ data, loading: false, error: null });
+    });
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   render() {

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React, { Component } from 'react';
 import { HashRouter, Link, Route, Switch } from 'react-router-dom';
 import GlobalNavigation from '@atlaskit/global-navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
@@ -9,37 +9,34 @@ import {
   Item,
   LayoutManager,
   NavigationProvider,
-  NavigationSubscriber,
-  NavRenderer,
-  RootViewSubscriber,
-  ContainerViewSubscriber,
+  UIStateSubscriber,
+  ViewRenderer,
+  ViewStateSubscriber,
 } from '../../src';
 
+import ContainerViews from './views/container';
 import RootViews from './views/root';
 import { ProjectSwitcher } from './pages/components';
 import { HomePage, ProjectPage, ProjectsPage, SettingsPage } from './pages';
 
 const MyGlobalNavigation = () => (
-  <NavigationSubscriber>
+  <UIStateSubscriber>
     {({ togglePeek }) => (
       <GlobalNavigation
         productIcon={AtlassianIcon}
         onProductClick={togglePeek}
       />
     )}
-  </NavigationSubscriber>
+  </UIStateSubscriber>
 );
-
 const ProductNavigationWrapper = props => (
   <div style={{ padding: 16 }} {...props} />
 );
-
 const Wordmark = () => (
   <div style={{ padding: '8px 0' }}>
     <AtlassianWordmark />
   </div>
 );
-
 const LinkItem = ({ to, ...props }: *) => (
   <Item
     component={({ className, children }) => (
@@ -51,69 +48,82 @@ const LinkItem = ({ to, ...props }: *) => (
   />
 );
 
-const MyProductNavigation = () => (
+const Renderer = ({ items }: any) => (
   <ProductNavigationWrapper>
-    <RootViewSubscriber>
-      {({ state: { data } }) =>
-        data ? (
-          <NavRenderer
-            items={data}
-            customComponents={{ LinkItem, ProjectSwitcher, Wordmark }}
-          />
-        ) : (
-          'LOADING'
-        )
-      }
-    </RootViewSubscriber>
+    <ViewRenderer
+      customComponents={{ LinkItem, ProjectSwitcher, Wordmark }}
+      items={items}
+    />
   </ProductNavigationWrapper>
 );
 
-const MyContainerView = () => (
-  <ProductNavigationWrapper>
-    <ContainerViewSubscriber>
-      {({ state: { data } }) =>
-        data ? (
-          <NavRenderer
-            items={data}
-            customComponents={{ LinkItem, ProjectSwitcher, Wordmark }}
+class ReferenceApplication extends Component<*> {
+  renderContainerNav = () => {
+    const { viewController } = this.props;
+    const { activeView } = viewController.state;
+
+    return activeView && activeView.type === 'container' ? (
+      <Renderer items={activeView.data} />
+    ) : (
+      'Container skeleton goes here.'
+    );
+  };
+  renderProductNav = () => {
+    const { uiController, viewController } = this.props;
+    const { isPeeking } = uiController.state;
+    const { activeView, activePeekView } = viewController.state;
+
+    if (
+      activePeekView &&
+      (isPeeking || (activeView && activeView.type === 'container'))
+    ) {
+      return <Renderer items={activePeekView.data} />;
+    }
+    if (activeView && activeView.type === 'product') {
+      return <Renderer items={activeView.data} />;
+    }
+    return 'Product skeleton goes here.';
+  };
+  render() {
+    return (
+      <LayoutManager
+        globalNavigation={MyGlobalNavigation}
+        productNavigation={this.renderProductNav}
+        containerNavigation={this.renderContainerNav}
+      >
+        <RootViews />
+        <ContainerViews />
+        <Switch>
+          <Route
+            path="/projects/:projectId"
+            render={({ match }) => (
+              <ProjectPage projectId={match.params.projectId} />
+            )}
           />
-        ) : (
-          'LOADING'
-        )
-      }
-    </ContainerViewSubscriber>
-  </ProductNavigationWrapper>
-);
+          <Route path="/projects" component={ProjectsPage} />
+          <Route path="/settings" component={SettingsPage} />
+          <Route path="/" component={HomePage} />
+        </Switch>
+      </LayoutManager>
+    );
+  }
+}
 
 export default () => (
   <HashRouter hashType="slash">
-    <NavigationProvider>
-      <Fragment>
-        <RootViews />
-        <ContainerViewSubscriber>
-          {containerView => (
-            <LayoutManager
-              globalNavigation={MyGlobalNavigation}
-              productRootNavigation={MyProductNavigation}
-              productContainerNavigation={
-                containerView.state.activeView ? MyContainerView : null
-              }
-            >
-              <Switch>
-                <Route
-                  path="/projects/:projectId"
-                  render={({ match }) => (
-                    <ProjectPage projectId={match.params.projectId} />
-                  )}
-                />
-                <Route path="/projects" component={ProjectsPage} />
-                <Route path="/settings" component={SettingsPage} />
-                <Route path="/" component={HomePage} />
-              </Switch>
-            </LayoutManager>
-          )}
-        </ContainerViewSubscriber>
-      </Fragment>
+    <NavigationProvider initialPeekViewId="root/index">
+      <ViewStateSubscriber>
+        {viewController => (
+          <UIStateSubscriber>
+            {uiController => (
+              <ReferenceApplication
+                uiController={uiController}
+                viewController={viewController}
+              />
+            )}
+          </UIStateSubscriber>
+        )}
+      </ViewStateSubscriber>
     </NavigationProvider>
   </HashRouter>
 );

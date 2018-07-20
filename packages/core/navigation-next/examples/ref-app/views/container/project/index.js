@@ -1,11 +1,11 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ContainerViewSubscriber } from '../../../../../src';
+import { withNavigationViews } from '../../../../../src';
 import ProjectsProvider from '../../../providers/projects-provider';
 import ProjectProvider from '../../../providers/project-provider';
 
-const getItems = (project, projects) => [
+const getItems = (project, projects) => () => [
   {
     type: 'Group',
     id: 'header',
@@ -37,7 +37,7 @@ const getItems = (project, projects) => [
       { id: 'settings', type: 'Item', text: 'Settings' },
       ...(project && project.shortcuts
         ? [
-            { id: 'shortcuts-title', type: 'Title', text: 'Shortcuts' },
+            { id: 'shortcuts-title', type: 'GroupHeading', text: 'Shortcuts' },
             ...project.shortcuts.map(s => ({
               id: s.name,
               type: 'Item',
@@ -50,7 +50,7 @@ const getItems = (project, projects) => [
 ];
 
 class ContainerProjectView extends Component<{
-  containerView: *,
+  navigationViews: *,
   project: *,
   projects: *,
 }> {
@@ -65,31 +65,26 @@ class ContainerProjectView extends Component<{
   }
 
   setView = () => {
-    const { project, projects, containerView } = this.props;
-    containerView.addView('container/project', () =>
-      getItems(project, projects),
-    );
+    const { project, projects, navigationViews } = this.props;
+    navigationViews.addView({
+      id: 'container/project',
+      type: 'container',
+      getItems: getItems(project, projects),
+    });
   };
 
   render() {
     return null;
   }
 }
+const ContainerView = withNavigationViews(ContainerProjectView);
 
 export default ({ projectId }: *) => (
   <ProjectsProvider>
     {({ data: projects }) => (
       <ProjectProvider projectId={projectId}>
         {({ data: project }) => (
-          <ContainerViewSubscriber>
-            {containerView => (
-              <ContainerProjectView
-                containerView={containerView}
-                project={project}
-                projects={projects}
-              />
-            )}
-          </ContainerViewSubscriber>
+          <ContainerView project={project} projects={projects} />
         )}
       </ProjectProvider>
     )}

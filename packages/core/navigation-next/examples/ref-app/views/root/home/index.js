@@ -1,7 +1,10 @@
 // @flow
 
-import React, { Component } from 'react';
-import { RootViewSubscriber } from '../../../../../src';
+import { Component } from 'react';
+import {
+  withNavigationViews,
+  type ViewStateInterface,
+} from '../../../../../src';
 
 const getItems = () => [
   {
@@ -24,9 +27,14 @@ const getItems = () => [
   },
 ];
 
-class RootHomeView extends Component<{ rootView: * }> {
+type Props = { navigationViews: ViewStateInterface };
+class RootHomeView extends Component<Props> {
   componentDidMount() {
-    this.props.rootView.addView('root/home', getItems);
+    this.props.navigationViews.addView({
+      id: 'root/home',
+      type: 'product',
+      getItems,
+    });
   }
 
   render() {
@@ -34,8 +42,4 @@ class RootHomeView extends Component<{ rootView: * }> {
   }
 }
 
-export default () => (
-  <RootViewSubscriber>
-    {rootView => <RootHomeView rootView={rootView} />}
-  </RootViewSubscriber>
-);
+export default withNavigationViews(RootHomeView);
