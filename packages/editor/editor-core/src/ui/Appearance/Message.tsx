@@ -73,8 +73,12 @@ export default class Editor extends React.Component<
 
   private appearance: EditorAppearance = 'message';
 
-  private focusEditor = e => {
-    if (this.props.editorActions) {
+  private focusEditor = (e: MouseEvent) => {
+    // Only focus for unhandled click events (e.g. so we don't focus on click events in pop ups)
+    const target = e.target as HTMLElement;
+    const clickIsFromPopup = !!target.closest('[data-editor-popup]');
+
+    if (this.props.editorActions && !clickIsFromPopup) {
       this.props.editorActions.focus();
     }
   };

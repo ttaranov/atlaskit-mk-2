@@ -53,4 +53,14 @@ describe('message editor', () => {
     (editorView.dom as HTMLElement).click();
     expect(editorView.state.doc).toEqualDocument(doc(p('Hello world')));
   });
+
+  describe('focus', () => {
+    it('should focus when clicking anywhere on editor', () => {
+      expect(true).toBe(false);
+    });
+
+    it('should not focus when clicking within a popup', () => {
+      expect(true).toBe(false);
+    });
+  });
 });
