@@ -51,6 +51,7 @@ module.exports = function createWebpackConfig(
   plugins: any[],
 }*/ {
   return {
+    mode: env,
     entry: {
       // TODO: ideally we should have a vendor chunk, with just external library dependencies.
       // vendor: vendorLibraries,
@@ -139,6 +140,7 @@ module.exports = function createWebpackConfig(
             transpileOnly: true,
           },
         },
+
         {
           test: /\.css$/,
           use: [
@@ -158,7 +160,10 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /\.(gif|jpe?g|png|ico|woff|woff2)$/,
-          loader: 'url-loader?limit=10000',
+          loader: require.resolve('url-loader'),
+          options: {
+            limit: 10000,
+          },
         },
         {
           test: /\.svg/,
@@ -199,98 +204,7 @@ function plugins(
   } /*: { cwd: string, env: string, websiteEnv: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
-    new webpack.NamedChunksPlugin(
-      chunk =>
-        chunk.name && path.isAbsolute(chunk.name) ? chunk.id : chunk.name,
-    ),
     new webpack.NamedModulesPlugin(),
-    //
-    // Order of CommonsChunkPlugins is important,
-    // each next one of them can drag some dependencies from the previous ones.
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'async-deps',
-      minChunks(module, count) {
-        const context = module.context;
-        return (
-          count === 1 &&
-          (context &&
-            // We're intentionally excluding rxjs-async-map from this chunk as it currently breaks our build
-            // This package is being used by the media-store package. Unfortunately it's not transpiled, and is thus breaking in ie11.
-            (context && !context.includes('node_modules/rxjs-async-map')))
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'shared-async-deps',
-      minChunks(module, count) {
-        let context = module.context;
-        if (
-          context &&
-          context.includes('node_modules') &&
-          !context.includes('@atlaskit')
-        ) {
-          return count >= 2;
-        }
-
-        return false;
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'editor-packages',
-      minChunks(module, count) {
-        const context = module.context;
-        return (
-          context &&
-          (context.includes('packages/editor') ||
-            context.includes('prosemirror'))
-        );
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'fabric-elements-packages',
-      minChunks(module, count) {
-        const context = module.context;
-        return context && context.includes('packages/elements');
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'media-packages',
-      minChunks(module, count) {
-        const context = module.context;
-        return context && context.includes('packages/media');
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'people-and-teams-packages',
-      minChunks(module, count) {
-        const context = module.context;
-        return context && context.includes('packages/people-and-teams');
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'core-packages',
-      minChunks(module, count) {
-        const context = module.context;
-        return context && context.includes('packages/core');
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common-app',
-      chunks: ['main', 'examples'],
-      minChunks(module, count) {
-        const resource = module.resource;
-        return !resource || !resource.includes('website/src/index.js');
-      },
-    }),
-
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
       title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
@@ -333,55 +247,5 @@ function plugins(
     );
   }
 
-  if (env === 'production' && !noMinimize) {
-    plugins.push(uglify());
-  }
-
   return plugins;
 }
-
-const uglify = () => {
-  return new UglifyJsPlugin({
-    parallel: Math.max(os.cpus().length - 1, 1),
-    uglifyOptions: {
-      compress: {
-        // Disabling following options speeds up minimization by 20 – 30s
-        // without any significant impact on a bundle size.
-        arrows: false,
-        booleans: false,
-        collapse_vars: false,
-
-        // https://product-fabric.atlassian.net/browse/MSW-436
-        comparisons: false,
-
-        computed_props: false,
-        hoist_funs: false,
-        hoist_props: false,
-        hoist_vars: false,
-        if_return: false,
-        inline: false,
-        join_vars: false,
-        keep_infinity: true,
-        loops: false,
-        negate_iife: false,
-        properties: false,
-        reduce_funcs: false,
-        reduce_vars: false,
-        sequences: false,
-        side_effects: false,
-        switches: false,
-        top_retain: false,
-        toplevel: false,
-        typeofs: false,
-        unused: false,
-
-        // Switch off all types of compression except those needed to convince
-        // react-devtools that we're using a production build
-        conditionals: true,
-        dead_code: true,
-        evaluate: true,
-      },
-      mangle: true,
-    },
-  });
-};
