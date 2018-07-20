@@ -2,7 +2,7 @@ jest.mock('../src/utils/getDataURIFromFileState');
 import { Observable } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { fakeContext } from '@atlaskit/media-test-helpers';
+import { fakeContext, nextTick } from '@atlaskit/media-test-helpers';
 import { Context, UrlPreview } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
@@ -33,7 +33,7 @@ describe('Card', () => {
     mediaItemType: 'file',
     collectionName: 'some-collection-name',
   };
-  const linkDetails: UrlPreview = {
+  const linkUrlPreview: UrlPreview = {
     type: 'link',
     url: 'some-url',
     title: 'some-title',
@@ -54,7 +54,7 @@ describe('Card', () => {
     };
   };
 
-  it('should render media card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
+  it('should render card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
     const dummyUrl = 'http://some.url.com';
     const mediaItemType = 'link';
     const identifier: UrlPreviewIdentifier = {
@@ -79,7 +79,7 @@ describe('Card', () => {
       getMediaItemProvider: {
         observable: () =>
           Observable.of({
-            details: linkDetails,
+            details: linkUrlPreview,
           }),
       },
     });
@@ -87,8 +87,8 @@ describe('Card', () => {
       <Card context={context} identifier={linkIdentifier} />,
     );
 
-    await context.getMediaItemProvider;
-    await Promise.resolve();
+    await nextTick();
+    await nextTick();
     card.update();
 
     expect(card.find(CardView)).toHaveLength(1);
@@ -102,12 +102,14 @@ describe('Card', () => {
 
   it('should render a CardView with the right metadata when using a UrlPreviewIdentifier', async () => {
     const context = fakeContext({
-      getUrlPreviewProvider: { observable: () => Observable.of(linkDetails) },
+      getUrlPreviewProvider: {
+        observable: () => Observable.of(linkUrlPreview),
+      },
     });
     const card = shallow(<Card context={context} identifier={urlIdentifier} />);
 
-    await context.getUrlPreviewProvider;
-    await Promise.resolve();
+    await nextTick();
+    await nextTick();
     card.update();
 
     expect(card.find(CardView)).toHaveLength(1);
@@ -353,7 +355,7 @@ describe('Card', () => {
   it('should set dataURI only if its not present', async () => {
     const { component } = setup();
     expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
-    await Promise.resolve();
+    await nextTick();
     expect(component.state('dataURI')).toEqual('some-data-uri');
   });
 
@@ -370,7 +372,7 @@ describe('Card', () => {
     });
     const { component } = setup(context);
 
-    await context.getFile;
+    await nextTick();
     expect(component.state()).toEqual({
       status: 'uploading',
       dataURI: 'some-data-uri',
@@ -396,7 +398,7 @@ describe('Card', () => {
     });
     const { component } = setup(context);
 
-    await context.getFile;
+    await nextTick();
     expect(component.state()).toEqual({
       status: 'uploading',
       dataURI: 'some-data-uri',
@@ -427,8 +429,8 @@ describe('Card', () => {
     } as any;
     const { component } = setup(context);
 
-    await context.getFile;
-    await context.mediaStore.getImage;
+    await nextTick();
+    await nextTick();
 
     expect(component.state()).toEqual({
       status: 'complete',
@@ -444,13 +446,12 @@ describe('Card', () => {
   });
 
   it('should render error card when getFile resolves with status=error', async () => {
-    // TODO: create context where getFile trows directly
     const context = fakeContext({
       getFile: Observable.of({ status: 'error' }),
     });
     const { component } = setup(context);
 
-    await context.getFile;
+    await nextTick();
     component.update();
     expect(component.find(CardView).prop('status')).toEqual('error');
   });
@@ -464,7 +465,7 @@ describe('Card', () => {
     });
     const { component } = setup(context);
 
-    await context.getFile;
+    await nextTick();
     expect(component.state('error')).toEqual('some-error');
     component.update();
     expect(component.find(CardView).prop('status')).toEqual('error');
@@ -485,8 +486,8 @@ describe('Card', () => {
     } as any;
     setup(context);
 
-    await context.getFile;
-    await context.mediaStore.getImage;
+    await nextTick();
+    await nextTick();
 
     expect(getImage).toHaveBeenCalledTimes(1);
     expect(getImage).toBeCalledWith('123', {
@@ -520,8 +521,8 @@ describe('Card', () => {
       disableOverlay: true,
     });
 
-    await context.getFile;
-    await context.mediaStore.getImage;
+    await nextTick();
+    await nextTick();
     component.update();
 
     expect(component.find(CardView).props()).toEqual(

@@ -69,7 +69,7 @@ class Example extends Component<ComponentProps, ComponentState> {
             <Card
               context={context}
               identifier={identifier}
-              onLoadingChange={this.onLoadingChange(id)}
+              onLoadingChange={this.updateCardState(id)}
             />
           </div>
           {this.renderCardState(state)}
@@ -93,7 +93,7 @@ class Example extends Component<ComponentProps, ComponentState> {
     );
   };
 
-  onLoadingChange = (id: string) => (state: OnLoadingChangeState) => {
+  updateCardState = (id: string) => (state: OnLoadingChangeState) => {
     const { cardStates } = this.state;
 
     cardStates[id] = state;
