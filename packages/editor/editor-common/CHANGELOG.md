@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 13.0.7
+- [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
+
 ## 13.0.6
 - [patch] Fix popup reposition error on scroll and resize and karma test [aeec6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeec6b8)
 - [none] Updated dependencies [aeec6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeec6b8)

@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 76.0.10
+- [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
+  - @atlaskit/layer@5.0.1
+  - @atlaskit/renderer@19.0.5
+  - @atlaskit/editor-common@13.0.7
+
 ## 76.0.9
 - [patch] Fix some decisionItem, taskItem, and panel nodeViews [af33ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af33ec7)
 - [none] Updated dependencies [af33ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af33ec7)
