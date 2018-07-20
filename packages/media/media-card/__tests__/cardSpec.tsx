@@ -103,6 +103,7 @@ describe('Card', () => {
       <Card context={context} identifier={linkIdentifier} />,
     );
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
     card.update();
@@ -124,6 +125,7 @@ describe('Card', () => {
     });
     const card = shallow(<Card context={context} identifier={urlIdentifier} />);
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
     card.update();
@@ -445,6 +447,7 @@ describe('Card', () => {
     } as any;
     const { component } = setup(context);
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
 
@@ -491,6 +494,7 @@ describe('Card', () => {
     const context = createContextWithGetFile();
     setup(context);
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
 
@@ -510,6 +514,7 @@ describe('Card', () => {
       appearance: 'small',
     });
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
 
@@ -528,6 +533,7 @@ describe('Card', () => {
       resizeMode: 'full-fit',
     });
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
 
@@ -563,6 +569,7 @@ describe('Card', () => {
       disableOverlay: true,
     });
 
+    // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
     component.update();

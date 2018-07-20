@@ -13,6 +13,7 @@ import {
   archiveFileId,
   unknownFileId,
   errorFileId,
+  gifFileId,
   createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
@@ -39,6 +40,7 @@ const fileIds = [
   audioFileId.id,
   audioNoCoverFileId.id,
   videoFileId.id,
+  gifFileId.id,
   videoProcessingFailedId.id,
   docFileId.id,
   largePdfFileId.id,

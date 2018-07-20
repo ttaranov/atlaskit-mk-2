@@ -219,6 +219,12 @@ export const errorFileId = {
   collectionName,
 };
 
+export const gifFileId = {
+  id: '26adc5af-3af4-42a8-9c24-62b6ce0f9369',
+  mediaItemType: fileType,
+  collectionName,
+};
+
 // === DETAILS ===
 
 export const genericUrlPreview: UrlPreview = {
