@@ -107,8 +107,7 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
-    const sectionIndex = 0;
-    return renderRecent(take(recentlyViewedItems, 10), sectionIndex);
+    return renderRecent(take(recentlyViewedItems, 10), 0);
   }
 
   if (
@@ -120,10 +119,30 @@ export default function searchResults(props: Props) {
   }
 
   let sectionIndex = 0;
-  return [
-    renderRecent(take(recentResults, 5), sectionIndex++),
-    renderJira(take(jiraResults, 5), query, sectionIndex++),
-    renderConfluence(take(confluenceResults, 5), query, sectionIndex++),
-    renderPeople(take(peopleResults, 3), query, sectionIndex++),
-  ];
+  const renderedRecent = renderRecent(take(recentResults, 5), sectionIndex);
+  if (renderedRecent !== null) {
+    sectionIndex++;
+  }
+
+  const renderedJira = renderJira(take(jiraResults, 5), query, sectionIndex);
+  if (renderedJira !== null) {
+    sectionIndex++;
+  }
+
+  const renderedConfluence = renderConfluence(
+    take(confluenceResults, 5),
+    query,
+    sectionIndex,
+  );
+  if (renderedConfluence !== null) {
+    sectionIndex++;
+  }
+
+  const renderedPeople = renderPeople(
+    take(peopleResults, 3),
+    query,
+    sectionIndex,
+  );
+
+  return [renderedRecent, renderedJira, renderedConfluence, renderedPeople];
 }
