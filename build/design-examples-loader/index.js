@@ -24,7 +24,7 @@ module.exports = async function getAllDesignExamples() {
   })).dir;
   const files /*: Array<string> */ = await globby(
     [
-      'packages/**/examples/*.js',
+      'packages/**/examples/design-examples/*.js',
       '!packages/**/node_modules/**',
       '!node_modules/**',
     ],
@@ -39,7 +39,7 @@ module.exports = async function getAllDesignExamples() {
     fileContent = fileContent.concat(`
       {name: '${titleize(
         file,
-      )} - ${index}', component: require('../../../${file}'), componentPath: '${file}'},
+      )}', component: require('../../../${file}'), componentPath: '${file}'},
     `);
   });
   fileContent = fileContent.concat('];');
