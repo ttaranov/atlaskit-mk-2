@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.0.9
+- [patch] Fix some decisionItem, taskItem, and panel nodeViews [af33ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af33ec7)
+- [none] Updated dependencies [af33ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af33ec7)
+
 ## 76.0.8
 - [patch] Choose to re-render entire task item when empty or if TODO/DONE state has changed [10cb299](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cb299)
 - [none] Updated dependencies [10cb299](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cb299)
