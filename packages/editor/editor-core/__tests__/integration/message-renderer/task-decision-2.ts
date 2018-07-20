@@ -12,9 +12,10 @@ import {
   editable,
   loadActionButton,
 } from './_task-decision-helpers';
+import { insertMentionUsingClick } from './_mention-helpers';
 
 /*
- * Safari adds special characters that end up in the snapshot 
+ * Safari adds special characters that end up in the snapshot
 */
 
 // Cannot paste rich text in IE/Edge
@@ -75,6 +76,21 @@ BrowserTestCase(
     await browser.waitForSelector('ol');
     await browser.click('ol');
     await browser.type(editable, ' has been edited');
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
+
+BrowserTestCase(
+  'task-decision: can insert mention into an action using click',
+  { skip: ['ie', 'safari'] },
+  async client => {
+    const browser = await new Page(client);
+    await browser.goto(messageEditor);
+    await browser.waitFor(editable);
+    await browser.type(editable, '[] ');
+    await browser.waitForSelector('ol');
+    await insertMentionUsingClick(browser, '0');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
   },
