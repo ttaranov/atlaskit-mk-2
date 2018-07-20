@@ -21,7 +21,6 @@
     "@atlaskit/analytics-next": "^3.0.1",
     "@atlaskit/portal": "^0.0.1",
     "@atlaskit/theme": "^5.0.0",
-    "react-deprecate": "^0.1.0",
     "react-node-resolver": "^1.0.1",
     "react-popper": "^1.0.0",
     "react-transition-group": "^2.2.1"

@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { Manager, Reference, Popper } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
-import { TransitionGroup, Transition } from 'react-transition-group';
+import { TransitionGroup } from 'react-transition-group';
 
 import Portal from '@atlaskit/portal';
 import {
@@ -85,14 +85,38 @@ function getInitialState(props): State {
   };
 }
 
-const recentlyOpen = false;
+const queueOperation = (defaultFn, delay, flushFn) => {
+  let pending = true;
+  const timeoutId = setTimeout(() => {
+    pending = false;
+    defaultFn();
+  }, delay);
+  return {
+    flush: () => {
+      if (pending) {
+        clearTimeout(timeoutId);
+        pending = false;
+        flushFn();
+      }
+    },
+    pending: () => pending,
+    timeoutID: () => timeoutId,
+  };
+};
+
+let pendingHide;
 
 const showTooltip = (fn: boolean => void, defaultDelay: number) => {
+  if (pendingHide && pendingHide.pending()) {
+    pendingHide.flush();
+    return setTimeout(() => fn(true), 0);
+  }
   return setTimeout(() => fn(false), defaultDelay);
 };
 
 const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
-  return setTimeout(() => fn(false), defaultDelay);
+  pendingHide = queueOperation(() => fn(false), defaultDelay, () => fn(true));
+  return pendingHide.timeoutID();
 };
 
 class Tooltip extends Component<Props, State> {
@@ -118,20 +142,6 @@ class Tooltip extends Component<Props, State> {
           this.props.onShow();
         }
       }, this.props.delay);
-      //
-      // if (getRecentlyOpen()) {
-      //   this.setState({ isVisible: true, immediatelyShow: true });
-      //   if (this.props.onShow) {
-      //     this.props.onShow();
-      //   }
-      // } else {
-      //   this.timer = setTimeout(() => {
-      //     this.setState({ isVisible: true, immediatelyShow: false });
-      //     if (this.props.onShow) {
-      //       this.props.onShow();
-      //     }
-      //   }, this.props.delay);
-      // }
     }
   };
 
@@ -145,12 +155,6 @@ class Tooltip extends Component<Props, State> {
           this.props.onHide();
         }
       }, this.props.delay);
-      // this.timer = setTimeout(() => {
-      //   this.setState({ isVisible: false });
-      //   if (this.props.onHide) {
-      //     this.props.onHide();
-      //   }
-      // }, this.props.delay);
     }
   };
 
