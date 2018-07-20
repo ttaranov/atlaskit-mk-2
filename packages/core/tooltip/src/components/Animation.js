@@ -28,30 +28,31 @@ const transitionStyle = (state, timeout) => {
   return transitions[state];
 };
 
-const Slide = ({
+const Animation = ({
   children,
   immediatelyHide,
   immediatelyShow,
-  ...props
+  in: inProp,
 }: {
   children: Object => Node,
   immediatelyHide: boolean,
   immediatelyShow: boolean,
+  in: boolean,
 }) => {
   const timeout = {
     enter: immediatelyShow ? 1 : ENTER_DURATION,
     exit: immediatelyHide ? 1 : EXIT_DURATION,
   };
   return (
-    <Transition timeout={timeout} {...props}>
-      {state =>
-        children({
+    <Transition timeout={timeout} in={inProp} mountOnEnter unmountOnExit>
+      {state => {
+        return children({
           ...defaultStyle(timeout),
           ...transitionStyle(state, timeout),
-        })
-      }
+        });
+      }}
     </Transition>
   );
 };
 
-export default Slide;
+export default Animation;

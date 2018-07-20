@@ -185,34 +185,31 @@ class Tooltip extends Component<Props, State> {
             )}
           </Reference>
         </TargetContainer>
-        <TransitionGroup>
-          {isVisible && (
-            <Animation
-              immediatelyShow={immediatelyShow}
-              immediatelyHide={immediatelyHide}
-            >
-              {animationStyles => (
-                <Portal layer="tooltip">
-                  <Popper placement={position}>
-                    {({ placement, ref, style }) => (
-                      <TooltipContainer
-                        innerRef={ref}
-                        style={{
-                          ...style,
-                          ...animationStyles,
-                        }}
-                        truncate={truncate}
-                        data-placement={placement}
-                      >
-                        {content}
-                      </TooltipContainer>
-                    )}
-                  </Popper>
-                </Portal>
-              )}
-            </Animation>
+        <Animation
+          immediatelyShow={immediatelyShow}
+          immediatelyHide={immediatelyHide}
+          in={isVisible}
+        >
+          {animationStyles => (
+            <Portal layer="tooltip">
+              <Popper placement={position}>
+                {({ placement, ref, style }) => (
+                  <TooltipContainer
+                    innerRef={ref}
+                    style={{
+                      ...style,
+                      ...animationStyles,
+                    }}
+                    truncate={truncate}
+                    data-placement={placement}
+                  >
+                    {content}
+                  </TooltipContainer>
+                )}
+              </Popper>
+            </Portal>
           )}
-        </TransitionGroup>
+        </Animation>
       </Manager>
     );
   }
