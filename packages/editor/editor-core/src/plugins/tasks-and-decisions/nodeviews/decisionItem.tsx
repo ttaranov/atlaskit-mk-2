@@ -16,7 +16,7 @@ class Decision extends ReactNodeView {
     return this.node.content.childCount === 0;
   }
 
-  getDomRef() {
+  createDomRef() {
     const domRef = document.createElement('li');
     domRef.style['list-style-type'] = 'none';
     return domRef;

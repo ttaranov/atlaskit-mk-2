@@ -30,7 +30,7 @@ class Task extends ReactNodeView {
     this.view.dispatch(tr);
   };
 
-  getDomRef() {
+  createDomRef() {
     const domRef = document.createElement('li');
     domRef.style['list-style-type'] = 'none';
     return domRef;
