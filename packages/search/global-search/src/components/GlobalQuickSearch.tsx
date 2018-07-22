@@ -34,7 +34,6 @@ export interface Props {
 
   isLoading: boolean;
   placeholder?: string;
-  query: string;
   searchSessionId: string;
   children: React.ReactNode;
   linkComponent?: LinkComponent;
@@ -49,7 +48,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
   public static defaultProps: Partial<Props> = {
     isSendSearchTermsEnabled: false,
   };
-
+  query: string = '';
   queryVersion: number = 0;
   resultSelected: boolean = false;
 
@@ -58,11 +57,11 @@ export class GlobalQuickSearch extends React.Component<Props> {
   }
 
   handleSearchInput = ({ target }) => {
-    const query = target.value;
-    this.debouncedSearch(query);
+    this.query = target.value;
+    this.debouncedSearch(this.query);
   };
 
-  debouncedSearch = debounce(this.doSearch, 350);
+  debouncedSearch = debounce(this.doSearch, 1000);
 
   doSearch(query: string) {
     const {
@@ -133,7 +132,6 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   render() {
     const {
-      query,
       isLoading,
       placeholder,
       linkComponent,
@@ -148,7 +146,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           placeholder={placeholder}
-          value={query}
+          value={this.query}
           linkComponent={linkComponent}
           onSearchSubmit={onSearchSubmit}
         >
