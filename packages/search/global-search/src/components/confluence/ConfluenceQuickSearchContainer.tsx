@@ -231,7 +231,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         elapsedMs,
         quickNavElapsedTime,
         this.state.searchSessionId,
-        this.state.query,
+        this.state.latestSearchQuery,
         createAnalyticsEvent,
       );
     }

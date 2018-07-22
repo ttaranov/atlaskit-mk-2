@@ -211,7 +211,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         searchSessionId={searchSessionId}
       >
         {renderSearchResults({
-          latestSearchQuery,
+          query: latestSearchQuery,
           isError,
           retrySearch: this.retrySearch,
           recentlyViewedItems,
