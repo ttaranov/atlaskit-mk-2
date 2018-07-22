@@ -68,13 +68,7 @@ class Task extends ReactNodeView {
      *
      * Returning false also when the task state has changed to force the checkbox to update. See ED-5107
      */
-    return super.update(
-      node,
-      decorations,
-      (currentNode, newNode) =>
-        !this.isContentEmpty() &&
-        !!(currentNode.attrs.state === newNode.attrs.state),
-    );
+    return false;
   }
 }
 
