@@ -20,7 +20,7 @@ import { HttpError } from '../api/HttpError';
 import {
   fireEvent,
   actionSubjectIds,
-  analyticsEvent,
+  AnalyticsEvent,
 } from '../internal/analytics';
 
 /**
@@ -175,7 +175,7 @@ export default class Comment extends React.Component<Props, State> {
     }
   };
 
-  private onReply = (value: any, analyticsEvent: analyticsEvent) => {
+  private onReply = (value: any, analyticsEvent: AnalyticsEvent) => {
     const { containerId, comment: parentComment } = this.props;
 
     fireEvent(
@@ -226,7 +226,7 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
-  private onDelete = (value: any, analyticsEvent: analyticsEvent) => {
+  private onDelete = (value: any, analyticsEvent: AnalyticsEvent) => {
     const {
       comment: { commentLevel, commentId },
       containerId,
@@ -243,7 +243,7 @@ export default class Comment extends React.Component<Props, State> {
     this.dispatch('onDeleteComment', conversationId, commentId);
   };
 
-  private onEdit = (value: any, analyticsEvent: analyticsEvent) => {
+  private onEdit = (value: any, analyticsEvent: AnalyticsEvent) => {
     const {
       comment: { commentLevel },
       containerId,
@@ -284,7 +284,7 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
-  private onRequestCancel = (value: any, analyticsEvent: analyticsEvent) => {
+  private onRequestCancel = (value: any, analyticsEvent: AnalyticsEvent) => {
     const {
       comment,
       onCancel,
@@ -307,7 +307,7 @@ export default class Comment extends React.Component<Props, State> {
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
 
-  private onRequestRetry = (value: any, analyticsEvent: analyticsEvent) => {
+  private onRequestRetry = (value: any, analyticsEvent: AnalyticsEvent) => {
     const { lastDispatch } = this.state;
     const {
       containerId,
