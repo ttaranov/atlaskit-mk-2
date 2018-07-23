@@ -110,14 +110,6 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(
-      'component will recieve props new then old',
-      nextProps,
-      this.props,
-    );
-  }
-
   render() {
     const ContainerComponent = this.getContainerComponent();
     const searchClients = this.memoizedConfigureSearchClients(
