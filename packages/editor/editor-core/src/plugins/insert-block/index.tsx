@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { WithProviders } from '@atlaskit/editor-common';
-import {
-  stateKey as blockTypeStateKey,
-  BlockTypeState,
-} from '../block-type/pm-plugins/main';
+import { pluginKey as blockTypeStateKey } from '../block-type/pm-plugins/main';
 import { stateKey as mediaStateKey } from '../media/pm-plugins/main';
 import { hyperlinkPluginKey } from '../hyperlink';
 import { mentionPluginKey as mentionStateKey } from '../mentions/pm-plugins/main';
@@ -22,7 +19,7 @@ import { emojiPluginKey } from '../emoji/pm-plugins/main';
 import WithPluginState from '../../ui/WithPluginState';
 import { ToolbarSize } from '../../ui/Toolbar';
 import ToolbarInsertBlock from './ui/ToolbarInsertBlock';
-import { insertBlockType } from '../../commands';
+import { insertBlockType } from '../block-type/commands';
 
 const toolbarSizeToButtons = toolbarSize => {
   switch (toolbarSize) {
@@ -77,7 +74,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
             layoutState: layoutStateKey,
           }}
           render={({
-            blockTypeState = {} as BlockTypeState,
+            blockTypeState,
             mediaState,
             mentionsState,
             tablesState,

@@ -572,7 +572,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
           `atlassian.editor.format.${item.value.name}.button`,
         );
         const { state, dispatch } = editorView;
-        onInsertBlockType!(item.value.name)(state, dispatch, editorView);
+        onInsertBlockType!(item.value.name)(state, dispatch);
         break;
       case 'decision':
         this.insertDecision();
