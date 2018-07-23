@@ -1,5 +1,9 @@
 # @atlaskit/profilecard
 
+## 4.0.1
+- [patch] Remove $FlowFixMe, move styled-components to peerDependencies and move tests under src and a unit folder [36b595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36b595c)
+- [none] Updated dependencies [36b595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36b595c)
+
 ## 4.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
