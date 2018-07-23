@@ -366,7 +366,7 @@
     "react-ace": "^6.1.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-text-content": "^0.0.4",
-    "react-beautiful-dnd": "^8.0.1",
+    "react-beautiful-dnd": "^8.0.5",
     "react-codesandboxer": "^2.1.0",
     "react-deprecate": "^0.1.0",
     "react-docgen": "^2.20.1",
