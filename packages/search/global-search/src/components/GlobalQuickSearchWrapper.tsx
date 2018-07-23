@@ -109,7 +109,15 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       return HomeQuickSearchContainer;
     }
   }
-  
+
+  componentWillReceiveProps(nextProps) {
+    console.log(
+      'component will recieve props new then old',
+      nextProps,
+      this.props,
+    );
+  }
+
   render() {
     const ContainerComponent = this.getContainerComponent();
     const searchClients = this.memoizedConfigureSearchClients(
@@ -119,15 +127,13 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     const { linkComponent, isSendSearchTermsEnabled } = this.props;
 
     return (
-      <div>
-        <MessagesIntlProvider>
-          <ContainerComponent
-            {...searchClients}
-            linkComponent={linkComponent}
-            isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-          />
-        </MessagesIntlProvider>
-      </div>
+      <MessagesIntlProvider>
+        <ContainerComponent
+          {...searchClients}
+          linkComponent={linkComponent}
+          isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+        />
+      </MessagesIntlProvider>
     );
   }
 }
