@@ -1,23 +1,18 @@
-import { keydownHandler } from 'prosemirror-keymap';
-import { MarkType } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
+import { keymap } from 'prosemirror-keymap';
+import { MarkType, Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
 import { trackAndInvoke } from '../../../analytics';
 import * as commands from '../commands/text-formatting';
-import { TextFormattingState } from './main';
 
-export function keymapHandler(
-  view: EditorView,
-  pluginState: TextFormattingState,
-): Function {
+export default function keymapPlugin(schema: Schema): Plugin {
   const list = {};
-  const { schema } = view.state;
 
   if (schema.marks.strong) {
     const eventName = analyticsEventName(schema.marks.strong);
     keymaps.bindKeymapWithCommand(
       keymaps.toggleBold.common!,
-      trackAndInvoke(eventName, () => pluginState.toggleStrong(view)),
+      trackAndInvoke(eventName, commands.toggleStrong()),
       list,
     );
   }
@@ -26,7 +21,7 @@ export function keymapHandler(
     const eventName = analyticsEventName(schema.marks.em);
     keymaps.bindKeymapWithCommand(
       keymaps.toggleItalic.common!,
-      trackAndInvoke(eventName, () => pluginState.toggleEm(view)),
+      trackAndInvoke(eventName, commands.toggleEm()),
       list,
     );
   }
@@ -35,7 +30,7 @@ export function keymapHandler(
     const eventName = analyticsEventName(schema.marks.code);
     keymaps.bindKeymapWithCommand(
       keymaps.toggleCode.common!,
-      trackAndInvoke(eventName, () => pluginState.toggleCode(view)),
+      trackAndInvoke(eventName, commands.toggleCode()),
       list,
     );
   }
@@ -44,7 +39,7 @@ export function keymapHandler(
     const eventName = analyticsEventName(schema.marks.strike);
     keymaps.bindKeymapWithCommand(
       keymaps.toggleStrikethrough.common!,
-      trackAndInvoke(eventName, () => pluginState.toggleStrike(view)),
+      trackAndInvoke(eventName, commands.toggleStrike()),
       list,
     );
   }
@@ -53,32 +48,14 @@ export function keymapHandler(
     const eventName = analyticsEventName(schema.marks.underline);
     keymaps.bindKeymapWithCommand(
       keymaps.toggleUnderline.common!,
-      trackAndInvoke(eventName, () => pluginState.toggleUnderline(view)),
+      trackAndInvoke(eventName, commands.toggleUnderline()),
       list,
     );
   }
 
-  keymaps.bindKeymapWithCommand(
-    keymaps.moveRight.common!,
-    commands.moveRight(),
-    list,
-  );
-  keymaps.bindKeymapWithCommand(
-    keymaps.moveLeft.common!,
-    commands.moveLeft(view),
-    list,
-  );
-  keymaps.bindKeymapWithCommand(
-    keymaps.backspace.common!,
-    commands.removeIgnoredNodes(view),
-    list,
-  );
-
-  return keydownHandler(list);
+  return keymap(list);
 }
 
 function analyticsEventName(markType: MarkType): string {
   return `atlassian.editor.format.${markType.name}.keyboard`;
 }
-
-export default keymapHandler;

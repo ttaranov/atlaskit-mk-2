@@ -5,8 +5,11 @@ import {
   Selection,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { toggleMark } from 'prosemirror-commands';
 import { removeIgnoredNodesLeft, hasCode } from '../utils';
-import { stateKey } from '../pm-plugins/main';
+import { markActive } from '../utils';
+import { transformToCodeAction } from './transform-to-code';
+import { analyticsService } from '../../../analytics';
 
 export interface Command {
   (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
@@ -20,7 +23,7 @@ export const moveRight = (): Command => {
       return false;
     }
     const { storedMarks } = state.tr;
-    const insideCode = stateKey.getState(state).markActive(code.create());
+    const insideCode = markActive(state, code.create());
     const currentPosHasCode = state.doc.rangeHasMark(
       $cursor.pos,
       $cursor.pos,
@@ -68,7 +71,7 @@ export const moveLeft = (
     }
 
     const { storedMarks } = state.tr;
-    const insideCode = stateKey.getState(state).markActive(code.create());
+    const insideCode = markActive(state, code.create());
     const currentPosHasCode = hasCode(state, $cursor.pos);
     const nextPosHasCode = hasCode(state, $cursor.pos - 1);
     const nextNextPosHasCode = hasCode(state, $cursor.pos - 2);
@@ -141,3 +144,116 @@ export const removeIgnoredNodes = (view: EditorView): Command => {
     return false;
   };
 };
+
+export const toggleEm = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { em } = state.schema.marks;
+    if (em) {
+      return toggleMark(em)(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const toggleStrike = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { strike } = state.schema.marks;
+    if (strike) {
+      return toggleMark(strike)(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const toggleStrong = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { strong } = state.schema.marks;
+    if (strong) {
+      return toggleMark(strong)(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const toggleUnderline = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { underline } = state.schema.marks;
+    if (underline) {
+      return toggleMark(underline)(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const toggleSuperscript = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { subsup } = state.schema.marks;
+    if (subsup) {
+      if (markActive(state, subsup.create({ type: 'sub' }))) {
+        // If subscript is enabled, turn it off first.
+        return toggleMark(subsup)(state, dispatch);
+      }
+      return toggleMark(subsup, { type: 'sup' })(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const toggleSubscript = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { subsup } = state.schema.marks;
+    if (subsup) {
+      if (markActive(state, subsup.create({ type: 'sup' }))) {
+        return toggleMark(subsup)(state, dispatch);
+      }
+      return toggleMark(subsup, { type: 'sub' })(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const toggleCode = (): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    const { code } = state.schema.marks;
+    const { from, to } = state.selection;
+    if (code) {
+      if (!markActive(state, code.create())) {
+        dispatch(transformToCodeAction(from, to, state.tr));
+        return true;
+      }
+      return toggleMark(code)(state, dispatch);
+    }
+    return false;
+  }
+}
+
+export const createInlineCodeFromTextInput = (from: number, to: number, text: string): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
+    if (state.selection.empty) {
+      const { nodeBefore: before } = state.doc.resolve(from);
+      const { nodeAfter: after } = state.doc.resolve(to);
+
+      const hasTickBefore = before && before.text && before.text.endsWith('`');
+      const hasTickAfter = after && after.text && after.text.startsWith('`');
+      if (hasTickBefore && hasTickAfter) {
+        analyticsService.trackEvent(
+          `atlassian.editor.format.code.autoformatting`,
+        );
+        const tr = state.tr.replaceRangeWith(
+          from - 1,
+          to + 1,
+          state.schema.text(text),
+        );
+        dispatch(
+          transformToCodeAction(
+            tr.mapping.map(from - 1),
+            tr.mapping.map(to + 1),
+            tr,
+          ),
+        );
+        return true;
+      }
+    }
+    return false;
+  }
+}
