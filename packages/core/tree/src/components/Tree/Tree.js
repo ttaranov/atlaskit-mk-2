@@ -11,15 +11,15 @@ import {
   type DraggableLocation,
   type DroppableProvided,
 } from 'react-beautiful-dnd';
-import type { TreePosition, Props, State } from './Tree-types';
+import type { Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
-import { flattenTree, getItem } from '../../utils/tree';
+import { flattenTree, getTreePosition } from '../../utils/tree';
 import {
   getDestinationPath,
   getSourcePath,
   getFlatItemPath,
 } from '../../utils/flat-tree';
-import type { FlattenedItem, Path, TreeData } from '../../types';
+import type { FlattenedItem, Path, TreePosition } from '../../types';
 import TreeItem from '../TreeItem';
 import {
   type TreeDraggableProvided,
@@ -51,15 +51,6 @@ export default class Tree extends Component<Props, State> {
       flattenedTree: flattenTree(props.tree),
     };
   }
-
-  static getTreePosition = (tree: TreeData, path: Path): TreePosition => {
-    const parentPath = path.slice(0, -1);
-    const parent = getItem(tree, parentPath);
-    return {
-      parentId: parent.id,
-      index: path.slice(-1)[0],
-    };
-  };
 
   onDragEnd = (result: DropResult) => {
     const { onDragEnd } = this.props;
@@ -109,7 +100,7 @@ export default class Tree extends Component<Props, State> {
     const { tree } = this.props;
     const { flattenedTree } = this.state;
     const sourcePath: Path = getSourcePath(flattenedTree, source.index);
-    const sourcePosition: TreePosition = Tree.getTreePosition(tree, sourcePath);
+    const sourcePosition: TreePosition = getTreePosition(tree, sourcePath);
 
     if (!destination) {
       return { sourcePosition, destinationPosition: null };
@@ -120,7 +111,7 @@ export default class Tree extends Component<Props, State> {
       source.index,
       destination.index,
     );
-    const destinationPosition: ?TreePosition = Tree.getTreePosition(
+    const destinationPosition: ?TreePosition = getTreePosition(
       tree,
       destinationPath,
     );
@@ -165,8 +156,11 @@ export default class Tree extends Component<Props, State> {
       !provided.draggableProps.style ||
       !provided.draggableProps.style.left
     ) {
+      // $ExpectError
       return provided;
     }
+    // During drop we apply some additional offset to the dropped item
+    // in order to precisely land it at the right location
     const finalStyle: TreeDraggingStyle = {
       ...provided.draggableProps.style,
       // overwrite left position
@@ -174,6 +168,7 @@ export default class Tree extends Component<Props, State> {
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
+    // $ExpectError
     const finalProvided: TreeDraggableProvided = {
       ...provided,
       draggableProps: {

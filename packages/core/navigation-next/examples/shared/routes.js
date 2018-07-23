@@ -5,115 +5,110 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  getContainerViewState,
-  getRootViewState,
-  NavigationSubscriber,
+  UIControllerSubscriber,
+  withNavigationViewController,
+  withNavigationUI,
 } from '../../src';
 
 import { containerViews, rootViews } from './mock-data';
 import ShortcutsPlugin from './shortcuts-plugin';
 
-const containerViewState = getContainerViewState();
-const rootViewState = getRootViewState();
-
-const maybeRegisterViews = (viewState: *, views: { [string]: any[] }) => () => {
-  const viewKeys = Object.keys(views);
-  viewKeys.forEach(key => {
-    if (viewState.views[key]) {
-      return;
+class SetActiveViewBase extends Component<{
+  id: string,
+  navigationUIController: *,
+  navigationViewController: *,
+}> {
+  componentDidMount() {
+    const { id, navigationUIController, navigationViewController } = this.props;
+    const { containerViewId, productViewId } = navigationViewController.state;
+    if (id !== containerViewId && id !== productViewId) {
+      navigationViewController.setView(id);
     }
-    const view = views[key];
-    viewState.addView(key, () => view);
-  });
-};
-const maybeRegisterContainerViews = maybeRegisterViews(
-  containerViewState,
-  containerViews,
+    navigationUIController.unPeek();
+  }
+  render() {
+    return null;
+  }
+}
+const SetActiveView = withNavigationUI(
+  withNavigationViewController(SetActiveViewBase),
 );
-const maybeRegisterRootViews = maybeRegisterViews(rootViewState, rootViews);
 
-const ROOT_INDEX_VIEW = 'root/index';
+class ViewRegistrarBase extends Component<{
+  navigationViewController: *,
+  view: *,
+}> {
+  componentDidMount() {
+    const { navigationViewController, view } = this.props;
+    if (!navigationViewController.views[view.id]) {
+      navigationViewController.addView(view);
+    }
+  }
+  render() {
+    return null;
+  }
+}
+const ViewRegistrar = withNavigationViewController(ViewRegistrarBase);
+
+const RootViews = () => (
+  <Fragment>
+    {rootViews.map(view => <ViewRegistrar key={view.id} view={view} />)}
+  </Fragment>
+);
+const ContainerViews = () => (
+  <Fragment>
+    {containerViews.map(view => <ViewRegistrar key={view.id} view={view} />)}
+  </Fragment>
+);
+const CoreViews = () => <RootViews />;
 
 /**
  * Root-level routes
  */
-export class DashboardsView extends Component<{}> {
-  viewKey = 'root/index';
+export const DashboardsView = () => (
+  <Fragment>
+    <CoreViews />
+    <SetActiveView id="root/index" />
+    <h1>Dashboards</h1>
+    <p>Hello here are your dashboards.</p>
+  </Fragment>
+);
 
-  componentDidMount() {
-    maybeRegisterRootViews();
-    rootViewState.setView(this.viewKey);
-    containerViewState.setView(null);
-  }
+export const ProjectsView = () => (
+  <Fragment>
+    <CoreViews />
+    <SetActiveView id="root/index" />
+    <h1>Projects</h1>
+    <p>Hello here are your projects.</p>
+    <h3>
+      <Link to="/projects/endeavour">Endeavour</Link>
+    </h3>
+  </Fragment>
+);
 
-  render() {
-    return (
-      <Fragment>
-        <h1>Dashboards</h1>
-        <p>Hello here are your dashboards.</p>
-      </Fragment>
-    );
-  }
-}
-
-export class ProjectsView extends Component<{}> {
-  viewKey = 'root/index';
-
-  componentDidMount() {
-    maybeRegisterRootViews();
-    rootViewState.setView(this.viewKey);
-    containerViewState.setView(null);
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <h1>Projects</h1>
-        <p>Hello here are your projects.</p>
-        <h3>
-          <Link to="/projects/endeavour">Endeavour</Link>
-        </h3>
-      </Fragment>
-    );
-  }
-}
-
-export class SearchIssuesView extends Component<{}> {
-  viewKey = 'root/issues';
-
-  componentDidMount() {
-    maybeRegisterRootViews();
-    rootViewState.setView(this.viewKey);
-    containerViewState.setView(null);
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <h1>Search issues</h1>
-        <p>Hello search for your issues here.</p>
-      </Fragment>
-    );
-  }
-}
+export const SearchIssuesView = () => (
+  <Fragment>
+    <CoreViews />
+    <SetActiveView id="root/issues" />
+    <h1>Search issues</h1>
+    <p>Hello search for your issues here.</p>
+  </Fragment>
+);
 
 /**
- * Container views
+ * Container-level routes
  */
 class BacklogViewBase extends Component<*> {
-  viewKey = 'container/project/index';
-
   componentDidMount() {
-    this.props.navUI.unPeek();
-    maybeRegisterRootViews();
-    maybeRegisterContainerViews();
-    containerViewState.setView(this.viewKey);
-    rootViewState.setView(ROOT_INDEX_VIEW);
+    this.props.navigationUIController.unPeek();
   }
 
   render() {
     return (
       <Fragment>
+        <CoreViews />
+        <ContainerViews />
+        <SetActiveView id="container/project/index" />
         <h1>Backlog</h1>
         <p>Hello this is the backlog.</p>
         <p>
@@ -125,7 +120,9 @@ class BacklogViewBase extends Component<*> {
   }
 }
 export const BacklogView = () => (
-  <NavigationSubscriber>
-    {navUI => <BacklogViewBase navUI={navUI} />}
-  </NavigationSubscriber>
+  <UIControllerSubscriber>
+    {navigationUIController => (
+      <BacklogViewBase navigationUIController={navigationUIController} />
+    )}
+  </UIControllerSubscriber>
 );

@@ -64,14 +64,17 @@ function getScrollY(node = window) {
   return scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
 }
 
-function updateAttribute(
-  node: HTMLElement,
-  attribute: string,
-  update: string => string,
-) {
-  const current = node.getAttribute(attribute);
-  node.setAttribute(attribute, update(current || ''));
-  return node;
+function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
+  const shouldCloneChildren = true;
+  const clonedNode = node.cloneNode(shouldCloneChildren);
+
+  clonedNode.style.margin = '0';
+  clonedNode.style.position = 'static';
+  // The target may have other transforms applied. Avoid unintended side effects
+  // by zeroing out "translate" rather than applying a value of "none".
+  clonedNode.style.transform = 'translate(0, 0) translate3d(0, 0, 0)';
+
+  return clonedNode;
 }
 
 export default function withScrollMeasurements(
@@ -156,15 +159,8 @@ export default function withScrollMeasurements(
         scrollParent.scrollTop += offsetY;
       }
 
-      // ensure positioning of cloned node is static
-      const clonedNode = updateAttribute(
-        node.cloneNode(true),
-        'style',
-        style =>
-          style.indexOf('position') > -1
-            ? style.replace(/position: (.*);/, 'position: static;')
-            : `${style} position: static;`,
-      );
+      // override styles that effect the position of our target node
+      const clonedNode = cloneAndOverrideStyles(node);
 
       this.setState({
         clone: clonedNode.outerHTML,

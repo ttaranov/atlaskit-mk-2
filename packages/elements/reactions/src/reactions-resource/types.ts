@@ -72,11 +72,20 @@ export interface ReactionsProvider {
     containerAri: string,
     ari: string,
     emojiId: string,
+    /**
+     * Epoch time of when the object being reacted on was created
+     */
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState>;
+
   addReaction(
     containerAri: string,
     ari: string,
     emojiId: string,
+    /**
+     * Epoch time of when the object being reacted on was created
+     */
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState>;
   deleteReaction(
     containerAri: string,

@@ -1,7 +1,12 @@
 //@flow
 import type { Path, FlattenedTree } from '../types';
 
-import { isTopOfSubtree, hasSameParent } from './path';
+import {
+  isTopOfSubtree,
+  hasSameParent,
+  getPathOnLevel,
+  moveAfterPath,
+} from './path';
 
 export const getFlatItemPath = (
   flattenedTree: FlattenedTree,
@@ -80,33 +85,28 @@ export const getDestinationPath = (
     return lowerPath;
   }
 
-  // End of list
-  // this means that the upper item is deeper in the tree.
   if (upperPath) {
-    const lowerLevel = lowerPath ? lowerPath.length : 1;
-    const upperLevel = upperPath ? upperPath.length : 1;
-    const sourceLevel = sourcePath.length;
+    // End of list
+    // this means that the upper item is deeper in the tree.
+    const lowerLevel: number = lowerPath ? lowerPath.length : 1;
+    const upperLevel: number = upperPath ? upperPath.length : 1;
+    const sourceLevel: number = sourcePath.length;
     // Disambiguation of the level.
     const finalLevel = sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
 
     if (finalLevel === upperLevel) {
       // Insert to the upper list
-      const newPath = [...upperPath];
-      if (!hasSameParent(upperPath, sourcePath)) {
-        newPath[newPath.length - 1] += 1;
-      }
-      return newPath;
+      return moveAfterPath(upperPath, sourcePath);
     }
 
     // Insert to the lower list
-    const itemAfterWeInsert = upperPath.slice(0, finalLevel);
-    const newPath = [...itemAfterWeInsert];
-    if (!hasSameParent(itemAfterWeInsert, sourcePath) || !down) {
-      newPath[newPath.length - 1] += 1;
-    }
-    return newPath;
+    const previousPathOnTheFinalLevel: Path = getPathOnLevel(
+      upperPath,
+      finalLevel,
+    );
+    return moveAfterPath(previousPathOnTheFinalLevel, sourcePath);
   }
 
-  // impossible case
+  // Impossible case
   return sourcePath;
 };

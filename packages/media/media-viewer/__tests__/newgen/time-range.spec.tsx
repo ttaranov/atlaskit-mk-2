@@ -67,7 +67,7 @@ describe('<TimeRange />', () => {
   it('should notify changes when user clicks on the timeline', () => {
     const { component, onChange } = setup();
 
-    component.instance()['wrapperElementWidth'] = 100;
+    (component as any).instance()['wrapperElementWidth'] = 100;
     component.find(TimeRangeWrapper).simulate('click', {
       target: {},
       nativeEvent: {

@@ -45,11 +45,11 @@ export class FakeTextCursorSelection extends Selection {
     return other instanceof FakeTextCursorSelection && other.head === this.head;
   }
 
-  toJSON(): any {
+  toJSON() {
     return { type: 'Cursor', pos: this.head };
   }
 
-  static fromJSON(doc: Node, json: any): Selection {
+  static fromJSON(doc: Node, json: { pos: number }): Selection {
     return new FakeTextCursorSelection(doc.resolve(json.pos));
   }
 
@@ -66,7 +66,9 @@ export const addFakeTextCursor = (
 ) => {
   const { selection } = state;
   if (selection.empty) {
-    const { selection: { $from } } = state;
+    const {
+      selection: { $from },
+    } = state;
     dispatch(state.tr.setSelection(new FakeTextCursorSelection($from)));
   }
 };
@@ -77,7 +79,7 @@ export const removeFakeTextCursor = (
 ) => {
   if (state.selection instanceof FakeTextCursorSelection) {
     const { $from } = state.selection;
-    dispatch(state.tr.setSelection(new TextSelection($from) as any));
+    dispatch(state.tr.setSelection(new TextSelection($from)));
   }
 };
 

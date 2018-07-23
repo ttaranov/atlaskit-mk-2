@@ -21,6 +21,7 @@ import {
   td,
   tdCursor,
   hardBreak,
+  a,
 } from '@atlaskit/editor-test-helpers';
 import mediaPlugin from '../../../src/plugins/media';
 import codeBlockPlugin from '../../../src/plugins/code-block';
@@ -361,6 +362,21 @@ describe('paste plugins', () => {
           doc(
             decisionList({ localId: 'local-decision' })(
               decisionItem({ localId: 'local-decision' })('plain text'),
+            ),
+          ),
+        );
+      });
+
+      it('linkifies text pasted into a decision', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(editorView, '<> ', sel);
+        dispatchPasteEvent(editorView, { plain: 'google.com' });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })(
+                a({ href: 'http://google.com' })('google.com'),
+              ),
             ),
           ),
         );

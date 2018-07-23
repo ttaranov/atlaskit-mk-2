@@ -18,6 +18,9 @@ export type GasPayload = {
     componentName: string;
     [key: string]: any;
   };
+  nonPrivacySafeAttributes?: {
+    [key: string]: any;
+  };
   tags?: Array<string>;
   source: string;
 };

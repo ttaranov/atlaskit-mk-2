@@ -1,5 +1,5 @@
 'use strict';
-//@flow
+// @flow
 
 /*
 * Setup webdriver clients depending on environment on which the test is run against.
@@ -14,9 +14,12 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
 
 const webdriverio = require('webdriverio');
+const uniqIdentifierStamp = process.env.LOCAL_IDENTIFIER || '';
 const commit = process.env.BITBUCKET_COMMIT
-  ? process.env.BITBUCKET_COMMIT
-  : process.env.USER;
+  ? process.env.BITBUCKET_COMMIT + uniqIdentifierStamp
+  : process.env.USER
+    ? process.env.USER + uniqIdentifierStamp
+    : uniqIdentifierStamp;
 let clients /*: Array<?Object>*/ = [];
 let skipForBrowser /*:?Object */ = {};
 
@@ -176,7 +179,7 @@ function setBrowserStackClients() {
 
   let clis = [];
   if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-    process.env.BITBUCKET_BRANCH = process.env.USER + '_local';
+    process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
   }
 
   Object.keys(launchers).forEach(key => {
@@ -186,13 +189,12 @@ function setBrowserStackClients() {
         os_version: launchers[key].os_version,
         browserName: launchers[key].browserName,
         browser_version: launchers[key].browser_version,
-        project: 'Atlaskit MK2',
+        project: 'Atlaskit MK-2 Webdriver Tests',
         build: process.env.BITBUCKET_BRANCH,
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,
         'browserstack.localIdentifier': commit,
-        project: 'Atlaskit MK-2 Webdriver Tests',
       },
       host: 'hub.browserstack.com',
       port: 80,

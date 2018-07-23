@@ -73,7 +73,6 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowTasksAndDecisions={true}
             allowCodeBlocks={true}
             allowLists={true}
-            allowMentions={true}
             allowRule={true}
             allowTables={true}
             emojiProvider={emojiProvider}

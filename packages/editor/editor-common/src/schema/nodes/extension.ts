@@ -4,7 +4,7 @@ export type Layout = 'default' | 'wide' | 'full-width';
 /**
  * @name extension_node
  */
-export interface Definition {
+export interface ExtensionDefinition {
   type: 'extension';
   attrs: {
     /**

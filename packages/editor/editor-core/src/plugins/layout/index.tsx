@@ -1,10 +1,16 @@
 import { layoutSection, layoutColumn } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { FloatingToolbarConfig } from '../floating-toolbar/types';
+import {
+  default as layoutPlugin,
+  pluginKey,
+  LayoutState,
+} from './pm-plugins/main';
+import { buildToolbar } from './toolbar';
 
-export const pluginKey = new PluginKey('layout');
+export { pluginKey };
 
-const layoutPlugin: EditorPlugin = {
+export default {
   nodes() {
     return [
       { rank: 2400, name: 'layoutSection', node: layoutSection },
@@ -16,18 +22,17 @@ const layoutPlugin: EditorPlugin = {
     return [
       {
         rank: 2400,
-        plugin: ({ schema }) =>
-          new Plugin({
-            key: pluginKey,
-            state: {
-              init: () => ({}), // TODO store property `forceMediaLayout: 'wide'`
-              apply: (tr, state) => state,
-            },
-            props: {},
-          }),
+        plugin: () => layoutPlugin,
       },
     ];
   },
-};
-
-export default layoutPlugin;
+  pluginsOptions: {
+    floatingToolbar(state): FloatingToolbarConfig | undefined {
+      const { pos } = pluginKey.getState(state) as LayoutState;
+      if (pos !== null) {
+        return buildToolbar(state, pos);
+      }
+      return undefined;
+    },
+  },
+} as EditorPlugin;

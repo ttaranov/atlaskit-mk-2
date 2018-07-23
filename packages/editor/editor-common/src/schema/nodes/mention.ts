@@ -8,7 +8,7 @@ export enum USER_TYPES {
 
 export type UserType = keyof typeof USER_TYPES;
 
-export interface Attributes {
+export interface MentionAttributes {
   id: string;
   text?: string;
   userType?: UserType;
@@ -18,9 +18,9 @@ export interface Attributes {
 /**
  * @name mention_node
  */
-export interface Definition {
+export interface MentionDefinition {
   type: 'mention';
-  attrs: Attributes;
+  attrs: MentionAttributes;
 }
 
 export const mention: NodeSpec = {
@@ -54,7 +54,7 @@ export const mention: NodeSpec = {
       },
     },
   ],
-  toDOM(node: any) {
+  toDOM(node) {
     const { id, accessLevel, text, userType } = node.attrs;
     const attrs = {
       'data-mention-id': id,

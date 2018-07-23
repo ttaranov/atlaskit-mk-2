@@ -11,18 +11,22 @@ import { EditorPlugin } from '../../types';
 import { ButtonGroup } from '../../ui/styles';
 import {
   plugin as textFormattingPlugin,
-  stateKey as textFormattingStateKey,
+  pluginKey as textFormattingPluginKey,
+  TextFormattingState,
 } from './pm-plugins/main';
 import {
   plugin as clearFormattingPlugin,
-  stateKey as clearFormattingStateKey,
+  pluginKey as clearFormattingPluginKey,
+  ClearFormattingState,
 } from './pm-plugins/clear-formatting';
 import textFormattingCursorPlugin from './pm-plugins/cursor';
 import textFormattingInputRulePlugin from './pm-plugins/input-rule';
 import clearFormattingKeymapPlugin from './pm-plugins/clear-formatting-keymap';
 import textFormattingSmartInputRulePlugin from './pm-plugins/smart-input-rule';
-import ToolbarTextFormatting from './ui/ToolbarTextFormatting';
+import keymapPlugin from './pm-plugins/keymap';
 import ToolbarAdvancedTextFormatting from './ui/ToolbarAdvancedTextFormatting';
+import ToolbarTextFormatting from './ui/ToolbarTextFormatting';
+import WithPluginState from '../../ui/WithPluginState';
 
 export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
@@ -55,7 +59,7 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
 
   pmPlugins() {
     return [
-      { rank: 800, plugin: () => textFormattingPlugin },
+      { rank: 800, plugin: ({ dispatch }) => textFormattingPlugin(dispatch) },
       { rank: 805, plugin: () => textFormattingCursorPlugin },
       {
         rank: 810,
@@ -68,11 +72,12 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
             ? textFormattingSmartInputRulePlugin
             : undefined,
       },
-      { rank: 820, plugin: () => clearFormattingPlugin },
+      { rank: 820, plugin: ({ dispatch }) => clearFormattingPlugin(dispatch) },
       {
         rank: 830,
         plugin: ({ schema }) => clearFormattingKeymapPlugin(schema),
       },
+      { rank: 835, plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
@@ -83,31 +88,40 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
     isToolbarReducedSpacing,
     disabled,
   }) {
-    const textFormattingPluginState = textFormattingStateKey.getState(
-      editorView.state,
-    );
-    const clearFormattingPluginState = clearFormattingStateKey.getState(
-      editorView.state,
-    );
-
     return (
-      <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
-        <ToolbarTextFormatting
-          disabled={disabled}
-          editorView={editorView}
-          pluginState={textFormattingPluginState}
-          isReducedSpacing={isToolbarReducedSpacing}
-        />
-        <ToolbarAdvancedTextFormatting
-          editorView={editorView}
-          isDisabled={disabled}
-          isReducedSpacing={isToolbarReducedSpacing}
-          pluginStateTextFormatting={textFormattingPluginState}
-          pluginStateClearFormatting={clearFormattingPluginState}
-          popupsMountPoint={popupsMountPoint}
-          popupsScrollableElement={popupsScrollableElement}
-        />
-      </ButtonGroup>
+      <WithPluginState
+        plugins={{
+          textFormattingState: textFormattingPluginKey,
+          clearFormattingState: clearFormattingPluginKey,
+        }}
+        render={({
+          textFormattingState,
+          clearFormattingState,
+        }: {
+          textFormattingState: TextFormattingState;
+          clearFormattingState: ClearFormattingState;
+        }): any => {
+          return (
+            <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
+              <ToolbarTextFormatting
+                disabled={disabled}
+                editorView={editorView}
+                textFormattingState={textFormattingState}
+                isReducedSpacing={isToolbarReducedSpacing}
+              />
+              <ToolbarAdvancedTextFormatting
+                editorView={editorView}
+                isDisabled={disabled}
+                isReducedSpacing={isToolbarReducedSpacing}
+                textFormattingState={textFormattingState}
+                clearFormattingState={clearFormattingState}
+                popupsMountPoint={popupsMountPoint}
+                popupsScrollableElement={popupsScrollableElement}
+              />
+            </ButtonGroup>
+          );
+        }}
+      />
     );
   },
 });

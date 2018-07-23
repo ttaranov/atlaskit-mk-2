@@ -8,7 +8,7 @@ import googleTextHTML from './__third-party__/google-docs/text/html';
 import googleTextPlain from './__third-party__/google-docs/text/plain';
 import msWordTextHTML from './__third-party__/microsoft-word/text/html';
 import msWordTextPlain from './__third-party__/microsoft-word/text/plain';
-import { toJSON } from '../../../src';
+import { toJSON } from '../../../src/utils';
 import {
   createEditor,
   doc,

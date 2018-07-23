@@ -1,5 +1,5 @@
 import { Schema, Slice } from 'prosemirror-model';
-import { JSONDocNode, JSONNode } from '../../';
+import { JSONDocNode, JSONNode } from '../';
 import { filterContentByType, filterSliceByType } from './filter';
 
 const taskDecisionAllowedNodeTypes = new Set([

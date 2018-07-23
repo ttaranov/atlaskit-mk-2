@@ -17,8 +17,8 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 
 function runTests() {
   return new Promise((resolve, reject) => {
-    /* maxWorkers set to 3 will create 3 threads */
-    let cmd = `INTEGRATION_TESTS=true jest --maxWorkers=3`;
+    /* maxWorkers set to 4 will create 4 threads */
+    let cmd = `INTEGRATION_TESTS=true jest --maxWorkers=4`;
 
     const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',

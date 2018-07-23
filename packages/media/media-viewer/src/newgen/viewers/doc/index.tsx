@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
-import { ErrorMessage } from '../../styled';
+import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { Spinner } from '../../loading';
-import { constructAuthTokenUrl } from '../../util';
+import { constructAuthTokenUrl } from '../../utils';
 import { Props as RendererProps } from './pdfRenderer';
+import { ComponentClass } from 'react';
+import { renderDownloadButton } from '../../domain/download';
 
 const moduleLoader = () =>
   import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
 
-const componentLoader: () => Promise<
-  React.ComponentClass<RendererProps>
-> = () => moduleLoader().then(module => module.PDFRenderer);
+const componentLoader: () => Promise<ComponentClass<RendererProps>> = () =>
+  moduleLoader().then(module => module.PDFRenderer);
 
 export type Props = {
   context: Context;
@@ -21,7 +22,7 @@ export type Props = {
 };
 
 export type State = {
-  src: Outcome<string, Error>;
+  src: Outcome<string, MediaViewerError>;
 };
 
 const initialState: State = {
@@ -29,7 +30,7 @@ const initialState: State = {
 };
 
 export class DocViewer extends React.Component<Props, State> {
-  static PDFComponent;
+  static PDFComponent: ComponentClass<RendererProps>;
 
   state: State = initialState;
 
@@ -39,7 +40,7 @@ export class DocViewer extends React.Component<Props, State> {
 
   private async init() {
     if (!DocViewer.PDFComponent) {
-      await this.loadDocViewer(this.props);
+      await this.loadDocViewer();
     }
     const { item, context, collectionName } = this.props;
 
@@ -48,7 +49,7 @@ export class DocViewer extends React.Component<Props, State> {
       this.setState({
         src: {
           status: 'FAILED',
-          err: new Error('no pdf artifacts found for this file'),
+          err: createError('noPDFArtifactsFound'),
         },
       });
       return;
@@ -69,15 +70,20 @@ export class DocViewer extends React.Component<Props, State> {
       this.setState({
         src: {
           status: 'FAILED',
-          err,
+          err: createError('previewFailed', undefined, err),
         },
       });
     }
   }
 
-  private async loadDocViewer(props: Props) {
+  private async loadDocViewer() {
     DocViewer.PDFComponent = await componentLoader();
     this.forceUpdate();
+  }
+
+  private renderDownloadButton() {
+    const { item, context, collectionName } = this.props;
+    return renderDownloadButton(item, context, collectionName);
   }
 
   render() {
@@ -95,7 +101,12 @@ export class DocViewer extends React.Component<Props, State> {
       case 'SUCCESSFUL':
         return <PDFComponent src={src.data} onClose={onClose} />;
       case 'FAILED':
-        return <ErrorMessage>{src.err.message}</ErrorMessage>;
+        return (
+          <ErrorMessage error={src.err}>
+            <p>Try downloading the file to view it.</p>
+            {this.renderDownloadButton()}
+          </ErrorMessage>
+        );
     }
   }
 }

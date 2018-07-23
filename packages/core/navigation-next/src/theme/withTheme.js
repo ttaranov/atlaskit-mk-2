@@ -4,13 +4,15 @@ import React, { Component, type ComponentType } from 'react';
 import { channel } from 'emotion-theming';
 import PropTypes from 'prop-types';
 
+import { light } from './modes';
 import type { GlobalTheme, ProductTheme } from './types';
 
 type State = { theme: GlobalTheme | ProductTheme | void };
 
-// export default (defaultTheme: ProductTheme) => (
-export default (defaultTheme: any) => (WrappedComponent: ComponentType<*>) => {
-  return class WithTheme extends Component<{}, State> {
+const withTheme = (defaultTheme: GlobalTheme | ProductTheme | void) => (
+  WrappedComponent: ComponentType<*>,
+) => {
+  return class WithTheme extends Component<*, State> {
     static contextTypes = {
       [channel]: PropTypes.object,
     };
@@ -59,3 +61,10 @@ export default (defaultTheme: any) => (WrappedComponent: ComponentType<*>) => {
     }
   };
 };
+
+const defaultContentTheme: ProductTheme = { mode: light, context: 'container' };
+const defaultGlobalTheme: GlobalTheme = { mode: light };
+
+export const withContentTheme = withTheme(defaultContentTheme);
+export const withGlobalTheme = withTheme(defaultGlobalTheme);
+export default withTheme;
