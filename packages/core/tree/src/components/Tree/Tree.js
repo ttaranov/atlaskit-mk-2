@@ -11,11 +11,11 @@ import {
   type DraggableLocation,
   type DroppableProvided,
 } from 'react-beautiful-dnd';
-import type { TreePosition, Props, State } from './Tree-types';
+import type { Props, State } from './Tree-types';
 import { noop } from '../../utils/handy';
 import { flattenTree, getTreePosition } from '../../utils/tree';
 import { getDestinationPath, getSourcePath } from '../../utils/flat-tree';
-import type { FlattenedItem, Path } from '../../types';
+import type { FlattenedItem, Path, TreePosition } from '../../types';
 import TreeItem from '../TreeItem';
 import {
   type TreeDraggableProvided,
@@ -153,6 +153,7 @@ export default class Tree extends Component<Props, State> {
       !provided.draggableProps.style ||
       !provided.draggableProps.style.left
     ) {
+      // $ExpectError
       return provided;
     }
 
@@ -166,6 +167,7 @@ export default class Tree extends Component<Props, State> {
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
+    // $ExpectError
     const finalProvided: TreeDraggableProvided = {
       ...provided,
       draggableProps: {

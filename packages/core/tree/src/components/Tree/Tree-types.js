@@ -1,6 +1,12 @@
 // @flow
 import * as React from 'react';
-import type { TreeData, Path, ItemId, FlattenedTree } from '../../types';
+import type {
+  TreeData,
+  Path,
+  ItemId,
+  FlattenedTree,
+  TreePosition,
+} from '../../types';
 import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
 export type Props = {|

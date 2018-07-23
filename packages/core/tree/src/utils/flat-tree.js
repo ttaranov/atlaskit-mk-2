@@ -83,23 +83,28 @@ export const getDestinationPath = (
     return lowerPath;
   }
 
-  // End of list
-  // this means that the upper item is deeper in the tree.
-  const lowerLevel: number = lowerPath ? lowerPath.length : 1;
-  const upperLevel: number = upperPath ? upperPath.length : 1;
-  const sourceLevel: number = sourcePath.length;
-  // Disambiguation of the level.
-  const finalLevel = sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
+  if (upperPath) {
+    // End of list
+    // this means that the upper item is deeper in the tree.
+    const lowerLevel: number = lowerPath ? lowerPath.length : 1;
+    const upperLevel: number = upperPath ? upperPath.length : 1;
+    const sourceLevel: number = sourcePath.length;
+    // Disambiguation of the level.
+    const finalLevel = sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
 
-  if (finalLevel === upperLevel) {
-    // Insert to the upper list
-    return moveAfterPath(upperPath, sourcePath);
+    if (finalLevel === upperLevel) {
+      // Insert to the upper list
+      return moveAfterPath(upperPath, sourcePath);
+    }
+
+    // Insert to the lower list
+    const previousPathOnTheFinalLevel: Path = getPathOnLevel(
+      upperPath,
+      finalLevel,
+    );
+    return moveAfterPath(previousPathOnTheFinalLevel, sourcePath);
   }
 
-  // Insert to the lower list
-  const previousPathOnTheFinalLevel: Path = getPathOnLevel(
-    upperPath,
-    finalLevel,
-  );
-  return moveAfterPath(previousPathOnTheFinalLevel, sourcePath);
+  // Impossible case
+  return sourcePath;
 };
