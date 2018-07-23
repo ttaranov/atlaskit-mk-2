@@ -1,5 +1,6 @@
 import MentionResource, {
   AbstractMentionResource,
+  MentionContextIdentifier,
   MentionProvider,
 } from './api/MentionResource';
 import PresenceResource, {
@@ -14,9 +15,12 @@ import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
 import { MentionDescription, MentionsResult, isSpecialMention } from './types';
 import { SearchIndex } from './util/searchIndex';
+import { ELEMENTS_CHANNEL } from './constants';
+import ContextMentionResource from './api/ContextMentionResource';
 
 export {
   // Classes
+  ContextMentionResource,
   MentionResource,
   PresenceResource,
   AbstractMentionResource,
@@ -27,6 +31,8 @@ export {
   PresenceProvider,
   MentionDescription,
   MentionsResult,
+  // types
+  MentionContextIdentifier,
   // Components
   MentionItem,
   MentionList,
@@ -36,6 +42,8 @@ export {
   ResourcedMention,
   // Functions
   isSpecialMention,
+  // Constants
+  ELEMENTS_CHANNEL,
 };
 
 export default MentionPicker;

@@ -12,7 +12,7 @@ import {
 import { MediaCard } from '../src/root/mediaCard';
 import { LazyContent } from '../src/utils/lazyContent';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { UIAnalyticsEventInterface } from '../src/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 describe('Card', () => {
   const linkIdentifier: LinkIdentifier = {

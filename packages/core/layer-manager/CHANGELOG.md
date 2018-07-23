@@ -1,5 +1,32 @@
 # @atlaskit/layer-manager
 
+## 5.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/icon@13.1.1
+
+## 5.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/onboarding@5.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/onboarding@5.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 4.3.1
 - [patch] Replaces implementation of ScrollLock with [react-scrolllock](https://github.com/jossmac/react-scrolllock). Deprecates ScrollLock export in @atlaskit/layer-manager. [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)
 - [none] Updated dependencies [497d50d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/497d50d)

@@ -1,10 +1,6 @@
 // @flow
 
-import React, {
-  Component,
-  type ComponentType,
-  type ElementConfig,
-} from 'react';
+import React, { type ComponentType, type ElementConfig } from 'react';
 
 import AnalyticsContext from './AnalyticsContext';
 
@@ -19,23 +15,23 @@ export default function withAnalyticsContext<
 >(
   defaultData: {} = {},
 ): (WrappedComponent: InnerComponent) => ComponentType<ExternalProps> {
-  return WrappedComponent =>
-    class WithAnalyticsContext extends Component<ExternalProps> {
-      static displayName = `WithAnalyticsContext(${WrappedComponent.displayName ||
-        WrappedComponent.name})`;
-
-      static defaultProps = {
-        analyticsContext: {},
-      };
-
-      render() {
-        const { analyticsContext, ...props } = this.props;
+  return WrappedComponent => {
+    // $FlowFixMe - flow 0.67 doesn't know about forwardRef
+    const WithAnalyticsContext = React.forwardRef(
+      (props: ExternalProps, ref) => {
+        const { analyticsContext = {}, ...others } = props;
         const data = { ...defaultData, ...analyticsContext };
         return (
           <AnalyticsContext data={data}>
-            <WrappedComponent {...props} />
+            <WrappedComponent {...others} ref={ref} />
           </AnalyticsContext>
         );
-      }
-    };
+      },
+    );
+
+    WithAnalyticsContext.displayName = `WithAnalyticsContext(${WrappedComponent.displayName ||
+      WrappedComponent.name})`;
+
+    return WithAnalyticsContext;
+  };
 }

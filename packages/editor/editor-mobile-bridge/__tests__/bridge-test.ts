@@ -3,15 +3,24 @@ jest.mock('@atlaskit/editor-core', () => {
     ...jest.genMockFromModule('@atlaskit/editor-core'),
     indentList: jest.fn(() => () => {}),
     outdentList: jest.fn(() => () => {}),
+    toggleOrderedList: jest.fn(() => () => {}),
+    toggleBulletList: jest.fn(() => () => {}),
   };
 });
 
 import WebBridgeImpl from '../src/native-to-web';
-import { indentList, outdentList } from '@atlaskit/editor-core';
+import {
+  indentList,
+  outdentList,
+  toggleOrderedList,
+  toggleBulletList,
+} from '@atlaskit/editor-core';
 
 afterEach(() => {
   indentList.mockClear();
   outdentList.mockClear();
+  toggleOrderedList.mockClear();
+  toggleBulletList.mockClear();
 });
 
 describe('headings should work', () => {
@@ -48,16 +57,10 @@ describe('headings should work', () => {
 });
 
 describe('lists should work', () => {
-  let orderListToggle;
-  let bulletListToggle;
   let bridge: any = new WebBridgeImpl();
   beforeEach(() => {
-    orderListToggle = jest.fn();
-    bulletListToggle = jest.fn();
     bridge.editorView = {};
     bridge.listState = {};
-    bridge.listState.toggleOrderedList = orderListToggle;
-    bridge.listState.toggleBulletList = bulletListToggle;
   });
 
   afterEach(() => {
@@ -67,36 +70,36 @@ describe('lists should work', () => {
 
   it('should call ordered list toggle', () => {
     bridge.onOrderedListSelected();
-    expect(orderListToggle).toBeCalled();
+    expect(toggleOrderedList).toBeCalled();
   });
 
   it('should not call ordered list if view is undefined', () => {
     bridge.editorView = undefined;
     bridge.onOrderedListSelected();
-    expect(orderListToggle).not.toBeCalled();
+    expect(toggleOrderedList).not.toBeCalled();
   });
 
   it('should not call ordered list if state is undefined', () => {
     bridge.listState = undefined;
     bridge.onOrderedListSelected();
-    expect(orderListToggle).not.toBeCalled();
+    expect(toggleOrderedList).not.toBeCalled();
   });
 
   it('should call bullet list toggle', () => {
     bridge.onBulletListSelected();
-    expect(bulletListToggle).toBeCalled();
+    expect(toggleBulletList).toBeCalled();
   });
 
   it('should not call bullet list if view is undefined', () => {
     bridge.editorView = undefined;
     bridge.onBulletListSelected();
-    expect(bulletListToggle).not.toBeCalled();
+    expect(toggleBulletList).not.toBeCalled();
   });
 
   it('should not call bullet list if state is undefined', () => {
     bridge.listState = undefined;
     bridge.onBulletListSelected();
-    expect(bulletListToggle).not.toBeCalled();
+    expect(toggleBulletList).not.toBeCalled();
   });
 
   it('should call indent list', () => {

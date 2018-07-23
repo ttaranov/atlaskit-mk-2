@@ -9,13 +9,16 @@ type State = {
 };
 
 const RelativeDiv = styled.div`
-  position: relative;
-  width: 200px;
-  height: 200px;
-  top: 100px;
-  left: 100px;
+  background-color: PaleVioletRed;
   border-radius: 3px;
-  background-color: grey;
+  height: 200px;
+  left: 40px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: relative;
+  top: 40px;
+  transform: translate(10px, 10px);
+  width: 200px;
 `;
 
 export default class SpotlightRelativeTarget extends Component<Object, State> {
@@ -26,12 +29,12 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
       <SpotlightManager>
         <div
           style={{
-            backgroundColor: 'lightblue',
+            backgroundColor: 'wheat',
           }}
         >
           <div style={{ textAlign: 'center', paddingTop: '2em' }}>
             <button onClick={() => this.setState({ active: true })}>
-              Spotlight grey box
+              Open Spotlight
             </button>
           </div>
           <SpotlightTarget name="box">
@@ -48,12 +51,13 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
               },
             ]}
             dialogPlacement="bottom left"
-            heading="This is a grey box"
+            heading="Combination positioning"
             key="box"
             target="box"
+            targetRadius={3}
           >
-            Despite the target being relatively positioned, the spotlight is
-            shown in the correct place.
+            The spotlight is shown in the correct place despite the target being
+            relatively positioned, transformed, and offset by margin.
           </Spotlight>
         )}
       </SpotlightManager>

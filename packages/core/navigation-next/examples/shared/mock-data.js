@@ -7,36 +7,11 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
-import { NavigationSubscriber } from '../../src';
+import { PeekToggleItem } from '../../src';
 
 export const globalNavPrimaryItems = [
-  {
-    key: 'jira',
-    component: ({ className, children }: *) => (
-      <NavigationSubscriber>
-        {navigation => {
-          function onClick() {
-            if (navigation.state.productNavIsCollapsed) {
-              navigation.expandProductNav();
-            }
-            navigation.togglePeek();
-          }
-          return (
-            <button
-              className={className}
-              onClick={onClick}
-              onMouseEnter={navigation.hint}
-              onMouseLeave={navigation.unHint}
-            >
-              {children}
-            </button>
-          );
-        }}
-      </NavigationSubscriber>
-    ),
-    icon: JiraIcon,
-    label: 'Jira',
-  },
+  { key: 'jira', icon: JiraIcon, label: 'Jira' },
+  { key: 'peek-toggle', component: PeekToggleItem, icon: null },
   { key: 'search', icon: SearchIcon },
   { key: 'create', icon: AddIcon },
 ];
@@ -61,13 +36,11 @@ export const globalNavSecondaryItems = [
 const rootIndex = [
   {
     id: 'root/index:header',
-    isRootLevel: true,
     items: [{ type: 'JiraWordmark', id: 'jira-wordmark' }],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'root/index:menu',
-    isRootLevel: true,
     items: [
       {
         type: 'LinkItem',
@@ -93,23 +66,21 @@ const rootIndex = [
     ],
     nestedGroupKey: 'menu',
     parentId: null,
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
 const rootIssues = [
   {
     id: 'root/issues:header',
-    isRootLevel: true,
     items: [
       { type: 'JiraWordmark', id: 'jira-wordmark' },
       { type: 'BackItem', goTo: 'root/index', id: 'back' },
     ],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'root/issues:menu',
-    isRootLevel: true,
     items: [
       {
         type: 'LinkItem',
@@ -130,34 +101,91 @@ const rootIssues = [
     ],
     nestedGroupKey: 'menu',
     parentId: 'root/index:menu',
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
-export const rootViews = {
-  'root/index': rootIndex,
-  'root/issues': rootIssues,
+export const rootViews = [
+  { id: 'root/index', getItems: () => rootIndex, type: 'product' },
+  { id: 'root/issues', getItems: () => rootIssues, type: 'product' },
+];
+
+const ProjectSwitcherItem = {
+  id: 'container-header',
+  type: 'ProjectSwitcher',
+  defaultSelected: {
+    avatar: 'endeavour',
+    id: 'endeavour',
+    pathname: '/projects/endeavour',
+    text: 'Endeavour',
+    subText: 'Software project',
+  },
+  options: [
+    {
+      label: 'Recent Projects',
+      options: [
+        {
+          avatar: 'endeavour',
+          id: 'endeavour',
+          pathname: '/projects/endeavour',
+          text: 'Endeavour',
+          subText: 'Software project',
+        },
+        {
+          avatar: 'design-system-support',
+          id: 'design-system-support',
+          pathname: '/projects/design-system-support',
+          text: 'Design System Support',
+          subText: 'Service desk project',
+        },
+      ],
+    },
+    {
+      label: 'Other Projects',
+      options: [
+        {
+          avatar: 'design-platform',
+          id: 'design-platform',
+          pathname: '/projects/design-platform',
+          text: 'Design Platform',
+          subText: 'Software project',
+        },
+        {
+          avatar: 'donut-world',
+          id: 'donut-world',
+          pathname: '/projects/donut-world',
+          text: 'Donut World',
+          subText: 'Software project',
+        },
+        {
+          avatar: 'kitkat',
+          id: 'kitkat',
+          pathname: '/projects/kitkat',
+          text: 'KitKat',
+          subText: 'Software project',
+        },
+        {
+          avatar: 'tangerine',
+          id: 'tangerine',
+          pathname: '/projects/tangerine',
+          text: 'Tangerine',
+          subText: 'Software project',
+        },
+      ],
+    },
+  ],
 };
 
 /** Product container views */
 const containerProject = [
   {
     id: 'container/project/index:header',
-    isRootLevel: true,
-    items: [
-      {
-        id: 'container-header',
-        subText: 'Software project',
-        text: 'Endeavour',
-        type: 'ProjectSwitcher',
-      },
-    ],
-    type: 'Group',
+    items: [ProjectSwitcherItem],
+    type: 'Section',
   },
   {
     id: 'container/project/index:menu',
     nestedGroupKey: 'menu',
-    isRootLevel: true,
     items: [
       {
         icon: 'BacklogIcon',
@@ -192,21 +220,15 @@ const containerProject = [
         type: 'GoToItem',
       },
     ],
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
 const containerProjectIssues = [
   {
     id: 'container/project/issues:header',
-    isRootLevel: true,
     items: [
-      {
-        id: 'container-header',
-        subText: 'Software project',
-        text: 'Endeavour',
-        type: 'ProjectSwitcher',
-      },
+      ProjectSwitcherItem,
       {
         id: 'back-button',
         items: [
@@ -215,11 +237,10 @@ const containerProjectIssues = [
         type: 'Group',
       },
     ],
-    type: 'Group',
+    type: 'Section',
   },
   {
     id: 'container/project/issues:menu',
-    isRootLevel: true,
     nestedGroupKey: 'menu',
     parentId: 'container/project/index:menu',
     items: [
@@ -235,11 +256,19 @@ const containerProjectIssues = [
       { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
       { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
     ],
-    type: 'Nested',
+    type: 'Section',
   },
 ];
 
-export const containerViews = {
-  'container/project/index': containerProject,
-  'container/project/issues': containerProjectIssues,
-};
+export const containerViews = [
+  {
+    id: 'container/project/index',
+    getItems: () => containerProject,
+    type: 'container',
+  },
+  {
+    id: 'container/project/issues',
+    getItems: () => containerProjectIssues,
+    type: 'container',
+  },
+];

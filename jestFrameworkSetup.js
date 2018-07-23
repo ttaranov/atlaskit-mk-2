@@ -13,6 +13,10 @@ if (global.URL) {
   global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
 }
 
+if (!global.WEBSITE_ENV) {
+  global.WEBSITE_ENV = 'local';
+}
+
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.

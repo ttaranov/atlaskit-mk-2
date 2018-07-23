@@ -3,6 +3,9 @@ import styled, { css } from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
 
 export const SearchBox = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 1; /* required to keep the search box on top of icons in results when sticky */
   background-color: ${colors.N0};
   color: ${colors.N500};
   display: flex;

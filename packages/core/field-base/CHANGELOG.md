@@ -1,5 +1,23 @@
 # @atlaskit/field-base
 
+## 11.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/inline-dialog@8.0.0
+  - @atlaskit/input@4.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/inline-dialog@8.0.0
+  - @atlaskit/input@4.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 10.2.0
 - [minor] Updated visual styles for textfield and textarea components to match latest ADG spec [37f5ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37f5ea5)
 - [none] Updated dependencies [37f5ea5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37f5ea5)

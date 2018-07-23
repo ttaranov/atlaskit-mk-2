@@ -33,7 +33,9 @@ export const akEditorPrimaryButton = akColorB400;
 export const akEditorCodeBackground = akColorN20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
-export const akEditorFloatingPanelZIndex = akZIndexLayer;
+export const akEditorFloatingPanelZIndex = akZIndexLayer + 1;
+export const akEditorToolbarDropdownMenuZIndex =
+  akEditorFloatingPanelZIndex + 1;
 export const akEditorMentionSelected = akColorN100;
 export const akEditorTableToolbarSize = 11;
 export const akEditorTableBorder = akColorN50;
@@ -50,3 +52,4 @@ export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
 export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;
+export const akEditorBreakoutPadding = 96;

@@ -27,7 +27,6 @@ describe('codeBlock - keymaps', () => {
       editorProps: {
         analyticsHandler: trackEvent,
         allowCodeBlocks: true,
-        allowMentions: true,
         mentionProvider: new Promise(() => {}),
         allowLists: true,
         allowTables: true,

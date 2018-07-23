@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import { ZoomControls, ZoomControlsProps } from '../../src/newgen/zoomControls';
 import { ZoomLevelIndicator } from '../../src/newgen/styled';
-import { ZoomLevel } from '../../src/newgen/domain';
+import { ZoomLevel } from '../../src/newgen/domain/zoomLevel';
 
 describe('Zooming', () => {
   describe('<ZoomControls />', () => {

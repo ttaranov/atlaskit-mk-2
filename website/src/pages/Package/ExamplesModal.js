@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { akElevationMixins } from '@atlaskit/util-shared-styles';
 
 import CodeIcon from '@atlaskit/icon/glyph/code';
@@ -349,6 +350,7 @@ export default class ExamplesModal extends Component<Props, State> {
     }
     return (
       <Modal
+        autoFocus={false}
         body={ModalBody}
         header={({ showKeyline }) => (
           <ModalHeaderComp
@@ -369,6 +371,12 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={1180}
       >
+        <Helmet>
+          <title>
+            Example - {fs.titleize(exampleId)} - {fs.titleize(packageId)} -{' '}
+            {BASE_TITLE}
+          </title>
+        </Helmet>
         <ContentBody>
           <ExampleNavigation
             groupId={groupId}
@@ -387,7 +395,8 @@ export default class ExamplesModal extends Component<Props, State> {
                 example={fs.getById(fs.getFiles(examples.children), exampleId)}
                 name={pkgJSON.name}
                 src={loaderUrl}
-                render={(ExampleCode, ExampleComponent, displayCode) => {
+              >
+                {(ExampleCode, ExampleComponent, displayCode) => {
                   if (displayCode) {
                     return (
                       <Content>
@@ -399,7 +408,7 @@ export default class ExamplesModal extends Component<Props, State> {
                   }
                   return <ExampleComponent />;
                 }}
-              />
+              </ExampleDisplay>
             ) : (
               <Content>
                 <ErrorMessage>

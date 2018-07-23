@@ -146,6 +146,7 @@ export default class ReactionsResource extends AbstractReactionsResource
     containerAri: string,
     ari: string,
     emojiId: string,
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState> {
     analyticsService.trackEvent('reactions.add.reaction', {
       containerAri,
@@ -162,7 +163,12 @@ export default class ReactionsResource extends AbstractReactionsResource
       {
         method: 'POST',
         headers: this.getHeaders(),
-        body: JSON.stringify({ emojiId, ari, containerAri }),
+        body: JSON.stringify({
+          emojiId,
+          ari,
+          containerAri,
+          objectCreationTimestamp,
+        }),
         credentials: 'include',
       },
     ).then(this.updateState(containerAri, localActionId));

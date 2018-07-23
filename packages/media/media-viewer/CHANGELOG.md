@@ -1,5 +1,68 @@
 # @atlaskit/media-viewer
 
+## 16.0.8
+- [patch] MSW-799: Implement zooming and panning without transforms [974c89a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/974c89a)
+
+## 16.0.7
+- [patch] Smaller chores and cleanup work for MVNG [3a91267](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a91267)
+
+## 16.0.6
+- [patch] Add ellipsis and truncate main and sub text if needed [06bee17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bee17)
+
+## 16.0.5
+- [patch] Handle the case where no audio or video artifacts were found [c83dda5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83dda5)
+
+## 16.0.4
+- [patch] Fix navigation buttons style [2deabc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2deabc2)
+
+## 16.0.3
+- [patch] Open MediaViewer in top of the modal dialog [49683a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49683a6)
+
+## 16.0.2
+- [patch] Prevent image from being selectable [63650bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63650bc)
+
+## 16.0.1
+- [patch] Fix constructAuthTokenUrl [f435228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f435228)
+
+## 16.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-ui@4.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 15.1.15
+- [patch] Add error views to MediaViewer NG [66ac5d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66ac5d4)
+
+## 15.1.14
+- [patch] Fancy video player improvements 3.0 [bb2b947](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb2b947)
+
+## 15.1.13
+- [patch] allow dev override to override feature flag [468bbfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468bbfe)
+
+## 15.1.12
+- [patch] Use media.tsconfig in MediaViewer [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-test-helpers@14.0.6
+  - @atlaskit/media-core@21.0.0
+
 ## 15.1.11
 - [patch] Fix passing feature flags down the List component [ae107ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae107ed)
 

@@ -2,12 +2,13 @@ import * as React from 'react';
 import EditorCodeIcon from '@atlaskit/icon/glyph/editor/code';
 import { codeBlock } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey, CodeBlockState } from './pm-plugins/main';
+import { plugin, stateKey, ActiveCodeBlock } from './pm-plugins/main';
 import keymap from './pm-plugins/keymaps';
 import ideUX from './pm-plugins/ide-ux';
 import LanguagePicker from './ui/LanguagePicker';
 import WithPluginState from '../../ui/WithPluginState';
 import { setNodeAttributes, deleteNodeAtPos } from './commands';
+import { focusStateKey } from '../base/pm-plugins/focus-handler';
 
 export interface CodeBlockOptions {
   enableKeybindingsForIDE?: boolean;
@@ -45,10 +46,19 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       };
       return (
         <WithPluginState
-          plugins={{ codeBlockState: stateKey }}
-          render={({ codeBlockState }: { codeBlockState: CodeBlockState }) => {
-            if (codeBlockState.activeCodeBlock) {
-              const { pos, node } = codeBlockState.activeCodeBlock;
+          plugins={{
+            activeCodeBlock: stateKey,
+            isEditorFocused: focusStateKey,
+          }}
+          render={({
+            activeCodeBlock,
+            isEditorFocused,
+          }: {
+            activeCodeBlock: ActiveCodeBlock;
+            isEditorFocused: boolean;
+          }) => {
+            if (activeCodeBlock) {
+              const { pos, node } = activeCodeBlock;
               const codeBlockDOM = domAtPos(pos) as HTMLElement;
               const setLanguage = (language: string) => {
                 setNodeAttributes(pos, { language })(view.state, view.dispatch);
@@ -62,7 +72,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
                   setLanguage={setLanguage}
                   deleteCodeBlock={deleteCodeBlock}
                   activeLanguage={node.attrs.language}
-                  isEditorFocused={codeBlockState.isEditorFocused}
+                  isEditorFocused={isEditorFocused}
                   popupsMountPoint={popupsMountPoint}
                   popupsBoundariesElement={popupsBoundariesElement}
                 />

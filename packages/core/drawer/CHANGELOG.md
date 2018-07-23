@@ -1,5 +1,21 @@
 # @atlaskit/drawer
 
+## 1.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/blanket@7.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/blanket@7.0.0
+  - @atlaskit/icon@13.0.0
+
 ## 0.1.1
 - [patch] Button should be a dev dependency [50ca31b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50ca31b)
 - [none] Updated dependencies [50ca31b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50ca31b)

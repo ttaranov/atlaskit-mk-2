@@ -4,7 +4,7 @@ import { FONT_STYLE } from '../groups';
 /**
  * @name underline_mark
  */
-export interface Definition {
+export interface UnderlineDefinition {
   type: 'underline';
 }
 

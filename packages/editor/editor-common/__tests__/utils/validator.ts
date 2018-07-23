@@ -1640,7 +1640,7 @@ describe('Renderer - Validator', () => {
 
   describe('getValidMark', () => {
     describe('unknown', () => {
-      it('should return null if type is unkown', () => {
+      it('should return null if type is unknown', () => {
         expect(getValidMark({ type: 'banana' })).to.equal(null);
       });
     });

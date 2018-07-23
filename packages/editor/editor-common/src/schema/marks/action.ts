@@ -4,12 +4,12 @@ import { LINK, COLOR } from '../groups';
 /**
  * @name action_mark
  */
-export interface Definition {
+export interface ActionDefinition {
   type: 'action';
-  attrs: Attributes;
+  attrs: ActionMarkAttributes;
 }
 
-export interface Attributes extends Action {
+export interface ActionMarkAttributes extends Action {
   title: string;
 }
 
@@ -54,7 +54,7 @@ export const action: MarkSpec = {
       },
     },
   ],
-  toDOM(node): [string, any] {
+  toDOM(node) {
     const { title, key, target } = node.attrs;
     return [
       'span',

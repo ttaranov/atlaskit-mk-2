@@ -15,6 +15,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import { PluginConfig as TablesPluginConfig } from '../plugins/table/pm-plugins/main';
+import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/pm-plugins/main';
 import { ErrorReportingHandler } from '../utils/error-reporter';
 import { AnalyticsHandler } from '../analytics';
@@ -67,12 +68,11 @@ export interface EditorProps {
   addonToolbarComponents?: ReactElement;
 
   allowBlockType?: { exclude?: Array<string> };
-  allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
   allowCodeBlocks?: boolean | CodeBlockOptions;
   allowLists?: boolean;
-  allowTextColor?: boolean;
+  allowTextColor?: boolean | TextColorPluginConfig;
   allowTables?: boolean | TablesPluginConfig;
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
@@ -135,9 +135,6 @@ export interface EditorProps {
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
-
-  // TODO: Deprecated remove after v63.0.0
-  allowTextFormatting?: boolean | TextFormattingOptions;
 
   extensionHandlers?: ExtensionHandlers;
 }

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
+import { selectRow } from 'prosemirror-utils';
+import { browser } from '@atlaskit/editor-common';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
 import NumberColumn from './NumberColumn';
@@ -9,7 +11,6 @@ import { Container } from './styles';
 import { isSelectionUpdated } from './utils';
 import {
   resetHoverSelection,
-  selectRowClearHover,
   hoverRows,
   insertRow,
   deleteSelectedRows,
@@ -133,8 +134,14 @@ export default class TableFloatingControls extends Component<Props, State> {
   };
 
   private selectRow = (row: number) => {
-    const { state, dispatch } = this.props.editorView;
-    selectRowClearHover(row)(state, dispatch);
+    const { editorView } = this.props;
+    const { state, dispatch } = editorView;
+    // fix for issue ED-4665
+    if (browser.ie_version === 11) {
+      (editorView.dom as HTMLElement).blur();
+    }
+    dispatch(selectRow(row)(state.tr));
+    this.resetHoverSelection();
   };
 
   private insertRow = (row: number) => {

@@ -55,7 +55,7 @@ export default function withOuterListeners<P>(
     };
 
     render() {
-      return <Component {...this.props as any} />;
+      return <Component {...this.props} />;
     }
   };
 }

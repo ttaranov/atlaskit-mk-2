@@ -31,6 +31,7 @@ const atlaskitTeam = [
 const editorTeam = [
   'imsysoev',
   'jyotiatl',
+  'atlasmarco',
   'ed919',
   'scottsidwell',
   'rifat_nabi',
@@ -40,6 +41,7 @@ const editorTeam = [
   'dsorin',
   'jmack2',
   'supertong',
+  'jcoppinger',
   'pcurren',
   'agnes',
   'vsutrave',

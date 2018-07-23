@@ -12,7 +12,7 @@ const date =
   '[aria-label="calendar"] > table > tbody > tr:nth-child(5) > td:nth-child(6)';
 const dateValue = `${datepickerDefault} > div > div > div`;
 const timepickerDefault = '#examples > div > div > div > div:nth-child(16)';
-const timePickerMenu = '[role="listbox"]';
+const timePickerMenu = '.timepicker-select__menu-list';
 const timeValue = `${timepickerDefault} > div > div > div`;
 const timeOption = '[role="option"]';
 

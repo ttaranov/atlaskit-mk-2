@@ -207,8 +207,10 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     border-radius: 1px;
   }
 
-  & img {
+  & .renderer-image {
     max-width: 100%;
+    display: block;
+    margin: ${akGridSizeUnitless * 3}px 0;
   }
 
   & div > .media-wrapped + .media-wrapped + *:not(.media-wrapped) {
@@ -281,6 +283,25 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-top: 12px;
     &:first-child {
       margin-top: 0;
+    }
+  }
+
+  & [data-layout-type] {
+    display: none;
+  }
+
+  & [data-layout-type='two_equal'] {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: calc(100% + 48px);
+    left: -28px;
+
+    & > * {
+      margin: ${akGridSizeUnitless}px;
+      padding: ${akGridSizeUnitless * 2}px;
+      flex: 1;
+      min-width: 0;
     }
   }
 `;

@@ -3,6 +3,7 @@
 import React from 'react';
 import Table from '@atlaskit/dynamic-table';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import { gridSize } from '@atlaskit/theme';
 import * as fs from '../utils/fs';
 import Page, { Title, Section } from '../components/Page';
@@ -126,6 +127,9 @@ const StatRows = () =>
 export default function PackagesList() {
   return (
     <Page width="large">
+      <Helmet>
+        <title>Browse all packages - {BASE_TITLE}</title>
+      </Helmet>
       <Title>All Packages</Title>
       <Section>
         <Table

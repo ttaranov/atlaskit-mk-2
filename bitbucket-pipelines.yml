@@ -1,4 +1,5 @@
-image: node:8.4.0
+# Note: This image can be found in build/pipelines/docker-image
+image: atlassianlabs/atlaskit-mk-2:1.0.3
 # This ensures we do a full clone on each build which prevents issues when cross referencing
 # changesets and releases
 clone:
@@ -66,12 +67,14 @@ pipelines:
         - step:
             name: Browser Testing
             script:
-              - source ./build-setup.sh 
+              - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - echo "Run browser unit tests using Karma"
+              - echo "Run browser unit tests using Karma + Browserstack"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-              - echo "Run browser integration tests using Webdriver"
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
+              - echo "Due to an issue with Webdriver and Browserstack - tests are disabled - please run it from your local branch or check your changes manually"
+              - echo "Run browser integration tests using Webdriver + Browserstack"
+              # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
+              -  LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
             caches:
               - node
         - step:
@@ -123,13 +126,13 @@ pipelines:
     - step:
           script:
             #to overcome puppeteer drawback yarn add again
-            # When running Puppeteer in Docker, 
+            # When running Puppeteer in Docker,
             # getting headless Chrome up and running in Docker can be tricky.
             # The bundled Chromium that Puppeteer installs is missing the necessary shared library dependencies.
             # To fix, you'll need to install the missing dependencies and the latest Chromium package in your Dockerfile:
             - source ./build/visual-regression/puppeteer.sh
             - source ./build-setup.sh
-            - bolt install --pure-lockfile 
+            - bolt install --pure-lockfile
             # Install puppeteer so it's available in the container.
             # Even if it is present in the package.json
             # For further details see: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
@@ -162,7 +165,7 @@ pipelines:
             - yarn build
             - yarn build:bundle-analysis
           caches:
-            - node 
+            - node
 
 
     landkid:

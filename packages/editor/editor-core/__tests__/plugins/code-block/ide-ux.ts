@@ -322,7 +322,7 @@ describe('IDE UX plugin', () => {
         );
         sendKeyToPm(editorView, 'Mod-[');
         expect(trackEvent).toHaveBeenCalledWith(
-          'atlassian.editor.codeblock.deindent',
+          'atlassian.editor.codeblock.outdent',
         );
       });
     });
@@ -445,7 +445,7 @@ describe('IDE UX plugin', () => {
         const { editorView } = editor(doc(code_block()('top\n{<>}start\nend')));
         sendKeyToPm(editorView, 'Tab');
         expect(trackEvent).toHaveBeenLastCalledWith(
-          'atlassian.editor.codeblock.insert.indent',
+          'atlassian.editor.codeblock.indent.insert',
         );
       });
     });
@@ -579,7 +579,7 @@ describe('IDE UX plugin', () => {
         );
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(trackEvent).toHaveBeenLastCalledWith(
-          'atlassian.editor.codeblock.deindent',
+          'atlassian.editor.codeblock.outdent',
         );
       });
     });

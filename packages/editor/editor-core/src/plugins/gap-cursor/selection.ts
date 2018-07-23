@@ -76,6 +76,8 @@ export class GapCursorSelection extends Selection {
     }
 
     let pos: number = $pos.pos;
+
+    // TODO: Fix any, potential issue. ED-5048
     let next: any = null;
 
     // Scan up from this position

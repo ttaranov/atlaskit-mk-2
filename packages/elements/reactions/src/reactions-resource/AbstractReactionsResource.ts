@@ -107,6 +107,7 @@ export default abstract class AbstractReactionsResource
     containerAri: string,
     ari: string,
     emojiId: string,
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState> {
     const key = `${containerAri}|${ari}`;
 
@@ -116,7 +117,12 @@ export default abstract class AbstractReactionsResource
         throw e;
       });
     } else {
-      return this.addReaction(containerAri, ari, emojiId).catch(e => {
+      return this.addReaction(
+        containerAri,
+        ari,
+        emojiId,
+        objectCreationTimestamp,
+      ).catch(e => {
         this.optimisticDeleteReaction(containerAri, ari, emojiId);
         throw e;
       });
@@ -348,6 +354,7 @@ export default abstract class AbstractReactionsResource
     containerAri: string,
     ari: string,
     emojiId: string,
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState>;
 
   abstract deleteReaction(

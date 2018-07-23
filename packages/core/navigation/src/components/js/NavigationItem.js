@@ -2,8 +2,17 @@
 import React, { PureComponent } from 'react';
 import type { ComponentType, Node } from 'react';
 import { withTheme } from 'styled-components';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import baseItem, { withItemClick, withItemFocus } from '@atlaskit/item';
 
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import NavigationItemAction from '../styled/NavigationItemAction';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemCaption from '../styled/NavigationItemCaption';
@@ -167,4 +176,24 @@ class NavigationItem extends PureComponent<Props> {
   }
 }
 
-export default withTheme(NavigationItem);
+export const NavigationItemWithoutAnalytics = withTheme(NavigationItem);
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'navigationItem',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'navigationItem',
+
+      attributes: {
+        componentName: 'navigationItem',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(NavigationItemWithoutAnalytics),
+);

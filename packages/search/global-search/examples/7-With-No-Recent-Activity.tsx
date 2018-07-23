@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import BasicNavigation from '../example-helpers/BasicNavigation';
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 import { GlobalQuickSearch } from '../src/index';
 
@@ -14,7 +15,9 @@ export default class extends React.Component {
       <Outer>
         <BasicNavigation
           searchDrawerContent={
-            <GlobalQuickSearch cloudId="cloudId" context="confluence" />
+            <LocaleIntlProvider>
+              <GlobalQuickSearch cloudId="cloudId" context="confluence" />
+            </LocaleIntlProvider>
           }
         />
       </Outer>

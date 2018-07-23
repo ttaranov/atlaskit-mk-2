@@ -68,6 +68,12 @@ export interface ResourceProvider<Result> {
   unsubscribe(key: string): void;
 }
 
+export type MentionContextIdentifier = {
+  containerId: string;
+  objectId: string;
+  childObjectId?: string;
+};
+
 export interface MentionProvider
   extends ResourceProvider<MentionDescription[]> {
   filter(query?: string): void;
@@ -267,25 +273,28 @@ class MentionResource extends AbstractMentionResource {
     }
   }
 
-  filter(query?: string): void {
+  filter(query?: string, contextIdentifier?: MentionContextIdentifier): void {
     const searchTime = Date.now();
 
     if (!query) {
-      this.initialState().then(
+      this.initialState(contextIdentifier).then(
         results => this.notify(searchTime, results, query),
         error => this.notifyError(error, query),
       );
     } else {
       this.activeSearches.add(query);
-      this.search(query).then(
+      this.search(query, contextIdentifier).then(
         results => this.notify(searchTime, results, query),
         error => this.notifyError(error, query),
       );
     }
   }
 
-  recordMentionSelection(mention: MentionDescription): Promise<void> {
-    return this.recordSelection(mention).then(
+  recordMentionSelection(
+    mention: MentionDescription,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<void> {
+    return this.recordSelection(mention, contextIdentifier).then(
       () => {},
       error => debug(`error recording mention selection: ${error}`, error),
     );
@@ -295,8 +304,10 @@ class MentionResource extends AbstractMentionResource {
     return this.activeSearches.has(query);
   }
 
-  private initialState(): Promise<MentionsResult> {
-    return this.remoteInitialState();
+  private initialState(
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
+    return this.remoteInitialState(contextIdentifier);
   }
 
   private getUserIdsInContext(): Promise<Set<string>> {
@@ -311,24 +322,46 @@ class MentionResource extends AbstractMentionResource {
     return Promise.resolve(new Set());
   }
 
+  private getQueryParams(
+    contextIdentifier?: MentionContextIdentifier,
+  ): KeyValues {
+    const configParams: KeyValues = {};
+    const contextParams: KeyValues = {};
+
+    if (this.config.containerId) {
+      configParams['containerId'] = this.config.containerId;
+    }
+
+    if (this.config.productId) {
+      configParams['productIdentifier'] = this.config.productId;
+    }
+
+    if (contextIdentifier) {
+      if (contextIdentifier.containerId) {
+        contextParams['containerId'] = contextIdentifier.containerId;
+      }
+      if (contextIdentifier.objectId) {
+        contextParams['objectId'] = contextIdentifier.objectId;
+      }
+      if (contextIdentifier.childObjectId) {
+        contextParams['childObjectId'] = contextIdentifier.childObjectId;
+      }
+    }
+    // if contextParams exist then it will override configParams for containerId
+    return { ...configParams, ...contextParams };
+  }
+
   /**
    * Returns the initial mention display list before a search is performed for the specified
    * container.
    *
-   * @param containerId
+   * @param contextIdentifier
    * @returns Promise
    */
-  private remoteInitialState(): Promise<MentionsResult> {
-    const queryParams: KeyValues = {};
-
-    if (this.config.containerId) {
-      queryParams['containerId'] = this.config.containerId;
-    }
-
-    if (this.config.productId) {
-      queryParams['productIdentifier'] = this.config.productId;
-    }
-
+  private remoteInitialState(
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
+    const queryParams: KeyValues = this.getQueryParams(contextIdentifier);
     const options = {
       path: 'bootstrap',
       queryParams,
@@ -343,11 +376,14 @@ class MentionResource extends AbstractMentionResource {
       });
   }
 
-  private search(query: string): Promise<MentionsResult> {
+  private search(
+    query: string,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
     if (this.searchIndex.hasDocuments()) {
       return this.searchIndex.search(query).then(result => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query).then(
+        this.remoteSearch(query, contextIdentifier).then(
           result => {
             this.activeSearches.delete(query);
             this.notify(searchTime, result, query);
@@ -362,7 +398,7 @@ class MentionResource extends AbstractMentionResource {
       });
     }
 
-    return this.remoteSearch(query).then(result => {
+    return this.remoteSearch(query, contextIdentifier).then(result => {
       this.searchIndex.indexResults(result.mentions);
       return result;
     });
@@ -381,23 +417,17 @@ class MentionResource extends AbstractMentionResource {
     });
   }
 
-  private remoteSearch(query: string): Promise<MentionsResult> {
-    const queryParams = {
-      query,
-      limit: MAX_QUERY_ITEMS,
-    };
-
-    if (this.config.containerId) {
-      queryParams['containerId'] = this.config.containerId;
-    }
-
-    if (this.config.productId) {
-      queryParams['productIdentifier'] = this.config.productId;
-    }
-
+  private remoteSearch(
+    query: string,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<MentionsResult> {
     const options = {
       path: 'search',
-      queryParams,
+      queryParams: {
+        query,
+        limit: MAX_QUERY_ITEMS,
+        ...this.getQueryParams(contextIdentifier),
+      },
     };
 
     return serviceUtils
@@ -421,18 +451,16 @@ class MentionResource extends AbstractMentionResource {
     return { ...result, mentions };
   }
 
-  private recordSelection(mention: MentionDescription): Promise<void> {
-    const queryParams = {
-      selectedUserId: mention.id,
-    };
-
-    if (this.config.productId) {
-      queryParams['productIdentifier'] = this.config.productId;
-    }
-
+  private recordSelection(
+    mention: MentionDescription,
+    contextIdentifier?: MentionContextIdentifier,
+  ): Promise<void> {
     const options = {
       path: 'record',
-      queryParams,
+      queryParams: {
+        selectedUserId: mention.id,
+        ...this.getQueryParams(contextIdentifier),
+      },
       requestInit: {
         method: 'POST',
       },

@@ -31,7 +31,7 @@ export function isTransitioning(state: TransitionState) {
   return ['entering', 'exiting'].includes(state);
 }
 
-type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
+export type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
 type Props = {
   children: ({
     transitionStyle: Object,

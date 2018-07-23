@@ -1,5 +1,46 @@
 # @atlaskit/single-select
 
+## 6.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/button@9.0.2
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+  - @atlaskit/droplist@7.0.2
+  - @atlaskit/avatar@14.0.2
+
+## 6.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/droplist@7.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/droplist@7.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 5.2.5
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/button@8.2.5
+
 ## 5.2.4
 - [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
   - @atlaskit/avatar@12.0.0

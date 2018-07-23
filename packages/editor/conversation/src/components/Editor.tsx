@@ -23,6 +23,8 @@ export interface Props {
   isExpanded?: boolean;
   onCancel?: () => void;
   onSave?: (value: any) => void;
+  onClose?: () => void;
+  onOpen?: () => void;
   isEditing?: boolean;
 
   // Provider
@@ -89,6 +91,30 @@ export default class Editor extends React.Component<Props, State> {
       isExpanded: props.isExpanded,
       isEditing: props.isEditing,
     };
+  }
+
+  UNSAFE_componentWillUpdate(nextProps: Props, nextState: State) {
+    if (nextState.isExpanded && !this.state.isExpanded && this.props.onOpen) {
+      this.props.onOpen();
+    } else if (
+      !nextState.isExpanded &&
+      this.state.isExpanded &&
+      this.props.onClose
+    ) {
+      this.props.onClose();
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.isExpanded && this.props.onOpen) {
+      this.props.onOpen();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
   }
 
   private onFocus = () =>

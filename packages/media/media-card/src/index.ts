@@ -10,10 +10,9 @@ import {
   MediaType,
   FileProcessingStatus,
 } from '@atlaskit/media-core';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { CardAction } from './actions';
-
-import { UIAnalyticsEventInterface } from './analytics-next';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';

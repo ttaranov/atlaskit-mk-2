@@ -1,8 +1,8 @@
 import { NodeSpec } from 'prosemirror-model';
-import { Definition as Paragraph } from './paragraph';
-import { Definition as OrderedList } from './ordered-list';
-import { Definition as BulletList } from './bullet-list';
-import { Definition as MediaSingle } from './media-single';
+import { ParagraphDefinition as Paragraph } from './paragraph';
+import { OrderedListDefinition as OrderedList } from './ordered-list';
+import { BulletListDefinition as BulletList } from './bullet-list';
+import { MediaSingleDefinition as MediaSingle } from './media-single';
 
 export interface ListItemArray
   extends Array<Paragraph | OrderedList | BulletList | MediaSingle> {
@@ -12,7 +12,7 @@ export interface ListItemArray
 /**
  * @name listItem_node
  */
-export interface Definition {
+export interface ListItemDefinition {
   type: 'listItem';
   /**
    * @minItems 1

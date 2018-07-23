@@ -2,8 +2,8 @@
 
 import { colors, gridSize } from '@atlaskit/theme';
 
-import productNavThemes from '../ProductNav/styles';
-import type { ThemedProductComponentStyles } from '../../theme/types';
+import contentNavThemes from '../ContentNavigation/styles';
+import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 
 const scrollHintHeight = 2;
 const scrollHintSpacing = gridSize() * 2;
@@ -12,7 +12,6 @@ const isGecko = window && window.navigator.userAgent.indexOf('Gecko') >= 0;
 const isWebkit =
   window && window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
 const scrollBarSize = isGecko || isWebkit ? 15 : 30;
-// console.log(window.navigator.userAgent);
 
 const baseStyles = {
   wrapper: {
@@ -65,11 +64,11 @@ const light = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.light().container.backgroundColor,
+        backgroundColor: contentNavThemes.light().container.backgroundColor,
       },
     },
   },
-  root: {
+  product: {
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -81,7 +80,7 @@ const light = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.light().root.backgroundColor,
+        backgroundColor: contentNavThemes.light().product.backgroundColor,
       },
     },
   },
@@ -100,11 +99,11 @@ const dark = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.dark().container.backgroundColor,
+        backgroundColor: contentNavThemes.dark().container.backgroundColor,
       },
     },
   },
-  root: {
+  product: {
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -116,7 +115,7 @@ const dark = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.dark().root.backgroundColor,
+        backgroundColor: contentNavThemes.dark().product.backgroundColor,
       },
     },
   },
@@ -135,11 +134,11 @@ const settings = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.settings().container.backgroundColor,
+        backgroundColor: contentNavThemes.settings().container.backgroundColor,
       },
     },
   },
-  root: {
+  product: {
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -151,11 +150,15 @@ const settings = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: productNavThemes.settings().root.backgroundColor,
+        backgroundColor: contentNavThemes.settings().product.backgroundColor,
       },
     },
   },
 });
 
-const themes: ThemedProductComponentStyles<void> = { dark, light, settings };
+const themes: ThemedContentNavigationComponentStyles<void> = {
+  dark,
+  light,
+  settings,
+};
 export default themes;
