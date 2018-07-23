@@ -25,7 +25,7 @@ import {
 const defaultImageOptions: MediaStoreGetFileImageParams = {
   'max-age': 3600,
   allowAnimated: true,
-  mode: 'full-fit',
+  mode: 'crop',
 };
 
 const extendImageParams = (

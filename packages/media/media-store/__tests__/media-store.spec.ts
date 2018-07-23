@@ -426,7 +426,7 @@ describe('MediaStore', () => {
         const url = await mediaStore.getFileImageURL('1234');
 
         expect(url).toEqual(
-          `${serviceHost}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token`,
+          `${serviceHost}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
         );
       });
     });
@@ -442,7 +442,7 @@ describe('MediaStore', () => {
 
         const image = await mediaStore.getImage('123');
         expect(fetchMock.lastUrl()).toEqual(
-          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token`,
+          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
         );
         expect(image).toBeInstanceOf(Blob);
       });
@@ -456,12 +456,12 @@ describe('MediaStore', () => {
         });
 
         await mediaStore.getImage('123', {
-          mode: 'crop',
+          mode: 'full-fit',
           version: 2,
           upscale: true,
         });
         expect(fetchMock.lastUrl()).toEqual(
-          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token&upscale=true&version=2`,
+          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
         );
       });
     });
