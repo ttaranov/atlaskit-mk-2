@@ -4,10 +4,10 @@ import { shallow, mount } from 'enzyme';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
 import { Presence } from '@atlaskit/avatar';
-import AkProfilecardResourced, { AkProfilecard, AkProfileClient } from '../src';
-import ErrorMessage from '../src/components/ErrorMessage';
-import presences from '../src/internal/presences';
-import { FullNameLabel, ActionButtonGroup } from '../src/styled/Card';
+import AkProfilecardResourced, { AkProfilecard, AkProfileClient } from '../..';
+import ErrorMessage from '../../components/ErrorMessage';
+import presences from '../../internal/presences';
+import { FullNameLabel, ActionButtonGroup } from '../../styled/Card';
 
 describe('Profilecard', () => {
   it('should export default AkProfilecardResourced', () => {
