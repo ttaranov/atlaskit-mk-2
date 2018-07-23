@@ -4,11 +4,11 @@ import {
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
-import Button from '@atlaskit/button';
-import { isError } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs';
+import { CardList, CardListEvent } from '@atlaskit/media-card';
 
 const context = createStorybookContext();
+const pageSize = 5;
 
 export type State = {
   selectedItem?: MediaViewerItem;
@@ -27,7 +27,12 @@ export default class Example extends React.Component<{}, {}> {
   render() {
     return (
       <div>
-        <Button onClick={this.open}>Open MediaViewer</Button>
+        <CardList
+          context={context}
+          collectionName={defaultCollectionName}
+          onCardClick={this.openCard}
+          pageSize={pageSize}
+        />
         {this.state.selectedItem && (
           <MediaViewer
             featureFlags={{ nextGen: true }}
@@ -38,40 +43,20 @@ export default class Example extends React.Component<{}, {}> {
             dataSource={{ collectionName: defaultCollectionName }}
             collectionName={defaultCollectionName}
             onClose={this.onClose}
-            pageSize={5}
+            pageSize={pageSize}
           />
         )}
       </div>
     );
   }
 
-  private open = () => {
-    // Always get the first item on the collection to avoid having the error of "selected item" not found
-    // when added more items to the top.
-    // MSW-668 will provide a more consistent collection to work as example
-    this.subscription = context
-      .getMediaCollectionProvider(defaultCollectionName, 1)
-      .observable()
-      .subscribe({
-        next: collection => {
-          if (!isError(collection)) {
-            const firstItem = collection.items[0];
-            if (firstItem) {
-              this.setState({
-                selectedItem: {
-                  id: firstItem.details.id,
-                  type: firstItem.type,
-                  occurrenceKey: firstItem.details.occurrenceKey,
-                },
-              });
-            } else {
-              console.error('No items found in the collection');
-            }
-          } else {
-            console.error(collection);
-          }
-        },
-      });
+  private openCard = (e: CardListEvent) => {
+    this.setState({
+      selectedItem: {
+        ...e.mediaCollectionItem.details,
+        type: e.mediaCollectionItem.type,
+      },
+    });
   };
 
   private onClose = () => {
