@@ -127,12 +127,12 @@ class Tooltip extends Component<Props, State> {
     isVisible: false,
   };
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleWindowScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleWindowScroll);
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (!prevState.isVisible && this.state.isVisible) {
+      window.addEventListener('scroll', this.handleWindowScroll);
+    } else if (prevState.isVisible && !this.state.isVisible) {
+      window.removeEventListener('scroll', this.handleWindowScroll);
+    }
   }
 
   handleWindowScroll = () => {
