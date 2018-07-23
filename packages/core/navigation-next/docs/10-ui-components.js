@@ -27,11 +27,9 @@ The ContainerHeader is intended to be used in the container navigation layer for
 
 ${(
   <Example
-    Component={
-      require('../examples/docs/ui-components/ContainerHeader').default
-    }
+    Component={require('./examples/ui-components/ContainerHeader').default}
     title="ContainerHeader"
-    source={require('!!raw-loader!../examples/docs/ui-components/ContainerHeader')}
+    source={require('!!raw-loader!./examples/ui-components/ContainerHeader')}
   />
 )}
 
@@ -50,9 +48,9 @@ GlobalItems are rendered inside the global navigation layer.
 
 ${(
   <Example
-    Component={require('../examples/docs/ui-components/GlobalItem').default}
+    Component={require('./examples/ui-components/GlobalItem').default}
     title="GlobalItem"
-    source={require('!!raw-loader!../examples/docs/ui-components/GlobalItem')}
+    source={require('!!raw-loader!./examples/ui-components/GlobalItem')}
   />
 )}
 
@@ -90,9 +88,9 @@ A section of the product or container navigation may contain multiple groups.
 
 ${(
   <Example
-    Component={require('../examples/docs/ui-components/Group').default}
+    Component={require('./examples/ui-components/Group').default}
     title="Group"
-    source={require('!!raw-loader!../examples/docs/ui-components/Group')}
+    source={require('!!raw-loader!./examples/ui-components/Group')}
   />
 )}
 
@@ -124,9 +122,9 @@ ${(
 
 ${(
   <Example
-    Component={require('../examples/docs/ui-components/Item').default}
+    Component={require('./examples/ui-components/Item').default}
     title="Item"
-    source={require('!!raw-loader!../examples/docs/ui-components/Item')}
+    source={require('!!raw-loader!./examples/ui-components/Item')}
   />
 )}
 
