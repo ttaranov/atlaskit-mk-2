@@ -645,6 +645,17 @@ describe('IDE UX plugin', () => {
           );
           expect(editorView.state.selection.from).toBe(sel + 1);
         });
+        const nonMatchingBracket = right === '}' ? ']' : '}';
+        it(`should insert non-matching closing bracket when '${nonMatchingBracket}' inserted`, () => {
+          const { editorView, sel } = editor(
+            doc(code_block()(`${left}{<>}${right}`)),
+          );
+          insertText(editorView, nonMatchingBracket, sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()(`${left}${nonMatchingBracket}${right}`)),
+          );
+          expect(editorView.state.selection.from).toBe(sel + 1);
+        });
         it('should remove the bracket pair when backspace pressed', () => {
           const { editorView, sel } = editor(
             doc(code_block()(`${left}{<>}${right}`)),

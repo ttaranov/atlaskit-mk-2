@@ -31,7 +31,11 @@ export default new Plugin({
 
         // Ignore right bracket when user types it and it already exists
         if (isCursorBeforeClosingBracket(afterText)) {
-          if (isClosingBracket(text)) {
+          const { hasTrailingMatchingBracket } = getAutoClosingBracketInfo(
+            beforeText,
+            text,
+          );
+          if (hasTrailingMatchingBracket) {
             view.dispatch(setTextSelection(to + text.length)(state.tr));
             return true;
           }
