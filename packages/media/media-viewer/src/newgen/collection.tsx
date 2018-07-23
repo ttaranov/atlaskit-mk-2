@@ -102,17 +102,24 @@ export class Collection extends React.Component<Props, State> {
             },
           });
         } else {
-          this.setState({
-            items: {
-              status: 'SUCCESSFUL',
-              data: collection.items.filter(collectionFileItemFilter),
+          this.setState(
+            {
+              items: {
+                status: 'SUCCESSFUL',
+                data: collection.items.filter(collectionFileItemFilter),
+              },
             },
-          });
-          if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
-            if (this.provider) {
-              this.provider.loadNextPage();
-            }
-          }
+            () => {
+              if (
+                defaultSelectedItem &&
+                this.shouldLoadNext(defaultSelectedItem)
+              ) {
+                if (this.provider) {
+                  this.provider.loadNextPage();
+                }
+              }
+            },
+          );
         }
       },
     });
