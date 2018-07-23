@@ -14,7 +14,7 @@ import {
 } from './_task-decision-helpers';
 import { insertMentionUsingClick } from './_mention-helpers';
 
-/*
+/* 
  * Safari adds special characters that end up in the snapshot
 */
 

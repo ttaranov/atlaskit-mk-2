@@ -114,21 +114,22 @@ function testRun(
 }
 
 function setLocalClients() {
-  const launchers = {
+  let launchers = {
     chrome: {
       browserName: 'chrome',
-      // Disable headless here to run on real browsers
-      chromeOptions: {
-        args: ['--headless', '--disable-gpu'],
-      },
+      chromeOptions: {},
     },
     firefox: {
       browserName: 'firefox',
-      'moz:firefoxOptions': {
-        args: ['-headless'],
-      },
+      'moz:firefoxOptions': {},
     },
   };
+  if (process.env.HEADLESS) {
+    launchers.chrome['chromeOptions'] = {
+      args: ['--headless', '--disable-gpu'],
+    };
+    launchers.firefox['moz:firefoxOptions'] = { args: ['-headless'] };
+  }
 
   return Object.keys(launchers).map(key => {
     const option = {
