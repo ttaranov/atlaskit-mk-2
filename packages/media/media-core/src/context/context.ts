@@ -268,7 +268,7 @@ class ContextImpl implements Context {
     const size = file.content instanceof Blob ? file.content.size : 0;
     const mediaType = getMediaTypeFromUploadableFile(file);
     const collectionName = file.collection;
-    const name = file.name || '';
+    const name = file.name || ''; // name property is not available in base64 image
     // TODO [MSW-678]: remove when id upfront is exposed
     const tempFileId = uuid.v4();
     const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });

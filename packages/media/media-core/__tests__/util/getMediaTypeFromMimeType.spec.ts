@@ -9,7 +9,6 @@ describe('getMediaTypeFromMimeType()', () => {
     expect(getMediaTypeFromMimeType('video/mp4')).toEqual('video');
     expect(getMediaTypeFromMimeType('video/mov')).toEqual('video');
     expect(getMediaTypeFromMimeType('application/pdf')).toEqual('doc');
-    expect(getMediaTypeFromMimeType('text/plain')).toEqual('doc');
   });
 
   it('should return unknown for not supported media types', () => {
