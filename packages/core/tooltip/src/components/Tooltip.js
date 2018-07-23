@@ -127,6 +127,21 @@ class Tooltip extends Component<Props, State> {
     isVisible: false,
   };
 
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleWindowScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleWindowScroll);
+  }
+
+  handleWindowScroll = () => {
+    if (this.state.isVisible) {
+      clearTimeout(this.timer);
+      this.setState({ isVisible: false, immediatelyHide: true });
+    }
+  };
+
   handleMouseClick = () => {
     if (this.props.hideTooltipOnClick) {
       clearTimeout(this.timer);
