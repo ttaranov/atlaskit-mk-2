@@ -147,6 +147,7 @@ export class MentionPicker extends Component<
     this.nextCount = 0;
     this.previousCount = 0;
     this.sessionId = uuid();
+    this.insertType = undefined;
     this.setState({ mentionProvider: undefined });
   };
 
@@ -198,6 +199,9 @@ export class MentionPicker extends Component<
 
   private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query, focused, queryActive } = state;
+    // If queryActive is true it means that the user is in a TypeAhead session.
+    // If it was false before, it means that a new session has started,
+    // so we need to create a MentionProvider with the analytics context information.
     if (queryActive && !this.state.queryActive) {
       this.refreshMentionProvider();
     }
@@ -228,7 +232,7 @@ export class MentionPicker extends Component<
     }
   };
 
-  private sendCancelledEvent = () => {
+  private sendCancelledEvent = () =>
     this.fireEvent(
       buildTypeAheadCancelPayload(
         this.pickerElapsedTime,
@@ -238,13 +242,11 @@ export class MentionPicker extends Component<
         this.pluginState && this.pluginState.lastQuery,
       ),
     );
-    this.endSession();
-  };
 
   private sendSelectedAnalyticsEvent = (
     mention: MentionDescription,
     insertType: InsertType,
-  ) => {
+  ) =>
     this.fireEvent(
       buildTypeAheadInsertedPayload(
         this.pickerElapsedTime,
@@ -257,12 +259,11 @@ export class MentionPicker extends Component<
         this.pluginState && this.pluginState.lastQuery,
       ),
     );
-    this.endSession();
-  };
 
   private handleDismiss = () => {
     this.handleOnClose();
     this.sendCancelledEvent();
+    this.endSession();
   };
 
   render() {
@@ -362,7 +363,7 @@ export class MentionPicker extends Component<
     });
 
     this.sendSelectedAnalyticsEvent(mention, mode);
-    this.insertType = undefined;
+    this.endSession();
   };
 
   private getMentionsCount = (): number =>
