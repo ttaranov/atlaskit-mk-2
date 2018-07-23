@@ -611,6 +611,26 @@ export const getValidNode = (
         }
         break;
       }
+      case 'layoutSection': {
+        if (attrs && content) {
+          const { layoutType } = attrs;
+          return {
+            type,
+            attrs: { layoutType },
+            content,
+          };
+        }
+        break;
+      }
+      case 'layoutColumn': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
       case 'decisionList': {
         return {
           type,

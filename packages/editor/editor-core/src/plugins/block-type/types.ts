@@ -7,36 +7,43 @@ export const NORMAL_TEXT: BlockType = {
   name: 'normal',
   title: 'Normal text',
   nodeName: 'paragraph',
+  tagName: 'p',
 };
 export const HEADING_1: BlockType = {
   name: 'heading1',
   title: 'Heading 1',
   nodeName: 'heading',
+  tagName: 'h1',
 };
 export const HEADING_2: BlockType = {
   name: 'heading2',
   title: 'Heading 2',
   nodeName: 'heading',
+  tagName: 'h2',
 };
 export const HEADING_3: BlockType = {
   name: 'heading3',
   title: 'Heading 3',
   nodeName: 'heading',
+  tagName: 'h3',
 };
 export const HEADING_4: BlockType = {
   name: 'heading4',
   title: 'Heading 4',
   nodeName: 'heading',
+  tagName: 'h4',
 };
 export const HEADING_5: BlockType = {
   name: 'heading5',
   title: 'Heading 5',
   nodeName: 'heading',
+  tagName: 'h5',
 };
 export const HEADING_6: BlockType = {
   name: 'heading6',
   title: 'Heading 6',
   nodeName: 'heading',
+  tagName: 'h6',
 };
 export const BLOCK_QUOTE: BlockType = {
   name: 'blockquote',
@@ -88,4 +95,5 @@ export interface BlockType {
   name: string;
   title: string;
   nodeName: string;
+  tagName?: string;
 }
