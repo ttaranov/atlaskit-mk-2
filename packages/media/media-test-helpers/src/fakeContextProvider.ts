@@ -38,9 +38,9 @@ export const fakeContext = (
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
-  const mediaStore = {} as any;
+  const getImage = {} as any;
   const defaultContext: Context = {
-    mediaStore,
+    getImage,
     getFile,
     getBlobService,
     getLocalPreview,
