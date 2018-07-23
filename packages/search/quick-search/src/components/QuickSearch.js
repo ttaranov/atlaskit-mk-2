@@ -170,8 +170,11 @@ export class QuickSearch extends Component<Props, State> {
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
       });
+    } else if (this.props.selectedResultId !== nextProps.selectedResultId) {
+      this.setState({
+        selectedResultId: nextProps.selectedResultId || null,
+      });
     }
-
     /**
      * Capture whether user needed to query in order to find their target result.
      * Only fire once per mount. Only fire when a search term is entered and the previous search
