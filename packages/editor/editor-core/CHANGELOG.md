@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.0.22
+- [patch] ED-5022, quick insert should not be triggered for key combination (/. [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
+- [patch] Updated dependencies [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
+
 ## 76.0.21
 - [patch] Allow empty alt tags, add better support for titles. ED-4751 [37fc5af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37fc5af)
 - [none] Updated dependencies [37fc5af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37fc5af)
