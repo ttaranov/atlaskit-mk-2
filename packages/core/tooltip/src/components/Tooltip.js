@@ -8,9 +8,7 @@ import React, {
   type Element,
   type ComponentType,
 } from 'react';
-import { Manager, Reference, Popper } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
-import { TransitionGroup } from 'react-transition-group';
 
 import Portal from '@atlaskit/portal';
 import {
@@ -26,6 +24,7 @@ import {
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 import Animation from './Animation';
+import Position from './Position';
 
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
@@ -73,17 +72,7 @@ type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   isVisible: boolean,
-  mousePosition: PositionTypeBase,
 };
-
-function getInitialState(props): State {
-  return {
-    immediatelyHide: false,
-    immediatelyShow: false,
-    isVisible: false,
-    mousePosition: props.mousePosition,
-  };
-}
 
 const queueOperation = (defaultFn, delay, flushFn) => {
   let pending = true;
@@ -120,16 +109,22 @@ const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
 };
 
 class Tooltip extends Component<Props, State> {
-  state = getInitialState(this.props);
-  wrapperRef: HTMLElement | null;
-  mouseCoordinates: CoordinatesType | null = null;
-  timer: TimeoutID;
   static defaultProps = {
     component: StyledTooltip,
     delay: 300,
     mousePosition: 'bottom',
     position: 'bottom',
     tag: 'div',
+  };
+
+  wrapperRef: HTMLElement | null;
+  targetRef: HTMLElement | null;
+  mouseCoordinates: CoordinatesType | null = null;
+  timer: TimeoutID;
+  state = {
+    immediatelyHide: false,
+    immediatelyShow: false,
+    isVisible: false,
   };
 
   handleMouseClick = () => {
@@ -165,33 +160,47 @@ class Tooltip extends Component<Props, State> {
     }
   };
 
+  // Update mouse coordinates, used when position is 'mouse'.
+  // We are not debouncing/throttling this function because we aren't causing any
+  // re-renders or performaing any intensive calculations, we're just updating a value.
+  // React also doesn't play nice debounced DOM event handlers because they pool their
+  // SyntheticEvent objects. Need to use event.persist as a workaround - https://stackoverflow.com/a/24679479/893630
+  handleMouseMove = (event: MouseEvent) => {
+    this.mouseCoordinates = {
+      left: event.clientX,
+      top: event.clientY,
+    };
+  };
+
   render() {
     const {
       children,
       content,
       position,
+      mousePosition,
       truncate,
       component: TooltipContainer,
       tag: TargetContainer,
     } = this.props;
     const { isVisible, immediatelyShow, immediatelyHide } = this.state;
     return (
-      <Manager>
+      <React.Fragment>
         <TargetContainer
           onClick={this.handleMouseClick}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseLeave}
+          onMouseMove={this.handleMouseMove}
           ref={wrapperRef => {
             this.wrapperRef = wrapperRef;
           }}
         >
-          <Reference>
-            {({ ref }) => (
-              <NodeResolver innerRef={ref}>
-                {Children.only(children)}
-              </NodeResolver>
-            )}
-          </Reference>
+          <NodeResolver
+            innerRef={targetRef => {
+              this.targetRef = targetRef;
+            }}
+          >
+            {Children.only(children)}
+          </NodeResolver>
         </TargetContainer>
         <Animation
           immediatelyShow={immediatelyShow}
@@ -200,25 +209,32 @@ class Tooltip extends Component<Props, State> {
         >
           {animationStyles => (
             <Portal layer="tooltip">
-              <Popper placement={position}>
-                {({ placement, ref, style }) => (
-                  <TooltipContainer
-                    innerRef={ref}
-                    style={{
-                      ...style,
-                      ...animationStyles,
-                    }}
-                    truncate={truncate}
-                    data-placement={placement}
-                  >
-                    {content}
-                  </TooltipContainer>
-                )}
-              </Popper>
+              <Position
+                mouseCoordinates={this.mouseCoordinates}
+                mousePosition={mousePosition}
+                position={position}
+                target={this.targetRef}
+              >
+                {(ref, placement, style) => {
+                  return (
+                    <TooltipContainer
+                      innerRef={ref}
+                      style={{
+                        ...style,
+                        ...animationStyles,
+                      }}
+                      truncate={truncate}
+                      data-placement={placement}
+                    >
+                      {content}
+                    </TooltipContainer>
+                  );
+                }}
+              </Position>
             </Portal>
           )}
         </Animation>
-      </Manager>
+      </React.Fragment>
     );
   }
 }

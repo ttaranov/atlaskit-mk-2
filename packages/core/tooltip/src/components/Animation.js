@@ -10,19 +10,18 @@ const defaultStyle = timeout => ({
   transition: `transform ${timeout.enter}ms ${easing}, opacity ${
     timeout.enter
   }ms linear`,
+  opacity: 0,
 });
 
 const transitionStyle = (state, timeout) => {
   const transitions = {
-    entering: {
-      opacity: 0,
-    },
+    entering: {},
     entered: {
       opacity: 1,
     },
     exiting: {
       opacity: 0,
-      transition: `opacity ${timeout.exit}ms linear`,
+      transition: `${timeout.exit}ms linear`,
     },
   };
   return transitions[state];
