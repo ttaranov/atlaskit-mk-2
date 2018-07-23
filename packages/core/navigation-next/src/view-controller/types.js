@@ -54,21 +54,21 @@ type IncomingView = {
 
 export type Reducer = ViewData => ViewData;
 
-export type ViewStateProps = {
+export type ViewControllerProps = {
   initialPeekViewId: ?ViewID,
   isDebugEnabled: boolean,
 };
 
-export type ViewStateState = {
+export type ViewControllerState = {
   activeView: ?ActiveView,
   incomingView: ?IncomingView,
   activePeekView: ?ActiveView,
   incomingPeekView: ?IncomingView,
 };
 
-export interface ViewStateInterface {
+export interface ViewControllerInterface {
   /** Properties */
-  state: ViewStateState;
+  state: ViewControllerState;
   views: { [ViewID]: View };
   reducers: { [ViewID]: Reducer[] };
   initialPeekViewId: ?ViewID;

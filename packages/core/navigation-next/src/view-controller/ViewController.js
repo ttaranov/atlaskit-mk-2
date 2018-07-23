@@ -7,12 +7,12 @@ import type {
   View,
   ViewData,
   ViewID,
-  ViewStateInterface,
-  ViewStateProps,
-  ViewStateState,
+  ViewControllerInterface,
+  ViewControllerProps,
+  ViewControllerState,
 } from './types';
 
-const defaultProps: ViewStateProps = {
+const defaultProps: ViewControllerProps = {
   initialPeekViewId: null,
   isDebugEnabled: false,
 };
@@ -21,8 +21,8 @@ type StateKeys =
   | { active: 'activeView', incoming: 'incomingView' }
   | { active: 'activePeekView', incoming: 'incomingPeekView' };
 
-export default class ViewState extends Container<ViewStateState>
-  implements ViewStateInterface {
+export default class ViewController extends Container<ViewControllerState>
+  implements ViewControllerInterface {
   state = {
     activeView: null,
     incomingView: null,
@@ -38,7 +38,7 @@ export default class ViewState extends Container<ViewStateState>
   constructor({
     initialPeekViewId,
     isDebugEnabled,
-  }: ViewStateProps = defaultProps) {
+  }: ViewControllerProps = defaultProps) {
     super();
     this.isDebugEnabled = isDebugEnabled;
     if (initialPeekViewId) {
@@ -51,7 +51,7 @@ export default class ViewState extends Container<ViewStateState>
    * view, or the active peek view.
    */
   _setViewInternals = (stateKeys: StateKeys) => (viewId: ViewID) => {
-    const updateViewState = this._updateViewState(stateKeys);
+    const updateViewController = this._updateViewController(stateKeys);
     const { incoming } = stateKeys;
     const view = this.views[viewId];
 
@@ -67,13 +67,13 @@ export default class ViewState extends Container<ViewStateState>
 
         // Wait for the Promise to resolve
         returnedItems.then(data => {
-          updateViewState(view, data);
+          updateViewController(view, data);
         });
         return;
       }
 
       // The view returned data
-      updateViewState(view, returnedItems);
+      updateViewController(view, returnedItems);
       return;
     }
 
@@ -85,7 +85,7 @@ export default class ViewState extends Container<ViewStateState>
   /**
    * Helper function for reducing a view's data and updating the state.
    */
-  _updateViewState = (stateKeys: StateKeys) => (
+  _updateViewController = (stateKeys: StateKeys) => (
     view: View,
     initialData: ViewData,
   ) => {
