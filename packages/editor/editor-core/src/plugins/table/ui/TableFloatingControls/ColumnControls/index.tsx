@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
 import { selectColumn, isTableSelected } from 'prosemirror-utils';
+import { browser } from '@atlaskit/editor-common';
 import {
   ColumnContainer,
   ColumnInner,
@@ -216,7 +217,12 @@ export default class ColumnControls extends Component<Props, any> {
   };
 
   private selectColumn = (column: number) => {
-    const { state, dispatch } = this.props.editorView;
+    const { editorView } = this.props;
+    const { state, dispatch } = editorView;
+    // fix for issue ED-4665
+    if (browser.ie_version === 11) {
+      (editorView.dom as HTMLElement).blur();
+    }
     dispatch(selectColumn(column)(state.tr));
   };
 

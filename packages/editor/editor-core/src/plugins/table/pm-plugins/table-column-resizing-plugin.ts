@@ -1,14 +1,14 @@
 import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { columnResizingPluginKey } from 'prosemirror-tables';
-import { stateKey as tablePluginKey } from '../pm-plugins/main';
+import { getPluginState } from '../pm-plugins/main';
 import { updateShadows } from '../nodeviews/TableComponent';
 import { getLineMarkerWidth } from '../ui/TableFloatingControls/utils';
 
 export const pluginKey = new PluginKey('tableColumnResizingCustomPlugin');
 
 const updateControls = (state: EditorState) => {
-  const { tableRef } = tablePluginKey.getState(state);
+  const { tableRef } = getPluginState(state);
   if (!tableRef) {
     return;
   }

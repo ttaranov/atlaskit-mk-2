@@ -12,15 +12,10 @@ import { shallow, mount } from 'enzyme';
 import { FileDetails, LinkDetails, Resource } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
-import { UIAnalyticsEventInterface } from '../src/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { Retry } from '../src/utils/cardGenericViewSmall/styled';
-import {
-  CardView,
-  CardViewWithAnalyticsEvents,
-  CardViewBase,
-  CardViewOwnProps,
-} from '../src/root/cardView';
+import { CardView, CardViewBase, CardViewOwnProps } from '../src/root/cardView';
 import { LinkCard } from '../src/links';
 import { FileCard } from '../src/files';
 import { Wrapper } from '../src/root/styled';
@@ -67,13 +62,8 @@ describe('CardView', () => {
     );
 
   it('should render FileCard when no metadata is passed', () => {
-    const element = shallow(<CardView status="loading" appearance="small" />);
-    const fileCard = element
-      .find(CardViewWithAnalyticsEvents)
-      .dive()
-      .find(CardViewBase)
-      .dive()
-      .find(FileCard);
+    const element = mount(<CardView status="loading" appearance="small" />);
+    const fileCard = element.find(FileCard);
     expect(fileCard).toHaveLength(1);
   });
 

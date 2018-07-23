@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
@@ -38,10 +39,14 @@ export interface Props {
 
 const Text = ({ url }) => (
   <TextWrapper>
-    <Title>Search for what you need</Title>
+    <Title>
+      <FormattedMessage id="global-search.no-recent-activity-title" />
+    </Title>
     <div>
-      Or use <a href={url}>Advanced Search</a> (`shift + enter`) to focus your
-      results.
+      <FormattedHTMLMessage
+        id="global-search.no-recent-activity-body"
+        values={{ url: url }}
+      />
     </div>
   </TextWrapper>
 );

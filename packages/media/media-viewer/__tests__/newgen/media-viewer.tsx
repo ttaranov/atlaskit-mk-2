@@ -2,33 +2,18 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
-import { Stubs } from '../_stubs';
+import { createContext } from '../_stubs';
 import { Content } from '../../src/newgen/content';
 import { MediaViewer } from '../../src/newgen/media-viewer';
-import { ErrorMessage, CloseButtonWrapper } from '../../src/newgen/styled';
+import { CloseButtonWrapper } from '../../src/newgen/styled';
+import { ErrorMessage } from '../../src/newgen/error';
 import Header from '../../src/newgen/header';
 import { KeyboardEventWithKeyCode } from './shortcut.spec';
-import { ItemSource } from '../../src/newgen/domain';
+import { ItemSource, Identifier } from '../../src/newgen/domain';
 
-function createContext(subject) {
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    subject && Stubs.mediaItemProvider(subject),
-  ) as any;
-}
-
-function createFixture(items, identifier) {
+function createFixture(items: Identifier[], identifier: Identifier) {
   const subject = new Subject<MediaItem>();
-  const context = createContext(subject);
+  const context = createContext({ subject });
   const onClose = jest.fn();
   const itemSource: ItemSource = {
     kind: 'ARRAY',

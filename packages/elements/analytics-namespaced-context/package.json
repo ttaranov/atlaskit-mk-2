@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-namespaced-context",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Provides a namespace for AnalyticsContext data (@atlaskit/analytics-next)",
   "config": {
     "access": "public"
@@ -15,12 +15,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics-gas-types": "^2.1.3",
-    "@atlaskit/analytics-next": "^2.1.8",
+    "@atlaskit/analytics-gas-types": "^3.0.0",
+    "@atlaskit/analytics-next": "^3.0.0",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.4.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -32,8 +32,11 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.2.4",
-    "@atlaskit/docs": "^4.2.2"
+    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/docs": "^5.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "react": "^16.4.0"
   },
   "atlaskit": {
     "internal": true

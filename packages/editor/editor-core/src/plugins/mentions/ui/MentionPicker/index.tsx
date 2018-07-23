@@ -1,24 +1,32 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
-import { PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { Popup, ContextIdentifierProvider } from '@atlaskit/editor-common';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { ContextIdentifierProvider, Popup } from '@atlaskit/editor-common';
 import {
+  ELEMENTS_CHANNEL,
+  isSpecialMention,
+  MentionDescription,
   MentionPicker as AkMentionPicker,
   MentionProvider,
-  MentionDescription,
-  isSpecialMention,
+  ContextMentionResource,
 } from '@atlaskit/mention';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { analyticsService } from '../../../../analytics';
 import {
   getInsertTypeForKey,
   InsertType,
 } from '../../../../analytics/fabric-analytics-helper';
 import { MentionsState } from '../../pm-plugins/main';
+import {
+  buildTypeAheadCancelPayload,
+  buildTypeAheadInsertedPayload,
+} from '../analytics';
+import { promiseAllWithNonFailFast } from '../../../../utils/promise-util';
 
 export interface Props {
   editorView?: EditorView;
-  contextIdentifierProvider: Promise<ContextIdentifierProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
   mentionProvider: Promise<MentionProvider>;
   pluginKey: PluginKey;
   presenceProvider?: any;
@@ -27,6 +35,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  createAnalyticsEvent: Function;
 }
 
 export interface State {
@@ -38,7 +47,7 @@ export interface State {
   focused?: boolean;
 }
 
-export default class MentionPicker extends PureComponent<Props, State> {
+export class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   content?: HTMLElement;
   private pluginState?: MentionsState;
@@ -46,6 +55,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private pickerOpenTime: number;
   private pickerElapsedTime: number;
   private insertType?: InsertType;
+  private nextCount: number = 0;
+  private previousCount: number = 0;
+  private mentions?: MentionDescription[];
 
   componentWillMount() {
     this.pickerOpenTime = 0;
@@ -54,8 +66,18 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.resolveResourceProvider(this.props.mentionProvider);
-    this.resolveContextIdentifierProvider(this.props.contextIdentifierProvider);
+    const { contextIdentifierProvider, mentionProvider } = this.props;
+    const errors: any[] = [];
+
+    promiseAllWithNonFailFast(
+      [
+        contextIdentifierProvider || Promise.resolve(undefined),
+        mentionProvider,
+      ],
+      error => errors.push(error),
+    ).then(([contextIdentifierProvider, mentionProvider]) => {
+      this.resolveResourceProvider(mentionProvider, contextIdentifierProvider);
+    });
   }
 
   componentWillUnmount() {
@@ -64,6 +86,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (pluginState) {
       pluginState.unsubscribe(this.handlePluginStateChange);
     }
+    this.unsubscribeMentionProvider();
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -73,18 +96,53 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.mentionProvider !== this.props.mentionProvider) {
-      this.resolveResourceProvider(nextProps.mentionProvider);
-    }
+    const contextIdProviderPromise = this.getUpdatedProp(
+      'contextIdentifierProvider',
+      nextProps,
+    );
+    const mentionProviderPromise = this.getUpdatedProp(
+      'mentionProvider',
+      nextProps,
+    );
+
     if (
-      nextProps.contextIdentifierProvider !==
-      this.props.contextIdentifierProvider
+      contextIdProviderPromise !== this.props.contextIdentifierProvider ||
+      mentionProviderPromise !== this.props.mentionProvider
     ) {
-      this.resolveContextIdentifierProvider(
-        nextProps.contextIdentifierProvider,
+      promiseAllWithNonFailFast(
+        [
+          contextIdProviderPromise || Promise.resolve(undefined),
+          mentionProviderPromise,
+        ],
+        error => {
+          // tslint:disable-next-line:no-console
+          console.warn(
+            'MentionPicker - some promise failed [ContextIdentifierProvider, MentionProvider]: ',
+            error ? error.toString() : 'N/A',
+          );
+        },
+      ).then(([contextIdentifierProvider, mentionProvider]) =>
+        this.resolveResourceProvider(
+          mentionProvider,
+          contextIdentifierProvider,
+        ),
       );
     }
   }
+
+  private getUpdatedProp = (name: keyof Props, nextProps: Props): any =>
+    this.props[name] !== nextProps[name] ? nextProps[name] : this.props[name];
+
+  private unsubscribeMentionProvider() {
+    if (this.state.mentionProvider) {
+      this.state.mentionProvider.unsubscribe('MentionPickerPlugin');
+    }
+  }
+
+  private resetCounters = () => {
+    this.nextCount = 0;
+    this.previousCount = 0;
+  };
 
   private setPluginState(props: Props) {
     const { editorView, pluginKey } = props;
@@ -101,30 +159,35 @@ export default class MentionPicker extends PureComponent<Props, State> {
       pluginState.onSelectPrevious = this.handleSelectPrevious;
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
-      pluginState.onDismiss = this.handleOnClose;
+      pluginState.onDismiss = this.handleDismiss;
       pluginState.onSpaceTyped = this.handleSpaceTyped;
     }
   }
 
-  private resolveResourceProvider(resourceProvider): void {
-    if (resourceProvider) {
-      resourceProvider.then((mentionProvider: MentionProvider) => {
-        this.setState({ mentionProvider });
-      });
-    } else {
-      this.setState({ mentionProvider: undefined });
-    }
-  }
+  private handleMentionResults = (mentions: MentionDescription[]) => {
+    this.mentions = mentions;
+  };
 
-  private resolveContextIdentifierProvider(contextIdentifierPromise): void {
-    if (contextIdentifierPromise) {
-      contextIdentifierPromise.then(
-        (contextIdentifierProvider: ContextIdentifierProvider) => {
-          this.setState({ contextIdentifierProvider });
-        },
+  private resolveResourceProvider(
+    mentionProvider?: MentionProvider,
+    contextIdentifierProvider?: ContextIdentifierProvider,
+  ) {
+    if (mentionProvider) {
+      // Note: if contextIdentifierProvider is undefined (maybe due to promise failure) then no MentionContextIdentifier will be passed to the
+      //       Mention service endpoints and the containerId from MentionResourceConfig will be used as fallback if any
+      const wrappedMentionProvider = contextIdentifierProvider
+        ? new ContextMentionResource(mentionProvider, contextIdentifierProvider)
+        : mentionProvider;
+      this.setState({
+        mentionProvider: wrappedMentionProvider,
+        contextIdentifierProvider,
+      });
+      mentionProvider.subscribe(
+        'MentionPickerPlugin',
+        this.handleMentionResults,
       );
     } else {
-      this.setState({ contextIdentifierProvider: undefined });
+      this.setState({ mentionProvider: undefined, contextIdentifierProvider });
     }
   }
 
@@ -149,6 +212,44 @@ export default class MentionPicker extends PureComponent<Props, State> {
     });
 
     return true;
+  };
+
+  private fireEvent = payload =>
+    this.props.createAnalyticsEvent(payload).fire(ELEMENTS_CHANNEL);
+
+  private sendCancelledEvent = () => {
+    this.fireEvent(
+      buildTypeAheadCancelPayload(
+        this.pickerElapsedTime,
+        this.previousCount,
+        this.nextCount,
+        this.pluginState && this.pluginState.lastQuery,
+      ),
+    );
+    this.resetCounters();
+  };
+
+  private sendSelectedAnalyticsEvent = (
+    mention: MentionDescription,
+    insertType: InsertType,
+  ) => {
+    this.fireEvent(
+      buildTypeAheadInsertedPayload(
+        this.pickerElapsedTime,
+        this.previousCount,
+        this.nextCount,
+        insertType,
+        mention,
+        this.mentions,
+        this.pluginState && this.pluginState.lastQuery,
+      ),
+    );
+    this.resetCounters();
+  };
+
+  private handleDismiss = () => {
+    this.handleOnClose();
+    this.sendCancelledEvent();
   };
 
   render() {
@@ -208,6 +309,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.picker) {
       (this.picker as AkMentionPicker).selectPrevious();
     }
+    this.previousCount++;
 
     return true;
   };
@@ -216,6 +318,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.picker) {
       (this.picker as AkMentionPicker).selectNext();
     }
+    this.nextCount++;
 
     return true;
   };
@@ -238,15 +341,10 @@ export default class MentionPicker extends PureComponent<Props, State> {
     const { accessLevel } = mention;
     const lastQuery = this.pluginState && this.pluginState.lastQuery;
 
-    const contextIdentifier = this.state.contextIdentifierProvider
-      ? ({
-          objectId: this.state.contextIdentifierProvider.objectId,
-          containerId: this.state.contextIdentifierProvider.containerId,
-        } as ContextIdentifierProvider)
-      : {};
-
+    const contextIdentifier = this.state.contextIdentifierProvider || {};
+    const mode: InsertType = this.insertType || InsertType.SELECTED;
     analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
-      mode: this.insertType || InsertType.SELECTED,
+      mode,
       isSpecial: isSpecialMention(mention) || false,
       accessLevel: accessLevel || '',
       queryLength: lastQuery ? lastQuery.length : 0,
@@ -255,14 +353,16 @@ export default class MentionPicker extends PureComponent<Props, State> {
       ...contextIdentifier,
     });
 
+    this.sendSelectedAnalyticsEvent(mention, mode);
     this.insertType = undefined;
   };
 
-  private getMentionsCount(): number {
-    return (this.picker && this.picker.mentionsCount()) || 0;
-  }
+  private getMentionsCount = (): number =>
+    (this.mentions && this.mentions.length) || 0;
 
   handleSpaceTyped = (): void => {
     analyticsService.trackEvent('atlassian.fabric.mention.picker.space', {});
   };
 }
+
+export default withAnalyticsEvents()(MentionPicker);

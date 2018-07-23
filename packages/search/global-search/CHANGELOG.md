@@ -1,5 +1,106 @@
 # @atlaskit/global-search
 
+## 5.1.1
+- [patch] fix infinite loop bug [e2e53e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2e53e0)
+
+## 5.1.0
+- [minor] Allow sending of search queries in analytics events [e5f14e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5f14e9)
+- [minor] Global search component now accepts a boolean to send search terms in analytics events [3b871bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b871bb)
+- [minor] Updated dependencies [e5f14e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5f14e9)
+  - @atlaskit/analytics-gas-types@3.1.0
+
+## 5.0.4
+- [patch] Passes the keyboard event from quick search to the submit event handler to ensure global search redirects with the complete search query. [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
+- [none] Updated dependencies [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
+  - @atlaskit/quick-search@4.1.0
+
+## 5.0.3
+- [patch] fix analytics bugs [30be100](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30be100)
+
+## 5.0.2
+- [patch] Wording update [43ebe0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43ebe0e)
+
+## 5.0.1
+- [patch] Add extra analytics event for highlight and selection of a search result [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
+- [patch] Updated dependencies [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
+  - @atlaskit/quick-search@4.0.1
+
+## 5.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/quick-search@4.0.0
+  - @atlaskit/field-text-area@4.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/page@8.0.0
+  - @atlaskit/flag@9.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/analytics-gas-types@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/quick-search@4.0.0
+  - @atlaskit/navigation@33.0.0
+  - @atlaskit/page@8.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text-area@4.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/flag@9.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/analytics-gas-types@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 4.7.0
+- [minor] Add support for i18n. No translations available yet. [bf66767](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf66767)
+
+## 4.6.3
+- [patch] Move tests under src and club unit, integration, visual regression [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)
+- [none] Updated dependencies [39c427d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c427d)
+  - @atlaskit/quick-search@3.0.2
+
+## 4.6.2
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/navigation@32.3.3
+  - @atlaskit/modal-dialog@5.2.8
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/quick-search@3.0.1
+  - @atlaskit/button@8.2.5
+  - @atlaskit/navigation@32.3.3
+  - @atlaskit/modal-dialog@5.2.8
+
+## 4.6.1
+- [patch] Add dismissed event and fix screen events. [c65736e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c65736e)
+
+## 4.6.0
+
+- [minor] Support sticky header and footer [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+- [minor] Updated dependencies [8bf8e51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8bf8e51)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+- [none] Updated dependencies [8b8ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b8ace1)
+  - @atlaskit/quick-search@3.0.0
+  - @atlaskit/navigation@32.3.2
+
+## 4.5.12
+- [patch] fixing XPSRCH-915 search results should not disapear between searches [0683d75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0683d75)
+
 ## 4.5.11
 - [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
   - @atlaskit/avatar@12.0.0

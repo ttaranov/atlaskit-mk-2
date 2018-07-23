@@ -1,5 +1,19 @@
 # @atlaskit/field-range
 
+## 5.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+
+## 4.1.1
+- [patch] update valuePercent state when value property is updated in FieldRange [8228477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8228477)
+- [none] Updated dependencies [8228477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8228477)
+
 ## 4.1.0
 - [minor] Added elevations to the Theme package and updated visual styles for the field-range component. [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)
 - [none] Updated dependencies [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)

@@ -121,7 +121,7 @@ export default class ProfilecardInteractive extends Component<Props, State> {
     );
   }
 
-  createRadioPresenceAttribute(attribute: string) {
+  createRadioPresenceAttribute(attribute: PresenceTypes) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>

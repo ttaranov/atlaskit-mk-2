@@ -6,10 +6,10 @@ import {
   isError,
 } from '@atlaskit/media-core';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
-import { ErrorMessage } from './styled';
+import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
 import { Subscription } from 'rxjs';
-import { toIdentifier } from './util';
+import { toIdentifier } from './utils';
 import { Spinner } from './loading';
 
 export type Props = Readonly<{
@@ -23,7 +23,7 @@ export type Props = Readonly<{
 }>;
 
 export type State = {
-  items: Outcome<MediaCollectionItem[], Error>;
+  items: Outcome<MediaCollectionItem[], MediaViewerError>;
 };
 
 const initialState: State = { items: { status: 'PENDING' } };
@@ -31,10 +31,10 @@ const initialState: State = { items: { status: 'PENDING' } };
 export class Collection extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
-  private provider: MediaCollectionProvider;
+  private subscription?: Subscription;
+  private provider?: MediaCollectionProvider;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -62,7 +62,7 @@ export class Collection extends React.Component<Props, State> {
       case 'PENDING':
         return <Spinner />;
       case 'FAILED':
-        return <ErrorMessage>Error loading collection</ErrorMessage>;
+        return <ErrorMessage error={items.err} />;
       case 'SUCCESSFUL':
         const identifiers = items.data.map(x =>
           toIdentifier(x, collectionName),
@@ -98,7 +98,7 @@ export class Collection extends React.Component<Props, State> {
           this.setState({
             items: {
               status: 'FAILED',
-              err: collection,
+              err: createError('metadataFailed', undefined, collection),
             },
           });
         } else {
@@ -109,7 +109,9 @@ export class Collection extends React.Component<Props, State> {
             },
           });
           if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
-            this.provider.loadNextPage();
+            if (this.provider) {
+              this.provider.loadNextPage();
+            }
           }
         }
       },
@@ -130,7 +132,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private onNavigationChange = (item: Identifier) => {
-    if (this.shouldLoadNext(item)) {
+    if (this.shouldLoadNext(item) && this.provider) {
       this.provider.loadNextPage();
     }
   };

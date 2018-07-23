@@ -1,18 +1,27 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 
-import React from 'react';
+import React, {
+  Component,
+  PureComponent,
+  type ComponentType,
+  type Node,
+} from 'react';
 import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
-import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, Route, withRouter } from 'react-router-dom';
 import LinkIcon from '@atlaskit/icon/glyph/link';
+import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
 import {
   GlobalNav,
-  ContainerViewSubscriber,
   ItemAvatar,
-  RootViewSubscriber,
-  NavRenderer,
+  ViewRenderer,
+  UIController,
+  ViewController,
+  withNavigationUI,
+  withNavigationViewController,
+  LayoutManager,
 } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
@@ -50,39 +59,149 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
   );
 };
 
-export const ProjectSwitcher = ({ components: C, ...props }: *) => (
-  <div css={{ paddingBottom: `${gridSize}px` }}>
-    <C.ContainerHeader
-      before={itemState => (
-        <ItemAvatar itemState={itemState} appearance="square" />
-      )}
-      {...props}
+// ==============================
+// Project Switcher
+// ==============================
+
+const SwitcherBefore = itemState => (
+  <ItemAvatar itemState={itemState} appearance="square" />
+);
+class Switcher extends PureComponent<*, *> {
+  state = {
+    selected: this.props.defaultSelected,
+  };
+  getTarget = () => {
+    const { components: C, isSelected } = this.props;
+    const { selected } = this.state;
+
+    return (
+      <C.ContainerHeader
+        before={SwitcherBefore}
+        after={ChevronDown}
+        text={selected.text}
+        subText={selected.subText}
+        isSelected={isSelected}
+      />
+    );
+  };
+  onSwitch = selected => {
+    const { location, history } = this.props;
+    if (selected.pathname === location.pathname) return;
+    history.push(selected.pathname);
+    this.setState({ selected });
+  };
+  render() {
+    const { components: C, options } = this.props;
+    const { selected } = this.state;
+    return (
+      <div css={{ paddingBottom: `${gridSize}px` }}>
+        <C.Switcher
+          onChange={this.onSwitch}
+          create={{
+            onClick: () => {
+              // eslint-disable-next-line
+              const boardName = window.prompt(
+                'What would you like to call your new board?',
+              );
+              if (boardName && boardName.length)
+                console.log(`You created the board "${boardName}"`);
+            },
+            text: 'Create board',
+          }}
+          options={options}
+          isMulti={false}
+          hideSelectedOptions
+          target={this.getTarget()}
+          value={selected}
+        />
+      </div>
+    );
+  }
+}
+export const ProjectSwitcher = withRouter(Switcher);
+
+// ==============================
+// Renderers
+// ==============================
+
+const Renderer = ({ activeView }: any) => (
+  <div css={{ padding: `${gridSize * 2}px 0` }}>
+    <ViewRenderer
+      customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
+      items={activeView.data}
     />
   </div>
 );
 
-const ViewRenderer = ({ view }: *) => {
-  const { activeView, data } = view.state;
-  return activeView && data ? (
-    <div css={{ padding: `${gridSize * 2}px 0` }}>
-      <NavRenderer
-        customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
-        items={data}
-      />
-    </div>
-  ) : (
-    'LOADING'
-  );
+type ConnectedLayoutManagerProps = {
+  children: Node,
+  globalNavigation: ComponentType<{}>,
+  navigationUIController: UIController,
+  navigationViewController: ViewController,
 };
+class ConnectedLayoutManagerBase extends Component<
+  ConnectedLayoutManagerProps,
+> {
+  renderContainerNavigation = () => {
+    const {
+      navigationViewController: {
+        state: { activeView },
+      },
+    } = this.props;
 
-export const ProductRoot = () => (
-  <RootViewSubscriber>
-    {rootView => <ViewRenderer view={rootView} />}
-  </RootViewSubscriber>
-);
+    return activeView && activeView.type === 'container' ? (
+      <Renderer activeView={activeView} />
+    ) : (
+      'Container skeleton goes here.'
+    );
+  };
 
-export const ProductContainer = () => (
-  <ContainerViewSubscriber>
-    {containerView => <ViewRenderer view={containerView} />}
-  </ContainerViewSubscriber>
+  renderProductNavigation = () => {
+    const {
+      navigationUIController: {
+        state: { isPeeking },
+      },
+      navigationViewController: {
+        state: { activeView, activePeekView },
+      },
+    } = this.props;
+
+    if (
+      activePeekView &&
+      (isPeeking || (activeView && activeView.type === 'container'))
+    ) {
+      return <Renderer activeView={activePeekView} />;
+    }
+    if (activeView && activeView.type === 'product') {
+      return <Renderer activeView={activeView} />;
+    }
+    return 'Product skeleton goes here.';
+  };
+
+  render() {
+    const {
+      children,
+      globalNavigation,
+      navigationViewController: {
+        state: { activeView },
+      },
+    } = this.props;
+
+    return (
+      <LayoutManager
+        globalNavigation={globalNavigation}
+        containerNavigation={
+          activeView && activeView.type === 'container'
+            ? this.renderContainerNavigation
+            : null
+        }
+        productNavigation={this.renderProductNavigation}
+      >
+        {children}
+      </LayoutManager>
+    );
+  }
+}
+export const ConnectedLayoutManager = withNavigationUI(
+  withNavigationViewController(ConnectedLayoutManagerBase),
 );

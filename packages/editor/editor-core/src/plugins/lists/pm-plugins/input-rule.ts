@@ -3,22 +3,23 @@ import {
   inputRules,
   wrappingInputRule,
 } from 'prosemirror-inputrules';
-import { NodeType, Schema } from 'prosemirror-model';
+import { NodeType, Schema, NodeRange, Node as PMNode } from 'prosemirror-model';
 import { Plugin, Transaction, EditorState } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../../analytics';
 import {
   createInputRule as defaultCreateInputRule,
   defaultInputRuleHandler,
   leafNodeReplacementCharacter,
+  InputRuleWithHandler,
 } from '../../../utils/input-rules';
 
-export function createInputRule(regexp: RegExp, nodeType: NodeType): InputRule {
+export function createInputRule(regexp: RegExp, nodeType: NodeType) {
   return wrappingInputRule(
     regexp,
     nodeType,
     {},
     (_, node) => node.type === nodeType,
-  );
+  ) as InputRuleWithHandler;
 }
 
 export const insertList = (
@@ -49,7 +50,7 @@ export const insertList = (
   let tr = state.tr.delete(start, end).split(start);
 
   // If node has more content split at the end of autoformatting.
-  let currentNode = tr.doc.nodeAt(start + 1);
+  let currentNode = tr.doc.nodeAt(start + 1) as PMNode;
   tr.doc.nodesBetween(start, start + currentNode!.nodeSize, (node, pos) => {
     if (node.type === hardBreak) {
       tr = tr.split(pos + 1).delete(pos, pos + 1);
@@ -60,11 +61,10 @@ export const insertList = (
   const { listItem } = state.schema.nodes;
   const position = tr.doc.resolve(start + 2);
   let range = position.blockRange(position)!;
-  tr = tr.wrap(range, [{ type: listType }, { type: listItem }]);
+  tr = tr.wrap(range as NodeRange, [{ type: listType }, { type: listItem }]);
   return tr;
 };
 
-// TODO: Fix types (ED-2987)
 export default function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: InputRule[] = [];
 
@@ -74,9 +74,10 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
       createInputRule(/^\s*([\*\-]) $/, schema.nodes.bulletList),
       true,
     );
-    (rule as any).handler = trackAndInvoke(
+
+    rule.handler = trackAndInvoke(
       'atlassian.editor.format.list.bullet.autoformatting',
-      (rule as any).handler,
+      rule.handler,
     );
     rules.push(rule);
     rules.push(
@@ -106,9 +107,9 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
       createInputRule(/^(1)[\.\)] $/, schema.nodes.orderedList),
       true,
     );
-    (rule as any).handler = trackAndInvoke(
+    rule.handler = trackAndInvoke(
       'atlassian.editor.format.list.numbered.autoformatting',
-      (rule as any).handler,
+      rule.handler,
     );
     rules.push(rule);
     rules.push(

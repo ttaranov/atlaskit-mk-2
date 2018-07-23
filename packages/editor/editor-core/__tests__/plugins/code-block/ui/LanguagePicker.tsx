@@ -33,9 +33,8 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   describe('Tracking selection', () => {
     it('should track the selected language', () => {
       const trackSpy = jest.spyOn(analyticsService, 'trackEvent');
-      (languagePicker
-        .find(Select)
-        .instance() as any).select.select.selectOption({
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
         label: 'Javascript',
         value: 'javascript',
       });
@@ -113,9 +112,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('should call setLanguage when dropdown item selected', () => {
       expect(setLanguageStub).toHaveBeenCalledTimes(0);
-      (languagePicker
-        .find(Select)
-        .instance() as any).select.select.selectOption({
+      console.log(languagePicker.find(Select).instance());
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
         label: 'Javascript',
         value: 'javascript',
       });
@@ -139,7 +138,7 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
         activeCodeBlockDOM={document.body}
         deleteCodeBlock={jest.fn()}
         setLanguage={jest.fn()}
-        isEditorFocused={true}
+        isEditorFocused
       />,
     );
     instance = wrapper.instance() as LanguagePickerWithOutsideListeners;

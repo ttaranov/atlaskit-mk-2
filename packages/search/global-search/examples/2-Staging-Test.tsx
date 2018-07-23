@@ -2,6 +2,7 @@ import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
 import BasicNavigation from '../example-helpers/BasicNavigation';
 import { Config } from '../src/api/configureSearchClients';
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 const config: Partial<Config> = {
   activityServiceUrl: 'https://api-private.stg.atlassian.com/activity',
@@ -63,11 +64,13 @@ export default class extends React.Component<
         <label for="contextConf">Confluence</label>
         <BasicNavigation
           searchDrawerContent={
-            <GlobalQuickSearch
-              cloudId={this.state.cloudId}
-              context={this.state.context}
-              {...config}
-            />
+            <LocaleIntlProvider>
+              <GlobalQuickSearch
+                cloudId={this.state.cloudId}
+                context={this.state.context}
+                {...config}
+              />
+            </LocaleIntlProvider>
           }
         />
       </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import memoizeOne from 'memoize-one';
 import HomeQuickSearchContainer, {
   Props as HomeContainerProps,
 } from './home/HomeQuickSearchContainer';
@@ -6,7 +7,7 @@ import ConfluenceQuickSearchContainer, {
   Props as ConfContainerProps,
 } from './confluence/ConfluenceQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
-import memoizeOne from 'memoize-one';
+import MessagesIntlProvider from './MessagesIntlProvider';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
@@ -54,6 +55,11 @@ export interface Props {
    * respected.
    */
   linkComponent?: LinkComponent;
+
+  /**
+   * Indicates if search terms should be send in analytic events when a search is performed.
+   */
+  isSendSearchTermsEnabled?: boolean;
 }
 
 /**
@@ -110,10 +116,16 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       this.props.cloudId,
       this.makeConfig(),
     );
-    const { linkComponent } = this.props;
+    const { linkComponent, isSendSearchTermsEnabled } = this.props;
 
     return (
-      <ContainerComponent {...searchClients} linkComponent={linkComponent} />
+      <MessagesIntlProvider>
+        <ContainerComponent
+          {...searchClients}
+          linkComponent={linkComponent}
+          isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+        />
+      </MessagesIntlProvider>
     );
   }
 }

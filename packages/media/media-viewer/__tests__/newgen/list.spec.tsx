@@ -2,37 +2,23 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaItem, MediaItemType } from '@atlaskit/media-core';
-import { Stubs } from '../_stubs';
+import { createContext } from '../_stubs';
 import { List, Props } from '../../src/newgen/list';
-import { ErrorMessage } from '../../src/newgen/styled';
+import { ErrorMessage } from '../../src/newgen/error';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { ItemViewer } from '../../src/newgen/item-viewer';
-
-function createContext(subject) {
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    subject && Stubs.mediaItemProvider(subject),
-  ) as any;
-}
+import { Identifier } from '../../src/newgen/domain';
+import Button from '@atlaskit/button';
 
 function createFixture(props: Partial<Props>) {
-  const items = [];
+  const items: Identifier[] = [];
   const selectedItem = {
     id: '',
     occurrenceKey: '',
     type: 'file' as MediaItemType,
   };
   const subject = new Subject<MediaItem>();
-  const context = createContext(subject);
+  const context = createContext({ subject });
   const el = mount(
     <List
       items={items}
@@ -81,7 +67,12 @@ describe('<List />', () => {
       type: 'file' as MediaItemType,
     };
     const el = createFixture({ items: list, defaultSelectedItem });
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      'The selected item was not found on the list.',
+    );
+    expect(errorMessage.find(Button)).toHaveLength(0);
   });
 
   it('should show controls when navigation occurs', () => {

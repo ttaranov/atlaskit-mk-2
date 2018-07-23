@@ -23,6 +23,8 @@ const isValidJSONSchema = json => {
 const unsupportedNodes = [
   'confluenceUnsupportedBlock',
   'confluenceUnsupportedInline',
+  'unsupportedBlock',
+  'unsupportedInline',
   'confluenceJiraIssue',
   'unknownBlock',
 

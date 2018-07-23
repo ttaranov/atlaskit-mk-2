@@ -1,5 +1,76 @@
 # @atlaskit/task-decision
 
+## 8.1.1
+- [patch] FS-1712 - Ensure empty state loading spinner is not taller than container [4defa84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4defa84)
+- [none] Updated dependencies [4defa84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4defa84)
+
+## 8.1.0
+- [minor] Refreshing of a ResourcedItemList now replaces all content rather than merging. This is required as actions may now be deleted. [edcbf25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edcbf25)
+- [none] Updated dependencies [edcbf25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edcbf25)
+
+## 8.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/renderer@19.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar-group@2.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/renderer@19.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar-group@2.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 7.1.14
+
+
+- [none] Updated dependencies [5f6ec84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f6ec84)
+  - @atlaskit/renderer@18.2.18
+  - @atlaskit/editor-common@12.0.0
+- [patch] Updated dependencies [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+  - @atlaskit/renderer@18.2.18
+  - @atlaskit/editor-common@12.0.0
+
+## 7.1.13
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-service-support@2.0.12
+  - @atlaskit/util-data-test@9.1.18
+
+## 7.1.12
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/avatar-group@1.0.2
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/button@8.2.5
+  - @atlaskit/avatar-group@1.0.2
+
+## 7.1.11
+- [patch] FS-1704 - Bug fix - copy and pasting of rendered actions/decisions into the editor [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+- [none] Updated dependencies [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+  - @atlaskit/editor-common@11.4.1
+
 ## 7.1.10
 - [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
   - @atlaskit/avatar@12.0.0

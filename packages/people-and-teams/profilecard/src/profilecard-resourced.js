@@ -124,7 +124,6 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
       analytics: this.props.analytics,
       ...this.state.data,
     };
-
     return <AkProfilecardStatic {...newProps} actions={this.filterActions()} />;
   }
 }

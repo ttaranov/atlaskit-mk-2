@@ -7,7 +7,7 @@ export const confluenceUnsupportedInline = {
   inline: true,
   atom: true,
   attrs: { cxhtml: { default: null } },
-  toDOM(node): [string, any, string] {
+  toDOM(node) {
     const attrs = {
       'data-node-type': name,
       'data-confluence-unsupported': 'inline',

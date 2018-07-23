@@ -4,7 +4,7 @@ import { FONT_STYLE } from '../groups';
 /**
  * @name em_mark
  */
-export interface Definition {
+export interface EmDefinition {
   type: 'em';
 }
 

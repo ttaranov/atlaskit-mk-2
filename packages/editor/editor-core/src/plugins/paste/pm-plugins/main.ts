@@ -22,7 +22,8 @@ import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
 import { closeHistory } from 'prosemirror-history';
 import { hasParentNodeOfType } from 'prosemirror-utils';
-import { stateKey as tableStateKey } from '../../table/pm-plugins/main';
+import { pluginKey as tableStateKey } from '../../table/pm-plugins/main';
+import { transformSliceToRemoveOpenTable } from '../../table/utils';
 
 // @ts-ignore
 import { handlePaste as handlePasteTable } from 'prosemirror-tables';
@@ -165,6 +166,9 @@ export function createPlugin(
         return false;
       },
       transformPasted(slice) {
+        /** If a partial paste of table, paste only table's content */
+        slice = transformSliceToRemoveOpenTable(slice, schema);
+
         // We do this separately so it also applies to drag/drop events
         slice = transformSliceToRemoveOpenLayoutNodes(slice, schema);
 

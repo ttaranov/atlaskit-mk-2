@@ -1,5 +1,19 @@
 # @atlaskit/theme
 
+## 5.1.0
+- [minor] Add new components (Consumer, Provider, Reset and Theme) and deprecate old APIs. New components are marked as experimenta so they may change. Deprecated components can still be used until experimental APIs are finalised. [cd799a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd799a5)
+- [none] Updated dependencies [cd799a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd799a5)
+
+## 5.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/docs@5.0.0
+
 ## 4.1.0
 - [minor] Added elevations to the Theme package and updated visual styles for the field-range component. [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)
 - [none] Updated dependencies [dbd8de7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd8de7)

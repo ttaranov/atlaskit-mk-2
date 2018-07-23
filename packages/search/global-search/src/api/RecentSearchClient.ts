@@ -144,6 +144,7 @@ function recentItemToResult(recentItem: RecentItem): Result {
     const confluenceResult: ConfluenceObjectResult = {
       resultType: ResultType.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
+      containerId: 'UNAVAILABLE',
       ...baseResult,
     };
 

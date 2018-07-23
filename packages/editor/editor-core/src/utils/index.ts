@@ -8,6 +8,7 @@ import {
   ResolvedPos,
   Slice,
   Schema,
+  NodeRange,
 } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import {
@@ -493,7 +494,7 @@ export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
       const sel = new NodeSelection(res);
       const range = sel.$from.blockRange(sel.$to)!;
 
-      if (liftTarget(range) !== undefined) {
+      if (liftTarget(range as NodeRange) !== undefined) {
         tr.lift(range, target);
       }
     }
@@ -523,7 +524,7 @@ export function liftSiblingNodes(view: EditorView) {
   const blockStart = tr.doc.resolve($from.start($from.depth - 1));
   const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
   const range = blockStart.blockRange(blockEnd)!;
-  view.dispatch(tr.lift(range, blockStart.depth - 1));
+  view.dispatch(tr.lift(range as NodeRange, blockStart.depth - 1));
 }
 
 /**
@@ -536,7 +537,7 @@ export function liftAndSelectSiblingNodes(view: EditorView): Transaction {
   const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
   const range = blockStart.blockRange(blockEnd)!;
   tr.setSelection(new TextSelection(blockStart, blockEnd));
-  tr.lift(range, blockStart.depth - 1);
+  tr.lift(range as NodeRange, blockStart.depth - 1);
   return tr;
 }
 
@@ -602,7 +603,7 @@ export function moveLeft(view: EditorView) {
  * Function will create a list of wrapper blocks present in a selection.
  */
 function getSelectedWrapperNodes(state: EditorState): NodeType[] {
-  const nodes: any[] = [];
+  const nodes: Array<NodeType> = [];
   if (state.selection) {
     const { $from, $to } = state.selection;
     const {

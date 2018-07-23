@@ -157,7 +157,7 @@ module.exports = function createWebpackConfig(
           ],
         },
         {
-          test: /\.(gif|jpe?g|png|ico)$/,
+          test: /\.(gif|jpe?g|png|ico|woff|woff2)$/,
           loader: 'url-loader?limit=10000',
         },
         {
@@ -315,6 +315,9 @@ function plugins(
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${env}"`,
       WEBSITE_ENV: `"${websiteEnv}"`,
+      BASE_TITLE: `"Atlaskit by Atlassian ${
+        env === 'development' ? '- DEV' : ''
+      }"`,
     }),
   ];
 

@@ -26,6 +26,10 @@ describe(`${name}/schema taskList node`, () => {
     const orderedList = doc.firstChild!;
     expect(orderedList.type.name).toEqual('orderedList');
   });
+
+  it('taskList requires defining to be true', () => {
+    expect(schema.nodes.taskList.spec.defining).toBe(true);
+  });
 });
 
 function makeSchema() {

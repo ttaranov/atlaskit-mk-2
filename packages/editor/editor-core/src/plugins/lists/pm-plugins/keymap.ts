@@ -2,9 +2,14 @@ import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
-import * as commands from '../../../commands';
 import { trackAndInvoke } from '../../../analytics';
-import { backspaceKeyCommand, enterKeyCommand } from '../commands';
+import {
+  toggleListCommand,
+  indentList,
+  outdentList,
+  backspaceKeyCommand,
+  enterKeyCommand,
+} from '../commands';
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   const list = {};
@@ -13,7 +18,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     keymaps.findShortcutByKeymap(keymaps.toggleOrderedList)!,
     trackAndInvoke(
       'atlassian.editor.format.list.numbered.keyboard',
-      commands.toggleOrderedList(),
+      toggleListCommand('orderedList'),
     ),
     list,
   );
@@ -21,7 +26,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     keymaps.findShortcutByKeymap(keymaps.toggleBulletList)!,
     trackAndInvoke(
       'atlassian.editor.format.list.bullet.keyboard',
-      commands.toggleBulletList(),
+      toggleListCommand('bulletList'),
     ),
     list,
   );
@@ -29,7 +34,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     keymaps.indentList.common!!,
     trackAndInvoke(
       'atlassian.editor.format.list.indent.keyboard',
-      commands.indentList(),
+      indentList(),
     ),
     list,
   );
@@ -37,7 +42,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     keymaps.outdentList.common!!,
     trackAndInvoke(
       'atlassian.editor.format.list.outdent.keyboard',
-      commands.outdentList(),
+      outdentList(),
     ),
     list,
   );

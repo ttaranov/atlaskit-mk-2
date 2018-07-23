@@ -1,5 +1,49 @@
 # @atlaskit/profilecard
 
+## 4.0.1
+- [patch] Remove $FlowFixMe, move styled-components to peerDependencies and move tests under src and a unit folder [36b595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36b595c)
+- [none] Updated dependencies [36b595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36b595c)
+
+## 4.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/dynamic-table@10.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/dynamic-table@10.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 3.13.4
+
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/dynamic-table@9.2.6
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/button@8.2.5
+  - @atlaskit/dynamic-table@9.2.6
+
+## 3.13.3
+- [patch] Fix flow config and add back flow fix me [107da09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107da09)
+- [none] Updated dependencies [107da09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/107da09)
+
 ## 3.13.2
 - [patch] Update package.json to point to correct build directories [2362f0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2362f0b)
 - [none] Updated dependencies [2362f0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2362f0b)
