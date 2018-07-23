@@ -63,6 +63,9 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
 // Project Switcher
 // ==============================
 
+const SwitcherBefore = itemState => (
+  <ItemAvatar itemState={itemState} appearance="square" />
+);
 class Switcher extends PureComponent<*, *> {
   state = {
     selected: this.props.defaultSelected,
@@ -73,10 +76,8 @@ class Switcher extends PureComponent<*, *> {
 
     return (
       <C.ContainerHeader
-        before={itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
-        )}
-        after={itemState => <ChevronDown itemState={itemState} />}
+        before={SwitcherBefore}
+        after={ChevronDown}
         text={selected.text}
         subText={selected.subText}
         isSelected={isSelected}
