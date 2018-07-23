@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 16.0.8
+- [patch] MSW-799: Implement zooming and panning without transforms [974c89a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/974c89a)
+
 ## 16.0.7
 - [patch] Smaller chores and cleanup work for MVNG [3a91267](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a91267)
 

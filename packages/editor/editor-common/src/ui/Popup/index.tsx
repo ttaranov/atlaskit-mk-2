@@ -184,6 +184,8 @@ export default class Popup extends React.Component<Props, State> {
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}
+        // Indicates component is an editor pop. Required for focus handling in Message.tsx
+        data-editor-popup
       >
         {this.props.children}
       </div>
