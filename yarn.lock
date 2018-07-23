@@ -5203,9 +5203,9 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-react-types@^0.11.0:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.11.1.tgz#684395403f2e99b6b9338ee851420f2beb9df951"
+extract-react-types@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.12.1.tgz#3be6487851b2a26d048d768705552b1d39d03ae7"
   dependencies:
     ast-pretty-print "^2.0.1"
     babel-core "7.0.0-alpha.19"
