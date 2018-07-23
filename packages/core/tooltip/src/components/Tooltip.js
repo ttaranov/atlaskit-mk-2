@@ -132,6 +132,13 @@ class Tooltip extends Component<Props, State> {
     tag: 'div',
   };
 
+  handleMouseClick = () => {
+    if (this.props.hideTooltipOnClick) {
+      clearTimeout(this.timer);
+      this.setState({ isVisible: false, immediatelyHide: true });
+    }
+  };
+
   handleMouseOver = (e: SyntheticMouseEvent<>) => {
     if (e.target === this.wrapperRef) return;
     clearTimeout(this.timer);
@@ -171,6 +178,7 @@ class Tooltip extends Component<Props, State> {
     return (
       <Manager>
         <TargetContainer
+          onClick={this.handleMouseClick}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseLeave}
           ref={wrapperRef => {
