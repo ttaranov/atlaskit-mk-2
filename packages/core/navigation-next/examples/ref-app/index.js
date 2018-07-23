@@ -11,12 +11,14 @@ import {
   NavigationProvider,
   UIStateSubscriber,
   ViewRenderer,
-  ViewStateSubscriber,
+  withNavigationUI,
+  withNavigationViews,
 } from '../../src';
 
 import ContainerViews from './views/container';
 import RootViews from './views/root';
 import { ProjectSwitcher } from './pages/components';
+import { DefaultGlobalNavigation } from '../shared/components';
 import { HomePage, ProjectPage, ProjectsPage, SettingsPage } from './pages';
 
 const MyGlobalNavigation = () => (
@@ -59,19 +61,15 @@ const Renderer = ({ items }: any) => (
 
 class ReferenceApplication extends Component<*> {
   renderContainerNav = () => {
-    const { viewController } = this.props;
-    const { activeView } = viewController.state;
+    const { navigationViews } = this.props;
+    const { activeView } = navigationViews.state;
 
-    return activeView && activeView.type === 'container' ? (
-      <Renderer items={activeView.data} />
-    ) : (
-      'Container skeleton goes here.'
-    );
+    return <Renderer items={activeView.data} />;
   };
   renderProductNav = () => {
-    const { uiController, viewController } = this.props;
-    const { isPeeking } = uiController.state;
-    const { activeView, activePeekView } = viewController.state;
+    const { navigationUI, navigationViews } = this.props;
+    const { isPeeking } = navigationUI.state;
+    const { activeView, activePeekView } = navigationViews.state;
 
     if (
       activePeekView &&
@@ -82,14 +80,21 @@ class ReferenceApplication extends Component<*> {
     if (activeView && activeView.type === 'product') {
       return <Renderer items={activeView.data} />;
     }
+
     return 'Product skeleton goes here.';
   };
   render() {
+    const { navigationViews } = this.props;
+    const { activeView } = navigationViews.state;
     return (
       <LayoutManager
-        globalNavigation={MyGlobalNavigation}
+        globalNavigation={DefaultGlobalNavigation}
         productNavigation={this.renderProductNav}
-        containerNavigation={this.renderContainerNav}
+        containerNavigation={
+          activeView &&
+          activeView.type === 'container' &&
+          this.renderContainerNav
+        }
       >
         <RootViews />
         <ContainerViews />
@@ -109,21 +114,11 @@ class ReferenceApplication extends Component<*> {
   }
 }
 
+const RefApp = withNavigationUI(withNavigationViews(ReferenceApplication));
 export default () => (
-  <HashRouter hashType="slash">
-    <NavigationProvider initialPeekViewId="root/index">
-      <ViewStateSubscriber>
-        {viewController => (
-          <UIStateSubscriber>
-            {uiController => (
-              <ReferenceApplication
-                uiController={uiController}
-                viewController={viewController}
-              />
-            )}
-          </UIStateSubscriber>
-        )}
-      </ViewStateSubscriber>
+  <HashRouter>
+    <NavigationProvider initialPeekViewId="root/home">
+      <RefApp />
     </NavigationProvider>
   </HashRouter>
 );
