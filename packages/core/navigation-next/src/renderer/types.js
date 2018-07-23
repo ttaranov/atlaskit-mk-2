@@ -2,8 +2,8 @@
 
 import type { ComponentType } from 'react';
 
-import { UIState, ViewState } from '../';
-import type { ViewData } from '../../src/view-state/types';
+import { UIState, ViewController } from '../';
+import type { ViewData } from '../../src/view-controller/types';
 
 /**
  * Components
@@ -22,7 +22,7 @@ export type GoToItemProps = {
   after?: ?ComponentType<*>,
   goTo: string,
   navigationUI: UIState,
-  navigationViews: ViewState,
+  navigationViewController: ViewController,
 };
 
 export type GroupHeadingProps = {

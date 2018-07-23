@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { UIState, ViewState } from '../';
+import { UIState, ViewController } from '../';
 import { CONTENT_NAV_WIDTH } from '../common/constants';
 import type { UIStateShape } from '../ui-state/types';
 import type { NavigationProviderProps } from './types';
@@ -38,28 +38,31 @@ export default class NavigationProvider extends Component<
     isDebugEnabled: false,
   };
   uiState: UIState;
-  viewState: ViewState;
+  viewController: ViewController;
 
   constructor(props: NavigationProviderProps) {
     super(props);
 
     const { cache, initialPeekViewId, initialUIState, isDebugEnabled } = props;
     this.uiState = new UIState(initialUIState, cache);
-    this.viewState = new ViewState({ isDebugEnabled, initialPeekViewId });
+    this.viewController = new ViewController({
+      isDebugEnabled,
+      initialPeekViewId,
+    });
   }
 
   componentDidUpdate(prevProps: NavigationProviderProps) {
-    const { viewState } = this;
+    const { viewController } = this;
     const { isDebugEnabled } = this.props;
     if (isDebugEnabled !== prevProps.isDebugEnabled) {
-      viewState.setIsDebugEnabled(!!isDebugEnabled);
+      viewController.setIsDebugEnabled(!!isDebugEnabled);
     }
   }
 
   render() {
     const { children } = this.props;
-    const { uiState, viewState } = this;
+    const { uiState, viewController } = this;
 
-    return <Provider inject={[uiState, viewState]}>{children}</Provider>;
+    return <Provider inject={[uiState, viewController]}>{children}</Provider>;
   }
 }

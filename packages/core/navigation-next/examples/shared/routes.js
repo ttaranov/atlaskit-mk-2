@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import {
   UIStateSubscriber,
-  withNavigationViews,
+  withNavigationViewController,
   withNavigationUI,
 } from '../../src';
 
@@ -16,13 +16,13 @@ import ShortcutsPlugin from './shortcuts-plugin';
 class SetActiveViewBase extends Component<{
   id: string,
   navigationUI: *,
-  navigationViews: *,
+  navigationViewController: *,
 }> {
   componentDidMount() {
-    const { id, navigationUI, navigationViews } = this.props;
-    const { containerViewId, productViewId } = navigationViews.state;
+    const { id, navigationUI, navigationViewController } = this.props;
+    const { containerViewId, productViewId } = navigationViewController.state;
     if (id !== containerViewId && id !== productViewId) {
-      navigationViews.setView(id);
+      navigationViewController.setView(id);
     }
     navigationUI.unPeek();
   }
@@ -30,20 +30,25 @@ class SetActiveViewBase extends Component<{
     return null;
   }
 }
-const SetActiveView = withNavigationUI(withNavigationViews(SetActiveViewBase));
+const SetActiveView = withNavigationUI(
+  withNavigationViewController(SetActiveViewBase),
+);
 
-class ViewRegistrarBase extends Component<{ navigationViews: *, view: * }> {
+class ViewRegistrarBase extends Component<{
+  navigationViewController: *,
+  view: *,
+}> {
   componentDidMount() {
-    const { navigationViews, view } = this.props;
-    if (!navigationViews.views[view.id]) {
-      navigationViews.addView(view);
+    const { navigationViewController, view } = this.props;
+    if (!navigationViewController.views[view.id]) {
+      navigationViewController.addView(view);
     }
   }
   render() {
     return null;
   }
 }
-const ViewRegistrar = withNavigationViews(ViewRegistrarBase);
+const ViewRegistrar = withNavigationViewController(ViewRegistrarBase);
 
 const RootViews = () => (
   <Fragment>

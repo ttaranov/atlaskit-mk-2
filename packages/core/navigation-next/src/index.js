@@ -25,11 +25,11 @@ export { default as Switcher } from './components/Switcher';
 export { NavigationProvider } from './provider';
 export { UIState, UIStateSubscriber, withNavigationUI } from './ui-state';
 export {
-  ViewState,
-  ViewStateSubscriber,
-  withNavigationViews,
+  ViewController,
+  ViewControllerSubscriber,
+  withNavigationViewController,
   viewReducerUtils,
-} from './view-state';
+} from './view-controller';
 
 /** Renderer */
 export { default as ViewRenderer } from './renderer';

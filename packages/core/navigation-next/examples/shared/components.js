@@ -18,9 +18,9 @@ import {
   ItemAvatar,
   ViewRenderer,
   UIState,
-  ViewState,
+  ViewController,
   withNavigationUI,
-  withNavigationViews,
+  withNavigationViewController,
   LayoutManager,
 } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
@@ -136,14 +136,14 @@ type ConnectedLayoutManagerProps = {
   children: Node,
   globalNavigation: ComponentType<{}>,
   navigationUI: UIState,
-  navigationViews: ViewState,
+  navigationViewController: ViewController,
 };
 class ConnectedLayoutManagerBase extends Component<
   ConnectedLayoutManagerProps,
 > {
   renderContainerNavigation = () => {
     const {
-      navigationViews: {
+      navigationViewController: {
         state: { activeView },
       },
     } = this.props;
@@ -160,7 +160,7 @@ class ConnectedLayoutManagerBase extends Component<
       navigationUI: {
         state: { isPeeking },
       },
-      navigationViews: {
+      navigationViewController: {
         state: { activeView, activePeekView },
       },
     } = this.props;
@@ -181,7 +181,7 @@ class ConnectedLayoutManagerBase extends Component<
     const {
       children,
       globalNavigation,
-      navigationViews: {
+      navigationViewController: {
         state: { activeView },
       },
     } = this.props;
@@ -202,5 +202,5 @@ class ConnectedLayoutManagerBase extends Component<
   }
 }
 export const ConnectedLayoutManager = withNavigationUI(
-  withNavigationViews(ConnectedLayoutManagerBase),
+  withNavigationViewController(ConnectedLayoutManagerBase),
 );

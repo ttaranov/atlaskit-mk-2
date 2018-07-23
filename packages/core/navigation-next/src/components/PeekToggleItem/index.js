@@ -7,14 +7,17 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import { GlobalItemPrimitive } from '../../';
 import InteractionStateManager from '../InteractionStateManager';
 import { UIState, UIStateSubscriber } from '../../ui-state';
-import { ViewState, withNavigationViews } from '../../view-state';
+import {
+  ViewController,
+  withNavigationViewController,
+} from '../../view-controller';
 
 type PeekToggleProps = {
   label: string,
   tooltip: string,
   isPeeking: boolean,
   navigationUI: UIState,
-  navigationViews: ViewState,
+  navigationViewController: ViewController,
 };
 
 class PeekToggle extends Component<PeekToggleProps> {
@@ -24,7 +27,10 @@ class PeekToggle extends Component<PeekToggleProps> {
   };
 
   getIsHomeViewActive() {
-    const { activeView, activePeekView } = this.props.navigationViews.state;
+    const {
+      activeView,
+      activePeekView,
+    } = this.props.navigationViewController.state;
     if (!activeView || !activePeekView) {
       return false;
     }
@@ -32,9 +38,11 @@ class PeekToggle extends Component<PeekToggleProps> {
   }
 
   handleClick = () => {
-    const { isPeeking, navigationUI, navigationViews } = this.props;
-    if (!isPeeking && navigationViews.initialPeekViewId) {
-      navigationViews.setPeekView(navigationViews.initialPeekViewId);
+    const { isPeeking, navigationUI, navigationViewController } = this.props;
+    if (!isPeeking && navigationViewController.initialPeekViewId) {
+      navigationViewController.setPeekView(
+        navigationViewController.initialPeekViewId,
+      );
     }
     navigationUI.togglePeek();
   };
@@ -91,4 +99,4 @@ const PeekToggleWithUIState = (props: *) => (
   </UIStateSubscriber>
 );
 
-export default withNavigationViews(PeekToggleWithUIState);
+export default withNavigationViewController(PeekToggleWithUIState);
