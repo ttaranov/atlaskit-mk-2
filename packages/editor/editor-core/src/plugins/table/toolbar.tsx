@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { splitCell, mergeCells } from 'prosemirror-tables';
 import { hasParentNodeOfType } from 'prosemirror-utils';
@@ -46,21 +45,15 @@ import {
 const getTableLayout = (tableState: TablePluginState) =>
   tableState.tableNode!.attrs.layout;
 
-const ColorPaletteContainer = styled.div`
-  width: 144px;
-`;
-
 const colorPaletteOptions = ({ hide, dispatchCommand }: RenderOptionsProps) => (
-  <ColorPaletteContainer>
-    <ColorPalette
-      palette={tableBackgroundColorPalette}
-      borderColors={tableBackgroundBorderColors}
-      onClick={color => {
-        hide();
-        dispatchCommand(setCellAttr('background', color));
-      }}
-    />
-  </ColorPaletteContainer>
+  <ColorPalette
+    palette={tableBackgroundColorPalette}
+    borderColors={tableBackgroundBorderColors}
+    onClick={color => {
+      hide();
+      dispatchCommand(setCellAttr('background', color));
+    }}
+  />
 );
 
 const withAnalytics = (
@@ -106,7 +99,11 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           type: 'dropdown',
           title: 'Cell background color',
           icon: BackgroundColorIcon,
-          options: colorPaletteOptions,
+          options: {
+            render: colorPaletteOptions,
+            width: 146,
+            height: 72,
+          },
           hidden: !pluginConfig.allowBackgroundColor,
         },
         {

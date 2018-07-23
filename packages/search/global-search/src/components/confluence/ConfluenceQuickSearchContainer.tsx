@@ -359,9 +359,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         () => this.fireShownPreQueryEvent(startTime),
       );
     } catch {
-      this.setState({
-        isLoading: false,
-      });
+      if (this.state.isLoading) {
+        this.setState({
+          isLoading: false,
+        });
+      }
     }
   };
 

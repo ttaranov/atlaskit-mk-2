@@ -4,6 +4,7 @@ import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
+import { closestElement } from '../../utils';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { pluginKey as isMultilineContentPluginKey } from '../../plugins/is-multiline-content';
 import { AddonToolbar, ClickAreaInline } from '../Addon';
@@ -73,8 +74,12 @@ export default class Editor extends React.Component<
 
   private appearance: EditorAppearance = 'message';
 
-  private focusEditor = e => {
-    if (this.props.editorActions) {
+  private focusEditor = (e: MouseEvent) => {
+    // Only focus for unhandled click events (e.g. so we don't focus on click events in pop ups)
+    const target = e.target as HTMLElement;
+    const clickIsFromPopup = !!closestElement(target, '[data-editor-popup]');
+
+    if (this.props.editorActions && !clickIsFromPopup) {
       this.props.editorActions.focus();
     }
   };

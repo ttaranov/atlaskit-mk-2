@@ -36,10 +36,10 @@ describe('Snapshot Test: table', () => {
       if (appearance === 'full-page') {
         ['wide', 'full-width'].forEach(layout => {
           it(`${layout} layout`, async () => {
-            const buttonSelector = `span[aria-label="Change layout to ${layout.replace(
-              '-',
-              ' ',
-            )}"]`;
+            const layoutName = layout
+              .replace('-', ' ')
+              .replace(/^\w/, c => c.toUpperCase());
+            const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${layoutName}"]`;
             await page.click(buttonSelector);
             await page.waitForSelector(
               `.ProseMirror table[data-layout="${layout}"]`,
@@ -48,7 +48,7 @@ describe('Snapshot Test: table', () => {
           });
         });
         it(`remove row buttons in full width layout mode`, async () => {
-          const buttonSelector = `span[aria-label="Change layout to full width"]`;
+          const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="Full width"]`;
           await page.click(buttonSelector);
           await page.waitForSelector(
             `.ProseMirror table[data-layout="full-width"]`,
@@ -121,7 +121,7 @@ describe('Snapshot Test: table', () => {
             await page.click(`.table-${type}:nth-child(${i}) button`);
             await snapshot(page);
           });
-          it(`add ${type} button`, async () => {
+          it(`add ${type} button at ${i} index`, async () => {
             const buttonSelector = `.table-${type}:nth-child(${i}) span[aria-label="Add ${type}"]`;
             await page.hover(`.table-${type}:nth-child(${i})>div`);
             await page.waitForSelector(buttonSelector);
@@ -130,7 +130,7 @@ describe('Snapshot Test: table', () => {
             await page.click(`table td:nth-child(1) p`);
             await snapshot(page);
           });
-          it(`remove ${type} button`, async () => {
+          it(`remove ${type} button at ${i} index`, async () => {
             const removeButtonSelector = `span[aria-label="Remove ${type}"]`;
             await page.click(`.table-${type}:nth-child(${i}) button`);
             await page.hover(removeButtonSelector);
