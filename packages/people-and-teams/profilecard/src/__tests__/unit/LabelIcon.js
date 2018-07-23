@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import IconLabel from '../src/components/IconLabel';
-import { DetailsLabelIcon, DetailsLabelText } from '../src/styled/Card';
+import IconLabel from '../../components/IconLabel';
+import { DetailsLabelIcon, DetailsLabelText } from '../../styled/Card';
 
 describe('Profilecard', () => {
   describe('IconLabel', () => {

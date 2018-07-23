@@ -4,7 +4,7 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 import sinon from 'sinon';
 
-import AkProfileClient, { modifyResponse } from '../src/api/profile-client';
+import AkProfileClient, { modifyResponse } from '../../api/profile-client';
 
 const clientUrl = 'https://foo/';
 const clientCacheSize = 10;
