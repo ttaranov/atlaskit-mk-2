@@ -8,7 +8,8 @@ const SkeletonContainerHeaderText = styled.div`
   background-color: currentColor;
   border-radius: ${math.divide(gridSize, 2)}px;
   opacity: 0.3;
-  margin-left: ${gridSize() * 2}px;
+  margin-left: ${props =>
+    props.isAvatarHidden ? gridSize() : gridSize() * 2}px;
   width: ${gridSize() * 18}px;
 `;
 
