@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 13.0.10
+- [patch] Fix deleting the panel macro crashes the page [f0a4fb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0a4fb9)
+- [none] Updated dependencies [f0a4fb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0a4fb9)
+
 ## 13.0.9
 - [patch] ED-4199, Adding support for column layout in renderer. [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
 - [none] Updated dependencies [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
