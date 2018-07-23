@@ -2,6 +2,70 @@
 import get from 'lodash.get';
 import set from 'lodash.set';
 
+type OperationsType = 'APPEND' | 'UPDATE';
+
+type OptionsType = {
+  key: string,
+  keysCache: Object,
+  operation: OperationsType,
+};
+
+function updateRootItems(
+  rootItems: Array<Object>,
+  allItems?: Array<Object> = [],
+  { key, keysCache, operation }: OptionsType,
+) {
+  let newKeysCache = { ...keysCache };
+  // If it is not an append operation we can ignore allItems as they will be swaped with new items
+  let allBaseItems = operation === 'UPDATE' ? [] : [...allItems];
+  let startIndexWith = allBaseItems.length;
+  rootItems.forEach((rootItem, index) => {
+    const rootItemKey = rootItem[key];
+    if (rootItemKey == undefined) {
+      throw new Error(
+        `[ERROR] No property '${key}' found in rootItem[${index}]`,
+      );
+    } else {
+      newKeysCache[rootItem[key]] = index + startIndexWith;
+    }
+  });
+
+  return {
+    keysCache: newKeysCache,
+    items: allBaseItems.concat(rootItems),
+  };
+}
+
+function updateChildItems(
+  newitems: Array<Object>,
+  allTableItems: Array<Object>,
+  itemParent: Object,
+  { key, keysCache, operation }: OptionsType,
+) {
+  let newKeysCache = { ...keysCache };
+  const parentCacheKey = itemParent[key];
+
+  if (parentCacheKey === undefined) {
+    throw new Error(`[Table Tree] No property '${key}' found in parent item`);
+  }
+  const parentLocation = newKeysCache[parentCacheKey];
+  const allItemsCopy = [...allTableItems];
+  const objectToChange = get(allItemsCopy, parentLocation);
+  const baseChildrenOfObjectToChange = objectToChange.children || [];
+  objectToChange.children = baseChildrenOfObjectToChange.concat(newitems);
+
+  // Update cache
+  newitems.forEach((item, index) => {
+    newKeysCache[item[key]] = `${parentLocation}.children[${index +
+      baseChildrenOfObjectToChange.length}]`;
+  });
+
+  return {
+    keysCache: newKeysCache,
+    items: set(allItemsCopy, parentLocation, objectToChange),
+  };
+}
+
 /**
  * This helper class will create a cache of all the id's in the items object and
  * path to the object.
@@ -31,36 +95,29 @@ export default class TableTreeDataHelper {
     allItems?: Array<Object> = [],
     parentItem: ?Object,
   ) {
-    const addRootItems = (rootItems: Array<Object>) => {
-      rootItems.forEach((rootItem, index) => {
-        this.keysCache[rootItem[this.key]] = index;
-      });
-      return rootItems;
+    const options = {
+      key: this.key,
+      keysCache: this.keysCache,
+      operation: 'UPDATE',
     };
-
-    const addChildItems = (
-      newitems: Array<Object>,
-      allTableItems: Array<Object>,
-      itemParent: Object,
-    ) => {
-      const parentLocation = this.keysCache[itemParent[this.key]];
-      // Update cache
-      newitems.forEach((item, index) => {
-        this.keysCache[item[this.key]] = `${parentLocation}.children[${index}]`;
-      });
-
-      const allItemsCopy = [...allTableItems];
-      const objectToChange = get(allItemsCopy, parentLocation);
-      objectToChange.children = newitems;
-
-      return set(allItemsCopy, parentLocation, objectToChange);
-    };
-
     if (!parentItem) {
-      return addRootItems(items);
+      let { keysCache, items: updatedRootItems } = updateRootItems(
+        items,
+        allItems,
+        options,
+      );
+      this.keysCache = keysCache;
+      return updatedRootItems;
     }
 
-    return addChildItems(items, allItems, parentItem);
+    let { keysCache, items: updatedItems } = updateChildItems(
+      items,
+      allItems,
+      parentItem,
+      options,
+    );
+    this.keysCache = keysCache;
+    return updatedItems;
   }
 
   appendItems(
@@ -68,48 +125,28 @@ export default class TableTreeDataHelper {
     allItems: Array<Object> = [],
     parentItem: ?Object,
   ) {
-    const appendRootItems = (rootItems: Array<Object>) => {
-      rootItems.forEach((rootItem, index) => {
-        const key = rootItem[this.key];
-        if (key === undefined) {
-          throw new Error(
-            `No property '${this.key}' found in rootItem[${index}]`,
-          );
-        }
-        this.keysCache[key] = index + allItems.length;
-      });
-      return allItems.concat(rootItems);
+    const options = {
+      key: this.key,
+      keysCache: this.keysCache,
+      operation: 'APPEND',
     };
-
-    const appendChildItems = (
-      newitems: Array<Object>,
-      allTableItems: Array<Object>,
-      itemParent: Object,
-    ) => {
-      const parentCacheKey = itemParent[this.key];
-      if (parentCacheKey === undefined) {
-        throw new Error(`No property '${this.key}' found in parent item`);
-      }
-      const parentLocation = this.keysCache[parentCacheKey];
-
-      const allItemsCopy = [...allTableItems];
-      const objectToChange = get(allItemsCopy, parentLocation);
-      const existingChildren = objectToChange.children || [];
-      objectToChange.children = existingChildren.concat(newitems);
-
-      // Update cache
-      newitems.forEach((item, index) => {
-        this.keysCache[item[this.key]] = `${parentLocation}.children[${index +
-          existingChildren.length}]`;
-      });
-
-      return set(allItemsCopy, parentLocation, objectToChange);
-    };
-
     if (!parentItem) {
-      return appendRootItems(items, allItems);
+      let { keysCache, items: updatedRootItems } = updateRootItems(
+        items,
+        allItems,
+        options,
+      );
+      this.keysCache = keysCache;
+      return updatedRootItems;
     }
 
-    return appendChildItems(items, allItems, parentItem);
+    let { keysCache, items: updatedItems } = updateChildItems(
+      items,
+      allItems,
+      parentItem,
+      options,
+    );
+    this.keysCache = keysCache;
+    return updatedItems;
   }
 }
