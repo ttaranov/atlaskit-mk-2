@@ -127,11 +127,11 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     return (
       <div>
         <MessagesIntlProvider>
-          <ContainerComponent {
-            ...searchClients}
-             linkComponent={linkComponent}
-             isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-              />
+          <ContainerComponent
+            {...searchClients}
+            linkComponent={linkComponent}
+            isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+          />
         </MessagesIntlProvider>
       </div>
     );
