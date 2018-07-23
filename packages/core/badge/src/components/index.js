@@ -3,7 +3,7 @@
 import React, { Component, type ComponentType } from 'react';
 import Container from './Container';
 import Format from './Format';
-import DefaultTheme, { type DefaultThemeProps } from '../theme';
+import { main } from '../theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
@@ -30,7 +30,7 @@ type Props = {
     newValue: number,
   }) => any,
 
-  theme: ComponentType<DefaultThemeProps>,
+  theme: ComponentType<*>,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
@@ -43,7 +43,7 @@ export default class Badge extends Component<Props> {
     children: 0,
     max: 99,
     onValueUpdated: () => {},
-    theme: DefaultTheme,
+    theme: main,
     value: undefined,
   };
 

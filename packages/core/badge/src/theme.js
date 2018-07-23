@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { colors, Theme, type ThemeDefinition } from '@atlaskit/theme';
+import { colors, theme, type ThemeDefinition } from '@atlaskit/theme';
 
 export const backgroundColors = {
   added: { light: colors.G50, dark: colors.G50 },
@@ -24,30 +24,46 @@ export const textColors = {
   removed: { light: colors.R500, dark: colors.R500 },
 };
 
-export default (props: DefaultThemeProps) => (
-  <Theme
-    values={{
-      badge: (state, theme) => ({
-        ...(typeof state.appearance === 'object'
-          ? state.appearance
-          : {
-              backgroundColor: backgroundColors[state.appearance][theme.mode],
-              textColor: textColors[state.appearance][theme.mode],
-            }),
-        ...theme.badge(state),
-      }),
-      mode: 'light',
-      ...props.values,
-    }}
-  >
-    {props.children}
-  </Theme>
-);
+export type Appearance =
+  | 'default'
+  | 'primary'
+  | 'primaryInverted'
+  | 'important'
+  | 'added'
+  | 'removed'
+  | {};
 
-export type DefaultThemeProps = ThemeDefinition<{
-  badge: ({ appearance: string | {} }) => {
-    backgroundColor: string,
-    textColor: string,
+export type ThemeProps = {
+  badge: ({ appearance: Appearance }) => {
+    backgroundColor?: string,
+    textColor?: string,
   },
   mode: string,
-}>;
+};
+
+export const main = theme(
+  ({ badge = s => ({}), mode = 'light', ...props }: ThemeProps) => ({
+    badge: ({ appearance }) => ({
+      ...(typeof appearance === 'object'
+        ? {
+            ...{
+              backgroundColor: backgroundColors.default.light,
+              textColor: textColors.default.light,
+            },
+            ...appearance,
+          }
+        : {
+            backgroundColor: backgroundColors[appearance][mode],
+            textColor: textColors[appearance][mode],
+          }),
+      ...badge({ appearance }),
+    }),
+    mode,
+    ...props,
+  }),
+);
+
+export const added = main((theme: ThemeProps) => ({
+  badge: s => theme.badge({ appearance: 'added' }),
+  ...theme,
+}));
