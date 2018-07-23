@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.1.1
+- [patch] fix infinite loop bug [e2e53e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2e53e0)
+
 ## 5.1.0
 - [minor] Allow sending of search queries in analytics events [e5f14e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5f14e9)
 - [minor] Global search component now accepts a boolean to send search terms in analytics events [3b871bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b871bb)

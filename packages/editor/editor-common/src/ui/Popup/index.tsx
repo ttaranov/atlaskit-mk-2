@@ -141,6 +141,8 @@ export default class Popup extends React.Component<Props, State> {
     this.updatePosition(props),
   );
 
+  onResize = () => this.scheduledUpdatePosition();
+
   componentWillReceiveProps(newProps: Props) {
     // We are delaying `updatePosition` otherwise it happens before the children
     // get rendered and we end up with a wrong position
@@ -148,7 +150,7 @@ export default class Popup extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.scheduledUpdatePosition);
+    window.addEventListener('resize', this.onResize);
 
     const { stickToBottom } = this.props;
 
@@ -158,20 +160,14 @@ export default class Popup extends React.Component<Props, State> {
       this.scrollElement = this.props.scrollableElement;
     }
     if (this.scrollElement) {
-      this.scrollElement.addEventListener(
-        'scroll',
-        this.scheduledUpdatePosition,
-      );
+      this.scrollElement.addEventListener('scroll', this.onResize);
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.scheduledUpdatePosition);
+    window.removeEventListener('resize', this.onResize);
     if (this.scrollElement) {
-      this.scrollElement.removeEventListener(
-        'scroll',
-        this.scheduledUpdatePosition,
-      );
+      this.scrollElement.removeEventListener('scroll', this.onResize);
     }
     this.scheduledUpdatePosition.cancel();
   }
@@ -188,6 +184,8 @@ export default class Popup extends React.Component<Props, State> {
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}
+        // Indicates component is an editor pop. Required for focus handling in Message.tsx
+        data-editor-popup
       >
         {this.props.children}
       </div>

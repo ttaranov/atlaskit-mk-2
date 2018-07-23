@@ -1,6 +1,7 @@
 // @flow
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
+import rafSchedule from 'raf-schd';
 
 import Popper from '../../popper/index-min';
 import ScrollBlock from './internal/ScrollBlock';
@@ -132,7 +133,8 @@ export default class Layer extends Component<Props, State> {
       maxHeight: null,
       fixedOffset: null,
     };
-    this.extractStyles = this.extractStyles.bind(this);
+
+    this.extractStyles = rafSchedule(this.extractStyles.bind(this));
   }
 
   componentDidMount() {
@@ -165,6 +167,7 @@ export default class Layer extends Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this.extractStyles.cancel();
     if (this.popper) {
       this.popper.destroy();
     }
