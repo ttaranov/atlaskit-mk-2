@@ -262,7 +262,9 @@ describe('text-formatting', () => {
     });
 
     it('should convert smart characters to normal ascii', () => {
-      const { editorView } = editor(doc(p('{<}… → ← – “ ” ‘ ’{>}')));
+      const { editorView } = editor(
+        doc(p('{<}… → ← – “ ” ‘ ’{>}')),
+      );
       expect(commands.toggleCode()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(
         doc(p(code('... -> <- -- " " \' \''))),
@@ -408,16 +410,12 @@ describe('text-formatting', () => {
     });
 
     it('should expose whether subcript is active on an empty selection', () => {
-      const { pluginState } = editor(
-        doc(p(subsup({ type: 'sub' })('te{<>}xt'))),
-      );
+      const { pluginState } = editor(doc(p(subsup({ type: 'sub' })('te{<>}xt'))));
       expect(pluginState.subscriptActive).toBe(true);
     });
 
     it('should expose whether subcript is active on a text selection', () => {
-      const { pluginState } = editor(
-        doc(p(subsup({ type: 'sub' })('t{<}e{>}xt'))),
-      );
+      const { pluginState } = editor(doc(p(subsup({ type: 'sub' })('t{<}e{>}xt'))));
       expect(pluginState.subscriptActive).toBe(true);
     });
 
@@ -432,16 +430,12 @@ describe('text-formatting', () => {
     });
 
     it('deactives superscript if subscript is already active at empty selection', () => {
-      const { pluginState } = editor(
-        doc(p(subsup({ type: 'sub' })('te{<>}xt'))),
-      );
+      const { pluginState } = editor(doc(p(subsup({type: 'sub'})('te{<>}xt'))));
       expect(pluginState.superscriptActive).toBe(false);
     });
 
     it('deactives superscript if subscript is already active at selected text', () => {
-      const { pluginState } = editor(
-        doc(p(subsup({ type: 'sub' })('t{<}e{>}xt'))),
-      );
+      const { pluginState } = editor(doc(p(subsup({type: 'sub'})('t{<}e{>}xt'))));
       expect(pluginState.superscriptActive).toBe(false);
     });
   });
@@ -458,16 +452,12 @@ describe('text-formatting', () => {
     });
 
     it('should expose whether superscript is active on an empty selection', () => {
-      const { pluginState } = editor(
-        doc(p(subsup({ type: 'sup' })('te{<>}xt'))),
-      );
+      const { pluginState } = editor(doc(p(subsup({ type: 'sup' })('te{<>}xt'))));
       expect(pluginState.superscriptActive).toBe(true);
     });
 
     it('should expose whether superscript is active on a text selection', () => {
-      const { pluginState } = editor(
-        doc(p(subsup({ type: 'sup' })('t{<}e{>}xt'))),
-      );
+      const { pluginState } = editor(doc(p(subsup({ type: 'sup' })('t{<}e{>}xt'))));
       expect(pluginState.superscriptActive).toBe(true);
     });
 

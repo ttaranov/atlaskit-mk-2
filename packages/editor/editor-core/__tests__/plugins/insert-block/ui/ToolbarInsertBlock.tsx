@@ -292,7 +292,9 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should insert decision when decision option is clicked', () => {
     uuid.setStatic('local-highlight');
-    const { editorView } = editor(doc(p('text')));
+    const { editorView } = editor(
+      doc(p('text')),
+    );
     const toolbarOption = mount(
       <ToolbarInsertBlock
         decisionSupported={true}

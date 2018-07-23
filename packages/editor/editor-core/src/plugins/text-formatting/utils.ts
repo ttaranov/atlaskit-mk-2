@@ -38,7 +38,7 @@ export const deepEqual = (obj1, obj2) => {
     }
   }
   return true;
-};
+}
 
 // Make sure the cursor isn't directly after one or more ignored
 // nodes, which will confuse the browser's cursor motion logic.
@@ -132,21 +132,18 @@ export const markActive = (state: EditorState, mark: Mark): boolean => {
     found = found || mark.isInSet(node.marks);
   });
   return found;
-};
+}
 
 /**
  * Determine if a mark of a specific type exists anywhere in the selection.
  */
-export const anyMarkActive = (
-  state: EditorState,
-  markType: MarkType,
-): boolean => {
+export const anyMarkActive = (state: EditorState, markType: MarkType): boolean => {
   const { $from, from, to, empty } = state.selection;
   if (empty) {
     return !!markType.isInSet(state.storedMarks || $from.marks());
   }
   return state.doc.rangeHasMark(from, to, markType);
-};
+}
 
 const blockStylingIsPresent = (state: EditorState): boolean => {
   let { from, to } = state.selection;
@@ -162,24 +159,24 @@ const blockStylingIsPresent = (state: EditorState): boolean => {
 };
 
 const marksArePresent = (state: EditorState) => {
-  const activeMarkTypes = FORMATTING_MARK_TYPES.filter(mark => {
-    if (!!state.schema.marks[mark]) {
-      const { $from, empty } = state.selection;
-      if (empty) {
-        return !!state.schema.marks[mark].isInSet(
-          state.storedMarks || $from.marks(),
-        );
+  const activeMarkTypes = FORMATTING_MARK_TYPES.filter(
+    mark => {
+      if (!!state.schema.marks[mark]) {
+        const { $from, empty } = state.selection;
+        if (empty) {
+          return !!state.schema.marks[mark].isInSet(state.storedMarks || $from.marks());
+        }
+        if (mark === state.schema.marks.code.name) {
+          return markActive(state, state.schema.marks.code.create());
+        }
+        return anyMarkActive(state, state.schema.marks[mark]);
       }
-      if (mark === state.schema.marks.code.name) {
-        return markActive(state, state.schema.marks.code.create());
-      }
-      return anyMarkActive(state, state.schema.marks[mark]);
+      return false;
     }
-    return false;
-  });
+  );
   return activeMarkTypes.length > 0;
-};
+}
 
 export const checkFormattingIsPresent = (state: EditorState) => {
   return marksArePresent(state) || blockStylingIsPresent(state);
-};
+}

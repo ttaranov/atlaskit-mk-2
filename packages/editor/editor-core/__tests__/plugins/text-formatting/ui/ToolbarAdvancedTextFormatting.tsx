@@ -61,7 +61,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   });
 
   it('should have only 6 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
+    const { editorView, pluginState } = editor(
+      doc(p('text')),
+    );
     const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
@@ -70,7 +72,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         textFormattingState={pluginState}
         clearFormattingState={clearFormattingState}
         editorView={editorView}
-      />,
+      />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropList).find(Item).length).toEqual(6);
@@ -183,10 +185,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        textFormattingState={{
-          ...textFormattingPluginState,
-          strikeHidden: true,
-        }}
+        textFormattingState={{...textFormattingPluginState, strikeHidden: true}}
         clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
@@ -200,10 +199,12 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   });
 
   it('should clear formatting when clearFormatting option is clicked', () => {
-    const { editorView } = editor(doc(p(em('{<}text{>}'))));
+    const { editorView } = editor(
+      doc(p(em('{<}text{>}'))),
+    );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        clearFormattingState={{ formattingIsPresent: true }}
+        clearFormattingState={{formattingIsPresent:true}}
         editorView={editorView}
       />,
     );
@@ -294,7 +295,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       toolbarOption = mount(
         <ToolbarAdvancedTextFormatting
           textFormattingState={textFormattingPluginState}
-          clearFormattingState={{ formattingIsPresent: true }}
+          clearFormattingState={{formattingIsPresent: true}}
           editorView={editorView}
         />,
       );

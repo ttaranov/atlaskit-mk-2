@@ -18,15 +18,20 @@ export interface Props {
 }
 
 export default class ToolbarTextFormatting extends PureComponent<Props> {
+
   render() {
-    const { disabled, isReducedSpacing, textFormattingState } = this.props;
+    const {
+      disabled,
+      isReducedSpacing,
+      textFormattingState
+    } = this.props;
     const {
       strongHidden,
       strongActive,
       strongDisabled,
       emHidden,
       emActive,
-      emDisabled,
+      emDisabled
     } = textFormattingState;
 
     return (

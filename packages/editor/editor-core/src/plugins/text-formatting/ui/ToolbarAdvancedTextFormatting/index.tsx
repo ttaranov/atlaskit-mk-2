@@ -59,7 +59,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       popupsScrollableElement,
       isReducedSpacing,
       textFormattingState = {},
-      clearFormattingState = {},
+      clearFormattingState = {}
     } = this.props;
     const {
       codeActive,
@@ -137,7 +137,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
   }
 
   private createItems = () => {
-    const { textFormattingState, clearFormattingState } = this.props;
+    const {
+      textFormattingState,
+      clearFormattingState,
+    } = this.props;
     let items: any[] = [];
 
     if (textFormattingState) {
