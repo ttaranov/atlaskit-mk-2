@@ -6,13 +6,13 @@ import { filter } from '../../../utils/commands';
 import {
   getAutoClosingBracketInfo,
   isCursorBeforeClosingBracket,
-  isClosingBracket,
 } from '../ide-ux/bracket-handling';
 import {
   getEndOfCurrentLine,
   getStartOfCurrentLine,
   isCursorInsideCodeBlock,
   isSelectionEntirelyInsideCodeBlock,
+  getLineInfo,
 } from '../ide-ux/line-handling';
 import {
   insertIndent,
@@ -58,16 +58,16 @@ export default new Plugin({
     handleKeyDown: keydownHandler({
       Backspace: (state: EditorState, dispatch) => {
         if (isCursorInsideCodeBlock(state)) {
+          const $cursor = getCursor(state.selection)!;
+          const beforeText = getStartOfCurrentLine(state).text;
+          const afterText = getEndOfCurrentLine(state).text;
+
           const {
             left,
             right,
             hasTrailingMatchingBracket,
-          } = getAutoClosingBracketInfo(
-            getStartOfCurrentLine(state).text,
-            getEndOfCurrentLine(state).text,
-          );
+          } = getAutoClosingBracketInfo(beforeText, afterText);
           if (left && right && hasTrailingMatchingBracket) {
-            const $cursor = getCursor(state.selection)!;
             dispatch(
               state.tr.delete(
                 $cursor.pos - left.length,
@@ -75,6 +75,21 @@ export default new Plugin({
               ),
             );
             return true;
+          }
+          const {
+            indentToken: { size, token },
+            indentText,
+          } = getLineInfo(beforeText);
+          if (beforeText === indentText) {
+            if (indentText.endsWith(token.repeat(size))) {
+              dispatch(
+                state.tr.delete(
+                  $cursor.pos - (size - indentText.length % size || size),
+                  $cursor.pos,
+                ),
+              );
+              return true;
+            }
           }
         }
         return false;
