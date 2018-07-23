@@ -1,7 +1,11 @@
 import { Node } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { findDomRefAtPos } from 'prosemirror-utils';
-import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
+import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
+import LayoutThreeEqualIcon from '@atlaskit/icon/glyph/editor/layout-three-equal';
+import LayoutTwoLeftSidebarIcon from '@atlaskit/icon/glyph/editor/layout-two-left-sidebar';
+import LayoutTwoRightSidebarIcon from '@atlaskit/icon/glyph/editor/layout-two-right-sidebar';
+import LayoutThreeWithSidebarsIcon from '@atlaskit/icon/glyph/editor/layout-three-with-sidebars';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import { Command } from '../../../src/types';
 import {
@@ -12,22 +16,22 @@ import {
 import { setActiveLayoutType, deleteActiveLayoutNode } from './actions';
 
 const LAYOUT_TYPES = [
-  { type: 'two_equal', text: 'Two Columns', icon: PlaceholderTextIcon },
-  { type: 'three_equal', text: 'Three Columns', icon: PlaceholderTextIcon },
+  { type: 'two_equal', text: 'Two Columns', icon: LayoutTwoEqualIcon },
+  { type: 'three_equal', text: 'Three Columns', icon: LayoutThreeEqualIcon },
   {
     type: 'two_left_sidebar',
     text: 'Two Columns with Left Sidebar',
-    icon: PlaceholderTextIcon,
+    icon: LayoutTwoLeftSidebarIcon,
   },
   {
     type: 'two_right_sidebar',
     text: 'Two Columns with Right Sidebar',
-    icon: PlaceholderTextIcon,
+    icon: LayoutTwoRightSidebarIcon,
   },
   {
     type: 'three_with_sidebars',
     text: 'Three Columns with Sidebars',
-    icon: PlaceholderTextIcon,
+    icon: LayoutThreeWithSidebarsIcon,
   },
 ];
 
