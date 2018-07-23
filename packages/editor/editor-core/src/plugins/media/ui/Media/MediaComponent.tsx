@@ -121,13 +121,16 @@ export class MediaComponentInternal extends Component<Props, State> {
         this.setState({ mediaProvider });
       }
     }
+
+    // if (this.props.id !== nextProps.id) {
+    //   // this.unregisterFromEvents(this.props, this.state);
+    //   this.setState({id: '', status: 'unknown'/*, mediaProvider: undefined*/});
+    // }
   }
 
-  componentWillUnmount() {
-    this.destroyed = true;
-
-    const { id } = this.props;
-    const { mediaProvider } = this.state;
+  private unregisterFromEvents(props, state) {
+    const { id } = props;
+    const { mediaProvider } = state;
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
@@ -140,6 +143,11 @@ export class MediaComponentInternal extends Component<Props, State> {
     if (stateManagerFallback && id) {
       stateManagerFallback.off(id, this.handleMediaStateChange);
     }
+  }
+
+  componentWillUnmount() {
+    this.destroyed = true;
+    this.unregisterFromEvents(this.props, this.state);
   }
 
   render() {

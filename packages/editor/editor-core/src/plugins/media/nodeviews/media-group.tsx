@@ -163,7 +163,7 @@ export class MediaGroupNode extends Component<
     const nodeIds: string[] = [];
 
     node.forEach(child => {
-      nodeIds.push(child.attrs.id);
+      nodeIds.push(child.attrs.__key);
     });
 
     return nodeIds;

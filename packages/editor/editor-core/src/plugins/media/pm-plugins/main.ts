@@ -538,7 +538,7 @@ export class MediaPluginState {
         }
 
         const { node } = nodeWithPos;
-        if (node.attrs.id === id) {
+        if (node.attrs.__key === id) {
           return nodeWithPos;
         }
 
@@ -699,6 +699,7 @@ export class MediaPluginState {
   }
 
   private handleMediaState = async (state: MediaState) => {
+    console.log('new media state', state.status, state);
     switch (state.status) {
       case 'error':
         this.removeNodeById(state.id);
