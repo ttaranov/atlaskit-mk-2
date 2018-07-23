@@ -272,7 +272,7 @@ export class CardList extends Component<CardListProps, CardListState> {
                   identifier={identifier}
                   appearance={cardAppearance}
                   dimensions={dimensions}
-                  isLazy={false}
+                  isLazy={shouldLazyLoadCards}
                   onClick={handleCardClick.bind(this, mediaItem)}
                   actions={cardActions(mediaItem)}
                 />

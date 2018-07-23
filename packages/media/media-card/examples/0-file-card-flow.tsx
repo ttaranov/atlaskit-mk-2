@@ -112,7 +112,7 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
-    if (!event.currentTarget.files) {
+    if (!event.currentTarget.files || !event.currentTarget.files.length) {
       return;
     }
 
@@ -139,7 +139,7 @@ class Example extends Component<ComponentProps, ComponentState> {
         if (!isIdSaved && state.status === 'uploading') {
           isIdSaved = true;
           this.setState({
-            fileIds: [...fileIds, state.id],
+            fileIds: [state.id, ...fileIds],
           });
         }
 

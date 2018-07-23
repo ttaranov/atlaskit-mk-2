@@ -3,7 +3,6 @@ import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
 import {
   Context,
-  MediaItemType,
   ImageResizeMode,
   MediaItemDetails,
   FileDetails,
@@ -37,6 +36,7 @@ export interface CardProps extends SharedCardProps, CardEventProps {
 
 export interface CardState {
   status: CardStatus;
+  isCardVisible: boolean;
   metadata?: MediaItemDetails;
   dataURI?: string;
   progress?: number;
@@ -54,6 +54,7 @@ export class Card extends Component<CardProps, CardState> {
 
   state: CardState = {
     status: 'loading',
+    isCardVisible: !this.props.isLazy,
   };
 
   componentDidMount() {
@@ -102,6 +103,11 @@ export class Card extends Component<CardProps, CardState> {
   };
 
   async subscribe(identifier: Identifier, context: Context) {
+    const { isCardVisible } = this.state;
+    if (!isCardVisible) {
+      return;
+    }
+
     if (identifier.mediaItemType !== 'file') {
       try {
         const metadata = await getLinkMetadata(identifier, context);
@@ -206,19 +212,6 @@ export class Card extends Component<CardProps, CardState> {
     this.subscribe(identifier, context);
   };
 
-  get placeholder(): JSX.Element {
-    const { appearance, dimensions } = this.props;
-
-    return (
-      <CardView
-        status="loading"
-        appearance={appearance}
-        dimensions={dimensions}
-        mediaItemType={this.mediaItemType}
-      />
-    );
-  }
-
   get analyticsContext(): CardAnalyticsContext {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
@@ -240,16 +233,17 @@ export class Card extends Component<CardProps, CardState> {
       onMouseEnter,
       onSelectChange,
       disableOverlay,
+      identifier,
     } = this.props;
     const { status, progress, metadata, dataURI } = this.state;
-    const { mediaItemType, placeholder, analyticsContext, onRetry } = this;
+    const { analyticsContext, onRetry } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
           status={status}
           metadata={metadata}
           dataURI={dataURI}
-          mediaItemType={mediaItemType}
+          mediaItemType={identifier.mediaItemType}
           appearance={appearance}
           resizeMode={resizeMode}
           dimensions={dimensions}
@@ -267,15 +261,18 @@ export class Card extends Component<CardProps, CardState> {
     );
 
     return isLazy ? (
-      <LazyContent placeholder={placeholder}>{card}</LazyContent>
+      <LazyContent placeholder={card} onRender={this.onCardInViewport}>
+        {card}
+      </LazyContent>
     ) : (
       card
     );
   }
 
-  private get mediaItemType(): MediaItemType {
-    const { mediaItemType } = this.props.identifier;
-
-    return mediaItemType;
-  }
+  onCardInViewport = () => {
+    this.setState({ isCardVisible: true }, () => {
+      const { identifier, context } = this.props;
+      this.subscribe(identifier, context);
+    });
+  };
 }

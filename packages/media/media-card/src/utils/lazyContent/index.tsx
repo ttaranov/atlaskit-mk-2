@@ -4,6 +4,7 @@ import { Wrapper } from './styled';
 export interface LazyContentProps {
   placeholder?: JSX.Element;
   children?: React.ReactNode;
+  onRender?: () => void;
 }
 
 export interface LazyContentState {}
@@ -13,9 +14,14 @@ export class LazyContent extends React.Component<
   LazyContentState
 > {
   render() {
-    const { children, placeholder } = this.props;
+    const { children, placeholder, onRender } = this.props;
     return (
-      <Wrapper offset={300} placeholder={placeholder} content={children} />
+      <Wrapper
+        offset={300}
+        onRender={onRender}
+        placeholder={placeholder}
+        content={children}
+      />
     );
   }
 }
