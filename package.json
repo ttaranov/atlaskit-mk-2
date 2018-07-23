@@ -433,7 +433,8 @@
     "xregexp": "^3.2.0"
   },
   "resolutions": {
-    "**/@atlaskit/theme/styled-components": "^3.2.6"
+    "**/@atlaskit/theme/styled-components": "^3.2.6",
+    "**/expand-range/fill-range": "2.2.3"
   },
   "engines": {
     "node": "^8.4.0"
