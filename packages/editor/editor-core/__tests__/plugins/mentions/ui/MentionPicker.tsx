@@ -10,6 +10,13 @@ import { analyticsService } from '../../../../src/analytics';
 import { enter } from '../../../../src/keymaps';
 import { MentionPicker } from '../../../../src/plugins/mentions/ui/MentionPicker';
 
+const sessionIdRegex = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
+
+const extractSessionId = <T extends any>(
+  createAnalyticsEvent: jest.Mock<T>,
+  callIndex: number = 0,
+) => createAnalyticsEvent.mock.calls[callIndex][0].attributes.sessionId;
+
 describe('MentionPicker', () => {
   describe('Analytics', () => {
     let trackEvent;
@@ -101,11 +108,12 @@ describe('MentionPicker', () => {
         ).toEqual({
           containerId: CONTAINER_ID,
           objectId: OBJECT_ID,
+          sessionId: expect.stringMatching(sessionIdRegex),
         });
       });
     });
 
-    it('should fallback mentionProvider to MentionResource in the state if contextIdenfierProvider fails after component is mounted', () => {
+    it('should use ContextMentionResource with sessionId if contextIdentifierProvider fails after component is mounted', () => {
       const _component = shallow(
         <MentionPicker
           mentionProvider={mentionProvider}
@@ -117,9 +125,13 @@ describe('MentionPicker', () => {
       );
       return new Promise(resolve => setTimeout(resolve)).then(() => {
         expect(_component.state().contextIdentifierProvider).toEqual(undefined);
-        expect(
-          _component.state().mentionProvider instanceof MentionResource,
-        ).toBeTruthy();
+        const mentionResource = _component.state()
+          .mentionProvider as ContextMentionResource;
+
+        expect(mentionResource instanceof ContextMentionResource).toBeTruthy();
+        expect(mentionResource.getContextIdentifier()).toEqual({
+          sessionId: expect.stringMatching(sessionIdRegex),
+        });
       });
     });
 
@@ -145,6 +157,7 @@ describe('MentionPicker', () => {
           containerId: 'whatever',
           objectId: 'boo',
           childObjectId: 'boo child',
+          sessionId: expect.stringMatching(sessionIdRegex),
         });
         expect(component.state().contextIdentifierProvider).toEqual({
           containerId: 'whatever',
@@ -171,6 +184,7 @@ describe('MentionPicker', () => {
         ).toEqual({
           containerId: CONTAINER_ID,
           objectId: OBJECT_ID,
+          sessionId: expect.stringMatching(sessionIdRegex),
         });
         expect(component.state().contextIdentifierProvider).toEqual({
           containerId: CONTAINER_ID,
@@ -200,6 +214,7 @@ describe('MentionPicker', () => {
         ).toEqual({
           containerId: 'Foo',
           objectId: 'Boo',
+          sessionId: expect.stringMatching(sessionIdRegex),
         });
         expect(component.state().contextIdentifierProvider).toEqual({
           containerId: 'Foo',
@@ -217,9 +232,13 @@ describe('MentionPicker', () => {
       // To be able to see the proper expect failure and not a timeout, the expectation is wrappered in the code bellow to run verify the result in the next tick
       // given the setState() triggered in the MentionPicker.componentWillReceiveProps is async
       return new Promise(resolve => setTimeout(resolve)).then(() => {
-        expect(
-          component.state().mentionProvider instanceof MentionResource,
-        ).toBeTruthy();
+        const mentionProvider = component.state()
+          .mentionProvider as ContextMentionResource;
+
+        expect(mentionProvider instanceof ContextMentionResource).toBeTruthy();
+        expect(mentionProvider.getContextIdentifier()).toEqual({
+          sessionId: expect.stringMatching(sessionIdRegex),
+        });
         expect(component.state().contextIdentifierProvider).toEqual(undefined);
       });
     });
@@ -284,6 +303,7 @@ describe('MentionPicker', () => {
             attributes: expect.objectContaining({
               packageName: '@atlaskit/editor-core',
               packageVersion: expect.any(String),
+              sessionId: expect.stringMatching(sessionIdRegex),
               spaceInQuery: false,
               queryLength: 9,
               duration: expect.any(Number),
@@ -299,11 +319,11 @@ describe('MentionPicker', () => {
       it('should fire typeahead pressed event', () => {
         const event: any = { fire: jest.fn() };
         createAnalyticsEvent.mockReturnValueOnce(event);
+        subscribeSpy.mock.calls[0][1](mentions);
         state.lastQuery = 'someQuery';
         state.onSelectNext();
         state.onSelectNext();
         state.onSelectPrevious();
-        subscribeSpy.mock.calls[0][1](mentions);
         state.onSelectCurrent(enter.common);
         (componentInstance as any).handleSelectedMention(mention);
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
@@ -368,6 +388,48 @@ describe('MentionPicker', () => {
         );
         expect(event.fire).toHaveBeenCalledTimes(1);
         expect(event.fire).toHaveBeenCalledWith('fabric-elements');
+      });
+
+      describe('sessionId', () => {
+        it('should recreate sessionId when first session is dismissed', () => {
+          state.subscribe.mock.calls[0][0]({
+            ...state,
+            queryActive: true,
+            focused: true,
+            anchorElement: {},
+            query: '',
+          });
+
+          component.update();
+          expect(component.find('MentionPicker')).toHaveLength(1);
+
+          state.subscribe.mock.calls[0][0]({
+            ...state,
+            queryActive: false,
+            focused: false,
+          });
+          state.onDismiss();
+          component.update();
+          expect(component.find('MentionPicker')).toHaveLength(0);
+
+          expect(createAnalyticsEvent).toHaveBeenCalledTimes(1);
+          const firstSessionId = extractSessionId(createAnalyticsEvent);
+          expect(firstSessionId).toMatch(sessionIdRegex);
+
+          state.subscribe.mock.calls[0][0]({
+            ...state,
+            queryActive: false,
+            focused: false,
+          });
+          state.onDismiss();
+          component.update();
+
+          expect(createAnalyticsEvent).toHaveBeenCalledTimes(2);
+          const secondSessionId = extractSessionId(createAnalyticsEvent, 1);
+
+          expect(firstSessionId).not.toEqual(secondSessionId);
+          expect(secondSessionId).toMatch(sessionIdRegex);
+        });
       });
     });
   });

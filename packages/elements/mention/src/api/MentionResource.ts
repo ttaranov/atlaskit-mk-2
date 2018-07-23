@@ -69,9 +69,10 @@ export interface ResourceProvider<Result> {
 }
 
 export type MentionContextIdentifier = {
-  containerId: string;
-  objectId: string;
+  containerId?: string;
+  objectId?: string;
   childObjectId?: string;
+  sessionId: string;
 };
 
 export interface MentionProvider
