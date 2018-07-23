@@ -5,7 +5,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  UIStateSubscriber,
+  UIControllerSubscriber,
   withNavigationViewController,
   withNavigationUI,
 } from '../../src';
@@ -15,16 +15,16 @@ import ShortcutsPlugin from './shortcuts-plugin';
 
 class SetActiveViewBase extends Component<{
   id: string,
-  navigationUI: *,
+  navigationUIController: *,
   navigationViewController: *,
 }> {
   componentDidMount() {
-    const { id, navigationUI, navigationViewController } = this.props;
+    const { id, navigationUIController, navigationViewController } = this.props;
     const { containerViewId, productViewId } = navigationViewController.state;
     if (id !== containerViewId && id !== productViewId) {
       navigationViewController.setView(id);
     }
-    navigationUI.unPeek();
+    navigationUIController.unPeek();
   }
   render() {
     return null;
@@ -100,7 +100,7 @@ export const SearchIssuesView = () => (
  */
 class BacklogViewBase extends Component<*> {
   componentDidMount() {
-    this.props.navUI.unPeek();
+    this.props.navigationUIController.unPeek();
   }
 
   render() {
@@ -120,7 +120,9 @@ class BacklogViewBase extends Component<*> {
   }
 }
 export const BacklogView = () => (
-  <UIStateSubscriber>
-    {navUI => <BacklogViewBase navUI={navUI} />}
-  </UIStateSubscriber>
+  <UIControllerSubscriber>
+    {navigationUIController => (
+      <BacklogViewBase navigationUIController={navigationUIController} />
+    )}
+  </UIControllerSubscriber>
 );

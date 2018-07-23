@@ -2,19 +2,19 @@
 
 import type { Node } from 'react';
 
-import UIState from './UIState';
+import UIController from './UIController';
 
 /**
- * UIState
+ * UIController
  */
-export type InitialUIStateShape = {
+export type InitialUIControllerShape = {
   isPeekHinting?: boolean,
   isPeeking?: boolean,
   isCollapsed?: boolean,
   productNavWidth?: number,
 };
 
-export type UIStateShape = {
+export type UIControllerShape = {
   isPeekHinting: boolean,
   isPeeking: boolean,
   isCollapsed: boolean,
@@ -22,17 +22,17 @@ export type UIStateShape = {
   isResizing: boolean,
 };
 
-export type UIStateCacheGetter = () => UIStateShape;
+export type UIControllerCacheGetter = () => UIControllerShape;
 
-export type UIStateCacheSetter = UIStateShape => void;
+export type UIControllerCacheSetter = UIControllerShape => void;
 
-export type UIStateCache = {
-  get: UIStateCacheGetter,
-  set: UIStateCacheSetter,
+export type UIControllerCache = {
+  get: UIControllerCacheGetter,
+  set: UIControllerCacheSetter,
 };
 
-export interface UIStateInterface {
-  state: UIStateShape;
+export interface UIControllerInterface {
+  state: UIControllerShape;
 
   collapse: () => void;
   expand: () => void;
@@ -48,8 +48,8 @@ export interface UIStateInterface {
 }
 
 /**
- * UIStateSubscriber
+ * UIControllerSubscriber
  */
-export type UIStateSubscriberProps = {
-  children: UIState => Node,
+export type UIControllerSubscriberProps = {
+  children: UIController => Node,
 };

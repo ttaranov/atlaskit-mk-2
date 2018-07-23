@@ -14,7 +14,7 @@ import {
   NavigationProvider,
   Section,
   Separator,
-  UIStateSubscriber,
+  UIControllerSubscriber,
 } from '../src';
 
 const MyGlobalNavigation = () => (
@@ -78,14 +78,14 @@ const MyContainerNavigation = () => (
 );
 
 const ExpandToggleButton = () => (
-  <UIStateSubscriber>
-    {navigationUI => (
-      <button onClick={navigationUI.toggleCollapse}>
-        {navigationUI.state.isCollapsed ? 'Expand' : 'Collapse'} product
-        navigation
+  <UIControllerSubscriber>
+    {navigationUIController => (
+      <button onClick={navigationUIController.toggleCollapse}>
+        {navigationUIController.state.isCollapsed ? 'Expand' : 'Collapse'}{' '}
+        product navigation
       </button>
     )}
-  </UIStateSubscriber>
+  </UIControllerSubscriber>
 );
 
 export default () => (

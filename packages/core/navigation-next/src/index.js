@@ -23,7 +23,11 @@ export { default as Switcher } from './components/Switcher';
 
 /** State */
 export { NavigationProvider } from './provider';
-export { UIState, UIStateSubscriber, withNavigationUI } from './ui-state';
+export {
+  UIController,
+  UIControllerSubscriber,
+  withNavigationUI,
+} from './ui-controller';
 export {
   ViewController,
   ViewControllerSubscriber,

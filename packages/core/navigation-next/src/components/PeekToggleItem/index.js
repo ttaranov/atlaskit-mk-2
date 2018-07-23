@@ -1,12 +1,12 @@
 // @flow
 
 import React, { Component } from 'react';
-import MenuIcon from '@atlaskit/icon/glyph/menu';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import MenuIcon from '../../../../icon/glyph/menu';
+import ArrowLeftIcon from '../../../../icon/glyph/arrow-left';
 
-import { GlobalItemPrimitive } from '../../';
+import { GlobalItemPrimitive } from '../..';
 import InteractionStateManager from '../InteractionStateManager';
-import { UIState, UIStateSubscriber } from '../../ui-state';
+import { UIController, UIControllerSubscriber } from '../../ui-controller';
 import {
   ViewController,
   withNavigationViewController,
@@ -16,7 +16,7 @@ type PeekToggleProps = {
   label: string,
   tooltip: string,
   isPeeking: boolean,
-  navigationUI: UIState,
+  navigationUIController: UIController,
   navigationViewController: ViewController,
 };
 
@@ -38,27 +38,31 @@ class PeekToggle extends Component<PeekToggleProps> {
   }
 
   handleClick = () => {
-    const { isPeeking, navigationUI, navigationViewController } = this.props;
+    const {
+      isPeeking,
+      navigationUIController,
+      navigationViewController,
+    } = this.props;
     if (!isPeeking && navigationViewController.initialPeekViewId) {
       navigationViewController.setPeekView(
         navigationViewController.initialPeekViewId,
       );
     }
-    navigationUI.togglePeek();
+    navigationUIController.togglePeek();
   };
 
   renderIcon = () => (this.props.isPeeking ? ArrowLeftIcon : MenuIcon);
 
   renderComponent = ({ className, children }) => {
     const isHomeViewActive = this.getIsHomeViewActive();
-    const { isPeeking, navigationUI } = this.props;
+    const { isPeeking, navigationUIController } = this.props;
 
     return (
       <button
         className={className}
         onClick={isHomeViewActive && !isPeeking ? null : this.handleClick}
-        onMouseEnter={navigationUI.peekHint}
-        onMouseLeave={navigationUI.unPeekHint}
+        onMouseEnter={navigationUIController.peekHint}
+        onMouseLeave={navigationUIController.unPeekHint}
       >
         {children}
       </button>
@@ -87,16 +91,16 @@ class PeekToggle extends Component<PeekToggleProps> {
   }
 }
 
-const PeekToggleWithUIState = (props: *) => (
-  <UIStateSubscriber>
-    {navigationUI => (
+const PeekToggleWithUIController = (props: *) => (
+  <UIControllerSubscriber>
+    {navigationUIController => (
       <PeekToggle
-        isPeeking={navigationUI.state.isPeeking}
-        navigationUI={navigationUI}
+        isPeeking={navigationUIController.state.isPeeking}
+        navigationUIController={navigationUIController}
         {...props}
       />
     )}
-  </UIStateSubscriber>
+  </UIControllerSubscriber>
 );
 
-export default withNavigationViewController(PeekToggleWithUIState);
+export default withNavigationViewController(PeekToggleWithUIController);

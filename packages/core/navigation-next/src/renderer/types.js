@@ -2,7 +2,7 @@
 
 import type { ComponentType } from 'react';
 
-import { UIState, ViewController } from '../';
+import { UIController, ViewController } from '../';
 import type { ViewData } from '../../src/view-controller/types';
 
 /**
@@ -21,7 +21,7 @@ export type GoToItemProps = {
   ...ItemProps,
   after?: ?ComponentType<*>,
   goTo: string,
-  navigationUI: UIState,
+  navigationUIController: UIController,
   navigationViewController: ViewController,
 };
 

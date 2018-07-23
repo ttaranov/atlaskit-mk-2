@@ -3,12 +3,12 @@
 import { Container } from 'unstated';
 
 import type {
-  InitialUIStateShape,
-  UIStateCache,
-  UIStateCacheGetter,
-  UIStateCacheSetter,
-  UIStateInterface,
-  UIStateShape,
+  InitialUIControllerShape,
+  UIControllerCache,
+  UIControllerCacheGetter,
+  UIControllerCacheSetter,
+  UIControllerInterface,
+  UIControllerShape,
 } from './types';
 
 import { CONTENT_NAV_WIDTH } from '../common/constants';
@@ -26,12 +26,15 @@ type Resize = {
   isCollapsed: boolean,
 };
 
-export default class UIState extends Container<UIStateShape>
-  implements UIStateInterface {
-  getCache: ?UIStateCacheGetter;
-  setCache: ?UIStateCacheSetter;
+export default class UIController extends Container<UIControllerShape>
+  implements UIControllerInterface {
+  getCache: ?UIControllerCacheGetter;
+  setCache: ?UIControllerCacheSetter;
 
-  constructor(initialState?: InitialUIStateShape, cache: UIStateCache | false) {
+  constructor(
+    initialState?: InitialUIControllerShape,
+    cache: UIControllerCache | false,
+  ) {
     super();
 
     if (!cache) {

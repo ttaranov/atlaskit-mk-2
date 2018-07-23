@@ -2,7 +2,7 @@
 
 import type { ComponentType, Node } from 'react';
 
-import UIState from '../../ui-state/UIState';
+import UIController from '../../ui-controller/UIController';
 
 export type ConnectedLayoutManagerProps = {
   /** Your page content. */
@@ -16,5 +16,5 @@ export type ConnectedLayoutManagerProps = {
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {
-  navigationUI: UIState,
+  navigationUIController: UIController,
 };

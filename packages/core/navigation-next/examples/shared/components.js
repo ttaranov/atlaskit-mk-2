@@ -17,7 +17,7 @@ import {
   GlobalNav,
   ItemAvatar,
   ViewRenderer,
-  UIState,
+  UIController,
   ViewController,
   withNavigationUI,
   withNavigationViewController,
@@ -135,7 +135,7 @@ const Renderer = ({ activeView }: any) => (
 type ConnectedLayoutManagerProps = {
   children: Node,
   globalNavigation: ComponentType<{}>,
-  navigationUI: UIState,
+  navigationUIController: UIController,
   navigationViewController: ViewController,
 };
 class ConnectedLayoutManagerBase extends Component<
@@ -157,7 +157,7 @@ class ConnectedLayoutManagerBase extends Component<
 
   renderProductNavigation = () => {
     const {
-      navigationUI: {
+      navigationUIController: {
         state: { isPeeking },
       },
       navigationViewController: {

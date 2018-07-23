@@ -23,7 +23,7 @@ import {
   Switcher,
   withNavigationUI,
   withNavigationViewController,
-} from '../';
+} from '..';
 import type {
   GoToItemProps,
   GroupProps,
@@ -54,7 +54,7 @@ const gridSize = gridSizeFn();
 const GoToItemBase = ({
   after: afterProp,
   goTo,
-  navigationUI,
+  navigationUIController,
   navigationViewController,
   ...rest
 }: GoToItemProps) => {
@@ -70,10 +70,10 @@ const GoToItemBase = ({
 
     const { activeView } = navigationViewController.state;
 
-    if (navigationUI.state.isPeeking) {
+    if (navigationUIController.state.isPeeking) {
       if (activeView && goTo === activeView.id) {
         // If we're peeking and goTo points to the active view, unpeek.
-        navigationUI.unPeek();
+        navigationUIController.unPeek();
       } else {
         // If we're peeking and goTo does not point to the active view, update
         // the peek view.

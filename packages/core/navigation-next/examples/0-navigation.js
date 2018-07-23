@@ -24,7 +24,7 @@ import {
   NavigationProvider,
   Section,
   Separator,
-  UIStateSubscriber,
+  UIControllerSubscriber,
 } from '../src';
 
 /**
@@ -34,26 +34,26 @@ const globalNavPrimaryItems = [
   {
     key: 'jira',
     component: ({ className, children }: *) => (
-      <UIStateSubscriber>
-        {navigation => {
+      <UIControllerSubscriber>
+        {navigationUIController => {
           function onClick() {
-            if (navigation.state.isCollapsed) {
-              navigation.expand();
+            if (navigationUIController.state.isCollapsed) {
+              navigationUIController.expand();
             }
-            navigation.togglePeek();
+            navigationUIController.togglePeek();
           }
           return (
             <button
               className={className}
               onClick={onClick}
-              onMouseEnter={navigation.peekHint}
-              onMouseLeave={navigation.unPeekHint}
+              onMouseEnter={navigationUIController.peekHint}
+              onMouseLeave={navigationUIController.unPeekHint}
             >
               {children}
             </button>
           );
         }}
-      </UIStateSubscriber>
+      </UIControllerSubscriber>
     ),
     icon: JiraIcon,
     label: 'Jira',

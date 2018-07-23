@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { withNavigationUI } from '../../ui-state';
+import { withNavigationUI } from '../../ui-controller';
 import LayoutManager from './LayoutManager';
 import type { ConnectedLayoutManagerProps } from './types';
 

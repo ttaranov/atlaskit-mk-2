@@ -62,8 +62,16 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
 
   renderContentNavigation = (args: RenderContentNavigationArgs) => {
     const { isDragging, transitionState, transitionStyle, width } = args;
-    const { containerNavigation, navigationUI, productNavigation } = this.props;
-    const { isPeekHinting, isPeeking, isResizing } = navigationUI.state;
+    const {
+      containerNavigation,
+      navigationUIController,
+      productNavigation,
+    } = this.props;
+    const {
+      isPeekHinting,
+      isPeeking,
+      isResizing,
+    } = navigationUIController.state;
 
     const isVisible = transitionState !== 'exited';
     const shouldDisableInteraction =
@@ -83,7 +91,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
             isPeekHinting={isPeekHinting}
             isPeeking={isPeeking}
             key="product-nav"
-            onOverlayClick={navigationUI.unPeek}
+            onOverlayClick={navigationUIController.unPeek}
             product={productNavigation}
             transitionState={transitionState}
             width={width}
@@ -94,13 +102,13 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
   };
 
   renderNavigation = () => {
-    const { navigationUI } = this.props;
+    const { navigationUIController } = this.props;
     const {
       isCollapsed,
       isPeeking,
       isResizing,
       productNavWidth,
-    } = navigationUI.state;
+    } = navigationUIController.state;
 
     return (
       <ResizeTransition
@@ -117,7 +125,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
           return (
             <NavigationContainer>
               <ResizeControl
-                navigation={navigationUI}
+                navigation={navigationUIController}
                 mutationRefs={[
                   { ref: this.pageRef, property: 'padding-left' },
                   { ref: this.productNavRef, property: 'width' },
@@ -147,7 +155,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
       isResizing,
       isCollapsed,
       productNavWidth,
-    } = this.props.navigationUI.state;
+    } = this.props.navigationUIController.state;
     return (
       <ResizeTransition
         from={[0]}

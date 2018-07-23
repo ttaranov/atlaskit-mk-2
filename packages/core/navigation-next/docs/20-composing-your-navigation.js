@@ -167,9 +167,9 @@ import { UIStateSubscriber } from '@atlaskit/navigation-next';
 
 const ExpandToggleButton = () => (
   <UIStateSubscriber>
-    {navigationUI => (
-      <button onClick={navigationUI.toggleCollapse}>
-        {navigationUI.state.isCollapsed ? 'Expand' : 'Collapse'} product navigation
+    {navigationUIController => (
+      <button onClick={navigationUIController.toggleCollapse}>
+        {navigationUIController.state.isCollapsed ? 'Expand' : 'Collapse'} product navigation
       </button>
     )}
   </UIStateSubscriber>
