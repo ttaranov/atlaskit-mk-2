@@ -6,7 +6,7 @@ import { analyticsService } from '../../../../src/analytics';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
 import {
   TextFormattingState,
-  stateKey,
+  pluginKey,
 } from '../../../../src/plugins/text-formatting/pm-plugins/main';
 import ToolbarTextFormatting from '../../../../src/plugins/text-formatting/ui/ToolbarTextFormatting';
 
@@ -14,7 +14,7 @@ describe('ToolbarTextFormatting', () => {
   const editor = (doc: any) =>
     createEditor<TextFormattingState>({
       doc,
-      pluginKey: stateKey,
+      pluginKey: pluginKey,
     });
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {
@@ -22,7 +22,7 @@ describe('ToolbarTextFormatting', () => {
     const toolbarTextColor = mount(
       <ToolbarTextFormatting
         disabled={true}
-        pluginState={pluginState}
+        textFormattingState={pluginState}
         editorView={editorView}
       />,
     );
@@ -40,7 +40,7 @@ describe('ToolbarTextFormatting', () => {
       const { editorView, pluginState } = editor(doc(p('text')));
       toolbarOption = mount(
         <ToolbarTextFormatting
-          pluginState={pluginState}
+          textFormattingState={pluginState}
           editorView={editorView}
         />,
       );

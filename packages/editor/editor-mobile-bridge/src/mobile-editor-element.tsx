@@ -97,11 +97,9 @@ function sendToNative(state) {
 function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
-  if (textFormattingPluginState) {
-    textFormattingPluginState.subscribe(state =>
-      toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state))),
-    );
-  }
+  eventDispatcher.on(textFormattingStateKey, state => {
+    toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state)));
+  });
 }
 
 function subscribeForBlockStateChanges(view: EditorView, eventDispatcher: any) {

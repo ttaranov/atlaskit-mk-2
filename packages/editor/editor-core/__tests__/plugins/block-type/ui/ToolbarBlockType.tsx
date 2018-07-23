@@ -14,6 +14,15 @@ import {
   blockquote,
   panel,
 } from '@atlaskit/editor-test-helpers';
+import {
+  NORMAL_TEXT,
+  HEADING_1,
+  HEADING_2,
+  HEADING_3,
+  HEADING_4,
+  HEADING_5,
+  HEADING_6,
+} from '../../../../src/plugins/block-type/types';
 import { analyticsService } from '../../../../src/analytics';
 import panelPlugin from '../../../../src/plugins/panel';
 import listPlugin from '../../../../src/plugins/lists';
@@ -120,6 +129,31 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     toolbarOption.unmount();
   });
 
+  describe('blockType dropdown items', () => {
+    let toolbarOption;
+    beforeEach(() => {
+      const { editorView, pluginState } = editor(doc(p('text')));
+      toolbarOption = mount(
+        <ToolbarBlockType pluginState={pluginState} editorView={editorView} />,
+      );
+      toolbarOption.find(ToolbarButton).simulate('click');
+    });
+
+    afterEach(() => {
+      toolbarOption.unmount();
+    });
+
+    [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5, HEADING_6,]
+    .forEach(blockType => {
+      it(`should have tagName ${blockType.tagName} present`, () => {
+        expect(toolbarOption
+          .find(Item)
+          .findWhere((n) => n.type() === blockType.tagName && n.text() === blockType.title)
+          .length).toEqual(1);
+      });
+    });
+  });
+
   describe('analytics', () => {
     let trackEvent;
     let toolbarOption;
@@ -137,24 +171,17 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       toolbarOption.unmount();
     });
 
-    [
-      { value: 'normal', name: 'Normal text' },
-      { value: 'heading1', name: 'Heading 1' },
-      { value: 'heading2', name: 'Heading 2' },
-      { value: 'heading3', name: 'Heading 3' },
-      { value: 'heading4', name: 'Heading 4' },
-      { value: 'heading5', name: 'Heading 5' },
-      { value: 'heading6', name: 'Heading 6' },
-    ].forEach(blockType => {
+    [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5, HEADING_6]
+    .forEach(blockType => {
       it(`should trigger analyticsService.trackEvent when ${
-        blockType.name
+        blockType.title
       } is clicked`, () => {
         toolbarOption
           .find(Item)
-          .filterWhere(n => n.text() === blockType.name)
+          .filterWhere(n => n.text() === blockType.title)
           .simulate('click');
         expect(trackEvent).toHaveBeenCalledWith(
-          `atlassian.editor.format.${blockType.value}.button`,
+          `atlassian.editor.format.${blockType.name}.button`,
         );
       });
     });

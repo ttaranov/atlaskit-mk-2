@@ -13,6 +13,13 @@ import {
   outdentList,
   toggleOrderedList,
   toggleBulletList,
+  toggleSuperscript,
+  toggleSubscript,
+  toggleStrike,
+  toggleCode,
+  toggleUnderline,
+  toggleEm,
+  toggleStrong,
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
@@ -30,39 +37,39 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleStrong(this.editorView);
+      toggleStrong()(this.editorView.state, this.editorView.dispatch);
     }
   }
 
   onItalicClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleEm(this.editorView);
+      toggleEm()(this.editorView.state, this.editorView.dispatch);
     }
   }
 
   onUnderlineClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleUnderline(this.editorView);
+      toggleUnderline()(this.editorView.state, this.editorView.dispatch);
     }
   }
   onCodeClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleCode(this.editorView);
+      toggleCode()(this.editorView.state, this.editorView.dispatch);
     }
   }
   onStrikeClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleStrike(this.editorView);
+      toggleStrike()(this.editorView.state, this.editorView.dispatch);
     }
   }
   onSuperClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleSuperscript(this.editorView);
+      toggleSuperscript()(this.editorView.state, this.editorView.dispatch);
     }
   }
   onSubClicked() {
     if (this.textFormattingPluginState && this.editorView) {
-      this.textFormattingPluginState.toggleSubscript(this.editorView);
+      toggleSubscript()(this.editorView.state, this.editorView.dispatch);
     }
   }
   onMentionSelect(mention: string) {

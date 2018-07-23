@@ -1,24 +1,21 @@
 // @flow
 
 import React, { Component } from 'react';
-import Avatar from '@atlaskit/avatar';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
-import type { ItemAvatarProps } from './types';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
+import ItemAvatar from './ItemAvatar';
+import type { ConnectedItemAvatarProps } from './types';
 
-class ItemAvatar extends Component<ItemAvatarProps> {
+const ItemAvatarWithTheme = withContentTheme(ItemAvatar);
+
+export default class ConnectedItemAvatar extends Component<
+  ConnectedItemAvatarProps,
+> {
   static defaultProps = {
     styles: styleReducerNoOp,
   };
 
   render() {
-    const { itemState, styles: styleReducer, theme, ...props } = this.props;
-    const { mode, context } = theme;
-    const borderColor = styleReducer(mode.item(itemState)[context], itemState)
-      .itemBase.backgroundColor;
-
-    return <Avatar borderColor={borderColor} {...props} />;
+    return <ItemAvatarWithTheme {...this.props} />;
   }
 }
-
-export default withTheme({ mode: light, context: 'container' })(ItemAvatar);
