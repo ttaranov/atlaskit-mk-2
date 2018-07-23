@@ -1,7 +1,7 @@
 // @flow
-import md from 'react-markings';
+import { md } from '@atlaskit/docs';
 import React, { Fragment, Component } from 'react';
-import AkToggle from '@atlaskit/toggle';
+import Button from '@atlaskit/button';
 import { GridColumn } from '../../src';
 
 export default class NavExplanation extends Component<*, *> {
@@ -32,12 +32,10 @@ export default class NavExplanation extends Component<*, *> {
             to 52 only when the banner is open.
 
             ### Show or hide an error banner
+
+
           `}
-          <AkToggle
-            label="toggle"
-            size="large"
-            onChange={onErrorBannerChange}
-          />
+          <Button onClick={onErrorBannerChange}>Toggle error banner</Button>
           {md`
             ## Complex use-cases with announcement Banners
 
@@ -58,16 +56,24 @@ export default class NavExplanation extends Component<*, *> {
             displayed at the same time.
 
             ### Show or hide an announcement banner
+
+
           `}
-          <AkToggle
-            label="toggle"
-            size="large"
-            onChange={onAnnouncementBannerChange}
-          />
+          <Button onClick={onAnnouncementBannerChange}>
+            Toggle announcement banner
+          </Button>
           <p>
             Whether you want to calculate the values or not will likely depend
             on whether you are using announcement banners in your app.
           </p>
+          <Button
+            onClick={() => {
+              onAnnouncementBannerChange();
+              onErrorBannerChange();
+            }}
+          >
+            Toggle Both Banners
+          </Button>
         </GridColumn>
       </Fragment>
     );
