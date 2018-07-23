@@ -27,7 +27,9 @@ const renderNode = (
       if (i > 0) {
         state.write(' ');
       }
+      (state as any).context.insideTable = true;
       state.renderInline(child);
+      (state as any).context.insideTable = false;
     } else {
       renderNode(state, child, i);
     }

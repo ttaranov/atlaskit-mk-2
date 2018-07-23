@@ -8,8 +8,6 @@ import {
   AnalyticsContext,
 } from '@atlaskit/analytics-next';
 
-import { withAnalytics } from '@atlaskit/analytics';
-
 import {
   fireSelectedSearchResult,
   fireHighlightedSearchResult,
@@ -41,12 +39,17 @@ export interface Props {
   children: React.ReactNode;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
+  isSendSearchTermsEnabled?: boolean;
 }
 
 /**
  * Presentational component that renders the search input and search results.
  */
 export class GlobalQuickSearch extends React.Component<Props> {
+  public static defaultProps: Partial<Props> = {
+    isSendSearchTermsEnabled: false,
+  };
+
   queryVersion: number = 0;
   resultSelected: boolean = false;
 
@@ -62,12 +65,18 @@ export class GlobalQuickSearch extends React.Component<Props> {
   debouncedSearch = debounce(this.doSearch, 350);
 
   doSearch(query: string) {
-    const { onSearch, searchSessionId, createAnalyticsEvent } = this.props;
+    const {
+      onSearch,
+      searchSessionId,
+      createAnalyticsEvent,
+      isSendSearchTermsEnabled,
+    } = this.props;
     onSearch(query);
     fireTextEnteredEvent(
       query,
       searchSessionId,
       this.queryVersion,
+      isSendSearchTermsEnabled,
       createAnalyticsEvent,
     );
     this.queryVersion++;
@@ -132,17 +141,10 @@ export class GlobalQuickSearch extends React.Component<Props> {
       onSearchSubmit,
     } = this.props;
 
-    const QuickSearchWithAnalytics = withAnalytics(
-      QuickSearch,
-      {
-        firePrivateAnalyticsEvent: this.fireSearchResultEvents,
-      },
-      {},
-    );
-
     return (
       <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
-        <QuickSearchWithAnalytics
+        <QuickSearch
+          firePrivateAnalyticsEvent={this.fireSearchResultEvents}
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           placeholder={placeholder}
@@ -151,7 +153,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           onSearchSubmit={onSearchSubmit}
         >
           {children}
-        </QuickSearchWithAnalytics>
+        </QuickSearch>
       </AnalyticsContext>
     );
   }

@@ -16,10 +16,11 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
+  nonPrivacySafeAttributes?: object | null,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
-    const payload = {
+    const payload: GasPayload = {
       action,
       actionSubject,
       actionSubjectId,
@@ -30,6 +31,9 @@ const fireGasEvent = (
         ...DEFAULT_GAS_ATTRIBUTES,
       },
     };
+    if (nonPrivacySafeAttributes) {
+      payload.nonPrivacySafeAttributes = nonPrivacySafeAttributes;
+    }
     event.update(payload).fire(DEFAULT_GAS_CHANNEL);
   }
 };
@@ -64,18 +68,33 @@ const getQueryAttributes = query => {
   };
 };
 
+const getNonPrivacySafeAttributes = query => {
+  return {
+    query: sanitizeSearchQuery(query),
+  };
+};
+
 export function fireTextEnteredEvent(
   query: string,
   searchSessionId: string,
   queryVersion: number,
+  isSendSearchTermsEnabled?: boolean,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  fireGasEvent(createAnalyticsEvent, 'entered', 'text', '', 'track', {
-    queryId: null,
-    queryVersion: queryVersion,
-    ...getQueryAttributes(query),
-    searchSessionId: searchSessionId,
-  });
+  fireGasEvent(
+    createAnalyticsEvent,
+    'entered',
+    'text',
+    '',
+    'track',
+    {
+      queryId: null,
+      queryVersion: queryVersion,
+      ...getQueryAttributes(query),
+      searchSessionId: searchSessionId,
+    },
+    isSendSearchTermsEnabled ? getNonPrivacySafeAttributes(query) : undefined,
+  );
 }
 
 export function fireDismissedEvent(

@@ -1,6 +1,9 @@
-import { constructAuthTokenUrl, getSelectedIndex } from '../../src/newgen/util';
-import { createContext } from '../_stubs';
-import { Identifier } from '../../src/newgen/domain';
+import {
+  constructAuthTokenUrl,
+  getSelectedIndex,
+} from '../../../src/newgen/utils';
+import { createContext } from '../../_stubs';
+import { Identifier } from '../../../src/newgen/domain';
 
 const token = 'some-token';
 

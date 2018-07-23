@@ -229,7 +229,7 @@ export default class Editor extends React.Component<
             <ContentArea>
               <div
                 style={{ padding: `0 ${GUTTER_PADDING}px` }}
-                className="content-area"
+                className="ak-editor-content-area"
               >
                 {customContentComponents}
                 {

@@ -25,7 +25,7 @@ export const confluenceJiraIssue = {
       }),
     },
   ],
-  toDOM(node: any) {
+  toDOM(node) {
     const attrs = {
       'data-node-type': name,
       'data-macro-id': node.attrs.macroId,

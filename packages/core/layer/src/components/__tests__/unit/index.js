@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import createStub from 'raf-stub';
 
 import Layer from '../../..';
 import ContentContainer from '../../../styledContentContainer';
@@ -13,6 +14,20 @@ import ContentContainer from '../../../styledContentContainer';
    be done as a part of AK-1098 */
 
 describe('Layer', () => {
+  let stub;
+  let rafSpy;
+
+  beforeEach(() => {
+    stub = createStub();
+    rafSpy = jest
+      .spyOn(global, 'requestAnimationFrame')
+      .mockImplementation(stub.add);
+  });
+
+  afterEach(() => {
+    rafSpy.mockRestore();
+  });
+
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
     expect(wrapper).not.toBe(undefined);
@@ -51,8 +66,11 @@ describe('Layer', () => {
           },
         },
       };
+
       wrapper.instance().extractStyles(dummyPopperState);
+      stub.step();
       wrapper.update();
+
       expect(
         wrapper
           .find(ContentContainer)

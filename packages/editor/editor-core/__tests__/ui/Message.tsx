@@ -1,8 +1,11 @@
 import * as React from 'react';
 
 import Message from '../../src/ui/Appearance/Message';
+import EditorActions from '../../src/actions';
 import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
 import { mount } from 'enzyme';
+
+import * as utils from '../../src/utils';
 
 const editor = (doc: any) =>
   createEditor({
@@ -52,5 +55,63 @@ describe('message editor', () => {
     );
     (editorView.dom as HTMLElement).click();
     expect(editorView.state.doc).toEqualDocument(doc(p('Hello world')));
+  });
+
+  describe('focus', () => {
+    let editorActionsFocusSpy;
+    let messageFocusEditor;
+    let closestElementSpy;
+
+    beforeEach(() => {
+      closestElementSpy = jest.spyOn(utils, 'closestElement');
+      editorActionsFocusSpy = jest.fn();
+      const editorActions = {
+        focus: editorActionsFocusSpy,
+      } as EditorActions;
+      const { editorView } = editor(doc(p('Hello world')));
+      const message = mount(
+        <Message
+          editorView={editorView}
+          providerFactory={{} as any}
+          editorDOMElement={<div />}
+          editorActions={editorActions}
+        />,
+      );
+
+      // Test private method
+      messageFocusEditor = (message.instance() as any).focusEditor;
+    });
+
+    afterEach(() => {
+      closestElementSpy.mockRestore();
+    });
+
+    it('should focus when clicking anywhere but a popup', () => {
+      // no popup
+      (closestElementSpy as any).mockReturnValue(undefined);
+      const target = {};
+      messageFocusEditor({
+        target,
+      });
+      expect(closestElementSpy).toHaveBeenCalledWith(
+        target,
+        '[data-editor-popup]',
+      );
+      expect(editorActionsFocusSpy).toHaveBeenCalled();
+    });
+
+    it('should not focus when clicking within a popup', () => {
+      // found popup
+      (closestElementSpy as any).mockReturnValue({});
+      const target = {};
+      messageFocusEditor({
+        target,
+      });
+      expect(utils.closestElement).toHaveBeenCalledWith(
+        target,
+        '[data-editor-popup]',
+      );
+      expect(editorActionsFocusSpy).not.toHaveBeenCalled();
+    });
   });
 });
