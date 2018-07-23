@@ -62,9 +62,7 @@ describe('Card', () => {
           mediaType: 'image',
           status: 'processed',
         }),
-      mediaStore: {
-        getImage,
-      },
+      getImage,
     } as any;
 
     return context;
@@ -441,9 +439,7 @@ describe('Card', () => {
           size: 10,
           name: 'me.png',
         }),
-      mediaStore: {
-        getImage,
-      },
+      getImage,
     } as any;
     const { component } = setup(context);
 
@@ -498,8 +494,8 @@ describe('Card', () => {
     await nextTick();
     await nextTick();
 
-    expect(context.mediaStore.getImage).toHaveBeenCalledTimes(1);
-    expect(context.mediaStore.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toHaveBeenCalledTimes(1);
+    expect(context.getImage).toBeCalledWith('123', {
       collection: 'some-collection-name',
       height: 125,
       width: 156,
@@ -518,7 +514,7 @@ describe('Card', () => {
     await nextTick();
     await nextTick();
 
-    expect(context.mediaStore.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('123', {
       collection: 'some-collection-name',
       height: 32,
       width: 32,
@@ -537,7 +533,7 @@ describe('Card', () => {
     await nextTick();
     await nextTick();
 
-    expect(context.mediaStore.getImage).toBeCalledWith(
+    expect(context.getImage).toBeCalledWith(
       '123',
       expect.objectContaining({
         mode: 'full-fit',
@@ -556,9 +552,7 @@ describe('Card', () => {
           name: 'file-name',
           size: 10,
         }),
-      mediaStore: {
-        getImage,
-      },
+      getImage,
     } as any;
 
     const { component } = setup(context, {

@@ -163,7 +163,7 @@ export class Card extends Component<CardProps, CardState> {
               const height = getDataURIDimension('height', options);
               try {
                 const allowAnimated = appearance !== 'small';
-                const blob = await context.mediaStore.getImage(state.id, {
+                const blob = await context.getImage(state.id, {
                   collection: collectionName,
                   mode: resizeMode,
                   height,
