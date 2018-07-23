@@ -47,16 +47,16 @@ export const ErrorContainer: ComponentClass<
   display: flex;
   align-items: center;
   ${absolute()} ${size()} ${withPreview(
-      `
+  `
       flex-direction: column;
       justify-content: center;
     `,
-      `
+  `
       flex-direction: row;
       width: 100%;
       justify-content: space-around;
     `,
-    )};
+)};
 `;
 
 export const ErrorMessage: ComponentClass<

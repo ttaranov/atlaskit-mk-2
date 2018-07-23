@@ -62,4 +62,4 @@ export default interface ViewModel {
   users?: UserViewModel[];
   actions?: Action[];
   onClick?: () => void;
-};
+}

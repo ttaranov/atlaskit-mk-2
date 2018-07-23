@@ -5,9 +5,7 @@ function commitsToValues(response) {
 }
 
 function commitUrl(user, repo, pullrequestid, page) {
-  return `/2.0/repositories/${user}/${repo}/pullrequests/${
-    pullrequestid
-  }/commits?page=${page}`;
+  return `/2.0/repositories/${user}/${repo}/pullrequests/${pullrequestid}/commits?page=${page}`;
 }
 
 export default function getCommits(user, repo, pullrequestid, page = 0) {

@@ -12,7 +12,11 @@ type Props = {
   match: RouterMatch,
 };
 
-export default function Pattern({ match: { params: { patternId } } }: Props) {
+export default function Pattern({
+  match: {
+    params: { patternId },
+  },
+}: Props) {
   const filePath = `patterns/${patternId}`;
   const found = fs.findNormalized(patterns, filePath);
 

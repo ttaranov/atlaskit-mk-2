@@ -87,10 +87,10 @@ export const OverflowContainer = styled.span`
 
 export const Cell = styled.div`
   ${commonCell} ${props =>
-      props.indentLevel &&
-      css`
-        padding-left: ${defaultToPx(indentWidth * props.indentLevel)};
-      `};
+    props.indentLevel &&
+    css`
+      padding-left: ${defaultToPx(indentWidth * props.indentLevel)};
+    `};
 `;
 
 export const Header = styled.div`
