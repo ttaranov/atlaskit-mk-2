@@ -79,6 +79,7 @@ const mentionsPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Mention',
+        priority: 400,
         icon: () => <MentionIcon label="Mention" />,
         action(insert, state) {
           const mark = state.schema.mark('mentionQuery');

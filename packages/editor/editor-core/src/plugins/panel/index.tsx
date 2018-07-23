@@ -18,6 +18,7 @@ const panelPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Panel',
+        priority: 1000,
         icon: () => <InfoIcon label="Panel" />,
         action(insert, state) {
           return insert(

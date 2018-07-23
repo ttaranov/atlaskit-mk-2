@@ -88,6 +88,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       quickInsert: [
         {
           title: 'Code block',
+          priority: 700,
           keywords: ['javascript', 'typescript'],
           icon: () => <EditorCodeIcon label="Code block" />,
           action(insert, state) {

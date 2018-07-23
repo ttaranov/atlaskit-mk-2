@@ -70,6 +70,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Action',
+        priority: 100,
         keywords: ['task'],
         icon: () => <EditorTaskIcon label="Action" />,
         action(insert, state) {
@@ -85,6 +86,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       },
       {
         title: 'Decision',
+        priority: 900,
         icon: () => <EditorDecisionIcon label="Insert Decision" />,
         action(insert, state) {
           return insert(

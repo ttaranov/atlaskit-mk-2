@@ -103,6 +103,7 @@ const emojiPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Emoji',
+        priority: 500,
         icon: () => <EmojiIcon label="Emoji" />,
         action(insert, state) {
           const mark = state.schema.mark('emojiQuery');
