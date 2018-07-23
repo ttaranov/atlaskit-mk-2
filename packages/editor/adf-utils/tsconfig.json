@@ -9,5 +9,9 @@
     "./docs/**/*.tsx",
     "./examples/**/*.ts",
     "./examples/**/*.tsx",
+    "./traverse.ts",
+    "./traverse.es.ts",
+    "./builders.ts",
+    "./builders.es.ts"
   ]
 }
