@@ -1,5 +1,10 @@
 # @atlaskit/global-navigation
 
+## 3.0.1
+- [patch] Significant overhaul of API. Publish docs. [532892d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/532892d)
+- [patch] Updated dependencies [532892d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/532892d)
+  - @atlaskit/navigation-next@3.0.0
+
 ## 3.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
