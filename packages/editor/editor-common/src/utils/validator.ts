@@ -357,6 +357,14 @@ export const getValidNode = (
         break;
       }
       case 'codeBlock': {
+        if (content) {
+          content = content.reduce((acc: any, val) => {
+            if (val.type === 'text') {
+              acc.push({ type: val.type, text: val.text });
+            }
+            return acc;
+          }, []);
+        }
         if (attrs && attrs.language) {
           return {
             type,
