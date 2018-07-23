@@ -187,7 +187,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   handleSearchErrorAnalyticsThunk = (
     source: string,
   ): ((reason: any) => void) => error =>
-      this.handleSearchErrorAnalytics(error, source);
+    this.handleSearchErrorAnalytics(error, source);
 
   fireShownPreQueryEvent(requestStartTime?: number) {
     const { createAnalyticsEvent } = this.props;
@@ -370,12 +370,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   retrySearch = () => {
     this.handleSearch(this.state.query);
   };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return Object.keys({ ...nextProps, ...this.props })
-      .map(key => this.props[key] !== nextProps[key])
-      .reduce((acc, value) => acc || value, false) || this.state !== nextState;
-  }
 
   render() {
     const { linkComponent, isSendSearchTermsEnabled } = this.props;

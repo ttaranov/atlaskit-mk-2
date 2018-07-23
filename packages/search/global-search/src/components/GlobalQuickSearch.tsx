@@ -131,12 +131,6 @@ export class GlobalQuickSearch extends React.Component<Props> {
     fireDismissedEvent(searchSessionId, createAnalyticsEvent);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return Object.keys({ ...nextProps, ...this.props })
-      .map(key => this.props[key] !== nextProps[key])
-      .reduce((acc, value) => acc || value, false) || this.state !== nextState;
-  }
-
   render() {
     const {
       query,
