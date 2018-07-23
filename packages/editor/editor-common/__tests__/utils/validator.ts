@@ -508,6 +508,38 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('codeBlock', () => {
+      it('should return codeBlock with only type text', () => {
+        const invalidCodeBlockADF = {
+          type: 'codeBlock',
+          attrs: {
+            language: 'javascript',
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'var foo = {};\nvar bar = [];',
+              marks: [
+                {
+                  type: 'link',
+                  attrs: {
+                    href: 'http://google.com',
+                    title: 'Google',
+                  },
+                },
+              ],
+            },
+          ],
+        };
+        const validNode = getValidNode(invalidCodeBlockADF);
+        expect(validNode.content[0].type).to.equal('text');
+        expect(validNode.content[0].text).to.equal(
+          'var foo = {};\nvar bar = [];',
+        );
+        expect(validNode.content[0].marks).to.not.exist;
+      });
+    });
+
     describe('doc', () => {
       it('should return "text" if version-field is missing', () => {
         expect(getValidNode({ type: 'doc' }).type).to.equal('text');

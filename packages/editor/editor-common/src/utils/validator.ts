@@ -358,7 +358,7 @@ export const getValidNode = (
       }
       case 'codeBlock': {
         if (content) {
-          content = content.reduce((acc: any, val) => {
+          content = content.reduce((acc: ADNode[], val) => {
             if (val.type === 'text') {
               acc.push({ type: val.type, text: val.text });
             }
