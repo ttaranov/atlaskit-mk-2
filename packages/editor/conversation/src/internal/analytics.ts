@@ -1,6 +1,6 @@
 export const ANALYTICS_CHANNEL = 'fabric-editor';
 
-export type createAnalyticsEvent = (event: object) => analyticsEvent;
+export type createAnalyticsEvent = (event: object) => AnalyticsEvent;
 
 export enum actionSubjectIds {
   commentCreateStart = 'commentCreateStart',
@@ -14,14 +14,14 @@ export enum actionSubjectIds {
   commentEditCancel = 'commentEditCancel',
 }
 
-export interface analyticsEvent {
+export interface AnalyticsEvent {
   update: (attributes: object) => void;
   fire: (channel: string) => void;
   attributes: object;
 }
 
 export function fireEvent(
-  analyticsEvent: analyticsEvent,
+  analyticsEvent: AnalyticsEvent,
   actionSubjectId: actionSubjectIds,
   containerId: string = '',
   commentLevel?: number,
