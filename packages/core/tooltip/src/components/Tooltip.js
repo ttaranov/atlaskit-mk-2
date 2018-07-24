@@ -225,6 +225,7 @@ class Tooltip extends Component<Props, State> {
           {animationStyles => (
             <Portal layer="tooltip">
               <Position
+                key={position}
                 mouseCoordinates={this.mouseCoordinates}
                 mousePosition={mousePosition}
                 position={position}
