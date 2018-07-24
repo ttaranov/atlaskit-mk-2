@@ -9,7 +9,7 @@ import {
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
   ImageNavigator,
-  Props,
+  Props as ImageNavigatorProps,
 } from '../src/image-navigator';
 import { ERROR, MAX_SIZE_MB } from '../src/avatar-picker-dialog';
 import {
@@ -26,16 +26,16 @@ import { errorIcon } from '../src/image-navigator/images';
 import { Ellipsify } from '@atlaskit/media-ui';
 
 describe('Image navigator', () => {
-  let component;
-  let onImageLoaded;
-  let onPositionChanged;
-  let onSizeChanged;
-  let onRemoveImage;
-  let onImageError;
-  let onImageUploaded;
-  let isLoading;
+  let component: any;
+  let onImageLoaded: () => void;
+  let onPositionChanged: () => void;
+  let onSizeChanged: () => void;
+  let onRemoveImage: () => void;
+  let onImageError: () => void;
+  let onImageUploaded: () => void;
+  let isLoading: boolean;
 
-  const setup = (props?: Partial<Props>) => {
+  const setup = (props?: Partial<ImageNavigatorProps>) => {
     return mount(
       <ImageNavigator
         imageSource={smallImage}
@@ -62,8 +62,8 @@ describe('Image navigator', () => {
   });
 
   describe('with an imageSource', () => {
-    let imageCropper;
-    let slider;
+    let imageCropper: any;
+    let slider: any;
     beforeEach(() => {
       component = setup();
       imageCropper = () => component.find(ImageCropper);
@@ -285,14 +285,14 @@ describe('Image navigator', () => {
 
     describe('when a file is dropped', () => {
       class MockFileReader {
-        onload: (e: any) => {};
+        onload: any;
 
-        readAsDataURL(file: File) {
+        readAsDataURL() {
           this.onload({ target: this });
         }
       }
 
-      const mockDropEvent = file => ({
+      const mockDropEvent = (file: any) => ({
         stopPropagation: jest.fn(),
         preventDefault: jest.fn(),
         dataTransfer: {
@@ -304,7 +304,7 @@ describe('Image navigator', () => {
         type: 'image/png',
       });
 
-      let FileReaderSpy;
+      let FileReaderSpy: any;
 
       beforeEach(() => {
         FileReaderSpy = jest
