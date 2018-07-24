@@ -14,10 +14,14 @@ function updateRootItems(
   rootItems: Array<Object>,
   allItems?: Array<Object> = [],
   { key, keysCache, operation }: OptionsType,
-) {
+): {
+  keysCache: Object,
+  items: Array<Object>,
+} {
   const newKeysCache = { ...keysCache };
   // If it is not an append operation we can ignore allItems as they will be swaped with new items
-  const allBaseItems = operation === 'UPDATE' ? [] : [...allItems];
+  const allBaseItems: Array<Object> =
+    operation === 'UPDATE' ? [] : [...allItems];
   const startIndexWith = allBaseItems.length;
   rootItems.forEach((rootItem, index) => {
     const rootItemKey = rootItem[key];
@@ -41,7 +45,10 @@ function updateChildItems(
   allTableItems: Array<Object>,
   itemParent: Object,
   { key, keysCache, operation }: OptionsType,
-) {
+): {
+  keysCache: Object,
+  items: Array<Object>,
+} {
   const newKeysCache = { ...keysCache };
   const parentCacheKey = itemParent[key];
 
