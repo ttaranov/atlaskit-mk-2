@@ -21,7 +21,7 @@ const itemThemeFromNavTheme = (
       top: gridSize,
     },
   },
-  borderRadius: 0,
+  borderRadius: 3,
   height: {
     compact: gridSize * 4.5,
     default: gridSize * 5,
