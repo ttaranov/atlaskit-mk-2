@@ -1,5 +1,8 @@
 # @atlaskit/avatar-group
 
+## 2.0.2
+- [patch] Update dev dependencies and docs [d0e13b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0e13b7)
+
 ## 2.0.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0
