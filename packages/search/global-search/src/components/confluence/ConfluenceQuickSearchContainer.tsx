@@ -10,7 +10,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import SearchResult, {
+import ConfluenceSearchResults, {
   MAX_PAGES_BLOGS_ATTACHMENTS,
   MAX_SPACES,
   MAX_PEOPLE,
@@ -419,7 +419,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       >
-        <SearchResult {...searchResultProps} />
+        <ConfluenceSearchResults {...searchResultProps} />
       </GlobalQuickSearch>
     );
   }
