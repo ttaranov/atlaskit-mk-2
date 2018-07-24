@@ -14,14 +14,14 @@ import {
   isEmpty,
 } from '../SearchResultsUtil';
 
-const renderRecent = (results: Result[]) => {
+const renderRecent = (results: Result[], sectionIndex: number) => {
   if (isEmpty(results)) {
     return null;
   }
 
   return (
     <ResultItemGroup title="Recently viewed" key="recent">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   );
 };
@@ -41,23 +41,31 @@ const renderSearchConfluenceItem = (query: string) =>
     showKeyboardLozenge: false,
   });
 
-const renderJira = (results: Result[], query: string) => (
+const renderJira = (results: Result[], query: string, sectionIndex: number) => (
   <ResultItemGroup title="Jira issues" key="jira">
-    {renderResults(results)}
+    {renderResults(results, sectionIndex)}
     {searchJiraItem(query)}
   </ResultItemGroup>
 );
 
-const renderConfluence = (results: Result[], query: string) => (
+const renderConfluence = (
+  results: Result[],
+  query: string,
+  sectionIndex: number,
+) => (
   <ResultItemGroup title="Confluence pages and blogs" key="confluence">
-    {renderResults(results)}
+    {renderResults(results, sectionIndex)}
     {renderSearchConfluenceItem(query)}
   </ResultItemGroup>
 );
 
-const renderPeople = (results: Result[], query: string) => (
+const renderPeople = (
+  results: Result[],
+  query: string,
+  sectionIndex: number,
+) => (
   <ResultItemGroup title="People" key="people">
-    {renderResults(results)}
+    {renderResults(results, sectionIndex)}
     {renderSearchPeopleItem(query)}
   </ResultItemGroup>
 );
@@ -99,7 +107,7 @@ export default function searchResults(props: Props) {
   }
 
   if (query.length === 0) {
-    return renderRecent(take(recentlyViewedItems, 10));
+    return renderRecent(take(recentlyViewedItems, 10), 0);
   }
 
   if (
@@ -110,10 +118,31 @@ export default function searchResults(props: Props) {
     return renderNoResults(query);
   }
 
-  return [
-    renderRecent(take(recentResults, 5)),
-    renderJira(take(jiraResults, 5), query),
-    renderConfluence(take(confluenceResults, 5), query),
-    renderPeople(take(peopleResults, 3), query),
-  ];
+  let sectionIndex = 0;
+  const renderedRecent = renderRecent(take(recentResults, 5), sectionIndex);
+  if (renderedRecent !== null) {
+    sectionIndex++;
+  }
+
+  const renderedJira = renderJira(take(jiraResults, 5), query, sectionIndex);
+  if (renderedJira !== null) {
+    sectionIndex++;
+  }
+
+  const renderedConfluence = renderConfluence(
+    take(confluenceResults, 5),
+    query,
+    sectionIndex,
+  );
+  if (renderedConfluence !== null) {
+    sectionIndex++;
+  }
+
+  const renderedPeople = renderPeople(
+    take(peopleResults, 3),
+    query,
+    sectionIndex,
+  );
+
+  return [renderedRecent, renderedJira, renderedConfluence, renderedPeople];
 }

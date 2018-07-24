@@ -63,6 +63,22 @@ export default class extends React.Component {
             onChange={this.handleRadioChange}
           />
           <label htmlFor="frLocale">FR</label>
+          <Radio
+            type="radio"
+            id="ptBRLocale"
+            name="locale"
+            value="pt-BR"
+            onChange={this.handleRadioChange}
+          />
+          <label htmlFor="ptBRLocale">pt-BR</label>
+          <Radio
+            type="radio"
+            id="zhLocale"
+            name="locale"
+            value="zh"
+            onChange={this.handleRadioChange}
+          />
+          <label htmlFor="zhLocale">ZH</label>
         </LanguageSelector>
 
         <BasicNavigation

@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 5.0.4
+- [patch] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/form@3.1.1
+
 ## 5.0.3
 - [patch] Updated dependencies [e33f19d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e33f19d)
   - @atlaskit/form@3.1.0

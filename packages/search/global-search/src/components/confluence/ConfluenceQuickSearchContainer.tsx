@@ -10,7 +10,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import renderSearchResults, {
+import ConfluenceSearchResults, {
   MAX_PAGES_BLOGS_ATTACHMENTS,
   MAX_SPACES,
   MAX_PEOPLE,
@@ -387,6 +387,24 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       keepRecentActivityResults,
     } = this.state;
 
+    const searchResultProps = {
+      retrySearch: this.retrySearch,
+      query,
+      isError,
+      objectResults,
+      spaceResults,
+      peopleResults,
+      isLoading,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
+      keepRecentActivityResults,
+      searchSessionId,
+      screenCounters: {
+        preQueryScreenCounter: this.preQueryScreenCounter,
+        postQueryScreenCounter: this.postQueryScreenCounter,
+      },
+    };
     return (
       <GlobalQuickSearch
         onMount={this.handleMount}
@@ -401,24 +419,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       >
-        {renderSearchResults({
-          retrySearch: this.retrySearch,
-          query,
-          isError,
-          objectResults,
-          spaceResults,
-          peopleResults,
-          isLoading,
-          recentlyViewedPages,
-          recentlyViewedSpaces,
-          recentlyInteractedPeople,
-          keepRecentActivityResults,
-          searchSessionId,
-          screenCounters: {
-            preQueryScreenCounter: this.preQueryScreenCounter,
-            postQueryScreenCounter: this.postQueryScreenCounter,
-          },
-        })}
+        <ConfluenceSearchResults {...searchResultProps} />
       </GlobalQuickSearch>
     );
   }

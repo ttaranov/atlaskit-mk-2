@@ -150,7 +150,7 @@ export class MediaClient {
       method: httpMethod,
       headers: {
         ...headers,
-        ...data ? { 'Content-Type': 'application/json; charset=utf-8' } : {},
+        ...(data ? { 'Content-Type': 'application/json; charset=utf-8' } : {}),
       },
       params: parameters,
       data,

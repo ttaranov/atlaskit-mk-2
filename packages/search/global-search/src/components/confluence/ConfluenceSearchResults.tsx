@@ -21,6 +21,7 @@ import {
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
 
+const MAX_RECENT_PAGES = 8;
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
@@ -28,33 +29,33 @@ export const MAX_PEOPLE = 3;
 const renderObjectsGroup = (
   title: JSX.Element,
   results: Result[],
-  query: string,
+  sectionIndex: number,
 ) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="objects">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   ) : null;
 
 const renderSpacesGroup = (
   title: JSX.Element,
   results: Result[],
-  query: string,
+  sectionIndex: number,
 ) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="spaces">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   ) : null;
 
 const renderPeopleGroup = (
   title: JSX.Element,
   results: Result[],
-  query: string,
+  sectionIndex: number,
 ) =>
   results.length > 0 ? (
     <ResultItemGroup title={title} key="people">
-      {renderResults(results)}
+      {renderResults(results, sectionIndex)}
     </ResultItemGroup>
   ) : null;
 
@@ -148,37 +149,54 @@ const renderRecentActivities = (
   recentlyInteractedPeople: Result[],
   searchSessionId: string,
   screenCounter?: ScreenCounter,
-) => [
-  renderObjectsGroup(
+) => {
+  let sectionIndex = 0;
+  const renderedObjectsGroup = renderObjectsGroup(
     <FormattedMessage id="global-search.confluence.recent-pages-heading" />,
-    take(recentlyViewedPages, 8),
-    query,
-  ),
-  renderSpacesGroup(
+    take(recentlyViewedPages, MAX_RECENT_PAGES),
+    sectionIndex,
+  );
+
+  if (renderedObjectsGroup !== null) {
+    sectionIndex++;
+  }
+
+  const renderedSpacesGroup = renderSpacesGroup(
     <FormattedMessage id="global-search.confluence.recent-spaces-heading" />,
     take(recentlyViewedSpaces, MAX_SPACES),
-    query,
-  ),
-  renderPeopleGroup(
+    sectionIndex,
+  );
+
+  if (renderedSpacesGroup !== null) {
+    sectionIndex++;
+  }
+
+  const renderedPeopleGroup = renderPeopleGroup(
     <FormattedMessage id="global-search.people.recent-people-heading" />,
     take(recentlyInteractedPeople, MAX_PEOPLE),
-    query,
-  ),
-  renderAdvancedSearchGroup(query),
-  screenCounter ? (
-    <AnalyticsEventFiredOnMount
-      key="preQueryScreenEvent"
-      onEventFired={() => screenCounter.increment()}
-      payloadProvider={() =>
-        buildScreenEvent(
-          Screen.PRE_QUERY,
-          screenCounter.getCount(),
-          searchSessionId,
-        )
-      }
-    />
-  ) : null,
-];
+    sectionIndex,
+  );
+
+  return [
+    renderedObjectsGroup,
+    renderedSpacesGroup,
+    renderedPeopleGroup,
+    renderAdvancedSearchGroup(query),
+    screenCounter ? (
+      <AnalyticsEventFiredOnMount
+        key="preQueryScreenEvent"
+        onEventFired={() => screenCounter.increment()}
+        payloadProvider={() =>
+          buildScreenEvent(
+            Screen.PRE_QUERY,
+            screenCounter.getCount(),
+            searchSessionId,
+          )
+        }
+      />
+    ) : null,
+  ];
+};
 
 const renderSearchResults = (
   query: string,
@@ -188,22 +206,36 @@ const renderSearchResults = (
   searchSessionId: string,
   screenCounter?: ScreenCounter,
 ) => {
+  let sectionIndex = 0;
+  const renderedObjectsGroup = renderObjectsGroup(
+    <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
+    take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
+    sectionIndex,
+  );
+
+  if (renderedObjectsGroup !== null) {
+    sectionIndex++;
+  }
+
+  const renderedSpacesGroup = renderSpacesGroup(
+    <FormattedMessage id="global-search.confluence.spaces-heading" />,
+    take(spaceResults, MAX_SPACES),
+    sectionIndex,
+  );
+
+  if (renderedSpacesGroup !== null) {
+    sectionIndex++;
+  }
+
+  const renderedPeopleGroup = renderPeopleGroup(
+    <FormattedMessage id="global-search.people.people-heading" />,
+    take(peopleResults, MAX_PEOPLE),
+    sectionIndex,
+  );
   return [
-    renderObjectsGroup(
-      <FormattedMessage id="global-search.confluence.confluence-objects-heading" />,
-      take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
-      query,
-    ),
-    renderSpacesGroup(
-      <FormattedMessage id="global-search.confluence.spaces-heading" />,
-      take(spaceResults, MAX_SPACES),
-      query,
-    ),
-    renderPeopleGroup(
-      <FormattedMessage id="global-search.people.people-heading" />,
-      take(peopleResults, MAX_PEOPLE),
-      query,
-    ),
+    renderedObjectsGroup,
+    renderedSpacesGroup,
+    renderedPeopleGroup,
     renderAdvancedSearchGroup(query),
 
     screenCounter ? (
@@ -239,6 +271,7 @@ const renderNoQuery = (
       <NoRecentActivity advancedSearchUrl={getConfluenceAdvancedSearchLink()} />
     );
   }
+
   return renderRecentActivities(
     query,
     recentlyViewedPages,
@@ -249,68 +282,68 @@ const renderNoQuery = (
   );
 };
 
-const render = (props: Props) => {
-  const {
-    query,
-    isError,
-    objectResults,
-    spaceResults,
-    peopleResults,
-    isLoading,
-    recentlyViewedPages,
-    recentlyViewedSpaces,
-    recentlyInteractedPeople,
-    retrySearch,
-    keepRecentActivityResults,
-    searchSessionId,
-    screenCounters,
-  } = props;
+export default class ConfluenceSearchResult extends React.Component<Props> {
+  render() {
+    const {
+      query,
+      isError,
+      objectResults,
+      spaceResults,
+      peopleResults,
+      isLoading,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
+      retrySearch,
+      keepRecentActivityResults,
+      searchSessionId,
+      screenCounters,
+    } = this.props;
 
-  const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
-    ? screenCounters
-    : {
-        preQueryScreenCounter: undefined,
-        postQueryScreenCounter: undefined,
-      };
+    const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
+      ? screenCounters
+      : {
+          preQueryScreenCounter: undefined,
+          postQueryScreenCounter: undefined,
+        };
 
-  if (isError) {
-    return <SearchError onRetryClick={retrySearch} />;
+    if (isError) {
+      return <SearchError onRetryClick={retrySearch} />;
+    }
+
+    if (query.length === 0) {
+      return isLoading
+        ? null
+        : renderNoQuery(
+            query,
+            recentlyViewedPages,
+            recentlyViewedSpaces,
+            recentlyInteractedPeople,
+            searchSessionId,
+            preQueryScreenCounter,
+          );
+    }
+
+    if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
+      return isLoading && keepRecentActivityResults
+        ? renderRecentActivities(
+            query,
+            recentlyViewedPages,
+            recentlyViewedSpaces,
+            recentlyInteractedPeople,
+            searchSessionId,
+            preQueryScreenCounter,
+          )
+        : renderNoResults(query);
+    }
+
+    return renderSearchResults(
+      query,
+      objectResults,
+      spaceResults,
+      peopleResults,
+      searchSessionId,
+      postQueryScreenCounter,
+    );
   }
-
-  if (query.length === 0) {
-    return isLoading
-      ? null
-      : renderNoQuery(
-          query,
-          recentlyViewedPages,
-          recentlyViewedSpaces,
-          recentlyInteractedPeople,
-          searchSessionId,
-          preQueryScreenCounter,
-        );
-  }
-
-  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return isLoading && keepRecentActivityResults
-      ? renderRecentActivities(
-          query,
-          recentlyViewedPages,
-          recentlyViewedSpaces,
-          recentlyInteractedPeople,
-          searchSessionId,
-          preQueryScreenCounter,
-        )
-      : renderNoResults(query);
-  }
-
-  return renderSearchResults(
-    query,
-    objectResults,
-    spaceResults,
-    peopleResults,
-    searchSessionId,
-    postQueryScreenCounter,
-  );
-};
-
-export default render;
+}

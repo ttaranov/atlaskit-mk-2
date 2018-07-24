@@ -5,10 +5,11 @@ import { tallImage } from '@atlaskit/media-test-helpers';
 
 const naturalWidth = 5360;
 
-const onImageSize = (width, height) =>
+const onImageSize = (width: number, height: number) =>
   console.log('onImageSize', width, height);
 const onRemoveImage = () => console.log('onRemoveImage');
-const onImageError = errorMessage => console.log('onImageError', errorMessage);
+const onImageError = (errorMessage: string) =>
+  console.log('onImageError', errorMessage);
 
 export default () => (
   <div>

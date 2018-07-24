@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MentionStyle, MentionContainer } from './styles';
+import { MentionStyle } from './styles';
 import Tooltip from '@atlaskit/tooltip';
 import {
   isRestricted,
@@ -140,7 +140,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     );
 
     return (
-      <MentionContainer
+      <span
         data-mention-id={id}
         data-access-level={accessLevel}
         spellCheck={false}
@@ -155,7 +155,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
         ) : (
           mentionComponent
         )}
-      </MentionContainer>
+      </span>
     );
   }
 }
