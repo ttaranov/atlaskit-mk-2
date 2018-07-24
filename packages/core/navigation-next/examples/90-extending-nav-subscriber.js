@@ -301,8 +301,8 @@ export default class ExtendingNavSubscriber extends React.Component<*> {
               Clear
             </button>
             {lastTen.length ? (
-              lastTen.map((e, i) => (
-                <p key={`${e.name}_${i}`}>
+              lastTen.map(e => (
+                <p key={e.name}>
                   <code>
                     {e.name}({e.value})
                   </code>
