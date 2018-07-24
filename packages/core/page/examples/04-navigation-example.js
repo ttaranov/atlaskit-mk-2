@@ -52,48 +52,52 @@ export default class NavigationExample extends Component<void, State> {
     const { isErrorBannerOpen, isAnnouncementBannerOpen } = this.state;
 
     return (
-      <Page
-        isBannerOpen={isErrorBannerOpen || isAnnouncementBannerOpen}
-        bannerHeight={this.getOffset()}
-        banner={
-          <Fragment>
-            <Banner
-              appearance="error"
-              isOpen={isErrorBannerOpen}
-              innerRef={ref => {
-                this.errorBannerRef = ref;
-              }}
-            >
-              Example Banner
-            </Banner>
-            <Banner
-              appearance="announcement"
-              isOpen={isAnnouncementBannerOpen}
-              innerRef={ref => {
-                this.announcementBannerRef = ref;
-              }}
-            >
-              <p>What if we have two?</p>
-              <p>Can we render this?</p>
-              <p>Will it work if this expands?</p>
-              <p>To maximum length?</p>
-              <p>In an annoying way</p>
-            </Banner>
-          </Fragment>
-        }
-        navigation={
-          <Navigation topOffset={this.getOffset()}>
-            The children are the future
-          </Navigation>
-        }
-      >
-        <Grid>
-          <NavigationExplanation
-            onErrorBannerChange={this.onErrorBannerChange}
-            onAnnouncementBannerChange={this.onAnnouncementBannerChange}
-          />
-        </Grid>
-      </Page>
+      /* This wrapping div exists to help this example display nicely on the
+      atlaskit website. It probably shouldn't be in code otherwise. */
+      <div style={{ margin: '-16px' }}>
+        <Page
+          isBannerOpen={isErrorBannerOpen || isAnnouncementBannerOpen}
+          bannerHeight={this.getOffset()}
+          banner={
+            <Fragment>
+              <Banner
+                appearance="error"
+                isOpen={isErrorBannerOpen}
+                innerRef={ref => {
+                  this.errorBannerRef = ref;
+                }}
+              >
+                Example Banner
+              </Banner>
+              <Banner
+                appearance="announcement"
+                isOpen={isAnnouncementBannerOpen}
+                innerRef={ref => {
+                  this.announcementBannerRef = ref;
+                }}
+              >
+                <p>What if we have two?</p>
+                <p>Can we render this?</p>
+                <p>Will it work if this expands?</p>
+                <p>To maximum length?</p>
+                <p>In an annoying way</p>
+              </Banner>
+            </Fragment>
+          }
+          navigation={
+            <Navigation topOffset={this.getOffset()}>
+              The children are the future
+            </Navigation>
+          }
+        >
+          <Grid>
+            <NavigationExplanation
+              onErrorBannerChange={this.onErrorBannerChange}
+              onAnnouncementBannerChange={this.onAnnouncementBannerChange}
+            />
+          </Grid>
+        </Page>
+      </div>
     );
   }
 }
