@@ -588,4 +588,47 @@ describe('Context', () => {
       });
     });
   });
+
+  describe('collection', () => {
+    describe('.getItems()', () => {
+      it('should return item ids of a collection', done => {
+        const context = createFakeContext();
+        const getCollectionItems = jest.fn();
+        // It seems like I need to start getting ready for leaving now. Sorry =(
+        // I love this collab thing!!!!!
+        (context as any).mediaStore = { getCollectionItems };
+        context.collection.getItems('recents').subscribe({
+          next() {},
+        });
+      });
+    });
+  });
 });
+
+/**
+ * 
+ * 
+ * 
+ * // context
+
+getItems(): Observable<string[]> {
+  this.mediaStore.getCollectionItems()
+  
+  return new Obseravable(() => {
+
+  })
+}
+
+
+// MediaPicker
+
+const {items} = this.state;
+
+
+<Recents>
+  <Card id={id} />
+  <Card id={id} />
+</Recents>
+ * 
+ * 
+ */
