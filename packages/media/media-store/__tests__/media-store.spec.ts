@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import fetchMock = require('fetch-mock');
 import { stringify } from 'query-string';
 
-import { AuthProvider, MediaStore } from '../src';
+import { AuthProvider, MediaStore, Auth } from '../src';
 import {
   MediaUpload,
   MediaChunksProbe,
@@ -20,16 +20,23 @@ describe('MediaStore', () => {
   describe('given auth provider resolves', () => {
     const clientId = 'some-client-id';
     const token = 'some-token';
-    const auth = { clientId, token };
+    const auth: Auth = { clientId, token };
+    const userClientId = 'some-user-client-id';
+    const userToken = 'some-token';
+    const userAuth: Auth = { clientId: userClientId, token: userToken };
     let authProvider: jest.Mock<AuthProvider>;
+    let userAuthProvider: jest.Mock<AuthProvider>;
     let mediaStore: MediaStore;
 
     beforeEach(() => {
       authProvider = jest.fn();
       authProvider.mockReturnValue(Promise.resolve(auth));
+      userAuthProvider = jest.fn();
+      userAuthProvider.mockReturnValue(Promise.resolve(userAuth));
       mediaStore = new MediaStore({
         serviceHost,
         authProvider,
+        userAuthProvider,
       });
     });
 
@@ -367,7 +374,86 @@ describe('MediaStore', () => {
       });
     });
 
+    // TODO Remove this .only
+    describe.only('getUserRecentItems', () => {
+      it('should throw an exception if userAuthProvider is not provided', () => {
+        const invalidMediaStore = new MediaStore({
+          serviceHost,
+          authProvider,
+          // no userAuthProvider
+        });
+
+        return invalidMediaStore
+          .getUserRecentItems()
+          .then(Promise.reject, error => {
+            expect(error).toBeInstanceOf(Error);
+            expect(error.message).toContain(
+              'userAuthProvider must be provided',
+            );
+          });
+      });
+
+      it('should GET to /collection/recents/items endpoint with default options', () => {
+        const data: MediaCollectionItems = {
+          nextInclusiveStartKey: '121',
+          contents: [],
+        };
+
+        fetchMock.mock(`begin:${serviceHost}/collection/recents`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.getUserRecentItems().then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${serviceHost}/collection/recents/items?client=${userClientId}&limit=30&sortDirection=desc&token=${userToken}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+            },
+          });
+          expect(userAuthProvider).toHaveBeenCalledWith({
+            collectionName: 'recents',
+          });
+        });
+      });
+    });
+
     describe('getCollectionItems', () => {
+      it('should GET to /collection/{collectionName} endpoint with default options', () => {
+        const collectionName = 'some-collection-name';
+        const data: MediaCollectionItems = {
+          nextInclusiveStartKey: '121',
+          contents: [],
+        };
+
+        fetchMock.mock(`begin:${serviceHost}/collection/${collectionName}`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore.getCollectionItems(collectionName).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(
+            `${serviceHost}/collection/some-collection-name/items?client=${clientId}&limit=30&sortDirection=desc&token=${token}`,
+          );
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+            },
+          });
+          expect(authProvider).toHaveBeenCalledWith({ collectionName });
+        });
+      });
+
       it('should GET to /collection/{collectionName} endpoint with correct options', () => {
         const collectionName = 'some-collection-name';
         const data: MediaCollectionItems = {

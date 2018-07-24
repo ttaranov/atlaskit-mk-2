@@ -9,7 +9,8 @@ import {
   AsapBasedAuth,
   AuthContext,
   ClientAltBasedAuth,
-  MediaApiConfig,
+  ContextConfig,
+  AuthProvider,
 } from './models/auth';
 import {
   request,
@@ -21,13 +22,13 @@ import {
   mapResponseToVoid,
 } from './utils/request';
 
-const defaultGetCollectionItems: MediaStoreGetCollectionItemsPrams = {
+const defaultGetCollectionItems: MediaStoreGetCollectionItemsParams = {
   limit: 30,
   sortDirection: 'desc',
 };
 
 export class MediaStore {
-  constructor(private readonly config: MediaApiConfig) {}
+  constructor(private readonly config: ContextConfig) {}
 
   createCollection(
     collectionName: string,
@@ -54,10 +55,39 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
-  // TODO: keep default params
+  getUserRecentItems(
+    params?: MediaStoreGetCollectionItemsParams,
+  ): Promise<MediaStoreResponse<MediaCollectionItems>> {
+    const userAuthProvider = this.config.userAuthProvider;
+    const collectionName = 'recents';
+
+    if (!userAuthProvider) {
+      return Promise.reject(
+        new Error(
+          'userAuthProvider must be provided to use getUserRecentItems',
+        ),
+      );
+    }
+
+    return this.request(
+      `/collection/${collectionName}/items`,
+      {
+        authContext: { collectionName },
+        params: {
+          ...defaultGetCollectionItems,
+          ...params,
+        },
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+      userAuthProvider,
+    ).then(mapResponseToJson);
+  }
+
   getCollectionItems(
     collectionName: string,
-    params?: MediaStoreGetCollectionItemsPrams,
+    params?: MediaStoreGetCollectionItemsParams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
       authContext: { collectionName },
@@ -207,10 +237,10 @@ export class MediaStore {
     options: MediaStoreRequestOptions = {
       method: 'GET',
     },
+    authProvider: AuthProvider = this.config.authProvider,
   ): Promise<Response> {
-    const { serviceHost, authProvider } = this.config;
+    const { serviceHost } = this.config;
     const { method, authContext, params, headers, body } = options;
-
     const auth = await authProvider(authContext);
 
     return request(`${serviceHost}${path}`, {
@@ -286,7 +316,7 @@ export type MediaStoreGetFileImageParams = {
   readonly allowAnimated: boolean;
 };
 
-export type MediaStoreGetCollectionItemsPrams = {
+export type MediaStoreGetCollectionItemsParams = {
   readonly limit: number;
 
   readonly inclusiveStartKey?: string;

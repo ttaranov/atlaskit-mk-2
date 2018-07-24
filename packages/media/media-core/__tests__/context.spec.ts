@@ -3,6 +3,7 @@ jest.mock('uuid', () => ({
     return 'some-uuid';
   },
 }));
+jest.mock('@atlaskit/media-store');
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -14,7 +15,12 @@ import {
 } from '../src';
 import { ContextFactory } from '../src/context/context';
 
-import { uploadFile } from '@atlaskit/media-store';
+import {
+  uploadFile,
+  MediaStoreResponse,
+  MediaCollectionItems,
+  MediaCollectionItem,
+} from '@atlaskit/media-store';
 
 const authProvider = () =>
   Promise.resolve({
@@ -29,7 +35,6 @@ const createFakeContext = () => {
   });
 };
 
-(uploadFile as any) = jest.fn();
 const uploadFileMock: jest.Mock<any> = uploadFile as any;
 
 describe('Context', () => {
@@ -590,15 +595,37 @@ describe('Context', () => {
   });
 
   describe('collection', () => {
-    describe('.getItems()', () => {
+    describe.only('.getUserRecentItems()', () => {
+      // TODO test cachings
       it('should return item ids of a collection', done => {
-        const context = createFakeContext();
-        const getCollectionItems = jest.fn();
-        // It seems like I need to start getting ready for leaving now. Sorry =(
-        // I love this collab thing!!!!!
-        (context as any).mediaStore = { getCollectionItems };
-        context.collection.getItems('recents').subscribe({
-          next() {},
+        const context = createFakeContext() as any;
+        const mediaCollectionItem: MediaCollectionItem = {
+          id: 'some-collection-item-id',
+          insertedAt: 42,
+          occurrenceKey: 'some-occurrence-key',
+          type: 'file',
+          details: {
+            name: 'some-file-name',
+            size: 10,
+          },
+        };
+        const collectionItems: MediaStoreResponse<MediaCollectionItems> = {
+          data: {
+            contents: [mediaCollectionItem],
+            nextInclusiveStartKey: null,
+          },
+        };
+        context.mediaStore.getUserRecentItems.mockReturnValue(
+          Promise.resolve(collectionItems),
+        );
+        context.collection.getUserRecentItems().subscribe({
+          next(ids: string[]) {
+            expect(context.mediaStore.getUserRecentItems).toHaveBeenCalledTimes(
+              1,
+            );
+            expect(ids).toEqual(['some-collection-item-id']);
+            done();
+          },
         });
       });
     });

@@ -1,8 +1,10 @@
 import {
   MediaStore,
-  MediaStoreGetCollectionItemsPrams,
+  MediaStoreGetCollectionItemsParams,
 } from '@atlaskit/media-store';
 import { FileItem, FileDetails, LinkItem, LinkDetails } from '../item';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 
 export interface MediaCollectionFileItemDetails extends FileDetails {
   occurrenceKey: string;
@@ -29,17 +31,18 @@ export interface MediaCollection {
   items: Array<MediaCollectionItem>;
 }
 
-export class Collection {
-  readonly mediaStore: MediaStore;
+export class CollectionFetcher {
+  constructor(readonly mediaStore: MediaStore) {}
 
-  constructor(mediaStore: MediaStore) {
-    this.mediaStore = mediaStore;
-  }
+  getUserRecentItems(
+    params?: MediaStoreGetCollectionItemsParams,
+  ): Observable<string[]> {
+    return Observable.create(async (observer: Observer<string[]>) => {
+      const items = await this.mediaStore.getUserRecentItems(params);
+      const ids = items.data.contents.map(item => item.id);
 
-  getItems(
-    collectionName: string,
-    params?: MediaStoreGetCollectionItemsPrams,
-  ): any {
-    return this.mediaStore.getCollectionItems(collectionName, params);
+      observer.next(ids);
+    });
+    // return this.mediaStore.getCollectionItems(collectionName, params);
   }
 }
