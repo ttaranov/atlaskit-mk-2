@@ -58,7 +58,7 @@ export type FileState =
   | ErrorFileState;
 
 const apiProcessingStatusToFileStatus = (
-  fileStatus: MediaFileProcessingStatus,
+  fileStatus?: MediaFileProcessingStatus,
 ): FileStatus => {
   switch (fileStatus) {
     case 'pending':
@@ -66,6 +66,7 @@ const apiProcessingStatusToFileStatus = (
     case 'succeeded':
       return 'processed';
     case 'failed':
+    case undefined:
       return 'error';
   }
 };

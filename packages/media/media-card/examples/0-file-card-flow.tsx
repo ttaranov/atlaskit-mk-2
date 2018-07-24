@@ -14,6 +14,7 @@ import {
   unknownFileId,
   errorFileId,
   gifFileId,
+  noMetadataFileId,
   createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
@@ -47,6 +48,7 @@ const fileIds = [
   archiveFileId.id,
   unknownFileId.id,
   errorFileId.id,
+  noMetadataFileId.id,
 ];
 class Example extends Component<ComponentProps, ComponentState> {
   uploadController?: UploadController;

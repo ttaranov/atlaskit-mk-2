@@ -225,6 +225,11 @@ export const gifFileId = {
   collectionName,
 };
 
+export const noMetadataFileId = {
+  id: '1adaf6f9-37f6-4171-ab6b-455ec3115381',
+  mediaItemType: fileType,
+  collectionName,
+};
 // === DETAILS ===
 
 export const genericUrlPreview: UrlPreview = {

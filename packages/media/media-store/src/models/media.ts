@@ -13,7 +13,7 @@ export type MediaFile = {
   readonly mediaType: MediaType;
   readonly mimeType: string;
   readonly name: string;
-  readonly processingStatus: MediaFileProcessingStatus;
+  readonly processingStatus?: MediaFileProcessingStatus;
   readonly size: number;
   readonly artifacts: MediaFileArtifacts;
 };
