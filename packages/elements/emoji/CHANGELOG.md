@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 38.0.2
+- [patch] FS-2819 use internal version of closest [1cd9438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd9438)
+- [none] Updated dependencies [1cd9438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd9438)
+
 ## 38.0.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

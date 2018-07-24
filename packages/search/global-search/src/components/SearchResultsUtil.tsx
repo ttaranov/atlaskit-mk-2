@@ -51,9 +51,13 @@ export interface PersonResultProps extends BaseResultProps {
   presenceMessage?: string;
 }
 
-export function renderResults(results: Result[]) {
-  return results.map(result => {
+export function renderResults(results: Result[], sectionIndex: number) {
+  return results.map((result, index) => {
     const resultType: ResultType = result.resultType;
+    const analyticsData = {
+      sectionIndex,
+      indexWithinSection: index,
+    };
 
     switch (resultType) {
       case ResultType.ConfluenceObjectResult: {
@@ -69,6 +73,10 @@ export function renderResults(results: Result[]) {
             contentType={confluenceResult.contentType}
             containerName={confluenceResult.containerName}
             avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
+            analyticsData={{
+              ...analyticsData,
+              contentType: confluenceResult.contentType,
+            }}
           />
         );
       }
@@ -85,6 +93,7 @@ export function renderResults(results: Result[]) {
             objectKey={jiraResult.objectKey}
             containerName={jiraResult.containerName}
             avatarUrl={jiraResult.avatarUrl}
+            analyticsData={analyticsData}
           />
         );
       }
@@ -99,6 +108,7 @@ export function renderResults(results: Result[]) {
             href={containerResult.href}
             type={containerResult.analyticsType}
             avatarUrl={containerResult.avatarUrl}
+            analyticsData={analyticsData}
           />
         );
       }
@@ -115,6 +125,7 @@ export function renderResults(results: Result[]) {
             avatarUrl={personResult.avatarUrl}
             mentionName={personResult.mentionName}
             presenceMessage={personResult.presenceMessage}
+            analyticsData={analyticsData}
           />
         );
       }

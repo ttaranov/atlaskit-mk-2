@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "2.0.1",
+  "version": "3.0.2",
   "description": "The Atlassian navigation component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,9 +17,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/avatar": "^14.0.1",
+    "@atlaskit/avatar": "^14.0.3",
     "@atlaskit/icon": "^13.1.1",
-    "@atlaskit/select": "^5.0.1",
+    "@atlaskit/select": "^5.0.4",
     "@atlaskit/theme": "^5.0.0",
     "@atlaskit/tooltip": "^12.0.0",
     "chromatism": "^2.6.0",
@@ -40,8 +40,10 @@
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/dropdown-menu": "^6.1.1",
     "@atlaskit/field-base": "^11.0.0",
+    "@atlaskit/global-navigation": "^3.0.2",
     "@atlaskit/logo": "^9.0.0",
     "@atlaskit/lozenge": "^6.0.0",
+    "@atlaskit/section-message": "^1.0.1",
     "@atlaskit/toggle": "^5.0.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"

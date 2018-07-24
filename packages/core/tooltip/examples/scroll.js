@@ -32,11 +32,11 @@ const Shim = styled.div`
       width: 200%;
       flex-direction: row;
     `} ${p =>
-      p.scroll === 'vertical' &&
-      css`
-        height: 200%;
-        flex-direction: column;
-      `};
+    p.scroll === 'vertical' &&
+    css`
+      height: 200%;
+      flex-direction: column;
+    `};
 `;
 
 export default () => (

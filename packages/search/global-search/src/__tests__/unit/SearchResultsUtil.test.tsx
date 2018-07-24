@@ -110,7 +110,7 @@ describe('renderResults', () => {
       }),
     ];
 
-    const wrapper = shallow(<span>{renderResults(jiraResults)}</span>);
+    const wrapper = shallow(<span>{renderResults(jiraResults, 0)}</span>);
 
     expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
       href: 'href',
@@ -131,7 +131,7 @@ describe('renderResults', () => {
       }),
     ];
 
-    const wrapper = shallow(<span>{renderResults(peopleResults)}</span>);
+    const wrapper = shallow(<span>{renderResults(peopleResults, 0)}</span>);
 
     expect(wrapper.find(PersonResultComponent).props()).toMatchObject({
       href: 'href',
@@ -152,7 +152,7 @@ describe('renderResults', () => {
       }),
     ];
 
-    const wrapper = shallow(<span>{renderResults(confluenceResults)}</span>);
+    const wrapper = shallow(<span>{renderResults(confluenceResults, 0)}</span>);
 
     expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
       href: 'href',
@@ -178,7 +178,7 @@ describe('renderResults', () => {
     ];
 
     const wrapper = shallow(
-      <span>{renderResults(confluenceSpaceResults)}</span>,
+      <span>{renderResults(confluenceSpaceResults, 0)}</span>,
     );
 
     expect(wrapper.find(ContainerResultComponent).props()).toMatchObject({

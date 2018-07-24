@@ -1,5 +1,6 @@
 // @flow
 import type { ComponentType } from 'react';
+import type { GlobalItemProps } from '@atlaskit/navigation-next';
 
 type DefaultItemShape = {
   icon?: ComponentType<*>,
@@ -59,3 +60,6 @@ export type NavItem = {
   section: 'primary' | 'secondary',
   tooltip?: string,
 };
+
+// The shape of the item data required by GlobalNav
+export type GlobalNavItemData = GlobalItemProps & { key?: string };

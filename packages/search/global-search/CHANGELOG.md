@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 5.3.0
+- [minor] Add i18n support for all supported languages. [68982c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68982c0)
+
+## 5.2.0
+- [minor] Rewrite internal keyboard handling implementation. [0ebfc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ebfc9a)
+- [minor] Updated dependencies [0ebfc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ebfc9a)
+  - @atlaskit/quick-search@4.2.0
+
 ## 5.1.1
 - [patch] fix infinite loop bug [e2e53e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2e53e0)
 

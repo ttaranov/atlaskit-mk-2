@@ -17,10 +17,10 @@ import {
   GlobalNav,
   ItemAvatar,
   ViewRenderer,
-  UIState,
-  ViewState,
+  UIController,
+  ViewController,
   withNavigationUI,
-  withNavigationViews,
+  withNavigationViewController,
   LayoutManager,
 } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
@@ -63,6 +63,9 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
 // Project Switcher
 // ==============================
 
+const SwitcherBefore = itemState => (
+  <ItemAvatar itemState={itemState} appearance="square" />
+);
 class Switcher extends PureComponent<*, *> {
   state = {
     selected: this.props.defaultSelected,
@@ -73,10 +76,8 @@ class Switcher extends PureComponent<*, *> {
 
     return (
       <C.ContainerHeader
-        before={itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
-        )}
-        after={itemState => <ChevronDown itemState={itemState} />}
+        before={SwitcherBefore}
+        after={ChevronDown}
         text={selected.text}
         subText={selected.subText}
         isSelected={isSelected}
@@ -135,15 +136,15 @@ const Renderer = ({ activeView }: any) => (
 type ConnectedLayoutManagerProps = {
   children: Node,
   globalNavigation: ComponentType<{}>,
-  navigationUI: UIState,
-  navigationViews: ViewState,
+  navigationUIController: UIController,
+  navigationViewController: ViewController,
 };
 class ConnectedLayoutManagerBase extends Component<
   ConnectedLayoutManagerProps,
 > {
   renderContainerNavigation = () => {
     const {
-      navigationViews: {
+      navigationViewController: {
         state: { activeView },
       },
     } = this.props;
@@ -157,10 +158,10 @@ class ConnectedLayoutManagerBase extends Component<
 
   renderProductNavigation = () => {
     const {
-      navigationUI: {
+      navigationUIController: {
         state: { isPeeking },
       },
-      navigationViews: {
+      navigationViewController: {
         state: { activeView, activePeekView },
       },
     } = this.props;
@@ -181,7 +182,7 @@ class ConnectedLayoutManagerBase extends Component<
     const {
       children,
       globalNavigation,
-      navigationViews: {
+      navigationViewController: {
         state: { activeView },
       },
     } = this.props;
@@ -190,9 +191,9 @@ class ConnectedLayoutManagerBase extends Component<
       <LayoutManager
         globalNavigation={globalNavigation}
         containerNavigation={
-          activeView &&
-          activeView.type === 'container' &&
-          this.renderContainerNavigation
+          activeView && activeView.type === 'container'
+            ? this.renderContainerNavigation
+            : null
         }
         productNavigation={this.renderProductNavigation}
       >
@@ -202,5 +203,5 @@ class ConnectedLayoutManagerBase extends Component<
   }
 }
 export const ConnectedLayoutManager = withNavigationUI(
-  withNavigationViews(ConnectedLayoutManagerBase),
+  withNavigationViewController(ConnectedLayoutManagerBase),
 );
