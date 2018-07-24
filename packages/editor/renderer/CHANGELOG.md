@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 19.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+  - @atlaskit/util-data-test@10.0.1
+  - @atlaskit/editor-common@13.1.0
+
 ## 19.0.7
 - [patch] ED-4199, Adding support for column layout in renderer. [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
 - [patch] Updated dependencies [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)

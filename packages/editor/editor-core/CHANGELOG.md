@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 76.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+  - @atlaskit/util-data-test@10.0.1
+  - @atlaskit/renderer@19.1.0
+  - @atlaskit/editor-common@13.1.0
+
 ## 76.0.25
 - [patch] Corrected gap size between more and italic icons in editor toolbar [92cf9d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cf9d4)
 - [none] Updated dependencies [92cf9d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cf9d4)

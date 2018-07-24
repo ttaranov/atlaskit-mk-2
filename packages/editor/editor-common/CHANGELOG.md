@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 13.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+
 ## 13.0.11
 - [patch] quick fix for invalid codeBlock throwing errors. We should handle it in a better way. Rifat is working on a proper solution [7d549c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d549c4)
 - [none] Updated dependencies [7d549c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d549c4)

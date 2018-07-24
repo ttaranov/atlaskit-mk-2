@@ -1,5 +1,9 @@
 # @atlaskit/util-data-test
 
+## 10.0.1
+- [patch] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+
 ## 10.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
