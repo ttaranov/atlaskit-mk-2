@@ -80,13 +80,19 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps,
   State
 > {
-  preQueryScreenCounter: ScreenCounter;
-  postQueryScreenCounter: ScreenCounter;
+  screenCounters: {
+    preQueryScreenCounter: ScreenCounter;
+    postQueryScreenCounter: ScreenCounter;
+  };
 
   constructor(props) {
     super(props);
-    this.preQueryScreenCounter = new SearchScreenCounter();
-    this.postQueryScreenCounter = new SearchScreenCounter();
+    const preQueryScreenCounter = new SearchScreenCounter();
+    const postQueryScreenCounter = new SearchScreenCounter();
+    this.screenCounters = {
+      preQueryScreenCounter,
+      postQueryScreenCounter,
+    };
   }
 
   state = {
@@ -400,10 +406,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       recentlyInteractedPeople,
       keepRecentActivityResults,
       searchSessionId,
-      screenCounters: {
-        preQueryScreenCounter: this.preQueryScreenCounter,
-        postQueryScreenCounter: this.postQueryScreenCounter,
-      },
+      screenCounters: this.screenCounters,
     };
     return (
       <GlobalQuickSearch
