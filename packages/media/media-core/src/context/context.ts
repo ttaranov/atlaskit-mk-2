@@ -37,6 +37,7 @@ import {
   mapMediaFileToFileState,
 } from '../fileState';
 import { Observer } from 'rxjs/Observer';
+import { Collection } from '../collection';
 import FileStreamCache from './fileStreamCache';
 
 const DEFAULT_CACHE_SIZE = 200;
@@ -80,6 +81,7 @@ export interface Context {
     controller?: UploadController,
   ): Observable<FileState>;
 
+  readonly collection: Collection;
   readonly config: ContextConfig;
 }
 
@@ -99,6 +101,7 @@ class ContextImpl implements Context {
   private readonly localPreviewCache: LRUCache<string, string>;
   private readonly fileStreamsCache: FileStreamCache;
   private readonly mediaStore: MediaStore;
+  readonly collection: Collection;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
@@ -108,6 +111,7 @@ class ContextImpl implements Context {
       serviceHost: config.serviceHost,
       authProvider: config.authProvider,
     });
+    this.collection = new Collection(this.mediaStore);
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {

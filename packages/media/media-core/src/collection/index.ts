@@ -1,4 +1,8 @@
-import { FileItem, FileDetails, LinkItem, LinkDetails } from './item';
+import {
+  MediaStore,
+  MediaStoreGetCollectionItemsPrams,
+} from '@atlaskit/media-store';
+import { FileItem, FileDetails, LinkItem, LinkDetails } from '../item';
 
 export interface MediaCollectionFileItemDetails extends FileDetails {
   occurrenceKey: string;
@@ -23,4 +27,19 @@ export type MediaCollectionItem =
 export interface MediaCollection {
   id: string;
   items: Array<MediaCollectionItem>;
+}
+
+export class Collection {
+  readonly mediaStore: MediaStore;
+
+  constructor(mediaStore: MediaStore) {
+    this.mediaStore = mediaStore;
+  }
+
+  getItems(
+    collectionName: string,
+    params?: MediaStoreGetCollectionItemsPrams,
+  ): any {
+    return this.mediaStore.getCollectionItems(collectionName, params);
+  }
 }

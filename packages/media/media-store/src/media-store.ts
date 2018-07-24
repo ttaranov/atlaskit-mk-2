@@ -21,6 +21,11 @@ import {
   mapResponseToVoid,
 } from './utils/request';
 
+const defaultGetCollectionItems: MediaStoreGetCollectionItemsPrams = {
+  limit: 30,
+  sortDirection: 'desc',
+};
+
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
 
@@ -49,13 +54,17 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
+  // TODO: keep default params
   getCollectionItems(
     collectionName: string,
-    params: MediaStoreGetCollectionItemsPrams,
+    params?: MediaStoreGetCollectionItemsPrams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
       authContext: { collectionName },
-      params,
+      params: {
+        ...defaultGetCollectionItems,
+        ...params,
+      },
       headers: {
         Accept: 'application/json',
       },
