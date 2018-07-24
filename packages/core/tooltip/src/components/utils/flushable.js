@@ -24,18 +24,20 @@ const flushable = (onComplete: (flushed: boolean) => any, delay: number) => {
     timeoutId = null;
     onComplete(false);
   }, delay);
+  const clearTimer = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
   return {
-    cancel: () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-    },
+    cancel: clearTimer,
     flush: () => {
-      if (timeoutId) {
-        timeoutId = null;
-        onComplete(true);
+      if (!timeoutId) {
+        return;
       }
+      clearTimer();
+      onComplete(true);
     },
     pending: () => Boolean(timeoutId),
   };
