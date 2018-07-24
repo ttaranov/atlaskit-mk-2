@@ -1,5 +1,12 @@
 # @atlaskit/navigation-next
 
+## 3.0.2
+- [patch] Update docs, change dev deps [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/select@5.0.4
+  - @atlaskit/avatar@14.0.3
+  - @atlaskit/global-navigation@3.0.2
+
 ## 3.0.1
 - [patch] fix icon imports [df7e2e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df7e2e0)
 - [none] Updated dependencies [df7e2e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df7e2e0)

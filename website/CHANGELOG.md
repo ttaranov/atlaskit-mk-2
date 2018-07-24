@@ -1,5 +1,14 @@
 # @atlaskit/website
 
+## 3.0.4
+
+
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/single-select@6.0.2
+  - @atlaskit/layer-manager@5.0.2
+- [patch] Updated dependencies [e16d2b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e16d2b6)
+  - extract-react-types-loader@0.2.1
+
 ## 3.0.3
 
 
