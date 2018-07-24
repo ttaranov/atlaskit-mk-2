@@ -19,7 +19,8 @@ export const backgroundColor = themed('appearance', {
 
 export const Container = styled.div`
   max-height: ${getMaxHeight};
-  overflow: scroll;
+  overflow: ${({ appearance }) =>
+    appearance === 'announcement' ? 'scroll' : 'visible'};
   background-color: ${backgroundColor};
 `;
 
