@@ -141,9 +141,9 @@ itemsById: {
 
 **TableTreeDataHelper** creates the cache and updates the object for you, hence taking the worry away in case of async loading.
 
-**Appending items in the table:** (**v4.0.2** or above required) 
+**Appending items in the table:** (**v4.1.0** or above required) 
 
-In case the table rows are recieved in chunks we can use the *appendItems* method on TableTreeDataHelper class
+In case the table rows are received in chunks we can use the *appendItems* method on TableTreeDataHelper class
 
 Usage:
 
