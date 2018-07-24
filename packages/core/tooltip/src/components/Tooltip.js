@@ -79,16 +79,20 @@ type State = {
 let pendingHide;
 
 const showTooltip = (fn: boolean => void, defaultDelay: number) => {
-  if (pendingHide && pendingHide.pending()) {
+  const isHidePending = pendingHide && pendingHide.pending();
+  if (isHidePending) {
     pendingHide.flush();
-    return setTimeout(() => fn(true), 0);
   }
-  return setTimeout(() => fn(false), defaultDelay);
+  const pendingShow = flushable(
+    () => fn(isHidePending),
+    isHidePending ? 0 : defaultDelay,
+  );
+  return pendingShow.cancel;
 };
 
 const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
-  pendingHide = flushable(() => fn(false), defaultDelay, () => fn(true));
-  return pendingHide.timeoutID();
+  pendingHide = flushable(flushed => fn(flushed), defaultDelay);
+  return pendingHide.cancel;
 };
 
 class Tooltip extends Component<Props, State> {
@@ -103,7 +107,7 @@ class Tooltip extends Component<Props, State> {
   wrapperRef: HTMLElement | null;
   targetRef: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
-  timer: TimeoutID;
+  cancelPendingSetState = () => {};
   state = {
     immediatelyHide: false,
     immediatelyShow: false,
@@ -121,23 +125,23 @@ class Tooltip extends Component<Props, State> {
 
   handleWindowScroll = () => {
     if (this.state.isVisible) {
-      clearTimeout(this.timer);
+      this.cancelPendingSetState();
       this.setState({ isVisible: false, immediatelyHide: true });
     }
   };
 
   handleMouseClick = () => {
     if (this.props.hideTooltipOnClick) {
-      clearTimeout(this.timer);
+      this.cancelPendingSetState();
       this.setState({ isVisible: false, immediatelyHide: true });
     }
   };
 
   handleMouseOver = (e: SyntheticMouseEvent<>) => {
     if (e.target === this.wrapperRef) return;
-    clearTimeout(this.timer);
+    this.cancelPendingSetState();
     if (!this.state.isVisible) {
-      this.timer = showTooltip(immediatelyShow => {
+      this.cancelPendingSetState = showTooltip(immediatelyShow => {
         this.setState({ isVisible: true, beenVisible: true, immediatelyShow });
         if (this.props.onShow) {
           this.props.onShow();
@@ -148,9 +152,9 @@ class Tooltip extends Component<Props, State> {
 
   handleMouseLeave = (e: SyntheticMouseEvent<>) => {
     if (e.target === this.wrapperRef) return;
-    clearTimeout(this.timer);
+    this.cancelPendingSetState();
     if (this.state.isVisible) {
-      this.timer = hideTooltip(immediatelyHide => {
+      this.cancelPendingSetState = hideTooltip(immediatelyHide => {
         this.setState({ isVisible: false, immediatelyHide });
         if (this.props.onHide) {
           this.props.onHide();
