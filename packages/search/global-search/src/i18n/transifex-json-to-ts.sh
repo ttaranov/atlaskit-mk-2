@@ -3,8 +3,9 @@
 # has a build step to support loading JSON files.
 
 # HOW TO:
-# 1. Unzip the translated files from transifex into the global-search/src/i18n directory.
-# 2. Run this script: ./transform_i18n.sh
+# 1. Unzip the translated files from transifex into the global-search/src/i18n directory
+# 2. cd into global-search/src/i18n
+# 3. Run this script: ./transifex-json-to-ts.sh
 
 set -e
 
