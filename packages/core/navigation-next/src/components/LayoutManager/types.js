@@ -19,8 +19,8 @@ export type ConnectedLayoutManagerProps = {
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {
   navigationUIController: UIController,
-  onExpandStart: CollapseListener,
-  onExpandEnd: CollapseListener,
-  onCollapseStart: CollapseListener,
-  onCollapseEnd: CollapseListener,
+  onExpandStart?: CollapseListener,
+  onExpandEnd?: CollapseListener,
+  onCollapseStart?: CollapseListener,
+  onCollapseEnd?: CollapseListener,
 };

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -180,29 +180,32 @@ const ContainerNavigation = () => (
 
 function NOOP() {}
 
-type StatusProps = {
+type StatusEvents = {
   onResizeEnd: number => void,
   onResizeStart: number => void,
   onPeekHint: () => void,
   onUnpeekHint: () => void,
   onPeek: () => void,
   onUnpeek: () => void,
-  navState: {
-    isPeekHinting: boolean,
-    isPeeking: boolean,
-    isResizing: boolean,
-    productNavIsCollapsed: boolean,
-    productNavWidth: number,
-  },
+};
+type NavState = {
+  isCollapsed: boolean,
+  isPeekHinting: boolean,
+  isPeeking: boolean,
+  isResizing: boolean,
+  productNavWidth: number,
+};
+type StatusProps = StatusEvents & {
+  navState: NavState,
 };
 
-const withNavState = (Comp: ComponentType<*>) => (props: StatusProps) => (
+const withNavState = (Comp: ComponentType<*>) => (props: StatusEvents) => (
   <UIControllerSubscriber>
     {nav => <Comp navState={nav.state} {...props} />}
   </UIControllerSubscriber>
 );
 
-class CollapseStatus extends React.Component<StatusProps, *> {
+class CollapseStatus extends React.Component<StatusProps> {
   static defaultProps = {
     onResizeEnd: NOOP,
     onResizeStart: NOOP,
@@ -257,10 +260,13 @@ const CollapseStatusListener = withNavState(CollapseStatus);
 // Nav Implementation
 // ==============================
 
+type StatusEvent = { name: string, value?: number };
+type State = { callStack: Array<StatusEvent> };
+
 // eslint-disable-next-line react/no-multi-comp
-export default class ExtendingNavSubscriber extends React.Component<*> {
+export default class ExtendingNavSubscriber extends React.Component<*, State> {
   state = { callStack: [] };
-  onEmit = name => value => {
+  onEmit = (name: string) => (value?: number) => {
     const callStack = this.state.callStack.slice(0);
     callStack.push({ name, value });
     this.setState({ callStack });

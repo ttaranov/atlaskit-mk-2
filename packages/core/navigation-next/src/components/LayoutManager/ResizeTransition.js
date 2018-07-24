@@ -44,10 +44,10 @@ type Props = {
   properties: Array<string>,
   from: Array<number | string>,
   to: Array<number | string>,
-  onExpandStart: CollapseListener,
-  onExpandEnd: CollapseListener,
-  onCollapseStart: CollapseListener,
-  onCollapseEnd: CollapseListener,
+  onExpandStart?: CollapseListener,
+  onExpandEnd?: CollapseListener,
+  onCollapseStart?: CollapseListener,
+  onCollapseEnd?: CollapseListener,
 };
 
 export default class ResizeTransition extends PureComponent<Props> {

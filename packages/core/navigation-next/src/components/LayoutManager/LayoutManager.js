@@ -29,18 +29,9 @@ type RenderContentNavigationArgs = {
   width: number,
 };
 
-function NOOP() {}
-
 export default class LayoutManager extends Component<LayoutManagerProps> {
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
-
-  static defaultProps = {
-    onExpandStart: NOOP,
-    onExpandEnd: NOOP,
-    onCollapseStart: NOOP,
-    onCollapseEnd: NOOP,
-  };
 
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
@@ -50,38 +41,50 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
   };
 
   onExpandStart = () => {
-    const { isResizing } = this.props.navigationUIController.state;
+    const {
+      isResizing,
+      onExpandStart,
+    } = this.props.navigationUIController.state;
 
     if (isResizing) return;
+    if (!onExpandStart) return;
 
-    this.props.onExpandStart(0);
+    onExpandStart(0);
   };
   onExpandEnd = () => {
     const {
       isResizing,
+      onExpandEnd,
       productNavWidth,
     } = this.props.navigationUIController.state;
 
     if (isResizing) return;
+    if (!onExpandEnd) return;
 
-    this.props.onExpandEnd(productNavWidth);
+    onExpandEnd(productNavWidth);
   };
   onCollapseStart = () => {
     const {
       isResizing,
+      onCollapseStart,
       productNavWidth,
     } = this.props.navigationUIController.state;
 
     if (isResizing) return;
+    if (!onCollapseStart) return;
 
-    this.props.onCollapseStart(productNavWidth);
+    onCollapseStart(productNavWidth);
   };
   onCollapseEnd = () => {
-    const { isResizing } = this.props.navigationUIController.state;
+    const {
+      isResizing,
+      onCollapseEnd,
+    } = this.props.navigationUIController.state;
 
     if (isResizing) return;
+    if (!onCollapseEnd) return;
 
-    this.props.onCollapseEnd(0);
+    onCollapseEnd(0);
   };
 
   renderGlobalNavigation = (shouldRenderShadow: boolean) => {
