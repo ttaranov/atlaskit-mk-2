@@ -7,11 +7,8 @@ import React, {
   type Node,
   type Element,
   type ComponentType,
-  type Ref,
 } from 'react';
-import { TransitionGroup } from 'react-transition-group';
 
-import Portal from '@atlaskit/portal';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -25,6 +22,7 @@ import {
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 
+import Portal from './Portal';
 import TooltipMarshal from './Marshal';
 import Transition from './Transition';
 import { getPosition } from './utils';
@@ -101,7 +99,6 @@ class Tooltip extends Component<Props, State> {
   state = getInitialState(this.props);
   wrapper: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
-  tooltipRef: HTMLElement | null;
   static defaultProps = {
     component: StyledTooltip,
     delay: 300,
@@ -135,8 +132,8 @@ class Tooltip extends Component<Props, State> {
     this.wrapper = ref;
   };
 
-  handleMeasureRef = () => {
-    if (!this.tooltipRef || !this.wrapper) return;
+  handleMeasureRef = (tooltip: HTMLElement) => {
+    if (!tooltip || !this.wrapper) return;
 
     const { position, mousePosition } = this.props;
     const { mouseCoordinates } = this;
@@ -147,7 +144,7 @@ class Tooltip extends Component<Props, State> {
     const positionData = getPosition({
       position,
       target,
-      tooltip: this.tooltipRef,
+      tooltip,
       mouseCoordinates,
       mousePosition,
     });
@@ -172,11 +169,9 @@ class Tooltip extends Component<Props, State> {
     if (!coordinates) {
       const MeasurableTooltip = component;
       return (
-        <Portal layer="tooltip" ref={this.handleMeasureRef}>
+        <Portal>
           <MeasurableTooltip
-            innerRef={ref => {
-              this.tooltipRef = ref;
-            }}
+            innerRef={this.handleMeasureRef}
             style={{ visibility: 'hidden' }}
           >
             {content}
@@ -262,7 +257,7 @@ class Tooltip extends Component<Props, State> {
         ref={this.handleWrapperRef}
       >
         {Children.only(children)}
-        <TransitionGroup>{this.renderTooltip()}</TransitionGroup>
+        {this.renderTooltip()}
       </Tag>
     );
   }
