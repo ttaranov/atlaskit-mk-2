@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.0",
+    "@atlaskit/form": "^3.1.1",
     "@atlaskit/field-range": "^5.0.0",
     "@atlaskit/field-text": "^7.0.0",
     "@atlaskit/inline-message": "^6.0.0",
