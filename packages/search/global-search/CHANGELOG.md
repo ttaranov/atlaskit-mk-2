@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.3.1
+- [patch] fix keyboard navigation  [5382e88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5382e88)
+
 ## 5.3.0
 - [minor] Add i18n support for all supported languages. [68982c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68982c0)
 
