@@ -54,7 +54,7 @@ const ContainerHeaderComponent = ({
   </div>
 );
 
-const GlobalSearchIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
+const GlobalSearchIcon = ({ openDrawer }: { openDrawer: string => void }) => (
   <Tooltip content="Search Icon" position="right">
     <AkGlobalItem size="medium" onClick={() => openDrawer('search')}>
       <SearchIcon />
@@ -62,7 +62,7 @@ const GlobalSearchIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
   </Tooltip>
 );
 
-const GlobalCreateIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
+const GlobalCreateIcon = ({ openDrawer }: { openDrawer: string => void }) => (
   <Tooltip content="Create Icon" position="right">
     <AkGlobalItem size="medium" onClick={() => openDrawer('create')}>
       <AddIcon />
@@ -70,7 +70,7 @@ const GlobalCreateIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
   </Tooltip>
 );
 
-const StarDrawerIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
+const StarDrawerIcon = ({ openDrawer }: { openDrawer: string => void }) => (
   <Tooltip content="Custom Drawer Icon" position="right">
     <AkGlobalItem size="medium" onClick={() => openDrawer('custom')}>
       <StarIcon />

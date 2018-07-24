@@ -8,12 +8,14 @@ import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 import SkeletonContainerHeaderText from './styled/SkeletonContainerHeaderText';
 import SkeletonDefaultContainerHeaderInner from './styled/SkeletonDefaultContainerHeaderInner';
 
-export type Props = {
+export type SkeletonContainerHeaderProps = {
   isCollapsed?: boolean,
   isAvatarHidden?: boolean,
 };
 
-export default class SkeletonDefaultContainerHeader extends Component<Props> {
+export default class SkeletonDefaultContainerHeader extends Component<
+  SkeletonContainerHeaderProps,
+> {
   static defaultProps = {
     isCollapsed: false,
     isAvatarHidden: false,
