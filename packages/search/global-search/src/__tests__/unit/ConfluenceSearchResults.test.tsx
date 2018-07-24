@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import renderSearchResults, {
+import SearchResult, {
   Props,
   ScreenCounter,
 } from '../../components/confluence/ConfluenceSearchResults';
@@ -52,7 +52,7 @@ describe('ConfluenceSearchResults', () => {
       ...partialProps,
     };
     // @ts-ignore
-    return shallow(<div>{renderSearchResults(props)}</div>);
+    return shallow(<SearchResult {...props} />);
   }
 
   it('should render recently viewed objects when no query is entered', () => {

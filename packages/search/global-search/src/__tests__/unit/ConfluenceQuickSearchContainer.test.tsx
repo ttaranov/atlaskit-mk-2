@@ -31,7 +31,7 @@ import {
   errorConfluenceQuickNavSearch,
   makeConfluenceClient,
 } from './mocks/_mockConfluenceClient';
-import * as SearchResults from '../../components/confluence/ConfluenceSearchResults';
+import SearchResults from '../../components/confluence/ConfluenceSearchResults';
 import { shallowWithIntl } from './helpers/_intl-enzyme-test-helper';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
@@ -65,36 +65,38 @@ function render(partialProps?: Partial<Props>) {
 }
 
 describe('ConfluenceQuickSearchContainer', () => {
-  let searchResultSpy;
   let originalPerformance;
 
   beforeEach(() => {
-    searchResultSpy = jest.spyOn(SearchResults, 'default');
     originalPerformance = global.window.performance;
     global.window.performance = {
       now: () => 1,
     };
   });
   afterEach(() => {
-    searchResultSpy.mockRestore();
     global.window.performance = originalPerformance;
   });
 
-  const assertSearchResultToHaveProperty = (property: string) => {
-    expect(searchResultSpy.mock.calls.length).toBeGreaterThan(1);
-    const group =
-      searchResultSpy.mock.calls[searchResultSpy.mock.calls.length - 1][0][
-        property
-      ];
-    expect(group).toHaveLength(1);
+  const assertSearchResult = wrapper => {
+    const searchResults = wrapper.find(SearchResults);
+    expect(searchResults.length).toBe(1);
+    return searchResults;
+  };
+
+  const assertSearchResultToHaveProperty = (
+    wrapper: React.ReactNode,
+    property: string,
+  ) => {
+    const searchResults = assertSearchResult(wrapper);
+    expect(searchResults.props()).toHaveProperty(property);
+
+    const group = searchResults.props()[property];
     return group;
   };
 
-  const assertResultError = (hasError: boolean) => {
-    expect(searchResultSpy.mock.calls.length).toBeGreaterThan(1);
-    const error =
-      searchResultSpy.mock.calls[searchResultSpy.mock.calls.length - 1][0]
-        .isError;
+  const assertResultError = (wrapper, hasError: boolean) => {
+    const searchResults = assertSearchResult(wrapper);
+    const error = searchResults.props().isError;
     expect(error).toBe(hasError);
   };
 
@@ -167,7 +169,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
       await waitForRender(wrapper);
 
-      assertSearchResultToHaveProperty('recentlyViewedPages');
+      assertSearchResultToHaveProperty(wrapper, 'recentlyViewedPages');
     });
 
     it('should render recently viewed spaces', async () => {
@@ -186,7 +188,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
       await waitForRender(wrapper);
 
-      assertSearchResultToHaveProperty('recentlyViewedSpaces');
+      assertSearchResultToHaveProperty(wrapper, 'recentlyViewedSpaces');
     });
 
     it('should render recent people', async () => {
@@ -208,7 +210,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
       await waitForRender(wrapper);
 
-      assertSearchResultToHaveProperty('recentlyInteractedPeople');
+      assertSearchResultToHaveProperty(wrapper, 'recentlyInteractedPeople');
     });
   });
 
@@ -256,7 +258,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    assertSearchResultToHaveProperty('objectResults');
+    assertSearchResultToHaveProperty(wrapper, 'objectResults');
   });
 
   it('should render space results', async () => {
@@ -269,7 +271,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    assertSearchResultToHaveProperty('spaceResults');
+    assertSearchResultToHaveProperty(wrapper, 'spaceResults');
   });
 
   it('should render people results', async () => {
@@ -287,7 +289,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    assertSearchResultToHaveProperty('peopleResults');
+    assertSearchResultToHaveProperty(wrapper, 'peopleResults');
   });
 
   it('should perform searches in parallel', async () => {
@@ -336,9 +338,9 @@ describe('ConfluenceQuickSearchContainer', () => {
     searchFor('once', wrapper);
     await waitForRender(wrapper, 6);
 
-    assertSearchResultToHaveProperty('objectResults');
-    assertSearchResultToHaveProperty('spaceResults');
-    assertSearchResultToHaveProperty('peopleResults');
+    assertSearchResultToHaveProperty(wrapper, 'objectResults');
+    assertSearchResultToHaveProperty(wrapper, 'spaceResults');
+    assertSearchResultToHaveProperty(wrapper, 'peopleResults');
   });
 
   it('should not display outdated results', async () => {
@@ -376,7 +378,10 @@ describe('ConfluenceQuickSearchContainer', () => {
     searchFor('twice - this will return the current fast result', wrapper);
     await waitForRender(wrapper, 10);
 
-    const objectResults = assertSearchResultToHaveProperty('objectResults');
+    const objectResults = assertSearchResultToHaveProperty(
+      wrapper,
+      'objectResults',
+    );
     expect(objectResults[0].name).toBe('current result');
   });
 
@@ -418,14 +423,20 @@ describe('ConfluenceQuickSearchContainer', () => {
 
       searchFor('dav', wrapper);
       await waitForRender(wrapper);
-      assertResultError(true);
+      assertResultError(wrapper, true);
     });
 
     it('should clear error state after subsequent search', async () => {
       const searchMock = jest
         .fn()
         .mockImplementationOnce((query: string) => Promise.reject('error'))
-        .mockImplementationOnce((query: string) => Promise.resolve(new Map()));
+        .mockImplementationOnce((query: string) =>
+          Promise.resolve([
+            makeConfluenceObjectResult({
+              name: 'current result',
+            }),
+          ]),
+        );
 
       const wrapper = render({
         confluenceClient: makeConfluenceClient({
@@ -436,12 +447,12 @@ describe('ConfluenceQuickSearchContainer', () => {
       searchFor('error state', wrapper);
       await waitForRender(wrapper);
 
-      assertResultError(true);
+      assertResultError(wrapper, true);
 
       searchFor('good state', wrapper);
       await waitForRender(wrapper);
 
-      assertResultError(false);
+      assertResultError(wrapper, false);
     });
 
     it('should not show the error state when only people search fails', async () => {

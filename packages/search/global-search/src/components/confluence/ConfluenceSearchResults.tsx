@@ -282,7 +282,7 @@ const renderNoQuery = (
   );
 };
 
-export class SearchResult extends React.Component<Props> {
+export default class ConfluenceSearchResult extends React.Component<Props> {
   render() {
     const {
       query,
@@ -347,5 +347,3 @@ export class SearchResult extends React.Component<Props> {
     );
   }
 }
-
-export default SearchResult;
