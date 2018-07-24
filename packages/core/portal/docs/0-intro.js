@@ -1,18 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props, code } from '@atlaskit/docs';
-// # Portal
-//
-// ${(
-//   <SectionMessage
-//     appearance="warning"
-//     title="Note: @atlaskit/portal is currently a developer preview."
-//   >
-//     Please experiment with and test this package, but be aware that the API
-//     may change at any time. Use at your own risk, preferrably not in
-//     production.
-//   </SectionMessage>
-// )}
+import { md, Props, code } from '@atlaskit/docs';
 
 export default md`
   An Atlaskit opinionated wrapper on [React Portals](https://reactjs.org/docs/portals.html).
