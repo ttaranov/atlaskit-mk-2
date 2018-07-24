@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 33.0.4
+- [patch] Upgrading react-beautiful-dnd to 8.0.5 [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+- [none] Updated dependencies [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+
 ## 33.0.3
 - [patch] add border radius back to navigation items [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
 - [none] Updated dependencies [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
