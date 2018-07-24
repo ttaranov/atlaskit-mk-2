@@ -14,6 +14,6 @@ test('shows a compact version when collapsed', () => {
 
 test('passes down custom styles', () => {
   expect(
-    shallow(<SkeletonContainerItem itemTextWidth={'100%'} />),
+    shallow(<SkeletonContainerItem itemTextWidth="100%" />),
   ).toMatchSnapshot();
 });

@@ -13,7 +13,6 @@ export type Props = {
 export default class SkeletonContainerItems extends Component<Props> {
   static defaultProps = {
     isCollapsed: false,
-    itemTextWidth: undefined,
   };
 
   render() {

@@ -10,6 +10,6 @@ test('renders an item text skeleton', () => {
 
 test('renders an item text skeleton with custom width', () => {
   expect(
-    shallow(<SkeletonContainerItemText textWidth={'100%'} />),
+    shallow(<SkeletonContainerItemText textWidth="100%" />),
   ).toMatchSnapshot();
 });
