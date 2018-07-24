@@ -31,7 +31,7 @@ import {
   errorConfluenceQuickNavSearch,
   makeConfluenceClient,
 } from './mocks/_mockConfluenceClient';
-import SearchResults from '../../components/confluence/ConfluenceSearchResults';
+import ConfluenceSearchResults from '../../components/confluence/ConfluenceSearchResults';
 import { shallowWithIntl } from './helpers/_intl-enzyme-test-helper';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
@@ -78,7 +78,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   });
 
   const assertSearchResult = wrapper => {
-    const searchResults = wrapper.find(SearchResults);
+    const searchResults = wrapper.find(ConfluenceSearchResults);
     expect(searchResults.length).toBe(1);
     return searchResults;
   };
