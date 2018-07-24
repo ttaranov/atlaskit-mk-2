@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 2.0.4
+- [patch] ED-4961 refactor block-type plugin [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+- [patch] Updated dependencies [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+  - @atlaskit/editor-core@76.0.23
+
 ## 2.0.3
 - [patch]  ED-4960, refactoring text formatting plugin. [f4a0996](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4a0996)
 - [none] Updated dependencies [f4a0996](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4a0996)

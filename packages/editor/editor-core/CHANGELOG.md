@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.0.23
+- [patch] ED-4961 refactor block-type plugin [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+- [none] Updated dependencies [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+
 ## 76.0.22
 - [patch] ED-5022, quick insert should not be triggered for key combination (/. [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
 - [patch] Updated dependencies [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
