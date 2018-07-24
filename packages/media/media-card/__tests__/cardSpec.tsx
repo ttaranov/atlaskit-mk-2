@@ -45,7 +45,12 @@ describe('Card', () => {
     (getDataURIFromFileState as any).mockReset();
     (getDataURIFromFileState as any).mockReturnValue('some-data-uri');
     const component = shallow(
-      <Card context={context} identifier={fileIdentifier} {...props} />,
+      <Card
+        context={context}
+        identifier={fileIdentifier}
+        isLazy={false}
+        {...props}
+      />,
     );
 
     return {
@@ -79,13 +84,12 @@ describe('Card', () => {
     const context = fakeContext({
       getUrlPreviewProvider: dummyProvider,
     }) as any;
-
-    const card = shallow(<Card context={context} identifier={identifier} />);
+    const { component } = setup(context, { identifier });
 
     expect(context.getUrlPreviewProvider).toHaveBeenCalledTimes(1);
     expect(context.getUrlPreviewProvider).toBeCalledWith(dummyUrl);
-    expect(card.find(CardView)).toHaveLength(1);
-    expect(card.find(CardView).prop('mediaItemType')).toEqual('link');
+    expect(component.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView).prop('mediaItemType')).toEqual('link');
   });
 
   it('should render a CardView with the right metadata when using a LinkIdentifier', async () => {
@@ -97,18 +101,16 @@ describe('Card', () => {
           }),
       },
     });
-    const card = shallow(
-      <Card context={context} identifier={linkIdentifier} />,
-    );
+    const { component } = setup(context, { identifier: linkIdentifier });
 
     // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
-    card.update();
+    component.update();
 
-    expect(card.find(CardView)).toHaveLength(1);
-    expect(card.find(CardView).prop('status')).toEqual('complete');
-    expect(card.find(CardView).prop('metadata')).toEqual({
+    expect(component.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView).prop('status')).toEqual('complete');
+    expect(component.find(CardView).prop('metadata')).toEqual({
       type: 'link',
       title: 'some-title',
       url: 'some-url',
@@ -121,16 +123,15 @@ describe('Card', () => {
         observable: () => Observable.of(linkUrlPreview),
       },
     });
-    const card = shallow(<Card context={context} identifier={urlIdentifier} />);
-
+    const { component } = setup(context, { identifier: urlIdentifier });
     // we need to wait for 2 promises: fetch metadata + fetch preview
     await nextTick();
     await nextTick();
-    card.update();
+    component.update();
 
-    expect(card.find(CardView)).toHaveLength(1);
-    expect(card.find(CardView).prop('status')).toEqual('complete');
-    expect(card.find(CardView).prop('metadata')).toEqual({
+    expect(component.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView).prop('status')).toEqual('complete');
+    expect(component.find(CardView).prop('metadata')).toEqual({
       type: 'link',
       title: 'some-title',
       url: 'some-url',
@@ -140,15 +141,13 @@ describe('Card', () => {
   it('should use the new context to create the subscription when context prop changes', () => {
     const firstContext = fakeContext({});
     const secondContext = fakeContext({}) as any;
-    const card = shallow(
-      <Card context={firstContext} identifier={fileIdentifier} />,
-    );
-    card.setProps({ context: secondContext, fileIdentifier });
+    const { component } = setup(firstContext);
+    component.setProps({ context: secondContext, fileIdentifier });
 
     const { id, collectionName } = fileIdentifier;
     expect(secondContext.getFile).toHaveBeenCalledTimes(1);
     expect(secondContext.getFile).toBeCalledWith(id, { collectionName });
-    expect(card.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView)).toHaveLength(1);
   });
 
   it('should create a new subscription when the identifier changes', () => {
@@ -158,10 +157,8 @@ describe('Card', () => {
     const context = fakeContext({
       getMediaItemProvider: dummyProvider,
     }) as any;
-    const card = shallow(
-      <Card context={context} identifier={firstIdentifier} />,
-    );
-    card.setProps({ context, identifier: secondIdentifier });
+    const { component } = setup(context, { identifier: firstIdentifier });
+    component.setProps({ context, identifier: secondIdentifier });
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
 
@@ -173,7 +170,7 @@ describe('Card', () => {
       collectionName,
     );
 
-    expect(card.find(CardView)).toHaveLength(1);
+    expect(component.find(CardView)).toHaveLength(1);
   });
 
   it('should fire onClick when passed in as a prop and CardView fires onClick', () => {
@@ -270,20 +267,20 @@ describe('Card', () => {
     const linkCard = shallow(
       <Card context={context} identifier={linkIdentifier} />,
     );
-    const filePlaceholder = (fileCard.instance() as Card).placeholder;
-    const linkPlaceholder = (linkCard.instance() as Card).placeholder;
+    const filePlaceholder = fileCard.find(CardView);
+    const linkPlaceholder = linkCard.find(CardView);
     const {
       status,
       appearance,
       mediaItemType,
       dimensions,
-    } = filePlaceholder.props;
+    } = filePlaceholder.props();
 
     expect(status).toBe('loading');
     expect(appearance).toBe('small');
     expect(mediaItemType).toBe('file');
     expect(dimensions).toEqual({ width: 100, height: 50 });
-    expect(linkPlaceholder.props.mediaItemType).toBe('link');
+    expect(linkPlaceholder.prop('mediaItemType')).toBe('link');
   });
 
   it('should use "crop" as default resizeMode', () => {
@@ -392,6 +389,7 @@ describe('Card', () => {
     expect(component.state()).toEqual({
       status: 'uploading',
       dataURI: 'some-data-uri',
+      isCardVisible: true,
       progress: 0.2,
       metadata: {
         id: '123',
@@ -419,6 +417,7 @@ describe('Card', () => {
       status: 'uploading',
       dataURI: 'some-data-uri',
       progress: undefined,
+      isCardVisible: true,
       metadata: {
         id: '123',
         mediaType: 'image',
@@ -451,6 +450,7 @@ describe('Card', () => {
       status: 'complete',
       dataURI: 'mock result of URL.createObjectURL()',
       progress: undefined,
+      isCardVisible: true,
       metadata: {
         id: '123',
         mediaType: 'image',

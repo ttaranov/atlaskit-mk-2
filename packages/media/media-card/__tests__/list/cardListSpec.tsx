@@ -411,6 +411,23 @@ describe('CardList', () => {
       expect(list.find(LazyContent)).toHaveLength(0);
     });
 
+    it('should render lazy Cards by default and when shouldLazyLoadCards=true', () => {
+      const context = contextWithDefaultCollection;
+      const defaultList = mount(
+        <CardList context={context} collectionName={collectionName} />,
+      );
+      const listWithUseInfiniteScroll = mount(
+        <CardList
+          useInfiniteScroll={true}
+          context={context}
+          collectionName={collectionName}
+        />,
+      );
+
+      expect(defaultList.find(LazyContent)).toHaveLength(1);
+      expect(listWithUseInfiniteScroll.find(LazyContent)).toHaveLength(1);
+    });
+
     it('should not render link items', () => {
       const collection = { items: linksOnlyItems };
       const context = contextWithInclusiveStartKey;

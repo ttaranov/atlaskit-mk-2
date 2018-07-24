@@ -16,9 +16,8 @@ import {
   defaultImageCardDimensions,
   defaultSmallCardDimensions,
 } from '../utils';
-import { LazyContent } from '../utils/lazyContent';
 import { CardDimensions, CardListEvent, CardEvent } from '..';
-import { CardView, Card, FileIdentifier } from '../root';
+import { Card, FileIdentifier } from '../root';
 import { CollectionAction } from '../actions';
 import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
@@ -226,7 +225,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
   private renderList(): JSX.Element {
     const { collection, shouldAnimate } = this.state;
-    const { cardWidth, dimensions, handleCardClick, placeholder } = this;
+    const { cardWidth, dimensions, handleCardClick } = this;
     const {
       cardAppearance,
       shouldLazyLoadCards,
@@ -249,6 +248,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     const cards = collection
       ? collection.items.filter(item => item.type === 'file').map(mediaItem => {
           const key = this.getItemKey(mediaItem);
+          const isLazy = shouldLazyLoadCards && !shouldAnimate; // We don't want to wrap new items into LazyContent aka lazy load new items
           const identifier: FileIdentifier = {
             id: mediaItem.details.id,
             collectionName,
@@ -272,23 +272,15 @@ export class CardList extends Component<CardListProps, CardListState> {
                   identifier={identifier}
                   appearance={cardAppearance}
                   dimensions={dimensions}
-                  isLazy={shouldLazyLoadCards}
+                  isLazy={isLazy}
                   onClick={handleCardClick.bind(this, mediaItem)}
                   actions={cardActions(mediaItem)}
                 />
               </CardListItemWrapper>
             </CSSTransition>
           );
-          // We don't want to wrap new items into LazyContent aka lazy load new items
-          const useLazyContent = shouldLazyLoadCards && !shouldAnimate;
 
-          return useLazyContent ? (
-            <LazyContent key={key} placeholder={placeholder}>
-              {cardListItem}
-            </LazyContent>
-          ) : (
-            cardListItem
-          );
+          return cardListItem;
         })
       : null;
 
@@ -378,20 +370,6 @@ export class CardList extends Component<CardListProps, CardListState> {
       width: cardWidth,
       height: cardHeight,
     };
-  }
-
-  private get placeholder(): JSX.Element {
-    const { cardWidth, dimensions } = this;
-    const { cardAppearance } = this.props;
-    return (
-      <CardListItemWrapper cardWidth={cardWidth}>
-        <CardView
-          dimensions={dimensions}
-          status="loading"
-          appearance={cardAppearance}
-        />
-      </CardListItemWrapper>
-    );
   }
 
   loadNextPage = (): void =>
