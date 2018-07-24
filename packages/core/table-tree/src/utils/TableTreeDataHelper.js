@@ -15,13 +15,13 @@ function updateRootItems(
   allItems?: Array<Object> = [],
   { key, keysCache, operation }: OptionsType,
 ) {
-  let newKeysCache = { ...keysCache };
+  const newKeysCache = { ...keysCache };
   // If it is not an append operation we can ignore allItems as they will be swaped with new items
-  let allBaseItems = operation === 'UPDATE' ? [] : [...allItems];
-  let startIndexWith = allBaseItems.length;
+  const allBaseItems = operation === 'UPDATE' ? [] : [...allItems];
+  const startIndexWith = allBaseItems.length;
   rootItems.forEach((rootItem, index) => {
     const rootItemKey = rootItem[key];
-    if (rootItemKey == undefined) {
+    if (rootItemKey === undefined) {
       throw new Error(
         `[ERROR] No property '${key}' found in rootItem[${index}]`,
       );
@@ -42,7 +42,7 @@ function updateChildItems(
   itemParent: Object,
   { key, keysCache, operation }: OptionsType,
 ) {
-  let newKeysCache = { ...keysCache };
+  const newKeysCache = { ...keysCache };
   const parentCacheKey = itemParent[key];
 
   if (parentCacheKey === undefined) {
@@ -51,7 +51,8 @@ function updateChildItems(
   const parentLocation = newKeysCache[parentCacheKey];
   const allItemsCopy = [...allTableItems];
   const objectToChange = get(allItemsCopy, parentLocation);
-  const baseChildrenOfObjectToChange = objectToChange.children || [];
+  const baseChildrenOfObjectToChange =
+    operation === 'UPDATE' ? [] : objectToChange.children;
   objectToChange.children = baseChildrenOfObjectToChange.concat(newitems);
 
   // Update cache
@@ -101,7 +102,7 @@ export default class TableTreeDataHelper {
       operation: 'UPDATE',
     };
     if (!parentItem) {
-      let { keysCache, items: updatedRootItems } = updateRootItems(
+      const { keysCache, items: updatedRootItems } = updateRootItems(
         items,
         allItems,
         options,
@@ -110,7 +111,7 @@ export default class TableTreeDataHelper {
       return updatedRootItems;
     }
 
-    let { keysCache, items: updatedItems } = updateChildItems(
+    const { keysCache, items: updatedItems } = updateChildItems(
       items,
       allItems,
       parentItem,
@@ -131,7 +132,7 @@ export default class TableTreeDataHelper {
       operation: 'APPEND',
     };
     if (!parentItem) {
-      let { keysCache, items: updatedRootItems } = updateRootItems(
+      const { keysCache, items: updatedRootItems } = updateRootItems(
         items,
         allItems,
         options,
@@ -140,7 +141,7 @@ export default class TableTreeDataHelper {
       return updatedRootItems;
     }
 
-    let { keysCache, items: updatedItems } = updateChildItems(
+    const { keysCache, items: updatedItems } = updateChildItems(
       items,
       allItems,
       parentItem,
