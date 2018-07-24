@@ -43,7 +43,7 @@ const Animation = ({
     exit: immediatelyHide ? 1 : EXIT_DURATION,
   };
   return (
-    <Transition timeout={timeout} in={inProp} mountOnEnter unmountOnExit>
+    <Transition timeout={timeout} in={inProp} unmountOnExit>
       {state => {
         return children({
           ...defaultStyle(timeout),

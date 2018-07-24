@@ -72,6 +72,7 @@ type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   isVisible: boolean,
+  beenVisible: boolean,
 };
 
 const queueOperation = (defaultFn, delay, flushFn) => {
@@ -125,6 +126,7 @@ class Tooltip extends Component<Props, State> {
     immediatelyHide: false,
     immediatelyShow: false,
     isVisible: false,
+    beenVisible: false,
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -154,7 +156,7 @@ class Tooltip extends Component<Props, State> {
     clearTimeout(this.timer);
     if (!this.state.isVisible) {
       this.timer = showTooltip(immediatelyShow => {
-        this.setState({ isVisible: true, immediatelyShow });
+        this.setState({ isVisible: true, beenVisible: true, immediatelyShow });
         if (this.props.onShow) {
           this.props.onShow();
         }
@@ -197,7 +199,12 @@ class Tooltip extends Component<Props, State> {
       component: TooltipContainer,
       tag: TargetContainer,
     } = this.props;
-    const { isVisible, immediatelyShow, immediatelyHide } = this.state;
+    const {
+      isVisible,
+      beenVisible,
+      immediatelyShow,
+      immediatelyHide,
+    } = this.state;
     return (
       <React.Fragment>
         <TargetContainer
@@ -217,39 +224,41 @@ class Tooltip extends Component<Props, State> {
             {Children.only(children)}
           </NodeResolver>
         </TargetContainer>
-        <Animation
-          immediatelyShow={immediatelyShow}
-          immediatelyHide={immediatelyHide}
-          in={isVisible}
-        >
-          {animationStyles => (
-            <Portal layer="tooltip">
-              <Position
-                key={position}
-                mouseCoordinates={this.mouseCoordinates}
-                mousePosition={mousePosition}
-                position={position}
-                target={this.targetRef}
-              >
-                {(ref, placement, style) => {
-                  return (
-                    <TooltipContainer
-                      innerRef={ref}
-                      style={{
-                        ...style,
-                        ...animationStyles,
-                      }}
-                      truncate={truncate}
-                      data-placement={placement}
-                    >
-                      {content}
-                    </TooltipContainer>
-                  );
-                }}
-              </Position>
-            </Portal>
-          )}
-        </Animation>
+        {beenVisible && (
+          <Animation
+            immediatelyShow={immediatelyShow}
+            immediatelyHide={immediatelyHide}
+            in={isVisible}
+          >
+            {animationStyles => (
+              <Portal layer="tooltip">
+                <Position
+                  key={position}
+                  mouseCoordinates={this.mouseCoordinates}
+                  mousePosition={mousePosition}
+                  position={position}
+                  target={this.targetRef}
+                >
+                  {(ref, placement, style) => {
+                    return (
+                      <TooltipContainer
+                        innerRef={ref}
+                        style={{
+                          ...style,
+                          ...animationStyles,
+                        }}
+                        truncate={truncate}
+                        data-placement={placement}
+                      >
+                        {content}
+                      </TooltipContainer>
+                    );
+                  }}
+                </Position>
+              </Portal>
+            )}
+          </Animation>
+        )}
       </React.Fragment>
     );
   }
