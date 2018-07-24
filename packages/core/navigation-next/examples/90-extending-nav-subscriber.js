@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type ComponentType, type Node } from 'react';
+import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -17,43 +17,44 @@ import { JiraWordmark } from '@atlaskit/logo';
 import {
   ContainerHeader,
   GlobalNav,
+  GroupHeading,
   Item,
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
-  NavigationSubscriber,
   Section,
-  SectionSeparator,
-  SectionTitle,
+  Separator,
+  UIControllerSubscriber,
 } from '../src';
 
-/**
- * Data
- */
+// ==============================
+// Data
+// ==============================
+
 const globalNavPrimaryItems = [
   {
     key: 'jira',
     component: ({ className, children }: *) => (
-      <NavigationSubscriber>
-        {navigation => {
+      <UIControllerSubscriber>
+        {navigationUIController => {
           function onClick() {
-            if (navigation.state.productNavIsCollapsed) {
-              navigation.expandProductNav();
+            if (navigationUIController.state.isCollapsed) {
+              navigationUIController.expand();
             }
-            navigation.togglePeek();
+            navigationUIController.togglePeek();
           }
           return (
             <button
               className={className}
               onClick={onClick}
-              onMouseEnter={navigation.hint}
-              onMouseLeave={navigation.unHint}
+              onMouseEnter={navigationUIController.peekHint}
+              onMouseLeave={navigationUIController.unPeekHint}
             >
               {children}
             </button>
           );
         }}
-      </NavigationSubscriber>
+      </UIControllerSubscriber>
     ),
     icon: JiraIcon,
     label: 'Jira',
@@ -129,18 +130,19 @@ const productContainerNavSections = [
     key: 'menu',
     isRootLevel: true,
     items: [
-      { type: SectionTitle, key: 'title', children: 'Section title' },
+      { type: GroupHeading, key: 'title', children: 'Group heading' },
       { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
       { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
       { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },
-      { type: SectionSeparator, key: 'separator' },
+      { type: Separator, key: 'separator' },
     ],
   },
 ];
 
-/**
- * Render components
- */
+// ==============================
+// Render components
+// ==============================
+
 const GlobalNavigation = () => (
   <GlobalNav
     primaryItems={globalNavPrimaryItems}
@@ -156,7 +158,7 @@ const RenderSection = ({ section }: *) => (
           <div
             css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
           >
-            {items.map(({ type: Component, ...props }) => (
+            {items.map(({ type: Component, ...props }: any) => (
               <Component {...props} />
             ))}
           </div>
@@ -165,8 +167,10 @@ const RenderSection = ({ section }: *) => (
     ))}
   </div>
 );
-const ProductRoot = () => <RenderSection section={productRootNavSections} />;
-const ProductContainer = () => (
+const ProductNavigation = () => (
+  <RenderSection section={productRootNavSections} />
+);
+const ContainerNavigation = () => (
   <RenderSection section={productContainerNavSections} />
 );
 
@@ -179,12 +183,12 @@ function NOOP() {}
 type StatusProps = {
   onResizeEnd: number => void,
   onResizeStart: number => void,
-  onHint: () => void,
-  onUnhint: () => void,
+  onPeekHint: () => void,
+  onUnpeekHint: () => void,
   onPeek: () => void,
   onUnpeek: () => void,
   navState: {
-    isHinting: boolean,
+    isPeekHinting: boolean,
     isPeeking: boolean,
     isResizing: boolean,
     productNavIsCollapsed: boolean,
@@ -193,9 +197,9 @@ type StatusProps = {
 };
 
 const withNavState = (Comp: ComponentType<*>) => (props: StatusProps) => (
-  <NavigationSubscriber>
+  <UIControllerSubscriber>
     {nav => <Comp navState={nav.state} {...props} />}
-  </NavigationSubscriber>
+  </UIControllerSubscriber>
 );
 
 class CollapseStatus extends React.Component<StatusProps, *> {
@@ -207,13 +211,13 @@ class CollapseStatus extends React.Component<StatusProps, *> {
     const {
       onResizeStart,
       onResizeEnd,
-      onHint,
-      onUnhint,
+      onPeekHint,
+      onUnpeekHint,
       onPeek,
       onUnpeek,
     } = this.props;
     const {
-      isHinting,
+      isPeekHinting,
       isPeeking,
       isResizing,
       productNavWidth,
@@ -228,11 +232,11 @@ class CollapseStatus extends React.Component<StatusProps, *> {
     }
 
     // hinting
-    if (isHinting && !prevProps.navState.isHinting) {
-      onHint();
+    if (isPeekHinting && !prevProps.navState.isPeekHinting) {
+      onPeekHint();
     }
-    if (!isHinting && prevProps.navState.isHinting) {
-      onUnhint();
+    if (!isPeekHinting && prevProps.navState.isPeekHinting) {
+      onUnpeekHint();
     }
 
     // peeking
@@ -248,6 +252,10 @@ class CollapseStatus extends React.Component<StatusProps, *> {
   }
 }
 const CollapseStatusListener = withNavState(CollapseStatus);
+
+// ==============================
+// Nav Implementation
+// ==============================
 
 // eslint-disable-next-line react/no-multi-comp
 export default class ExtendingNavSubscriber extends React.Component<*> {
@@ -270,8 +278,8 @@ export default class ExtendingNavSubscriber extends React.Component<*> {
       <NavigationProvider>
         <LayoutManager
           globalNavigation={GlobalNavigation}
-          productRootNavigation={ProductRoot}
-          productContainerNavigation={ProductContainer}
+          productNavigation={ProductNavigation}
+          containerNavigation={ContainerNavigation}
           onCollapseStart={this.onEmit('onCollapseStart')}
           onCollapseEnd={this.onEmit('onCollapseEnd')}
           onExpandStart={this.onEmit('onExpandStart')}
@@ -282,8 +290,8 @@ export default class ExtendingNavSubscriber extends React.Component<*> {
             onResizeStart={this.onEmit('onResizeStart')}
             onPeek={this.onEmit('onPeek')}
             onUnpeek={this.onEmit('onUnpeek')}
-            onHint={this.onEmit('onHint')}
-            onUnhint={this.onEmit('onUnhint')}
+            onPeekHint={this.onEmit('onPeekHint')}
+            onUnpeekHint={this.onEmit('onUnpeekHint')}
           />
           <div style={{ padding: 30 }}>
             <h4>

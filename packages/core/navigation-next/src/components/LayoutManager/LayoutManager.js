@@ -29,16 +29,59 @@ type RenderContentNavigationArgs = {
   width: number,
 };
 
+function NOOP() {}
+
 export default class LayoutManager extends Component<LayoutManagerProps> {
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
 
+  static defaultProps = {
+    onExpandStart: NOOP,
+    onExpandEnd: NOOP,
+    onCollapseStart: NOOP,
+    onCollapseEnd: NOOP,
+  };
+
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
-
   getPageRef = (ref: ElementRef<*>) => {
     this.pageRef = ref;
+  };
+
+  onExpandStart = () => {
+    const { isResizing } = this.props.navigationUIController.state;
+
+    if (isResizing) return;
+
+    this.props.onExpandStart(0);
+  };
+  onExpandEnd = () => {
+    const {
+      isResizing,
+      productNavWidth,
+    } = this.props.navigationUIController.state;
+
+    if (isResizing) return;
+
+    this.props.onExpandEnd(productNavWidth);
+  };
+  onCollapseStart = () => {
+    const {
+      isResizing,
+      productNavWidth,
+    } = this.props.navigationUIController.state;
+
+    if (isResizing) return;
+
+    this.props.onCollapseStart(productNavWidth);
+  };
+  onCollapseEnd = () => {
+    const { isResizing } = this.props.navigationUIController.state;
+
+    if (isResizing) return;
+
+    this.props.onCollapseEnd(0);
   };
 
   renderGlobalNavigation = (shouldRenderShadow: boolean) => {
@@ -163,6 +206,11 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
         properties={['paddingLeft']}
         to={[productNavWidth]}
         userIsDragging={isResizing}
+        // only apply listeners to the NAV resize transition
+        onExpandStart={this.onExpandStart}
+        onExpandEnd={this.onExpandEnd}
+        onCollapseStart={this.onCollapseStart}
+        onCollapseEnd={this.onCollapseEnd}
       >
         {({ transitionStyle, transitionState }) => (
           <PageWrapper
