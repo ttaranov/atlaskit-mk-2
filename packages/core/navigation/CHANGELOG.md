@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 33.0.3
+- [patch] add border radius back to navigation items [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
+- [none] Updated dependencies [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
+
 ## 33.0.2
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
