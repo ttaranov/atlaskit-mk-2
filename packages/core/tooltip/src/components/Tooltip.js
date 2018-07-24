@@ -25,6 +25,7 @@ import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 import Animation from './Animation';
 import Position from './Position';
+import flushable from './utils/flushable';
 
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
@@ -75,25 +76,6 @@ type State = {
   beenVisible: boolean,
 };
 
-const queueOperation = (defaultFn, delay, flushFn) => {
-  let pending = true;
-  const timeoutId = setTimeout(() => {
-    pending = false;
-    defaultFn();
-  }, delay);
-  return {
-    flush: () => {
-      if (pending) {
-        clearTimeout(timeoutId);
-        pending = false;
-        flushFn();
-      }
-    },
-    pending: () => pending,
-    timeoutID: () => timeoutId,
-  };
-};
-
 let pendingHide;
 
 const showTooltip = (fn: boolean => void, defaultDelay: number) => {
@@ -105,7 +87,7 @@ const showTooltip = (fn: boolean => void, defaultDelay: number) => {
 };
 
 const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
-  pendingHide = queueOperation(() => fn(false), defaultDelay, () => fn(true));
+  pendingHide = flushable(() => fn(false), defaultDelay, () => fn(true));
   return pendingHide.timeoutID();
 };
 
