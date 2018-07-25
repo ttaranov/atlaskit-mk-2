@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.3.5
+- [patch] Fix disappearing query problem when typing slowly [fc654d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc654d7)
+
 ## 5.3.4
 - [patch] Fix flashing no results screen when typing. [d02e61a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02e61a)
 
