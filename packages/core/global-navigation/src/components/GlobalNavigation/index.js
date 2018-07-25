@@ -60,33 +60,30 @@ export default class GlobalNavigation
     this.drawers.forEach((drawer: DrawerName) => {
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
 
-      // If a drawer has an onClick handler, mark it as a controlled drawer.
-      // ie, if onSearchClick prop is present, this.isSearchDrawerControlled is set to true
-      // and this.state.isSearchDrawerOpen is controlled by this.props.isSearchDrawerOpen
-      // in componentDidUpdate.
       if (
         props[
           `on${capitalisedDrawerName.substr(
             0,
-            capitalisedDrawerName.length - 6,
+            capitalisedDrawerName.length - 6, // Trim the `Drawer` bit from ${drawerType}Drawer
           )}Click`
-        ] !== undefined
+        ]
       ) {
-        this[`is${capitalisedDrawerName}Controlled`] = true;
-        this.state[`is${capitalisedDrawerName}Open`] =
-          props[`is${capitalisedDrawerName}Open`];
+        this[`is${capitalisedDrawerName}Controlled`] = false;
         return;
       }
-
-      this[`is${capitalisedDrawerName}Controlled`] = false;
-      this.state[`is${capitalisedDrawerName}Open`] = false;
+      // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
+      this[`is${capitalisedDrawerName}Controlled`] = true;
+      // Set it's initial state using a prop with the same name.
+      this.state[`is${capitalisedDrawerName}Open`] =
+        props[`is${capitalisedDrawerName}Open`];
     });
   }
 
   componentDidUpdate(prevProps: GlobalNavigationProps) {
     this.drawers.forEach(drawer => {
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-      if (!this[`is${capitalisedDrawerName}Controlled`]) {
+      // Do nothing if it's a controlled drawer
+      if (this[`is${capitalisedDrawerName}Controlled`]) {
         return;
       }
 
@@ -94,7 +91,7 @@ export default class GlobalNavigation
         prevProps[`is${capitalisedDrawerName}Open`] !==
         this.props[`is${capitalisedDrawerName}Open`]
       ) {
-        // If it's is a controlled drawer, let the props manage the drawer
+        // Update the state based on the prop
         this.setState({
           [`is${capitalisedDrawerName}Open`]: this.props[
             `is${capitalisedDrawerName}Open`
@@ -115,8 +112,9 @@ export default class GlobalNavigation
         ? this.props[`on${capitalisedDrawerName}Open`]
         : noop;
 
-    // If it's is a controlled drawer, the props manage the drawer in componentDidUpdate
-    if (!this[`is${capitalisedDrawerName}Controlled`]) {
+    // Update the state only if it's a controlled drawer.
+    // componentDidMount takes care of the uncontrolled drawers
+    if (this[`is${capitalisedDrawerName}Controlled`]) {
       this.setState(
         {
           [`is${capitalisedDrawerName}Open`]: true,
@@ -124,6 +122,7 @@ export default class GlobalNavigation
         onOpenCallback,
       );
     } else {
+      // invoke callback in both cases
       onOpenCallback();
     }
   };
@@ -134,8 +133,10 @@ export default class GlobalNavigation
       typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
-    // If it's is a controlled drawer, the props manage the drawer in componentDidUpdate
-    if (!this[`is${capitalisedDrawerName}Controlled`]) {
+
+    // Update the state only if it's a controlled drawer.
+    // componentDidMount takes care of the uncontrolled drawers
+    if (this[`is${capitalisedDrawerName}Controlled`]) {
       this.setState(
         {
           [`is${capitalisedDrawerName}Open`]: false,
@@ -143,6 +144,7 @@ export default class GlobalNavigation
         onCloseCallback,
       );
     } else {
+      // invoke callback in both cases
       onCloseCallback();
     }
   };
