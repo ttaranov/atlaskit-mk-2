@@ -153,9 +153,7 @@ export default () => (
       productNavigation={() => null}
       containerNavigation={() => null}
     >
-      <Fragment>
-        <div>Page content</div>
-      </Fragment>
+      <div>Page content</div>
     </LayoutManager>
   </NavigationProvider>
 );
