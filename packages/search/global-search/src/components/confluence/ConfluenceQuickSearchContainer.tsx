@@ -60,7 +60,7 @@ class SearchScreenCounter implements ScreenCounter {
 }
 
 export interface State {
-  query: string;
+  latestSearchQuery: string;
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
@@ -98,7 +98,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   state = {
     isLoading: false,
     isError: false,
-    query: '',
+    latestSearchQuery: '',
     searchSessionId: uuid(), // unique id for search attribution
     recentlyViewedPages: [],
     recentlyViewedSpaces: [],
@@ -109,15 +109,15 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     keepRecentActivityResults: true,
   };
 
-  handleSearch = (query: string) => {
-    if (this.state.query !== query) {
+  handleSearch = (newLatestSearchQuery: string) => {
+    if (this.state.latestSearchQuery !== newLatestSearchQuery) {
       this.setState({
-        query: query,
+        latestSearchQuery: newLatestSearchQuery,
         isLoading: true,
       });
     }
 
-    if (query.length === 0) {
+    if (newLatestSearchQuery.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState(
         {
@@ -131,7 +131,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         () => this.fireShownPreQueryEvent(),
       );
     } else {
-      this.doSearch(query);
+      this.doSearch(newLatestSearchQuery);
     }
   };
 
@@ -231,7 +231,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         elapsedMs,
         quickNavElapsedTime,
         this.state.searchSessionId,
-        this.state.query,
+        this.state.latestSearchQuery,
         createAnalyticsEvent,
       );
     }
@@ -273,7 +273,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchPeoplePromise,
       ]);
 
-      if (this.state.query === query) {
+      if (this.state.latestSearchQuery === query) {
         this.setState(
           {
             objectResults,
@@ -355,13 +355,13 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   retrySearch = () => {
-    this.handleSearch(this.state.query);
+    this.handleSearch(this.state.latestSearchQuery);
   };
 
   render() {
     const { linkComponent, isSendSearchTermsEnabled } = this.props;
     const {
-      query,
+      latestSearchQuery,
       isLoading,
       searchSessionId,
       isError,
@@ -376,7 +376,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     const searchResultProps = {
       retrySearch: this.retrySearch,
-      query,
+      query: latestSearchQuery,
       isError,
       objectResults,
       spaceResults,
@@ -398,7 +398,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         placeholder={this.props.intl.formatMessage({
           id: 'global-search.confluence.search-placeholder',
         })}
-        query={query}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
