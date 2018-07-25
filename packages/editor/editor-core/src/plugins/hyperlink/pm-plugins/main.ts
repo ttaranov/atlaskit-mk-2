@@ -4,13 +4,13 @@ import { Dispatch } from '../../../event-dispatcher';
 import { getCursor } from '../../../utils';
 
 export enum LinkAction {
-  SHOW_INSERT_TOOLBAR = 'show_insert',
-  HIDE_TOOLBAR = 'hide_toolbar',
-  SELECTION_CHANGE = 'selection_change',
+  SHOW_INSERT_TOOLBAR = 'SHOW_INSERT_TOOLBAR',
+  HIDE_TOOLBAR = 'HIDE_TOOLBAR',
+  SELECTION_CHANGE = 'SELECTION_CHANGE',
 }
 export enum InsertStatus {
-  EDIT_LINK_TOOLBAR = 'edit',
-  INSERT_LINK_TOOLBAR = 'insert',
+  EDIT_LINK_TOOLBAR = 'EDIT',
+  INSERT_LINK_TOOLBAR = 'INSERT',
 }
 export type LinkToolbarState =
   | {

@@ -21,7 +21,7 @@ const hyperlinkPlugin: EditorPlugin = {
         plugin: ({ props: { appearance } }) =>
           appearance === 'message' ? syncTextAndUrlPlugin : undefined,
       },
-      { rank: 900, plugin: ({ dispatch }) => plugin(dispatch) },
+      { rank: 901, plugin: ({ dispatch }) => plugin(dispatch) },
       { rank: 905, plugin: () => fakeCursorToolbarPlugin },
       { rank: 910, plugin: ({ schema }) => createInputRulePlugin(schema) },
       {

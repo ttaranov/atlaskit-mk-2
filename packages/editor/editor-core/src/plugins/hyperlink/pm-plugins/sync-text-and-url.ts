@@ -14,7 +14,7 @@ const isInsideLinkMark = (node?: Node | null) =>
 // Given the position of a link in an old document, apply the
 // transactions to determine the new position of this link.
 // If the link was deleted during any transactions, return null
-const getLinkPosAfterTxns = (pos: number, txns: Transaction[]) => {
+const getLinkPosAfterTransactions = (pos: number, txns: Transaction[]) => {
   let trPos = pos;
   for (const tr of txns) {
     trPos = tr.mapping.map(trPos);
@@ -43,7 +43,7 @@ export default new Plugin({
       } = newState;
       findChildrenByMark(oldState.doc, link).forEach(item => {
         if (isHrefAndTextEqual(item.node)) {
-          let pos = getLinkPosAfterTxns(item.pos, txns);
+          let pos = getLinkPosAfterTransactions(item.pos, txns);
           if (typeof pos === 'number') {
             let trPos = tr.mapping.map(pos);
             const node = tr.doc.nodeAt(trPos) as Node;
