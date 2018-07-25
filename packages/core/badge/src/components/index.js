@@ -3,7 +3,7 @@
 import React, { Component, type ComponentType } from 'react';
 import Container from './Container';
 import Format from './Format';
-import { main } from '../theme';
+import { Default } from '../theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
@@ -43,7 +43,7 @@ export default class Badge extends Component<Props> {
     children: 0,
     max: 99,
     onValueUpdated: () => {},
-    theme: main,
+    theme: Default,
     value: undefined,
   };
 
@@ -71,8 +71,8 @@ export default class Badge extends Component<Props> {
     const { appearance, children, max, theme: Theme, value } = this.props;
     return (
       <Theme>
-        {t => (
-          <Container {...t.badge({ appearance })}>
+        {theme => (
+          <Container {...theme.badge({ appearance })}>
             <Format max={max}>{value || children}</Format>
           </Container>
         )}

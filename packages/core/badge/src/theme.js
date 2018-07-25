@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react';
-import { colors, theme, type ThemeDefinition } from '@atlaskit/theme';
+import React, { type Node } from 'react';
+import { colors, Theme, type ThemeDefinition } from '@atlaskit/theme';
 
 export const backgroundColors = {
   added: { light: colors.G50, dark: colors.G50 },
@@ -34,36 +34,49 @@ export type Appearance =
   | {};
 
 export type ThemeProps = {
-  badge: ({ appearance: Appearance }) => {
+  badge?: ({ appearance: Appearance }) => {
     backgroundColor?: string,
     textColor?: string,
   },
-  mode: string,
+  mode?: string,
 };
 
-export const main = theme(
-  ({ badge = s => ({}), mode = 'light', ...props }: ThemeProps) => ({
-    badge: ({ appearance }) => ({
-      ...(typeof appearance === 'object'
-        ? {
-            ...{
-              backgroundColor: backgroundColors.default.light,
-              textColor: textColors.default.light,
-            },
-            ...appearance,
-          }
-        : {
-            backgroundColor: backgroundColors[appearance][mode],
-            textColor: textColors[appearance][mode],
-          }),
-      ...badge({ appearance }),
-    }),
-    mode,
-    ...props,
-  }),
+export type ThemeType<Props> = {
+  children: Node,
+  values: Props => Props,
+};
+
+export const Default = ({
+  children,
+  values = v => v,
+}: ThemeType<ThemeProps>) => (
+  <Theme
+    values={({ badge = v => ({}), mode = 'light' } = {}) =>
+      values({
+        badge: props => ({
+          ...(typeof props.appearance === 'object'
+            ? {
+                ...{
+                  backgroundColor: backgroundColors.default.light,
+                  textColor: textColors.default.light,
+                },
+                ...props.appearance,
+              }
+            : {
+                backgroundColor: backgroundColors[props.appearance][mode],
+                textColor: textColors[props.appearance][mode],
+              }),
+          ...badge(props),
+        }),
+        mode,
+      })
+    }
+  >
+    {children}
+  </Theme>
 );
 
-export const added = main((theme: ThemeProps) => ({
-  badge: s => theme.badge({ appearance: 'added' }),
-  ...theme,
-}));
+// export const added = main((theme: ThemeProps) => ({
+//   badge: s => theme.badge({ appearance: 'added' }),
+//   ...theme,
+// }));
