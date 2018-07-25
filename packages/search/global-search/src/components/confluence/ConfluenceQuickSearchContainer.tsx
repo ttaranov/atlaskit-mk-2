@@ -273,7 +273,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchPeoplePromise,
       ]);
 
-      if (this.state.query === query) {
+      if (this.state.latestSearchQuery === query) {
         this.setState(
           {
             objectResults,
