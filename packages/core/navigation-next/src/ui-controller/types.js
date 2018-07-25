@@ -4,8 +4,6 @@ import type { Node } from 'react';
 
 import UIController from './UIController';
 
-type CollapseListener = number => void;
-
 /**
  * UIController
  */
@@ -21,10 +19,6 @@ export type UIControllerShape = {
   isPeekHinting: boolean,
   isPeeking: boolean,
   isResizing: boolean,
-  onExpandStart?: CollapseListener,
-  onExpandEnd?: CollapseListener,
-  onCollapseStart?: CollapseListener,
-  onCollapseEnd?: CollapseListener,
   productNavWidth: number,
 };
 

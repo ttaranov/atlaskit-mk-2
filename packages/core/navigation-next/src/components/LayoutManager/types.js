@@ -15,9 +15,13 @@ export type ConnectedLayoutManagerProps = {
   globalNavigation: ComponentType<{}>,
   /** A component which will render the product navigation layer. */
   productNavigation: ComponentType<{}>,
+  /** Called when the navigation begins expanding. */
   onExpandStart?: CollapseListener,
+  /** Called when the navigation completes expanding. */
   onExpandEnd?: CollapseListener,
+  /** Called when the navigation begins collapsing. */
   onCollapseStart?: CollapseListener,
+  /** Called when the navigation completes collapsing. */
   onCollapseEnd?: CollapseListener,
 };
 
