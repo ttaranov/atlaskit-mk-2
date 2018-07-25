@@ -15,16 +15,16 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import {
-  resetHoverSelection,
+  clearHoverSelection,
   hoverColumns,
   hoverRows,
   hoverTable,
 } from '../../../src/plugins/table/actions';
 import {
-  TablePluginState,
   pluginKey,
   getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../src/plugins/table/types';
 import tablesPlugin from '../../../src/plugins/table';
 
 describe('table hover selection plugin', () => {
@@ -211,7 +211,7 @@ describe('table hover selection plugin', () => {
         ).toHaveLength(6);
 
         // reset hover selection plugin to an empty DecorationSet
-        resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection(editorView.state, editorView.dispatch);
         expect(getPluginState(editorView.state).hoverDecoration).toEqual(
           DecorationSet.empty,
         );
