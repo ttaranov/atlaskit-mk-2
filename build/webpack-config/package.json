@@ -25,6 +25,7 @@
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.30.1",
     "minimatch": "^3.0.4",
+    "preprocess-markdown-loader": "^0.0.0",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.16.1",
     "svg-url-loader": "^2.3.0",

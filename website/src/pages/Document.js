@@ -14,7 +14,11 @@ type DocProps = {
   match: RouterMatch,
 };
 
-export default function Document({ match: { params: { docId } } }: DocProps) {
+export default function Document({
+  match: {
+    params: { docId },
+  },
+}: DocProps) {
   if (!docId) {
     const found = fs.getFiles(docs.children)[0];
     if (!found) return <FourOhFour />;
@@ -28,8 +32,11 @@ export default function Document({ match: { params: { docId } } }: DocProps) {
     loader: () => found && found.exports(),
     loading: Loading,
     render(md) {
-      if (md) {
-        return <Markdown>{md}</Markdown>;
+      console.log(md);
+      if (md && md.default && md.default.content) {
+        return (
+          <Markdown metaData={md.default.data}>{md.default.content}</Markdown>
+        );
       }
       return <FourOhFour />;
     },

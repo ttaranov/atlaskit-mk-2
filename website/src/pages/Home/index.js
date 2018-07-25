@@ -66,6 +66,7 @@ export default class HomePage extends Component {
       <HomePageWrapper>
         <Helmet>
           <title>{BASE_TITLE}</title>
+          <meta name="description" content={DEFAULT_META_DESCRIPTION} />
         </Helmet>
         <Style />
         <Title>Atlaskit</Title>

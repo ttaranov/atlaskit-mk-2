@@ -15,6 +15,10 @@ const Warning = p => (
   />
 );
 
+export const meta = {
+  description: 'A component that represents a use',
+};
+
 export default md`
   ### Usage
 

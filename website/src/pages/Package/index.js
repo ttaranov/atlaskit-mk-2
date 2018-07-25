@@ -142,15 +142,17 @@ export default class Package extends Component<PackageProps, PackageState> {
         Promise.all([
           json.exports(),
           doc && doc.exports().then(mod => mod.default),
+          doc && doc.exports().then(mod => mod.meta),
           changelog &&
             changelog.contents().then(changelog => divvyChangelog(changelog)),
         ])
-          .then(([pkg, doc, changelog]) => {
+          .then(([pkg, doc, meta, changelog]) => {
             this.setState({
               pkg,
               doc,
               examples: examples && examples.children,
               changelog: changelog || [],
+              meta,
             });
           })
           .catch(err => {
@@ -190,7 +192,12 @@ export default class Package extends Component<PackageProps, PackageState> {
   render() {
     const { isExact: urlIsExactMatch } = this.props.match;
     const { groupId, pkgId } = this.props.match.params;
-    const { pkg, doc, changelog, missing } = this.state;
+    const { pkg, doc, changelog, missing, meta } = this.state;
+    let description = DEFAULT_META_DESCRIPTION;
+
+    if (meta && meta.description) {
+      description = meta.description;
+    }
 
     if (missing) {
       return <FourOhFour />;
@@ -214,6 +221,7 @@ export default class Package extends Component<PackageProps, PackageState> {
             <title>
               {fs.titleize(pkgId)} package - {BASE_TITLE}
             </title>
+            <meta name="description" content={description} />
           </Helmet>
         )}
         <Title>
