@@ -11,8 +11,8 @@ import {
   OnSelectChangeFunc,
   OnLoadingChangeFunc,
 } from '@atlaskit/media-card';
-import { FilmstripView } from './filmstripView';
 import { Context } from '@atlaskit/media-core';
+import { FilmstripView } from './filmstripView';
 
 export interface AllowedCardProps {
   readonly actions?: Array<CardAction>;
@@ -35,14 +35,14 @@ export interface FilmstripState {
   offset: number;
 }
 
-export const isUrlPreviewIdentifier = (
+// TODO: this has been duplicated from media-card => let's export it from there instead
+const isUrlPreviewIdentifier = (
   identifier: Identifier,
 ): identifier is UrlPreviewIdentifier => {
   const preview = identifier as UrlPreviewIdentifier;
   return preview && preview.url !== undefined;
 };
 
-// TODO: this has been duplicated from media-card => let's export it from there instead
 const getIdentifierKey = (identifier: Identifier): string => {
   if (isUrlPreviewIdentifier(identifier)) {
     return identifier.url;
