@@ -8,7 +8,7 @@ ${(
   <SectionMessage appearance="warning">
     <p>
       <strong>
-        Note: @atlaskit/navigation-next is currently a developer preview.
+        Note: @atlaskit/global-navigation is currently a developer preview.
       </strong>
     </p>
     <p>

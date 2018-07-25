@@ -2,9 +2,8 @@
 
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
-import TrayIcon from '@atlaskit/icon/glyph/tray';
+import StarLargeIcon from '@atlaskit/icon/glyph/star-large';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
-import PeopleIcon from '@atlaskit/icon/glyph/people';
 
 import type { DefaultConfigShape } from './types';
 
@@ -16,12 +15,12 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       section: 'primary',
       tooltip: 'Atlassian',
     },
-    yourWork: {
-      icon: TrayIcon,
-      label: 'Your Work',
+    starred: {
+      icon: StarLargeIcon,
+      label: 'Starred and recent',
       rank: 2,
       section: 'primary',
-      tooltip: 'Your Work',
+      tooltip: 'Starred and recent',
     },
     search: {
       icon: SearchIcon,
@@ -43,13 +42,6 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       section: 'secondary',
       rank: 1,
       tooltip: 'Notifications',
-    },
-    people: {
-      icon: PeopleIcon,
-      label: 'People directory',
-      section: 'secondary',
-      rank: 2,
-      tooltip: 'People directory',
     },
     appSwitcher: {
       label: 'App Switcher',
