@@ -57,19 +57,21 @@ function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
   const shouldNotRenderItem = !onClick && !href;
 
   if (shouldNotRenderItem && (tooltip || isNotEmpty(otherConfig))) {
-    /* eslint-disable-next-line no-console */
+    /* eslint-disable no-console */
     console.warn(
       `One of the items in the Global Navigation is missing an onClick (or an href in case of the productIcon). This item will not be rendered in Global Navigation.`,
     );
+    /* eslint-enable */
   }
 
   if (shouldNotRenderItem) return null;
 
   if (onClick && href) {
-    /* eslint-disable-next-line no-console */
+    /* eslint-disable no-console */
     console.warn(
       'You have provided both href and an onClick handler for one of the items. onClick will be ignored.',
     );
+    /* eslint-enable */
   }
 
   return {
@@ -81,10 +83,11 @@ function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
 
 function helpConfigFactory(items, tooltip, otherConfig = {}) {
   if (!items && (tooltip || isNotEmpty(otherConfig))) {
-    /* eslint-disable-next-line no-console */
+    /* eslint-disable no-console */
     console.warn(
       'You have provided some prop(s) for help, but not helpItems. Help will not be rendered in Global Navigation',
     );
+    /* eslint-enable */
   }
 
   if (!items) return null;
@@ -108,19 +111,21 @@ function profileConfigFactory(
 ) {
   const shouldNotRenderProfile = !items && !href;
   if (shouldNotRenderProfile && (tooltip || isNotEmpty(otherConfig))) {
-    /* eslint-disable-next-line no-console */
+    /* eslint-disable no-console */
     console.warn(
       'You provided some prop(s) for profile, but not profileItems or loginHref. Profile will not be rendered in Global Navigation',
     );
+    /* eslint-enable */
   }
 
   if (shouldNotRenderProfile) return null;
 
   if (items && href) {
-    /* eslint-disable-next-line no-console */
+    /* eslint-disable no-console */
     console.warn(
       'You have provided both loginHref and profileItems. loginUrl prop will be ignored by Global Navigation',
     );
+    /* eslint-enable */
   }
 
   const profileComponent = items

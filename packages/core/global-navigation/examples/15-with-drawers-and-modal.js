@@ -44,13 +44,14 @@ class GlobalNavWithDrawers extends Component<{}, State> {
     window.addEventListener('keydown', this.handleKeyboardShortcut);
   }
 
-  handleKeyboardShortcut = e => {
+  handleKeyboardShortcut(e) {
     if (e.key === '\\') {
-      this.state.isSearchDrawerOpen
-        ? this.closeSearchDrawer()
-        : this.openSearchDrawer();
+      if (this.state.isSearchDrawerOpen) return this.closeSearchDrawer();
+
+      return this.openSearchDrawer();
     }
-  };
+    return null;
+  }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyboardShortcut);
