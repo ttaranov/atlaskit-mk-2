@@ -1,15 +1,23 @@
 // @flow
 import React, { type Node } from 'react';
+import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 import { mount } from 'enzyme';
 import Portal from '../..';
 
 const App = ({ children }: { children: Node }) => <div>{children}</div>;
 
-const zIndex = (elem: HTMLElement) => parseInt(elem.style['z-index'], 10);
+const zIndex = (elem: HTMLElement) =>
+  parseInt(elem.style.getPropertyValue('z-index'), 10);
 
 let wrapper: any;
 
 afterEach(() => wrapper && wrapper.unmount());
+
+afterAll(() =>
+  document
+    .querySelectorAll('.atlaskit-portal')
+    .forEach(e => e.parentNode && e.parentNode.removeChild(e)));
 
 test('should create a portal', () => {
   wrapper = mount(
@@ -19,7 +27,7 @@ test('should create a portal', () => {
       </Portal>
     </App>,
   );
-  const elements = document.getElementsByClassName('atlaskit-portal-default');
+  const elements = document.getElementsByClassName('atlaskit-portal');
   expect(wrapper.find(App).html()).toBe('<div></div>');
   expect(elements).toHaveLength(1);
   expect(elements[0].innerHTML).toBe('<div>Hi</div>');
@@ -30,13 +38,13 @@ test('should use z-index to stack nested portals', () => {
     <App>
       <Portal>
         <div>back</div>
-        <Portal>
+        <Portal zIndex={1}>
           <div>front</div>
         </Portal>
       </Portal>
     </App>,
   );
-  const elements = document.getElementsByClassName('atlaskit-portal-default');
+  const elements = document.getElementsByClassName('atlaskit-portal');
   expect(elements).toHaveLength(2);
   const [front, back] = elements;
   expect(zIndex(front)).toBeGreaterThan(zIndex(back));
@@ -53,33 +61,28 @@ test('should use DOM ordering to stack sibiling portals', () => {
       </Portal>
     </App>,
   );
-  const elements = document.getElementsByClassName('atlaskit-portal-default');
+  const elements = document.getElementsByClassName('atlaskit-portal');
   expect(elements).toHaveLength(2);
   const [back, front] = elements;
   expect(zIndex(front)).toEqual(zIndex(back));
   expect(back.nextSibling).toBe(front);
 });
 
-test('should layer portals', () => {
-  wrapper = mount(
-    <App>
-      <Portal layer="tooltip">
-        <div>front</div>
+test('should hydrate portal correctly', () => {
+  const SsrApp = ({ ssr = false }: { ssr?: boolean }) => (
+    <div>
+      <Portal canUseDOM={() => !ssr}>
+        <h1>:wave:</h1>
       </Portal>
-      <Portal>
-        <div>back</div>
-      </Portal>
-    </App>,
+      <p>Hi everyone</p>
+    </div>
   );
-  const defaultElements = document.getElementsByClassName(
-    'atlaskit-portal-default',
-  );
-  const tooltipElements = document.getElementsByClassName(
-    'atlaskit-portal-tooltip',
-  );
-  expect(defaultElements).toHaveLength(1);
-  expect(tooltipElements).toHaveLength(1);
-  expect(zIndex(tooltipElements[0])).toBeGreaterThan(
-    zIndex(defaultElements[0]),
-  );
+  // server-side
+  const serverHTML = ReactDOMServer.renderToString(<SsrApp ssr />);
+  // client-side
+  const elem = document.createElement('div');
+  elem.innerHTML = serverHTML;
+  ReactDOM.hydrate(<SsrApp />, elem);
+  expect(elem.getElementsByTagName('h1')).toHaveLength(0);
+  expect(document.getElementsByClassName('atlaskit-portal')).toHaveLength(1);
 });

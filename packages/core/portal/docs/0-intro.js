@@ -3,33 +3,16 @@ import React from 'react';
 import { md, Props, code } from '@atlaskit/docs';
 
 export default md`
-  An Atlaskit opinionated wrapper on [React Portals](https://reactjs.org/docs/portals.html).
+  A best practice, server-side-render friendly wrapper on [React Portals](https://reactjs.org/docs/portals.html).
 
   Portals are used for rendering parts of a React component tree into a different
   part of the DOM. This is particularly useful for UI components that need
   to appear over the top of other components. Examples of these components are
   \`@atlaskit/modal-dialog\`, \`@atlaskit/flag\` and \`@atlaskit/tooltip\`.
 
-  This package does two things. It provides a way of rendering React components into Portals.
-  It introduces the concept of layering to Portals. Layering is used to ensure that components
-  appear in a natural order. There are four layers which stack in the following order:
-
-  1. Tooltip
-  2. Flag
-  3. Spotlight
-  4. Default (used for all other components)
-
-  This means that all components on the \`tooltip\` layer will appear above those
-  on the \`flag\` layer, components on the \`spotlight\` layer will appear above
-  the \`default\` layer, etc.
-
   ## Usage
 
-  This package was primarily designed for components inside the Atlaskit repository. All
-  Atlaskit components layer correctly out-of-the-box. If you have a use-case for
-  this component, we would love to hear from you. You can let us know [here](https://ecosystem.atlassian.net/servicedesk/customer/portal/24/create/237).
-
-  This example renders a \`<div />\` and \`<h2 />\` into the \`default\` Portal layer.
+  This example renders a \`<div />\` and \`<h2 />\` into a Portal.
 
   ${code`
 import React from 'react';

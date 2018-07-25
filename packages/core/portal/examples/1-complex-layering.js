@@ -182,8 +182,8 @@ class App extends React.Component<{}, State> {
           />
         ))}
         <p>
-          This example shows off all components that rely on layering to appear
-          in the expected order.
+          This example shows off all components that rely on portalling and
+          layering to appear in the expected order.
         </p>
         <TooltipButton
           onClick={() =>
