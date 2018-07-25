@@ -2,32 +2,148 @@
 
 import React, { Component, Fragment } from 'react';
 import { GlobalNav } from '@atlaskit/navigation-next';
+import Drawer from '@atlaskit/drawer';
 
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
-import type { GlobalNavigationProps } from './types';
+import type { GlobalNavigationProps, DrawerName } from './types';
 
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   icon,
   label,
   onClick,
   tooltip,
+  component,
+  badge,
 }) => ({
   icon,
   label,
   onClick,
   tooltip,
+  component,
+  badge,
 });
 
-export default class GlobalNavigation extends Component<GlobalNavigationProps> {
-  static defaultProps = {};
+const noop = () => {};
+
+type GlobalNavigationState = {
+  [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
+  isSearchDrawerOpen: boolean,
+  isNotificationDrawerOpen: boolean,
+  isStarredDrawerOpen: boolean,
+};
+
+interface Global {
+  [key: string]: boolean;
+  isSearchDrawerControlled?: boolean;
+  isNotificationDrawerControlled?: boolean;
+  isStarredDrawerControlled?: boolean;
+}
+
+// $FlowFixMe Flow has a bug with indexer properties in interfaces. https://github.com/facebook/flow/issues/6321
+export default class GlobalNavigation
+  extends Component<GlobalNavigationProps, GlobalNavigationState>
+  implements Global {
+  drawers: DrawerName[] = ['search', 'notification', 'starred'];
+  constructor(props: GlobalNavigationProps) {
+    super(props);
+
+    this.state = {
+      isSearchDrawerOpen: false,
+      isNotificationDrawerOpen: false,
+      isStarredDrawerOpen: false,
+    };
+
+    this.drawers.forEach((drawer: DrawerName) => {
+      const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+
+      if (
+        props[
+          `on${capitalisedDrawerName.substr(
+            0,
+            capitalisedDrawerName.length - 6,
+          )}Click`
+        ] !== undefined
+      ) {
+        this[`is${capitalisedDrawerName}Controlled`] = true;
+        this.state[`is${capitalisedDrawerName}Open`] =
+          props[`is${capitalisedDrawerName}Open`];
+        return;
+      }
+
+      this[`is${capitalisedDrawerName}Controlled`] = false;
+      this.state[`is${capitalisedDrawerName}Open`] = false;
+    });
+  }
+
+  componentDidUpdate(prevProps: GlobalNavigationProps) {
+    this.drawers.forEach(drawer => {
+      const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+      if (!this[`is${capitalisedDrawerName}Controlled`]) {
+        return;
+      }
+
+      if (
+        prevProps[`is${capitalisedDrawerName}Open`] !==
+        this.props[`is${capitalisedDrawerName}Open`]
+      ) {
+        this.setState({
+          [`is${capitalisedDrawerName}Open`]: this.props[
+            `is${capitalisedDrawerName}Open`
+          ],
+        });
+      }
+    });
+  }
+
+  getCapitalisedDrawerName = (drawerName: DrawerName) => {
+    return `${drawerName[0].toUpperCase()}${drawerName.slice(1)}Drawer`;
+  };
+
+  openDrawer = (drawerName: DrawerName) => () => {
+    const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
+    const onOpenCallback =
+      typeof this.props[`on${capitalisedDrawerName}Open`] === 'function'
+        ? this.props[`on${capitalisedDrawerName}Open`]
+        : noop;
+
+    if (!this[`is${capitalisedDrawerName}Controlled`]) {
+      this.setState(
+        {
+          [`is${capitalisedDrawerName}Open`]: true,
+        },
+        onOpenCallback,
+      );
+    } else {
+      onOpenCallback();
+    }
+  };
+
+  closeDrawer = (drawerName: DrawerName) => () => {
+    const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
+    const onCloseCallback =
+      typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
+        ? this.props[`on${capitalisedDrawerName}Close`]
+        : noop;
+    if (!this[`is${capitalisedDrawerName}Controlled`]) {
+      this.setState(
+        {
+          [`is${capitalisedDrawerName}Open`]: false,
+        },
+        onCloseCallback,
+      );
+    } else {
+      onCloseCallback();
+    }
+  };
 
   constructNavItems = () => {
-    const productConfig = generateProductConfig(this.props);
+    const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
+    // $FlowFixMe
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
         ? {
@@ -59,6 +175,25 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
           primaryItems={primaryItems}
           secondaryItems={secondaryItems}
         />
+        {this.drawers.map(drawer => {
+          const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+          const DrawerContents = this.props[`${drawer}DrawerContents`];
+
+          if (!DrawerContents) {
+            return null;
+          }
+
+          return (
+            <Drawer
+              key={drawer}
+              isOpen={this.state[`is${capitalisedDrawerName}Open`]}
+              onClose={this.closeDrawer(drawer)}
+              width="wide"
+            >
+              <DrawerContents />
+            </Drawer>
+          );
+        })}
       </Fragment>
     );
   }

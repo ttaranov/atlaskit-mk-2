@@ -1,14 +1,18 @@
 // @flow
+
 import React, {
   type ComponentType,
   type StatelessFunctionalComponent,
 } from 'react';
-import QuestionIcon from '@atlaskit/icon/glyph/question';
+import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
 import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
 import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import Dropdown from '@atlaskit/dropdown-menu';
-import type { GlobalNavigationProps } from '../components/GlobalNavigation/types';
+import type {
+  GlobalNavigationProps,
+  DrawerName,
+} from '../components/GlobalNavigation/types';
 import type { ProductConfigShape } from './types';
 
 const isNotEmpty = obj => {
@@ -19,8 +23,8 @@ const isNotEmpty = obj => {
 };
 
 const generateDropDown = (
-  Trigger: ComponentType<*>,
-  DropdownItems: ComponentType<*>,
+  Trigger: ComponentType<{}>,
+  DropdownItems: ComponentType<{}>,
 ) => ({ className }: { className: string }) => (
   <Dropdown
     trigger={
@@ -86,7 +90,10 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
   if (!items) return null;
 
   return {
-    component: generateDropDown(QuestionIcon, items),
+    component: generateDropDown(
+      () => <QuestionIcon secondaryColor={'inherit'} />,
+      items,
+    ),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };
@@ -129,30 +136,36 @@ function profileConfigFactory(
 
 export default function generateProductConfig(
   props: GlobalNavigationProps,
+  openDrawer: DrawerName => () => void,
 ): ProductConfigShape {
   const {
     onProductClick,
     productTooltip,
     productIcon,
     productHref,
+
     onCreateClick,
     createTooltip,
-    onSearchClick,
+
     searchTooltip,
-    onYourWorkClick,
-    yourWorkTooltip,
+    onSearchClick,
+
+    onStarredClick,
+    starredTooltip,
+
     onNotificationClick,
     notificationTooltip,
     notificationCount,
-    onPeopleClick,
-    peopleTooltip,
+
+    appSwitcherComponent,
+
     helpItems,
     helpTooltip,
+
     profileItems,
     profileTooltip,
     loginHref,
     profileIconUrl,
-    appSwitcherComponent,
   } = props;
 
   const notificationBadge = {
@@ -167,14 +180,16 @@ export default function generateProductConfig(
       href: productHref,
     }),
     create: configFactory(onCreateClick, createTooltip),
-    search: configFactory(onSearchClick, searchTooltip),
-    yourWork: configFactory(onYourWorkClick, yourWorkTooltip),
+    search: configFactory(onSearchClick || openDrawer('search'), searchTooltip),
+    starred: configFactory(
+      onStarredClick || openDrawer('starred'),
+      starredTooltip,
+    ),
     notification: configFactory(
-      onNotificationClick,
+      onNotificationClick || openDrawer('notification'),
       notificationTooltip,
       notificationBadge,
     ),
-    people: configFactory(onPeopleClick, peopleTooltip),
     help: helpConfigFactory(helpItems, helpTooltip),
     profile: profileConfigFactory(
       profileItems,

@@ -16,8 +16,17 @@ export type NavigationStateShape = InitialNavigationStateShape & {
   isResizing?: boolean,
 };
 
+export type GlobalNavDrawerProps = {
+  isSearchDrawerOpen?: boolean,
+  searchDrawerContents?: ComponentType<*>,
+  isNotificationDrawerOpen?: boolean,
+  notificationDrawerContents?: ComponentType<*>,
+  isStarredDrawerOpen?: boolean,
+  starredDrawerContents?: ComponentType<*>,
+};
+
 export type GlobalNavigationProps = {
-  productIcon?: ComponentType<*>,
+  productIcon?: ComponentType<{}>,
   onProductClick?: () => void,
   productTooltip?: string,
   productHref?: string,
@@ -25,26 +34,31 @@ export type GlobalNavigationProps = {
   onCreateClick?: () => void,
   createTooltip?: string,
 
-  onYourWorkClick?: () => void,
-  yourWorkTooltip?: string,
+  onStarredDrawerOpen?: () => void,
+  onStarredDrawerClose?: () => void,
+  onStarredClick?: () => void,
+  starredTooltip?: string,
 
+  onSearchDrawerOpen?: () => void,
+  onSearchDrawerClose?: () => void,
   onSearchClick?: () => void,
   searchTooltip?: string,
 
   appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
 
   helpTooltip?: string,
-  helpItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  helpItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
 
   profileTooltip?: string,
-  profileItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  profileItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
   profileIconUrl?: string,
   loginHref?: string, // Login url to redirect anonymous users to login page.
 
-  onPeopleClick?: () => void,
-  peopleTooltip?: string,
-
+  onNotificationDrawerOpen?: () => void,
+  onNotificationDrawerClose?: () => void,
   onNotificationClick?: () => void,
   notificationCount?: number,
   notificationTooltip?: string,
-};
+} & GlobalNavDrawerProps;
+
+export type DrawerName = 'search' | 'notification' | 'starred';
