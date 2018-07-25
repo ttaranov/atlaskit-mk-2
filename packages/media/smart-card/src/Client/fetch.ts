@@ -36,6 +36,7 @@ export function fetch<T>(
           );
       }
     });
+    xhr.withCredentials = true;
     xhr.send(data ? JSON.stringify(data) : undefined);
     return () => xhr.abort();
   });
