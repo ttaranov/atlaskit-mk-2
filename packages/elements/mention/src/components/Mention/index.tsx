@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { MentionStyle } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import {
-  isRestricted,
-  MentionType,
-  isSpecialMentionText,
-  MentionEventHandler,
-} from '../../types';
+import { isRestricted, MentionType, MentionEventHandler } from '../../types';
+import { mentionPayload, fireAnalytics } from '../../util/analytics';
+
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
-import { GasPayload } from '@atlaskit/analytics-gas-types';
 import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+  withAnalyticsEvents,
+  UIAnalyticsEventInterface,
+} from '@atlaskit/analytics-next';
 import { ELEMENTS_CHANNEL } from '../../constants';
 
-const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
+import {
+  WithAnalyticsEventProps,
+  CreateUIAnalyticsEventSignature,
+} from '@atlaskit/analytics-next-types';
+
 export const ANALYTICS_HOVER_DELAY = 1000;
 
 export type OwnProps = {
@@ -38,36 +36,6 @@ export type OldAnalytics = {
 };
 
 export type Props = OwnProps & OldAnalytics & WithAnalyticsEventProps;
-
-const mentionPayload = (
-  actionSubject: string,
-  action: string,
-  { accessLevel, text, id }: Props,
-): GasPayload => ({
-  action,
-  actionSubject,
-  eventType: 'ui',
-  attributes: {
-    packageName,
-    packageVersion,
-    componentName: 'mention',
-    accessLevel,
-    isSpecial: isSpecialMentionText(text),
-    userId: id,
-  },
-  source: 'unknown',
-});
-
-const fireAnalytics = (eventName: string, props: Props) => {
-  const { accessLevel, text, firePrivateAnalyticsEvent } = props;
-
-  if (firePrivateAnalyticsEvent) {
-    firePrivateAnalyticsEvent(`${MENTION_ANALYTICS_PREFIX}.${eventName}`, {
-      accessLevel,
-      isSpecial: isSpecialMentionText(text),
-    });
-  }
-};
 
 export class MentionInternal extends React.PureComponent<Props, {}> {
   private hoverTimeout?: number;
@@ -165,23 +133,41 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
 const MentionWithAnalytics: React.ComponentClass<
   OwnProps
 > = withAnalyticsEvents({
-  onClick: (createEvent, props: Props) => {
-    const event = createEvent(mentionPayload('mention', 'selected', props));
-
+  onClick: (
+    createEvent: CreateUIAnalyticsEventSignature,
+    props: Props,
+  ): UIAnalyticsEventInterface => {
+    const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
+    const event = createEvent(
+      mentionPayload('mention', 'selected', accessLevel, text, id),
+    );
     event.fire(ELEMENTS_CHANNEL);
 
     // old analytics
-    fireAnalytics('lozenge.select', props);
+    fireAnalytics(firePrivateAnalyticsEvent)(
+      'lozenge.select',
+      accessLevel,
+      text,
+    );
     return event;
   },
 
-  onHover: (createEvent, props) => {
-    const event = createEvent(mentionPayload('mention', 'hovered', props));
-
+  onHover: (
+    createEvent: CreateUIAnalyticsEventSignature,
+    props: Props,
+  ): UIAnalyticsEventInterface => {
+    const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
+    const event = createEvent(
+      mentionPayload('mention', 'hovered', accessLevel, text, id),
+    );
     event.fire(ELEMENTS_CHANNEL);
 
     // old analytics
-    fireAnalytics('lozenge.hover', props);
+    fireAnalytics(firePrivateAnalyticsEvent)(
+      'lozenge.hover',
+      accessLevel,
+      text,
+    );
     return event;
   },
 })(MentionInternal) as React.ComponentClass<OwnProps>;

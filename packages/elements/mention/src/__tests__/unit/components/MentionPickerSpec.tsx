@@ -29,6 +29,13 @@ function setupPicker(props?: Props): ReactWrapper<Props, State> {
   ) as ReactWrapper<Props, State>;
 }
 
+function getMentionPicker(
+  component: ReactWrapper<Props, State>,
+): MentionPicker {
+  const mentionPicker = component.find('MentionPicker');
+  return mentionPicker.instance() as MentionPicker;
+}
+
 const leftClick = {
   button: 0,
 };
@@ -162,7 +169,7 @@ describe('MentionPicker', () => {
       isMentionItemSelected(component, mentions[1].id);
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
-      const mentionPicker = component.instance() as MentionPicker;
+      const mentionPicker = getMentionPicker(component);
       mentionPicker.selectNext();
       component.update();
       return waitUntil(secondItemSelected);
@@ -175,7 +182,7 @@ describe('MentionPicker', () => {
       isMentionItemSelected(component, mentions[2].id);
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
-      const mentionPicker = component.instance() as MentionPicker;
+      const mentionPicker = getMentionPicker(component);
       mentionPicker.selectIndex(2);
       component.update();
       return waitUntil(thirdItemSelected);
@@ -188,7 +195,7 @@ describe('MentionPicker', () => {
       isMentionItemSelected(component, mentions[2].id);
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
-      const mentionPicker = component.instance() as MentionPicker;
+      const mentionPicker = getMentionPicker(component);
       mentionPicker.selectId(mentions[2].id);
       component.update();
       return waitUntil(thirdItemSelected);
@@ -201,7 +208,7 @@ describe('MentionPicker', () => {
       isMentionItemSelected(component, mentions[MAX_NOTIFIED_ITEMS - 1].id);
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
-      const mentionPicker = component.instance() as MentionPicker;
+      const mentionPicker = getMentionPicker(component);
       mentionPicker.selectPrevious();
       component.update();
       return waitUntil(lastItemSelected);
@@ -223,13 +230,13 @@ describe('MentionPicker', () => {
 
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
-        const mentionPicker = component.instance() as MentionPicker;
+        const mentionPicker = getMentionPicker(component);
         mentionPicker.selectNext();
         component.update();
         return waitUntil(secondItemSelected);
       })
       .then(() => {
-        const mentionPicker = component.instance() as MentionPicker;
+        const mentionPicker = getMentionPicker(component);
         mentionPicker.chooseCurrentSelection();
         component.update();
         return waitUntil(chooseSecondItem);
@@ -313,7 +320,7 @@ describe('MentionPicker', () => {
     const component = setupPicker();
 
     return waitUntil(createDefaultMentionItemsShowTest(component)).then(() => {
-      const mentionPicker = component.instance() as MentionPicker;
+      const mentionPicker = getMentionPicker(component);
       expect(mentionPicker.mentionsCount()).toEqual(MAX_NOTIFIED_ITEMS);
     });
   });

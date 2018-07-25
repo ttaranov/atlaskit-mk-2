@@ -8,6 +8,11 @@ import ResourcedMentionList from '../ResourcedMentionList';
 import Popup from '../Popup';
 import debug from '../../util/logger';
 import uniqueId from '../../util/id';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+
+import { fireAnalyticsMentionTypeaheadEvent } from '../../util/analytics';
 
 export interface OnOpen {
   (): void;
@@ -43,7 +48,10 @@ export interface State {
 /**
  * @class MentionPicker
  */
-export default class MentionPicker extends React.PureComponent<Props, State> {
+export class MentionPicker extends React.PureComponent<
+  Props & WithAnalyticsEventProps,
+  State
+> {
   private subscriberKey: string;
   private mentionListRef: ResourcedMentionList;
 
@@ -165,7 +173,7 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
   };
 
   // internal, used for callbacks
-  private filterChange = mentions => {
+  private filterChange = (mentions, query, duration, remoteSearch) => {
     debug('ak-mention-picker.filterChange', mentions.length);
     const wasVisible = this.state.visible;
     const visible = mentions.length > 0;
@@ -174,6 +182,14 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
     });
 
     this.onFilterVisibilityChange(wasVisible, visible);
+
+    if (remoteSearch) {
+      fireAnalyticsMentionTypeaheadEvent(this.props)(
+        'rendered',
+        duration,
+        query,
+      );
+    }
   };
 
   private filterError = error => {
@@ -272,3 +288,12 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
     );
   }
 }
+
+// tslint:disable-next-line:variable-name
+const MentionPickerWithAnalytics: React.ComponentClass<
+  Props
+> = withAnalyticsEvents({})(MentionPicker) as React.ComponentClass<Props>;
+
+type MentionPickerWithAnalytics = MentionPicker;
+
+export default MentionPickerWithAnalytics;
