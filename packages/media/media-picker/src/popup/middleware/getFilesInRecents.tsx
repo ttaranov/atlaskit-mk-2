@@ -25,16 +25,20 @@ export const requestRecentFiles = (
   userAuthProvider: AuthProvider,
   store: Store<State>,
 ): Promise<void> => {
-  const { apiUrl } = store.getState();
+  const { context } = store.getState();
 
-  return userAuthProvider()
-    .then(auth => fetcher.getRecentFiles(apiUrl, auth, 30, 'desc'))
-    .then(({ contents, nextInclusiveStartKey }) => {
-      store.dispatch(
-        getFilesInRecentsFullfilled(contents, nextInclusiveStartKey),
-      );
-    })
-    .catch(() => {
-      store.dispatch(getFilesInRecentsFailed());
+  return new Promise((resolve, reject) => {
+    context.collection.getUserRecentItems().subscribe({
+      next(ids) {
+        console.log({ ids });
+        const nextInclusiveStartKey = 'key';
+        store.dispatch(getFilesInRecentsFullfilled(ids, nextInclusiveStartKey));
+        resolve();
+      },
+      error() {
+        store.dispatch(getFilesInRecentsFailed());
+        // reject();
+      },
     });
+  });
 };

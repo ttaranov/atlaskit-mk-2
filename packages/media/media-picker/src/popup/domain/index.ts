@@ -52,7 +52,7 @@ export interface GiphyState {
 
 export interface Recents {
   readonly nextKey: string;
-  readonly items: CollectionItem[];
+  readonly items: string[];
 }
 
 export type RemoteUpload = {

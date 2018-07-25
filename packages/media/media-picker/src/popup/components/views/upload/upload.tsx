@@ -289,8 +289,9 @@ export class StatelessUploadView extends Component<
       }
     };
 
-    return items.map(item => {
-      const { id, occurrenceKey } = item;
+    return items.map(id => {
+      // const { id, occurrenceKey } = item;
+      const occurrenceKey = 'key';
       const selected = selectedRecentFiles.indexOf(id) > -1;
 
       const actions: CardAction[] = [];

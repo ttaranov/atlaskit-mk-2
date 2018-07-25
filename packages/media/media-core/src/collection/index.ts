@@ -42,10 +42,14 @@ export interface MediaCollection {
 }
 
 export class CollectionFetcher {
+  private fileIds: string[];
+
   constructor(
     readonly mediaStore: MediaStore,
     readonly fileStreamCache: FileStreamCache,
-  ) {}
+  ) {
+    this.fileIds = [];
+  }
 
   private createFileStateObserver(
     id: string,
@@ -84,14 +88,19 @@ export class CollectionFetcher {
     params?: MediaStoreGetCollectionItemsParams,
   ): Observable<string[]> {
     return Observable.create(async (observer: Observer<string[]>) => {
-      const items = await this.mediaStore.getUserRecentItems({
-        ...params,
-        details: 'full',
-      });
-      this.populateCache(items.data.contents);
-      const ids = items.data.contents.map(item => item.id);
+      if (this.fileIds.length) {
+        observer.next(this.fileIds);
+      } else {
+        const items = await this.mediaStore.getUserRecentItems({
+          ...params,
+          details: 'full',
+        });
+        this.populateCache(items.data.contents);
+        const ids = items.data.contents.map(item => item.id);
+        this.fileIds = ids;
 
-      observer.next(ids);
+        observer.next(ids);
+      }
     });
   }
 }

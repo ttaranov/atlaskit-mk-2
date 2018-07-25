@@ -24,7 +24,7 @@ export const GET_FILES_IN_RECENTS_FULLFILLED =
 
 export interface GetFilesInRecentsFullfilledAction {
   readonly type: 'GET_FILES_IN_RECENTS_FULLFILLED';
-  readonly items: CollectionItem[];
+  readonly items: string[];
   readonly nextKey: string;
 }
 
@@ -35,7 +35,7 @@ export const isGetFilesInRecentsFullfilledAction = (
 };
 
 export function getFilesInRecentsFullfilled(
-  items: CollectionItem[],
+  items: string[],
   nextKey: string,
 ): GetFilesInRecentsFullfilledAction {
   return {
