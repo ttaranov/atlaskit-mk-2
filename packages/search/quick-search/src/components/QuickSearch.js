@@ -146,7 +146,6 @@ export class QuickSearch extends Component<Props, State> {
 
   /**
     * Reconcile list of results for keyboard navigation after every update.
-
     1. Empty list of results
     2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
     3. All ResultBase components call registerResult() in order to register itself
@@ -170,7 +169,7 @@ export class QuickSearch extends Component<Props, State> {
         selectedResultId: nextProps.selectedResultId || null,
       });
     } else if (
-      nextProps.selectedResultId !== this.props.selectedResultId ||
+      nextProps.selectedResultId !== this.props.selectedResultId &&
       nextProps.selectedResultId !== this.state.selectedResultId
     ) {
       this.setState({

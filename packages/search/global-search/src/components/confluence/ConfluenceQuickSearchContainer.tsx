@@ -358,6 +358,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     this.handleSearch(this.state.latestSearchQuery);
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      Object.keys({ ...nextProps, ...this.props })
+        .map(key => this.props[key] !== nextProps[key])
+        .reduce((acc, value) => acc || value, false) || this.state !== nextState
+    );
+  }
+
   render() {
     const { linkComponent, isSendSearchTermsEnabled } = this.props;
     const {
@@ -374,21 +382,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       keepRecentActivityResults,
     } = this.state;
 
-    const searchResultProps = {
-      retrySearch: this.retrySearch,
-      query: latestSearchQuery,
-      isError,
-      objectResults,
-      spaceResults,
-      peopleResults,
-      isLoading,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
-      keepRecentActivityResults,
-      searchSessionId,
-      screenCounters: this.screenCounters,
-    };
     return (
       <GlobalQuickSearch
         onMount={this.handleMount}
@@ -402,7 +395,21 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       >
-        <ConfluenceSearchResults {...searchResultProps} />
+        <ConfluenceSearchResults
+          retrySearch={this.retrySearch}
+          query={latestSearchQuery}
+          isError={isError}
+          objectResults={objectResults}
+          spaceResults={spaceResults}
+          peopleResults={peopleResults}
+          isLoading={isLoading}
+          recentlyViewedPages={recentlyViewedPages}
+          recentlyViewedSpaces={recentlyViewedSpaces}
+          recentlyInteractedPeople={recentlyInteractedPeople}
+          keepRecentActivityResults={keepRecentActivityResults}
+          searchSessionId={searchSessionId}
+          screenCounters={this.screenCounters}
+        />
       </GlobalQuickSearch>
     );
   }
