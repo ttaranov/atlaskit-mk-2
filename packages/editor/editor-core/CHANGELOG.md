@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.2.1
+- [patch] ED-5043: only disable dropzone for popup picker [9878d57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9878d57)
+- [none] Updated dependencies [9878d57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9878d57)
+
 ## 76.2.0
 
 
