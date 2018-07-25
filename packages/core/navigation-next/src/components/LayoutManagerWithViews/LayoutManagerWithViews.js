@@ -7,9 +7,33 @@ import ViewRenderer from '../../renderer';
 import { withNavigationUIController } from '../../ui-controller';
 import { withNavigationViewController } from '../../view-controller';
 import LayoutManager from '../LayoutManager';
+import Section from '../Section';
+import SkeletonContainerHeader from '../SkeletonContainerHeader';
+import SkeletonItem from '../SkeletonItem';
 import type { LayoutManagerWithViewsProps } from './types';
 
 const gridSize = gridSizeFn();
+
+const skeleton = (
+  <div css={{ padding: `${gridSize * 2}px 0` }}>
+    <Section>
+      {({ className }) => (
+        <div className={className}>
+          <SkeletonContainerHeader hasBefore />
+        </div>
+      )}
+    </Section>
+    <Section>
+      {({ className }) => (
+        <div className={className}>
+          <SkeletonItem hasBefore />
+          <SkeletonItem hasBefore />
+          <SkeletonItem hasBefore />
+        </div>
+      )}
+    </Section>
+  </div>
+);
 
 class LayoutManagerWithViewsBase extends Component<
   LayoutManagerWithViewsProps,
@@ -23,7 +47,7 @@ class LayoutManagerWithViewsBase extends Component<
 
     return activeView && activeView.type === 'container'
       ? this.renderView(activeView)
-      : 'Container skeleton goes here.';
+      : skeleton;
   };
 
   renderProductNavigation = () => {
@@ -45,7 +69,7 @@ class LayoutManagerWithViewsBase extends Component<
     if (activeView && activeView.type === 'product') {
       return this.renderView(activeView);
     }
-    return 'Product skeleton goes here.';
+    return skeleton;
   };
 
   renderView(view) {

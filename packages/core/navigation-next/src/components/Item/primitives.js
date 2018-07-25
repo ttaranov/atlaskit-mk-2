@@ -70,7 +70,6 @@ class ItemPrimitive extends PureComponent<ItemProps> {
       text,
       theme,
     } = this.props;
-    // console.log({ isHover, isActive });
 
     const { mode, context } = theme;
     const presentationProps = { isActive, isHover, isSelected, spacing };
