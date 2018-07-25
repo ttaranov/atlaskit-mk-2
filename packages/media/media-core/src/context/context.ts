@@ -110,8 +110,7 @@ class ContextImpl implements Context {
     this.mediaStore = new MediaStore({
       serviceHost: config.serviceHost,
       authProvider: config.authProvider,
-      // TODO Test me first!
-      // userAuthProvider: config.userAuthProvider
+      userAuthProvider: config.userAuthProvider,
     });
     this.collection = new CollectionFetcher(this.mediaStore);
   }
