@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.2.6
+- [patch] ED-4977 Fixed extra newline after blockquote in Firefox [ac47c1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac47c1c)
+- [none] Updated dependencies [ac47c1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac47c1c)
+
 ## 76.2.5
 - [patch] ED-5090: added contextual menu [2cb70d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cb70d8)
 - [none] Updated dependencies [2cb70d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cb70d8)
