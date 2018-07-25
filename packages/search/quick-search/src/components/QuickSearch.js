@@ -124,7 +124,6 @@ export class QuickSearch extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-
     this.state = {
       /** Select first result by default if `selectedResultId` prop is not provided */
       selectedResultId: this.props.selectedResultId || null,
@@ -149,10 +148,8 @@ export class QuickSearch extends Component<Props, State> {
     * Reconcile list of results for keyboard navigation after every update.
 
     1. Empty list of results
-    2. Set isDirty=true to signal ResultBase components to register
-    3. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
-    4. All ResultBase components call registerResult() in order to register itself
-    4. When update is complete set isDirty=false to finish reconcillation.
+    2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
+    3. All ResultBase components call registerResult() in order to register itself
    */
   resetResults() {
     this.flatResults = [];

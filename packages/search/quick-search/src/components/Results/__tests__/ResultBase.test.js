@@ -8,7 +8,6 @@ describe('Result Base', () => {
   let resultWrapper;
   beforeEach(() => {
     const context: Context = {
-      isDirty: false,
       registerResult: () => {},
       onMouseEnter: () => {},
       onMouseLeave: () => {},
@@ -39,7 +38,12 @@ describe('Result Base', () => {
 
   it('should pass { `resultId`,  `type` } to onMouseEnter handler', () => {
     const spy = jest.fn();
-    resultWrapper.setProps({ context: { onMouseEnter: spy } });
+    resultWrapper.setProps({
+      context: {
+        onMouseEnter: spy,
+        registerResult: () => {},
+      },
+    });
     resultWrapper.simulate('mouseenter');
     expect(spy).toBeCalledWith({ resultId: 'testResult', type: 'base' });
   });

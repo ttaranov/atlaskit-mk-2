@@ -11,7 +11,6 @@ const defaultProps = {
   isCompact: false,
   onClick: () => {},
   context: {
-    isDirty: false,
     registerResult: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},

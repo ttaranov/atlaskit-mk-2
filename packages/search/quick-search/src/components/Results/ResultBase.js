@@ -25,7 +25,6 @@ class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
     onClick: () => {},
     type: BASE_RESULT_TYPE,
     context: {
-      isDirty: false,
       registerResult: () => {},
       onMouseEnter: () => {},
       onMouseLeave: () => {},

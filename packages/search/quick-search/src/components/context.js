@@ -3,7 +3,6 @@ import React from 'react';
 import { type Context } from './Results/types';
 
 const defaultState: Context = {
-  isDirty: false,
   sendAnalytics: () => {},
   onMouseEnter: () => {},
   onMouseLeave: () => {},
