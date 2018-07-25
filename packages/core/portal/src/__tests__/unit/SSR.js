@@ -1,13 +1,17 @@
 /**
-@jest-environment node
-*/
+ * @jest-environment node
+ */
 // @flow
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-// import Portal from '../..';
+import Portal from '../..';
 
-test(`Portal renders nothing when server side rendered`, () => {
+test(`Portal renders without exception in node environment`, () => {
   expect(() =>
-    ReactDOMServer.renderToString(<div>Hi there</div>),
+    ReactDOMServer.renderToString(
+      <Portal>
+        <h1>:wave:</h1>
+      </Portal>,
+    ),
   ).not.toThrowError();
 });
