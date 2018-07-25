@@ -1,5 +1,9 @@
 # @atlaskit/global-search
 
+## 5.3.3
+- [patch] Updated dependencies [9fbaafd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fbaafd)
+  - @atlaskit/quick-search@4.2.1
+
 ## 5.3.2
 - [patch] minor refactor for passing screen counters [b5fc99c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5fc99c)
 
