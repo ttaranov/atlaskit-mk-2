@@ -32,6 +32,8 @@ export function isTransitioning(state: TransitionState) {
   return ['entering', 'exiting'].includes(state);
 }
 
+function NOOP() {}
+
 export type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
 type Props = {
   children: ({
@@ -41,17 +43,24 @@ type Props = {
   innerRef?: HTMLElement => any,
   in: boolean,
   userIsDragging: boolean,
+  productNavWidth: number,
   properties: Array<string>,
   from: Array<number | string>,
   to: Array<number | string>,
-  onExpandStart?: CollapseListener,
-  onExpandEnd?: CollapseListener,
-  onCollapseStart?: CollapseListener,
-  onCollapseEnd?: CollapseListener,
+  onExpandStart: CollapseListener,
+  onExpandEnd: CollapseListener,
+  onCollapseStart: CollapseListener,
+  onCollapseEnd: CollapseListener,
 };
 
 export default class ResizeTransition extends PureComponent<Props> {
   target: HTMLElement;
+  static defaultProps = {
+    onExpandStart: NOOP,
+    onExpandEnd: NOOP,
+    onCollapseStart: NOOP,
+    onCollapseEnd: NOOP,
+  };
   getTarget = (ref: HTMLElement) => {
     this.target = ref;
 
@@ -59,24 +68,36 @@ export default class ResizeTransition extends PureComponent<Props> {
     if (innerRef) innerRef(ref);
   };
 
+  onExpandStart = () => {
+    const { userIsDragging, onExpandStart } = this.props;
+    if (userIsDragging) return;
+    onExpandStart(0);
+  };
+  onExpandEnd = () => {
+    const { userIsDragging, productNavWidth, onExpandEnd } = this.props;
+    if (userIsDragging) return;
+    onExpandEnd(productNavWidth);
+  };
+  onCollapseStart = () => {
+    const { userIsDragging, productNavWidth, onCollapseStart } = this.props;
+    if (userIsDragging) return;
+    onCollapseStart(productNavWidth);
+  };
+  onCollapseEnd = () => {
+    const { userIsDragging, onCollapseEnd } = this.props;
+    if (userIsDragging) return;
+    onCollapseEnd(0);
+  };
+
   render() {
-    const {
-      userIsDragging,
-      properties,
-      from,
-      to,
-      onExpandStart,
-      onExpandEnd,
-      onCollapseStart,
-      onCollapseEnd,
-    } = this.props;
+    const { from, properties, to, userIsDragging } = this.props;
 
     return (
       <Transition
-        onEnter={onExpandStart}
-        onEntered={onExpandEnd}
-        onExit={onCollapseStart}
-        onExited={onCollapseEnd}
+        onEnter={this.onExpandStart}
+        onEntered={this.onExpandEnd}
+        onExit={this.onCollapseStart}
+        onExited={this.onCollapseEnd}
         in={this.props.in}
         timeout={DURATION}
       >

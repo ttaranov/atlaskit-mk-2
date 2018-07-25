@@ -15,12 +15,12 @@ export type ConnectedLayoutManagerProps = {
   globalNavigation: ComponentType<{}>,
   /** A component which will render the product navigation layer. */
   productNavigation: ComponentType<{}>,
-};
-
-export type LayoutManagerProps = ConnectedLayoutManagerProps & {
-  navigationUIController: UIController,
   onExpandStart?: CollapseListener,
   onExpandEnd?: CollapseListener,
   onCollapseStart?: CollapseListener,
   onCollapseEnd?: CollapseListener,
+};
+
+export type LayoutManagerProps = ConnectedLayoutManagerProps & {
+  navigationUIController: UIController,
 };

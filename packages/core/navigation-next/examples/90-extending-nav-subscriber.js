@@ -260,15 +260,21 @@ const CollapseStatusListener = withNavState(CollapseStatus);
 // Nav Implementation
 // ==============================
 
-type StatusEvent = { name: string, value?: number };
+type StatusEvent = { key: string, name: string, value?: number };
 type State = { callStack: Array<StatusEvent> };
+function makeKey() {
+  return Math.random()
+    .toString(36)
+    .substr(2, 9);
+}
 
 // eslint-disable-next-line react/no-multi-comp
 export default class ExtendingNavSubscriber extends React.Component<*, State> {
   state = { callStack: [] };
   onEmit = (name: string) => (value?: number) => {
     const callStack = this.state.callStack.slice(0);
-    callStack.push({ name, value });
+    const key = makeKey();
+    callStack.push({ key, name, value });
     this.setState({ callStack });
   };
   getStack = () => {
@@ -308,7 +314,7 @@ export default class ExtendingNavSubscriber extends React.Component<*, State> {
             </button>
             {lastTen.length ? (
               lastTen.map(e => (
-                <p key={e.name}>
+                <p key={e.key}>
                   <code>
                     {e.name}({e.value})
                   </code>
