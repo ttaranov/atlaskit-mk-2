@@ -43,7 +43,7 @@ class Example extends Component<any, ExampleState> {
     };
     const stream = context.uploadFile(uplodableFile);
 
-    const subscription = stream.subscribe({
+    stream.first().subscribe({
       next: state => {
         if (state.status === 'uploading') {
           const { id } = state;
@@ -53,16 +53,10 @@ class Example extends Component<any, ExampleState> {
             mediaItemType: 'file',
             collectionName: defaultCollectionName,
           };
-          // isIdSaved = true;
-          console.log({ newIdentifier });
-          this.setState(
-            {
-              identifiers: [newIdentifier, ...identifiers],
-            },
-            () => {
-              subscription.unsubscribe();
-            },
-          );
+
+          this.setState({
+            identifiers: [newIdentifier, ...identifiers],
+          });
         }
       },
       error(error) {

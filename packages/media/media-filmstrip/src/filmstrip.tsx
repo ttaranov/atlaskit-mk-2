@@ -1,14 +1,33 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
 import { Component } from 'react';
-import { Identifier, Card, UrlPreviewIdentifier } from '@atlaskit/media-card';
+import {
+  Identifier,
+  Card,
+  UrlPreviewIdentifier,
+  CardAction,
+  CardOnClickCallback,
+  CardEvent,
+  OnSelectChangeFunc,
+  OnLoadingChangeFunc,
+} from '@atlaskit/media-card';
 import { FilmstripView } from './filmstripView';
 import { Context } from '@atlaskit/media-core';
+
+export interface AllowedCardProps {
+  readonly actions?: Array<CardAction>;
+  readonly selectable?: boolean;
+  readonly selected?: boolean;
+  readonly onClick?: CardOnClickCallback;
+  readonly onMouseEnter?: (result: CardEvent) => void;
+  readonly onSelectChange?: OnSelectChangeFunc;
+  readonly onLoadingChange?: OnLoadingChangeFunc;
+}
 
 export interface FilmstripProps {
   identifiers: Identifier[];
   context: Context;
-  animate?: boolean;
+  cardProps?: AllowedCardProps;
 }
 
 export interface FilmstripState {
@@ -23,6 +42,7 @@ export const isUrlPreviewIdentifier = (
   return preview && preview.url !== undefined;
 };
 
+// TODO: this has been duplicated from media-card => let's export it from there instead
 const getIdentifierKey = (identifier: Identifier): string => {
   if (isUrlPreviewIdentifier(identifier)) {
     return identifier.url;
@@ -42,13 +62,14 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
     this.setState({ animate, offset });
 
   renderCards() {
-    const { identifiers, context } = this.props;
+    const { identifiers, context, cardProps } = this.props;
     const cards = identifiers.map(identifier => {
       return (
         <Card
           key={getIdentifierKey(identifier)}
           identifier={identifier}
           context={context}
+          {...cardProps}
         />
       );
     });
