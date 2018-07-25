@@ -8,6 +8,7 @@ import gapCursorPlugin, {
   Side,
 } from '../../../src/plugins/gap-cursor';
 import panelPlugin from '../../../src/plugins/panel';
+import * as utils from '../../../src/utils';
 
 const editor = (doc: any) =>
   createEditor({
@@ -56,6 +57,20 @@ describe('ClickAreaBlock', () => {
     const selection = editorView.state.selection as GapCursorSelection;
     expect(selection instanceof GapCursorSelection).toBe(true);
     expect(selection.side).toEqual(Side.LEFT);
+    editorView.destroy();
+    clickWrapper.unmount();
+  });
+
+  // @see ED-5126
+  it('should not call editorView.focus() if the click target is inside Popup', () => {
+    const closestElementSpy = jest.spyOn(utils, 'closestElement');
+    (closestElementSpy as any).mockReturnValue({});
+    const { editorView } = editor(doc(p('Hello world'), p('')));
+    const focusSpy = jest.spyOn(editorView, 'focus');
+    const clickWrapper = mount(<ClickAreaBlock editorView={editorView} />);
+    clickWrapper.simulate('click', { clientY: 200 });
+    expect(closestElementSpy).toHaveBeenCalled();
+    expect(focusSpy).not.toHaveBeenCalled();
     editorView.destroy();
     clickWrapper.unmount();
   });
