@@ -73,6 +73,17 @@ export default class GlobalNavigation
       }
       // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
       this[`is${capitalisedDrawerName}Controlled`] = true;
+
+      if (
+        props[`${drawer}DrawerContents`] &&
+        !props[`is${capitalisedDrawerName}Close`]
+      ) {
+        /* eslint-disable no-console */
+        console.warn(`You have provided an onClick handler for ${drawer}, but no close handler for the drawer.
+        Please pass is${capitalisedDrawerName}Close prop to handle closing of the ${drawer} drawer.`);
+        /* eslint-enable */
+      }
+
       // Set it's initial state using a prop with the same name.
       this.state[`is${capitalisedDrawerName}Open`] =
         props[`is${capitalisedDrawerName}Open`];
