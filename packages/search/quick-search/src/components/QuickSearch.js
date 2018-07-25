@@ -129,9 +129,10 @@ export class QuickSearch extends Component<Props, State> {
       /** Select first result by default if `selectedResultId` prop is not provided */
       selectedResultId: this.props.selectedResultId || null,
       context: {
-        isDirty: false,
         registerResult: (result: ResultBaseType) => {
-          this.flatResults.push(result);
+          if (!this.flatResults.includes(result)) {
+            this.flatResults.push(result);
+          }
         },
         onMouseEnter: this.handleResultMouseEnter,
         onMouseLeave: this.handleResultMouseLeave,
@@ -155,24 +156,10 @@ export class QuickSearch extends Component<Props, State> {
    */
   resetResults() {
     this.flatResults = [];
-
-    const setDirtyContext = (isDirty: boolean) => ({
-      context: { ...this.state.context, isDirty },
-    });
-    this.setState(setDirtyContext(true), () =>
-      this.setState(setDirtyContext(false)),
-    );
   }
 
   componentDidMount() {
     this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_OPEN);
-    this.resetResults();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.children !== this.props.children) {
-      this.resetResults();
-    }
   }
 
   componentWillUnmount() {
@@ -180,20 +167,35 @@ export class QuickSearch extends Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.children) {
+    if (nextProps.children !== this.props.children) {
+      this.resetResults();
+      this.setState({
+        selectedResultId: nextProps.selectedResultId || null,
+      });
+    } else if (
+      nextProps.selectedResultId ||
+      (this.props.selectedResultId && nextProps.selectedResultId) ||
+      this.state.selectedResultId
+    ) {
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
       });
     }
 
     // keep context state in sync
-    this.setState({
-      context: {
-        ...this.state.context,
-        sendAnalytics: nextProps.firePrivateAnalyticsEvent,
-        linkComponent: nextProps.linkComponent,
-      },
-    });
+    const { sendAnalytics, linkComponent } = this.state.context;
+    if (
+      sendAnalytics !== nextProps.firePrivateAnalyticsEvent ||
+      linkComponent !== nextProps.linkComponent
+    ) {
+      this.setState({
+        context: {
+          ...this.state.context,
+          sendAnalytics: nextProps.firePrivateAnalyticsEvent,
+          linkComponent: nextProps.linkComponent,
+        },
+      });
+    }
 
     /**
      * Capture whether user needed to query in order to find their target result.

@@ -37,10 +37,7 @@ class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
 
   registerResult() {
     const { context } = this.props;
-
-    if (context.isDirty === true) {
-      context.registerResult(this);
-    }
+    context.registerResult(this);
   }
 
   componentDidMount() {
