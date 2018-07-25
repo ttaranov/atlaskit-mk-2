@@ -16,10 +16,8 @@ import {
   code_block,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import {
-  TablePluginState,
-  pluginKey as tablePluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
+import { pluginKey as tablePluginKey } from '../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../src/plugins/table/types';
 import tablesPlugin from '../../../src/plugins/table';
 import {
   unwrapContentFromTable,

@@ -1,5 +1,89 @@
 # @atlaskit/editor-core
 
+## 76.2.5
+- [patch] ED-5090: added contextual menu [2cb70d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cb70d8)
+- [none] Updated dependencies [2cb70d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cb70d8)
+
+## 76.2.4
+- [patch] ED-5033, fixes for multiple date related issues. [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+- [patch] Updated dependencies [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+  - @atlaskit/renderer@19.2.2
+  - @atlaskit/editor-common@13.2.2
+
+## 76.2.3
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-picker@11.1.1
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/editor-common@13.2.1
+  - @atlaskit/media-card@31.1.0
+  - @atlaskit/renderer@19.2.1
+  - @atlaskit/editor-test-helpers@5.0.3
+
+## 76.2.2
+- [patch] Change tab-size to 4 spaces wide inside a code-block. [d089d0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d089d0f)
+- [patch] Support backspacing an entire intent level inside code-block. ED-4864 [86998f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86998f3)
+- [patch] Fix issue where bracket-autocompletion would work for any closing bracket even when it didn't match the opening bracket. [952eab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/952eab1)
+- [none] Updated dependencies [d089d0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d089d0f)
+- [none] Updated dependencies [86998f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86998f3)
+- [none] Updated dependencies [952eab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/952eab1)
+
+## 76.2.1
+- [patch] ED-5043: only disable dropzone for popup picker [9878d57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9878d57)
+- [none] Updated dependencies [9878d57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9878d57)
+
+## 76.2.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+
+## 76.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+  - @atlaskit/util-data-test@10.0.1
+  - @atlaskit/renderer@19.1.0
+  - @atlaskit/editor-common@13.1.0
+
+## 76.0.25
+- [patch] Corrected gap size between more and italic icons in editor toolbar [92cf9d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cf9d4)
+- [none] Updated dependencies [92cf9d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cf9d4)
+
+## 76.0.24
+- [patch] Fixing the Mobile appearance height [a79b962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a79b962)
+- [none] Updated dependencies [a79b962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a79b962)
+
+## 76.0.23
+- [patch] ED-4961 refactor block-type plugin [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+- [none] Updated dependencies [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+
 ## 76.0.22
 - [patch] ED-5022, quick insert should not be triggered for key combination (/. [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
 - [patch] Updated dependencies [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)

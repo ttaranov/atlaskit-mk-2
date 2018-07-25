@@ -24,6 +24,7 @@ import {
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
 import { rejectPromise, resolvePromise } from '../cross-platform-promise';
+import { setBlockType } from '../../../editor-core/src/plugins/block-type/commands';
 
 export default class WebBridgeImpl implements NativeToWebBridge {
   textFormattingPluginState: TextFormattingState | null = null;
@@ -123,8 +124,9 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   }
 
   onBlockSelected(blockType: string) {
-    if (this.blockState && this.editorView) {
-      this.blockState.setBlockType(blockType, this.editorView);
+    if (this.editorView) {
+      const { state, dispatch } = this.editorView;
+      setBlockType(blockType)(state, dispatch);
     }
   }
 

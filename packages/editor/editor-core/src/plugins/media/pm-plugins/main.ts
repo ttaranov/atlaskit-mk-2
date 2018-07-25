@@ -382,7 +382,11 @@ export class MediaPluginState {
 
   // TODO [MSW-454]: remove this logic from Editor
   onPopupPickerClose = () => {
-    if (this.dropzonePicker) {
+    if (
+      this.dropzonePicker &&
+      this.popupPicker &&
+      this.popupPicker.type === 'popup'
+    ) {
       this.dropzonePicker.activate();
     }
   };
@@ -391,7 +395,7 @@ export class MediaPluginState {
     if (!this.popupPicker) {
       return;
     }
-    if (this.dropzonePicker) {
+    if (this.dropzonePicker && this.popupPicker.type === 'popup') {
       this.dropzonePicker.deactivate();
     }
     this.popupPicker.show();

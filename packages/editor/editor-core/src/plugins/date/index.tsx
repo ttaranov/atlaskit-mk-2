@@ -39,7 +39,7 @@ const datePlugin: EditorPlugin = {
             <DatePicker
               element={dateState.element}
               onSelect={date => insertDate(date)(editorView.state, dispatch)}
-              onClickOutside={() =>
+              closeDatePicker={() =>
                 selectElement(null)(editorView.state, dispatch)
               }
             />

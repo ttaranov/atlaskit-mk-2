@@ -12,6 +12,7 @@ import {
   MediaItemProvider,
   UploadableFile,
   UploadController,
+  UploadingFileState,
 } from '../src';
 import { ContextFactory } from '../src/context/context';
 
@@ -337,7 +338,7 @@ describe('Context', () => {
       });
       const getFile = jest.fn();
       const file = {
-        content: new Blob(),
+        content: 'some-base-64',
       };
       (context as any).mediaStore = { getFile };
       uploadFileMock.mockImplementation((_, __, callbacks) => {
@@ -356,6 +357,7 @@ describe('Context', () => {
                   status: 'uploading',
                   progress: 0.5,
                   name: '',
+                  mediaType: 'unknown',
                   size: 0,
                 });
                 expect(getFile).not.toBeCalled();
@@ -376,11 +378,12 @@ describe('Context', () => {
           id: 'file-id-1',
           name: 'file-one',
           size: 1,
+          mediaType: 'image',
         },
       });
       const next = jest.fn();
       const file = {
-        content: new Blob(),
+        content: 'some-base-64',
       };
       (context as any).mediaStore = { getFile };
       uploadFileMock.mockImplementation((_, __, callbacks) => {
@@ -397,12 +400,14 @@ describe('Context', () => {
               id: 'some-uuid',
               progress: 0.1,
               status: 'uploading',
+              mediaType: 'unknown',
               name: '',
               size: 0,
             });
             expect(next.mock.calls[1][0]).toEqual({
               id: 'file-id-1',
               status: 'processing',
+              mediaType: 'unknown',
               name: '',
               size: 0,
             });
@@ -412,7 +417,7 @@ describe('Context', () => {
               name: 'file-one',
               size: 1,
               artifacts: undefined,
-              mediaType: undefined,
+              mediaType: 'image',
               binaryUrl: '/file/file-id-1/binary',
             });
             resolve();
@@ -590,6 +595,38 @@ describe('Context', () => {
           },
         });
         controller.abort();
+      });
+    });
+
+    it('should emit file preview when file is a Blob', () => {
+      const context = createFakeContext();
+      const getFile = jest.fn().mockReturnValue({
+        data: {
+          processingStatus: 'succeeded',
+          id: 'file-id-1',
+          name: 'file-one',
+          size: 1,
+        },
+      });
+      const file = {
+        content: new File([], '', { type: 'image/png' }),
+        name: 'file-name.png',
+      };
+      (context as any).mediaStore = { getFile };
+
+      return new Promise(resolve => {
+        context.uploadFile(file).subscribe({
+          next(state) {
+            expect(state as UploadingFileState).toEqual(
+              expect.objectContaining({
+                name: 'file-name.png',
+                mediaType: 'image',
+              }),
+            );
+            expect((state as any).preview.blob).toBeInstanceOf(Blob);
+            resolve();
+          },
+        });
       });
     });
   });

@@ -140,7 +140,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderGenericLink(appearance: CardAppearance): JSX.Element | null {
     const { url, title, site, description } = this.urlPreview;
-    const { dimensions, actions, onRetry } = this.props;
+    const { onRetry } = this.props;
     const { errorMessage } = this;
 
     return (
@@ -152,10 +152,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         description={description}
         thumbnailUrl={this.thumbnailUrl}
         iconUrl={this.iconUrl}
-        dimensions={dimensions}
         appearance={appearance}
         isLoading={this.isLoading}
-        actions={actions}
         onRetry={onRetry}
       />
     );

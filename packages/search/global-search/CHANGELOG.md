@@ -1,5 +1,15 @@
 # @atlaskit/global-search
 
+## 5.3.3
+- [patch] Updated dependencies [9fbaafd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fbaafd)
+  - @atlaskit/quick-search@4.2.1
+
+## 5.3.2
+- [patch] minor refactor for passing screen counters [b5fc99c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5fc99c)
+
+## 5.3.1
+- [patch] fix keyboard navigation  [5382e88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5382e88)
+
 ## 5.3.0
 - [minor] Add i18n support for all supported languages. [68982c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68982c0)
 
