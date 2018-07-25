@@ -5,13 +5,17 @@ import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
+const shouldLogEvents = true;
+
 const logEvent = event => {
-  const { eventType, action, actionSubject, actionSubjectId } = event.payload;
-  console.log(
-    `${eventType} | ${action} ${actionSubject} ${actionSubjectId}`,
-    event.payload.attributes,
-    event.payload,
-  );
+  if (shouldLogEvents) {
+    const { eventType, action, actionSubject, actionSubjectId } = event.payload;
+    console.log(
+      `${eventType} | ${action} ${actionSubject} ${actionSubjectId}`,
+      event.payload.attributes,
+      event.payload,
+    );
+  }
 };
 
 export default class extends React.Component {
