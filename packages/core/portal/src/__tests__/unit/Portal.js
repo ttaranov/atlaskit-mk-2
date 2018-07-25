@@ -71,7 +71,7 @@ test('should use DOM ordering to stack sibiling portals', () => {
 test('should hydrate portal correctly', () => {
   const SsrApp = ({ ssr = false }: { ssr?: boolean }) => (
     <div>
-      <Portal canUseDOM={() => !ssr}>
+      <Portal ssr={ssr}>
         <h1>:wave:</h1>
       </Portal>
       <p>Hi everyone</p>

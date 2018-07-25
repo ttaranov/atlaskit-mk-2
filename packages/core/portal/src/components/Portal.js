@@ -3,8 +3,8 @@ import React, { type Node } from 'react';
 import ReactDOM from 'react-dom';
 
 type Props = {
-  /* Used to know if rendering is happening on the client or server */
-  canUseDOM: () => boolean,
+  /* Whether rendering is happening on the client or server */
+  ssr?: boolean,
   /* Children to render in the React Portal. */
   children: Node,
   /* The z-index of the DOM container element. */
@@ -24,7 +24,7 @@ const createContainer = (zIndex: number) => {
 
 const body = fn => document.body && fn(document.body);
 
-const defaultDOMCheck = () =>
+const canUseDOM = () =>
   Boolean(
     typeof window !== 'undefined' &&
       window.document &&
@@ -37,14 +37,14 @@ const defaultDOMCheck = () =>
 
 class Portal extends React.Component<Props, State> {
   static defaultProps = {
-    canUseDOM: defaultDOMCheck,
     zIndex: 0,
   };
 
   state = {
-    container: this.props.canUseDOM()
-      ? createContainer(this.props.zIndex)
-      : undefined,
+    container:
+      !this.props.ssr && canUseDOM()
+        ? createContainer(this.props.zIndex)
+        : undefined,
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
