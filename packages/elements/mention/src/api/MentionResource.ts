@@ -72,7 +72,7 @@ export type MentionContextIdentifier = {
   containerId?: string;
   objectId?: string;
   childObjectId?: string;
-  sessionId: string;
+  sessionId?: string;
 };
 
 export interface MentionProvider
