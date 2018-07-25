@@ -236,25 +236,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       );
     }
   }
-  getSearchResultState = (
-    query: string,
-    objectResults: Result[],
-    spaceResults: Map<Scope, Result[]>,
-    peopleResults: Result[],
-  ) => {
-    if (this.state.query === query) {
-      return {
-        objectResults,
-        spaceResults: spaceResults.get(Scope.ConfluenceSpace) || [],
-        peopleResults,
-      };
-    }
-    return {
-      objectResults: this.state.objectResults,
-      spaceResults: this.state.spaceResults,
-      peopleResults: this.state.peopleResults,
-    };
-  };
 
   doSearch = async (query: string) => {
     const startTime = performanceNow();
@@ -292,29 +273,29 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchPeoplePromise,
       ]);
 
-      const searchResult = this.getSearchResultState(
-        query,
-        objectResults,
-        spaceResultsMap,
-        peopleResults,
-      );
-
-      this.setState({
-        isError: false,
-        isLoading: false,
-        keepRecentActivityResults: false,
-        ...searchResult,
-      });
-
-      this.fireShownPostQueryEvent(
-        startTime,
-        quickNavTime,
-        buildShownEventDetails(
-          take(searchResult.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
-          take(searchResult.spaceResults, MAX_SPACES),
-          take(searchResult.peopleResults, MAX_PEOPLE),
-        ),
-      );
+      if (this.state.query === query) {
+        this.setState(
+          {
+            objectResults,
+            spaceResults: spaceResultsMap.get(Scope.ConfluenceSpace) || [],
+            peopleResults,
+            isError: false,
+            isLoading: false,
+            keepRecentActivityResults: false,
+          },
+          () => {
+            this.fireShownPostQueryEvent(
+              startTime,
+              quickNavTime,
+              buildShownEventDetails(
+                take(this.state.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
+                take(this.state.spaceResults, MAX_SPACES),
+                take(this.state.peopleResults, MAX_PEOPLE),
+              ),
+            );
+          },
+        );
+      }
     } catch {
       this.setState({
         isError: true,
