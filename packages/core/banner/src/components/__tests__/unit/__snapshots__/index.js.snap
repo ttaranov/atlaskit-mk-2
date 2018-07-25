@@ -3,7 +3,7 @@
 exports[`banner should render error banner correctly 1`] = `
 .c1 {
   max-height: 52px;
-  overflow: scroll;
+  overflow: visible;
   background-color: #DE350B;
 }
 
@@ -108,7 +108,7 @@ exports[`banner should render error banner correctly 1`] = `
 exports[`banner should render warning banner correctly 1`] = `
 .c1 {
   max-height: 52px;
-  overflow: scroll;
+  overflow: visible;
   background-color: #FFAB00;
 }
 
