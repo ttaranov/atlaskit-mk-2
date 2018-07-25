@@ -14,8 +14,9 @@ import {
   UploadController,
   UploadingFileState,
 } from '../src';
+import { FileState } from '../src/fileState';
 import { ContextFactory } from '../src/context/context';
-
+import { FileStreamCache } from '../src/context/fileStreamCache';
 import {
   uploadFile,
   MediaStoreResponse,
@@ -633,7 +634,57 @@ describe('Context', () => {
 
   describe('collection', () => {
     describe.only('.getUserRecentItems()', () => {
-      // TODO test cachings
+      it.only('should cache results', () => {
+        const context = createFakeContext();
+        const mediaCollectionItem: MediaCollectionItem = {
+          id: 'some-collection-item-id',
+          insertedAt: 42,
+          occurrenceKey: 'some-occurrence-key',
+          type: 'file',
+          details: {
+            processingStatus: 'succeeded',
+            name: 'some-file-name',
+            size: 10,
+          },
+        };
+        mediaCollectionItem.details;
+        const collectionItems: MediaStoreResponse<MediaCollectionItems> = {
+          data: {
+            contents: [mediaCollectionItem],
+            nextInclusiveStartKey: null,
+          },
+        };
+        (context.collection.mediaStore
+          .getUserRecentItems as any).mockReturnValue(
+          Promise.resolve(collectionItems),
+        );
+        return new Promise((resolve, reject) => {
+          context.collection.getUserRecentItems().subscribe({
+            next(ids: string[]) {
+              const key = FileStreamCache.createKey(ids[0], {
+                collectionName: 'recents',
+              });
+
+              context.collection.fileStreamCache.get(key)!.subscribe({
+                next(fileState: FileState) {
+                  try {
+                    expect(fileState.id).toEqual('some-collection-item-id');
+                    expect(fileState.status).toEqual('processed');
+                    if (fileState.status === 'processed') {
+                      expect(fileState.size).toEqual(10);
+                      expect(fileState.name).toEqual('some-file-name');
+                    }
+                  } catch (e) {
+                    reject(e);
+                  }
+                  resolve();
+                },
+              });
+            },
+          });
+        });
+      });
+
       it('should return item ids of a collection', done => {
         const context = createFakeContext() as any;
         const mediaCollectionItem: MediaCollectionItem = {

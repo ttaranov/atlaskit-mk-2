@@ -42,7 +42,7 @@ export type MediaCollectionItemMinimalDetails = {
 };
 
 export type MediaCollectionItemFullDetails = {
-  readonly mediaType: string;
+  readonly mediaType: MediaType;
   readonly mimeType: string;
   readonly name: string;
   readonly processingStatus: MediaFileProcessingStatus;

@@ -83,7 +83,6 @@ export interface Context {
     controller?: UploadController,
   ): Observable<FileState>;
 
-
   readonly collection: CollectionFetcher;
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
   readonly config: ContextConfig;
@@ -116,7 +115,10 @@ class ContextImpl implements Context {
       authProvider: config.authProvider,
       userAuthProvider: config.userAuthProvider,
     });
-    this.collection = new CollectionFetcher(this.mediaStore);
+    this.collection = new CollectionFetcher(
+      this.mediaStore,
+      this.fileStreamsCache,
+    );
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {

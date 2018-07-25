@@ -356,8 +356,7 @@ describe('MediaStore', () => {
       });
     });
 
-    // TODO Remove this .only
-    describe.only('getUserRecentItems', () => {
+    describe('getUserRecentItems', () => {
       it('should throw an exception if userAuthProvider is not provided', () => {
         const invalidMediaStore = new MediaStore({
           serviceHost,

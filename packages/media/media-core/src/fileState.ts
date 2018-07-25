@@ -57,7 +57,7 @@ export type FileState =
   | ProcessedFileState
   | ErrorFileState;
 
-const apiProcessingStatusToFileStatus = (
+export const apiProcessingStatusToFileStatus = (
   fileStatus?: MediaFileProcessingStatus,
 ): FileStatus => {
   switch (fileStatus) {

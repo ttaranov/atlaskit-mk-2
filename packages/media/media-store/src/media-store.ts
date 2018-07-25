@@ -26,7 +26,7 @@ import {
 const defaultGetCollectionItems: MediaStoreGetCollectionItemsParams = {
   limit: 30,
   sortDirection: 'desc',
-}
+};
 const defaultImageOptions: MediaStoreGetFileImageParams = {
   'max-age': 3600,
   allowAnimated: true,
@@ -339,8 +339,7 @@ export type MediaStoreGetFileImageParams = {
 };
 
 export type MediaStoreGetCollectionItemsParams = {
-  readonly limit: number;
-
+  readonly limit?: number;
   readonly inclusiveStartKey?: string;
   readonly sortDirection?: 'asc' | 'desc';
   readonly details?: 'minimal' | 'full';
