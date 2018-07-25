@@ -52,7 +52,7 @@ export type ProductConfigShape = {
 
 export type NavItem = {
   label?: string,
-  onClick: () => void,
+  onClick?: () => void,
   icon?: ComponentType<*>,
   rank: number,
   section: 'primary' | 'secondary',

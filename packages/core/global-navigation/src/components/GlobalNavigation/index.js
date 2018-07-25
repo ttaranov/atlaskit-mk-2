@@ -143,7 +143,6 @@ export default class GlobalNavigation
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
-    // $FlowFixMe
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
         ? {
