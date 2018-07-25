@@ -154,13 +154,16 @@ export default function generateProductConfig(
 
     searchTooltip,
     onSearchClick,
+    searchDrawerContents,
 
     onStarredClick,
     starredTooltip,
+    starredDrawerContents,
 
     onNotificationClick,
     notificationTooltip,
     notificationCount,
+    notificationDrawerContents,
 
     appSwitcherComponent,
 
@@ -185,13 +188,17 @@ export default function generateProductConfig(
       href: productHref,
     }),
     create: configFactory(onCreateClick, createTooltip),
-    search: configFactory(onSearchClick || openDrawer('search'), searchTooltip),
+    search: configFactory(
+      onSearchClick || (searchDrawerContents && openDrawer('search')),
+      searchTooltip,
+    ),
     starred: configFactory(
-      onStarredClick || openDrawer('starred'),
+      onStarredClick || (starredDrawerContents && openDrawer('starred')),
       starredTooltip,
     ),
     notification: configFactory(
-      onNotificationClick || openDrawer('notification'),
+      onNotificationClick ||
+        (notificationDrawerContents && openDrawer('notification')),
       notificationTooltip,
       notificationBadge,
     ),

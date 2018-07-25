@@ -50,7 +50,6 @@ class GlobalNavWithDrawers extends Component<{}, State> {
 
       return this.openSearchDrawer();
     }
-    return null;
   }
 
   componentWillUnmount() {

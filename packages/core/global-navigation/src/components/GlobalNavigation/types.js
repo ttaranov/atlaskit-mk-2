@@ -19,10 +19,18 @@ export type NavigationStateShape = InitialNavigationStateShape & {
 export type GlobalNavDrawerProps = {
   isSearchDrawerOpen?: boolean,
   searchDrawerContents?: ComponentType<*>,
+  onSearchDrawerOpen?: () => void,
+  onSearchDrawerClose?: () => void,
+
   isNotificationDrawerOpen?: boolean,
   notificationDrawerContents?: ComponentType<*>,
+  onNotificationDrawerOpen?: () => void,
+  onNotificationDrawerClose?: () => void,
+
   isStarredDrawerOpen?: boolean,
   starredDrawerContents?: ComponentType<*>,
+  onStarredDrawerOpen?: () => void,
+  onStarredDrawerClose?: () => void,
 };
 
 export type GlobalNavigationProps = {
@@ -34,13 +42,9 @@ export type GlobalNavigationProps = {
   onCreateClick?: () => void,
   createTooltip?: string,
 
-  onStarredDrawerOpen?: () => void,
-  onStarredDrawerClose?: () => void,
   onStarredClick?: () => void,
   starredTooltip?: string,
 
-  onSearchDrawerOpen?: () => void,
-  onSearchDrawerClose?: () => void,
   onSearchClick?: () => void,
   searchTooltip?: string,
 
@@ -54,8 +58,6 @@ export type GlobalNavigationProps = {
   profileIconUrl?: string,
   loginHref?: string, // Login url to redirect anonymous users to login page.
 
-  onNotificationDrawerOpen?: () => void,
-  onNotificationDrawerClose?: () => void,
   onNotificationClick?: () => void,
   notificationCount?: number,
   notificationTooltip?: string,

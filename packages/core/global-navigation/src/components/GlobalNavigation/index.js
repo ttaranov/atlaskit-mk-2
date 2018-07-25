@@ -10,6 +10,7 @@ import generateProductConfig from '../../config/product-config';
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
 
+// TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   icon,
   label,
@@ -36,7 +37,7 @@ type GlobalNavigationState = {
 };
 
 interface Global {
-  [key: string]: boolean;
+  [key: string]: boolean; // Need an indexer property to appease flow for is${capitalisedDrawerName}Controlled
   isSearchDrawerControlled?: boolean;
   isNotificationDrawerControlled?: boolean;
   isStarredDrawerControlled?: boolean;
@@ -59,6 +60,10 @@ export default class GlobalNavigation
     this.drawers.forEach((drawer: DrawerName) => {
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
 
+      // If a drawer has an onClick handler, mark it as a controlled drawer.
+      // ie, if onSearchClick prop is present, this.isSearchDrawerControlled is set to true
+      // and this.state.isSearchDrawerOpen is controlled by this.props.isSearchDrawerOpen
+      // in componentDidUpdate.
       if (
         props[
           `on${capitalisedDrawerName.substr(
@@ -89,6 +94,7 @@ export default class GlobalNavigation
         prevProps[`is${capitalisedDrawerName}Open`] !==
         this.props[`is${capitalisedDrawerName}Open`]
       ) {
+        // If it's is a controlled drawer, let the props manage the drawer
         this.setState({
           [`is${capitalisedDrawerName}Open`]: this.props[
             `is${capitalisedDrawerName}Open`
@@ -109,6 +115,7 @@ export default class GlobalNavigation
         ? this.props[`on${capitalisedDrawerName}Open`]
         : noop;
 
+    // If it's is a controlled drawer, the props manage the drawer in componentDidUpdate
     if (!this[`is${capitalisedDrawerName}Controlled`]) {
       this.setState(
         {
@@ -127,6 +134,7 @@ export default class GlobalNavigation
       typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
+    // If it's is a controlled drawer, the props manage the drawer in componentDidUpdate
     if (!this[`is${capitalisedDrawerName}Controlled`]) {
       this.setState(
         {
