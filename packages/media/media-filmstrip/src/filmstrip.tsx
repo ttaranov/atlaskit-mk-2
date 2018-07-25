@@ -4,12 +4,12 @@ import { Component } from 'react';
 import {
   Identifier,
   Card,
-  UrlPreviewIdentifier,
   CardAction,
   CardOnClickCallback,
   CardEvent,
   OnSelectChangeFunc,
   OnLoadingChangeFunc,
+  isUrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 import { Context } from '@atlaskit/media-core';
 import { FilmstripView } from './filmstripView';
@@ -34,14 +34,6 @@ export interface FilmstripState {
   animate: boolean;
   offset: number;
 }
-
-// TODO: this has been duplicated from media-card => let's export it from there instead
-const isUrlPreviewIdentifier = (
-  identifier: Identifier,
-): identifier is UrlPreviewIdentifier => {
-  const preview = identifier as UrlPreviewIdentifier;
-  return preview && preview.url !== undefined;
-};
 
 const getIdentifierKey = (identifier: Identifier): string => {
   if (isUrlPreviewIdentifier(identifier)) {
