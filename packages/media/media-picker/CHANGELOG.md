@@ -1,5 +1,13 @@
 # @atlaskit/media-picker
 
+## 11.1.1
+- [patch] use context.getFile in media-card [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-store@5.1.0
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/media-card@31.1.0
+
 ## 11.1.0
 
 

@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 13.2.1
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/media-card@31.1.0
+  - @atlaskit/editor-test-helpers@5.0.3
+
 ## 13.2.0
 
 
