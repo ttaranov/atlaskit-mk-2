@@ -170,9 +170,8 @@ export class QuickSearch extends Component<Props, State> {
         selectedResultId: nextProps.selectedResultId || null,
       });
     } else if (
-      nextProps.selectedResultId ||
-      (this.props.selectedResultId && nextProps.selectedResultId) ||
-      this.state.selectedResultId
+      nextProps.selectedResultId !== this.props.selectedResultId ||
+      nextProps.selectedResultId !== this.state.selectedResultId
     ) {
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
