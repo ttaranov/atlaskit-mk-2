@@ -59,7 +59,7 @@ export default (
     composeWithDevTools(
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,
-        getFilesInRecents(fetcher) as Middleware,
+        getFilesInRecents(fetcher) as Middleware, // TODO: remove from Redux?
         changeService as Middleware,
         changeAccount as Middleware,
         changeCloudAccountFolderMiddleware(fetcher) as Middleware,

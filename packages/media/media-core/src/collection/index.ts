@@ -87,20 +87,27 @@ export class CollectionFetcher {
   getUserRecentItems(
     params?: MediaStoreGetCollectionItemsParams,
   ): Observable<string[]> {
-    return Observable.create(async (observer: Observer<string[]>) => {
-      if (this.fileIds.length) {
-        observer.next(this.fileIds);
-      } else {
-        const items = await this.mediaStore.getUserRecentItems({
-          ...params,
-          details: 'full',
-        });
-        this.populateCache(items.data.contents);
-        const ids = items.data.contents.map(item => item.id);
-        this.fileIds = ids;
+    const observable = Observable.create(
+      async (observer: Observer<string[]>) => {
+        if (this.fileIds.length) {
+          setTimeout(() => {
+            observer.next(this.fileIds);
+          }, 1);
+        } else {
+          const items = await this.mediaStore.getUserRecentItems({
+            ...params,
+            details: 'full',
+          });
+          this.populateCache(items.data.contents);
+          const ids = items.data.contents.map(item => item.id);
+          this.fileIds = ids;
 
-        observer.next(ids);
-      }
-    });
+          observer.next(ids);
+        }
+      },
+    ).publishReplay(1);
+
+    observable.connect();
+    return observable;
   }
 }

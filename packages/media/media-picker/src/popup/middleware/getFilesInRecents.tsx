@@ -31,9 +31,9 @@ export const requestRecentFiles = (
     context.collection.getUserRecentItems().subscribe({
       next(ids) {
         console.log({ ids });
-        const nextInclusiveStartKey = 'key';
+        const nextInclusiveStartKey = new Date().getTime().toString();
         store.dispatch(getFilesInRecentsFullfilled(ids, nextInclusiveStartKey));
-        resolve();
+        // resolve();
       },
       error() {
         store.dispatch(getFilesInRecentsFailed());

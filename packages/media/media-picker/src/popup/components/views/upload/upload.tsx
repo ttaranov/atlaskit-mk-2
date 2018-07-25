@@ -106,7 +106,7 @@ export class StatelessUploadView extends Component<
     const { isLoading, mpBrowser } = this.props;
     const cards = this.renderCards();
     const isEmpty = !isLoading && cards.length === 0;
-
+    console.log({ isEmpty, isLoading }, cards.length);
     let contentPart: JSX.Element | null = null;
     if (isLoading) {
       contentPart = this.loadingView();
@@ -288,7 +288,7 @@ export class StatelessUploadView extends Component<
         }
       }
     };
-
+    console.log({ items });
     return items.map(id => {
       // const { id, occurrenceKey } = item;
       const occurrenceKey = 'key';
