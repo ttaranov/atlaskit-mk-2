@@ -2,11 +2,11 @@
 
 import React, { Component } from 'react';
 
-import { withNavigationUI } from '../../ui-controller';
+import { withNavigationUIController } from '../../ui-controller';
 import LayoutManager from './LayoutManager';
 import type { ConnectedLayoutManagerProps } from './types';
 
-const LayoutManagerWithNavigationUI = withNavigationUI(LayoutManager);
+const LayoutManagerWithNavigationUI = withNavigationUIController(LayoutManager);
 
 export default class ConnectedLayoutManager extends Component<
   ConnectedLayoutManagerProps,

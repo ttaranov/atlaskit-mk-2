@@ -20,7 +20,11 @@ export default class InteractionStateManager extends Component<
 
   onMouseUp = () => this.setState({ isActive: false });
 
-  onMouseEnter = () => this.setState({ isHover: true });
+  onMouseOver = () => {
+    if (!this.state.isHover) {
+      this.setState({ isHover: true });
+    }
+  };
 
   onMouseLeave = () => this.setState({ isActive: false, isHover: false });
 
@@ -28,7 +32,7 @@ export default class InteractionStateManager extends Component<
     return (
       <div
         onMouseDown={this.onMouseDown}
-        onMouseEnter={this.onMouseEnter}
+        onMouseOver={this.onMouseOver}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
         role="presentation"

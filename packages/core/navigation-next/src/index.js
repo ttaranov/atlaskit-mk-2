@@ -15,6 +15,9 @@ export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as PeekToggleItem } from './components/PeekToggleItem';
 export { default as LayoutManager } from './components/LayoutManager';
 export {
+  default as LayoutManagerWithViews,
+} from './components/LayoutManagerWithViews';
+export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';
 export { default as Section } from './components/Section';
@@ -26,7 +29,7 @@ export { NavigationProvider } from './provider';
 export {
   UIController,
   UIControllerSubscriber,
-  withNavigationUI,
+  withNavigationUIController,
 } from './ui-controller';
 export {
   ViewController,
