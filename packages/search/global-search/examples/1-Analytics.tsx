@@ -10,7 +10,6 @@ import { AnalyticsListener } from '@atlaskit/analytics';
 
 const ComponentPanel = styled.div`
   flex: 1;
-  overflow: hidden
   display: flex;
 `;
 
