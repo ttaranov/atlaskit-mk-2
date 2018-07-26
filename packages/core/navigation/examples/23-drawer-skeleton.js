@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import StarIcon from '@atlaskit/icon/glyph/star';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
@@ -10,6 +11,7 @@ import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
 import Navigation, {
@@ -23,6 +25,10 @@ import Navigation, {
   SkeletonDefaultContainerHeader,
   SkeletonContainerItems,
 } from '../src';
+
+const SkeletonItemsWrapper = styled.div`
+  padding-right: ${akGridSizeUnitless * 3}px;
+`;
 
 const BackIcon = (
   <Tooltip position="right" content="Back">
@@ -87,6 +93,21 @@ export default class ConfluenceHome extends Component<*, *> {
     width: this.props.width,
   };
 
+  getStarCustomDrawer = () => (
+    <AkCustomDrawer
+      backIcon={BackIcon}
+      isOpen={this.state.openDrawer === 'custom'}
+      key="custom"
+      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
+      header={<SkeletonDefaultContainerHeader isAvatarHidden />}
+      onBackButton={this.closeDrawer}
+    >
+      <SkeletonItemsWrapper>
+        <SkeletonContainerItems itemTextWidth="100%" />
+      </SkeletonItemsWrapper>
+    </AkCustomDrawer>
+  );
+
   getSearchDrawer = () => (
     <AkSearchDrawer
       backIcon={BackIcon}
@@ -95,7 +116,9 @@ export default class ConfluenceHome extends Component<*, *> {
       primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
       onBackButton={this.closeDrawer}
     >
-      <SkeletonContainerItems itemTextWidth="100%" />
+      <SkeletonItemsWrapper>
+        <SkeletonContainerItems itemTextWidth="100%" />
+      </SkeletonItemsWrapper>
     </AkSearchDrawer>
   );
 
@@ -107,21 +130,10 @@ export default class ConfluenceHome extends Component<*, *> {
       primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
       onBackButton={this.closeDrawer}
     >
-      <SkeletonContainerItems itemTextWidth="100%" />
+      <SkeletonItemsWrapper>
+        <SkeletonContainerItems itemTextWidth="100%" />
+      </SkeletonItemsWrapper>
     </AkCreateDrawer>
-  );
-
-  getCustomDrawer = () => (
-    <AkCustomDrawer
-      backIcon={BackIcon}
-      isOpen={this.state.openDrawer === 'custom'}
-      key="custom"
-      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
-      header={<SkeletonDefaultContainerHeader isAvatarHidden />}
-      onBackButton={this.closeDrawer}
-    >
-      <SkeletonContainerItems itemTextWidth="100%" />
-    </AkCustomDrawer>
   );
 
   openDrawer = (name: string) => {
@@ -167,7 +179,7 @@ export default class ConfluenceHome extends Component<*, *> {
             drawers={[
               this.getSearchDrawer(),
               this.getCreateDrawer(),
-              this.getCustomDrawer(),
+              this.getStarCustomDrawer(),
             ]}
             containerTheme={presetThemes.global}
             containerHeaderComponent={() => (
