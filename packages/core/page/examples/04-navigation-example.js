@@ -2,10 +2,9 @@
 import React, { Component, Fragment } from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import Page, { Grid } from '../src';
-import NavigationExplanation from './utils/NavigationExplanation';
 
 type State = {
   isErrorBannerOpen: boolean,
