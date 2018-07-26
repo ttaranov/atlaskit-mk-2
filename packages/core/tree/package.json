@@ -11,7 +11,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
-  "dependencies": {},
+  "dependencies": {
+    "react-beautiful-dnd": "^8.0.5"
+  },
   "peerDependencies": {
     "react": "^16.4.0"
   },

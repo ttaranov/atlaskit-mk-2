@@ -152,8 +152,8 @@ export const toggleEm = (): Command => {
       return toggleMark(em)(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
 export const toggleStrike = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
@@ -162,8 +162,8 @@ export const toggleStrike = (): Command => {
       return toggleMark(strike)(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
 export const toggleStrong = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
@@ -172,8 +172,8 @@ export const toggleStrong = (): Command => {
       return toggleMark(strong)(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
 export const toggleUnderline = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
@@ -182,8 +182,8 @@ export const toggleUnderline = (): Command => {
       return toggleMark(underline)(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
 export const toggleSuperscript = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
@@ -196,8 +196,8 @@ export const toggleSuperscript = (): Command => {
       return toggleMark(subsup, { type: 'sup' })(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
 export const toggleSubscript = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
@@ -209,8 +209,8 @@ export const toggleSubscript = (): Command => {
       return toggleMark(subsup, { type: 'sub' })(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
 export const toggleCode = (): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
@@ -224,10 +224,14 @@ export const toggleCode = (): Command => {
       return toggleMark(code)(state, dispatch);
     }
     return false;
-  }
-}
+  };
+};
 
-export const createInlineCodeFromTextInput = (from: number, to: number, text: string): Command => {
+export const createInlineCodeFromTextInput = (
+  from: number,
+  to: number,
+  text: string,
+): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     if (state.selection.empty) {
       const { nodeBefore: before } = state.doc.resolve(from);
@@ -255,5 +259,5 @@ export const createInlineCodeFromTextInput = (from: number, to: number, text: st
       }
     }
     return false;
-  }
-}
+  };
+};

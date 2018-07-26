@@ -11,8 +11,9 @@ import Tree, {
   type TreeItem,
   type TreeData,
   type ItemId,
+  type TreePosition,
 } from '../src/';
-import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
+import { complexTree } from '../mockdata/complexTree';
 
 const PADDING_PER_LEVEL = 35;
 
@@ -33,9 +34,9 @@ type State = {|
   tree: TreeData,
 |};
 
-export default class StaticTree extends Component<void, State> {
+export default class DragDropTree extends Component<void, State> {
   state = {
-    tree: treeWithTwoBranches,
+    tree: complexTree,
   };
 
   static getIcon(
@@ -43,7 +44,7 @@ export default class StaticTree extends Component<void, State> {
     onExpand: (itemId: ItemId) => void,
     onCollapse: (itemId: ItemId) => void,
   ) {
-    if (item.hasChildren) {
+    if (item.children && item.children.length > 0) {
       return item.isExpanded ? (
         <ChevronDownIcon
           label=""
@@ -67,30 +68,18 @@ export default class StaticTree extends Component<void, State> {
     onExpand,
     onCollapse,
     provided,
-  }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
-      <AkNavigationItem
-        text={item.data ? item.data.title : ''}
-        icon={StaticTree.getIcon(item, onExpand, onCollapse)}
-        onKeyDown={event => this.onKeyDown(event, item, onExpand, onCollapse)}
-        dnd={provided}
-      />
-    </div>
-  );
-
-  onKeyDown = (
-    event: KeyboardEvent,
-    item: TreeItem,
-    onExpand: (itemId: ItemId) => void,
-    onCollapse: (itemId: ItemId) => void,
-  ) => {
-    if (event.key === 'Enter' && item.hasChildren) {
-      if (item.isExpanded) {
-        onCollapse(item.id);
-      } else {
-        onExpand(item.id);
-      }
-    }
+    snapshot,
+  }: RenderItemParams) => {
+    return (
+      <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+        <AkNavigationItem
+          isDragging={snapshot.isDragging}
+          text={item.data ? item.data.title : ''}
+          icon={DragDropTree.getIcon(item, onExpand, onCollapse)}
+          dnd={provided}
+        />
+      </div>
+    );
   };
 
   onExpand = (itemId: ItemId) => {
@@ -107,6 +96,35 @@ export default class StaticTree extends Component<void, State> {
     });
   };
 
+  onDragEnd = (source: TreePosition, destination: ?TreePosition) => {
+    const { tree } = this.state;
+
+    if (!destination) {
+      return;
+    }
+
+    const sourceParent: TreeItem = tree.items[source.parentId];
+    const itemIdToMove = sourceParent.children[source.index];
+    const newSourceChildren = [...sourceParent.children];
+    newSourceChildren.splice(source.index, 1);
+    const treeWithoutSource = mutateTree(tree, source.parentId, {
+      children: newSourceChildren,
+    });
+
+    const destinationParent: TreeItem =
+      treeWithoutSource.items[destination.parentId];
+    const newDestinationChildren = [...destinationParent.children];
+    newDestinationChildren.splice(destination.index, 0, itemIdToMove);
+    const treeWithTheItem = mutateTree(
+      treeWithoutSource,
+      destination.parentId,
+      { children: newDestinationChildren },
+    );
+    this.setState({
+      tree: treeWithTheItem,
+    });
+  };
+
   render() {
     const { tree } = this.state;
 
@@ -118,6 +136,7 @@ export default class StaticTree extends Component<void, State> {
             renderItem={this.renderItem}
             onExpand={this.onExpand}
             onCollapse={this.onCollapse}
+            onDragEnd={this.onDragEnd}
           />
         </Navigation>
       </Container>

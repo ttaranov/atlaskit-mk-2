@@ -7,11 +7,15 @@ import LayoutColumn from '../../../../src/react/nodes/layoutColumn';
 describe('Renderer - React/Nodes/LayoutSection', () => {
   const layoutSection = shallow(
     <LayoutSection layoutType="two_equal">
-      <LayoutColumn><p>test</p></LayoutColumn>
-    </LayoutSection>
+      <LayoutColumn>
+        <p>test</p>
+      </LayoutColumn>
+    </LayoutSection>,
   );
 
   it('should wrap content with div[data-layout-type="two_equal"-tag', () => {
-    expect(layoutSection.is('div[data-layout-type="two_equal"]')).to.equal(true);
+    expect(layoutSection.is('div[data-layout-type="two_equal"]')).to.equal(
+      true,
+    );
   });
 });

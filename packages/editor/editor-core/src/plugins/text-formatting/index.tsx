@@ -94,12 +94,13 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
           textFormattingState: textFormattingPluginKey,
           clearFormattingState: clearFormattingPluginKey,
         }}
-        render={(
-          { textFormattingState, clearFormattingState }:
-          {
-            textFormattingState: TextFormattingState,
-            clearFormattingState: ClearFormattingState
-          }): any => {
+        render={({
+          textFormattingState,
+          clearFormattingState,
+        }: {
+          textFormattingState: TextFormattingState;
+          clearFormattingState: ClearFormattingState;
+        }): any => {
           return (
             <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
               <ToolbarTextFormatting
@@ -118,11 +119,11 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
                 popupsScrollableElement={popupsScrollableElement}
               />
             </ButtonGroup>
-          )}
-        }
+          );
+        }}
       />
     );
-  }
+  },
 });
 
 export default textFormatting;
