@@ -2,6 +2,8 @@
 import React, { Component, Fragment } from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import Page, { Grid } from '../src';
 import NavigationExplanation from './utils/NavigationExplanation';
 
@@ -85,16 +87,29 @@ export default class NavigationExample extends Component<void, State> {
             </Fragment>
           }
           navigation={
-            <Navigation topOffset={this.getOffset()}>
+            <Navigation
+              topOffset={this.getOffset()}
+              globalPrimaryIcon={<AtlassianIcon />}
+            >
               The children are the future
             </Navigation>
           }
         >
           <Grid>
-            <NavigationExplanation
-              onErrorBannerChange={this.onErrorBannerChange}
-              onAnnouncementBannerChange={this.onAnnouncementBannerChange}
-            />
+            <Button onClick={this.onErrorBannerChange}>
+              Toggle Error Banner
+            </Button>
+            <Button onClick={this.onAnnouncementBannerChange}>
+              Toggle Announcement Banner
+            </Button>
+            <Button
+              onClick={() => {
+                this.onAnnouncementBannerChange();
+                this.onErrorBannerChange();
+              }}
+            >
+              Toggle both Banners
+            </Button>
           </Grid>
         </Page>
       </div>

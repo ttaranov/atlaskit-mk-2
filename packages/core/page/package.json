@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@atlaskit/banner": "^7.0.2",
+    "@atlaskit/icon": "^13.2.0",
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/navigation": "^33.1.2",
