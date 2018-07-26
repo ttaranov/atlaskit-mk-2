@@ -1,4 +1,3 @@
-*.ejs
 *.json
 dist
 .*/packages/core/logo/src
