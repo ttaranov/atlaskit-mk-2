@@ -20,8 +20,16 @@ const createPlugin: PMPluginFactory = ({ dispatch, portalProviderAPI }) =>
           // ED-5033, calendar control open for element in plugin state, when node-view is clicked.
           // Following chanek ensures that if same node-view is clicked twice calendar should close,
           // but if a different node-view is clicked, calendar should open next the that node-view.
-          const elmId = meta.element && meta.element && meta.element.firstChild && meta.element.firstChild.id;
-          const oldElmId = state && state.element && state.element.firstChild && (state.element.firstChild as HTMLElement).id;
+          const elmId =
+            meta.element &&
+            meta.element &&
+            meta.element.firstChild &&
+            meta.element.firstChild.id;
+          const oldElmId =
+            state &&
+            state.element &&
+            state.element.firstChild &&
+            (state.element.firstChild as HTMLElement).id;
           let newState;
           if (elmId && elmId === oldElmId) {
             newState = { ...state, element: null };
