@@ -121,27 +121,22 @@ export class MediaComponentInternal extends Component<Props, State> {
         this.setState({ mediaProvider });
       }
     }
-
-    // if (this.props.id !== nextProps.id) {
-    //   // this.unregisterFromEvents(this.props, this.state);
-    //   this.setState({id: '', status: 'unknown'/*, mediaProvider: undefined*/});
-    // }
   }
 
   private unregisterFromEvents(props, state) {
-    const { id } = props;
+    const { __key } = props;
     const { mediaProvider } = state;
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
-      if (stateManager && id) {
-        stateManager.off(id, this.handleMediaStateChange);
+      if (stateManager && __key) {
+        stateManager.off(__key, this.handleMediaStateChange);
       }
     }
 
     const { stateManagerFallback } = this.props;
-    if (stateManagerFallback && id) {
-      stateManagerFallback.off(id, this.handleMediaStateChange);
+    if (stateManagerFallback && __key) {
+      stateManagerFallback.off(__key, this.handleMediaStateChange);
     }
   }
 
@@ -315,6 +310,8 @@ export class MediaComponentInternal extends Component<Props, State> {
       otherProps.actions = [createDeleteAction(onDelete)];
     }
 
+    console.log('render temp', progress);
+
     return (
       <CardView
         // CardViewProps
@@ -385,7 +382,7 @@ export class MediaComponentInternal extends Component<Props, State> {
   };
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
-    const { id, tempId } = this.props;
+    const { __key } = this.props;
 
     if (this.destroyed) {
       return;
@@ -399,11 +396,11 @@ export class MediaComponentInternal extends Component<Props, State> {
 
     this.setState({ mediaProvider });
 
-    if (stateManager && id) {
-      const mediaState = stateManager.getState(tempId || id);
+    if (stateManager && __key) {
+      const mediaState = stateManager.getState(__key);
 
-      stateManager.on(id, this.handleMediaStateChange);
-      this.setState({ id, ...mediaState });
+      stateManager.on(__key, this.handleMediaStateChange);
+      this.setState({ id: __key, ...mediaState });
     }
 
     await this.setContext('viewContext', mediaProvider);

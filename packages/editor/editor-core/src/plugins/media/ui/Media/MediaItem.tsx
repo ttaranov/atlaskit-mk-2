@@ -13,6 +13,7 @@ import { MediaStateManager } from '../../pm-plugins/main';
 import MediaComponent, { Appearance } from './MediaComponent';
 
 export interface Props {
+  __key: string;
   id: string;
   tempId: string;
   providers?: ProviderFactory;

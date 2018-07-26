@@ -77,7 +77,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
     if (
-      !width &&
+      progress < 1 &&
       this.pluginState.editorAppearance !== 'message' &&
       isMediaSingle &&
       type !== 'external'
@@ -96,8 +96,9 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       <UIMedia
         key={`media-node-${__key}`}
         editorView={view}
+        __key={__key!}
         id={id!}
-        tempId={__key!}
+        tempId={id!}
         type={type!}
         collection={collection!}
         providers={providerFactory}
