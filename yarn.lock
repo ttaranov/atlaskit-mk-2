@@ -11437,6 +11437,10 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+re-resizable@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-4.7.1.tgz#3eca5bb94a6059d14311786cfd2d430bc9f7fba0"
+
 react-ace@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-ace/-/react-ace-6.1.0.tgz#ddd53ce63776ec262e5501af2ef37ad2e5d7f18b"

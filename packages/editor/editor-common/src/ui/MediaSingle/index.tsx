@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MediaSingleLayout } from '../../schema';
-import Wrapper from './styled';
-import * as classnames from 'classnames';
+import * as Resizable from 're-resizable';
+import styled from 'styled-components';
 
 export interface Props {
   children: React.ReactChild;
@@ -13,6 +13,15 @@ export interface Props {
   className?: string;
 }
 
+const StyledResizable = styled(Resizable)`
+  margin: 0 auto;
+
+  & > div {
+    position: absolute;
+    height: 100%;
+  }
+`;
+
 export default function MediaSingle({
   children,
   layout,
@@ -22,18 +31,15 @@ export default function MediaSingle({
   isLoading = false,
   className,
 }: Props) {
+  const aspectRatio = width / height;
   return (
-    <Wrapper
-      layout={layout}
-      width={width}
-      height={height}
-      containerWidth={containerWidth}
-      className={classnames('media-single', layout, className, {
-        'is-loading': isLoading,
-        'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',
-      })}
+    <StyledResizable
+      size={{ width: width || '100%', height: height || '100%' }}
+      lockAspectRatio={aspectRatio}
+      minWidth="25%"
+      maxWidth="100%"
     >
       {React.Children.only(children)}
-    </Wrapper>
+    </StyledResizable>
   );
 }
