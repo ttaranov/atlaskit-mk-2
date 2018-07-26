@@ -33,23 +33,23 @@ export class Client {
   }
 
   private createObservable(url: string): Observable<ObjectState> {
-    const temporaryResolver = this.temporaryResolver;
-    if (temporaryResolver) {
-      return race(
-        createTemporaryResolverObservable(url, temporaryResolver),
-        createObjectResolverServiceObservable(url, {
-          serviceUrl: this.serviceUrl,
-          objectUrl: url,
-          $commands: this.$commands,
-        }),
-      );
-    } else {
-      return createObjectResolverServiceObservable(url, {
-        serviceUrl: this.serviceUrl,
-        objectUrl: url,
-        $commands: this.$commands,
-      });
-    }
+    // const temporaryResolver = this.temporaryResolver;
+    // if (temporaryResolver) {
+    //   return race(
+    //     createTemporaryResolverObservable(url, temporaryResolver),
+    //     createObjectResolverServiceObservable(url, {
+    //       serviceUrl: this.serviceUrl,
+    //       objectUrl: url,
+    //       $commands: this.$commands,
+    //     }),
+    //   );
+    // } else {
+    return createObjectResolverServiceObservable(url, {
+      serviceUrl: this.serviceUrl,
+      objectUrl: url,
+      $commands: this.$commands,
+    });
+    // }
   }
 
   get(url: string): Observable<ObjectState> {

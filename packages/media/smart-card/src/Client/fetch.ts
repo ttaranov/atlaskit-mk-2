@@ -1,43 +1,31 @@
 import { Observable } from 'rxjs/Observable';
 
-export function fetch<T>(
+export default function<T>(
   method: string,
   url: string,
   data?: any,
 ): Observable<T | undefined> {
-  return Observable.create(observer => {
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.setRequestHeader('Cache-Control', 'no-cache');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.addEventListener('error', () => observer.error());
-    xhr.addEventListener('load', () => {
-      switch (xhr.status) {
-        case 200:
-          try {
-            const json = JSON.parse(xhr.responseText);
-            observer.next(json as T);
-            observer.complete();
-          } catch (error) {
-            observer.error(error);
-          }
-          break;
+  return new Observable(observer => {
+    const abortController = new AbortController();
+    const requestConfig = {
+      method,
+      signal: abortController.signal,
+      credentials: 'include' as RequestCredentials,
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/json',
+      },
+      ...(data ? { body: JSON.stringify(data) } : {}),
+    };
 
-        case 404:
-          observer.next(undefined);
-          observer.complete();
-          break;
+    fetch(url, requestConfig)
+      .then(resp => resp.json())
+      .then(res => {
+        observer.next(res as T);
+        observer.complete();
+      })
+      .catch(err => observer.error(err));
 
-        default:
-          observer.error(
-            new Error(
-              '@atlaskit/smart-card: Recieved an unsupported response.',
-            ),
-          );
-      }
-    });
-    xhr.withCredentials = true;
-    xhr.send(data ? JSON.stringify(data) : undefined);
-    return () => xhr.abort();
+    return () => abortController.abort();
   });
 }
