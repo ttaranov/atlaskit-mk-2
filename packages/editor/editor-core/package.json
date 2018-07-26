@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "76.2.6",
+  "version": "76.2.7",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^4.0.0",
-    "@atlaskit/analytics-gas-types": "^3.0.0",
+    "@atlaskit/analytics-gas-types": "^3.1.1",
     "@atlaskit/analytics-next": "^3.0.0",
     "@atlaskit/analytics-next-types": "^3.0.0",
     "@atlaskit/avatar": "^14.0.1",
@@ -41,7 +41,7 @@
     "@atlaskit/media-card": "^31.1.0",
     "@atlaskit/media-filmstrip": "^10.1.0",
     "@atlaskit/media-picker": "^11.1.1",
-    "@atlaskit/mention": "^15.0.0",
+    "@atlaskit/mention": "^15.0.1",
     "@atlaskit/modal-dialog": "^6.0.0",
     "@atlaskit/select": "^5.0.1",
     "@atlaskit/size-detector": "^5.0.0",
