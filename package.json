@@ -416,6 +416,7 @@
     "svg-inline-react": "^3.0.0",
     "svg-url-loader": "^2.3.0",
     "svgo": "^0.7.0",
+    "tiny-invariant": "^0.0.3",
     "toml": "^2.3.2",
     "ts-node": "^6.1.1",
     "tslib": "^1.8.0",
