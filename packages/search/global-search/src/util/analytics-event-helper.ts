@@ -1,6 +1,7 @@
 import * as Rusha from 'rusha';
 import {
   sanitizeSearchQuery,
+  sanitizeContainerId,
   ShownAnalyticsAttributes,
   DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_ATTRIBUTES,
@@ -145,6 +146,7 @@ const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
   sectionIndex: eventData.sectionIndex,
   globalIndex: eventData.index,
   indexWithinSection: eventData.indexWithinSection,
+  containerId: sanitizeContainerId(eventData.containerId),
 });
 
 const hash = (str: string): string =>
@@ -159,6 +161,7 @@ export interface SearchResultEvent {
   sectionIndex: string;
   index: string;
   indexWithinSection: string;
+  containerId?: string;
 }
 
 export interface KeyboardControlEvent extends SearchResultEvent {

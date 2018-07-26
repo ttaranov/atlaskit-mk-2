@@ -57,6 +57,7 @@ export function renderResults(results: Result[], sectionIndex: number) {
     const analyticsData = {
       sectionIndex,
       indexWithinSection: index,
+      containerId: result.containerId,
     };
 
     switch (resultType) {

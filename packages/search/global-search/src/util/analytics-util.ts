@@ -46,6 +46,8 @@ export const sanitizeSearchQuery = query => {
   return (query || '').replace(/\s+/g, ' ').trim();
 };
 
+export const sanitizeContainerId = containerId => `${containerId}`.trim().startsWith('~') ? 'UNAVAILABLE' : containerId;
+
 function mapResultsToShownSection(
   results: Result[],
 ): ShownResultContextSection {
@@ -61,7 +63,7 @@ function mapResultToShownResult(result: Result): ShownResultContextItem {
     return {
       resultContentId: result.resultId,
       resultType: confluenceResult.contentType,
-      containerId: confluenceResult.containerId,
+      containerId: sanitizeContainerId(confluenceResult.containerId),
     };
   }
 
