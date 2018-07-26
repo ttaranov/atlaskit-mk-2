@@ -62,6 +62,8 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       ...uploadParams,
     };
 
+    // TODO: 😦
+    context.collection.getUserRecentItems();
     const popup = this.renderPopup();
 
     this.container = popup;

@@ -26,6 +26,8 @@ export interface MediaProviderFactoryConfig {
 export function storyMediaProviderFactory(
   mediaProviderFactoryConfig: MediaProviderFactoryConfig = {},
 ) {
+  // performance hack 🔥
+  mediaPickerAuthProvider()();
   const {
     collectionName,
     stateManager,

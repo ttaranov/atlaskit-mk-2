@@ -95,6 +95,7 @@ export class ContextFactory {
 }
 
 const pollingInterval = 1000;
+const fileStreamsCache = new FileStreamCache();
 
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
@@ -109,7 +110,7 @@ class ContextImpl implements Context {
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreamsCache = new FileStreamCache();
+    this.fileStreamsCache = fileStreamsCache;
     this.mediaStore = new MediaStore({
       serviceHost: config.serviceHost,
       authProvider: config.authProvider,
@@ -123,7 +124,6 @@ class ContextImpl implements Context {
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
-
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = this.createDownloadFileStream(
