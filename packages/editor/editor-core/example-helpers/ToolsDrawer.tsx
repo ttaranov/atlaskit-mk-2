@@ -225,6 +225,9 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                             providerKey,
                             providerStateName,
                           )}
+                          className={`${providerKey}-${providerStateName
+                            .replace(/[()]/g, '')
+                            .replace(/ /g, '-')}`}
                           appearance={
                             providerStateName === this.state[providerKey]
                               ? 'primary'
