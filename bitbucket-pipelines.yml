@@ -69,6 +69,8 @@ pipelines:
               - bolt install --pure-lockfile
               - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
               - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
+              - echo 'Running server side tests'
+              - yarn run test server-side
             caches:
               - node
         - step:
