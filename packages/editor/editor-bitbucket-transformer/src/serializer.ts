@@ -58,11 +58,36 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    */
   renderInline(parent: PMNode): void {
     const active: Mark[] = [];
+    let trailing = '';
 
     const progress = (node: PMNode | null, _?: any, index?: number) => {
       let marks = node
         ? node.marks.filter(mark => this.marks[mark.type.name])
         : [];
+
+      let leading = trailing;
+      trailing = '';
+      // If whitespace has to be expelled from the node, adjust
+      // leading and trailing accordingly.
+      if (
+        node &&
+        node.isText &&
+        marks.some(mark => {
+          let info = this.marks[mark.type.name];
+          return info && info.expelEnclosingWhitespace;
+        })
+      ) {
+        let [, lead, inner, trail] = /^(\s*)(.*?)(\s*)$/m.exec(node.text!)!;
+        leading += lead;
+        trailing = trail;
+        if (lead || trail) {
+          node = inner ? (node as any).withText(inner) : null;
+          if (!node) {
+            marks = active;
+          }
+        }
+      }
+
       const code =
         marks.length &&
         marks[marks.length - 1].type.name === 'code' &&
@@ -114,6 +139,11 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       // Close the marks that need to be closed
       while (keep < active.length) {
         this.text(this.markString(active.pop()!, false), false);
+      }
+
+      // Output any previously expelled trailing whitespace outside the marks
+      if (leading) {
+        this.text(leading);
       }
 
       // Open the marks that need to be opened
@@ -309,14 +339,7 @@ const editorNodes = {
     index: number,
   ) {
     const previousNode = index === 0 ? null : parent.child(index - 1);
-    const previousNodeIsAMention =
-      previousNode && previousNode.type.name === 'mention';
-    const currentNodeStartWithASpace = node.textContent.indexOf(' ') === 0;
-    const trimTrailingWhitespace =
-      previousNodeIsAMention && currentNodeStartWithASpace;
-    let text = trimTrailingWhitespace
-      ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
-      : node.textContent;
+    let text = node.textContent;
 
     // BB converts 4 spaces at the beginning of the line to code block
     // that's why we escape 4 spaces with zero-width-non-joiner
@@ -358,7 +381,12 @@ const editorNodes = {
     index: number,
   ) {
     const isLastNode = parent.childCount === index + 1;
-    const delimiter = isLastNode ? '' : ' ';
+    let delimiter = '';
+    if (!isLastNode) {
+      const nextNode = parent.child(index + 1);
+      const nextNodeHasLeadingSpace = nextNode.textContent.indexOf(' ') === 0;
+      delimiter = nextNodeHasLeadingSpace ? '' : ' ';
+    }
 
     state.write(`@${node.attrs.id}${delimiter}`);
   },
@@ -375,9 +403,19 @@ const editorNodes = {
 export const nodes = { ...editorNodes, ...tableNodes };
 
 export const marks = {
-  em: { open: '*', close: '*', mixable: true },
-  strong: { open: '**', close: '**', mixable: true },
-  strike: { open: '~~', close: '~~', mixable: true },
+  em: { open: '_', close: '_', mixable: true, expelEnclosingWhitespace: true },
+  strong: {
+    open: '**',
+    close: '**',
+    mixable: true,
+    expelEnclosingWhitespace: true,
+  },
+  strike: {
+    open: '~~',
+    close: '~~',
+    mixable: true,
+    expelEnclosingWhitespace: true,
+  },
   link: {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {

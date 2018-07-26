@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/portal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Atlaskit wrapper for rendering components in React portals",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
