@@ -17,13 +17,13 @@ async function getExamplesFor(
       examples: 'examples/*.+(js|ts|tsx)',
     },
   });
-  let examples = [];
+  let examplesArr = [];
   project.workspaces.forEach(workspace => {
     if (workspace.pkg && workspace.pkg.name.split('/')[1] === pkgName) {
-      examples.push(...workspace.files.examples);
+      examplesArr.push(...workspace.files.examples);
     }
   });
-  return examples;
+  return examplesArr;
 }
 
 module.exports = { getExamplesFor };

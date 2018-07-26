@@ -7,8 +7,6 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { getExamplesFor } from './helper';
 
-let allExamples;
-
 /* This test takes the example name and a react component. It will throw an error if the component is not SSR friendly
 * Usage: 
 * import { testSSR } from '@atlaskit/test-ssr';
@@ -27,12 +25,8 @@ function testSSR(example: string, reactComponent: () => React$Element<*>) {
 * import { testSSRAll } from '@atlaskit/test-ssr';
 *  */
 async function testSSRAll(pkg: string) {
-  // $FlowFixMe - ForEach not define in Promise
-  beforeAll(async () => {
-    allExamples = await getExamplesFor(pkg);
-  });
   test(pkg, async () => {
-    allExamples.forEach(examples => {
+    (await getExamplesFor(pkg)).forEach(examples => {
       expect(() =>
         // $FlowFixMe - string literal
         ReactDOMServer.renderToString(require(examples.filePath).default),
