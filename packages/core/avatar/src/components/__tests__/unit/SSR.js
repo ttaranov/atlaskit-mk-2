@@ -2,8 +2,6 @@
  * @jest-environment node
  */
 // @flow
-import { testSSR, testSSRAll } from '@atlaskit/test-ssr';
-import Example from '../../../../examples/01-basicAvatar';
+import { testSSRAll } from '@atlaskit/test-ssr';
 
-testSSR('basicAvatar', Example);
 testSSRAll('avatar');
