@@ -2,6 +2,7 @@ import MentionResource, {
   AbstractMentionResource,
   MentionContextIdentifier,
   MentionProvider,
+  MentionStats,
 } from './api/MentionResource';
 import PresenceResource, {
   PresenceProvider,
@@ -10,7 +11,7 @@ import PresenceResource, {
 import MentionItem from './components/MentionItem';
 import MentionList from './components/MentionList';
 import ResourcedMentionList from './components/ResourcedMentionList';
-import MentionPicker from './components/MentionPicker';
+import { MentionPickerWithAnalytics as MentionPicker } from './components/MentionPicker';
 import Mention from './components/Mention';
 import ResourcedMention from './components/Mention/ResourcedMention';
 import { MentionDescription, MentionsResult, isSpecialMention } from './types';
@@ -33,6 +34,7 @@ export {
   MentionsResult,
   // types
   MentionContextIdentifier,
+  MentionStats,
   // Components
   MentionItem,
   MentionList,

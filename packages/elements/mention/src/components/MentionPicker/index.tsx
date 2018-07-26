@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
 import { OnMentionEvent } from '../../types';
-import { MentionProvider } from '../../api/MentionResource';
+import { MentionProvider, MentionStats } from '../../api/MentionResource';
 import { PresenceProvider } from '../../api/PresenceResource';
 import ResourcedMentionList from '../ResourcedMentionList';
 import Popup from '../Popup';
@@ -12,7 +12,7 @@ import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
-import { fireAnalyticsMentionTypeaheadEvent } from '../../util/analytics';
+import * as UtilAnalytics from '../../util/analytics';
 
 export interface OnOpen {
   (): void;
@@ -173,7 +173,7 @@ export class MentionPicker extends React.PureComponent<
   };
 
   // internal, used for callbacks
-  private filterChange = (mentions, query, duration, remoteSearch) => {
+  private filterChange = (mentions, query: string, stats?: MentionStats) => {
     debug('ak-mention-picker.filterChange', mentions.length);
     const wasVisible = this.state.visible;
     const visible = mentions.length > 0;
@@ -183,10 +183,10 @@ export class MentionPicker extends React.PureComponent<
 
     this.onFilterVisibilityChange(wasVisible, visible);
 
-    if (remoteSearch) {
-      fireAnalyticsMentionTypeaheadEvent(this.props)(
+    if (stats && stats.remoteSearch) {
+      UtilAnalytics.fireAnalyticsMentionTypeaheadEvent(this.props)(
         'rendered',
-        duration,
+        stats.duration,
         query,
       );
     }
@@ -290,7 +290,7 @@ export class MentionPicker extends React.PureComponent<
 }
 
 // tslint:disable-next-line:variable-name
-const MentionPickerWithAnalytics: React.ComponentClass<
+export const MentionPickerWithAnalytics: React.ComponentClass<
   Props
 > = withAnalyticsEvents({})(MentionPicker) as React.ComponentClass<Props>;
 

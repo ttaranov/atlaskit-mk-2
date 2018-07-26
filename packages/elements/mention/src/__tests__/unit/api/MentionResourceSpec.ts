@@ -8,6 +8,7 @@ import { MentionDescription } from '../../../types';
 import MentionResource, {
   HttpError,
   MentionResourceConfig,
+  MentionStats,
 } from '../../../api/MentionResource';
 import {
   resultC,
@@ -84,6 +85,11 @@ describe('MentionResource', () => {
           },
         })
         .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+          body: {
+            mentions: resultC,
+          },
+        })
+        .mock(/\/mentions\/bootstrap$/, {
           body: {
             mentions: resultC,
           },
@@ -208,33 +214,89 @@ describe('MentionResource', () => {
   });
 
   describe('#filter', () => {
+    it('should add weight based on response order - bootstrap', done => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          for (let i = 0; i < mentions.length; i++) {
+            expect(mentions[i].weight).toBe(i);
+          }
+          expect(stats).toBeDefined();
+          // @ts-ignore: stats should be passed
+          expect(stats.duration).toBeGreaterThan(0);
+          // @ts-ignore: stats should be passed
+          expect(stats.remoteSearch).toBeTruthy();
+          done();
+        },
+      );
+      resource.filter('');
+    });
+
     it('should add weight based on response order', done => {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe('test1', mentions => {
-        for (let i = 0; i < mentions.length; i++) {
-          expect(mentions[i].weight).toBe(i);
-        }
-
-        done();
-      });
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          for (let i = 0; i < mentions.length; i++) {
+            expect(mentions[i].weight).toBe(i);
+          }
+          expect(stats).toBeDefined();
+          // @ts-ignore: stats should be passed
+          expect(stats.duration).toBeGreaterThan(0);
+          // @ts-ignore: stats should be passed
+          expect(stats.remoteSearch).toBeTruthy();
+          done();
+        },
+      );
       resource.filter('c');
     });
 
     it('in order responses', done => {
       const resource = new MentionResource(apiConfig);
-      const results: MentionDescription[][] = [];
-      const expected = [resultC, [], resultCraig];
-      resource.subscribe('test1', mentions => {
-        results.push(mentions);
-        // 1st: remote search for 'c'
-        // 2nd: local index for 'craig'  => no results
-        // 3rd: remote search for 'craig'
+      let sequence = 0;
 
-        if (results.length === 3) {
-          checkOrder(expected, results);
-          done();
-        }
-      });
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          sequence++;
+
+          expect(stats).toBeDefined();
+
+          // 1st: remote search for 'c'
+          // 2nd: local index for 'craig'  => no results
+          // 3rd: remote search for 'craig'
+
+          if (sequence === 1) {
+            expect(query).toBe('c');
+            expect(mentions).toBe(resultC);
+            // @ts-ignore: stats should be passed
+            expect(stats.duration).toBeGreaterThan(0);
+            // @ts-ignore: stats should be passed
+            expect(stats.remoteSearch).toBeTruthy();
+          }
+
+          if (sequence === 2) {
+            expect(query).toBe('craig');
+            expect(mentions).toBe([]);
+            // @ts-ignore: stats should be passed
+            expect(stats.duration).toBeGreaterThan(0);
+            // @ts-ignore: stats should be passed
+            expect(stats.remoteSearch).toBeFalsy();
+          }
+
+          if (sequence === 3) {
+            expect(query).toBe('craig');
+            expect(mentions).toMatchObject(resultCraig);
+            // @ts-ignore: stats should be passed
+            expect(stats.duration).toBeGreaterThan(0);
+            // @ts-ignore: stats should be passed
+            expect(stats.remoteSearch).toBeTruthy();
+
+            done();
+          }
+        },
+      );
       resource.filter('c');
       setTimeout(() => {
         resource.filter('craig');

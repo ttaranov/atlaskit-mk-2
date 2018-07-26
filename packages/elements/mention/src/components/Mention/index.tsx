@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MentionStyle } from './styles';
 import Tooltip from '@atlaskit/tooltip';
 import { isRestricted, MentionType, MentionEventHandler } from '../../types';
-import { mentionPayload, fireAnalytics } from '../../util/analytics';
+import { fireAnalyticsMentionEvent, fireAnalytics } from '../../util/analytics';
 
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
@@ -10,7 +10,6 @@ import {
   withAnalyticsEvents,
   UIAnalyticsEventInterface,
 } from '@atlaskit/analytics-next';
-import { ELEMENTS_CHANNEL } from '../../constants';
 
 import {
   WithAnalyticsEventProps,
@@ -138,16 +137,20 @@ const MentionWithAnalytics: React.ComponentClass<
     props: Props,
   ): UIAnalyticsEventInterface => {
     const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
-    const event = createEvent(
-      mentionPayload('mention', 'selected', accessLevel, text, id),
+
+    const event = fireAnalyticsMentionEvent(createEvent)(
+      'mention',
+      'selected',
+      text,
+      id,
+      accessLevel,
     );
-    event.fire(ELEMENTS_CHANNEL);
 
     // old analytics
     fireAnalytics(firePrivateAnalyticsEvent)(
       'lozenge.select',
-      accessLevel,
       text,
+      accessLevel,
     );
     return event;
   },
@@ -157,16 +160,20 @@ const MentionWithAnalytics: React.ComponentClass<
     props: Props,
   ): UIAnalyticsEventInterface => {
     const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
-    const event = createEvent(
-      mentionPayload('mention', 'hovered', accessLevel, text, id),
+
+    const event = fireAnalyticsMentionEvent(createEvent)(
+      'mention',
+      'hovered',
+      text,
+      id,
+      accessLevel,
     );
-    event.fire(ELEMENTS_CHANNEL);
 
     // old analytics
     fireAnalytics(firePrivateAnalyticsEvent)(
       'lozenge.hover',
-      accessLevel,
       text,
+      accessLevel,
     );
     return event;
   },

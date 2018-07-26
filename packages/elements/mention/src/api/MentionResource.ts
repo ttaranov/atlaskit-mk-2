@@ -16,8 +16,10 @@ import { SearchIndex, mentionDescriptionComparator } from '../util/searchIndex';
 const MAX_QUERY_ITEMS = 100;
 const MAX_NOTIFIED_ITEMS = 20;
 
+export type MentionStats = { [key: string]: any };
+
 export interface ResultCallback<T> {
-  (result: T, query?: string, duration?: number, remoteSearch?: boolean): void;
+  (result: T, query?: string, stats?: MentionStats): void;
 }
 
 export interface ErrorCallback {
@@ -159,8 +161,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]>
 
   protected _notifyListeners(
     mentionsResult: MentionsResult,
-    duration?: number,
-    remoteSearch?: boolean,
+    stats?: MentionStats,
   ): void {
     debug(
       'ak-mention-resource._notifyListeners',
@@ -175,8 +176,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]>
         listener(
           mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS),
           mentionsResult.query,
-          duration,
-          remoteSearch,
+          stats,
         );
       } catch (e) {
         // ignore error from listener
@@ -273,11 +273,10 @@ class MentionResource extends AbstractMentionResource {
     this.sortMentionsResult(mentionResult).then(sortedMentionsResult => {
       if (searchTime > this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
-        this._notifyListeners(
-          sortedMentionsResult,
-          Date.now() - searchTime,
+        this._notifyListeners(sortedMentionsResult, {
+          duration: Date.now() - searchTime,
           remoteSearch,
-        );
+        });
       } else {
         const date = new Date(searchTime).toISOString().substr(17, 6);
         debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
@@ -394,7 +393,7 @@ class MentionResource extends AbstractMentionResource {
 
     return serviceUtils
       .requestService<MentionsResult>(this.config, options)
-      .then(result => this.transformServiceResponse(result))
+      .then(result => this.transformServiceResponse(result, ''))
       .then(result => {
         this.searchIndex.indexResults(result.mentions);
         return result;
@@ -469,10 +468,13 @@ class MentionResource extends AbstractMentionResource {
 
     return serviceUtils
       .requestService<MentionsResult>(this.config, options)
-      .then(result => this.transformServiceResponse(result));
+      .then(result => this.transformServiceResponse(result, query));
   }
 
-  private transformServiceResponse(result: MentionsResult): MentionsResult {
+  private transformServiceResponse(
+    result: MentionsResult,
+    query: string,
+  ): MentionsResult {
     const mentions = result.mentions.map((mention, index) => {
       let lozenge: string | undefined;
       const weight = mention.weight !== undefined ? mention.weight : index;
@@ -482,10 +484,10 @@ class MentionResource extends AbstractMentionResource {
         lozenge = mention.userType;
       }
 
-      return { ...mention, lozenge, weight };
+      return { ...mention, lozenge, weight, query };
     });
 
-    return { ...result, mentions };
+    return { ...result, mentions, query: result.query || query };
   }
 
   private recordSelection(
