@@ -1,7 +1,5 @@
 // @flow
 import React, { type Node } from 'react';
-import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
 import { mount } from 'enzyme';
 import Portal from '../..';
 
@@ -13,11 +11,6 @@ const zIndex = (elem: HTMLElement) =>
 let wrapper: any;
 
 afterEach(() => wrapper && wrapper.unmount());
-
-afterAll(() =>
-  document
-    .querySelectorAll('.atlaskit-portal')
-    .forEach(e => e.parentNode && e.parentNode.removeChild(e)));
 
 test('should create a portal', () => {
   wrapper = mount(
@@ -66,23 +59,4 @@ test('should use DOM ordering to stack sibiling portals', () => {
   const [back, front] = elements;
   expect(zIndex(front)).toEqual(zIndex(back));
   expect(back.nextSibling).toBe(front);
-});
-
-test('should hydrate portal correctly', () => {
-  const SsrApp = ({ ssr = false }: { ssr?: boolean }) => (
-    <div>
-      <Portal ssr={ssr}>
-        <h1>:wave:</h1>
-      </Portal>
-      <p>Hi everyone</p>
-    </div>
-  );
-  // server-side
-  const serverHTML = ReactDOMServer.renderToString(<SsrApp ssr />);
-  // client-side
-  const elem = document.createElement('div');
-  elem.innerHTML = serverHTML;
-  ReactDOM.hydrate(<SsrApp />, elem);
-  expect(elem.getElementsByTagName('h1')).toHaveLength(0);
-  expect(document.getElementsByClassName('atlaskit-portal')).toHaveLength(1);
 });

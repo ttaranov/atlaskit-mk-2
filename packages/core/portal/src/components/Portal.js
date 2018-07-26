@@ -1,10 +1,9 @@
 // @flow
 import React, { type Node } from 'react';
 import ReactDOM from 'react-dom';
+import canUseDOM from '../utils/canUseDOM';
 
 type Props = {
-  /* Whether rendering is happening on the client or server */
-  ssr?: boolean,
   /* Children to render in the React Portal. */
   children: Node,
   /* The z-index of the DOM container element. */
@@ -24,13 +23,6 @@ const createContainer = (zIndex: number) => {
 
 const body = fn => document.body && fn(document.body);
 
-const canUseDOM = () =>
-  Boolean(
-    typeof window !== 'undefined' &&
-      window.document &&
-      window.document.createElement,
-  );
-
 // This is a generic component does two things:
 // 1. Portals it's children using React.createPortal
 // 2. Creates the DOM node container for the portal based on props
@@ -41,10 +33,7 @@ class Portal extends React.Component<Props, State> {
   };
 
   state = {
-    container:
-      !this.props.ssr && canUseDOM()
-        ? createContainer(this.props.zIndex)
-        : undefined,
+    container: canUseDOM() ? createContainer(this.props.zIndex) : undefined,
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
