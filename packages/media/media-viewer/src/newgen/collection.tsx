@@ -102,24 +102,21 @@ export class Collection extends React.Component<Props, State> {
             },
           });
         } else {
-          this.setState(
-            {
-              items: {
-                status: 'SUCCESSFUL',
-                data: collection.items.filter(collectionFileItemFilter),
-              },
+          const items = collection.items.filter(collectionFileItemFilter);
+          this.setState({
+            items: {
+              status: 'SUCCESSFUL',
+              data: items,
             },
-            () => {
-              if (
-                defaultSelectedItem &&
-                this.shouldLoadNext(defaultSelectedItem)
-              ) {
-                if (this.provider) {
-                  this.provider.loadNextPage();
-                }
-              }
-            },
-          );
+          });
+          if (
+            defaultSelectedItem &&
+            this.shouldLoadNext(defaultSelectedItem, items)
+          ) {
+            if (this.provider) {
+              this.provider.loadNextPage();
+            }
+          }
         }
       },
     });
@@ -139,17 +136,24 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private onNavigationChange = (item: Identifier) => {
-    if (this.shouldLoadNext(item) && this.provider) {
+    const { items } = this.state;
+    if (
+      items.status === 'SUCCESSFUL' &&
+      this.provider &&
+      this.shouldLoadNext(item, items.data)
+    ) {
       this.provider.loadNextPage();
     }
   };
 
-  private shouldLoadNext(selectedItem: Identifier): boolean {
-    const { items } = this.state;
-    if (items.status !== 'SUCCESSFUL' || items.data.length === 0) {
+  private shouldLoadNext(
+    selectedItem: Identifier,
+    items: MediaCollectionItem[],
+  ): boolean {
+    if (items.length === 0) {
       return false;
     }
-    return this.isLastItem(selectedItem, items.data);
+    return this.isLastItem(selectedItem, items);
   }
 
   private isLastItem(selectedItem: Identifier, items: MediaCollectionItem[]) {
