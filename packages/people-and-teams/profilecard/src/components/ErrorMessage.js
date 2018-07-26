@@ -8,7 +8,7 @@ import { type ProfileCardErrorType } from '../types';
 
 type Props = {
   reload?: Function,
-  errorType?: ProfileCardErrorType,
+  errorType?: ?ProfileCardErrorType,
 };
 
 export default class ErrorMessage extends PureComponent<Props> {
@@ -40,7 +40,9 @@ export default class ErrorMessage extends PureComponent<Props> {
     ) : null;
 
   renderErrorContent() {
-    const { errorType = {} } = this.props;
+    const errorType: ProfileCardErrorType = this.props.errorType || {
+      reason: 'default',
+    };
 
     switch (errorType.reason) {
       case 'NotFound':

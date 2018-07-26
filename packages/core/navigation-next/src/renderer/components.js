@@ -14,22 +14,23 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   ContainerHeader,
-  ContainerViewSubscriber,
   Item as BaseItem,
   ItemPrimitive,
-  RootViewSubscriber,
-  Section,
-  SectionSeparator,
-  SectionTitle,
+  Section as SectionComponent,
+  Separator,
+  Group as GroupComponent,
+  GroupHeading as GroupHeadingComponent,
   Switcher,
-} from '../';
+  withNavigationUI,
+  withNavigationViewController,
+} from '..';
 import type {
   GoToItemProps,
   GroupProps,
   ItemProps,
   ItemsRendererProps,
-  NestedProps,
-  TitleProps,
+  SectionProps,
+  GroupHeadingProps,
 } from './types';
 
 const iconMap = {
@@ -50,29 +51,43 @@ const gridSize = gridSizeFn();
  */
 
 // GoToItem
-const GoToItem = ({ after: afterProp, goTo, ...rest }: GoToItemProps) => {
+const GoToItemBase = ({
+  after: afterProp,
+  goTo,
+  navigationUIController,
+  navigationViewController,
+  ...rest
+}: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
-    after = ({ isHover }: *) =>
-      isHover ? <ArrowRightIcon size="small" /> : null;
+    after = ({ isActive, isHover }: *) =>
+      isActive || isHover ? <ArrowRightIcon size="small" /> : null;
   }
 
   const props = { ...rest, after };
-  const ViewSubscriber = goTo.match(/^root\//)
-    ? RootViewSubscriber
-    : ContainerViewSubscriber;
-
-  const handleClick = (e, view) => {
+  const handleClick = e => {
     e.preventDefault();
-    view.setView(goTo);
+
+    const { activeView } = navigationViewController.state;
+
+    if (navigationUIController.state.isPeeking) {
+      if (activeView && goTo === activeView.id) {
+        // If we're peeking and goTo points to the active view, unpeek.
+        navigationUIController.unPeek();
+      } else {
+        // If we're peeking and goTo does not point to the active view, update
+        // the peek view.
+        navigationViewController.setPeekView(goTo);
+      }
+    } else {
+      // If we're not peeking, update the active view.
+      navigationViewController.setView(goTo);
+    }
   };
 
-  return (
-    <ViewSubscriber>
-      {view => <Item onClick={e => handleClick(e, view)} {...props} />}
-    </ViewSubscriber>
-  );
+  return <Item onClick={e => handleClick(e)} {...props} />;
 };
+const GoToItem = withNavigationUI(withNavigationViewController(GoToItemBase));
 
 // Item
 const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
@@ -112,12 +127,9 @@ const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
   </div>
 );
 
-// Separator
-const Separator = SectionSeparator;
-
 // Title
-const Title = ({ text, ...props }: TitleProps) => (
-  <SectionTitle {...props}>{text}</SectionTitle>
+const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
+  <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
 const Debug = props => (
@@ -137,49 +149,36 @@ const Debug = props => (
  * GROUPS
  */
 
-const rootLevelGroupStyles = {
-  paddingLeft: `${gridSize * 2}px`,
-  paddingRight: `${gridSize * 2}px`,
-};
-
 // Group
 const Group = ({
   customComponents,
   hasSeparator,
-  isRootLevel,
+  heading,
   items,
-  title,
 }: GroupProps) =>
   items.length ? (
-    <div css={isRootLevel ? rootLevelGroupStyles : null}>
-      {title ? <Title text={title} /> : null}
+    <GroupComponent heading={heading} hasSeparator={hasSeparator}>
       <ItemsRenderer items={items} customComponents={customComponents} />
-      {hasSeparator && <Separator />}
-    </div>
+    </GroupComponent>
   ) : null;
 
-// Nested
-const Nested = ({
+// Section
+const Section = ({
   customComponents,
   id,
-  isRootLevel,
   items,
   nestedGroupKey,
   parentId,
-}: NestedProps) => (
-  <Section id={id} key={nestedGroupKey} parentId={parentId}>
-    {({ css }) => (
-      <div
-        css={{
-          ...css,
-          ...(isRootLevel ? rootLevelGroupStyles : null),
-        }}
-      >
-        <ItemsRenderer items={items} customComponents={customComponents} />
-      </div>
-    )}
-  </Section>
-);
+}: SectionProps) =>
+  items.length ? (
+    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+      {({ css }) => (
+        <div css={{ ...css }}>
+          <ItemsRenderer items={items} customComponents={customComponents} />
+        </div>
+      )}
+    </SectionComponent>
+  ) : null;
 
 const itemComponents = {
   ContainerHeader,
@@ -188,13 +187,13 @@ const itemComponents = {
   Item,
   BackItem,
   Separator,
-  Title,
+  GroupHeading,
   Switcher,
 };
 
 const groupComponents = {
   Group,
-  Nested,
+  Section,
 };
 
 const components = { ...itemComponents, ...groupComponents };

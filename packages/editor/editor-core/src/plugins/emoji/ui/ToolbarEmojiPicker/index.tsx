@@ -5,7 +5,11 @@ import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
+import {
+  EmojiPicker as AkEmojiPicker,
+  EmojiProvider,
+  EmojiId,
+} from '@atlaskit/emoji';
 import { analyticsDecorator as analytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { EmojiState } from '../../pm-plugins/main';
@@ -208,7 +212,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.emoji.button')
-  private handleSelectedEmoji = (emojiId: any, emoji: any): boolean => {
+  private handleSelectedEmoji = (emojiId: EmojiId): boolean => {
     if (this.state.isOpen && this.pluginState) {
       this.pluginState.insertEmoji(emojiId);
       this.close();

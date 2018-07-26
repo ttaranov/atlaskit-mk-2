@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, ReactElement } from 'react';
 import styled from 'styled-components';
 import DropList from '@atlaskit/droplist';
 import Item, { ItemGroup } from '@atlaskit/item';
 import Tooltip from '@atlaskit/tooltip';
-import { Popup } from '@atlaskit/editor-common';
+import {
+  Popup,
+  akEditorToolbarDropdownMenuZIndex,
+} from '@atlaskit/editor-common';
 import withOuterListeners from '../with-outer-listeners';
 
 export interface Props {
@@ -18,7 +21,7 @@ export interface Props {
   fitHeight?: number;
   items: Array<{
     items: Array<{
-      content: string;
+      content: string | ReactElement<any>;
       elemBefore?: React.ReactNode;
       tooltipDescription?: string;
       tooltipPosition?: string;
@@ -131,6 +134,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
         onPlacementChanged={this.updatePopupPlacement}
         fitHeight={fitHeight}
         fitWidth={fitWidth}
+        zIndex={akEditorToolbarDropdownMenuZIndex}
       >
         <DropListWithOutsideListeners
           isOpen={true}

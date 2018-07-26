@@ -148,7 +148,7 @@ export default md`
 
   Allows user to drag & drop files into the page. Has a design first seen in [https://enso.me/](Enso).
 
-  ![alt text](./dropzone.png "Dropzone")
+  ![alt text](./dropzone.png 'Dropzone')
 
   #### Usage
 
@@ -239,7 +239,7 @@ export default md`
 
   Opens native Operating System file browser window.
 
-  ![alt text](./browser.png "Browser")
+  ![alt text](./browser.png 'Browser')
 
   #### Usage
 
@@ -323,7 +323,7 @@ export default md`
 
   The popup component requires userAuthProvider (in addition to the authProvider because it displays files from and uploads files to the user's recent file collection). You will be need to cache this token returned by userAuthProvider because the popup will call this provider on every request to the media api concerning the users collection and cloud accounts. You cannot use the popup component if you can't obtain a token for the user's collection - use the Browser component instead.
 
-  ![alt text](./popup.png "Popup")
+  ![alt text](./popup.png 'Popup')
 
   #### Usage
 

@@ -1,24 +1,12 @@
 // @flow
 import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
-import { colors } from '@atlaskit/theme';
-
-const Warning = p => (
-  <div
-    style={{
-      backgroundColor: colors.Y75,
-      boxShadow: `-4px 0 0 ${colors.Y200}`,
-      marginBottom: '1.4em',
-      padding: '1em 1.2em',
-    }}
-    {...p}
-  />
-);
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
 
   ${(
-    <Warning>
+    <SectionMessage appearance="warning">
       <p>
         <strong>Note: @atlaskit/tree is currently a developer preview.</strong>
       </p>
@@ -26,13 +14,13 @@ export default md`
         Please experiment with and test this package but be aware that the API
         may & probably will change with future releases.
       </p>
-    </Warning>
+    </SectionMessage>
   )}
 
   Tree component provides a generic way to visualize tree structures.
-  
+
   ## Features
-  
+
    - Fully customizable node rendering
    - Capability to collapse and expand subtree
    - Lazy loading of subtrees
@@ -47,7 +35,7 @@ export default md`
       source={require('!!raw-loader!../examples/0-static-tree')}
     />
   )}
-  
+
   ${(
     <Props
       props={require('!!extract-react-types-loader!../src/components/Tree')}

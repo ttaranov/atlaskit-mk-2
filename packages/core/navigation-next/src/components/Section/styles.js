@@ -1,14 +1,19 @@
 // @flow
 
 import { keyframes } from 'emotion';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   transitionDuration,
   transitionTimingFunction,
 } from '../../common/constants';
 
+const gridSize = gridSizeFn();
+
 const baseStyles = {
   boxSizing: 'border-box',
+  paddingLeft: `${gridSize * 2}px`,
+  paddingRight: `${gridSize * 2}px`,
 };
 
 const enterAnimationDown = keyframes`

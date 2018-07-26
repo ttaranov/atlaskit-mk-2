@@ -20,9 +20,11 @@ const TooltipButton = ({
   children: Node,
   onClick: Function,
 }) => (
-  <Tooltip content="Click me">
-    <Button onClick={onClick}>{children}</Button>
-  </Tooltip>
+  <div style={{ backgroundColor: 'white' }}>
+    <Tooltip content="Click me">
+      <Button onClick={onClick}>{children}</Button>
+    </Tooltip>
+  </div>
 );
 
 type SpotlightProps = {
@@ -179,6 +181,10 @@ class App extends React.Component<{}, State> {
             }
           />
         ))}
+        <p>
+          This example shows off all components that rely on portalling and
+          layering to appear in the expected order.
+        </p>
         <TooltipButton
           onClick={() =>
             this.setState({

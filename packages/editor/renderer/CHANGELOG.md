@@ -1,5 +1,37 @@
 # @atlaskit/renderer
 
+## 19.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+  - @atlaskit/util-data-test@10.0.1
+  - @atlaskit/editor-common@13.1.0
+
+## 19.0.7
+- [patch] ED-4199, Adding support for column layout in renderer. [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
+- [patch] Updated dependencies [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
+  - @atlaskit/editor-common@13.0.9
+
+## 19.0.6
+- [patch] ED-5123: fix getText util when passing ADNode [195e6e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/195e6e0)
+- [none] Updated dependencies [195e6e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/195e6e0)
+
+## 19.0.5
+- [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
+  - @atlaskit/editor-common@13.0.7
+
+## 19.0.4
+- [patch] Fixing issue with image wrapper class name in renderer. [635c686](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/635c686)
+- [none] Updated dependencies [635c686](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/635c686)
+
+## 19.0.3
+- [patch] New floating toolbar for Panel [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+- [none] Updated dependencies [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+  - @atlaskit/editor-common@13.0.5
+
+## 19.0.2
+- [patch] ED-5046, fixing image rendering in renderer. [1c70502](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c70502)
+- [none] Updated dependencies [1c70502](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c70502)
+
 ## 19.0.1
 - [patch] Updated dependencies [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
   - @atlaskit/editor-common@13.0.1

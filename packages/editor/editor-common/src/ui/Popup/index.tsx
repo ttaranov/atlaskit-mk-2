@@ -47,7 +47,6 @@ export default class Popup extends React.Component<Props, State> {
     overflowScrollParent: false,
   };
 
-  private scheduledResizeFrame: number | null = null;
   private placement: [string, string] = ['', ''];
 
   /**
@@ -138,18 +137,20 @@ export default class Popup extends React.Component<Props, State> {
     this.initPopup(popup);
   };
 
-  private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
+  private scheduledUpdatePosition = rafSchedule(props =>
+    this.updatePosition(props),
+  );
 
-  private handleReposition = () => {
-    this.scheduledResizeFrame = this.scheduledUpdatePosition();
-  };
+  onResize = () => this.scheduledUpdatePosition();
 
   componentWillReceiveProps(newProps: Props) {
-    this.updatePosition(newProps);
+    // We are delaying `updatePosition` otherwise it happens before the children
+    // get rendered and we end up with a wrong position
+    this.scheduledUpdatePosition(newProps);
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleReposition);
+    window.addEventListener('resize', this.onResize);
 
     const { stickToBottom } = this.props;
 
@@ -159,19 +160,16 @@ export default class Popup extends React.Component<Props, State> {
       this.scrollElement = this.props.scrollableElement;
     }
     if (this.scrollElement) {
-      this.scrollElement.addEventListener('scroll', this.handleReposition);
+      this.scrollElement.addEventListener('scroll', this.onResize);
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleReposition);
-    if (this.scheduledResizeFrame) {
-      cancelAnimationFrame(this.scheduledResizeFrame);
-    }
-
+    window.removeEventListener('resize', this.onResize);
     if (this.scrollElement) {
-      this.scrollElement.removeEventListener('scroll', this.handleReposition);
+      this.scrollElement.removeEventListener('scroll', this.onResize);
     }
+    this.scheduledUpdatePosition.cancel();
   }
 
   private renderPopup() {
@@ -186,6 +184,8 @@ export default class Popup extends React.Component<Props, State> {
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}
+        // Indicates component is an editor pop. Required for focus handling in Message.tsx
+        data-editor-popup
       >
         {this.props.children}
       </div>

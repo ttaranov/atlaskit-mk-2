@@ -155,8 +155,8 @@ export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={props => <GlobalNavWithDrawers {...props} />}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
+      productNavigation={() => null}
+      containerNavigation={() => null}
     >
       <div>Page content</div>
     </LayoutManager>

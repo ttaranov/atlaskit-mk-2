@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "layoutSection",
+      "attrs": {
+        "layoutType": "two_equal"
+      },
+      "content": [
+        {
+          "type": "layoutColumn",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "left content"
+                }
+              ]
+            },
+            {
+              "type": "codeBlock",
+              "attrs": {},
+              "content": [
+                {
+                  "type": "text",
+                  "text": "code block on left"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "layoutColumn",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "right content"
+                }
+              ]
+            },
+            {
+              "type": "blockquote",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "block quote on right"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

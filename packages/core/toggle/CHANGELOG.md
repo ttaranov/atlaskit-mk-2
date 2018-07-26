@@ -1,5 +1,9 @@
 # @atlaskit/toggle
 
+## 5.0.2
+- [patch] Fixed large toggle icon size and improved dark mode style [7c1166b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c1166b)
+- [none] Updated dependencies [7c1166b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c1166b)
+
 ## 5.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

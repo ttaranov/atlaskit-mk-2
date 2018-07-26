@@ -123,14 +123,14 @@ export const IconWrapper: ComponentClass<
   HTMLAttributes<{}> & PlaceholderProps
 > = styled.div`
   ${borderRadius} ${size(16)} ${({ isPlaceholder }: PlaceholderProps) => {
-      if (isPlaceholder) {
-        return `
+  if (isPlaceholder) {
+    return `
       background-color: ${akColorN30};
     `;
-      } else {
-        return '';
-      }
-    }} margin-right: 4px;
+  } else {
+    return '';
+  }
+}} margin-right: 4px;
 `;
 
 export const TextWrapper: ComponentClass<

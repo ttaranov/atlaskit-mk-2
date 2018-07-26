@@ -121,14 +121,13 @@ export default class ProfilecardInteractive extends Component<Props, State> {
     );
   }
 
-  createRadioPresenceAttribute(attribute: string) {
+  createRadioPresenceAttribute(attribute: PresenceTypes) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
         <input
           checked={this.state.presence === attribute}
           id={id}
-          // $FlowFixMe - Cannot call `this.setState` with object literal bound to `partialState`
           onChange={() => this.setState({ presence: attribute })}
           type="radio"
         />

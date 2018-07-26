@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 9.1.0
+- [minor] fix panning and origin problems. minor visual improvements. [2045263](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2045263)
+
 ## 9.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

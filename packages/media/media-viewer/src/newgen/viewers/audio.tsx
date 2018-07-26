@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
-import { constructAuthTokenUrl } from '../util';
+import { constructAuthTokenUrl } from '../utils';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
 import {
@@ -125,11 +125,10 @@ export class AudioViewer extends React.Component<Props, State> {
   private async init() {
     const { context, item, collectionName } = this.props;
     const audioUrl = getAudioArtifactUrl(item);
-    if (!audioUrl) {
-      return;
-    }
-
     try {
+      if (!audioUrl) {
+        throw new Error('No audio artifacts found');
+      }
       this.setCoverUrl();
       this.setState({
         src: {

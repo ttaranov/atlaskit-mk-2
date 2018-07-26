@@ -1,24 +1,12 @@
 // @flow
 import React from 'react';
 import { md, Props } from '@atlaskit/docs';
-import { colors } from '@atlaskit/theme';
+import SectionMessage from '@atlaskit/section-message';
 import { Link } from 'react-router-dom';
-
-const Warning = p => (
-  <div
-    style={{
-      backgroundColor: colors.Y75,
-      boxShadow: `-4px 0 0 ${colors.Y200}`,
-      marginBottom: '1.4em',
-      padding: '1em 1.2em',
-    }}
-    {...p}
-  />
-);
 
 export default md`
 ${(
-  <Warning>
+  <SectionMessage appearance="warning">
     <p>
       <strong>Note: @atlaskit/form is currently a developer preview.</strong>
     </p>
@@ -26,23 +14,23 @@ ${(
       Please experiment with and test this package but be aware that the API may
       & probably will change with future releases.
     </p>
-  </Warning>
+  </SectionMessage>
 )}
 
   ### Usage
   The Form package provides form & field state, layout and validation and can be imported using:
   ~~~js
-  import Form { 
+  import Form {
     FormHeader,
     FormSection,
     FormFooter
-    Field, 
-    FieldGroup, 
-    Validator 
+    Field,
+    FieldGroup,
+    Validator
   } from '@atlaskit/form';
   ~~~
-  
-  Layout & state management can be implemented using **Form**, **FormHeader**, **FormSection** & **FormFooter** components. 
+
+  Layout & state management can be implemented using **Form**, **FormHeader**, **FormSection** & **FormFooter** components.
   If you have existing form wrappers then **Field**, **FieldGroup** & **Validator** can still be used to provide validation via
   validator libs, custom validator functions or Regular expressions.
 

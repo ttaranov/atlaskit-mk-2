@@ -1,4 +1,7 @@
 import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { NodeType } from 'prosemirror-model';
+
 import { Command } from '../../types';
 import { ButtonAppearance } from './ui/Button';
 import { DropdownOptions, RenderOptionsPropsT } from './ui/Dropdown';
@@ -31,7 +34,8 @@ export type FloatingToolbarItem<T> =
 
 export interface FloatingToolbarConfig {
   title: string;
-  target: HTMLElement;
+  getDomRef: (view: EditorView) => HTMLElement | undefined;
+  nodeType: NodeType;
   items: Array<FloatingToolbarItem<Command>>;
 }
 

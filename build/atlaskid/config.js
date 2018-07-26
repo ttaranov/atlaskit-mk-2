@@ -41,6 +41,7 @@ const editorTeam = [
   'dsorin',
   'jmack2',
   'supertong',
+  'jcoppinger',
   'pcurren',
   'agnes',
   'vsutrave',

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
+import createStub from 'raf-stub/lib';
 import { browser } from '../../src';
 
 import {
@@ -588,14 +589,25 @@ describe('Popup', () => {
     });
 
     it('should call onPositionCalculated everytime position changes', () => {
+      let stub = createStub();
+      const sinonStub = sinon
+        .stub(window, 'requestAnimationFrame')
+        .callsFake(stub.add);
+
       const onPositionCalculated = sinon.stub().returns({});
       const popup = mount(
         <Popup target={target} onPositionCalculated={onPositionCalculated} />,
       );
+
       expect(onPositionCalculated.calledOnce).to.eq(true);
+
       popup.setProps({ fitHeight: 10 });
+
+      stub.step();
       expect(onPositionCalculated.calledTwice).to.eq(true);
       popup.unmount();
+
+      sinonStub.restore();
     });
 
     it('should replace position with a result of onPositionCalculated callback', () => {

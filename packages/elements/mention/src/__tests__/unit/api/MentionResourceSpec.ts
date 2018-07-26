@@ -63,6 +63,7 @@ function checkOrder(expected, actual) {
 const FULL_CONTEXT = {
   containerId: 'someContainerId',
   objectId: 'someObjectId',
+  childObjectId: 'someChildObjectId',
 };
 
 describe('MentionResource', () => {
@@ -141,6 +142,7 @@ describe('MentionResource', () => {
 
         expect(queryParams.containerId).toBe('someContainerId');
         expect(queryParams.objectId).toBe('someObjectId');
+        expect(queryParams.childObjectId).toBe('someChildObjectId');
         expect(requestData.credentials).toEqual('include');
         done();
       });
@@ -159,6 +161,7 @@ describe('MentionResource', () => {
         const queryParams = queryString.parse(
           queryString.extract(fetchMock.lastUrl().url),
         );
+        // default containerId from config should be used
         expect(queryParams.containerId).toBe('defaultContainerId');
 
         count++;
@@ -178,7 +181,6 @@ describe('MentionResource', () => {
 
     it('subscribe should receive updates with credentials omitted', done => {
       const resource = new MentionResource(apiConfigWithoutCredentials);
-      // const resource = new MentionResource(apiConfig);
       resource.subscribe('test3', mentions => {
         expect(mentions).toHaveLength(0);
 
@@ -482,6 +484,7 @@ describe('MentionResource', () => {
           );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
+          expect(queryParams.childObjectId).toBe('someChildObjectId');
           expect(fetchMock.called('record')).toBe(true);
           done();
         });

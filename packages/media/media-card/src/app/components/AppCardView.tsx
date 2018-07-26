@@ -27,17 +27,23 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   static defaultProps = {};
 
   get isDarkAppearance() {
-    const { model: { background } } = this.props;
+    const {
+      model: { background },
+    } = this.props;
     return Boolean(background);
   }
 
   get contentMaxWidth() {
-    const { model: { preview } } = this.props;
+    const {
+      model: { preview },
+    } = this.props;
     return preview ? maxCardWidth - previewWidth : maxCardWidth;
   }
 
   renderPreview() {
-    const { model: { preview } } = this.props;
+    const {
+      model: { preview },
+    } = this.props;
     if (!preview) {
       return null;
     }
@@ -67,7 +73,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderDescription() {
-    const { model: { description } } = this.props;
+    const {
+      model: { description },
+    } = this.props;
     if (!description) {
       return null;
     }
@@ -81,7 +89,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderDetails() {
-    const { model: { details } } = this.props;
+    const {
+      model: { details },
+    } = this.props;
     if (!details) {
       return null;
     }
@@ -95,7 +105,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderContext() {
-    const { model: { context } } = this.props;
+    const {
+      model: { context },
+    } = this.props;
     if (!context) {
       return null;
     }
@@ -106,7 +118,10 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderActions() {
-    const { model: { actions }, onActionClick } = this.props;
+    const {
+      model: { actions },
+      onActionClick,
+    } = this.props;
 
     if (!actions) {
       return null;
@@ -122,7 +137,9 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   renderBody() {
-    const { model: { description, details, context, actions } } = this.props;
+    const {
+      model: { description, details, context, actions },
+    } = this.props;
 
     if (!description && !details && !context && !actions) {
       return null;
@@ -143,7 +160,10 @@ export class AppCardView extends React.Component<AppCardViewProps, {}> {
   }
 
   render(): JSX.Element {
-    const { model: { background, preview }, onClick } = this.props;
+    const {
+      model: { background, preview },
+      onClick,
+    } = this.props;
     return (
       <Card
         background={background && background.url}

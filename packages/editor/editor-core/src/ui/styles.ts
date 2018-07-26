@@ -37,8 +37,7 @@ export const Wrapper: ComponentClass<
   > div > div {
     display: flex;
   }
-  /* see ED-4591 */
-  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 5 : 4)}px;
+  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 4 : 0)}px;
   min-width: ${({ isSmall }: { isSmall?: boolean }) =>
     isSmall ? '40px' : 'auto'};
 `;
@@ -58,7 +57,7 @@ export const MenuWrapper: ComponentClass<HTMLAttributes<{}>> = Wrapper;
 export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   width: 80px;
-  height: 24px;
+  height: 32px;
   align-items: center;
   padding: ${(props: any) => (props.width ? 0 : '0 8px')};
 `;

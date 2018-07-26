@@ -23,13 +23,24 @@ describe('typeAhead input rules', () => {
   it('should not duplicate previous char', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView, sel } = createEditor({
-      doc: doc(p('({<>}')),
+      doc: doc(p('.{<>}')),
       editorPlugins: [plugin],
     });
 
     insertText(editorView, '/', sel);
     expect(editorView.state.doc).toEqualDocument(
-      doc(p('(', '{<>}', typeAheadQuery({ trigger: '/' })('/'))),
+      doc(p('.', '{<>}', typeAheadQuery({ trigger: '/' })('/'))),
     );
+  });
+
+  it('should not show typeahead for key combination (/', () => {
+    const plugin = createTypeAheadPlugin();
+    const { editorView, sel } = createEditor({
+      doc: doc(p('({<>}')),
+      editorPlugins: [plugin],
+    });
+
+    insertText(editorView, '/', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(p('(/')));
   });
 });

@@ -1,5 +1,50 @@
 # @atlaskit/editor-common
 
+## 13.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+
+## 13.0.11
+- [patch] quick fix for invalid codeBlock throwing errors. We should handle it in a better way. Rifat is working on a proper solution [7d549c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d549c4)
+- [none] Updated dependencies [7d549c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d549c4)
+
+## 13.0.10
+- [patch] Fix deleting the panel macro crashes the page [f0a4fb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0a4fb9)
+- [none] Updated dependencies [f0a4fb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0a4fb9)
+
+## 13.0.9
+- [patch] ED-4199, Adding support for column layout in renderer. [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
+- [none] Updated dependencies [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
+
+## 13.0.8
+- [patch] FS-2816 - Prevent clicks in pop ups from triggering focus of the message editor [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+- [none] Updated dependencies [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+
+## 13.0.7
+- [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
+
+## 13.0.6
+- [patch] Fix popup reposition error on scroll and resize and karma test [aeec6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeec6b8)
+- [none] Updated dependencies [aeec6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeec6b8)
+
+## 13.0.5
+- [patch] New floating toolbar for Panel [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+- [none] Updated dependencies [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+
+## 13.0.4
+- [patch] Fallback to use containerId from MentionResourceConfig if ContextIdentifier promise fails [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+- [patch] add support for childObjectId in ContextIdentifiers and pass it to the mention service endpoints [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+- [none] Updated dependencies [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+- [patch] Updated dependencies [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+
+## 13.0.3
+- [patch] Improves type coverage by removing casts to any [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+- [none] Updated dependencies [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+
 ## 13.0.2
 - [patch] ED-4676, text in table header should be bold y default. [1bf849c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bf849c)
 - [patch] Updated dependencies [1bf849c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bf849c)

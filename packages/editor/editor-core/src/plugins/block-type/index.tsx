@@ -3,10 +3,12 @@ import EditorQuoteIcon from '@atlaskit/icon/glyph/editor/quote';
 import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { ToolbarSize } from '../../ui/Toolbar';
-import { createPlugin, stateKey } from './pm-plugins/main';
+import { createPlugin, pluginKey } from './pm-plugins/main';
 import keymapPlugin from './pm-plugins/keymap';
 import inputRulePlugin from './pm-plugins/input-rule';
 import ToolbarBlockType from './ui/ToolbarBlockType';
+import WithPluginState from '../../ui/WithPluginState';
+import { setBlockType } from './commands';
 
 const blockType: EditorPlugin = {
   nodes({ allowBlockType }) {
@@ -28,7 +30,8 @@ const blockType: EditorPlugin = {
     return [
       {
         rank: 500,
-        plugin: ({ props }) => createPlugin(props.appearance),
+        plugin: ({ props, dispatch }) =>
+          createPlugin(dispatch, props.appearance),
       },
       { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
       // Needs to be lower priority than prosemirror-tables.tableEditing
@@ -45,19 +48,33 @@ const blockType: EditorPlugin = {
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
+    eventDispatcher,
   }) {
-    const pluginState = stateKey.getState(editorView.state);
     const isSmall = toolbarSize < ToolbarSize.XL;
+    const boundSetBlockType = name =>
+      setBlockType(name)(editorView.state, editorView.dispatch);
+
     return (
-      <ToolbarBlockType
-        isSmall={isSmall}
-        isDisabled={disabled}
-        isReducedSpacing={isToolbarReducedSpacing}
+      <WithPluginState
         editorView={editorView}
-        pluginState={pluginState}
-        popupsMountPoint={popupsMountPoint}
-        popupsBoundariesElement={popupsBoundariesElement}
-        popupsScrollableElement={popupsScrollableElement}
+        eventDispatcher={eventDispatcher}
+        plugins={{
+          pluginState: pluginKey,
+        }}
+        render={({ pluginState }) => {
+          return (
+            <ToolbarBlockType
+              isSmall={isSmall}
+              isDisabled={disabled}
+              isReducedSpacing={isToolbarReducedSpacing}
+              setBlockType={boundSetBlockType}
+              pluginState={pluginState}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+              popupsScrollableElement={popupsScrollableElement}
+            />
+          );
+        }}
       />
     );
   },
@@ -81,4 +98,4 @@ const blockType: EditorPlugin = {
 };
 
 export default blockType;
-export { stateKey, BlockTypeState } from './pm-plugins/main';
+export { pluginKey, BlockTypeState } from './pm-plugins/main';
