@@ -85,7 +85,7 @@ export function fireTextEnteredEvent(
     createAnalyticsEvent,
     'entered',
     'text',
-    '',
+    'globalSearchInputBar',
     'track',
     {
       queryId: null,
