@@ -28,6 +28,17 @@ export type State = {
 
 const initialState: State = { items: { status: 'PENDING' } };
 
+const isLastItem = (selectedItem: Identifier, items: MediaCollectionItem[]) => {
+  if (items.length === 0) {
+    return false;
+  }
+  const lastItem = items[items.length - 1];
+  const isLastItem =
+    selectedItem.id === lastItem.details.id &&
+    selectedItem.occurrenceKey === lastItem.details.occurrenceKey;
+  return isLastItem;
+};
+
 export class Collection extends React.Component<Props, State> {
   state: State = initialState;
 
@@ -109,10 +120,7 @@ export class Collection extends React.Component<Props, State> {
               data: items,
             },
           });
-          if (
-            defaultSelectedItem &&
-            this.shouldLoadNext(defaultSelectedItem, items)
-          ) {
+          if (defaultSelectedItem && isLastItem(defaultSelectedItem, items)) {
             if (this.provider) {
               this.provider.loadNextPage();
             }
@@ -140,27 +148,9 @@ export class Collection extends React.Component<Props, State> {
     if (
       items.status === 'SUCCESSFUL' &&
       this.provider &&
-      this.shouldLoadNext(item, items.data)
+      isLastItem(item, items.data)
     ) {
       this.provider.loadNextPage();
     }
   };
-
-  private shouldLoadNext(
-    selectedItem: Identifier,
-    items: MediaCollectionItem[],
-  ): boolean {
-    if (items.length === 0) {
-      return false;
-    }
-    return this.isLastItem(selectedItem, items);
-  }
-
-  private isLastItem(selectedItem: Identifier, items: MediaCollectionItem[]) {
-    const lastItem = items[items.length - 1];
-    const isLastItem =
-      selectedItem.id === lastItem.details.id &&
-      selectedItem.occurrenceKey === lastItem.details.occurrenceKey;
-    return isLastItem;
-  }
 }
