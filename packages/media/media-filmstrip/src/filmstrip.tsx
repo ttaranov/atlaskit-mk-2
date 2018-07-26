@@ -14,7 +14,8 @@ import {
 import { Context } from '@atlaskit/media-core';
 import { FilmstripView } from './filmstripView';
 
-export interface AllowedCardProps {
+export interface FilmstripItem {
+  readonly identifier: Identifier;
   readonly actions?: Array<CardAction>;
   readonly selectable?: boolean;
   readonly selected?: boolean;
@@ -25,9 +26,8 @@ export interface AllowedCardProps {
 }
 
 export interface FilmstripProps {
-  identifiers: Identifier[];
+  items: FilmstripItem[];
   context: Context;
-  cardProps?: AllowedCardProps;
 }
 
 export interface FilmstripState {
@@ -54,14 +54,13 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
     this.setState({ animate, offset });
 
   renderCards() {
-    const { identifiers, context, cardProps } = this.props;
-    const cards = identifiers.map(identifier => {
+    const { items, context } = this.props;
+    const cards = items.map(item => {
       return (
         <Card
-          key={getIdentifierKey(identifier)}
-          identifier={identifier}
+          key={getIdentifierKey(item.identifier)}
           context={context}
-          {...cardProps}
+          {...item}
         />
       );
     });

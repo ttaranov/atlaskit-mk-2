@@ -1,28 +1,40 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Filmstrip, FilmstripView, FilmstripProps } from '../src';
+import {
+  Filmstrip,
+  FilmstripView,
+  FilmstripProps,
+  FilmstripItem,
+} from '../src';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Card, Identifier } from '@atlaskit/media-card';
 
 describe('<Filmstrip />', () => {
+  const firstIdenfier: Identifier = {
+    id: 'id-1',
+    mediaItemType: 'file',
+  };
   const setup = (props?: Partial<FilmstripProps>) => {
     const context = fakeContext();
-    const identifiers: Identifier[] = [
+    const items: FilmstripItem[] = [
       {
-        id: 'id-1',
-        mediaItemType: 'file',
+        identifier: firstIdenfier,
       },
       {
-        id: 'id-2',
-        mediaItemType: 'file',
+        identifier: {
+          id: 'id-2',
+          mediaItemType: 'file',
+        },
       },
       {
-        url: 'some-url',
-        mediaItemType: 'link',
+        identifier: {
+          url: 'some-url',
+          mediaItemType: 'link',
+        },
       },
     ];
     const component = shallow(
-      <Filmstrip context={context} identifiers={identifiers} {...props} />,
+      <Filmstrip context={context} items={items} {...props} />,
     );
 
     return {
@@ -66,10 +78,15 @@ describe('<Filmstrip />', () => {
 
   it('should pass properties down to Cards', () => {
     const { component, context } = setup({
-      cardProps: {
-        selectable: true,
-        selected: true,
-      },
+      items: [
+        {
+          identifier: firstIdenfier,
+          cardProps: {
+            selectable: true,
+            selected: true,
+          },
+        },
+      ],
     });
 
     expect(

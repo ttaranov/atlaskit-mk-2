@@ -1,7 +1,6 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
 import { Component, SyntheticEvent } from 'react';
-import { Identifier, FileIdentifier } from '@atlaskit/media-card';
 import {
   createUploadContext,
   genericFileId,
@@ -10,24 +9,73 @@ import {
   gifFileId,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
-import { Filmstrip } from '../src';
+import { Filmstrip, FilmstripItem } from '../src';
 import { ExampleWrapper, FilmstripWrapper } from '../example-helpers/styled';
+import {
+  CardEvent,
+  FileIdentifier,
+} from '../node_modules/@atlaskit/media-card';
 
 export interface ExampleState {
-  identifiers: Identifier[];
+  items: FilmstripItem[];
 }
 
 const context = createUploadContext();
-const initialIdentifiers: Identifier[] = [
-  genericFileId,
-  audioFileId,
-  errorFileId,
-  gifFileId,
-];
 
 class Example extends Component<any, ExampleState> {
+  onCardClick = (result: CardEvent) => {
+    const { items } = this.state;
+    if (!result.mediaItemDetails) {
+      return;
+    }
+    const selectedId = (result.mediaItemDetails as FileIdentifier).id;
+    const item = items.find(
+      item => (item.identifier as FileIdentifier).id === selectedId,
+    );
+
+    if (item) {
+      const newItem = {
+        ...item,
+        selected: !item.selected,
+      };
+      const currentItemIndex = items.indexOf(item);
+      console.log({ currentItemIndex, newItem });
+      items[currentItemIndex] = newItem;
+      // item.cardProps = {
+      //   ...item.cardProps,
+      //   selected: !item.cardProps.selected,
+      // };
+
+      this.setState({
+        items,
+      });
+    }
+  };
+
+  cardProps: Partial<FilmstripItem> = {
+    selectable: true,
+    onClick: this.onCardClick,
+  };
+
   state: ExampleState = {
-    identifiers: initialIdentifiers,
+    items: [
+      {
+        identifier: genericFileId,
+        ...this.cardProps,
+      },
+      {
+        identifier: audioFileId,
+        ...this.cardProps,
+      },
+      {
+        identifier: errorFileId,
+        ...this.cardProps,
+      },
+      {
+        identifier: gifFileId,
+        ...this.cardProps,
+      },
+    ],
   };
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
@@ -47,15 +95,19 @@ class Example extends Component<any, ExampleState> {
       next: state => {
         if (state.status === 'uploading') {
           const { id } = state;
-          const { identifiers } = this.state;
-          const newIdentifier: FileIdentifier = {
-            id,
-            mediaItemType: 'file',
-            collectionName: defaultCollectionName,
+          const { items } = this.state;
+          const newItem: FilmstripItem = {
+            ...this.cardProps,
+            identifier: {
+              id,
+              mediaItemType: 'file',
+              collectionName: defaultCollectionName,
+            },
+            selected: true,
           };
 
           this.setState({
-            identifiers: [newIdentifier, ...identifiers],
+            items: [newItem, ...items],
           });
         }
       },
@@ -66,12 +118,12 @@ class Example extends Component<any, ExampleState> {
   };
 
   render() {
-    const { identifiers } = this.state;
+    const { items } = this.state;
 
     return (
       <ExampleWrapper>
         <FilmstripWrapper>
-          <Filmstrip context={context} identifiers={identifiers} />
+          <Filmstrip context={context} items={items} />
         </FilmstripWrapper>
         Upload file <input type="file" onChange={this.uploadFile} />
       </ExampleWrapper>
