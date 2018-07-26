@@ -20,7 +20,7 @@ const calendarStyle = {
 
 export interface Props {
   element: HTMLElement | null;
-  onClickOutside: () => void;
+  closeDatePicker: () => void;
   onSelect: (date: DateType) => void;
 }
 
@@ -48,7 +48,7 @@ export default class DatePicker extends React.Component<Props, State> {
   }
 
   render() {
-    const { element, onClickOutside, onSelect } = this.props;
+    const { element, closeDatePicker, onSelect } = this.props;
     const timestamp = element!.getAttribute('timestamp');
     if (!timestamp) {
       return null;
@@ -58,8 +58,8 @@ export default class DatePicker extends React.Component<Props, State> {
       <PopupWithListeners
         target={element!}
         offset={[0, 8]}
-        handleClickOutside={onClickOutside}
-        handleEscapeKeydown={onClickOutside}
+        handleClickOutside={closeDatePicker}
+        handleEscapeKeydown={closeDatePicker}
       >
         <Calendar
           onChange={this.handleChange}

@@ -33,8 +33,6 @@ type CommonResultProps = {
 };
 
 export type Context = {
-  /** Signals whether the Result needs to register itself again. */
-  isDirty: boolean,
   /** Register itself as keyboard navigation target */
   registerResult: (result: any) => void,
   /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */

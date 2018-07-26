@@ -282,68 +282,68 @@ const renderNoQuery = (
   );
 };
 
-const render = (props: Props) => {
-  const {
-    query,
-    isError,
-    objectResults,
-    spaceResults,
-    peopleResults,
-    isLoading,
-    recentlyViewedPages,
-    recentlyViewedSpaces,
-    recentlyInteractedPeople,
-    retrySearch,
-    keepRecentActivityResults,
-    searchSessionId,
-    screenCounters,
-  } = props;
+export default class ConfluenceSearchResults extends React.Component<Props> {
+  render() {
+    const {
+      query,
+      isError,
+      objectResults,
+      spaceResults,
+      peopleResults,
+      isLoading,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
+      retrySearch,
+      keepRecentActivityResults,
+      searchSessionId,
+      screenCounters,
+    } = this.props;
 
-  const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
-    ? screenCounters
-    : {
-        preQueryScreenCounter: undefined,
-        postQueryScreenCounter: undefined,
-      };
+    const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
+      ? screenCounters
+      : {
+          preQueryScreenCounter: undefined,
+          postQueryScreenCounter: undefined,
+        };
 
-  if (isError) {
-    return <SearchError onRetryClick={retrySearch} />;
+    if (isError) {
+      return <SearchError onRetryClick={retrySearch} />;
+    }
+
+    if (query.length === 0) {
+      return isLoading
+        ? null
+        : renderNoQuery(
+            query,
+            recentlyViewedPages,
+            recentlyViewedSpaces,
+            recentlyInteractedPeople,
+            searchSessionId,
+            preQueryScreenCounter,
+          );
+    }
+
+    if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
+      return isLoading && keepRecentActivityResults
+        ? renderRecentActivities(
+            query,
+            recentlyViewedPages,
+            recentlyViewedSpaces,
+            recentlyInteractedPeople,
+            searchSessionId,
+            preQueryScreenCounter,
+          )
+        : renderNoResults(query);
+    }
+
+    return renderSearchResults(
+      query,
+      objectResults,
+      spaceResults,
+      peopleResults,
+      searchSessionId,
+      postQueryScreenCounter,
+    );
   }
-
-  if (query.length === 0) {
-    return isLoading
-      ? null
-      : renderNoQuery(
-          query,
-          recentlyViewedPages,
-          recentlyViewedSpaces,
-          recentlyInteractedPeople,
-          searchSessionId,
-          preQueryScreenCounter,
-        );
-  }
-
-  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return isLoading && keepRecentActivityResults
-      ? renderRecentActivities(
-          query,
-          recentlyViewedPages,
-          recentlyViewedSpaces,
-          recentlyInteractedPeople,
-          searchSessionId,
-          preQueryScreenCounter,
-        )
-      : renderNoResults(query);
-  }
-
-  return renderSearchResults(
-    query,
-    objectResults,
-    spaceResults,
-    peopleResults,
-    searchSessionId,
-    postQueryScreenCounter,
-  );
-};
-
-export default render;
+}

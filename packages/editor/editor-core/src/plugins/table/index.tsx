@@ -9,10 +9,13 @@ import {
   tableRow,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { createPlugin, PluginConfig } from './pm-plugins/main';
+import { PluginConfig } from './types';
+import { createPlugin, pluginKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
 import { getToolbarConfig } from './toolbar';
+import FloatingContextualMenu from './ui/FloatingContextualMenu';
+import WithPluginState from '../../ui/WithPluginState';
 
 export const CELL_MIN_WIDTH = 128;
 
@@ -66,6 +69,27 @@ const tablesPlugin: EditorPlugin = {
       { rank: 905, plugin: () => keymapPlugin() },
       { rank: 930, plugin: () => tableEditing() },
     ];
+  },
+
+  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
+    return (
+      <WithPluginState
+        plugins={{
+          tablesState: pluginKey,
+        }}
+        render={({ tablesState }) => (
+          <FloatingContextualMenu
+            editorView={editorView}
+            mountPoint={popupsMountPoint}
+            boundariesElement={popupsBoundariesElement}
+            targetCellRef={tablesState.targetCellRef}
+            targetCellPosition={tablesState.targetCellPosition}
+            isOpen={tablesState.isContextualMenuOpen}
+            pluginConfig={tablesState.pluginConfig}
+          />
+        )}
+      />
+    );
   },
 
   pluginsOptions: {

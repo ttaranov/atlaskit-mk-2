@@ -15,10 +15,8 @@ import {
   thEmpty,
 } from '@atlaskit/editor-test-helpers';
 
-import {
-  TablePluginState,
-  pluginKey,
-} from '../../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../../src/plugins/table/types';
 import ColumnControls from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls';
 import {
   ColumnControlsButtonWrap,
@@ -208,15 +206,9 @@ describe('ColumnControls', () => {
         tableRef={document.querySelector('table')!}
         isTableHovered={false}
         editorView={editorView}
+        dangerColumns={[0, 1, 2]}
       />,
     );
-
-    editorView.dispatch(selectColumns([0, 1])(editorView.state.tr));
-
-    // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
-    floatingControls.setProps({ numberOfColumns: 3 });
-
-    floatingControls.find(DeleteColumnButton).simulate('mouseenter');
 
     floatingControls
       .find(ColumnControlsButtonWrap)

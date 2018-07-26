@@ -25,7 +25,6 @@ class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
     onClick: () => {},
     type: BASE_RESULT_TYPE,
     context: {
-      isDirty: false,
       registerResult: () => {},
       onMouseEnter: () => {},
       onMouseLeave: () => {},
@@ -37,10 +36,7 @@ class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
 
   registerResult() {
     const { context } = this.props;
-
-    if (context.isDirty === true) {
-      context.registerResult(this);
-    }
+    context.registerResult(this);
   }
 
   componentDidMount() {

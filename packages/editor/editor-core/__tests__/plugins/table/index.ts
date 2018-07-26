@@ -29,10 +29,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { TableLayout } from '@atlaskit/editor-common';
 import {
-  TablePluginState,
   pluginKey,
   getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../src/plugins/table/types';
 import { createTable } from '../../../src/plugins/table/actions';
 import { setNodeSelection } from '../../../src/utils';
 import {

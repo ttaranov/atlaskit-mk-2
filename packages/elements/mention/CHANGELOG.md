@@ -1,5 +1,10 @@
 # @atlaskit/mention
 
+## 15.0.1
+- [patch] FS-2020 add session id to typeahead plugin inside editor [5ae463f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ae463f)
+- [none] Updated dependencies [5ae463f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ae463f)
+  - @atlaskit/analytics-gas-types@3.1.1
+
 ## 15.0.0
 - [major] ED-4769: wrap mentions like inline text [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
 - [none] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)

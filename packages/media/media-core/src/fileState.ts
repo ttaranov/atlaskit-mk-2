@@ -2,6 +2,7 @@ import {
   MediaFileProcessingStatus,
   MediaFile,
   MediaStoreResponse,
+  MediaType,
 } from '@atlaskit/media-store';
 
 export type FileStatus = 'uploading' | 'processing' | 'processed' | 'error';
@@ -24,6 +25,7 @@ export interface UploadingFileState {
   name: string;
   size: number;
   progress: number;
+  mediaType: MediaType;
   preview?: FilePreview;
 }
 export interface ProcessingFileState {
@@ -31,6 +33,7 @@ export interface ProcessingFileState {
   id: string;
   name: string;
   size: number;
+  mediaType: MediaType;
   preview?: FilePreview;
 }
 export interface ProcessedFileState {
@@ -39,7 +42,7 @@ export interface ProcessedFileState {
   name: string;
   size: number;
   artifacts: Object;
-  mediaType: string;
+  mediaType: MediaType;
   binaryUrl: string;
   preview?: FilePreview;
 }
@@ -55,7 +58,7 @@ export type FileState =
   | ErrorFileState;
 
 const apiProcessingStatusToFileStatus = (
-  fileStatus: MediaFileProcessingStatus,
+  fileStatus?: MediaFileProcessingStatus,
 ): FileStatus => {
   switch (fileStatus) {
     case 'pending':
@@ -63,6 +66,7 @@ const apiProcessingStatusToFileStatus = (
     case 'succeeded':
       return 'processed';
     case 'failed':
+    case undefined:
       return 'error';
   }
 };
@@ -81,13 +85,13 @@ export const mapMediaFileToFileState = (
   const status = apiProcessingStatusToFileStatus(processingStatus);
 
   switch (status) {
-    // This state will not be used until we merge uploadFile + getFile
     case 'uploading':
       return {
         id,
         status,
         name,
         size,
+        mediaType,
         progress: 0,
       };
     case 'processing':
@@ -96,6 +100,7 @@ export const mapMediaFileToFileState = (
         status,
         name,
         size,
+        mediaType,
       };
     case 'processed':
       return {

@@ -1,7 +1,8 @@
 // @flow
 import React, { type Node } from 'react';
 import ReactDOM from 'react-dom';
-import canUseDOM from '../utils/canUseDOM';
+import invariant from 'tiny-invariant';
+import canUseDOM from '../utils/canUseDom';
 
 type Props = {
   /* Children to render in the React Portal. */
@@ -21,7 +22,10 @@ const createContainer = (zIndex: number) => {
   return container;
 };
 
-const body = fn => document.body && fn(document.body);
+const body = () => {
+  invariant(document && document.body, 'cannot find document.body');
+  return document.body;
+};
 
 // This is a generic component does two things:
 // 1. Portals it's children using React.createPortal
@@ -41,19 +45,20 @@ class Portal extends React.Component<Props, State> {
     const { zIndex } = this.props;
     if (container && prevProps.zIndex !== zIndex) {
       const newContainer = createContainer(zIndex);
-      body(b => b.replaceChild(container, newContainer));
+
+      body().replaceChild(container, newContainer);
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ container: newContainer });
     } else if (!prevState.container && container) {
       // SSR path
-      body(b => b.appendChild(container));
+      body().appendChild(container);
     }
   }
   componentDidMount() {
     const { container } = this.state;
     const { zIndex } = this.props;
     if (container) {
-      body(b => b.appendChild(container));
+      body().appendChild(container);
     } else {
       // SSR path
       const newContainer = createContainer(zIndex);
@@ -64,7 +69,7 @@ class Portal extends React.Component<Props, State> {
   componentWillUnmount() {
     const { container } = this.state;
     if (container) {
-      body(b => b.removeChild(container));
+      body().removeChild(container);
     }
   }
   render() {

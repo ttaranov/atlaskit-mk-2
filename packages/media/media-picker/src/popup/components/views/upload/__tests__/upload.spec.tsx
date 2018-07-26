@@ -165,6 +165,55 @@ describe('<StatelessUploadView />', () => {
     expect(component.find(CardView).props().selectable).toEqual(true);
     expect(component.find(CardView).props().selected).toEqual(true);
   });
+
+  it('should render right mediaType for uploading files', () => {
+    const mockStateOverride: Partial<State> = {
+      uploads: {
+        uploadId1: {
+          file: {
+            metadata: {
+              id: 'id1',
+              mimeType: 'video/mp4',
+            },
+          },
+        } as LocalUpload,
+        uploadId2: {
+          file: {
+            metadata: {
+              id: 'id1',
+              mimeType: 'application/pdf',
+            },
+          },
+        } as LocalUpload,
+      },
+    };
+    const component = shallow(
+      getUploadViewElement(false, [], mockStateOverride),
+    );
+    expect(component.find(CardView)).toHaveLength(2);
+    expect(
+      component
+        .find(CardView)
+        .first()
+        .props().metadata,
+    ).toEqual(
+      expect.objectContaining({
+        mediaType: 'video',
+        mimeType: 'video/mp4',
+      }),
+    );
+    expect(
+      component
+        .find(CardView)
+        .last()
+        .props().metadata,
+    ).toEqual(
+      expect.objectContaining({
+        mediaType: 'doc',
+        mimeType: 'application/pdf',
+      }),
+    );
+  });
 });
 
 describe('<UploadView />', () => {

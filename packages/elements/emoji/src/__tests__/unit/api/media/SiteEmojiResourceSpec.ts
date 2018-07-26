@@ -266,6 +266,7 @@ describe('SiteEmojiResource', () => {
             size: 1,
             status: 'uploading',
             progress: 0.5,
+            mediaType: 'image',
           });
         }),
       );

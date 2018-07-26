@@ -15,10 +15,8 @@ import {
   thEmpty,
 } from '@atlaskit/editor-test-helpers';
 import AkButton from '@atlaskit/button';
-import {
-  TablePluginState,
-  pluginKey,
-} from '../../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../../src/plugins/table/types';
 import RowControls from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls';
 import {
   RowControlsButtonWrap,
@@ -28,7 +26,7 @@ import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatin
 import {
   hoverRows,
   insertRow,
-  resetHoverSelection,
+  clearHoverSelection,
   deleteSelectedRows,
 } from '../../../../src/plugins/table/actions';
 import { tablesPlugin } from '../../../../src/plugins';
@@ -152,8 +150,8 @@ describe('RowControls', () => {
             hoverRows={(rows, danger) => {
               hoverRows(rows, danger)(editorView.state, editorView.dispatch);
             }}
-            resetHoverSelection={() => {
-              resetHoverSelection(editorView.state, editorView.dispatch);
+            clearHoverSelection={() => {
+              clearHoverSelection(editorView.state, editorView.dispatch);
             }}
             isTableHovered={false}
             insertRow={row => {
@@ -227,8 +225,8 @@ describe('RowControls', () => {
         hoverRows={(rows, danger) => {
           hoverRows(rows, danger)(editorView.state, editorView.dispatch);
         }}
-        resetHoverSelection={() => {
-          resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection={() => {
+          clearHoverSelection(editorView.state, editorView.dispatch);
         }}
         isTableHovered={false}
         insertRow={row => {
@@ -274,8 +272,8 @@ describe('RowControls', () => {
         hoverRows={(rows, danger) => {
           hoverRows(rows, danger)(editorView.state, editorView.dispatch);
         }}
-        resetHoverSelection={() => {
-          resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection={() => {
+          clearHoverSelection(editorView.state, editorView.dispatch);
         }}
         isTableHovered={false}
         insertRow={row => {
@@ -325,8 +323,8 @@ describe('RowControls', () => {
         hoverRows={(rows, danger) => {
           hoverRows(rows, danger)(editorView.state, editorView.dispatch);
         }}
-        resetHoverSelection={() => {
-          resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection={() => {
+          clearHoverSelection(editorView.state, editorView.dispatch);
         }}
         isTableHovered={false}
         insertRow={row => {
@@ -371,8 +369,8 @@ describe('RowControls', () => {
           hoverRows={(rows, danger) => {
             hoverRows(rows, danger)(editorView.state, editorView.dispatch);
           }}
-          resetHoverSelection={() => {
-            resetHoverSelection(editorView.state, editorView.dispatch);
+          clearHoverSelection={() => {
+            clearHoverSelection(editorView.state, editorView.dispatch);
           }}
           isTableHovered={false}
           insertRow={row => {
@@ -418,8 +416,8 @@ describe('RowControls', () => {
           hoverRows={(rows, danger) => {
             hoverRows(rows, danger)(editorView.state, editorView.dispatch);
           }}
-          resetHoverSelection={() => {
-            resetHoverSelection(editorView.state, editorView.dispatch);
+          clearHoverSelection={() => {
+            clearHoverSelection(editorView.state, editorView.dispatch);
           }}
           isTableHovered={false}
           insertRow={row => {
@@ -465,8 +463,8 @@ describe('RowControls', () => {
           hoverRows={(rows, danger) => {
             hoverRows(rows, danger)(editorView.state, editorView.dispatch);
           }}
-          resetHoverSelection={() => {
-            resetHoverSelection(editorView.state, editorView.dispatch);
+          clearHoverSelection={() => {
+            clearHoverSelection(editorView.state, editorView.dispatch);
           }}
           isTableHovered={false}
           insertRow={row => {

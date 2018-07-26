@@ -5,8 +5,8 @@ import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 
-import { TablePluginState, getPluginState } from '../pm-plugins/main';
-
+import { getPluginState } from '../pm-plugins/main';
+import { TablePluginState } from '../types';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import { CELL_MIN_WIDTH } from '../';
 
@@ -125,6 +125,7 @@ class TableComponent extends React.Component<ComponentProps> {
             isHeaderColumnEnabled={checkIfHeaderColumnEnabled(view.state)}
             isHeaderRowEnabled={checkIfHeaderRowEnabled(view.state)}
             hasHeaderRow={containsHeaderRow(view.state, node)}
+            dangerRows={pluginState.dangerRows}
             // pass `selection` and `tableHeight` to control re-render
             selection={view.state.selection}
             tableHeight={tableRef ? tableRef.offsetHeight : undefined}
@@ -146,6 +147,7 @@ class TableComponent extends React.Component<ComponentProps> {
               tableRef={tableRef}
               isTableHovered={isTableHovered}
               isTableInDanger={isTableInDanger}
+              dangerColumns={pluginState.dangerColumns}
               // pass `selection` and `numberOfColumns` to control re-render
               selection={view.state.selection}
               numberOfColumns={node.firstChild!.childCount}

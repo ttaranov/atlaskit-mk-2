@@ -10,7 +10,6 @@ describe('@atlaskit/editor-common date utils', () => {
   describe('timestampToString', () => {
     it('should correctly format date', () => {
       const date = Date.parse('2018-06-19');
-      expect(timestampToString(date, 'dddd')).toEqual('Tuesday');
       expect(timestampToString(date, 'ddd, DD MMM')).toEqual('Tue, 19 Jun');
       expect(timestampToString(date, 'YYYY-MM-DD')).toEqual('2018-06-19');
       expect(timestampToString(date, 'DD MMM YYYY')).toEqual('19 Jun 2018');
@@ -35,28 +34,45 @@ describe('@atlaskit/editor-common date utils', () => {
   });
 
   describe('isPastDate', () => {
-    it('should correctly true is passed date is before current date', () => {
+    it('should return true if passed date is before current date', () => {
       const date = Date.parse('2018-06-18');
       expect(isPastDate(date)).toEqual(true);
     });
   });
 
   describe('timestampToTaskContext', () => {
-    it('should correctly true is passed date is before current date', () => {
+    const matchesYearFormat = date => {
+      const currentYear = new Date().getUTCFullYear();
+      if (date.getUTCFullYear() === currentYear) {
+        expect(timestampToTaskContext(date.valueOf())).toEqual(
+          timestampToString(date.valueOf(), 'ddd, DD MMM'),
+        );
+      } else {
+        expect(timestampToTaskContext(date.valueOf())).toEqual(
+          timestampToString(date.valueOf(), 'DD MMM YYYY'),
+        );
+      }
+    };
+    it('should correctly format date for task', () => {
       const date = new Date();
+      const currentDate = date.getUTCDate();
+      const currentMonth = date.getUTCMonth();
+      date.setDate(currentDate - 1);
+      expect(timestampToTaskContext(date.valueOf())).toEqual(
+        timestampToString(date.valueOf(), 'Yesterday'),
+      );
+      date.setDate(currentDate);
       expect(timestampToTaskContext(date.valueOf())).toEqual('Today');
-      date.setDate(date.getDate() + 1);
-      // Commenting the following expect due to https://product-fabric.atlassian.net/browse/ED-5079
-      // expect(timestampToTaskContext(date.valueOf())).toEqual('Tomorrow');
-      date.setDate(date.getDate() + 2);
-      date.setMonth(date.getMonth() + 1);
-      expect(timestampToTaskContext(date.valueOf())).toEqual(
-        timestampToString(date.valueOf(), 'ddd, DD MMM'),
-      );
+      date.setDate(currentDate + 1);
+      expect(timestampToTaskContext(date.valueOf())).toEqual('Tomorrow');
+      date.setDate(currentDate - 4);
+      matchesYearFormat(date);
+      date.setDate(currentDate + 4);
+      matchesYearFormat(date);
+      date.setMonth(currentMonth + 1);
+      matchesYearFormat(date);
       date.setFullYear(date.getFullYear() + 1);
-      expect(timestampToTaskContext(date.valueOf())).toEqual(
-        timestampToString(date.valueOf(), 'DD MMM YYYY'),
-      );
+      matchesYearFormat(date);
     });
   });
 });
