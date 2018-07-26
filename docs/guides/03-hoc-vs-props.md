@@ -1,3 +1,7 @@
+---
+description: "Learn when to use high order components (HoC) and when to use render props"
+---
+
 # When to use a HoC vs render props
 
 Related resources:

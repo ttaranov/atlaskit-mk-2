@@ -1,3 +1,7 @@
+---
+description: "Read about designing component keeping customer in mind. This document will discuss how to create a new Atlaskit component."
+---
+
 # Component design
 
 Related reading:

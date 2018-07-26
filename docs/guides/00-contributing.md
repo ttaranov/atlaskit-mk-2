@@ -1,5 +1,5 @@
 ---
-description: 'sdkfdjlfkds'
+description: "Read about contribution model of Atlaskit. Although it's is our job to look after all the components in our repo we rely heavily on contributions outside of our team to make Atlaskit great"
 ---
 
 # Contributing
@@ -19,7 +19,7 @@ This project is bound by a [Code of Conduct](https://bitbucket.org/atlassian/atl
 
 ## Introduction
 
-Although it's our job to look after all the components in our repo, we rely heavily on contributions outside of our team to make Atlaskit great. At its core, our contrubution model is very much like contributing to any open source library, but because we get several contributions from within Atlassian from other teams, we have the ability to build on that model to help make inter-team contributions more efficient.
+Although it is our job to look after all the components in our repo, we rely heavily on contributions outside of our team to make Atlaskit great. At its core, our contrubution model is very much like contributing to any open source library, but because we get several contributions from within Atlassian from other teams, we have the ability to build on that model to help make inter-team contributions more efficient.
 
 ## Open source contribution model
 

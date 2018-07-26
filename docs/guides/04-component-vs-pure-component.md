@@ -1,3 +1,7 @@
+---
+description: "In practice we should use Component for everything. If you need to check to prevent a render, we should be hand-crafting `shouldComponentUpdate` ourselves (if the product can't do it for some reason) because we'd be being explicit about what we need to check. As a last resort, we can use `PureComponent` if we'd be implementing the exact same checks."
+---
+
 # Component vs PureComponent
 
 Related reading:

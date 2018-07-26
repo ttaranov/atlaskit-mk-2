@@ -1,3 +1,7 @@
+---
+description: "Read about directory structure of Atlaskit repository. The build directory is where all build tooling goes that isn't handled by our tools directly. The docs directory is where all project documentation lives. The packages directory is where all of our public NPM packages are contained."
+---
+
 # Directory structure
 
 Related reading:
