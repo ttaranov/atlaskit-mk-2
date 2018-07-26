@@ -1,10 +1,10 @@
 // @flow
 
-const canUseDOM = () =>
+const canUseDom = () =>
   Boolean(
     typeof window !== 'undefined' &&
       window.document &&
       window.document.createElement,
   );
 
-export default canUseDOM;
+export default canUseDom;

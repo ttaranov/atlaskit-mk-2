@@ -1,7 +1,6 @@
 // @flow
 import React, { type Node } from 'react';
 import { mount } from 'enzyme';
-
 import Portal from '../..';
 
 const App = ({ children }: { children: Node }) => <div>{children}</div>;

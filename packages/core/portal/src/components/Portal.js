@@ -1,7 +1,7 @@
 // @flow
 import React, { type Node } from 'react';
 import ReactDOM from 'react-dom';
-import canUseDOM from '../utils/canUseDOM';
+import canUseDOM from '../utils/canUseDom';
 
 type Props = {
   /* Children to render in the React Portal. */
