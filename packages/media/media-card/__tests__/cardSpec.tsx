@@ -549,6 +549,7 @@ describe('Card', () => {
           id: '123',
           status: 'processed',
           mediaType: 'image',
+          mimeType: 'image/png',
           name: 'file-name',
           size: 10,
         }),
@@ -587,6 +588,7 @@ describe('Card', () => {
       id: '123',
       mediaType: 'image',
       name: 'file-name',
+      mimeType: 'image/png',
       size: 10,
     });
   });
