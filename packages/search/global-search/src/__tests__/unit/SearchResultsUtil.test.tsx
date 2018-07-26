@@ -28,7 +28,7 @@ import {
   makePersonResult,
   makeJiraObjectResult,
 } from './_test-util';
-import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
+import Objects24Object24PageIcon from '../../../../../core/icon/glyph/objects/24/object-24-page';
 
 describe('searchPeopleItem', () => {
   function render(partialProps: Partial<AdvancedSearchItemProps>) {

@@ -8,7 +8,10 @@ import {
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
 } from './analytics-util';
-import { GasPayload, EventType } from '@atlaskit/analytics-gas-types';
+import {
+  GasPayload,
+  EventType,
+} from '../../../../elements/analytics-gas-types';
 import { CreateAnalyticsEventFn } from '../components/analytics/types';
 
 const fireGasEvent = (

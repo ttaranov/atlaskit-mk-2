@@ -11,7 +11,7 @@ import {
   RequestServiceOptions,
   ServiceConfig,
   utils,
-} from '@atlaskit/util-service-support';
+} from '../../../../elements/util-service-support';
 import * as URI from 'urijs';
 
 export type ConfluenceItemContentType = 'page' | 'blogpost';

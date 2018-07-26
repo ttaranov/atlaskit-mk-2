@@ -3,9 +3,9 @@ import Avatar from '@atlaskit/avatar';
 import { colors } from '@atlaskit/theme';
 import { ResultBase } from '@atlaskit/quick-search';
 import { ContentType, AnalyticsType } from '../model/Result';
-import Objects24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
-import Objects24BlogIcon from '@atlaskit/icon/glyph/objects/24/object-24-blog';
-import Objects24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
+import Objects24PageIcon from '../../../../core/icon/glyph/objects/24/object-24-page';
+import Objects24BlogIcon from '../../../../core/icon/glyph/objects/24/object-24-blog';
+import Objects24ImageIcon from '../../../../core/icon/glyph/file-types/24/file-24-image';
 
 const OBJECT_RESULT_TYPE = 'object';
 

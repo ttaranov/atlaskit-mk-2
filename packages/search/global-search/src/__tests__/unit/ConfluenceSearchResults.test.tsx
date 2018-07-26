@@ -373,7 +373,7 @@ describe('ConfluenceSearchResults', () => {
       spaceResults: [],
       peopleResults: [],
       isLoading: true,
-      keepRecentActivityResults: false,
+      keepPreQueryState: false,
       recentlyInteractedPeople: [makePersonResult()],
     };
 
@@ -392,7 +392,7 @@ describe('ConfluenceSearchResults', () => {
       spaceResults: [],
       peopleResults: [],
       isLoading: true,
-      keepRecentActivityResults: true,
+      keepPreQueryState: true,
       recentlyInteractedPeople: [makePersonResult()],
     };
 
@@ -411,7 +411,7 @@ describe('ConfluenceSearchResults', () => {
       spaceResults: [],
       peopleResults: [],
       isLoading: true,
-      keepRecentActivityResults: false,
+      keepPreQueryState: false,
       recentlyInteractedPeople: [makePersonResult()],
     };
 

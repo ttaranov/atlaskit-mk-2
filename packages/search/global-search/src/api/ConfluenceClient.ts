@@ -10,7 +10,7 @@ import {
   RequestServiceOptions,
   utils,
   ServiceConfig,
-} from '@atlaskit/util-service-support';
+} from '../../../../elements/util-service-support';
 import * as URI from 'urijs';
 import * as unescapeHtml from 'unescape';
 

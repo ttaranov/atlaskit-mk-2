@@ -1,5 +1,5 @@
 import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { GasPayload } from '../../../../elements/analytics-gas-types';
 
 export declare type ScreenEventSafeGasPayload = GasPayload & { name: string };
 

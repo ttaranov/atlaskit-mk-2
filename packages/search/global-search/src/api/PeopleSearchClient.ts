@@ -8,7 +8,7 @@ import {
   RequestServiceOptions,
   ServiceConfig,
   utils,
-} from '@atlaskit/util-service-support';
+} from '../../../../elements/util-service-support';
 
 export interface GraphqlResponse {
   errors?: GraphqlError[];

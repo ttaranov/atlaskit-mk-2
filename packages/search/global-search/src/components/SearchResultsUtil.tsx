@@ -4,7 +4,7 @@ import {
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
+import JiraIcon from '../../../../core/icon/glyph/jira';
 import {
   Result,
   ContainerResult,
