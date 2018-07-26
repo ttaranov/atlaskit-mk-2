@@ -16,6 +16,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
+import { layers } from '@atlaskit/theme';
 import {
   name as packageName,
   version as packageVersion,
@@ -217,7 +218,7 @@ class Tooltip extends Component<Props, State> {
             in={isVisible}
           >
             {animationStyles => (
-              <Portal layer="tooltip">
+              <Portal zIndex={layers.tooltip()}>
                 <Position
                   key={position}
                   mouseCoordinates={this.mouseCoordinates}
