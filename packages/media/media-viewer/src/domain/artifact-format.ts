@@ -10,6 +10,8 @@ export class ArtifactFormat {
     if (mediaItem.type === 'file') {
       return ArtifactFormat.fromFileItem(mediaItem);
     }
+
+    return undefined;
   }
 
   static fromFileItem(fileItem: FileItem): ArtifactFormat | undefined {
@@ -24,7 +26,7 @@ export class ArtifactFormat {
   }
 
   static fromMimeType(mimeType?: string): ArtifactFormat | undefined {
-    const byMimeType = {
+    const byMimeType: any = {
       'image/gif': {
         type: 'image/gif',
         name: 'original',
@@ -34,10 +36,12 @@ export class ArtifactFormat {
     if (mimeType) {
       return byMimeType[mimeType];
     }
+
+    return undefined;
   }
 
   static fromMediaType(mediaType?: string): ArtifactFormat | undefined {
-    const byMediaType = {
+    const byMediaType: any = {
       doc: {
         type: 'application/pdf',
         name: 'document.pdf',
@@ -71,5 +75,7 @@ export class ArtifactFormat {
     if (mediaType) {
       return byMediaType[mediaType];
     }
+
+    return undefined;
   }
 }

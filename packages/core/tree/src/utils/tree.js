@@ -7,7 +7,10 @@ import type {
   TreeItemData,
   ItemId,
   TreeItem,
+  TreePosition,
 } from '../types';
+
+import { getParentPath, getIndexAmongSiblings } from './path';
 
 export type TreeItemMutation = {|
   id?: ItemId,
@@ -90,8 +93,22 @@ export const mutateTree = (
 
 export const getItem = (tree: TreeData, path: Path): TreeItem => {
   let cursor: TreeItem = tree.items[tree.rootId];
-  for (const i of path) {
+  for (const i: number of path) {
     cursor = tree.items[cursor.children[i]];
   }
   return cursor;
+};
+
+export const getParent = (tree: TreeData, path: Path): TreeItem => {
+  const parentPath: Path = getParentPath(path);
+  return getItem(tree, parentPath);
+};
+
+export const getTreePosition = (tree: TreeData, path: Path): TreePosition => {
+  const parent: TreeItem = getParent(tree, path);
+  const index: number = getIndexAmongSiblings(path);
+  return {
+    parentId: parent.id,
+    index,
+  };
 };

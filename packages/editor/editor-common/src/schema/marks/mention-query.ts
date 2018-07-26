@@ -7,11 +7,11 @@ export const mentionQuery: MarkSpec = {
   inclusive: true,
   group: SEARCH_QUERY,
   parseDOM: [{ tag: 'span[data-mention-query]' }],
-  toDOM(node): [string, any] {
+  toDOM(node) {
     return [
       'span',
       {
-        'data-mention-query': true,
+        'data-mention-query': 'true',
         'data-active': node.attrs.active,
         style: `color: ${akColorB400}`,
       },

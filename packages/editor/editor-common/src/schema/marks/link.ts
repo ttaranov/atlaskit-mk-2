@@ -27,7 +27,7 @@ export interface LinkAttributes {
 /**
  * @name link_mark
  */
-export interface Definition {
+export interface LinkDefinition {
   type: 'link';
   attrs: LinkAttributes;
 }
@@ -47,7 +47,7 @@ export const link: MarkSpec = {
       tag: 'a[href]',
       getAttrs: (dom: Element) => {
         let href = dom.getAttribute('href') || '';
-        const attrs: any = {
+        const attrs: { __confluenceMetadata: string; href?: string } = {
           __confluenceMetadata: dom.hasAttribute('__confluenceMetadata')
             ? JSON.parse(dom.getAttribute('__confluenceMetadata') || '')
             : undefined,

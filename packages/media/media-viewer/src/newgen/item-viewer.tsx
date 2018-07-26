@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { ErrorMessage } from './styled';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -9,6 +8,8 @@ import { DocViewer } from './viewers/doc';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { ErrorMessage, createError, MediaViewerError } from './error';
+import { renderDownloadButton } from './domain/download';
 
 export type Props = Readonly<{
   identifier: Identifier;
@@ -20,16 +21,16 @@ export type Props = Readonly<{
 }>;
 
 export type State = {
-  item: Outcome<FileItem, Error>;
+  item: Outcome<FileItem, MediaViewerError>;
 };
 
 const initialState: State = { item: { status: 'PENDING' } };
 export class ItemViewer extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -82,11 +83,32 @@ export class ItemViewer extends React.Component<Props, State> {
           case 'doc':
             return <DocViewer {...viewerProps} />;
           default:
-            return <ErrorMessage>This file is unsupported</ErrorMessage>;
+            return (
+              <ErrorMessage error={createError('unsupported')}>
+                <p>Try downloading the file to view it.</p>
+                {this.renderDownloadButton(itemUnwrapped)}
+              </ErrorMessage>
+            );
         }
       case 'FAILED':
-        return <ErrorMessage>{item.err.message}</ErrorMessage>;
+        const error = item.err;
+        const fileItem = item.err.fileItem;
+        if (fileItem) {
+          return (
+            <ErrorMessage error={error}>
+              <p>Try downloading the file to view it.</p>
+              {this.renderDownloadButton(fileItem)}
+            </ErrorMessage>
+          );
+        } else {
+          return <ErrorMessage error={error} />;
+        }
     }
+  }
+
+  private renderDownloadButton(fileItem: FileItem) {
+    const { context, identifier } = this.props;
+    return renderDownloadButton(fileItem, context, identifier.collectionName);
   }
 
   private init(props: Props) {
@@ -104,7 +126,7 @@ export class ItemViewer extends React.Component<Props, State> {
           this.setState({
             item: {
               status: 'FAILED',
-              err: new Error('links are not supported at the moment'),
+              err: createError('linksNotSupported'),
             },
           });
         } else {
@@ -113,7 +135,7 @@ export class ItemViewer extends React.Component<Props, State> {
             this.setState({
               item: {
                 status: 'FAILED',
-                err: new Error('processing failed'),
+                err: createError('previewFailed', mediaItem),
               },
             });
           } else if (processingStatus === 'succeeded') {
@@ -130,7 +152,7 @@ export class ItemViewer extends React.Component<Props, State> {
         this.setState({
           item: {
             status: 'FAILED',
-            err,
+            err: createError('metadataFailed', undefined, err),
           },
         });
       },

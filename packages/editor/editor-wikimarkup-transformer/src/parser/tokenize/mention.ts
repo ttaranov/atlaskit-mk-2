@@ -15,7 +15,6 @@ export function mention(input: string, schema: Schema): Token {
 
   const mentionNode = schema.nodes.mention.createChecked({
     id: mentionText,
-    text: mentionText,
   });
 
   return {

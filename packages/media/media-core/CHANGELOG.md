@@ -1,5 +1,24 @@
 # @atlaskit/media-core
 
+## 22.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-store@5.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-store@5.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/docs@5.0.0
+
+## 21.0.0
+- [major] Use media.tsconfig in MediaViewer [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+- [none] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-test-helpers@14.0.6
+
 ## 20.0.0
 - [major] merge getFile and uploadFile + update MediaPicker NewUploadService + expose UploadController from MediaStore [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
 - [major] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)

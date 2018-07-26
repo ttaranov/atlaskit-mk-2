@@ -8,7 +8,7 @@ import {
 import { stateKey as mediaStateKey } from '../media/pm-plugins/main';
 import { hyperlinkPluginKey } from '../hyperlink';
 import { mentionPluginKey as mentionStateKey } from '../mentions/pm-plugins/main';
-import { stateKey as tablesStateKey } from '../table/pm-plugins/main';
+import { pluginKey as tablesStateKey } from '../table/pm-plugins/main';
 import { stateKey as imageUploadStateKey } from '../image-upload/pm-plugins/main';
 import { pluginKey as placeholderTextStateKey } from '../placeholder-text';
 import { pluginKey as layoutStateKey } from '../layout';
@@ -47,6 +47,7 @@ export interface InsertBlockOptions {
 const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
   primaryToolbarComponent({
     editorView,
+    appearance,
     editorActions,
     eventDispatcher,
     providerFactory,
@@ -94,6 +95,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               editorView={editorView}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
+              decisionSupported={!!editorView.state.schema.nodes.decisionItem}
               dateEnabled={!!dateState}
               placeholderTextEnabled={
                 placeholderTextState && placeholderTextState.allowInserting

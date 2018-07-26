@@ -4,9 +4,12 @@ import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
-
-import { name, version } from '../../package.json';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
@@ -40,8 +43,6 @@ const createStyledComponent = () => {
   // Override pseudo-state specificity.
   // This is necessary because we don't know what DOM element the custom component will render.
   const component = styled(
-    /* CustomComponentProxy is absolutely valid here, so this seems a problem with styled-components flow definitions */
-    // $FlowFixMe
     CustomComponentProxy,
   )`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
   component.displayName = 'StyledCustomComponent';
@@ -215,19 +216,24 @@ class Button extends Component<ButtonProps, State> {
 export type ButtonType = Button;
 export const ButtonBase = Button;
 
+export const ButtonWithoutAnalytics = withDeprecationWarnings(Button);
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
-  component: 'button',
-  package: name,
-  version,
+  componentName: 'button',
+  packageName,
+  packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'button',
 
-      return consumerEvent;
-    },
-  })(withDeprecationWarnings(Button)),
+      attributes: {
+        componentName: 'button',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ButtonWithoutAnalytics),
 );

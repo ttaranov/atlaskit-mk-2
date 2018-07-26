@@ -1,13 +1,16 @@
 // @flow
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
-import { ContainerViewSubscriber, navAPIUtils } from '../../src';
+import { viewReducerUtils, withNavigationViewController } from '../../src';
 
-const { appendChildren, findId } = navAPIUtils;
+const { appendChildren, findId } = viewReducerUtils;
 
-class Shortcuts extends Component<{ viewState: any }, { items: any[] }> {
+class Shortcuts extends Component<
+  { navigationViewController: any },
+  { items: any[] },
+> {
   state = {
     items: [],
   };
@@ -34,13 +37,20 @@ class Shortcuts extends Component<{ viewState: any }, { items: any[] }> {
   }
 
   registerReducer() {
-    const { viewState } = this.props;
-    viewState.addReducer('container/project/index', this.reducer, 'shortcuts');
+    const { navigationViewController } = this.props;
+    navigationViewController.addReducer(
+      'container/project/index',
+      this.reducer,
+      'shortcuts',
+    );
   }
 
   unregisterReducer() {
-    const { viewState } = this.props;
-    viewState.removeReducer('container/project/index', this.reducer);
+    const { navigationViewController } = this.props;
+    navigationViewController.removeReducer(
+      'container/project/index',
+      this.reducer,
+    );
   }
 
   onAddItemClick = () => {
@@ -71,8 +81,4 @@ class Shortcuts extends Component<{ viewState: any }, { items: any[] }> {
   }
 }
 
-export default (props: any) => (
-  <ContainerViewSubscriber>
-    {viewState => <Shortcuts {...props} viewState={viewState} />}
-  </ContainerViewSubscriber>
-);
+export default withNavigationViewController(Shortcuts);

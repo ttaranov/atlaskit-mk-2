@@ -1,7 +1,17 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 type Props = {
   /** The content to render inside the action button. */
@@ -14,7 +24,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-export default class ActionItem extends Component<Props, {}> {
+class ActionItem extends Component<Props, {}> {
   render() {
     const { children, onClick, onFocus, onMouseOver } = this.props;
     /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -28,3 +38,25 @@ export default class ActionItem extends Component<Props, {}> {
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
+
+export { ActionItem as CommentActionWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'commentAction',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'commentAction',
+
+      attributes: {
+        componentName: 'commentAction',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ActionItem),
+);

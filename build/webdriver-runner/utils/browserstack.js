@@ -6,10 +6,14 @@
 
 const browserstack = require('browserstack-local');
 const bsLocal = new browserstack.Local();
+
+const uniqIdentifierStamp = process.env.LOCAL_IDENTIFIER || '';
 const bsKey = process.env.BROWSERSTACK_KEY;
 const commit = process.env.BITBUCKET_COMMIT
-  ? process.env.BITBUCKET_COMMIT
-  : process.env.USER;
+  ? process.env.BITBUCKET_COMMIT + uniqIdentifierStamp
+  : process.env.USER
+    ? process.env.USER + uniqIdentifierStamp
+    : uniqIdentifierStamp;
 
 async function startBrowserStack() {
   return new Promise((resolve, reject) => {

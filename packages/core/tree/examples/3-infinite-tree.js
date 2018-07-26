@@ -129,13 +129,19 @@ export default class InfiniteTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => {
-    console.log('render');
+  renderItem = ({
+    item,
+    depth,
+    onExpand,
+    onCollapse,
+    provided,
+  }: RenderItemParams) => {
     return (
       <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
         <AkNavigationItem
           text={item.data ? item.data.title : ''}
           icon={InfiniteTree.getIcon(item, onExpand, onCollapse)}
+          dnd={provided}
         />
       </div>
     );

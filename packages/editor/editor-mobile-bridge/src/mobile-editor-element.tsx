@@ -54,18 +54,16 @@ class EditorWithState extends Editor {
     transformer?: any;
   }) {
     super.onEditorCreated(instance);
-    bridge.editorView = instance.view;
-    bridge.editorActions._privateRegisterEditor(
-      instance.view,
-      instance.eventDispatcher,
-    );
+    const { eventDispatcher, view } = instance;
+    bridge.editorView = view;
+    bridge.editorActions._privateRegisterEditor(view, eventDispatcher);
     if (this.props.media && this.props.media.customMediaPicker) {
       bridge.mediaPicker = this.props.media.customMediaPicker;
     }
-    subscribeForMentionStateChanges(instance.view);
-    subscribeForTextFormatChanges(instance.view);
-    subscribeForBlockStateChanges(instance.view);
-    subscribeForListStateChanges(instance.view);
+    subscribeForMentionStateChanges(view, eventDispatcher);
+    subscribeForTextFormatChanges(view, eventDispatcher);
+    subscribeForBlockStateChanges(view, eventDispatcher);
+    subscribeForListStateChanges(view, eventDispatcher);
   }
 
   onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
@@ -77,7 +75,10 @@ class EditorWithState extends Editor {
   }
 }
 
-function subscribeForMentionStateChanges(view) {
+function subscribeForMentionStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
   let mentionsPluginState = mentionPluginKey.getState(view.state);
   bridge.mentionsPluginState = mentionsPluginState;
   if (mentionsPluginState) {
@@ -93,17 +94,15 @@ function sendToNative(state) {
   }
 }
 
-function subscribeForTextFormatChanges(view: EditorView) {
+function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
-  if (textFormattingPluginState) {
-    textFormattingPluginState.subscribe(state =>
-      toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state))),
-    );
-  }
+  eventDispatcher.on(textFormattingStateKey, state => {
+    toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state)));
+  });
 }
 
-function subscribeForBlockStateChanges(view: EditorView) {
+function subscribeForBlockStateChanges(view: EditorView, eventDispatcher: any) {
   let blockState = blockPluginStateKey.getState(view.state);
   bridge.blockState = blockState;
   if (blockState) {
@@ -113,10 +112,10 @@ function subscribeForBlockStateChanges(view: EditorView) {
   }
 }
 
-function subscribeForListStateChanges(view: EditorView) {
+function subscribeForListStateChanges(view: EditorView, eventDispatcher: any) {
   const listState: ListsState = listsStateKey.getState(view.state);
   bridge.listState = listState;
-  listState.subscribe(state => {
+  eventDispatcher.on(listsStateKey, state => {
     toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
   });
 }
@@ -153,6 +152,8 @@ export default function mobileEditor() {
         customMediaPicker: new MobilePicker(),
         provider: Promise.resolve(createMediaProvider()),
       }}
+      allowPanel={true}
+      allowCodeBlocks={true}
       allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());

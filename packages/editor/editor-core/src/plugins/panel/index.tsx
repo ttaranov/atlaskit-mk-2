@@ -2,8 +2,8 @@ import * as React from 'react';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { createPlugin, stateKey } from './pm-plugins/main';
-import PanelEdit from './ui/PanelEdit';
+import { createPlugin } from './pm-plugins/main';
+import { getToolbarConfig } from './toolbar';
 
 const panelPlugin: EditorPlugin = {
   nodes() {
@@ -12,11 +12,6 @@ const panelPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [{ rank: 1110, plugin: createPlugin }];
-  },
-
-  contentComponent({ editorView }) {
-    const pluginState = stateKey.getState(editorView.state);
-    return <PanelEdit editorView={editorView} pluginState={pluginState} />;
   },
 
   pluginsOptions: {
@@ -34,6 +29,7 @@ const panelPlugin: EditorPlugin = {
         },
       },
     ],
+    floatingToolbar: getToolbarConfig,
   },
 };
 

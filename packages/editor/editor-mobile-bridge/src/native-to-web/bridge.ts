@@ -18,4 +18,4 @@ export default interface NativeToWebBridge {
   onBulletListSelected();
   onIndentList();
   onOutdentList();
-};
+}

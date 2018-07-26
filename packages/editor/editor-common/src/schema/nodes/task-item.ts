@@ -5,7 +5,7 @@ import { uuid } from '../../utils';
 /**
  * @name taskItem_node
  */
-export interface Definition {
+export interface TaskItemDefinition {
   type: 'taskItem';
   content: Array<Inline>;
   attrs: {
@@ -16,6 +16,7 @@ export interface Definition {
 
 export const taskItem: NodeSpec = {
   content: 'inline*',
+  defining: true,
   marks: '_',
   attrs: {
     localId: { default: '' },

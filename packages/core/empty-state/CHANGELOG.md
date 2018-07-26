@@ -1,5 +1,26 @@
 # @atlaskit/empty-state
 
+## 3.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/button@9.0.2
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 3.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+
 ## 2.1.3
 - [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
   - @atlaskit/spinner@8.0.0

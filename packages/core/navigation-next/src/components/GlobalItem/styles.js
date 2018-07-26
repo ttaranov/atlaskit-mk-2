@@ -2,7 +2,7 @@
 
 import { colors, gridSize } from '@atlaskit/theme';
 
-import type { ThemedGlobalComponentStyles } from '../../theme/types';
+import type { ThemedGlobalNavigationComponentStyles } from '../../theme/types';
 import type { GlobalItemPresentationProps } from './types';
 
 /**
@@ -115,7 +115,9 @@ const settings = ({ isActive, isHover, size }) => ({
   },
 });
 
-const theme: ThemedGlobalComponentStyles<GlobalItemPresentationProps> = {
+const theme: ThemedGlobalNavigationComponentStyles<
+  GlobalItemPresentationProps,
+> = {
   dark,
   light,
   settings,

@@ -1,8 +1,17 @@
 // @flow
 import uuid from 'uuid';
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
 import defaultBaseProps from './defaultBaseProps';
 import type { StatelessProps, DefaultBaseProps } from './types';
@@ -16,7 +25,7 @@ type DefaultProps = DefaultBaseProps & {
   isChecked: boolean,
 };
 
-export default class ToggleStateless extends Component<StatelessProps, State> {
+class ToggleStateless extends Component<StatelessProps, State> {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isChecked: false,
@@ -75,7 +84,8 @@ export default class ToggleStateless extends Component<StatelessProps, State> {
             <IconWrapper isChecked={isChecked} size={size}>
               <Icon
                 label={label || (isChecked ? 'Uncheck' : 'Check')}
-                size={size === 'large' ? 'medium' : 'small'}
+                size={size === 'large' ? null : 'small'}
+                primaryColor="inherit"
               />
             </IconWrapper>
           </Inner>
@@ -84,3 +94,47 @@ export default class ToggleStateless extends Component<StatelessProps, State> {
     );
   }
 }
+
+export { ToggleStateless as ToggleStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'toggle',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'toggle',
+
+      attributes: {
+        componentName: 'toggle',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'toggle',
+
+      attributes: {
+        componentName: 'toggle',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'toggle',
+
+      attributes: {
+        componentName: 'toggle',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ToggleStateless),
+);

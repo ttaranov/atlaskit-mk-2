@@ -18,7 +18,7 @@ We encourage adding tests to all components on **Atlaskit**.
 ### Browser unit tests
 - some components require unit tests which can be run against **real browser**.
 - these tests use *jest-karma runner*.
-- *browser unit tests* for packages should be structured under `<pkg>/tests/browser`.
+- *browser unit tests* for packages should be structured under `<pkg>/__tests-karma__`.
 - on local these run against 2 browsers  (Chrome and FF).
 - on CI these run against 5 different browsers across OS for changed packages only.
 - to run on local `yarn test:browser`.
