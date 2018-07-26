@@ -15,6 +15,7 @@ import {
   version as packageVersion,
 } from '../../../package.json';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import { ELEMENTS_CHANNEL } from '../../constants';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
@@ -36,7 +37,7 @@ export type OldAnalytics = {
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 };
 
-export type Props = OwnProps & OldAnalytics;
+export type Props = OwnProps & OldAnalytics & WithAnalyticsEventProps;
 
 const mentionPayload = (
   actionSubject: string,
@@ -165,21 +166,23 @@ const MentionWithAnalytics: React.ComponentClass<
   OwnProps
 > = withAnalyticsEvents({
   onClick: (createEvent, props: Props) => {
-    createEvent(mentionPayload('mention', 'selected', props)).fire(
-      ELEMENTS_CHANNEL,
-    );
+    const event = createEvent(mentionPayload('mention', 'selected', props));
+
+    event.fire(ELEMENTS_CHANNEL);
 
     // old analytics
     fireAnalytics('lozenge.select', props);
+    return event;
   },
 
   onHover: (createEvent, props) => {
-    createEvent(mentionPayload('mention', 'hovered', props)).fire(
-      ELEMENTS_CHANNEL,
-    );
+    const event = createEvent(mentionPayload('mention', 'hovered', props));
+
+    event.fire(ELEMENTS_CHANNEL);
 
     // old analytics
     fireAnalytics('lozenge.hover', props);
+    return event;
   },
 })(MentionInternal) as React.ComponentClass<OwnProps>;
 

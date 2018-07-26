@@ -99,7 +99,7 @@ describe('<Mention />', () => {
         mentionData.id,
         mentionData.text,
         expect.anything(),
-        undefined,
+        expect.anything(),
       );
     });
 
@@ -285,7 +285,7 @@ describe('<Mention />', () => {
         mentionData.id,
         mentionData.text,
         expect.anything(),
-        undefined,
+        expect.anything(),
       );
     });
 

@@ -1,7 +1,4 @@
-import {
-  TablePluginState,
-  pluginKey as tablePluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
+import { pluginKey as tablePluginKey } from '../../../src/plugins/table/pm-plugins/main';
 import { supportsTableLayout } from '../../../src/plugins/table/toolbar';
 import {
   createEditor,
@@ -18,7 +15,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { TableLayout } from '@atlaskit/editor-common';
 import tablesPlugin from '../../../src/plugins/table';
-import { PermittedLayoutsDescriptor } from '../../../src/plugins/table/pm-plugins/main';
+import {
+  PermittedLayoutsDescriptor,
+  TablePluginState,
+} from '../../../src/plugins/table/types';
 import layoutPlugin from '../../../src/plugins/layout';
 import extensionPlugin from '../../../src/plugins/extension';
 

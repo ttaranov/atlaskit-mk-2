@@ -290,7 +290,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     display: none;
   }
 
-  & [data-layout-type="two_equal"] {
+  & [data-layout-type='two_equal'] {
     display: flex;
     flex-direction: row;
     position: relative;

@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 7.0.1
+- [patch] Fix CORS request in Smart Card [b0e2ce3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0e2ce3)
+
 ## 7.0.0
 - [major] Implemented smart cards and common views for other cards [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
 - [major] Implemented smart cards and common UI elements [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)

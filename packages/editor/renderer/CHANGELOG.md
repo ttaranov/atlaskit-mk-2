@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 19.2.2
+- [patch] ED-5033, fixes for multiple date related issues. [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+- [patch] Updated dependencies [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+  - @atlaskit/editor-common@13.2.2
+
 ## 19.2.1
 - [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
   - @atlaskit/media-test-helpers@15.2.0

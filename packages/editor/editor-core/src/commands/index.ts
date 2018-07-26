@@ -14,18 +14,9 @@ import {
   isTableCell,
 } from '../utils';
 
-import { hyperlinkPluginKey } from '../plugins/hyperlink';
-
 export function preventDefault(): Command {
   return function(state, dispatch) {
     return true;
-  };
-}
-
-export function showLinkPanel(): Command {
-  return function(state, dispatch, view) {
-    const pluginState = hyperlinkPluginKey.getState(state);
-    return pluginState.showLinkPanel(view);
   };
 }
 

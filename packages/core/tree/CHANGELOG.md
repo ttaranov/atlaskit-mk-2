@@ -1,5 +1,14 @@
 # @atlaskit/tree
 
+## 1.1.0
+- [minor] Introducing Drag&Drop functionality to atlaskit/tree [98fe2b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98fe2b5)
+
+
+- [none] Updated dependencies [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+  - @atlaskit/navigation@33.0.5
+- [none] Updated dependencies [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+  - @atlaskit/navigation@33.0.5
+
 ## 1.0.1
 - [patch] Update docs, change dev deps [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
 - [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)

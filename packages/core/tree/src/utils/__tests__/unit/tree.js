@@ -1,8 +1,8 @@
 //@flow
 
-import { flattenTree, isSamePath, mutateTree } from '../../../../utils/tree';
-import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
-import { treeWithTwoBranches } from '../../../../../mockdata/treeWithTwoBranches';
+import { flattenTree, getItem, mutateTree, getTreePosition } from '../../tree';
+import { treeWithThreeLeaves } from '../../../../mockdata/treeWithThreeLeaves';
+import { treeWithTwoBranches } from '../../../../mockdata/treeWithTwoBranches';
 
 describe('@atlaskit/tree - utils/tree', () => {
   describe('#flattenTree', () => {
@@ -56,7 +56,7 @@ describe('@atlaskit/tree - utils/tree', () => {
       });
     });
 
-    it("doesn't show collapsed subtrees", () => {
+    it('does not show collapsed subtrees', () => {
       const collapsedTree = {
         rootId: treeWithTwoBranches.rootId,
         items: {
@@ -146,23 +146,44 @@ describe('@atlaskit/tree - utils/tree', () => {
     });
   });
 
-  describe('#isSamePath', () => {
-    it('returns true if for the same instances', () => {
-      const path = [1, 1];
-      expect(isSamePath(path, path)).toBe(true);
+  describe('#getItem', () => {
+    it('returns item from the first level of tree', () => {
+      expect(getItem(treeWithThreeLeaves, [1])).toBe(
+        treeWithThreeLeaves.items['1-2'],
+      );
     });
 
-    it("returns true if it's the same", () => {
-      expect(isSamePath([1, 1], [1, 1])).toBe(true);
+    it('returns item from deep the tree', () => {
+      expect(getItem(treeWithTwoBranches, [1, 1])).toBe(
+        treeWithTwoBranches.items['1-2-2'],
+      );
     });
 
-    it("returns false if it's not", () => {
-      expect(isSamePath([1, 1, 1], [1, 1])).toBe(false);
+    it('returns undefined if item does not exist', () => {
+      expect(getItem(treeWithThreeLeaves, [100])).toBe(undefined);
+    });
+  });
+
+  describe('#getTreePosition', () => {
+    it('returns the top element', () => {
+      expect(getTreePosition(treeWithTwoBranches, [0])).toEqual({
+        parentId: '1',
+        index: 0,
+      });
     });
 
-    it('returns false if any of them is empty', () => {
-      expect(isSamePath([], [1, 1])).toBe(false);
-      expect(isSamePath([1], [])).toBe(false);
+    it('returns the top element of a sublist', () => {
+      expect(getTreePosition(treeWithTwoBranches, [0, 0])).toEqual({
+        parentId: '1-1',
+        index: 0,
+      });
+    });
+
+    it('returns the last element of a sublist', () => {
+      expect(getTreePosition(treeWithTwoBranches, [0, 1])).toEqual({
+        parentId: '1-1',
+        index: 1,
+      });
     });
   });
 });

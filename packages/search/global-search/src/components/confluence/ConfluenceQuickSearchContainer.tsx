@@ -60,7 +60,7 @@ class SearchScreenCounter implements ScreenCounter {
 }
 
 export interface State {
-  query: string;
+  latestSearchQuery: string;
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
@@ -98,7 +98,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   state = {
     isLoading: false,
     isError: false,
-    query: '',
+    latestSearchQuery: '',
     searchSessionId: uuid(), // unique id for search attribution
     recentlyViewedPages: [],
     recentlyViewedSpaces: [],
@@ -109,15 +109,15 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     keepRecentActivityResults: true,
   };
 
-  handleSearch = (query: string) => {
-    if (this.state.query !== query) {
+  handleSearch = (newLatestSearchQuery: string) => {
+    if (this.state.latestSearchQuery !== newLatestSearchQuery) {
       this.setState({
-        query: query,
+        latestSearchQuery: newLatestSearchQuery,
         isLoading: true,
       });
     }
 
-    if (query.length === 0) {
+    if (newLatestSearchQuery.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState(
         {
@@ -131,7 +131,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         () => this.fireShownPreQueryEvent(),
       );
     } else {
-      this.doSearch(query);
+      this.doSearch(newLatestSearchQuery);
     }
   };
 
@@ -231,30 +231,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         elapsedMs,
         quickNavElapsedTime,
         this.state.searchSessionId,
-        this.state.query,
+        this.state.latestSearchQuery,
         createAnalyticsEvent,
       );
     }
   }
-  getSearchResultState = (
-    query: string,
-    objectResults: Result[],
-    spaceResults: Map<Scope, Result[]>,
-    peopleResults: Result[],
-  ) => {
-    if (this.state.query === query) {
-      return {
-        objectResults,
-        spaceResults: spaceResults.get(Scope.ConfluenceSpace) || [],
-        peopleResults,
-      };
-    }
-    return {
-      objectResults: this.state.objectResults,
-      spaceResults: this.state.spaceResults,
-      peopleResults: this.state.peopleResults,
-    };
-  };
 
   doSearch = async (query: string) => {
     const startTime = performanceNow();
@@ -292,29 +273,29 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         searchPeoplePromise,
       ]);
 
-      const searchResult = this.getSearchResultState(
-        query,
-        objectResults,
-        spaceResultsMap,
-        peopleResults,
-      );
-
-      this.setState({
-        isError: false,
-        isLoading: false,
-        keepRecentActivityResults: false,
-        ...searchResult,
-      });
-
-      this.fireShownPostQueryEvent(
-        startTime,
-        quickNavTime,
-        buildShownEventDetails(
-          take(searchResult.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
-          take(searchResult.spaceResults, MAX_SPACES),
-          take(searchResult.peopleResults, MAX_PEOPLE),
-        ),
-      );
+      if (this.state.latestSearchQuery === query) {
+        this.setState(
+          {
+            objectResults,
+            spaceResults: spaceResultsMap.get(Scope.ConfluenceSpace) || [],
+            peopleResults,
+            isError: false,
+            isLoading: false,
+            keepRecentActivityResults: false,
+          },
+          () => {
+            this.fireShownPostQueryEvent(
+              startTime,
+              quickNavTime,
+              buildShownEventDetails(
+                take(this.state.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
+                take(this.state.spaceResults, MAX_SPACES),
+                take(this.state.peopleResults, MAX_PEOPLE),
+              ),
+            );
+          },
+        );
+      }
     } catch {
       this.setState({
         isError: true,
@@ -374,13 +355,21 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   retrySearch = () => {
-    this.handleSearch(this.state.query);
+    this.handleSearch(this.state.latestSearchQuery);
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      Object.keys({ ...nextProps, ...this.props })
+        .map(key => this.props[key] !== nextProps[key])
+        .reduce((acc, value) => acc || value, false) || this.state !== nextState
+    );
+  }
 
   render() {
     const { linkComponent, isSendSearchTermsEnabled } = this.props;
     const {
-      query,
+      latestSearchQuery,
       isLoading,
       searchSessionId,
       isError,
@@ -393,21 +382,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       keepRecentActivityResults,
     } = this.state;
 
-    const searchResultProps = {
-      retrySearch: this.retrySearch,
-      query,
-      isError,
-      objectResults,
-      spaceResults,
-      peopleResults,
-      isLoading,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
-      keepRecentActivityResults,
-      searchSessionId,
-      screenCounters: this.screenCounters,
-    };
     return (
       <GlobalQuickSearch
         onMount={this.handleMount}
@@ -417,12 +391,25 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         placeholder={this.props.intl.formatMessage({
           id: 'global-search.confluence.search-placeholder',
         })}
-        query={query}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       >
-        <ConfluenceSearchResults {...searchResultProps} />
+        <ConfluenceSearchResults
+          retrySearch={this.retrySearch}
+          query={latestSearchQuery}
+          isError={isError}
+          objectResults={objectResults}
+          spaceResults={spaceResults}
+          peopleResults={peopleResults}
+          isLoading={isLoading}
+          recentlyViewedPages={recentlyViewedPages}
+          recentlyViewedSpaces={recentlyViewedSpaces}
+          recentlyInteractedPeople={recentlyInteractedPeople}
+          keepRecentActivityResults={keepRecentActivityResults}
+          searchSessionId={searchSessionId}
+          screenCounters={this.screenCounters}
+        />
       </GlobalQuickSearch>
     );
   }

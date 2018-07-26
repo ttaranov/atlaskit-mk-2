@@ -34,7 +34,6 @@ export interface Props {
 
   isLoading: boolean;
   placeholder?: string;
-  query: string;
   searchSessionId: string;
   children: React.ReactNode;
   linkComponent?: LinkComponent;
@@ -42,16 +41,23 @@ export interface Props {
   isSendSearchTermsEnabled?: boolean;
 }
 
+export interface State {
+  query: string;
+}
+
 /**
  * Presentational component that renders the search input and search results.
  */
-export class GlobalQuickSearch extends React.Component<Props> {
+export class GlobalQuickSearch extends React.Component<Props, State> {
   public static defaultProps: Partial<Props> = {
     isSendSearchTermsEnabled: false,
   };
-
   queryVersion: number = 0;
   resultSelected: boolean = false;
+
+  state = {
+    query: '',
+  };
 
   componentDidMount() {
     this.props.onMount();
@@ -59,6 +65,9 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   handleSearchInput = ({ target }) => {
     const query = target.value;
+    this.setState({
+      query,
+    });
     this.debouncedSearch(query);
   };
 
@@ -83,13 +92,13 @@ export class GlobalQuickSearch extends React.Component<Props> {
   }
 
   fireSearchResultSelectedEvent = (eventData: SearchResultEvent) => {
-    const { createAnalyticsEvent, searchSessionId, query } = this.props;
+    const { createAnalyticsEvent, searchSessionId } = this.props;
     this.resultSelected = true;
     if (isAdvancedSearchResult(eventData.resultId)) {
       fireSelectedAdvancedSearch(
         {
           ...eventData,
-          query,
+          query: this.state.query,
           queryVersion: this.queryVersion,
         } as AdvancedSearchSelectedEvent,
         searchSessionId,
@@ -133,7 +142,6 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   render() {
     const {
-      query,
       isLoading,
       placeholder,
       linkComponent,
@@ -148,7 +156,7 @@ export class GlobalQuickSearch extends React.Component<Props> {
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           placeholder={placeholder}
-          value={query}
+          value={this.state.query}
           linkComponent={linkComponent}
           onSearchSubmit={onSearchSubmit}
         >

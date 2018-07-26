@@ -1,5 +1,20 @@
 # @atlaskit/global-search
 
+## 5.3.6
+- [patch] fix keyboard navigation [2dbff95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dbff95)
+- [patch] Updated dependencies [2dbff95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dbff95)
+  - @atlaskit/quick-search@4.2.2
+
+## 5.3.5
+- [patch] Fix disappearing query problem when typing slowly [fc654d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc654d7)
+
+## 5.3.4
+- [patch] Fix flashing no results screen when typing. [d02e61a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02e61a)
+
+## 5.3.3
+- [patch] Updated dependencies [9fbaafd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fbaafd)
+  - @atlaskit/quick-search@4.2.1
+
 ## 5.3.2
 - [patch] minor refactor for passing screen counters [b5fc99c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5fc99c)
 

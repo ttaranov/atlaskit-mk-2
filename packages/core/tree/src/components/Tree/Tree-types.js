@@ -1,19 +1,13 @@
 // @flow
 import * as React from 'react';
 import type {
-  TreeItem,
-  TargetPosition,
   TreeData,
   Path,
   ItemId,
-} from '../types';
-
-export type RenderItemParams = {|
-  item: TreeItem,
-  depth: number,
-  onExpand: (itemId: ItemId) => void,
-  onCollapse: (itemId: ItemId) => void,
-|};
+  FlattenedTree,
+  TreePosition,
+} from '../../types';
+import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
 export type Props = {|
   tree: TreeData,
@@ -21,9 +15,14 @@ export type Props = {|
   onCollapse: (itemId: ItemId, path: Path) => void,
   onDragStart: (itemId: ItemId) => void,
   onDragEnd: (
-    itemId: ItemId,
-    targetId: ItemId,
-    position: TargetPosition,
+    sourcePosition: TreePosition,
+    destinationPosition: ?TreePosition,
   ) => void,
   renderItem: RenderItemParams => React.Node,
+  offsetPerLevel: number,
+|};
+
+export type State = {|
+  flattenedTree: FlattenedTree,
+  dropAnimationOffset: number,
 |};
