@@ -9,12 +9,11 @@ import {
   gifFileId,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
+import { CardEvent, FileIdentifier, CardAction } from '@atlaskit/media-card';
+import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import { Filmstrip, FilmstripItem } from '../src';
 import { ExampleWrapper, FilmstripWrapper } from '../example-helpers/styled';
-import {
-  CardEvent,
-  FileIdentifier,
-} from '../node_modules/@atlaskit/media-card';
+import { MediaItem } from '../node_modules/@atlaskit/media-core';
 
 export interface ExampleState {
   items: FilmstripItem[];
@@ -30,16 +29,14 @@ class Example extends Component<any, ExampleState> {
       return;
     }
     const selectedId = (result.mediaItemDetails as FileIdentifier).id;
-    const item = items.find(
-      item => (item.identifier as FileIdentifier).id === selectedId,
-    );
+    const currentItemIndex = this.getItemIndex(selectedId);
 
-    if (item) {
+    if (currentItemIndex > -1) {
+      const item = items[currentItemIndex];
       const newItem = {
         ...item,
         selected: !item.selected,
       };
-      const currentItemIndex = items.indexOf(item);
       items[currentItemIndex] = newItem;
 
       this.setState({
@@ -48,10 +45,44 @@ class Example extends Component<any, ExampleState> {
     }
   };
 
-  // TODO: pass delete action
+  getItemIndex = (id: string): number => {
+    const { items } = this.state;
+    const item = items.find(
+      item => (item.identifier as FileIdentifier).id === id,
+    );
+
+    if (item) {
+      return items.indexOf(item);
+    }
+
+    return -1;
+  };
+
+  onClose = (item?: MediaItem) => {
+    if (!item) {
+      return;
+    }
+
+    const { items } = this.state;
+    const index = this.getItemIndex(item.details.id);
+
+    if (index > -1) {
+      items.splice(index, 1);
+      this.setState({
+        items,
+      });
+    }
+  };
+
   cardProps: Partial<FilmstripItem> = {
     selectable: true,
     onClick: this.onCardClick,
+    actions: [
+      {
+        handler: this.onClose,
+        icon: <EditorCloseIcon label="close" />,
+      },
+    ],
   };
 
   state: ExampleState = {
@@ -84,6 +115,24 @@ class Example extends Component<any, ExampleState> {
     });
   };
 
+  createActionsFromId = (id: string): CardAction[] => {
+    const handler = () => {
+      this.onClose({
+        type: 'file',
+        details: {
+          id,
+        },
+      });
+    };
+
+    return [
+      {
+        handler,
+        icon: <EditorCloseIcon label="close" />,
+      },
+    ];
+  };
+
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files || !event.currentTarget.files.length) {
       return;
@@ -105,6 +154,7 @@ class Example extends Component<any, ExampleState> {
           const newItem: FilmstripItem = {
             ...this.cardProps,
             onClick: this.createOnClickFromId(id),
+            actions: this.createActionsFromId(id),
             identifier: {
               id,
               mediaItemType: 'file',
