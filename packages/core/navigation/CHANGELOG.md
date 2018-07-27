@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 33.1.0
+- [minor] Add `itemTextWidth` prop to SkeletonContainerItems and SkeletonContainerItem components. Add `isAvatarHidden` prop to SkeletonDefaultContainerHeader. This enables usage of skeleton components for Atlaskit drawers. [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
+- [minor] Updated dependencies [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
+
 ## 33.0.5
 - [patch] Upgrading react-beautiful-dnd to 8.0.1 [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
 - [patch] Upgrading react-beautiful-dnd to 8.0.0 [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
