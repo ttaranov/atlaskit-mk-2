@@ -26,6 +26,21 @@ export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
 
+const getAnalyticsComponent = (screenCounter, searchSessionId, analyticsKey) =>
+  screenCounter ? (
+    <AnalyticsEventFiredOnMount
+      key={analyticsKey}
+      onEventFired={() => screenCounter.increment()}
+      payloadProvider={() =>
+        buildScreenEvent(
+          Screen.POST_QUERY,
+          screenCounter.getCount(),
+          searchSessionId,
+        )
+      }
+    />
+  ) : null;
+
 const renderObjectsGroup = (
   title: JSX.Element,
   results: Result[],
@@ -74,7 +89,7 @@ const renderSearchPeopleItem = (query: string) =>
     text: <FormattedMessage id="global-search.people.advanced-search" />,
   });
 
-const renderNoResults = (query: string) => [
+const renderNoResults = (query: string, screenCounter, searchSessionId) => [
   <NoResults key="no-results" />,
   <ResultItemGroup title="" key="advanced-search">
     {renderSearchConfluenceItem(
@@ -83,6 +98,7 @@ const renderNoResults = (query: string) => [
     )}
     {renderSearchPeopleItem(query)}
   </ResultItemGroup>,
+  getAnalyticsComponent(screenCounter, searchSessionId, 'postQueryScreenEvent'),
 ];
 
 const PeopleSearchWrapper = styled.div`
@@ -182,19 +198,11 @@ const renderRecentActivities = (
     renderedSpacesGroup,
     renderedPeopleGroup,
     renderAdvancedSearchGroup(query),
-    screenCounter ? (
-      <AnalyticsEventFiredOnMount
-        key="preQueryScreenEvent"
-        onEventFired={() => screenCounter.increment()}
-        payloadProvider={() =>
-          buildScreenEvent(
-            Screen.PRE_QUERY,
-            screenCounter.getCount(),
-            searchSessionId,
-          )
-        }
-      />
-    ) : null,
+    getAnalyticsComponent(
+      screenCounter,
+      searchSessionId,
+      'preQueryScreenEvent',
+    ),
   ];
 };
 
@@ -237,20 +245,11 @@ const renderSearchResults = (
     renderedSpacesGroup,
     renderedPeopleGroup,
     renderAdvancedSearchGroup(query),
-
-    screenCounter ? (
-      <AnalyticsEventFiredOnMount
-        key="postQueryScreenEvent"
-        onEventFired={() => screenCounter.increment()}
-        payloadProvider={() =>
-          buildScreenEvent(
-            Screen.POST_QUERY,
-            screenCounter.getCount(),
-            searchSessionId,
-          )
-        }
-      />
-    ) : null,
+    getAnalyticsComponent(
+      screenCounter,
+      searchSessionId,
+      'postQueryScreenEvent',
+    ),
   ];
 };
 
@@ -267,9 +266,16 @@ const renderNoQuery = (
       isEmpty,
     )
   ) {
-    return (
-      <NoRecentActivity advancedSearchUrl={getConfluenceAdvancedSearchLink()} />
-    );
+    return [
+      <NoRecentActivity
+        advancedSearchUrl={getConfluenceAdvancedSearchLink()}
+      />,
+      getAnalyticsComponent(
+        screenCounter,
+        searchSessionId,
+        'preQueryScreenEvent',
+      ),
+    ];
   }
 
   return renderRecentActivities(
@@ -334,7 +340,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             searchSessionId,
             preQueryScreenCounter,
           )
-        : renderNoResults(query);
+        : renderNoResults(query, screenCounters, searchSessionId);
     }
 
     return renderSearchResults(
