@@ -7,17 +7,17 @@ import inputRulePlugin from './pm-plugins/input-rule';
 
 const rulePlugin: EditorPlugin = {
   nodes() {
-    return [{ name: 'rule', node: rule, rank: 1000 }];
+    return [{ name: 'rule', node: rule }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 1000,
+        name: 'ruleInputRule',
         plugin: ({ schema }) => inputRulePlugin(schema),
       },
       {
-        rank: 1010,
+        name: 'ruleKeymap',
         plugin: ({ schema }) => keymapPlugin(schema),
       },
     ];

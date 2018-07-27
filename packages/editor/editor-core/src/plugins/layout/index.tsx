@@ -13,15 +13,15 @@ export { pluginKey };
 export default {
   nodes() {
     return [
-      { rank: 2400, name: 'layoutSection', node: layoutSection },
-      { rank: 2400, name: 'layoutColumn', node: layoutColumn },
+      { name: 'layoutSection', node: layoutSection },
+      { name: 'layoutColumn', node: layoutColumn },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 2400,
+        name: 'layout',
         plugin: () => layoutPlugin,
       },
     ];

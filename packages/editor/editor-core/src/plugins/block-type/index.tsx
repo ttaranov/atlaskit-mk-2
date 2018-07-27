@@ -13,9 +13,9 @@ import { setBlockType } from './commands';
 const blockType: EditorPlugin = {
   nodes({ allowBlockType }) {
     const nodes = [
-      { name: 'heading', node: heading, rank: 600 },
-      { name: 'blockquote', node: blockquote, rank: 700 },
-      { name: 'hardBreak', node: hardBreak, rank: 1500 },
+      { name: 'heading', node: heading },
+      { name: 'blockquote', node: blockquote },
+      { name: 'hardBreak', node: hardBreak },
     ];
 
     if (allowBlockType) {
@@ -29,14 +29,20 @@ const blockType: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 500,
+        name: 'blockType',
         plugin: ({ props, dispatch }) =>
           createPlugin(dispatch, props.appearance),
       },
-      { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
+      {
+        name: 'blockTypeInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
       // Needs to be lower priority than prosemirror-tables.tableEditing
       // plugin as it is currently swallowing right/down arrow events inside tables
-      { rank: 925, plugin: ({ schema }) => keymapPlugin(schema) },
+      {
+        name: 'blockTypeKeyMap',
+        plugin: ({ schema }) => keymapPlugin(schema),
+      },
     ];
   },
 

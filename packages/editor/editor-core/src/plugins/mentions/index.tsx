@@ -10,22 +10,25 @@ import MentionPicker from './ui/MentionPicker';
 
 const mentionsPlugin: EditorPlugin = {
   nodes() {
-    return [{ name: 'mention', node: mention, rank: 1200 }];
+    return [{ name: 'mention', node: mention }];
   },
 
   marks() {
-    return [{ name: 'mentionQuery', mark: mentionQuery, rank: 1200 }];
+    return [{ name: 'mentionQuery', mark: mentionQuery }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 300,
+        name: 'mention',
         plugin: ({ providerFactory, portalProviderAPI }) =>
           createPlugin(portalProviderAPI, providerFactory),
       },
-      { rank: 310, plugin: ({ schema }) => inputRulePlugin(schema) },
-      { rank: 320, plugin: ({ schema }) => keymap(schema) },
+      {
+        name: 'mentionInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
+      { name: 'mentionKeymap', plugin: ({ schema }) => keymap(schema) },
     ];
   },
 

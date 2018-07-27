@@ -15,13 +15,13 @@ export type DateType = {
 
 const datePlugin: EditorPlugin = {
   nodes() {
-    return [{ rank: 2400, name: 'date', node: date }];
+    return [{ name: 'date', node: date }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 2410,
+        name: 'date',
         plugin: createDatePlugin,
       },
     ];
