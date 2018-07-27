@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import {
-  withAnalytics,
-  FireAnalyticsEvent,
-} from '../../../../../core/analytics/src';
+import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import { ConfluenceClient } from '../../api/ConfluenceClient';

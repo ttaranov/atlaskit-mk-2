@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import FeedbackDialog from './FeedbackDialog';
 import { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
-import SuccessIcon from '../../../../../core/icon/glyph/check-circle';
-import FeedbackIcon from '../../../../../core/icon/glyph/feedback';
+import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
+import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import { colors } from '@atlaskit/theme';
 
 // Positions the button at the top right of the drawer

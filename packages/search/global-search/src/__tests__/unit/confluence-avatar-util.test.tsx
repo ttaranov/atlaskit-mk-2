@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { makeConfluenceObjectResult } from './_test-util';
-import { ContentType } from '../../model/Result';
-import FileTypes24File24ImageIcon from '../../../../../core/icon/glyph/file-types/24/file-24-image';
-import FileTypes24File24ExcelSpreadsheetIcon from '../../../../../core/icon/glyph/file-types/24/file-24-excel-spreadsheet';
-import FileTypes24File24VideoIcon from '../../../../../core/icon/glyph/file-types/24/file-24-video';
-import FileTypes24File24ArchiveIcon from '../../../../../core/icon/glyph/file-types/24/file-24-archive';
-import FileTypes24File24PowerpointPresentationIcon from '../../../../../core/icon/glyph/file-types/24/file-24-powerpoint-presentation';
-import FileTypes24File24SourceCodeIcon from '../../../../../core/icon/glyph/file-types/24/file-24-source-code';
-import FileTypes24File24AudioIcon from '../../../../../core/icon/glyph/file-types/24/file-24-audio';
-import FileTypes24File24WordDocumentIcon from '../../../../../core/icon/glyph/file-types/24/file-24-word-document';
-import FileTypes24File24PdfDocumentIcon from '../../../../../core/icon/glyph/file-types/24/file-24-pdf-document';
-import FileTypes24File24GenericIcon from '../../../../../core/icon/glyph/file-types/24/file-24-generic';
+import { ContentType } from '../../../src/model/Result';
+import FileTypes24File24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
+import FileTypes24File24ExcelSpreadsheetIcon from '@atlaskit/icon/glyph/file-types/24/file-24-excel-spreadsheet';
+import FileTypes24File24VideoIcon from '@atlaskit/icon/glyph/file-types/24/file-24-video';
+import FileTypes24File24ArchiveIcon from '@atlaskit/icon/glyph/file-types/24/file-24-archive';
+import FileTypes24File24PowerpointPresentationIcon from '@atlaskit/icon/glyph/file-types/24/file-24-powerpoint-presentation';
+import FileTypes24File24SourceCodeIcon from '@atlaskit/icon/glyph/file-types/24/file-24-source-code';
+import FileTypes24File24AudioIcon from '@atlaskit/icon/glyph/file-types/24/file-24-audio';
+import FileTypes24File24WordDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-word-document';
+import FileTypes24File24PdfDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-pdf-document';
+import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/file-24-generic';
 
-import { getAvatarForConfluenceObjectResult } from '../../util/confluence-avatar-util';
+import { getAvatarForConfluenceObjectResult } from '../../../src/util/confluence-avatar-util';
 
 const TEST_FILE_PREFIXES = [
   '',

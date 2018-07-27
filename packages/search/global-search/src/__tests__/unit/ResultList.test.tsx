@@ -5,7 +5,7 @@ import {
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
-import Objects24Object24PageIcon from '../../../../../core/icon/glyph/objects/24/object-24-page';
+import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
 import ResultList, { Props } from '../../components/ResultList';
 import {
   JiraObjectResult,
