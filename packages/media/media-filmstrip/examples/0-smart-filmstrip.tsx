@@ -25,6 +25,7 @@ const context = createUploadContext();
 class Example extends Component<any, ExampleState> {
   onCardClick = (result: CardEvent) => {
     const { items } = this.state;
+
     if (!result.mediaItemDetails) {
       return;
     }
@@ -39,12 +40,7 @@ class Example extends Component<any, ExampleState> {
         selected: !item.selected,
       };
       const currentItemIndex = items.indexOf(item);
-      console.log({ currentItemIndex, newItem });
       items[currentItemIndex] = newItem;
-      // item.cardProps = {
-      //   ...item.cardProps,
-      //   selected: !item.cardProps.selected,
-      // };
 
       this.setState({
         items,
@@ -52,6 +48,7 @@ class Example extends Component<any, ExampleState> {
     }
   };
 
+  // TODO: pass delete action
   cardProps: Partial<FilmstripItem> = {
     selectable: true,
     onClick: this.onCardClick,
@@ -78,6 +75,15 @@ class Example extends Component<any, ExampleState> {
     ],
   };
 
+  createOnClickFromId = (id: string) => (event: any) => {
+    this.onCardClick({
+      event,
+      mediaItemDetails: {
+        id,
+      },
+    });
+  };
+
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files || !event.currentTarget.files.length) {
       return;
@@ -98,6 +104,7 @@ class Example extends Component<any, ExampleState> {
           const { items } = this.state;
           const newItem: FilmstripItem = {
             ...this.cardProps,
+            onClick: this.createOnClickFromId(id),
             identifier: {
               id,
               mediaItemType: 'file',
@@ -112,7 +119,7 @@ class Example extends Component<any, ExampleState> {
         }
       },
       error(error) {
-        console.log('stream error', error);
+        console.log('subscription', error);
       },
     });
   };

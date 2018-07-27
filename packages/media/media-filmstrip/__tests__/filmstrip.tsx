@@ -81,10 +81,8 @@ describe('<Filmstrip />', () => {
       items: [
         {
           identifier: firstIdenfier,
-          cardProps: {
-            selectable: true,
-            selected: true,
-          },
+          selectable: true,
+          selected: true,
         },
       ],
     });
