@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Date, Color } from '../src';
 
-const DateInP = ({ color }: { color?: Color }) => (
+const DateInParagraph = ({ color }: { color?: Color }) => (
   <p>
     <Date value={586137600000} color={color} />
   </p>
@@ -9,11 +9,11 @@ const DateInP = ({ color }: { color?: Color }) => (
 
 export default () => (
   <div>
-    <DateInP />
-    <DateInP color="red" />
-    <DateInP color="green" />
-    <DateInP color="blue" />
-    <DateInP color="purple" />
-    <DateInP color="yellow" />
+    <DateInParagraph />
+    <DateInParagraph color="red" />
+    <DateInParagraph color="green" />
+    <DateInParagraph color="blue" />
+    <DateInParagraph color="purple" />
+    <DateInParagraph color="yellow" />
   </div>
 );
