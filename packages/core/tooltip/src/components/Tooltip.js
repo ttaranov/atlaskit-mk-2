@@ -217,7 +217,7 @@ class Tooltip extends Component<Props, State> {
             immediatelyHide={immediatelyHide}
             in={isVisible}
           >
-            {animationStyles => (
+            {getAnimationStyles => (
               <Portal zIndex={layers.tooltip()}>
                 <Position
                   key={position}
@@ -226,21 +226,19 @@ class Tooltip extends Component<Props, State> {
                   position={position}
                   target={this.targetRef}
                 >
-                  {(ref, placement, style) => {
-                    return (
-                      <TooltipContainer
-                        innerRef={ref}
-                        style={{
-                          ...style,
-                          ...animationStyles,
-                        }}
-                        truncate={truncate}
-                        data-placement={placement}
-                      >
-                        {content}
-                      </TooltipContainer>
-                    );
-                  }}
+                  {(ref, placement, positionStyles) => (
+                    <TooltipContainer
+                      innerRef={ref}
+                      style={{
+                        ...positionStyles,
+                        ...getAnimationStyles(placement),
+                      }}
+                      truncate={truncate}
+                      data-placement={placement}
+                    >
+                      {content}
+                    </TooltipContainer>
+                  )}
                 </Position>
               </Portal>
             )}
