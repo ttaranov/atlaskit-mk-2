@@ -5,7 +5,7 @@ import { code, Example, md } from '@atlaskit/docs';
 export default md`
 ## Upgrade from 1.x to 2.x
 
-In the v2 release the table-tree component does not maintain a state anymore. A helper class \`TableTreeDataHelper\`
+In the v2 release the table-tree component does not maintain state anymore. A helper class \`TableTreeDataHelper\`
 is exported that can help you maintain cache of the object keys and update table tree items object efficiently.
 
 ---
