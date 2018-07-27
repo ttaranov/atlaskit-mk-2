@@ -25,7 +25,6 @@ import {
   media,
   sendKeyToPm,
   randomId,
-  createEvent,
 } from '@atlaskit/editor-test-helpers';
 import { TableLayout } from '@atlaskit/editor-common';
 import {
@@ -33,7 +32,10 @@ import {
   getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
 import { TablePluginState } from '../../../src/plugins/table/types';
-import { createTable } from '../../../src/plugins/table/actions';
+import {
+  createTable,
+  setEditorFocus,
+} from '../../../src/plugins/table/actions';
 import { setNodeSelection } from '../../../src/utils';
 import {
   toggleHeaderRow,
@@ -57,7 +59,6 @@ import listPlugin from '../../../src/plugins/lists';
 import { TextSelection } from 'prosemirror-state';
 
 describe('table plugin', () => {
-  const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
@@ -1015,11 +1016,12 @@ describe('table plugin', () => {
   describe('table plugin state', () => {
     it('should update tableNode when cursor enters the table', () => {
       const {
-        plugin,
         editorView: view,
         refs: { nextPos },
       } = editor(doc(table()(tr(td()(p('{nextPos}')))), p('te{<>}xt')));
-      plugin.props.handleDOMEvents!.focus(view, event);
+
+      setEditorFocus(true)(view.state, view.dispatch);
+
       view.dispatch(
         view.state.tr.setSelection(
           new TextSelection(view.state.doc.resolve(nextPos)),
@@ -1028,6 +1030,23 @@ describe('table plugin', () => {
       const { tableNode } = getPluginState(view.state);
       expect(tableNode).toBeDefined();
       expect(tableNode.type.name).toEqual('table');
+    });
+    it('should update targetCellRef when table looses focus', () => {
+      const {
+        editorView: view,
+        refs: { nextPos },
+      } = editor(doc(table()(tr(td()(p('{<>}')))), p('te{nextPos}xt')));
+
+      setEditorFocus(true)(view.state, view.dispatch);
+
+      expect(getPluginState(view.state).targetCellRef).toBeDefined();
+
+      view.dispatch(
+        view.state.tr.setSelection(
+          new TextSelection(view.state.doc.resolve(nextPos)),
+        ),
+      );
+      expect(getPluginState(view.state).targetCellRef).not.toBeDefined();
     });
   });
 });
