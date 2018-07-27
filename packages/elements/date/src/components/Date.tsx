@@ -15,6 +15,7 @@ export type Props = {
   format?: string;
   color?: Color;
   className?: string;
+  id?: string;
   children?: ((props: Props) => React.ReactNode) | string | React.ReactNode;
 };
 
@@ -50,6 +51,7 @@ export class Date extends React.Component<Props> {
   render() {
     return (
       <DateLozenge
+        id={this.props.id}
         className={this.props.className}
         onClick={isClickable(this.props) ? this.handleOnClick : undefined}
         color={this.props.color}

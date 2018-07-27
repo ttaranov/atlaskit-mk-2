@@ -59,6 +59,7 @@ export default class DateNodeView extends React.Component<Props> {
 
     return (
       <SelectableDate
+        id={Math.random().toString()}
         color={color}
         value={timestamp}
         onClick={this.handleClick}
