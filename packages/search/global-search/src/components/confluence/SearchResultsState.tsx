@@ -8,9 +8,9 @@ import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount'
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
 
-export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
-export const MAX_SPACES = 3;
-export const MAX_PEOPLE = 3;
+const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
+const MAX_SPACES = 3;
+const MAX_PEOPLE = 3;
 
 export interface Props {
   query: string;
@@ -34,7 +34,7 @@ export default class SearchResultsState extends React.Component<Props> {
 
     let sectionIndex = 0;
 
-    const renderedObjectsGroup = (
+    const objectsGroup = (
       <ResultsGroup
         key="objects"
         title={
@@ -45,11 +45,11 @@ export default class SearchResultsState extends React.Component<Props> {
       />
     );
 
-    if (renderedObjectsGroup !== null) {
+    if (objectResults.length > 0) {
       sectionIndex++;
     }
 
-    const renderedSpacesGroup = (
+    const spacesGroup = (
       <ResultsGroup
         key="spaces"
         title={
@@ -60,11 +60,11 @@ export default class SearchResultsState extends React.Component<Props> {
       />
     );
 
-    if (renderedSpacesGroup !== null) {
+    if (spaceResults.length > 0) {
       sectionIndex++;
     }
 
-    const renderedPeopleGroup = (
+    const peopleGroup = (
       <ResultsGroup
         key="people"
         title={<FormattedMessage id="global-search.people.people-heading" />}
@@ -74,9 +74,9 @@ export default class SearchResultsState extends React.Component<Props> {
     );
 
     return [
-      renderedObjectsGroup,
-      renderedSpacesGroup,
-      renderedPeopleGroup,
+      objectsGroup,
+      spacesGroup,
+      peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
       screenCounter ? (
         <AnalyticsEventFiredOnMount

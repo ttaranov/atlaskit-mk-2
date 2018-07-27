@@ -9,8 +9,8 @@ import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
 
 const MAX_RECENT_PAGES = 8;
-export const MAX_SPACES = 3;
-export const MAX_PEOPLE = 3;
+const MAX_SPACES = 3;
+const MAX_PEOPLE = 3;
 
 export interface Props {
   query: string;
@@ -31,9 +31,10 @@ export default class RecentActivities extends React.Component<Props> {
       searchSessionId,
       screenCounter,
     } = this.props;
+
     let sectionIndex = 0;
 
-    const renderedObjectsGroup = (
+    const objectsGroup = (
       <ResultGroup
         key="objects"
         title={
@@ -44,11 +45,11 @@ export default class RecentActivities extends React.Component<Props> {
       />
     );
 
-    if (renderedObjectsGroup !== null) {
+    if (recentlyViewedPages.length > 0) {
       sectionIndex++;
     }
 
-    const renderedSpacesGroup = (
+    const spacesGroup = (
       <ResultGroup
         key="spaces"
         title={
@@ -59,11 +60,11 @@ export default class RecentActivities extends React.Component<Props> {
       />
     );
 
-    if (renderedSpacesGroup !== null) {
+    if (recentlyViewedSpaces.length > 0) {
       sectionIndex++;
     }
 
-    const renderedPeopleGroup = (
+    const peopleGroup = (
       <ResultGroup
         key="people"
         title={
@@ -75,9 +76,9 @@ export default class RecentActivities extends React.Component<Props> {
     );
 
     return [
-      renderedObjectsGroup,
-      renderedSpacesGroup,
-      renderedPeopleGroup,
+      objectsGroup,
+      spacesGroup,
+      peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
       screenCounter ? (
         <AnalyticsEventFiredOnMount

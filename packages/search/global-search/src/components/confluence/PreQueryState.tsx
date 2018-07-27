@@ -10,7 +10,7 @@ export interface Props {
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
   recentlyInteractedPeople: Result[];
-  searchSessionId;
+  searchSessionId: string;
   screenCounter?: ScreenCounter;
 }
 

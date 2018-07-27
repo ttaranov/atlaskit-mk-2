@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Icon from '@atlaskit/icon';
 import { ResultItemGroup } from '@atlaskit/quick-search';
-import { FormattedMessage } from 'react-intl';
-import SearchIcon from '../../../../../core/icon/glyph/search';
+import ConfluenceIcon from '../../../../../core/icon/glyph/confluence';
+import PeopleIcon from '../../../../../core/icon/glyph/people';
 import NoResults from '../NoResults';
 import SearchConfluenceItem from '../SearchConfluenceItem';
 import SearchPeopleItem from '../SearchPeopleItem';
-import PeopleIconGlyph from '../../assets/PeopleIconGlyph';
+import SearchJiraItem from '../SearchJiraItem';
+
 export interface Props {
   query: string;
 }
@@ -14,24 +14,19 @@ export interface Props {
 export default class NoResultsState extends React.Component<Props> {
   render() {
     const { query } = this.props;
-
     return [
       <NoResults key="no-results" />,
       <ResultItemGroup title="" key="advanced-search">
+        <SearchJiraItem query={query} />
         <SearchConfluenceItem
           query={query}
-          text={
-            <FormattedMessage id="global-search.confluence.advanced-search-filters" />
-          }
-          icon={<SearchIcon size="medium" label="Advanced search" />}
-          showKeyboardLozenge={true}
+          text="Search for more Confluence pages and blogs"
+          icon={<ConfluenceIcon size="medium" label="Search confluence" />}
         />
         <SearchPeopleItem
           query={query}
-          text={<FormattedMessage id="global-search.people.advanced-search" />}
-          icon={
-            <Icon glyph={PeopleIconGlyph} size="medium" label="Search people" />
-          }
+          text="Search for more people"
+          icon={<PeopleIcon size="medium" label="Search people" />}
         />
       </ResultItemGroup>,
     ];

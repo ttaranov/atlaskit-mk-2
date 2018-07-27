@@ -28,6 +28,7 @@ export default class ResultList extends React.Component<Props> {
       const analyticsData = {
         sectionIndex,
         indexWithinSection: index,
+        containerId: result.containerId,
       };
 
       switch (resultType) {

@@ -28,10 +28,8 @@ export interface Props {
   peopleResults: Result[];
   keepPreQueryState: boolean;
   searchSessionId: string;
-  screenCounters?: {
-    preQueryScreenCounter: ScreenCounter;
-    postQueryScreenCounter: ScreenCounter;
-  };
+  preQueryScreenCounter?: ScreenCounter;
+  postQueryScreenCounter?: ScreenCounter;
 }
 
 export default class ConfluenceSearchResults extends React.Component<Props> {
@@ -49,15 +47,9 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
       retrySearch,
       keepPreQueryState,
       searchSessionId,
-      screenCounters,
+      preQueryScreenCounter,
+      postQueryScreenCounter,
     } = this.props;
-
-    const { preQueryScreenCounter, postQueryScreenCounter } = screenCounters
-      ? screenCounters
-      : {
-          preQueryScreenCounter: undefined,
-          postQueryScreenCounter: undefined,
-        };
 
     if (isError) {
       return <SearchError onRetryClick={retrySearch} />;

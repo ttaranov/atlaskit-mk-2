@@ -425,7 +425,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyInteractedPeople={recentlyInteractedPeople}
           keepPreQueryState={keepPreQueryState}
           searchSessionId={searchSessionId}
-          screenCounters={this.screenCounters}
+          {...this.screenCounters}
         />
       </GlobalQuickSearch>
     );

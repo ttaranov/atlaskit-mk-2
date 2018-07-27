@@ -4,7 +4,7 @@ import { Result } from '../model/Result';
 import ResultList from './ResultList';
 
 export interface Props {
-  title: JSX.Element;
+  title: JSX.Element | string;
   results: Result[];
   sectionIndex: number;
 }
