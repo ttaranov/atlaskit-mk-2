@@ -2,7 +2,7 @@ import * as React from 'react';
 import Icon from '@atlaskit/icon';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import { FormattedMessage } from 'react-intl';
-import SearchIcon from '../../../../../core/icon/glyph/search';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import NoResults from '../NoResults';
 import SearchConfluenceItem from '../SearchConfluenceItem';
 import SearchPeopleItem from '../SearchPeopleItem';

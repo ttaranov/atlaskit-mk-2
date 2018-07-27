@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from '@atlaskit/icon';
-import SearchIcon from '../../../../../core/icon/glyph/search';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { colors, gridSize, math } from '@atlaskit/theme';
