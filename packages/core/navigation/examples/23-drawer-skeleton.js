@@ -1,29 +1,34 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import AddIcon from '@atlaskit/icon/glyph/add';
+import StarIcon from '@atlaskit/icon/glyph/star';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
-import EditorAlignLeftIcon from '@atlaskit/icon/glyph/editor/align-left';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
 import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
-import { AkSearch } from '@atlaskit/quick-search';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
 import Navigation, {
   AkContainerNavigationNested,
+  AkGlobalItem,
   AkCreateDrawer,
-  AkNavigationItemGroup,
+  AkCustomDrawer,
   AkNavigationItem,
   AkSearchDrawer,
   presetThemes,
   SkeletonDefaultContainerHeader,
   SkeletonContainerItems,
 } from '../src';
+
+const SkeletonItemsWrapper = styled.div`
+  padding-right: ${akGridSizeUnitless * 3}px;
+`;
 
 const BackIcon = (
   <Tooltip position="right" content="Back">
@@ -55,25 +60,27 @@ const ContainerHeaderComponent = ({
   </div>
 );
 
-const GlobalCreateIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
-  <Tooltip position="right" content="Create">
-    <AddIcon
-      label="Create icon"
-      secondaryColor="inherit"
-      size="medium"
-      onClick={() => openDrawer('create')}
-    />
+const GlobalSearchIcon = ({ openDrawer }: { openDrawer: string => void }) => (
+  <Tooltip content="Search Icon" position="right">
+    <AkGlobalItem size="medium" onClick={() => openDrawer('search')}>
+      <SearchIcon />
+    </AkGlobalItem>
   </Tooltip>
 );
 
-const GlobalSearchIcon = ({ openDrawer }: { openDrawer: string => mixed }) => (
-  <Tooltip position="right" content="Search">
-    <SearchIcon
-      label="Search icon"
-      secondaryColor="inherit"
-      size="medium"
-      onClick={() => openDrawer('search')}
-    />
+const GlobalCreateIcon = ({ openDrawer }: { openDrawer: string => void }) => (
+  <Tooltip content="Create Icon" position="right">
+    <AkGlobalItem size="medium" onClick={() => openDrawer('create')}>
+      <AddIcon />
+    </AkGlobalItem>
+  </Tooltip>
+);
+
+const StarDrawerIcon = ({ openDrawer }: { openDrawer: string => void }) => (
+  <Tooltip content="Custom Drawer Icon" position="right">
+    <AkGlobalItem size="medium" onClick={() => openDrawer('custom')}>
+      <StarIcon />
+    </AkGlobalItem>
   </Tooltip>
 );
 
@@ -86,33 +93,32 @@ export default class ConfluenceHome extends Component<*, *> {
     width: this.props.width,
   };
 
+  getStarCustomDrawer = () => (
+    <AkCustomDrawer
+      backIcon={BackIcon}
+      isOpen={this.state.openDrawer === 'custom'}
+      key="custom"
+      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
+      header={<SkeletonDefaultContainerHeader isAvatarHidden />}
+      onBackButton={this.closeDrawer}
+    >
+      <SkeletonItemsWrapper>
+        <SkeletonContainerItems itemTextWidth="100%" />
+      </SkeletonItemsWrapper>
+    </AkCustomDrawer>
+  );
+
   getSearchDrawer = () => (
     <AkSearchDrawer
       backIcon={BackIcon}
       isOpen={this.state.openDrawer === 'search'}
       key="search"
-      onBackButton={this.closeDrawer}
       primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
+      onBackButton={this.closeDrawer}
     >
-      <AkSearch placeholder="Search..." onKeyDown={() => {}}>
-        <AkNavigationItemGroup title="RECENTLY VIEWED">
-          <AkNavigationItem
-            icon={<EditorAlignLeftIcon label="Editor icon" />}
-            text="Article 1"
-          />
-          <AkNavigationItem
-            icon={<EditorAlignLeftIcon label="Editor icon" />}
-            text="Article 2"
-          />
-        </AkNavigationItemGroup>
-        <AkNavigationItemGroup title="RECENT SPACES">
-          <AkNavigationItem
-            icon={<ConfluenceIcon label="Confluence icon" />}
-            text="Confluence"
-          />
-          <AkNavigationItem icon={<JiraIcon label="Jira icon" />} text="Jira" />
-        </AkNavigationItemGroup>
-      </AkSearch>
+      <SkeletonItemsWrapper>
+        <SkeletonContainerItems itemTextWidth="100%" />
+      </SkeletonItemsWrapper>
     </AkSearchDrawer>
   );
 
@@ -121,20 +127,12 @@ export default class ConfluenceHome extends Component<*, *> {
       backIcon={BackIcon}
       isOpen={this.state.openDrawer === 'create'}
       key="create"
-      onBackButton={this.closeDrawer}
       primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
+      onBackButton={this.closeDrawer}
     >
-      <AkNavigationItem text="Item outside a group" />
-      <AkNavigationItemGroup title="Create item group">
-        <AkNavigationItem
-          icon={<ConfluenceIcon label="Confluence icon" />}
-          text="Item with an icon"
-        />
-        <AkNavigationItem
-          icon={<JiraIcon label="Jira icon" />}
-          text="A really, really, quite long, actually super long container name"
-        />
-      </AkNavigationItemGroup>
+      <SkeletonItemsWrapper>
+        <SkeletonContainerItems itemTextWidth="100%" />
+      </SkeletonItemsWrapper>
     </AkCreateDrawer>
   );
 
@@ -178,7 +176,11 @@ export default class ConfluenceHome extends Component<*, *> {
       <Page
         navigation={
           <Navigation
-            drawers={[this.getSearchDrawer(), this.getCreateDrawer()]}
+            drawers={[
+              this.getSearchDrawer(),
+              this.getCreateDrawer(),
+              this.getStarCustomDrawer(),
+            ]}
             containerTheme={presetThemes.global}
             containerHeaderComponent={() => (
               <ContainerHeaderComponent
@@ -186,12 +188,15 @@ export default class ConfluenceHome extends Component<*, *> {
                 goBackHome={this.goBackHome}
               />
             )}
-            globalCreateIcon={<GlobalCreateIcon openDrawer={this.openDrawer} />}
             globalPrimaryIcon={
               <ConfluenceIcon label="Confluence icon" size="large" />
             }
             globalPrimaryItemHref="//www.atlassian.com/software/confluence"
-            globalSearchIcon={<GlobalSearchIcon openDrawer={this.openDrawer} />}
+            globalPrimaryActions={[
+              <StarDrawerIcon openDrawer={this.openDrawer} />,
+              <GlobalSearchIcon openDrawer={this.openDrawer} />,
+              <GlobalCreateIcon openDrawer={this.openDrawer} />,
+            ]}
             globalSecondaryActions={
               <SecondaryActions
                 timerMenu={this.timerMenu}
