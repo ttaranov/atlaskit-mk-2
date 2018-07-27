@@ -312,10 +312,11 @@ export class QuickSearch extends Component<Props, State> {
     } else if (event.key === 'Enter') {
       // shift key pressed or no result selected
       if (event.shiftKey || !this.state.selectedResultId) {
-        if(firePrivateAnalyticsEvent) {
+        if (firePrivateAnalyticsEvent) {
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
             newTab: false, // enter always open in the same tab
             resultsCount: this.flatResults.length,
+            method: 'shortcut',
           });
         }
         this.props.onSearchSubmit(event);

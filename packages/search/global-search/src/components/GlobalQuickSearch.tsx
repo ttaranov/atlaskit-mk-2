@@ -21,7 +21,10 @@ import {
 } from '../util/analytics-event-helper';
 
 import { CreateAnalyticsEventFn } from './analytics/types';
-import { isAdvancedSearchResult } from './SearchResultsUtil';
+import {
+  isAdvancedSearchResult,
+  ADVANCED_CONFLUENCE_SEARCH_RESULT_ID,
+} from './SearchResultsUtil';
 
 const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
 const QS_ANALYTICS_EV_KB_CTRLS_USED = `${ATLASKIT_QUICKSEARCH_NS}.keyboard-controls-used`;
@@ -91,22 +94,28 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
     this.queryVersion++;
   }
 
-  fireSearchResultSelectedEvent = (eventData: SearchResultEvent) => {
+  fireSearchResultSelectedEvent = (eventData: SelectedSearchResultEvent) => {
     const { createAnalyticsEvent, searchSessionId } = this.props;
     this.resultSelected = true;
-    if (isAdvancedSearchResult(eventData.resultId)) {
+    const resultId =
+      eventData.resultsCount && eventData.method === 'shortcut'
+        ? ADVANCED_CONFLUENCE_SEARCH_RESULT_ID
+        : eventData.resultId;
+    if (isAdvancedSearchResult(resultId)) {
       fireSelectedAdvancedSearch(
         {
           ...eventData,
+          resultId,
           query: this.state.query,
           queryVersion: this.queryVersion,
+          isLoading: this.props.isLoading,
         } as AdvancedSearchSelectedEvent,
         searchSessionId,
         createAnalyticsEvent,
       );
     } else {
       fireSelectedSearchResult(
-        eventData as SelectedSearchResultEvent,
+        eventData,
         searchSessionId,
         createAnalyticsEvent,
       );
@@ -119,7 +128,9 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
   ) => {
     const { createAnalyticsEvent, searchSessionId } = this.props;
     if (eventName === QS_ANALYTICS_EV_SUBMIT) {
-      this.fireSearchResultSelectedEvent(eventData);
+      this.fireSearchResultSelectedEvent(
+        eventData as SelectedSearchResultEvent,
+      );
     } else if (eventName === QS_ANALYTICS_EV_KB_CTRLS_USED) {
       const data = eventData as KeyboardControlEvent;
       if (data.key === 'ArrowDown' || data.key === 'ArrowUp') {

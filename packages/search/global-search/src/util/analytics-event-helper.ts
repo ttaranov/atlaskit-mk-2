@@ -180,7 +180,8 @@ export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   queryVersion: number;
   queryId: null | string;
   wasOnNoResultsScreen: boolean;
-  trigger? : string;
+  trigger?: string;
+  isLoading: boolean;
 }
 
 export type AnalyticsNextEvent = {
@@ -213,16 +214,16 @@ export function fireSelectedSearchResult(
 
 /**
  * checks if advanced link is clicked on no result screen
- * @param eventData 
+ * @param eventData
  */
-const checkOnNoResultscreen = (eventData) => {
+const checkOnNoResultscreen = eventData => {
   const index = eventData.index || 0;
   const sectionIndex = eventData.sectionIndex || 0;
   const resultsCount = eventData.resultsCount || 0;
   // no result screen if results count is 2 (2 advanced confluence search and advanced people search)
   // or when index = 0 and section index is 1 => empty first section
   return +!index === 0 && (+sectionIndex === 1 || +resultsCount === 2);
-}
+};
 
 export function fireSelectedAdvancedSearch(
   eventData: AdvancedSearchSelectedEvent,
@@ -242,6 +243,7 @@ export function fireSelectedAdvancedSearch(
       newTab,
       queryVersion,
       queryId: null,
+      isLoading: eventData.isLoading,
       ...getQueryAttributes(query),
       wasOnNoResultsScreen: checkOnNoResultscreen(eventData),
       ...transformSearchResultEventData(eventData),
