@@ -74,7 +74,7 @@ type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   isVisible: boolean,
-  beenVisible: boolean,
+  everBeenVisible: boolean,
 };
 
 let pendingHide;
@@ -108,19 +108,24 @@ class Tooltip extends Component<Props, State> {
   wrapperRef: HTMLElement | null;
   targetRef: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
-  cancelPendingSetState = () => {};
+  cancelPendingSetState = () => {}; // set in mouseover/mouseout handlers
   state = {
     immediatelyHide: false,
     immediatelyShow: false,
     isVisible: false,
-    beenVisible: false,
+    everBeenVisible: false,
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
+    const scrollOptions = { capture: true, passive: true };
     if (!prevState.isVisible && this.state.isVisible) {
-      window.addEventListener('scroll', this.handleWindowScroll);
+      window.addEventListener('scroll', this.handleWindowScroll, scrollOptions);
     } else if (prevState.isVisible && !this.state.isVisible) {
-      window.removeEventListener('scroll', this.handleWindowScroll);
+      window.removeEventListener(
+        'scroll',
+        this.handleWindowScroll,
+        scrollOptions,
+      );
     }
   }
 
@@ -143,7 +148,11 @@ class Tooltip extends Component<Props, State> {
     this.cancelPendingSetState();
     if (!this.state.isVisible) {
       this.cancelPendingSetState = showTooltip(immediatelyShow => {
-        this.setState({ isVisible: true, beenVisible: true, immediatelyShow });
+        this.setState({
+          isVisible: true,
+          everBeenVisible: true,
+          immediatelyShow,
+        });
         if (this.props.onShow) {
           this.props.onShow();
         }
@@ -188,7 +197,7 @@ class Tooltip extends Component<Props, State> {
     } = this.props;
     const {
       isVisible,
-      beenVisible,
+      everBeenVisible,
       immediatelyShow,
       immediatelyHide,
     } = this.state;
@@ -211,7 +220,7 @@ class Tooltip extends Component<Props, State> {
             {Children.only(children)}
           </NodeResolver>
         </TargetContainer>
-        {beenVisible && (
+        {everBeenVisible && (
           <Animation
             immediatelyShow={immediatelyShow}
             immediatelyHide={immediatelyHide}
