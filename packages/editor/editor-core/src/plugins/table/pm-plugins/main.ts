@@ -180,7 +180,7 @@ export const createPlugin = (
 
           const dragging = (resizingPluginKey.getState(state) || {}).dragging;
           const targetCellRef =
-            editorHasFocus && !dragging && targetCellPosition
+            editorHasFocus && tableRef && !dragging && targetCellPosition
               ? (findDomRefAtPos(targetCellPosition, domAtPos) as HTMLElement)
               : undefined;
 
