@@ -27,7 +27,7 @@ function updateRootItems(
     const rootItemKey = rootItem[key];
     if (rootItemKey === undefined) {
       throw new Error(
-        `[ERROR] No property '${key}' found in rootItem[${index}]`,
+        `[ERROR] Property '${key}' not found in rootItem[${index}]`,
       );
     } else {
       newKeysCache[rootItem[key]] = index + startIndexWith;
@@ -53,13 +53,13 @@ function updateChildItems(
   const parentCacheKey = itemParent[key];
 
   if (parentCacheKey === undefined) {
-    throw new Error(`[Table Tree] No property '${key}' found in parent item`);
+    throw new Error(`[Table Tree] Property '${key}' not found in parent item`);
   }
   const parentLocation = newKeysCache[parentCacheKey];
   const allItemsCopy = [...allTableItems];
   const objectToChange = get(allItemsCopy, parentLocation);
   const baseChildrenOfObjectToChange =
-    operation === 'UPDATE' ? [] : objectToChange.children;
+    operation === 'UPDATE' ? [] : get(objectToChange, 'children', []);
   objectToChange.children = baseChildrenOfObjectToChange.concat(newitems);
 
   // Update cache
