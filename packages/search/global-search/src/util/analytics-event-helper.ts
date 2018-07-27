@@ -216,7 +216,7 @@ export function fireSelectedSearchResult(
  * checks if advanced link is clicked on no result screen
  * @param eventData
  */
-const checkOnNoResultscreen = eventData => {
+const checkOnNoResultScreen = eventData => {
   const index = eventData.index || 0;
   const sectionIndex = eventData.sectionIndex || 0;
   const resultCount = eventData.resultCount || 0;
@@ -245,7 +245,7 @@ export function fireSelectedAdvancedSearch(
       queryId: null,
       isLoading: eventData.isLoading,
       ...getQueryAttributes(query),
-      wasOnNoResultsScreen: checkOnNoResultscreen(eventData),
+      wasOnNoResultsScreen: checkOnNoResultScreen(eventData),
       ...transformSearchResultEventData(eventData),
     },
   );
