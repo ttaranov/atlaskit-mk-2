@@ -1,5 +1,9 @@
 # @atlaskit/navigation-next
 
+## 3.1.0
+- [minor] add collapse listeners [90199a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90199a5)
+- [none] Updated dependencies [90199a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90199a5)
+
 ## 3.0.3
 - [patch] Updated dependencies [d0733a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0733a7)
   - @atlaskit/global-navigation@4.0.0
