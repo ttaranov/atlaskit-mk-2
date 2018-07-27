@@ -230,6 +230,7 @@
     "@types/bricks.js": "^1.8.0",
     "@types/bytes": "^2.4.33",
     "@types/codemirror": "^0.0.40",
+    "@types/date-fns": "^2.6.0",
     "@types/dateformat": "^1.0.1",
     "@types/eventemitter2": "^4.1.0",
     "@types/filesize": "^3.2.15",
