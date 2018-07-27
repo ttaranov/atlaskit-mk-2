@@ -43,7 +43,6 @@ type Props = {
   innerRef?: HTMLElement => any,
   in: boolean,
   userIsDragging: boolean,
-  productNavWidth: number,
   properties: Array<string>,
   from: Array<number | string>,
   to: Array<number | string>,
@@ -68,36 +67,24 @@ export default class ResizeTransition extends PureComponent<Props> {
     if (innerRef) innerRef(ref);
   };
 
-  onExpandStart = () => {
-    const { userIsDragging, onExpandStart } = this.props;
-    if (userIsDragging) return;
-    onExpandStart(0);
-  };
-  onExpandEnd = () => {
-    const { userIsDragging, productNavWidth, onExpandEnd } = this.props;
-    if (userIsDragging) return;
-    onExpandEnd(productNavWidth);
-  };
-  onCollapseStart = () => {
-    const { userIsDragging, productNavWidth, onCollapseStart } = this.props;
-    if (userIsDragging) return;
-    onCollapseStart(productNavWidth);
-  };
-  onCollapseEnd = () => {
-    const { userIsDragging, onCollapseEnd } = this.props;
-    if (userIsDragging) return;
-    onCollapseEnd(0);
-  };
-
   render() {
-    const { from, properties, to, userIsDragging } = this.props;
+    const {
+      from,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
+      properties,
+      to,
+      userIsDragging,
+    } = this.props;
 
     return (
       <Transition
-        onEnter={this.onExpandStart}
-        onEntered={this.onExpandEnd}
-        onExit={this.onCollapseStart}
-        onExited={this.onCollapseEnd}
+        onEntering={onExpandStart}
+        onEntered={onExpandEnd}
+        onExiting={onCollapseStart}
+        onExited={onCollapseEnd}
         in={this.props.in}
         timeout={DURATION}
       >

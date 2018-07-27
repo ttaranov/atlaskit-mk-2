@@ -199,7 +199,7 @@ type StatusProps = StatusEvents & {
   navState: NavState,
 };
 
-const withNavState = (Comp: ComponentType<*>) => (props: StatusEvents) => (
+const withNavState = (Comp: ComponentType<*>) => (props: *) => (
   <UIControllerSubscriber>
     {nav => <Comp navState={nav.state} {...props} />}
   </UIControllerSubscriber>
@@ -260,8 +260,53 @@ const CollapseStatusListener = withNavState(CollapseStatus);
 // Nav Implementation
 // ==============================
 
+const Logger = p => (
+  <div
+    {...p}
+    css={{
+      background: 'Wheat',
+      borderRadius: 2,
+      fontSize: 12,
+      padding: 10,
+      marginTop: 16,
+      position: 'relative',
+      width: 180,
+    }}
+  />
+);
+
+type BoxProps = { pending: boolean, width: number | 'auto' };
+const ResizeBox = ({ pending, width }: BoxProps) => (
+  <div
+    css={{
+      alignItems: 'center',
+      background: 'PaleVioletRed',
+      borderRadius: 2,
+      boxSizing: 'border-box',
+      color: 'white',
+      display: 'flex',
+      flexDirection: 'column',
+      fontSize: 18,
+      height: 200,
+      justifyContent: 'center',
+      padding: 10,
+      transition: 'width 220ms cubic-bezier(0.2, 0, 0, 1)',
+      width,
+    }}
+  >
+    <div>
+      My width is <code>{width}px</code>
+    </div>
+    <div style={{ fontSize: 12 }}>{pending ? '(resize pending)' : '・'}</div>
+  </div>
+);
+
 type StatusEvent = { key: string, name: string, value?: number };
-type State = { callStack: Array<StatusEvent> };
+type State = {
+  boxWidth: number | 'auto',
+  callStack: Array<StatusEvent>,
+  resizePending: boolean,
+};
 function makeKey() {
   return Math.random()
     .toString(36)
@@ -269,8 +314,11 @@ function makeKey() {
 }
 
 // eslint-disable-next-line react/no-multi-comp
-export default class ExtendingNavSubscriber extends React.Component<*, State> {
-  state = { callStack: [] };
+class ExtendingNavSubscriber extends React.Component<*, State> {
+  state = { callStack: [], boxWidth: 'auto', resizePending: false };
+  componentDidMount() {
+    this.updateWidth();
+  }
   onEmit = (name: string) => (value?: number) => {
     const callStack = this.state.callStack.slice(0);
     const key = makeKey();
@@ -283,49 +331,94 @@ export default class ExtendingNavSubscriber extends React.Component<*, State> {
     const len = callStack.length;
     return len < total ? callStack : callStack.slice(len - total, len);
   };
+  onCollapseStart = () => {
+    this.onEmit('onCollapseStart')();
+    this.makePending();
+  };
+  onCollapseEnd = () => {
+    this.onEmit('onCollapseEnd')();
+    this.updateWidth();
+  };
+  onExpandStart = () => {
+    if (this.props.navState.isResizing) return; // ignore expand events when resizing
+    this.onEmit('onExpandStart')();
+    this.makePending();
+  };
+  onExpandEnd = () => {
+    if (this.props.navState.isResizing) return; // ignore expand events when resizing
+    this.onEmit('onExpandEnd')();
+    this.updateWidth();
+  };
+  onResizeEnd = () => {
+    this.onEmit('onResizeEnd')();
+    this.updateWidth();
+  };
+  onResizeStart = () => {
+    this.onEmit('onResizeStart')();
+    this.makePending();
+  };
+  updateWidth = () => {
+    const { isCollapsed, productNavWidth } = this.props.navState;
+    const less = (isCollapsed ? 0 : productNavWidth) + 64;
+    const boxWidth = window.innerWidth - less - 32;
+    this.setState({ boxWidth, resizePending: false });
+  };
+  makePending = () => {
+    this.setState({ resizePending: true });
+  };
   render() {
+    const { boxWidth, resizePending } = this.state;
     const lastTen = this.getStack();
+    console.log('navState', this.props.navState);
 
     return (
-      <NavigationProvider>
-        <LayoutManager
-          globalNavigation={GlobalNavigation}
-          productNavigation={ProductNavigation}
-          containerNavigation={ContainerNavigation}
-          onCollapseStart={this.onEmit('onCollapseStart')}
-          onCollapseEnd={this.onEmit('onCollapseEnd')}
-          onExpandStart={this.onEmit('onExpandStart')}
-          onExpandEnd={this.onEmit('onExpandEnd')}
-        >
-          <CollapseStatusListener
-            onResizeEnd={this.onEmit('onResizeEnd')}
-            onResizeStart={this.onEmit('onResizeStart')}
-            onPeek={this.onEmit('onPeek')}
-            onUnpeek={this.onEmit('onUnpeek')}
-            onPeekHint={this.onEmit('onPeekHint')}
-            onUnpeekHint={this.onEmit('onUnpeekHint')}
-          />
-          <div style={{ padding: 30 }}>
-            <h4>
-              Extending <code>NavigationSubscriber</code>
-            </h4>
-            <button onClick={() => this.setState({ callStack: [] })}>
+      <LayoutManager
+        globalNavigation={GlobalNavigation}
+        productNavigation={ProductNavigation}
+        containerNavigation={ContainerNavigation}
+        onCollapseStart={this.onCollapseStart}
+        onCollapseEnd={this.onCollapseEnd}
+        onExpandStart={this.onExpandStart}
+        onExpandEnd={this.onExpandEnd}
+      >
+        <CollapseStatusListener
+          onResizeEnd={this.onResizeEnd}
+          onResizeStart={this.onResizeStart}
+          onPeek={this.onEmit('onPeek')}
+          onUnpeek={this.onEmit('onUnpeek')}
+          onPeekHint={this.onEmit('onPeekHint')}
+          onUnpeekHint={this.onEmit('onUnpeekHint')}
+        />
+        <div>
+          <ResizeBox width={boxWidth} pending={resizePending} />
+          <Logger>
+            <button
+              style={{ position: 'absolute', right: 10, top: 10 }}
+              onClick={() => this.setState({ callStack: [] })}
+            >
               Clear
             </button>
             {lastTen.length ? (
               lastTen.map(e => (
-                <p key={e.key}>
+                <div key={e.key}>
                   <code>
                     {e.name}({e.value})
                   </code>
-                </p>
+                </div>
               ))
             ) : (
-              <p>Interact with navigation to see the events logged here...</p>
+              <div>Events logged here...</div>
             )}
-          </div>
-        </LayoutManager>
-      </NavigationProvider>
+          </Logger>
+        </div>
+      </LayoutManager>
     );
   }
 }
+
+const ExtendedNavSubscriber = withNavState(ExtendingNavSubscriber);
+export default () => (
+  <NavigationProvider>
+    <ExtendedNavSubscriber />
+  </NavigationProvider>
+);
