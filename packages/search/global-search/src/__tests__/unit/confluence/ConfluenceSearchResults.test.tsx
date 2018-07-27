@@ -2,16 +2,16 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ConfluenceSearchResults, {
   Props,
-} from '../../components/confluence/ConfluenceSearchResults';
+} from '../../../components/confluence/ConfluenceSearchResults';
 
-import SearchError from '../../components/SearchError';
+import SearchError from '../../../components/SearchError';
 import {
   makeConfluenceContainerResult,
   makeConfluenceObjectResult,
-} from './_test-util';
-import PreQueryState from '../../components/confluence/PreQueryState';
-import NoResultsState from '../../components/confluence/NoResultsState';
-import SearchResultsState from '../../components/confluence/SearchResultsState';
+} from '../_test-util';
+import PreQueryState from '../../../components/confluence/PreQueryState';
+import NoResultsState from '../../../components/confluence/NoResultsState';
+import SearchResultsState from '../../../components/confluence/SearchResultsState';
 
 function render(partialProps: Partial<Props>) {
   const props = {

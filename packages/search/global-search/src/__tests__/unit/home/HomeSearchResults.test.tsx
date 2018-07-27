@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import searchResults, { Props } from '../../components/home/HomeSearchResults';
+import searchResults, {
+  Props,
+} from '../../../components/home/HomeSearchResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   ObjectResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
 } from '@atlaskit/quick-search';
 
-import SearchError from '../../components/SearchError';
-import NoResults from '../../components/NoResults';
-import AdvancedSearchResult from '../../components/AdvancedSearchResult';
+import SearchError from '../../../components/SearchError';
+import NoResults from '../../../components/NoResults';
+import AdvancedSearchResult from '../../../components/AdvancedSearchResult';
 import {
   makeJiraObjectResult,
   makeConfluenceObjectResult,
   makePersonResult,
-} from './_test-util';
+} from '../_test-util';
 
 enum Group {
   Recent = 'recent',

@@ -4,26 +4,26 @@ import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   HomeQuickSearchContainer,
   Props,
-} from '../../components/home/HomeQuickSearchContainer';
-import { Result } from '../../model/Result';
-import GlobalQuickSearch from '../../components/GlobalQuickSearch';
-import { Scope } from '../../api/CrossProductSearchClient';
-import SearchError from '../../components/SearchError';
-import { delay, makeJiraObjectResult } from './_test-util';
+} from '../../../components/home/HomeQuickSearchContainer';
+import { Result } from '../../../model/Result';
+import GlobalQuickSearch from '../../../components/GlobalQuickSearch';
+import { Scope } from '../../../api/CrossProductSearchClient';
+import SearchError from '../../../components/SearchError';
+import { delay, makeJiraObjectResult } from '../_test-util';
 import {
   noResultsPeopleSearchClient,
   errorPeopleSearchClient,
-} from './mocks/_mockPeopleSearchClient';
+} from '../mocks/_mockPeopleSearchClient';
 import {
   noResultsCrossProductSearchClient,
   errorCrossProductSearchClient,
   singleResultCrossProductSearchClient,
   makeSingleResultCrossProductSearchResponse,
-} from './mocks/_mockCrossProductSearchClient';
+} from '../mocks/_mockCrossProductSearchClient';
 import {
   noResultsRecentSearchClient,
   errorRecentSearchClient,
-} from './mocks/_mockRecentSearchClient';
+} from '../mocks/_mockRecentSearchClient';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);

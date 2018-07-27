@@ -3,36 +3,36 @@ import * as React from 'react';
 import {
   ConfluenceQuickSearchContainer,
   Props,
-} from '../../components/confluence/ConfluenceQuickSearchContainer';
-import { Result, PersonResult } from '../../model/Result';
-import GlobalQuickSearch from '../../components/GlobalQuickSearch';
-import { Scope } from '../../api/CrossProductSearchClient';
-import SearchError from '../../components/SearchError';
-import * as searchResultsUtil from '../../components/SearchResultsUtil';
+} from '../../../components/confluence/ConfluenceQuickSearchContainer';
+import { Result, PersonResult } from '../../../model/Result';
+import GlobalQuickSearch from '../../../components/GlobalQuickSearch';
+import { Scope } from '../../../api/CrossProductSearchClient';
+import SearchError from '../../../components/SearchError';
+import * as searchResultsUtil from '../../../components/SearchResultsUtil';
 import {
   delay,
   makeConfluenceObjectResult,
   makeConfluenceContainerResult,
   makePersonResult,
-} from './_test-util';
+} from '../_test-util';
 import {
   noResultsCrossProductSearchClient,
   singleResultCrossProductSearchClient,
   makeSingleResultCrossProductSearchResponse,
-} from './mocks/_mockCrossProductSearchClient';
+} from '../mocks/_mockCrossProductSearchClient';
 import {
   noResultsPeopleSearchClient,
   errorPeopleSearchClient,
-} from './mocks/_mockPeopleSearchClient';
+} from '../mocks/_mockPeopleSearchClient';
 import {
   noResultsConfluenceClient,
   makeSingleResultQuickNavSearchResponse,
   singleResultQuickNav,
   errorConfluenceQuickNavSearch,
   makeConfluenceClient,
-} from './mocks/_mockConfluenceClient';
-import ConfluenceSearchResults from '../../components/confluence/ConfluenceSearchResults';
-import { shallowWithIntl } from './helpers/_intl-enzyme-test-helper';
+} from '../mocks/_mockConfluenceClient';
+import ConfluenceSearchResults from '../../../components/confluence/ConfluenceSearchResults';
+import { shallowWithIntl } from '../helpers/_intl-enzyme-test-helper';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
