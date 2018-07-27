@@ -137,6 +137,13 @@ const removeIdsFromDoc = transformDoc(node => {
           /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
           '$11234-5678-abcd-efgh$3',
         ),
+
+        __key: node.attrs.__key.replace(
+          /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
+          '$11234-5678-abcd-efgh$3',
+        ),
+
+        __fileName: 'example.png',
       },
     };
   }

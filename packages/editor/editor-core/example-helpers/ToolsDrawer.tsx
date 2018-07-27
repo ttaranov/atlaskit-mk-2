@@ -250,9 +250,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                     theme="dark"
                     spacing="compact"
                   >
-                    {this.state.editorEnabled
-                      ? 'Disable editor'
-                      : 'Enable editor'}
+                    {this.state.editorEnabled ? 'Disable editor' : 'Enable editor'}
                   </Button>
                   <Button
                     onClick={this.reloadEditor}
@@ -267,9 +265,9 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                       appearance={mediaMockEnabled ? 'primary' : 'default'}
                       theme="dark"
                       spacing="compact"
+                      className="mediaPickerMock"
                     >
-                      {mediaMockEnabled ? 'Disable' : 'Enable'} Media-Picker
-                      Mock
+                      {mediaMockEnabled ? 'Disable' : 'Enable'} Media-Picker Mock
                     </Button>
                   </Tooltip>
                 </ButtonGroup>
