@@ -17,7 +17,7 @@ const SelectableDate = styled(Date)`
 
   .ProseMirror-selectednode & {
     display: 'relative';
-    &:before {
+    &::before {
       content: '';
       border: 2px solid ${akColorB200};
       display: 'absolute';
