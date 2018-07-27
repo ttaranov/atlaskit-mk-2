@@ -101,6 +101,7 @@ export const Dialog = styled.div`
         `} color: ${colors.text};
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   height: ${dialogHeight};
   ${flexMaxHeightIEFix};
   outline: 0;
