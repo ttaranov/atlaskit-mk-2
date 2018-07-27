@@ -125,11 +125,11 @@ describe('<QuickSearch />', () => {
         });
       });
 
-      it('should fire submit analytics on shortcut submit', async () => {
+      it('should fire submit analytics on shortcut submit', () => {
         searchInput.simulate('keydown', { key: 'Enter', shiftKey: true });
         expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT, {
           newTab: false, // enter always open in the same tab
-          resultsCount: 3,
+          resultCount: 3,
           method: 'shortcut',
         });
       });
