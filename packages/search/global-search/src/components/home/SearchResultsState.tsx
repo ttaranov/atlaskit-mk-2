@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import ConfluenceIcon from '../../../../../core/icon/glyph/confluence';
 import PeopleIcon from '../../../../../core/icon/glyph/people';
