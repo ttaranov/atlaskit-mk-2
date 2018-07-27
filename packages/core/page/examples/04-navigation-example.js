@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import Navigation from '@atlaskit/navigation';
+import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
 import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
@@ -12,6 +12,10 @@ type State = {
   navigationWidth?: number,
   isNavigationOpen?: boolean,
 };
+
+const Wrapper = props => (
+  <div style={{ padding: '4px', display: 'block' }} {...props} />
+);
 
 export default class NavigationExample extends Component<void, State> {
   errorBannerRef: ?HTMLElement;
@@ -81,7 +85,7 @@ export default class NavigationExample extends Component<void, State> {
                 <p>Can we render this?</p>
                 <p>Will it work if this expands?</p>
                 <p>To maximum length?</p>
-                <p>In an annoying way</p>
+                <p>Yes, we can!</p>
               </Banner>
             </Fragment>
           }
@@ -90,25 +94,31 @@ export default class NavigationExample extends Component<void, State> {
               topOffset={this.getOffset()}
               globalPrimaryIcon={<AtlassianIcon />}
             >
-              The children are the future
+              <AkNavigationItem text="Welcome to banners!" />
             </Navigation>
           }
         >
           <Grid>
-            <Button onClick={this.onErrorBannerChange}>
-              Toggle Error Banner
-            </Button>
-            <Button onClick={this.onAnnouncementBannerChange}>
-              Toggle Announcement Banner
-            </Button>
-            <Button
-              onClick={() => {
-                this.onAnnouncementBannerChange();
-                this.onErrorBannerChange();
-              }}
-            >
-              Toggle both Banners
-            </Button>
+            <Wrapper>
+              <Button onClick={this.onErrorBannerChange}>
+                Toggle Error Banner
+              </Button>
+            </Wrapper>
+            <Wrapper>
+              <Button onClick={this.onAnnouncementBannerChange}>
+                Toggle Announcement Banner
+              </Button>
+            </Wrapper>
+            <Wrapper>
+              <Button
+                onClick={() => {
+                  this.onAnnouncementBannerChange();
+                  this.onErrorBannerChange();
+                }}
+              >
+                Toggle both Banners
+              </Button>
+            </Wrapper>
           </Grid>
         </Page>
       </div>
