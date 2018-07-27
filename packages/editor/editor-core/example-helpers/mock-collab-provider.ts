@@ -130,6 +130,7 @@ export class MockCollabEditProvider implements CollabEditProvider {
 
   on(evt: CollabEvent, handler: (...args) => void) {
     const { sid } = this;
+
     if (sid) {
       this.eventBus.on(`${sid}:${evt}`, handler);
     } else {

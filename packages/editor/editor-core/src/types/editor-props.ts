@@ -55,7 +55,21 @@ export interface ExtensionConfig {
   allowBreakout?: boolean;
 }
 
+export interface InlineCommentLocator {
+  inlineCommentId: string; // This could be conversatioNId
+  resolved: boolean;
+}
+
+export interface InlineCommentsOutsideADFProvider {
+  getInlineCommentLocations(): InlineCommentLocator[];
+}
+
+export interface ADFInlineCommentsProvider {
+  // getInlineCommentLocations(): InlineCommentLocator[];
+}
+
 export interface EditorProps {
+  inlineComments?: Promise<InlineCommentsOutsideADFProvider>;
   appearance?: EditorAppearance;
   // Legacy analytics support
   analyticsHandler?: AnalyticsHandler;

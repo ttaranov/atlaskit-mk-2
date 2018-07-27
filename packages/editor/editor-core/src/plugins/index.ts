@@ -45,3 +45,5 @@ export { default as gapCursorPlugin } from './gap-cursor';
 export { default as inlineActionPlugin } from './inline-action';
 export { default as cardPlugin } from './card';
 export { default as floatingToolbarPlugin } from './floating-toolbar';
+
+export { default as inlineCommentPlugin } from './inline-comments';

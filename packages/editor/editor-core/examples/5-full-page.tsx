@@ -58,9 +58,18 @@ export const Content: any = styled.div`
 `;
 Content.displayName = 'Content';
 
+class InlineCommentsSpike implements InlineCommentsOutsideADFProvider {
+  comments: InlineCommentLocator[];
+
+  getInlineCommentLocations() {
+    return [];
+  }
+}
+
 // tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 // tslint:disable-next-line:no-console
+
 const SAVE_ACTION = () => console.log('Save');
 
 const SaveAndCancelButtons = props => (
@@ -127,6 +136,9 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
+            inlineComments={{
+              provider: Promise.resolve(new InlineCommentsSpike()),
+            }}
             defaultValue={this.props.defaultValue}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
