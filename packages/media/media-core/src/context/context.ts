@@ -272,12 +272,15 @@ class ContextImpl implements Context {
     // TODO [MSW-678]: remove when id upfront is exposed
     const tempFileId = uuid.v4();
     const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
+    let mimeType = '';
     const fileStream = new Observable<FileState>(observer => {
       if (file.content instanceof Blob) {
+        mimeType = file.content.type;
         observer.next({
           name,
           size,
           mediaType,
+          mimeType,
           id: tempFileId,
           progress: 0,
           status: 'uploading',
@@ -294,6 +297,7 @@ class ContextImpl implements Context {
             name,
             size,
             mediaType,
+            mimeType,
             id: tempFileId,
             status: 'uploading',
           });
@@ -316,6 +320,7 @@ class ContextImpl implements Context {
             name,
             size,
             mediaType,
+            mimeType,
             status: 'processing',
           });
           observer.complete();

@@ -26,6 +26,7 @@ export interface UploadingFileState {
   size: number;
   progress: number;
   mediaType: MediaType;
+  mimeType: string;
   preview?: FilePreview;
 }
 export interface ProcessingFileState {
@@ -34,6 +35,7 @@ export interface ProcessingFileState {
   name: string;
   size: number;
   mediaType: MediaType;
+  mimeType: string;
   preview?: FilePreview;
 }
 export interface ProcessedFileState {
@@ -43,6 +45,7 @@ export interface ProcessedFileState {
   size: number;
   artifacts: Object;
   mediaType: MediaType;
+  mimeType: string;
   binaryUrl: string;
   preview?: FilePreview;
 }
@@ -81,6 +84,7 @@ export const mapMediaFileToFileState = (
     processingStatus,
     artifacts,
     mediaType,
+    mimeType,
   } = mediaFile.data;
   const status = apiProcessingStatusToFileStatus(processingStatus);
 
@@ -92,6 +96,7 @@ export const mapMediaFileToFileState = (
         name,
         size,
         mediaType,
+        mimeType,
         progress: 0,
       };
     case 'processing':
@@ -101,6 +106,7 @@ export const mapMediaFileToFileState = (
         name,
         size,
         mediaType,
+        mimeType,
       };
     case 'processed':
       return {
@@ -110,6 +116,7 @@ export const mapMediaFileToFileState = (
         size,
         artifacts,
         mediaType,
+        mimeType,
         binaryUrl: `/file/${id}/binary`,
       };
     case 'error':
