@@ -17,6 +17,11 @@ export type NavigationStateShape = InitialNavigationStateShape & {
 };
 
 export type GlobalNavDrawerProps = {
+  isCreateDrawerOpen?: boolean,
+  createDrawerContents?: ComponentType<*>,
+  onCreateDrawerOpen?: () => void,
+  onCreateDrawerClose?: () => void,
+
   isSearchDrawerOpen?: boolean,
   searchDrawerContents?: ComponentType<*>,
   onSearchDrawerOpen?: () => void,
@@ -39,13 +44,13 @@ export type GlobalNavigationProps = {
   productTooltip?: string,
   productHref?: string,
 
-  onCreateClick?: () => void,
+  onCreateClick?: ?() => void,
   createTooltip?: string,
 
-  onStarredClick?: () => void,
+  onStarredClick?: ?() => void,
   starredTooltip?: string,
 
-  onSearchClick?: () => void,
+  onSearchClick?: ?() => void,
   searchTooltip?: string,
 
   appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
@@ -58,9 +63,9 @@ export type GlobalNavigationProps = {
   profileIconUrl?: string,
   loginHref?: string, // Login url to redirect anonymous users to login page.
 
-  onNotificationClick?: () => void,
+  onNotificationClick?: ?() => void,
   notificationCount?: number,
   notificationTooltip?: string,
 } & GlobalNavDrawerProps;
 
-export type DrawerName = 'search' | 'notification' | 'starred';
+export type DrawerName = 'search' | 'notification' | 'starred' | 'create';

@@ -47,11 +47,12 @@ interface Global {
 export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
-  drawers: DrawerName[] = ['search', 'notification', 'starred'];
+  drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
   constructor(props: GlobalNavigationProps) {
     super(props);
 
     this.state = {
+      isCreateDrawerOpen: false,
       isSearchDrawerOpen: false,
       isNotificationDrawerOpen: false,
       isStarredDrawerOpen: false,

@@ -151,6 +151,7 @@ export default function generateProductConfig(
 
     onCreateClick,
     createTooltip,
+    createDrawerContents,
 
     searchTooltip,
     onSearchClick,
@@ -187,7 +188,10 @@ export default function generateProductConfig(
       icon: productIcon,
       href: productHref,
     }),
-    create: configFactory(onCreateClick, createTooltip),
+    create: configFactory(
+      onCreateClick || (createDrawerContents && openDrawer('create')),
+      createTooltip,
+    ),
     search: configFactory(
       onSearchClick || (searchDrawerContents && openDrawer('search')),
       searchTooltip,

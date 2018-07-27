@@ -8,12 +8,6 @@ import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src';
 
-type State = {
-  isCreateModalOpen: boolean,
-  isSearchDrawerOpen: boolean,
-  notificationCount: number,
-};
-
 const DrawerContent = ({
   drawerTitle,
   drawerBody,
@@ -33,7 +27,17 @@ const DrawerContent = ({
   </div>
 );
 
-class GlobalNavWithDrawers extends Component<{}, State> {
+type State = {
+  isCreateModalOpen: boolean,
+  isSearchDrawerOpen: boolean,
+  notificationCount: number,
+};
+
+type Props = {
+  isCreateDrawerEnabled: boolean,
+};
+
+class GlobalNavWithDrawers extends Component<Props, State> {
   state = {
     isCreateModalOpen: false,
     isSearchDrawerOpen: false,
@@ -101,11 +105,19 @@ class GlobalNavWithDrawers extends Component<{}, State> {
       { text: 'Secondary Action', onClick: this.secondaryAction },
     ];
 
+    const { isCreateDrawerEnabled } = this.props;
+
     return (
       <Fragment>
         <GlobalNavigation
           productIcon={EmojiAtlassianIcon}
-          onCreateClick={this.openCreateModal}
+          onCreateClick={isCreateDrawerEnabled ? this.openCreateModal : null}
+          createDrawerContents={() => (
+            <DrawerContent
+              drawerTitle="Create Modal"
+              drawerBody="You can toggle between a search drawer and the search modal"
+            />
+          )}
           onProductClick={() => console.log('product clicked')}
           onSearchClick={this.openSearchDrawer}
           searchTooltip="Search (\)"
@@ -147,14 +159,46 @@ class GlobalNavWithDrawers extends Component<{}, State> {
   }
 }
 
-export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={props => <GlobalNavWithDrawers {...props} />}
-      productNavigation={() => null}
-      containerNavigation={() => null}
-    >
-      <div>Page content</div>
-    </LayoutManager>
-  </NavigationProvider>
-);
+type NavState = {
+  isCreateDrawerEnabled: boolean,
+};
+
+// Need two componentss because both have state
+// eslint-disable-next-line react/no-multi-comp
+export default class extends Component<{||}, NavState> {
+  state = {
+    isCreateDrawerEnabled: true,
+  };
+
+  toggleCreateDrawer = () => {
+    this.setState(prevState => ({
+      isCreateDrawerEnabled: !prevState.isCreateDrawerEnabled,
+    }));
+  };
+
+  render() {
+    return (
+      <NavigationProvider>
+        <LayoutManager
+          globalNavigation={props => (
+            <GlobalNavWithDrawers
+              {...props}
+              isCreateDrawerEnabled={this.state.isCreateDrawerEnabled}
+            />
+          )}
+          productNavigation={() => null}
+          containerNavigation={() => null}
+        >
+          <Fragment>
+            <div>Page content</div>
+            <button onClick={this.toggleCreateDrawer}>{`Enable ${
+              this.state.isCreateDrawerEnabled
+                ? 'Create Drawer'
+                : 'Create Modal'
+            }`}</button>
+          </Fragment>
+        </LayoutManager>
+      </NavigationProvider>
+    );
+  }
+}
