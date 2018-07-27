@@ -147,6 +147,7 @@ const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
   globalIndex: eventData.index,
   indexWithinSection: eventData.indexWithinSection,
   containerId: sanitizeContainerId(eventData.containerId),
+  resultsCount: eventData.resultsCount,
 });
 
 const hash = (str: string): string =>
@@ -162,6 +163,7 @@ export interface SearchResultEvent {
   index: string;
   indexWithinSection: string;
   containerId?: string;
+  resultsCount?: string;
 }
 
 export interface KeyboardControlEvent extends SearchResultEvent {
@@ -178,6 +180,7 @@ export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   queryVersion: number;
   queryId: null | string;
   wasOnNoResultsScreen: boolean;
+  trigger? : string;
 }
 
 export type AnalyticsNextEvent = {
@@ -208,6 +211,19 @@ export function fireSelectedSearchResult(
   );
 }
 
+/**
+ * checks if advanced link is clicked on no result screen
+ * @param eventData 
+ */
+const checkOnNoResultscreen = (eventData) => {
+  const index = eventData.index || 0;
+  const sectionIndex = eventData.sectionIndex || 0;
+  const resultsCount = eventData.resultsCount || 0;
+  // no result screen if results count is 2 (2 advanced confluence search and advanced people search)
+  // or when index = 0 and section index is 1 => empty first section
+  return +!index === 0 && (+sectionIndex === 1 || +resultsCount === 2);
+}
+
 export function fireSelectedAdvancedSearch(
   eventData: AdvancedSearchSelectedEvent,
   searchSessionId: string,
@@ -227,8 +243,7 @@ export function fireSelectedAdvancedSearch(
       queryVersion,
       queryId: null,
       ...getQueryAttributes(query),
-      wasOnNoResultsScreen:
-        +eventData.index === 0 && +eventData.sectionIndex === 1,
+      wasOnNoResultsScreen: checkOnNoResultscreen(eventData),
       ...transformSearchResultEventData(eventData),
     },
   );

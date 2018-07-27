@@ -46,7 +46,7 @@ export const sanitizeSearchQuery = query => {
   return (query || '').replace(/\s+/g, ' ').trim();
 };
 
-export const sanitizeContainerId = (containerId: string): string => {
+export const sanitizeContainerId = (containerId?): string => {
   const trimmedContainerId = (containerId || '').trim();
   return trimmedContainerId.startsWith('~') ? 'UNAVAILABLE' : trimmedContainerId;
 }
