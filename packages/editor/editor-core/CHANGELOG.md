@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.2.9
+- [patch] ED-5126: fix codeblock language picker is loosing focus on click [6a3ca70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3ca70)
+- [none] Updated dependencies [6a3ca70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3ca70)
+
 ## 76.2.8
 - [patch] Internal refactor of hyperlink plugin to not contain direct references to the view in plugin state. ED-4962 [dda4cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4cab)
 - [none] Updated dependencies [dda4cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4cab)
