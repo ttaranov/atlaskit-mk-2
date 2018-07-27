@@ -1,6 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import { ResultItemGroup, ResultBase } from '@atlaskit/quick-search';
 import {
   HomeQuickSearchContainer,
   Props,
@@ -24,7 +23,6 @@ import {
   noResultsRecentSearchClient,
   errorRecentSearchClient,
 } from '../mocks/_mockRecentSearchClient';
-import ResultGroup from '../../../components/ResultGroup';
 import SearchResultsState from '../../../components/home/SearchResultsState';
 import PreQueryState from '../../../components/home/PreQueryState';
 
