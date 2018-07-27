@@ -8,6 +8,8 @@ export type Layout =
   | 'wide'
   | 'full-width';
 
+export type Size = '50%' | '75%' | '100%';
+
 /**
  * @name mediaSingle_node
  */
@@ -26,6 +28,7 @@ export interface MediaSingleAttributes {
 
 export const defaultAttrs = {
   layout: { default: 'center' },
+  size: { default: '50%' },
 };
 
 export const mediaSingle: NodeSpec = {
@@ -42,10 +45,11 @@ export const mediaSingle: NodeSpec = {
     },
   ],
   toDOM(node: Node) {
-    const { layout } = node.attrs;
+    const { layout, size } = node.attrs;
     const attrs = {
       'data-node-type': 'mediaSingle',
       'data-layout': layout,
+      'data-size': size,
     };
     return ['div', attrs, 0];
   },
