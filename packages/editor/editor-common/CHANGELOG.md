@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 13.2.3
+- [patch] Updated dependencies [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+  - @atlaskit/media-core@22.2.0
+  - @atlaskit/media-card@31.1.1
+
 ## 13.2.2
 - [patch] ED-5033, fixes for multiple date related issues. [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
 - [patch] Updated dependencies [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)

@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 76.2.10
+- [patch] Updated dependencies [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+  - @atlaskit/media-picker@11.1.2
+  - @atlaskit/editor-common@13.2.3
+  - @atlaskit/media-core@22.2.0
+  - @atlaskit/media-card@31.1.1
+
 ## 76.2.9
 - [patch] ED-5126: fix codeblock language picker is loosing focus on click [6a3ca70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3ca70)
 - [none] Updated dependencies [6a3ca70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3ca70)
