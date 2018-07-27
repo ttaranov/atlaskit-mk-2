@@ -215,7 +215,7 @@ export class QuickSearch extends Component<Props, State> {
         firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
           ...result.getAnalyticsData(),
           key: this.lastKeyPressed,
-          resultsCount: this.flatResults.length,
+          resultCount: this.flatResults.length,
         });
       }
     }
@@ -338,7 +338,7 @@ export class QuickSearch extends Component<Props, State> {
             ...result.getAnalyticsData(),
             method: 'returnKey',
             newTab: false, // enter always open in the same tab
-            resultsCount: this.flatResults.length,
+            resultCount: this.flatResults.length,
           });
         }
 
