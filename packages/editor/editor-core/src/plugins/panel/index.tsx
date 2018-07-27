@@ -7,11 +7,11 @@ import { getToolbarConfig } from './toolbar';
 
 const panelPlugin: EditorPlugin = {
   nodes() {
-    return [{ rank: 1100, name: 'panel', node: panel }];
+    return [{ name: 'panel', node: panel }];
   },
 
   pmPlugins() {
-    return [{ rank: 1110, plugin: createPlugin }];
+    return [{ name: 'panel', plugin: createPlugin }];
   },
 
   pluginsOptions: {

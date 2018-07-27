@@ -25,17 +25,17 @@ const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
 const tablesPlugin: EditorPlugin = {
   nodes() {
     return [
-      { rank: 1700, name: 'table', node: table },
-      { rank: 1800, name: 'tableHeader', node: tableHeader },
-      { rank: 1900, name: 'tableRow', node: tableRow },
-      { rank: 2000, name: 'tableCell', node: tableCell },
+      { name: 'table', node: table },
+      { name: 'tableHeader', node: tableHeader },
+      { name: 'tableRow', node: tableRow },
+      { name: 'tableCell', node: tableCell },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 900,
+        name: 'table',
         plugin: ({
           props: { allowTables },
           eventDispatcher,
@@ -51,14 +51,14 @@ const tablesPlugin: EditorPlugin = {
         },
       },
       {
-        rank: 910,
+        name: 'tablePMColResizing',
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
             ? columnResizing({ handleWidth: 6, cellMinWidth: CELL_MIN_WIDTH })
             : undefined,
       },
       {
-        rank: 920,
+        name: 'tableColResizing',
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
             ? tableColumnResizingPlugin
@@ -66,8 +66,8 @@ const tablesPlugin: EditorPlugin = {
       },
       // Needs to be lower priority than prosemirror-tables.tableEditing
       // plugin as it is currently swallowing backspace events inside tables
-      { rank: 905, plugin: () => keymapPlugin() },
-      { rank: 930, plugin: () => tableEditing() },
+      { name: 'tableKeymap', plugin: () => keymapPlugin() },
+      { name: 'tableEditing', plugin: () => tableEditing() },
     ];
   },
 

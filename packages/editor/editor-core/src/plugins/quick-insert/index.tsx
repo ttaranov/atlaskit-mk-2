@@ -14,7 +14,7 @@ const quickInsertPlugin: EditorPlugin = {
   pmPlugins(quickInsert: Array<Array<QuickInsertItem>>) {
     return [
       {
-        rank: 500, // It's important that this plugin is above TypeAheadPlugin
+        name: 'quickInsert', // It's important that this plugin is above TypeAheadPlugin
         plugin: ({ providerFactory }) =>
           quickInsertPluginFactory(quickInsert, providerFactory),
       },
