@@ -147,7 +147,7 @@ const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
   globalIndex: eventData.index,
   indexWithinSection: eventData.indexWithinSection,
   containerId: sanitizeContainerId(eventData.containerId),
-  resultsCount: eventData.resultsCount,
+  resultCount: eventData.resultCount,
 });
 
 const hash = (str: string): string =>
@@ -163,7 +163,7 @@ export interface SearchResultEvent {
   index: string;
   indexWithinSection: string;
   containerId?: string;
-  resultsCount?: string;
+  resultCount?: string;
 }
 
 export interface KeyboardControlEvent extends SearchResultEvent {
@@ -219,10 +219,10 @@ export function fireSelectedSearchResult(
 const checkOnNoResultscreen = eventData => {
   const index = eventData.index || 0;
   const sectionIndex = eventData.sectionIndex || 0;
-  const resultsCount = eventData.resultsCount || 0;
+  const resultCount = eventData.resultCount || 0;
   // no result screen if results count is 2 (2 advanced confluence search and advanced people search)
   // or when index = 0 and section index is 1 => empty first section
-  return +!index === 0 && (+sectionIndex === 1 || +resultsCount === 2);
+  return +!index === 0 && (+sectionIndex === 1 || +resultCount === 2);
 };
 
 export function fireSelectedAdvancedSearch(

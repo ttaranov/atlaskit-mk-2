@@ -98,7 +98,7 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
     const { createAnalyticsEvent, searchSessionId } = this.props;
     this.resultSelected = true;
     const resultId =
-      eventData.resultsCount && eventData.method === 'shortcut'
+      eventData.resultCount && eventData.method === 'shortcut'
         ? ADVANCED_CONFLUENCE_SEARCH_RESULT_ID
         : eventData.resultId;
     if (isAdvancedSearchResult(resultId)) {

@@ -46,10 +46,12 @@ export const sanitizeSearchQuery = query => {
   return (query || '').replace(/\s+/g, ' ').trim();
 };
 
-export const sanitizeContainerId = (containerId?): string => {
+export const sanitizeContainerId = containerId => {
   const trimmedContainerId = (containerId || '').trim();
-  return trimmedContainerId.startsWith('~') ? 'UNAVAILABLE' : trimmedContainerId;
-}
+  return trimmedContainerId.startsWith('~')
+    ? 'UNAVAILABLE'
+    : trimmedContainerId;
+};
 
 function mapResultsToShownSection(
   results: Result[],

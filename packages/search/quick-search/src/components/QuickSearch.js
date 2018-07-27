@@ -315,7 +315,7 @@ export class QuickSearch extends Component<Props, State> {
         if (firePrivateAnalyticsEvent) {
           firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
             newTab: false, // enter always open in the same tab
-            resultsCount: this.flatResults.length,
+            resultCount: this.flatResults.length,
             method: 'shortcut',
           });
         }
