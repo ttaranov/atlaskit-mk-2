@@ -244,7 +244,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
     const portalDestination = document.body;
 
     if (!portalDestination || !isOpen) return null;
-    console.log('dir');
 
     const popper = (
       <Popper {...this.popperProps}>

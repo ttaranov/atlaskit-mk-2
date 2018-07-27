@@ -308,8 +308,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
   render() {
     const { target } = this.props;
 
-    console.log('file');
-
     return (
       <Manager>
         <Reference>
