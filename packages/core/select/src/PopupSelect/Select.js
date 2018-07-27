@@ -3,7 +3,7 @@
 import React, {
   PureComponent,
   type ElementRef,
-  type Element,
+  type Element as ElementType,
   type Node,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -42,7 +42,7 @@ type Props = {
   popperProps?: PopperPropsNoChildren,
   searchThreshold: number,
   styles: Object,
-  target: Element<*>,
+  target: ElementType<*>,
 };
 type State = { isOpen: boolean };
 
@@ -119,7 +119,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
     const { isOpen } = this.state;
 
     // appease flow
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
 
     // NOTE: Why not use the <Blanket /> component to close?
     // We don't want to interupt the user's flow. Taking this approach allows
@@ -244,6 +244,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
     const portalDestination = document.body;
 
     if (!portalDestination || !isOpen) return null;
+    console.log('dir');
 
     const popper = (
       <Popper {...this.popperProps}>
