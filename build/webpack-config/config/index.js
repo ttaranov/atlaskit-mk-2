@@ -50,8 +50,42 @@ module.exports = function createWebpackConfig(
   resolveLoader: {},
   plugins: any[],
 }*/ {
+  // const optimization =
+  //   env === 'development'
+  //     ? undefined
+  //     : {
+  //         minimize: false,
+  //         concatenateModules: false,
+  //         flagIncludedChunks: false,
+  //         occurrenceOrder: false,
+  //         usedExports: false,
+  //         sideEffects: false,
+  //         noEmitOnErrors: false,
+  //         minimizer: [uglify()],
+  //       };
+  const optimization = {
+    // concatenateModules: true,
+    // flagIncludedChunks: true,
+    // occurrenceOrder: true,
+    // usedExports: true,
+    // sideEffects: true,
+    // noEmitOnErrors: true,
+    // namedModules: false,
+    // namedChunks: false,
+    nodeEnv: 'production',
+    minimizer: [uglify()],
+    minimize: true,
+    splitChunks: {
+      // hidePathInfo: false,
+      // minSize: 10000,
+      maxAsyncRequests: Infinity,
+      // maxInitialRequests: Infinity,
+    },
+  };
   return {
-    mode: env,
+    cache: true,
+    mode: 'production',
+    performance: false,
     entry: {
       // TODO: ideally we should have a vendor chunk, with just external library dependencies.
       // vendor: vendorLibraries,
@@ -191,6 +225,7 @@ module.exports = function createWebpackConfig(
       ],
     },
     plugins: plugins({ cwd, env, websiteEnv, noMinimize, report }),
+    optimization,
   };
 };
 
@@ -204,7 +239,6 @@ function plugins(
   } /*: { cwd: string, env: string, websiteEnv: string, noMinimize: boolean, report: boolean } */,
 ) {
   const plugins = [
-    new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'public/index.html.ejs'),
       title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
@@ -227,7 +261,6 @@ function plugins(
     }),
 
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': `"${env}"`,
       WEBSITE_ENV: `"${websiteEnv}"`,
       BASE_TITLE: `"Atlaskit by Atlassian ${
         env === 'development' ? '- DEV' : ''
@@ -249,3 +282,49 @@ function plugins(
 
   return plugins;
 }
+
+const uglify = () => {
+  return new UglifyJsPlugin({
+    parallel: Math.max(os.cpus().length - 1, 1),
+    uglifyOptions: {
+      compress: {
+        // Disabling following options speeds up minimization by 20 – 30s
+        // without any significant impact on a bundle size.
+        arrows: false,
+        booleans: false,
+        collapse_vars: false,
+
+        // https://product-fabric.atlassian.net/browse/MSW-436
+        comparisons: false,
+
+        computed_props: false,
+        hoist_funs: false,
+        hoist_props: false,
+        hoist_vars: false,
+        if_return: false,
+        inline: false,
+        join_vars: false,
+        keep_infinity: true,
+        loops: false,
+        negate_iife: false,
+        properties: false,
+        reduce_funcs: false,
+        reduce_vars: false,
+        sequences: false,
+        side_effects: false,
+        switches: false,
+        top_retain: false,
+        toplevel: false,
+        typeofs: false,
+        unused: false,
+
+        // Switch off all types of compression except those needed to convince
+        // react-devtools that we're using a production build
+        conditionals: true,
+        dead_code: true,
+        evaluate: true,
+      },
+      mangle: true,
+    },
+  });
+};
