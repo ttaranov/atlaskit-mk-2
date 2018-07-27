@@ -13,6 +13,7 @@ export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
   width: number;
+  getPos: () => number;
 }
 
 export interface MediaSingleNodeState {
@@ -99,7 +100,7 @@ export default class MediaSingleNode extends Component<
   };
 
   render() {
-    const { layout } = this.props.node.attrs;
+    const { layout, size } = this.props.node.attrs;
     const { progress } = this.state;
 
     let { width, height, type } = this.child.props.node.attrs;
@@ -116,13 +117,24 @@ export default class MediaSingleNode extends Component<
       }
     }
 
+    const updateSize = (size: string) => {
+      const { state, dispatch } = this.props.view;
+      return dispatch(
+        state.tr.setNodeMarkup(this.props.getPos(), undefined, {
+          layout,
+          size,
+        }),
+      );
+    };
+
     return (
       <MediaSingle
         layout={layout}
-        width={width}
-        height={height}
+        size={size}
+        aspectRatio={width / height}
         containerWidth={this.props.width}
         isLoading={!width}
+        updateSize={updateSize}
       >
         {React.cloneElement(
           this.child as ReactElement<any>,
