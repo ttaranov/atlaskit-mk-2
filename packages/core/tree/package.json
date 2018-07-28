@@ -18,6 +18,7 @@
     "react": "^16.4.0"
   },
   "devDependencies": {
+    "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/icon": "^13.0.0",
     "@atlaskit/navigation": "^33.0.5",
@@ -26,6 +27,7 @@
     "@atlaskit/theme": "^5.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "react-dom": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "keywords": [

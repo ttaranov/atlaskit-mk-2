@@ -30,11 +30,13 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.1",
     "@atlaskit/icon": "^13.1.1",
     "@atlaskit/select": "^5.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
+    "react-dom": "^16.4.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   }
