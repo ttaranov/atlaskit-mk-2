@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { MediaSingleLayout, MediaSingleSize } from '../../schema';
-import * as BrokenImportResizable from 're-resizable';
-import { default as ResizableType } from 're-resizable';
+
+// import * as BrokenImportResizable from 're-resizable';
+// import { default as ResizableType } from 're-resizable';
+
+import * as BrokenImportResizable from '/Users/jcoppinger/repos/re-resizable';
+import { default as ResizableType } from '/Users/jcoppinger/repos/re-resizable';
+
 import styled from 'styled-components';
 import { updateColumnsOnResize } from '../../../../editor-core/node_modules/@types/prosemirror-tables';
 
@@ -57,6 +62,14 @@ class MediaSingle extends React.Component<Props> {
     // }
   };
 
+  mapSize = (size: { width: number; height: number }) => {
+    const multiplier = 2;
+
+    return { width: size.width * 2, height: size.height * 2 };
+    // console.log("size is", size)
+    // return size;
+  };
+
   render() {
     const { children, aspectRatio, className, size } = this.props;
     const ratio = size === '50%' ? 0.5 : size === '75%' ? 0.75 : 1;
@@ -70,7 +83,8 @@ class MediaSingle extends React.Component<Props> {
         lockAspectRatio={aspectRatio}
         // grid={[gridSize, aspectRatio ? gridSize / aspectRatio : gridSize]}
         maxWidth="100%"
-        onResizeStop={this.handleResizeStop}
+        // onResizeStop={this.handleResizeStop}
+        mapSize={this.mapSize}
       >
         {React.Children.only(children)}
       </Resizable>
