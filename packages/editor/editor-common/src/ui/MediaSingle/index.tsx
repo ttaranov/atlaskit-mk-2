@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { MediaSingleLayout, MediaSingleSize } from '../../schema';
 
-// import * as BrokenImportResizable from 're-resizable';
-// import { default as ResizableType } from 're-resizable';
-
 import * as BrokenImportResizable from '/Users/jcoppinger/repos/re-resizable';
 import { default as ResizableType } from '/Users/jcoppinger/repos/re-resizable';
+
+// import * as BrokenImportResizable from 're-resizable';
+// import { default as ResizableType } from 're-resizable';
 
 import styled from 'styled-components';
 import { updateColumnsOnResize } from '../../../../editor-core/node_modules/@types/prosemirror-tables';
@@ -85,6 +85,7 @@ class MediaSingle extends React.Component<Props> {
         maxWidth="100%"
         // onResizeStop={this.handleResizeStop}
         mapSize={this.mapSize}
+        // onResizeStop={this.handleResizeStop}
       >
         {React.Children.only(children)}
       </Resizable>
