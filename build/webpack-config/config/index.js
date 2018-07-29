@@ -50,41 +50,20 @@ module.exports = function createWebpackConfig(
   resolveLoader: {},
   plugins: any[],
 }*/ {
-  // const optimization =
-  //   env === 'development'
-  //     ? undefined
-  //     : {
-  //         minimize: false,
-  //         concatenateModules: false,
-  //         flagIncludedChunks: false,
-  //         occurrenceOrder: false,
-  //         usedExports: false,
-  //         sideEffects: false,
-  //         noEmitOnErrors: false,
-  //         minimizer: [uglify()],
-  //       };
-  const optimization = {
-    // concatenateModules: true,
-    // flagIncludedChunks: true,
-    // occurrenceOrder: true,
-    // usedExports: true,
-    // sideEffects: true,
-    // noEmitOnErrors: true,
-    // namedModules: false,
-    // namedChunks: false,
-    nodeEnv: 'production',
-    minimizer: [uglify()],
-    minimize: true,
-    splitChunks: {
-      // hidePathInfo: false,
-      // minSize: 10000,
-      maxAsyncRequests: Infinity,
-      // maxInitialRequests: Infinity,
-    },
-  };
+  const optimization =
+    env === 'development'
+      ? undefined
+      : {
+          nodeEnv: 'production',
+          minimizer: [uglify()],
+          minimize: true,
+          splitChunks: {
+            maxAsyncRequests: Infinity,
+          },
+        };
   return {
     cache: true,
-    mode: 'production',
+    mode: env,
     performance: false,
     entry: {
       // TODO: ideally we should have a vendor chunk, with just external library dependencies.
