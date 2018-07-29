@@ -15,7 +15,7 @@ function getSafeRaw(file) {
   } (raw)" */'!!raw-loader!${file.path}'); }`;
   if (['.json'].includes(nodePath.extname(file.path))) {
     raw = `function(){ return Promise.reject({
-        error: "We cannot parse raw json at the moment due to weback4 trying to parse json after it has gone through the raw loader. Please use the "
+        error: "We cannot parse raw json at the moment due to weback4 trying to parse json after it has gone through the raw loader. Please use the non-raw version of of JSON files"
       }) }`;
   }
   return raw;
