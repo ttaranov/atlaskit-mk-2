@@ -50,7 +50,7 @@ export { mediaGroup, MediaGroupDefinition } from './media-group';
 export {
   mediaSingle,
   Layout as MediaSingleLayout,
-  Scale as MediaSingleImageScale,
+  Percentage as MediaSingleImagePercentage,
   MediaSingleDefinition,
   MediaSingleAttributes,
 } from './media-single';

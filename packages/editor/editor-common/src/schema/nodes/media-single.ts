@@ -8,7 +8,7 @@ export type Layout =
   | 'wide'
   | 'full-width';
 
-export type Scale = 0.5 | 0.75 | 1;
+export type Percentage = 0.5 | 0.75 | 1;
 
 /**
  * @name mediaSingle_node
@@ -28,7 +28,7 @@ export interface MediaSingleAttributes {
 
 export const defaultAttrs = {
   layout: { default: 'center' },
-  size: { default: '50%' },
+  percentage: { default: 0.5 },
 };
 
 export const mediaSingle: NodeSpec = {
@@ -45,11 +45,11 @@ export const mediaSingle: NodeSpec = {
     },
   ],
   toDOM(node: Node) {
-    const { layout, size } = node.attrs;
+    const { layout, percentage } = node.attrs;
     const attrs = {
       'data-node-type': 'mediaSingle',
       'data-layout': layout,
-      'data-size': size,
+      'data-percentage': percentage,
     };
     return ['div', attrs, 0];
   },

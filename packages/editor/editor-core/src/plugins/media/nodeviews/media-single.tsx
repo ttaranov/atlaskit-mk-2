@@ -100,7 +100,7 @@ export default class MediaSingleNode extends Component<
   };
 
   render() {
-    const { layout, size } = this.props.node.attrs;
+    const { layout, percentage, per } = this.props.node.attrs;
     const { progress } = this.state;
 
     let { width, height, type } = this.child.props.node.attrs;
@@ -117,12 +117,12 @@ export default class MediaSingleNode extends Component<
       }
     }
 
-    const updateSize = (size: string) => {
+    const updatePercentage = (percentage: number) => {
       const { state, dispatch } = this.props.view;
       return dispatch(
         state.tr.setNodeMarkup(this.props.getPos(), undefined, {
-          layout,
-          size,
+          // layout,
+          percentage,
         }),
       );
     };
@@ -130,11 +130,11 @@ export default class MediaSingleNode extends Component<
     return (
       <MediaSingle
         layout={layout}
-        size={size}
+        percentage={percentage}
         aspectRatio={width / height}
         containerWidth={this.props.width}
         isLoading={!width}
-        updateSize={updateSize}
+        updatePercentage={updatePercentage}
       >
         {React.cloneElement(
           this.child as ReactElement<any>,
