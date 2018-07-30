@@ -63,7 +63,7 @@ module.exports = function createWebpackConfig(
         };
   return {
     cache: true,
-    mode: env,
+    mode: env == 'production' ? 'production' : 'development',
     performance: false,
     entry: {
       // TODO: ideally we should have a vendor chunk, with just external library dependencies.
@@ -213,9 +213,8 @@ function plugins(
     cwd,
     env,
     websiteEnv,
-    noMinimize,
     report,
-  } /*: { cwd: string, env: string, websiteEnv: string, noMinimize: boolean, report: boolean } */,
+  } /*: { cwd: string, env: string, websiteEnv: string, report: boolean } */,
 ) {
   const plugins = [
     new HtmlWebpackPlugin({
