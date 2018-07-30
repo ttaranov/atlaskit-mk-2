@@ -1,4 +1,3 @@
-/* tslint:disable variable-name */
 import * as React from 'react';
 import { Component, SyntheticEvent } from 'react';
 import {
@@ -13,7 +12,7 @@ import { CardEvent, FileIdentifier, CardAction } from '@atlaskit/media-card';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import { Filmstrip, FilmstripItem } from '../src';
 import { ExampleWrapper, FilmstripWrapper } from '../example-helpers/styled';
-import { MediaItem } from '../node_modules/@atlaskit/media-core';
+import { MediaItem, UploadableFile } from '@atlaskit/media-core';
 
 export interface ExampleState {
   items: FilmstripItem[];
@@ -21,7 +20,7 @@ export interface ExampleState {
 
 const context = createUploadContext();
 
-class Example extends Component<any, ExampleState> {
+class Example extends Component<{}, ExampleState> {
   onCardClick = (result: CardEvent) => {
     const { items } = this.state;
 
@@ -139,39 +138,41 @@ class Example extends Component<any, ExampleState> {
     }
 
     const file = event.currentTarget.files[0];
-    const uplodableFile = {
+    const uplodableFile: UploadableFile = {
       content: file,
       name: file.name,
       collection: defaultCollectionName,
     };
-    const stream = context.uploadFile(uplodableFile);
 
-    stream.first().subscribe({
-      next: state => {
-        if (state.status === 'uploading') {
-          const { id } = state;
-          const { items } = this.state;
-          const newItem: FilmstripItem = {
-            ...this.cardProps,
-            onClick: this.createOnClickFromId(id),
-            actions: this.createActionsFromId(id),
-            identifier: {
-              id,
-              mediaItemType: 'file',
-              collectionName: defaultCollectionName,
-            },
-            selected: true,
-          };
+    context
+      .uploadFile(uplodableFile)
+      .first()
+      .subscribe({
+        next: state => {
+          if (state.status === 'uploading') {
+            const { id } = state;
+            const { items } = this.state;
+            const newItem: FilmstripItem = {
+              ...this.cardProps,
+              onClick: this.createOnClickFromId(id),
+              actions: this.createActionsFromId(id),
+              identifier: {
+                id,
+                mediaItemType: 'file',
+                collectionName: defaultCollectionName,
+              },
+              selected: true,
+            };
 
-          this.setState({
-            items: [newItem, ...items],
-          });
-        }
-      },
-      error(error) {
-        console.log('subscription', error);
-      },
-    });
+            this.setState({
+              items: [newItem, ...items],
+            });
+          }
+        },
+        error(error) {
+          console.log('subscription', error);
+        },
+      });
   };
 
   render() {
