@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.4.0
+- [minor] Internal refactoring of result components. [28ac980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28ac980)
+
 ## 5.3.7
 - [patch] add missing attributes to analytics [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
 - [patch] Updated dependencies [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
