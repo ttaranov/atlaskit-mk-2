@@ -7,7 +7,11 @@ import * as Resumable from 'resumablejs';
 import * as uuid from 'uuid';
 import { EventEmitter2 } from 'eventemitter2';
 import { ResumableFile, ResumableChunk } from 'resumablejs';
-import { AuthProvider, MediaType } from '@atlaskit/media-core';
+import {
+  AuthProvider,
+  MediaType,
+  getMediaTypeFromMimeType,
+} from '@atlaskit/media-core';
 import { createHasher } from '@atlaskit/media-store';
 import { Context, FileDetails } from '@atlaskit/media-core';
 import { handleError } from '../util/handleError';
@@ -328,13 +332,8 @@ export class OldUploadServiceImpl implements UploadService {
 
   private getMediaTypeFromFile(file: File): MediaType {
     const { type } = file;
-    if (type.match(/^image\//)) {
-      return 'image';
-    } else if (type.match(/^video\//)) {
-      return 'video';
-    }
 
-    return 'unknown';
+    return getMediaTypeFromMimeType(type);
   }
 
   private onChunkingComplete = (resumableFile: ResumableFile): void => {

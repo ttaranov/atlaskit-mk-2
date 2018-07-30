@@ -39,7 +39,7 @@ describe('Avatar Picker Dialog', () => {
 
   const newImage = dataURItoFile(smallImage);
 
-  const updateComponentWithNewImage = component => {
+  const updateComponentWithNewImage = (component: any) => {
     // get the handler which the ImageNavigator triggers when the image loads, fire it
     const { onImageLoaded } = component.find(ImageNavigator).props();
     onImageLoaded(newImage, { x: 0, y: 0, size: CONTAINER_SIZE });
@@ -83,7 +83,7 @@ describe('Avatar Picker Dialog', () => {
   it('when save button is clicked onImagePickedDataURI should be called', () => {
     const onImagePickedDataURI = jest.fn();
 
-    const component = renderWithProps({
+    const component: any = renderWithProps({
       onImagePickedDataURI,
       imageSource: smallImage,
     });

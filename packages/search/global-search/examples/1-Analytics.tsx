@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GlobalQuickSearch } from '../src/index';
-import { AtlaskitThemeProvider } from '@atlaskit/theme';
+import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 import styled from 'styled-components';
@@ -8,9 +8,22 @@ import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 import { AnalyticsListener } from '@atlaskit/analytics';
 
-const Panel = styled.div`
+const ComponentPanel = styled.div`
   flex: 1;
-  padding: 8px;
+  display: flex;
+`;
+
+const EventsPanel = styled.div`
+  flex: 1;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  z-index: 501;
+  width: 300px;
+  background: white;
+  word-wrap: break-word;
+  padding-right: 4px;
+  min-height: 800px;
 `;
 
 const Bordered = styled.div`
@@ -68,31 +81,31 @@ export default class extends React.Component<any, any> {
     const events = this.state.events;
 
     return (
-      <Outer>
-        <Panel>
+      <Outer id="outer">
+        <ComponentPanel>
           <h2>Quick search - ignore styling/keyboard issues for now</h2>
-          <Bordered>
-            <AnalyticsListener onEvent={this.onEvent}>
-              <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
-                <AnalyticsNextListener
-                  channel="fabric-elements"
-                  onEvent={e => this.onAnalyticsNextEvent(e)}
-                >
-                  <AtlaskitThemeProvider mode="light">
+          <AnalyticsListener onEvent={this.onEvent}>
+            <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
+              <AnalyticsNextListener
+                channel="fabric-elements"
+                onEvent={e => this.onAnalyticsNextEvent(e)}
+              >
+                <BasicNavigation
+                  searchDrawerContent={
                     <LocaleIntlProvider>
                       <GlobalQuickSearch
                         cloudId="cloudId"
                         context="confluence"
                       />
                     </LocaleIntlProvider>
-                  </AtlaskitThemeProvider>
-                </AnalyticsNextListener>
-              </AnalyticsListener>
+                  }
+                />
+              </AnalyticsNextListener>
             </AnalyticsListener>
-          </Bordered>
-        </Panel>
+          </AnalyticsListener>
+        </ComponentPanel>
 
-        <Panel>
+        <EventsPanel>
           <h2>Analytics Events</h2>
           <a
             href="#"
@@ -109,12 +122,26 @@ export default class extends React.Component<any, any> {
               {events.map((event, i) => (
                 <li key={i}>
                   <strong>Event:</strong> {event.name} | <strong>Data:</strong>{' '}
-                  {JSON.stringify(event.data)}
+                  <a
+                    href="#"
+                    onClick={() => {
+                      if (this.state.expandedEvent === i) {
+                        this.setState({ expandedEvent: null });
+                      } else {
+                        this.setState({ expandedEvent: i });
+                      }
+                    }}
+                  >
+                    Data
+                  </a>
+                  {i === this.state.expandedEvent ? (
+                    <div>{JSON.stringify(event.data)}</div>
+                  ) : null}
                 </li>
               ))}
             </EventsList>
           </Bordered>
-        </Panel>
+        </EventsPanel>
       </Outer>
     );
   }

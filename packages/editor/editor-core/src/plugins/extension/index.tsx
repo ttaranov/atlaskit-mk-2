@@ -39,16 +39,16 @@ const isLayoutSupported = (state, selectedExtNode) => {
 const extensionPlugin: EditorPlugin = {
   nodes() {
     return [
-      { rank: 2300, name: 'extension', node: extension },
-      { rank: 2310, name: 'bodiedExtension', node: bodiedExtension },
-      { rank: 2320, name: 'inlineExtension', node: inlineExtension },
+      { name: 'extension', node: extension },
+      { name: 'bodiedExtension', node: bodiedExtension },
+      { name: 'inlineExtension', node: inlineExtension },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 2330,
+        name: 'extension',
         plugin: ({
           schema,
           props,

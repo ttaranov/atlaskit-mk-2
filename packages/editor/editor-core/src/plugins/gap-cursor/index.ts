@@ -9,11 +9,11 @@ export default {
   pmPlugins() {
     return [
       {
-        rank: 850,
+        name: 'gapCursorKeymap',
         plugin: ({ schema, props }) => keymapPlugin(),
       },
       {
-        rank: 860,
+        name: 'gapCursor',
         plugin: ({ schema, props }) => plugin,
       },
     ];

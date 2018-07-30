@@ -16,7 +16,10 @@ import {
   akFontSizeDefault,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import { tableSharedStyle } from '@atlaskit/editor-common';
+import {
+  tableSharedStyle,
+  columnLayoutSharedStyle,
+} from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
@@ -286,22 +289,11 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
+  ${columnLayoutSharedStyle};
   & [data-layout-type] {
-    display: none;
-  }
-
-  & [data-layout-type='two_equal'] {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    width: calc(100% + 48px);
-    left: -28px;
-
-    & > * {
-      margin: ${akGridSizeUnitless}px;
-      padding: ${akGridSizeUnitless * 2}px;
-      flex: 1;
-      min-width: 0;
+    margin: ${akGridSizeUnitless * 3}px 0;
+    & > div + div {
+      padding-left: ${akGridSizeUnitless * 3}px;
     }
   }
 `;

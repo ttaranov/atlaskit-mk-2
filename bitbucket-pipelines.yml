@@ -51,8 +51,15 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 120
+              - source build/ci-scripts/count-flowfixme.sh 126
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
+              # Get the commit that we diverged from master at
+              - export DIVERGED_AT=$(git merge-base master HEAD)
+              # Get a comma separated list of changed files
+              - export CHANGED_FILES=$(git diff --name-only $DIVERGED_AT -- 'packages' 'build' 'website' | grep -E 'js$|ts$|tsx$' | tr '\n' ',')
+              # The below runs prettier over all changed files and fails if anyone of them don't match prettier's rules
+              # We add fileMock.js to the list of files so that we never pass an empty list to prettier
+              - yarn prettier --no-editorconfig "{$CHANGED_FILES,fileMock.js}" --list-different
             caches:
               - node
         - step:
@@ -71,7 +78,6 @@ pipelines:
               - bolt install --pure-lockfile
               - echo "Run browser unit tests using Karma + Browserstack"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-              - echo "Due to an issue with Webdriver and Browserstack - tests are disabled - please run it from your local branch or check your changes manually"
               - echo "Run browser integration tests using Webdriver + Browserstack"
               # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
               -  LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed

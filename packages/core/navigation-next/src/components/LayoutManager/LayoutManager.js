@@ -36,7 +36,6 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
-
   getPageRef = (ref: ElementRef<*>) => {
     this.pageRef = ref;
   };
@@ -102,7 +101,13 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
   };
 
   renderNavigation = () => {
-    const { navigationUIController } = this.props;
+    const {
+      navigationUIController,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
+    } = this.props;
     const {
       isCollapsed,
       isPeeking,
@@ -117,6 +122,12 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
         properties={['width']}
         to={[productNavWidth]}
         userIsDragging={isResizing}
+        // only apply listeners to the NAV resize transition
+        productNavWidth={productNavWidth}
+        onExpandStart={onExpandStart}
+        onExpandEnd={onExpandEnd}
+        onCollapseStart={onCollapseStart}
+        onCollapseEnd={onCollapseEnd}
       >
         {({ transitionStyle, transitionState }) => {
           const shouldRenderGlobalNavShadow =
@@ -160,6 +171,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
       <ResizeTransition
         from={[0]}
         in={!isCollapsed}
+        productNavWidth={productNavWidth}
         properties={['paddingLeft']}
         to={[productNavWidth]}
         userIsDragging={isResizing}

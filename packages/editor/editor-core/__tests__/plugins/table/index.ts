@@ -25,15 +25,17 @@ import {
   media,
   sendKeyToPm,
   randomId,
-  createEvent,
 } from '@atlaskit/editor-test-helpers';
 import { TableLayout } from '@atlaskit/editor-common';
 import {
-  TablePluginState,
   pluginKey,
   getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
-import { createTable } from '../../../src/plugins/table/actions';
+import { TablePluginState } from '../../../src/plugins/table/types';
+import {
+  createTable,
+  setEditorFocus,
+} from '../../../src/plugins/table/actions';
 import { setNodeSelection } from '../../../src/utils';
 import {
   toggleHeaderRow,
@@ -57,7 +59,6 @@ import listPlugin from '../../../src/plugins/lists';
 import { TextSelection } from 'prosemirror-state';
 
 describe('table plugin', () => {
-  const event = createEvent('event');
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
@@ -281,6 +282,108 @@ describe('table plugin', () => {
           expect(editorView.state.selection.$from.pos).toEqual(30);
           editorView.destroy();
         });
+      });
+    });
+
+    describe('when adding a new row', () => {
+      describe('when table has merged columns in rows', () => {
+        it('copies the structure', () => {
+          const { editorView } = editor(
+            doc(
+              table()(
+                tr(td({})(p('row1')), td()(p())),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('row2{<>}'))),
+              ),
+            ),
+            trackEvent,
+          );
+
+          insertRow(2)(editorView.state, editorView.dispatch);
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              table()(
+                tr(td({})(p('row1')), td()(p())),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('{<>}'))),
+              ),
+            ),
+          );
+
+          expect(trackEvent).toHaveBeenLastCalledWith(
+            'atlassian.editor.format.table.row.button',
+          );
+
+          editorView.destroy();
+        });
+      });
+
+      it('copies the structure from a tableCell', () => {
+        const { editorView } = editor(
+          doc(
+            table()(
+              tr(th({})(p()), th({})(p())),
+              tr(td({ background: '#e6fcff' })(p('row1')), td()(p('{<>}'))),
+              tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+            ),
+          ),
+          trackEvent,
+        );
+
+        insertRow(2)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(th({})(p()), th({})(p())),
+              tr(td({ background: '#e6fcff' })(p('row1')), td()(p())),
+              tr(td({ background: '#e6fcff' })(p('{<>}')), td()(p())),
+              tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+            ),
+          ),
+        );
+
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.format.table.row.button',
+        );
+
+        editorView.destroy();
+      });
+
+      it('copies the structure from a tableHeader', () => {
+        const { editorView } = editor(
+          doc(
+            table()(
+              tr(th({})(p('row1')), th()(p()), th()(p('{<>}'))),
+              tr(
+                th({ colspan: 2, background: '#e6fcff' })(p('row2')),
+                td()(p()),
+              ),
+            ),
+          ),
+          trackEvent,
+        );
+
+        insertRow(2)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(th({})(p('row1')), th()(p()), th()(p())),
+              tr(
+                th({ colspan: 2, background: '#e6fcff' })(p('row2')),
+                td()(p()),
+              ),
+              tr(th({ colspan: 2, background: '#e6fcff' })(p()), td()(p())),
+            ),
+          ),
+        );
+
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.format.table.row.button',
+        );
+
+        editorView.destroy();
       });
     });
   });
@@ -1015,11 +1118,12 @@ describe('table plugin', () => {
   describe('table plugin state', () => {
     it('should update tableNode when cursor enters the table', () => {
       const {
-        plugin,
         editorView: view,
         refs: { nextPos },
       } = editor(doc(table()(tr(td()(p('{nextPos}')))), p('te{<>}xt')));
-      plugin.props.handleDOMEvents!.focus(view, event);
+
+      setEditorFocus(true)(view.state, view.dispatch);
+
       view.dispatch(
         view.state.tr.setSelection(
           new TextSelection(view.state.doc.resolve(nextPos)),
@@ -1028,6 +1132,23 @@ describe('table plugin', () => {
       const { tableNode } = getPluginState(view.state);
       expect(tableNode).toBeDefined();
       expect(tableNode.type.name).toEqual('table');
+    });
+    it('should update targetCellRef when table looses focus', () => {
+      const {
+        editorView: view,
+        refs: { nextPos },
+      } = editor(doc(table()(tr(td()(p('{<>}')))), p('te{nextPos}xt')));
+
+      setEditorFocus(true)(view.state, view.dispatch);
+
+      expect(getPluginState(view.state).targetCellRef).toBeDefined();
+
+      view.dispatch(
+        view.state.tr.setSelection(
+          new TextSelection(view.state.doc.resolve(nextPos)),
+        ),
+      );
+      expect(getPluginState(view.state).targetCellRef).not.toBeDefined();
     });
   });
 });

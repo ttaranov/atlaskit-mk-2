@@ -1,3 +1,6 @@
+import * as React from 'react';
+import { Node as PMNode } from 'prosemirror-model';
+import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
 import { layoutSection, layoutColumn } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { FloatingToolbarConfig } from '../floating-toolbar/types';
@@ -13,15 +16,15 @@ export { pluginKey };
 export default {
   nodes() {
     return [
-      { rank: 2400, name: 'layoutSection', node: layoutSection },
-      { rank: 2400, name: 'layoutColumn', node: layoutColumn },
+      { name: 'layoutSection', node: layoutSection },
+      { name: 'layoutColumn', node: layoutColumn },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 2400,
+        name: 'layout',
         plugin: () => layoutPlugin,
       },
     ];
@@ -34,5 +37,17 @@ export default {
       }
       return undefined;
     },
+    quickInsert: [
+      {
+        title: 'Columns',
+        keywords: ['layout', 'section'],
+        priority: 1100,
+        icon: () => <PlaceholderTextIcon label="Insert columns" />,
+        action(insert, state) {
+          const { layoutSection } = state.schema.nodes;
+          return insert(layoutSection.createAndFill() as PMNode);
+        },
+      },
+    ],
   },
 } as EditorPlugin;

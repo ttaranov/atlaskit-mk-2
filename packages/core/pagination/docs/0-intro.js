@@ -86,16 +86,28 @@ export default () => (
       </thead>
       <tbody>
         <tr>
-          <td>{md`\`current\``}</td>
-          <td>{md`\`value\``}</td>
+          <td>{md`
+\`current\`
+          `}</td>
+          <td>{md`
+\`value\`
+          `}</td>
         </tr>
         <tr>
-          <td>{md`\`defaultCurrent\``}</td>
-          <td>{md`\`defaultValue\``}</td>
+          <td>{md`
+\`defaultCurrent\`
+          `}</td>
+          <td>{md`
+\`defaultValue\`
+          `}</td>
         </tr>
         <tr>
-          <td>{md`\`onSetPage\``}</td>
-          <td>{md`\`onChange\``}</td>
+          <td>{md`
+\`onSetPage\`
+          `}</td>
+          <td>{md`
+\`onChange\`
+          `}</td>
         </tr>
       </tbody>
     </table>

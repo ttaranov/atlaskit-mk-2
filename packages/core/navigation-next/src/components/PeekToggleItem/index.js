@@ -1,8 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import MenuIcon from '../../../../icon/glyph/menu';
-import ArrowLeftIcon from '../../../../icon/glyph/arrow-left';
+import MenuIcon from '@atlaskit/icon/glyph/menu';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import { GlobalItemPrimitive } from '../..';
 import InteractionStateManager from '../InteractionStateManager';

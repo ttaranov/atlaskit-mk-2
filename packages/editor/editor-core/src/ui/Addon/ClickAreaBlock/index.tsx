@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { createParagraphAtEnd } from '../../../commands';
 import { setGapCursorForTopLevelBlocks } from '../../../plugins/gap-cursor';
+import { closestElement } from '../../../utils';
 
 const ClickWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex-grow: 1;
@@ -39,10 +40,15 @@ export default class ClickAreaBlock extends React.Component<Props> {
     // by the time it gets triggered on input, PM already re-renders nodeView and detaches it from DOM
     // which doesn't pass the check !contentArea.contains(event.target)
     const isInputClicked = event.target.nodeName === 'INPUT';
-
+    // @see ED-5126
+    const isPopupClicked = !!closestElement(
+      event.target,
+      '[data-editor-popup]',
+    );
     if (
       (!contentArea || !insideContentArea(event.target.parentNode)) &&
       !isInputClicked &&
+      !isPopupClicked &&
       view
     ) {
       const { dispatch, dom } = view;

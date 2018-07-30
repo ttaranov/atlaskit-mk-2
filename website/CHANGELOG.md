@@ -1,5 +1,42 @@
 # @atlaskit/website
 
+## 3.1.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+
+## 3.0.4
+
+
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/single-select@6.0.2
+  - @atlaskit/layer-manager@5.0.2
+- [patch] Updated dependencies [e16d2b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e16d2b6)
+  - extract-react-types-loader@0.2.1
+
+## 3.0.3
+
+
+- [none] Updated dependencies [d0e13b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0e13b7)
+- [patch] Updated dependencies [c5214a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5214a3)
+  - extract-react-types-loader@0.2.0
+
 ## 3.0.2
 - [patch] Update examples iframe loader to be more performant and unmount unused react dom trees [c42f300](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c42f300)
 
