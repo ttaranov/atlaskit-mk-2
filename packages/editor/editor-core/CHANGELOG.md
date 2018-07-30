@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 76.3.2
+- [patch] When copying a table respect the table layout and cell attributes. ED-4947 [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
+- [none] Updated dependencies [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
+  - @atlaskit/editor-common@13.2.5
+
 ## 76.3.1
 - [patch] Updated dependencies [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
   - @atlaskit/media-filmstrip@10.2.0
