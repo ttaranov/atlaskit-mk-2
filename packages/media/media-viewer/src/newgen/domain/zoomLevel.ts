@@ -14,13 +14,25 @@ export class ZoomLevel {
   public static readonly MIN = ZoomLevel.ZOOM_LEVELS[0];
   public static readonly MAX = ZoomLevel.ZOOM_LEVELS.slice(-1)[0];
 
-  constructor(public readonly value: number = 1) {
+  constructor(
+    public readonly value: number = 1,
+    private readonly maxInitScale: number = 1,
+  ) {
     if (value < ZoomLevel.MIN) {
       this.value = ZoomLevel.MIN;
     }
     if (value > ZoomLevel.MAX) {
       this.value = ZoomLevel.MAX;
     }
+    const distances = ZoomLevel.ZOOM_LEVELS.map((x, n) => ({
+      n,
+      d: Math.abs(x - value),
+    }))
+      .sort(({ d: a }, { d: b }) => a - b)
+      .filter(({ n }) => ZoomLevel.ZOOM_LEVELS[n] <= maxInitScale);
+    console.log('----', distances, maxInitScale);
+    const smallest = distances[0].n;
+    this.value = ZoomLevel.ZOOM_LEVELS[smallest];
   }
 
   get asPercentage(): string {
@@ -30,13 +42,13 @@ export class ZoomLevel {
   zoomIn(): ZoomLevel {
     const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
     const nextValue = ZoomLevel.ZOOM_LEVELS[index + 1];
-    return nextValue ? new ZoomLevel(nextValue) : this;
+    return nextValue ? new ZoomLevel(nextValue, this.maxInitScale) : this;
   }
 
   zoomOut(): ZoomLevel {
     const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
     const nextValue = ZoomLevel.ZOOM_LEVELS[index - 1];
-    return nextValue ? new ZoomLevel(nextValue) : this;
+    return nextValue ? new ZoomLevel(nextValue, this.maxInitScale) : this;
   }
 
   get canZoomIn(): boolean {
