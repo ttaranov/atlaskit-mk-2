@@ -4,7 +4,7 @@ import {
   editable,
   getDocFromElement,
   setupMediaMocksProviders,
-  insertFirstMedia,
+  insertMedia,
   fullpage,
 } from '../_helpers';
 import { sleep } from '@atlaskit/editor-test-helpers';
@@ -26,7 +26,7 @@ BrowserTestCase(
     await browser.type(editable, 'some text');
 
     // now we can insert media as necessary
-    await insertFirstMedia(browser);
+    await insertMedia(browser);
 
     // wait for "upload" and finish doc sync
     await sleep(200);

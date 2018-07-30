@@ -4,18 +4,10 @@ import {
   editable,
   getDocFromElement,
   setupMediaMocksProviders,
-  insertFirstMedia,
+  insertMedia,
   fullpage,
 } from '../_helpers';
 import { sleep } from '@atlaskit/editor-test-helpers';
-
-const mediaSingleLayouts = {
-  center: 'Align center',
-  'wrap-left': 'Align left',
-  'wrap-right': 'Align right',
-  wide: 'Wide',
-  'full-width': 'Full width',
-};
 
 BrowserTestCase(
   'Can change media single to full-width layout on fullpage',
@@ -34,31 +26,23 @@ BrowserTestCase(
     await browser.type(editable, 'some text');
 
     // now we can insert media as necessary
-    await insertFirstMedia(browser);
+    await insertMedia(browser);
 
     // wait for the nodeview to appear
     await browser.waitForSelector('.media-single');
-
-    await sleep(400);
+    await sleep(200);
 
     // click it so the toolbar appears
     await browser.click('.media-single div div div');
 
     // change layouts
-    for (const layout of Object.keys(mediaSingleLayouts)) {
-      const layoutButton = `[aria-label="Change layout to ${
-        mediaSingleLayouts[layout]
-      }"]`;
-      await browser.waitForSelector(layoutButton);
-      await browser.click(layoutButton);
+    const layoutButton = `[aria-label="Change layout to Full width"]`;
+    await browser.waitForSelector(layoutButton);
+    await browser.click(layoutButton);
 
-      await browser.waitForSelector(`.media-single.${layout}`);
+    await browser.waitForSelector(`.media-single.full-width`);
 
-      const doc = await browser.$eval(editable, getDocFromElement);
-
-      // FIXME: our override only supports a single snapshot per test :(
-      // leaving this here so we can grab this code for the visual regression tests
-      expect(doc).toMatchDocSnapshot();
-    }
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
   },
 );

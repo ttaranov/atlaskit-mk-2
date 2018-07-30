@@ -2,7 +2,6 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import {
   editable,
-  getDocFromElement,
   setupMediaMocksProviders,
   message,
   comment,
@@ -12,7 +11,7 @@ import { sleep } from '@atlaskit/editor-test-helpers';
 
 [comment, message].forEach(editor => {
   BrowserTestCase(
-    `Inserts a media group on ${editor.name}`,
+    `Inserts and deletes media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const browser = await new Page(client);
@@ -27,15 +26,29 @@ import { sleep } from '@atlaskit/editor-test-helpers';
       await browser.type(editable, 'some text');
 
       // now we can insert media as necessary
-      await insertMedia(browser);
+      await insertMedia(browser, [0, 1]);
+      await sleep(500);
 
-      // wait for "upload" and finish doc sync
-      await sleep(200);
-      await browser.waitForSelector('.image');
-      expect(await browser.isVisible('.image')).toBe(true);
+      // wait for the nodeview to appear
+      await browser.waitForSelector('.wrapper .image');
+      expect(await browser.count('.wrapper .image')).toBe(2);
 
-      const doc = await browser.$eval(editable, getDocFromElement);
-      expect(doc).toMatchDocSnapshot();
+      // TODO: check ADF
+
+      // okay, delete the first
+      await browser.click('.wrapper .image');
+      await browser.click('.image [aria-label="delete"]');
+
+      expect(await browser.count('.wrapper .image')).toBe(1);
+
+      // TODO: check ADF
+
+      await browser.click('.wrapper .image');
+      await browser.click('.image [aria-label="delete"]');
+
+      expect(await browser.count('.wrapper .image')).toBe(0);
+
+      // TODO: check ADF
     },
   );
 });
