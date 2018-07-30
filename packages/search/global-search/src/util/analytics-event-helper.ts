@@ -3,6 +3,7 @@ import {
   sanitizeSearchQuery,
   sanitizeContainerId,
   ShownAnalyticsAttributes,
+  SearchPerformanceTiming,
   DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
@@ -113,14 +114,14 @@ export function fireDismissedEvent(
 }
 export function firePostQueryShownEvent(
   resultsDetails: ShownAnalyticsAttributes,
-  elapsedMs: number,
-  quickNavElapsedMs: number,
+  timings: SearchPerformanceTiming,
   searchSessionId: string,
   query: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
   const event = createAnalyticsEvent();
 
+  const { elapsedMs, ...otherPerformanceTimings } = timings;
   const payload: GasPayload = {
     action: 'shown',
     actionSubject: 'searchResults',
@@ -131,7 +132,7 @@ export function firePostQueryShownEvent(
       ...getQueryAttributes(query),
       postQueryRequestDurationMs: elapsedMs,
       searchSessionId,
-      quickNavElapsedMs,
+      ...otherPerformanceTimings,
       ...resultsDetails,
       ...DEFAULT_GAS_ATTRIBUTES,
     },
