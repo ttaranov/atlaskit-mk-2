@@ -268,6 +268,7 @@ const renderNoQuery = (
   ) {
     return [
       <NoRecentActivity
+        key="no-recent-activity"
         advancedSearchUrl={getConfluenceAdvancedSearchLink()}
       />,
       getAnalyticsComponent(
