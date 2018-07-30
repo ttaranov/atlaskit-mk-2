@@ -424,7 +424,7 @@ export const fileStoreUrl = (baseUrl: string): string => {
 };
 
 export const pickerUrl = (baseUrl: string): string => {
-  return `${this.fileStoreUrl(baseUrl)}/picker`;
+  return `${fileStoreUrl(baseUrl)}/picker`;
 };
 
 export function flattenAccounts(services: Service[]): ServiceAccountWithType[] {
