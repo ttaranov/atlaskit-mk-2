@@ -11,13 +11,12 @@ import { ShownWhenCollapsed } from './ToggleWhenCollapsed';
 import SkeletonContainerNavigationInner from './styled/SkeletonContainerNavigationInner';
 import SkeletonNavigationContentOuter from './styled/SkeletonNavigationContentOuter';
 import SkeletonContainerHeaderWrapper from './styled/SkeletonContainerHeaderWrapper';
-
-import type { ContainerHeaderProps } from './';
+import { type SkeletonContainerHeaderProps } from './SkeletonDefaultContainerHeader';
 
 export type Props = {
-  isCollapsed: boolean,
+  isCollapsed?: boolean,
   theme: Provided,
-  containerHeaderComponent: ComponentType<ContainerHeaderProps>,
+  containerHeaderComponent: ComponentType<SkeletonContainerHeaderProps>,
 };
 
 export default class SkeletonContainerNavigation extends Component<Props> {

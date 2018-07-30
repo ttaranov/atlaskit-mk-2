@@ -10,7 +10,7 @@ export interface NumberedRowProps {
 
   selectRow: (row: number) => void;
   hoverRows: (rows: number[], danger?: boolean) => void;
-  resetHoverSelection: () => void;
+  clearHoverSelection: () => void;
 
   children?: React.ReactNode;
 }
@@ -22,7 +22,7 @@ export class NumberedRow extends React.Component<NumberedRowProps> {
     this.props.tableActive ? this.props.hoverRows([this.props.row]) : null;
   private onMouseOut = () => {
     if (this.props.tableActive) {
-      this.props.resetHoverSelection();
+      this.props.clearHoverSelection();
     }
   };
 

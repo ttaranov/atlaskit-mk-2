@@ -1,5 +1,36 @@
 # @atlaskit/media-picker
 
+## 11.1.2
+- [patch] pass mimeType to files in uploads-start event in MediaPicker [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+- [patch] Updated dependencies [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+  - @atlaskit/media-core@22.2.0
+  - @atlaskit/media-card@31.1.1
+
+## 11.1.1
+- [patch] use context.getFile in media-card [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-store@5.1.0
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/media-card@31.1.0
+
+## 11.1.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+
 ## 11.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

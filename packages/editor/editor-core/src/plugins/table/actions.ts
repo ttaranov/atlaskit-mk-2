@@ -8,8 +8,9 @@ import {
   goToNextCell as baseGotoNextCell,
   selectionCell,
   TableMap,
+  CellSelection,
 } from 'prosemirror-tables';
-import { Node, Slice, Schema } from 'prosemirror-model';
+import { Node as PMNode, Slice, Schema } from 'prosemirror-model';
 import {
   findTable,
   getCellsInColumn,
@@ -26,14 +27,16 @@ import {
   findParentNodeOfType,
   safeInsert,
   createTable as createTableNode,
+  removeColumnAt,
+  removeRowAt,
+  findCellClosestToPos,
+  emptyCell,
+  setCellAttrs,
+  selectColumn as selectColumnTransform,
+  selectRow as selectRowTransform,
 } from 'prosemirror-utils';
 import { TableLayout } from '@atlaskit/editor-common';
-import {
-  getPluginState,
-  setPluginState,
-  pluginKey,
-  defaultTableSelection,
-} from './pm-plugins/main';
+import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
   createHoverDecorationSet,
   getCellSelection,
@@ -48,11 +51,13 @@ import { analyticsService } from '../../analytics';
 import { outdentList } from '../lists/commands';
 import { mapSlice } from '../../utils/slice';
 
-export const resetHoverSelection: Command = (
+export const clearHoverSelection: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  setPluginState({ ...defaultTableSelection })(state, dispatch);
+  dispatch(
+    state.tr.setMeta(pluginKey, { action: ACTIONS.CLEAR_HOVER_SELECTION }),
+  );
   return true;
 };
 
@@ -63,17 +68,21 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
   const table = findTable(state.selection);
   if (table) {
     const cells = columns.reduce(
-      (acc: { pos: number; node: Node }[], colIdx) => {
+      (acc: { pos: number; node: PMNode }[], colIdx) => {
         const colCells = getCellsInColumn(colIdx)(state.selection);
         return colCells ? acc.concat(colCells) : acc;
       },
       [],
     );
-
-    setPluginState({
-      hoverDecoration: createHoverDecorationSet(cells, state, danger),
-    })(state, dispatch);
-
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        action: ACTIONS.HOVER_COLUMNS,
+        data: {
+          hoverDecoration: createHoverDecorationSet(cells, state, danger),
+          dangerColumns: danger ? columns : [],
+        },
+      }),
+    );
     return true;
   }
   return false;
@@ -85,15 +94,22 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = rows.reduce((acc: { pos: number; node: Node }[], rowIdx) => {
-      const rowCells = getCellsInRow(rowIdx)(state.selection);
-      return rowCells ? acc.concat(rowCells) : acc;
-    }, []);
-
-    setPluginState({
-      hoverDecoration: createHoverDecorationSet(cells, state, danger),
-    })(state, dispatch);
-
+    const cells = rows.reduce(
+      (acc: { pos: number; node: PMNode }[], rowIdx) => {
+        const rowCells = getCellsInRow(rowIdx)(state.selection);
+        return rowCells ? acc.concat(rowCells) : acc;
+      },
+      [],
+    );
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        action: ACTIONS.HOVER_ROWS,
+        data: {
+          hoverDecoration: createHoverDecorationSet(cells, state, danger),
+          dangerRows: danger ? rows : [],
+        },
+      }),
+    );
     return true;
   }
   return false;
@@ -106,12 +122,15 @@ export const hoverTable = (danger?: boolean): Command => (
   const table = findTable(state.selection);
   if (table) {
     const cells = getCellsInTable(state.selection)!;
-
-    setPluginState({
-      hoverDecoration: createHoverDecorationSet(cells, state, danger),
-      isTableHovered: true,
-      isTableInDanger: danger,
-    })(state, dispatch);
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        action: ACTIONS.HOVER_TABLE,
+        data: {
+          hoverDecoration: createHoverDecorationSet(cells, state, danger),
+          isTableInDanger: danger,
+        },
+      }),
+    );
 
     return true;
   }
@@ -248,9 +267,15 @@ export const insertRow = (row: number): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  resetHoverSelection(state, dispatch);
+  clearHoverSelection(state, dispatch);
 
-  const tr = addRowAt(row)(state.tr);
+  // Dont clone the header row
+  const headerRowEnabled = checkIfHeaderRowEnabled(state);
+  const clonePreviousRow =
+    (headerRowEnabled && row > 1) || (!headerRowEnabled && row >= 0);
+
+  const tr = addRowAt(row, clonePreviousRow)(state.tr);
+
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
@@ -269,7 +294,7 @@ export function transformSliceToAddTableHeaders(
     if (maybeTable.type === table) {
       const firstRow = maybeTable.firstChild;
       if (firstRow) {
-        const headerCols = [] as Node[];
+        const headerCols = [] as PMNode[];
         firstRow.forEach(oldCol => {
           headerCols.push(
             tableHeader.createChecked(
@@ -522,5 +547,182 @@ export const moveCursorBackward: Command = (
   // due to ridiculous amount of PM code that would have been required to overwrite
   dispatch(tr.setSelection(new TextSelection(state.doc.resolve(pos))));
 
+  return true;
+};
+
+export const deleteColumns = (indexes: number[]): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  let { tr } = state;
+  for (let i = indexes.length; i >= 0; i--) {
+    tr = removeColumnAt(indexes[i])(tr);
+  }
+  if (tr.docChanged) {
+    dispatch(setTextSelection(tr.selection.$from.pos)(tr));
+    return true;
+  }
+  return false;
+};
+
+export const deleteRows = (indexes: number[]): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  let { tr } = state;
+  for (let i = indexes.length; i >= 0; i--) {
+    tr = removeRowAt(indexes[i])(tr);
+  }
+  if (tr.docChanged) {
+    dispatch(setTextSelection(tr.selection.$from.pos)(tr));
+    return true;
+  }
+  return false;
+};
+
+export const emptyMultipleCells = (targetCellPosition?: number): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  let cursorPos;
+  let { tr } = state;
+
+  if (isCellSelection(tr.selection)) {
+    const selection = (tr.selection as any) as CellSelection;
+    selection.forEachCell((node, pos) => {
+      const $pos = tr.doc.resolve(tr.mapping.map(pos + 1));
+      tr = emptyCell(findCellClosestToPos($pos)!, state.schema)(tr);
+    });
+    cursorPos = selection.$headCell.pos;
+  } else if (targetCellPosition) {
+    const cell = findCellClosestToPos(tr.doc.resolve(targetCellPosition + 1))!;
+    tr = emptyCell(cell, state.schema)(tr);
+    cursorPos = cell.pos;
+  }
+  if (tr.docChanged) {
+    const $pos = tr.doc.resolve(tr.mapping.map(cursorPos));
+    const textSelection = Selection.findFrom($pos, 1, true);
+    if (textSelection) {
+      tr.setSelection(textSelection);
+    }
+    dispatch(tr);
+    return true;
+  }
+  return false;
+};
+
+export const setMultipleCellAttrs = (
+  attrs: Object,
+  targetCellPosition?: number,
+): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  let cursorPos;
+  let { tr } = state;
+
+  if (isCellSelection(tr.selection)) {
+    const selection = (tr.selection as any) as CellSelection;
+    selection.forEachCell((cell, pos) => {
+      const $pos = tr.doc.resolve(tr.mapping.map(pos + 1));
+      tr = setCellAttrs(findCellClosestToPos($pos)!, attrs)(tr);
+    });
+    cursorPos = selection.$headCell.pos;
+  } else if (targetCellPosition) {
+    const cell = findCellClosestToPos(tr.doc.resolve(targetCellPosition + 1))!;
+    tr = setCellAttrs(cell, attrs)(tr);
+    cursorPos = cell.pos;
+  }
+  if (tr.docChanged) {
+    const $pos = tr.doc.resolve(tr.mapping.map(cursorPos));
+    dispatch(tr.setSelection(Selection.near($pos)));
+    return true;
+  }
+  return false;
+};
+
+export const toggleContextualMenu = (
+  isContextualMenuOpen: boolean,
+): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  dispatch(
+    state.tr.setMeta(pluginKey, {
+      action: ACTIONS.TOGGLE_CONTEXTUAL_MENU,
+      data: { isContextualMenuOpen },
+    }),
+  );
+  return true;
+};
+
+export const setEditorFocus = (editorHasFocus: boolean): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  dispatch(
+    state.tr.setMeta(pluginKey, {
+      action: ACTIONS.SET_EDITOR_FOCUS,
+      data: { editorHasFocus },
+    }),
+  );
+  return true;
+};
+
+export const setTableRef = (tableRef?: HTMLElement): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  dispatch(
+    state.tr.setMeta(pluginKey, {
+      action: ACTIONS.SET_TABLE_REF,
+      data: { tableRef },
+    }),
+  );
+  return true;
+};
+
+export const setTargetCell = (targetCellRef?: HTMLElement): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  dispatch(
+    state.tr.setMeta(pluginKey, {
+      action: ACTIONS.SET_TARGET_CELL_REF,
+      data: { targetCellRef },
+    }),
+  );
+  return true;
+};
+
+export const selectColumn = (column: number): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const tr = selectColumnTransform(column)(state.tr);
+  const firstCell = getCellsInColumn(column)(tr.selection)![0];
+  // update contextual menu target cell position on column selection
+  dispatch(
+    tr.setMeta(pluginKey, {
+      action: ACTIONS.SET_TARGET_CELL_POSITION,
+      data: { targetCellPosition: firstCell.pos },
+    }),
+  );
+  return true;
+};
+
+export const selectRow = (row: number): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const tr = selectRowTransform(row)(state.tr);
+  const firstCell = getCellsInRow(row)(tr.selection)![0];
+  // update contextual menu target cell position on row selection
+  dispatch(
+    tr.setMeta(pluginKey, {
+      action: ACTIONS.SET_TARGET_CELL_POSITION,
+      data: { targetCellPosition: firstCell.pos },
+    }),
+  );
   return true;
 };

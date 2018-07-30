@@ -17,17 +17,23 @@ export interface CodeBlockOptions {
 const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
   ({
     nodes() {
-      return [{ name: 'codeBlock', node: codeBlock, rank: 800 }];
+      return [{ name: 'codeBlock', node: codeBlock }];
     },
 
     pmPlugins() {
       return [
-        { rank: 700, plugin: ({ dispatch }) => plugin(dispatch) },
         {
-          rank: 710,
+          name: 'codeBlock',
+          plugin: ({ dispatch }) => plugin(dispatch),
+        },
+        {
+          name: 'codeBlockIDEKeyBindings',
           plugin: () => (options.enableKeybindingsForIDE ? ideUX : undefined),
         },
-        { rank: 720, plugin: ({ schema }) => keymap(schema) },
+        {
+          name: 'codeBlockKeyMap',
+          plugin: ({ schema }) => keymap(schema),
+        },
       ];
     },
 
@@ -88,6 +94,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       quickInsert: [
         {
           title: 'Code block',
+          priority: 700,
           keywords: ['javascript', 'typescript'],
           icon: () => <EditorCodeIcon label="Code block" />,
           action(insert, state) {

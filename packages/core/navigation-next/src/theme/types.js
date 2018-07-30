@@ -54,4 +54,8 @@ export type GlobalTheme = {
   mode: Mode,
 };
 
-export type StyleReducer<State> = (ObjectType, State) => ObjectType;
+// export type StyleReducer<State> = (ObjectType, State) => ObjectType;
+export type StyleReducer = (
+  Styles: ObjectType,
+  State?: ObjectType,
+) => ObjectType;

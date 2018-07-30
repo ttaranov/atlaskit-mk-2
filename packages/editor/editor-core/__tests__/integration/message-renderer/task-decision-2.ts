@@ -51,7 +51,7 @@ BrowserTestCase(
     await browser.isVisible(clipboardInput);
     await browser.type(
       clipboardInput,
-      '<p>this is a link <a href="http://www.google.com">www.google.com</a></p><p>more elements with some <strong>format</strong></p><p>some addition<em> formatting</em></p>',
+      'this is a link http://www.google.com more elements with some **format** some addition *formatting*',
     );
     await browser.click(copyAsPlaintextButton);
     await browser.goto(messageEditor);

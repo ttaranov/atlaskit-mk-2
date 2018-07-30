@@ -19,6 +19,7 @@ import {
 } from '../../types';
 import { leftClick } from '../../util/mouse';
 import { shouldUseAltRepresentation } from '../../api/EmojiUtils';
+import closest from '../../util/closest';
 
 export interface Props {
   /**
@@ -83,11 +84,7 @@ export interface Props {
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
   // Clicked emoji delete button
-  if (
-    event.target instanceof Element &&
-    event.target.closest &&
-    !!event.target.closest('svg')
-  ) {
+  if (event.target instanceof Element && closest(event.target, 'svg')) {
     return;
   }
   const { emoji, onSelected } = props;

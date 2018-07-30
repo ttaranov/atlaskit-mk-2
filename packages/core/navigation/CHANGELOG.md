@@ -1,5 +1,23 @@
 # @atlaskit/navigation
 
+## 33.1.0
+- [minor] Add `itemTextWidth` prop to SkeletonContainerItems and SkeletonContainerItem components. Add `isAvatarHidden` prop to SkeletonDefaultContainerHeader. This enables usage of skeleton components for Atlaskit drawers. [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
+- [minor] Updated dependencies [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
+
+## 33.0.5
+- [patch] Upgrading react-beautiful-dnd to 8.0.1 [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+- [patch] Upgrading react-beautiful-dnd to 8.0.0 [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+- [none] Updated dependencies [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+- [none] Updated dependencies [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+
+## 33.0.4
+- [patch] Upgrading react-beautiful-dnd to 8.0.5 [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+- [none] Updated dependencies [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+
+## 33.0.3
+- [patch] add border radius back to navigation items [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
+- [none] Updated dependencies [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
+
 ## 33.0.2
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

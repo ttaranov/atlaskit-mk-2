@@ -2,11 +2,11 @@ import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
 import { Plugin, EditorState, Transaction } from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
-import * as commands from '../../../commands';
 import { analyticsService, trackAndInvoke } from '../../../analytics';
 import { EditorProps } from '../../../types/editor-props';
 import { Match, getLinkMatch } from '../utils';
-import { HyperlinkState, hyperlinkPluginKey } from '../pm-plugins/main';
+import { HyperlinkState, stateKey } from '../pm-plugins/main';
+import { showLinkToolbar, hideLinkToolbar } from '../commands';
 
 export function createKeymapPlugin(
   schema: Schema,
@@ -19,7 +19,7 @@ export function createKeymapPlugin(
       keymaps.addLink.common!,
       trackAndInvoke(
         'atlassian.editor.format.hyperlink.keyboard',
-        commands.showLinkPanel(),
+        showLinkToolbar(),
       ),
       list,
     );
@@ -39,15 +39,15 @@ export function createKeymapPlugin(
 
   keymaps.bindKeymapWithCommand(
     keymaps.escape.common!,
-    (state: EditorState, dispatch) => {
-      const hyperlinkPlugin = hyperlinkPluginKey.getState(
-        state,
-      ) as HyperlinkState;
-      if (!hyperlinkPlugin.active) {
+    (state: EditorState, dispatch, view) => {
+      const hyperlinkPlugin = stateKey.getState(state) as HyperlinkState;
+      if (hyperlinkPlugin.activeLinkMark) {
+        hideLinkToolbar()(state, dispatch);
+        if (view) {
+          view.focus();
+        }
         return false;
       }
-
-      hyperlinkPlugin.setInactive(state, dispatch);
       return false;
     },
     list,

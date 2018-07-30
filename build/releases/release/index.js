@@ -109,9 +109,15 @@ async function run(opts) {
       logger.log('New tag: ', tag);
       await git.tag(tag);
     }
+
     logger.log('Pushing tags...');
-    // shouldn't need to worry about rebasing or pushing because we didnt create any new commits
-    await git.push(['--follow-tags']);
+    // We have tried a lot of iterations of this command, here is the reasoning for each:
+    // Originally we had `git push --tags` and this failed to push non-annotated commits
+    // Then we moved to `git push --follow-tags` which pushes our HEAD ref as well. This one fails if
+    // we are behind current master
+    // Finally we came back to `git push --tags` but with annotated tags (`git tag tagName -m tagMsg`)
+    // and this should finally work
+    await git.push(['--tags']);
   }
 
   if (failedToPublish.length > 0) {

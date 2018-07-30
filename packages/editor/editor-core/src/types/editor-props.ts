@@ -14,7 +14,8 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
-import { PluginConfig as TablesPluginConfig } from '../plugins/table/pm-plugins/main';
+import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
+import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/pm-plugins/main';
 import { ErrorReportingHandler } from '../utils/error-reporter';
 import { AnalyticsHandler } from '../analytics';
@@ -71,7 +72,7 @@ export interface EditorProps {
   allowRule?: boolean;
   allowCodeBlocks?: boolean | CodeBlockOptions;
   allowLists?: boolean;
-  allowTextColor?: boolean;
+  allowTextColor?: boolean | TextColorPluginConfig;
   allowTables?: boolean | TablesPluginConfig;
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;

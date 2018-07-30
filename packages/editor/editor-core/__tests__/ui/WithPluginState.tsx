@@ -20,7 +20,7 @@ describe(name, () => {
       pmPlugins() {
         return [
           {
-            rank: 1,
+            name: '',
             plugin: () =>
               new Plugin({
                 key,

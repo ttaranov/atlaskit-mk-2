@@ -217,7 +217,7 @@ describe('AtlaskitListener', () => {
             packageName: undefined,
             packageVersion: undefined,
           },
-          source: undefined,
+          source: 'unknown',
           tags: ['atlaskit'],
         },
       },

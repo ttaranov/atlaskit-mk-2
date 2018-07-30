@@ -31,9 +31,9 @@ describe.skip('Ellipsify', () => {
     container = document.createElement('div');
     container.innerHTML = '<div id="lineheight-check">a</div>';
     document.body.appendChild(container);
-    lineHeight = container.querySelector(
-      '#lineheight-check',
-    )!.getBoundingClientRect().height;
+    lineHeight = container
+      .querySelector('#lineheight-check')!
+      .getBoundingClientRect().height;
   });
 
   afterEach(() => {

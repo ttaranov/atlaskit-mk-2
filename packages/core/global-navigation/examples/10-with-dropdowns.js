@@ -30,8 +30,8 @@ export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={GlobalNav}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
+      productNavigation={() => null}
+      containerNavigation={() => null}
     >
       Page content
     </LayoutManager>

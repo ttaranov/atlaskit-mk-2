@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 4.0.3
+- [patch] Make marked text expel any whitespace on its borders to make more compliant markdown. ED-5142 [00c9e2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00c9e2b)
+- [none] Updated dependencies [00c9e2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00c9e2b)
+
 ## 4.0.2
 - [patch] Don't escape pipe characters when outside table [018de18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/018de18)
 - [none] Updated dependencies [018de18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/018de18)

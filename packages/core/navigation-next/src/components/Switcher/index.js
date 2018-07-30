@@ -5,7 +5,7 @@ import { components, PopupSelect } from '@atlaskit/select';
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
-import type { ItemProps } from '../Item/types';
+import type { ConnectedItemProps } from '../Item/types';
 import Option from './Option';
 
 const gridSize = gridSizeFn();
@@ -77,7 +77,7 @@ const Footer = ({ text, onClick }: *) => (
 
 type Props = {
   create?: { onClick: (*) => void, text: string },
-  options: Array<ItemProps>,
+  options: Array<ConnectedItemProps>,
   target: Element<*>,
 };
 type State = {

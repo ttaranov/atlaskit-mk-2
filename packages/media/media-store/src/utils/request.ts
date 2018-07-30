@@ -50,6 +50,10 @@ export function mapResponseToJson(response: Response): Promise<any> {
   return response.json();
 }
 
+export function mapResponseToBlob(response: Response): Promise<Blob> {
+  return response.blob();
+}
+
 export function mapResponseToVoid(_response: Response): Promise<void> {
   return Promise.resolve();
 }

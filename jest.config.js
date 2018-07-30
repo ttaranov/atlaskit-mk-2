@@ -114,7 +114,7 @@ if (PARALLELIZE_TESTS) {
   console.log('Parallelising jest tests.');
   console.log(`Parallel step ${String(STEP_IDX)} of ${String(STEPS)}`);
   console.log('Total test files', allTests.length);
-  console.log(`Running filess: ${startIdx}-${endIdx}`);
+  console.log(`Running files: ${startIdx}-${endIdx}`);
 }
 
 // Annoyingly, if the array is empty, jest will fallback to its defaults and run everything

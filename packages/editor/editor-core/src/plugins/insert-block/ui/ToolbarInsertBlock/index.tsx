@@ -16,6 +16,7 @@ import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DateIcon from '@atlaskit/icon/glyph/editor/date';
 import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
+import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import {
   EmojiId,
@@ -47,6 +48,8 @@ import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
 import { insertLayoutColumns } from '../../../layout/actions';
 import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
+import { Command } from '../../../../commands';
+import { showLinkToolbar } from '../../../hyperlink/commands';
 
 export interface Props {
   buttons: number;
@@ -72,7 +75,6 @@ export interface Props {
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
   linkDisabled?: boolean;
-  showLinkPanel?: (editorView: EditorView) => void;
   emojiDisabled?: boolean;
   insertEmoji?: (emojiId: EmojiId) => void;
   popupsMountPoint?: HTMLElement;
@@ -81,7 +83,7 @@ export interface Props {
   macroProvider?: MacroProvider | null;
   insertMenuItems?: InsertMenuCustomItem[];
   onShowMediaPicker?: () => void;
-  onInsertBlockType?: (name: string, view: EditorView) => void;
+  onInsertBlockType?: (name: string) => Command;
   onInsertMacroFromMacroBrowser?: (
     macroProvider: MacroProvider,
   ) => (editorView: EditorView) => void;
@@ -428,7 +430,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         value: { name: 'layout' },
         tooltipDescription: 'Insert columns',
         tooltipPosition: 'right',
-        elemBefore: <PlaceholderTextIcon label="Insert columns" />,
+        elemBefore: <LayoutTwoEqualIcon label="Insert columns" />,
       });
     }
 
@@ -451,8 +453,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
 
   @analyticsDecorator('atlassian.editor.format.hyperlink.button')
   private toggleLinkPanel = (): boolean => {
-    const { showLinkPanel, editorView } = this.props;
-    showLinkPanel!(editorView);
+    const { editorView } = this.props;
+    showLinkToolbar()(editorView.state, editorView.dispatch);
     return true;
   };
 
@@ -569,7 +571,8 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertBlockType!(item.value.name, editorView);
+        const { state, dispatch } = editorView;
+        onInsertBlockType!(item.value.name)(state, dispatch);
         break;
       case 'decision':
         this.insertDecision();

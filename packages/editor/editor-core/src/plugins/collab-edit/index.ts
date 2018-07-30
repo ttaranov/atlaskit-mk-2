@@ -8,7 +8,7 @@ const collabEditPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 1000,
+        name: 'collab',
         plugin: ({ dispatch, providerFactory }) =>
           createPlugin(dispatch, providerFactory),
       },
