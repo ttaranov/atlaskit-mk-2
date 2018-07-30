@@ -1,5 +1,6 @@
 // @flow
 import React, { Fragment } from 'react';
+import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 import { PopupSelect } from '../src';
 
 const options = [
@@ -32,21 +33,33 @@ const PopupSelectExample = () => (
         popperProps={{ placement: 'right-start' }}
       />
     </div>
-    <div
-      style={{
-        background: 'AliceBlue',
-        marginBottom: '1em',
-        marginTop: '1em',
-        padding: '1em',
-        height: 500,
-        width: 300,
-        overflowY: 'auto',
-      }}
-    >
-      <h3>Scroll Container</h3>
-      <div style={{ height: 100 }} />
-      <PopupSelect {...defaults} target={<button>Target</button>} />
-      <div style={{ height: 1000 }} />
+    <div css={{ display: 'flex' }}>
+      <div
+        style={{
+          background: 'AliceBlue',
+          marginBottom: '1em',
+          marginTop: '1em',
+          padding: '1em',
+          height: 500,
+          width: 300,
+          overflowY: 'auto',
+        }}
+      >
+        <h3>Scroll Container</h3>
+        <div style={{ height: 100 }} />
+        <PopupSelect {...defaults} target={<button>Target</button>} />
+        <div style={{ height: 1000 }} />
+      </div>
+      <div style={{ margin: '1em' }}>
+        <PopupSelect
+          {...defaults}
+          target={
+            <button>
+              <AppSwitcherIcon />
+            </button>
+          }
+        />
+      </div>
     </div>
     <div style={{ height: 1000 }} />
   </Fragment>
