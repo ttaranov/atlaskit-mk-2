@@ -7,7 +7,6 @@ export interface Props {
   query: string;
   icon: JSX.Element;
   text: JSX.Element | string;
-  showKeyboardLozenge?: boolean;
 }
 
 export default class SearchPeopleItem extends React.Component<Props> {

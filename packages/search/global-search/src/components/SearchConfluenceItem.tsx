@@ -14,6 +14,10 @@ export interface Props {
 }
 
 export default class SearchConfluenceItem extends React.Component<Props> {
+  static defaultProps = {
+    showKeyboardLozenge: false,
+  };
+
   render() {
     const { query, icon, text, showKeyboardLozenge } = this.props;
 
@@ -25,7 +29,7 @@ export default class SearchConfluenceItem extends React.Component<Props> {
         text={text}
         icon={icon}
         type={AnalyticsType.AdvancedSearchConfluence}
-        showKeyboardLozenge={showKeyboardLozenge || false}
+        showKeyboardLozenge={showKeyboardLozenge}
       />
     );
   }
