@@ -55,8 +55,8 @@ module.exports = function createWebpackConfig(
       ? undefined
       : {
           nodeEnv: 'production',
-          minimizer: [uglify()],
-          minimize: true,
+          minimizer: null,
+          minimize: false,
           splitChunks: {
             maxAsyncRequests: Infinity,
           },
