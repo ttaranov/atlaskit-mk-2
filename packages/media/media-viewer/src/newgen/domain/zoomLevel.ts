@@ -1,5 +1,5 @@
 export class ZoomLevel {
-  private static readonly ZOOM_LEVELS = [
+  private static readonly INITIAL_ZOOM_LEVELS = [
     0.06,
     0.12,
     0.24,
@@ -11,39 +11,50 @@ export class ZoomLevel {
     6,
     8,
   ];
-  public static readonly MIN = ZoomLevel.ZOOM_LEVELS[0];
-  public static readonly MAX = ZoomLevel.ZOOM_LEVELS.slice(-1)[0];
 
-  constructor(public readonly value: number = 1) {
-    if (value < ZoomLevel.MIN) {
-      this.value = ZoomLevel.MIN;
+  private readonly zoomLevels: number[];
+  private readonly min: number;
+  private readonly max: number;
+
+  constructor(
+    public readonly value: number = 1,
+    private readonly initialValue?: number,
+  ) {
+    // todo no duplicates!
+    // todo make sure that value is OK (in bounds etc)?
+    if (initialValue) {
+      this.zoomLevels = ZoomLevel.INITIAL_ZOOM_LEVELS.concat(
+        initialValue,
+      ).sort();
+    } else {
+      this.zoomLevels = ZoomLevel.INITIAL_ZOOM_LEVELS;
     }
-    if (value > ZoomLevel.MAX) {
-      this.value = ZoomLevel.MAX;
-    }
+
+    this.min = this.zoomLevels[0];
+    this.max = this.zoomLevels.slice(-1)[0];
   }
 
   get asPercentage(): string {
-    return `${this.value * 100} %`;
+    return `${Math.round(this.value * 100)} %`;
   }
 
   zoomIn(): ZoomLevel {
-    const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
-    const nextValue = ZoomLevel.ZOOM_LEVELS[index + 1];
-    return nextValue ? new ZoomLevel(nextValue) : this;
+    const index = this.zoomLevels.indexOf(this.value);
+    const nextValue = this.zoomLevels[index + 1];
+    return nextValue ? new ZoomLevel(nextValue, this.initialValue) : this;
   }
 
   zoomOut(): ZoomLevel {
-    const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
-    const nextValue = ZoomLevel.ZOOM_LEVELS[index - 1];
-    return nextValue ? new ZoomLevel(nextValue) : this;
+    const index = this.zoomLevels.indexOf(this.value);
+    const nextValue = this.zoomLevels[index - 1];
+    return nextValue ? new ZoomLevel(nextValue, this.initialValue) : this;
   }
 
   get canZoomIn(): boolean {
-    return this.value < ZoomLevel.MAX;
+    return this.value < this.max;
   }
 
   get canZoomOut(): boolean {
-    return this.value > ZoomLevel.MIN;
+    return this.value > this.min;
   }
 }

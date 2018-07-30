@@ -65,7 +65,7 @@ export class Camera {
   }
 
   scaledImg(newScale: number): Rectangle {
-    return this.fittedImg.scaled(newScale);
+    return this.originalImg.scaled(newScale);
   }
 
   scaledOffset(
