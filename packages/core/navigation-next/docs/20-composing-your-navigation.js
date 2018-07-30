@@ -160,19 +160,19 @@ ${(
 <a name="managing-the-ui-state"></a>
 ## Managing the UI state
 
-If you try you'll notice that you can expand, collapse, and resize your navigation right now, and this state will be controlled by the component. What if we want to manage or respond to this state somewhere in our application? Introducing the \`UIStateSubscriber\`.
+If you try you'll notice that you can expand, collapse, and resize your navigation right now, and this state will be controlled by the component. What if we want to manage or respond to this state somewhere in our application? Introducing the \`UIControllerSubscriber\`.
 
 ${code`
-import { UIStateSubscriber } from '@atlaskit/navigation-next';
+import { UIControllerSubscriber } from '@atlaskit/navigation-next';
 
 const ExpandToggleButton = () => (
-  <UIStateSubscriber>
+  <UIControllerSubscriber>
     {navigationUIController => (
       <button onClick={navigationUIController.toggleCollapse}>
         {navigationUIController.state.isCollapsed ? 'Expand' : 'Collapse'} product navigation
       </button>
     )}
-  </UIStateSubscriber>
+  </UIControllerSubscriber>
 );
 `}
 

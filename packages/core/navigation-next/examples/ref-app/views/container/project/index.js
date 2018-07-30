@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { withNavigationViews } from '../../../../../src';
+import { withNavigationViewController } from '../../../../../src';
 import ProjectsProvider from '../../../providers/projects-provider';
 import ProjectProvider from '../../../providers/project-provider';
 
@@ -50,7 +50,7 @@ const getItems = (project, projects) => () => [
 ];
 
 class ContainerProjectView extends Component<{
-  navigationViews: *,
+  navigationViewController: *,
   project: *,
   projects: *,
 }> {
@@ -65,8 +65,8 @@ class ContainerProjectView extends Component<{
   }
 
   setView = () => {
-    const { project, projects, navigationViews } = this.props;
-    navigationViews.addView({
+    const { project, projects, navigationViewController } = this.props;
+    navigationViewController.addView({
       id: 'container/project',
       type: 'container',
       getItems: getItems(project, projects),
@@ -77,7 +77,7 @@ class ContainerProjectView extends Component<{
     return null;
   }
 }
-const ContainerView = withNavigationViews(ContainerProjectView);
+const ContainerView = withNavigationViewController(ContainerProjectView);
 
 export default ({ projectId }: *) => (
   <ProjectsProvider>

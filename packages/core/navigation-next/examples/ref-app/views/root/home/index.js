@@ -2,7 +2,7 @@
 
 import { Component } from 'react';
 import {
-  withNavigationViews,
+  withNavigationViewController,
   type ViewStateInterface,
 } from '../../../../../src';
 
@@ -27,10 +27,10 @@ const getItems = () => [
   },
 ];
 
-type Props = { navigationViews: ViewStateInterface };
+type Props = { navigationViewController: ViewStateInterface };
 class RootHomeView extends Component<Props> {
   componentDidMount() {
-    this.props.navigationViews.addView({
+    this.props.navigationViewController.addView({
       id: 'root/home',
       type: 'product',
       getItems,
@@ -42,4 +42,4 @@ class RootHomeView extends Component<Props> {
   }
 }
 
-export default withNavigationViews(RootHomeView);
+export default withNavigationViewController(RootHomeView);

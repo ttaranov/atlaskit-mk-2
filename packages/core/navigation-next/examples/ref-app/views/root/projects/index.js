@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ViewStateSubscriber } from '../../../../../src';
+import { ViewControllerSubscriber } from '../../../../../src';
 import ProjectsProvider from '../../../providers/projects-provider';
 
 const getItems = projects => () => [
@@ -26,10 +26,13 @@ const getItems = projects => () => [
   },
 ];
 
-class RootProjectsView extends Component<{ navigationViews: *, projects: * }> {
+class RootProjectsView extends Component<{
+  navigationViewController: *,
+  projects: *,
+}> {
   componentDidMount() {
-    const { projects, navigationViews } = this.props;
-    navigationViews.addView({
+    const { projects, navigationViewController } = this.props;
+    navigationViewController.addView({
       id: 'root/projects',
       type: 'product',
       getItems: getItems(projects),
@@ -45,14 +48,14 @@ export default () => (
   <ProjectsProvider>
     {({ data: projects }) =>
       projects ? (
-        <ViewStateSubscriber>
-          {navigationViews => (
+        <ViewControllerSubscriber>
+          {navigationViewController => (
             <RootProjectsView
-              navigationViews={navigationViews}
+              navigationViewController={navigationViewController}
               projects={projects}
             />
           )}
-        </ViewStateSubscriber>
+        </ViewControllerSubscriber>
       ) : null
     }
   </ProjectsProvider>

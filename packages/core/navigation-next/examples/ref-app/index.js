@@ -9,10 +9,10 @@ import {
   Item,
   LayoutManager,
   NavigationProvider,
-  UIStateSubscriber,
+  UIControllerSubscriber,
   ViewRenderer,
   withNavigationUI,
-  withNavigationViews,
+  withNavigationViewController,
 } from '../../src';
 
 import ContainerViews from './views/container';
@@ -22,14 +22,14 @@ import { DefaultGlobalNavigation } from '../shared/components';
 import { HomePage, ProjectPage, ProjectsPage, SettingsPage } from './pages';
 
 const MyGlobalNavigation = () => (
-  <UIStateSubscriber>
+  <UIControllerSubscriber>
     {({ togglePeek }) => (
       <GlobalNavigation
         productIcon={AtlassianIcon}
         onProductClick={togglePeek}
       />
     )}
-  </UIStateSubscriber>
+  </UIControllerSubscriber>
 );
 const ProductNavigationWrapper = props => (
   <div style={{ padding: 16 }} {...props} />
@@ -61,15 +61,15 @@ const Renderer = ({ items }: any) => (
 
 class ReferenceApplication extends Component<*> {
   renderContainerNav = () => {
-    const { navigationViews } = this.props;
-    const { activeView } = navigationViews.state;
+    const { navigationViewController } = this.props;
+    const { activeView } = navigationViewController.state;
 
     return <Renderer items={activeView.data} />;
   };
   renderProductNav = () => {
-    const { navigationUI, navigationViews } = this.props;
-    const { isPeeking } = navigationUI.state;
-    const { activeView, activePeekView } = navigationViews.state;
+    const { navigationUIController, navigationViewController } = this.props;
+    const { isPeeking } = navigationUIController.state;
+    const { activeView, activePeekView } = navigationViewController.state;
 
     if (
       activePeekView &&
@@ -84,8 +84,8 @@ class ReferenceApplication extends Component<*> {
     return 'Product skeleton goes here.';
   };
   render() {
-    const { navigationViews } = this.props;
-    const { activeView } = navigationViews.state;
+    const { navigationViewController } = this.props;
+    const { activeView } = navigationViewController.state;
     return (
       <LayoutManager
         globalNavigation={DefaultGlobalNavigation}
@@ -114,7 +114,9 @@ class ReferenceApplication extends Component<*> {
   }
 }
 
-const RefApp = withNavigationUI(withNavigationViews(ReferenceApplication));
+const RefApp = withNavigationUI(
+  withNavigationViewController(ReferenceApplication),
+);
 export default () => (
   <HashRouter>
     <NavigationProvider initialPeekViewId="root/home">

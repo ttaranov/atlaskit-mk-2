@@ -4,25 +4,25 @@
 
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { withNavigationViews } from '../../../src';
+import { withNavigationViewController } from '../../../src';
 
 export const Page = (p: *) => <div style={{ padding: 32 }} {...p} />;
 
 type Props = {
   id: string,
-  navigationViews: *,
+  navigationViewController: *,
 };
 
 class SetNavView extends Component<Props> {
   componentDidMount() {
-    this.props.navigationViews.setView(this.props.id);
+    this.props.navigationViewController.setView(this.props.id);
   }
   render() {
     return null;
   }
 }
 
-export const ViewSetter = withNavigationViews(SetNavView);
+export const ViewSetter = withNavigationViewController(SetNavView);
 
 export const PageView = ({ children, currentNavView }: *) => {
   return (

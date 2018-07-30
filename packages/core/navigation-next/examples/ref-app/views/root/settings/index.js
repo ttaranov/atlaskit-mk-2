@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ViewStateSubscriber } from '../../../../../src';
+import { ViewControllerSubscriber } from '../../../../../src';
 import MoreSettingsProvider from '../../../../../../global-navigation/node_modules/@atlaskit/navigation-next/examples/ref-app/providers/more-settings-provider';
 
 const getItems = moreSettingsState => () => {
@@ -34,21 +34,21 @@ const getItems = moreSettingsState => () => {
 };
 
 class RootSettingsView extends Component<{
-  navigationViews: *,
+  navigationViewController: *,
   moreSettingsState: *,
 }> {
   componentDidMount() {
-    const { navigationViews, moreSettingsState } = this.props;
-    navigationViews.addView({
+    const { navigationViewController, moreSettingsState } = this.props;
+    navigationViewController.addView({
       id: 'root/settings',
       getItems: getItems(moreSettingsState),
       type: 'product',
     });
   }
   componentDidUpdate(prevProps) {
-    const { moreSettingsState, navigationViews } = this.props;
+    const { moreSettingsState, navigationViewController } = this.props;
     if (prevProps.moreSettingsState.data !== moreSettingsState.data) {
-      navigationViews.addView({
+      navigationViewController.addView({
         id: 'root/settings',
         getItems: getItems(moreSettingsState),
         type: 'product',
@@ -63,14 +63,14 @@ class RootSettingsView extends Component<{
 export default () => (
   <MoreSettingsProvider>
     {moreSettingsState => (
-      <ViewStateSubscriber>
-        {navigationViews => (
+      <ViewControllerSubscriber>
+        {navigationViewController => (
           <RootSettingsView
-            navigationViews={navigationViews}
+            navigationViewController={navigationViewController}
             moreSettingsState={moreSettingsState}
           />
         )}
-      </ViewStateSubscriber>
+      </ViewControllerSubscriber>
     )}
   </MoreSettingsProvider>
 );
