@@ -9,7 +9,7 @@ export type Props = React.HTMLProps<HTMLSpanElement> & {
   color?: Color;
 };
 
-export const resolveColors = (color?: string): [string, string, string] => {
+export const resolveColors = (color?: Color): [string, string, string] => {
   if (!color || color === 'default') {
     return [
       UtilSharedStyles.akColorN30A,
