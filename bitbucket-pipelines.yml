@@ -88,19 +88,20 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
-              - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
-              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+              - cd website && yarn deploy-staging:no-minimize
+              # - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
+    #           - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
+    #           - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
             caches:
               - node
-    - step:
-        name: Sending Website Build Url
-        script:
-          - (cd build/utils && yarn install) # needed for npm-run when updating status
-          - cd build/ci-scripts
-          - yarn install
-          - node download.build.artefact.for.commit.js netlify-build.txt
-          - node update.build.status.with.netlify.link.js
+    # - step:
+    #     name: Sending Website Build Url
+    #     script:
+    #       - (cd build/utils && yarn install) # needed for npm-run when updating status
+    #       - cd build/ci-scripts
+    #       - yarn install
+    #       - node download.build.artefact.for.commit.js netlify-build.txt
+    #       - node update.build.status.with.netlify.link.js
 
 
   custom: # Pipelines that can be scheduled or triggered manually
