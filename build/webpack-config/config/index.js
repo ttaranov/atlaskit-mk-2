@@ -264,7 +264,7 @@ function plugins(
 
 const uglify = () => {
   return new UglifyJsPlugin({
-    parallel: Math.max(os.cpus().length - 1, 1),
+    parallel: 2,
     uglifyOptions: {
       compress: {
         // Disabling following options speeds up minimization by 20 – 30s
