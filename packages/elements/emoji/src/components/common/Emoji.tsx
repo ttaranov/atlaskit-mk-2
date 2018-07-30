@@ -84,7 +84,7 @@ export interface Props {
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
   // Clicked emoji delete button
-  if (event.target instanceof HTMLElement && closest(event.target, 'svg')) {
+  if (event.target instanceof Element && closest(event.target, 'svg')) {
     return;
   }
   const { emoji, onSelected } = props;

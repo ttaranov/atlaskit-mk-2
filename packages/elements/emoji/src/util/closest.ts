@@ -4,10 +4,10 @@
  * Returns the ancestor element of a particular type if exists or null
  */
 export default function closest(
-  node: HTMLElement | null,
+  node: Element | null,
   s: string,
-): HTMLElement | null {
-  let el = node as HTMLElement;
+): Element | null {
+  let el = node as Element;
   if (!el) {
     return null;
   }
@@ -20,7 +20,7 @@ export default function closest(
     if (el[matches](s)) {
       return el;
     }
-    el = (el.parentElement || el.parentNode) as HTMLElement;
+    el = (el.parentElement || el.parentNode) as Element;
   } while (el !== null && el.nodeType === 1);
   return null;
 }
