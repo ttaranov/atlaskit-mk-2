@@ -116,7 +116,6 @@ export class ExampleEditor extends React.Component<Props> {
                 activityProvider={activityProvider}
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}
-                mediaProvider={mediaProvider}
                 taskDecisionProvider={taskDecisionProvider}
                 contextIdentifierProvider={contextIdentifierProvider}
                 macroProvider={Promise.resolve(macroProvider)}

@@ -70,6 +70,10 @@ const providers = {
   },
   mediaProvider: {
     resolved: storyMediaProviderFactory(),
+    'resolved (no auth provider)': storyMediaProviderFactory({
+      useMediaPickerAuthProvider: false,
+    }),
+
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory({
@@ -81,6 +85,7 @@ const providers = {
     'w/o userAuthProvider': storyMediaProviderFactory({
       includeUserAuthProvider: false,
     }),
+
     undefined: undefined,
   },
   activityProvider: {
@@ -256,6 +261,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                     onClick={this.reloadEditor}
                     theme="dark"
                     spacing="compact"
+                    className="reloadEditorButton"
                   >
                     Reload Editor
                   </Button>

@@ -23,13 +23,21 @@ BrowserTestCase(
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editable);
-    await browser.click(editable);
-
-    await browser.type(editable, 'some text');
 
     // enable the media picker mock
     await browser.waitForSelector(mediaPickerMock);
     await browser.click(mediaPickerMock);
+
+    // since we're mocking and aren't uploading a real endpoint, skip authenticating
+    // (this is also a https endpoint which we can't load from inside the http-only netlify environment at this stage)
+    await browser.click('.mediaProvider-resolved-no-auth-provider');
+
+    // reload the editor so that media provider changes take effect
+    await browser.click('.reloadEditorButton');
+
+    // type some text
+    await browser.click(editable);
+    await browser.type(editable, 'some text');
 
     // now we can insert media as necessary
     await browser.click(openMediaPopup);
