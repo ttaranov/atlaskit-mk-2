@@ -18,7 +18,7 @@ import {
 import AdvancedSearchResult from './AdvancedSearchResult';
 import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
 
-const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
+export const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
 const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
 const ADVANCED_PEOPLE_SEARCH_RESULT_ID = 'search_people';
 
@@ -57,6 +57,7 @@ export function renderResults(results: Result[], sectionIndex: number) {
     const analyticsData = {
       sectionIndex,
       indexWithinSection: index,
+      containerId: result.containerId,
     };
 
     switch (resultType) {

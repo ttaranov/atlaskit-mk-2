@@ -17,6 +17,8 @@ export interface Result {
   analyticsType: AnalyticsType;
   // field to disambiguate between result types
   resultType: ResultType;
+  // optional container id
+  containerId?: string;
 }
 
 export interface ConfluenceObjectResult extends Result {

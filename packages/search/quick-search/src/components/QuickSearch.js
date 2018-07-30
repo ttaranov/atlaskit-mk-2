@@ -215,6 +215,7 @@ export class QuickSearch extends Component<Props, State> {
         firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, {
           ...result.getAnalyticsData(),
           key: this.lastKeyPressed,
+          resultCount: this.flatResults.length,
         });
       }
     }
@@ -311,6 +312,13 @@ export class QuickSearch extends Component<Props, State> {
     } else if (event.key === 'Enter') {
       // shift key pressed or no result selected
       if (event.shiftKey || !this.state.selectedResultId) {
+        if (firePrivateAnalyticsEvent) {
+          firePrivateAnalyticsEvent(QS_ANALYTICS_EV_SUBMIT, {
+            newTab: false, // enter always open in the same tab
+            resultCount: this.flatResults.length,
+            method: 'shortcut',
+          });
+        }
         this.props.onSearchSubmit(event);
       } else {
         event.preventDefault(); // Don't fire submit event from input
@@ -330,6 +338,7 @@ export class QuickSearch extends Component<Props, State> {
             ...result.getAnalyticsData(),
             method: 'returnKey',
             newTab: false, // enter always open in the same tab
+            resultCount: this.flatResults.length,
           });
         }
 
