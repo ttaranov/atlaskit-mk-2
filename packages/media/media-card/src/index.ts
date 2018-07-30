@@ -20,6 +20,7 @@ export * from './root/cardView';
 export * from './root/domain';
 export * from './list';
 export * from './actions';
+export { isUrlPreviewIdentifier } from './utils/identifier';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
 export {
   AppCardView,
