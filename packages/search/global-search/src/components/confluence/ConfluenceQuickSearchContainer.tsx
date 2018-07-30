@@ -257,11 +257,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       this.handleSearchErrorAnalyticsThunk('search-people'),
     );
 
+    const mapPromiseToPerformanceTime = p =>
+      p.then(() => performanceNow() - startTime);
+
     const timingPromise = [
       quickNavPromise,
       confXpSearchPromise,
       searchPeoplePromise,
-    ].map(p => p.then(() => performanceNow() - startTime));
+    ].map(mapPromiseToPerformanceTime);
 
     try {
       const [
