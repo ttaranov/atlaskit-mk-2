@@ -30,78 +30,9 @@ pipelines:
             - node
 
   default:
-    - parallel:
-        - step:
-            name: Building dists
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - yarn build
-              - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
-            caches:
-              - node
-        - step:
-            name: Lint + Typecheck
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
-              - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
-              - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
-              - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
-              # The script below counts flowfixme and fails if above the threshold.
-              # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 126
-              - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
-              # Get the commit that we diverged from master at
-              - export DIVERGED_AT=$(git merge-base master HEAD)
-              # Get a comma separated list of changed files
-              - export CHANGED_FILES=$(git diff --name-only $DIVERGED_AT -- 'packages' 'build' 'website' | grep -E 'js$|ts$|tsx$' | tr '\n' ',')
-              # The below runs prettier over all changed files and fails if anyone of them don't match prettier's rules
-              # We add fileMock.js to the list of files so that we never pass an empty list to prettier
-              - yarn prettier --no-editorconfig "{$CHANGED_FILES,fileMock.js}" --list-different
-            caches:
-              - node
-        - step:
-            name: Unit Testing
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
-              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
-            caches:
-              - node
-        - step:
-            name: Browser Testing
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - echo "Run browser unit tests using Karma + Browserstack"
-              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-              - echo "Run browser integration tests using Webdriver + Browserstack"
-              # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
-              -  LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
-            caches:
-              - node
-        - step:
-            name: Building website
-            script:
-              - source ./build-setup.sh
-              - bolt install --pure-lockfile
-              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
-              - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
-              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
-            caches:
-              - node
     - step:
-        name: Sending Website Build Url
         script:
-          - (cd build/utils && yarn install) # needed for npm-run when updating status
-          - cd build/ci-scripts
-          - yarn install
-          - node download.build.artefact.for.commit.js netlify-build.txt
-          - node update.build.status.with.netlify.link.js
-
+          - node run.js
 
   custom: # Pipelines that can be scheduled or triggered manually
 
