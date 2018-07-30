@@ -177,6 +177,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     quickInsert: [
       {
         title: 'Files and images',
+        priority: 200,
         keywords: ['media'],
         icon: () => <EditorImageIcon label="Files and images" />,
         action(insert, state) {

@@ -89,6 +89,7 @@ const blockType: EditorPlugin = {
     quickInsert: [
       {
         title: 'Block quote',
+        priority: 1300,
         icon: () => <EditorQuoteIcon label="Block quote" />,
         action(insert, state) {
           return insert(

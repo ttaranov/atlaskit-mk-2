@@ -4,6 +4,7 @@ import { TypeAheadItem } from '../type-ahead/types';
 
 export type QuickInsertItem = TypeAheadItem & {
   keywords?: Array<string>;
+  priority?: number;
   action: (
     insert: (node?: Node | Object | string, prependSpace?: boolean) => boolean,
     state: EditorState,
