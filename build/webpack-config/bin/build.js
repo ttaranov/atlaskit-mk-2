@@ -48,7 +48,7 @@ async function runBuild() {
         reject(1); // eslint-disable-line
       }
 
-      const statsString = stats.toString({ colors: true });
+      const statsString = stats.toString('minimal');
       if (statsString) console.log(statsString + '\n');
       if (stats.hasErrors()) reject(2);
 
