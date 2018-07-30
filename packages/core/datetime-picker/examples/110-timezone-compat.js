@@ -22,7 +22,7 @@ const parseValue = (value, date, time, zone) => {
   const returnObject = {
     dateValue: parsed.isValid() ? parsed.format('YYYY-MM-DD') : date,
     timeValue: parsed.isValid() ? parsed.format('HH:mm') : time,
-    zoneValue: parsed.isValid() ? parsed.parseZone().format('ZZ') : zone,
+    zoneValue: parsed.isValid() ? parsed.format('ZZ') : zone,
   };
   return returnObject;
 };
@@ -43,6 +43,11 @@ export default () => (
       onChange={logValue}
       parseValue={parseValue}
       value={jiraServerValueConvertedToHKTime}
+    />
+    <DateTimePicker
+      onChange={logValue}
+      parseValue={parseValue}
+      defaultValue={jiraServerValueConvertedToHKTime}
     />
     <div>Trick the datetime picker into rendering the correct time.</div>
     <div>{myValue}</div>
