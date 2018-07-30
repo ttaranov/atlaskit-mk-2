@@ -53,7 +53,7 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   private handleScroll = ({ animate, offset }) =>
     this.setState({ animate, offset });
 
-  renderCards() {
+  private renderCards() {
     const { items, context } = this.props;
     const cards = items.map(item => {
       return (
