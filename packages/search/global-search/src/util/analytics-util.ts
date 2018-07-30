@@ -17,6 +17,14 @@ export interface ShownAnalyticsAttributes {
   resultContext: ShownResultContextSection[];
 }
 
+export interface SearchPerformanceTiming {
+  startTime: number;
+  elapsedMs: number;
+  confSearchElapsedMs: number;
+  peopleElapsedMs: number;
+  quickNavElapsedMs: number;
+}
+
 export interface ShownResultContextSection {
   sectionId: string;
   results: ShownResultContextItem[];
