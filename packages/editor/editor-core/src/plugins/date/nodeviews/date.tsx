@@ -58,20 +58,17 @@ export default class DateNodeView extends React.Component<Props> {
       withinIncompleteTask && isPastDate(timestamp) ? 'red' : undefined;
 
     return (
-      <SelectableDate
-        id={Math.random().toString()}
-        color={color}
-        value={timestamp}
-        onClick={this.handleClick}
-      >
-        {withinIncompleteTask
-          ? timestampToTaskContext(timestamp)
-          : timestampToString(timestamp)}
-      </SelectableDate>
+      <span id={Math.random().toString()} onClick={this.handleClick}>
+        <SelectableDate color={color} value={timestamp}>
+          {withinIncompleteTask
+            ? timestampToTaskContext(timestamp)
+            : timestampToString(timestamp)}
+        </SelectableDate>
+      </span>
     );
   }
 
-  private handleClick = (timestamp, event: React.SyntheticEvent<any>) => {
+  private handleClick = (event: React.SyntheticEvent<any>) => {
     event.nativeEvent.stopImmediatePropagation();
     const { state, dispatch } = this.props.view;
     setDatePickerAt(state.selection.from)(state, dispatch);
