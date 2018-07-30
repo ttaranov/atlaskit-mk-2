@@ -55,8 +55,8 @@ module.exports = function createWebpackConfig(
       ? undefined
       : {
           nodeEnv: 'production',
-          minimizer: null,
-          minimize: false,
+          minimizer: [uglify()],
+          minimize: true,
           splitChunks: {
             maxAsyncRequests: Infinity,
           },
@@ -264,7 +264,7 @@ function plugins(
 
 const uglify = () => {
   return new UglifyJsPlugin({
-    parallel: 2,
+    parallel: Math.max(os.cpus().length - 1, 1),
     uglifyOptions: {
       compress: {
         // Disabling following options speeds up minimization by 20 – 30s
