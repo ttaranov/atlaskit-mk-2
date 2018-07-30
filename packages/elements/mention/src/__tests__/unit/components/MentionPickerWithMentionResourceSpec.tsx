@@ -8,7 +8,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as UtilAnalytics from '../../../util/analytics';
 
 import { MentionsResult } from '../../../types';
-import MentionPicker, { Props, State } from '../../../components/MentionPicker';
+import { MentionPicker, Props, State } from '../../../components/MentionPicker';
 import MentionResource from '../../../api/MentionResource';
 import { resultC } from '../_mention-search-results';
 
@@ -18,7 +18,12 @@ const mentionResource = new MentionResource({
 
 function setupPicker(props?: Props): ReactWrapper<Props, State> {
   return mount(
-    <MentionPicker resourceProvider={mentionResource} query="" {...props} />,
+    <MentionPicker
+      resourceProvider={mentionResource}
+      query=""
+      createAnalyticsEvent={jest.fn()}
+      {...props}
+    />,
   ) as ReactWrapper<Props, State>;
 }
 

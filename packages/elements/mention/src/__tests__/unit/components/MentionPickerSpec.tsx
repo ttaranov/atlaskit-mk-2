@@ -5,7 +5,8 @@ import { mount, ReactWrapper } from 'enzyme';
 import { MentionDescription } from '../../../types';
 import { HttpError } from '../../../api/MentionResource';
 import { mention, MockMentionResource } from '@atlaskit/util-data-test';
-import MentionPicker, {
+import {
+  MentionPicker,
   OnClose,
   OnOpen,
   Props,
@@ -25,7 +26,12 @@ function setupPicker(props?: Props): ReactWrapper<Props, State> {
     maxWait: 0,
   });
   return mount(
-    <MentionPicker resourceProvider={resourceProvider} query="" {...props} />,
+    <MentionPicker
+      resourceProvider={resourceProvider}
+      query=""
+      createAnalyticsEvent={jest.fn()}
+      {...props}
+    />,
   ) as ReactWrapper<Props, State>;
 }
 
