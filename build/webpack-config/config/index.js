@@ -263,8 +263,9 @@ function plugins(
 }
 
 const uglify = () => {
+  console.log('LUKE I HAVE A PRESENT FOR YOU', os.cpus().length);
   return new UglifyJsPlugin({
-    parallel: Math.max(os.cpus().length - 1, 1),
+    parallel: 2,
     uglifyOptions: {
       compress: {
         // Disabling following options speeds up minimization by 20 – 30s
