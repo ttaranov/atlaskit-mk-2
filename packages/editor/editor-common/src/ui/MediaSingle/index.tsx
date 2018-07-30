@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MediaSingleLayout, MediaSingleSize } from '../../schema';
+import { MediaSingleLayout, MediaSingleImageSize } from '../../schema';
 
 import * as BrokenImportResizable from '/Users/jcoppinger/repos/re-resizable';
 import { default as ResizableType } from '/Users/jcoppinger/repos/re-resizable';
@@ -15,13 +15,19 @@ const Resizable = (BrokenImportResizable as any) as ResizableType;
 export interface Props {
   children: React.ReactChild;
   layout: MediaSingleLayout;
-  size: MediaSingleSize;
+  scale: MediaSingleImageScale;
   aspectRatio: number;
   containerWidth?: number;
   isLoading?: boolean;
   className?: string;
-  updateSize?: (size: string) => void;
+  updateScale?: (scale: MediaSingleImageScale) => void;
 }
+
+const fixedWidthPercentages: number[] = [0.5, 0.75, 1];
+const fixedWidthPixels: number[] = fixedWidthPercentages.map(
+  percentage => percentage * maxImageWidth,
+);
+const maxImageWidth: number = 680;
 
 class MediaSingle extends React.Component<Props> {
   handleResizeStop = (
@@ -30,42 +36,63 @@ class MediaSingle extends React.Component<Props> {
     refToElement,
     delta: { width: number; height: number },
   ) => {
-    const sizeMap = {
-      '50%': 0.5,
-      '75%': 0.75,
-      '100%': 1,
-    };
-
-    const currentRatio = sizeMap[this.props.size];
-
-    const pageWidth = 680;
-
-    const newWidth = currentRatio * pageWidth + delta.width;
-
-    let newSize;
-    if (newWidth >= 680) {
-      newSize = '100%';
-    } else if (newWidth > sizeMap['75%'] * pageWidth) {
-      newSize = '75%';
-    } else if (newWidth > sizeMap['50%'] * pageWidth) {
-      newSize = '50%';
-    }
-
-    console.log({ delta, currentRatio, newWidth, newSize });
-
-    this.props.updateSize(newSize);
-
+    // const sizeMap = {
+    //   '50%': 0.5,
+    //   '75%': 0.75,
+    //   '100%': 1,
+    // };
+    // const currentRatio = sizeMap[this.props.size];
+    // const scale = this.
+    // const closestScale = fixedWidthPercentages
+    //   .map(scale => ({scale, diff: Math.abs(imagePercentage -  scale)}))
+    //   .reduce((prev, curr) => curr.diff < prev.diff ? curr : prev );
+    // const newWidth = currentRatio * maxImageWidth + delta.width;
+    // let newSize;
+    // if (newWidth >= 680) {
+    //   newSize = '100%';
+    // } else if (newWidth > sizeMap['75%'] * maxImageWidth) {
+    //   newSize = '75%';
+    // } else if (newWidth > sizeMap['50%'] * maxImageWidth) {
+    //   newSize = '50%';
+    // }
+    // console.log({ delta, currentRatio, newWidth, newSize });
+    // this.props.updateScale(newSize);
     // if (delta.width > 300) {
-    //   this.props.updateSize(this.props.size !== 10'5');
+    //   this.props.updateScale(this.props.size !== 10'5');
     // } else if(delta.width < -300) {
-    //   this.props.updateSize(false);
+    //   this.props.updateScale(false);
     // }
   };
 
   mapSize = (size: { width: number; height: number }) => {
-    const multiplier = 2;
+    console.log({ maxImageWidth });
+    const imagePercentage: number = size.width / maxImageWidth;
+    const maxImageHeight: number = size.height / imagePercentage;
 
-    return { width: size.width * 2, height: size.height * 2 };
+    const closestPercentage: {
+      percentage: number;
+      diff: number;
+    } = fixedWidthPercentages
+      .map(percentage => ({
+        percentage,
+        diff: Math.abs(imagePercentage - percentage),
+      }))
+      .reduce((prev, curr) => (curr.diff < prev.diff ? curr : prev));
+
+    console.log(closestPercentage);
+
+    const newPercentage: number =
+      closestPercentage.diff < 0.05
+        ? closestPercentage.percentage
+        : imagePercentage;
+
+    const newSize = {
+      width: maxImageWidth * newPercentage,
+      height: maxImageHeight * newPercentage,
+    };
+    return newSize;
+
+    // return { width: 680 * newPercentage, height: size.height * scaling };
     // console.log("size is", size)
     // return size;
   };

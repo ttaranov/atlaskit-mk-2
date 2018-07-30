@@ -8,7 +8,7 @@ export type Layout =
   | 'wide'
   | 'full-width';
 
-export type Size = '50%' | '75%' | '100%';
+export type Scale = 0.5 | 0.75 | 1;
 
 /**
  * @name mediaSingle_node
