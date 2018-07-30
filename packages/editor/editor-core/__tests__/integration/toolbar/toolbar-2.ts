@@ -1,12 +1,12 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { editors, editable } from '../_helpers';
+import { comment, fullpage, editable } from '../_helpers';
 
 const changeFormatting = '[aria-label="Change formatting"]';
 const input = 'helloworld';
 
 // https://product-fabric.atlassian.net/browse/ED-4531
-editors.forEach(editor => {
+[comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Toolbar: should be able to select heading1 for ${editor.name} editor`,
     { skip: ['ie', 'safari'] },

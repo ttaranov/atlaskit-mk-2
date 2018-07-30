@@ -1,13 +1,13 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement, editors, editable } from '../_helpers';
+import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
 
 const more = '[aria-label="Open or close advance text formatting dropdown"]';
 const underline = 'span=Underline';
 const clear = 'span=Clear Formatting';
 
 // https://product-fabric.atlassian.net/browse/ED-4531
-editors.forEach(editor => {
+[comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Toolbar: should be able to select Clear Formatting on toolbar for ${
       editor.name
