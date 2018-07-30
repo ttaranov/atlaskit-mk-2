@@ -264,43 +264,51 @@ class ContextImpl implements Context {
     controller?: UploadController,
   ): Observable<FileState> {
     let fileId: string;
+    let mimeType = '';
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
     const mediaType = getMediaTypeFromUploadableFile(file);
     const collectionName = file.collection;
     const name = file.name || ''; // name property is not available in base64 image
-    // TODO [MSW-678]: remove when id upfront is exposed
-    const tempFileId = uuid.v4();
-    const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
-    let mimeType = '';
     const fileStream = new Observable<FileState>(observer => {
       if (file.content instanceof Blob) {
         mimeType = file.content.type;
-        observer.next({
-          name,
-          size,
-          mediaType,
-          mimeType,
-          id: tempFileId,
-          progress: 0,
-          status: 'uploading',
-          preview: {
-            blob: file.content,
-          },
-        });
       }
 
       const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
         onProgress: progress => {
-          observer.next({
-            progress,
-            name,
-            size,
-            mediaType,
-            mimeType,
-            id: tempFileId,
-            status: 'uploading',
-          });
+          console.log('onProgress', progress);
+          if (fileId) {
+            observer.next({
+              progress,
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: fileId,
+              status: 'uploading',
+            });
+          }
+        },
+        onId: id => {
+          fileId = id;
+          const key = FileStreamCache.createKey(fileId, { collectionName });
+          this.fileStreamsCache.set(key, fileStream);
+          console.log('onId', fileId);
+          if (file.content instanceof Blob) {
+            observer.next({
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: fileId,
+              progress: 0,
+              status: 'uploading',
+              preview: {
+                blob: file.content,
+              },
+            });
+          }
         },
       });
 
@@ -309,14 +317,9 @@ class ContextImpl implements Context {
       }
 
       deferredFileId
-        .then(id => {
-          fileId = id;
-          const key = FileStreamCache.createKey(id, { collectionName });
-
-          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
-          this.fileStreamsCache.set(key, fileStream);
+        .then(() => {
           observer.next({
-            id,
+            id: fileId,
             name,
             size,
             mediaType,
@@ -337,8 +340,6 @@ class ContextImpl implements Context {
       )
       .publishReplay(1)
       .refCount();
-
-    this.fileStreamsCache.set(tempKey, fileStream);
 
     return fileStream;
   }

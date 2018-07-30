@@ -69,6 +69,7 @@ export class NewUploadServiceImpl implements UploadService {
     }
 
     const creationDate = Date.now();
+    console.log({ files });
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
       mediaFile: {
         id: uuid.v4(),
@@ -101,6 +102,7 @@ export class NewUploadServiceImpl implements UploadService {
         .uploadFile(uploadableFile, controller)
         .subscribe({
           next: state => {
+            console.log('next', { state });
             if (state.status === 'uploading') {
               this.onFileProgress(cancellableFileUpload, state.progress);
             }
