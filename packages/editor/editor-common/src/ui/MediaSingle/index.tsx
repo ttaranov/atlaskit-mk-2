@@ -27,6 +27,8 @@ const fixedWidthPercentages: number[] = [0.5, 0.75, 1];
 const maxImageWidth: number = 680;
 
 class MediaSingle extends React.Component<Props> {
+  resizer?: Resizable;
+
   handleResizeStop = (
     event,
     direction,
@@ -34,7 +36,8 @@ class MediaSingle extends React.Component<Props> {
     delta: { width: number; height: number },
   ) => {
     const oldImagePercentage = this.props.percentage;
-    const currentImageSize = oldImagePercentage * maxImageWidth + delta.width;
+    const currentImageSize =
+      oldImagePercentage * maxImageWidth + delta.width * 2;
     const imagePercentage = currentImageSize / maxImageWidth;
 
     const closestPercentage: {
@@ -67,7 +70,13 @@ class MediaSingle extends React.Component<Props> {
 
     console.log(closestPercentage);
 
-    return closestPercentage.diff < 0.05 ? closestPercentage.p : percentage;
+    // return percentage;
+    return (
+      percentage * closestPercentage.diff +
+      closestPercentage.p * (1 - closestPercentage.diff)
+    );
+
+    // return closestPercentage.diff < 0.05 ? closestPercentage.p : percentage;
   };
 
   mapSize = (size: { width: number; height: number }) => {
@@ -80,6 +89,34 @@ class MediaSingle extends React.Component<Props> {
       width: maxImageWidth * newPercentage,
       height: maxImageHeight * newPercentage,
     };
+  };
+
+  handleResize = (
+    event: MouseEvent | TouchEvent,
+    direction: ResizableDirection,
+    refToElement: HTMLDivElement,
+    delta: NumberSize,
+  ) => {
+    const size = {
+      width: this.resizer.state.original.width,
+      height: this.resizer.state.original.height,
+    };
+    console.log('current size:', size);
+    const newSize = {
+      width: size.width + delta.width * 2,
+      height: size.height + delta.height * 2,
+    };
+    this.resizer.setState({
+      width: Math.min(Math.max(newSize.width, 0), maxImageWidth),
+      height: Math.min(
+        Math.max(newSize.height, 0),
+        maxImageWidth / this.props.aspectRatio,
+      ),
+    });
+  };
+
+  handleRef = element => {
+    this.resizer = element || undefined;
   };
 
   render() {
@@ -95,6 +132,8 @@ class MediaSingle extends React.Component<Props> {
         maxWidth="100%"
         onResizeStop={this.handleResizeStop}
         mapSize={this.mapSize}
+        onResize={this.handleResize}
+        ref={this.handleRef}
       >
         {React.Children.only(children)}
       </Resizable>
