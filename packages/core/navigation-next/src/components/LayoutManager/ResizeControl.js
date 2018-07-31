@@ -61,6 +61,7 @@ const Button = ({ ...props }) => (
       background: 0,
       border: 0,
       boxSizing: 'content-box',
+      boxShadow: 'none',
       cursor: 'pointer',
       height: 24,
       margin: 4,
@@ -72,6 +73,10 @@ const Button = ({ ...props }) => (
       transform: 'translateX(-20%)',
       transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
       transitionDelay: 0,
+
+      '&:focus': {
+        boxShadow: 'none',
+      },
 
       [`.${innerStyles}:hover &`]: {
         transform: 'translateX(0)',
