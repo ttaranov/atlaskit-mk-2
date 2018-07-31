@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^14.0.2",
+    "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.0",

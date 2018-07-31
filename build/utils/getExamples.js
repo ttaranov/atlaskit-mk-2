@@ -1,7 +1,7 @@
 //@flow
 'use strict';
 /*
-* server side renderer utilities helper to return all the examples and filter by packages
+* Utilities helper to return all the examples and filter them by packages
 */
 const boltQuery = require('bolt-query');
 const glob = require('glob');

@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@atlaskit/breadcrumbs": "^6.0.0",
+    "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/button": "^9.0.0",
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/field-text": "^7.0.0",
@@ -35,6 +36,7 @@
     "@atlaskit/page": "^8.0.0",
     "@atlaskit/single-select": "^6.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.0",
     "react-test-renderer": "^16.3.0"
   },
   "keywords": [

@@ -30,9 +30,11 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^14.0.2",
+    "@atlaskit/build-utils": "^1.12.1",
     "@atlaskit/docs": "^5.0.1",
     "@atlaskit/editor-core": "^76.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.0"
   },
   "keywords": [
     "atlaskit",
