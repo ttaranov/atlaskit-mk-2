@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "38.0.0",
+  "version": "38.0.3",
   "config": {
     "access": "public"
   },
@@ -23,10 +23,10 @@
     "@atlaskit/analytics": "^4.0.0",
     "@atlaskit/button": "^9.0.0",
     "@atlaskit/field-base": "^11.0.0",
-    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/icon": "^13.1.1",
     "@atlaskit/spinner": "^9.0.0",
     "@atlaskit/theme": "^5.0.0",
-    "@atlaskit/tooltip": "^11.0.0",
+    "@atlaskit/tooltip": "^12.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^3.0.0",
     "babel-runtime": "^6.26.0",

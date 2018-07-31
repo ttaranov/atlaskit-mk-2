@@ -1,5 +1,11 @@
 # @atlaskit/editor-cq-transformer
 
+## 5.0.2
+- [patch] Improves type coverage by removing casts to any [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+- [none] Updated dependencies [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+  - @atlaskit/editor-core@76.0.3
+  - @atlaskit/editor-common@13.0.3
+
 ## 5.0.1
 
 

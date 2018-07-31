@@ -17,14 +17,14 @@ import { JiraWordmark } from '@atlaskit/logo';
 import {
   ContainerHeader,
   GlobalNav,
+  GroupHeading,
   Item,
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
-  NavigationSubscriber,
   Section,
-  SectionSeparator,
-  SectionTitle,
+  Separator,
+  UIControllerSubscriber,
 } from '../src';
 
 /**
@@ -34,26 +34,26 @@ const globalNavPrimaryItems = [
   {
     key: 'jira',
     component: ({ className, children }: *) => (
-      <NavigationSubscriber>
-        {navigation => {
+      <UIControllerSubscriber>
+        {navigationUIController => {
           function onClick() {
-            if (navigation.state.productNavIsCollapsed) {
-              navigation.expandProductNav();
+            if (navigationUIController.state.isCollapsed) {
+              navigationUIController.expand();
             }
-            navigation.togglePeek();
+            navigationUIController.togglePeek();
           }
           return (
             <button
               className={className}
               onClick={onClick}
-              onMouseEnter={navigation.hint}
-              onMouseLeave={navigation.unHint}
+              onMouseEnter={navigationUIController.peekHint}
+              onMouseLeave={navigationUIController.unPeekHint}
             >
               {children}
             </button>
           );
         }}
-      </NavigationSubscriber>
+      </UIControllerSubscriber>
     ),
     icon: JiraIcon,
     label: 'Jira',
@@ -129,11 +129,11 @@ const productContainerNavSections = [
     key: 'menu',
     isRootLevel: true,
     items: [
-      { type: SectionTitle, key: 'title', children: 'Section title' },
+      { type: GroupHeading, key: 'title', children: 'Group heading' },
       { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
       { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
       { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },
-      { type: SectionSeparator, key: 'separator' },
+      { type: Separator, key: 'separator' },
     ],
   },
 ];
@@ -156,7 +156,7 @@ const RenderSection = ({ section }: *) => (
           <div
             css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
           >
-            {items.map(({ type: Component, ...props }) => (
+            {items.map(({ type: Component, ...props }: any) => (
               <Component {...props} />
             ))}
           </div>
@@ -165,8 +165,10 @@ const RenderSection = ({ section }: *) => (
     ))}
   </div>
 );
-const ProductRoot = () => <RenderSection section={productRootNavSections} />;
-const ProductContainer = () => (
+const ProductNavigation = () => (
+  <RenderSection section={productRootNavSections} />
+);
+const ContainerNavigation = () => (
   <RenderSection section={productContainerNavSections} />
 );
 
@@ -174,8 +176,8 @@ export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={GlobalNavigation}
-      productRootNavigation={ProductRoot}
-      productContainerNavigation={ProductContainer}
+      productNavigation={ProductNavigation}
+      containerNavigation={ContainerNavigation}
     >
       <div style={{ padding: 30 }}>Page content</div>
     </LayoutManager>

@@ -11,6 +11,7 @@ let consoleLog;
 // URL is not available for non Node environment
 if (global.URL) {
   global.URL.createObjectURL = () => 'mock result of URL.createObjectURL()';
+  global.URL.revokeObjectURL = () => 'mock result of URL.revokeObjectURL()';
 }
 
 if (!global.WEBSITE_ENV) {

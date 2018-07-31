@@ -20,6 +20,8 @@ import Image from './image';
 import InlineExtension, {
   Props as InlineExtensionProps,
 } from './inlineExtension';
+import LayoutSection from './layoutSection';
+import LayoutColumn from './layoutColumn';
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
@@ -56,6 +58,8 @@ export const nodeToReact = {
   heading: Heading,
   image: Image,
   inlineExtension: InlineExtension,
+  layoutSection: LayoutSection,
+  layoutColumn: LayoutColumn,
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
@@ -239,6 +243,8 @@ export {
   Image,
   InlineExtension,
   InlineExtensionProps,
+  LayoutSection,
+  LayoutColumn,
   Media,
   MediaGroup,
   MediaSingle,

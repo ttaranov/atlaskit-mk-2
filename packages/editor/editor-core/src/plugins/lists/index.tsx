@@ -11,17 +11,20 @@ import WithPluginState from '../../ui/WithPluginState';
 const listPlugin: EditorPlugin = {
   nodes() {
     return [
-      { name: 'bulletList', node: bulletList, rank: 300 },
-      { name: 'orderedList', node: orderedList, rank: 400 },
-      { name: 'listItem', node: listItem, rank: 500 },
+      { name: 'bulletList', node: bulletList },
+      { name: 'orderedList', node: orderedList },
+      { name: 'listItem', node: listItem },
     ];
   },
 
   pmPlugins() {
     return [
-      { rank: 600, plugin: ({ dispatch }) => createPlugin(dispatch) },
-      { rank: 620, plugin: ({ schema }) => inputRulePlugin(schema) },
-      { rank: 640, plugin: ({ schema }) => keymapPlugin(schema) },
+      { name: 'lists', plugin: ({ dispatch }) => createPlugin(dispatch) },
+      {
+        name: 'listsInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
+      { name: 'listsKeymap', plugin: ({ schema }) => keymapPlugin(schema) },
     ];
   },
 
@@ -51,10 +54,7 @@ const listPlugin: EditorPlugin = {
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
             popupsScrollableElement={popupsScrollableElement}
-            allowTasks={
-              !!editorView.state.schema.nodes.taskItem &&
-              appearance === 'full-page'
-            }
+            allowTasks={!!editorView.state.schema.nodes.taskItem}
             bulletListActive={listsState.bulletListActive}
             bulletListDisabled={listsState.bulletListDisabled}
             orderedListActive={listsState.orderedListActive}

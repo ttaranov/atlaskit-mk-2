@@ -17,9 +17,7 @@ const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const BITBUCKET_BUILD_NUMBER = process.env.BITBUCKET_BUILD_NUMBER;
 const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER;
 const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG;
-const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${
-  REPO_OWNER
-}/${REPO_SLUG}/pipelines/`;
+const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
 const axiosRequestConfig = {
@@ -40,9 +38,7 @@ const axiosRequestConfig = {
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${
-    pipelineUUID
-  }/stopPipeline`;
+  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(
@@ -76,9 +72,9 @@ axios
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${
-        REPO_SLUG
-      }/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
+      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/addon/pipelines/home#!/results/${
+        olderRunningPipelines[0].uuid
+      }`;
       console.log(
         `Another master branch is already running: ${olderRunningPipelineURL}`,
       );

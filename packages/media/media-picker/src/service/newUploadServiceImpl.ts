@@ -4,6 +4,7 @@ import {
   UploadableFile,
   MediaType,
   FileItem,
+  getMediaTypeFromMimeType,
 } from '@atlaskit/media-core';
 import {
   MediaStore,
@@ -186,13 +187,8 @@ export class NewUploadServiceImpl implements UploadService {
 
   private getMediaTypeFromFile(file: File): MediaType {
     const { type } = file;
-    if (type.match(/^image\//)) {
-      return 'image';
-    } else if (type.match(/^video\//)) {
-      return 'video';
-    }
 
-    return 'unknown';
+    return getMediaTypeFromMimeType(type);
   }
 
   private releaseCancellableFile(mediaFile: MediaFile): void {

@@ -1,5 +1,43 @@
 # @atlaskit/media-viewer
 
+## 16.1.1
+- [patch] MSW-701: zoom into viewport center, not image center [c2c8fdd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2c8fdd)
+
+## 16.1.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-ui@5.0.0
+
+## 16.0.8
+- [patch] MSW-799: Implement zooming and panning without transforms [974c89a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/974c89a)
+
+## 16.0.7
+- [patch] Smaller chores and cleanup work for MVNG [3a91267](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a91267)
+
+## 16.0.6
+- [patch] Add ellipsis and truncate main and sub text if needed [06bee17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bee17)
+
+## 16.0.5
+- [patch] Handle the case where no audio or video artifacts were found [c83dda5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c83dda5)
+
+## 16.0.4
+- [patch] Fix navigation buttons style [2deabc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2deabc2)
+
+## 16.0.3
+- [patch] Open MediaViewer in top of the modal dialog [49683a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49683a6)
+
 ## 16.0.2
 - [patch] Prevent image from being selectable [63650bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63650bc)
 

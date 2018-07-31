@@ -15,7 +15,7 @@ async function getPackagesInfo(cwd /*: string */) {
       let tsConfigExists = await exists(path.join(pkg.dir, 'tsconfig.json'));
       let tslintConfigExists = await exists(path.join(pkg.dir, 'tslint.json'));
       let testBrowserExists = await exists(
-        path.join(pkg.dir, 'tests', 'browser'),
+        path.join(pkg.dir, '__tests-karma__'),
       );
       let testWebdriverExists = await exists(
         path.join(pkg.dir, '__tests__', 'integration'),

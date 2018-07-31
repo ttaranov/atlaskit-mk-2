@@ -1,6 +1,7 @@
 import { StoryBookAuthProvider } from './authProvider';
 import { collectionNames } from './collectionNames';
 import { ContextFactory, Context } from '@atlaskit/media-core';
+import { mediaPickerAuthProvider } from './mediaPickerAuthProvider';
 
 export const defaultBaseUrl = 'https://dt-api.dev.atl-paas.net';
 
@@ -42,3 +43,9 @@ export const createStorybookContext = (
     authProvider,
   });
 };
+
+export const createUploadContext = (): Context =>
+  ContextFactory.create({
+    serviceHost: defaultServiceHost,
+    authProvider: mediaPickerAuthProvider('asap'),
+  });

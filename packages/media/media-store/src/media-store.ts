@@ -19,7 +19,20 @@ import {
   RequestParams,
   RequestHeaders,
   mapResponseToVoid,
+  mapResponseToBlob,
 } from './utils/request';
+
+const defaultImageOptions: MediaStoreGetFileImageParams = {
+  'max-age': 3600,
+  allowAnimated: true,
+  mode: 'crop',
+};
+
+const extendImageParams = (
+  params?: MediaStoreGetFileImageParams,
+): MediaStoreGetFileImageParams => {
+  return { ...defaultImageOptions, ...params };
+};
 
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
@@ -158,9 +171,19 @@ export class MediaStore {
     const auth = await this.config.authProvider();
 
     return createUrl(`${auth.baseUrl}/file/${id}/image`, {
-      params,
+      params: extendImageParams(params),
       auth,
     });
+  };
+
+  getImage = (
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<Blob> => {
+    return this.request(`/file/${id}/image`, {
+      params: extendImageParams(params),
+      authContext: { collectionName: params && params.collection },
+    }).then(mapResponseToBlob);
   };
 
   appendChunksToUpload(
@@ -267,14 +290,14 @@ export type MediaStoreGetFileParams = {
 };
 
 export type MediaStoreGetFileImageParams = {
+  readonly allowAnimated?: boolean;
   readonly version?: number;
   readonly collection?: string;
   readonly width?: number;
   readonly height?: number;
   readonly mode?: 'fit' | 'full-fit' | 'crop';
   readonly upscale?: boolean;
-  readonly 'max-age': number;
-  readonly allowAnimated: boolean;
+  readonly 'max-age'?: number;
 };
 
 export type MediaStoreGetCollectionItemsPrams = {

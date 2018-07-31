@@ -18,10 +18,10 @@ export const truncateStyle = ({
         width: ${width}%;
       `
     : ''} ${isFixedSize
-      ? css`
-          overflow: hidden;
-        `
-      : ''};
+    ? css`
+        overflow: hidden;
+      `
+    : ''};
   ${isFixedSize && shouldTruncate
     ? css`
         text-overflow: ellipsis;

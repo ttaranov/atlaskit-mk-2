@@ -394,7 +394,8 @@ export default class Examples extends React.Component<Props, State> {
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
             name={config.name}
             src={loaderUrl}
-            render={(ExampleCode, ExampleComponent, displayCode) => {
+          >
+            {(ExampleCode, ExampleComponent, displayCode) => {
               return (
                 <Content>
                   <ExampleComponentWrapper codeIsVisible={displayCode}>
@@ -406,7 +407,7 @@ export default class Examples extends React.Component<Props, State> {
                 </Content>
               );
             }}
-          />
+          </ExampleDisplay>
         ) : (
           <Content>
             <ErrorMessage>

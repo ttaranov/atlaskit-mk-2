@@ -4,7 +4,6 @@ import { EditorView } from 'prosemirror-view';
 import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import TaskIcon from '@atlaskit/icon/glyph/editor/task';
-import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import { analyticsDecorator as analytics } from '../../../../analytics';
 import {
@@ -61,25 +60,26 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       bulletListActive,
       orderedListActive,
     } = this.props;
-    let items: any[] = [];
-    items.push({
-      content: 'Bullet List',
-      value: { name: 'bullet_list' },
-      isDisabled: bulletListDisabled,
-      isActive: bulletListActive,
-      tooltipDescription: 'Numbered list',
-      tooltipPosition: 'right',
-      elemBefore: <BulletListIcon label="Numbered list" />,
-    });
-    items.push({
-      content: 'Ordered List',
-      value: { name: 'ordered_list' },
-      isDisabled: orderedListDisabled,
-      isActive: orderedListActive,
-      tooltipDescription: 'Ordered list',
-      tooltipPosition: 'right',
-      elemBefore: <NumberListIcon label="Ordered list" />,
-    });
+    let items = [
+      {
+        content: 'Bullet List',
+        value: { name: 'bullet_list' },
+        isDisabled: bulletListDisabled,
+        isActive: Boolean(bulletListActive),
+        tooltipDescription: 'Numbered list',
+        tooltipPosition: 'right',
+        elemBefore: <BulletListIcon label="Numbered list" />,
+      },
+      {
+        content: 'Ordered List',
+        value: { name: 'ordered_list' },
+        isDisabled: orderedListDisabled,
+        isActive: Boolean(orderedListActive),
+        tooltipDescription: 'Ordered list',
+        tooltipPosition: 'right',
+        elemBefore: <NumberListIcon label="Ordered list" />,
+      },
+    ];
     if (this.props.allowTasks) {
       items.push({
         content: 'Create action',
@@ -131,22 +131,13 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             iconBefore={<NumberListIcon label="Ordered list" />}
           />
           {allowTasks && (
-            <>
-              <ToolbarButton
-                spacing={isReducedSpacing ? 'none' : 'default'}
-                onClick={this.handleCreateAction}
-                disabled={disabled}
-                title="Create action []"
-                iconBefore={<TaskIcon label="Create action" />}
-              />
-              <ToolbarButton
-                spacing={isReducedSpacing ? 'none' : 'default'}
-                onClick={this.handleCreateDecision}
-                disabled={disabled}
-                title="Create decision <>"
-                iconBefore={<DecisionIcon label="Create decision" />}
-              />
-            </>
+            <ToolbarButton
+              spacing={isReducedSpacing ? 'none' : 'default'}
+              onClick={this.handleCreateAction}
+              disabled={disabled}
+              title="Create action []"
+              iconBefore={<TaskIcon label="Create action" />}
+            />
           )}
           {isSeparator && <Separator />}
         </ButtonGroup>
@@ -217,16 +208,6 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     return true;
   };
 
-  @analytics('atlassian.fabric.decision.trigger.button')
-  private handleCreateDecision = (): boolean => {
-    const { editorView } = this.props;
-    if (!editorView) {
-      return false;
-    }
-    changeToTaskDecision(editorView, 'decisionList');
-    return true;
-  };
-
   private onItemActivated = ({ item }) => {
     this.setState({ isDropdownOpen: false });
     switch (item.value.name) {
@@ -238,9 +219,6 @@ export default class ToolbarLists extends PureComponent<Props, State> {
         break;
       case 'action':
         this.handleCreateAction();
-        break;
-      case 'decision':
-        this.handleCreateDecision();
         break;
     }
   };

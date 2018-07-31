@@ -6,10 +6,14 @@ import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Spinner from '@atlaskit/spinner';
-import Tree from '../src/';
-import type { TreeItem, TreeData, Path, ItemId } from '../src/types';
-import type { RenderItemParams } from '../src/components/Tree-types';
-import { mutateTree } from '../src/utils/tree';
+import Tree, {
+  mutateTree,
+  type RenderItemParams,
+  type TreeItem,
+  type TreeData,
+  type ItemId,
+  type Path,
+} from '../src/';
 import { range } from '../src/utils/handy';
 
 const PADDING_PER_LEVEL = 35;
@@ -125,13 +129,19 @@ export default class InfiniteTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => {
-    console.log('render');
+  renderItem = ({
+    item,
+    depth,
+    onExpand,
+    onCollapse,
+    provided,
+  }: RenderItemParams) => {
     return (
       <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
         <AkNavigationItem
           text={item.data ? item.data.title : ''}
           icon={InfiniteTree.getIcon(item, onExpand, onCollapse)}
+          dnd={provided}
         />
       </div>
     );

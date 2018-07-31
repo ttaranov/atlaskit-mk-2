@@ -1,5 +1,47 @@
 # @atlaskit/navigation
 
+## 33.1.0
+- [minor] Add `itemTextWidth` prop to SkeletonContainerItems and SkeletonContainerItem components. Add `isAvatarHidden` prop to SkeletonDefaultContainerHeader. This enables usage of skeleton components for Atlaskit drawers. [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
+- [minor] Updated dependencies [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
+
+## 33.0.5
+- [patch] Upgrading react-beautiful-dnd to 8.0.1 [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+- [patch] Upgrading react-beautiful-dnd to 8.0.0 [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+- [none] Updated dependencies [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+- [none] Updated dependencies [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+
+## 33.0.4
+- [patch] Upgrading react-beautiful-dnd to 8.0.5 [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+- [none] Updated dependencies [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+
+## 33.0.3
+- [patch] add border radius back to navigation items [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
+- [none] Updated dependencies [97eb578](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97eb578)
+
+## 33.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/tooltip@12.0.1
+  - @atlaskit/single-select@6.0.1
+  - @atlaskit/field-text@7.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/toggle@5.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/docs@5.0.1
+  - @atlaskit/size-detector@5.0.1
+  - @atlaskit/analytics@4.0.1
+  - @atlaskit/blanket@7.0.1
+  - @atlaskit/dropdown-menu@6.1.2
+  - @atlaskit/avatar@14.0.2
+
+## 33.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/item@8.0.1
+  - @atlaskit/icon@13.1.1
+  - @atlaskit/dropdown-menu@6.1.1
+  - @atlaskit/avatar@14.0.1
+
 ## 33.0.0
 - [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

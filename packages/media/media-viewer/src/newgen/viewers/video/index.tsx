@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FileItem, Context } from '@atlaskit/media-core';
-import { constructAuthTokenUrl } from '../../util';
+import { constructAuthTokenUrl } from '../../utils';
 import { Outcome, MediaViewerFeatureFlags } from '../../domain';
 import { Spinner } from '../../loading';
 import { Video } from '../../styled';
@@ -77,10 +77,10 @@ export class VideoViewer extends React.Component<Props, State> {
     const { context, item, collectionName } = this.props;
     const preferHd = isHDActive && isHDAvailable(item);
     const videoUrl = getVideoArtifactUrl(item, preferHd);
-    if (!videoUrl) {
-      return;
-    }
     try {
+      if (!videoUrl) {
+        throw new Error('No video artifacts found');
+      }
       this.setState({
         src: {
           status: 'SUCCESSFUL',

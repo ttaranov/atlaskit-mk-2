@@ -55,6 +55,11 @@ export interface Props {
    * respected.
    */
   linkComponent?: LinkComponent;
+
+  /**
+   * Indicates if search terms should be send in analytic events when a search is performed.
+   */
+  isSendSearchTermsEnabled?: boolean;
 }
 
 /**
@@ -105,17 +110,29 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      Object.keys({ ...nextProps, ...this.props })
+        .map(key => this.props[key] !== nextProps[key])
+        .reduce((acc, value) => acc || value, false) || this.state !== nextState
+    );
+  }
+
   render() {
     const ContainerComponent = this.getContainerComponent();
     const searchClients = this.memoizedConfigureSearchClients(
       this.props.cloudId,
       this.makeConfig(),
     );
-    const { linkComponent } = this.props;
+    const { linkComponent, isSendSearchTermsEnabled } = this.props;
 
     return (
       <MessagesIntlProvider>
-        <ContainerComponent {...searchClients} linkComponent={linkComponent} />
+        <ContainerComponent
+          {...searchClients}
+          linkComponent={linkComponent}
+          isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+        />
       </MessagesIntlProvider>
     );
   }

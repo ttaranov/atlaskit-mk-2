@@ -51,22 +51,18 @@ const unsupportedContentPlugin: EditorPlugin = {
   nodes() {
     return [
       {
-        rank: 1300,
         name: 'confluenceUnsupportedBlock',
         node: confluenceUnsupportedBlock,
       },
       {
-        rank: 1310,
         name: 'confluenceUnsupportedInline',
         node: confluenceUnsupportedInline,
       },
       {
-        rank: 1320,
         name: 'unsupportedBlock',
         node: unsupportedBlock,
       },
       {
-        rank: 1330,
         name: 'unsupportedInline',
         node: unsupportedInline,
       },
@@ -76,7 +72,7 @@ const unsupportedContentPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 1340,
+        name: 'unsupportedContent',
         plugin: createPlugin,
       },
     ];

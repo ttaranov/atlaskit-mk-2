@@ -1,5 +1,263 @@
 # @atlaskit/editor-core
 
+## 76.3.4
+- [patch] Fixed ToolbarButton to respond to spacing prop [ec1595e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec1595e)
+- [none] Updated dependencies [ec1595e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec1595e)
+
+## 76.3.3
+- [patch] Clone previous rows colspan and cell attrs if any. ED-4991 [a5f1c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5f1c5b)
+- [none] Updated dependencies [a5f1c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5f1c5b)
+
+## 76.3.2
+- [patch] When copying a table respect the table layout and cell attributes. ED-4947 [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
+- [none] Updated dependencies [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
+  - @atlaskit/editor-common@13.2.5
+
+## 76.3.1
+- [patch] Updated dependencies [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
+  - @atlaskit/media-filmstrip@10.2.0
+  - @atlaskit/renderer@19.2.4
+  - @atlaskit/media-card@31.2.0
+
+## 76.3.0
+- [minor] Add priority for quick search menu items and improve search [eaa974b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eaa974b)
+- [none] Updated dependencies [eaa974b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eaa974b)
+
+## 76.2.13
+- [patch] Cleaning up plugin ranks [ce2a71b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce2a71b)
+- [none] Updated dependencies [ce2a71b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce2a71b)
+
+## 76.2.12
+- [patch] ED-5147: set targetCellRef to undefined when table looses focus [d805071](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d805071)
+- [none] Updated dependencies [d805071](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d805071)
+
+## 76.2.11
+- [patch] ED-4995: added support for the rest of the page layout types in the renderer [9d9acfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d9acfa)
+- [none] Updated dependencies [9d9acfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d9acfa)
+  - @atlaskit/renderer@19.2.3
+  - @atlaskit/editor-common@13.2.4
+
+## 76.2.10
+- [patch] Updated dependencies [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+  - @atlaskit/media-picker@11.1.2
+  - @atlaskit/editor-common@13.2.3
+  - @atlaskit/media-core@22.2.0
+  - @atlaskit/media-card@31.1.1
+
+## 76.2.9
+- [patch] ED-5126: fix codeblock language picker is loosing focus on click [6a3ca70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3ca70)
+- [none] Updated dependencies [6a3ca70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a3ca70)
+
+## 76.2.8
+- [patch] Internal refactor of hyperlink plugin to not contain direct references to the view in plugin state. ED-4962 [dda4cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4cab)
+- [none] Updated dependencies [dda4cab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dda4cab)
+
+## 76.2.7
+- [patch] FS-2020 add session id to typeahead plugin inside editor [5ae463f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ae463f)
+- [none] Updated dependencies [5ae463f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ae463f)
+  - @atlaskit/mention@15.0.1
+  - @atlaskit/analytics-gas-types@3.1.1
+
+## 76.2.6
+- [patch] ED-4977 Fixed extra newline after blockquote in Firefox [ac47c1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac47c1c)
+- [none] Updated dependencies [ac47c1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac47c1c)
+
+## 76.2.5
+- [patch] ED-5090: added contextual menu [2cb70d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cb70d8)
+- [none] Updated dependencies [2cb70d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cb70d8)
+
+## 76.2.4
+- [patch] ED-5033, fixes for multiple date related issues. [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+- [patch] Updated dependencies [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+  - @atlaskit/renderer@19.2.2
+  - @atlaskit/editor-common@13.2.2
+
+## 76.2.3
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-picker@11.1.1
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/editor-common@13.2.1
+  - @atlaskit/media-card@31.1.0
+  - @atlaskit/renderer@19.2.1
+  - @atlaskit/editor-test-helpers@5.0.3
+
+## 76.2.2
+- [patch] Change tab-size to 4 spaces wide inside a code-block. [d089d0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d089d0f)
+- [patch] Support backspacing an entire intent level inside code-block. ED-4864 [86998f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86998f3)
+- [patch] Fix issue where bracket-autocompletion would work for any closing bracket even when it didn't match the opening bracket. [952eab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/952eab1)
+- [none] Updated dependencies [d089d0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d089d0f)
+- [none] Updated dependencies [86998f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86998f3)
+- [none] Updated dependencies [952eab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/952eab1)
+
+## 76.2.1
+- [patch] ED-5043: only disable dropzone for popup picker [9878d57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9878d57)
+- [none] Updated dependencies [9878d57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9878d57)
+
+## 76.2.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-picker@11.1.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/renderer@19.2.0
+  - @atlaskit/editor-common@13.2.0
+
+## 76.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+  - @atlaskit/util-data-test@10.0.1
+  - @atlaskit/renderer@19.1.0
+  - @atlaskit/editor-common@13.1.0
+
+## 76.0.25
+- [patch] Corrected gap size between more and italic icons in editor toolbar [92cf9d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cf9d4)
+- [none] Updated dependencies [92cf9d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92cf9d4)
+
+## 76.0.24
+- [patch] Fixing the Mobile appearance height [a79b962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a79b962)
+- [none] Updated dependencies [a79b962](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a79b962)
+
+## 76.0.23
+- [patch] ED-4961 refactor block-type plugin [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+- [none] Updated dependencies [b88ca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88ca64)
+
+## 76.0.22
+- [patch] ED-5022, quick insert should not be triggered for key combination (/. [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
+- [patch] Updated dependencies [5588225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5588225)
+
+## 76.0.21
+- [patch] Allow empty alt tags, add better support for titles. ED-4751 [37fc5af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37fc5af)
+- [none] Updated dependencies [37fc5af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/37fc5af)
+
+## 76.0.20
+- [patch] ED-5089, fixing styling of items in block-type dropdown menu. [65683ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65683ed)
+- [patch] Updated dependencies [65683ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65683ed)
+
+## 76.0.19
+- [patch] ED-4954 Fixed toolbar button hight to be consistant with icons [8f1d665](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1d665)
+- [none] Updated dependencies [8f1d665](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1d665)
+
+## 76.0.18
+- [patch] Update icons for Layouts to reflect new design [fc59e6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc59e6b)
+- [none] Updated dependencies [fc59e6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc59e6b)
+
+## 76.0.17
+- [patch] Refactor text-color plugin to new architecture. ED-4965 [f21bea7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f21bea7)
+- [none] Updated dependencies [f21bea7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f21bea7)
+
+## 76.0.16
+- [patch]  ED-4960, refactoring text formatting plugin. [f4a0996](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4a0996)
+- [none] Updated dependencies [f4a0996](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4a0996)
+
+## 76.0.15
+- [patch] Add support for switching between different layout styles via the toolbar. ED-4196 [ab7dcd4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab7dcd4)
+- [none] Updated dependencies [ab7dcd4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab7dcd4)
+
+## 76.0.14
+- [patch] Make sure we linkify slice when pasting into task and decision. ED-4728 [e37b5ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e37b5ea)
+- [none] Updated dependencies [e37b5ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e37b5ea)
+
+## 76.0.13
+- [patch] FS-2816 - Prevent clicks in pop ups from triggering focus of the message editor [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+- [none] Updated dependencies [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+  - @atlaskit/editor-common@13.0.8
+
+## 76.0.12
+- [patch] Fix floating toolbar dropdown poisitoning [9f8dd6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8dd6a)
+- [none] Updated dependencies [9f8dd6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8dd6a)
+
+## 76.0.11
+- [patch] Fix issue where we would not show code block toolbar when inserting code block via insert-menu. ED-4982 [8260943](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8260943)
+- [none] Updated dependencies [8260943](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8260943)
+
+## 76.0.10
+- [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
+  - @atlaskit/layer@5.0.1
+  - @atlaskit/renderer@19.0.5
+  - @atlaskit/editor-common@13.0.7
+
+## 76.0.9
+- [patch] Fix some decisionItem, taskItem, and panel nodeViews [af33ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af33ec7)
+- [none] Updated dependencies [af33ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af33ec7)
+
+## 76.0.8
+- [patch] Choose to re-render entire task item when empty or if TODO/DONE state has changed [10cb299](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cb299)
+- [none] Updated dependencies [10cb299](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10cb299)
+
+## 76.0.7
+- [patch] FS-2800 - Fix selection when changing between actions and decisions [685abd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/685abd1)
+- [none] Updated dependencies [685abd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/685abd1)
+
+## 76.0.6
+- [patch] Obfuscate internal editor class-name "content-area" to prevent clashes with product css [7ddf1eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ddf1eb)
+- [none] Updated dependencies [7ddf1eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ddf1eb)
+
+## 76.0.5
+- [patch] New floating toolbar for Panel [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+- [none] Updated dependencies [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+  - @atlaskit/renderer@19.0.3
+  - @atlaskit/editor-common@13.0.5
+
+## 76.0.4
+- [patch] Fallback to use containerId from MentionResourceConfig if ContextIdentifier promise fails [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+- [patch] add support for childObjectId in ContextIdentifiers and pass it to the mention service endpoints [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+- [none] Updated dependencies [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+  - @atlaskit/editor-common@13.0.4
+- [patch] Updated dependencies [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+  - @atlaskit/editor-common@13.0.4
+
+## 76.0.3
+- [patch] Improves type coverage by removing casts to any [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+- [none] Updated dependencies [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+  - @atlaskit/editor-common@13.0.3
+
+## 76.0.2
+- [patch] ED-4956, moving decision menu item to insert menu drop-down. [4e11c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e11c66)
+- [none] Updated dependencies [4e11c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e11c66)
+
+## 76.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/media-card@30.0.1
+  - @atlaskit/mention@14.0.1
+  - @atlaskit/emoji@38.0.1
+  - @atlaskit/select@5.0.1
+  - @atlaskit/layer-manager@5.0.1
+  - @atlaskit/item@8.0.1
+  - @atlaskit/icon@13.1.1
+  - @atlaskit/droplist@7.0.1
+  - @atlaskit/avatar-group@2.0.1
+  - @atlaskit/avatar@14.0.1
+
 ## 76.0.0
 - [minor] Add styles for all different page-layout options. Add appendTransaction handler to ensure that only validate page-layouts ever get added to the document. ED-4197 [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
 - [major] ED-3701: editor exports cleanup [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)

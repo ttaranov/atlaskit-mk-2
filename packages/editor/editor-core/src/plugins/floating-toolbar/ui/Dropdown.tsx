@@ -6,7 +6,7 @@ import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import UiDropdown from '../../../ui/Dropdown';
 import withOuterListeners from '../../../ui/with-outer-listeners';
 import Button from './Button';
-import DropdownMenu from './DropdownMenu';
+import DropdownMenu, { menuItemDimensions, itemSpacing } from './DropdownMenu';
 
 const DropdownWithOutsideListeners = withOuterListeners(UiDropdown);
 
@@ -25,7 +25,13 @@ export interface DropdownOptionT<T> {
 
 export type DropdownOptions<T> =
   | Array<DropdownOptionT<T>>
-  | ((props: RenderOptionsPropsT<T>) => React.ReactElement<any> | null);
+  | {
+      render: ((
+        props: RenderOptionsPropsT<T>,
+      ) => React.ReactElement<any> | null);
+      height: number;
+      width: number;
+    };
 
 const DropdownExpandContainer = styled.span`
   margin-left: -8px;
@@ -77,6 +83,18 @@ export default class Dropdown extends Component<Props, State> {
 
     const TriggerIcon = hideExpandIcon ? icon : <CompositeIcon icon={icon} />;
 
+    /**
+     * We want to change direction of our dropdowns a bit early,
+     * not exactly when it hits the boundary.
+     */
+    const fitTolerance = 10;
+    const fitWidth = Array.isArray(options)
+      ? menuItemDimensions.width
+      : options.width;
+    const fitHeight = Array.isArray(options)
+      ? options.length * menuItemDimensions.height + itemSpacing * 2
+      : options.height;
+
     return (
       <DropdownWithOutsideListeners
         mountTo={mountPoint}
@@ -85,6 +103,8 @@ export default class Dropdown extends Component<Props, State> {
         isOpen={isOpen}
         handleClickOutside={this.hide}
         handleEscapeKeydown={this.hide}
+        fitWidth={fitWidth + fitTolerance}
+        fitHeight={fitHeight + fitTolerance}
         trigger={
           <Button
             title={title}
@@ -94,24 +114,20 @@ export default class Dropdown extends Component<Props, State> {
           />
         }
       >
-        <div>
-          {Array.isArray(options)
-            ? this.renderArrayOptions(options)
-            : options({ hide: this.hide, dispatchCommand })}
-        </div>
+        {Array.isArray(options)
+          ? this.renderArrayOptions(options)
+          : options.render({ hide: this.hide, dispatchCommand })}
       </DropdownWithOutsideListeners>
     );
   }
 
-  private renderArrayOptions = (options: Array<DropdownOptionT<Function>>) => {
-    return (
-      <DropdownMenu
-        hide={this.hide}
-        dispatchCommand={this.props.dispatchCommand}
-        items={options}
-      />
-    );
-  };
+  private renderArrayOptions = (options: Array<DropdownOptionT<Function>>) => (
+    <DropdownMenu
+      hide={this.hide}
+      dispatchCommand={this.props.dispatchCommand}
+      items={options}
+    />
+  );
 
   private toggleOpen = () => {
     this.setState({ isOpen: !this.state.isOpen });

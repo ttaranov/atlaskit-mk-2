@@ -1,4 +1,5 @@
 import * as isBefore from 'date-fns/is_before';
+import * as differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 
 const ISO_FORMAT = 'YYYY-MM-DD';
 const DEFAULT_FORMAT = 'DD MMM YYYY';
@@ -38,15 +39,7 @@ const months = [
   'Nov',
   'Dec',
 ];
-const days_full = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
+const week_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // example: "23 Jan 2018"
 export const timestampToString = (
@@ -56,11 +49,9 @@ export const timestampToString = (
   const date = new Date(Number(timestamp));
   switch (pattern) {
     case 'ddd, DD MMM':
-      return `${days_full[date.getUTCDay()].substr(0, 3)}, ${addLeadingZero(
+      return `${week_days[date.getUTCDay()]}, ${addLeadingZero(
         date.getUTCDate(),
       )} ${months[date.getUTCMonth()]}`;
-    case 'dddd':
-      return `${days_full[date.getUTCDay()]}`;
     case ISO_FORMAT:
       return `${date.getUTCFullYear()}-${addLeadingZero(
         date.getUTCMonth() + 1,
@@ -87,26 +78,20 @@ export const isPastDate = (timestamp: string | number): boolean => {
 export const timestampToTaskContext = (timestamp: string | number): string => {
   const curDate = new Date();
   const givenDate = new Date(Number(timestamp));
-  const distance = Math.abs(givenDate.getUTCDay() - curDate.getUTCDay());
+  const distance = differenceInCalendarDays(givenDate, curDate);
+  const sameYear = givenDate.getUTCFullYear() === curDate.getUTCFullYear();
   let pattern = '';
 
-  if (
-    givenDate.getUTCFullYear() !== curDate.getUTCFullYear() ||
-    isPastDate(timestamp)
-  ) {
-    pattern = DEFAULT_FORMAT;
-  } else if (
-    givenDate.getUTCMonth() !== curDate.getUTCMonth() ||
-    distance >= 7
-  ) {
-    pattern = 'ddd, DD MMM';
-  } else if (distance > 1 && distance < 7) {
-    pattern = 'dddd';
+  if (distance === 0) {
+    return 'Today';
   } else if (distance === 1) {
     return 'Tomorrow';
+  } else if (distance === -1) {
+    pattern = 'Yesterday';
+  } else if (sameYear) {
+    pattern = 'ddd, DD MMM';
   } else {
-    return 'Today';
+    pattern = DEFAULT_FORMAT;
   }
-
   return timestampToString(timestamp, pattern);
 };

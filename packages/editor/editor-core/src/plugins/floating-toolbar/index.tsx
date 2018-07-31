@@ -1,5 +1,7 @@
 import * as React from 'react';
+import { EditorView } from 'prosemirror-view';
 import { Plugin, PluginKey } from 'prosemirror-state';
+import { findParentDomRefOfType } from 'prosemirror-utils';
 import { Popup } from '@atlaskit/editor-common';
 
 import WithPluginState from '../../ui/WithPluginState';
@@ -8,6 +10,26 @@ import { Dispatch } from '../../event-dispatcher';
 import Toolbar from './ui/Toolbar';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
 
+const getRelevantConfig = (
+  view: EditorView,
+  configs: Array<FloatingToolbarConfig>,
+): FloatingToolbarConfig => {
+  if (configs.length > 1) {
+    const domAtPos = view.domAtPos.bind(view);
+    const nodeTypes = configs.map(config => config.nodeType);
+    const domRef = findParentDomRefOfType(nodeTypes, domAtPos)(
+      view.state.selection,
+    );
+    const relevantConfig = configs.filter(
+      config => config.getDomRef(view) === domRef,
+    );
+    if (relevantConfig.length) {
+      return relevantConfig[0];
+    }
+  }
+  return configs[0];
+};
+
 const floatingToolbarPlugin: EditorPlugin = {
   name: 'floatingToolbar',
 
@@ -15,7 +37,7 @@ const floatingToolbarPlugin: EditorPlugin = {
     return [
       {
         // Should be after all toolbar plugins
-        rank: 5000,
+        name: 'floatingToolbar',
         plugin: ({ dispatch }) =>
           floatingToolbarPluginFactory(dispatch, floatingToolbar),
       },
@@ -30,37 +52,43 @@ const floatingToolbarPlugin: EditorPlugin = {
   }) {
     return (
       <WithPluginState
-        plugins={{ floatingToolbarConfig: pluginKey }}
+        plugins={{ floatingToolbarConfigs: pluginKey }}
         render={({
-          floatingToolbarConfig,
+          floatingToolbarConfigs,
         }: {
-          floatingToolbarConfig?: FloatingToolbarConfig;
+          floatingToolbarConfigs?: Array<FloatingToolbarConfig>;
         }) => {
-          if (floatingToolbarConfig) {
-            const { title, target, items } = floatingToolbarConfig;
-            return (
-              <Popup
-                offset={[0, 12]}
-                target={target}
-                alignY="bottom"
-                alignX="center"
-                stickToBottom={true}
-                mountTo={popupsMountPoint}
-                boundariesElement={popupsBoundariesElement}
-                scrollableElement={popupsScrollableElement}
-              >
-                <Toolbar
-                  ariaLabel={title}
-                  items={items}
-                  dispatchCommand={fn =>
-                    fn && fn(editorView.state, editorView.dispatch)
-                  }
-                  popupsMountPoint={popupsMountPoint}
-                  popupsBoundariesElement={popupsBoundariesElement}
-                  popupsScrollableElement={popupsScrollableElement}
-                />
-              </Popup>
+          if (floatingToolbarConfigs && floatingToolbarConfigs.length > 0) {
+            const { title, getDomRef, items } = getRelevantConfig(
+              editorView,
+              floatingToolbarConfigs,
             );
+            const targetRef = getDomRef(editorView);
+            if (targetRef) {
+              return (
+                <Popup
+                  ariaLabel={title}
+                  offset={[0, 12]}
+                  target={targetRef}
+                  alignY="bottom"
+                  alignX="center"
+                  stickToBottom={true}
+                  mountTo={popupsMountPoint}
+                  boundariesElement={popupsBoundariesElement}
+                  scrollableElement={popupsScrollableElement}
+                >
+                  <Toolbar
+                    items={items}
+                    dispatchCommand={fn =>
+                      fn && fn(editorView.state, editorView.dispatch)
+                    }
+                    popupsMountPoint={popupsMountPoint}
+                    popupsBoundariesElement={popupsBoundariesElement}
+                    popupsScrollableElement={popupsScrollableElement}
+                  />
+                </Popup>
+              );
+            }
           }
           return null;
         }}
@@ -80,7 +108,7 @@ export default floatingToolbarPlugin;
 export const pluginKey = new PluginKey('floatingToolbarPluginKey');
 
 function floatingToolbarPluginFactory(
-  dispatch: Dispatch<FloatingToolbarConfig | undefined>,
+  dispatch: Dispatch<Array<FloatingToolbarConfig> | undefined>,
   floatingToolbarHandlers: Array<FloatingToolbarHandler>,
 ) {
   return new Plugin({
@@ -89,18 +117,9 @@ function floatingToolbarPluginFactory(
       init: () => undefined,
 
       apply(tr, pluginState, oldState, newState) {
-        const configs = floatingToolbarHandlers
+        const newPluginState = floatingToolbarHandlers
           .map(handler => handler(newState))
           .filter(Boolean) as Array<FloatingToolbarConfig>;
-
-        let newPluginState: FloatingToolbarConfig | undefined;
-        const noOfToolbars = configs.length;
-        if (noOfToolbars === 1) {
-          newPluginState = configs[0];
-        } else if (noOfToolbars > 1) {
-          // tslint:disable-next-line:no-console
-          console.warn('Expected one active toolbar but got ${noOfToolbars}.');
-        }
 
         dispatch(pluginKey, newPluginState);
         return newPluginState;

@@ -6,21 +6,19 @@ import SkeletonNavigationInner from './styled/SkeletonNavigationInner';
 
 import SkeletonGlobalNavigation from './SkeletonGlobalNavigation';
 import SkeletonContainerNavigation from './SkeletonContainerNavigation';
-import SkeletonDefaultContainerHeader from './SkeletonDefaultContainerHeader';
+import SkeletonDefaultContainerHeader, {
+  type SkeletonContainerHeaderProps,
+} from './SkeletonDefaultContainerHeader';
 import { HiddenWhenCollapsed } from './ToggleWhenCollapsed';
 
 import type { Provided } from '../../../theme/types';
 import { defaultContainerTheme, defaultGlobalTheme } from '../../../theme/util';
 
-export type ContainerHeaderProps = {
-  isCollapsed: boolean,
-};
-
 export type Props = {
-  isCollapsed: boolean,
+  isCollapsed?: boolean,
   globalTheme?: Provided,
   containerTheme?: Provided,
-  containerHeaderComponent: ComponentType<ContainerHeaderProps>,
+  containerHeaderComponent: ComponentType<SkeletonContainerHeaderProps>,
 };
 
 export default class SkeletonNavigation extends Component<Props> {

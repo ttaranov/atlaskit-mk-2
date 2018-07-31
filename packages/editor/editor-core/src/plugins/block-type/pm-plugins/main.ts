@@ -1,6 +1,5 @@
-import { Node } from 'prosemirror-model';
+import { Node, Schema } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import {
   NORMAL_TEXT,
   HEADING_1,
@@ -14,161 +13,84 @@ import {
   PANEL,
   OTHER,
   BlockType,
+  TEXT_BLOCK_TYPES,
+  WRAPPER_BLOCK_TYPES,
+  HEADINGS_BY_LEVEL,
 } from '../types';
-import * as commands from '../../../commands';
 import { areBlockTypesDisabled } from '../../../utils';
 
-export type StateChangeHandler = (state: BlockTypeState) => any;
-export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
+export type BlockTypeState = {
+  currentBlockType: BlockType;
+  blockTypesDisabled: boolean;
+  availableBlockTypes: BlockType[];
+  availableWrapperBlockTypes: BlockType[];
+};
 
-/**
- *
- * Plugin State
- *
- */
-export class BlockTypeState {
-  private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState;
+const blockTypeForNode = (node: Node, schema: Schema): BlockType => {
+  if (node.type === schema.nodes.heading) {
+    const maybeNode = HEADINGS_BY_LEVEL[node.attrs['level']];
+    if (maybeNode) {
+      return maybeNode;
+    }
+  } else if (node.type === schema.nodes.paragraph) {
+    return NORMAL_TEXT;
+  }
+  return OTHER;
+};
 
-  // public state
-  currentBlockType: BlockType = NORMAL_TEXT;
-  blockTypesDisabled: boolean = false;
-  availableBlockTypes: BlockType[] = [];
-  availableWrapperBlockTypes: BlockType[] = [];
-  isCodeBlock: boolean = false;
+const isBlockTypeSchemaSupported = (
+  blockType: BlockType,
+  state: EditorState,
+) => {
+  switch (blockType) {
+    case NORMAL_TEXT:
+      return !!state.schema.nodes.paragraph;
+    case HEADING_1:
+    case HEADING_2:
+    case HEADING_3:
+    case HEADING_4:
+    case HEADING_5:
+    case HEADING_6:
+      return !!state.schema.nodes.heading;
+    case BLOCK_QUOTE:
+      return !!state.schema.nodes.blockquote;
+    case CODE_BLOCK:
+      return !!state.schema.nodes.codeBlock;
+    case PANEL:
+      return !!state.schema.nodes.panel;
+  }
+};
 
-  constructor(state: EditorState) {
-    this.changeHandlers = [];
-    this.state = state;
-
-    this.availableBlockTypes = [
-      NORMAL_TEXT,
-      HEADING_1,
-      HEADING_2,
-      HEADING_3,
-      HEADING_4,
-      HEADING_5,
-      HEADING_6,
-    ].filter(this.isBlockTypeSchemaSupported);
-
-    this.availableWrapperBlockTypes = [BLOCK_QUOTE, CODE_BLOCK, PANEL].filter(
-      this.isBlockTypeSchemaSupported,
+const detectBlockType = (
+  availableBlockTypes: BlockType[],
+  state: EditorState,
+): BlockType => {
+  // Before a document is loaded, there is no selection.
+  if (!state.selection) {
+    return NORMAL_TEXT;
+  }
+  let blockType;
+  const { $from, $to } = state.selection;
+  state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+    const nodeBlockType = availableBlockTypes.filter(
+      blockType => blockType === blockTypeForNode(node, state.schema),
     );
-
-    this.update(state);
-  }
-
-  subscribe(cb: StateChangeHandler) {
-    this.changeHandlers.push(cb);
-    cb(this);
-  }
-
-  unsubscribe(cb: StateChangeHandler) {
-    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  setBlockType(name: string, view: EditorView): boolean {
-    return commands.setBlockType(view, name);
-  }
-
-  insertBlockType(name: string, view: EditorView): boolean {
-    return commands.insertBlockType(name)(view.state, view.dispatch);
-  }
-
-  update(newEditorState, dirty = false) {
-    this.state = newEditorState;
-
-    const newBlockType = this.detectBlockType();
-    if (newBlockType !== this.currentBlockType) {
-      this.currentBlockType = newBlockType;
-      dirty = true;
-    }
-
-    const newBlockTypesDisabled = areBlockTypesDisabled(this.state);
-    if (newBlockTypesDisabled !== this.blockTypesDisabled) {
-      this.blockTypesDisabled = newBlockTypesDisabled;
-      dirty = true;
-    }
-
-    if (dirty) {
-      this.triggerOnChange();
-    }
-  }
-
-  private triggerOnChange() {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  private detectBlockType(): BlockType {
-    const { state } = this;
-    // Before a document is loaded, there is no selection.
-    if (!state.selection) {
-      return NORMAL_TEXT;
-    }
-    let blockType;
-    const { $from, $to } = state.selection;
-    state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      const nodeBlockType = this.availableBlockTypes.filter(
-        blockType => blockType === this.nodeBlockType(node),
-      );
-      if (nodeBlockType.length > 0) {
-        if (!blockType) {
-          blockType = nodeBlockType[0];
-        } else if (blockType !== OTHER && blockType !== nodeBlockType[0]) {
-          blockType = OTHER;
-        }
+    if (nodeBlockType.length > 0) {
+      if (!blockType) {
+        blockType = nodeBlockType[0];
+      } else if (blockType !== OTHER && blockType !== nodeBlockType[0]) {
+        blockType = OTHER;
       }
-    });
-    return blockType || OTHER;
-  }
-
-  private nodeBlockType = (node: Node): BlockType => {
-    if (node.type === this.state.schema.nodes.heading) {
-      switch (node.attrs['level']) {
-        case 1:
-          return HEADING_1;
-        case 2:
-          return HEADING_2;
-        case 3:
-          return HEADING_3;
-        case 4:
-          return HEADING_4;
-        case 5:
-          return HEADING_5;
-        case 6:
-          return HEADING_6;
-      }
-    } else if (node.type === this.state.schema.nodes.paragraph) {
-      return NORMAL_TEXT;
     }
-    return OTHER;
-  };
+  });
+  return blockType || OTHER;
+};
 
-  private isBlockTypeSchemaSupported = (blockType: BlockType) => {
-    const { state } = this;
-    switch (blockType) {
-      case NORMAL_TEXT:
-        return !!state.schema.nodes.paragraph;
-      case HEADING_1:
-      case HEADING_2:
-      case HEADING_3:
-      case HEADING_4:
-      case HEADING_5:
-      case HEADING_6:
-        return !!state.schema.nodes.heading;
-      case BLOCK_QUOTE:
-        return !!state.schema.nodes.blockquote;
-      case CODE_BLOCK:
-        return !!state.schema.nodes.codeBlock;
-      case PANEL:
-        return !!state.schema.nodes.panel;
-    }
-  };
-}
-
-export const stateKey = new PluginKey('blockTypePlugin');
-
-export const createPlugin = (appearance?) => {
+export const pluginKey = new PluginKey('blockTypePlugin');
+export const createPlugin = (
+  dispatch: (eventName: string | PluginKey, data: any) => void,
+  appearance?,
+) => {
   return new Plugin({
     appendTransaction(
       transactions: Transaction[],
@@ -187,15 +109,51 @@ export const createPlugin = (appearance?) => {
         }
       }
     },
+
     state: {
       init(config, state: EditorState) {
-        return new BlockTypeState(state);
+        const availableBlockTypes = TEXT_BLOCK_TYPES.filter(blockType =>
+          isBlockTypeSchemaSupported(blockType, state),
+        );
+        const availableWrapperBlockTypes = WRAPPER_BLOCK_TYPES.filter(
+          blockType => isBlockTypeSchemaSupported(blockType, state),
+        );
+
+        return {
+          currentBlockType: detectBlockType(availableBlockTypes, state),
+          blockTypesDisabled: areBlockTypesDisabled(state),
+          availableBlockTypes,
+          availableWrapperBlockTypes,
+        };
       },
-      apply(tr, pluginState: BlockTypeState, oldState, newState) {
-        pluginState.update(newState);
-        return pluginState;
+
+      apply(
+        tr,
+        oldPluginState: BlockTypeState,
+        oldState: EditorState,
+        newState: EditorState,
+      ) {
+        const newPluginState = {
+          ...oldPluginState,
+          currentBlockType: detectBlockType(
+            oldPluginState.availableBlockTypes,
+            newState,
+          ),
+          blockTypesDisabled: areBlockTypesDisabled(newState),
+        };
+
+        if (
+          newPluginState.currentBlockType !== oldPluginState.currentBlockType ||
+          newPluginState.blockTypesDisabled !==
+            oldPluginState.blockTypesDisabled
+        ) {
+          dispatch(pluginKey, newPluginState);
+        }
+
+        return newPluginState;
       },
     },
-    key: stateKey,
+
+    key: pluginKey,
   });
 };

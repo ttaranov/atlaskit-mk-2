@@ -26,7 +26,7 @@ export const blocktypeStyles = css`
     }
 
     &::after {
-      content: '';
+      content: none;
     }
 
     & p {

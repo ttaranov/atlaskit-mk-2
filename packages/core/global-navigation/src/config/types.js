@@ -1,5 +1,6 @@
 // @flow
 import type { ComponentType } from 'react';
+import type { GlobalItemProps } from '@atlaskit/navigation-next';
 
 type DefaultItemShape = {
   icon?: ComponentType<*>,
@@ -27,11 +28,10 @@ type DropdownItem = {
 
 export type DefaultConfigShape = {
   product: DefaultItemShape,
-  yourWork: DefaultItemShape,
+  starred: DefaultItemShape,
   search: DefaultItemShape,
   create: DefaultItemShape,
   notification: DefaultItemShape,
-  people: DefaultItemShape,
   appSwitcher: DefaultItemShape,
   help: DefaultItemShape,
   profile: DefaultItemShape,
@@ -41,9 +41,8 @@ export type ProductConfigShape = {
   product: ?ItemShape,
   create: ?ItemShape,
   search: ?ItemShape,
-  yourWork: ?ItemShape,
+  starred: ?ItemShape,
   notification: ?ItemShape,
-  people: ?ItemShape,
   appSwitcher: ?{
     component: ComponentType<*>,
   },
@@ -52,10 +51,15 @@ export type ProductConfigShape = {
 };
 
 export type NavItem = {
-  icon?: ComponentType<*>,
   label?: string,
   onClick?: () => void,
+  icon?: ComponentType<*>,
   rank: number,
   section: 'primary' | 'secondary',
+  component?: ComponentType<*>,
+  badge?: ComponentType<*>,
   tooltip?: string,
 };
+
+// The shape of the item data required by GlobalNav
+export type GlobalNavItemData = GlobalItemProps & { key?: string };

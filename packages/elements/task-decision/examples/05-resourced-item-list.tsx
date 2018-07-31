@@ -114,7 +114,7 @@ export default () => (
           initialQuery={initialQuery}
           taskDecisionProvider={taskDecisionProviderInfinite}
           useInfiniteScroll={true}
-          height="100%"
+          height="400px"
         />
       </SidebarContainer>
     </Item>
@@ -126,7 +126,7 @@ export default () => (
           initialQuery={initialQuery}
           taskDecisionProvider={taskDecisionProviderInfiniteSlow}
           useInfiniteScroll={true}
-          height="100%"
+          height="400px"
         />
       </SidebarContainer>
     </Item>
@@ -138,7 +138,7 @@ export default () => (
           initialQuery={initialQuery}
           taskDecisionProvider={taskDecisionProviderInfiniteSlow5000}
           useInfiniteScroll={true}
-          height="100%"
+          height="400px"
         />
       </SidebarContainer>
     </Item>
@@ -149,7 +149,7 @@ export default () => (
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProviderInfiniteSlowReset}
         useInfiniteScroll={true}
-        height="100%"
+        height="400px"
       />
     </Item>
     <Item>
@@ -172,7 +172,7 @@ export default () => (
           taskDecisionProvider={taskDecisionProviderInfinite}
           groupItems={true}
           useInfiniteScroll={true}
-          height="100%"
+          height="400px"
         />
       </SidebarContainer>
     </Item>
@@ -185,7 +185,7 @@ export default () => (
           taskDecisionProvider={taskDecisionProviderInfiniteSlow}
           groupItems={true}
           useInfiniteScroll={true}
-          height="100%"
+          height="400px"
         />
       </SidebarContainer>
     </Item>

@@ -16,7 +16,10 @@ import {
   akFontSizeDefault,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import { tableSharedStyle } from '@atlaskit/editor-common';
+import {
+  tableSharedStyle,
+  columnLayoutSharedStyle,
+} from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
@@ -207,8 +210,10 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     border-radius: 1px;
   }
 
-  & img {
+  & .renderer-image {
     max-width: 100%;
+    display: block;
+    margin: ${akGridSizeUnitless * 3}px 0;
   }
 
   & div > .media-wrapped + .media-wrapped + *:not(.media-wrapped) {
@@ -281,6 +286,14 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-top: 12px;
     &:first-child {
       margin-top: 0;
+    }
+  }
+
+  ${columnLayoutSharedStyle};
+  & [data-layout-type] {
+    margin: ${akGridSizeUnitless * 3}px 0;
+    & > div + div {
+      padding-left: ${akGridSizeUnitless * 3}px;
     }
   }
 `;

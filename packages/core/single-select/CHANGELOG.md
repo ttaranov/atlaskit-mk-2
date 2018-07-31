@@ -1,5 +1,19 @@
 # @atlaskit/single-select
 
+## 6.0.2
+- [patch] Update docs, change dev deps [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/avatar@14.0.3
+
+## 6.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/button@9.0.2
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+  - @atlaskit/droplist@7.0.2
+  - @atlaskit/avatar@14.0.2
+
 ## 6.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

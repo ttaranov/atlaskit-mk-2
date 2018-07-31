@@ -15,13 +15,13 @@ export type DateType = {
 
 const datePlugin: EditorPlugin = {
   nodes() {
-    return [{ rank: 2400, name: 'date', node: date }];
+    return [{ name: 'date', node: date }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 2410,
+        name: 'date',
         plugin: createDatePlugin,
       },
     ];
@@ -39,7 +39,7 @@ const datePlugin: EditorPlugin = {
             <DatePicker
               element={dateState.element}
               onSelect={date => insertDate(date)(editorView.state, dispatch)}
-              onClickOutside={() =>
+              closeDatePicker={() =>
                 selectElement(null)(editorView.state, dispatch)
               }
             />
@@ -53,6 +53,7 @@ const datePlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Date',
+        priority: 800,
         keywords: ['time', '/'],
         icon: () => <EditorDateIcon label="Date" />,
         action(insert, state) {

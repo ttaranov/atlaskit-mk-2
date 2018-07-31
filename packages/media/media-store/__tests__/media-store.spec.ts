@@ -21,6 +21,15 @@ describe('MediaStore', () => {
     const clientId = 'some-client-id';
     const token = 'some-token';
     const auth: Auth = { clientId, token, baseUrl };
+    const data: MediaFile = {
+      id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
+      mediaType: 'doc',
+      mimeType: 'application/pdf',
+      name: 'example document.pdf',
+      processingStatus: 'pending',
+      size: 231392,
+      artifacts: {},
+    };
     let authProvider: jest.Mock<AuthProvider>;
     let mediaStore: MediaStore;
 
@@ -141,15 +150,6 @@ describe('MediaStore', () => {
           replaceFileId: 'some-replace-file-id',
           skipConversions: true,
         };
-        const data: MediaFile = {
-          id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
-          mediaType: 'document',
-          mimeType: 'application/pdf',
-          name: 'example document.pdf',
-          processingStatus: 'pending',
-          size: 231392,
-          artifacts: {},
-        };
 
         fetchMock.mock(`begin:${baseUrl}/file/upload`, {
           body: {
@@ -190,15 +190,6 @@ describe('MediaStore', () => {
           replaceFileId: 'some-replace-file-id',
           skipConversions: true,
         };
-        const data: MediaFile = {
-          id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
-          mediaType: 'document',
-          mimeType: 'application/pdf',
-          name: 'example document.pdf',
-          processingStatus: 'pending',
-          size: 231392,
-          artifacts: {},
-        };
 
         fetchMock.mock(`begin:${baseUrl}/file/binary`, {
           body: {
@@ -236,25 +227,16 @@ describe('MediaStore', () => {
         const params: MediaStoreGetFileParams = {
           collection: collectionName,
         };
-        const responseData: MediaFile = {
-          id: 'faee2a3a-f37d-11e4-aae2-3c15c2c70ce6',
-          mediaType: 'document',
-          mimeType: 'application/pdf',
-          name: 'example document.pdf',
-          processingStatus: 'pending',
-          size: 231392,
-          artifacts: {},
-        };
 
         fetchMock.mock(`begin:${baseUrl}/file/${fileId}`, {
           body: {
-            data: responseData,
+            data,
           },
           status: 201,
         });
 
         return mediaStore.getFile(fileId, params).then(response => {
-          expect(response).toEqual({ data: responseData });
+          expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
             `${baseUrl}/file/${fileId}?client=${clientId}&collection=${collectionName}&token=${token}`,
           );
@@ -435,6 +417,51 @@ describe('MediaStore', () => {
               body: undefined,
             });
           });
+      });
+    });
+
+    describe('getFileImageURL', () => {
+      it('should return the file image preview url based on the file id', async () => {
+        const url = await mediaStore.getFileImageURL('1234');
+
+        expect(url).toEqual(
+          `${serviceHost}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+        );
+      });
+    });
+
+    describe('getImage', () => {
+      it('should return file image preview', async () => {
+        fetchMock.mock(`begin:${serviceHost}/file`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        const image = await mediaStore.getImage('123');
+        expect(fetchMock.lastUrl()).toEqual(
+          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+        );
+        expect(image).toBeInstanceOf(Blob);
+      });
+
+      it('should merge default params with given ones', async () => {
+        fetchMock.mock(`begin:${serviceHost}/file`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        await mediaStore.getImage('123', {
+          mode: 'full-fit',
+          version: 2,
+          upscale: true,
+        });
+        expect(fetchMock.lastUrl()).toEqual(
+          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
+        );
       });
     });
   });

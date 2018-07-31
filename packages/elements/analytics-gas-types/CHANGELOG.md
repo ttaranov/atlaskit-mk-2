@@ -1,5 +1,11 @@
 # @atlaskit/analytics-gas-types
 
+## 3.1.1
+- [patch] FS-2020 add session id to typeahead plugin inside editor [5ae463f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ae463f)
+
+## 3.1.0
+- [minor] Allow sending of search queries in analytics events [e5f14e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5f14e9)
+
 ## 3.0.0
 
 

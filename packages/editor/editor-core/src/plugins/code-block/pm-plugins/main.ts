@@ -4,57 +4,31 @@ import codeBlockNodeView from '../nodeviews/code-block';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { Dispatch } from '../../../event-dispatcher';
 
-export type ActiveCodeBlock = { node: Node; pos: number };
-export interface CodeBlockState {
-  activeCodeBlock?: ActiveCodeBlock;
-}
-
-const setActiveCodeBlock = (
-  state: CodeBlockState,
-  activeCodeBlock?: ActiveCodeBlock,
-) => ({
-  ...state,
-  activeCodeBlock: activeCodeBlock,
-});
+export type ActiveCodeBlock = { node: Node; pos: number } | undefined;
 
 export const stateKey = new PluginKey('codeBlockPlugin');
 
 export const plugin = (dispatch: Dispatch) =>
   new Plugin({
     state: {
-      init(config, state: EditorState): CodeBlockState {
-        const activeCodeBlock = findParentNodeOfType(
-          state.schema.nodes.codeBlock,
-        )(state.selection);
-        return setActiveCodeBlock({}, activeCodeBlock);
+      init(_, state: EditorState): ActiveCodeBlock {
+        return findParentNodeOfType(state.schema.nodes.codeBlock)(
+          state.selection,
+        );
       },
-      apply(
-        tr,
-        pluginState: CodeBlockState,
-        oldState,
-        newState,
-      ): CodeBlockState {
-        let state: CodeBlockState = pluginState;
-        if (!oldState.selection.eq(tr.selection)) {
-          let activeCodeBlock = findParentNodeOfType(
-            tr.doc.type.schema.nodes.codeBlock,
-          )(tr.selection);
-          state = setActiveCodeBlock(pluginState, activeCodeBlock);
-        } else if (tr.docChanged && pluginState.activeCodeBlock) {
-          const {
-            activeCodeBlock: { pos, node },
-          } = pluginState;
-          const trPos = tr.mapping.map(pos);
-          const trNode = tr.doc.nodeAt(trPos);
-          // Update activeCodeBlock when node updated or deleted
-          if (trNode && trNode !== node && trNode.type === node.type) {
-            state = setActiveCodeBlock(pluginState, {
-              pos: trPos,
-              node: trNode,
-            });
+      apply(tr, pluginState: ActiveCodeBlock): ActiveCodeBlock {
+        let state: ActiveCodeBlock = pluginState;
+        if (tr.docChanged && !tr.selectionSet && pluginState) {
+          const { pos, deleted } = tr.mapping.mapResult(pluginState.pos);
+          if (deleted) {
+            state = undefined;
           } else {
-            state = {};
+            state = { pos, node: tr.doc.nodeAt(pos) as Node };
           }
+        } else if (tr.docChanged || tr.selectionSet) {
+          state = findParentNodeOfType(tr.doc.type.schema.nodes.codeBlock)(
+            tr.selection,
+          );
         }
         if (state !== pluginState) {
           dispatch(stateKey, state);

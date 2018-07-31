@@ -17,6 +17,14 @@ export interface ShownAnalyticsAttributes {
   resultContext: ShownResultContextSection[];
 }
 
+export interface SearchPerformanceTiming {
+  startTime: number;
+  elapsedMs: number;
+  confSearchElapsedMs: number;
+  peopleElapsedMs: number;
+  quickNavElapsedMs: number;
+}
+
 export interface ShownResultContextSection {
   sectionId: string;
   results: ShownResultContextItem[];
@@ -46,6 +54,13 @@ export const sanitizeSearchQuery = query => {
   return (query || '').replace(/\s+/g, ' ').trim();
 };
 
+export const sanitizeContainerId = containerId => {
+  const trimmedContainerId = (containerId || '').trim();
+  return trimmedContainerId.startsWith('~')
+    ? 'UNAVAILABLE'
+    : trimmedContainerId;
+};
+
 function mapResultsToShownSection(
   results: Result[],
 ): ShownResultContextSection {
@@ -61,7 +76,7 @@ function mapResultToShownResult(result: Result): ShownResultContextItem {
     return {
       resultContentId: result.resultId,
       resultType: confluenceResult.contentType,
-      containerId: confluenceResult.containerId,
+      containerId: sanitizeContainerId(confluenceResult.containerId),
     };
   }
 
@@ -106,8 +121,9 @@ export function buildScreenEvent(
     actionSubject: screen,
     eventType: 'screen',
     source: DEFAULT_GAS_SOURCE,
-    name: `viewed${screen}`,
+    name: DEFAULT_GAS_SOURCE,
     attributes: {
+      subscreen: screen,
       timesViewed: timesViewed,
       searchSessionId: searchSessionId,
       ...DEFAULT_GAS_ATTRIBUTES,
