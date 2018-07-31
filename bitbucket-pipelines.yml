@@ -88,7 +88,7 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - set -o pipefail && (cd website && yarn deploy-staging) | tee netlify-build.txt
+              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
               - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
               - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
             caches:
