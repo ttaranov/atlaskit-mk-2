@@ -46,6 +46,7 @@
     "@atlaskit/modal-dialog": "^6.0.5",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "moment": "^2.22.2",
     "react-dom": "^16.4.0",
     "react-lorem-component": "^0.12.2",
     "react-test-renderer": "^16.3.0"
