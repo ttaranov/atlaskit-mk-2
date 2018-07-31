@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { EventDispatcher, createDispatch } from '../event-dispatcher';
 import { processRawValue } from '../utils';
@@ -54,6 +55,10 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   contentTransformer?: Transformer<string>;
   config: EditorConfig;
   editorState: EditorState;
+
+  static contextTypes = {
+    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
+  };
 
   constructor(props: EditorViewProps & T) {
     super(props);
@@ -133,6 +138,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     this.eventDispatcher = new EventDispatcher();
     const dispatch = createDispatch(this.eventDispatcher);
     const errorReporter = createErrorReporter(errorReporterHandler);
+
     const plugins = createPMPlugins({
       schema,
       dispatch,
@@ -142,6 +148,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
       eventDispatcher: this.eventDispatcher,
       providerFactory: options.props.providerFactory,
       portalProviderAPI: this.props.portalProviderAPI,
+      reactContext: () => this.context,
     });
 
     this.contentTransformer = contentTransformerProvider

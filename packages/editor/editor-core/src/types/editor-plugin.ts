@@ -23,6 +23,7 @@ export type PMPluginFactory = (
     providerFactory: ProviderFactory;
     errorReporter: ErrorReporter;
     portalProviderAPI: PortalProviderAPI;
+    reactContext: () => { [key: string]: any };
   },
 ) => Plugin | undefined;
 
