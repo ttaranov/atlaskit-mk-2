@@ -100,7 +100,7 @@ pipelines:
     - step:
         name: Sending Website Build Url
         script:
-          - (cd build/utils && yarn install) # needed for npm-run when updating status aaaaaaaaaaaaaaa
+          - (cd build/utils && yarn install) # needed for npm-run when updating status aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           - cd build/ci-scripts
           - yarn install
           - node download.build.artefact.for.commit.js netlify-build.txt
