@@ -22,6 +22,8 @@ const LatestChange = ({
 }) => {
   if (!changelog || !changelog[0] || !changelog[0].version) return null;
 
+  console.log(changelog[0]);
+
   return (
     <LogWrapper>
       <Latest />
@@ -57,9 +59,6 @@ const LogWrapper = styled.div`
     &:last-child {
       margin-bottom: 0;
     }
-  }
-  p {
-    display: none;
   }
 `;
 const Button = styled(Btn)`
