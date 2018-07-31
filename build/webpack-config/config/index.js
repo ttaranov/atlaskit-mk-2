@@ -58,7 +58,7 @@ module.exports = function createWebpackConfig(
           test: /SITE_DATA$/,
           loader: require.resolve('bolt-fs-loader'),
           options: {
-            include: ['docs/**/*.md', ...globs].filter(p => !!p),
+            include: [...globs, 'docs/**/*.md'].filter(Boolean),
             exclude: ['**/node_modules/**', 'packages/build/docs/**'],
           },
         },
@@ -66,7 +66,8 @@ module.exports = function createWebpackConfig(
           test: /NAV_DATA$/,
           loader: require.resolve('nav-info-loader'),
           options: {
-            include: [...globs]
+            /** $FlowFixMe - We have absolutely 0 idea why flow is complaining here */
+            include: globs
               .filter(p => p.includes('package.json'))
               .map(p => p.replace('/package.json', '')),
             exclude: ['**/node_modules/**', 'packages/build/docs/**'],
