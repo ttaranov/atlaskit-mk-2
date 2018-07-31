@@ -3,19 +3,12 @@
 import React, { Component } from 'react';
 import Container from './Container';
 import Format from './Format';
-import defaultTheme from '../theme';
+import defaultTheme, { type ThemeAppearance, type ThemeProps } from '../theme';
 import { Theme } from '@atlaskit/theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
-  appearance:
-    | 'default'
-    | 'primary'
-    | 'primaryInverted'
-    | 'important'
-    | 'added'
-    | 'removed'
-    | {},
+  appearance: ThemeAppearance,
 
   /** Supercedes the `value` props. The value displayed within the badge. */
   children: number,
@@ -31,7 +24,7 @@ type Props = {
     newValue: number,
   }) => any,
 
-  theme: *,
+  theme: () => ThemeProps,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,

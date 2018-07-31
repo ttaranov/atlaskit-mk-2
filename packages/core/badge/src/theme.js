@@ -24,7 +24,7 @@ export const textColors = {
   removed: { light: colors.R500, dark: colors.R500 },
 };
 
-export type Appearance =
+export type ThemeAppearance =
   | 'added'
   | 'default'
   | 'important'
@@ -34,7 +34,7 @@ export type Appearance =
   | {};
 
 export type ThemeProps = {
-  badge: ({ appearance: Appearance }) => {
+  badge: ({ appearance: ThemeAppearance }) => {
     backgroundColor?: string,
     textColor?: string,
   },
