@@ -22,8 +22,6 @@ const LatestChange = ({
 }) => {
   if (!changelog || !changelog[0] || !changelog[0].version) return null;
 
-  console.log(changelog[0]);
-
   return (
     <LogWrapper>
       <Latest />
