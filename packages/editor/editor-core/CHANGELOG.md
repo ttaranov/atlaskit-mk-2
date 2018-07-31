@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 76.4.1
+- [patch] Make typeahead keymap work in a list [a7d7421](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7d7421)
+- [none] Updated dependencies [a7d7421](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7d7421)
+
 ## 76.4.0
 - [minor] MediaPicker Popup now supports passing of optional parent react context as a parameter [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
 - [minor] Updated dependencies [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
