@@ -9,6 +9,8 @@ import {
   ResultCallback,
 } from './MentionResource';
 import { padArray } from '../util';
+import { MentionDescription } from '../types';
+export { MentionDescription };
 
 /**
  * This component is stateful and should be instantianted per contextIdentifiers.

@@ -262,6 +262,7 @@ export class ImageNavigator extends Component<Props, State> {
         onImageUploaded(imageFile);
       }
 
+      // TODO: [ts30] Add proper handling for null and ArrayBuffer
       this.setState({ fileImageSource: fileImageSource as string, imageFile });
     };
     reader.readAsDataURL(imageFile);

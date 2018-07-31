@@ -155,9 +155,7 @@ export class MockCollabEditProvider implements CollabEditProvider {
   }
 }
 
-const getCollabEditProviderFor = <T>(participants: T) => (sid?: keyof T) =>
-  Promise.resolve(
-    new MockCollabEditProvider(mediator, sid as string | undefined),
-  );
+const getCollabEditProviderFor = <T>(participants: T) => (sid?: string) =>
+  Promise.resolve(new MockCollabEditProvider(mediator, sid));
 
 export const collabEditProvider = getCollabEditProviderFor(participants);

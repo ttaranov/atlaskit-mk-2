@@ -535,7 +535,7 @@ export function liftAndSelectSiblingNodes(view: EditorView): Transaction {
   const { $from, $to } = view.state.selection;
   const blockStart = tr.doc.resolve($from.start($from.depth - 1));
   const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
-  // TODO: [ts29] handle void and null properly
+  // TODO: [ts30] handle void and null properly
   const range = blockStart.blockRange(blockEnd) as NodeRange;
   tr.setSelection(new TextSelection(blockStart, blockEnd));
   tr.lift(range as NodeRange, blockStart.depth - 1);

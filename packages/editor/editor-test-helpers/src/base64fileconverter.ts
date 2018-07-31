@@ -69,8 +69,9 @@ export class Converter {
           reader.onload = onLoadDataUrl;
           reader.readAsDataURL(file);
         } else {
-          (reader as FileReader).onload = onLoadBinaryString;
-          (reader as FileReader).readAsBinaryString(file);
+          const fileReader = reader as FileReader;
+          fileReader.onload = onLoadBinaryString;
+          fileReader.readAsBinaryString(file);
         }
       });
     }

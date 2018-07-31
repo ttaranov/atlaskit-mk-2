@@ -46,7 +46,7 @@ export default class PlaceholderTextNode {
     ) {
       document.getSelection().removeAllRanges();
       // Find the nearest selection to the left to move the cursor to
-      // TODO: [ts29] handle void and null properly
+      // TODO: [ts30] handle void and null properly
       const selectionToLeftOfClick = TextSelection.findFrom(
         selectionAtClick.$head,
         -1,

@@ -20,13 +20,12 @@ export interface ResponseData {
   body?: any;
 }
 
-export class MockContextItem {
+export interface MockContextItem {
   auth: ClientBasedAuth;
   collection: Array<MediaCollectionFile>;
   collectionName: string;
 }
 
-// TODO: Convert to an interface
 export class MockContext {
   userContext: MockContextItem = {
     auth: {

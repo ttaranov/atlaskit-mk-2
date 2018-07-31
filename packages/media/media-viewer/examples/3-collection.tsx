@@ -16,9 +16,7 @@ export type State = {
 export default class Example extends React.Component<{}, {}> {
   state: State = {};
 
-  // should be optional
-  // @ts-ignore
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
   componentWillUnmount() {
     if (this.subscription) {
