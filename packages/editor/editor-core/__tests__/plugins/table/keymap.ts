@@ -21,10 +21,8 @@ import {
   pmNodeBuilder,
 } from '@atlaskit/editor-test-helpers';
 
-import {
-  TablePluginState,
-  pluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../src/plugins/table/types';
 import {
   tablesPlugin,
   extensionPlugin,

@@ -14,10 +14,8 @@ import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';
 import listPlugin from '../../../src/plugins/lists';
 import TableView from '../../../src/plugins/table/nodeviews/table';
-import {
-  TablePluginState,
-  pluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../src/plugins/table/types';
 
 describe('TableView', () => {
   const editor = (doc: any, trackEvent = () => {}) =>

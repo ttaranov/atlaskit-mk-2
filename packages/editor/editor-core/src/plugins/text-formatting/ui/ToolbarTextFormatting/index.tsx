@@ -8,59 +8,46 @@ import { toggleBold, toggleItalic, tooltip } from '../../../../keymaps';
 import { TextFormattingState } from '../../pm-plugins/main';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { ButtonGroup } from '../../../../ui/styles';
+import { toggleStrong, toggleEm } from '../../commands/text-formatting';
 
 export interface Props {
   editorView: EditorView;
-  pluginState: TextFormattingState;
+  textFormattingState: TextFormattingState;
   disabled?: boolean;
   isReducedSpacing?: boolean;
 }
 
-export interface State {
-  boldActive?: boolean;
-  boldDisabled?: boolean;
-  boldHidden?: boolean;
-  italicActive?: boolean;
-  italicDisabled?: boolean;
-  italicHidden?: boolean;
-  underlineActive?: boolean;
-  underlineDisabled?: boolean;
-  underlineHidden?: boolean;
-}
-
-export default class ToolbarTextFormatting extends PureComponent<Props, State> {
-  state: State = {};
-
-  componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-  }
-
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-  }
-
+export default class ToolbarTextFormatting extends PureComponent<Props> {
   render() {
-    const { disabled, isReducedSpacing } = this.props;
+    const { disabled, isReducedSpacing, textFormattingState } = this.props;
+    const {
+      strongHidden,
+      strongActive,
+      strongDisabled,
+      emHidden,
+      emActive,
+      emDisabled,
+    } = textFormattingState;
 
     return (
       <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
-        {this.state.boldHidden ? null : (
+        {strongHidden ? null : (
           <ToolbarButton
             spacing={isReducedSpacing ? 'none' : 'default'}
             onClick={this.handleBoldClick}
-            selected={this.state.boldActive}
-            disabled={disabled || this.state.boldDisabled}
+            selected={strongActive}
+            disabled={disabled || strongDisabled}
             title={tooltip(toggleBold)}
             iconBefore={<BoldIcon label="Bold" />}
           />
         )}
 
-        {this.state.italicHidden ? null : (
+        {emHidden ? null : (
           <ToolbarButton
             spacing={isReducedSpacing ? 'none' : 'default'}
             onClick={this.handleItalicClick}
-            selected={this.state.italicActive}
-            disabled={disabled || this.state.italicDisabled}
+            selected={emActive}
+            disabled={disabled || emDisabled}
             title={tooltip(toggleItalic)}
             iconBefore={<ItalicIcon label="Italic" />}
           />
@@ -69,32 +56,22 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     );
   }
 
-  private handlePluginStateChange = (pluginState: TextFormattingState) => {
-    this.setState({
-      boldActive: pluginState.strongActive,
-      boldDisabled: pluginState.strongDisabled,
-      boldHidden: pluginState.strongHidden,
-      italicActive: pluginState.emActive,
-      italicDisabled: pluginState.emDisabled,
-      italicHidden: pluginState.emHidden,
-      underlineActive: pluginState.underlineActive,
-      underlineDisabled: pluginState.underlineDisabled,
-      underlineHidden: pluginState.underlineHidden,
-    });
-  };
-
   @analytics('atlassian.editor.format.strong.button')
   private handleBoldClick = (): boolean => {
-    if (!this.state.boldDisabled) {
-      return this.props.pluginState.toggleStrong(this.props.editorView);
+    const { strongDisabled } = this.props.textFormattingState;
+    if (!strongDisabled) {
+      const { state, dispatch } = this.props.editorView;
+      return toggleStrong()(state, dispatch);
     }
     return false;
   };
 
   @analytics('atlassian.editor.format.em.button')
   private handleItalicClick = (): boolean => {
-    if (!this.state.italicDisabled) {
-      return this.props.pluginState.toggleEm(this.props.editorView);
+    const { emDisabled } = this.props.textFormattingState;
+    if (!emDisabled) {
+      const { state, dispatch } = this.props.editorView;
+      return toggleEm()(state, dispatch);
     }
     return false;
   };

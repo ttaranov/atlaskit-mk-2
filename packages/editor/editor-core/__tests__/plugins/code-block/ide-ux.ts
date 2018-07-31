@@ -608,6 +608,62 @@ describe('IDE UX plugin', () => {
         });
       });
     });
+
+    describe('Backspace pressed', () => {
+      describe('when cursor on line', () => {
+        describe('and next to leading indentation', () => {
+          it('should remove two spaces when indentation ends with two spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('    {<>}start middle end')),
+            );
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  start middle end')),
+            );
+          });
+          it('should only remove one space when indentation has odd number of preceding tokens', () => {
+            const { editorView } = editor(
+              doc(code_block()('   {<>}start middle end')),
+            );
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  start middle end')),
+            );
+          });
+          it('should remove tab when indentation ends with tab', () => {
+            const { editorView } = editor(
+              doc(code_block()('\t\t{<>}start middle end')),
+            );
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\tstart middle end')),
+            );
+          });
+        });
+        it('should fallback to the default Backspace when in the middle of a line', () => {
+          const { editorView } = editor(
+            doc(code_block()('  start mid  {<>}dle end')),
+          );
+          sendKeyToPm(editorView, 'Backspace');
+          // Document doesn't change since PM doesn't handle backspace itself.
+          // It normally relies on the content-editable to change
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('  start mid  dle end')),
+          );
+        });
+      });
+      describe('when selection is across multiple lines', () => {
+        it('should fallback to the default Backspace behaviour', () => {
+          const { editorView } = editor(
+            doc(code_block()('  {<} start\n  {>}end')),
+          );
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('  end')),
+          );
+        });
+      });
+    });
   });
 
   describe('Auto-closing Brackets', () => {
@@ -642,6 +698,17 @@ describe('IDE UX plugin', () => {
           insertText(editorView, right, sel);
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()(`${left}${right}`)),
+          );
+          expect(editorView.state.selection.from).toBe(sel + 1);
+        });
+        const nonMatchingBracket = right === '}' ? ']' : '}';
+        it(`should insert non-matching closing bracket when '${nonMatchingBracket}' inserted`, () => {
+          const { editorView, sel } = editor(
+            doc(code_block()(`${left}{<>}${right}`)),
+          );
+          insertText(editorView, nonMatchingBracket, sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()(`${left}${nonMatchingBracket}${right}`)),
           );
           expect(editorView.state.selection.from).toBe(sel + 1);
         });

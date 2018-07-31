@@ -8,7 +8,7 @@ export const stateKey = new PluginKey('cardPlugin');
 
 const cardPlugin: EditorPlugin = {
   nodes() {
-    return [{ name: 'inlineCard', node: inlineCard, rank: 2500 }];
+    return [{ name: 'inlineCard', node: inlineCard }];
   },
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "config": {
     "access": "public"
   },
@@ -26,10 +26,10 @@
   "dependencies": {
     "@atlaskit/avatar": "^14.0.0",
     "@atlaskit/comment": "^6.0.1",
-    "@atlaskit/editor-common": "^13.0.0",
-    "@atlaskit/editor-core": "^76.0.0",
+    "@atlaskit/editor-common": "^13.1.0",
+    "@atlaskit/editor-core": "^76.1.0",
     "@atlaskit/reactions": "^13.0.0",
-    "@atlaskit/renderer": "^19.0.0",
+    "@atlaskit/renderer": "^19.1.0",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "react-redux": "^5.0.0",
@@ -40,6 +40,6 @@
   "devDependencies": {
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/single-select": "^6.0.0",
-    "@atlaskit/util-data-test": "^10.0.0"
+    "@atlaskit/util-data-test": "^10.0.1"
   }
 }

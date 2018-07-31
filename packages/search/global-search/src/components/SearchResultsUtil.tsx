@@ -18,7 +18,7 @@ import {
 import AdvancedSearchResult from './AdvancedSearchResult';
 import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
 
-const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
+export const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
 const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
 const ADVANCED_PEOPLE_SEARCH_RESULT_ID = 'search_people';
 
@@ -51,9 +51,14 @@ export interface PersonResultProps extends BaseResultProps {
   presenceMessage?: string;
 }
 
-export function renderResults(results: Result[]) {
-  return results.map(result => {
+export function renderResults(results: Result[], sectionIndex: number) {
+  return results.map((result, index) => {
     const resultType: ResultType = result.resultType;
+    const analyticsData = {
+      sectionIndex,
+      indexWithinSection: index,
+      containerId: result.containerId,
+    };
 
     switch (resultType) {
       case ResultType.ConfluenceObjectResult: {
@@ -69,6 +74,10 @@ export function renderResults(results: Result[]) {
             contentType={confluenceResult.contentType}
             containerName={confluenceResult.containerName}
             avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
+            analyticsData={{
+              ...analyticsData,
+              contentType: confluenceResult.contentType,
+            }}
           />
         );
       }
@@ -85,6 +94,7 @@ export function renderResults(results: Result[]) {
             objectKey={jiraResult.objectKey}
             containerName={jiraResult.containerName}
             avatarUrl={jiraResult.avatarUrl}
+            analyticsData={analyticsData}
           />
         );
       }
@@ -99,6 +109,7 @@ export function renderResults(results: Result[]) {
             href={containerResult.href}
             type={containerResult.analyticsType}
             avatarUrl={containerResult.avatarUrl}
+            analyticsData={analyticsData}
           />
         );
       }
@@ -115,6 +126,7 @@ export function renderResults(results: Result[]) {
             avatarUrl={personResult.avatarUrl}
             mentionName={personResult.mentionName}
             presenceMessage={personResult.presenceMessage}
+            analyticsData={analyticsData}
           />
         );
       }

@@ -2,6 +2,7 @@
 
 import React, { PureComponent, type Node } from 'react';
 import { Transition } from 'react-transition-group';
+import type { CollapseListener } from './types';
 
 const DURATION = 300;
 
@@ -31,7 +32,9 @@ export function isTransitioning(state: TransitionState) {
   return ['entering', 'exiting'].includes(state);
 }
 
-type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
+function NOOP() {}
+
+export type TransitionState = 'entered' | 'entering' | 'exited' | 'exiting';
 type Props = {
   children: ({
     transitionStyle: Object,
@@ -43,10 +46,20 @@ type Props = {
   properties: Array<string>,
   from: Array<number | string>,
   to: Array<number | string>,
+  onExpandStart: CollapseListener,
+  onExpandEnd: CollapseListener,
+  onCollapseStart: CollapseListener,
+  onCollapseEnd: CollapseListener,
 };
 
 export default class ResizeTransition extends PureComponent<Props> {
   target: HTMLElement;
+  static defaultProps = {
+    onExpandStart: NOOP,
+    onExpandEnd: NOOP,
+    onCollapseStart: NOOP,
+    onCollapseEnd: NOOP,
+  };
   getTarget = (ref: HTMLElement) => {
     this.target = ref;
 
@@ -55,10 +68,26 @@ export default class ResizeTransition extends PureComponent<Props> {
   };
 
   render() {
-    const { userIsDragging, properties, from, to } = this.props;
+    const {
+      from,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
+      properties,
+      to,
+      userIsDragging,
+    } = this.props;
 
     return (
-      <Transition in={this.props.in} timeout={DURATION}>
+      <Transition
+        onEntering={onExpandStart}
+        onEntered={onExpandEnd}
+        onExiting={onCollapseStart}
+        onExited={onCollapseEnd}
+        in={this.props.in}
+        timeout={DURATION}
+      >
         {transitionState => {
           // transitions interupt manual resize behaviour
           const cssTransition = !userIsDragging

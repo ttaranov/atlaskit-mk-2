@@ -14,7 +14,7 @@ import {
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { uuid } from '@atlaskit/editor-common';
 
-import { stateKey as blockTypePluginKey } from '../../../../src/plugins/block-type/pm-plugins/main';
+import { pluginKey as blockTypePluginKey } from '../../../../src/plugins/block-type/pm-plugins/main';
 import DropdownMenu from '../../../../src/ui/DropdownMenu';
 import ToolbarInsertBlock from '../../../../src/plugins/insert-block/ui/ToolbarInsertBlock';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
@@ -204,7 +204,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView, pluginState: pluginStateBlockType } = editor(
       doc(p('text')),
     );
-    const spy = jest.fn();
+    const spy = jest.fn(blockType => {
+      return () => {
+        return true;
+      };
+    });
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -218,12 +222,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    pluginStateBlockType.insertBlockType = jest.fn();
     const panelButton = toolbarOption
       .find(Item)
       .filterWhere(n => n.text().indexOf('Panel') >= 0);
     panelButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('panel');
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.panel.button',
     );
@@ -234,7 +238,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView, pluginState: pluginStateBlockType } = editor(
       doc(p('text')),
     );
-    const spy = jest.fn();
+    const spy = jest.fn(blockType => {
+      return () => {
+        return true;
+      };
+    });
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -248,12 +256,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    pluginStateBlockType.insertBlockType = jest.fn();
     const codeblockButton = toolbarOption
       .find(Item)
       .filterWhere(n => n.text().indexOf('Code block') >= 0);
     codeblockButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('codeblock');
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.codeblock.button',
     );
@@ -264,7 +272,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView, pluginState: pluginStateBlockType } = editor(
       doc(p('text')),
     );
-    const spy = jest.fn();
+    const spy = jest.fn(blockType => {
+      return () => {
+        return true;
+      };
+    });
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -284,6 +296,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
     blockquoteButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('blockquote');
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.blockquote.button',
     );
@@ -292,9 +305,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should insert decision when decision option is clicked', () => {
     uuid.setStatic('local-highlight');
-    const { editorView } = editor(
-      doc(p('text')),
-    );
+    const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
         decisionSupported={true}

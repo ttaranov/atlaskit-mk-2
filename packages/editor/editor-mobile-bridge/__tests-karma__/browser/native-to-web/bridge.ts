@@ -4,6 +4,7 @@ import mobileEditor from '../../../src/mobile-editor-element';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { mountEditor } from './utils';
+import { TextSelection } from 'prosemirror-state';
 
 declare var bridge;
 
@@ -35,6 +36,25 @@ describe('NativeToWebBridge', () => {
 
     const content = bridge.getContent();
     expect(JSON.parse(content)).to.be.deep.equal(originalContent);
+  });
+
+  it('can set headings', () => {
+    const withHeading = {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          attrs: { level: 2 },
+          type: 'heading',
+          content: [{ type: 'text', text: 'test' }],
+        },
+      ],
+    };
+
+    bridge.editorActions.replaceDocument(JSON.stringify(originalContent));
+    bridge.onBlockSelected('heading2');
+    const content = bridge.getContent();
+    expect(JSON.parse(content)).to.be.deep.equal(withHeading);
   });
 });
 

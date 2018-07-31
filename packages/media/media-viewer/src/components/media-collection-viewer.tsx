@@ -53,7 +53,9 @@ export class MediaCollectionViewer extends Component<
       MediaViewer,
       mediaViewerConfiguration,
     } = props;
-    const { config: { authProvider } } = context;
+    const {
+      config: { authProvider },
+    } = context;
     const pageSize =
       this.props.pageSize || MediaCollectionViewer.defaultPageSize;
 
