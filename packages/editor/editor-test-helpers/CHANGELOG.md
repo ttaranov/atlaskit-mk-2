@@ -1,5 +1,9 @@
 # @atlaskit/editor-test-helpers
 
+## 5.1.0
+- [minor] Updated dependencies [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+  - @atlaskit/editor-core@76.4.0
+
 ## 5.0.3
 - [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
   - @atlaskit/media-test-helpers@15.2.0

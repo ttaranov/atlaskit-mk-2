@@ -24,6 +24,7 @@ import {
 import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
+  SearchPerformanceTiming,
 } from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { take } from '../SearchResultsUtil';
@@ -70,7 +71,7 @@ export interface State {
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
-  keepRecentActivityResults: boolean;
+  keepPreQueryState: boolean;
 }
 
 /**
@@ -106,7 +107,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     objectResults: [],
     spaceResults: [],
     peopleResults: [],
-    keepRecentActivityResults: true,
+    keepPreQueryState: true,
   };
 
   handleSearch = (newLatestSearchQuery: string) => {
@@ -126,7 +127,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           objectResults: [],
           spaceResults: [],
           peopleResults: [],
-          keepRecentActivityResults: true,
+          keepPreQueryState: true,
         },
         () => this.fireShownPreQueryEvent(),
       );
@@ -218,18 +219,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   fireShownPostQueryEvent(
-    requestStartTime: number,
-    quickNavElapsedTime: number,
+    searchPerformanceTiming: SearchPerformanceTiming,
     resultsDetails: ShownAnalyticsAttributes,
   ) {
     const { createAnalyticsEvent } = this.props;
     if (createAnalyticsEvent) {
-      const elapsedMs: number = performanceNow() - requestStartTime;
-
       firePostQueryShownEvent(
         resultsDetails,
-        elapsedMs,
-        quickNavElapsedTime,
+        searchPerformanceTiming,
         this.state.searchSessionId,
         this.state.latestSearchQuery,
         createAnalyticsEvent,
@@ -238,8 +235,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   doSearch = async (query: string) => {
-    const startTime = performanceNow();
-    let quickNavTime;
+    const startTime: number = performanceNow();
 
     this.setState({
       isLoading: true,
@@ -249,7 +245,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       // rethrow to fail the promise
       throw error;
     });
-    quickNavPromise.then(() => (quickNavTime = performanceNow() - startTime));
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query),
       new Map<Scope, Result[]>(),
@@ -262,17 +257,31 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       this.handleSearchErrorAnalyticsThunk('search-people'),
     );
 
+    const mapPromiseToPerformanceTime = p =>
+      p.then(() => performanceNow() - startTime);
+
+    const timingPromise = [
+      quickNavPromise,
+      confXpSearchPromise,
+      searchPeoplePromise,
+    ].map(mapPromiseToPerformanceTime);
+
     try {
       const [
         objectResults,
         spaceResultsMap = new Map<Scope, Result[]>(),
         peopleResults = [],
+        quickNavElapsedMs,
+        confSearchElapsedMs,
+        peopleElapsedMs,
       ] = await Promise.all([
         quickNavPromise,
         confXpSearchPromise,
         searchPeoplePromise,
+        ...timingPromise,
       ]);
 
+      const elapsedMs = performanceNow() - startTime;
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
@@ -281,12 +290,17 @@ export class ConfluenceQuickSearchContainer extends React.Component<
             peopleResults,
             isError: false,
             isLoading: false,
-            keepRecentActivityResults: false,
+            keepPreQueryState: false,
           },
           () => {
             this.fireShownPostQueryEvent(
-              startTime,
-              quickNavTime,
+              {
+                startTime,
+                elapsedMs,
+                confSearchElapsedMs,
+                peopleElapsedMs,
+                quickNavElapsedMs,
+              },
               buildShownEventDetails(
                 take(this.state.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
                 take(this.state.spaceResults, MAX_SPACES),
@@ -300,7 +314,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       this.setState({
         isError: true,
         isLoading: false,
-        keepRecentActivityResults: false,
+        keepPreQueryState: false,
       });
     }
   };
@@ -379,7 +393,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       recentlyViewedPages,
       recentlyViewedSpaces,
       recentlyInteractedPeople,
-      keepRecentActivityResults,
+      keepPreQueryState,
     } = this.state;
 
     return (
@@ -406,9 +420,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyViewedPages={recentlyViewedPages}
           recentlyViewedSpaces={recentlyViewedSpaces}
           recentlyInteractedPeople={recentlyInteractedPeople}
-          keepRecentActivityResults={keepRecentActivityResults}
+          keepPreQueryState={keepPreQueryState}
           searchSessionId={searchSessionId}
-          screenCounters={this.screenCounters}
+          {...this.screenCounters}
         />
       </GlobalQuickSearch>
     );

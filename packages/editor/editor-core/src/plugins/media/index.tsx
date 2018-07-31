@@ -78,6 +78,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           providerFactory,
           errorReporter,
           portalProviderAPI,
+          reactContext,
         }) =>
           createPlugin(
             schema,
@@ -124,6 +125,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
             },
+            reactContext,
             dispatch,
             props.appearance,
           ),
@@ -177,6 +179,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     quickInsert: [
       {
         title: 'Files and images',
+        priority: 200,
         keywords: ['media'],
         icon: () => <EditorImageIcon label="Files and images" />,
         action(insert, state) {

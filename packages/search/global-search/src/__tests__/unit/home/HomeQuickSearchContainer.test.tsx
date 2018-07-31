@@ -1,29 +1,30 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import { ResultItemGroup } from '@atlaskit/quick-search';
 import {
   HomeQuickSearchContainer,
   Props,
-} from '../../components/home/HomeQuickSearchContainer';
-import { Result } from '../../model/Result';
-import GlobalQuickSearch from '../../components/GlobalQuickSearch';
-import { Scope } from '../../api/CrossProductSearchClient';
-import SearchError from '../../components/SearchError';
-import { delay, makeJiraObjectResult } from './_test-util';
+} from '../../../components/home/HomeQuickSearchContainer';
+import { Result } from '../../../model/Result';
+import GlobalQuickSearch from '../../../components/GlobalQuickSearch';
+import { Scope } from '../../../api/CrossProductSearchClient';
+import SearchError from '../../../components/SearchError';
+import { delay, makeJiraObjectResult } from '../_test-util';
 import {
   noResultsPeopleSearchClient,
   errorPeopleSearchClient,
-} from './mocks/_mockPeopleSearchClient';
+} from '../mocks/_mockPeopleSearchClient';
 import {
   noResultsCrossProductSearchClient,
   errorCrossProductSearchClient,
   singleResultCrossProductSearchClient,
   makeSingleResultCrossProductSearchResponse,
-} from './mocks/_mockCrossProductSearchClient';
+} from '../mocks/_mockCrossProductSearchClient';
 import {
   noResultsRecentSearchClient,
   errorRecentSearchClient,
-} from './mocks/_mockRecentSearchClient';
+} from '../mocks/_mockRecentSearchClient';
+import SearchResultsState from '../../../components/home/SearchResultsState';
+import PreQueryState from '../../../components/home/PreQueryState';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
@@ -39,19 +40,6 @@ function searchFor(query: string, wrapper: ShallowWrapper) {
 async function waitForRender(wrapper: ShallowWrapper, millis?: number) {
   await delay(millis);
   wrapper.update();
-}
-
-enum Group {
-  Recent = 'recent',
-  Jira = 'jira',
-  Confluence = 'confluence',
-  People = 'people',
-}
-
-function findGroup(group: Group, wrapper: ShallowWrapper) {
-  return wrapper
-    .find(ResultItemGroup)
-    .findWhere(n => n.key() === group.valueOf());
 }
 
 function render(partialProps?: Partial<Props>) {
@@ -132,8 +120,9 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    const group = findGroup(Group.Recent, wrapper);
-    expect(group.children()).toHaveLength(1);
+    expect(wrapper.find(SearchResultsState).prop('recentResults')).toHaveLength(
+      1,
+    );
   });
 
   it('should render recently viewed items on mount', async () => {
@@ -155,8 +144,9 @@ describe('HomeQuickSearchContainer', () => {
 
     await waitForRender(wrapper);
 
-    const group = findGroup(Group.Recent, wrapper);
-    expect(group.children()).toHaveLength(1);
+    expect(
+      wrapper.find(PreQueryState).prop('recentlyViewedItems'),
+    ).toHaveLength(1);
   });
 
   it('should render jira results', async () => {
@@ -169,8 +159,9 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    const group = findGroup(Group.Jira, wrapper);
-    expect(group.children()).toHaveLength(2); // result + search jira item
+    expect(wrapper.find(SearchResultsState).prop('jiraResults')).toHaveLength(
+      1,
+    );
   });
 
   it('should render confluence results', async () => {
@@ -183,8 +174,9 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    const group = findGroup(Group.Confluence, wrapper);
-    expect(group.children()).toHaveLength(2); // result + search conf item
+    expect(
+      wrapper.find(SearchResultsState).prop('confluenceResults'),
+    ).toHaveLength(1);
   });
 
   it('should render people results', async () => {
@@ -202,8 +194,9 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    const group = findGroup(Group.People, wrapper);
-    expect(group.children()).toHaveLength(2); // result + search people item
+    expect(wrapper.find(SearchResultsState).prop('peopleResults')).toHaveLength(
+      1,
+    );
   });
 
   it('should perform searches in parallel', async () => {
@@ -243,11 +236,12 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('once', wrapper);
     await waitForRender(wrapper, 6);
 
-    const jiraResults = findGroup(Group.Jira, wrapper).children();
-    const recentResults = findGroup(Group.Recent, wrapper).children();
-
-    expect(jiraResults).not.toHaveLength(0);
-    expect(recentResults).not.toHaveLength(0);
+    expect(wrapper.find(SearchResultsState).prop('jiraResults')).toHaveLength(
+      1,
+    );
+    expect(wrapper.find(SearchResultsState).prop('recentResults')).toHaveLength(
+      1,
+    );
   });
 
   it('should not display outdated results', async () => {
@@ -296,8 +290,8 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('twice - this will return the current fast result', wrapper);
     await waitForRender(wrapper, 10);
 
-    const jiraResults = findGroup(Group.Jira, wrapper).children();
-    expect(jiraResults.first().prop('name')).toBe('current result');
+    const results = wrapper.find(SearchResultsState).prop('jiraResults');
+    expect(results[0].name).toBe('current result');
   });
 
   describe('Analytics', () => {

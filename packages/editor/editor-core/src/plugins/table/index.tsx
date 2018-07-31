@@ -96,6 +96,7 @@ const tablesPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Table',
+        priority: 600,
         icon: () => <TableIcon label="Table" />,
         action(insert, state) {
           return insert(createTable(state.schema));

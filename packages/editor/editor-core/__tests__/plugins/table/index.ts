@@ -284,6 +284,108 @@ describe('table plugin', () => {
         });
       });
     });
+
+    describe('when adding a new row', () => {
+      describe('when table has merged columns in rows', () => {
+        it('copies the structure', () => {
+          const { editorView } = editor(
+            doc(
+              table()(
+                tr(td({})(p('row1')), td()(p())),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('row2{<>}'))),
+              ),
+            ),
+            trackEvent,
+          );
+
+          insertRow(2)(editorView.state, editorView.dispatch);
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              table()(
+                tr(td({})(p('row1')), td()(p())),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('{<>}'))),
+              ),
+            ),
+          );
+
+          expect(trackEvent).toHaveBeenLastCalledWith(
+            'atlassian.editor.format.table.row.button',
+          );
+
+          editorView.destroy();
+        });
+      });
+
+      it('copies the structure from a tableCell', () => {
+        const { editorView } = editor(
+          doc(
+            table()(
+              tr(th({})(p()), th({})(p())),
+              tr(td({ background: '#e6fcff' })(p('row1')), td()(p('{<>}'))),
+              tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+            ),
+          ),
+          trackEvent,
+        );
+
+        insertRow(2)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(th({})(p()), th({})(p())),
+              tr(td({ background: '#e6fcff' })(p('row1')), td()(p())),
+              tr(td({ background: '#e6fcff' })(p('{<>}')), td()(p())),
+              tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+            ),
+          ),
+        );
+
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.format.table.row.button',
+        );
+
+        editorView.destroy();
+      });
+
+      it('copies the structure from a tableHeader', () => {
+        const { editorView } = editor(
+          doc(
+            table()(
+              tr(th({})(p('row1')), th()(p()), th()(p('{<>}'))),
+              tr(
+                th({ colspan: 2, background: '#e6fcff' })(p('row2')),
+                td()(p()),
+              ),
+            ),
+          ),
+          trackEvent,
+        );
+
+        insertRow(2)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(th({})(p('row1')), th()(p()), th()(p())),
+              tr(
+                th({ colspan: 2, background: '#e6fcff' })(p('row2')),
+                td()(p()),
+              ),
+              tr(th({ colspan: 2, background: '#e6fcff' })(p()), td()(p())),
+            ),
+          ),
+        );
+
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.format.table.row.button',
+        );
+
+        editorView.destroy();
+      });
+    });
   });
 
   describe('selectColumn(number)', () => {

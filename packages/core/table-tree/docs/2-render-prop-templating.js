@@ -15,8 +15,10 @@ export default md`
   ## Examples
   ${(
     <Example
-      Component={require('../examples/render-prop-async').default}
-      source={require('!!raw-loader!../examples/render-prop-async')}
+      Component={
+        require('../examples/render-prop-async-with-update-items').default
+      }
+      source={require('!!raw-loader!../examples/render-prop-async-with-update-items')}
       title="Basic"
       language="javascript"
     />
