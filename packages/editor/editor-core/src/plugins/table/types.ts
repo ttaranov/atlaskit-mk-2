@@ -17,6 +17,7 @@ export interface PluginConfig {
   isHeaderRowRequired?: boolean;
   stickToolbarToBottom?: boolean;
   permittedLayouts?: PermittedLayoutsDescriptor;
+  allowControls?: boolean;
 }
 
 export interface TablePluginState {
