@@ -104,7 +104,7 @@ describe('Video viewer', () => {
   });
 
   it('shows error message when there are not video artifacts in the media item', async () => {
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(
       authPromise,
       {
