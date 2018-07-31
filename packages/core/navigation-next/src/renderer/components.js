@@ -172,8 +172,8 @@ const Section = ({
 }: SectionProps) =>
   items.length ? (
     <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
-      {({ css }) => (
-        <div css={{ ...css }}>
+      {({ className }) => (
+        <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
         </div>
       )}
