@@ -1,15 +1,12 @@
 const BASE_ZOOM_LEVELS = [0.06, 0.12, 0.24, 0.48, 1, 1.5, 2, 4, 6, 8];
 
+const deduplicated = (nums: number[]): number[] =>
+  nums.sort().filter((num, pos) => pos === 0 || num != nums[pos - 1]);
+
 export class ZoomLevel {
   public readonly value: number;
-  public readonly zoomLevels: number[];
-  public readonly min: number;
-  public readonly max: number;
 
   constructor(public readonly initialValue: number, selectedValue?: number) {
-    this.zoomLevels = BASE_ZOOM_LEVELS.map(i => i * initialValue);
-    this.min = this.zoomLevels[0];
-    this.max = this.zoomLevels.slice(-1)[0];
     if (!selectedValue) {
       selectedValue = initialValue;
     }
@@ -20,6 +17,22 @@ export class ZoomLevel {
     } else {
       this.value = selectedValue;
     }
+  }
+
+  get zoomLevels(): number[] {
+    return deduplicated(
+      BASE_ZOOM_LEVELS.map(i => i * this.initialValue)
+        .concat(1) // make sure 100% is selectable
+        .sort(),
+    ); // and that all levels are ordered
+  }
+
+  get min(): number {
+    return this.zoomLevels[0];
+  }
+
+  get max(): number {
+    return this.zoomLevels.slice(-1)[0];
   }
 
   get asPercentage(): string {

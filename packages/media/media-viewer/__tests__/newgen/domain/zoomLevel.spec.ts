@@ -1,7 +1,10 @@
 import { ZoomLevel } from '../../../src/newgen/domain/zoomLevel';
 import * as jsc from 'jsverify';
 
-const scaleGenerator = () => jsc.number(0.1, 2.0);
+const scaleGenerator = () =>
+  jsc.oneof(
+    [jsc.number(0.1, 2.0), jsc.constant(1)], // guarantees that 1 will be checked
+  );
 
 describe('ZoomLevel', () => {
   jsc.property(
@@ -10,6 +13,15 @@ describe('ZoomLevel', () => {
     scale => {
       const zoomLevel = new ZoomLevel(scale);
       return zoomLevel.value == scale;
+    },
+  );
+
+  jsc.property(
+    'the zoomLevel of 100% does always exist exactly once',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return zoomLevel.zoomLevels.filter(i => i === 1).length === 1;
     },
   );
 
