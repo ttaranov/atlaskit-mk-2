@@ -1,5 +1,12 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 4.0.4
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/editor-common@13.2.6
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-core@76.4.2
+
 ## 4.0.3
 - [patch] Make marked text expel any whitespace on its borders to make more compliant markdown. ED-5142 [00c9e2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00c9e2b)
 - [none] Updated dependencies [00c9e2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00c9e2b)

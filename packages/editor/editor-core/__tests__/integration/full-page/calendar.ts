@@ -1,7 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-import { timestampToString } from '@atlaskit/editor-common';
 
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
@@ -37,7 +36,7 @@ BrowserTestCase(
     const insertMenu = '[aria-label="Open or close insert block dropdown"]';
     const dateMenu = 'span=Date';
     const calendar = '[aria-label="calendar"]';
-    const dateView = `span=${timestampToString(new Date().getTime())}`;
+    const dateView = `span.dateView-content-wrap`;
 
     const browser = await new Page(client);
 
@@ -61,7 +60,7 @@ BrowserTestCase(
     const insertMenu = '[aria-label="Open or close insert block dropdown"]';
     const dateMenu = 'span=Date';
     const calendar = '[aria-label="calendar"]';
-    const dateView = `span=${timestampToString(new Date().getTime())}`;
+    const dateView = `span.dateView-content-wrap`;
 
     const browser = await new Page(client);
 
