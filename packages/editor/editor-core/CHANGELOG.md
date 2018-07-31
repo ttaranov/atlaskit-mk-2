@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 76.4.4
+- [patch] FS-2131 add date element [b026429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026429)
+- [patch] Updated dependencies [b026429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026429)
+  - @atlaskit/date@0.1.0
+
 ## 76.4.3
 - [patch] ED-4825, copying single line of code should create inline code mark. [c99642b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c99642b)
 - [patch] Updated dependencies [c99642b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c99642b)
