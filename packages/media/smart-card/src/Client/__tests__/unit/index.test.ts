@@ -213,7 +213,9 @@ describe('Client', () => {
 
         case 1:
           expect(status).toEqual('resolved');
+
           client.reload(definitionId);
+
           break;
 
         case 2:
@@ -237,137 +239,145 @@ describe('Client', () => {
     });
   });
 
-  // it('should not reload when reload is called for a different provider', done => {
-  //   expect.assertions(2);
-  //   resolved();
-  //   resolved();
-  //   let count = 0;
-  //   const client = createClient();
-  //   const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
-  //     switch (count++) {
-  //       case 0:
-  //         expect(status).toEqual('resolving');
-  //         break;
+  it('should not reload when reload is called for a different provider', done => {
+    expect.assertions(2);
+    resolved();
+    resolved();
+    let count = 0;
+    const client = createClient();
+    const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
+      switch (count++) {
+        case 0:
+          expect(status).toEqual('resolving');
+          break;
 
-  //       case 1:
-  //         expect(status).toEqual('resolved');
-  //         client.reload('def-456');
-  //         setTimeout(() => {
-  //           // allow other requests to happen (and fail the test)
-  //           subscription.unsubscribe();
-  //           done();
-  //         }, 150);
+        case 1:
+          expect(status).toEqual('resolved');
 
-  //         break;
+          client.reload('def-456');
 
-  //       default:
-  //         done.fail();
-  //     }
-  //   });
-  // });
+          setTimeout(() => {
+            // allow other requests to happen (and fail the test)
+            subscription.unsubscribe();
+            done();
+          }, 150);
 
-  // it('should immediately replay the most recent state to additional subscribers', done => {
-  //   expect.assertions(1);
-  //   resolved();
-  //   const client = createClient();
-  //   const subscription = client
-  //     .get(OBJECT_URL)
-  //     .subscribe(async stateFromFirstObserver => {
-  //       if (stateFromFirstObserver.status === 'resolved') {
-  //         const stateFromSecondObserver = await client
-  //           .get(OBJECT_URL)
-  //           .pipe(nth(0))
-  //           .toPromise();
-  //         expect(stateFromSecondObserver).toEqual(stateFromFirstObserver);
-  //         subscription.unsubscribe();
-  //         done();
-  //       }
-  //     });
-  // });
+          break;
 
-  // it('should be resolved from the provider when a resolver is provided and the resolver resolves first', async () => {
-  //   resolved();
-  //   const state = await createClient({
-  //     TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
-  //   })
-  //     .get(OBJECT_URL)
-  //     .pipe(nth(2))
-  //     .toPromise();
-  //   expect(state.status).toEqual('resolved');
-  //   expect(state.services).toEqual([]);
-  //   expect(state.data).toEqual(
-  //     expect.objectContaining({
-  //       name: 'From resolver',
-  //     }),
-  //   );
-  // });
+        default:
+          done.fail();
+      }
+    });
+  });
 
-  // it('should be resolved from the provider when a resolver is provided and the ORS errored', async () => {
-  //   errored();
-  //   const state = await createClient({
-  //     TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
-  //   })
-  //     .get(OBJECT_URL)
-  //     .pipe(nth(2))
-  //     .toPromise();
-  //   expect(state.status).toEqual('resolved');
-  //   expect(state.services).toEqual([]);
-  //   expect(state.data).toEqual(
-  //     expect.objectContaining({
-  //       name: 'From resolver',
-  //     }),
-  //   );
-  // });
+  it('should immediately replay the most recent state to additional subscribers', done => {
+    expect.assertions(1);
+    resolved();
+    const client = createClient();
+    const subscription = client
+      .get(OBJECT_URL)
+      .subscribe(async stateFromFirstObserver => {
+        if (stateFromFirstObserver.status === 'resolved') {
+          const stateFromSecondObserver = await client
+            .get(OBJECT_URL)
+            .take(1)
+            .takeLast(1)
+            .toPromise();
+          expect(stateFromSecondObserver).toEqual(stateFromFirstObserver);
+          subscription.unsubscribe();
+          done();
+        }
+      });
+  });
 
-  // it('should be resolved from the provider when a resolver is provided and the ORS was not-found', async () => {
-  //   notfound();
-  //   const state = await createClient({
-  //     TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
-  //   })
-  //     .get(OBJECT_URL)
-  //     .pipe(nth(2))
-  //     .toPromise();
-  //   expect(state.status).toEqual('resolved');
-  //   expect(state.services).toEqual([]);
-  //   expect(state.data).toEqual(
-  //     expect.objectContaining({
-  //       name: 'From resolver',
-  //     }),
-  //   );
-  // });
+  it('should be resolved from the provider when a resolver is provided and the resolver resolves first', async () => {
+    resolved();
+    const state = await createClient({
+      TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
+    })
+      .get(OBJECT_URL)
+      .take(3)
+      .takeLast(1)
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'From resolver',
+      }),
+    );
+  });
 
-  // it('should be resolved from the ORS when a resolver is provided and the resolver does not resolve first', async () => {
-  //   resolved();
-  //   const resolver = () =>
-  //     new Promise(resolve =>
-  //       setTimeout(() => resolve({ name: 'From resolver' }), 100),
-  //     );
-  //   const state = await createClient({ TEMPORARY_resolver: resolver })
-  //     .get(OBJECT_URL)
-  //     .pipe(nth(2))
-  //     .toPromise();
-  //   expect(state.status).toEqual('resolved');
-  //   expect(state.services).toEqual([]);
-  //   expect(state.data).toEqual(
-  //     expect.objectContaining({
-  //       name: 'My Page',
-  //     }),
-  //   );
-  // });
+  it('should be resolved from the provider when a resolver is provided and the ORS errored', async () => {
+    errored();
+    const state = await createClient({
+      TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
+    })
+      .get(OBJECT_URL)
+      .take(3)
+      .takeLast(1)
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'From resolver',
+      }),
+    );
+  });
 
-  // it('should be resolved from the ORS when a resolver is provided and the resolver is errored', async () => {
-  //   resolved();
-  //   const resolver = () => Promise.reject(new Error('😵'));
-  //   const state = await createClient({ TEMPORARY_resolver: resolver })
-  //     .get(OBJECT_URL)
-  //     .pipe(nth(2))
-  //     .toPromise();
-  //   expect(state.status).toEqual('resolved');
-  //   expect(state.services).toEqual([]);
-  //   expect(state.data).toEqual(
-  //     expect.objectContaining({
-  //       name: 'My Page',
-  //     }),
-  //   );
-  // });
+  it('should be resolved from the provider when a resolver is provided and the ORS was not-found', async () => {
+    notfound();
+    const state = await createClient({
+      TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
+    })
+      .get(OBJECT_URL)
+      .take(3)
+      .takeLast(1)
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'From resolver',
+      }),
+    );
+  });
+
+  it('should be resolved from the ORS when a resolver is provided and the resolver does not resolve first', async () => {
+    resolved();
+    const resolver = () =>
+      new Promise(resolve =>
+        setTimeout(() => resolve({ name: 'From resolver' }), 100),
+      );
+    const state = await createClient({ TEMPORARY_resolver: resolver })
+      .get(OBJECT_URL)
+      .take(3)
+      .takeLast(1)
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'My Page',
+      }),
+    );
+  });
+
+  it('should be resolved from the ORS when a resolver is provided and the resolver is errored', async () => {
+    resolved();
+    const resolver = () => Promise.reject(new Error('😵'));
+    const state = await createClient({ TEMPORARY_resolver: resolver })
+      .get(OBJECT_URL)
+      .take(3)
+      .takeLast(1)
+      .toPromise();
+    expect(state.status).toEqual('resolved');
+    expect(state.services).toEqual([]);
+    expect(state.data).toEqual(
+      expect.objectContaining({
+        name: 'My Page',
+      }),
+    );
+  });
 });

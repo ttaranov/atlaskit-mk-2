@@ -109,8 +109,7 @@ export function createObjectResolverServiceObservable(
         }),
       );
     }),
-    catchError(e => {
-      console.log('Got error: >>>>', e);
+    catchError(() => {
       return of<ObjectState>({
         status: 'errored',
         services: [],
