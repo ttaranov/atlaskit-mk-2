@@ -11,10 +11,8 @@ const { print, buildBanner } = require('../banner');
 const utils = require('../config/utils');
 
 async function runBuild() {
-  const [entry] = process.argv.slice(2);
-  const env = 'production';
+  const mode = 'production';
   const websiteEnv = process.env.WEBSITE_ENV || 'local';
-  const includePatterns = true;
   const noMinimize = !!process.argv.find(arg =>
     arg.startsWith('--no-minimize'),
   );
@@ -22,15 +20,9 @@ async function runBuild() {
 
   print(buildBanner());
 
-  //
-  // Creating webpack instance
-  //
-
   const config = createConfig({
-    entry,
-    env,
+    mode,
     websiteEnv,
-    includePatterns,
     noMinimize,
     report,
   });

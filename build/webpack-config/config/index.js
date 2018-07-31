@@ -8,102 +8,57 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
 
-// const vendorLibraries = [
-//   'react',
-//   'react-dom',
-//   'styled-components',
-//   'highlight.js',
-//   'react-router',
-//   'react-router-dom',
-// ];
-
 module.exports = function createWebpackConfig(
   {
-    entry,
-    host,
-    port,
     globs = createDefaultGlob(),
-    includePatterns = false,
-    env = 'development',
+    mode = 'development',
     websiteEnv = 'local',
-    cwd = process.cwd(),
+    websiteDir = process.cwd(), // if not passed in, we must be in the websiteDir already
     noMinimize = false,
     report = false,
   } /*: {
-    entry: string,
-    host?: string,
-    port?: number,
     globs?: Array<string>,
-    cwd?: string,
-    includePatterns: boolean,
-    env: string,
+    websiteDir?: string,
+    mode: string,
     websiteEnv: string,
     noMinimize?: boolean,
     report?: boolean,
   }*/,
-) /*: {
-  entry: {},
-  output: {},
-  devtool: boolean | string,
-  module: {},
-  resolve: {},
-  resolveLoader: {},
-  plugins: any[],
-}*/ {
-  const optimization =
-    env === 'development'
-      ? undefined
-      : {
-          nodeEnv: 'production',
-          minimizer: [uglify()],
-          minimize: true,
-          splitChunks: {
-            maxAsyncRequests: Infinity,
-          },
-        };
+) {
+  const isProduction = mode === 'production';
+
   return {
-    cache: true,
-    mode: env,
-    performance: false,
+    mode,
+    performance: {
+      // performance hints are used to warn you about large bundles but come at their own perf cost
+      hints: false,
+    },
+    // parallelism: ??, TODO
     entry: {
-      // TODO: ideally we should have a vendor chunk, with just external library dependencies.
-      // vendor: vendorLibraries,
-      main:
-        env === 'development' && host && port
-          ? [
-              `${require.resolve(
-                'webpack-dev-server/client',
-              )}?http://${host}:${port}/`,
-              path.join(process.cwd(), entry),
-            ]
-          : path.join(cwd, entry),
-      examples:
-        env === 'development' && host && port
-          ? [
-              `${require.resolve(
-                'webpack-dev-server/client',
-              )}?http://${host}:${port}/`,
-              path.join(process.cwd(), './src/examples-entry.js'),
-            ]
-          : path.join(cwd, './src/examples-entry.js'),
+      main: getEntries({
+        isProduction,
+        websiteDir,
+        entryPath: './src/index.js',
+      }),
+      examples: getEntries({
+        isProduction,
+        websiteDir,
+        entryPath: './src/examples-entry.js',
+      }),
     },
     output: {
       filename: '[name].js',
-      path: path.resolve(cwd, 'dist'),
+      path: path.resolve(websiteDir, 'dist'),
       publicPath: '/',
     },
-    devtool: env === 'production' ? false : 'cheap-module-source-map',
+    devtool: isProduction ? false : 'cheap-module-source-map',
     module: {
       rules: [
         {
           test: /SITE_DATA$/,
           loader: require.resolve('bolt-fs-loader'),
           options: {
-            include: [
-              'docs/**/*.md',
-              includePatterns && 'patterns/**/*.js',
-              ...globs,
-            ].filter(p => !!p),
+            include: ['docs/**/*.md', ...globs].filter(p => !!p),
             exclude: ['**/node_modules/**', 'packages/build/docs/**'],
           },
         },
@@ -199,51 +154,50 @@ module.exports = function createWebpackConfig(
     },
     resolveLoader: {
       modules: [
-        path.join(__dirname, '..', '..', '..', 'build/'),
+        path.join(__dirname, '..', '..'), // resolve custom loaders from `build/` dir
         'node_modules',
       ],
     },
-    plugins: plugins({ cwd, env, websiteEnv, noMinimize, report }),
-    optimization,
+    plugins: getPlugins({ websiteDir, isProduction, websiteEnv, report }),
+    optimization: getOptimizations({
+      isProduction,
+      noMinimizeFlag: noMinimize,
+    }),
   };
 };
 
-function plugins(
+function getPlugins(
   {
-    cwd,
-    env,
+    websiteDir,
+    isProduction,
     websiteEnv,
-    noMinimize,
     report,
-  } /*: { cwd: string, env: string, websiteEnv: string, noMinimize: boolean, report: boolean } */,
+  } /*: { websiteDir: string, websiteEnv: string, report: boolean, isProduction: boolean } */,
 ) {
+  const faviconPath = path.join(
+    websiteDir,
+    `public/favicon${!isProduction ? '-dev' : ''}.ico`,
+  );
+  const HTMLPageTitle = `Atlaskit by Atlassian${!isProduction ? ' - DEV' : ''}`;
   const plugins = [
     new HtmlWebpackPlugin({
-      template: path.join(cwd, 'public/index.html.ejs'),
-      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
-      favicon: path.join(
-        cwd,
-        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
-      ),
+      template: path.join(websiteDir, 'public/index.html.ejs'),
+      title: HTMLPageTitle,
+      favicon: faviconPath,
       excludeChunks: ['examples'],
     }),
 
     new HtmlWebpackPlugin({
       filename: 'examples.html',
-      title: `Atlaskit by Atlassian${env === 'development' ? ' - DEV' : ''}`,
-      template: path.join(cwd, 'public/examples.html.ejs'),
-      favicon: path.join(
-        cwd,
-        `public/favicon${env === 'development' ? '-dev' : ''}.ico`,
-      ),
+      title: HTMLPageTitle,
+      template: path.join(websiteDir, 'public/examples.html.ejs'),
+      favicon: faviconPath,
       excludeChunks: ['main'],
     }),
 
     new webpack.DefinePlugin({
       WEBSITE_ENV: `"${websiteEnv}"`,
-      BASE_TITLE: `"Atlaskit by Atlassian ${
-        env === 'development' ? '- DEV' : ''
-      }"`,
+      BASE_TITLE: `"Atlaskit by Atlassian ${!isProduction ? '- DEV' : ''}"`,
     }),
   ];
 
@@ -262,8 +216,25 @@ function plugins(
   return plugins;
 }
 
-const uglify = () => {
-  return new UglifyJsPlugin({
+//
+function getEntries({ isProduction, entryPath, websiteDir }) {
+  const absEntryPath = path.join(websiteDir, entryPath);
+  if (isProduction) {
+    return absEntryPath;
+  }
+  const port = process.env.ATLASKIT_DEV_PORT || '9000';
+  const devServerPath = `${require.resolve(
+    'webpack-dev-server/client',
+  )}?http://localhost:${port}/`;
+  return [devServerPath, absEntryPath];
+}
+
+function getOptimizations({ isProduction, noMinimizeFlag }) {
+  if (!isProduction) {
+    // If we are in development, use all of webpack's default optimizations ("do nothing")
+    return undefined;
+  }
+  const uglifyPlugin = new UglifyJsPlugin({
     parallel: Math.max(os.cpus().length - 1, 1),
     uglifyOptions: {
       compress: {
@@ -275,7 +246,8 @@ const uglify = () => {
 
         // https://product-fabric.atlassian.net/browse/MSW-436
         comparisons: false,
-
+        // We disables a lot of these rules because they don't effect the size very much, but cost a lot
+        // of time
         computed_props: false,
         hoist_funs: false,
         hoist_props: false,
@@ -306,4 +278,16 @@ const uglify = () => {
       mangle: true,
     },
   });
-};
+
+  return {
+    // There's an interesting bug in webpack where passing *any* uglify plugin, where `minimize` is
+    // false, causes webpack to use its own minimizer plugin + settings.
+    minimizer: noMinimizeFlag ? undefined : [uglifyPlugin],
+    minimize: noMinimizeFlag ? false : true,
+    splitChunks: {
+      // "Maximum number of parallel requests when on-demand loading. (default in production: 5)"
+      // The default value of 5 causes the webpack process to crash, reason currently unknown
+      maxAsyncRequests: Infinity,
+    },
+  };
+}
