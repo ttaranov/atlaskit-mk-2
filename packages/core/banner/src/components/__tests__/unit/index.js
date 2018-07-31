@@ -52,14 +52,14 @@ describe('banner', () => {
         expect(
           mount(<Banner />)
             .find(Visibility)
-            .prop('height'),
+            .prop('bannerHeight'),
         ).toBe(0);
       });
       it('should have height in pixels when open', () => {
         expect(
           mount(<Banner isOpen />)
             .find(Visibility)
-            .prop('height'),
+            .prop('bannerHeight'),
           // This height will not be '0px' in a real render, and discovered
           // that in enzyme, clientHeight is always 0. This means that checking
           // that these sizes are correct cannot have reliable tests written for it.

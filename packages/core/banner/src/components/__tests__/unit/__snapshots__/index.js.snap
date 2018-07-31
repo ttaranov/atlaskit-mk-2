@@ -77,7 +77,6 @@ exports[`banner should render error banner correctly 1`] = `
 
 <div
   className="c0"
-  height={0}
 >
   <div
     aria-hidden={false}
@@ -182,7 +181,6 @@ exports[`banner should render warning banner correctly 1`] = `
 
 <div
   className="c0"
-  height={0}
 >
   <div
     aria-hidden={false}
