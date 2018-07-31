@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 76.4.0
+- [minor] MediaPicker Popup now supports passing of optional parent react context as a parameter [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+- [minor] Updated dependencies [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+  - @atlaskit/media-picker@11.2.0
+  - @atlaskit/editor-test-helpers@5.1.0
+
+## 76.3.6
+- [patch] When you select Date from the quick insert menu, we now auto open the date picker. ED-5016 [f85d035](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f85d035)
+- [none] Updated dependencies [f85d035](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f85d035)
+
 ## 76.3.5
 - [patch] ED-5147: do not render context menu if its closed [633f27a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/633f27a)
 - [none] Updated dependencies [633f27a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/633f27a)

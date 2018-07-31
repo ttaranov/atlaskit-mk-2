@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import SectionMessage from '@atlaskit/section-message';
 import TableTree, {
   Headers,
   Header,
@@ -111,30 +112,54 @@ export default class extends Component<*, *> {
   render() {
     const { items } = this.state;
     return (
-      <TableTree>
-        <Headers>
-          <Header width={300}>Chapter title</Header>
-          <Header width={100}>Numbering</Header>
-          <Header width={100}>Page</Header>
-        </Headers>
-        <Rows
-          items={items}
-          render={({ title, numbering, page, hasChildren, children }) => (
-            <Row
-              expandLabel={'Expand'}
-              collapseLabel={'Collapse'}
-              itemId={numbering}
-              onExpand={this.loadTableData}
-              items={children}
-              hasChildren={hasChildren}
-            >
-              <Cell singleLine>{title}</Cell>
-              <Cell singleLine>{numbering}</Cell>
-              <Cell singleLine>{page}</Cell>
-            </Row>
-          )}
-        />
-      </TableTree>
+      <div>
+        <SectionMessage appearance="change">
+          <p>
+            This examples uses{' '}
+            <b>
+              <i>updateItems</i>
+            </b>{' '}
+            method. There are two methods in TableTreeDataHelper class,{' '}
+            <b>appendItems</b> and <b>updateItems</b>.
+          </p>
+          <p>
+            Use <i>appendItems</i> when you want the new items to be appended to
+            the items.
+          </p>
+          <p>
+            Use <i>updateItems</i> when you want the new items to replace the
+            existing items.
+          </p>
+          <p>
+            If there are no items present the <i>appendItems</i> adds them to
+            the list working just like <i>updateItems</i> just for this case.
+          </p>
+        </SectionMessage>
+        <TableTree>
+          <Headers>
+            <Header width={300}>Chapter title</Header>
+            <Header width={100}>Numbering</Header>
+            <Header width={100}>Page</Header>
+          </Headers>
+          <Rows
+            items={items}
+            render={({ title, numbering, page, hasChildren, children }) => (
+              <Row
+                expandLabel={'Expand'}
+                collapseLabel={'Collapse'}
+                itemId={numbering}
+                onExpand={this.loadTableData}
+                items={children}
+                hasChildren={hasChildren}
+              >
+                <Cell singleLine>{title}</Cell>
+                <Cell singleLine>{numbering}</Cell>
+                <Cell singleLine>{page}</Cell>
+              </Row>
+            )}
+          />
+        </TableTree>
+      </div>
     );
   }
 }
