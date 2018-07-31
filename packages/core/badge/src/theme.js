@@ -47,20 +47,20 @@ export default function themeDefault({
   ...theme
 }: ThemeProps): ThemeProps {
   return {
-    badge: props => ({
-      ...(typeof props.appearance === 'object'
+    badge: ({ appearance }) => ({
+      ...(typeof appearance === 'object'
         ? {
             ...{
               backgroundColor: backgroundColors.default.light,
               textColor: textColors.default.light,
             },
-            ...props.appearance,
+            ...appearance,
           }
         : {
-            backgroundColor: backgroundColors[props.appearance][mode],
-            textColor: textColors[props.appearance][mode],
+            backgroundColor: backgroundColors[appearance][mode],
+            textColor: textColors[appearance][mode],
           }),
-      ...badge(props),
+      ...badge({ appearance }),
     }),
     mode,
     ...theme,
