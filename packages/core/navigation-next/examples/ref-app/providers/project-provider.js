@@ -12,17 +12,17 @@ type State = {
 };
 
 type Props = {
-  projectId: string,
+  projectId?: string,
   children: State => Node,
 };
 
-const fetchData = (projectId: string) =>
-  new Promise(resolve =>
-    window.setTimeout(
-      () => resolve(simpleData.projects.find(p => p.id === projectId)),
-      2000,
-    ),
-  );
+const fetchData = (projectId?: string) =>
+  new Promise((resolve, reject) => {
+    const fn = projectId
+      ? () => resolve(simpleData.projects.find(p => p.id === projectId))
+      : () => reject('ProjectProvider requires a `projectId`.');
+    return window.setTimeout(fn, 2000);
+  });
 
 export default class ProjectProvider extends Component<Props, State> {
   state = {

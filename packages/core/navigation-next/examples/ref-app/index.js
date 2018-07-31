@@ -2,14 +2,11 @@
 
 import React, { Component } from 'react';
 import { HashRouter, Link, Route, Switch } from 'react-router-dom';
-import GlobalNavigation from '@atlaskit/global-navigation';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import { AtlassianWordmark } from '@atlaskit/logo';
 import {
   Item,
   LayoutManager,
   NavigationProvider,
-  UIControllerSubscriber,
   ViewRenderer,
   withNavigationUI,
   withNavigationViewController,
@@ -21,16 +18,16 @@ import { ProjectSwitcher } from './pages/components';
 import { DefaultGlobalNavigation } from '../shared/components';
 import { HomePage, ProjectPage, ProjectsPage, SettingsPage } from './pages';
 
-const MyGlobalNavigation = () => (
-  <UIControllerSubscriber>
-    {({ togglePeek }) => (
-      <GlobalNavigation
-        productIcon={AtlassianIcon}
-        onProductClick={togglePeek}
-      />
-    )}
-  </UIControllerSubscriber>
-);
+// const MyGlobalNavigation = () => (
+//   <UIControllerSubscriber>
+//     {({ togglePeek }) => (
+//       <GlobalNavigation
+//         productIcon={AtlassianIcon}
+//         onProductClick={togglePeek}
+//       />
+//     )}
+//   </UIControllerSubscriber>
+// );
 const ProductNavigationWrapper = props => (
   <div style={{ padding: 16 }} {...props} />
 );

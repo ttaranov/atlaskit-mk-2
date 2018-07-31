@@ -1,10 +1,7 @@
 // @flow
 
 import { Component } from 'react';
-import {
-  withNavigationViewController,
-  type ViewStateInterface,
-} from '../../../../../src';
+import { withNavigationViewController } from '../../../../../src';
 
 const getItems = () => [
   {
@@ -27,8 +24,7 @@ const getItems = () => [
   },
 ];
 
-type Props = { navigationViewController: ViewStateInterface };
-class RootHomeView extends Component<Props> {
+class RootHomeView extends Component<*> {
   componentDidMount() {
     this.props.navigationViewController.addView({
       id: 'root/home',
