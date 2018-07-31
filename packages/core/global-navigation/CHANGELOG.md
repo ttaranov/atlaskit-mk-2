@@ -1,5 +1,9 @@
 # @atlaskit/global-navigation
 
+## 4.0.2
+- [patch] Pass through href for product logo [d40f193](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d40f193)
+- [patch] Updated dependencies [d40f193](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d40f193)
+
 ## 4.0.1
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/navigation-next@3.1.1
