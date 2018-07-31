@@ -88,4 +88,13 @@ describe('ZoomLevel', () => {
       return zoomLevelDefault.canZoomIn && !zoomLevelMax.canZoomIn;
     },
   );
+
+  jsc.property(
+    'the percentage will be returned as an integer string',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return !zoomLevel.asPercentage.includes('.');
+    },
+  );
 });

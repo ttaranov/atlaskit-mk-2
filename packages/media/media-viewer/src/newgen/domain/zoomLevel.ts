@@ -23,7 +23,7 @@ export class ZoomLevel {
   }
 
   get asPercentage(): string {
-    return `${this.value * 100} %`;
+    return `${Math.round(this.value * 100)} %`;
   }
 
   zoomIn(): ZoomLevel {
