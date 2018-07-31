@@ -1,5 +1,9 @@
 # @atlaskit/datetime-picker
 
+## 6.1.0
+- [minor] Added parseInputValue prop to datePicker and timePicker, which allows for the customisation of logic around parsing input values into the requisite date object. Also added datePickerProps and timePickerProps props to dateTimePicker to expose these two (and later other datePicker and timePicker explicit props) at the dateTimePicker level [9a75b8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a75b8b)
+- [none] Updated dependencies [9a75b8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a75b8b)
+
 ## 6.0.3
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/select@5.0.7
