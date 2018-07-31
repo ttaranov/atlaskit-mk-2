@@ -20,7 +20,6 @@ import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import {
   redirectToConfluenceAdvancedSearch,
   handlePromiseError,
-  isEmpty,
 } from '../SearchResultsUtil';
 import {
   ShownAnalyticsAttributes,
@@ -35,10 +34,6 @@ import {
 } from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
-import SearchResults from '../SearchResults';
-import PreQueryState from './PreQueryState';
-import NoResultsState from './NoResultsState';
-import SearchResultsState from './SearchResultsState';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;

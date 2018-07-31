@@ -39,11 +39,12 @@ export default class SearchResults extends React.Component<Props> {
       return renderPreQueryStateComponent();
     }
 
-    if (shouldRenderNoResultsState()) {
-      if (isLoading && keepPreQueryState) {
-        return renderPreQueryStateComponent();
-      }
+    // the state when the user starts typing from the pre query screen while we are waiting for search results
+    if (isLoading && keepPreQueryState) {
+      return renderPreQueryStateComponent();
+    }
 
+    if (shouldRenderNoResultsState()) {
       return renderNoResultsStateComponent();
     }
 
