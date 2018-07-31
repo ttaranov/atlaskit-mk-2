@@ -11,11 +11,11 @@
     "Raja B"
   ],
   "scripts": {
-    "webpack:dev": "./node_modules/@atlaskit/webpack-config/bin/dev.js ./src/index.js",
-    "webpack:dev:examples": "./node_modules/@atlaskit/webpack-config/bin/dev-examples.js ./src/examples-entry.js",
-    "webpack:build": "./node_modules/@atlaskit/webpack-config/bin/build.js ./src/index.js",
-    "webpack:report": "./node_modules/@atlaskit/webpack-config/bin/build.js ./src/index.js --report",
-    "webpack:build:examples": "./node_modules/@atlaskit/webpack-config/bin/build.js ./src/examples-entry.js",
+    "webpack:dev": "node ./node_modules/@atlaskit/webpack-config/bin/dev.js ./src/index.js",
+    "webpack:dev:examples": "node ./node_modules/@atlaskit/webpack-config/bin/dev-examples.js ./src/examples-entry.js",
+    "webpack:build": "node ./node_modules/@atlaskit/webpack-config/bin/build.js ./src/index.js",
+    "webpack:report": "node ./node_modules/@atlaskit/webpack-config/bin/build.js ./src/index.js --report",
+    "webpack:build:examples": "node ./node_modules/@atlaskit/webpack-config/bin/build.js ./src/examples-entry.js",
     "build": "yarn build:webpack && yarn build:copy && yarn build:zip",
     "build:no-minimize": "yarn build:webpack --no-minimize && yarn build:copy && yarn build:zip",
     "build:webpack": "rm -rf dist && yarn run webpack:build",
