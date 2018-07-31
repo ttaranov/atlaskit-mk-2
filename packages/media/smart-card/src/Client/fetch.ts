@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-// import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 
 export default function<T>(
   method: string,
@@ -7,10 +7,10 @@ export default function<T>(
   data?: any,
 ): Observable<T | undefined> {
   return new Observable(observer => {
-    const abortController = new AbortController();
+    const AC = new AbortController();
     const requestConfig = {
       method,
-      signal: abortController.signal,
+      signal: AC.signal,
       credentials: 'include' as RequestCredentials,
       headers: {
         'Cache-Control': 'no-cache',
@@ -28,6 +28,6 @@ export default function<T>(
       })
       .catch(observer.error.bind(observer));
 
-    return () => abortController.abort();
+    return () => AC.abort();
   });
 }
