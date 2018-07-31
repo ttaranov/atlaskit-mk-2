@@ -3,7 +3,7 @@
 import React, { Component, type ComponentType } from 'react';
 import Container from './Container';
 import Format from './Format';
-import { Default } from '../theme';
+import { ThemeDefault } from '../theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
@@ -43,7 +43,7 @@ export default class Badge extends Component<Props> {
     children: 0,
     max: 99,
     onValueUpdated: () => {},
-    theme: Default,
+    theme: ThemeDefault,
     value: undefined,
   };
 

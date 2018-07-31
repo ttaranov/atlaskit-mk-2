@@ -3,7 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@atlaskit/theme';
-import Badge from '../src';
+import Badge, {
+  ThemeAdded,
+  ThemeImportant,
+  ThemePrimary,
+  ThemePrimaryInverted,
+  ThemeRemoved,
+} from '../src';
 
 const Item = styled.div`
   align-items: center;
@@ -25,34 +31,33 @@ export default function Example() {
   return (
     <div>
       <Item>
-        <p>Default</p>
-        <Badge>{5}</Badge>
-      </Item>
-      <Item>
-        <p>Primary</p>
-        <Badge appearance="primary">{-5}</Badge>
-      </Item>
-      <Item>
-        <p>Important</p>
-        <Badge appearance="important">{25}</Badge>
-      </Item>
-      <Item inverted>
-        <p>Primary Inverted</p>
-        <Badge appearance="primaryInverted">{5}</Badge>
-      </Item>
-      <Item>
-        <p>Added (no theme change)</p>
-        <Badge appearance="added" max={99}>
+        <Badge theme={ThemeAdded} max={99}>
           {3000}
         </Badge>
       </Item>
       <Item>
-        <p>Removed (no theme change)</p>
-        <Badge appearance="removed">{100}</Badge>
+        <p>Default</p>
+        <Badge>{5}</Badge>
       </Item>
       <Item>
-        <p>Infinity (∞)</p>
+        <p>Default (∞)</p>
         <Badge max={Infinity}>{Infinity}</Badge>
+      </Item>
+      <Item>
+        <p>Important</p>
+        <Badge theme={ThemeImportant}>{25}</Badge>
+      </Item>
+      <Item>
+        <p>Primary</p>
+        <Badge theme={ThemePrimary}>{-5}</Badge>
+      </Item>
+      <Item inverted>
+        <p>Primary Inverted</p>
+        <Badge theme={ThemePrimaryInverted}>{5}</Badge>
+      </Item>
+      <Item>
+        <p>Removed</p>
+        <Badge theme={ThemeRemoved}>{100}</Badge>
       </Item>
     </div>
   );

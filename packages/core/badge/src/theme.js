@@ -25,11 +25,11 @@ export const textColors = {
 };
 
 export type Appearance =
+  | 'added'
   | 'default'
+  | 'important'
   | 'primary'
   | 'primaryInverted'
-  | 'important'
-  | 'added'
   | 'removed'
   | {};
 
@@ -46,7 +46,7 @@ export type ThemeType<Props> = {
   values: Props => Props,
 };
 
-export const Default = ({
+export const ThemeDefault = ({
   children,
   values = v => v,
 }: ThemeType<ThemeProps>) => (
@@ -76,7 +76,26 @@ export const Default = ({
   </Theme>
 );
 
-// export const added = main((theme: ThemeProps) => ({
-//   badge: s => theme.badge({ appearance: 'added' }),
-//   ...theme,
-// }));
+const createAppearanceTheme = (appearance: string) => ({
+  children,
+  values = v => v,
+}: ThemeType<ThemeProps>) => (
+  <ThemeDefault>
+    <Theme
+      values={theme =>
+        values({
+          ...theme,
+          badge: props => theme.badge({ appearance }),
+        })
+      }
+    >
+      {children}
+    </Theme>
+  </ThemeDefault>
+);
+
+export const ThemeAdded = createAppearanceTheme('added');
+export const ThemeImportant = createAppearanceTheme('important');
+export const ThemePrimary = createAppearanceTheme('primary');
+export const ThemePrimaryInverted = createAppearanceTheme('primaryInverted');
+export const ThemeRemoved = createAppearanceTheme('removed');
