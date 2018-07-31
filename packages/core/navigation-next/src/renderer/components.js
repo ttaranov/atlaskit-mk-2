@@ -20,7 +20,7 @@ import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';
 import Switcher from '../components/Switcher';
-import { withNavigationUIController } from '../ui-controller';
+import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
 import type {
   GoToItemProps,
@@ -85,9 +85,7 @@ const GoToItemBase = ({
 
   return <Item onClick={e => handleClick(e)} {...props} />;
 };
-const GoToItem = withNavigationUIController(
-  withNavigationViewController(GoToItemBase),
-);
+const GoToItem = withNavigationUI(withNavigationViewController(GoToItemBase));
 
 // Item
 const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {

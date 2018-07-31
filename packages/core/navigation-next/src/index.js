@@ -33,7 +33,7 @@ export { NavigationProvider } from './provider';
 export {
   UIController,
   UIControllerSubscriber,
-  withNavigationUIController,
+  withNavigationUI,
 } from './ui-controller';
 export {
   ViewController,

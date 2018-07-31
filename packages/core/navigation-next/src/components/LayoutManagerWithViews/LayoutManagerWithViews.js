@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import ViewRenderer from '../../renderer';
-import { withNavigationUIController } from '../../ui-controller';
+import { withNavigationUI } from '../../ui-controller';
 import { withNavigationViewController } from '../../view-controller';
 import LayoutManager from '../LayoutManager';
 import Section from '../Section';
@@ -105,6 +105,6 @@ class LayoutManagerWithViewsBase extends Component<
     );
   }
 }
-export default withNavigationUIController(
+export default withNavigationUI(
   withNavigationViewController(LayoutManagerWithViewsBase),
 );

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import {
   UIControllerSubscriber,
   withNavigationViewController,
-  withNavigationUIController,
+  withNavigationUI,
 } from '../../src';
 
 import { containerViews, rootViews } from './mock-data';
@@ -30,7 +30,7 @@ class SetActiveViewBase extends Component<{
     return null;
   }
 }
-const SetActiveView = withNavigationUIController(
+const SetActiveView = withNavigationUI(
   withNavigationViewController(SetActiveViewBase),
 );
 
