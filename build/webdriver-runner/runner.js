@@ -117,26 +117,30 @@ function setLocalClients() {
   let launchers = {
     chrome: {
       browserName: 'chrome',
-      chromeOptions: {},
+      chromeOptions: { args: ['--headless', '--disable-gpu'] },
     },
     firefox: {
       browserName: 'firefox',
-      'moz:firefoxOptions': {},
+      'moz:firefoxOptions': { args: ['-headless'] },
     },
   };
-  if (process.env.HEADLESS) {
-    launchers.chrome['chromeOptions'] = {
-      args: ['--headless', '--disable-gpu'],
-    };
-    launchers.firefox['moz:firefoxOptions'] = { args: ['-headless'] };
+
+  if (process.env.HEADLESS === 'false') {
+    launchers.chrome['chromeOptions'] = { args: [] };
+    launchers.firefox['moz:firefoxOptions'] = { args: [] };
   }
 
-  return Object.keys(launchers).map(key => {
+  if (process.env.WATCH === 'true') {
+    launchers = { chrome: { browserName: 'chrome' } };
+  }
+  let browserOption = [];
+  for (let key in launchers) {
     const option = {
       desiredCapabilities: launchers[key],
     };
-    return { driver: webdriverio.remote(option) };
-  });
+    browserOption.push({ driver: webdriverio.remote(option) });
+  }
+  return browserOption;
 }
 
 function setBrowserStackClients() {

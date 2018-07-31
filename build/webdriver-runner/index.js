@@ -16,14 +16,14 @@ const isReachable = require('is-reachable');
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 /* 
  * maxWorkers set to 4 when using browserstack and 1 when running locally. 
- * In addition, the tests will be executed on real browsers, set HEADLESS=true to run the tests headlessly
+ * By default the tests are running headlessly, set HEADLESS=false if you want to run them directly on real browsers.
  *  */
-const args =
+const maxWorkers =
   process.env.TEST_ENV === 'browserstack' ? '--maxWorkers=4' : '--maxWorkers=1';
-
+const watch = process.env.WATCH ? '--watch' : '';
 function runTests() {
   return new Promise((resolve, reject) => {
-    let cmd = `INTEGRATION_TESTS=true jest ${args}`;
+    let cmd = `INTEGRATION_TESTS=true jest ${maxWorkers} ${watch}`;
     const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',
       shell: true,
