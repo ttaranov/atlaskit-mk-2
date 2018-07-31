@@ -137,6 +137,7 @@ export default class DragDropTree extends Component<void, State> {
             onExpand={this.onExpand}
             onCollapse={this.onCollapse}
             onDragEnd={this.onDragEnd}
+            isDragEnabled
           />
         </Navigation>
       </Container>
