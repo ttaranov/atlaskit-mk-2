@@ -343,7 +343,7 @@
     "pdfjs-dist": "^2.0.466",
     "polished": "1.5.0",
     "postis": "^2.2.0",
-    "pretty-proptypes": "^0.2.1",
+    "pretty-proptypes": "^0.2.2",
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
     "prosemirror-commands": "^1.0.7",
