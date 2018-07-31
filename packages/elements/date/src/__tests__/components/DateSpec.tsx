@@ -33,7 +33,7 @@ describe('Date', () => {
   describe('color', () => {
     it('should use default color', () => {
       const component = shallowDate();
-      expect(component.find(DateLozenge).prop('color')).toEqual('default');
+      expect(component.find(DateLozenge).prop('color')).toEqual('grey');
     });
 
     it('should set custom color', () => {

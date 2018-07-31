@@ -28,7 +28,7 @@ const isClickable = <
 export class Date extends React.Component<Props> {
   static defaultProps: Partial<Props> = {
     format: 'DD/MM/YYYY',
-    color: 'default',
+    color: 'grey',
   };
 
   handleOnClick = (event: React.SyntheticEvent<any>) => {

@@ -9,7 +9,7 @@ describe('resolveColors', () => {
       UtilSharedStyles.akColorN40,
     ]);
 
-    expect(resolveColors('default')).toEqual([
+    expect(resolveColors('grey')).toEqual([
       UtilSharedStyles.akColorN30A,
       UtilSharedStyles.akColorN800,
       UtilSharedStyles.akColorN40,

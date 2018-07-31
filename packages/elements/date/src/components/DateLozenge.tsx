@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as UtilSharedStyles from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export type Color = 'default' | 'red' | 'blue' | 'green' | 'purple' | 'yellow';
+export type Color = 'grey' | 'red' | 'blue' | 'green' | 'purple' | 'yellow';
 
 export type Props = React.HTMLProps<HTMLSpanElement> & {
   clickable?: boolean;
@@ -10,7 +10,7 @@ export type Props = React.HTMLProps<HTMLSpanElement> & {
 };
 
 export const resolveColors = (color?: Color): [string, string, string] => {
-  if (!color || color === 'default') {
+  if (!color || color === 'grey') {
     return [
       UtilSharedStyles.akColorN30A,
       UtilSharedStyles.akColorN800,
