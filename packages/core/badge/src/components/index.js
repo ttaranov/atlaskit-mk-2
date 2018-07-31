@@ -24,7 +24,7 @@ type Props = {
     newValue: number,
   }) => any,
 
-  theme: () => ThemeProps,
+  theme: ThemeProps => ThemeProps,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
