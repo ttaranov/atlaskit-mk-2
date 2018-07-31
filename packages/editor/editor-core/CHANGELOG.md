@@ -1,5 +1,29 @@
 # @atlaskit/editor-core
 
+## 76.4.3
+- [patch] ED-4825, copying single line of code should create inline code mark. [c99642b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c99642b)
+- [patch] Updated dependencies [c99642b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c99642b)
+
+## 76.4.2
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/renderer@19.2.5
+  - @atlaskit/editor-common@13.2.6
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-markdown-transformer@2.0.2
+  - @atlaskit/editor-json-transformer@4.0.2
+  - @atlaskit/editor-bitbucket-transformer@4.0.4
+
+## 76.4.1
+- [patch] Make typeahead keymap work in a list [a7d7421](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7d7421)
+- [none] Updated dependencies [a7d7421](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7d7421)
+
+## 76.4.0
+- [minor] MediaPicker Popup now supports passing of optional parent react context as a parameter [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+- [minor] Updated dependencies [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+  - @atlaskit/media-picker@11.2.0
+  - @atlaskit/editor-test-helpers@5.1.0
+
 ## 76.3.6
 - [patch] When you select Date from the quick insert menu, we now auto open the date picker. ED-5016 [f85d035](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f85d035)
 - [none] Updated dependencies [f85d035](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f85d035)

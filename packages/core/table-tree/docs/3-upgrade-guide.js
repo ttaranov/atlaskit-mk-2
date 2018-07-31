@@ -3,7 +3,9 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
-In the v2 release the table-tree component does not maintain a state anymore. A helper class \`TableTreeDataHelper\`
+## Upgrade from 1.x to 2.x
+
+In the v2 release the table-tree component does not maintain state anymore. A helper class \`TableTreeDataHelper\`
 is exported that can help you maintain cache of the object keys and update table tree items object efficiently.
 
 ---
@@ -138,4 +140,14 @@ itemsById: {
 `}
 
 **TableTreeDataHelper** creates the cache and updates the object for you, hence taking the worry away in case of async loading.
+
+**Appending items in the table:** (**v4.1.0** or above required) 
+
+In case the table rows are received in chunks we can use the *appendItems* method on TableTreeDataHelper class
+
+Usage:
+
+${code`
+tableTreeDataHelper.appendItems(<_items_to_add>, <_current_items_>, <_parent_item_for_item_to_be_added_>);
+`}
 `;

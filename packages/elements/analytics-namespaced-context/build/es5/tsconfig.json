@@ -3,6 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "../../dist/es5",
+    "rootDir": "../../src",
     "lib": ["dom", "es6"],
     "target": "es5"
   },
@@ -10,4 +11,5 @@
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
   ],
+  "exclude": ["../../src/**/__tests__/*"],
 }
