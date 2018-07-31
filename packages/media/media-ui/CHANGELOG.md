@@ -1,5 +1,20 @@
 # @atlaskit/media-ui
 
+## 5.0.1
+- [patch] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/page@8.0.1
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/lozenge@6.1.2
+  - @atlaskit/badge@9.0.2
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/dropdown-menu@6.1.3
+  - @atlaskit/avatar-group@2.0.3
+  - @atlaskit/avatar@14.0.4
+
 ## 5.0.0
 - [major] Implemented smart cards and common views for other cards [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
 - [major] Implemented smart cards and common UI elements [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)

@@ -1,5 +1,19 @@
 # @atlaskit/inline-edit
 
+## 7.0.2
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/field-base@11.0.1
+  - @atlaskit/input@4.0.1
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/tag@6.0.2
+  - @atlaskit/tag-group@6.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/field-radio-group@4.0.2
+  - @atlaskit/icon@13.2.1
+
 ## 7.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

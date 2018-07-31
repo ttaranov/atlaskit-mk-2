@@ -1,5 +1,14 @@
 # @atlaskit/tooltip
 
+## 12.0.3
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/layer-manager@5.0.3
+  - @atlaskit/icon@13.2.1
+
 ## 12.0.2
 - [patch] tooltip now renders popup into @atlaskit/portal [64fba41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64fba41)
 - [none] Updated dependencies [64fba41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64fba41)
