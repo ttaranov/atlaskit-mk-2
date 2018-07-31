@@ -42,7 +42,7 @@ export default class Banner extends Component<Props, { height: number }> {
     const { appearance, children, icon, isOpen } = this.props;
 
     return (
-      <Visibility height={this.state.height} isOpen={isOpen}>
+      <Visibility bannerHeight={this.state.height} isOpen={isOpen}>
         <Container
           innerRef={this.innerRef}
           appearance={appearance}

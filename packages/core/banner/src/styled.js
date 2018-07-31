@@ -80,7 +80,7 @@ const textOverflow = ({
       `;
 
 export const Visibility = styled.div`
-  max-height: ${({ height, isOpen }) => (isOpen ? height : 0)}px;
+  max-height: ${({ bannerHeight, isOpen }) => (isOpen ? bannerHeight : 0)}px;
   overflow: hidden;
   transition: max-height ${TRANSITION_DURATION};
 `;
