@@ -138,6 +138,7 @@ export interface ServiceFolder {
 export interface ServiceFile {
   readonly mimeType: string;
   readonly id: string;
+  readonly upfrontId: Promise<string>;
   readonly name: string;
   readonly size: number;
   readonly date: number;

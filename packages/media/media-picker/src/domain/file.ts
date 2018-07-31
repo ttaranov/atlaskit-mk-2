@@ -1,5 +1,6 @@
 export type MediaFile = {
   readonly id: string;
+  readonly upfrontId: Promise<string>;
   readonly name: string;
   readonly size: number;
   readonly creationDate: number;
@@ -11,7 +12,7 @@ export type PublicMediaFile = MediaFile & {
 };
 
 export function copyMediaFileForUpload(
-  { name, size, creationDate, type }: MediaFile,
+  { name, size, creationDate, type, upfrontId }: MediaFile,
   uploadId: string,
 ): MediaFile {
   // We dont' use spread here because user upload events are not sanitized
@@ -21,11 +22,12 @@ export function copyMediaFileForUpload(
     size,
     creationDate,
     type,
+    upfrontId,
   };
 }
 
 export function copyPublicMediaFileForUpload(
-  { name, size, creationDate, type, publicId }: PublicMediaFile,
+  { name, size, creationDate, type, publicId, upfrontId }: PublicMediaFile,
   uploadId: string,
 ): PublicMediaFile {
   // We dont' use spread here because user upload events are not sanitized
@@ -36,6 +38,7 @@ export function copyPublicMediaFileForUpload(
     creationDate,
     type,
     publicId,
+    upfrontId,
   };
 }
 

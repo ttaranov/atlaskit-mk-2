@@ -50,6 +50,7 @@ const mapSelectedItemToSelectedUploadFile = ({
   date,
   serviceName,
   accountId,
+  upfrontId,
 }: SelectedItem): SelectedUploadFile => ({
   file: {
     id,
@@ -57,6 +58,7 @@ const mapSelectedItemToSelectedUploadFile = ({
     size,
     creationDate: date || Date.now(),
     type: mimeType,
+    upfrontId,
   },
   serviceName,
   accountId,
@@ -134,6 +136,7 @@ export const importFilesFromLocalUpload = (
   store: Store<State>,
   localUpload: LocalUpload,
 ): void => {
+  console.log('localUpload.events', localUpload.events);
   localUpload.events.forEach(originalEvent => {
     const event = { ...originalEvent };
 

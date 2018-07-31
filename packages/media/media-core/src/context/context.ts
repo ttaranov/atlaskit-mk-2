@@ -1,4 +1,3 @@
-import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/defer';
@@ -94,6 +93,7 @@ export class ContextFactory {
 }
 
 const pollingInterval = 1000;
+const fileStreamsCache = new FileStreamCache();
 
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
@@ -107,7 +107,7 @@ class ContextImpl implements Context {
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreamsCache = new FileStreamCache();
+    this.fileStreamsCache = fileStreamsCache;
     this.mediaStore = new MediaStore({
       serviceHost: config.serviceHost,
       authProvider: config.authProvider,
@@ -277,7 +277,6 @@ class ContextImpl implements Context {
 
       const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
         onProgress: progress => {
-          console.log('onProgress', progress);
           if (fileId) {
             observer.next({
               progress,
@@ -294,7 +293,6 @@ class ContextImpl implements Context {
           fileId = id;
           const key = FileStreamCache.createKey(fileId, { collectionName });
           this.fileStreamsCache.set(key, fileStream);
-          console.log('onId', fileId);
           if (file.content instanceof Blob) {
             observer.next({
               name,

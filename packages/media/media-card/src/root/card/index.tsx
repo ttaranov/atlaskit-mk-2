@@ -128,71 +128,76 @@ export class Card extends Component<CardProps, CardState> {
     const { id, collectionName } = identifier;
 
     this.unsubscribe();
-    this.subscription = context.getFile(id, { collectionName }).subscribe({
-      next: async state => {
-        const {
-          dataURI: currentDataURI,
-          metadata: currentMetadata,
-        } = this.state;
-        const metadata = extendMetadata(state, currentMetadata as FileDetails);
+    this.subscription = context
+      .getFile(await id, { collectionName })
+      .subscribe({
+        next: async state => {
+          const {
+            dataURI: currentDataURI,
+            metadata: currentMetadata,
+          } = this.state;
+          const metadata = extendMetadata(
+            state,
+            currentMetadata as FileDetails,
+          );
 
-        if (!currentDataURI) {
-          const dataURI = await getDataURIFromFileState(state);
-          this.notifyStateChange({ dataURI });
-        }
+          if (!currentDataURI) {
+            const dataURI = await getDataURIFromFileState(state);
+            this.notifyStateChange({ dataURI });
+          }
 
-        switch (state.status) {
-          case 'uploading':
-            const { progress } = state;
-            this.notifyStateChange({
-              status: 'uploading',
-              progress,
-              metadata,
-            });
-            break;
-          case 'processing':
-            this.notifyStateChange({
-              progress: 1,
-              status: 'complete',
-              metadata,
-            });
-            break;
-          case 'processed':
-            if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
-              const { appearance, dimensions, resizeMode } = this.props;
-              const options = {
-                appearance,
-                dimensions,
-                component: this,
-              };
-              const width = getDataURIDimension('width', options);
-              const height = getDataURIDimension('height', options);
-              try {
-                const allowAnimated = appearance !== 'small';
-                const blob = await context.getImage(state.id, {
-                  collection: collectionName,
-                  mode: resizeMode,
-                  height,
-                  width,
-                  allowAnimated,
-                });
-                const dataURI = URL.createObjectURL(blob);
-                this.releaseDataURI();
-                this.setState({ dataURI });
-              } catch (e) {
-                // We don't want to set status=error if the preview fails, we still want to display the metadata
+          switch (state.status) {
+            case 'uploading':
+              const { progress } = state;
+              this.notifyStateChange({
+                status: 'uploading',
+                progress,
+                metadata,
+              });
+              break;
+            case 'processing':
+              this.notifyStateChange({
+                progress: 1,
+                status: 'complete',
+                metadata,
+              });
+              break;
+            case 'processed':
+              if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
+                const { appearance, dimensions, resizeMode } = this.props;
+                const options = {
+                  appearance,
+                  dimensions,
+                  component: this,
+                };
+                const width = getDataURIDimension('width', options);
+                const height = getDataURIDimension('height', options);
+                try {
+                  const allowAnimated = appearance !== 'small';
+                  const blob = await context.getImage(state.id, {
+                    collection: collectionName,
+                    mode: resizeMode,
+                    height,
+                    width,
+                    allowAnimated,
+                  });
+                  const dataURI = URL.createObjectURL(blob);
+                  this.releaseDataURI();
+                  this.setState({ dataURI });
+                } catch (e) {
+                  // We don't want to set status=error if the preview fails, we still want to display the metadata
+                }
               }
-            }
-            this.notifyStateChange({ status: 'complete', metadata });
-            break;
-          case 'error':
-            this.notifyStateChange({ status: 'error' });
-        }
-      },
-      error: error => {
-        this.notifyStateChange({ error, status: 'error' });
-      },
-    });
+              this.notifyStateChange({ status: 'complete', metadata });
+              break;
+            case 'error':
+              this.notifyStateChange({ status: 'error' });
+          }
+        },
+        error: error => {
+          this.notifyStateChange({ error, status: 'error' });
+        },
+      });
   }
 
   notifyStateChange = (state: Partial<CardState>) => {

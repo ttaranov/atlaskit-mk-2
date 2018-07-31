@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
 import { isFileUploadsStartAction } from '../actions/fileUploadsStart';
-import { LocalUpload, State } from '../domain';
+import { LocalUpload, State, SelectedItem } from '../domain';
 
 export default function fileUploadsAdd(state: State, action: Action): State {
   if (isFileUploadsStartAction(action)) {
@@ -30,9 +30,10 @@ export default function fileUploadsAdd(state: State, action: Action): State {
         }),
     );
 
-    const newSelectedItems = files.map(file => ({
+    const newSelectedItems: SelectedItem[] = files.map(file => ({
       date: 0,
       id: file.id,
+      upfrontId: file.upfrontId,
       mimeType: file.type,
       name: file.name,
       parentId: '',

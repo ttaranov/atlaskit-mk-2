@@ -69,28 +69,8 @@ export class NewUploadServiceImpl implements UploadService {
     }
 
     const creationDate = Date.now();
-    console.log({ files });
-    const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
-      mediaFile: {
-        id: uuid.v4(),
-        name: file.name,
-        size: file.size,
-        creationDate,
-        type: file.type,
-      },
-      file,
-    }));
-
-    const mediaFiles = cancellableFileUploads.map(
-      cancellableFileUpload => cancellableFileUpload.mediaFile,
-    );
-
-    this.emit('files-added', { files: mediaFiles });
-    this.emitPreviews(cancellableFileUploads);
-
-    cancellableFileUploads.forEach(cancellableFileUpload => {
-      const { mediaFile, file } = cancellableFileUpload;
-      this.cancellableFilesUploads[mediaFile.id] = cancellableFileUpload;
+    const cancellableFileUploads: CancellableFileUpload[] = files.map(file => {
+      const id = uuid.v4();
       const uploadableFile: UploadableFile = {
         collection: this.uploadParams.collection,
         content: file,
@@ -98,30 +78,54 @@ export class NewUploadServiceImpl implements UploadService {
         mimeType: file.type,
       };
       const controller = this.createUploadController();
-      const subscrition = this.context
-        .uploadFile(uploadableFile, controller)
-        .subscribe({
-          next: state => {
-            console.log('next', { state });
-            if (state.status === 'uploading') {
-              this.onFileProgress(cancellableFileUpload, state.progress);
-            }
+      const upfrontId = new Promise<string>(resolve => {
+        const subscrition = this.context
+          .uploadFile(uploadableFile, controller)
+          .subscribe({
+            next: state => {
+              resolve(state.id);
 
-            if (state.status === 'processing') {
-              subscrition.unsubscribe();
-              this.onFileSuccess(cancellableFileUpload, state.id);
-            }
-          },
-          error: error => {
-            this.onFileError(mediaFile, 'upload_fail', error);
-          },
-        });
+              if (state.status === 'uploading') {
+                this.onFileProgress(cancellableFileUpload, state.progress);
+              }
 
-      cancellableFileUpload.cancel = () => {
-        // we can't do "cancellableFileUpload.cancel = controller.abort" because will change the "this" context
-        controller.abort();
+              if (state.status === 'processing') {
+                subscrition.unsubscribe();
+                this.onFileSuccess(cancellableFileUpload, state.id);
+              }
+            },
+            error: error => {
+              this.onFileError(mediaFile, 'upload_fail', error);
+            },
+          });
+      });
+      const mediaFile = {
+        id,
+        upfrontId,
+        name: file.name,
+        size: file.size,
+        creationDate,
+        type: file.type,
       };
+      const cancellableFileUpload: CancellableFileUpload = {
+        mediaFile,
+        file,
+        cancel: () => {
+          // we can't do "cancellableFileUpload.cancel = controller.abort" because will change the "this" context
+          controller.abort();
+        },
+      };
+      this.cancellableFilesUploads[id] = cancellableFileUpload;
+
+      return cancellableFileUpload;
     });
+
+    const mediaFiles = cancellableFileUploads.map(
+      cancellableFileUpload => cancellableFileUpload.mediaFile,
+    );
+
+    this.emit('files-added', { files: mediaFiles });
+    this.emitPreviews(cancellableFileUploads);
   }
 
   cancel(id?: string): void {
