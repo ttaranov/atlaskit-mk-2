@@ -1,5 +1,9 @@
 # @atlaskit/analytics-listeners
 
+## 3.0.2
+- [patch] Updated dependencies [80e90ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e90ed)
+  - @atlaskit/analytics-namespaced-context@2.0.1
+
 ## 3.0.1
 - [patch] fixes problem caused by source not always being set [00b1a71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00b1a71)
 
