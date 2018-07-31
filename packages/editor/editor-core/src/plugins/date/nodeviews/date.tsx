@@ -10,11 +10,8 @@ import {
 } from '@atlaskit/editor-common';
 import { Date } from '@atlaskit/date';
 import { setDatePickerAt } from '../actions';
-import { defaultEditorFontStyles } from '../../../styles';
 
 const SelectableDate = styled(Date)`
-  ${defaultEditorFontStyles};
-
   .ProseMirror-selectednode & {
     display: 'relative';
     &::before {

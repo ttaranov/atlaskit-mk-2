@@ -2,7 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { PanelType } from '@atlaskit/editor-common';
+import { fontSize } from '@atlaskit/theme';
+import { PanelType, relativeSize } from '@atlaskit/editor-common';
 import {
   akBorderRadius,
   akGridSizeUnitless,
@@ -61,10 +62,13 @@ const config = {
   },
 };
 
-// tslint:disable-next-line:variable-name
+// TODO: Extract to common styles
 const PanelWrapper = styled.div`
   border-radius: ${akBorderRadius};
-  margin: ${akGridSizeUnitless / 2}px 0;
+
+  margin: ${relativeSize(1.142)}px 0;
+  padding: 1px 0;
+  font-size: ${fontSize}px;
   padding: ${akGridSizeUnitless}px;
   background: ${({ panelType }: Props) => config[panelType].background};
 `;

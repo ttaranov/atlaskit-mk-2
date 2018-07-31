@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { akEditorFullPageWidths, akEditorSize } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
@@ -38,10 +38,11 @@ const ScrollContainer = styled(ContentStyles)`
 ScrollContainer.displayName = 'ScrollContainer';
 
 const ContentArea = styled.div`
-  line-height: 24px;
   height: 100%;
   width: 100%;
-  max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
+  max-width: ${({ theme }) =>
+    akEditorFullPageWidths[theme.size || akEditorSize.S] +
+    GUTTER_PADDING * 2}px;
   padding-top: 50px;
   margin: 0 auto;
   display: flex;

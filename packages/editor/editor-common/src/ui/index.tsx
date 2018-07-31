@@ -3,6 +3,8 @@ export { default as MediaSingle } from './MediaSingle';
 export { default as Mention } from './Mention';
 export { default as Popup } from './Popup';
 export { default as UnsupportedBlock } from './UnsupportedBlock';
+export { BaseTheme } from './BaseTheme';
+export * from './WidthProvider';
 
 export { calcExtensionWidth } from './Extension';
 

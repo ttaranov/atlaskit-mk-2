@@ -8,7 +8,8 @@ import { Wrapper as WrapperDefault, padding } from '../styles';
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
   WrapperDefault,
 )`
-  margin: 12px 0;
+  /* TODO: copy to renderer */
+  margin: 1.142em 0 0 0;
 
   /* extension container breakout */
   &[data-layout='full-width'],

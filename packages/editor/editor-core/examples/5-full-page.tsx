@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import * as React from 'react';
+import SizeDetector from '@atlaskit/size-detector';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN90 } from '@atlaskit/util-shared-styles';
 
@@ -21,6 +22,7 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
+import { WidthProvider } from '@atlaskit/editor-common';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -124,70 +126,83 @@ export class ExampleEditor extends React.Component<Props, State> {
 
   render() {
     return (
-      <Wrapper>
-        <Content>
-          <Editor
-            defaultValue={this.props.defaultValue}
-            appearance="full-page"
-            analyticsHandler={analyticsHandler}
-            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-            delegateAnalyticsEvent={(...args) => console.log(args)}
-            allowTasksAndDecisions={true}
-            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-            allowLists={true}
-            allowTextColor={true}
-            allowTables={{
-              allowColumnResizing: true,
-              allowMergeCells: true,
-              allowNumberColumn: true,
-              allowBackgroundColor: true,
-              allowHeaderRow: true,
-              allowHeaderColumn: true,
-              permittedLayouts: 'all',
-              stickToolbarToBottom: true,
-            }}
-            allowJiraIssue={true}
-            allowUnsupportedContent={true}
-            allowPanel={true}
-            allowExtension={{
-              allowBreakout: true,
-            }}
-            allowRule={true}
-            allowDate={true}
-            UNSAFE_allowLayouts={true}
-            allowGapCursor={true}
-            allowTemplatePlaceholders={{ allowInserting: true }}
-            UNSAFE_cards={{
-              provider: Promise.resolve(cardProvider),
-            }}
-            {...providers}
-            media={{ provider: mediaProvider, allowMediaSingle: true }}
-            placeholder="Write something..."
-            shouldFocus={false}
-            disabled={this.state.disabled}
-            contentComponents={
-              <TitleInput
-                placeholder="Give this page a title..."
-                // tslint:disable-next-line:jsx-no-lambda
-                innerRef={this.handleTitleRef}
-                onFocus={this.handleTitleOnFocus}
-                onBlur={this.handleTitleOnBlur}
-              />
-            }
-            primaryToolbarComponents={
-              <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />
-            }
-            onSave={SAVE_ACTION}
-            insertMenuItems={customInsertMenuItems}
-            extensionHandlers={extensionHandlers}
-          />
-        </Content>
-      </Wrapper>
+      <SizeDetector
+        containerStyle={{
+          height: '100%',
+          borderStyle: 'none',
+        }}
+      >
+        {({ width }) => (
+          <WidthProvider value={width}>
+            <Wrapper>
+              <Content>
+                <Editor
+                  defaultValue={this.props.defaultValue}
+                  appearance="full-page"
+                  analyticsHandler={analyticsHandler}
+                  quickInsert={{
+                    provider: Promise.resolve(quickInsertProvider),
+                  }}
+                  delegateAnalyticsEvent={(...args) => console.log(args)}
+                  allowTasksAndDecisions={true}
+                  allowCodeBlocks={{ enableKeybindingsForIDE: true }}
+                  allowLists={true}
+                  allowTextColor={true}
+                  allowTables={{
+                    allowColumnResizing: true,
+                    allowMergeCells: true,
+                    allowNumberColumn: true,
+                    allowBackgroundColor: true,
+                    allowHeaderRow: true,
+                    allowHeaderColumn: true,
+                    permittedLayouts: 'all',
+                    stickToolbarToBottom: true,
+                  }}
+                  allowJiraIssue={true}
+                  allowUnsupportedContent={true}
+                  allowPanel={true}
+                  allowExtension={{
+                    allowBreakout: true,
+                  }}
+                  allowRule={true}
+                  allowDate={true}
+                  UNSAFE_allowLayouts={true}
+                  allowGapCursor={true}
+                  allowTemplatePlaceholders={{ allowInserting: true }}
+                  UNSAFE_cards={{
+                    provider: Promise.resolve(cardProvider),
+                  }}
+                  {...providers}
+                  media={{ provider: mediaProvider, allowMediaSingle: true }}
+                  placeholder="Write something..."
+                  shouldFocus={false}
+                  disabled={this.state.disabled}
+                  contentComponents={
+                    <TitleInput
+                      placeholder="Give this page a title..."
+                      // tslint:disable-next-line:jsx-no-lambda
+                      innerRef={this.handleTitleRef}
+                      onFocus={this.handleTitleOnFocus}
+                      onBlur={this.handleTitleOnBlur}
+                    />
+                  }
+                  primaryToolbarComponents={
+                    <WithEditorActions
+                      // tslint:disable-next-line:jsx-no-lambda
+                      render={actions => (
+                        <SaveAndCancelButtons editorActions={actions} />
+                      )}
+                    />
+                  }
+                  onSave={SAVE_ACTION}
+                  insertMenuItems={customInsertMenuItems}
+                  extensionHandlers={extensionHandlers}
+                />
+              </Content>
+            </Wrapper>
+          </WidthProvider>
+        )}
+      </SizeDetector>
     );
   }
 

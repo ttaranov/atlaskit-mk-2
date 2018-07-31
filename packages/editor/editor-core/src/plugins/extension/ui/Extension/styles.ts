@@ -2,6 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { fontSize } from '@atlaskit/theme';
 import {
   akColorN20A,
   akColorN20,
@@ -17,6 +18,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   border-radius: ${akBorderRadius};
   position: relative;
   vertical-align: middle;
+  font-size: ${fontSize}px;
 
   .ProseMirror-selectednode > & > .extension-overlay {
     border: 2px solid ${akColorB200};

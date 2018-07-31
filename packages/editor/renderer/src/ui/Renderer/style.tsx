@@ -1,6 +1,7 @@
 import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 
+import { fontSize } from '@atlaskit/theme';
 import {
   akColorB300,
   akColorB400,
@@ -11,7 +12,6 @@ import {
   akColorR50,
   akColorR500,
   akGridSizeUnitless,
-  akTypographyMixins,
   akFontFamily,
   akFontSizeDefault,
   akBorderRadius,
@@ -19,6 +19,7 @@ import {
 import {
   tableSharedStyle,
   columnLayoutSharedStyle,
+  akEditorFontSize,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
@@ -31,6 +32,7 @@ const getLineHeight = ({ appearance }: Props) => {
 };
 
 export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  font-size: ${akEditorFontSize}px;
   ${getLineHeight};
   color: ${akColorN800};
   word-wrap: break-word;
@@ -72,7 +74,19 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & p,
+  & p {
+    font-size: 1em;
+    line-height: 1.714;
+    font-weight: normal;
+    margin-top: 1.142em;
+    margin-bottom: 0px;
+    letter-spacing: -0.005em;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
   & .UnknownBlock {
     font-family: ${akFontFamily};
     font-size: ${akFontSizeDefault};
@@ -159,45 +173,67 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & .akTaskList > ol,
   & .akDecisionList > ol {
     list-style-type: none;
+    font-size: ${fontSize}px;
   }
 
   & h1 {
-    ${akTypographyMixins.h800 as any};
+    line-height: 1.166;
+    font-size: 1.714em;
+    margin-top: 2.857em;
+    margin-bottom: 0px;
+
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h2 {
-    ${akTypographyMixins.h700 as any};
+    line-height: 1.2;
+    font-size: 1.43em;
+    margin-top: 2.571em;
+    margin-bottom: 0px;
+
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h3 {
-    ${akTypographyMixins.h600 as any};
+    line-height: 1.5;
+    font-size: 1.142em;
+    margin-top: 2.585em;
+    margin-bottom: 0px;
+
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h4 {
-    ${akTypographyMixins.h500 as any};
+    line-height: 1.428;
+    font-size: 1em;
+    margin-top: 1.714em;
+
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h5 {
-    ${akTypographyMixins.h400 as any};
+    line-height: 1.333;
+    font-size: 0.857em;
+    margin-top: 1.43em;
+
     &:first-child {
       margin-top: 0;
     }
   }
 
   & h6 {
-    ${akTypographyMixins.h300 as any};
+    line-height: 1.454;
+    font-size: 0.785em;
+    margin-top: 1.42em;
+
     &:first-child {
       margin-top: 0;
     }
@@ -206,6 +242,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & hr {
     border: none;
     background-color: ${akColorN30A};
+    margin: 1.142em 0;
     height: 2px;
     border-radius: 1px;
   }

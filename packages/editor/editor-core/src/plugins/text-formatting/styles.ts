@@ -2,11 +2,12 @@
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
 import { akColorN30A } from '@atlaskit/util-shared-styles';
-import { akEditorCodeFontFamily } from '../../styles';
+import { akEditorCodeFontFamily, relativeSize } from '../../styles';
 
 export const textFormattingStyles = css`
   .ProseMirror span.code {
-    font-size: 12px;
+    /* TODO: Copy to renderer */
+    font-size: ${relativeSize(0.857)}px;
     font-weight: normal;
     padding: 2px 1px;
     background: ${akColorN30A};

@@ -2,8 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } from 'react';
-import { defaultEditorFontStyles } from '../../styles';
-
+import { akEditorFontSize } from '@atlaskit/editor-common';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
 import { tableStyles } from '../../plugins/table/ui/styles';
@@ -19,6 +18,7 @@ import { fakeCursorStyles } from '../../plugins/fake-text-cursor/styles';
 import { mentionsStyles } from '../../plugins/mentions/styles';
 import { textFormattingStyles } from '../../plugins/text-formatting/styles';
 import { placeholderTextStyles } from '../../plugins/placeholder-text/styles';
+import { tasksAndDecisionsStyles } from '../../plugins/tasks-and-decisions/ui/styles';
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -33,10 +33,21 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     word-wrap: break-word;
     white-space: pre-wrap;
     outline: none;
+    font-size: ${akEditorFontSize}px;
   }
 
+  /* TODO: Extract to common styles */
   .ProseMirror p {
-    ${defaultEditorFontStyles}
+    font-size: 1em;
+    line-height: 1.714;
+    font-weight: normal;
+    margin-top: 1.142em;
+    margin-bottom: 0px;
+    letter-spacing: -0.005em;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   .ProseMirror-hideselection *::selection {
@@ -71,10 +82,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     display: inline-block;
   }
 
+  ${blocktypeStyles}
   ${textFormattingStyles}
   ${placeholderTextStyles}
   ${placeholderStyles}
-  ${blocktypeStyles}
   ${codeBlockStyles}
   ${listsStyles}
   ${ruleStyles}
@@ -86,6 +97,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${panelStyles}
   ${fakeCursorStyles}
   ${mentionsStyles}
+  ${tasksAndDecisionsStyles}
 `;
 
 export default ContentStyles;

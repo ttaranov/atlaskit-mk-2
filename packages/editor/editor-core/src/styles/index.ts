@@ -1,4 +1,3 @@
-import { fontSize } from '@atlaskit/theme';
 import {
   akCodeFontFamily,
   akColorB100,
@@ -33,8 +32,4 @@ export const akEditorFloatingPanelZIndex = akZIndexLayer;
 export const akEditorMentionSelected = akColorN100;
 export const akEditorRuleBackground = akColorN30;
 export const akEditorRuleBorderRadius = '1px';
-export const defaultEditorFontStyles = `
-  font-size: ${fontSize()}px;
-  font-weight: normal;
-`;
 export const akEditorToolbarKeylineHeight = 2;

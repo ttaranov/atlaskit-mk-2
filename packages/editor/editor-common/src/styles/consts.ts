@@ -18,6 +18,7 @@ import {
   akColorR50,
   akColorR75,
 } from '@atlaskit/util-shared-styles';
+import { fontSize as defaultFontSize } from '@atlaskit/theme';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;
 export const akEditorInactiveForeground = akColorN500;
@@ -50,6 +51,21 @@ export const akEditorTableToolbarDelete = akColorR75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
+export enum akEditorSize {
+  S,
+  M,
+  L,
+}
+// TODO: Default
+export const akEditorFullPageWidths = {
+  [akEditorSize.S]: 680,
+  [akEditorSize.M]: 760,
+  [akEditorSize.L]: 850,
+};
 export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;
 export const akEditorBreakoutPadding = 96;
+export const akEditorFontSize = ({ theme }) =>
+  theme && theme.baseFont ? theme.baseFont : defaultFontSize();
+export const relativeSize = (size: number) => ({ theme }) =>
+  akEditorFontSize({ theme }) * size;

@@ -15,8 +15,9 @@ export const codeBlockStyles = css`
     background: ${akColorN20};
     border-radius: ${akBorderRadius};
     font-size: 14px;
-    line-height: 20px;
-    margin: 12px 0 0 0;
+    line-height: 24px;
+    /* TODO: copy to renderer */
+    margin: 1.142em 0 0 0;
     counter-reset: line;
     display: flex;
 
@@ -28,7 +29,7 @@ export const codeBlockStyles = css`
       padding: ${akEditorCodeBlockPadding} 8px;
       border-radius: ${akBorderRadius};
       font-size: 12px;
-      line-height: 20px;
+      line-height: 24px;
 
       span {
         display: block;

@@ -8,6 +8,6 @@ export const ruleStyles = css`
     height: 0;
     border: 1px solid ${akEditorRuleBackground};
     border-radius: ${akEditorRuleBorderRadius};
-    margin: 24px 0;
+    margin: 1.142em 0;
   }
 `;

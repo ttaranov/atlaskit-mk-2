@@ -1000,7 +1000,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Heading 1',
+                    },
+                  ],
                 },
               ],
             },
@@ -1012,7 +1017,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Heading 2',
+                    },
+                  ],
                 },
               ],
             },
@@ -1031,7 +1041,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Some content',
+                    },
+                  ],
                 },
               ],
             },
@@ -1040,7 +1055,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Some content',
+                    },
+                  ],
                 },
               ],
             },
@@ -1049,7 +1069,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Some content',
+                    },
+                  ],
                 },
               ],
             },
@@ -1063,7 +1088,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Some content',
+                    },
+                  ],
                 },
               ],
             },
@@ -1072,7 +1102,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Some content',
+                    },
+                  ],
                 },
               ],
             },
@@ -1081,7 +1116,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Some content',
+                    },
+                  ],
                 },
               ],
             },

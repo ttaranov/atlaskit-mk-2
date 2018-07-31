@@ -159,7 +159,9 @@ export function processRawValue(
     return parsedDoc;
   } catch (e) {
     // tslint:disable-next-line:no-console
-    console.error(`Error processing value: ${node} – ${e.message}`);
+    console.error(
+      `Error processing value: "${JSON.stringify(node)}" – ${e.message}`,
+    );
     return;
   }
 }

@@ -33,6 +33,7 @@ const tableSharedStyle = css`
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     border: 1px solid ${akEditorTableBorder};
+    font-size: 14px;
     table-layout: fixed;
     width: 100%;
 
@@ -85,7 +86,7 @@ const tableSharedStyle = css`
 
 export const calcTableWidth = (
   layout: TableLayout,
-  containerWidth: number,
+  containerWidth?: number,
   addControllerPadding: boolean = true,
 ): string => {
   switch (layout) {
