@@ -46,6 +46,5 @@ export const createStorybookContext = (
 
 export const createUploadContext = (): Context =>
   ContextFactory.create({
-    serviceHost: defaultServiceHost,
     authProvider: mediaPickerAuthProvider('asap'),
   });

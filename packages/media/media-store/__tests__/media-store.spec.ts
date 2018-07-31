@@ -425,14 +425,14 @@ describe('MediaStore', () => {
         const url = await mediaStore.getFileImageURL('1234');
 
         expect(url).toEqual(
-          `${serviceHost}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
         );
       });
     });
 
     describe('getImage', () => {
       it('should return file image preview', async () => {
-        fetchMock.mock(`begin:${serviceHost}/file`, {
+        fetchMock.mock(`begin:${baseUrl}/file`, {
           body: {
             data,
           },
@@ -441,13 +441,13 @@ describe('MediaStore', () => {
 
         const image = await mediaStore.getImage('123');
         expect(fetchMock.lastUrl()).toEqual(
-          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
         );
         expect(image).toBeInstanceOf(Blob);
       });
 
       it('should merge default params with given ones', async () => {
-        fetchMock.mock(`begin:${serviceHost}/file`, {
+        fetchMock.mock(`begin:${baseUrl}/file`, {
           body: {
             data,
           },
@@ -460,7 +460,7 @@ describe('MediaStore', () => {
           upscale: true,
         });
         expect(fetchMock.lastUrl()).toEqual(
-          `${serviceHost}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
+          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
         );
       });
     });
