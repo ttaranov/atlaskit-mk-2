@@ -262,7 +262,7 @@ export class ImageNavigator extends Component<Props, State> {
         onImageUploaded(imageFile);
       }
 
-      this.setState({ fileImageSource, imageFile });
+      this.setState({ fileImageSource: fileImageSource as string, imageFile });
     };
     reader.readAsDataURL(imageFile);
   }

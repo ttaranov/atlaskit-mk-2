@@ -53,7 +53,7 @@ const typeAheadPlugin: EditorPlugin = {
             items: [],
             currentIndex: 0,
             itemsLoader: null,
-          },
+          } as any,
         }: {
           typeAhead: TypeAheadPluginState;
         }) => {

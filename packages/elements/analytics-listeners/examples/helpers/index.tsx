@@ -85,10 +85,10 @@ export const TaggedDummyComponentWithAnalytics = withAnalyticsEvents({
 
 export const IncorrectEventType = withAnalyticsEvents({
   onClick: (createEvent, props) => {
-    // @ts-ignore
     const event: GasPayload = {
       action: 'someAction',
       actionSubject: 'someComponent',
+      // @ts-ignore
       eventType: 'unknown',
       source: 'unknown',
     };

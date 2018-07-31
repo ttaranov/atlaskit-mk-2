@@ -46,7 +46,7 @@ export function fileToDataURI(file: File): Promise<string> {
   return new Promise((res, rej) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      res(reader.result);
+      res(reader.result as string);
     });
     reader.addEventListener('error', rej);
     reader.readAsDataURL(file);
