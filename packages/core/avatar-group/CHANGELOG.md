@@ -1,5 +1,8 @@
 # @atlaskit/avatar-group
 
+## 2.0.5
+- [patch] Clean up changelog [5b5bd8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b5bd8e)
+
 ## 2.0.4
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/tooltip@12.0.4

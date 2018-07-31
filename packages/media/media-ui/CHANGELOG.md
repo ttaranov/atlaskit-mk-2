@@ -1,5 +1,9 @@
 # @atlaskit/media-ui
 
+## 5.0.3
+- [patch] Updated dependencies [5b5bd8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b5bd8e)
+  - @atlaskit/avatar-group@2.0.5
+
 ## 5.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/page@8.0.2
