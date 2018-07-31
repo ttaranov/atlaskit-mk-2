@@ -114,7 +114,18 @@ export class PDFRenderer extends React.Component<Props, State> {
       const doc = await fetch(this.props.src);
       this.setState({ doc: { status: 'SUCCESSFUL', data: doc } }, () => {
         this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
+
         this.pdfViewer.setDocument(doc);
+        this.pdfViewer.firstPagePromise.then(() => {
+          this.pdfViewer.currentScaleValue = 'page-width';
+          console.log(this.pdfViewer.currentScale);
+          this.setState({
+            zoomLevel: new ZoomLevel(
+              this.pdfViewer.currentScale,
+              this.pdfViewer.currentScale,
+            ),
+          });
+        });
       });
     } catch (err) {
       this.setState({
