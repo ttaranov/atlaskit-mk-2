@@ -29,7 +29,7 @@ class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
       onMouseEnter: () => {},
       onMouseLeave: () => {},
       sendAnalytics: () => {},
-      getIndex: () => {},
+      getIndex: () => null,
     },
     analyticsData: {},
   };
