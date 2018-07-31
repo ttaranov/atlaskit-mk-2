@@ -30,6 +30,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.1",
     "@atlaskit/field-radio-group": "^4.0.1",
     "@atlaskit/field-text": "^7.0.1",
@@ -37,7 +38,8 @@
     "@atlaskit/multi-select": "^11.0.1",
     "@atlaskit/tag": "^6.0.1",
     "@atlaskit/tag-group": "^6.0.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.0"
   },
   "keywords": [
     "atlaskit",

@@ -338,6 +338,7 @@ export default md`
   token returned by userAuthProvider because the popup will call this provider on every request
   to the media api concerning the users collection and cloud accounts. You cannot use the popup component
   if you can't obtain a token for the user's collection - use the Browser component instead.
+  It can be optionally passed Legacy Context from any "parent" element to make analytics-next events bubble up to listeners.
 
   ![alt text](./popup.png 'Popup')
 
@@ -361,6 +362,9 @@ export default md`
 
   const popupConfig = {
     container: document.getElementById('container'),
+    proxyReactContext?: {
+      getAtlaskitAnalyticsEventHandlers: () => {}
+    }
   };
 
   const popup = MediaPicker('popup', context, popupConfig);

@@ -1,5 +1,11 @@
 # @atlaskit/emoji
 
+## 38.0.4
+- [patch] FS-2111 Code review feedback [cf930e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf930e3)
+- [patch] Fix emoji picker focus issue for IE11 [ce6eb48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce6eb48)
+- [none] Updated dependencies [cf930e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf930e3)
+- [none] Updated dependencies [ce6eb48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce6eb48)
+
 ## 38.0.3
 - [patch] FS-2819 fix typechecking of target element [8edc3a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8edc3a2)
 - [none] Updated dependencies [8edc3a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8edc3a2)

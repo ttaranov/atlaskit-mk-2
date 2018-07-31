@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 13.2.6
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-json-transformer@4.0.2
+
 ## 13.2.5
 - [patch] When copying a table respect the table layout and cell attributes. ED-4947 [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
 - [none] Updated dependencies [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
