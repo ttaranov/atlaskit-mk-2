@@ -49,4 +49,7 @@ async function runBuild() {
   });
 }
 
-runBuild().catch(err => process.exit(err));
+runBuild().catch(err => {
+  console.error(err.message);
+  process.exit(err.code);
+});

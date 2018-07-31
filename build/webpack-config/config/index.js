@@ -6,6 +6,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
+const HappyPack = require('happypack');
+
 const { createDefaultGlob } = require('./utils');
 
 module.exports = function createWebpackConfig(
@@ -96,10 +98,7 @@ module.exports = function createWebpackConfig(
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: require.resolve('babel-loader'),
-          options: {
-            cacheDirectory: true,
-          },
+          loader: 'happypack/loader',
         },
         {
           test: /\.tsx?$/,
@@ -199,6 +198,10 @@ function getPlugins(
     new webpack.DefinePlugin({
       WEBSITE_ENV: `"${websiteEnv}"`,
       BASE_TITLE: `"Atlaskit by Atlassian ${!isProduction ? '- DEV' : ''}"`,
+    }),
+
+    new HappyPack({
+      loaders: ['babel-loader?cacheDirectory=true'],
     }),
   ];
 

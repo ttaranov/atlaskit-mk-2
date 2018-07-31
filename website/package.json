@@ -13,14 +13,11 @@
   "scripts": {
     "TODO": "FIX THE BINARY FILES",
     "start": "./node_modules/@atlaskit/webpack-config/bin/dev.js",
-
     "build": "rm -rf dist && ./node_modules/@atlaskit/webpack-config/bin/build.js",
     "build:report": "yarn build --report",
     "build:no-minimize": "yarn build --no-minimize",
-
     "build:copy": "cp dist/index.html dist/404.html && cp -R public/* dist/",
     "build:zip": "rm -rf dist.zip && zip -r dist.zip dist/",
-
     "deploy:production": "netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
     "deploy:staging": "netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
   },
@@ -70,6 +67,7 @@
     "commonmark": "^0.27.0",
     "commonmark-react-renderer": "^4.3.3",
     "connect-history-api-fallback": "^1.5.0",
+    "happypack": "^5.0.0",
     "ldclient-js": "^2.3.1",
     "lodash.debounce": "^4.0.8",
     "minimatch": "^3.0.4",
