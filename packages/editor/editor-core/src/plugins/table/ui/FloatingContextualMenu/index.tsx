@@ -51,15 +51,16 @@ const FloatingContextualMenu = ({
   targetCellPosition,
   pluginConfig,
 }: Props) => {
-  if (!targetCellRef || !isOpen) {
-    return null;
-  }
-  const width = targetCellRef.getBoundingClientRect().width;
-
   const { selection } = editorView.state;
   const selectionRect = isCellSelection(selection)
     ? getSelectionRect(selection)!
     : findCellRectClosestToPos(selection.$from);
+
+  if (!selectionRect || !targetCellRef) {
+    return null;
+  }
+
+  const width = targetCellRef.getBoundingClientRect().width;
 
   return (
     <Popup
