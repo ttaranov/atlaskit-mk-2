@@ -19,6 +19,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   component,
   badge,
   href,
+  size,
 }) => ({
   icon,
   label,
@@ -27,6 +28,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   component,
   badge,
   href,
+  size,
 });
 
 const noop = () => {};
