@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -23,11 +23,11 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/banner": "^7.0.1",
+    "@atlaskit/banner": "^7.0.2",
     "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/docs": "^5.0.0",
-    "@atlaskit/navigation": "^33.1.1",
-    "@atlaskit/toggle": "^5.0.3",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/navigation": "^33.1.2",
+    "@atlaskit/toggle": "^5.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.0",
     "react-lorem-component": "^0.12.2",

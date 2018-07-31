@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "14.0.4",
+  "version": "14.0.5",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,9 +19,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^3.0.2",
-    "@atlaskit/theme": "^5.1.1",
-    "@atlaskit/tooltip": "^12.0.3"
+    "@atlaskit/analytics-next": "^3.0.3",
+    "@atlaskit/theme": "^5.1.2",
+    "@atlaskit/tooltip": "^12.0.4"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -29,12 +29,12 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.3",
-    "@atlaskit/docs": "^5.0.1",
-    "@atlaskit/field-base": "^11.0.1",
-    "@atlaskit/icon": "^13.2.1",
-    "@atlaskit/section-message": "^1.0.2",
-    "@atlaskit/toggle": "^5.0.3",
+    "@atlaskit/button": "^9.0.4",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/field-base": "^11.0.2",
+    "@atlaskit/icon": "^13.2.2",
+    "@atlaskit/section-message": "^1.0.3",
+    "@atlaskit/toggle": "^5.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.0"
   },

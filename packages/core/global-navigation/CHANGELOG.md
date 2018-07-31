@@ -1,5 +1,20 @@
 # @atlaskit/global-navigation
 
+## 4.0.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation-next@3.1.1
+  - @atlaskit/onboarding@5.1.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/section-message@1.0.3
+  - @atlaskit/drawer@1.0.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/badge@9.0.3
+  - @atlaskit/blanket@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/modal-dialog@6.0.5
+
 ## 4.0.0
 - [major] Support controlled and uncontrolled drawers in Global Navigation. Update icons for starred drawer and help menu. Remove people drawer from Global navigation. [d0733a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0733a7)
 - [none] Updated dependencies [d0733a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0733a7)

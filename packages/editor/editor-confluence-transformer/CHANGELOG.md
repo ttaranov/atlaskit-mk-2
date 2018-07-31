@@ -1,5 +1,15 @@
 # @atlaskit/editor-cq-transformer
 
+## 5.0.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-test-helpers@5.1.2
+  - @atlaskit/editor-core@76.4.5
+  - @atlaskit/button@9.0.4
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+
 ## 5.0.3
 - [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
 - [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
