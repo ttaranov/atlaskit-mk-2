@@ -18,17 +18,13 @@ export class ZoomLevel {
 
   constructor(
     public readonly value: number = 1,
-    private readonly initialValue?: number,
+    private readonly initialValue = 1,
   ) {
-    // todo no duplicates!
-    // todo make sure that value is OK (in bounds etc)?
-    if (initialValue) {
-      this.zoomLevels = ZoomLevel.INITIAL_ZOOM_LEVELS.concat(
-        initialValue,
-      ).sort();
-    } else {
-      this.zoomLevels = ZoomLevel.INITIAL_ZOOM_LEVELS;
-    }
+    this.zoomLevels = Array.from(
+      new Set(
+        ZoomLevel.INITIAL_ZOOM_LEVELS.map(x => x * initialValue).concat(1),
+      ),
+    ).sort();
 
     this.min = this.zoomLevels[0];
     this.max = this.zoomLevels.slice(-1)[0];
