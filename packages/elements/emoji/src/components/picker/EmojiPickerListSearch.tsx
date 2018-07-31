@@ -18,7 +18,7 @@ interface InputSelection {
   selectionDirection?: string;
 }
 
-export default class EmojiPickerListSearch extends PureComponent<Props, {}> {
+export default class EmojiPickerListSearch extends PureComponent<Props> {
   static defaultProps = {
     style: {},
   };
@@ -93,7 +93,7 @@ export default class EmojiPickerListSearch extends PureComponent<Props, {}> {
       // setting the focus to search input.
       // see FS-2056
       this.inputRef = input;
-      setTimeout(() => this.focusInput());
+      setTimeout(this.focusInput);
     }
   };
 
