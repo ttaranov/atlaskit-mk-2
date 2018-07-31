@@ -120,6 +120,7 @@ export class ExampleEditor extends React.Component<Props, State> {
   www.dumbmacro.com?paramA=CFE
   www.smartmacro.com?paramB=CFE
     `);
+    console.timeStamp('onExampleDidMount');
   }
 
   render() {

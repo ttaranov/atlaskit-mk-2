@@ -58,6 +58,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     eventDispatcher: EventDispatcher;
     transformer?: Transformer<string>;
   }) {
+    console.timeStamp('onEditorCreated');
     this.registerEditorForActions(
       instance.view,
       instance.eventDispatcher,
