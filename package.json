@@ -255,6 +255,7 @@
     "@types/react-transition-group": "^2.0.6",
     "@types/redux": "^3.6.0",
     "@types/sinon-chai": "^2.7.27",
+    "abortcontroller-polyfill": "^1.1.9",
     "adf-builder": "^3.2.0",
     "ajv": "^4.11.3",
     "array-find": "^1.0.0",

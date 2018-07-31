@@ -10,7 +10,7 @@ import {
   publishReplay,
 } from 'rxjs/operators';
 import { Command, ObjectState, AuthService } from './types';
-import _fetch from './fetch';
+import fetch$ from './fetch';
 
 // @see https://product-fabric.atlassian.net/wiki/spaces/CS/pages/279347271/Object+Provider
 interface ResolveResponse {
@@ -65,7 +65,7 @@ export function createObjectResolverServiceObservable(
         return Observable.empty();
       }
 
-      return _fetch<ResolveResponse>('post', `${serviceUrl}/resolve`, {
+      return fetch$<ResolveResponse>('post', `${serviceUrl}/resolve`, {
         resourceUrl: encodeURI(objectUrl),
       }).pipe(
         map<ResolveResponse, ObjectState>(json => {
@@ -109,12 +109,13 @@ export function createObjectResolverServiceObservable(
         }),
       );
     }),
-    catchError(() =>
-      of<ObjectState>({
+    catchError(e => {
+      console.log('Got error: >>>>', e);
+      return of<ObjectState>({
         status: 'errored',
         services: [],
-      }),
-    ),
+      });
+    }),
     publishReplay(1),
     refCount(),
   );

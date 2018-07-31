@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+// import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 
 export default function<T>(
   method: string,
@@ -13,18 +14,19 @@ export default function<T>(
       credentials: 'include' as RequestCredentials,
       headers: {
         'Cache-Control': 'no-cache',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       ...(data ? { body: JSON.stringify(data) } : {}),
     };
 
     fetch(url, requestConfig)
-      .then(resp => resp.json())
+      .then(resp => resp.ok && resp.json())
       .then(res => {
         observer.next(res as T);
         observer.complete();
       })
-      .catch(err => observer.error(err));
+      .catch(observer.error.bind(observer));
 
     return () => abortController.abort();
   });
