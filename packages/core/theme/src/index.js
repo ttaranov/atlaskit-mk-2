@@ -51,4 +51,3 @@ export const layers = {
 export { Consumer, Provider } from './components/Context';
 export { default as Reset } from './components/Reset';
 export { default as Theme } from './components/Theme';
-export type { ThemeDefinition } from './types';

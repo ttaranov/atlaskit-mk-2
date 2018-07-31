@@ -1,7 +1,7 @@
 // @flow
 
 import React, { type Node } from 'react';
-import { colors, Theme, type ThemeDefinition } from '@atlaskit/theme';
+import { colors, Theme } from '@atlaskit/theme';
 
 export const backgroundColors = {
   added: { light: colors.G50, dark: colors.G50 },
@@ -34,68 +34,35 @@ export type Appearance =
   | {};
 
 export type ThemeProps = {
-  badge?: ({ appearance: Appearance }) => {
+  badge: ({ appearance: Appearance }) => {
     backgroundColor?: string,
     textColor?: string,
   },
-  mode?: string,
+  mode: string,
 };
 
-export type ThemeType<Props> = {
-  children: Node,
-  values: Props => Props,
-};
-
-export const ThemeDefault = ({
-  children,
-  values = v => v,
-}: ThemeType<ThemeProps>) => (
-  <Theme
-    values={({ badge = v => ({}), mode = 'light' } = {}) =>
-      values({
-        badge: props => ({
-          ...(typeof props.appearance === 'object'
-            ? {
-                ...{
-                  backgroundColor: backgroundColors.default.light,
-                  textColor: textColors.default.light,
-                },
-                ...props.appearance,
-              }
-            : {
-                backgroundColor: backgroundColors[props.appearance][mode],
-                textColor: textColors[props.appearance][mode],
-              }),
-          ...badge(props),
-        }),
-        mode,
-      })
-    }
-  >
-    {children}
-  </Theme>
-);
-
-const createAppearanceTheme = (appearance: string) => ({
-  children,
-  values = v => v,
-}: ThemeType<ThemeProps>) => (
-  <ThemeDefault>
-    <Theme
-      values={theme =>
-        values({
-          ...theme,
-          badge: props => theme.badge({ appearance }),
-        })
-      }
-    >
-      {children}
-    </Theme>
-  </ThemeDefault>
-);
-
-export const ThemeAdded = createAppearanceTheme('added');
-export const ThemeImportant = createAppearanceTheme('important');
-export const ThemePrimary = createAppearanceTheme('primary');
-export const ThemePrimaryInverted = createAppearanceTheme('primaryInverted');
-export const ThemeRemoved = createAppearanceTheme('removed');
+export default function themeDefault({
+  badge = () => ({}),
+  mode = 'light',
+  ...theme
+}: ThemeProps): ThemeProps {
+  return {
+    badge: props => ({
+      ...(typeof props.appearance === 'object'
+        ? {
+            ...{
+              backgroundColor: backgroundColors.default.light,
+              textColor: textColors.default.light,
+            },
+            ...props.appearance,
+          }
+        : {
+            backgroundColor: backgroundColors[props.appearance][mode],
+            textColor: textColors[props.appearance][mode],
+          }),
+      ...badge(props),
+    }),
+    mode,
+    ...theme,
+  };
+}

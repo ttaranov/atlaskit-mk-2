@@ -1,6 +1,6 @@
 // @flow
 
-import { type Node } from 'react';
+import { type ComponentType, type Node } from 'react';
 
 // Deprecated / legacy types
 export type ThemeModes = 'light' | 'dark';
@@ -27,7 +27,6 @@ export type ThemeDefinition<Values: ThemeOutput> = {
   values?: Values,
 };
 
-// Themes
 export type ThemeReset = {
   backgroundColor: string,
   textColor: string,

@@ -3,13 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@atlaskit/theme';
-import Badge, {
-  ThemeAdded,
-  ThemeImportant,
-  ThemePrimary,
-  ThemePrimaryInverted,
-  ThemeRemoved,
-} from '../src';
+import Badge from '../src';
 
 const Item = styled.div`
   align-items: center;
@@ -31,7 +25,8 @@ export default function Example() {
   return (
     <div>
       <Item>
-        <Badge theme={ThemeAdded} max={99}>
+        <p>Added</p>
+        <Badge appearance="added" max={99}>
           {3000}
         </Badge>
       </Item>
@@ -45,19 +40,19 @@ export default function Example() {
       </Item>
       <Item>
         <p>Important</p>
-        <Badge theme={ThemeImportant}>{25}</Badge>
+        <Badge appearance="important">{25}</Badge>
       </Item>
       <Item>
         <p>Primary</p>
-        <Badge theme={ThemePrimary}>{-5}</Badge>
+        <Badge appearance="primary">{-5}</Badge>
       </Item>
       <Item inverted>
         <p>Primary Inverted</p>
-        <Badge theme={ThemePrimaryInverted}>{5}</Badge>
+        <Badge appearance="primaryInverted">{5}</Badge>
       </Item>
       <Item>
         <p>Removed</p>
-        <Badge theme={ThemeRemoved}>{100}</Badge>
+        <Badge appearance="removed">{100}</Badge>
       </Item>
     </div>
   );

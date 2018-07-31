@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Theme } from '../src';
-import { type ThemeDefinition } from '../src/types';
 
 type ColorThemeValues = {
   backgroundColor?: string,
@@ -11,22 +10,17 @@ type ColorThemeValues = {
 
 type CustomThemeValues = ColorThemeValues & { padding?: number };
 
-const ColorTheme = ({
-  children,
-  values,
-}: ThemeDefinition<ColorThemeValues>) => (
-  <Theme values={{ color: '#eee', ...values }}>{children}</Theme>
-);
-
-const CustomTheme = ({
-  children,
-  values,
-}: ThemeDefinition<CustomThemeValues>) => (
-  <ColorTheme values={{ padding: 10, ...values }}>{children}</ColorTheme>
-);
+const themeDefault = theme => ({
+  backgroundColor: 'rebeccapurple',
+  color: '#eee',
+  ...theme,
+});
+const themeCustom = theme => ({ ...theme, padding: 10 });
 
 export default () => (
-  <CustomTheme values={{ backgroundColor: 'rebeccapurple' }}>
-    {theme => <div style={theme}>I am themed.</div>}
-  </CustomTheme>
+  <Theme values={themeDefault}>
+    <Theme values={themeCustom}>
+      {theme => <div style={theme}>I am themed.</div>}
+    </Theme>
+  </Theme>
 );
