@@ -47,6 +47,7 @@ class DropdownMenuStateless extends Component<
   triggerContainer: ?HTMLElement;
 
   sourceOfIsOpen: ?string;
+  autoFocusDropdownItem: boolean = false;
 
   static defaultProps = {
     appearance: 'default',
@@ -391,6 +392,12 @@ class DropdownMenuStateless extends Component<
     );
   };
 
+  /** Ensure droplist is positioned before focussing to avoid container scrolling to top */
+  onDroplistPositioned = () => {
+    this.autoFocusDropdownItem = this.sourceOfIsOpen === 'keydown';
+    if (this.props.onPositioned) this.props.onPositioned();
+  };
+
   render() {
     const {
       appearance,
@@ -404,7 +411,6 @@ class DropdownMenuStateless extends Component<
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
-      onPositioned,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
@@ -432,7 +438,7 @@ class DropdownMenuStateless extends Component<
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
-          onPositioned={onPositioned}
+          onPositioned={this.onDroplistPositioned}
           {...deprecatedProps}
           analyticsContext={{
             componentName: 'dropdownMenu',
@@ -450,7 +456,7 @@ class DropdownMenuStateless extends Component<
             >
               <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
                 <DropdownItemFocusManager
-                  autoFocus={this.sourceOfIsOpen === 'keydown'}
+                  autoFocus={this.autoFocusDropdownItem}
                   close={this.close}
                 >
                   {children}
