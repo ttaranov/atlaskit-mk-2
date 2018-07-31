@@ -1,7 +1,7 @@
 const BASE_ZOOM_LEVELS = [0.06, 0.12, 0.24, 0.48, 1, 1.5, 2, 4, 6, 8];
 
 const deduplicated = (nums: number[]): number[] =>
-  nums.sort().filter((num, pos) => pos === 0 || num != nums[pos - 1]);
+  nums.sort().filter((num, pos) => pos === 0 || num !== nums[pos - 1]);
 
 export class ZoomLevel {
   public readonly value: number;
