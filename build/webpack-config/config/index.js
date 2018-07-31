@@ -7,6 +7,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 const { createDefaultGlob } = require('./utils');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = function createWebpackConfig(
   {
@@ -199,6 +200,19 @@ function getPlugins(
     new webpack.DefinePlugin({
       WEBSITE_ENV: `"${websiteEnv}"`,
       BASE_TITLE: `"Atlaskit by Atlassian ${!isProduction ? '- DEV' : ''}"`,
+    }),
+
+    new HardSourceWebpackPlugin(),
+
+    new HardSourceWebpackPlugin.ParallelModulePlugin({
+      fork: (fork, compiler, webpackBin) =>
+        fork(
+          webpackBin(),
+          ['--config', path.resolve(__dirname, '../bin/_config')],
+          {
+            silent: true,
+          },
+        ),
     }),
   ];
 

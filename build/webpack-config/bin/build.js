@@ -5,10 +5,12 @@
 const minimatch = require('minimatch');
 
 const bolt = require('bolt');
+const fs = require('fs');
 const webpack = require('webpack');
 const createConfig = require('../config');
 const { print, buildBanner } = require('../banner');
 const utils = require('../config/utils');
+const path = require('path');
 
 async function runBuild() {
   const mode = 'production';
@@ -20,12 +22,14 @@ async function runBuild() {
 
   print(buildBanner());
 
-  const config = createConfig({
+  const opts = {
     mode,
     websiteEnv,
     noMinimize,
     report,
-  });
+  };
+  const config = createConfig(opts);
+  fs.writeFileSync(path.resolve(__dirname, '.config'), JSON.stringify(opts));
   const compiler = webpack(config);
 
   //
@@ -49,4 +53,4 @@ async function runBuild() {
   });
 }
 
-runBuild().catch(err => process.exit(err));
+runBuild().catch(err => console.error(err));
