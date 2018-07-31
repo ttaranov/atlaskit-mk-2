@@ -59,6 +59,7 @@ export type NavItem = {
   component?: ComponentType<*>,
   badge?: ComponentType<*>,
   tooltip?: string,
+  href?: string,
 };
 
 // The shape of the item data required by GlobalNav

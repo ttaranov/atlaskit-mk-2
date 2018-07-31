@@ -18,6 +18,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   tooltip,
   component,
   badge,
+  href,
 }) => ({
   icon,
   label,
@@ -25,6 +26,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   tooltip,
   component,
   badge,
+  href,
 });
 
 const noop = () => {};
