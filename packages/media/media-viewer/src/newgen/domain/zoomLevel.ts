@@ -1,25 +1,24 @@
-export class ZoomLevel {
-  private static readonly ZOOM_LEVELS = [
-    0.06,
-    0.12,
-    0.24,
-    0.48,
-    1,
-    1.5,
-    2,
-    4,
-    6,
-    8,
-  ];
-  public static readonly MIN = ZoomLevel.ZOOM_LEVELS[0];
-  public static readonly MAX = ZoomLevel.ZOOM_LEVELS.slice(-1)[0];
+const BASE_ZOOM_LEVELS = [0.06, 0.12, 0.24, 0.48, 1, 1.5, 2, 4, 6, 8];
 
-  constructor(public readonly value: number = 1) {
-    if (value < ZoomLevel.MIN) {
-      this.value = ZoomLevel.MIN;
+export class ZoomLevel {
+  public readonly value: number;
+  public readonly zoomLevels: number[];
+  public readonly min: number;
+  public readonly max: number;
+
+  constructor(public readonly initialValue: number, selectedValue?: number) {
+    this.zoomLevels = BASE_ZOOM_LEVELS.map(i => i * initialValue);
+    this.min = this.zoomLevels[0];
+    this.max = this.zoomLevels.slice(-1)[0];
+    if (!selectedValue) {
+      selectedValue = initialValue;
     }
-    if (value > ZoomLevel.MAX) {
-      this.value = ZoomLevel.MAX;
+    if (selectedValue < this.min) {
+      this.value = this.min;
+    } else if (selectedValue > this.max) {
+      this.value = this.max;
+    } else {
+      this.value = selectedValue;
     }
   }
 
@@ -28,22 +27,30 @@ export class ZoomLevel {
   }
 
   zoomIn(): ZoomLevel {
-    const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
-    const nextValue = ZoomLevel.ZOOM_LEVELS[index + 1];
-    return nextValue ? new ZoomLevel(nextValue) : this;
+    const index = this.zoomLevels.indexOf(this.value);
+    const nextValue = this.zoomLevels[index + 1];
+    return nextValue ? new ZoomLevel(this.initialValue, nextValue) : this;
   }
 
   zoomOut(): ZoomLevel {
-    const index = ZoomLevel.ZOOM_LEVELS.indexOf(this.value);
-    const nextValue = ZoomLevel.ZOOM_LEVELS[index - 1];
-    return nextValue ? new ZoomLevel(nextValue) : this;
+    const index = this.zoomLevels.indexOf(this.value);
+    const nextValue = this.zoomLevels[index - 1];
+    return nextValue ? new ZoomLevel(this.initialValue, nextValue) : this;
+  }
+
+  fullyZoomIn(): ZoomLevel {
+    return new ZoomLevel(this.initialValue, this.max);
+  }
+
+  fullyZoomOut(): ZoomLevel {
+    return new ZoomLevel(this.initialValue, this.min);
   }
 
   get canZoomIn(): boolean {
-    return this.value < ZoomLevel.MAX;
+    return this.value < this.max;
   }
 
   get canZoomOut(): boolean {
-    return this.value > ZoomLevel.MIN;
+    return this.value > this.min;
   }
 }

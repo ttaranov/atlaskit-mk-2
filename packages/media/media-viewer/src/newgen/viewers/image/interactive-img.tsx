@@ -17,7 +17,7 @@ export type State = {
 };
 
 const initialState: State = {
-  zoomLevel: new ZoomLevel(),
+  zoomLevel: new ZoomLevel(1),
   camera: { status: 'PENDING' },
 };
 
