@@ -10,11 +10,6 @@ import {
 } from './MentionResource';
 import { padArray } from '../util';
 
-import {
-  // @ts-ignore
-  MentionDescription,
-} from '../types';
-
 /**
  * This component is stateful and should be instantianted per contextIdentifiers.
  */
@@ -45,12 +40,15 @@ export default class ContextMentionResource implements MentionProvider {
       argsLength !== declaredArgs
         ? padArray(args, declaredArgs - argsLength, undefined)
         : args;
-    return this.mentionProvider[f](...mentionArgs, this.contextIdentifier);
+    return (this.mentionProvider[f] as any)(
+      ...mentionArgs,
+      this.contextIdentifier,
+    );
   };
 
   callDefault = <K extends keyof MentionProvider>(f: K): MentionProvider[K] => (
     ...args: any[]
-  ) => this.mentionProvider[f](...args);
+  ) => (this.mentionProvider[f] as any)(...args);
 
   subscribe = this.callDefault('subscribe');
 

@@ -39,6 +39,8 @@ export class MediaCollectionViewer extends Component<
   MediaCollectionViewerProps,
   MediaCollectionViewerState
 > {
+  // should be optional
+  // @ts-ignore
   private subscription: Subscription;
 
   static readonly defaultPageSize = 10;
