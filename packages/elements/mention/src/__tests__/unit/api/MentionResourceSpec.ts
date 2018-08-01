@@ -223,10 +223,8 @@ describe('MentionResource', () => {
             expect(mentions[i].weight).toBe(i);
           }
           expect(stats).toBeDefined();
-          // @ts-ignore: stats should be passed
-          expect(stats.duration).toBeGreaterThan(0);
-          // @ts-ignore: stats should be passed
-          expect(stats.remoteSearch).toBeTruthy();
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
           done();
         },
       );
@@ -242,10 +240,8 @@ describe('MentionResource', () => {
             expect(mentions[i].weight).toBe(i);
           }
           expect(stats).toBeDefined();
-          // @ts-ignore: stats should be passed
-          expect(stats.duration).toBeGreaterThan(0);
-          // @ts-ignore: stats should be passed
-          expect(stats.remoteSearch).toBeTruthy();
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
           done();
         },
       );
@@ -270,29 +266,22 @@ describe('MentionResource', () => {
           if (sequence === 1) {
             expect(query).toBe('c');
             expect(mentions).toBe(resultC);
-            // @ts-ignore: stats should be passed
-            expect(stats.duration).toBeGreaterThan(0);
-            // @ts-ignore: stats should be passed
-            expect(stats.remoteSearch).toBeTruthy();
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeTruthy();
           }
 
           if (sequence === 2) {
             expect(query).toBe('craig');
             expect(mentions).toBe([]);
-            // @ts-ignore: stats should be passed
-            expect(stats.duration).toBeGreaterThan(0);
-            // @ts-ignore: stats should be passed
-            expect(stats.remoteSearch).toBeFalsy();
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeFalsy();
           }
 
           if (sequence === 3) {
             expect(query).toBe('craig');
             expect(mentions).toMatchObject(resultCraig);
-            // @ts-ignore: stats should be passed
-            expect(stats.duration).toBeGreaterThan(0);
-            // @ts-ignore: stats should be passed
-            expect(stats.remoteSearch).toBeTruthy();
-
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeTruthy();
             done();
           }
         },
