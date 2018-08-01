@@ -6,14 +6,12 @@ import { fireAnalyticsMentionEvent, fireAnalytics } from '../../util/analytics';
 
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
-import {
-  withAnalyticsEvents,
-  UIAnalyticsEventInterface,
-} from '@atlaskit/analytics-next';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 import {
   WithAnalyticsEventProps,
   CreateUIAnalyticsEventSignature,
+  UIAnalyticsEventInterface,
 } from '@atlaskit/analytics-next-types';
 
 export const ANALYTICS_HOVER_DELAY = 1000;

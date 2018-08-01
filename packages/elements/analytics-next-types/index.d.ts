@@ -120,7 +120,7 @@ export type CreateUIAnalyticsEventSignature = (
   payload: AnalyticsEventPayload,
 ) => UIAnalyticsEventInterface;
 
-interface AnalyticsEventCreator<TOwnProps> {
+export interface AnalyticsEventCreator<TOwnProps> {
   (
     create: CreateUIAnalyticsEventSignature,
     props: TOwnProps,

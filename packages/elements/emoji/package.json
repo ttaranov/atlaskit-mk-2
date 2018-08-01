@@ -21,6 +21,8 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^4.0.3",
+    "@atlaskit/analytics-gas-types": "^3.1.2",
+    "@atlaskit/analytics-next-types": "^3.0.0",
     "@atlaskit/button": "^9.0.4",
     "@atlaskit/field-base": "^11.0.2",
     "@atlaskit/icon": "^13.2.2",
