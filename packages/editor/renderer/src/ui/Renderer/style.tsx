@@ -289,6 +289,11 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
+  & .Extension {
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
   ${columnLayoutSharedStyle};
   & [data-layout-type] {
     margin: ${akGridSizeUnitless * 3}px 0;
