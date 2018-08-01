@@ -289,11 +289,10 @@ export class MentionPicker extends React.PureComponent<
   }
 }
 
-// tslint:disable-next-line:variable-name
 export const MentionPickerWithAnalytics: React.ComponentClass<
   Props
 > = withAnalyticsEvents({})(MentionPicker) as React.ComponentClass<Props>;
 
-type MentionPickerWithAnalytics = MentionPicker;
+export type MentionPickerWithAnalytics = MentionPicker;
 
 export default MentionPickerWithAnalytics;
