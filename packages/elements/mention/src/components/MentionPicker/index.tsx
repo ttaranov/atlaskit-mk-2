@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
-import { OnMentionEvent } from '../../types';
+import { OnMentionEvent, MentionDescription } from '../../types';
 import { MentionProvider, MentionStats } from '../../api/MentionResource';
 import { PresenceProvider } from '../../api/PresenceResource';
 import ResourcedMentionList from '../ResourcedMentionList';
@@ -173,7 +173,11 @@ export class MentionPicker extends React.PureComponent<
   };
 
   // internal, used for callbacks
-  private filterChange = (mentions, query: string, stats?: MentionStats) => {
+  private filterChange = (
+    mentions: MentionDescription[],
+    query: string,
+    stats?: MentionStats,
+  ) => {
     debug('ak-mention-picker.filterChange', mentions.length);
     const wasVisible = this.state.visible;
     const visible = mentions.length > 0;
@@ -187,6 +191,7 @@ export class MentionPicker extends React.PureComponent<
       UtilAnalytics.fireAnalyticsMentionTypeaheadEvent(this.props)(
         'rendered',
         stats.duration,
+        mentions.map(mention => mention.id),
         query,
       );
     }

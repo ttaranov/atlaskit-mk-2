@@ -15,7 +15,7 @@ describe('Util Analytics', () => {
     createAnalyticsEventMock.mockReturnValue(eventMock);
     fireAnalyticsMentionTypeaheadEvent({
       createAnalyticsEvent: createAnalyticsEventMock,
-    })('someAction', 10, 'someQuery');
+    })('someAction', 10, ['abc-123', 'abc-123', 'def-456'], 'someQuery');
 
     expect(createAnalyticsEventMock).toBeCalledWith({
       action: 'someAction',
@@ -26,6 +26,7 @@ describe('Util Analytics', () => {
         componentName: 'mention',
         duration: 10,
         query: 'someQuery',
+        userIds: ['abc-123', 'abc-123', 'def-456'],
       },
       eventType: 'operational',
       source: 'unknown',
