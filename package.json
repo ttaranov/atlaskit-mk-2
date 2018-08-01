@@ -41,7 +41,8 @@
     "typecheck": "                           yarn run typecheck:flow && yarn run typecheck:typescript",
     "typecheck:flow": "                      flow check",
     "typecheck:typescript": "                bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --noEmit --project ./",
-    "website:start": "                       cd website && yarn start",
+    "website:start": "                       cd website/atlaskit && yarn start",
+    "start:adg": "                           cd website/adg && yarn start",
     "start": "                               yarn run website:start",
     "start:bitbucket": "                     yarn run website:start **/packages/bitbucket/**",
     "start:confluence": "                    yarn run website:start **/packages/confluence/**",
@@ -86,7 +87,7 @@
       "build/*",
       "packages/*/*",
       "patterns",
-      "website"
+      "website/*"
     ],
     "releases": {
       "baseCommitUrl": "https://bitbucket.org/atlassian/atlaskit-mk-2/commits"
@@ -229,6 +230,7 @@
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
+    "@reach/router": "^1.1.1",
     "@types/bricks.js": "^1.8.0",
     "@types/bytes": "^2.4.33",
     "@types/codemirror": "^0.0.40",
@@ -282,6 +284,7 @@
     "commonmark": "^0.27.0",
     "commonmark-react-renderer": "^4.3.3",
     "connect-history-api-fallback": "^1.5.0",
+    "contentful": "^6.1.2",
     "create-error": "^0.3.1",
     "css-color-names": "0.0.4",
     "css-element-queries": "^0.3.2",

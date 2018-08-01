@@ -1,0 +1,27 @@
+{
+    "name": "adg-website",
+    "version": "0.0.0",
+    "scripts": {
+        "webpack:dev": "./node_modules/@atlaskit/webpack-config/bin/dev.js ./src/index.js",
+        "start": "yarn webpack:dev"
+    },
+    "dependencies": {
+        "@atlaskit/button": "^9.0.2",
+        "@atlaskit/css-reset": "^3.0.0",
+        "@atlaskit/icon": "^13.2.0",
+        "@atlaskit/navigation": "^33.1.0",
+        "@atlaskit/page": "^8.0.0",
+        "@atlaskit/renderer": "^19.2.4",
+        "@atlaskit/theme": "^5.1.0",
+        "@atlaskit/tooltip": "^12.0.2",
+        "@atlaskit/webpack-config": "^2.0.2",
+        "@reach/router": "^1.1.1",
+        "contentful": "^6.1.2",
+        "react": "^16.4.0",
+        "react-dom": "^16.4.0",
+        "react-loadable": "^5.1.0",
+        "react-lorem-component": "^0.12.2",
+        "react-router-dom": "^4.2.2",
+        "styled-components": "^3.2.6"
+    }
+}

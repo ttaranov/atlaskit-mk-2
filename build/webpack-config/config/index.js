@@ -82,9 +82,28 @@ module.exports = function createWebpackConfig(
     module: {
       rules: [
         {
+          test: /CONTENTFUL_DATA/,
+          loader: require.resolve('contentful-loader'),
+          options: {
+            spaceId: '8j5aqoy0ts8s',
+            accessToken:
+              'c095861ccf259e184e34be072a1bd4051fdefcf1b5570f5fcae84a94f462a033',
+          },
+        },
+        {
           test: /DESIGN_EXAMPLES/,
           exclude: /node_modules/,
           loader: require.resolve('design-examples-loader'),
+        },
+        {
+          test: /DESIGN_SITE_DATA$/,
+          loader: require.resolve('bolt-fs-loader'),
+          options: {
+            include: [
+              includePatterns && 'packages/**/design-examples/*.js',
+            ].filter(p => !!p),
+            exclude: ['**/node_modules/**', 'packages/build/docs/**'],
+          },
         },
         {
           test: /SITE_DATA$/,

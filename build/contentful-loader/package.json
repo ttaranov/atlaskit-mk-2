@@ -1,0 +1,7 @@
+{
+    "name": "contentful-loader",
+    "version": "0.0.0",
+    "dependencies": {
+        "contentful": "^6.1.2"
+    }
+}
