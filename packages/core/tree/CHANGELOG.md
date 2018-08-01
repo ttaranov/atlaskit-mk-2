@@ -1,5 +1,8 @@
 # @atlaskit/tree
 
+## 2.0.0
+- [major] Disabling drag&drop by default. [63de261](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63de261)
+
 ## 1.1.0
 - [minor] Introducing Drag&Drop functionality to atlaskit/tree [98fe2b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98fe2b5)
 

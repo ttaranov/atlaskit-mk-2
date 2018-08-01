@@ -87,11 +87,15 @@ export class MediaPluginState {
   public editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
 
+  private reactContext: () => {};
+
   constructor(
     state: EditorState,
     options: MediaPluginOptions,
+    reactContext: () => {},
     editorAppearance?: EditorAppearance,
   ) {
+    this.reactContext = reactContext;
     this.options = options;
     this.editorAppearance = editorAppearance;
     this.waitForMediaUpload =
@@ -203,6 +207,7 @@ export class MediaPluginState {
           resolvedMediaProvider.uploadParams,
           uploadContext,
           Picker,
+          this.reactContext,
         );
       } else {
         this.destroyPickers();
@@ -580,6 +585,7 @@ export class MediaPluginState {
     uploadParams: UploadParams,
     context: Context,
     Picker: typeof PickerFacade,
+    reactContext: () => {},
   ) {
     if (this.destroyed) {
       return;
@@ -598,6 +604,7 @@ export class MediaPluginState {
           featureFlags && featureFlags.useNewUploadService
         ),
         uploadParams,
+        proxyReactContext: reactContext(),
       };
 
       if (this.options.customMediaPicker) {
@@ -877,6 +884,7 @@ export const getMediaPluginState = (state: EditorState) =>
 export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
+  reactContext: () => {},
   dispatch?: Dispatch,
   editorAppearance?: EditorAppearance,
 ) => {
@@ -885,7 +893,12 @@ export const createPlugin = (
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options, editorAppearance);
+        return new MediaPluginState(
+          state,
+          options,
+          reactContext,
+          editorAppearance,
+        );
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);

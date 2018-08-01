@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 4.1.0
+- [minor] Added a new helper method appendItem in tableTreeHelper class [f520c93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f520c93)
+
 ## 4.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

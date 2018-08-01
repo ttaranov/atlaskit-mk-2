@@ -3,7 +3,7 @@ import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
-import App from '../popup/components/app';
+import App, { AppProxyReactContext } from '../popup/components/app';
 import { cancelUpload } from '../popup/actions/cancelUpload';
 import { showPopup } from '../popup/actions/showPopup';
 import { resetView } from '../popup/actions/resetView';
@@ -23,6 +23,7 @@ export interface PopupConfig {
   readonly container?: HTMLElement;
   readonly uploadParams: UploadParams;
   readonly useNewUploadService?: boolean;
+  readonly proxyReactContext?: AppProxyReactContext;
 }
 
 export const USER_RECENTS_COLLECTION = 'recents';
@@ -44,6 +45,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private readonly container: HTMLElement;
   private readonly store: Store<State>;
   private uploadParams: UploadParams;
+  private proxyReactContext?: AppProxyReactContext;
 
   constructor(
     readonly context: Context,
@@ -51,9 +53,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       container = document.body,
       uploadParams,
       useNewUploadService,
+      proxyReactContext,
     }: PopupConfig,
   ) {
     super();
+    this.proxyReactContext = proxyReactContext;
 
     this.store = createStore(this, context, useNewUploadService);
 
@@ -121,7 +125,10 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
   private renderPopup(): HTMLElement {
     const container = document.createElement('div');
-    render(<App store={this.store} />, container);
+    render(
+      <App store={this.store} proxyReactContext={this.proxyReactContext} />,
+      container,
+    );
     return container;
   }
 }
