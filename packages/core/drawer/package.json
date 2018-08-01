@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/drawer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React component the renders a Drawer from the left of the screen",
   "main": "dist/cjs/index.js",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -11,10 +11,10 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^7.0.0",
-    "@atlaskit/docs": "^5.0.0",
-    "@atlaskit/icon": "^13.0.0",
-    "@atlaskit/theme": "^5.0.0",
+    "@atlaskit/blanket": "^7.0.3",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/icon": "^13.2.2",
+    "@atlaskit/theme": "^5.1.2",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",
@@ -26,7 +26,7 @@
     "react": "^16.4.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^9.0.0",
+    "@atlaskit/button": "^9.0.4",
     "react-lorem-component": "^0.12.2"
   }
 }

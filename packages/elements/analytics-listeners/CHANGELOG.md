@@ -1,5 +1,13 @@
 # @atlaskit/analytics-listeners
 
+## 3.0.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/button@9.0.4
+  - @atlaskit/analytics-namespaced-context@2.0.2
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/analytics-gas-types@3.1.2
+
 ## 3.0.2
 - [patch] Updated dependencies [80e90ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e90ed)
   - @atlaskit/analytics-namespaced-context@2.0.1

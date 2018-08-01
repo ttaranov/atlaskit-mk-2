@@ -1,5 +1,16 @@
 # @atlaskit/media-avatar-picker
 
+## 9.2.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-ui@5.0.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/field-range@5.0.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/modal-dialog@6.0.5
+
 ## 9.2.0
 
 

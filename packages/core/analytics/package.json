@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "The Atlaskit Component Analytics Framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/docs": "^5.0.1",
+    "@atlaskit/docs": "^5.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.0",

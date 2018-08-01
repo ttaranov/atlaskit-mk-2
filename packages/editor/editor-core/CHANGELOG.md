@@ -1,5 +1,53 @@
 # @atlaskit/editor-core
 
+## 76.4.7
+- [patch] Adding conditional controls render [0ed8bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ed8bcf)
+- [none] Updated dependencies [0ed8bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ed8bcf)
+
+## 76.4.6
+- [patch] isOpen never renders the menu, check if we have an appropriate selection before rendering [f72ad6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f72ad6c)
+- [none] Updated dependencies [f72ad6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f72ad6c)
+
+## 76.4.5
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/select@5.0.7
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/media-picker@11.2.1
+  - @atlaskit/media-filmstrip@10.2.1
+  - @atlaskit/renderer@19.2.6
+  - @atlaskit/task-decision@8.1.2
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/mention@15.0.2
+  - @atlaskit/emoji@38.0.5
+  - @atlaskit/editor-json-transformer@4.0.3
+  - @atlaskit/editor-bitbucket-transformer@4.0.5
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-test-helpers@5.1.2
+  - @atlaskit/editor-markdown-transformer@2.0.3
+  - @atlaskit/logo@9.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/layer-manager@5.0.4
+  - @atlaskit/item@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/calendar@7.0.3
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/code@7.0.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/analytics-gas-types@3.1.2
+  - @atlaskit/size-detector@5.0.3
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/droplist@7.0.4
+  - @atlaskit/avatar-group@2.0.4
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/modal-dialog@6.0.5
+
 ## 76.4.4
 - [patch] FS-2131 add date element [b026429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026429)
 - [patch] Updated dependencies [b026429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026429)

@@ -1,5 +1,22 @@
 # @atlaskit/navigation-next
 
+## 3.1.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/select@5.0.7
+  - @atlaskit/global-navigation@4.0.1
+  - @atlaskit/logo@9.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/toggle@5.0.4
+  - @atlaskit/section-message@1.0.3
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/badge@9.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/field-base@11.0.2
+
 ## 3.1.0
 - [minor] add collapse listeners [90199a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90199a5)
 - [none] Updated dependencies [90199a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90199a5)
