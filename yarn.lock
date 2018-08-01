@@ -11807,9 +11807,9 @@ react-json-tree@^0.11.0:
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
-react-lazily-render@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-1.0.1.tgz#9a3826443b97ab291b69f4b45c5530d4e6680089"
+react-lazily-render@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-lazily-render/-/react-lazily-render-1.0.2.tgz#5942b194521e68b81193d02c731e2465e48bc418"
   dependencies:
     scrollparent "^2.0.1"
 
