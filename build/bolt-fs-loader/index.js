@@ -38,7 +38,7 @@ function createLoaderOutput(
     `;
   }
 
-  return output;
+  return output.replace(/\\/g, '\\\\');
 }
 
 function addWebpackDependencies(
