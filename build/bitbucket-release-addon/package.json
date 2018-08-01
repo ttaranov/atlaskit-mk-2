@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/bitbucket-releases-addon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Bitbucket addon for displaying releases section in PRs",
   "scripts": {
