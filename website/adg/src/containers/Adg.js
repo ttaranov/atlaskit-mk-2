@@ -24,6 +24,7 @@ import Navigation, {
   SkeletonDefaultContainerHeader,
   SkeletonContainerItems,
 } from '@atlaskit/navigation';
+import Preview from './Preview';
 //import { Router, Link } from '@reach/router';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import App from './App';
@@ -219,6 +220,7 @@ export default class ConfluenceHome extends Component<*, *> {
           <GridColumn medium={12}>
             <Router>
               <Switch>
+                <Route component={Preview} path={'/preview/:id'} />
                 {Object.keys(paths).map(path => (
                   <Route
                     render={() => <App id={paths[path].id} />}

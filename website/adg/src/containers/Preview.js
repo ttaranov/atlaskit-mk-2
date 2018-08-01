@@ -53,8 +53,8 @@ const extensionHandlers = {
 };
 
 export default class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       docs: {},
     };
@@ -64,10 +64,11 @@ export default class App extends React.Component {
     let client = contentful.createClient({
       space: '8j5aqoy0ts8s',
       accessToken:
-        'c095861ccf259e184e34be072a1bd4051fdefcf1b5570f5fcae84a94f462a033',
+        '524f57fbea94aad39f14294585a31e9aeb44a278c88ad7d82b8c03ae2611d7b2',
+      host: 'preview.contentful.com',
     });
 
-    client.getEntry(this.props.id).then(entry => {
+    client.getEntry(this.props.match.params.id).then(entry => {
       this.setState({
         docs: entry.fields.docs,
       });
@@ -82,6 +83,7 @@ export default class App extends React.Component {
       });
   }
   render() {
+    console.log(this.props);
     return (
       <div>
         {this.state.docs.type === 'doc' && (

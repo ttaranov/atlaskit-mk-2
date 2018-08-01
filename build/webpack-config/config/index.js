@@ -103,6 +103,7 @@ module.exports = function createWebpackConfig(
               includePatterns && 'packages/**/design-examples/*.js',
             ].filter(p => !!p),
             exclude: ['**/node_modules/**', 'packages/build/docs/**'],
+            debug: true,
           },
         },
         {

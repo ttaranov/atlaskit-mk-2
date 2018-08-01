@@ -37,9 +37,7 @@ module.exports = async function getAllDesignExamples() {
 
   files.forEach((file, index) => {
     fileContent = fileContent.concat(`
-      {name: '${titleize(
-        file,
-      )}', component: require('../../../${file}'), componentPath: '${file}'},
+      {name: '${titleize(file)}', componentPath: '${file}'},
     `);
   });
   fileContent = fileContent.concat('];');

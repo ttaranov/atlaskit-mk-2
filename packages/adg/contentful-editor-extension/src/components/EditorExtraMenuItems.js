@@ -1,8 +1,8 @@
 import React from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import Test from '../../DESIGN_EXAMPLES';
+import designGuideExamples from '../../DESIGN_EXAMPLES';
 
-export const customInsertMenuItems = Test.map(
+export const customInsertMenuItems = designGuideExamples.map(
   ({ name, component, componentPath }) => ({
     content: name,
     title: name,
@@ -17,12 +17,6 @@ export const customInsertMenuItems = Test.map(
           extensionType: 'com.ajay.test',
           extensionKey: 'block-eh',
           parameters: {
-            tag: componentPath,
-            props: {
-              name: 'xlarge',
-              size: 'xlarge',
-              presence: 'online',
-            },
             componentPath,
           },
         },
@@ -35,12 +29,6 @@ export const customInsertMenuItems = Test.map(
           extensionType: 'com.ajay.test',
           extensionKey: 'block-eh',
           parameters: {
-            tag: componentPath,
-            props: {
-              name: 'xlarge',
-              size: 'xlarge',
-              presence: 'online',
-            },
             componentPath,
           },
         },

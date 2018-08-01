@@ -5,13 +5,11 @@ import quickInsertProviderFactory, {
   customInsertMenuItems,
 } from './EditorExtraMenuItems';
 import ImperativeContentfulUIExtension from './ImperativeContentfulUiExtension';
-import Test from '../../DESIGN_EXAMPLES';
-const quickInsertProvider = quickInsertProviderFactory();
+import Loadable from 'react-loadable';
+import * as fs from '../utils/fs';
+import packageResolver from '../utils/packageResolver';
 
-function getTheMatchingComponent(path) {
-  return Test.filter(example => example.componentPath === path)[0].component
-    .default;
-}
+const quickInsertProvider = quickInsertProviderFactory();
 
 export default class Example extends React.PureComponent {
   transformer = new JSONTransformer();
@@ -32,23 +30,61 @@ export default class Example extends React.PureComponent {
               allowCodeBlocks={true}
               allowLists={true}
               allowRule={true}
+              allowGapCursor={true}
               allowTables={true}
               allowExtension
+              media={{
+                provider: () => Promise.resolve(),
+                allowMediaSingle: true,
+              }}
               onChange={editorView =>
                 this.handleChangeInTheEditor(
                   editorView,
                   updateContentfulFieldValue,
                 )
               }
-              insertMenuItems={customInsertMenuItems}
               quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
               media={{
                 allowMediaSingle: true,
               }}
               extensionHandlers={{
                 'com.ajay.test': (ext, doc) => {
-                  const Tag = getTheMatchingComponent(ext.parameters.tag);
-                  return <Tag />;
+                  const { extensionKey, parameters } = ext;
+                  const { componentPath } = parameters;
+                  const [
+                    ,
+                    groupId,
+                    packageName,
+                    ,
+                    ,
+                    exampleName,
+                  ] = componentPath.split('/');
+
+                  const { examples, packageId, exampleId } = packageResolver(
+                    groupId,
+                    packageName,
+                    exampleName,
+                  );
+
+                  const LoadableComponent = Loadable({
+                    loader: () =>
+                      fs
+                        .getById(fs.getFiles(examples.children), exampleName)
+                        .exports(),
+                    loading: () => <div>something</div>,
+                    render(loaded) {
+                      if (!loaded.default) {
+                        return <div>Example doesn't have default export.</div>;
+                      }
+
+                      return (
+                        <div>
+                          <loaded.default />
+                        </div>
+                      );
+                    },
+                  });
+                  return <LoadableComponent />;
                 },
               }}
             />
