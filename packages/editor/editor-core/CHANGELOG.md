@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 76.4.9
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+  - @atlaskit/media-picker@11.2.2
+  - @atlaskit/media-filmstrip@10.2.2
+  - @atlaskit/renderer@19.2.7
+  - @atlaskit/editor-common@13.2.8
+
 ## 76.4.8
 - [patch] Prevents editor from crashing when hitting backspace on selected date node. ED-5168 [c360f18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c360f18)
 - [none] Updated dependencies [c360f18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c360f18)
