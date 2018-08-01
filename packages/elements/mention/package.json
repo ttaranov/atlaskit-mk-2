@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "15.0.2",
+  "version": "15.0.3",
   "config": {
     "access": "public"
   },
@@ -19,11 +19,10 @@
     "dist/es2015/**/*.json",
     "src"
   ],
-
   "dependencies": {
     "@atlaskit/analytics": "^4.0.3",
     "@atlaskit/analytics-gas-types": "^3.1.2",
-    "@atlaskit/analytics-next": "^3.0.3",    
+    "@atlaskit/analytics-next": "^3.0.3",
     "@atlaskit/analytics-next-types": "^3.0.0",
     "@atlaskit/avatar": "^14.0.5",
     "@atlaskit/icon": "^13.2.2",

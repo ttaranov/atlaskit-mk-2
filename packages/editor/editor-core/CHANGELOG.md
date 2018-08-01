@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 76.4.10
+
+- [patch] fixed broken tests and added test for util/analytics [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
+
+
+- [none] Updated dependencies [8eced90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8eced90)
+  - @atlaskit/mention@15.0.3
+- [none] Updated dependencies [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
+  - @atlaskit/mention@15.0.3
+- [none] Updated dependencies [0bc5732](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bc5732)
+  - @atlaskit/mention@15.0.3
+- [none] Updated dependencies [c536e60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c536e60)
+  - @atlaskit/mention@15.0.3
+
 ## 76.4.9
 - [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
   - @atlaskit/media-card@31.3.0
