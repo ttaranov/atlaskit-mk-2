@@ -1,5 +1,9 @@
 # @atlaskit/navigation-next
 
+## 3.1.3
+- [patch] Updated dependencies [6438477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6438477)
+  - @atlaskit/global-navigation@4.0.3
+
 ## 3.1.2
 - [patch] Prevent square focus ring on nav resizer icon [a3663d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3663d3)
 - [none] Updated dependencies [a3663d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3663d3)
