@@ -38,6 +38,9 @@ function createLoaderOutput(
     `;
   }
 
+  // We must ensure Windows paths are escaped, otherwise we will get errors
+  // about octal literals (they're not allowed in strings in strict mode and
+  // modules are implicitly strict).
   return output.replace(/\\/g, '\\\\');
 }
 
