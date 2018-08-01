@@ -131,7 +131,16 @@ function setLocalClients() {
   }
 
   if (process.env.WATCH === 'true') {
-    launchers = { chrome: { browserName: 'chrome' } };
+    if (process.env.HEADLESS === 'false') {
+      launchers = { chrome: { browserName: 'chrome' } };
+    } else {
+      launchers = {
+        chrome: {
+          browserName: 'chrome',
+          chromeOptions: { args: ['--headless', '--disable-gpu'] },
+        },
+      };
+    }
   }
   let browserOption = [];
   for (let key in launchers) {

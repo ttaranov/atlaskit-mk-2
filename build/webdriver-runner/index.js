@@ -17,6 +17,7 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 /* 
  * maxWorkers set to 4 when using browserstack and 1 when running locally. 
  * By default the tests are running headlessly, set HEADLESS=false if you want to run them directly on real browsers.
+ * if WATCH= true, by default, it will start chrome.
  *  */
 const maxWorkers =
   process.env.TEST_ENV === 'browserstack' ? '--maxWorkers=4' : '--maxWorkers=1';
