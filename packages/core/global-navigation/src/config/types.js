@@ -50,6 +50,8 @@ export type ProductConfigShape = {
   profile: ?DropdownItem,
 };
 
+type Size = 'small' | 'large';
+
 export type NavItem = {
   label?: string,
   onClick?: () => void,
@@ -59,6 +61,8 @@ export type NavItem = {
   component?: ComponentType<*>,
   badge?: ComponentType<*>,
   tooltip?: string,
+  href?: string,
+  size?: Size,
 };
 
 // The shape of the item data required by GlobalNav

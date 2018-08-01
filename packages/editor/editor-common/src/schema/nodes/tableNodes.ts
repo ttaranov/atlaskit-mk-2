@@ -17,7 +17,7 @@ import {
   akColorT75,
   akColorY75,
 } from '@atlaskit/util-shared-styles';
-import { hexToRgba } from '../../utils';
+import { hexToRgba, isHex } from '../../utils';
 import {
   akEditorTableCellBackgroundOpacity,
   akEditorTableNumberColumnWidth,
@@ -69,9 +69,10 @@ const setCellAttrs = (node: PmNode) => {
 
     if (!ignored) {
       const color =
-        nodeType === 'tableCell'
+        nodeType === 'tableCell' && isHex(background)
           ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
           : background;
+
       attrs.style = `${attrs.style || ''}background-color: ${color};`;
     }
   }

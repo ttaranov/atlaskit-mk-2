@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "config": {
     "access": "public"
   },
@@ -12,12 +12,12 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^14.0.0",
-    "@atlaskit/button": "^9.0.0",
-    "@atlaskit/icon": "^13.0.0",
-    "@atlaskit/layer": "^5.0.0",
-    "@atlaskit/spinner": "^9.0.0",
-    "@atlaskit/theme": "^5.0.0",
+    "@atlaskit/avatar": "^14.0.5",
+    "@atlaskit/button": "^9.0.4",
+    "@atlaskit/icon": "^13.2.2",
+    "@atlaskit/layer": "^5.0.3",
+    "@atlaskit/spinner": "^9.0.4",
+    "@atlaskit/theme": "^5.1.2",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
@@ -28,10 +28,10 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.0",
-    "@atlaskit/dynamic-table": "^10.0.0",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/dynamic-table": "^10.0.5",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.0",
+    "@atlaskit/util-data-test": "^10.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fetch-mock": "^5.12.1",
     "loader-utils": "^1.1.0",

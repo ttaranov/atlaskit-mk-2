@@ -1,5 +1,16 @@
 # @atlaskit/quick-search
 
+## 4.2.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation@33.1.2
+  - @atlaskit/item@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/field-base@11.0.2
+
 ## 4.2.3
 - [patch] add missing attributes to analytics [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
 - [patch] Updated dependencies [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)

@@ -71,7 +71,7 @@ export interface State {
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
-  keepRecentActivityResults: boolean;
+  keepPreQueryState: boolean;
 }
 
 /**
@@ -107,7 +107,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     objectResults: [],
     spaceResults: [],
     peopleResults: [],
-    keepRecentActivityResults: true,
+    keepPreQueryState: true,
   };
 
   handleSearch = (newLatestSearchQuery: string) => {
@@ -127,7 +127,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           objectResults: [],
           spaceResults: [],
           peopleResults: [],
-          keepRecentActivityResults: true,
+          keepPreQueryState: true,
         },
         () => this.fireShownPreQueryEvent(),
       );
@@ -290,7 +290,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
             peopleResults,
             isError: false,
             isLoading: false,
-            keepRecentActivityResults: false,
+            keepPreQueryState: false,
           },
           () => {
             this.fireShownPostQueryEvent(
@@ -314,7 +314,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       this.setState({
         isError: true,
         isLoading: false,
-        keepRecentActivityResults: false,
+        keepPreQueryState: false,
       });
     }
   };
@@ -393,7 +393,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       recentlyViewedPages,
       recentlyViewedSpaces,
       recentlyInteractedPeople,
-      keepRecentActivityResults,
+      keepPreQueryState,
     } = this.state;
 
     return (
@@ -420,9 +420,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyViewedPages={recentlyViewedPages}
           recentlyViewedSpaces={recentlyViewedSpaces}
           recentlyInteractedPeople={recentlyInteractedPeople}
-          keepRecentActivityResults={keepRecentActivityResults}
+          keepPreQueryState={keepPreQueryState}
           searchSessionId={searchSessionId}
-          screenCounters={this.screenCounters}
+          {...this.screenCounters}
         />
       </GlobalQuickSearch>
     );

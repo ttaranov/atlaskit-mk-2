@@ -1,5 +1,26 @@
 # @atlaskit/global-search
 
+## 5.4.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation@33.1.2
+  - @atlaskit/quick-search@4.2.4
+  - @atlaskit/page@8.0.2
+  - @atlaskit/flag@9.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-text-area@4.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+  - @atlaskit/analytics-gas-types@3.1.2
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/modal-dialog@6.0.5
+
+## 5.4.0
+- [minor] Internal refactoring of result components. [28ac980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28ac980)
+
 ## 5.3.7
 - [patch] add missing attributes to analytics [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
 - [patch] Updated dependencies [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)

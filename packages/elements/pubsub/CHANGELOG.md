@@ -1,5 +1,14 @@
 # @atlaskit/pubsub
 
+## 3.0.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+
 ## 3.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

@@ -269,7 +269,13 @@ export const insertRow = (row: number): Command => (
 ): boolean => {
   clearHoverSelection(state, dispatch);
 
-  const tr = addRowAt(row)(state.tr);
+  // Dont clone the header row
+  const headerRowEnabled = checkIfHeaderRowEnabled(state);
+  const clonePreviousRow =
+    (headerRowEnabled && row > 1) || (!headerRowEnabled && row >= 0);
+
+  const tr = addRowAt(row, clonePreviousRow)(state.tr);
+
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);

@@ -20,6 +20,7 @@ export type Props = {|
   ) => void,
   renderItem: RenderItemParams => React.Node,
   offsetPerLevel: number,
+  isDragEnabled: boolean,
 |};
 
 export type State = {|
