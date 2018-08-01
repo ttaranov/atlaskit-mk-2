@@ -1,5 +1,9 @@
 # @atlaskit/editor-markdown-transformer
 
+## 2.0.4
+- [patch] Fixes issue an issue with empty lists inside tables [378fe99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/378fe99)
+- [none] Updated dependencies [378fe99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/378fe99)
+
 ## 2.0.3
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/editor-common@13.2.7
