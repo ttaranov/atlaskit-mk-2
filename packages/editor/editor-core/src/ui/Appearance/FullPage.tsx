@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import { akEditorFullPageWidths, akEditorSize } from '@atlaskit/editor-common';
+import { akEditorFullPageWidths, akEditorSizes } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
@@ -41,7 +41,7 @@ const ContentArea = styled.div`
   height: 100%;
   width: 100%;
   max-width: ${({ theme }) =>
-    akEditorFullPageWidths[theme.size || akEditorSize.S] +
+    akEditorFullPageWidths[theme.size || akEditorSizes.S] +
     GUTTER_PADDING * 2}px;
   padding-top: 50px;
   margin: 0 auto;

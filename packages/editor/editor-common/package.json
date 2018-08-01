@@ -30,6 +30,7 @@
     "@atlaskit/media-card": "^31.3.0",
     "@atlaskit/mention": "^15.0.2",
     "@atlaskit/profilecard": "^4.0.2",
+    "@atlaskit/theme": "^5.1.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-view": "^1.0.0",

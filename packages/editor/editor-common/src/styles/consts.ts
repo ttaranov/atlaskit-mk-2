@@ -51,17 +51,19 @@ export const akEditorTableToolbarDelete = akColorR75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
-export enum akEditorSize {
+export enum akEditorSizes {
   S,
   M,
   L,
 }
 // TODO: Default
 export const akEditorFullPageWidths = {
-  [akEditorSize.S]: 680,
-  [akEditorSize.M]: 760,
-  [akEditorSize.L]: 850,
+  [akEditorSizes.S]: 680,
+  [akEditorSizes.M]: 760,
+  [akEditorSizes.L]: 850,
 };
+
+// TODO: Layouts
 export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;
 export const akEditorBreakoutPadding = 96;
