@@ -130,6 +130,7 @@ export function createPMPlugins({
   providerFactory,
   errorReporter,
   portalProviderAPI,
+  reactContext,
 }: {
   editorConfig: EditorConfig;
   schema: Schema;
@@ -139,6 +140,7 @@ export function createPMPlugins({
   providerFactory: ProviderFactory;
   errorReporter: ErrorReporter;
   portalProviderAPI: PortalProviderAPI;
+  reactContext: () => { [key: string]: any };
 }): Plugin[] {
   return editorConfig.pmPlugins
     .sort(sortByOrder('plugins'))
@@ -151,6 +153,7 @@ export function createPMPlugins({
         errorReporter,
         eventDispatcher,
         portalProviderAPI,
+        reactContext,
       }),
     )
     .filter(plugin => !!plugin) as Plugin[];

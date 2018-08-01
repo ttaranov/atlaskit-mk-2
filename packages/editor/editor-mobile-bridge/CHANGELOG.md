@@ -1,5 +1,16 @@
 # @atlaskit/editor-mobile-bridge
 
+## 2.0.7
+- [patch] Upgrade to webpack 4 [ea8a4bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8a4bb)
+- [none] Updated dependencies [ea8a4bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8a4bb)
+
+## 2.0.6
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/mention@15.0.2
+  - @atlaskit/editor-json-transformer@4.0.3
+  - @atlaskit/editor-core@76.4.5
+  - @atlaskit/media-core@22.2.1
+
 ## 2.0.5
 - [patch] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
   - @atlaskit/mention@15.0.0

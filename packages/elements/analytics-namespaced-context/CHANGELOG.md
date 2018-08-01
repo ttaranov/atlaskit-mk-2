@@ -1,5 +1,15 @@
 # @atlaskit/analytics-namespaced-context
 
+## 2.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/button@9.0.4
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/analytics-gas-types@3.1.2
+
+## 2.0.1
+- [patch] fixes problem with modules not being exported [80e90ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e90ed)
+
 ## 2.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
