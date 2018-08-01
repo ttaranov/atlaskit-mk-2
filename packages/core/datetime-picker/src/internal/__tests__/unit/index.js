@@ -169,8 +169,8 @@ test('DateTimePicker, custom parseValue', () => {
     const parsedValue = moment(dateTimeValue).parseZone();
     return {
       dateValue: parsedValue.isValid
-      ? parsedValue.format('YYYY-MM-DD')
-      : dateValue,
+        ? parsedValue.format('YYYY-MM-DD')
+        : dateValue,
       timeValue: parsedValue.isValid ? parsedValue.format('HH:mm') : timeValue,
       zoneValue: parsedValue.isValid ? parsedValue.format('ZZ') : zoneValue,
     };
