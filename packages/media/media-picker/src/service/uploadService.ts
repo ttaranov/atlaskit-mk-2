@@ -66,64 +66,76 @@ interface Upload {
 export class OldUploadServiceImpl implements UploadService {
   private static hasher = createHasher();
 
-  private readonly resumable: Resumable;
+  private resumableInstance?: Resumable;
+  private uploadChunkUrl?: string;
 
   private readonly emitter: EventEmitter2;
   private readonly mediaClientPool: MediaClientPool;
   private readonly authProvider: AuthProvider;
   private readonly userCollectionMediaClient: MediaClient;
   private readonly api: MediaApi;
-  private readonly uploadChunkUrl: string;
   private readonly uploads: { [uniqueIdentifier: string]: Upload } = {};
 
-  private dropzoneElement?: HTMLElement;
   private uploadParams: UploadParams;
   private retry: number = 0;
 
   constructor(context: Context, uploadParams?: UploadParams) {
-    const url = context.config.serviceHost;
     const authProvider = context.config.authProvider;
     const userAuthProvider = context.config.userAuthProvider;
 
     this.emitter = new EventEmitter2();
-
-    this.uploadChunkUrl = `${url}/chunk`;
+    this.api = new MediaApi();
     this.authProvider = authProvider;
-    this.mediaClientPool = new MediaClientPool(url, authProvider);
+
+    this.mediaClientPool = new MediaClientPool(authProvider);
     if (userAuthProvider) {
       this.userCollectionMediaClient = new MediaClient(
-        url,
         userAuthProvider,
         'recents',
       );
     }
 
-    this.api = new MediaApi();
-
     this.setUploadParams(uploadParams);
 
-    this.resumable = new Resumable({
-      target: this.generateTarget,
-      uploadMethod: 'PUT',
-      testMethod: 'HEAD',
-      chunkSize: 4 * 1024 * 1024,
-      chunkRetryInterval: 2500,
-      maxChunkRetries: 5,
-      simultaneousUploads: 3,
-      forceChunkSize: true,
-      permanentErrors: [400, 403, 404, 415, 500, 501],
-      method: 'octet',
-      minFileSize: 0,
-      query: this.getQueryParameters,
-      preprocess: chunk => this.hashResumableChunk(chunk),
-      generateUniqueIdentifier: () => uuid.v4(),
-    });
+    this.authProvider().then(({ baseUrl }) => {
+      this.resumableInstance = new Resumable({
+        target: this.generateTarget,
+        uploadMethod: 'PUT',
+        testMethod: 'HEAD',
+        chunkSize: 4 * 1024 * 1024,
+        chunkRetryInterval: 2500,
+        maxChunkRetries: 5,
+        simultaneousUploads: 3,
+        forceChunkSize: true,
+        permanentErrors: [400, 403, 404, 415, 500, 501],
+        method: 'octet',
+        minFileSize: 0,
+        query: this.getQueryParameters,
+        preprocess: chunk => this.hashResumableChunk(chunk),
+        generateUniqueIdentifier: () => uuid.v4(),
+      });
 
-    this.resumable.on('filesAdded', this.onFilesAdded);
-    this.resumable.on('chunkingComplete', this.onChunkingComplete);
-    this.resumable.on('fileProgress', this.onFileProgress);
-    this.resumable.on('fileSuccess', this.onFileSuccess);
-    this.resumable.on('fileError', this.onFileError);
+      this.resumableInstance.on('filesAdded', this.onFilesAdded);
+      this.resumableInstance.on('chunkingComplete', this.onChunkingComplete);
+      this.resumableInstance.on('fileProgress', this.onFileProgress);
+      this.resumableInstance.on('fileSuccess', this.onFileSuccess);
+      this.resumableInstance.on('fileError', this.onFileError);
+
+      this.uploadChunkUrl = `${baseUrl}/chunk`;
+      this.emitter.emit('resumable-is-ready');
+    });
+  }
+
+  get resumable(): Promise<Resumable> {
+    if (this.resumableInstance) {
+      return Promise.resolve(this.resumableInstance);
+    } else {
+      return new Promise(resolve => {
+        this.emitter.once('resumable-is-ready', () => {
+          resolve(this.resumableInstance);
+        });
+      });
+    }
   }
 
   setUploadParams(uploadParams?: UploadParams): void {
@@ -138,47 +150,25 @@ export class OldUploadServiceImpl implements UploadService {
     return this.uploadParams;
   }
 
-  addBrowse(element: HTMLElement): void {
-    this.resumable.assignBrowse(element);
-  }
-
-  addDropzone(element: HTMLElement): void {
-    if (this.dropzoneElement) {
-      // dropzone already assigned
-      return;
-    }
-
-    this.dropzoneElement = element;
-    this.dropzoneElement.addEventListener('drop', this.onDrop);
-    this.resumable.assignDrop(this.dropzoneElement);
-  }
-
-  removeDropzone(): void {
-    if (!this.dropzoneElement) {
-      // dropzone already unassigned
-      return;
-    }
-
-    this.dropzoneElement.removeEventListener('drop', this.onDrop);
-    this.resumable.unAssignDrop(this.dropzoneElement);
-    this.dropzoneElement = undefined;
-  }
-
   addFiles(files: File[]): void {
-    files.forEach(file => this.resumable.addFile(file));
+    this.resumable.then(resumable =>
+      files.forEach(file => resumable.addFile(file)),
+    );
   }
 
   cancel(uniqueIdentifier?: string): void {
-    if (uniqueIdentifier) {
-      const resumableFile = this.resumable.getFromUniqueIdentifier(
-        uniqueIdentifier,
-      );
-      if (resumableFile) {
-        resumableFile.cancel();
+    this.resumable.then(resumable => {
+      if (uniqueIdentifier) {
+        const resumableFile = resumable.getFromUniqueIdentifier(
+          uniqueIdentifier,
+        );
+        if (resumableFile) {
+          resumableFile.cancel();
+        }
+      } else {
+        resumable.cancel();
       }
-    } else {
-      this.resumable.cancel();
-    }
+    });
   }
 
   on<E extends keyof UploadServiceEventPayloadTypes>(
@@ -318,7 +308,7 @@ export class OldUploadServiceImpl implements UploadService {
 
         this.emit('files-added', { files });
 
-        this.resumable.upload();
+        this.resumable.then(resumable => resumable.upload());
       },
       () => {
         resumableFiles.forEach(resumableFile =>
@@ -349,7 +339,9 @@ export class OldUploadServiceImpl implements UploadService {
 
           resumableFile.abort();
           resumableFile.pause(true);
-          this.resumable.fire('fileError', resumableFile, message || '');
+          this.resumable.then(resumable =>
+            resumable.fire('fileError', resumableFile, message || ''),
+          );
           return;
         }
 
@@ -626,14 +618,6 @@ export class OldUploadServiceImpl implements UploadService {
     });
     handleError(errorName, errorDetails);
   }
-
-  // Dropzone drop listener
-  private readonly onDrop = (dragEvent: DragEvent) => {
-    dragEvent.preventDefault();
-    dragEvent.stopPropagation();
-
-    this.emit('file-dropped', dragEvent);
-  };
 
   private mapResumableFileToMediaFile = (
     resumableFile: ResumableFile,

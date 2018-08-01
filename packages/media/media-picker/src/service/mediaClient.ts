@@ -75,7 +75,6 @@ export class MediaClient {
   private auth?: Auth;
 
   constructor(
-    private readonly apiUrl: string,
     private readonly authProvider: AuthProvider,
     private readonly collection?: string,
   ) {}
@@ -127,26 +126,24 @@ export class MediaClient {
     return this.refreshAuth();
   }
 
-  private makeCallWithToken(
+  private async makeCallWithToken(
     request: MediaClientRequest,
     addAuth: AddAuth,
     auth: Auth,
   ): Promise<MediaClientResponse> {
     const requestWithAuth = addAuth(request, auth);
-    const config = this.getAxiosRequestConfig(requestWithAuth);
-
-    return axios.request(config).then(response => response.data) as Promise<
-      MediaClientResponse
-    >;
+    const config = this.getAxiosRequestConfig(requestWithAuth, auth.baseUrl);
+    const response = await axios.request(config);
+    return response.data as MediaClientResponse;
   }
 
   private getAxiosRequestConfig(
     request: MediaClientRequest,
+    baseUrl: string,
   ): AxiosRequestConfig {
     const { httpMethod, mediaApiMethod, parameters, headers, data } = request;
-
     return {
-      url: `${this.apiUrl}/${mediaApiMethod}`,
+      url: `${baseUrl}/${mediaApiMethod}`,
       method: httpMethod,
       headers: {
         ...headers,

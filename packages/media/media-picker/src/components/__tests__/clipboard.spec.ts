@@ -1,4 +1,4 @@
-import { ContextFactory } from '@atlaskit/media-core';
+import { Auth, ContextFactory } from '@atlaskit/media-core';
 import { MockClipboardEvent, MockFile } from '../../util/clipboardEventMocks';
 import { Clipboard } from '../clipboard';
 import { UploadService } from '../../service/uploadServiceFactory';
@@ -9,8 +9,12 @@ describe('Clipboard', () => {
   let clipboard: Clipboard;
   let addFiles: any;
   const context = ContextFactory.create({
-    serviceHost: '',
-    authProvider: {} as any,
+    authProvider: () =>
+      Promise.resolve<Auth>({
+        clientId: '',
+        token: '',
+        baseUrl: '',
+      }),
   });
 
   beforeEach(done => {

@@ -32,11 +32,11 @@ export default md`
       resolve({
         token: 'token-that-was-recieved-in-some-async-way',
         clientId: 'some-client-id',
+        baseUrl: 'http://example.com',
         //  asapIssuer: 'asap-issuer'
       });
     });
   const config: ContextConfig = {
-    serviceHost: 'http://example.com',
     authProvider,
   };
   const context: Context = ContextFactory.create(config);

@@ -2,6 +2,7 @@ jest.mock('axios');
 jest.mock('../../../../util/getPreviewFromBlob');
 
 import axios from 'axios';
+import { Auth } from '@atlaskit/media-core';
 import { Service } from '../../../domain';
 import { isImagePreview } from '../../../../domain/preview';
 import {
@@ -13,10 +14,10 @@ import {
 import { getPreviewFromBlob } from '../../../../util/getPreviewFromBlob';
 
 describe('Fetcher', () => {
-  const apiUrl = 'api-url';
-  const auth = {
+  const auth: Auth = {
     clientId: '',
     token: '',
+    baseUrl: '',
   };
   const fileId = 'file-id';
   const imageFile = {
@@ -44,7 +45,7 @@ describe('Fetcher', () => {
     it('should call api with biggest supported dimensions for image files', () => {
       fetcher['query'] = querySpy;
       fetcher.pollFile = jest.fn().mockReturnValue(Promise.resolve(imageFile));
-      return fetcher.getPreview(apiUrl, auth, fileId).then(() => {
+      return fetcher.getPreview(auth, fileId).then(() => {
         expect(querySpy.mock.calls[0][2]).toEqual(
           expect.objectContaining({
             width: 4096,
@@ -59,7 +60,7 @@ describe('Fetcher', () => {
       fetcher.pollFile = jest
         .fn()
         .mockReturnValue(Promise.resolve(nonImageFile));
-      return fetcher.getPreview(apiUrl, auth, fileId).then(() => {
+      return fetcher.getPreview(auth, fileId).then(() => {
         expect(querySpy.mock.calls[0][2]).toEqual(
           expect.objectContaining({
             width: 640,
@@ -81,7 +82,7 @@ describe('Fetcher', () => {
       fetcher['query'] = querySpy;
       fetcher.pollFile = jest.fn().mockReturnValue(Promise.resolve(imageFile));
 
-      return fetcher.getPreview(apiUrl, auth, fileId).then(preview => {
+      return fetcher.getPreview(auth, fileId).then(preview => {
         if (!isImagePreview(preview)) {
           throw new Error('no preview returned');
         }
@@ -157,7 +158,7 @@ describe('Fetcher', () => {
         }),
       );
       fetcher['query'] = querySpy;
-      const recents = await fetcher.getRecentFiles(apiUrl, auth, 30, 'desc');
+      const recents = await fetcher.getRecentFiles(auth, 30, 'desc');
 
       expect(recents.nextInclusiveStartKey).toEqual('next-key');
       expect(recents.contents).toEqual([

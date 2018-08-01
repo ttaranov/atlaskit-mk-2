@@ -4,7 +4,6 @@ import { Component } from 'react';
 import {
   mediaPickerAuthProvider,
   defaultMediaPickerCollectionName,
-  defaultServiceHost,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import { MediaPicker, Browser, BrowserConfig } from '../src';
@@ -37,7 +36,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
 
   createBrowse = () => {
     const context = ContextFactory.create({
-      serviceHost: defaultServiceHost,
       authProvider: mediaPickerAuthProvider(),
     });
 

@@ -1,21 +1,17 @@
 // We still need postis here to communicate with the "link-account-handler" iframe
 import * as postis from 'postis';
-import * as url from 'url';
 import * as uuid from 'uuid';
 import { AuthProvider } from '@atlaskit/media-core';
 
 import { ServiceName } from '../domain';
 import { mapAuthToQueryParameters } from '../domain/auth';
 import { objectToQueryString } from '../tools/objectToQueryString';
+import { pickerUrl } from '../tools/fetcher/fetcher';
 
 export class CloudService {
   constructor(private readonly userAuthProvider: AuthProvider) {}
 
-  startAuth(
-    apiUrl: string,
-    redirectUrl: string,
-    serviceName: ServiceName,
-  ): Promise<void> {
+  startAuth(redirectUrl: string, serviceName: ServiceName): Promise<void> {
     const win = window.open('', '_blank');
 
     return this.userAuthProvider()
@@ -29,13 +25,11 @@ export class CloudService {
             redirectUrl: `${redirectUrl}?channelId=${channelId}`,
           } as any);
 
-          const url = `${this.pickerUrl(
-            apiUrl,
-          )}/service/${serviceName}?${queryString}`;
-
           // Electron does not support location.assign so we must use the
           // string setter to assign a new location to the window
-          (win as any).location = url;
+          (win as any).location = `${pickerUrl(
+            auth.baseUrl,
+          )}/service/${serviceName}?${queryString}`;
 
           const channel = (postis as Function)({
             window: win,
@@ -62,14 +56,5 @@ export class CloudService {
         }
         throw e;
       });
-  }
-
-  private fileStoreUrl(apiUrl: string): string {
-    const { protocol, host } = url.parse(apiUrl);
-    return `${protocol}//${host}`;
-  }
-
-  private pickerUrl(apiUrl: string): string {
-    return `${this.fileStoreUrl(apiUrl)}/picker`;
   }
 }

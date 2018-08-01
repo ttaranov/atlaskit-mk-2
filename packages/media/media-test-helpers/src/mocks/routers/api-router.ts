@@ -8,11 +8,11 @@ import {
   createCollection,
   createCollectionItem,
 } from '../database';
-import { defaultServiceHost } from '../..';
+import { defaultBaseUrl } from '../..';
 
 export function createApiRouter(): Router<DatabaseSchema> {
   const router = new Router<DatabaseSchema>({
-    host: defaultServiceHost,
+    host: defaultBaseUrl,
     requestDelay: 10,
   });
 

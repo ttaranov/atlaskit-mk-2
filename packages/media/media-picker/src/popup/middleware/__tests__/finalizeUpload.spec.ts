@@ -34,6 +34,7 @@ describe('finalizeUploadMiddleware', () => {
     auth: {
       clientId: 'some-tenant-client-id',
       token: 'some-tenant-token',
+      baseUrl: 'some-base-url',
     },
     uploadParams: {},
   };

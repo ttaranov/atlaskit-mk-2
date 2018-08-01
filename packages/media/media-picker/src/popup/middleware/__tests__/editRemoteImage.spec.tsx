@@ -39,18 +39,11 @@ describe('editRemoteImage', () => {
       item: file,
       collectionName,
     };
-    const { apiUrl } = store.getState();
-
     fetcher.getImage.mockReturnValueOnce(Promise.reject('some-error'));
 
     await editRemoteImage(fetcher, store, action);
 
-    expect(fetcher.getImage).toBeCalledWith(
-      apiUrl,
-      auth,
-      fileId,
-      collectionName,
-    );
+    expect(fetcher.getImage).toBeCalledWith(auth, fileId, collectionName);
     expect(store.dispatch).toHaveBeenCalledTimes(2);
     expect(store.dispatch.mock.calls[0]).toEqual([editorShowLoading(file)]);
     expect(store.dispatch.mock.calls[1]).toEqual([
@@ -65,18 +58,11 @@ describe('editRemoteImage', () => {
       item: file,
       collectionName,
     };
-    const { apiUrl } = store.getState();
-
     fetcher.getImage.mockReturnValueOnce(Promise.resolve(new Blob()));
 
     await editRemoteImage(fetcher, store, action);
 
-    expect(fetcher.getImage).toBeCalledWith(
-      apiUrl,
-      auth,
-      fileId,
-      collectionName,
-    );
+    expect(fetcher.getImage).toBeCalledWith(auth, fileId, collectionName);
     expect(store.dispatch).toHaveBeenCalledTimes(2);
     expect(store.dispatch.mock.calls[0]).toEqual([editorShowLoading(file)]);
     expect(store.dispatch.mock.calls[1]).toEqual([

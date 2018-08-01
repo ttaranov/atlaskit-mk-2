@@ -1,5 +1,4 @@
 import {
-  defaultServiceHost,
   defaultMediaPickerAuthProvider,
   tallImage,
 } from '@atlaskit/media-test-helpers';
@@ -24,7 +23,6 @@ export interface UploaderExampleState {
 }
 
 const store = new MediaStore({
-  serviceHost: defaultServiceHost,
   authProvider: defaultMediaPickerAuthProvider,
 });
 
@@ -103,7 +101,6 @@ class UploaderExample extends Component<
     uploadFile(
       { content: tallImage },
       {
-        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
@@ -130,7 +127,6 @@ class UploaderExample extends Component<
     uploadFile(
       { content: file, name: file.name, mimeType: file.type },
       {
-        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
