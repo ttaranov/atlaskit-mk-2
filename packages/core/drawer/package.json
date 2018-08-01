@@ -14,6 +14,7 @@
     "@atlaskit/blanket": "^7.0.0",
     "@atlaskit/docs": "^5.0.0",
     "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/section-message": "^1.0.1",
     "@atlaskit/theme": "^5.0.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
