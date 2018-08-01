@@ -23,6 +23,7 @@ import {
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
+import { mediaPickerAuthProvider } from '@atlaskit/media-test-helpers';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
@@ -31,14 +32,19 @@ export interface CancellableFileUpload {
 }
 
 export class NewUploadServiceImpl implements UploadService {
-  private readonly userMediaStore: MediaStore;
+  private readonly userMediaStore?: MediaStore;
 
   private uploadParams: UploadParams;
+  private tenantUploadParams: UploadParams;
 
   private readonly emitter: EventEmitter2;
   private cancellableFilesUploads: { [key: string]: CancellableFileUpload };
 
-  constructor(private readonly context: Context, uploadParams?: UploadParams) {
+  constructor(
+    private readonly context: Context,
+    tenantUploadParams: UploadParams,
+    uploadParams?: UploadParams,
+  ) {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
 
@@ -49,6 +55,7 @@ export class NewUploadServiceImpl implements UploadService {
       });
     }
 
+    this.tenantUploadParams = tenantUploadParams;
     this.setUploadParams(uploadParams);
   }
 
@@ -78,27 +85,51 @@ export class NewUploadServiceImpl implements UploadService {
         mimeType: file.type,
       };
       const controller = this.createUploadController();
-      const upfrontId = new Promise<string>(resolve => {
-        const subscrition = this.context
-          .uploadFile(uploadableFile, controller)
-          .subscribe({
-            next: state => {
-              resolve(state.id);
+      // const upfrontId = new Promise<string>(resolve => {
+      const subscrition = this.context
+        .uploadFile(uploadableFile, controller)
+        .subscribe({
+          next: state => {
+            // resolve(state.id);
 
-              if (state.status === 'uploading') {
-                this.onFileProgress(cancellableFileUpload, state.progress);
-              }
+            if (state.status === 'uploading') {
+              this.onFileProgress(cancellableFileUpload, state.progress);
+            }
 
-              if (state.status === 'processing') {
-                subscrition.unsubscribe();
-                this.onFileSuccess(cancellableFileUpload, state.id);
-              }
-            },
-            error: error => {
-              this.onFileError(mediaFile, 'upload_fail', error);
-            },
-          });
+            if (state.status === 'processing') {
+              subscrition.unsubscribe();
+
+              this.onFileSuccess(cancellableFileUpload, state.id);
+            }
+          },
+          error: error => {
+            this.onFileError(mediaFile, 'upload_fail', error);
+          },
+        });
+      // TODO: Make this when pressing "insert"
+      // TODO: move into own method
+      const upfrontId = new Promise<string>(async resolve => {
+        if (!this.userMediaStore) {
+          return;
+        }
+        // TODO: don't create here
+        const mediaStore = new MediaStore({
+          serviceHost: this.context.config.serviceHost,
+          authProvider: mediaPickerAuthProvider(), // TODO: we need to use a real context.config.authProvider
+          // authProvider: this.context.config.authProvider,
+        });
+        const occurrenceKey = uuid.v4();
+        const collection = this.tenantUploadParams.collection;
+        // TODO: we need to use the tenant.uploadParams.collection
+        const options = { collection, occurrenceKey };
+        // const response = await this.userMediaStore.createFile(options);
+        const response = await mediaStore.createFile(options);
+        const id = response.data.id;
+
+        console.log('id upfront', collection, id);
+        resolve(id);
       });
+      // });
       const mediaFile = {
         id,
         upfrontId,
@@ -204,7 +235,9 @@ export class NewUploadServiceImpl implements UploadService {
   ) => {
     const { mediaFile } = cancellableFileUpload;
     const collectionName = this.uploadParams.collection;
-    this.copyFileToUsersCollection(fileId, collectionName).catch(console.log); // We intentionally swallow these errors
+
+    // TODO: This was never working before, and probably we don't want to do it at this point. Ask @sasha
+    // this.copyFileToUsersCollection(fileId, collectionName).catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
       ...mediaFile,
@@ -291,7 +324,8 @@ export class NewUploadServiceImpl implements UploadService {
     sourceFileId: string,
     sourceCollection?: string,
   ): Promise<void> {
-    if (!this.userMediaStore) {
+    const userMediaStore = this.userMediaStore;
+    if (!userMediaStore) {
       return Promise.resolve();
     }
     return this.context.config
@@ -309,7 +343,8 @@ export class NewUploadServiceImpl implements UploadService {
         const params = {
           collection: 'recents',
         };
-        return this.userMediaStore.copyFileWithToken(body, params);
+
+        return userMediaStore.copyFileWithToken(body, params);
       });
   }
 }

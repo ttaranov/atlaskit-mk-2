@@ -135,8 +135,9 @@ export const importFilesFromLocalUpload = (
   uploadId: string,
   store: Store<State>,
   localUpload: LocalUpload,
+  replaceFileId?: string,
 ): void => {
-  console.log('localUpload.events', localUpload.events);
+  // console.log('importFilesFromLocalUpload', localUpload.events);
   localUpload.events.forEach(originalEvent => {
     const event = { ...originalEvent };
 
@@ -146,8 +147,10 @@ export const importFilesFromLocalUpload = (
         id: file.publicId,
         collection: RECENTS_COLLECTION,
       };
-
-      store.dispatch(finalizeUpload(file, uploadId, source, tenant));
+      console.log('importFilesFromLocalUpload', { source });
+      store.dispatch(
+        finalizeUpload(file, uploadId, source, tenant, replaceFileId),
+      );
     } else if (event.name !== 'upload-end') {
       store.dispatch(sendUploadEvent({ event, uploadId }));
     }

@@ -638,12 +638,13 @@ export class OldUploadServiceImpl implements UploadService {
   private mapResumableFileToMediaFile = (
     resumableFile: ResumableFile,
   ): MediaFile => {
-    const file = {
+    const file: MediaFile = {
       id: resumableFile.uniqueIdentifier,
       name: resumableFile.file.name,
       size: resumableFile.file.size,
       type: resumableFile.file.type,
       creationDate: this.getResumableFileCreationDate(resumableFile),
+      upfrontId: Promise.resolve(resumableFile.uniqueIdentifier), // TODO: this is probably placebo
     };
 
     return file;

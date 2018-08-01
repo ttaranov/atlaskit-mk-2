@@ -10,7 +10,7 @@ import {
   createStorybookContext,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
-import { MediaPicker, Popup } from '../src';
+import { MediaPicker } from '../src';
 import {
   PopupContainer,
   PopupHeader,
@@ -70,7 +70,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     const { files } = this.state;
     const { files: newFiles } = data;
     const ids = newFiles.map(file => file.upfrontId);
-    console.log('onUploadsStart', { ids });
+    // console.log('onUploadsStart', { ids });
     this.setState({
       uploadingFiles: ids,
       files: [...ids, ...files],
@@ -88,7 +88,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       this.setState({ uploadingFiles });
     }
 
-    console.log('onUploadEnd', { data, index });
+    // console.log('onUploadEnd', { data, index });
   };
 
   onShow = () => {
@@ -101,7 +101,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   renderCards = () => {
     const { files } = this.state;
     const cards = files.map((id, key) => {
-      console.log('renderCards', id);
+      // console.log('renderCards', id);
       return (
         <CardItemWrapper key={key}>
           <Card
@@ -125,7 +125,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     const { uploadingFiles } = this.state;
     const length = uploadingFiles.length;
     const isUploadFinished = !length;
-    console.log({ isUploadFinished });
+    // console.log({ isUploadFinished });
     return (
       <PopupContainer>
         <PopupHeader>

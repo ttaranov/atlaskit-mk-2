@@ -32,6 +32,7 @@ type Method = 'GET' | 'POST' | 'DELETE';
 export interface CopyFileDestination {
   readonly auth: Auth;
   readonly collection?: string;
+  readonly replaceFileId?: string;
 }
 
 export interface GiphyImage {
@@ -293,9 +294,10 @@ export class MediaApiFetcher implements Fetcher {
   copyFile(
     apiUrl: string,
     sourceFile: SourceFile,
-    { auth, collection }: CopyFileDestination,
+    { auth, collection, replaceFileId }: CopyFileDestination,
   ): Promise<FileDetails> {
     const params = collection ? `?collection=${collection}` : '';
+    console.log('copyFile', { replaceFileId });
     return this.query<{ data: FileDetails }>(
       `${this.fileStoreUrl(apiUrl)}/file/copy/withToken${params}`,
       'POST',

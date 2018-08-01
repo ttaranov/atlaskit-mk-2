@@ -25,7 +25,7 @@ export default function(fetcher: Fetcher): Middleware {
 export function finalizeUpload(
   fetcher: Fetcher,
   store: Store<State>,
-  { file, uploadId, source, tenant }: FinalizeUploadAction,
+  { file, uploadId, source, tenant, replaceFileId }: FinalizeUploadAction,
 ): Promise<SendUploadEventAction> {
   const { userAuthProvider } = store.getState();
   return userAuthProvider()
@@ -35,13 +35,14 @@ export function finalizeUpload(
         ...source,
         owner,
       };
-      const copyFileParams = {
+      const copyFileParams: CopyFileParams = {
         store,
         fetcher,
         file,
         uploadId,
         sourceFile,
         tenant,
+        replaceFileId,
       };
 
       return copyFile(copyFileParams);
@@ -55,6 +56,7 @@ type CopyFileParams = {
   uploadId: string;
   sourceFile: SourceFile;
   tenant: Tenant;
+  replaceFileId?: string;
 };
 
 function copyFile({
@@ -64,12 +66,16 @@ function copyFile({
   uploadId,
   sourceFile,
   tenant,
+  replaceFileId,
 }: CopyFileParams): Promise<SendUploadEventAction> {
   const { apiUrl } = store.getState();
   const destination = {
     auth: tenant.auth,
     collection: tenant.uploadParams.collection,
+    replaceFileId,
   };
+  console.log({ destination });
+
   return fetcher
     .copyFile(apiUrl, sourceFile, destination)
     .then(destinationFile => {

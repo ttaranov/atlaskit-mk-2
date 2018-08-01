@@ -12,6 +12,7 @@ import {
   BinaryUploader as MpBinary,
   Browser as MpBrowser,
   Dropzone as MpDropzone,
+  UploadParams,
 } from '../..';
 
 /* Components */
@@ -75,6 +76,7 @@ export interface AppProxyReactContext {
 
 export interface AppOwnProps {
   store: Store<State>;
+  tenantUploadParams: UploadParams;
   proxyReactContext?: AppProxyReactContext;
 }
 
@@ -101,8 +103,10 @@ export class App extends Component<AppProps, AppState> {
       onUploadEnd,
       onUploadError,
       context,
+      tenantUploadParams,
+      useNewUploadService,
     } = props;
-
+    console.log('tenant.uploadParams', tenantUploadParams);
     const { userAuthProvider } = context.config;
 
     if (!userAuthProvider) {
@@ -122,12 +126,14 @@ export class App extends Component<AppProps, AppState> {
     this.mpContext = ContextFactory.create({
       serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
+      userAuthProvider,
     });
 
     this.mpBrowser = MediaPicker('browser', this.mpContext, {
       ...defaultConfig,
       multiple: true,
-      useNewUploadService: this.props.useNewUploadService,
+      useNewUploadService,
+      tenantUploadParams,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -139,7 +145,8 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
       ...defaultConfig,
       headless: true,
-      useNewUploadService: this.props.useNewUploadService,
+      useNewUploadService,
+      tenantUploadParams,
     });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
@@ -152,7 +159,8 @@ export class App extends Component<AppProps, AppState> {
 
     this.mpBinary = MediaPicker('binary', this.mpContext, {
       ...defaultConfig,
-      useNewUploadService: this.props.useNewUploadService,
+      useNewUploadService,
+      tenantUploadParams,
     });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);

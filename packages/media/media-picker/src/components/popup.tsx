@@ -66,6 +66,8 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       ...uploadParams,
     };
 
+    console.log('popup', this.uploadParams);
+
     const popup = this.renderPopup();
 
     this.container = popup;
@@ -78,6 +80,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         collectionName: this.uploadParams.collection,
       })
       .then(auth => {
+        console.log('dispatch setTenant', this.uploadParams);
         this.store.dispatch(
           setTenant({
             auth,
@@ -126,7 +129,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private renderPopup(): HTMLElement {
     const container = document.createElement('div');
     render(
-      <App store={this.store} proxyReactContext={this.proxyReactContext} />,
+      <App
+        store={this.store}
+        proxyReactContext={this.proxyReactContext}
+        tenantUploadParams={this.uploadParams}
+      />,
       container,
     );
     return container;
