@@ -1,4 +1,6 @@
-# @atlaskit/banne## 6.1.0
+# @atlaskit/banner
+
+## 6.1.0
 
 ## 7.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)

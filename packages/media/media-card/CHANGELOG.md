@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 31.3.0
+- [minor] change file image cards background color to transparent [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+
 ## 31.2.1
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/smart-card@7.0.2

@@ -1,5 +1,9 @@
 # @atlaskit/quick-search
 
+## 4.2.5
+- [patch] Make context prop optional [3f902d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f902d5)
+- [none] Updated dependencies [3f902d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f902d5)
+
 ## 4.2.4
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/navigation@33.1.2

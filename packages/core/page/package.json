@@ -24,10 +24,12 @@
   },
   "devDependencies": {
     "@atlaskit/banner": "^7.0.2",
+    "@atlaskit/icon": "^13.2.0",
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/navigation": "^33.1.2",
     "@atlaskit/toggle": "^5.0.4",
+    "@atlaskit/button": "^9.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.0",
     "react-lorem-component": "^0.12.2",

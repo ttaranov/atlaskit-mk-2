@@ -1,5 +1,15 @@
 # @atlaskit/renderer
 
+## 19.2.8
+- [patch] ED-5144, extensions breakout support for renderer. [071e7c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/071e7c2)
+- [patch] Updated dependencies [071e7c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/071e7c2)
+
+## 19.2.7
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+  - @atlaskit/media-filmstrip@10.2.2
+  - @atlaskit/editor-common@13.2.8
+
 ## 19.2.6
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/media-card@31.2.1
