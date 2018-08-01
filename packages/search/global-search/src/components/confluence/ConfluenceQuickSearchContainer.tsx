@@ -43,6 +43,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
+  useAggregatorForObjects: boolean;
 }
 
 class SearchScreenCounter implements ScreenCounter {
@@ -152,17 +153,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   async searchCrossProductConfluence(
     query: string,
   ): Promise<Map<Scope, Result[]>> {
+    const scopes = this.props.useAggregatorForObjects
+      ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
+      : [Scope.ConfluenceSpace];
+
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      [
-        /*
-        TEMPORARILY DISABLED: XPSRCH-861
-        ----------------------------------
-        Scope.ConfluencePageBlogAttachment,
-        */
-        Scope.ConfluenceSpace,
-      ],
+      scopes,
     );
     return results;
   }
@@ -268,8 +266,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     try {
       const [
-        objectResults,
-        spaceResultsMap = new Map<Scope, Result[]>(),
+        objectResults = [],
+        xpsearchResultsMap = new Map<Scope, Result[]>(),
         peopleResults = [],
         quickNavElapsedMs,
         confSearchElapsedMs,
@@ -285,8 +283,10 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            objectResults,
-            spaceResults: spaceResultsMap.get(Scope.ConfluenceSpace) || [],
+            objectResults: this.props.useAggregatorForObjects
+              ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment)
+              : objectResults,
+            spaceResults: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
             peopleResults,
             isError: false,
             isLoading: false,

@@ -32,7 +32,7 @@ const QS_ANALYTICS_EV_SUBMIT = `${ATLASKIT_QUICKSEARCH_NS}.submit`;
 
 export interface Props {
   onMount();
-  onSearch(query: string);
+  onSearch(query: string, useAggregatorForObjects?: boolean);
   onSearchSubmit?();
 
   isLoading: boolean;
@@ -42,6 +42,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
+  useAggregatorForObjects?: boolean;
 }
 
 export interface State {
@@ -54,6 +55,7 @@ export interface State {
 export class GlobalQuickSearch extends React.Component<Props, State> {
   public static defaultProps: Partial<Props> = {
     isSendSearchTermsEnabled: false,
+    useAggregatorForObjects: false,
   };
   queryVersion: number = 0;
   resultSelected: boolean = false;

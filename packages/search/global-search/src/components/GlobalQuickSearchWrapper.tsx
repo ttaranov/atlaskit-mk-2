@@ -60,6 +60,11 @@ export interface Props {
    * Indicates if search terms should be send in analytic events when a search is performed.
    */
   isSendSearchTermsEnabled?: boolean;
+
+  /**
+   * Indicates whether or not the aggregator should be used for object searches.
+   */
+  useAggregatorForObjects?: boolean;
 }
 
 /**
@@ -124,7 +129,11 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       this.props.cloudId,
       this.makeConfig(),
     );
-    const { linkComponent, isSendSearchTermsEnabled } = this.props;
+    const {
+      linkComponent,
+      isSendSearchTermsEnabled,
+      useAggregatorForObjects,
+    } = this.props;
 
     return (
       <MessagesIntlProvider>
@@ -132,6 +141,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           {...searchClients}
           linkComponent={linkComponent}
           isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+          useAggregatorForObjects={useAggregatorForObjects}
         />
       </MessagesIntlProvider>
     );
