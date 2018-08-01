@@ -9058,9 +9058,9 @@ markdown-escapes@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/markdown-escapes/-/markdown-escapes-1.0.1.tgz#1994df2d3af4811de59a6714934c2b2292734518"
 
-markdown-it-table@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/markdown-it-table/-/markdown-it-table-2.0.3.tgz#d0069997abcd9725ed77a472112d6ce61ad72b90"
+markdown-it-table@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/markdown-it-table/-/markdown-it-table-2.0.4.tgz#ca0b2482bfe7015ace6fbe73eb49ef8e0f59615d"
 
 markdown-it@^6.0.4:
   version "6.1.1"
