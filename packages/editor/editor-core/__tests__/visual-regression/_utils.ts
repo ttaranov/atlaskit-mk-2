@@ -152,6 +152,7 @@ export const baseTests = [
       clickSelector: 'button[aria-haspopup="true"]',
       menuItemText: `Heading ${level}`,
       nodeSelector: `h${level}`,
+      tagName: `h${level}`,
       content: 'text',
       appearance: ['full-page', 'comment'],
     };
