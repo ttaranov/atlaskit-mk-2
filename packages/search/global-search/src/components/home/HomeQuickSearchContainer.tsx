@@ -9,7 +9,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import renderSearchResults from './HomeSearchResults';
+import HomeSearchResults from './HomeSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 
@@ -210,16 +210,16 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
       >
-        {renderSearchResults({
-          query: latestSearchQuery,
-          isError,
-          retrySearch: this.retrySearch,
-          recentlyViewedItems,
-          recentResults,
-          jiraResults,
-          confluenceResults,
-          peopleResults,
-        })}
+        <HomeSearchResults
+          query={latestSearchQuery}
+          isError={isError}
+          retrySearch={this.retrySearch}
+          recentlyViewedItems={recentlyViewedItems}
+          recentResults={recentResults}
+          jiraResults={jiraResults}
+          confluenceResults={confluenceResults}
+          peopleResults={peopleResults}
+        />
       </GlobalQuickSearch>
     );
   }

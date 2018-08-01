@@ -4,10 +4,10 @@ import {
   HomeQuickSearchContainer,
   Props,
 } from '../../../components/home/HomeQuickSearchContainer';
+import HomeSearchResults from '../../../components/home/HomeSearchResults';
 import { Result } from '../../../model/Result';
 import GlobalQuickSearch from '../../../components/GlobalQuickSearch';
 import { Scope } from '../../../api/CrossProductSearchClient';
-import SearchError from '../../../components/SearchError';
 import { delay, makeJiraObjectResult } from '../_test-util';
 import {
   noResultsPeopleSearchClient,
@@ -23,8 +23,6 @@ import {
   noResultsRecentSearchClient,
   errorRecentSearchClient,
 } from '../mocks/_mockRecentSearchClient';
-import SearchResultsState from '../../../components/home/SearchResultsState';
-import PreQueryState from '../../../components/home/PreQueryState';
 
 function searchFor(query: string, wrapper: ShallowWrapper) {
   const quicksearch = wrapper.find(GlobalQuickSearch);
@@ -54,48 +52,6 @@ function render(partialProps?: Partial<Props>) {
 }
 
 describe('HomeQuickSearchContainer', () => {
-  describe('loading state', () => {
-    it.skip('should set loading state when searching', () => {
-      const wrapper = render();
-
-      searchFor('dav', wrapper);
-      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
-    });
-
-    it.skip('should unset loading state when search has finished', async () => {
-      const wrapper = render();
-
-      searchFor('dav', wrapper);
-      await waitForRender(wrapper);
-      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
-    });
-
-    it.skip('should unset loading state only when all promises have settled', async () => {
-      /**
-       * 0. Recent search errors out immediately, xpsearch takes 5ms
-       * 1. Make sure immediately that loading state is set
-       * 2. Wait 6ms until xpsearch has finished
-       * 3. Make sure loading state is unset
-       */
-      const wrapper = render({
-        recentSearchClient: errorRecentSearchClient,
-        crossProductSearchClient: {
-          search(query: string) {
-            return delay(5, new Map());
-          },
-        },
-      });
-
-      searchFor('disco', wrapper);
-
-      await waitForRender(wrapper);
-      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
-
-      await waitForRender(wrapper, 6);
-      expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
-    });
-  });
-
   it('should start searching when a character has been typed', async () => {
     const wrapper = render();
 
@@ -120,7 +76,7 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    expect(wrapper.find(SearchResultsState).prop('recentResults')).toHaveLength(
+    expect(wrapper.find(HomeSearchResults).prop('recentResults')).toHaveLength(
       1,
     );
   });
@@ -145,7 +101,7 @@ describe('HomeQuickSearchContainer', () => {
     await waitForRender(wrapper);
 
     expect(
-      wrapper.find(PreQueryState).prop('recentlyViewedItems'),
+      wrapper.find(HomeSearchResults).prop('recentlyViewedItems'),
     ).toHaveLength(1);
   });
 
@@ -159,9 +115,7 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    expect(wrapper.find(SearchResultsState).prop('jiraResults')).toHaveLength(
-      1,
-    );
+    expect(wrapper.find(HomeSearchResults).prop('jiraResults')).toHaveLength(1);
   });
 
   it('should render confluence results', async () => {
@@ -175,7 +129,7 @@ describe('HomeQuickSearchContainer', () => {
     await waitForRender(wrapper);
 
     expect(
-      wrapper.find(SearchResultsState).prop('confluenceResults'),
+      wrapper.find(HomeSearchResults).prop('confluenceResults'),
     ).toHaveLength(1);
   });
 
@@ -194,7 +148,7 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('query', wrapper);
     await waitForRender(wrapper);
 
-    expect(wrapper.find(SearchResultsState).prop('peopleResults')).toHaveLength(
+    expect(wrapper.find(HomeSearchResults).prop('peopleResults')).toHaveLength(
       1,
     );
   });
@@ -236,10 +190,8 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('once', wrapper);
     await waitForRender(wrapper, 6);
 
-    expect(wrapper.find(SearchResultsState).prop('jiraResults')).toHaveLength(
-      1,
-    );
-    expect(wrapper.find(SearchResultsState).prop('recentResults')).toHaveLength(
+    expect(wrapper.find(HomeSearchResults).prop('jiraResults')).toHaveLength(1);
+    expect(wrapper.find(HomeSearchResults).prop('recentResults')).toHaveLength(
       1,
     );
   });
@@ -290,7 +242,7 @@ describe('HomeQuickSearchContainer', () => {
     searchFor('twice - this will return the current fast result', wrapper);
     await waitForRender(wrapper, 10);
 
-    const results = wrapper.find(SearchResultsState).prop('jiraResults');
+    const results = wrapper.find(HomeSearchResults).prop('jiraResults');
     expect(results[0].name).toBe('current result');
   });
 
@@ -333,7 +285,7 @@ describe('HomeQuickSearchContainer', () => {
 
       searchFor('dav', wrapper);
       await waitForRender(wrapper);
-      expect(wrapper.find(SearchError).exists()).toBe(true);
+      expect(wrapper.find(HomeSearchResults).prop('isError')).toBe(true);
     });
 
     it('should clear error state after subsequent search', async () => {
@@ -353,11 +305,11 @@ describe('HomeQuickSearchContainer', () => {
 
       searchFor('error state', wrapper);
       await waitForRender(wrapper);
-      expect(wrapper.find(SearchError).exists()).toBe(true);
+      expect(wrapper.find(HomeSearchResults).prop('isError')).toBe(true);
 
       searchFor('good state', wrapper);
       await waitForRender(wrapper);
-      expect(wrapper.find(SearchError).exists()).toBe(false);
+      expect(wrapper.find(HomeSearchResults).prop('isError')).toBe(false);
     });
 
     it('should not show the error state when getting the initial recently viewed items fails', async () => {
@@ -366,7 +318,7 @@ describe('HomeQuickSearchContainer', () => {
       });
 
       await waitForRender(wrapper);
-      expect(wrapper.find(SearchError).exists()).toBe(false);
+      expect(wrapper.find(HomeSearchResults).prop('isError')).toBe(false);
     });
 
     it('should not show the error state when only people search fails', async () => {
@@ -376,7 +328,7 @@ describe('HomeQuickSearchContainer', () => {
 
       searchFor('dav', wrapper);
       await waitForRender(wrapper);
-      expect(wrapper.find(SearchError).exists()).toBe(false);
+      expect(wrapper.find(HomeSearchResults).prop('isError')).toBe(false);
     });
   });
 

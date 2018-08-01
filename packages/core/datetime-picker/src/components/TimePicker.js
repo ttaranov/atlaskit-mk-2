@@ -64,6 +64,7 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
+  parseInputValue: (time: string, timeFormat: string) => Date | typeof NaN,
   /** Props to apply to the select. */
   selectProps: Object,
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
@@ -79,7 +80,7 @@ type Props = {
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
   /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
-  timeFormat?: string,
+  timeFormat: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
 };
@@ -120,23 +121,24 @@ class TimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
+    defaultIsOpen: false,
+    defaultValue: '',
+    hideIcon: false,
+    id: '',
+    innerProps: {},
     isDisabled: false,
+    isInvalid: false,
     name: '',
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    times: defaultTimes,
+    placeholder: 'e.g. 8:00am',
+    parseInputValue: (time: string, timeFormat: string) => parseTime(time), // eslint-disable-line no-unused-vars
     selectProps: {},
     spacing: 'default',
-    innerProps: {},
-    id: '',
-    defaultIsOpen: false,
-    defaultValue: '',
+    times: defaultTimes,
     timeIsEditable: false,
-    isInvalid: false,
-    hideIcon: false,
     timeFormat: defaultTimeFormat,
-    placeholder: 'e.g. 8:00am',
   };
 
   state = {
@@ -172,7 +174,9 @@ class TimePicker extends Component<Props, State> {
 
   /** Only allow custom times if timeIsEditable prop is true  */
   onCreateOption = (inputValue: any): void => {
-    const value = format(parseTime(inputValue), 'HH:mm') || '';
+    const { parseInputValue, timeFormat } = this.props;
+    const value =
+      format(parseInputValue(inputValue, timeFormat), 'HH:mm') || '';
     if (this.props.timeIsEditable) {
       this.setState({ value });
       this.props.onChange(value);

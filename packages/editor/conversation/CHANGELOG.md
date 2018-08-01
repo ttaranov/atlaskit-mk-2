@@ -1,5 +1,17 @@
 # @atlaskit/conversation
 
+## 9.1.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/renderer@19.2.6
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/reactions@13.0.3
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-core@76.4.5
+  - @atlaskit/comment@6.0.4
+  - @atlaskit/single-select@6.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/avatar@14.0.5
+
 ## 9.1.0
 - [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
   - @atlaskit/util-data-test@10.0.1
