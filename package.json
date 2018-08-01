@@ -333,7 +333,7 @@
     "lodash.set": "^4.3.2",
     "lru-fast": "^0.2.2",
     "markdown-it": "^6.0.4",
-    "markdown-it-table": "^2.0.3",
+    "markdown-it-table": "^2.0.4",
     "memoize-one": "^3.0.1",
     "meow": "^5.0.0",
     "minimatch": "^3.0.4",
