@@ -1,5 +1,48 @@
 # @atlaskit/navigation
 
+## 33.1.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/logo@9.0.2
+  - @atlaskit/quick-search@4.2.4
+  - @atlaskit/page@8.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/item@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/toggle@5.0.4
+  - @atlaskit/single-select@6.0.3
+  - @atlaskit/checkbox@4.0.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/blanket@7.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/size-detector@5.0.3
+  - @atlaskit/polyfills@3.0.1
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/avatar@14.0.5
+
+## 33.1.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/logo@9.0.1
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/toggle@5.0.3
+  - @atlaskit/page@8.0.1
+  - @atlaskit/checkbox@4.0.1
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/size-detector@5.0.2
+  - @atlaskit/analytics@4.0.2
+  - @atlaskit/blanket@7.0.2
+  - @atlaskit/item@8.0.2
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/dropdown-menu@6.1.3
+  - @atlaskit/avatar@14.0.4
+
 ## 33.1.0
 - [minor] Add `itemTextWidth` prop to SkeletonContainerItems and SkeletonContainerItem components. Add `isAvatarHidden` prop to SkeletonDefaultContainerHeader. This enables usage of skeleton components for Atlaskit drawers. [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
 - [minor] Updated dependencies [acd3271](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd3271)
