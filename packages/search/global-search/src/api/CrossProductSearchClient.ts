@@ -53,6 +53,7 @@ export interface ConfluenceItem {
     displayUrl: string;
   };
   space?: {
+    key: string; // currently used as instance-unique ID
     icon: {
       path: string;
     };
@@ -222,7 +223,7 @@ function mapConfluenceItemToResultSpace(
   href.addQuery('search_id', searchSessionId);
 
   return {
-    resultId: `search-${spaceItem.container.displayUrl}`,
+    resultId: `space-${spaceItem.space!.key}`, // space is always defined for space results
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: href.toString(),
