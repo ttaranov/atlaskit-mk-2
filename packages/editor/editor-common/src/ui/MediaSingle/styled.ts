@@ -33,7 +33,9 @@ function calcWidth(
         ? 'calc(50% - 12px)'
         : `${width}px`;
     case 'wide':
-      return `${Math.min(akEditorWideLayoutWidth, width)}px`;
+      return width > akEditorFullPageMaxWidth
+        ? '100%'
+        : `${Math.min(akEditorWideLayoutWidth, width)}px`;
     case 'full-width':
       return `${Math.min(width, containerWidth) - akEditorBreakoutPadding}px`;
     default:
@@ -67,6 +69,7 @@ function calcMargin(layout: MediaSingleLayout): string {
       return '24px auto';
   }
 }
+
 export interface WrapperProps {
   layout: MediaSingleLayout;
   width: number;
@@ -84,14 +87,18 @@ const MediaSingleDimensionHelper = ({
   layout,
   containerWidth,
 }: WrapperProps) => css`
-  width: ${calcWidth(layout, width, containerWidth)};
   max-width: ${calcMaxWidth(layout, width, containerWidth)};
+  width: ${calcWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
   &::after {
     content: '';
     display: block;
     padding-bottom: ${height / width * 100}%;
+  }
+
+  tr & {
+    max-width: 100%;
   }
 `;
 
