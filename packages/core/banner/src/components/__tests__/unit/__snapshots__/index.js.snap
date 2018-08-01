@@ -1,14 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`banner should render error banner correctly 1`] = `
-.c0 {
+.c1 {
   max-height: 52px;
-  overflow: hidden;
-  -webkit-transition: max-height 0.25s ease-in-out;
-  transition: max-height 0.25s ease-in-out;
+  overflow: visible;
+  background-color: #DE350B;
 }
 
-.c1 {
+.c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -27,21 +26,22 @@ exports[`banner should render error banner correctly 1`] = `
   justify-content: center;
   padding: 16px;
   text-align: center;
+  margin: auto;
   -webkit-transition: color 0.25s ease-in-out;
   transition: color 0.25s ease-in-out;
 }
 
-.c1 a,
-.c1 a:visited,
-.c1 a:hover,
-.c1 a:active,
-.c1 a:focus {
+.c2 a,
+.c2 a:visited,
+.c2 a:hover,
+.c2 a:active,
+.c2 a:focus {
   color: #FFFFFF;
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.c2 {
+.c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -58,50 +58,60 @@ exports[`banner should render error banner correctly 1`] = `
   flex: 0 0 auto;
 }
 
-.c3 {
-  -webkit-flex: 0 1 auto;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
-  overflow: hidden;
-  padding-left: 4px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-<div
-  aria-hidden={false}
-  className="c0"
-  role="alert"
->
-  <div
-    className="c1"
-  >
-    <span
-      className="c2"
-    />
-    <span
-      className="c3"
-    >
-      This is an error banner with a 
-      <a
-        href="http://atlassian.com"
-      >
-        link
-      </a>
-    </span>
-  </div>
-</div>
-`;
-
-exports[`banner should render warning banner correctly 1`] = `
 .c0 {
-  max-height: 52px;
+  max-height: 0px;
   overflow: hidden;
   -webkit-transition: max-height 0.25s ease-in-out;
   transition: max-height 0.25s ease-in-out;
 }
 
+.c4 {
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  padding-left: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+<div
+  className="c0"
+>
+  <div
+    aria-hidden={false}
+    className="c1"
+    role="alert"
+  >
+    <div
+      className="c2"
+    >
+      <span
+        className="c3"
+      />
+      <span
+        className="c4"
+      >
+        This is an error banner with a 
+        <a
+          href="http://atlassian.com"
+        >
+          link
+        </a>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`banner should render warning banner correctly 1`] = `
 .c1 {
+  max-height: 52px;
+  overflow: visible;
+  background-color: #FFAB00;
+}
+
+.c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -120,21 +130,22 @@ exports[`banner should render warning banner correctly 1`] = `
   justify-content: center;
   padding: 16px;
   text-align: center;
+  margin: auto;
   -webkit-transition: color 0.25s ease-in-out;
   transition: color 0.25s ease-in-out;
 }
 
-.c1 a,
-.c1 a:visited,
-.c1 a:hover,
-.c1 a:active,
-.c1 a:focus {
+.c2 a,
+.c2 a:visited,
+.c2 a:hover,
+.c2 a:active,
+.c2 a:focus {
   color: #253858;
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.c2 {
+.c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -151,37 +162,48 @@ exports[`banner should render warning banner correctly 1`] = `
   flex: 0 0 auto;
 }
 
-.c3 {
+.c0 {
+  max-height: 0px;
+  overflow: hidden;
+  -webkit-transition: max-height 0.25s ease-in-out;
+  transition: max-height 0.25s ease-in-out;
+}
+
+.c4 {
   -webkit-flex: 0 1 auto;
   -ms-flex: 0 1 auto;
   flex: 0 1 auto;
-  overflow: hidden;
   padding-left: 4px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 <div
-  aria-hidden={false}
   className="c0"
-  role="alert"
 >
   <div
+    aria-hidden={false}
     className="c1"
+    role="alert"
   >
-    <span
+    <div
       className="c2"
-    />
-    <span
-      className="c3"
     >
-      This is a warning banner with a 
-      <a
-        href="http://atlassian.com"
+      <span
+        className="c3"
+      />
+      <span
+        className="c4"
       >
-        link
-      </a>
-    </span>
+        This is a warning banner with a 
+        <a
+          href="http://atlassian.com"
+        >
+          link
+        </a>
+      </span>
+    </div>
   </div>
 </div>
 `;
