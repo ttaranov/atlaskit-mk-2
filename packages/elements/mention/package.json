@@ -71,5 +71,8 @@
     "ui",
     "mention",
     "fabric"
-  ]
+  ],
+  "devDependencies,peerDependencies": {
+    "react": "^16.4.2"
+  }
 }

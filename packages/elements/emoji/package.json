@@ -83,5 +83,9 @@
   "keywords": [
     "fabric",
     "ui"
-  ]
+  ],
+  "devDependencies,peerDependencies": {
+    "react": "^16.4.2",
+    "rxjs": "^5.1.0"
+  }
 }

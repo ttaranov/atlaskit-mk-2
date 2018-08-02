@@ -28,7 +28,7 @@
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0",
+    "react": "^16.4.2",
     "rxjs": "^5.1.0"
   },
   "devDependencies": {

@@ -23,7 +23,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",

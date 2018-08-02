@@ -27,7 +27,7 @@
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",

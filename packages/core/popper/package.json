@@ -22,7 +22,7 @@
     "react-popper": "^1.0.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "@atlaskit/button": "^9.0.4",

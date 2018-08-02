@@ -71,5 +71,9 @@
     "react": "^16.4.0",
     "rxjs": "^5.1.0",
     "scrollparent": "^2.0.1"
+  },
+  "devDependencies,peerDependencies": {
+    "react": "^16.4.2",
+    "rxjs": "^5.1.0"
   }
 }

@@ -22,7 +22,7 @@
     "prosemirror-model": "^1.6.1"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",

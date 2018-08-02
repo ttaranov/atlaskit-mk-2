@@ -22,7 +22,7 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "@atlaskit/field-text": "^7.0.3",

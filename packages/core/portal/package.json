@@ -20,7 +20,7 @@
     "tiny-invariant": "^0.0.3"
   },
   "peerDependencies": {
-    "react": "^16.4.0",
+    "react": "^16.4.2",
     "react-dom": "^16.4.0"
   },
   "devDependencies": {

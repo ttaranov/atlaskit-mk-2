@@ -15,7 +15,7 @@
     "react-beautiful-dnd": "^8.0.7"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",

@@ -47,5 +47,8 @@
   "keywords": [
     "fabric",
     "ui"
-  ]
+  ],
+  "devDependencies,peerDependencies": {
+    "react": "^16.4.2"
+  }
 }

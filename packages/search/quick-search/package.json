@@ -40,5 +40,8 @@
     "react": "^16.4.0",
     "sinon": "^2.2.0",
     "uuid": "^3.1.0"
+  },
+  "devDependencies,peerDependencies": {
+    "react": "^16.4.2"
   }
 }
