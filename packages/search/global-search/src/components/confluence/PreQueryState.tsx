@@ -36,6 +36,7 @@ export default class PreQueryState extends React.Component<Props> {
       return [
         getPreQueryAnalyticsComponent(screenCounter, searchSessionId),
         <NoRecentActivity
+          key="no-recent-activity"
           advancedSearchUrl={getConfluenceAdvancedSearchLink()}
         />,
       ];
