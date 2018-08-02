@@ -1,5 +1,12 @@
 # @atlaskit/media-viewer
 
+## 17.0.0
+- [major] Bumping to latest version of of media-core [5811ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5811ed4)
+- [minor] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [minor] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-core@23.0.0
+
 ## 16.1.4
 - [patch] Fixes MSW-767 and MSW-895 [8102852](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8102852)
 

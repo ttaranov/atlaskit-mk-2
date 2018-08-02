@@ -1,5 +1,67 @@
 # @atlaskit/editor-core
 
+## 77.0.0
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-picker@12.0.0
+  - @atlaskit/media-filmstrip@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/media-card@32.0.0
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+
 ## 76.4.11
 - [patch] ED-5023 Quick insert now appears in help dialog when it is enabled [93c9b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93c9b37)
 - [none] Updated dependencies [93c9b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93c9b37)

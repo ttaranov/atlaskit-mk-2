@@ -1,5 +1,23 @@
 # @atlaskit/emoji
 
+## 39.0.0
+
+
+
+
+- [patch] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/util-data-test@10.0.3
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/util-data-test@10.0.3
+
 ## 38.0.5
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/util-data-test@10.0.2

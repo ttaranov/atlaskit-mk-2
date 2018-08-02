@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 10.0.6
+- [patch] Bumping react-beautiful-dnd to 8.0.7 to fix timing issue with onDragStart [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+
 ## 10.0.5
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/toggle@5.0.4

@@ -1,5 +1,14 @@
 # @atlaskit/media-picker
 
+## 12.0.0
+- [major] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-store@6.0.0
+  - @atlaskit/media-editor@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/media-card@32.0.0
+
 ## 11.2.2
 - [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
   - @atlaskit/media-card@31.3.0
