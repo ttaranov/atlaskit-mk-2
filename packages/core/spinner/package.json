@@ -37,7 +37,7 @@
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "sinon": "^2.2.0"
   }
 }

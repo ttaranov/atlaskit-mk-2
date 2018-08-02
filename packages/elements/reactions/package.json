@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.2"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

@@ -30,7 +30,7 @@
     "@atlaskit/visual-regression": "^0.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0"
   }
 }

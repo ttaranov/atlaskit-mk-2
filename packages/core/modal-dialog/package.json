@@ -43,7 +43,7 @@
     "@atlaskit/inline-dialog": "^8.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-beautiful-dnd": "^8.0.7",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2"
   },
   "keywords": [

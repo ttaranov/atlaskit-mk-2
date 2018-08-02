@@ -24,7 +24,7 @@
   },
   "peerDependencies": {
     "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@atlaskit/tooltip": "^12.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "polished": "1.5.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "recompose": "^0.26.0"

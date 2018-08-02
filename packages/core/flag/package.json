@@ -38,7 +38,7 @@
     "@atlaskit/spinner": "^9.0.4",
     "@atlaskit/theme": "^5.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.2"
   },
   "keywords": [
     "atlaskit",

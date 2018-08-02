@@ -32,7 +32,7 @@
   },
   "peerDependencies": {
     "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -43,6 +43,6 @@
     "@atlaskit/dropdown-menu": "^6.1.4",
     "@atlaskit/toggle": "^5.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.2"
   }
 }
