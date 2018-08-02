@@ -6,6 +6,9 @@ import HomeQuickSearchContainer, {
 import ConfluenceQuickSearchContainer, {
   Props as ConfContainerProps,
 } from './confluence/ConfluenceQuickSearchContainer';
+import JiraQuickSearchContainer, {
+  Props as JiraContainerProps,
+} from './jira/JiraQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
 import MessagesIntlProvider from './MessagesIntlProvider';
 
@@ -27,7 +30,7 @@ export interface Props {
   /**
    * The context for quick-search determines the UX and what kind of entities the component is searching.
    */
-  context: 'confluence' | 'home';
+  context: 'confluence' | 'home' | 'jira';
 
   /**
    * For development purposes only: Overrides the URL to the activity service.
@@ -48,6 +51,11 @@ export interface Props {
    * The URL for Confluence. Must include the context path.
    */
   confluenceUrl?: string;
+
+  /**
+   * The URL for Jira. Must include the context path.
+   */
+  jiraUrl?: string;
 
   /**
    * React component to be used for rendering links. It receives a className prop that needs to be applied for
@@ -98,12 +106,14 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
   }
 
   private getContainerComponent(): React.ComponentClass<
-    HomeContainerProps | ConfContainerProps
+    HomeContainerProps | ConfContainerProps | JiraContainerProps
   > {
     if (this.props.context === 'confluence') {
       return ConfluenceQuickSearchContainer;
     } else if (this.props.context === 'home') {
       return HomeQuickSearchContainer;
+    } else if (this.props.context === 'jira') {
+      return JiraQuickSearchContainer;
     } else {
       // fallback to home if nothing specified
       return HomeQuickSearchContainer;

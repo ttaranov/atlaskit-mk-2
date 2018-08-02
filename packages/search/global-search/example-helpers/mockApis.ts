@@ -7,7 +7,7 @@ import {
   makeConfluenceRecentPagesData,
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
-} from '../example-helpers/mockData';
+} from './mockData';
 
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
@@ -70,6 +70,7 @@ export function setupMocks() {
   mockPeopleApi();
   mockConfluenceRecentApi();
   mockQuickNavApi();
+  // TODO jira mocks
 }
 
 export function teardownMocks() {
