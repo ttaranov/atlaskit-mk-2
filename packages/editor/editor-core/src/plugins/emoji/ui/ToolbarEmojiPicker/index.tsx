@@ -111,12 +111,14 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: EmojiState) => {
     const disabled = !pluginState.isEnabled();
-    // Ensure closed if disabled, so it does reappear later
-    const isOpen = disabled ? false : this.state.isOpen;
-    this.setState({
+    const newState: any = {
       disabled,
-      isOpen,
-    });
+    };
+    if (disabled) {
+      // Ensure closed if disabled, so it does reappear later
+      newState.isOpen = false;
+    }
+    this.setState(newState);
   };
 
   private handleButtonRef = (ref): void => {
