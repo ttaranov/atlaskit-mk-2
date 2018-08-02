@@ -1,5 +1,10 @@
 # @atlaskit/media-filmstrip
 
+## 10.2.0
+- [minor] expose smart Filmstrip from media-filmstrip [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
+- [minor] Updated dependencies [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
+  - @atlaskit/media-card@31.2.0
+
 ## 10.1.0
 
 

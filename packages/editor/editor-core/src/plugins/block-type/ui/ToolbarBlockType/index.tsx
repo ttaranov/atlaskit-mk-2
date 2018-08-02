@@ -55,6 +55,7 @@ export default class ToolbarBlockType extends React.PureComponent<
       popupsBoundariesElement,
       popupsScrollableElement,
       isSmall,
+      isReducedSpacing,
       pluginState: {
         currentBlockType,
         blockTypesDisabled,
@@ -67,7 +68,7 @@ export default class ToolbarBlockType extends React.PureComponent<
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing="none"
+        spacing={isReducedSpacing ? 'none' : 'default'}
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}

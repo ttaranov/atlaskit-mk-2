@@ -3,6 +3,9 @@ import Button from '@atlaskit/button';
 import {
   createStorybookContext,
   imageFileId,
+  smallImageFileId,
+  largeImageFileId,
+  wideImageFileId,
   audioFileId,
   videoFileId,
   docFileId,
@@ -21,6 +24,24 @@ const context = createStorybookContext();
 const imageItem: MediaViewerItem = {
   type: 'file',
   id: imageFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const smallImageItem: MediaViewerItem = {
+  type: 'file',
+  id: smallImageFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const largeImageItem: MediaViewerItem = {
+  type: 'file',
+  id: largeImageFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+const wideImageItem: MediaViewerItem = {
+  type: 'file',
+  id: wideImageFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 
@@ -92,6 +113,9 @@ export default class Example extends React.Component<{}, State> {
     return (
       <div>
         <Button onClick={this.setItem(imageItem)}>Image item</Button>
+        <Button onClick={this.setItem(smallImageItem)}>Small image item</Button>
+        <Button onClick={this.setItem(wideImageItem)}>Wide image item</Button>
+        <Button onClick={this.setItem(largeImageItem)}>Large image item</Button>
         <Button onClick={this.setItem(videoHorizontalFileItem)}>
           Video horizontal
         </Button>

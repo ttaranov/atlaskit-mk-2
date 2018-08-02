@@ -37,7 +37,7 @@ const floatingToolbarPlugin: EditorPlugin = {
     return [
       {
         // Should be after all toolbar plugins
-        rank: 5000,
+        name: 'floatingToolbar',
         plugin: ({ dispatch }) =>
           floatingToolbarPluginFactory(dispatch, floatingToolbar),
       },

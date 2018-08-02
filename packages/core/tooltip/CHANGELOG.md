@@ -1,5 +1,9 @@
 # @atlaskit/tooltip
 
+## 12.0.2
+- [patch] tooltip now renders popup into @atlaskit/portal [64fba41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64fba41)
+- [none] Updated dependencies [64fba41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64fba41)
+
 ## 12.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

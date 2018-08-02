@@ -50,6 +50,7 @@ const Text = ({ url }) => (
     </div>
   </TextWrapper>
 );
+
 export default class NoRecentActivity extends React.Component<Props> {
   render() {
     return (

@@ -107,6 +107,7 @@ describe('metadata utils', () => {
         name: 'file-name',
         size: 10,
         mediaType: 'unknown',
+        mimeType: 'foo/bar',
       };
       const existingMetadata: FileDetails = {
         id: '123',
@@ -118,12 +119,14 @@ describe('metadata utils', () => {
         name: 'file-name',
         size: 10,
         mediaType: 'unknown',
+        mimeType: 'foo/bar',
       });
       expect(extendMetadata(state, existingMetadata)).toEqual({
         id: '1',
         name: 'file-name',
         size: 10,
         mediaType: 'image',
+        mimeType: 'foo/bar',
       });
     });
   });

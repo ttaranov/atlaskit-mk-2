@@ -17,7 +17,7 @@ import {
   timestampToTaskContext,
   isPastDate,
 } from '@atlaskit/editor-common';
-import { selectElement } from '../actions';
+import { setDatePickerAt } from '../actions';
 import { defaultEditorFontStyles } from '../../../styles';
 
 const Overlay = styled.div`
@@ -69,16 +69,25 @@ export interface Props {
 
 export default class DateNodeView extends React.Component<Props, any> {
   render() {
-    const { attrs: { timestamp } } = this.props.node;
-    const { view: { state: { schema, selection } } } = this.props;
+    const {
+      attrs: { timestamp },
+    } = this.props.node;
+    const {
+      view: {
+        state: { schema, selection },
+      },
+    } = this.props;
     const parent = selection.$from.parent;
-    const withinIncompleteTask = parent.type === schema.nodes.taskItem && parent.attrs.state !== 'DONE';
+    const withinIncompleteTask =
+      parent.type === schema.nodes.taskItem && parent.attrs.state !== 'DONE';
 
     return (
       <DateNode
         id={Math.random().toString()}
         onClick={this.handleClick}
-        className={withinIncompleteTask && isPastDate(timestamp) ? 'past-due' : ''}
+        className={
+          withinIncompleteTask && isPastDate(timestamp) ? 'past-due' : ''
+        }
       >
         <Overlay />
         {withinIncompleteTask
@@ -91,6 +100,6 @@ export default class DateNodeView extends React.Component<Props, any> {
   private handleClick = (event: React.SyntheticEvent<any>) => {
     event.nativeEvent.stopImmediatePropagation();
     const { state, dispatch } = this.props.view;
-    selectElement(event.currentTarget.parentElement)(state, dispatch);
+    setDatePickerAt(state.selection.from)(state, dispatch);
   };
 }

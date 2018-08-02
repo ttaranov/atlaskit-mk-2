@@ -11,21 +11,27 @@ import HyperlinkToolbar from './ui';
 
 const hyperlinkPlugin: EditorPlugin = {
   marks() {
-    return [{ name: 'link', mark: link, rank: 100 }];
+    return [{ name: 'link', mark: link }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 900,
+        name: 'syncUrlText',
         plugin: ({ props: { appearance } }) =>
           appearance === 'message' ? syncTextAndUrlPlugin : undefined,
       },
-      { rank: 901, plugin: ({ dispatch }) => plugin(dispatch) },
-      { rank: 905, plugin: () => fakeCursorToolbarPlugin },
-      { rank: 910, plugin: ({ schema }) => createInputRulePlugin(schema) },
+      { name: 'hyperlink', plugin: ({ dispatch }) => plugin(dispatch) },
       {
-        rank: 920,
+        name: 'fakeCursorToolbarPlugin',
+        plugin: () => fakeCursorToolbarPlugin,
+      },
+      {
+        name: 'hyperlinkInputRule',
+        plugin: ({ schema }) => createInputRulePlugin(schema),
+      },
+      {
+        name: 'hyperlinkKeymap',
         plugin: ({ schema, props }) => createKeymapPlugin(schema, props),
       },
     ];

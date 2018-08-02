@@ -51,7 +51,7 @@ const FloatingContextualMenu = ({
   targetCellPosition,
   pluginConfig,
 }: Props) => {
-  if (!targetCellRef) {
+  if (!targetCellRef || !isOpen) {
     return null;
   }
   const width = targetCellRef.getBoundingClientRect().width;

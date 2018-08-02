@@ -6,7 +6,9 @@ import { gridSize, math } from '@atlaskit/theme';
 const SkeletonDefaultContainerHeaderInner = styled.div`
   display: flex;
   align-items: center;
-  margin: ${math.divide(gridSize, 2)}px ${gridSize()}px 0 ${gridSize()}px;
+  margin: ${props =>
+      props.isAvatarHidden ? gridSize() * 2 : math.divide(gridSize, 2)}px
+    ${gridSize()}px 0 ${gridSize()}px;
 `;
 
 SkeletonDefaultContainerHeaderInner.displayName =

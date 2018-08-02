@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 16.1.1
+- [patch] MSW-701: zoom into viewport center, not image center [c2c8fdd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2c8fdd)
+
 ## 16.1.0
 
 

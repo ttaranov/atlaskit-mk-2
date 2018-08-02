@@ -1,4 +1,4 @@
-import { getCellsInTable, selectColumn } from 'prosemirror-utils';
+import { getCellsInTable, selectColumn, selectTable } from 'prosemirror-utils';
 import { CellSelection } from 'prosemirror-tables';
 import { Node as ProsemirrorNode, Fragment, Slice } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
@@ -146,6 +146,70 @@ describe('table plugin', () => {
               tr(th()(p('1')), th()(p('2')), th()(p('2'))),
               tr(td()(p('4')), td()(p('5')), td()(p('5'))),
               tr(td()(p('7')), td()(p('8')), td()(p('8'))),
+            ),
+          ),
+        );
+      });
+
+      it('copies a table with all attributes', () => {
+        const {
+          editorView,
+          refs: { nextPos },
+        } = editor(
+          doc(
+            table({
+              layout: 'wide',
+            })(
+              tr(th()(p('{<>}1')), th()(p('2')), th()(p('3'))),
+              tr(
+                td({ background: 'rgba(255, 252, 242, 0.5)' })(p('4')),
+                td({ background: '#fffcf7' })(p('5')),
+                td()(p('6')),
+              ),
+              tr(td()(p('7')), td()(p('8')), td()(p('9'))),
+            ),
+            p('{nextPos}'),
+          ),
+        );
+
+        let { state } = editorView;
+        state = state.apply(selectTable(state.tr));
+
+        const { dom, text } = __serializeForClipboard(
+          editorView,
+          state.selection.content(),
+        );
+
+        // move cursor to the 3rd column
+        const $pos = state.doc.resolve(nextPos);
+        state = state.apply(
+          state.tr.setSelection(new TextSelection($pos, $pos)),
+        );
+
+        editorView.updateState(state);
+
+        // paste the column
+        dispatchPasteEvent(editorView, { html: dom.innerHTML, plain: text });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table({ layout: 'wide' })(
+              tr(th()(p('1')), th()(p('2')), th()(p('3'))),
+              tr(
+                td({ background: 'rgba(255, 252, 242, 0.5)' })(p('4')),
+                td({ background: '#fffcf7' })(p('5')),
+                td()(p('6')),
+              ),
+              tr(td()(p('7')), td()(p('8')), td()(p('9'))),
+            ),
+            table({ layout: 'wide' })(
+              tr(th()(p('1')), th()(p('2')), th()(p('3'))),
+              tr(
+                td({ background: 'rgba(255, 252, 242, 0.5)' })(p('4')),
+                td({ background: 'rgba(255, 252, 247, 0.5)' })(p('5')),
+                td()(p('6')),
+              ),
+              tr(td()(p('7')), td()(p('8')), td()(p('9'))),
             ),
           ),
         );

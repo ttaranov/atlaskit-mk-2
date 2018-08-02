@@ -25,13 +25,13 @@ const textColorPlugin: EditorPlugin = {
   name: 'textColor',
 
   marks() {
-    return [{ name: 'textColor', mark: textColor, rank: 1700 }];
+    return [{ name: 'textColor', mark: textColor }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 600,
+        name: 'textColor',
         plugin: ({ props, dispatch }) =>
           createPlugin(dispatch, pluginConfig(props.allowTextColor)),
       },

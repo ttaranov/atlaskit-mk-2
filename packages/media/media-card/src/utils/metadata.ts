@@ -52,6 +52,7 @@ export const extendMetadata = (
       id,
       name: state.name,
       size: state.size,
+      mimeType: state.mimeType,
       mediaType:
         currentMediaType && currentMediaType !== 'unknown'
           ? currentMediaType

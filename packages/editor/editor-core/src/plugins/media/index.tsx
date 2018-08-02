@@ -47,9 +47,9 @@ export interface MediaSingleOptions {
 const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   nodes() {
     return [
-      { name: 'mediaGroup', node: mediaGroup, rank: 1700 },
-      { name: 'mediaSingle', node: mediaSingle, rank: 1750 },
-      { name: 'media', node: media, rank: 1800 },
+      { name: 'mediaGroup', node: mediaGroup },
+      { name: 'mediaSingle', node: mediaSingle },
+      { name: 'media', node: media },
     ].filter(node => {
       const { allowMediaGroup = true, allowMediaSingle = false } =
         options || {};
@@ -69,7 +69,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   pmPlugins() {
     return [
       {
-        rank: 1200,
+        name: 'media',
         plugin: ({
           schema,
           props,
@@ -128,11 +128,11 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             props.appearance,
           ),
       },
-      { rank: 1220, plugin: ({ schema }) => keymapPlugin(schema) },
+      { name: 'mediaKeymap', plugin: ({ schema }) => keymapPlugin(schema) },
     ].concat(
       options && options.allowMediaSingle
         ? {
-            rank: 1250,
+            name: 'mediaSingleKeymap',
             plugin: ({ schema }) => keymapMediaSinglePlugin(schema),
           }
         : [],
@@ -177,6 +177,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     quickInsert: [
       {
         title: 'Files and images',
+        priority: 200,
         keywords: ['media'],
         icon: () => <EditorImageIcon label="Files and images" />,
         action(insert, state) {

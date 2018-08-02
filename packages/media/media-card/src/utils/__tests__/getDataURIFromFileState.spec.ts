@@ -28,6 +28,7 @@ describe('getDataURIFromFileState()', () => {
       name: '',
       size: 1,
       mediaType: 'doc',
+      mimeType: 'application/pdf',
       preview: {
         blob: new File([], 'filename', { type: 'text/plain' }),
       },
@@ -44,6 +45,7 @@ describe('getDataURIFromFileState()', () => {
       size: 1,
       progress: 0.5,
       mediaType: 'image',
+      mimeType: 'image/jpg',
       preview: {
         blob: new File([], 'filename', { type: 'image/png' }),
       },
@@ -59,6 +61,7 @@ describe('getDataURIFromFileState()', () => {
       name: '',
       size: 1,
       mediaType: 'image',
+      mimeType: 'image/png',
       preview: {
         blob: new File([], 'filename', { type: 'video/mov' }),
       },
