@@ -1,9 +1,9 @@
 // @flow
 
 import React, { Component } from 'react';
-import Container from './Container';
-import Format from './Format';
-import defaultTheme, { type ThemeAppearance, type ThemeProps } from '../theme';
+import { Container } from './Container';
+import { Format } from './Format';
+import { theme, type ThemeAppearance, type ThemeProps } from '../theme';
 import { Theme } from '@atlaskit/theme';
 
 type Props = {
@@ -37,7 +37,7 @@ export default class Badge extends Component<Props> {
     children: 0,
     max: 99,
     onValueUpdated: () => {},
-    theme: defaultTheme,
+    theme,
     value: undefined,
   };
 
@@ -65,8 +65,8 @@ export default class Badge extends Component<Props> {
     const { appearance, children, max, theme, value } = this.props;
     return (
       <Theme values={theme}>
-        {theme => (
-          <Container {...theme.badge({ appearance })}>
+        {t => (
+          <Container {...t.badge({ appearance })}>
             <Format max={max}>{value || children}</Format>
           </Container>
         )}

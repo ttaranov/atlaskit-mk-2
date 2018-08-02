@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 
-const Container = styled.span`
+export const Container = styled.span`
   ${props => `
     background-color: ${props.backgroundColor};
     color: ${props.textColor};
@@ -17,5 +17,3 @@ const Container = styled.span`
   text-align: center;
 `;
 Container.displayName = 'Ak.Badge.Container';
-
-export default Container;

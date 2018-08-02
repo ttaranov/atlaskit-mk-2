@@ -41,7 +41,7 @@ export type ThemeProps = {
   mode: string,
 };
 
-export default function themeDefault({
+export function theme({
   badge = () => ({}),
   mode = 'light',
   ...theme

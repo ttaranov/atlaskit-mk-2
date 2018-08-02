@@ -8,7 +8,7 @@ type Props = {
   max?: number,
 };
 
-const Format = (props: Props): string => {
+export const Format = (props: Props): string => {
   let formatted = '';
   let { children = 0, max = 0 } = props;
 
@@ -31,5 +31,3 @@ const Format = (props: Props): string => {
   return `${formatted}`;
 };
 Format.displayName = 'Ak.Badge.Format';
-
-export default Format;
