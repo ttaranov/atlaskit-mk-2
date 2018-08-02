@@ -5,7 +5,6 @@ import { Auth, AuthProvider, AuthContext } from '@atlaskit/media-core';
 const cachedAuths: { [key: string]: Promise<Auth> } = {};
 const authProviderBaseURL =
   'https://api-private.dev.atlassian.com/media-playground/api/';
-export const userAuthProviderBaseURL = 'https://dt-api.dev.atl-paas.net';
 
 export class StoryBookAuthProvider {
   static create(
@@ -30,6 +29,7 @@ export class StoryBookAuthProvider {
         response = await axios.get('/token/tenant', config);
       }
 
+      // We leverage the fact, that our internal /toke/tenant API returns data in the same format as Auth
       return response.data as Auth;
     };
 

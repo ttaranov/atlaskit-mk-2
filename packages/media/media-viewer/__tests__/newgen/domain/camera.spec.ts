@@ -108,7 +108,7 @@ describe('Camera', () => {
 
   describe('scaledImg', () => {
     jsc.property(
-      'any up-scaled image is larger than a fitted one',
+      'any up-scaled image is larger than the original one',
       sideLenGenerator(),
       sideLenGenerator(),
       sideLenGenerator(),
@@ -125,7 +125,7 @@ describe('Camera', () => {
     );
 
     jsc.property(
-      'any down-scaled image is smaller than a fitted one',
+      'any down-scaled image is smaller than the original one',
       sideLenGenerator(),
       sideLenGenerator(),
       sideLenGenerator(),
@@ -135,10 +135,10 @@ describe('Camera', () => {
         const viewport = new Rectangle(side1, side2);
         const originalImg = new Rectangle(side3, side4);
         const camera = new Camera(viewport, originalImg);
-        const fitted = camera.fittedImg;
         const downscaled = camera.scaledImg(scale);
         return (
-          fitted.width > downscaled.width && fitted.height > downscaled.height
+          originalImg.width > downscaled.width &&
+          originalImg.height > downscaled.height
         );
       },
     );

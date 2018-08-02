@@ -17,7 +17,7 @@ export type State = {
 };
 
 const initialState: State = {
-  zoomLevel: new ZoomLevel(),
+  zoomLevel: new ZoomLevel(1),
   camera: { status: 'PENDING' },
 };
 
@@ -63,11 +63,13 @@ export class InteractiveImg extends React.Component<Props, State> {
       const { naturalWidth, naturalHeight } = ev.currentTarget;
       const viewport = new Rectangle(clientWidth, clientHeight);
       const originalImg = new Rectangle(naturalWidth, naturalHeight);
+      const camera = new Camera(viewport, originalImg);
       this.setState({
         camera: {
           status: 'SUCCESSFUL',
-          data: new Camera(viewport, originalImg),
+          data: camera,
         },
+        zoomLevel: new ZoomLevel(camera.scaleDownToFit),
       });
     }
   };

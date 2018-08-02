@@ -4,12 +4,17 @@ import { ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaPickerPopup', () => {
   const context = ContextFactory.create({
-    serviceHost: 'some-api-url',
-    authProvider: () => Promise.resolve({ clientId: '', token: '' }),
+    authProvider: () =>
+      Promise.resolve({
+        clientId: '',
+        token: '',
+        baseUrl: 'some-api-url',
+      }),
     userAuthProvider: () =>
       Promise.resolve({
         clientId: 'some-client-id',
         token: 'some-token',
+        baseUrl: 'some-api-url',
       }),
   });
   const popupConfig: PopupConfig = {

@@ -1,5 +1,27 @@
 # @atlaskit/onboarding
 
+## 5.1.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/layer-manager@5.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/modal-dialog@6.0.5
+
+## 5.1.2
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/modal-dialog@6.0.4
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/layer@5.0.2
+  - @atlaskit/layer-manager@5.0.3
+  - @atlaskit/icon@13.2.1
+
 ## 5.1.1
 - [patch] onboarding spotlight: fix margin affecting target position [0e33c70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e33c70)
 - [none] Updated dependencies [0e33c70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e33c70)

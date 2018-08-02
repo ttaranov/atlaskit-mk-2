@@ -10,8 +10,8 @@ export type ConnectionLostHandler = () => void;
 export type WebsocketDataReceivedHandler = (data: WsMessageData) => void;
 
 // Helper function that formats websocket URL based on API URL
-export const getWsUrl = (apiUrl: string): string => {
-  const urlParams = url.parse(apiUrl);
+export const getWsUrl = (baseUrl: string): string => {
+  const urlParams = url.parse(baseUrl);
   const { protocol, host } = urlParams;
   const wsProtocol = protocol === 'http:' ? 'ws:' : 'wss:';
 
@@ -30,12 +30,11 @@ export class Ws {
   private pingTimeoutId: number;
 
   constructor(
-    apiUrl: string,
     auth: Auth,
     private onDataReceived: WebsocketDataReceivedHandler,
     private onConnectionLost: ConnectionLostHandler,
   ) {
-    const wsUrl = getWsUrl(apiUrl);
+    const wsUrl = getWsUrl(auth.baseUrl);
 
     // WebSocket throws an exception SECURITY_ERR if the port is blocked.
     // https://developer.mozilla.org/en-US/docs/Web/API/WebSocket

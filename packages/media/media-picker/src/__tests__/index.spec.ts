@@ -6,20 +6,27 @@ import {
   Clipboard,
   Popup,
 } from '..';
-import { ContextFactory } from '@atlaskit/media-core';
+import { AuthProvider, ContextFactory } from '@atlaskit/media-core';
 
 /**
  * These specs should describe the public API.
  */
 describe('MediaPicker', () => {
   const container = document.createElement('div');
-  const userAuthProvider = () =>
-    Promise.resolve({ clientId: 'some-client-id', token: 'some-token' });
+  const userAuthProvider: AuthProvider = () =>
+    Promise.resolve({
+      clientId: 'some-client-id',
+      token: 'some-token',
+      baseUrl: 'some-api-url',
+    });
   const context = ContextFactory.create({
-    serviceHost: 'some-api-url',
     userAuthProvider,
     authProvider: () =>
-      Promise.resolve({ clientId: 'some-client-id', token: 'some-token' }),
+      Promise.resolve({
+        clientId: 'some-client-id',
+        token: 'some-token',
+        baseUrl: 'some-api-url',
+      }),
   });
   const config = {
     uploadParams: {

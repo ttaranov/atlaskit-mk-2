@@ -50,12 +50,12 @@ export function editRemoteImage(
   action: EditRemoteImageAction,
 ): Promise<void> {
   const { item, collectionName } = action;
-  const { apiUrl, userAuthProvider } = store.getState();
+  const { userAuthProvider } = store.getState();
 
   store.dispatch(editorShowLoading(item));
 
   return userAuthProvider()
-    .then(auth => fetcher.getImage(apiUrl, auth, item.id, collectionName))
+    .then(auth => fetcher.getImage(auth, item.id, collectionName))
     .then(fileToBase64)
     .then(base64image => {
       if (continueRenderingEditor(item.id, store)) {

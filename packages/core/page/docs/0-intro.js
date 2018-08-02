@@ -44,14 +44,6 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
   )}
 
   ${(
-    <Example
-      Component={require('../examples/04-navigation-example').default}
-      title="Navigation"
-      source={require('!!raw-loader!../examples/04-navigation-example')}
-    />
-  )}
-
-  ${(
     <Props
       props={require('!!extract-react-types-loader!../src/Page')}
       heading="Page Props"

@@ -1,9 +1,9 @@
 import * as sinon from 'sinon';
 
 import { MediaUrlPreviewService } from '../src/services/urlPreviewService';
-import { AuthProvider } from '@atlaskit/media-store';
+import { Auth, AuthProvider } from '@atlaskit/media-store';
 
-const serviceHost = 'some-host';
+const baseUrl = 'some-host';
 const token = 'some-token';
 const clientId = 'some-client-id';
 
@@ -26,13 +26,13 @@ describe('UrlPreviewService', () => {
   beforeEach(() => {
     setupFakeXhr();
     authProvider = jest.fn(() =>
-      Promise.resolve({
-        token: token,
-        clientId: clientId,
+      Promise.resolve<Auth>({
+        token,
+        clientId,
+        baseUrl,
       }),
     );
     urlPreviewService = new MediaUrlPreviewService({
-      serviceHost,
       authProvider,
     });
   });

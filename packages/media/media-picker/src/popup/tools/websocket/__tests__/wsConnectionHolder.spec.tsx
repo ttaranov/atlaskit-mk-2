@@ -18,14 +18,14 @@ interface FakeWsConnection {
 }
 
 describe('WsConnectionHolder', () => {
-  const apiUrl = 'https://media.api';
-  const auth = { clientId: 'id', token: 'token' };
+  const baseUrl = 'https://media.api';
+  const auth: Auth = { clientId: 'id', token: 'token', baseUrl };
 
   describe('connection handling', () => {
     let holder: WsConnectionHolder;
 
     beforeEach(() => {
-      holder = new WsConnectionHolder(apiUrl, auth);
+      holder = new WsConnectionHolder(auth);
     });
 
     afterEach(() => {
@@ -42,8 +42,7 @@ describe('WsConnectionHolder', () => {
       holder.openConnection(activity);
 
       expect(WsConnection).toHaveBeenCalledTimes(1);
-      expect((WsConnection as any).mock.calls[0][0]).toEqual(apiUrl);
-      expect((WsConnection as any).mock.calls[0][1]).toEqual(auth);
+      expect((WsConnection as any).mock.calls[0][0]).toEqual(auth);
     });
 
     it('should open only one connection when two activities are added', () => {
@@ -137,10 +136,9 @@ describe('WsConnectionHolder', () => {
     };
 
     beforeEach(() => {
-      holder = new WsConnectionHolder(apiUrl, auth);
+      holder = new WsConnectionHolder(auth);
       (WsConnection as any).mockImplementation(
         (
-          apiUrl: string,
           auth: Auth,
           onDataReceived: WebsocketDataReceivedHandler,
           onConnectionLost: ConnectionLostHandler,
