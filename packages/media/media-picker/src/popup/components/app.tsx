@@ -106,7 +106,6 @@ export class App extends Component<AppProps, AppState> {
       tenantUploadParams,
       useNewUploadService,
     } = props;
-    console.log('tenant.uploadParams', tenantUploadParams);
     const { userAuthProvider } = context.config;
 
     if (!userAuthProvider) {
@@ -123,13 +122,16 @@ export class App extends Component<AppProps, AppState> {
     };
 
     // We can't just use the given context since the Cards in the recents view needs a different authProvider
+    // TODO: probably rename into cardContext
     this.mpContext = ContextFactory.create({
       serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
       userAuthProvider,
     });
+    // We need access to both auth + userAuth providers in local components
+    const localComponentContext = context;
 
-    this.mpBrowser = MediaPicker('browser', this.mpContext, {
+    this.mpBrowser = MediaPicker('browser', localComponentContext, {
       ...defaultConfig,
       multiple: true,
       useNewUploadService,
@@ -142,7 +144,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
+    this.mpDropzone = MediaPicker('dropzone', localComponentContext, {
       ...defaultConfig,
       headless: true,
       useNewUploadService,
@@ -157,7 +159,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', this.mpContext, {
+    this.mpBinary = MediaPicker('binary', localComponentContext, {
       ...defaultConfig,
       useNewUploadService,
       tenantUploadParams,

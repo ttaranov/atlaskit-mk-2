@@ -89,7 +89,6 @@ export async function importFiles(
     selectedItems,
     userAuthProvider,
   } = store.getState();
-
   store.dispatch(hidePopup());
 
   const auth = await userAuthProvider();
@@ -108,12 +107,14 @@ export async function importFiles(
     const selectedItemId = file.id;
     if (serviceName === 'upload') {
       const localUpload: LocalUpload = uploads[selectedItemId];
+      const replaceFileId = file.upfrontId;
       importFilesFromLocalUpload(
         selectedItemId,
         tenant,
         uploadId,
         store,
         localUpload,
+        replaceFileId,
       );
     } else if (serviceName === 'recent_files') {
       importFilesFromRecentFiles(selectedUploadFile, tenant, store);
@@ -135,9 +136,8 @@ export const importFilesFromLocalUpload = (
   uploadId: string,
   store: Store<State>,
   localUpload: LocalUpload,
-  replaceFileId?: string,
+  replaceFileId?: Promise<string>,
 ): void => {
-  // console.log('importFilesFromLocalUpload', localUpload.events);
   localUpload.events.forEach(originalEvent => {
     const event = { ...originalEvent };
 
@@ -147,7 +147,7 @@ export const importFilesFromLocalUpload = (
         id: file.publicId,
         collection: RECENTS_COLLECTION,
       };
-      console.log('importFilesFromLocalUpload', { source });
+
       store.dispatch(
         finalizeUpload(file, uploadId, source, tenant, replaceFileId),
       );

@@ -66,8 +66,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       ...uploadParams,
     };
 
-    console.log('popup', this.uploadParams);
-
     const popup = this.renderPopup();
 
     this.container = popup;
@@ -80,7 +78,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         collectionName: this.uploadParams.collection,
       })
       .then(auth => {
-        console.log('dispatch setTenant', this.uploadParams);
         this.store.dispatch(
           setTenant({
             auth,
@@ -92,7 +89,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         this.store.dispatch(getFilesInRecents());
         // TODO [MSW-466]: Fetch remote accounts only when needed
         this.store.dispatch(getConnectedRemoteAccounts());
-
         this.store.dispatch(showPopup());
       });
   }

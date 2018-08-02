@@ -32,7 +32,6 @@ export class LocalUploadComponent<
     super();
 
     this.context = context;
-    console.log('LocalUploadComponent', config.uploadParams);
     this.uploadService = UploadServiceFactory.create(
       this.context,
       config.tenantUploadParams,
@@ -53,7 +52,6 @@ export class LocalUploadComponent<
   }
 
   public setUploadParams(uploadParams: UploadParams): void {
-    console.log('setUploadParams', uploadParams);
     this.uploadService.setUploadParams(uploadParams);
   }
 

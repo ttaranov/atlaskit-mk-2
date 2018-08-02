@@ -290,7 +290,6 @@ class ContextImpl implements Context {
           }
         },
         onId: id => {
-          // console.log('onId', id);
           fileId = id;
           const key = FileStreamCache.createKey(fileId, { collectionName });
           this.fileStreamsCache.set(key, fileStream);

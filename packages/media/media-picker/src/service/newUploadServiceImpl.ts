@@ -3,8 +3,9 @@ import {
   Context,
   UploadableFile,
   MediaType,
-  FileItem,
+  FileDetails,
   getMediaTypeFromMimeType,
+  ContextFactory,
 } from '@atlaskit/media-core';
 import { MediaStore, UploadController } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
@@ -23,7 +24,6 @@ import {
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
-import { mediaPickerAuthProvider } from '@atlaskit/media-test-helpers';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
@@ -85,51 +85,58 @@ export class NewUploadServiceImpl implements UploadService {
         mimeType: file.type,
       };
       const controller = this.createUploadController();
-      // const upfrontId = new Promise<string>(resolve => {
-      const subscrition = this.context
-        .uploadFile(uploadableFile, controller)
-        .subscribe({
-          next: state => {
-            // resolve(state.id);
-
-            if (state.status === 'uploading') {
-              this.onFileProgress(cancellableFileUpload, state.progress);
-            }
-
-            if (state.status === 'processing') {
-              subscrition.unsubscribe();
-
-              this.onFileSuccess(cancellableFileUpload, state.id);
-            }
-          },
-          error: error => {
-            this.onFileError(mediaFile, 'upload_fail', error);
-          },
+      const { serviceHost, userAuthProvider } = this.context.config;
+      if (userAuthProvider) {
+        // TODO: don't create another context here, find a way to specify which provider we want to use instead
+        // We need to use the userAuth to upload this file (recents)
+        const userContext = ContextFactory.create({
+          serviceHost,
+          userAuthProvider,
+          authProvider: userAuthProvider,
         });
+        const subscrition = userContext
+          .uploadFile(uploadableFile, controller)
+          .subscribe({
+            next: state => {
+              if (state.status === 'uploading') {
+                this.onFileProgress(cancellableFileUpload, state.progress);
+              }
+
+              if (state.status === 'processing') {
+                subscrition.unsubscribe();
+
+                this.onFileSuccess(cancellableFileUpload, state.id);
+              }
+            },
+            error: error => {
+              this.onFileError(mediaFile, 'upload_fail', error);
+            },
+          });
+      }
+
       // TODO: Make this when pressing "insert"
       // TODO: move into own method
       const upfrontId = new Promise<string>(async resolve => {
         if (!this.userMediaStore) {
           return;
         }
-        // TODO: don't create here
+        const { serviceHost, authProvider } = this.context.config;
+        // TODO: don't create store here
+        // We need a non user auth store, since we want to create the empty file in the public collection
         const mediaStore = new MediaStore({
-          serviceHost: this.context.config.serviceHost,
-          authProvider: mediaPickerAuthProvider(), // TODO: we need to use a real context.config.authProvider
-          // authProvider: this.context.config.authProvider,
+          serviceHost,
+          authProvider,
         });
         const occurrenceKey = uuid.v4();
         const collection = this.tenantUploadParams.collection;
         // TODO: we need to use the tenant.uploadParams.collection
         const options = { collection, occurrenceKey };
-        // const response = await this.userMediaStore.createFile(options);
+        // We want to create an empty file in the public collection
         const response = await mediaStore.createFile(options);
         const id = response.data.id;
 
-        console.log('id upfront', collection, id);
         resolve(id);
       });
-      // });
       const mediaFile = {
         id,
         upfrontId,
@@ -229,14 +236,14 @@ export class NewUploadServiceImpl implements UploadService {
     delete this.cancellableFilesUploads[mediaFile.id];
   }
 
-  private readonly onFileSuccess = (
+  private readonly onFileSuccess = async (
     cancellableFileUpload: CancellableFileUpload,
     fileId: string,
   ) => {
     const { mediaFile } = cancellableFileUpload;
-    const collectionName = this.uploadParams.collection;
-
-    // TODO: This was never working before, and probably we don't want to do it at this point. Ask @sasha
+    // TODO: do we need to do anything with the collectionName here?
+    // const collectionName = this.uploadParams.collection;
+    // TODO: This was never working before, and probably we don't want to do this at this point. Ask @sasha
     // this.copyFileToUsersCollection(fileId, collectionName).catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
@@ -248,34 +255,17 @@ export class NewUploadServiceImpl implements UploadService {
       file: publicMediaFile,
     });
 
-    const subscription = this.context
-      .getMediaItemProvider(fileId, 'file', collectionName)
-      .observable()
-      .subscribe({
-        next: (fileItem: FileItem) => {
-          const fileDetails = fileItem.details;
-          const { processingStatus } = fileDetails;
+    // TODO: fill extra available details? should we use this.context.getFile(publicId, {collectionName}) here?
+    const details: FileDetails = {
+      id: fileId,
+    };
 
-          if (
-            processingStatus === 'succeeded' ||
-            processingStatus === 'failed'
-          ) {
-            this.emit('file-converted', {
-              file: publicMediaFile,
-              public: fileItem.details,
-            });
-            this.releaseCancellableFile(mediaFile);
-          }
-        },
-        error: this.onFileError.bind(
-          this,
-          cancellableFileUpload,
-          'metadata_fetch_fail',
-        ),
-      });
+    this.emit('file-converted', {
+      file: publicMediaFile,
+      public: details,
+    });
 
     cancellableFileUpload.cancel = () => {
-      subscription.unsubscribe();
       this.releaseCancellableFile(mediaFile);
     };
   };

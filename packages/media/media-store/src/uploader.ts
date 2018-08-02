@@ -88,10 +88,11 @@ export const uploadFile = (
     },
   );
 
-  if (callbacks && callbacks.onId) {
+  const onId = callbacks && callbacks.onId;
+  if (onId) {
     deferredEmptyFile.then(emptyFile => {
       const fileId = emptyFile.data.id;
-      callbacks.onId(fileId);
+      onId(fileId);
     });
   }
 

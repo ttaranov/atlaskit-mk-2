@@ -110,7 +110,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             identifier={{
               id,
               mediaItemType: 'file',
-              collectionName: 'mediapicker-test',
+              // collectionName: 'mediapicker-test',
               // collectionName: 'recents',
             }}
           />

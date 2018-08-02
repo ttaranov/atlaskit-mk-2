@@ -32,7 +32,7 @@ type Method = 'GET' | 'POST' | 'DELETE';
 export interface CopyFileDestination {
   readonly auth: Auth;
   readonly collection?: string;
-  readonly replaceFileId?: string;
+  readonly replaceFileId?: Promise<string>;
 }
 
 export interface GiphyImage {
@@ -291,13 +291,18 @@ export class MediaApiFetcher implements Fetcher {
     );
   }
 
-  copyFile(
+  async copyFile(
     apiUrl: string,
     sourceFile: SourceFile,
     { auth, collection, replaceFileId }: CopyFileDestination,
   ): Promise<FileDetails> {
-    const params = collection ? `?collection=${collection}` : '';
-    console.log('copyFile', { replaceFileId });
+    let params = collection ? `?collection=${collection}` : '';
+
+    if (replaceFileId) {
+      const replaceFileIdParam = `replaceFileId=${await replaceFileId}`;
+      params += params ? `&${replaceFileIdParam}` : `?${replaceFileId}`;
+    }
+
     return this.query<{ data: FileDetails }>(
       `${this.fileStoreUrl(apiUrl)}/file/copy/withToken${params}`,
       'POST',

@@ -16,7 +16,7 @@ export interface FinalizeUploadAction extends Action {
   readonly uploadId: string;
   readonly source: FinalizeUploadSource;
   readonly tenant: Tenant;
-  readonly replaceFileId?: string;
+  readonly replaceFileId?: Promise<string>;
 }
 
 export function isFinalizeUploadAction(
@@ -30,7 +30,7 @@ export function finalizeUpload(
   uploadId: string,
   source: FinalizeUploadSource,
   tenant: Tenant,
-  replaceFileId?: string,
+  replaceFileId?: Promise<string>,
 ): FinalizeUploadAction {
   return {
     type: FINALIZE_UPLOAD,

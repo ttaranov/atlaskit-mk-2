@@ -56,7 +56,7 @@ type CopyFileParams = {
   uploadId: string;
   sourceFile: SourceFile;
   tenant: Tenant;
-  replaceFileId?: string;
+  replaceFileId?: Promise<string>;
 };
 
 function copyFile({
