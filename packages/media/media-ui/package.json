@@ -24,7 +24,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/avatar": "^14.0.5",
-    "@atlaskit/avatar-group": "2.0.5",
+    "@atlaskit/avatar-group": "^2.0.5",
     "@atlaskit/badge": "^9.0.3",
     "@atlaskit/button": "^9.0.4",
     "@atlaskit/dropdown-menu": "^6.1.4",
