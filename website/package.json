@@ -34,6 +34,7 @@
     "@atlaskit/analytics-listeners": "^3.0.3",
     "@atlaskit/badge": "^9.0.3",
     "@atlaskit/button": "^9.0.4",
+    "@atlaskit/docs": "^5.0.2",
     "@atlaskit/code": "^7.0.2",
     "@atlaskit/css-reset": "^3.0.1",
     "@atlaskit/dynamic-table": "^10.0.6",
