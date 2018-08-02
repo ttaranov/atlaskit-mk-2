@@ -114,39 +114,28 @@ function testRun(
 }
 
 function setLocalClients() {
-  let launchers = {
+  const isHeadless = process.env.HEADLESS !== 'false';
+  const launchers = {
     chrome: {
       browserName: 'chrome',
-      chromeOptions: { args: ['--headless', '--disable-gpu'] },
+      chromeOptions: isHeadless
+        ? { args: ['--headless', '--disable-gpu'] }
+        : { args: [] },
     },
     firefox: {
       browserName: 'firefox',
-      'moz:firefoxOptions': { args: ['-headless'] },
+      'moz:firefoxOptions': isHeadless ? { args: ['-headless'] } : { args: [] },
     },
   };
 
-  if (process.env.HEADLESS === 'false') {
-    launchers.chrome['chromeOptions'] = { args: [] };
-    launchers.firefox['moz:firefoxOptions'] = { args: [] };
+  // Keep only chrome for watch mode
+  if (process.env.WATCH === 'true') {
+    delete launchers.firefox;
   }
 
-  if (process.env.WATCH === 'true') {
-    if (process.env.HEADLESS === 'false') {
-      launchers = { chrome: { browserName: 'chrome' } };
-    } else {
-      launchers = {
-        chrome: {
-          browserName: 'chrome',
-          chromeOptions: { args: ['--headless', '--disable-gpu'] },
-        },
-      };
-    }
-  }
-  let browserOption = [];
-  for (let key in launchers) {
-    const option = {
-      desiredCapabilities: launchers[key],
-    };
+  const browserOption = [];
+  for (const key of Object.keys(launchers)) {
+    const option = { desiredCapabilities: launchers[key] };
     browserOption.push({ driver: webdriverio.remote(option) });
   }
   return browserOption;

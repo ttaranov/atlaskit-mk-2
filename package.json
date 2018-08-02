@@ -29,6 +29,8 @@
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
     "test:browser:browserstack": "           projector ./projector testBrowserCI --browserstack",
     "test:webdriver": "                      node ./build/webdriver-runner/index.js",
+    "test:webdriver:watch": "                WATCH=true node ./build/webdriver-runner/index.js",
+    "test:webdriver:watch:chrome": "         HEADLESS=false WATCH=true node ./build/webdriver-runner/index.js",
     "test:webdriver:browserstack": "         TEST_ENV=browserstack node ./build/webdriver-runner/index.js",
     "test:webdriver:browserstack:changed": " CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn test:webdriver:browserstack",
     "test:vr": "                             node ./build/visual-regression/index.js",
