@@ -66,7 +66,7 @@ describe('InteractiveImg', () => {
   it('sets the correct width and height on the Img element', () => {
     const { el, camera, zoomLevel } = createFixture();
     const styleProp = el.find(Img).prop('style');
-    expect(styleProp).toEqual(camera.scaledImg(zoomLevel.value));
+    expect(styleProp).toMatchObject(camera.scaledImg(zoomLevel.value));
   });
 
   it('sets the correct scrollLeft and scrollTop values on the ImageWrapper', () => {
