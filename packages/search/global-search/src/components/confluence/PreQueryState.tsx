@@ -4,6 +4,7 @@ import { ScreenCounter } from './ConfluenceSearchResults';
 import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import RecentActivities from './RecentActivities';
+import { getPreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 
 export interface Props {
   query: string;
@@ -32,11 +33,12 @@ export default class PreQueryState extends React.Component<Props> {
         recentlyViewedSpaces,
       ].every(isEmpty)
     ) {
-      return (
+      return [
+        getPreQueryAnalyticsComponent(screenCounter, searchSessionId),
         <NoRecentActivity
           advancedSearchUrl={getConfluenceAdvancedSearchLink()}
-        />
-      );
+        />,
+      ];
     }
 
     return (

@@ -4,8 +4,7 @@ import { ScreenCounter } from './ConfluenceSearchResults';
 import { FormattedMessage } from 'react-intl';
 import { take } from '../SearchResultsUtil';
 import ResultGroup from '../ResultGroup';
-import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
-import { buildScreenEvent, Screen } from '../../util/analytics-util';
+import { getPreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
 
 const MAX_RECENT_PAGES = 8;
@@ -80,19 +79,7 @@ export default class RecentActivities extends React.Component<Props> {
       spacesGroup,
       peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
-      screenCounter ? (
-        <AnalyticsEventFiredOnMount
-          key="preQueryScreenEvent"
-          onEventFired={() => screenCounter.increment()}
-          payloadProvider={() =>
-            buildScreenEvent(
-              Screen.PRE_QUERY,
-              screenCounter.getCount(),
-              searchSessionId,
-            )
-          }
-        />
-      ) : null,
+      getPreQueryAnalyticsComponent(screenCounter, searchSessionId),
     ];
   }
 }
