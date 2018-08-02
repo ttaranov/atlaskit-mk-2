@@ -1,5 +1,10 @@
 # @atlaskit/avatar-group
 
+## 2.0.6
+- [patch] Update pretty-proptypes [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+- [none] Updated dependencies [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+  - @atlaskit/docs@5.0.3
+
 ## 2.0.5
 - [patch] Clean up changelog [5b5bd8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b5bd8e)
 
