@@ -37,6 +37,7 @@ export interface Props {
   advancedSearchUrl: string;
 }
 
+// TODO this needs to be more generic. in confluence its a text with a link, in jira its a text with a dropdown
 const Text = ({ url }) => (
   <TextWrapper>
     <Title>

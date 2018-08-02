@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { GlobalQuickSearch } from '../src/index';
-import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
 import styled from 'styled-components';
-import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
-
 import { AnalyticsListener } from '@atlaskit/analytics';
+import { GlobalQuickSearch } from '../src';
+import withNavigation from '../example-helpers/withNavigation';
+
+const GlobalQuickSearchInNavigation = withNavigation(GlobalQuickSearch);
 
 const ComponentPanel = styled.div`
   flex: 1;
@@ -90,16 +90,7 @@ export default class extends React.Component<any, any> {
                 channel="fabric-elements"
                 onEvent={e => this.onAnalyticsNextEvent(e)}
               >
-                <BasicNavigation
-                  searchDrawerContent={
-                    <LocaleIntlProvider>
-                      <GlobalQuickSearch
-                        cloudId="cloudId"
-                        context="confluence"
-                      />
-                    </LocaleIntlProvider>
-                  }
-                />
+                <GlobalQuickSearchInNavigation />
               </AnalyticsNextListener>
             </AnalyticsListener>
           </AnalyticsListener>

@@ -7,8 +7,8 @@ import RecentActivities from './RecentActivities';
 
 export interface Props {
   query: string;
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
+  recentObjects: Result[];
+  recentContainers: Result[];
   recentlyInteractedPeople: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
@@ -17,23 +17,20 @@ export interface Props {
 export default class PreQueryState extends React.Component<Props> {
   render() {
     const {
+      recentObjects,
+      recentContainers,
       recentlyInteractedPeople,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
       query,
       searchSessionId,
       screenCounter,
     } = this.props;
 
     if (
-      [
-        recentlyInteractedPeople,
-        recentlyViewedPages,
-        recentlyViewedSpaces,
-      ].every(isEmpty)
+      [recentObjects, recentContainers, recentlyInteractedPeople].every(isEmpty)
     ) {
       return (
         <NoRecentActivity
+          // TODO jira advanced link
           advancedSearchUrl={getConfluenceAdvancedSearchLink()}
         />
       );
@@ -42,8 +39,8 @@ export default class PreQueryState extends React.Component<Props> {
     return (
       <RecentActivities
         query={query}
-        recentlyViewedPages={recentlyViewedPages}
-        recentlyViewedSpaces={recentlyViewedSpaces}
+        recentObjects={recentObjects}
+        recentContainers={recentContainers}
         recentlyInteractedPeople={recentlyInteractedPeople}
         searchSessionId={searchSessionId}
         screenCounter={screenCounter}

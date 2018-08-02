@@ -6,16 +6,16 @@ import { take } from '../SearchResultsUtil';
 import ResultGroup from '../ResultGroup';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
-import AdvancedSearchGroup from './AdvancedSearchGroup';
+import AdvancedSearchFooter from './AdvancedSearchFooter';
 
-const MAX_RECENT_PAGES = 8;
-const MAX_SPACES = 3;
+const MAX_OBJECTS = 8;
+const MAX_CONTAINERS = 3;
 const MAX_PEOPLE = 3;
 
 export interface Props {
   query: string;
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
+  recentObjects: Result[];
+  recentContainers: Result[];
   recentlyInteractedPeople: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
@@ -25,8 +25,8 @@ export default class RecentActivities extends React.Component<Props> {
   render() {
     const {
       query,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
+      recentObjects,
+      recentContainers,
       recentlyInteractedPeople,
       searchSessionId,
       screenCounter,
@@ -38,29 +38,29 @@ export default class RecentActivities extends React.Component<Props> {
       <ResultGroup
         key="objects"
         title={
-          <FormattedMessage id="global-search.confluence.recent-pages-heading" />
+          <FormattedMessage id="global-search.jira.recent-objects-heading" />
         }
-        results={take(recentlyViewedPages, MAX_RECENT_PAGES)}
+        results={take(recentObjects, MAX_OBJECTS)}
         sectionIndex={sectionIndex}
       />
     );
 
-    if (recentlyViewedPages.length > 0) {
+    if (recentObjects.length > 0) {
       sectionIndex++;
     }
 
-    const spacesGroup = (
+    const containersGroup = (
       <ResultGroup
-        key="spaces"
+        key="containers"
         title={
-          <FormattedMessage id="global-search.confluence.recent-spaces-heading" />
+          <FormattedMessage id="global-search.jira.recent-containers-heading" />
         }
-        results={take(recentlyViewedSpaces, MAX_SPACES)}
+        results={take(recentContainers, MAX_CONTAINERS)}
         sectionIndex={sectionIndex}
       />
     );
 
-    if (recentlyViewedSpaces.length > 0) {
+    if (recentContainers.length > 0) {
       sectionIndex++;
     }
 
@@ -77,9 +77,9 @@ export default class RecentActivities extends React.Component<Props> {
 
     return [
       objectsGroup,
-      spacesGroup,
+      containersGroup,
       peopleGroup,
-      <AdvancedSearchGroup key="advanced" query={query} />,
+      <AdvancedSearchFooter key="advanced" query={query} />,
       screenCounter ? (
         <AnalyticsEventFiredOnMount
           key="preQueryScreenEvent"

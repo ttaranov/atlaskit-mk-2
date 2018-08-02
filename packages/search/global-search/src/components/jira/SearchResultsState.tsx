@@ -6,16 +6,16 @@ import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
-import AdvancedSearchGroup from './AdvancedSearchGroup';
+import AdvancedSearchFooter from './AdvancedSearchFooter';
 
-const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
-const MAX_SPACES = 3;
+const MAX_OBJECTS = 8;
+const MAX_CONTAINERS = 3;
 const MAX_PEOPLE = 3;
 
 export interface Props {
   query: string;
   objectResults: Result[];
-  spaceResults: Result[];
+  containerResults: Result[];
   peopleResults: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
@@ -26,7 +26,7 @@ export default class SearchResultsState extends React.Component<Props> {
     const {
       query,
       objectResults,
-      spaceResults,
+      containerResults,
       peopleResults,
       searchSessionId,
       screenCounter,
@@ -38,9 +38,9 @@ export default class SearchResultsState extends React.Component<Props> {
       <ResultsGroup
         key="objects"
         title={
-          <FormattedMessage id="global-search.confluence.confluence-objects-heading" />
+          <FormattedMessage id="global-search.jira.jira-objects-heading" />
         }
-        results={take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS)}
+        results={take(objectResults, MAX_OBJECTS)}
         sectionIndex={sectionIndex}
       />
     );
@@ -49,18 +49,16 @@ export default class SearchResultsState extends React.Component<Props> {
       sectionIndex++;
     }
 
-    const spacesGroup = (
+    const containersGroup = (
       <ResultsGroup
-        key="spaces"
-        title={
-          <FormattedMessage id="global-search.confluence.spaces-heading" />
-        }
-        results={take(spaceResults, MAX_SPACES)}
+        key="containers"
+        title={<FormattedMessage id="global-search.jira.conatiners-heading" />}
+        results={take(containerResults, MAX_CONTAINERS)}
         sectionIndex={sectionIndex}
       />
     );
 
-    if (spaceResults.length > 0) {
+    if (containerResults.length > 0) {
       sectionIndex++;
     }
 
@@ -75,9 +73,9 @@ export default class SearchResultsState extends React.Component<Props> {
 
     return [
       objectsGroup,
-      spacesGroup,
+      containersGroup,
       peopleGroup,
-      <AdvancedSearchGroup key="advanced" query={query} />,
+      <AdvancedSearchFooter key="advanced" query={query} />,
       screenCounter ? (
         <AnalyticsEventFiredOnMount
           key="postQueryScreenEvent"

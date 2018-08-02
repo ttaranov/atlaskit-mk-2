@@ -11,16 +11,13 @@ import {
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import JiraSearchResults, {
-  MAX_PAGES_BLOGS_ATTACHMENTS,
-  MAX_SPACES,
+  MAX_OBJECTS,
+  MAX_CONTAINERS,
   MAX_PEOPLE,
   ScreenCounter,
 } from './JiraSearchResults';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
-import {
-  redirectToConfluenceAdvancedSearch,
-  handlePromiseError,
-} from '../SearchResultsUtil';
+import { handlePromiseError } from '../SearchResultsUtil';
 import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
@@ -38,7 +35,7 @@ import performanceNow from '../../util/performance-now';
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
-  confluenceClient: ConfluenceClient;
+  jiraClient: JiraClient;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
@@ -65,11 +62,11 @@ export interface State {
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
+  recentObjects: Result[];
+  recentContainers: Result[];
   recentlyInteractedPeople: Result[];
   objectResults: Result[];
-  spaceResults: Result[];
+  containerResults: Result[];
   peopleResults: Result[];
   keepPreQueryState: boolean;
 }
@@ -101,11 +98,11 @@ export class JiraQuickSearchContainer extends React.Component<
     isError: false,
     latestSearchQuery: '',
     searchSessionId: uuid(), // unique id for search attribution
-    recentlyViewedPages: [],
-    recentlyViewedSpaces: [],
+    recentObjects: [],
+    recentContainers: [],
     recentlyInteractedPeople: [],
     objectResults: [],
-    spaceResults: [],
+    containerResults: [],
     peopleResults: [],
     keepPreQueryState: true,
   };
@@ -125,7 +122,7 @@ export class JiraQuickSearchContainer extends React.Component<
           isError: false,
           isLoading: false,
           objectResults: [],
-          spaceResults: [],
+          containerResults: [],
           peopleResults: [],
           keepPreQueryState: true,
         },
@@ -138,31 +135,16 @@ export class JiraQuickSearchContainer extends React.Component<
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
-    redirectToConfluenceAdvancedSearch(query);
+    // TODO
+    // redirectToConfluenceAdvancedSearch(query);
   };
 
-  async searchQuickNav(query: string): Promise<Result[]> {
-    const results = await this.props.confluenceClient.searchQuickNav(
-      query,
-      this.state.searchSessionId,
-    );
-    return results;
-  }
-
-  async searchCrossProductConfluence(
-    query: string,
-  ): Promise<Map<Scope, Result[]>> {
+  async searchCrossProductJira(query: string): Promise<Map<Scope, Result[]>> {
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      [
-        /*
-        TEMPORARILY DISABLED: XPSRCH-861
-        ----------------------------------
-        Scope.ConfluencePageBlogAttachment,
-        */
-        Scope.ConfluenceSpace,
-      ],
+      // TODO all the scopes
+      [Scope.JiraIssue],
     );
     return results;
   }
@@ -204,8 +186,8 @@ export class JiraQuickSearchContainer extends React.Component<
         : 0;
 
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        take(this.state.recentlyViewedPages, MAX_PAGES_BLOGS_ATTACHMENTS),
-        take(this.state.recentlyViewedSpaces, MAX_SPACES),
+        take(this.state.recentObjects, MAX_OBJECTS),
+        take(this.state.recentContainers, MAX_CONTAINERS),
         take(this.state.recentlyInteractedPeople, MAX_PEOPLE),
       );
 
@@ -240,15 +222,13 @@ export class JiraQuickSearchContainer extends React.Component<
     this.setState({
       isLoading: true,
     });
-    const quickNavPromise = this.searchQuickNav(query).catch(error => {
-      this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
-      // rethrow to fail the promise
-      throw error;
-    });
-    const confXpSearchPromise = handlePromiseError(
-      this.searchCrossProductConfluence(query),
-      new Map<Scope, Result[]>(),
-      this.handleSearchErrorAnalyticsThunk('xpsearch-confluence'),
+
+    const jiraXpSearchPromise = this.searchCrossProductJira(query).catch(
+      error => {
+        this.handleSearchErrorAnalytics(error, 'xpsearch-jira');
+        // rethrow to fail the promise
+        throw error;
+      },
     );
 
     const searchPeoplePromise = handlePromiseError(
@@ -260,23 +240,18 @@ export class JiraQuickSearchContainer extends React.Component<
     const mapPromiseToPerformanceTime = p =>
       p.then(() => performanceNow() - startTime);
 
-    const timingPromise = [
-      quickNavPromise,
-      confXpSearchPromise,
-      searchPeoplePromise,
-    ].map(mapPromiseToPerformanceTime);
+    const timingPromise = [jiraXpSearchPromise, searchPeoplePromise].map(
+      mapPromiseToPerformanceTime,
+    );
 
     try {
       const [
-        objectResults,
-        spaceResultsMap = new Map<Scope, Result[]>(),
-        peopleResults = [],
-        quickNavElapsedMs,
+        jiraResults,
+        peopleResults,
         confSearchElapsedMs,
         peopleElapsedMs,
       ] = await Promise.all([
-        quickNavPromise,
-        confXpSearchPromise,
+        jiraXpSearchPromise,
         searchPeoplePromise,
         ...timingPromise,
       ]);
@@ -285,25 +260,27 @@ export class JiraQuickSearchContainer extends React.Component<
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            objectResults,
-            spaceResults: spaceResultsMap.get(Scope.ConfluenceSpace) || [],
+            // TODO correct scopes here
+            objectResults: jiraResults.get(Scope.JiraIssue),
+            containerResults: jiraResults.get(Scope.JiraIssue),
             peopleResults,
             isError: false,
             isLoading: false,
             keepPreQueryState: false,
           },
           () => {
+            // TODO this needs to be less conf specific (quickNavElapsedMs...)
             this.fireShownPostQueryEvent(
               {
                 startTime,
                 elapsedMs,
                 confSearchElapsedMs,
                 peopleElapsedMs,
-                quickNavElapsedMs,
+                quickNavElapsedMs: 100,
               },
               buildShownEventDetails(
-                take(this.state.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
-                take(this.state.spaceResults, MAX_SPACES),
+                take(this.state.objectResults, MAX_OBJECTS),
+                take(this.state.containerResults, MAX_CONTAINERS),
                 take(this.state.peopleResults, MAX_PEOPLE),
               ),
             );
@@ -327,11 +304,11 @@ export class JiraQuickSearchContainer extends React.Component<
     });
 
     const sessionId = this.state.searchSessionId;
-    const { confluenceClient, peopleSearchClient } = this.props;
+    const { jiraClient, peopleSearchClient } = this.props;
 
     const recentActivityPromisesMap = {
-      'recent-confluence-items': confluenceClient.getRecentItems(sessionId),
-      'recent-confluence-spaces': confluenceClient.getRecentSpaces(sessionId),
+      'recent-jira-objects': jiraClient.getRecentObjects(sessionId),
+      'recent-jira-containers': jiraClient.getRecentContainers(sessionId),
       'recent-people': peopleSearchClient.getRecentPeople(),
     };
 
@@ -346,14 +323,14 @@ export class JiraQuickSearchContainer extends React.Component<
 
     try {
       const [
-        recentlyViewedPages = [],
-        recentlyViewedSpaces = [],
+        recentObjects = [],
+        recentContainers = [],
         recentlyInteractedPeople = [],
       ] = await Promise.all(recentActivityPromises);
       this.setState(
         {
-          recentlyViewedPages,
-          recentlyViewedSpaces,
+          recentObjects,
+          recentContainers,
           recentlyInteractedPeople,
           isLoading: false,
         },
@@ -388,10 +365,10 @@ export class JiraQuickSearchContainer extends React.Component<
       searchSessionId,
       isError,
       objectResults,
-      spaceResults,
+      containerResults,
       peopleResults,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
+      recentObjects,
+      recentContainers,
       recentlyInteractedPeople,
       keepPreQueryState,
     } = this.state;
@@ -403,7 +380,7 @@ export class JiraQuickSearchContainer extends React.Component<
         onSearchSubmit={this.handleSearchSubmit}
         isLoading={isLoading}
         placeholder={this.props.intl.formatMessage({
-          id: 'global-search.confluence.search-placeholder',
+          id: 'global-search.jira.search-placeholder',
         })}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
@@ -414,11 +391,11 @@ export class JiraQuickSearchContainer extends React.Component<
           query={latestSearchQuery}
           isError={isError}
           objectResults={objectResults}
-          spaceResults={spaceResults}
+          containerResults={containerResults}
           peopleResults={peopleResults}
           isLoading={isLoading}
-          recentlyViewedPages={recentlyViewedPages}
-          recentlyViewedSpaces={recentlyViewedSpaces}
+          recentObjects={recentObjects}
+          recentContainers={recentContainers}
           recentlyInteractedPeople={recentlyInteractedPeople}
           keepPreQueryState={keepPreQueryState}
           searchSessionId={searchSessionId}

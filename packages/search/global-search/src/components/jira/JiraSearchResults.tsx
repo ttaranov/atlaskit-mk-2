@@ -6,8 +6,8 @@ import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
 import SearchResults from '../SearchResults';
 
-export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
-export const MAX_SPACES = 3;
+export const MAX_OBJECTS = 8;
+export const MAX_CONTAINERS = 3;
 export const MAX_PEOPLE = 3;
 
 export interface ScreenCounter {
@@ -20,11 +20,11 @@ export interface Props {
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
+  recentObjects: Result[];
+  recentContainers: Result[];
   recentlyInteractedPeople: Result[];
   objectResults: Result[];
-  spaceResults: Result[];
+  containerResults: Result[];
   peopleResults: Result[];
   keepPreQueryState: boolean;
   searchSessionId: string;
@@ -38,11 +38,11 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
       query,
       isError,
       objectResults,
-      spaceResults,
+      containerResults,
       peopleResults,
       isLoading,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
+      recentObjects,
+      recentContainers,
       recentlyInteractedPeople,
       retrySearch,
       keepPreQueryState,
@@ -61,22 +61,22 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
         renderPreQueryStateComponent={() => (
           <PreQueryState
             query={query}
-            recentlyViewedPages={recentlyViewedPages}
-            recentlyViewedSpaces={recentlyViewedSpaces}
+            recentObjects={recentObjects}
+            recentContainers={recentContainers}
             recentlyInteractedPeople={recentlyInteractedPeople}
             searchSessionId={searchSessionId}
             screenCounter={preQueryScreenCounter}
           />
         )}
         shouldRenderNoResultsState={() =>
-          [objectResults, spaceResults, peopleResults].every(isEmpty)
+          [objectResults, containerResults, peopleResults].every(isEmpty)
         }
         renderNoResultsStateComponent={() => <NoResultsState query={query} />}
         renderSearchResultsStateComponent={() => (
           <SearchResultsState
             query={query}
             objectResults={objectResults}
-            spaceResults={spaceResults}
+            containerResults={containerResults}
             peopleResults={peopleResults}
             searchSessionId={searchSessionId}
             screenCounter={postQueryScreenCounter}
