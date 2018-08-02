@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.0.1
+- [patch] Stop editor from blowing up inside dispatchTransaction if editorView is undefined [49b0733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b0733)
+- [none] Updated dependencies [49b0733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b0733)
+
 ## 77.0.0
 
 
