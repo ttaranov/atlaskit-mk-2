@@ -1,8 +1,16 @@
-import { constrainPos, constrainScale } from '../src/constraint-util';
+import {
+  constrainPos,
+  constrainScale,
+  constrainEdges,
+} from '../src/constraint-util';
+import {
+  CONTAINER_SIZE,
+  CONTAINER_INNER_SIZE,
+  CONTAINER_PADDING,
+} from '../src/image-navigator';
 
-const CONTAINER_SIZE = 100;
-const IMAGE_WIDTH = 200;
-const IMAGE_HEIGHT = 200;
+const IMAGE_WIDTH = 400;
+const IMAGE_HEIGHT = 400;
 const SCALE = 1;
 
 describe('Constraint Spec', () => {
@@ -15,7 +23,6 @@ describe('Constraint Spec', () => {
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
-          CONTAINER_SIZE,
         );
         expect(constrainedPos.x).toBe(0);
         expect(constrainedPos.y).toBe(0);
@@ -28,7 +35,6 @@ describe('Constraint Spec', () => {
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
-          CONTAINER_SIZE,
         );
         expect(constrainedPos.x).toBe(-75);
         expect(constrainedPos.y).toBe(-75);
@@ -41,7 +47,6 @@ describe('Constraint Spec', () => {
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
-          CONTAINER_SIZE,
         );
         expect(constrainedPos.x).toBe(-100);
         expect(constrainedPos.y).toBe(-100);
@@ -56,10 +61,9 @@ describe('Constraint Spec', () => {
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
-          CONTAINER_SIZE,
         );
-        expect(constrainedPos.x).toBe(0);
-        expect(constrainedPos.y).toBe(0);
+        expect(constrainedPos.x).toBe(10);
+        expect(constrainedPos.y).toBe(10);
       });
 
       it('should return constrained coords when greater than corner position', () => {
@@ -69,10 +73,61 @@ describe('Constraint Spec', () => {
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
-          CONTAINER_SIZE,
         );
-        expect(constrainedPos.x).toBe(-100);
-        expect(constrainedPos.y).toBe(-100);
+        expect(constrainedPos.x).toBe(-105);
+        expect(constrainedPos.y).toBe(-105);
+      });
+
+      it('should constrain inner edges to inner crop area at full scale', () => {
+        const constrainedPos = constrainEdges(
+          CONTAINER_SIZE,
+          CONTAINER_SIZE,
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT,
+          SCALE,
+        );
+        expect(constrainedPos.x).toBe(CONTAINER_PADDING);
+        expect(constrainedPos.y).toBe(CONTAINER_PADDING);
+      });
+
+      it('should constrain inner edges to inner crop area at half scale', () => {
+        const constrainedPos = constrainEdges(
+          CONTAINER_SIZE,
+          CONTAINER_SIZE,
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT,
+          SCALE * 0.5,
+        );
+        expect(constrainedPos.x).toBe(CONTAINER_PADDING);
+        expect(constrainedPos.y).toBe(CONTAINER_PADDING);
+      });
+
+      it('should constrain outer edges to inner crop area at full scale', () => {
+        const constrainedPos = constrainEdges(
+          IMAGE_WIDTH * -0.5,
+          IMAGE_WIDTH * -0.5,
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT,
+          SCALE,
+        );
+        expect(constrainedPos.x).toBe(
+          (CONTAINER_INNER_SIZE - CONTAINER_PADDING) * -1,
+        );
+        expect(constrainedPos.y).toBe(
+          (CONTAINER_INNER_SIZE - CONTAINER_PADDING) * -1,
+        );
+      });
+
+      it('should constrain outer edges to inner crop area at half scale', () => {
+        const constrainedPos = constrainEdges(
+          IMAGE_WIDTH * -0.5,
+          IMAGE_WIDTH * -0.5,
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT,
+          SCALE * 0.5,
+        );
+        expect(constrainedPos.x).toBe(CONTAINER_PADDING);
+        expect(constrainedPos.y).toBe(CONTAINER_PADDING);
       });
     });
   });
@@ -86,7 +141,6 @@ describe('Scale Constraint', () => {
         SCALE,
         IMAGE_WIDTH,
         IMAGE_HEIGHT,
-        CONTAINER_SIZE,
       );
       expect(constrainedScale).toBe(1);
     });
@@ -97,7 +151,6 @@ describe('Scale Constraint', () => {
         SCALE,
         IMAGE_WIDTH,
         IMAGE_HEIGHT,
-        CONTAINER_SIZE,
       );
       expect(constrainedScale).toBe(0.5);
     });
@@ -110,7 +163,6 @@ describe('Scale Constraint', () => {
         0.5,
         IMAGE_WIDTH,
         IMAGE_HEIGHT,
-        CONTAINER_SIZE,
       );
       expect(constrainedScale).toBe(0.5);
     });

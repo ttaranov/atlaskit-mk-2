@@ -12,7 +12,6 @@ const DEFAULT_PROPS = {
   onMount: noop,
   isLoading: false,
   searchSessionId: 'abc',
-  query: '',
   children: [],
 };
 

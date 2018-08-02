@@ -12,13 +12,12 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   // ![something](link) should convert to an image
   const imageRule = createInputRule(
-    /!\[(\S+)\]\((\S+)\)$/,
+    /!\[(.*)\]\((\S+)\)$/,
     (state, match, start, end) => {
       const { schema } = state;
       const attrs = {
         src: match[2],
         alt: match[1],
-        title: match[1],
       };
 
       const node = createMediaNode(attrs.src, schema);

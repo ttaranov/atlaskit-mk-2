@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EditorView } from 'prosemirror-view';
+import { ReactElement, createElement } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import { analyticsService as analytics } from '../../../../analytics';
@@ -12,25 +12,22 @@ import {
   MenuWrapper,
   ExpandIconWrapper,
 } from '../../../../ui/styles';
-import { BlockType } from '../../types';
 import { BlockTypeState } from '../../pm-plugins/main';
+import { BlockType } from '../../types';
 
 export interface Props {
   isDisabled?: boolean;
   isSmall?: boolean;
   isReducedSpacing?: boolean;
-  editorView: EditorView;
   pluginState: BlockTypeState;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  setBlockType: (string) => void;
 }
 
 export interface State {
   active: boolean;
-  availableBlockTypes: BlockType[];
-  currentBlockType: BlockType;
-  blockTypesDisabled: boolean;
 }
 
 export default class ToolbarBlockType extends React.PureComponent<
@@ -39,42 +36,31 @@ export default class ToolbarBlockType extends React.PureComponent<
 > {
   constructor(props: Props) {
     super(props);
-    const { pluginState } = props;
 
     this.state = {
       active: false,
-      availableBlockTypes: pluginState.availableBlockTypes,
-      currentBlockType: pluginState.currentBlockType,
-      blockTypesDisabled: pluginState.blockTypesDisabled,
     };
   }
 
-  componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-  }
-
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-  }
-
-  private onOpenChange = (attrs: { isOpen: boolean }) => {
+  private onOpenChange = (attrs: any) => {
     this.setState({
       active: attrs.isOpen,
     });
   };
 
   render() {
-    const {
-      active,
-      currentBlockType,
-      blockTypesDisabled,
-      availableBlockTypes,
-    } = this.state;
+    const { active } = this.state;
     const {
       popupsMountPoint,
       popupsBoundariesElement,
       popupsScrollableElement,
       isSmall,
+      isReducedSpacing,
+      pluginState: {
+        currentBlockType,
+        blockTypesDisabled,
+        availableBlockTypes,
+      },
     } = this.props;
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
@@ -82,7 +68,7 @@ export default class ToolbarBlockType extends React.PureComponent<
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing="none"
+        spacing={isReducedSpacing ? 'none' : 'default'}
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
@@ -136,12 +122,13 @@ export default class ToolbarBlockType extends React.PureComponent<
   };
 
   private createItems = () => {
-    const { currentBlockType, availableBlockTypes } = this.state;
+    const { currentBlockType, availableBlockTypes } = this.props.pluginState;
     const items = availableBlockTypes.reduce(
       (acc, blockType, blockTypeNo) => {
         acc.push({
-          content: blockType.title,
+          content: createElement(blockType.tagName || 'p', {}, blockType.title),
           value: blockType,
+          key: `${blockType}-${blockTypeNo}`,
           // ED-2853, hiding tooltips as shortcuts are not working atm.
           // tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
           // tooltipPosition: 'right',
@@ -150,7 +137,8 @@ export default class ToolbarBlockType extends React.PureComponent<
         return acc;
       },
       [] as Array<{
-        content: string;
+        content: ReactElement<any>;
+        key: string;
         value: BlockType;
         isActive: boolean;
       }>,
@@ -162,23 +150,11 @@ export default class ToolbarBlockType extends React.PureComponent<
     ];
   };
 
-  private handlePluginStateChange = (pluginState: BlockTypeState) => {
-    this.setState({
-      active: this.state.active,
-      availableBlockTypes: pluginState.availableBlockTypes,
-      currentBlockType: pluginState.currentBlockType,
-      blockTypesDisabled: pluginState.blockTypesDisabled,
-    });
-  };
-
   private handleSelectBlockType = ({ item }) => {
     const blockType = item.value;
-    const { availableBlockTypes } = this.state;
-    this.props.pluginState.setBlockType(blockType.name, this.props.editorView);
+    this.props.setBlockType(blockType.name);
     this.setState({
       active: false,
-      availableBlockTypes,
-      currentBlockType: blockType,
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);

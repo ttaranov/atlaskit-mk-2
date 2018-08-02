@@ -11,7 +11,7 @@ import { PeekToggleItem } from '../../src';
 
 export const globalNavPrimaryItems = [
   { key: 'jira', icon: JiraIcon, label: 'Jira' },
-  { key: 'peek-toggle', component: PeekToggleItem },
+  { key: 'peek-toggle', component: PeekToggleItem, icon: null },
   { key: 'search', icon: SearchIcon },
   { key: 'create', icon: AddIcon },
 ];

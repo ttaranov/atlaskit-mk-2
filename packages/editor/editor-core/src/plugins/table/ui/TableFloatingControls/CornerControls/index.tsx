@@ -14,7 +14,7 @@ export interface Props {
   editorView: EditorView;
   selection?: Selection;
   tableRef: HTMLElement;
-  resetHoverSelection: () => void;
+  clearHoverSelection: () => void;
   isTableInDanger?: boolean;
   isHeaderColumnEnabled?: boolean;
   isHeaderRowEnabled?: boolean;
@@ -43,7 +43,7 @@ export default class CornerControls extends Component<Props, any> {
         <CornerButton
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
-          onMouseOut={this.props.resetHoverSelection}
+          onMouseOut={this.props.clearHoverSelection}
           className={isTableInDanger ? 'danger' : ''}
         />
         {!isHeaderColumnEnabled &&

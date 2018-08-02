@@ -54,6 +54,7 @@ export const codeBlockStyles = css`
       code {
         display: inline-block;
         min-width: 100%;
+        tab-size: 4;
       }
     }
 

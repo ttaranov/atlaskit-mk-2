@@ -1,3 +1,5 @@
+import { QuickInsertItem } from './types';
+
 export function distance(str1, str2) {
   const lowerStr2 = str2.toLowerCase().replace(/\s/g, '');
   return str1
@@ -27,22 +29,39 @@ export function distance(str1, str2) {
     ).dist;
 }
 
-export function find(query, items, extractSearchString = item => item) {
+export function find(query, items) {
+  const getItemSearchStrings = (item: QuickInsertItem) =>
+    item.keywords ? [item.title].concat(item.keywords) : [item.title];
+
   const itemsWithDistances = items
     .sort((a, b) => {
-      const aStr = extractSearchString(a);
-      const bStr = extractSearchString(b);
-      return aStr > bStr ? 1 : aStr < bStr ? -1 : 0;
+      const aPriority = a.priority || Number.POSITIVE_INFINITY;
+      const bPriority = b.priority || Number.POSITIVE_INFINITY;
+      const priorityDiff = bPriority - aPriority;
+      return priorityDiff
+        ? priorityDiff
+        : a.title > b.title
+          ? -1
+          : a.title < b.title
+            ? 1
+            : 0;
     })
     .map(item => {
-      return {
-        item,
-        dist: distance(query, extractSearchString(item)),
-      };
+      const dist = getItemSearchStrings(item).reduce((acc, keyword) => {
+        const interimDist = distance(query, keyword);
+        return interimDist < acc ? interimDist : acc;
+      }, Infinity);
+
+      return { item, dist };
     });
 
-  return itemsWithDistances
+  const res = itemsWithDistances
     .filter(item => item.dist !== Infinity)
-    .sort((a, b) => (a.dist > b.dist ? 1 : a.dist < b.dist ? -1 : 0))
-    .map(item => item.item);
+    .sort((a, b) => {
+      const aPriority = a.item.priority || Number.POSITIVE_INFINITY;
+      const bPriority = b.item.priority || Number.POSITIVE_INFINITY;
+      return a.dist > b.dist ? 1 : a.dist < b.dist ? -1 : aPriority - bPriority;
+    });
+
+  return res.map(item => item.item);
 }

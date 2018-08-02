@@ -1,5 +1,34 @@
 # @atlaskit/emoji
 
+## 38.0.5
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/field-base@11.0.2
+
+## 38.0.4
+- [patch] FS-2111 Code review feedback [cf930e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf930e3)
+- [patch] Fix emoji picker focus issue for IE11 [ce6eb48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce6eb48)
+- [none] Updated dependencies [cf930e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf930e3)
+- [none] Updated dependencies [ce6eb48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce6eb48)
+
+## 38.0.3
+- [patch] FS-2819 fix typechecking of target element [8edc3a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8edc3a2)
+- [none] Updated dependencies [8edc3a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8edc3a2)
+
+## 38.0.2
+- [patch] FS-2819 use internal version of closest [1cd9438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd9438)
+- [none] Updated dependencies [1cd9438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd9438)
+
 ## 38.0.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

@@ -9,6 +9,7 @@ import type { GlobalItemProps } from './types';
 
 export default class GlobalItem extends PureComponent<GlobalItemProps> {
   static defaultProps = {
+    label: '',
     size: 'large',
     styles: styleReducerNoOp,
   };

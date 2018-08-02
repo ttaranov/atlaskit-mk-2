@@ -1,5 +1,48 @@
 # @atlaskit/media-ui
 
+## 5.0.3
+- [patch] Updated dependencies [5b5bd8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b5bd8e)
+  - @atlaskit/avatar-group@2.0.5
+
+## 5.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/page@8.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/badge@9.0.3
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/avatar-group@2.0.4
+  - @atlaskit/avatar@14.0.5
+
+## 5.0.1
+- [patch] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/page@8.0.1
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/lozenge@6.1.2
+  - @atlaskit/badge@9.0.2
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/dropdown-menu@6.1.3
+  - @atlaskit/avatar-group@2.0.3
+  - @atlaskit/avatar@14.0.4
+
+## 5.0.0
+- [major] Implemented smart cards and common views for other cards [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+- [major] Implemented smart cards and common UI elements [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+- [major] Implement smart card [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+- [major] Smart cards implementation and moved UI elements into media-ui package [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+- [major] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-ui@5.0.0
+
 ## 4.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

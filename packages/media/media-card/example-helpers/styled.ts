@@ -90,3 +90,35 @@ export const CardPreviewWrapper: ComponentClass<
 > = styled.div`
   flex: 1;
 `;
+
+export const CardTitle = styled.div`
+  text-decoration: underline;
+  padding-bottom: 10px;
+`;
+
+export const CardWrapper = styled.div`
+  border: 1px solid;
+  padding: 10px;
+  margin: 5px;
+  flex-direction: column;
+  width: 310px;
+  height: 280px;
+  overflow: auto;
+  display: inline-block;
+`;
+
+export const CardFlowHeader = styled.div`
+  border-bottom: 1px solid;
+  margin-bottom: 10px;
+  padding: 10px 0;
+`;
+
+export const CardsWrapper = styled.div``;
+
+export const CardState = styled.div`
+  margin-top: 10px;
+
+  pre {
+    font-size: 11px;
+  }
+`;

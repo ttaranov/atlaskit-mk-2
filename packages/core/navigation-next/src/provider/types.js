@@ -2,15 +2,18 @@
 
 import type { Element } from 'react';
 
-import type { InitialUIStateShape, UIStateCache } from '../ui-state/types';
+import type {
+  InitialUIControllerShape,
+  UIControllerCache,
+} from '../ui-controller/types';
 
 /**
  * NavigationProvider
  */
 export type NavigationProviderProps = {
   children: Element<*>,
-  cache: UIStateCache | false,
+  cache: UIControllerCache | false,
   initialPeekViewId: ?string,
-  initialUIState?: InitialUIStateShape,
+  initialUIController?: InitialUIControllerShape,
   isDebugEnabled: boolean,
 };

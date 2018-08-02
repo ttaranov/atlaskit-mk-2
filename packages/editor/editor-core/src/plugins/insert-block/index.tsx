@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { WithProviders } from '@atlaskit/editor-common';
-import {
-  stateKey as blockTypeStateKey,
-  BlockTypeState,
-} from '../block-type/pm-plugins/main';
+import { pluginKey as blockTypeStateKey } from '../block-type/pm-plugins/main';
 import { stateKey as mediaStateKey } from '../media/pm-plugins/main';
-import { hyperlinkPluginKey } from '../hyperlink';
+import { stateKey as hyperlinkPluginKey } from '../hyperlink/pm-plugins/main';
 import { mentionPluginKey as mentionStateKey } from '../mentions/pm-plugins/main';
 import { pluginKey as tablesStateKey } from '../table/pm-plugins/main';
 import { stateKey as imageUploadStateKey } from '../image-upload/pm-plugins/main';
@@ -22,6 +19,7 @@ import { emojiPluginKey } from '../emoji/pm-plugins/main';
 import WithPluginState from '../../ui/WithPluginState';
 import { ToolbarSize } from '../../ui/Toolbar';
 import ToolbarInsertBlock from './ui/ToolbarInsertBlock';
+import { insertBlockType } from '../block-type/commands';
 
 const toolbarSizeToButtons = toolbarSize => {
   switch (toolbarSize) {
@@ -76,7 +74,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
             layoutState: layoutStateKey,
           }}
           render={({
-            blockTypeState = {} as BlockTypeState,
+            blockTypeState,
             mediaState,
             mentionsState,
             tablesState,
@@ -119,15 +117,14 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               linkSupported={!!hyperlinkState}
               linkDisabled={
                 !hyperlinkState ||
-                !hyperlinkState.linkable ||
-                hyperlinkState.active
+                !hyperlinkState.canInsertLink ||
+                hyperlinkState.activeLinkMark
               }
-              showLinkPanel={hyperlinkState && hyperlinkState.showLinkPanel}
               emojiDisabled={!emojiState || !emojiState.enabled}
               insertEmoji={emojiState && emojiState.insertEmoji}
               emojiProvider={providers.emojiProvider}
               horizontalRuleEnabled={options.horizontalRuleEnabled}
-              onInsertBlockType={blockTypeState.insertBlockType}
+              onInsertBlockType={insertBlockType}
               onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
               macroProvider={macroState.macroProvider}
               popupsMountPoint={popupsMountPoint}

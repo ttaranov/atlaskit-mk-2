@@ -38,6 +38,20 @@ describe('inputrules', () => {
       );
     });
 
+    it('should convert `![](url)` to image', () => {
+      const trackEvent = jest.fn();
+      const { editorView, sel } = editor(doc(p('{<>}')), trackEvent);
+
+      insertText(editorView, '![](url)', sel);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(), mediaSingle()(media({ type: 'external', url: 'url' })()), p()),
+      );
+
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.image.autoformatting',
+      );
+    });
+
     it('should not convert `![text](url)` to image inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 

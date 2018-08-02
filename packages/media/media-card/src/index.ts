@@ -17,8 +17,10 @@ import { CardAction } from './actions';
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
 export * from './root/cardView';
+export * from './root/domain';
 export * from './list';
 export * from './actions';
+export { isUrlPreviewIdentifier } from './utils/identifier';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
 export {
   AppCardView,

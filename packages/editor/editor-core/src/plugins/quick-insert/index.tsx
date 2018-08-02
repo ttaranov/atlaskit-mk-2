@@ -5,16 +5,13 @@ import { EditorPlugin, Command } from '../../types';
 import { QuickInsertItem, QuickInsertProvider } from './types';
 import { find } from './search';
 
-const getItemSearchString = (item: QuickInsertItem) =>
-  `${item.title} ${(item.keywords || []).join(' ')}`;
-
 const quickInsertPlugin: EditorPlugin = {
   name: 'quickInsert',
 
   pmPlugins(quickInsert: Array<Array<QuickInsertItem>>) {
     return [
       {
-        rank: 500, // It's important that this plugin is above TypeAheadPlugin
+        name: 'quickInsert', // It's important that this plugin is above TypeAheadPlugin
         plugin: ({ providerFactory }) =>
           quickInsertPluginFactory(quickInsert, providerFactory),
       },
@@ -28,18 +25,11 @@ const quickInsertPlugin: EditorPlugin = {
         analyticsService.trackEvent('atlassian.editor.quickinsert.query');
 
         const quickInsertState = pluginKey.getState(state);
-        const defaultSearch = () =>
-          find(query, quickInsertState.items, getItemSearchString);
+        const defaultSearch = () => find(query, quickInsertState.items);
 
         if (quickInsertState.provider) {
           return quickInsertState.provider
-            .then(items =>
-              find(
-                query,
-                [...quickInsertState.items, ...items],
-                getItemSearchString,
-              ),
-            )
+            .then(items => find(query, [...quickInsertState.items, ...items]))
             .catch(err => {
               // tslint:disable-next-line:no-console
               console.error(err);

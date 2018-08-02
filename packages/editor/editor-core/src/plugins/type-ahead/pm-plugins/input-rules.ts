@@ -19,7 +19,7 @@ export function inputRulePlugin(
   }
 
   const regex = new RegExp(
-    `(^|[\\s\(${leafNodeReplacementCharacter}])(${triggers})$`,
+    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${triggers})$`,
   );
 
   const typeAheadInputRule = createInputRule(regex, (state, match, start, end):

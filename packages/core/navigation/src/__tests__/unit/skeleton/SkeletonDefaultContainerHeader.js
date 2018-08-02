@@ -13,3 +13,9 @@ test('shows a compact version when collapsed', () => {
     shallow(<SkeletonDefaultContainerHeader isCollapsed />),
   ).toMatchSnapshot();
 });
+
+test('shows a version with hidden avatar', () => {
+  expect(
+    shallow(<SkeletonDefaultContainerHeader isAvatarHidden />),
+  ).toMatchSnapshot();
+});

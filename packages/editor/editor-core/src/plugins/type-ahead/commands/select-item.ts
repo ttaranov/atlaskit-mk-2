@@ -73,8 +73,7 @@ export const selectItem = (
         .replaceWith(start, end, Fragment.empty);
 
       if (!maybeNode) {
-        dispatch(tr);
-        return true;
+        return tr;
       }
 
       let node;
@@ -88,8 +87,7 @@ export const selectItem = (
       } catch (e) {
         // tslint:disable-next-line:no-console
         console.error(e);
-        dispatch(tr);
-        return true;
+        return tr;
       }
 
       if (node.isText) {
@@ -124,18 +122,20 @@ export const selectItem = (
         );
       }
 
-      dispatch(tr);
-      return true;
+      return tr;
     };
 
     analyticsService.trackEvent('atlassian.editor.typeahead.select', {
       item: item.title,
     });
 
-    if (handler.selectItem(state, item, insert) === false) {
+    const tr = handler.selectItem(state, item, insert);
+
+    if (tr === false) {
       return insertFallbackCommand(start, end)(state, dispatch);
     }
 
+    dispatch(tr);
     return true;
   });
 };

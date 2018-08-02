@@ -58,6 +58,8 @@ type Props = {
   hideIcon?: boolean,
   /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat?: string,
+  datePickerProps: {},
+  timePickerProps: {},
   /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
   datePickerSelectProps: {},
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
@@ -157,6 +159,8 @@ class DateTimePicker extends Component<Props, State> {
     timeIsEditable: false,
     isInvalid: false,
     hideIcon: false,
+    datePickerProps: {},
+    timePickerProps: {},
     datePickerSelectProps: {},
     timePickerSelectProps: {},
     times: defaultTimes,
@@ -238,7 +242,9 @@ class DateTimePicker extends Component<Props, State> {
       name,
       timeIsEditable,
       dateFormat,
+      datePickerProps,
       datePickerSelectProps,
+      timePickerProps,
       timePickerSelectProps,
       times,
       timeFormat,
@@ -289,6 +295,7 @@ class DateTimePicker extends Component<Props, State> {
             onChange={this.onDateChange}
             selectProps={mergedDatePickerSelectProps}
             value={dateValue}
+            {...datePickerProps}
           />
         </FlexItem>
         <FlexItem>
@@ -301,6 +308,7 @@ class DateTimePicker extends Component<Props, State> {
             timeIsEditable={timeIsEditable}
             times={times}
             timeFormat={timeFormat}
+            {...timePickerProps}
           />
         </FlexItem>
       </Flex>

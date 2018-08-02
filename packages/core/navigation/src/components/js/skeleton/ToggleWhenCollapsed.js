@@ -2,7 +2,7 @@
 import { type Node } from 'react';
 
 export type Props = {
-  isCollapsed: boolean,
+  isCollapsed?: boolean,
   children?: Node,
 };
 

@@ -2,6 +2,7 @@
 
 import type { ProductTheme } from '../../theme/types';
 
-export type SeparatorProps = {
+export type ConnectedSeparatorProps = {};
+export type SeparatorProps = SeparatorProps & {
   theme: ProductTheme,
 };

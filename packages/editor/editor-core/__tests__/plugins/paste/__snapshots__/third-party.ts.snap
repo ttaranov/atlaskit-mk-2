@@ -985,7 +985,16 @@ Object {
     Object {
       "content": Array [
         Object {
-          "text": "Bold                 ",
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
+          "text": "Bold",
+          "type": "text",
+        },
+        Object {
+          "text": "                 ",
           "type": "text",
         },
         Object {

@@ -47,11 +47,14 @@ const helpDialog: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 2200,
+        name: 'helpDialog',
         plugin: ({ dispatch, props: { legacyImageUploadProvider } }) =>
           createPlugin(dispatch, !!legacyImageUploadProvider),
       },
-      { rank: 2210, plugin: ({ schema }) => keymapPlugin(schema) },
+      {
+        name: 'helpDialogKeymap',
+        plugin: ({ schema }) => keymapPlugin(schema),
+      },
     ];
   },
 

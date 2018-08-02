@@ -7,10 +7,13 @@ import type {
   TreeItemData,
   ItemId,
   TreeItem,
+  TreePosition,
 } from '../types';
-import { oneOf } from './handy';
 
-export type TreeMutation = {|
+import { getParentPath, getIndexAmongSiblings } from './path';
+
+export type TreeItemMutation = {|
+  id?: ItemId,
   children?: Array<ItemId>,
   hasChildren?: boolean,
   isExpanded?: boolean,
@@ -37,18 +40,23 @@ export const flattenTree = (tree: TreeData, path: Path = []): FlattenedItem[] =>
       }, [])
     : [];
 
-const createFlattenedItem = function(item: TreeItem, currentPath: Path) {
+/*
+  Constructs a new FlattenedItem
+ */
+const createFlattenedItem = (
+  item: TreeItem,
+  currentPath: Path,
+): FlattenedItem => {
   return {
     item,
     path: currentPath,
   };
 };
 
-const flattenChildren = function(
-  tree: TreeData,
-  item: TreeItem,
-  currentPath: Path,
-) {
+/*
+  Flatten the children of the given subtree
+*/
+const flattenChildren = (tree: TreeData, item: TreeItem, currentPath: Path) => {
   return item.isExpanded
     ? flattenTree({ rootId: item.id, items: tree.items }, currentPath)
     : [];
@@ -60,7 +68,7 @@ const flattenChildren = function(
 export const mutateTree = (
   tree: TreeData,
   itemId: ItemId,
-  mutation: TreeMutation,
+  mutation: TreeItemMutation,
 ): TreeData => {
   const itemToChange = tree.items[itemId];
   if (!itemToChange) {
@@ -76,26 +84,31 @@ export const mutateTree = (
       ...tree.items,
       // overwriting only the item being changed
       [itemId]: {
-        id: itemId,
-        isExpanded: oneOf(mutation.isExpanded, itemToChange.isExpanded),
-        hasChildren: oneOf(mutation.hasChildren, itemToChange.hasChildren),
-        children:
-          typeof mutation.children !== 'undefined'
-            ? mutation.children
-            : itemToChange.children,
-        isChildrenLoading: oneOf(
-          mutation.isChildrenLoading,
-          itemToChange.isChildrenLoading,
-        ),
-        data: oneOf(mutation.data, itemToChange.data),
+        ...itemToChange,
+        ...mutation,
       },
     },
   };
 };
 
-export const isSamePath = (a: Path, b: Path): boolean => {
-  if (a === b) {
-    return true;
+export const getItem = (tree: TreeData, path: Path): TreeItem => {
+  let cursor: TreeItem = tree.items[tree.rootId];
+  for (const i: number of path) {
+    cursor = tree.items[cursor.children[i]];
   }
-  return a.length === b.length && a.every((v, i) => v === b[i]);
+  return cursor;
+};
+
+export const getParent = (tree: TreeData, path: Path): TreeItem => {
+  const parentPath: Path = getParentPath(path);
+  return getItem(tree, parentPath);
+};
+
+export const getTreePosition = (tree: TreeData, path: Path): TreePosition => {
+  const parent: TreeItem = getParent(tree, path);
+  const index: number = getIndexAmongSiblings(path);
+  return {
+    parentId: parent.id,
+    index,
+  };
 };

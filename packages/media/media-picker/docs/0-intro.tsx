@@ -148,7 +148,7 @@ export default md`
 
   Allows user to drag & drop files into the page. Has a design first seen in [https://enso.me/](Enso).
 
-  ![alt text](./dropzone.png "Dropzone")
+  ![alt text](./dropzone.png 'Dropzone')
 
   #### Usage
 
@@ -239,7 +239,7 @@ export default md`
 
   Opens native Operating System file browser window.
 
-  ![alt text](./browser.png "Browser")
+  ![alt text](./browser.png 'Browser')
 
   #### Usage
 
@@ -321,9 +321,9 @@ export default md`
 
   Lets user pick files from their local computer or cloud storage.
 
-  The popup component requires userAuthProvider (in addition to the authProvider because it displays files from and uploads files to the user's recent file collection). You will be need to cache this token returned by userAuthProvider because the popup will call this provider on every request to the media api concerning the users collection and cloud accounts. You cannot use the popup component if you can't obtain a token for the user's collection - use the Browser component instead.
+  The popup component requires userAuthProvider (in addition to the authProvider because it displays files from and uploads files to the user's recent file collection). You will be need to cache this token returned by userAuthProvider because the popup will call this provider on every request to the media api concerning the users collection and cloud accounts. You cannot use the popup component if you can't obtain a token for the user's collection - use the Browser component instead. It can be optionally passed Legacy Context from any "parent" element to make analytics-next events bubble up to listeners.
 
-  ![alt text](./popup.png "Popup")
+  ![alt text](./popup.png 'Popup')
 
   #### Usage
 
@@ -344,6 +344,9 @@ export default md`
         clientId: 'your-user-client-id',
         token: 'your-user-generated-token',
       }),
+    proxyReactContext?: {
+      getAtlaskitAnalyticsEventHandlers: () => {}
+    }
   };
 
   const popup = MediaPicker('popup', mpConfig, popupConfig);

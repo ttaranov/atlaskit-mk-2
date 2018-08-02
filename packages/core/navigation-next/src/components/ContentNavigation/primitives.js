@@ -12,7 +12,7 @@ import {
   transitionTimingFunction,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
-import { light, withTheme } from '../../theme';
+import { light, withContentTheme } from '../../theme';
 
 const animationFade = state => {
   const defaultStyle = {
@@ -52,14 +52,13 @@ const ScrollProvider = (props: any) => (
 /**
  * ProductNavigation
  */
-const ProductNavigationPrimitive = withTheme({
-  mode: light,
-  context: 'product',
-})(({ children, theme = { mode: light } }) => (
-  <div css={theme.mode.contentNav().product}>
-    <ScrollProvider>{children}</ScrollProvider>
-  </div>
-));
+const ProductNavigationPrimitive = withContentTheme(
+  ({ children, theme = { mode: light } }) => (
+    <div css={theme.mode.contentNav().product}>
+      <ScrollProvider>{children}</ScrollProvider>
+    </div>
+  ),
+);
 
 type ProductNavigationProps = { children: Node };
 
@@ -79,37 +78,36 @@ const slideIn = keyframes`
 /**
  * ContainerNavigation
  */
-const ContainerNavigationPrimitive = withTheme({
-  mode: light,
-  context: 'container',
-})(({ children, isEntering, isExiting, isPeekHinting, isPeeking, theme }) => {
-  let animationName;
-  if (isEntering) animationName = slideIn;
+const ContainerNavigationPrimitive = withContentTheme(
+  ({ children, isEntering, isExiting, isPeekHinting, isPeeking, theme }) => {
+    let animationName;
+    if (isEntering) animationName = slideIn;
 
-  let transform = null;
-  if (isPeekHinting) transform = 'translateX(16px)';
-  if (isPeeking) transform = 'translateX(calc(100% - 32px))';
-  if (isExiting) transform = 'translateX(100%)';
+    let transform = null;
+    if (isPeekHinting) transform = 'translateX(16px)';
+    if (isPeeking) transform = 'translateX(calc(100% - 32px))';
+    if (isExiting) transform = 'translateX(100%)';
 
-  return (
-    <div
-      css={{
-        ...theme.mode.contentNav().container,
-        animationName,
-        animationDuration: transitionDuration,
-        animationFillMode: 'forwards',
-        animationTimingFunction: transitionTimingFunction,
-        transitionProperty: 'boxShadow, transform',
-        transitionDuration,
-        transitionTimingFunction,
-        transform,
-      }}
-    >
-      <Shadow isBold={isPeeking} isOverDarkBg />
-      <ScrollProvider>{children}</ScrollProvider>
-    </div>
-  );
-});
+    return (
+      <div
+        css={{
+          ...theme.mode.contentNav().container,
+          animationName,
+          animationDuration: transitionDuration,
+          animationFillMode: 'forwards',
+          animationTimingFunction: transitionTimingFunction,
+          transitionProperty: 'boxShadow, transform',
+          transitionDuration,
+          transitionTimingFunction,
+          transform,
+        }}
+      >
+        <Shadow isBold={isPeeking} isOverDarkBg />
+        <ScrollProvider>{children}</ScrollProvider>
+      </div>
+    );
+  },
+);
 
 type ContainerNavigationProps = {
   children: Node,

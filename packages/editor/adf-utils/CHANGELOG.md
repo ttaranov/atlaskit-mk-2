@@ -1,5 +1,16 @@
 # @atlaskit/adf-utils
 
+## 2.0.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/docs@5.0.2
+
+## 2.0.2
+- [patch] Include type files to release [02cae82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02cae82)
+
+## 2.0.1
+- [patch] Fix types for top level imports [61cd06b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61cd06b)
+
 ## 2.0.0
 
 
