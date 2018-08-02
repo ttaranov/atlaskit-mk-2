@@ -15,10 +15,10 @@ import {
   wideImageIdentifier,
   defaultCollectionName,
 } from '../example-helpers';
-import { MediaViewer } from '../src/index';
-import { videoFileId } from '@atlaskit/media-test-helpers/index';
+import { MediaViewer } from '../src';
+import { videoFileId } from '@atlaskit/media-test-helpers';
 import { MediaViewerItem } from '../src';
-import { MediaViewerDataSource } from '../index';
+import { MediaViewerDataSource } from '..';
 
 const context = createStorybookContext();
 
@@ -86,13 +86,14 @@ export default class Example extends React.Component<{}, State> {
   };
 
   private openCollection = () => {
-    if (!this.state.firstCollectionItem) {
+    const { firstCollectionItem } = this.state;
+    if (!firstCollectionItem) {
       return;
     }
     this.setState({
       selected: {
         dataSource: { collectionName: defaultCollectionName },
-        identifier: this.state.firstCollectionItem,
+        identifier: firstCollectionItem,
       },
     });
   };

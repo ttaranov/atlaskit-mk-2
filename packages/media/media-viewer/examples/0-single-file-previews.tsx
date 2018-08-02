@@ -19,7 +19,7 @@ import {
   wideImageItem,
   defaultCollectionName,
 } from '../example-helpers';
-import { MediaViewer, MediaViewerItem } from '../src/index';
+import { MediaViewer, MediaViewerItem } from '../src';
 
 const context = createStorybookContext();
 

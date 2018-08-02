@@ -13,10 +13,10 @@ import {
   videoProcessingFailedId,
   wideImageFileId,
   genericLinkId,
-} from '@atlaskit/media-test-helpers/index';
+} from '@atlaskit/media-test-helpers';
 import { MediaViewerItem } from '../src';
 
-export { defaultCollectionName } from '@atlaskit/media-test-helpers/index';
+export { defaultCollectionName } from '@atlaskit/media-test-helpers';
 
 export const imageIdentifier: MediaViewerItem = {
   type: 'file',
