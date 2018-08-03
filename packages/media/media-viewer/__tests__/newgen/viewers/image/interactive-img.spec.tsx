@@ -87,6 +87,35 @@ describe('InteractiveImg', () => {
     expect(imgWrapper.scrollLeft).toEqual(expectedOffset.x);
     expect(imgWrapper.scrollTop).toEqual(expectedOffset.y);
   });
+
+  it('resizes a fitted image when the window is resized', () => {
+    const { el, camera, zoomLevel } = createFixture();
+    const oldZoomLevel = new ZoomLevel(camera.scaleDownToFit);
+    el.setState({ zoomLevel: oldZoomLevel });
+
+    const newViewport = new Rectangle(100, 100);
+    const newCamera = camera.resizedViewport(newViewport);
+    const newWrapper = {
+      clientWidth: newViewport.width,
+      clientHeight: newViewport.height,
+    };
+
+    el.instance()['wrapper'] = newWrapper;
+    window.dispatchEvent(new CustomEvent('resize'));
+
+    const expectedZoomLevel = zoomLevelAfterResize(
+      newCamera,
+      camera,
+      oldZoomLevel,
+    );
+
+    const {
+      zoomLevel: actualZoomLevel,
+      camera: { data: actualCamera },
+    } = el.state();
+    expect(actualCamera.viewport).toEqual(newViewport);
+    expect(actualZoomLevel.value).toEqual(expectedZoomLevel.value);
+  });
 });
 
 describe('zoomLevelAfterResize', () => {
