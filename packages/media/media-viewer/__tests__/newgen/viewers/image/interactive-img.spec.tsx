@@ -89,7 +89,7 @@ describe('InteractiveImg', () => {
   });
 
   it('resizes a fitted image when the window is resized', () => {
-    const { el, camera, zoomLevel } = createFixture();
+    const { el, camera } = createFixture();
     const oldZoomLevel = new ZoomLevel(camera.scaleDownToFit);
     el.setState({ zoomLevel: oldZoomLevel });
 
@@ -100,7 +100,7 @@ describe('InteractiveImg', () => {
       clientHeight: newViewport.height,
     };
 
-    el.instance()['wrapper'] = newWrapper;
+    (el.instance() as any)['wrapper'] = newWrapper;
     window.dispatchEvent(new CustomEvent('resize'));
 
     const expectedZoomLevel = zoomLevelAfterResize(
