@@ -15,7 +15,7 @@ export const fetchNextCloudFilesPageMiddleware = (fetcher: Fetcher) => (
     const { userAuthProvider } = store.getState();
     const { serviceName, accountId, path } = action;
     const { id: folderId } = path[path.length - 1] || { id: '' };
-    const { apiUrl, view } = store.getState();
+    const { view } = store.getState();
 
     const cursor = view && view.nextCursor;
     const items = (view && view.items) || [];
@@ -23,7 +23,6 @@ export const fetchNextCloudFilesPageMiddleware = (fetcher: Fetcher) => (
     userAuthProvider()
       .then(auth =>
         fetcher.fetchCloudAccountFolder(
-          apiUrl,
           auth,
           serviceName,
           accountId,

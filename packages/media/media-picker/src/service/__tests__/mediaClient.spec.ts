@@ -1,8 +1,7 @@
 jest.mock('axios');
 
-import { expect } from 'chai';
-import * as sinon from 'sinon';
 import axios from 'axios';
+import { Auth, AuthProvider } from '@atlaskit/media-core';
 
 import {
   MediaClient,
@@ -12,9 +11,14 @@ import {
   addAuthToQueryParameters,
 } from '../mediaClient';
 
+const clientId = 'some-client-id';
+const token = 'some-token';
+const baseUrl = 'some-base-url';
+const auth: Auth = { clientId, token, baseUrl };
+
 describe('isTokenExpirationError', () => {
   it('should return false for an undefined error object', () => {
-    expect(isTokenError(undefined)).to.equal(false);
+    expect(isTokenError(undefined)).toEqual(false);
   });
 
   it('should return false for an empty error object', () => {
@@ -22,7 +26,7 @@ describe('isTokenExpirationError', () => {
       isTokenError({
         error: {},
       }),
-    ).to.equal(false);
+    ).toEqual(false);
   });
 
   it('should return false for another error', () => {
@@ -32,7 +36,7 @@ describe('isTokenExpirationError', () => {
           code: 'Not authorized',
         },
       }),
-    ).to.equal(false);
+    ).toEqual(false);
   });
 
   it('should return true for the token expiration error', () => {
@@ -42,7 +46,7 @@ describe('isTokenExpirationError', () => {
           code: 'JwtAuthoriser:TokenExpiredError',
         },
       }),
-    ).to.equal(true);
+    ).toEqual(true);
   });
 
   it('should return true for the token authentication error', () => {
@@ -52,16 +56,13 @@ describe('isTokenExpirationError', () => {
           code: 'JwtAuthoriser:AuthenticationError',
         },
       }),
-    ).to.equal(true);
+    ).toEqual(true);
   });
 });
 
 describe('addAuthToHeaders function', () => {
   const httpMethod = 'POST';
   const mediaApiMethod = 'some-method';
-  const clientId = 'some-client-id';
-  const token = 'some-token';
-  const auth = { clientId, token };
 
   it('should add headers with credentials to the existing headers', () => {
     const originalRequest: MediaClientRequest = {
@@ -74,7 +75,7 @@ describe('addAuthToHeaders function', () => {
 
     const newRequest = addAuthToHeaders(originalRequest, auth);
 
-    expect(newRequest.headers).to.deep.equal({
+    expect(newRequest.headers).toEqual({
       'some-header': 'some-data',
       Authorization: `Bearer ${token}`,
       'X-Client-Id': clientId,
@@ -89,7 +90,7 @@ describe('addAuthToHeaders function', () => {
 
     const newRequest = addAuthToHeaders(originalRequest, auth);
 
-    expect(newRequest.headers).to.deep.equal({
+    expect(newRequest.headers).toEqual({
       Authorization: `Bearer ${token}`,
       'X-Client-Id': clientId,
     });
@@ -107,7 +108,7 @@ describe('addAuthToHeaders function', () => {
 
     const newRequest = addAuthToHeaders(originalRequest, auth);
 
-    expect(newRequest.headers).to.deep.equal({
+    expect(newRequest.headers).toEqual({
       Authorization: `Bearer ${token}`,
       'X-Client-Id': clientId,
     });
@@ -117,9 +118,6 @@ describe('addAuthToHeaders function', () => {
 describe('addAuthToQueryParameters function', () => {
   const httpMethod = 'POST';
   const mediaApiMethod = 'some-method';
-  const clientId = 'some-client-id';
-  const token = 'some-token';
-  const auth = { clientId, token };
 
   it('should add parameters with credentials to the existing parameters', () => {
     const originalRequest: MediaClientRequest = {
@@ -132,7 +130,7 @@ describe('addAuthToQueryParameters function', () => {
 
     const newRequest = addAuthToQueryParameters(originalRequest, auth);
 
-    expect(newRequest.parameters).to.deep.equal({
+    expect(newRequest.parameters).toEqual({
       'some-parameter': 'some-data',
       client: clientId,
       token: token,
@@ -147,7 +145,7 @@ describe('addAuthToQueryParameters function', () => {
 
     const newRequest = addAuthToQueryParameters(originalRequest, auth);
 
-    expect(newRequest.parameters).to.deep.equal({
+    expect(newRequest.parameters).toEqual({
       client: clientId,
       token: token,
     });
@@ -165,7 +163,7 @@ describe('addAuthToQueryParameters function', () => {
 
     const newRequest = addAuthToQueryParameters(originalRequest, auth);
 
-    expect(newRequest.parameters).to.deep.equal({
+    expect(newRequest.parameters).toEqual({
       client: clientId,
       token: token,
     });
@@ -174,65 +172,57 @@ describe('addAuthToQueryParameters function', () => {
 
 describe('MediaClient', () => {
   describe('storedToken', () => {
-    const apiUrl = 'https://media.api';
-    const clientId = 'client-id';
-    const token = 'some-token';
-    const authProvider = () => Promise.resolve({ clientId, token });
+    const authProvider: AuthProvider = () =>
+      Promise.resolve({ clientId, token, baseUrl });
 
     let mediaClient: MediaClient;
 
     beforeEach(() => {
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      mediaClient = new MediaClient(authProvider);
     });
 
     it('should be undefined by default', () => {
-      expect(typeof mediaClient.storedAuth).to.equal('undefined');
+      expect(typeof mediaClient.storedAuth).toEqual('undefined');
     });
 
     it('should be equal to the provided token after token refresh', () => {
       return mediaClient.refreshAuth().then(() => {
-        expect(mediaClient.storedAuth).to.deep.equal({ clientId, token });
+        expect(mediaClient.storedAuth).toEqual({ clientId, token, baseUrl });
       });
     });
   });
 
   describe('refreshToken', () => {
-    const apiUrl = 'https://media.api';
-    const token = 'some-token';
-
-    let authProvider: sinon.SinonStub;
+    let authProvider: jest.Mock<any>;
     let mediaClient: MediaClient;
 
     beforeEach(() => {
-      authProvider = sinon.stub();
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      authProvider = jest.fn(() =>
+        Promise.resolve<Auth>({ clientId, token, baseUrl }),
+      );
+      mediaClient = new MediaClient(authProvider);
     });
 
     it('should call tokenProvider to get token', () => {
-      authProvider.resolves(token);
-
       return mediaClient.refreshAuth().then(receivedToken => {
-        expect(receivedToken).to.equal(token);
-        expect(authProvider.callCount).to.equal(1);
+        expect(receivedToken).toEqual(auth);
+        expect(authProvider).toHaveBeenCalled();
       });
     });
   });
 
   describe('call', () => {
-    const apiUrl = 'https://media.api';
-    const clientId = 'some-client-id';
-    const token = 'some-token';
-    const auth = { clientId, token };
+    const auth: Auth = { clientId, token, baseUrl };
     const data = { item: 'item' };
     const response = { data };
     const mediaApiMethod = 'some-method';
 
-    let authProvider: sinon.SinonStub;
+    let authProvider: jest.Mock<any>;
     let mediaClient: MediaClient;
 
     beforeEach(() => {
-      authProvider = sinon.stub();
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      authProvider = jest.fn(() => Promise.resolve<Auth>(auth));
+      mediaClient = new MediaClient(authProvider);
     });
 
     afterEach(() => {
@@ -241,7 +231,7 @@ describe('MediaClient', () => {
 
     it('should reject if token can not be retrieved', done => {
       const error = new Error('No network connection');
-      authProvider.rejects(error);
+      authProvider.mockReturnValue(Promise.reject(error));
       (axios.request as any).mockReturnValue(Promise.resolve(response));
 
       mediaClient
@@ -250,19 +240,19 @@ describe('MediaClient', () => {
           httpMethod: 'GET',
         })
         .catch(receivedError => {
-          expect(receivedError).to.equal(error);
+          expect(receivedError).toEqual(error);
           done();
         });
     });
 
     it('should attach credentials to the request', () => {
-      authProvider.resolves(auth);
-
       (axios.request as any).mockImplementationOnce((params: any) => {
-        expect(params.headers).contain({
-          Authorization: 'Bearer some-token',
-          'X-Client-Id': 'some-client-id',
-        });
+        expect(params.headers).toEqual(
+          expect.objectContaining({
+            Authorization: 'Bearer some-token',
+            'X-Client-Id': 'some-client-id',
+          }),
+        );
 
         return Promise.resolve(response);
       });
@@ -273,16 +263,14 @@ describe('MediaClient', () => {
           httpMethod: 'PUT',
         })
         .then(receivedData => {
-          expect(receivedData).to.equal(data);
+          expect(receivedData).toEqual(data);
         });
     });
 
     it('should format url and pass provided parameters to Media API', () => {
-      authProvider.resolves(auth);
-
       (axios.request as any).mockImplementationOnce((params: any) => {
-        expect(params).to.deep.equal({
-          url: 'https://media.api/some-method',
+        expect(params).toEqual({
+          url: 'some-base-url/some-method',
           method: 'POST',
           headers: {
             'first-header': 'first-header-value',
@@ -322,17 +310,17 @@ describe('MediaClient', () => {
           },
         })
         .then(receivedData => {
-          expect(receivedData).to.equal(data);
+          expect(receivedData).toEqual(data);
         });
     });
 
     it('should add Content-Type header if the request contains data', () => {
-      authProvider.resolves(auth);
-
       (axios.request as any).mockImplementationOnce((params: any) => {
-        expect(params.headers).to.contain({
-          'Content-Type': 'application/json; charset=utf-8',
-        });
+        expect(params.headers).toEqual(
+          expect.objectContaining({
+            'Content-Type': 'application/json; charset=utf-8',
+          }),
+        );
 
         return Promise.resolve(response);
       });
@@ -345,12 +333,12 @@ describe('MediaClient', () => {
     });
 
     it('should not add Content-Type header if the request contains no data', () => {
-      authProvider.resolves(auth);
-
       (axios.request as any).mockImplementationOnce((params: any) => {
-        expect(params.headers).to.not.contain({
-          'Content-Type': 'application/json; charset=utf-8',
-        });
+        expect(params.headers).not.toEqual(
+          expect.objectContaining({
+            'Content-Type': 'application/json; charset=utf-8',
+          }),
+        );
 
         return Promise.resolve(response);
       });
@@ -362,8 +350,6 @@ describe('MediaClient', () => {
     });
 
     it('should retry if the error is for the expired token', () => {
-      authProvider.resolves(auth);
-
       const error = new Error();
       (error as any)['response'] = {
         data: {
@@ -381,13 +367,11 @@ describe('MediaClient', () => {
           httpMethod: 'GET',
         })
         .then(receivedData => {
-          expect(receivedData).to.equal(data);
+          expect(receivedData).toEqual(data);
         });
     });
 
     it('should not retry if the error is not for the expired token', done => {
-      authProvider.resolves(auth);
-
       const error = new Error();
       (error as any)['response'] = {
         data: {
@@ -405,14 +389,14 @@ describe('MediaClient', () => {
           httpMethod: 'GET',
         })
         .catch(receivedError => {
-          expect(receivedError).to.equal(error);
+          expect(receivedError).toEqual(error);
           done();
         });
     });
 
     it('should not retrieve token for consecutive calls if API requests return successfully', () => {
-      authProvider.onFirstCall().resolves(auth);
-      authProvider.onSecondCall().rejects(new Error());
+      authProvider.mockReturnValueOnce(Promise.resolve(auth));
+      authProvider.mockReturnValue(Promise.reject(new Error()));
 
       (axios.request as any).mockReturnValueOnce(Promise.resolve(response));
       (axios.request as any).mockReturnValueOnce(Promise.resolve(response));
@@ -423,14 +407,14 @@ describe('MediaClient', () => {
           httpMethod: 'GET',
         })
         .then(receivedData => {
-          expect(receivedData).to.equal(data);
+          expect(receivedData).toEqual(data);
           return mediaClient.call({
             mediaApiMethod,
             httpMethod: 'GET',
           });
         })
         .then(receivedData => {
-          expect(receivedData).to.equal(data);
+          expect(receivedData).toEqual(data);
         });
     });
   });

@@ -1,6 +1,5 @@
 import {
   defaultCollectionName,
-  defaultServiceHost,
   defaultMediaPickerAuthProvider,
   userAuthProvider,
   mediaMock,
@@ -16,7 +15,6 @@ import { MediaPicker } from '../src';
 mediaMock.enable();
 
 const context = ContextFactory.create({
-  serviceHost: defaultServiceHost,
   authProvider: defaultMediaPickerAuthProvider,
   userAuthProvider: userAuthProvider,
 });

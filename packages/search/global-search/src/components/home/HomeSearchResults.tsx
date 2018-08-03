@@ -17,46 +17,48 @@ export interface Props {
   peopleResults: Result[];
 }
 
-export default function searchResults(props: Props) {
-  const {
-    query,
-    isError,
-    retrySearch,
-    recentlyViewedItems,
-    recentResults,
-    jiraResults,
-    confluenceResults,
-    peopleResults,
-  } = props;
+export default class HomeSearchResults extends React.Component<Props> {
+  render() {
+    const {
+      query,
+      isError,
+      retrySearch,
+      recentlyViewedItems,
+      recentResults,
+      jiraResults,
+      confluenceResults,
+      peopleResults,
+    } = this.props;
 
-  if (isError) {
-    return <SearchError onRetryClick={retrySearch} />;
-  }
+    if (isError) {
+      return <SearchError onRetryClick={retrySearch} />;
+    }
 
-  if (query.length === 0) {
+    if (query.length === 0) {
+      return (
+        <PreQueryState
+          recentlyViewedItems={recentlyViewedItems}
+          sectionIndex={0}
+        />
+      );
+    }
+
+    if (
+      [recentResults, jiraResults, confluenceResults, peopleResults].every(
+        isEmpty,
+      )
+    ) {
+      return <NoResultsState query={query} />;
+    }
+
     return (
-      <PreQueryState
-        recentlyViewedItems={recentlyViewedItems}
-        sectionIndex={0}
+      <SearchResultsState
+        query={query}
+        recentResults={recentResults}
+        jiraResults={jiraResults}
+        confluenceResults={confluenceResults}
+        peopleResults={peopleResults}
       />
     );
   }
-
-  if (
-    [recentResults, jiraResults, confluenceResults, peopleResults].every(
-      isEmpty,
-    )
-  ) {
-    return <NoResultsState query={query} />;
-  }
-
-  return (
-    <SearchResultsState
-      query={query}
-      recentResults={recentResults}
-      jiraResults={jiraResults}
-      confluenceResults={confluenceResults}
-      peopleResults={peopleResults}
-    />
-  );
 }

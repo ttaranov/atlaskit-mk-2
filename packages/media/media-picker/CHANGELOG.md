@@ -1,5 +1,36 @@
 # @atlaskit/media-picker
 
+## 12.0.0
+- [major] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-store@6.0.0
+  - @atlaskit/media-editor@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/media-card@32.0.0
+
+## 11.2.2
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+
+## 11.2.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/flag@9.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/media-editor@10.0.1
+  - @atlaskit/toggle@5.0.4
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/media-store@5.1.1
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/modal-dialog@6.0.5
+
 ## 11.2.0
 - [minor] MediaPicker Popup now supports passing of optional parent react context as a parameter [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
 

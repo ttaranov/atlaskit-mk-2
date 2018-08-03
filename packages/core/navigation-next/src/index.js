@@ -15,10 +15,17 @@ export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as PeekToggleItem } from './components/PeekToggleItem';
 export { default as LayoutManager } from './components/LayoutManager';
 export {
+  default as LayoutManagerWithViewController,
+} from './components/LayoutManagerWithViewController';
+export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';
 export { default as Section } from './components/Section';
 export { default as Separator } from './components/Separator';
+export {
+  default as SkeletonContainerHeader,
+} from './components/SkeletonContainerHeader';
+export { default as SkeletonItem } from './components/SkeletonItem';
 export { default as Switcher } from './components/Switcher';
 
 /** State */

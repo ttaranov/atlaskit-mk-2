@@ -44,7 +44,6 @@ describe('changePath', () => {
     ]);
     const items = ['item1'];
     const data = { id: 'some-id', items };
-    const { apiUrl } = store.getState();
 
     fetcher.fetchCloudAccountFolder.mockReturnValueOnce(Promise.resolve(data));
 
@@ -57,7 +56,6 @@ describe('changePath', () => {
             expect(fileListUpdateAction.items).toEqual(items);
 
             expect(fetcher.fetchCloudAccountFolder).toBeCalledWith(
-              apiUrl,
               auth,
               action.serviceName,
               action.accountId,
@@ -79,7 +77,6 @@ describe('changePath', () => {
 
   it('should dispatch account unlink if fetching ended with 401 error', () => {
     const { fetcher, store, next } = setup();
-    const { apiUrl } = store.getState();
     const action = changeCloudAccountFolder(serviceName, accountId, [
       { id: folderId, name: 'some-folder' },
     ]);
@@ -103,7 +100,6 @@ describe('changePath', () => {
             );
 
             expect(fetcher.fetchCloudAccountFolder).toBeCalledWith(
-              apiUrl,
               auth,
               action.serviceName,
               action.accountId,

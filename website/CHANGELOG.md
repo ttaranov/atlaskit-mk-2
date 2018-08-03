@@ -1,5 +1,46 @@
 # @atlaskit/website
 
+## 4.0.0
+
+
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/dynamic-table@10.0.6
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-filmstrip@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/media-card@32.0.0
+
+## 3.1.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/media-filmstrip@10.2.1
+  - @atlaskit/logo@9.0.2
+  - @atlaskit/navigation@33.1.2
+  - @atlaskit/quick-search@4.2.4
+  - @atlaskit/page@8.0.2
+  - @atlaskit/inline-dialog@8.0.3
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/layer-manager@5.0.4
+  - @atlaskit/flag@9.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/dynamic-table@10.0.5
+  - @atlaskit/tag@6.0.3
+  - @atlaskit/tag-group@6.0.3
+  - @atlaskit/single-select@6.0.3
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/analytics-listeners@3.0.3
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/code@7.0.2
+  - @atlaskit/badge@9.0.3
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/css-reset@3.0.1
+  - @atlaskit/modal-dialog@6.0.5
+
 ## 3.1.0
 
 

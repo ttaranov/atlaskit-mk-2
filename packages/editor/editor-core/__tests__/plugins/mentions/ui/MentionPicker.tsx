@@ -1,8 +1,9 @@
-import {
+import AkMentionPicker, {
   MentionDescription,
   MentionResource,
   ContextMentionResource,
 } from '@atlaskit/mention';
+
 import { shallow } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import * as React from 'react';
@@ -401,7 +402,8 @@ describe('MentionPicker', () => {
           });
 
           component.update();
-          expect(component.find('MentionPicker')).toHaveLength(1);
+
+          expect(component.find(AkMentionPicker)).toHaveLength(1);
 
           state.subscribe.mock.calls[0][0]({
             ...state,
@@ -410,7 +412,8 @@ describe('MentionPicker', () => {
           });
           state.onDismiss();
           component.update();
-          expect(component.find('MentionPicker')).toHaveLength(0);
+
+          expect(component.find(AkMentionPicker)).toHaveLength(0);
 
           expect(createAnalyticsEvent).toHaveBeenCalledTimes(1);
           const firstSessionId = extractSessionId(createAnalyticsEvent);

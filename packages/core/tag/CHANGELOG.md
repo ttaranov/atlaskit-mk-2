@@ -1,5 +1,21 @@
 # @atlaskit/tag
 
+## 6.0.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/avatar@14.0.5
+
+## 6.0.2
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/avatar@14.0.4
+
 ## 6.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

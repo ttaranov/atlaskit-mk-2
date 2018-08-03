@@ -33,7 +33,7 @@ export default function Document({
     loading: Loading,
     render(md) {
       if (md) {
-        return <Markdown>{md}</Markdown>;
+        return <Markdown>{md.default}</Markdown>;
       }
       return <FourOhFour />;
     },

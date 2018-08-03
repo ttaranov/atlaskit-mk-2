@@ -22,10 +22,10 @@ export function getPreview(
   store: Store<State>,
   { uploadId, file, collection }: GetPreviewAction,
 ): Promise<SendUploadEventAction> {
-  const { apiUrl, userAuthProvider } = store.getState();
+  const { userAuthProvider } = store.getState();
 
   return userAuthProvider()
-    .then(auth => fetcher.getPreview(apiUrl, auth, file.id, collection))
+    .then(auth => fetcher.getPreview(auth, file.id, collection))
     .then(preview =>
       store.dispatch(
         sendUploadEvent({

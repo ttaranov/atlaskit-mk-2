@@ -1,3 +1,5 @@
+import { AuthProvider, MediaApiConfig } from '../src/models/auth';
+
 jest.mock('chunkinator');
 jest.mock('../src/media-store');
 
@@ -8,8 +10,7 @@ import { MediaStore } from '../src/media-store';
 describe('Uploader', () => {
   const setup = () => {
     const ChunkinatorMock = jest.fn();
-    const config = {
-      serviceHost: '',
+    const config: MediaApiConfig = {
       authProvider,
     };
     const createFileFromUpload = jest
@@ -60,7 +61,12 @@ describe('Uploader', () => {
       appendChunksToUpload,
     };
   };
-  const authProvider = () => Promise.resolve({ clientId: '', token: '' });
+  const authProvider: AuthProvider = () =>
+    Promise.resolve({
+      clientId: '',
+      token: '',
+      baseUrl: '',
+    });
 
   it('should pass down the file content to Chunkinator', async () => {
     const { MediaStoreMock, ChunkinatorMock, config } = setup();

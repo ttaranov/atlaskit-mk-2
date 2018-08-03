@@ -59,6 +59,8 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
+  /* A function for parsing input characters and transforming them into a Date object. By default uses [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) */
+  parseInputValue: (date: string, dateFormat: string) => Date,
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
@@ -144,23 +146,24 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
+    dateFormat: defaultDateFormat,
+    defaultIsOpen: false,
+    defaultValue: '',
     disabled: [],
+    hideIcon: false,
     icon: CalendarIcon,
-    name: '',
+    id: '',
+    innerProps: {},
     isDisabled: false,
+    isInvalid: false,
+    name: '',
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    innerProps: {},
+    parseInputValue: parse,
+    placeholder: 'e.g. 2018/01/01',
     selectProps: {},
     spacing: 'default',
-    id: '',
-    defaultIsOpen: false,
-    defaultValue: '',
-    isInvalid: false,
-    hideIcon: false,
-    dateFormat: defaultDateFormat,
-    placeholder: 'e.g. 2018/01/01',
   };
 
   state = {
@@ -211,11 +214,15 @@ class DatePicker extends Component<Props, State> {
 
   onSelectInput = (e: Event) => {
     let value = e.target.value;
+    const { dateFormat, parseInputValue } = this.props;
     if (value) {
-      const parsed = parse(value);
+      const parsed = parseInputValue(value, dateFormat);
       // Only try to set the date if we have month & day
       if (isValid(parsed)) {
-        value = format(parsed, 'YYYY-MM-DD');
+        // We format the parsed date to YYYY-MM-DD here because
+        // this is the format expected by the @atlaskit/calendar component
+        const calendarFormat = 'YYYY-MM-DD';
+        value = format(parsed, calendarFormat);
         this.triggerChange(value);
       }
     }

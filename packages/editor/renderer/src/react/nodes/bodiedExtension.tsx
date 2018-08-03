@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
 import { ADNode, ExtensionHandlers } from '@atlaskit/editor-common';
+import { renderExtension } from './extension';
 
 export interface Props {
   serializer: Serializer<any>;
@@ -12,6 +13,7 @@ export interface Props {
   originalContent?: any;
   parameters?: any;
   content?: any;
+  layout?: string;
 }
 
 const BodiedExtension: React.StatelessComponent<Props> = ({
@@ -23,6 +25,7 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
   content,
   parameters,
   children,
+  layout = 'default',
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
@@ -40,7 +43,7 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
       switch (true) {
         case extensionContent && React.isValidElement(extensionContent):
           // Return the extensionContent directly if it's a valid JSX.Element
-          return <div>{extensionContent}</div>;
+          return renderExtension(extensionContent, layout);
         case !!extensionContent:
           // We expect it to be Atlassian Document here
           const nodes = Array.isArray(extensionContent)
@@ -60,7 +63,7 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
   }
 
   // Always return default content if anything goes wrong
-  return <div>{children}</div>;
+  return renderExtension(children, layout);
 };
 
 export default BodiedExtension;

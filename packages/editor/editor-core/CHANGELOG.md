@@ -1,5 +1,172 @@
 # @atlaskit/editor-core
 
+## 77.0.1
+- [patch] Stop editor from blowing up inside dispatchTransaction if editorView is undefined [49b0733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b0733)
+- [none] Updated dependencies [49b0733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b0733)
+
+## 77.0.0
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-picker@12.0.0
+  - @atlaskit/media-filmstrip@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-bitbucket-transformer@4.0.6
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-markdown-transformer@2.0.5
+  - @atlaskit/media-card@32.0.0
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+
+## 76.4.11
+- [patch] ED-5023 Quick insert now appears in help dialog when it is enabled [93c9b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93c9b37)
+- [none] Updated dependencies [93c9b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93c9b37)
+
+## 76.4.10
+
+- [patch] fixed broken tests and added test for util/analytics [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
+
+
+- [none] Updated dependencies [8eced90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8eced90)
+  - @atlaskit/mention@15.0.3
+- [none] Updated dependencies [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
+  - @atlaskit/mention@15.0.3
+- [none] Updated dependencies [0bc5732](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bc5732)
+  - @atlaskit/mention@15.0.3
+- [none] Updated dependencies [c536e60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c536e60)
+  - @atlaskit/mention@15.0.3
+
+## 76.4.9
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+  - @atlaskit/media-picker@11.2.2
+  - @atlaskit/media-filmstrip@10.2.2
+  - @atlaskit/renderer@19.2.7
+  - @atlaskit/editor-common@13.2.8
+
+## 76.4.8
+- [patch] Prevents editor from crashing when hitting backspace on selected date node. ED-5168 [c360f18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c360f18)
+- [none] Updated dependencies [c360f18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c360f18)
+
+## 76.4.7
+- [patch] Adding conditional controls render [0ed8bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ed8bcf)
+- [none] Updated dependencies [0ed8bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ed8bcf)
+
+## 76.4.6
+- [patch] isOpen never renders the menu, check if we have an appropriate selection before rendering [f72ad6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f72ad6c)
+- [none] Updated dependencies [f72ad6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f72ad6c)
+
+## 76.4.5
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/select@5.0.7
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/media-picker@11.2.1
+  - @atlaskit/media-filmstrip@10.2.1
+  - @atlaskit/renderer@19.2.6
+  - @atlaskit/task-decision@8.1.2
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/mention@15.0.2
+  - @atlaskit/emoji@38.0.5
+  - @atlaskit/editor-json-transformer@4.0.3
+  - @atlaskit/editor-bitbucket-transformer@4.0.5
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-test-helpers@5.1.2
+  - @atlaskit/editor-markdown-transformer@2.0.3
+  - @atlaskit/logo@9.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/layer-manager@5.0.4
+  - @atlaskit/item@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/calendar@7.0.3
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/code@7.0.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/analytics-gas-types@3.1.2
+  - @atlaskit/size-detector@5.0.3
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/droplist@7.0.4
+  - @atlaskit/avatar-group@2.0.4
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/modal-dialog@6.0.5
+
+## 76.4.4
+- [patch] FS-2131 add date element [b026429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026429)
+- [patch] Updated dependencies [b026429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b026429)
+  - @atlaskit/date@0.1.0
+
+## 76.4.3
+- [patch] ED-4825, copying single line of code should create inline code mark. [c99642b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c99642b)
+- [patch] Updated dependencies [c99642b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c99642b)
+
+## 76.4.2
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/renderer@19.2.5
+  - @atlaskit/editor-common@13.2.6
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-markdown-transformer@2.0.2
+  - @atlaskit/editor-json-transformer@4.0.2
+  - @atlaskit/editor-bitbucket-transformer@4.0.4
+
+## 76.4.1
+- [patch] Make typeahead keymap work in a list [a7d7421](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7d7421)
+- [none] Updated dependencies [a7d7421](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7d7421)
+
 ## 76.4.0
 - [minor] MediaPicker Popup now supports passing of optional parent react context as a parameter [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
 - [minor] Updated dependencies [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
