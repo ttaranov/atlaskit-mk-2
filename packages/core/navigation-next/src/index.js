@@ -15,8 +15,8 @@ export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as PeekToggleItem } from './components/PeekToggleItem';
 export { default as LayoutManager } from './components/LayoutManager';
 export {
-  default as LayoutManagerWithViews,
-} from './components/LayoutManagerWithViews';
+  default as LayoutManagerWithViewController,
+} from './components/LayoutManagerWithViewController';
 export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';

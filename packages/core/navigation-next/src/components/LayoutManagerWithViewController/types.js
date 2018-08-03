@@ -4,7 +4,7 @@ import type { ComponentType, Node } from 'react';
 
 import { UIController, ViewController } from '../../';
 
-export type LayoutManagerWithViewsProps = {
+export type LayoutManagerWithViewControllerProps = {
   children: Node,
   customComponents: { [string]: ComponentType<*> },
   globalNavigation: ComponentType<{}>,

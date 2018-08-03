@@ -10,7 +10,7 @@ import LayoutManager from '../LayoutManager';
 import Section from '../Section';
 import SkeletonContainerHeader from '../SkeletonContainerHeader';
 import SkeletonItem from '../SkeletonItem';
-import type { LayoutManagerWithViewsProps } from './types';
+import type { LayoutManagerWithViewControllerProps } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -35,8 +35,8 @@ const skeleton = (
   </div>
 );
 
-class LayoutManagerWithViewsBase extends Component<
-  LayoutManagerWithViewsProps,
+class LayoutManagerWithViewControllerBase extends Component<
+  LayoutManagerWithViewControllerProps,
 > {
   renderContainerNavigation = () => {
     const {
@@ -106,5 +106,5 @@ class LayoutManagerWithViewsBase extends Component<
   }
 }
 export default withNavigationUI(
-  withNavigationViewController(LayoutManagerWithViewsBase),
+  withNavigationViewController(LayoutManagerWithViewControllerBase),
 );
