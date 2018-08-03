@@ -6,10 +6,16 @@ import {
   FileItem,
   getMediaTypeFromMimeType,
 } from '@atlaskit/media-core';
-import { MediaStore, UploadController } from '@atlaskit/media-store';
+import {
+  MediaStore,
+  MediaStoreCopyFileWithTokenBody,
+  UploadController,
+} from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
+
+import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
 import { UploadParams } from '..';
@@ -29,7 +35,6 @@ export interface CancellableFileUpload {
 }
 
 export class NewUploadServiceImpl implements UploadService {
-  // @ts-ignore
   private readonly mediaStore: MediaStore;
 
   private uploadParams: UploadParams;
@@ -190,6 +195,7 @@ export class NewUploadServiceImpl implements UploadService {
   ) => {
     const { mediaFile } = cancellableFileUpload;
     const collectionName = this.uploadParams.collection;
+    this.copyFileToUsersCollection(fileId, collectionName).catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
       ...mediaFile,
@@ -271,4 +277,27 @@ export class NewUploadServiceImpl implements UploadService {
       },
     });
   };
+
+  private copyFileToUsersCollection(
+    sourceFileId: string,
+    sourceCollection?: string,
+  ): Promise<void> {
+    return this.context.config
+      .authProvider({ collectionName: sourceCollection })
+      .then(auth => {
+        const body: MediaStoreCopyFileWithTokenBody = {
+          sourceFile: {
+            id: sourceFileId,
+            collection: sourceCollection,
+            owner: {
+              ...mapAuthToSourceFileOwner(auth),
+            },
+          },
+        };
+        const params = {
+          collection: 'recents',
+        };
+        return this.mediaStore.copyFileWithToken(body, params, 'user');
+      });
+  }
 }
