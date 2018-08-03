@@ -119,8 +119,5 @@
     "sinon": "^2.2.0",
     "string.prototype.repeat": "^0.2.0",
     "thenable": "^1.0.0"
-  },
-  "dependencies,devDependencies": {
-    "@atlaskit/util-shared-styles": "^2.10.3"
   }
 }
