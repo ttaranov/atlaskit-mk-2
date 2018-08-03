@@ -121,27 +121,28 @@ export function createPlugin(
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
 
           if (doc && doc.content) {
-            console.log('open start', slice.openStart);
-            doc.descendants((node, pos) => {
-              const docPos = Math.max(
-                state.tr.selection.from + pos - slice.openStart - 1,
-                0,
-              );
-              const linkMark = node.marks.find(
-                mark => mark.type.name === 'link',
-              );
-              if (linkMark) {
-                console.log('queuing for', node, 'at', docPos);
-                queueCard(linkMark.attrs.href, docPos, 'inline')(view);
-                return false;
-              }
-            });
-
             const tr = closeHistory(state.tr);
             tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),
             );
             dispatch(tr.scrollIntoView());
+
+            // if the selection contained the entire document, offset into the first paragraph
+            const offset = state.tr.selection.from === 0 ? 1 : 0;
+
+            // dispatch links after we replace selection, otherwise we'll remap early
+            doc.descendants((node, pos) => {
+              const linkMark = node.marks.find(
+                mark => mark.type.name === 'link',
+              );
+
+              if (linkMark) {
+                const docPos =
+                  state.tr.selection.from + pos - slice.openStart + offset;
+                queueCard(linkMark.attrs.href, docPos, 'inline')(view);
+                return false;
+              }
+            });
 
             return true;
           }

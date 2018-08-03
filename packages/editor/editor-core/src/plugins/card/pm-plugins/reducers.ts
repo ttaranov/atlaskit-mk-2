@@ -48,7 +48,6 @@ const setProvider = (state: CardPluginState, action: SetProvider) => {
 };
 
 export default (state: CardPluginState, action: CardPluginAction) => {
-  console.log('have action', action.type);
   switch (action.type) {
     case 'QUEUE':
       return queue(state, action);

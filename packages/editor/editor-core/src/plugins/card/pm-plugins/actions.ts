@@ -22,14 +22,10 @@ export const resolve = (url: string, cardData: any): Command => (
   }
 
   const request = state.requests[url];
-
-  // mark as resolved
-  dispatch(
-    editorState.tr.setMeta(pluginKey, {
-      type: 'RESOLVE',
-      url,
-    } as Resolve),
-  );
+  if (!request) {
+    // request has expired
+    return false;
+  }
 
   // try to transform to ADF
   const schema = editorState.schema;
@@ -38,8 +34,11 @@ export const resolve = (url: string, cardData: any): Command => (
   if (cardAdf) {
     // replace all the outstanding links with their cards
     let tr = editorState.tr;
-    request.positions.forEach(pos => {
-      const node = tr.doc.nodeAt(pos + 1);
+
+    request.positions.forEach(unmappedPos => {
+      // remap across the replacement
+      const pos = tr.mapping.map(unmappedPos);
+      const node = tr.doc.nodeAt(pos);
       if (!node) {
         return;
       }
@@ -54,13 +53,19 @@ export const resolve = (url: string, cardData: any): Command => (
         return;
       }
 
-      // link changed (TODO: no need to check text when we fix hyperlink)
-      if (linkMark.attrs.href !== url || node.text !== url) {
+      const textSlice = node.text;
+      if (linkMark.attrs.href !== url || textSlice !== url) {
         return;
       }
 
-      tr = tr.replaceWith(pos + 1, pos + 1 + node.nodeSize, cardAdf);
+      tr = tr.replaceWith(pos, pos + url.length, cardAdf);
     });
+
+    // mark as resolved
+    tr = tr.setMeta(pluginKey, {
+      type: 'RESOLVE',
+      url,
+    } as Resolve);
 
     dispatch(tr);
     return true;
@@ -98,7 +103,6 @@ export const setProvider = (cardProvider: CardProvider | null): Command => (
   state,
   dispatch,
 ) => {
-  console.log('setting provider', cardProvider);
   dispatch(
     state.tr.setMeta(pluginKey, {
       type: 'SET_PROVIDER',
