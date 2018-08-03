@@ -1,15 +1,15 @@
 import {
-  ContainerResult,
-  ResultType,
+  // ContainerResult,
+  // ResultType,
   Result,
-  AnalyticsType,
-  ContentType,
+  // AnalyticsType,
+  // ContentType,
 } from '../model/Result';
-import {
-  RequestServiceOptions,
-  utils,
-  ServiceConfig,
-} from '@atlaskit/util-service-support';
+// import {
+//   RequestServiceOptions,
+//   utils,
+//   ServiceConfig,
+// } from '@atlaskit/util-service-support';
 import {
   makeJiraObjectResult,
   makeConfluenceContainerResult,
@@ -21,14 +21,14 @@ export interface JiraClient {
 }
 
 export default class JiraClientImpl implements JiraClient {
-  private serviceConfig: ServiceConfig;
-  private cloudId: string;
+  // private serviceConfig: ServiceConfig;
+  // private cloudId: string;
 
-  private readonly RESULT_LIMIT = 10;
+  // private readonly RESULT_LIMIT = 10;
 
   constructor(url: string, cloudId: string) {
-    this.serviceConfig = { url: url };
-    this.cloudId = cloudId;
+    // this.serviceConfig = { url: url };
+    // this.cloudId = cloudId;
   }
 
   // TODO replace mock data with an actual implementation s'il vous plait

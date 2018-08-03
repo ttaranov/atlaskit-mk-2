@@ -6,6 +6,7 @@ import NoResults from '../NoResults';
 import SearchConfluenceItem from '../SearchConfluenceItem';
 import SearchPeopleItem from '../SearchPeopleItem';
 import SearchJiraItem from '../SearchJiraItem';
+import { FormattedMessage } from 'react-intl';
 
 export interface Props {
   query: string;
@@ -15,7 +16,11 @@ export default class NoResultsState extends React.Component<Props> {
   render() {
     const { query } = this.props;
     return [
-      <NoResults key="no-results" />,
+      <NoResults
+        key="no-results"
+        title={<FormattedMessage id="global-search.no-results-title" />}
+        body={<FormattedMessage id="global-search.no-results-body" />}
+      />,
       <ResultItemGroup title="" key="advanced-search">
         <SearchJiraItem query={query} />
         <SearchConfluenceItem
