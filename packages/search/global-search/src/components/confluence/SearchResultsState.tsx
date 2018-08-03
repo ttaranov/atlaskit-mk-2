@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
 import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
+import { ScreenCounter } from '../../util/ScreenCounter';
 
 const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 const MAX_SPACES = 3;

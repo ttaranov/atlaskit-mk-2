@@ -1,14 +1,11 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
-import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 
 import { Result } from '../../model/Result';
 import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import RecentActivities from './RecentActivities';
 import { ScreenCounter } from '../../util/ScreenCounter';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedHTMLMessage } from 'react-intl';
 
 export interface Props {
   query: string;

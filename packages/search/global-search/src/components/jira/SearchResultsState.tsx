@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './JiraSearchResults';
 import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import AdvancedSearchFooter from './AdvancedSearchFooter';
+import { ScreenCounter } from '../../util/ScreenCounter';
 
 const MAX_OBJECTS = 8;
 const MAX_CONTAINERS = 3;

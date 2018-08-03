@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
 import { FormattedMessage } from 'react-intl';
 import { take } from '../SearchResultsUtil';
 import ResultGroup from '../ResultGroup';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
+import { ScreenCounter } from '../../util/ScreenCounter';
 
 const MAX_RECENT_PAGES = 8;
 const MAX_SPACES = 3;

@@ -120,7 +120,7 @@ export class JiraQuickSearchContainer extends React.Component<
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
-    // TODO what happens when you press enter?
+    // TODO rediret to jira advanced search when you press enter
     // redirectToConfluenceAdvancedSearch(query);
   };
 
