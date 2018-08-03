@@ -45,7 +45,7 @@
   "peerDependencies": {
     "@atlaskit/media-core": "^23.0.0",
     "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "rxjs": "^5.1.0"
   },
   "author": "Atlassian Pty Ltd",

@@ -63,7 +63,7 @@
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "raf-stub": "^2.0.1",
     "react-beautiful-dnd": "^8.0.7",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

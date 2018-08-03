@@ -46,7 +46,7 @@
     "glob": "^7.1.2",
     "lodash.sample": "^4.2.1",
     "prettier": "^1.9.2",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "svgo": "^0.7.0"
   },
   "keywords": [
