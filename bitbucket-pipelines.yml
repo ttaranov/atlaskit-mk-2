@@ -51,7 +51,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 122
+              - source build/ci-scripts/count-flowfixme.sh 126
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
               # Get the commit that we diverged from master at
               - export DIVERGED_AT=$(git merge-base master HEAD)
@@ -88,9 +88,13 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
+              - cd website
+              - WEBSITE_ENV=staging yarn build:no-minimize
+              - yarn build:copy
+              - yarn build:zip
+              - yarn deploy:staging | tee netlify-build.txt
               - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
-              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+              - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
             caches:
               - node
     - step:
@@ -111,7 +115,12 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - (cd website && yarn deploy)
+            - cd website
+            - WEBSITE_ENV=production yarn build
+            - yarn build:copy
+            - yarn build:zip
+            - yarn deploy:production
+            - cd ..
             # This is a sanity check to make sure the website renders on all browsers without error
             - yarn test:webdriver:browserstack website
           caches:

@@ -1,5 +1,52 @@
 # @atlaskit/media-viewer
 
+## 17.0.0
+- [major] Bumping to latest version of of media-core [5811ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5811ed4)
+- [minor] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [minor] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-core@23.0.0
+
+## 16.1.4
+- [patch] Fixes MSW-767 and MSW-895 [8102852](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8102852)
+
+## 16.1.3
+- [patch] Upgrade to webpack 4 [ea8a4bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8a4bb)
+- [none] Updated dependencies [ea8a4bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8a4bb)
+
+## 16.1.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-ui@5.0.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-range@5.0.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/modal-dialog@6.0.5
+
+## 16.1.1
+- [patch] MSW-701: zoom into viewport center, not image center [c2c8fdd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2c8fdd)
+
+## 16.1.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-ui@5.0.0
+
 ## 16.0.8
 - [patch] MSW-799: Implement zooming and panning without transforms [974c89a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/974c89a)
 

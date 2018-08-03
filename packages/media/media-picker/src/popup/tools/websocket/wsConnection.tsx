@@ -13,7 +13,6 @@ export class WsConnection {
   private ws?: Ws;
 
   constructor(
-    private readonly apiUrl: string,
     private readonly auth: Auth,
     private readonly onDataReceived: WebsocketDataReceivedHandler,
     private readonly onConnectionLost: ConnectionLostHandler,
@@ -44,12 +43,7 @@ export class WsConnection {
 
     try {
       window.clearTimeout(this.retryTimeoutId);
-      this.ws = new Ws(
-        this.apiUrl,
-        this.auth,
-        this.wsDataReceived,
-        this.onConnectionLost,
-      );
+      this.ws = new Ws(this.auth, this.wsDataReceived, this.onConnectionLost);
       this.resetIdleTimeout();
     } catch (error) {
       // Could not create a web socket

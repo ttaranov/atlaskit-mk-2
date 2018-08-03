@@ -1,4 +1,4 @@
-import { hexToRgba } from '../../src/utils/color';
+import { hexToRgba, isRgb } from '../../src/utils/color';
 
 describe('@atlaskit/editor-core color utils', () => {
   describe('hex2rgba', () => {
@@ -8,6 +8,24 @@ describe('@atlaskit/editor-core color utils', () => {
 
     it('converts long hex to rgba', () => {
       expect(hexToRgba('#ffaabb', 0.5)).toEqual('rgba(255,170,187,0.5)');
+    });
+  });
+
+  describe('isRgb', () => {
+    it('returns truthy for rgb', () => {
+      expect(isRgb('rgb(0, 0, 0)')).toBeTruthy();
+    });
+
+    it('returns truthy for rgba', () => {
+      expect(isRgb('rgba(0, 0, 0, 0)')).toBeTruthy();
+    });
+
+    it('returns falsy for hex', () => {
+      expect(isRgb('#FFFFFF')).toBeFalsy();
+    });
+
+    it('returns falsy for random string', () => {
+      expect(isRgb('rgab(00')).toBeFalsy();
     });
   });
 });

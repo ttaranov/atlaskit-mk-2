@@ -38,46 +38,54 @@ export interface TextFormattingOptions {
 const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
   marks() {
     return [
-      { name: 'em', mark: em, rank: 200 },
-      { name: 'strong', mark: strong, rank: 300 },
-      { name: 'strike', mark: strike, rank: 400 },
+      { name: 'em', mark: em },
+      { name: 'strong', mark: strong },
+      { name: 'strike', mark: strike },
     ]
-      .concat(
-        options.disableCode ? [] : { name: 'code', mark: code, rank: 700 },
-      )
+      .concat(options.disableCode ? [] : { name: 'code', mark: code })
       .concat(
         options.disableSuperscriptAndSubscript
           ? []
-          : { name: 'subsup', mark: subsup, rank: 500 },
+          : { name: 'subsup', mark: subsup },
       )
       .concat(
-        options.disableUnderline
-          ? []
-          : { name: 'underline', mark: underline, rank: 600 },
+        options.disableUnderline ? [] : { name: 'underline', mark: underline },
       );
   },
 
   pmPlugins() {
     return [
-      { rank: 800, plugin: ({ dispatch }) => textFormattingPlugin(dispatch) },
-      { rank: 805, plugin: () => textFormattingCursorPlugin },
       {
-        rank: 810,
+        name: 'textFormatting',
+        plugin: ({ dispatch }) => textFormattingPlugin(dispatch),
+      },
+      {
+        name: 'textFormattingCursor',
+        plugin: () => textFormattingCursorPlugin,
+      },
+      {
+        name: 'textFormattingInputRule',
         plugin: ({ schema }) => textFormattingInputRulePlugin(schema),
       },
       {
-        rank: 811,
+        name: 'textFormattingSmartRule',
         plugin: ({ schema }) =>
           !options.disableSmartTextCompletion
             ? textFormattingSmartInputRulePlugin
             : undefined,
       },
-      { rank: 820, plugin: ({ dispatch }) => clearFormattingPlugin(dispatch) },
       {
-        rank: 830,
+        name: 'textFormattingClear',
+        plugin: ({ dispatch }) => clearFormattingPlugin(dispatch),
+      },
+      {
+        name: 'textFormattingClearKeymap',
         plugin: ({ schema }) => clearFormattingKeymapPlugin(schema),
       },
-      { rank: 835, plugin: ({ schema }) => keymapPlugin(schema) },
+      {
+        name: 'textFormattingKeymap',
+        plugin: ({ schema }) => keymapPlugin(schema),
+      },
     ];
   },
 
@@ -94,12 +102,13 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
           textFormattingState: textFormattingPluginKey,
           clearFormattingState: clearFormattingPluginKey,
         }}
-        render={(
-          { textFormattingState, clearFormattingState }:
-          {
-            textFormattingState: TextFormattingState,
-            clearFormattingState: ClearFormattingState
-          }): any => {
+        render={({
+          textFormattingState,
+          clearFormattingState,
+        }: {
+          textFormattingState: TextFormattingState;
+          clearFormattingState: ClearFormattingState;
+        }): any => {
           return (
             <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
               <ToolbarTextFormatting
@@ -118,11 +127,11 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
                 popupsScrollableElement={popupsScrollableElement}
               />
             </ButtonGroup>
-          )}
-        }
+          );
+        }}
       />
     );
-  }
+  },
 });
 
 export default textFormatting;

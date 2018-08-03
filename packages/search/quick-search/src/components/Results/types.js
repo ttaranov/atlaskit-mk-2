@@ -33,8 +33,6 @@ type CommonResultProps = {
 };
 
 export type Context = {
-  /** Signals whether the Result needs to register itself again. */
-  isDirty: boolean,
   /** Register itself as keyboard navigation target */
   registerResult: (result: any) => void,
   /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
@@ -59,7 +57,7 @@ export type ResultType = CommonResultProps & {
   /** Main text to be displayed as the item. */
   text: Element<any> | string,
   /** The context provided by QuickSearch. */
-  context: Context,
+  context?: Context,
   /** key/value pairs of attributes to be send in analytics events. */
   analyticsData?: AnalyticsData,
 };

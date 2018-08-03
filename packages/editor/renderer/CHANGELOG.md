@@ -1,5 +1,141 @@
 # @atlaskit/renderer
 
+## 20.0.0
+
+
+
+- [patch] ED-5170: fix table horizontal scroll in renderer [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/editor-json-transformer@4.0.4
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-filmstrip@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/task-decision@8.1.3
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/media-card@32.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+
+## 19.2.8
+- [patch] ED-5144, extensions breakout support for renderer. [071e7c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/071e7c2)
+- [patch] Updated dependencies [071e7c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/071e7c2)
+
+## 19.2.7
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+  - @atlaskit/media-filmstrip@10.2.2
+  - @atlaskit/editor-common@13.2.8
+
+## 19.2.6
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/media-filmstrip@10.2.1
+  - @atlaskit/task-decision@8.1.2
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/profilecard@4.0.2
+  - @atlaskit/mention@15.0.2
+  - @atlaskit/editor-json-transformer@4.0.3
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-test-helpers@5.1.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/code@7.0.2
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/size-detector@5.0.3
+
+## 19.2.5
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/editor-common@13.2.6
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-json-transformer@4.0.2
+
+## 19.2.4
+- [patch] Updated dependencies [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
+  - @atlaskit/media-filmstrip@10.2.0
+  - @atlaskit/media-card@31.2.0
+
+## 19.2.3
+- [patch] ED-4995: added support for the rest of the page layout types in the renderer [9d9acfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d9acfa)
+- [none] Updated dependencies [9d9acfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d9acfa)
+  - @atlaskit/editor-common@13.2.4
+
+## 19.2.2
+- [patch] ED-5033, fixes for multiple date related issues. [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+- [patch] Updated dependencies [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+  - @atlaskit/editor-common@13.2.2
+
+## 19.2.1
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/editor-common@13.2.1
+  - @atlaskit/media-card@31.1.0
+  - @atlaskit/editor-test-helpers@5.0.3
+
+## 19.2.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/editor-common@13.2.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-filmstrip@10.1.0
+  - @atlaskit/editor-common@13.2.0
+
+## 19.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+  - @atlaskit/util-data-test@10.0.1
+  - @atlaskit/editor-common@13.1.0
+
 ## 19.0.7
 - [patch] ED-4199, Adding support for column layout in renderer. [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
 - [patch] Updated dependencies [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)

@@ -15,11 +15,11 @@ export type InitialUIControllerShape = {
 };
 
 export type UIControllerShape = {
+  isCollapsed: boolean,
   isPeekHinting: boolean,
   isPeeking: boolean,
-  isCollapsed: boolean,
-  productNavWidth: number,
   isResizing: boolean,
+  productNavWidth: number,
 };
 
 export type UIControllerCacheGetter = () => UIControllerShape;

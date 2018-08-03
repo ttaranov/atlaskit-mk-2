@@ -1,19 +1,7 @@
 // @flow
 import React from 'react';
 import { code, md, Example, Props } from '@atlaskit/docs';
-import { colors } from '@atlaskit/theme';
-
-const Warning = p => (
-  <div
-    style={{
-      backgroundColor: colors.R75,
-      boxShadow: `-4px 0 0 ${colors.R200}`,
-      marginBottom: '1.4em',
-      padding: '1em 1.2em',
-    }}
-    {...p}
-  />
-);
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
   ## Why?
@@ -96,7 +84,7 @@ const App = () => (
 
   ${(
     <React.Fragment>
-      <Warning>
+      <SectionMessage appearance="warning">
         <p>
           <strong>ScrollLock is deprecated.</strong>
         </p>
@@ -107,7 +95,7 @@ const App = () => (
           </a>{' '}
           instead.
         </p>
-      </Warning>
+      </SectionMessage>
       <Example
         Component={require('../examples/1-scroll-lock').default}
         source={require('!!raw-loader!../examples/1-scroll-lock')}

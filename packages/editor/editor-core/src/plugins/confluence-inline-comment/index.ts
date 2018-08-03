@@ -8,7 +8,6 @@ const confluenceInlineCommentPlugin: EditorPlugin = {
       {
         name: 'confluenceInlineComment',
         mark: confluenceInlineComment,
-        rank: 190,
       },
     ];
   },

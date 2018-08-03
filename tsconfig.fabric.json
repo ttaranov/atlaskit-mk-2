@@ -36,6 +36,8 @@
     "./typings/rusha.d.ts",
     "./typings/uuid.d.ts",
     "./typings/lodash.last.d.ts",
+    "./typings/lodash.debounce.d.ts",
+    "./typings/lodash.matches.d.ts",
     "./typings/jest-in-case.d.ts"
   ]
 }

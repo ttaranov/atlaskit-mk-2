@@ -1,5 +1,20 @@
 # @atlaskit/docs
 
+## 5.0.4
+- [patch] Export a modified replaceImport function [18f2701](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18f2701)
+- [none] Updated dependencies [18f2701](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18f2701)
+
+## 5.0.3
+- [patch] Update pretty-proptypes [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+- [none] Updated dependencies [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+
+## 5.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/code@7.0.2
+
 ## 5.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

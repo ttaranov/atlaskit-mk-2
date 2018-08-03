@@ -10,20 +10,19 @@ import {
   CardAction,
   CardEventHandler,
 } from '@atlaskit/media-card';
-import { Context, MediaItem, FileDetails } from '@atlaskit/media-core';
-
+import {
+  Context,
+  MediaItem,
+  FileDetails,
+  getMediaTypeFromMimeType,
+} from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-
 import { Browser } from '../../../../components/browser';
-
-import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';
-
 import { Dropzone } from './dropzone';
-
 import { fileClick } from '../../../actions/fileClick';
 import { editorShowImage } from '../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../actions/editRemoteImage';
@@ -35,7 +34,6 @@ import {
   SelectedItem,
   State,
 } from '../../../domain';
-
 import { menuEdit } from '../editor/phrases';
 import {
   Wrapper,
@@ -66,7 +64,6 @@ export interface UploadViewStateProps {
   readonly recents: Recents;
   readonly uploads: LocalUploads;
   readonly selectedItems: SelectedItem[];
-  readonly apiUrl: string;
 }
 
 export interface UploadViewDispatchProps {
@@ -194,8 +191,7 @@ export class StatelessUploadView extends Component<
       const item = this.props.uploads[key];
       const { progress, file } = item;
       const { dataURI } = file;
-
-      const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
+      const mediaType = getMediaTypeFromMimeType(file.metadata.mimeType);
       const fileMetadata: LocalUploadFileMetadata = {
         ...file.metadata,
         mimeType: mediaType,
@@ -203,7 +199,6 @@ export class StatelessUploadView extends Component<
 
       // mimeType
       const { id } = fileMetadata;
-
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
       const onClick = () => onFileClick(fileMetadata, 'upload');
@@ -354,7 +349,6 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
   recents: state.recents,
   uploads: state.uploads,
   selectedItems: state.selectedItems,
-  apiUrl: state.apiUrl,
 });
 
 const mapDispatchToProps = (

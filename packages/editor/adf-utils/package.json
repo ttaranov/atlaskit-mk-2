@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/adf-utils",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "description": "Set of utilities to traverse, modify and create ADF documents.",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -8,19 +8,23 @@
   "files": [
     "dist",
     "builders.es.js",
+    "builders.es.d.ts",
     "builders.js",
+    "builders.d.ts",
     "traverse.es.js",
-    "traverse.js"
+    "traverse.es.d.ts",
+    "traverse.js",
+    "traverse.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Stanislav S"
   ],
   "dependencies": {
-    "@atlaskit/editor-common": "^13.0.0"
+    "@atlaskit/editor-common": "^14.0.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.0"
+    "@atlaskit/docs": "^5.0.2"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }

@@ -10,14 +10,6 @@ const defaultProps = {
   isSelected: false,
   isCompact: false,
   onClick: () => {},
-  context: {
-    isDirty: false,
-    registerResult: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-    sendAnalytics: () => {},
-    getIndex: n => Number(n),
-  },
 };
 
 /*eslint-disable */

@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { Label } from '@atlaskit/field-base';
 import { ToggleStateless } from '@atlaskit/toggle';
 
-import { LayoutManagerWithViews, NavigationProvider } from '../src';
+import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
 import { DefaultGlobalNavigation, ProjectSwitcher } from './shared/components';
 
@@ -35,7 +35,7 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
           initialPeekViewId="root/index"
           isDebugEnabled={isDebugEnabled}
         >
-          <LayoutManagerWithViews
+          <LayoutManagerWithViewController
             customComponents={{ ProjectSwitcher }}
             globalNavigation={DefaultGlobalNavigation}
           >
@@ -52,7 +52,7 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
                 onChange={this.onDebugToggle}
               />
             </div>
-          </LayoutManagerWithViews>
+          </LayoutManagerWithViewController>
         </NavigationProvider>
       </HashRouter>
     );

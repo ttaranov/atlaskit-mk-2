@@ -16,8 +16,10 @@ import { SearchIndex, mentionDescriptionComparator } from '../util/searchIndex';
 const MAX_QUERY_ITEMS = 100;
 const MAX_NOTIFIED_ITEMS = 20;
 
+export type MentionStats = { [key: string]: any };
+
 export interface ResultCallback<T> {
-  (result: T, query?: string): void;
+  (result: T, query?: string, stats?: MentionStats): void;
 }
 
 export interface ErrorCallback {
@@ -69,9 +71,10 @@ export interface ResourceProvider<Result> {
 }
 
 export type MentionContextIdentifier = {
-  containerId: string;
-  objectId: string;
+  containerId?: string;
+  objectId?: string;
   childObjectId?: string;
+  sessionId?: string;
 };
 
 export interface MentionProvider
@@ -87,6 +90,11 @@ const emptySecurityProvider = () => {
     params: {},
     headers: {},
   };
+};
+
+type SearchResponse = {
+  mentions: Promise<MentionsResult>;
+  remoteSearch: boolean;
 };
 
 class AbstractResource<Result> implements ResourceProvider<Result> {
@@ -151,7 +159,10 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]>
     return false;
   }
 
-  protected _notifyListeners(mentionsResult: MentionsResult): void {
+  protected _notifyListeners(
+    mentionsResult: MentionsResult,
+    stats?: MentionStats,
+  ): void {
     debug(
       'ak-mention-resource._notifyListeners',
       mentionsResult &&
@@ -165,6 +176,7 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]>
         listener(
           mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS),
           mentionsResult.query,
+          stats,
         );
       } catch (e) {
         // ignore error from listener
@@ -252,11 +264,19 @@ class MentionResource extends AbstractMentionResource {
     return false;
   }
 
-  notify(searchTime: number, mentionResult: MentionsResult, query?: string) {
+  notify(
+    searchTime: number,
+    mentionResult: MentionsResult,
+    query?: string,
+    remoteSearch?: boolean,
+  ) {
     this.sortMentionsResult(mentionResult).then(sortedMentionsResult => {
       if (searchTime > this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
-        this._notifyListeners(sortedMentionsResult);
+        this._notifyListeners(sortedMentionsResult, {
+          duration: Date.now() - searchTime,
+          remoteSearch,
+        });
       } else {
         const date = new Date(searchTime).toISOString().substr(17, 6);
         debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
@@ -278,13 +298,17 @@ class MentionResource extends AbstractMentionResource {
 
     if (!query) {
       this.initialState(contextIdentifier).then(
-        results => this.notify(searchTime, results, query),
+        results => this.notify(searchTime, results, query, true),
         error => this.notifyError(error, query),
       );
     } else {
       this.activeSearches.add(query);
-      this.search(query, contextIdentifier).then(
-        results => this.notify(searchTime, results, query),
+      const searchResponse = this.search(query, contextIdentifier);
+
+      searchResponse.mentions.then(
+        results => {
+          this.notify(searchTime, results, query, searchResponse.remoteSearch);
+        },
         error => this.notifyError(error, query),
       );
     }
@@ -369,39 +393,51 @@ class MentionResource extends AbstractMentionResource {
 
     return serviceUtils
       .requestService<MentionsResult>(this.config, options)
-      .then(result => this.transformServiceResponse(result))
+      .then(result => this.transformServiceResponse(result, ''))
       .then(result => {
         this.searchIndex.indexResults(result.mentions);
         return result;
       });
   }
 
+  private searchAsync(
+    query: string,
+    contextIdentifier?: MentionContextIdentifier,
+  ): void {
+    const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
+    this.remoteSearch(query, contextIdentifier).then(
+      result => {
+        this.activeSearches.delete(query);
+        this.notify(searchTime, result, query, true);
+        this.searchIndex.indexResults(result.mentions);
+      },
+      err => {
+        this._notifyErrorListeners(err);
+      },
+    );
+  }
+
   private search(
     query: string,
     contextIdentifier?: MentionContextIdentifier,
-  ): Promise<MentionsResult> {
+  ): SearchResponse {
     if (this.searchIndex.hasDocuments()) {
-      return this.searchIndex.search(query).then(result => {
-        const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
-        this.remoteSearch(query, contextIdentifier).then(
-          result => {
-            this.activeSearches.delete(query);
-            this.notify(searchTime, result, query);
-            this.searchIndex.indexResults(result.mentions);
-          },
-          err => {
-            this._notifyErrorListeners(err);
-          },
-        );
-
-        return result;
-      });
+      return {
+        mentions: this.searchIndex.search(query).then(result => {
+          this.searchAsync(query, contextIdentifier);
+          // return local search result quickly while the back-end search runs async
+          return result;
+        }),
+        remoteSearch: false, // due to be returning the local search results above
+      };
     }
-
-    return this.remoteSearch(query, contextIdentifier).then(result => {
-      this.searchIndex.indexResults(result.mentions);
-      return result;
-    });
+    return {
+      mentions: this.remoteSearch(query, contextIdentifier).then(result => {
+        this.searchIndex.indexResults(result.mentions);
+        return result;
+      }),
+      remoteSearch: true,
+    };
   }
 
   private sortMentionsResult(
@@ -432,10 +468,13 @@ class MentionResource extends AbstractMentionResource {
 
     return serviceUtils
       .requestService<MentionsResult>(this.config, options)
-      .then(result => this.transformServiceResponse(result));
+      .then(result => this.transformServiceResponse(result, query));
   }
 
-  private transformServiceResponse(result: MentionsResult): MentionsResult {
+  private transformServiceResponse(
+    result: MentionsResult,
+    query: string,
+  ): MentionsResult {
     const mentions = result.mentions.map((mention, index) => {
       let lozenge: string | undefined;
       const weight = mention.weight !== undefined ? mention.weight : index;
@@ -445,10 +484,10 @@ class MentionResource extends AbstractMentionResource {
         lozenge = mention.userType;
       }
 
-      return { ...mention, lozenge, weight };
+      return { ...mention, lozenge, weight, query };
     });
 
-    return { ...result, mentions };
+    return { ...result, mentions, query: result.query || query };
   }
 
   private recordSelection(

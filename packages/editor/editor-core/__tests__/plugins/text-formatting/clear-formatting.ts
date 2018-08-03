@@ -96,9 +96,7 @@ describe('clear-formatting', () => {
     });
 
     it('should be false if all present blocks are cleared', () => {
-      const { editorView } = editor(
-        doc(code_block({})('code{<>}block')),
-      );
+      const { editorView } = editor(doc(code_block({})('code{<>}block')));
       clearFormatting()(editorView.state, editorView.dispatch);
       expect(checkFormattingIsPresent(editorView.state)).toBe(false);
       editorView.destroy();
@@ -114,9 +112,7 @@ describe('clear-formatting', () => {
       { nodeName: 'strikeout', nodeType: strike },
     ].forEach(({ nodeName, nodeType }) => {
       it(`should clear ${nodeName} if present`, () => {
-        const { editorView } = editor(
-          doc(p(nodeType('t{<}ex{>}t'))),
-        );
+        const { editorView } = editor(doc(p(nodeType('t{<}ex{>}t'))));
 
         clearFormatting()(editorView.state, editorView.dispatch);
         expect(editorView.state.doc).toEqualDocument(
@@ -129,9 +125,7 @@ describe('clear-formatting', () => {
 
     it(`should clear text color if present`, () => {
       const blackText = textColor({ color: '#FFFFFF' });
-      const { editorView } = editor(
-        doc(p(blackText('t{<}ex{>}t'))),
-      );
+      const { editorView } = editor(doc(p(blackText('t{<}ex{>}t'))));
 
       clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
@@ -160,9 +154,7 @@ describe('clear-formatting', () => {
     });
 
     it('should remove blockquote if present', () => {
-      const { editorView } = editor(
-        doc(blockquote(p('te{<>}xt'))),
-      );
+      const { editorView } = editor(doc(blockquote(p('te{<>}xt'))));
 
       clearFormatting()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));

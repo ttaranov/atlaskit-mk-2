@@ -8,16 +8,16 @@ import { MediaApiConfig } from '@atlaskit/media-store';
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';
 const token = 'some-token';
-const serviceHost = 'some-service-host';
+const baseUrl = 'some-service-host';
 const authParams = `token=${token}&client=${clientId}`;
-const config = {
-  serviceHost,
+const config: MediaApiConfig = {
   authProvider: () =>
     Promise.resolve({
       token,
       clientId,
+      baseUrl,
     }),
-} as MediaApiConfig;
+};
 
 describe('MediaCollectionService', () => {
   let xhr: SinonFakeXMLHttpRequest;
@@ -54,7 +54,7 @@ describe('MediaCollectionService', () => {
       .then(() => {
         const request = requests[0];
         expect(request.url).toBe(
-          `${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${DEFAULT_COLLECTION_PAGE_SIZE}&${authParams}`,
+          `${baseUrl}/collection/${collectionName}/items?collection=${collectionName}&limit=${DEFAULT_COLLECTION_PAGE_SIZE}&${authParams}`,
         );
       });
 
@@ -83,7 +83,7 @@ describe('MediaCollectionService', () => {
         const request = requests[0];
 
         expect(request.url).toBe(
-          `${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${limit}&` +
+          `${baseUrl}/collection/${collectionName}/items?collection=${collectionName}&limit=${limit}&` +
             `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}&${authParams}`,
         );
       });

@@ -14,13 +14,13 @@ export const plugin = (dispatch: Dispatch) =>
   new Plugin({
     state: {
       init(config, state: EditorState) {
-        return {formattingIsPresent: checkFormattingIsPresent(state)};
+        return { formattingIsPresent: checkFormattingIsPresent(state) };
       },
       apply(tr, pluginState: ClearFormattingState, oldState, newState) {
         const formattingIsPresent = checkFormattingIsPresent(newState);
         if (formattingIsPresent !== pluginState.formattingIsPresent) {
-          dispatch(pluginKey, {formattingIsPresent});
-          return {formattingIsPresent};
+          dispatch(pluginKey, { formattingIsPresent });
+          return { formattingIsPresent };
         }
         return pluginState;
       },

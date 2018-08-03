@@ -47,7 +47,7 @@ describe('Snapshot Test: ProseMirror nodes and marks', () => {
           if (test.menuItemText) {
             await selectByTextAndClick({
               page,
-              tagName: 'span',
+              tagName: test.tagName || 'span',
               text: test.menuItemText,
             });
           }

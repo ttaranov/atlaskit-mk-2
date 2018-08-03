@@ -3,9 +3,8 @@ import { BaselineExtend, ImageWrapper, Img } from '../../styled';
 import { ZoomLevel } from '../../domain/zoomLevel';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 import { ZoomControls } from '../../zoomControls';
-import { Rectangle } from '../../domain/rectangle';
 import { Outcome } from '../../domain';
-import { computeProjection } from '../../domain/projection';
+import { Rectangle, Camera, Vector2 } from '../../domain/camera';
 
 export type Props = {
   src: string;
@@ -14,18 +13,12 @@ export type Props = {
 
 export type State = {
   zoomLevel: ZoomLevel;
-  dimensions: Outcome<
-    {
-      viewport: Rectangle;
-      img: Rectangle;
-    },
-    never
-  >;
+  camera: Outcome<Camera, never>;
 };
 
 const initialState: State = {
-  zoomLevel: new ZoomLevel(),
-  dimensions: { status: 'PENDING' },
+  zoomLevel: new ZoomLevel(1),
+  camera: { status: 'PENDING' },
 };
 
 export class InteractiveImg extends React.Component<Props, State> {
@@ -36,22 +29,15 @@ export class InteractiveImg extends React.Component<Props, State> {
   componentDidMount() {
     this.state = initialState;
   }
-
   render() {
     const { src, onClose } = this.props;
-    const { zoomLevel, dimensions } = this.state;
+    const { zoomLevel, camera } = this.state;
 
     // We use style attr instead of SC prop for perf reasons
-    let imgStyle = {};
-    if (dimensions.status === 'SUCCESSFUL') {
-      const { viewport, img } = dimensions.data;
-      const { width, height } = computeProjection(
-        img,
-        viewport,
-        zoomLevel.value,
-      );
-      imgStyle = { width, height };
-    }
+    const imgStyle =
+      camera.status === 'SUCCESSFUL'
+        ? camera.data.scaledImg(zoomLevel.value)
+        : {};
 
     return (
       <ImageWrapper
@@ -76,32 +62,34 @@ export class InteractiveImg extends React.Component<Props, State> {
       const { clientWidth, clientHeight } = this.wrapper;
       const { naturalWidth, naturalHeight } = ev.currentTarget;
       const viewport = new Rectangle(clientWidth, clientHeight);
-      const img = new Rectangle(naturalWidth, naturalHeight);
+      const originalImg = new Rectangle(naturalWidth, naturalHeight);
+      const camera = new Camera(viewport, originalImg);
       this.setState({
-        dimensions: {
+        camera: {
           status: 'SUCCESSFUL',
-          data: {
-            viewport,
-            img,
-          },
+          data: camera,
         },
+        zoomLevel: new ZoomLevel(camera.scaleDownToFit),
       });
     }
   };
 
-  private onZoomChange = (zoomLevel: ZoomLevel) => {
-    this.setState({ zoomLevel }, () => {
-      const { dimensions } = this.state;
-      if (dimensions.status === 'SUCCESSFUL' && this.wrapper) {
-        const { viewport, img } = dimensions.data;
-        const { offsetLeft, offsetTop } = computeProjection(
-          img,
-          viewport,
-          zoomLevel.value,
+  private onZoomChange = (nextZoomLevel: ZoomLevel) => {
+    const { camera } = this.state;
+    const { wrapper } = this;
+    if (wrapper && camera.status === 'SUCCESSFUL') {
+      const { scrollLeft, scrollTop } = wrapper;
+      const prevOffset = new Vector2(scrollLeft, scrollTop);
+      const prevZoomLevel = this.state.zoomLevel;
+      this.setState({ zoomLevel: nextZoomLevel }, () => {
+        const { x, y } = camera.data.scaledOffset(
+          prevOffset,
+          prevZoomLevel.value,
+          nextZoomLevel.value,
         );
-        this.wrapper.scrollLeft = offsetLeft;
-        this.wrapper.scrollTop = offsetTop;
-      }
-    });
+        wrapper.scrollLeft = x;
+        wrapper.scrollTop = y;
+      });
+    }
   };
 }

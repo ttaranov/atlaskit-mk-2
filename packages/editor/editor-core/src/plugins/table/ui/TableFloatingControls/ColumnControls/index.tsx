@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
-import { selectColumn, isTableSelected } from 'prosemirror-utils';
+import { isTableSelected } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
 import {
   ColumnContainer,
@@ -20,10 +20,11 @@ import {
   isSelectionUpdated,
 } from '../utils';
 import {
-  resetHoverSelection,
+  clearHoverSelection,
   hoverColumns,
   insertColumn,
   deleteSelectedColumns,
+  selectColumn,
 } from '../../../actions';
 
 export interface Props {
@@ -33,10 +34,13 @@ export interface Props {
   isTableHovered: boolean;
   isTableInDanger?: boolean;
   numberOfColumns?: number;
+  dangerColumns?: number[];
 }
 
 export default class ColumnControls extends Component<Props, any> {
-  state: { dangerColumns: number[] } = { dangerColumns: [] };
+  static defaultProps = {
+    dangerColumns: [],
+  };
 
   shouldComponentUpdate(nextProps, nextState) {
     const {
@@ -63,7 +67,7 @@ export default class ColumnControls extends Component<Props, any> {
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
       numberOfColumns !== nextProps.numberOfColumns ||
-      this.state.dangerColumns !== nextState.dangerColumns ||
+      this.props.dangerColumns !== nextProps.dangerColumns ||
       isSelectionUpdated(selection, nextProps.selection)
     );
   }
@@ -122,7 +126,7 @@ export default class ColumnControls extends Component<Props, any> {
       classNames.push('active');
     }
 
-    if (this.state.dangerColumns.indexOf(i) !== -1 || isTableInDanger) {
+    if (this.props.dangerColumns!.indexOf(i) !== -1 || isTableInDanger) {
       classNames.push('danger');
     }
 
@@ -173,7 +177,7 @@ export default class ColumnControls extends Component<Props, any> {
           <HeaderButton
             onMouseDown={() => this.selectColumn(i)}
             onMouseOver={() => this.hoverColumns([i])}
-            onMouseOut={this.resetHoverSelection}
+            onMouseOut={this.clearHoverSelection}
           />
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
@@ -213,7 +217,7 @@ export default class ColumnControls extends Component<Props, any> {
   private deleteColumns = () => {
     const { state, dispatch } = this.props.editorView;
     deleteSelectedColumns(state, dispatch);
-    this.resetHoverSelection();
+    this.clearHoverSelection();
   };
 
   private selectColumn = (column: number) => {
@@ -223,19 +227,17 @@ export default class ColumnControls extends Component<Props, any> {
     if (browser.ie_version === 11) {
       (editorView.dom as HTMLElement).blur();
     }
-    dispatch(selectColumn(column)(state.tr));
+    selectColumn(column)(state, dispatch);
   };
 
   private hoverColumns = (columns: number[], danger?: boolean) => {
     const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerColumns: danger ? columns : [] });
     hoverColumns(columns, danger)(state, dispatch);
   };
 
-  private resetHoverSelection = () => {
+  private clearHoverSelection = () => {
     const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerColumns: [] });
-    resetHoverSelection(state, dispatch);
+    clearHoverSelection(state, dispatch);
   };
 
   private insertColumn = (column: number) => {
