@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './JiraSearchResults';
-import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import { isEmpty } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import RecentActivities from './RecentActivities';
+import { ScreenCounter } from '../../util/ScreenCounter';
 
 export interface Props {
   query: string;
@@ -12,6 +12,16 @@ export interface Props {
   recentlyInteractedPeople: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
+}
+
+class JiraNoRecentActivity extends React.Component {
+  render() {
+    return (
+      <NoRecentActivity>
+        <p>TODO blabla text and advanced search dropdown</p>
+      </NoRecentActivity>
+    );
+  }
 }
 
 export default class PreQueryState extends React.Component<Props> {
@@ -28,12 +38,7 @@ export default class PreQueryState extends React.Component<Props> {
     if (
       [recentObjects, recentContainers, recentlyInteractedPeople].every(isEmpty)
     ) {
-      return (
-        <NoRecentActivity
-          // TODO jira advanced link
-          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
-        />
-      );
+      return <JiraNoRecentActivity />;
     }
 
     return (

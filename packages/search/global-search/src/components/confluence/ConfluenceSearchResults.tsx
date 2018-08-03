@@ -5,15 +5,11 @@ import SearchResultsState from './SearchResultsState';
 import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
 import SearchResults from '../SearchResults';
+import { ScreenCounter } from '../../util/ScreenCounter';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
-
-export interface ScreenCounter {
-  getCount(): number;
-  increment();
-}
 
 export interface Props {
   query: string;

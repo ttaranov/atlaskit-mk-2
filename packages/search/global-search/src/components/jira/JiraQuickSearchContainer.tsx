@@ -14,14 +14,13 @@ import JiraSearchResults, {
   MAX_OBJECTS,
   MAX_CONTAINERS,
   MAX_PEOPLE,
-  ScreenCounter,
 } from './JiraSearchResults';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import { handlePromiseError } from '../SearchResultsUtil';
 import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
-  SearchPerformanceTiming,
+  JiraSearchPerformanceTiming,
 } from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { take } from '../SearchResultsUtil';
@@ -31,6 +30,7 @@ import {
 } from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
+import { ScreenCounter, SearchScreenCounter } from '../../util/ScreenCounter';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -40,21 +40,6 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
-}
-
-class SearchScreenCounter implements ScreenCounter {
-  count = 1;
-  constructor() {
-    this.count = 1;
-  }
-
-  getCount() {
-    return this.count;
-  }
-
-  increment() {
-    this.count++;
-  }
 }
 
 export interface State {
@@ -135,7 +120,7 @@ export class JiraQuickSearchContainer extends React.Component<
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
-    // TODO
+    // TODO what happens when you press enter?
     // redirectToConfluenceAdvancedSearch(query);
   };
 
@@ -143,8 +128,7 @@ export class JiraQuickSearchContainer extends React.Component<
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      // TODO all the scopes
-      [Scope.JiraIssue],
+      [Scope.JiraIssue, Scope.JiraBoardFilterProject],
     );
     return results;
   }
@@ -201,7 +185,7 @@ export class JiraQuickSearchContainer extends React.Component<
   }
 
   fireShownPostQueryEvent(
-    searchPerformanceTiming: SearchPerformanceTiming,
+    searchPerformanceTiming: JiraSearchPerformanceTiming,
     resultsDetails: ShownAnalyticsAttributes,
   ) {
     const { createAnalyticsEvent } = this.props;
@@ -248,7 +232,7 @@ export class JiraQuickSearchContainer extends React.Component<
       const [
         jiraResults,
         peopleResults,
-        confSearchElapsedMs,
+        jiraSearchElapsedMs,
         peopleElapsedMs,
       ] = await Promise.all([
         jiraXpSearchPromise,
@@ -260,23 +244,21 @@ export class JiraQuickSearchContainer extends React.Component<
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            // TODO correct scopes here
             objectResults: jiraResults.get(Scope.JiraIssue),
-            containerResults: jiraResults.get(Scope.JiraIssue),
+            containerResults:
+              jiraResults.get(Scope.JiraBoardFilterProject) || [],
             peopleResults,
             isError: false,
             isLoading: false,
             keepPreQueryState: false,
           },
           () => {
-            // TODO this needs to be less conf specific (quickNavElapsedMs...)
             this.fireShownPostQueryEvent(
               {
                 startTime,
                 elapsedMs,
-                confSearchElapsedMs,
+                jiraSearchElapsedMs,
                 peopleElapsedMs,
-                quickNavElapsedMs: 100,
               },
               buildShownEventDetails(
                 take(this.state.objectResults, MAX_OBJECTS),

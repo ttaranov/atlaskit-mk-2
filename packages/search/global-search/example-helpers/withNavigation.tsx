@@ -24,6 +24,7 @@ interface State {
   locale: string;
 }
 
+// Wraps global-search in AK Navigation and offers a context/locale switch
 export default function withNavigation(
   WrappedComponent: ComponentType<Props>,
 ): ComponentType<Partial<Props>> {

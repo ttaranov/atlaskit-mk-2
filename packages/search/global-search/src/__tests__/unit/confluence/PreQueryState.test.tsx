@@ -27,7 +27,12 @@ it('should render no recent activity when there is no recent activity', () => {
     recentlyInteractedPeople: [],
   });
 
-  expect(wrapper.find(NoRecentActivity).exists()).toBe(true);
+  expect(
+    wrapper
+      .dive()
+      .find(NoRecentActivity)
+      .exists(),
+  ).toBe(true);
   expect(wrapper.find(RecentActivities).exists()).toBe(false);
 });
 

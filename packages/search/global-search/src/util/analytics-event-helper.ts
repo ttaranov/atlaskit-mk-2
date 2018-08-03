@@ -3,10 +3,10 @@ import {
   sanitizeSearchQuery,
   sanitizeContainerId,
   ShownAnalyticsAttributes,
-  SearchPerformanceTiming,
   DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
+  SearchPerformanceTiming,
 } from './analytics-util';
 import { GasPayload, EventType } from '@atlaskit/analytics-gas-types';
 import { CreateAnalyticsEventFn } from '../components/analytics/types';

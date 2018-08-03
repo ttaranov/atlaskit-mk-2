@@ -21,6 +21,8 @@ export enum Scope {
   ConfluencePageBlogAttachment = 'confluence.page,blogpost,attachment',
   ConfluenceSpace = 'confluence.space',
   JiraIssue = 'jira.issue',
+  // TODO is this the right scope?
+  JiraBoardFilterProject = 'jira.board,filter,project',
 }
 
 export interface CrossProductSearchResponse {
@@ -171,6 +173,10 @@ function mapItemToResult(
       );
     }
     case Scope.JiraIssue: {
+      return mapJiraItemToResult(item as JiraItem);
+    }
+    case Scope.JiraBoardFilterProject: {
+      // TODO map jira container to result
       return mapJiraItemToResult(item as JiraItem);
     }
     default: {

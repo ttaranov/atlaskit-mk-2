@@ -10,6 +10,10 @@ import {
   utils,
   ServiceConfig,
 } from '@atlaskit/util-service-support';
+import {
+  makeJiraObjectResult,
+  makeConfluenceContainerResult,
+} from '../__tests__/unit/_test-util';
 
 export interface JiraClient {
   getRecentObjects(searchSessionId: string): Promise<Result[]>;
@@ -27,13 +31,13 @@ export default class JiraClientImpl implements JiraClient {
     this.cloudId = cloudId;
   }
 
-  // TODO
+  // TODO replace mock data with an actual implementation s'il vous plait
   public async getRecentObjects(searchSessionId: string): Promise<Result[]> {
-    return Promise.resolve([]);
+    return Promise.resolve([makeJiraObjectResult(), makeJiraObjectResult()]);
   }
 
-  // TODO
+  // TODO remove mock data (: D: D: D:
   public async getRecentContainers(searchSessionId: string): Promise<Result[]> {
-    return Promise.resolve([]);
+    return Promise.resolve([makeConfluenceContainerResult()]);
   }
 }

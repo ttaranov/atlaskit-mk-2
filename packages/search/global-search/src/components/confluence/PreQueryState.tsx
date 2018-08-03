@@ -1,9 +1,14 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import { gridSize } from '@atlaskit/theme';
+import { akTypographyMixins } from '@atlaskit/util-shared-styles';
+
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
 import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import RecentActivities from './RecentActivities';
+import { ScreenCounter } from '../../util/ScreenCounter';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 export interface Props {
   query: string;
@@ -12,6 +17,19 @@ export interface Props {
   recentlyInteractedPeople: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
+}
+
+class ConfluenceNoRecentActivity extends React.Component {
+  render() {
+    return (
+      <NoRecentActivity>
+        <FormattedHTMLMessage
+          id="global-search.no-recent-activity-body"
+          values={{ url: getConfluenceAdvancedSearchLink() }}
+        />
+      </NoRecentActivity>
+    );
+  }
 }
 
 export default class PreQueryState extends React.Component<Props> {
@@ -32,11 +50,7 @@ export default class PreQueryState extends React.Component<Props> {
         recentlyViewedSpaces,
       ].every(isEmpty)
     ) {
-      return (
-        <NoRecentActivity
-          advancedSearchUrl={getConfluenceAdvancedSearchLink()}
-        />
-      );
+      return <ConfluenceNoRecentActivity />;
     }
 
     return (

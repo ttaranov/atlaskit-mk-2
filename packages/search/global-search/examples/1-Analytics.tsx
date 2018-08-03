@@ -42,6 +42,7 @@ const EventsList = styled.ul`
   }
 `;
 
+// TODO wrapping this with withNavigation really fucked up the styles. Needs some adjusting
 export default class extends React.Component<any, any> {
   constructor(props) {
     super(props);

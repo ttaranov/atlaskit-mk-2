@@ -14,7 +14,6 @@ import ConfluenceSearchResults, {
   MAX_PAGES_BLOGS_ATTACHMENTS,
   MAX_SPACES,
   MAX_PEOPLE,
-  ScreenCounter,
 } from './ConfluenceSearchResults';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import {
@@ -24,7 +23,7 @@ import {
 import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
-  SearchPerformanceTiming,
+  ConfluenceSearchPerformanceTiming,
 } from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { take } from '../SearchResultsUtil';
@@ -34,6 +33,7 @@ import {
 } from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
+import { ScreenCounter, SearchScreenCounter } from '../../util/ScreenCounter';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -43,21 +43,6 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
-}
-
-class SearchScreenCounter implements ScreenCounter {
-  count = 1;
-  constructor() {
-    this.count = 1;
-  }
-
-  getCount() {
-    return this.count;
-  }
-
-  increment() {
-    this.count++;
-  }
 }
 
 export interface State {
@@ -219,7 +204,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   fireShownPostQueryEvent(
-    searchPerformanceTiming: SearchPerformanceTiming,
+    searchPerformanceTiming: ConfluenceSearchPerformanceTiming,
     resultsDetails: ShownAnalyticsAttributes,
   ) {
     const { createAnalyticsEvent } = this.props;

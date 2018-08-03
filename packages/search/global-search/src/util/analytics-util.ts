@@ -20,9 +20,18 @@ export interface ShownAnalyticsAttributes {
 export interface SearchPerformanceTiming {
   startTime: number;
   elapsedMs: number;
+}
+
+export interface ConfluenceSearchPerformanceTiming
+  extends SearchPerformanceTiming {
   confSearchElapsedMs: number;
   peopleElapsedMs: number;
   quickNavElapsedMs: number;
+}
+
+export interface JiraSearchPerformanceTiming extends SearchPerformanceTiming {
+  jiraSearchElapsedMs: number;
+  peopleElapsedMs: number;
 }
 
 export interface ShownResultContextSection {

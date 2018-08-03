@@ -6,7 +6,10 @@ export default class extends React.Component {
   render() {
     return (
       <LocaleAndMessagesIntlProvider>
-        <NoResults />
+        <NoResults
+          title="No results found"
+          body="NO NO NONO N ONO NONO NO! NO! NO! NO!"
+        />
       </LocaleAndMessagesIntlProvider>
     );
   }
