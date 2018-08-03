@@ -21,6 +21,7 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
+import { EditorActions } from './../src';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -66,6 +67,7 @@ const SAVE_ACTION = () => console.log('Save');
 const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
+      tabIndex="-1"
       appearance="primary"
       onClick={() =>
         props.editorActions
@@ -77,6 +79,7 @@ const SaveAndCancelButtons = props => (
       Publish
     </Button>
     <Button
+      tabIndex="-1"
       appearance="subtle"
       // tslint:disable-next-line:jsx-no-lambda
       onClick={() => props.editorActions.clear()}
@@ -169,12 +172,20 @@ export class ExampleEditor extends React.Component<Props, State> {
             shouldFocus={false}
             disabled={this.state.disabled}
             contentComponents={
-              <TitleInput
-                placeholder="Give this page a title..."
+              <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
-                innerRef={this.handleTitleRef}
-                onFocus={this.handleTitleOnFocus}
-                onBlur={this.handleTitleOnBlur}
+                render={actions => (
+                  <TitleInput
+                    placeholder="Give this page a title..."
+                    // tslint:disable-next-line:jsx-no-lambda
+                    innerRef={this.handleTitleRef}
+                    onFocus={this.handleTitleOnFocus}
+                    onBlur={this.handleTitleOnBlur}
+                    onKeyDown={(e: KeyboardEvent) =>
+                      this.onKeyPressed(e, actions)
+                    }
+                  />
+                )}
               />
             }
             primaryToolbarComponents={
@@ -193,6 +204,16 @@ export class ExampleEditor extends React.Component<Props, State> {
       </Wrapper>
     );
   }
+  private onKeyPressed = (e: KeyboardEvent, actions: EditorActions) => {
+    if (e.key === 'Tab' && !e.shiftKey) {
+      // Move to the editor view
+      this.setState({
+        disabled: false,
+      });
+      actions.focus();
+      return false;
+    }
+  };
 
   private handleTitleOnFocus = () => this.setState({ disabled: true });
   private handleTitleOnBlur = () => this.setState({ disabled: false });
