@@ -1,5 +1,15 @@
 # @atlaskit/conversation
 
+## 9.1.3
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/reactions@13.0.5
+  - @atlaskit/editor-core@77.0.2
+  - @atlaskit/comment@6.0.6
+  - @atlaskit/editor-common@14.0.1
+  - @atlaskit/avatar@14.0.6
+
 ## 9.1.2
 
 

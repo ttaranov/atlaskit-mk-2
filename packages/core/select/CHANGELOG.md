@@ -1,5 +1,18 @@
 # @atlaskit/select
 
+## 5.0.8
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/checkbox@4.0.3
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/form@3.1.5
+
 ## 5.0.7
 - [patch] Fix bug with Popup select not opening if target was an SVG object [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)

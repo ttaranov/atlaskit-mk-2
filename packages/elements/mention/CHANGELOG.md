@@ -1,5 +1,17 @@
 # @atlaskit/mention
 
+## 15.0.5
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/analytics-next-types@3.0.1
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/lozenge@6.1.4
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
 ## 15.0.4
 - [patch] FS-2049 add userIds attribute to rendered event [a5d05bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5d05bc)
 - [none] Updated dependencies [a5d05bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5d05bc)

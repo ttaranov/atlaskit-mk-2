@@ -1,5 +1,20 @@
 # @atlaskit/datetime-picker
 
+## 6.1.1
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/select@5.0.8
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-base@11.0.3
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/calendar@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/field-range@5.0.3
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/icon@13.2.4
+
 ## 6.1.0
 - [minor] Added parseInputValue prop to datePicker and timePicker, which allows for the customisation of logic around parsing input values into the requisite date object. Also added datePickerProps and timePickerProps props to dateTimePicker to expose these two (and later other datePicker and timePicker explicit props) at the dateTimePicker level [9a75b8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a75b8b)
 - [none] Updated dependencies [9a75b8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a75b8b)
