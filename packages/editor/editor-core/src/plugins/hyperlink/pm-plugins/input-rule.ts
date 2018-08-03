@@ -54,6 +54,8 @@ export function createInputRulePlugin(schema: Schema): Plugin | undefined {
       const url = normalizeUrl(linkUrl);
       const markType = schema.mark('link', { href: url });
 
+      // TODO: do card stuff
+
       analyticsService.trackEvent(
         'atlassian.editor.format.hyperlink.autoformatting',
       );

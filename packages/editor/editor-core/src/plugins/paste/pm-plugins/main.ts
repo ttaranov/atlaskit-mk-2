@@ -37,6 +37,7 @@ import {
   transformSliceToJoinAdjacentCodeBlocks,
   transformSingleLineCodeBlockToCodeMark,
 } from '../../code-block/utils';
+import { queueCard } from '../../card/pm-plugins/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -118,12 +119,28 @@ export function createPlugin(
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
+
           if (doc && doc.content) {
+            console.log('open start', slice.openStart);
+            doc.descendants((node, pos) => {
+              const docPos =
+                state.tr.selection.from + pos - slice.openStart - 1;
+              const linkMark = node.marks.find(
+                mark => mark.type.name === 'link',
+              );
+              if (linkMark) {
+                console.log('queuing for', node, 'at', docPos);
+                queueCard(linkMark.attrs.href, docPos, 'inline')(view);
+                return false;
+              }
+            });
+
             const tr = closeHistory(state.tr);
             tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),
             );
             dispatch(tr.scrollIntoView());
+
             return true;
           }
         }
