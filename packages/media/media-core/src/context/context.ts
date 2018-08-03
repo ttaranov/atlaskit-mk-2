@@ -14,6 +14,8 @@ import {
   MediaApiConfig,
   UploadController,
   MediaStoreGetFileImageParams,
+  AuthType,
+  authProviderFromType,
 } from '@atlaskit/media-store';
 
 import {
@@ -253,6 +255,7 @@ class ContextImpl implements Context {
   uploadFile(
     file: UploadableFile,
     controller?: UploadController,
+    authType?: AuthType,
   ): Observable<FileState> {
     let fileId: string;
     // TODO [MSW-796]: get file size for base64
@@ -280,20 +283,24 @@ class ContextImpl implements Context {
           },
         });
       }
-
-      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
-        onProgress: progress => {
-          observer.next({
-            progress,
-            name,
-            size,
-            mediaType,
-            mimeType,
-            id: tempFileId,
-            status: 'uploading',
-          });
+      const authProvider = authProviderFromType(this.config, authType);
+      const { deferredFileId, cancel } = uploadFile(
+        file,
+        { authProvider },
+        {
+          onProgress: progress => {
+            observer.next({
+              progress,
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: tempFileId,
+              status: 'uploading',
+            });
+          },
         },
-      });
+      );
 
       if (controller) {
         controller.setAbort(cancel);

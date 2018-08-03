@@ -41,3 +41,5 @@ export type AuthProvider = (context?: AuthContext) => Promise<Auth>;
 export type MediaApiConfig = {
   authProvider: AuthProvider;
 };
+
+export type AuthType = 'public' | 'user';

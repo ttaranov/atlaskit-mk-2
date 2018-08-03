@@ -35,7 +35,7 @@ export interface CancellableFileUpload {
 }
 
 export class NewUploadServiceImpl implements UploadService {
-  private readonly userMediaStore: MediaStore;
+  private readonly mediaStore: MediaStore;
 
   private uploadParams: UploadParams;
 
@@ -45,13 +45,7 @@ export class NewUploadServiceImpl implements UploadService {
   constructor(private readonly context: Context, uploadParams?: UploadParams) {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
-
-    if (context.config.userAuthProvider) {
-      this.userMediaStore = new MediaStore({
-        authProvider: context.config.userAuthProvider,
-      });
-    }
-
+    this.mediaStore = new MediaStore(context.config);
     this.setUploadParams(uploadParams);
   }
 
@@ -288,9 +282,6 @@ export class NewUploadServiceImpl implements UploadService {
     sourceFileId: string,
     sourceCollection?: string,
   ): Promise<void> {
-    if (!this.userMediaStore) {
-      return Promise.resolve();
-    }
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
@@ -306,7 +297,7 @@ export class NewUploadServiceImpl implements UploadService {
         const params = {
           collection: 'recents',
         };
-        return this.userMediaStore.copyFileWithToken(body, params);
+        return this.mediaStore.copyFileWithToken(body, params, 'user');
       });
   }
 }

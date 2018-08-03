@@ -2,7 +2,7 @@ import * as uuid from 'uuid';
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 
 import { MediaStore } from './media-store';
-import { MediaApiConfig } from './models/auth';
+import { ContextConfig } from './models/auth';
 import { createHasher } from './utils/hashing/hasherCreator';
 
 // TODO: Allow to pass multiple files
@@ -55,7 +55,7 @@ const createProcessingFunction = (
 
 export const uploadFile = (
   file: UploadableFile,
-  config: MediaApiConfig,
+  config: ContextConfig,
   callbacks?: UploadFileCallbacks,
 ): UploadFileResult => {
   const { content, collection, name, mimeType } = file;

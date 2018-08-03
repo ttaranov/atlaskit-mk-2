@@ -9,7 +9,9 @@ import {
   AsapBasedAuth,
   AuthContext,
   ClientAltBasedAuth,
-  MediaApiConfig,
+  ContextConfig,
+  AuthProvider,
+  AuthType,
 } from './models/auth';
 import {
   request,
@@ -35,7 +37,7 @@ const extendImageParams = (
 };
 
 export class MediaStore {
-  constructor(private readonly config: MediaApiConfig) {}
+  constructor(private readonly config: ContextConfig) {}
 
   createCollection(
     collectionName: string,
@@ -127,15 +129,20 @@ export class MediaStore {
 
   createFile(
     params: MediaStoreCreateFileParams = {},
+    authType?: AuthType,
   ): Promise<MediaStoreResponse<EmptyFile>> {
-    return this.request('/file', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
+    return this.request(
+      '/file',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
+        params,
+        authContext: { collectionName: params.collection },
       },
-      params,
-      authContext: { collectionName: params.collection },
-    }).then(mapResponseToJson);
+      authType,
+    ).then(mapResponseToJson);
   }
 
   createFileFromBinary(
@@ -203,17 +210,22 @@ export class MediaStore {
   copyFileWithToken(
     body: MediaStoreCopyFileWithTokenBody,
     params: MediaStoreCopyFileWithTokenParams,
+    authType?: AuthType,
   ): Promise<void> {
-    return this.request('/file/copy/withToken', {
-      method: 'POST',
-      authContext: { collectionName: params.collection }, // Contains collection name to write to
-      body: JSON.stringify(body), // Contains collection name to read from
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+    return this.request(
+      '/file/copy/withToken',
+      {
+        method: 'POST',
+        authContext: { collectionName: params.collection }, // Contains collection name to write to
+        body: JSON.stringify(body), // Contains collection name to read from
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        params, // Contains collection name to write to
       },
-      params, // Contains collection name to write to
-    }).then(mapResponseToVoid);
+      authType,
+    ).then(mapResponseToVoid);
   }
 
   async request(
@@ -221,10 +233,10 @@ export class MediaStore {
     options: MediaStoreRequestOptions = {
       method: 'GET',
     },
+    authType: AuthType = 'public',
   ): Promise<Response> {
-    const { authProvider } = this.config;
     const { method, authContext, params, headers, body } = options;
-
+    const authProvider = authProviderFromType(this.config, authType);
     const auth = await authProvider(authContext);
 
     return request(`${auth.baseUrl}${path}`, {
@@ -236,6 +248,19 @@ export class MediaStore {
     });
   }
 }
+
+export const authProviderFromType = (
+  config: ContextConfig,
+  authType: AuthType = 'public',
+): AuthProvider => {
+  const authProvider =
+    authType === 'public' ? config.authProvider : config.userAuthProvider;
+  if (!authProvider) {
+    throw new Error('userAuthProvider must be provided');
+  }
+
+  return authProvider;
+};
 
 export interface MediaStoreResponse<Data> {
   readonly data: Data;
