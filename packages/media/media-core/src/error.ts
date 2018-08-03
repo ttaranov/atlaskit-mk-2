@@ -11,6 +11,6 @@ export function isCollectionNotFoundError(
   return error.name === CollectionNotFoundError.name;
 }
 
-export function isError(something: any): something is Error {
+export function isError<T>(something: T | Error): something is Error {
   return something instanceof Error;
 }

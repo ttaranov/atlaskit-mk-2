@@ -1,7 +1,7 @@
 import { FileItem, MediaApiConfig } from '../';
 import { FileService, MediaFileService } from '../services/fileService';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/publishReplay';
+import { publishReplay } from 'rxjs/operators/publishReplay';
 import { LRUCache } from 'lru-fast';
 
 export const FILE_PROVIDER_RETRY_INTERVAL = 2000;
@@ -34,35 +34,37 @@ export class FileProvider {
   ): FileProvider {
     return {
       observable() {
-        const observable = new Observable<FileItem>(subscriber => {
-          let handle: number;
-          const timeout = pollInterval || 1000;
+        const observable = publishReplay<FileItem>(1)(
+          new Observable<FileItem>(subscriber => {
+            let handle: number;
+            const timeout = pollInterval || 1000;
 
-          const fetch = () => {
-            fileService.getFileItem(fileId, collectionName).then(
-              fileItem => {
-                if (fileItem.details.processingStatus !== 'pending') {
-                  subscriber.next(fileItem);
-                  subscriber.complete();
-                } else {
-                  subscriber.next(fileItem);
-                  handle = window.setTimeout(() => fetch(), timeout);
-                }
-              },
-              error => {
-                subscriber.error(error);
-              },
-            );
-          };
+            const fetch = () => {
+              fileService.getFileItem(fileId, collectionName).then(
+                fileItem => {
+                  if (fileItem.details.processingStatus !== 'pending') {
+                    subscriber.next(fileItem);
+                    subscriber.complete();
+                  } else {
+                    subscriber.next(fileItem);
+                    handle = window.setTimeout(() => fetch(), timeout);
+                  }
+                },
+                error => {
+                  subscriber.error(error);
+                },
+              );
+            };
 
-          fetch();
+            fetch();
 
-          return () => {
-            if (handle !== null) {
-              clearTimeout(handle);
-            }
-          };
-        }).publishReplay(1);
+            return () => {
+              if (handle !== null) {
+                clearTimeout(handle);
+              }
+            };
+          }),
+        );
 
         observable.connect();
 

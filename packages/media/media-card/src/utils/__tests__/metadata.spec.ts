@@ -7,7 +7,7 @@ import {
   FileItem,
 } from '@atlaskit/media-core';
 import { UrlPreviewIdentifier, LinkIdentifier } from '../../root/domain';
-import { Observable } from 'rxjs';
+import { of as ObservableOf } from 'rxjs/observable/of';
 
 describe('metadata utils', () => {
   describe('getLinkMetadata()', () => {
@@ -37,7 +37,7 @@ describe('metadata utils', () => {
       };
       const context = {
         getUrlPreviewProvider: () => ({
-          observable: () => Observable.of(urlPreview),
+          observable: () => ObservableOf(urlPreview),
         }),
       } as any;
       const metadata = await getLinkMetadata(identifier, context);
@@ -53,7 +53,7 @@ describe('metadata utils', () => {
       };
       const context = {
         getMediaItemProvider: () => ({
-          observable: () => Observable.of(linkItem),
+          observable: () => ObservableOf(linkItem),
         }),
       } as any;
       const metadata = await getLinkMetadata(identifier, context);
@@ -72,7 +72,7 @@ describe('metadata utils', () => {
       };
       const context = {
         getMediaItemProvider: () => ({
-          observable: () => Observable.of(fileItem),
+          observable: () => ObservableOf(fileItem),
         }),
       } as any;
 

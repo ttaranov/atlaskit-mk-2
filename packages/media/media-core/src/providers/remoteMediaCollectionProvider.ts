@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/publishReplay';
+import { publishReplay } from 'rxjs/operators/publishReplay';
 
 import { MediaCollection, MediaCollectionItem } from '../collection';
 import {
@@ -17,7 +17,9 @@ export type MediaCollectionItemPredicate = (
 
 export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
   private readonly subject = new Subject<MediaCollection | Error>();
-  private readonly connectableObservable = this.subject.publishReplay(1);
+  private readonly connectableObservable = publishReplay<
+    MediaCollection | Error
+  >(1)(this.subject);
 
   private items: Array<MediaCollectionItem> = [];
   private nextInclusiveStartKey?: string = undefined;

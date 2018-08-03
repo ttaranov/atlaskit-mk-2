@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/filter';
+import { tap } from 'rxjs/operators/tap';
+import { skip } from 'rxjs/operators/skip';
+import { take } from 'rxjs/operators/take';
+import { filter } from 'rxjs/operators/filter';
 
 import { CollectionServiceStub } from '../../test-helpers/collection-service-stub';
 import { RemoteMediaCollectionProviderFactory } from '../../src/providers/remoteMediaCollectionProviderFactory';
@@ -14,9 +14,9 @@ import { CollectionNotFoundError } from '../../src/index';
 
 const defaultCollectionName = 'MediaServicesSample';
 
-function isMediaCollection(value: any): value is MediaCollection {
-  return !isError(value);
-}
+const isMediaCollection = (
+  value: MediaCollection | Error,
+): value is MediaCollection => !isError(value);
 
 describe('RemoteMediaCollectionProvider', () => {
   const pageCount = 10;
@@ -39,7 +39,7 @@ describe('RemoteMediaCollectionProvider', () => {
 
     const subscription = collectionProvider
       .observable()
-      .filter(isMediaCollection)
+      .pipe(filter(isMediaCollection))
       .subscribe({
         next: collection => {
           expect(collection.id).toBe(defaultCollectionName);
@@ -66,17 +66,18 @@ describe('RemoteMediaCollectionProvider', () => {
     // Load next page when we have finished loading the first one.
     const subscription1: Subscription = collectionProvider
       .observable()
-      .take(1)
-      .do(() => collectionProvider.loadNextPage())
+      .pipe(take(1), tap(() => collectionProvider.loadNextPage()))
       .subscribe({
         next: () => subscription1.unsubscribe(),
       });
 
     const subscription2 = collectionProvider
       .observable()
-      .filter(isMediaCollection)
-      .skip(1)
-      .take(1)
+      .pipe(
+        filter(isMediaCollection),
+        skip<MediaCollection>(1),
+        take<MediaCollection>(1),
+      )
       .subscribe({
         next: collection => {
           expect(collection.items).toHaveLength(2 * itemsPerPageCount);
@@ -125,7 +126,7 @@ describe('RemoteMediaCollectionProvider', () => {
       let firstTime = true;
       const subscription = collectionProvider
         .observable()
-        .filter(isMediaCollection)
+        .pipe(filter(isMediaCollection))
         .subscribe({
           next: collection => {
             if (firstTime) {
@@ -181,7 +182,7 @@ describe('RemoteMediaCollectionProvider', () => {
       let firstTime = true;
       const subscription = collectionProvider
         .observable()
-        .filter(isMediaCollection)
+        .pipe(filter(isMediaCollection))
         .subscribe({
           next: collection => {
             if (firstTime) {
@@ -234,7 +235,7 @@ describe('RemoteMediaCollectionProvider', () => {
       let firstTime = true;
       const subscription = collectionProvider
         .observable()
-        .filter(isMediaCollection)
+        .pipe(filter(isMediaCollection))
         .subscribe({
           next: collection => {
             if (firstTime) {
@@ -307,7 +308,7 @@ describe('RemoteMediaCollectionProvider', () => {
       let callCount = 0;
       const subscription = collectionProvider
         .observable()
-        .filter(isMediaCollection)
+        .pipe(filter(isMediaCollection))
         .subscribe({
           next: collection => {
             switch (callCount) {
@@ -402,7 +403,7 @@ describe('RemoteMediaCollectionProvider', () => {
       let callCount = 0;
       const subscription = collectionProvider
         .observable()
-        .filter(isMediaCollection)
+        .pipe(filter(isMediaCollection))
         .subscribe({
           next: collection => {
             switch (callCount) {
@@ -448,11 +449,13 @@ describe('RemoteMediaCollectionProvider', () => {
 
       return provider
         .observable()
-        .filter(isError)
-        .take(1)
-        .do(error => {
-          expect(error).toEqual(new CollectionNotFoundError());
-        })
+        .pipe(
+          filter(isError),
+          take<Error>(1),
+          tap<Error>(error => {
+            expect(error).toEqual(new CollectionNotFoundError());
+          }),
+        )
         .toPromise();
     });
 
@@ -476,11 +479,13 @@ describe('RemoteMediaCollectionProvider', () => {
 
       return provider
         .observable()
-        .filter(isError)
-        .take(1)
-        .do(error => {
-          expect(error).toEqual(someError);
-        })
+        .pipe(
+          filter(isError),
+          take<Error>(1),
+          tap<Error>(error => {
+            expect(error).toEqual(someError);
+          }),
+        )
         .toPromise();
     });
   });

@@ -1,7 +1,7 @@
 import { LinkItem, MediaApiConfig } from '../';
 import { LinkService, MediaLinkService } from '../services/linkService';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/publishReplay';
+import { publishReplay } from 'rxjs/operators/publishReplay';
 
 export interface LinkProvider {
   observable(): Observable<LinkItem>;
@@ -39,9 +39,9 @@ export class LinkProvider {
           );
 
           return () => {};
-        }).publishReplay(1);
+        });
 
-        observable.connect();
+        publishReplay(1)(observable).connect();
 
         return observable;
       },
