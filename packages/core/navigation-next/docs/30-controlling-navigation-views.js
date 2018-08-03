@@ -80,13 +80,15 @@ const jsonView = [
       { type: 'Item' before: PortfolioIcon, text: 'Portfolio' },
     ],
   },
-]`}
+];`}
 
 In this model a view is represented as an array of items. Each item in this array has a \`type\` property, a \`key\` property, and maybe an \`items\` property (if this item contains other items).
 
 A few things to note:
 
-* 
+* Some \`type\`s are built in to the package (such as, 'Item' and 'Section') and these types can be provided as a string. In the above example the Jira wordmark component isn't built-in to \`navigation-next\`, but we can provide a component as the type.
+* A view is expected to be an array of Sections. Sections should not be nested.
+* You can find a complete list of the in-built item types here. **INSERT LINK HERE AT SOME POINT**
 
 `}</ContentsProvider>
 );
