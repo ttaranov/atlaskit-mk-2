@@ -46,6 +46,7 @@
     "@atlaskit/modal-dialog": "^6.0.6",
     "@atlaskit/select": "^5.0.8",
     "@atlaskit/size-detector": "^5.0.4",
+    "@atlaskit/smart-card": "^7.0.3",
     "@atlaskit/spinner": "^9.0.5",
     "@atlaskit/task-decision": "^8.1.4",
     "@atlaskit/theme": "^5.1.3",

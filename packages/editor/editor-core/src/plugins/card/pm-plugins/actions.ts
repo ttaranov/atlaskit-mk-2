@@ -3,14 +3,12 @@ import {
   CardPluginState,
   CardAppearance,
   CardProvider,
-  CardPluginAction,
   SetProvider,
   Queue,
   Resolve,
 } from '../types';
 import { Command } from '../../../types';
 import { processRawValue } from '../../../utils';
-import { safeInsert } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 
 export const resolve = (url: string, cardData: any): Command => (

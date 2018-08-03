@@ -3,6 +3,8 @@ import { CardProvider, CardPluginState, Request } from '../types';
 import reducer from './reducers';
 import { EditorView } from 'prosemirror-view';
 import { setProvider } from './actions';
+import { ReactNodeView } from '../../../nodeviews';
+import inlineCardNodeView from '../nodeviews/inlineCard';
 
 export const pluginKey = new PluginKey('cardPlugin');
 
@@ -77,6 +79,18 @@ export const createPlugin = ({
           providerFactory.unsubscribe('cardProvider', handleProvider);
         },
       };
+    },
+
+    props: {
+      nodeViews: {
+        inlineCard: ReactNodeView.fromComponent(
+          inlineCardNodeView,
+          portalProviderAPI,
+          {
+            providerFactory,
+          },
+        ),
+      },
     },
 
     key: pluginKey,

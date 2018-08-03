@@ -123,8 +123,10 @@ export function createPlugin(
           if (doc && doc.content) {
             console.log('open start', slice.openStart);
             doc.descendants((node, pos) => {
-              const docPos =
-                state.tr.selection.from + pos - slice.openStart - 1;
+              const docPos = Math.max(
+                state.tr.selection.from + pos - slice.openStart - 1,
+                0,
+              );
               const linkMark = node.marks.find(
                 mark => mark.type.name === 'link',
               );
