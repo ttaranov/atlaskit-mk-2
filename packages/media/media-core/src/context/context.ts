@@ -1,5 +1,7 @@
 import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import { of } from 'rxjs/observable/of';
 import { Subscriber } from 'rxjs/Subscriber';
 import { defer } from 'rxjs/observable/defer';
 import { concat } from 'rxjs/operators/concat';
@@ -38,8 +40,6 @@ import {
   FileState,
   mapMediaFileToFileState,
 } from '../fileState';
-import { Observer } from 'rxjs/Observer';
-import { of as ObservableOf } from 'rxjs/observable/of';
 import FileStreamCache from './fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
@@ -177,7 +177,7 @@ class ContextImpl implements Context {
     if (mediaItem && (isMediaItemLink || isMediaItemFileAndNotPending)) {
       return {
         observable() {
-          return ObservableOf(mediaItem);
+          return of(mediaItem);
         },
       };
     }

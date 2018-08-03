@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 
 import LazilyRender from 'react-lazily-render';
 import { Observable, Subject } from 'rxjs';
-import { of as ObservableOf } from 'rxjs/observable/of';
+import { of } from 'rxjs/observable/of';
 
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import {
@@ -74,7 +74,7 @@ describe('CardList', () => {
   const contextWithInclusiveStartKey = fakeContext({
     getMediaCollectionProvider: {
       observable() {
-        return ObservableOf({
+        return of({
           items: expectedMediaItems,
           nextInclusiveStartKey: 'xyz',
         });
@@ -82,7 +82,7 @@ describe('CardList', () => {
     },
     getMediaItemProvider: {
       observable() {
-        return ObservableOf(expectedMediaItemProvider);
+        return of(expectedMediaItemProvider);
       },
     },
   }) as any;

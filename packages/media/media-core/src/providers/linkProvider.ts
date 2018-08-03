@@ -27,21 +27,23 @@ export class LinkProvider {
   ): LinkProvider {
     return {
       observable() {
-        const observable = new Observable<LinkItem>(observer => {
-          linkService.getLinkItem(linkId, collectionName).then(
-            linkItem => {
-              observer.next(linkItem);
-              observer.complete();
-            },
-            error => {
-              observer.error(error);
-            },
-          );
+        const observable = publishReplay<LinkItem>(1)(
+          new Observable<LinkItem>(observer => {
+            linkService.getLinkItem(linkId, collectionName).then(
+              linkItem => {
+                observer.next(linkItem);
+                observer.complete();
+              },
+              error => {
+                observer.error(error);
+              },
+            );
 
-          return () => {};
-        });
+            return () => {};
+          }),
+        );
 
-        publishReplay(1)(observable).connect();
+        observable.connect();
 
         return observable;
       },
