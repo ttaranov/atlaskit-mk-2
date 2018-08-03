@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.0.3
+- [patch] Remove items from toolbar if the prop is disabled [7c46965](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c46965)
+- [none] Updated dependencies [7c46965](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c46965)
+
 ## 77.0.2
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [patch] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
