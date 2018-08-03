@@ -1,32 +1,19 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 
-import React, {
-  Component,
-  PureComponent,
-  type ComponentType,
-  type Node,
-} from 'react';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
+import React, { PureComponent } from 'react';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
-import { Link, Route, withRouter } from 'react-router-dom';
-import LinkIcon from '@atlaskit/icon/glyph/link';
+import { withRouter } from 'react-router-dom';
 import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
-import {
-  GlobalNav,
-  ItemAvatar,
-  ViewRenderer,
-  UIController,
-  ViewController,
-  withNavigationUI,
-  withNavigationViewController,
-  LayoutManager,
-} from '../../src';
+import { GlobalNav, ItemAvatar } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
 const gridSize = gridSizeFn();
 
+// ==============================
+// Simple global navigation
+// ==============================
 export const DefaultGlobalNavigation = () => (
   <GlobalNav
     primaryItems={globalNavPrimaryItems}
@@ -34,35 +21,9 @@ export const DefaultGlobalNavigation = () => (
   />
 );
 
-export const JiraWordmark = () => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <JiraWordmarkLogo />
-  </div>
-);
-
-export const LinkItem = ({ components: C, to, ...props }: *) => {
-  return (
-    <Route
-      render={({ location: { pathname } }) => (
-        <C.Item
-          after={() => <LinkIcon size="small" />}
-          component={({ children, className }) => (
-            <Link className={className} to={to}>
-              {children}
-            </Link>
-          )}
-          isSelected={pathname === to}
-          {...props}
-        />
-      )}
-    />
-  );
-};
-
 // ==============================
 // Project Switcher
 // ==============================
-
 const SwitcherBefore = itemState => (
   <ItemAvatar itemState={itemState} appearance="square" />
 );
@@ -119,89 +80,3 @@ class Switcher extends PureComponent<*, *> {
   }
 }
 export const ProjectSwitcher = withRouter(Switcher);
-
-// ==============================
-// Renderers
-// ==============================
-
-const Renderer = ({ activeView }: any) => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <ViewRenderer
-      customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
-      items={activeView.data}
-    />
-  </div>
-);
-
-type ConnectedLayoutManagerProps = {
-  children: Node,
-  globalNavigation: ComponentType<{}>,
-  navigationUIController: UIController,
-  navigationViewController: ViewController,
-};
-class ConnectedLayoutManagerBase extends Component<
-  ConnectedLayoutManagerProps,
-> {
-  renderContainerNavigation = () => {
-    const {
-      navigationViewController: {
-        state: { activeView },
-      },
-    } = this.props;
-
-    return activeView && activeView.type === 'container' ? (
-      <Renderer activeView={activeView} />
-    ) : (
-      'Container skeleton goes here.'
-    );
-  };
-
-  renderProductNavigation = () => {
-    const {
-      navigationUIController: {
-        state: { isPeeking },
-      },
-      navigationViewController: {
-        state: { activeView, activePeekView },
-      },
-    } = this.props;
-
-    if (
-      activePeekView &&
-      (isPeeking || (activeView && activeView.type === 'container'))
-    ) {
-      return <Renderer activeView={activePeekView} />;
-    }
-    if (activeView && activeView.type === 'product') {
-      return <Renderer activeView={activeView} />;
-    }
-    return 'Product skeleton goes here.';
-  };
-
-  render() {
-    const {
-      children,
-      globalNavigation,
-      navigationViewController: {
-        state: { activeView },
-      },
-    } = this.props;
-
-    return (
-      <LayoutManager
-        globalNavigation={globalNavigation}
-        containerNavigation={
-          activeView && activeView.type === 'container'
-            ? this.renderContainerNavigation
-            : null
-        }
-        productNavigation={this.renderProductNavigation}
-      >
-        {children}
-      </LayoutManager>
-    );
-  }
-}
-export const ConnectedLayoutManager = withNavigationUI(
-  withNavigationViewController(ConnectedLayoutManagerBase),
-);
