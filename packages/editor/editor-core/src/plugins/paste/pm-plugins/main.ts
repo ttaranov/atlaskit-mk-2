@@ -37,6 +37,7 @@ import {
   transformSliceToJoinAdjacentCodeBlocks,
   transformSingleLineCodeBlockToCodeMark,
 } from '../../code-block/utils';
+import { queueCardFromTr } from '../../card/pm-plugins/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -118,12 +119,26 @@ export function createPlugin(
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
+
           if (doc && doc.content) {
             const tr = closeHistory(state.tr);
-            tr.replaceSelection(
-              new Slice(doc.content, slice.openStart, slice.openEnd),
+            const replacementSlice = new Slice(
+              doc.content,
+              slice.openStart,
+              slice.openEnd,
             );
+
+            // replace the selection
+            tr.replaceSelection(replacementSlice);
+
+            const remappedFrom = tr.mapping.map(state.selection.from, -1);
+            console.log('remapped from', remappedFrom);
+
             dispatch(tr.scrollIntoView());
+
+            // queue cards, ignoring any errors
+            Promise.all(queueCardFromTr(tr)(view)).catch(rejected => {});
+
             return true;
           }
         }
@@ -182,9 +197,12 @@ export function createPlugin(
                 1,
               ) as Selection);
             }
+
             dispatch(tr);
           }
 
+          // queue link cards, ignoring any errors
+          Promise.all(queueCardFromTr(tr)(view)).catch(rejected => {});
           return true;
         }
 
