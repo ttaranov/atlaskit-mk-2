@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 15.0.4
+- [patch] FS-2049 add userIds attribute to rendered event [a5d05bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5d05bc)
+- [none] Updated dependencies [a5d05bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5d05bc)
+
 ## 15.0.3
 - [patch] fixed TS errors [8eced90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8eced90)
 - [patch] fixed broken tests and added test for util/analytics [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
