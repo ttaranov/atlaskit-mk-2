@@ -60,8 +60,7 @@ export interface Props {
 }
 
 export interface State {
-  imageWidth: number;
-  imageHeight: number;
+  originalImg: Rectangle;
   imagePos: Vector2;
   imageDragStartPos: Vector2;
   cursorInitPos?: Vector2;
@@ -74,8 +73,7 @@ export interface State {
 }
 
 const defaultState = {
-  imageWidth: 0,
-  imageHeight: 0,
+  originalImg: new Rectangle(0, 0),
   imagePos: new Vector2(CONTAINER_PADDING, CONTAINER_PADDING),
   minScale: 1,
   scale: 1,
@@ -100,7 +98,7 @@ export class ImageNavigator extends Component<Props, State> {
 
   onMouseMove = (e: MouseEvent) => {
     if (this.state.isDragging) {
-      const { imageDragStartPos, scale, imageWidth, imageHeight } = this.state;
+      const { imageDragStartPos, scale, originalImg } = this.state;
       const { screenX: x, screenY: y } = e;
       const cursorInitPos = this.state.cursorInitPos || new Vector2(x, y);
       const constrainedPos = constrainPos(
@@ -108,7 +106,7 @@ export class ImageNavigator extends Component<Props, State> {
           imageDragStartPos.x + (x - cursorInitPos.x),
           imageDragStartPos.y + (y - cursorInitPos.y),
         ),
-        new Rectangle(imageWidth, imageHeight),
+        originalImg,
         scale,
       );
       this.setState({
@@ -151,18 +149,8 @@ export class ImageNavigator extends Component<Props, State> {
    * @param scale New scale in 0-100 format.
    */
   onScaleChange = (scale: number) => {
-    const {
-      imageWidth,
-      imageHeight,
-      minScale,
-      scale: currentScale,
-      imagePos,
-    } = this.state;
-    const newScale = constrainScale(
-      scale / 100,
-      minScale,
-      new Rectangle(imageWidth, imageHeight),
-    );
+    const { originalImg, minScale, scale: currentScale, imagePos } = this.state;
+    const newScale = constrainScale(scale / 100, minScale, originalImg);
     const oldScale = currentScale;
     const scaleRelation = newScale / oldScale;
     const oldCenterPixel: Vector2 = new Vector2(
@@ -178,13 +166,13 @@ export class ImageNavigator extends Component<Props, State> {
         CONTAINER_SIZE / 2 - newCenterPixel.x,
         CONTAINER_SIZE / 2 - newCenterPixel.y,
       ),
-      new Rectangle(imageWidth, imageHeight),
+      originalImg,
       newScale,
     );
-    const haveRenderedImage = !!this.state.imageWidth;
+    const haveRenderedImage = !!originalImg.width;
     if (haveRenderedImage) {
       // adjust cropped properties by scale value
-      const minSize = Math.min(imageWidth, imageHeight);
+      const minSize = Math.min(originalImg.width, originalImg.height);
       const size =
         minSize < CONTAINER_SIZE
           ? minSize
@@ -222,8 +210,7 @@ export class ImageNavigator extends Component<Props, State> {
       });
     }
     this.setState({
-      imageWidth: width,
-      imageHeight: height,
+      originalImg: new Rectangle(width, height),
       minScale: scale,
       scale,
     });
@@ -381,7 +368,7 @@ export class ImageNavigator extends Component<Props, State> {
   };
 
   renderImageCropper(dataURI: string) {
-    const { imageWidth, imagePos, scale, isDragging, minScale } = this.state;
+    const { originalImg, imagePos, scale, isDragging, minScale } = this.state;
     const { onLoad, onImageError } = this.props;
     const { onDragStarted, onImageSize, onRemoveImage } = this;
 
@@ -391,7 +378,7 @@ export class ImageNavigator extends Component<Props, State> {
         <ImageCropper
           scale={scale}
           imageSource={dataURI}
-          imageWidth={imageWidth}
+          imageWidth={originalImg.width}
           containerSize={CONTAINER_SIZE}
           isCircularMask={false}
           top={imagePos.y}

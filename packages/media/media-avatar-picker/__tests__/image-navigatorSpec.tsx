@@ -1,3 +1,5 @@
+import { Rectangle } from '../src/camera';
+
 declare var global: any; // we need define an interface for the Node global object when overwriting global objects, in this case FileReader
 import * as util from '../src/util';
 const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
@@ -142,7 +144,7 @@ describe('Image navigator', () => {
     });
 
     it('should change scale in state when slider is moved', () => {
-      component.setState({ imageWidth: 10000, imageHeight: 10000 });
+      component.setState({ originalImg: new Rectangle(10000, 10000) });
       slider()
         .props()
         .onChange(20);
@@ -230,7 +232,7 @@ describe('Image navigator', () => {
     describe('when image is scaled', () => {
       it('should call onSizeChanged with new size', () => {
         const imageWidth = 20;
-        component.setState({ imageWidth });
+        component.setState({ originalImg: new Rectangle(imageWidth, 1) });
         const { value } = slider().props();
         // decrease the slider by 5%
         slider()
@@ -242,7 +244,7 @@ describe('Image navigator', () => {
       });
       it('should call onPositionChanged with new coordinates', () => {
         const imageWidth = 20;
-        component.setState({ imageWidth });
+        component.setState({ originalImg: new Rectangle(imageWidth, 1) });
         const { value } = slider().props();
         // decrease the slider by 5%
         slider()
