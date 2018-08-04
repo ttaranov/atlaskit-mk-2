@@ -50,8 +50,7 @@ export function constrainScale(
 }
 
 export function constrainEdges(
-  x: number,
-  y: number,
+  { x, y }: Vector2,
   imageWidth: number,
   imageHeight: number,
   scale: number,

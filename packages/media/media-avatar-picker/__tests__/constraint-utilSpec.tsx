@@ -76,8 +76,7 @@ describe('Constraint Spec', () => {
 
       it('should constrain inner edges to inner crop area at full scale', () => {
         const constrainedPos = constrainEdges(
-          CONTAINER_SIZE,
-          CONTAINER_SIZE,
+          new Vector2(CONTAINER_SIZE, CONTAINER_SIZE),
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
@@ -88,8 +87,7 @@ describe('Constraint Spec', () => {
 
       it('should constrain inner edges to inner crop area at half scale', () => {
         const constrainedPos = constrainEdges(
-          CONTAINER_SIZE,
-          CONTAINER_SIZE,
+          new Vector2(CONTAINER_SIZE, CONTAINER_SIZE),
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE * 0.5,
@@ -100,8 +98,7 @@ describe('Constraint Spec', () => {
 
       it('should constrain outer edges to inner crop area at full scale', () => {
         const constrainedPos = constrainEdges(
-          IMAGE_WIDTH * -0.5,
-          IMAGE_WIDTH * -0.5,
+          new Vector2(IMAGE_WIDTH * -0.5, IMAGE_WIDTH * -0.5),
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE,
@@ -116,8 +113,7 @@ describe('Constraint Spec', () => {
 
       it('should constrain outer edges to inner crop area at half scale', () => {
         const constrainedPos = constrainEdges(
-          IMAGE_WIDTH * -0.5,
-          IMAGE_WIDTH * -0.5,
+          new Vector2(IMAGE_WIDTH * -0.5, IMAGE_WIDTH * -0.5),
           IMAGE_WIDTH,
           IMAGE_HEIGHT,
           SCALE * 0.5,

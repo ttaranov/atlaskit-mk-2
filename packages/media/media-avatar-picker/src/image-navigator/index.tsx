@@ -180,8 +180,10 @@ export class ImageNavigator extends Component<Props, State> {
       scaleRelation * oldCenterPixel.y,
     );
     const newPos = constrainEdges(
-      CONTAINER_SIZE / 2 - newCenterPixel.x,
-      CONTAINER_SIZE / 2 - newCenterPixel.y,
+      new Vector2(
+        CONTAINER_SIZE / 2 - newCenterPixel.x,
+        CONTAINER_SIZE / 2 - newCenterPixel.y,
+      ),
       imageWidth,
       imageHeight,
       newScale,
