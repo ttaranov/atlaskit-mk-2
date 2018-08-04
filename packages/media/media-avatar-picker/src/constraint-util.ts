@@ -3,12 +3,11 @@ import {
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
 } from './image-navigator';
-import { Vector2 } from './camera';
+import { Rectangle, Vector2 } from './camera';
 
 export function constrainPos(
   { x, y }: Vector2,
-  width: number,
-  height: number,
+  { width, height }: Rectangle,
   scale: number,
 ): Vector2 {
   const scaledSize = {

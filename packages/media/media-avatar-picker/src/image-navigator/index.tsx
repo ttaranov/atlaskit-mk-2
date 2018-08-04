@@ -28,7 +28,7 @@ import {
 import { dataURItoFile, fileSizeMb } from '../util';
 import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
 import { Ellipsify } from '@atlaskit/media-ui';
-import { Vector2 } from '../camera';
+import { Rectangle, Vector2 } from '../camera';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 export const CONTAINER_INNER_SIZE = akGridSizeUnitless * 25;
@@ -109,8 +109,7 @@ export class ImageNavigator extends Component<Props, State> {
           imageDragStartPos.x + (x - cursorInitPos.x),
           imageDragStartPos.y + (y - cursorInitPos.y),
         ),
-        imageWidth,
-        imageHeight,
+        new Rectangle(imageWidth, imageHeight),
         scale,
       );
       this.setState({

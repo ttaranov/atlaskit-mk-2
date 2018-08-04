@@ -8,7 +8,7 @@ import {
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
 } from '../src/image-navigator';
-import { Vector2 } from '../src/camera';
+import { Rectangle, Vector2 } from '../src/camera';
 
 const IMAGE_WIDTH = 400;
 const IMAGE_HEIGHT = 400;
@@ -20,8 +20,7 @@ describe('Constraint Spec', () => {
       it('should return same coords when at origin position', () => {
         const constrainedPos = constrainPos(
           new Vector2(0, 0),
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
           SCALE,
         );
         expect(constrainedPos.x).toBe(0);
@@ -31,8 +30,7 @@ describe('Constraint Spec', () => {
       it('should return same coords when at middle position', () => {
         const constrainedPos = constrainPos(
           new Vector2(-75, -75),
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
           SCALE,
         );
         expect(constrainedPos.x).toBe(-75);
@@ -42,8 +40,7 @@ describe('Constraint Spec', () => {
       it('should return same coords when at corner position', () => {
         const constrainedPos = constrainPos(
           new Vector2(-100, -100),
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
           SCALE,
         );
         expect(constrainedPos.x).toBe(-100);
@@ -55,8 +52,7 @@ describe('Constraint Spec', () => {
       it('should return constrained coords when greater than origin position', () => {
         const constrainedPos = constrainPos(
           new Vector2(10, 10),
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
           SCALE,
         );
         expect(constrainedPos.x).toBe(10);
@@ -66,8 +62,7 @@ describe('Constraint Spec', () => {
       it('should return constrained coords when greater than corner position', () => {
         const constrainedPos = constrainPos(
           new Vector2(-105, -105),
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
           SCALE,
         );
         expect(constrainedPos.x).toBe(-105);
