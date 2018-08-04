@@ -126,12 +126,14 @@ export class ImageNavigator extends Component<Props, State> {
     });
   };
 
-  exportedImagePos({ x, y }: Vector2): Vector2 {
+  exportedImagePos(pos: Vector2): Vector2 {
     const { scale } = this.state;
-    return new Vector2(
-      Math.round(Math.abs((x * scale - CONTAINER_PADDING) * (1.0 / scale))),
-      Math.round(Math.abs((y * scale - CONTAINER_PADDING) * (1.0 / scale))),
-    );
+    return pos
+      .scaled(scale)
+      .sub(new Vector2(CONTAINER_PADDING, CONTAINER_PADDING))
+      .scaled(1.0 / scale)
+      .map(Math.abs)
+      .map(Math.round);
   }
 
   onDragStarted = () => {
