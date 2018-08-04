@@ -151,19 +151,11 @@ export class ImageNavigator extends Component<Props, State> {
     const newScale = constrainScale(scale / 100, minScale, originalImg);
     const oldScale = currentScale;
     const scaleRelation = newScale / oldScale;
-    const oldCenterPixel: Vector2 = new Vector2(
-      CONTAINER_SIZE / 2 - imagePos.x,
-      CONTAINER_SIZE / 2 - imagePos.y,
-    );
-    const newCenterPixel: Vector2 = new Vector2(
-      scaleRelation * oldCenterPixel.x,
-      scaleRelation * oldCenterPixel.y,
-    );
+    const containerRect = new Rectangle(CONTAINER_SIZE, CONTAINER_SIZE);
+    const oldCenterPixel = containerRect.center.sub(imagePos);
+    const newCenterPixel: Vector2 = oldCenterPixel.scaled(scaleRelation);
     const newPos = constrainEdges(
-      new Vector2(
-        CONTAINER_SIZE / 2 - newCenterPixel.x,
-        CONTAINER_SIZE / 2 - newCenterPixel.y,
-      ),
+      containerRect.center.sub(newCenterPixel),
       originalImg,
       newScale,
     );
@@ -175,10 +167,8 @@ export class ImageNavigator extends Component<Props, State> {
         minSize < CONTAINER_SIZE
           ? minSize
           : Math.round(CONTAINER_INNER_SIZE / newScale);
-      const { x: exportedPosX, y: exportedPosY } = this.exportedImagePos(
-        new Vector2(newPos.x / newScale, newPos.y / newScale),
-      );
-      this.props.onPositionChanged(exportedPosX, exportedPosY);
+      const exportedPos = this.exportedImagePos(newPos.scaled(1 / newScale));
+      this.props.onPositionChanged(exportedPos.x, exportedPos.y);
       this.props.onSizeChanged(size);
     }
     this.setState({
