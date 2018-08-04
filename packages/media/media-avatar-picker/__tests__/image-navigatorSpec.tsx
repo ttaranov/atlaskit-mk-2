@@ -142,6 +142,7 @@ describe('Image navigator', () => {
     });
 
     it('should change scale in state when slider is moved', () => {
+      component.setState({ imageWidth: 10000, imageHeight: 10000 });
       slider()
         .props()
         .onChange(20);

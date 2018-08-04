@@ -60,8 +60,8 @@ export interface Props {
 }
 
 export interface State {
-  imageWidth?: number;
-  imageHeight?: number;
+  imageWidth: number;
+  imageHeight: number;
   imagePos: Vector2;
   imageDragStartPos: Vector2;
   cursorInitPos?: Vector2;
@@ -74,7 +74,8 @@ export interface State {
 }
 
 const defaultState = {
-  imageWidth: undefined,
+  imageWidth: 0,
+  imageHeight: 0,
   imagePos: new Vector2(CONTAINER_PADDING, CONTAINER_PADDING),
   minScale: 1,
   scale: 1,
@@ -99,9 +100,7 @@ export class ImageNavigator extends Component<Props, State> {
 
   onMouseMove = (e: MouseEvent) => {
     if (this.state.isDragging) {
-      const { imageDragStartPos, scale } = this.state;
-      const imageWidth = this.state.imageWidth as number;
-      const imageHeight = this.state.imageHeight as number;
+      const { imageDragStartPos, scale, imageWidth, imageHeight } = this.state;
       const { screenX: x, screenY: y } = e;
       const cursorInitPos = this.state.cursorInitPos || new Vector2(x, y);
       const constrainedPos = constrainPos(
@@ -153,14 +152,12 @@ export class ImageNavigator extends Component<Props, State> {
    */
   onScaleChange = (scale: number) => {
     const {
-      imageWidth: imgWidth,
-      imageHeight: imgHeight,
+      imageWidth,
+      imageHeight,
       minScale: mScale,
       scale: currentScale,
       imagePos,
     } = this.state;
-    const imageWidth = imgWidth as number;
-    const imageHeight = imgHeight as number;
     const minScale = mScale as number;
     const newScale = constrainScale(
       scale / 100,
