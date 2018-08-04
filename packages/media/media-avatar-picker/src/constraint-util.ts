@@ -6,8 +6,7 @@ import {
 import { Vector2 } from './camera';
 
 export function constrainPos(
-  x: number,
-  y: number,
+  { x, y }: Vector2,
   width: number,
   height: number,
   scale: number,

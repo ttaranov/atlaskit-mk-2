@@ -105,8 +105,10 @@ export class ImageNavigator extends Component<Props, State> {
       const { screenX: x, screenY: y } = e;
       const cursorInitPos = this.state.cursorInitPos || new Vector2(x, y);
       const constrainedPos = constrainPos(
-        imageDragStartPos.x + (x - cursorInitPos.x),
-        imageDragStartPos.y + (y - cursorInitPos.y),
+        new Vector2(
+          imageDragStartPos.x + (x - cursorInitPos.x),
+          imageDragStartPos.y + (y - cursorInitPos.y),
+        ),
         imageWidth,
         imageHeight,
         scale,
