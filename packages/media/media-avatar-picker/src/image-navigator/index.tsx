@@ -116,8 +116,10 @@ export class ImageNavigator extends Component<Props, State> {
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
     const exportedPos = this.exportedImagePos(
-      Math.round(imagePos.x / scale),
-      Math.round(imagePos.y / scale),
+      new Vector2(
+        Math.round(imagePos.x / scale),
+        Math.round(imagePos.y / scale),
+      ),
     );
     this.props.onPositionChanged(exportedPos.x, exportedPos.y);
     this.setState({
@@ -127,7 +129,7 @@ export class ImageNavigator extends Component<Props, State> {
     });
   };
 
-  exportedImagePos(x: number, y: number): Vector2 {
+  exportedImagePos({ x, y }: Vector2): Vector2 {
     const { scale } = this.state;
     return new Vector2(
       Math.round(Math.abs((x * scale - CONTAINER_PADDING) * (1.0 / scale))),
@@ -175,8 +177,7 @@ export class ImageNavigator extends Component<Props, State> {
           ? minSize
           : Math.round(CONTAINER_INNER_SIZE / newScale);
       const { x: exportedPosX, y: exportedPosY } = this.exportedImagePos(
-        newPos.x / newScale,
-        newPos.y / newScale,
+        new Vector2(newPos.x / newScale, newPos.y / newScale),
       );
       this.props.onPositionChanged(exportedPosX, exportedPosY);
       this.props.onSizeChanged(size);
