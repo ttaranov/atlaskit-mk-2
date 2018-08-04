@@ -49,8 +49,7 @@ export function constrainScale(
 
 export function constrainEdges(
   { x, y }: Vector2,
-  imageWidth: number,
-  imageHeight: number,
+  { width: imageWidth, height: imageHeight }: Rectangle,
   scale: number,
 ): Vector2 {
   const width = imageWidth * scale;

@@ -182,8 +182,7 @@ export class ImageNavigator extends Component<Props, State> {
         CONTAINER_SIZE / 2 - newCenterPixel.x,
         CONTAINER_SIZE / 2 - newCenterPixel.y,
       ),
-      imageWidth,
-      imageHeight,
+      new Rectangle(imageWidth, imageHeight),
       newScale,
     );
     const haveRenderedImage = !!this.state.imageWidth;
