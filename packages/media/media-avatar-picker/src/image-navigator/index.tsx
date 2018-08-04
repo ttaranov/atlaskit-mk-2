@@ -99,13 +99,10 @@ export class ImageNavigator extends Component<Props, State> {
   onMouseMove = (e: MouseEvent) => {
     if (this.state.isDragging) {
       const { imageDragStartPos, scale, originalImg } = this.state;
-      const { screenX: x, screenY: y } = e;
-      const cursorInitPos = this.state.cursorInitPos || new Vector2(x, y);
+      const currentPos = new Vector2(e.screenX, e.screenY);
+      const cursorInitPos = this.state.cursorInitPos || currentPos;
       const constrainedPos = constrainPos(
-        new Vector2(
-          imageDragStartPos.x + (x - cursorInitPos.x),
-          imageDragStartPos.y + (y - cursorInitPos.y),
-        ),
+        imageDragStartPos.add(currentPos.sub(cursorInitPos)),
         originalImg,
         scale,
       );
