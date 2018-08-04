@@ -48,7 +48,7 @@ export class ImageViewer extends React.Component<
 
   render() {
     const { onClose } = this.props;
-    return Outcome.match(this.state.objectUrl, {
+    return this.state.objectUrl.match({
       pending: () => <Spinner />,
       successful: objectUrl => (
         <InteractiveImg src={objectUrl} onClose={onClose} />
@@ -113,7 +113,7 @@ export class ImageViewer extends React.Component<
       this.cancelImageFetch();
     }
 
-    Outcome.whenSuccessful(this.state.objectUrl, objectUrl => {
+    this.state.objectUrl.whenSuccessful(objectUrl => {
       this.revokeObjectUrl(objectUrl);
     });
   }

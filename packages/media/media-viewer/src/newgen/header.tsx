@@ -100,7 +100,7 @@ export default class Header extends React.Component<Props, State> {
       />
     );
 
-    return Outcome.match(item, {
+    return item.match({
       pending: () => disabledDownloadButton,
       failed: () => disabledDownloadButton,
       successful: item => (
@@ -128,7 +128,7 @@ export default class Header extends React.Component<Props, State> {
 
   private renderMetadata() {
     const { item } = this.state;
-    return Outcome.match(item, {
+    return item.match({
       successful: item => this.renderMetadataLayout(item),
       pending: () => null,
       failed: () => null,

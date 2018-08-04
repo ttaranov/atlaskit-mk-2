@@ -80,13 +80,12 @@ export class DocViewer extends React.Component<Props, State> {
   render() {
     const { onClose } = this.props;
     const { PDFComponent } = DocViewer;
-    const { src } = this.state;
 
     if (!PDFComponent) {
       return <Spinner />;
     }
 
-    return Outcome.match(src, {
+    return this.state.src.match({
       pending: () => <Spinner />,
       successful: src => <PDFComponent src={src} onClose={onClose} />,
       failed: err => (

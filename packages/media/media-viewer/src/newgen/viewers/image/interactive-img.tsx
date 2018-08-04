@@ -60,7 +60,7 @@ export class InteractiveImg extends React.Component<Props, State> {
     const { zoomLevel, camera } = this.state;
 
     // We use style attr instead of SC prop for perf reasons
-    const imgStyle = Outcome.match(camera, {
+    const imgStyle = camera.match({
       successful: camera => camera.scaledImg(zoomLevel.value),
       pending: () => ({}),
       failed: () => ({}),
@@ -97,7 +97,7 @@ export class InteractiveImg extends React.Component<Props, State> {
   };
 
   private onResize = () => {
-    Outcome.whenSuccessful(this.state.camera, oldCamera => {
+    this.state.camera.whenSuccessful(oldCamera => {
       if (!this.wrapper) {
         return;
       }
@@ -119,7 +119,7 @@ export class InteractiveImg extends React.Component<Props, State> {
   };
 
   private onZoomChange = (nextZoomLevel: ZoomLevel) => {
-    Outcome.whenSuccessful(this.state.camera, camera => {
+    this.state.camera.whenSuccessful(camera => {
       const { wrapper } = this;
       if (!wrapper) {
         return;

@@ -1,4 +1,4 @@
-export type Outcome<Data, Err = Error> =
+export type State<Data, Err> =
   | {
       status: 'PENDING';
     }
@@ -11,87 +11,93 @@ export type Outcome<Data, Err = Error> =
       err: Err;
     };
 
-export const Outcome = {
-  successful<Data, Err>(data: Data): Outcome<Data, Err> {
-    return { status: 'SUCCESSFUL', data };
-  },
+export class Outcome<Data, Err = Error> {
+  private constructor(private readonly state: State<Data, Err>) {}
 
-  pending<Data, Err>(): Outcome<Data, Err> {
-    return { status: 'PENDING' };
-  },
+  static successful<Data, Err>(data: Data): Outcome<Data, Err> {
+    return new Outcome({ status: 'SUCCESSFUL', data });
+  }
 
-  failed<Data, Err>(err: Err): Outcome<Data, Err> {
-    return { status: 'FAILED', err };
-  },
+  static pending<Data, Err>(): Outcome<Data, Err> {
+    return new Outcome({ status: 'PENDING' });
+  }
 
-  whenSuccessful<Data, Err>(
-    outcome: Outcome<Data, Err>,
-    successful: (data: Data) => void,
-  ): void {
-    if (outcome.status === 'SUCCESSFUL') {
-      successful(outcome.data);
+  static failed<Data, Err>(err: Err): Outcome<Data, Err> {
+    return new Outcome({ status: 'FAILED', err });
+  }
+
+  get status(): 'PENDING' | 'SUCCESSFUL' | 'FAILED' {
+    return this.state.status;
+  }
+
+  get data(): Data | undefined {
+    if (this.state.status === 'SUCCESSFUL') {
+      return this.state.data;
+    } else {
+      return;
     }
-  },
+  }
 
-  whenPending<Data, Err>(
-    outcome: Outcome<Data, Err>,
-    pending: () => void,
-  ): void {
-    if (outcome.status === 'PENDING') {
+  get err(): Err | undefined {
+    if (this.state.status === 'FAILED') {
+      return this.state.err;
+    } else {
+      return;
+    }
+  }
+
+  whenSuccessful(successful: (data: Data) => void): void {
+    if (this.state.status === 'SUCCESSFUL') {
+      successful(this.state.data);
+    }
+  }
+
+  whenPending(pending: () => void): void {
+    if (this.state.status === 'PENDING') {
       pending();
     }
-  },
+  }
 
-  whenFailed<Data, Err>(
-    outcome: Outcome<Data, Err>,
-    failed: (err: Err) => void,
-  ): void {
-    if (outcome.status === 'FAILED') {
-      failed(outcome.err);
+  whenFailed(failed: (err: Err) => void): void {
+    if (this.state.status === 'FAILED') {
+      failed(this.state.err);
     }
-  },
+  }
 
-  match<Data, Err, Result>(
-    outcome: Outcome<Data, Err>,
-    {
-      successful,
-      pending,
-      failed,
-    }: {
-      successful: (data: Data) => Result;
-      pending: () => Result;
-      failed: (err: Err) => Result;
-    },
-  ): Result {
-    switch (outcome.status) {
+  match<Result>({
+    successful,
+    pending,
+    failed,
+  }: {
+    successful: (data: Data) => Result;
+    pending: () => Result;
+    failed: (err: Err) => Result;
+  }): Result {
+    switch (this.state.status) {
       case 'SUCCESSFUL':
-        return successful(outcome.data);
+        return successful(this.state.data);
       case 'PENDING':
         return pending();
       case 'FAILED':
-        return failed(outcome.err);
+        return failed(this.state.err);
     }
-  },
+  }
 
-  mapSuccessful<Data, Err, MappedData>(
-    outcome: Outcome<Data, Err>,
+  mapSuccessful<MappedData>(
     map: (data: Data) => MappedData,
   ): Outcome<MappedData, Err> {
-    if (outcome.status === 'SUCCESSFUL') {
-      return Outcome.successful(map(outcome.data));
+    if (this.state.status === 'SUCCESSFUL') {
+      return Outcome.successful(map(this.state.data));
     } else {
-      return outcome;
+      return new Outcome<MappedData, Err>(this.state);
     }
-  },
+  }
 
-  mapFailed<Data, Err, MappedErr>(
-    outcome: Outcome<Data, Err>,
-    map: (err: Err) => MappedErr,
-  ): Outcome<Data, MappedErr> {
-    if (outcome.status === 'FAILED') {
-      return Outcome.failed(map(outcome.err));
+  mapFailed<MappedErr>(map: (err: Err) => MappedErr): Outcome<Data, MappedErr> {
+    if (this.state.status === 'FAILED') {
+      return Outcome.failed(map(this.state.err));
     } else {
-      return outcome;
+      return new Outcome(this.state);
     }
-  },
-};
+  }
+}

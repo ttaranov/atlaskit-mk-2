@@ -45,7 +45,7 @@ export class VideoViewer extends React.Component<Props, State> {
     const useCustomVideoPlayer =
       !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
     const isAutoPlay = previewCount === 0;
-    return Outcome.match(this.state.src, {
+    return this.state.src.match({
       pending: () => <Spinner />,
       successful: src =>
         useCustomVideoPlayer ? (

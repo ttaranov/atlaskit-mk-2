@@ -51,8 +51,7 @@ export class AudioViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { src } = this.state;
-    return Outcome.match(src, {
+    return this.state.src.match({
       pending: () => <Spinner />,
       successful: src => this.renderPlayer(src),
       failed: err => (

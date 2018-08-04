@@ -55,7 +55,7 @@ export class ItemViewer extends React.Component<Props, State> {
       previewCount,
     } = this.props;
 
-    return Outcome.match(this.state.item, {
+    return this.state.item.match({
       successful: item => {
         const itemUnwrapped = item;
         const viewerProps = {

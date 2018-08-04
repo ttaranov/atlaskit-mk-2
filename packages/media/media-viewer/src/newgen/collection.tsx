@@ -58,7 +58,7 @@ export class Collection extends React.Component<Props, State> {
       showControls,
     } = this.props;
 
-    return Outcome.match(this.state.items, {
+    return this.state.items.match({
       pending: () => <Spinner />,
       successful: items => {
         const identifiers = items.map(x => toIdentifier(x, collectionName));
@@ -134,10 +134,12 @@ export class Collection extends React.Component<Props, State> {
 
   private shouldLoadNext(selectedItem: Identifier): boolean {
     const { items } = this.state;
-    if (items.status !== 'SUCCESSFUL' || items.data.length === 0) {
-      return false;
-    }
-    return this.isLastItem(selectedItem, items.data);
+    return items.match({
+      pending: () => false,
+      failed: () => false,
+      successful: items =>
+        items.length !== 0 && this.isLastItem(selectedItem, items),
+    });
   }
 
   private isLastItem(selectedItem: Identifier, items: MediaCollectionItem[]) {

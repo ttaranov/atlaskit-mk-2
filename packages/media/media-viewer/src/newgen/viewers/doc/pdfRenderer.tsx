@@ -144,7 +144,7 @@ export class PDFRenderer extends React.Component<Props, State> {
   };
 
   render() {
-    return Outcome.match(this.state.doc, {
+    return this.state.doc.match({
       pending: () => <Spinner />,
       successful: () => (
         <PDFWrapper innerRef={this.savePdfElement}>
