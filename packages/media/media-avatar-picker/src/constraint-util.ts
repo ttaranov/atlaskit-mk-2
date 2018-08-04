@@ -3,11 +3,7 @@ import {
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
 } from './image-navigator';
-
-export interface ImagePosition {
-  x: number;
-  y: number;
-}
+import { Vector2 } from './camera';
 
 export function constrainPos(
   x: number,
@@ -15,22 +11,22 @@ export function constrainPos(
   width: number,
   height: number,
   scale: number,
-): ImagePosition {
+): Vector2 {
   const scaledSize = {
     width: width * scale,
     height: height * scale,
   };
 
-  return {
-    x: Math.min(
+  return new Vector2(
+    Math.min(
       Math.max(CONTAINER_SIZE - CONTAINER_PADDING - scaledSize.width, x),
       CONTAINER_PADDING,
     ),
-    y: Math.min(
+    Math.min(
       Math.max(CONTAINER_SIZE - CONTAINER_PADDING - scaledSize.height, y),
       CONTAINER_PADDING,
     ),
-  };
+  );
 }
 
 export function constrainScale(
@@ -60,7 +56,7 @@ export function constrainEdges(
   imageWidth: number,
   imageHeight: number,
   scale: number,
-): ImagePosition {
+): Vector2 {
   const width = imageWidth * scale;
   const height = imageHeight * scale;
   const newPos = {
@@ -83,5 +79,5 @@ export function constrainEdges(
   if (deltaNearY > 0) {
     newPos.y = CONTAINER_PADDING;
   }
-  return newPos;
+  return new Vector2(newPos.x, newPos.y);
 }

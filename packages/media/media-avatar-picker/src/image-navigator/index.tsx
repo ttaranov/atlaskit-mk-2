@@ -104,14 +104,13 @@ export class ImageNavigator extends Component<Props, State> {
       const imageHeight = this.state.imageHeight as number;
       const { screenX: x, screenY: y } = e;
       const cursorInitPos = this.state.cursorInitPos || new Vector2(x, y);
-      const t = constrainPos(
+      const constrainedPos = constrainPos(
         imageDragStartPos.x + (x - cursorInitPos.x),
         imageDragStartPos.y + (y - cursorInitPos.y),
         imageWidth,
         imageHeight,
         scale,
       );
-      const constrainedPos = new Vector2(t.x, t.y);
       this.setState({
         cursorInitPos,
         imagePos: constrainedPos,
@@ -178,14 +177,13 @@ export class ImageNavigator extends Component<Props, State> {
       scaleRelation * oldCenterPixel.x,
       scaleRelation * oldCenterPixel.y,
     );
-    const t = constrainEdges(
+    const newPos = constrainEdges(
       CONTAINER_SIZE / 2 - newCenterPixel.x,
       CONTAINER_SIZE / 2 - newCenterPixel.y,
       imageWidth,
       imageHeight,
       newScale,
     );
-    const newPos = new Vector2(t.x, t.y);
     const haveRenderedImage = !!this.state.imageWidth;
     if (haveRenderedImage) {
       // adjust cropped properties by scale value
