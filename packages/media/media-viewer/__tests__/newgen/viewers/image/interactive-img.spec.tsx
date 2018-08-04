@@ -2,6 +2,7 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import * as jsc from 'jsverify';
 import Button from '@atlaskit/button';
+import { createMouseEvent } from '@atlaskit/media-test-helpers';
 import {
   InteractiveImg,
   zoomLevelAfterResize,
@@ -115,6 +116,88 @@ describe('InteractiveImg', () => {
     } = el.state();
     expect(actualCamera.viewport).toEqual(newViewport);
     expect(actualZoomLevel.value).toEqual(expectedZoomLevel.value);
+  });
+
+  describe('drag and drop', () => {
+    it('the image will not move before a mousedown event', () => {
+      const { el } = createFixture();
+      const wrapper = el.find(ImageWrapper).getDOMNode();
+      const { scrollLeft: oldScrollLeft, scrollTop: oldScrollTop } = wrapper;
+      const mouseMove = createMouseEvent('mousemove', {
+        screenX: 300,
+        screenY: 200,
+      });
+      document.dispatchEvent(mouseMove);
+      expect(wrapper.scrollLeft).toEqual(oldScrollLeft);
+      expect(wrapper.scrollTop).toEqual(oldScrollTop);
+    });
+
+    it('the image will move after a mousedown event', () => {
+      const { el } = createFixture();
+
+      el.find(Img).simulate('mousedown', { screenX: 100, screenY: 100 });
+
+      const wrapper = el.find(ImageWrapper).getDOMNode();
+      const { scrollLeft: oldScrollLeft, scrollTop: oldScrollTop } = wrapper;
+
+      const mouseMove = createMouseEvent('mousemove', {
+        screenX: 300,
+        screenY: 200,
+      });
+      document.dispatchEvent(mouseMove);
+
+      expect(wrapper.scrollLeft).not.toEqual(oldScrollLeft);
+      expect(wrapper.scrollTop).not.toEqual(oldScrollTop);
+    });
+
+    it('the image will stop moving after a mouseup event', () => {
+      const { el } = createFixture();
+
+      el.find(Img).simulate('mousedown', { screenX: 100, screenY: 100 });
+      const mouseUp = createMouseEvent('mouseup');
+      document.dispatchEvent(mouseUp);
+
+      const wrapper = el.find(ImageWrapper).getDOMNode();
+      const { scrollLeft: oldScrollLeft, scrollTop: oldScrollTop } = wrapper;
+
+      const mouseMove = createMouseEvent('mousemove', {
+        screenX: 300,
+        screenY: 200,
+      });
+      document.dispatchEvent(mouseMove);
+
+      expect(wrapper.scrollLeft).toEqual(oldScrollLeft);
+      expect(wrapper.scrollTop).toEqual(oldScrollTop);
+    });
+
+    it('the image will be draggable when it is zoomed larger than the screen', () => {
+      const { el, camera } = createFixture();
+      const zoomLevel = new ZoomLevel(camera.scaleToFit * 1.5);
+      el.setState({ zoomLevel });
+      expect(el.find(Img).prop('canDrag')).toEqual(true);
+    });
+
+    it('the image will not be draggable when it is zoomed smaller than or equal to the screen', () => {
+      const { el, camera } = createFixture();
+      const zoomLevel = new ZoomLevel(camera.scaleToFit);
+      el.setState({ zoomLevel });
+      expect(el.find(Img).prop('canDrag')).toEqual(false);
+    });
+
+    it('the image will be marked as isDragging when it is being dragged', () => {
+      const { el, camera } = createFixture();
+      const zoomLevel = new ZoomLevel(camera.scaleToFit * 1.5);
+      el.setState({ zoomLevel });
+      el.find(Img).simulate('mousedown', { screenX: 100, screenY: 100 });
+      expect(el.find(Img).prop('isDragging')).toEqual(true);
+    });
+
+    it('the image will not be marked as isDragging when it is not being dragged', () => {
+      const { el, camera } = createFixture();
+      const zoomLevel = new ZoomLevel(camera.scaleToFit * 1.5);
+      el.setState({ zoomLevel });
+      expect(el.find(Img).prop('isDragging')).toEqual(false);
+    });
   });
 });
 
