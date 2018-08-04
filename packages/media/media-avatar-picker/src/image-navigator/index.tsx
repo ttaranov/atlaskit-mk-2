@@ -165,8 +165,7 @@ export class ImageNavigator extends Component<Props, State> {
     const newScale = constrainScale(
       scale / 100,
       minScale,
-      imageWidth,
-      imageHeight,
+      new Rectangle(imageWidth, imageHeight),
     );
     const oldScale = currentScale;
     const scaleRelation = newScale / oldScale;

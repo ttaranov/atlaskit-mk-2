@@ -30,8 +30,7 @@ export function constrainPos(
 export function constrainScale(
   newScale: number,
   minScale: number,
-  width: number,
-  height: number,
+  { width, height }: Rectangle,
 ): number {
   const scaledSize = {
     width: width * newScale,

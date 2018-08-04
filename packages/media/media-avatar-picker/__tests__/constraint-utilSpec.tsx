@@ -126,8 +126,7 @@ describe('Scale Constraint', () => {
       const constrainedScale = constrainScale(
         1,
         SCALE,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
+        new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
       );
       expect(constrainedScale).toBe(1);
     });
@@ -136,8 +135,7 @@ describe('Scale Constraint', () => {
       const constrainedScale = constrainScale(
         0.5,
         SCALE,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
+        new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
       );
       expect(constrainedScale).toBe(0.5);
     });
@@ -148,8 +146,7 @@ describe('Scale Constraint', () => {
       const constrainedScale = constrainScale(
         0.4,
         0.5,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
+        new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
       );
       expect(constrainedScale).toBe(0.5);
     });
