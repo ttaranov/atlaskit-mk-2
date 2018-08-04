@@ -116,10 +116,7 @@ export class ImageNavigator extends Component<Props, State> {
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
     const exportedPos = this.exportedImagePos(
-      new Vector2(
-        Math.round(imagePos.x / scale),
-        Math.round(imagePos.y / scale),
-      ),
+      imagePos.scaled(scale).map(Math.round),
     );
     this.props.onPositionChanged(exportedPos.x, exportedPos.y);
     this.setState({
