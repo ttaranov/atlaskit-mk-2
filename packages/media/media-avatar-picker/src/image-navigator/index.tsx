@@ -28,6 +28,7 @@ import {
 import { dataURItoFile, fileSizeMb } from '../util';
 import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
 import { Ellipsify } from '@atlaskit/media-ui';
+import { Vector2 } from '../camera';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 export const CONTAINER_INNER_SIZE = akGridSizeUnitless * 25;
@@ -58,17 +59,12 @@ export interface Props {
   isLoading?: boolean;
 }
 
-export interface Position {
-  x: number;
-  y: number;
-}
-
 export interface State {
   imageWidth?: number;
   imageHeight?: number;
-  imagePos: Position;
-  imageDragStartPos: Position;
-  cursorInitPos?: Position;
+  imagePos: Vector2;
+  imageDragStartPos: Vector2;
+  cursorInitPos?: Vector2;
   scale: number;
   isDragging: boolean;
   minScale?: number;
@@ -79,11 +75,11 @@ export interface State {
 
 const defaultState = {
   imageWidth: undefined,
-  imagePos: { x: CONTAINER_PADDING, y: CONTAINER_PADDING },
+  imagePos: new Vector2(CONTAINER_PADDING, CONTAINER_PADDING),
   minScale: 1,
   scale: 1,
   isDragging: false,
-  imageDragStartPos: { x: CONTAINER_PADDING, y: CONTAINER_PADDING },
+  imageDragStartPos: new Vector2(CONTAINER_PADDING, CONTAINER_PADDING),
   fileImageSource: undefined,
   isDroppingFile: false,
 };
@@ -107,14 +103,15 @@ export class ImageNavigator extends Component<Props, State> {
       const imageWidth = this.state.imageWidth as number;
       const imageHeight = this.state.imageHeight as number;
       const { screenX: x, screenY: y } = e;
-      const cursorInitPos = this.state.cursorInitPos || { x, y };
-      const constrainedPos = constrainPos(
+      const cursorInitPos = this.state.cursorInitPos || new Vector2(x, y);
+      const t = constrainPos(
         imageDragStartPos.x + (x - cursorInitPos.x),
         imageDragStartPos.y + (y - cursorInitPos.y),
         imageWidth,
         imageHeight,
         scale,
       );
+      const constrainedPos = new Vector2(t.x, t.y);
       this.setState({
         cursorInitPos,
         imagePos: constrainedPos,
@@ -136,12 +133,12 @@ export class ImageNavigator extends Component<Props, State> {
     });
   };
 
-  exportedImagePos(x: number, y: number): Position {
+  exportedImagePos(x: number, y: number): Vector2 {
     const { scale } = this.state;
-    return {
-      x: Math.round(Math.abs((x * scale - CONTAINER_PADDING) * (1.0 / scale))),
-      y: Math.round(Math.abs((y * scale - CONTAINER_PADDING) * (1.0 / scale))),
-    };
+    return new Vector2(
+      Math.round(Math.abs((x * scale - CONTAINER_PADDING) * (1.0 / scale))),
+      Math.round(Math.abs((y * scale - CONTAINER_PADDING) * (1.0 / scale))),
+    );
   }
 
   onDragStarted = () => {
@@ -173,21 +170,22 @@ export class ImageNavigator extends Component<Props, State> {
     );
     const oldScale = currentScale;
     const scaleRelation = newScale / oldScale;
-    const oldCenterPixel: Position = {
-      x: CONTAINER_SIZE / 2 - imagePos.x,
-      y: CONTAINER_SIZE / 2 - imagePos.y,
-    };
-    const newCenterPixel: Position = {
-      x: scaleRelation * oldCenterPixel.x,
-      y: scaleRelation * oldCenterPixel.y,
-    };
-    const newPos = constrainEdges(
+    const oldCenterPixel: Vector2 = new Vector2(
+      CONTAINER_SIZE / 2 - imagePos.x,
+      CONTAINER_SIZE / 2 - imagePos.y,
+    );
+    const newCenterPixel: Vector2 = new Vector2(
+      scaleRelation * oldCenterPixel.x,
+      scaleRelation * oldCenterPixel.y,
+    );
+    const t = constrainEdges(
       CONTAINER_SIZE / 2 - newCenterPixel.x,
       CONTAINER_SIZE / 2 - newCenterPixel.y,
       imageWidth,
       imageHeight,
       newScale,
     );
+    const newPos = new Vector2(t.x, t.y);
     const haveRenderedImage = !!this.state.imageWidth;
     if (haveRenderedImage) {
       // adjust cropped properties by scale value
