@@ -15,6 +15,10 @@ export class Vector2 {
     const { x, y } = this;
     return new Vector2(x * scalar, y * scalar);
   }
+
+  map(fn: (component: number) => number): Vector2 {
+    return new Vector2(fn(this.x), fn(this.y));
+  }
 }
 
 export class Rectangle {
