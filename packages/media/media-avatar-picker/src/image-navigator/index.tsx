@@ -67,7 +67,7 @@ export interface State {
   cursorInitPos?: Vector2;
   scale: number;
   isDragging: boolean;
-  minScale?: number;
+  minScale: number;
   fileImageSource?: string;
   imageFile?: File;
   isDroppingFile: boolean;
@@ -154,11 +154,10 @@ export class ImageNavigator extends Component<Props, State> {
     const {
       imageWidth,
       imageHeight,
-      minScale: mScale,
+      minScale,
       scale: currentScale,
       imagePos,
     } = this.state;
-    const minScale = mScale as number;
     const newScale = constrainScale(
       scale / 100,
       minScale,
@@ -382,11 +381,9 @@ export class ImageNavigator extends Component<Props, State> {
   };
 
   renderImageCropper(dataURI: string) {
-    const { imageWidth, imagePos, scale, isDragging } = this.state;
+    const { imageWidth, imagePos, scale, isDragging, minScale } = this.state;
     const { onLoad, onImageError } = this.props;
     const { onDragStarted, onImageSize, onRemoveImage } = this;
-
-    const minScale = this.state.minScale as number;
 
     return (
       <div>
