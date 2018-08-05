@@ -43,11 +43,8 @@ export function constrainScale(
 
 export function constrainEdges(
   { x, y }: Vector2,
-  { width: imageWidth, height: imageHeight }: Rectangle,
-  scale: number,
+  { width, height }: Rectangle,
 ): Vector2 {
-  const width = imageWidth * scale;
-  const height = imageHeight * scale;
   const newPos = {
     x,
     y,
