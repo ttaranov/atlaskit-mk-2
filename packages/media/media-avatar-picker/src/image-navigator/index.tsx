@@ -147,8 +147,7 @@ export class ImageNavigator extends Component<Props, State> {
   onScaleChange = (scale: number) => {
     const { originalImg, minScale, scale: currentScale, imagePos } = this.state;
     const newScale = constrainScale(scale / 100, minScale, originalImg);
-    const oldScale = currentScale;
-    const scaleRelation = newScale / oldScale;
+    const scaleRelation = newScale / currentScale;
     const containerRect = new Rectangle(CONTAINER_SIZE, CONTAINER_SIZE);
     const oldCenterPixel = containerRect.center.sub(imagePos);
     const newCenterPixel: Vector2 = oldCenterPixel.scaled(scaleRelation);
