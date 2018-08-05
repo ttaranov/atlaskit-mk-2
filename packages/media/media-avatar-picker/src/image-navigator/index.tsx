@@ -40,6 +40,9 @@ export const CONTAINER_PADDING = (CONTAINER_SIZE - CONTAINER_INNER_SIZE) / 2;
 // This constant is used for the max value for smaller images, as the (scale * 100) will be greater than 100.
 export const MAX_SMALL_IMAGE_SCALE = 2500;
 
+const containerRect = new Rectangle(CONTAINER_SIZE, CONTAINER_SIZE);
+const containerPadding = new Vector2(CONTAINER_PADDING, CONTAINER_PADDING);
+
 export interface CropProperties {
   x: number;
   y: number;
@@ -74,11 +77,11 @@ export interface State {
 
 const defaultState = {
   originalImg: new Rectangle(0, 0),
-  imagePos: new Vector2(CONTAINER_PADDING, CONTAINER_PADDING),
+  imagePos: containerPadding,
   minScale: 1,
   scale: 1,
   isDragging: false,
-  imageDragStartPos: new Vector2(CONTAINER_PADDING, CONTAINER_PADDING),
+  imageDragStartPos: containerPadding,
   fileImageSource: undefined,
   isDroppingFile: false,
 };
@@ -127,7 +130,7 @@ export class ImageNavigator extends Component<Props, State> {
     const { scale } = this.state;
     const exported = pos
       .scaled(scale)
-      .sub(new Vector2(CONTAINER_PADDING, CONTAINER_PADDING))
+      .sub(containerPadding)
       .scaled(1.0 / scale)
       .map(Math.abs)
       .map(Math.round);
@@ -148,7 +151,6 @@ export class ImageNavigator extends Component<Props, State> {
     const { originalImg, minScale, scale: currentScale, imagePos } = this.state;
     const newScale = constrainScale(scale / 100, minScale, originalImg);
     const scaleRelation = newScale / currentScale;
-    const containerRect = new Rectangle(CONTAINER_SIZE, CONTAINER_SIZE);
     const oldCenterPixel = containerRect.center.sub(imagePos);
     const newCenterPixel: Vector2 = oldCenterPixel.scaled(scaleRelation);
     const newPos = constrainEdges(
