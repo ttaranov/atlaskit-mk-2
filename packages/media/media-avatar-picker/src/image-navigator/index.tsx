@@ -115,10 +115,7 @@ export class ImageNavigator extends Component<Props, State> {
 
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
-    const exportedPos = this.exportedImagePos(
-      imagePos.scaled(scale).map(Math.round),
-    );
-    this.props.onPositionChanged(exportedPos.x, exportedPos.y);
+    this.exportImagePos(imagePos.scaled(scale).map(Math.round));
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
@@ -126,14 +123,15 @@ export class ImageNavigator extends Component<Props, State> {
     });
   };
 
-  exportedImagePos(pos: Vector2): Vector2 {
+  exportImagePos(pos: Vector2): void {
     const { scale } = this.state;
-    return pos
+    const exported = pos
       .scaled(scale)
       .sub(new Vector2(CONTAINER_PADDING, CONTAINER_PADDING))
       .scaled(1.0 / scale)
       .map(Math.abs)
       .map(Math.round);
+    this.props.onPositionChanged(exported.x, exported.y);
   }
 
   onDragStarted = () => {
@@ -167,8 +165,7 @@ export class ImageNavigator extends Component<Props, State> {
         minSize < CONTAINER_SIZE
           ? minSize
           : Math.round(CONTAINER_INNER_SIZE / newScale);
-      const exportedPos = this.exportedImagePos(newPos.scaled(1 / newScale));
-      this.props.onPositionChanged(exportedPos.x, exportedPos.y);
+      this.exportImagePos(newPos.scaled(1 / newScale));
       this.props.onSizeChanged(size);
     }
     this.setState({
