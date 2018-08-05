@@ -9,7 +9,6 @@ import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
 import {
   CONTAINER_INNER_SIZE,
-  CONTAINER_PADDING,
   ImageNavigator,
   Props as ImageNavigatorProps,
 } from '../src/image-navigator';
@@ -154,14 +153,14 @@ describe('Image navigator', () => {
     it('should mark state as is dragging when mouse pressed down', () => {
       imageCropper()
         .props()
-        .onDragStarted();
+        .onDragStarted(0, 0);
       expect(component.state().isDragging).toBe(true);
     });
 
     it('should mark state as is not dragging when mouse unpressed', () => {
       imageCropper()
         .props()
-        .onDragStarted();
+        .onDragStarted(0, 0);
       document.dispatchEvent(createMouseEvent('mouseup'));
       expect(component.state().isDragging).toBe(false);
     });
@@ -181,40 +180,28 @@ describe('Image navigator', () => {
       });
 
       it('should change state during drag', () => {
-        const imageDragStartPos = component.state().imageDragStartPos;
-
         imageCropper()
           .props()
-          .onDragStarted();
+          .onDragStarted(0, 0);
         document.dispatchEvent(
-          createMouseEvent('mousemove', { screenX: 0, screenY: 0 }),
+          createMouseEvent('mousemove', { screenX: 10, screenY: 10 }),
         );
-        expect(component.state().cursorInitPos).toEqual({ x: 0, y: 0 });
-        expect(component.state().imagePos).toEqual({
-          x: CONTAINER_PADDING,
-          y: CONTAINER_PADDING,
-        });
+        expect(component.state().cursorPos).toEqual({ x: 10, y: 10 });
+        expect(component.state().imagePos).toEqual({ x: -62, y: -62 });
 
         document.dispatchEvent(
           createMouseEvent('mousemove', { screenX: -20, screenY: -30 }),
         );
-        expect(component.state().cursorInitPos).toEqual({ x: 0, y: 0 });
-        expect(component.state().imagePos).toEqual({
-          x: imageDragStartPos.x - 20,
-          y: imageDragStartPos.y - 30,
-        });
+        expect(component.state().cursorPos).toEqual({ x: -20, y: -30 });
+        expect(component.state().imagePos).toEqual({ x: -92, y: -102 });
 
         document.dispatchEvent(createMouseEvent('mouseup'));
-        expect(component.state().cursorInitPos).toBe(undefined);
-        expect(component.state().imageDragStartPos).toEqual({
-          x: imageDragStartPos.x - 20,
-          y: imageDragStartPos.y - 30,
-        });
+        expect(component.state().imagePos).toEqual({ x: -92, y: -102 });
       });
       it('should call onPositionChanged on drop', () => {
         imageCropper()
           .props()
-          .onDragStarted();
+          .onDragStarted(0, 0);
         document.dispatchEvent(
           createMouseEvent('mousemove', { screenX: 0, screenY: 0 }),
         );
@@ -226,7 +213,7 @@ describe('Image navigator', () => {
         expect(onPositionChanged).not.toHaveBeenCalled();
 
         document.dispatchEvent(createMouseEvent('mouseup'));
-        expect(onPositionChanged).toHaveBeenCalledWith(20, 30);
+        expect(onPositionChanged).toHaveBeenCalledWith(120, 130);
       });
     });
     describe('when image is scaled', () => {

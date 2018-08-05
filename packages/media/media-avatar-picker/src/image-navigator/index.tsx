@@ -65,8 +65,7 @@ export interface Props {
 export interface State {
   originalImg: Rectangle;
   imagePos: Vector2;
-  imageDragStartPos: Vector2;
-  cursorInitPos?: Vector2;
+  cursorPos: Vector2;
   scale: number;
   isDragging: boolean;
   minScale: number;
@@ -78,10 +77,10 @@ export interface State {
 const defaultState = {
   originalImg: new Rectangle(0, 0),
   imagePos: containerPadding,
+  cursorPos: new Vector2(0, 0),
   minScale: 1,
   scale: 1,
   isDragging: false,
-  imageDragStartPos: containerPadding,
   fileImageSource: undefined,
   isDroppingFile: false,
 };
@@ -99,19 +98,26 @@ export class ImageNavigator extends Component<Props, State> {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
+  onDragStarted = (x: number, y: number) => {
+    this.setState({
+      isDragging: true,
+      cursorPos: new Vector2(x, y),
+    });
+  };
+
   onMouseMove = (e: MouseEvent) => {
     if (this.state.isDragging) {
-      const { imageDragStartPos, scale, originalImg } = this.state;
-      const currentPos = new Vector2(e.screenX, e.screenY);
-      const cursorInitPos = this.state.cursorInitPos || currentPos;
-      const constrainedPos = constrainPos(
-        imageDragStartPos.add(currentPos.sub(cursorInitPos)),
+      const { scale, originalImg, imagePos, cursorPos } = this.state;
+      const newCursorPos = new Vector2(e.screenX, e.screenY);
+      const cursorDelta = newCursorPos.sub(cursorPos);
+      const newImagePos = constrainPos(
+        imagePos.add(cursorDelta),
         originalImg,
         scale,
       );
       this.setState({
-        cursorInitPos,
-        imagePos: constrainedPos,
+        cursorPos: newCursorPos,
+        imagePos: newImagePos,
       });
     }
   };
@@ -119,39 +125,9 @@ export class ImageNavigator extends Component<Props, State> {
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
     this.setState({
-      cursorInitPos: undefined,
       isDragging: false,
-      imageDragStartPos: imagePos,
     });
     this.exportImagePos(imagePos.scaled(scale).map(Math.round));
-  };
-
-  exportSize(newScale: number): void {
-    const { width, height } = this.state.originalImg;
-    // adjust cropped properties by scale value
-    const minSize = Math.min(width, height);
-    const size =
-      minSize < CONTAINER_SIZE
-        ? minSize
-        : Math.round(CONTAINER_INNER_SIZE / newScale);
-    this.props.onSizeChanged(size);
-  }
-
-  exportImagePos(pos: Vector2): void {
-    const { scale } = this.state;
-    const exported = pos
-      .scaled(scale)
-      .sub(containerPadding)
-      .scaled(1.0 / scale)
-      .map(Math.abs)
-      .map(Math.round);
-    this.props.onPositionChanged(exported.x, exported.y);
-  }
-
-  onDragStarted = () => {
-    this.setState({
-      isDragging: true,
-    });
   };
 
   /**
@@ -212,6 +188,28 @@ export class ImageNavigator extends Component<Props, State> {
       CONTAINER_INNER_SIZE / width,
       CONTAINER_INNER_SIZE / height,
     );
+  }
+
+  exportSize(newScale: number): void {
+    const { width, height } = this.state.originalImg;
+    // adjust cropped properties by scale value
+    const minSize = Math.min(width, height);
+    const size =
+      minSize < CONTAINER_SIZE
+        ? minSize
+        : Math.round(CONTAINER_INNER_SIZE / newScale);
+    this.props.onSizeChanged(size);
+  }
+
+  exportImagePos(pos: Vector2): void {
+    const { scale } = this.state;
+    const exported = pos
+      .scaled(scale)
+      .sub(containerPadding)
+      .scaled(1.0 / scale)
+      .map(Math.abs)
+      .map(Math.round);
+    this.props.onPositionChanged(exported.x, exported.y);
   }
 
   validateFile(imageFile: File): string | null {
