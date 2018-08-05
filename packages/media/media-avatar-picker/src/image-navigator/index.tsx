@@ -126,6 +126,17 @@ export class ImageNavigator extends Component<Props, State> {
     });
   };
 
+  exportSize(newScale: number): void {
+    const { width, height } = this.state.originalImg;
+    // adjust cropped properties by scale value
+    const minSize = Math.min(width, height);
+    const size =
+      minSize < CONTAINER_SIZE
+        ? minSize
+        : Math.round(CONTAINER_INNER_SIZE / newScale);
+    this.props.onSizeChanged(size);
+  }
+
   exportImagePos(pos: Vector2): void {
     const { scale } = this.state;
     const exported = pos
@@ -160,14 +171,8 @@ export class ImageNavigator extends Component<Props, State> {
     );
     const haveRenderedImage = !!originalImg.width;
     if (haveRenderedImage) {
-      // adjust cropped properties by scale value
-      const minSize = Math.min(originalImg.width, originalImg.height);
-      const size =
-        minSize < CONTAINER_SIZE
-          ? minSize
-          : Math.round(CONTAINER_INNER_SIZE / newScale);
       this.exportImagePos(newPos.scaled(1 / newScale));
-      this.props.onSizeChanged(size);
+      this.exportSize(newScale);
     }
     this.setState({
       scale: newScale,
