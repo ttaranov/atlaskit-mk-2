@@ -78,6 +78,7 @@ export default class SearchResultsState extends React.Component<Props> {
       peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
       <PostQueryAnalyticsComponent
+        key="post-query-analytics"
         screenCounter={screenCounter}
         searchSessionId={searchSessionId}
       />,

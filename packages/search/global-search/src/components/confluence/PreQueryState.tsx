@@ -35,6 +35,7 @@ export default class PreQueryState extends React.Component<Props> {
     ) {
       return [
         <PreQueryAnalyticsComponent
+          key="pre-query-analytics"
           screenCounter={screenCounter}
           searchSessionId={searchSessionId}
         />,

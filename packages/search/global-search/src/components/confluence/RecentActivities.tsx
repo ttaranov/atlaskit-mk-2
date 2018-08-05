@@ -80,6 +80,7 @@ export default class RecentActivities extends React.Component<Props> {
       peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
       <PreQueryAnalyticsComponent
+        key="pre-query-analytics"
         screenCounter={screenCounter}
         searchSessionId={searchSessionId}
       />,
