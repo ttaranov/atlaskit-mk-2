@@ -28,7 +28,7 @@ import {
 import { dataURItoFile, fileSizeMb } from '../util';
 import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
 import { Ellipsify } from '@atlaskit/media-ui';
-import { Rectangle, Vector2 } from '../camera';
+import { Camera, Rectangle, Vector2 } from '../camera';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 export const CONTAINER_INNER_SIZE = akGridSizeUnitless * 25;
@@ -130,28 +130,36 @@ export class ImageNavigator extends Component<Props, State> {
   };
 
   /**
-   * When scale change we want to zoom in/out relative to the center of the frame.
-   * @param scale New scale in 0-100 format.
+   * When newScale change we want to zoom in/out relative to the center of the frame.
+   * @param newScale New scale in 0-100 format.
    */
-  onScaleChange = (scale: number) => {
-    const { originalImg, minScale, scale: currentScale, imagePos } = this.state;
-    const newScale = constrainScale(scale / 100, minScale, originalImg);
-    const scaleRelation = newScale / currentScale;
-    const oldCenterPixel = containerRect.center.sub(imagePos);
-    const newCenterPixel: Vector2 = oldCenterPixel.scaled(scaleRelation);
-    const newPos = constrainEdges(
-      containerRect.center.sub(newCenterPixel),
-      originalImg.scaled(newScale),
+  onScaleChange = (newScale: number) => {
+    const { originalImg, minScale, scale, imagePos } = this.state;
+
+    const constrainedScale = constrainScale(
+      newScale / 100,
+      minScale,
+      originalImg,
     );
+    const camera = new Camera(containerRect, originalImg);
+
+    const newPos = camera
+      .scaledOffset(imagePos.scaled(-1), scale, constrainedScale)
+      .scaled(-1);
+    const constrainedPos = constrainEdges(
+      newPos,
+      camera.scaledImg(constrainedScale),
+    );
+
     this.setState({
-      scale: newScale,
-      imagePos: newPos,
+      scale: constrainedScale,
+      imagePos: constrainedPos,
     });
 
     const haveRenderedImage = !!originalImg.width;
     if (haveRenderedImage) {
-      this.exportImagePos(newPos.scaled(1 / newScale));
-      this.exportSize(newScale);
+      this.exportImagePos(constrainedPos.scaled(1 / constrainedScale));
+      this.exportSize(constrainedScale);
     }
   };
 

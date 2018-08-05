@@ -29,7 +29,11 @@ export class Rectangle {
   }
 
   get center(): Vector2 {
-    return new Vector2(this.width / 2, this.height / 2);
+    return this.vector.scaled(1 / 2);
+  }
+
+  get vector(): Vector2 {
+    return new Vector2(this.width, this.height);
   }
 
   scaled(scale: number): Rectangle {
