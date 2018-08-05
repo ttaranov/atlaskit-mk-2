@@ -118,12 +118,12 @@ export class ImageNavigator extends Component<Props, State> {
 
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
-    this.exportImagePos(imagePos.scaled(scale).map(Math.round));
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
       imageDragStartPos: imagePos,
     });
+    this.exportImagePos(imagePos.scaled(scale).map(Math.round));
   };
 
   exportSize(newScale: number): void {
@@ -169,15 +169,16 @@ export class ImageNavigator extends Component<Props, State> {
       originalImg,
       newScale,
     );
+    this.setState({
+      scale: newScale,
+      imagePos: newPos,
+    });
+
     const haveRenderedImage = !!originalImg.width;
     if (haveRenderedImage) {
       this.exportImagePos(newPos.scaled(1 / newScale));
       this.exportSize(newScale);
     }
-    this.setState({
-      scale: newScale,
-      imagePos: newPos,
-    });
   };
 
   /**
