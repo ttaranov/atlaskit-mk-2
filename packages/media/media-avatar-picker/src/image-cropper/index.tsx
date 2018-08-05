@@ -64,7 +64,9 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   }
 
   onDragStarted = (e: React.MouseEvent<{}>) => {
-    this.props.onDragStarted && this.props.onDragStarted(e.screenX, e.screenY);
+    if (this.props.onDragStarted) {
+      this.props.onDragStarted(e.screenX, e.screenY);
+    }
   };
 
   onImageLoaded = (e: React.SyntheticEvent<HTMLImageElement>) => {
