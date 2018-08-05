@@ -17,11 +17,14 @@ const getAnalyticsComponent = (screenCounter, searchSessionId, analyticsKey) =>
     />
   ) : null;
 
-export const getPreQueryAnalyticsComponent = (screenCounter, searchSessionId) =>
-  getAnalyticsComponent(screenCounter, searchSessionId, 'preQueryScreenEvent');
-
-export const getPostQueryAnalyticsComponent = (
+export const PreQueryAnalyticsComponent = ({
   screenCounter,
   searchSessionId,
-) =>
+}) =>
+  getAnalyticsComponent(screenCounter, searchSessionId, 'preQueryScreenEvent');
+
+export const PostQueryAnalyticsComponent = ({
+  screenCounter,
+  searchSessionId,
+}) =>
   getAnalyticsComponent(screenCounter, searchSessionId, 'postQueryScreenEvent');
