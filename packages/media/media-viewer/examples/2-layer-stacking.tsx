@@ -1,19 +1,14 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
+import ModalDialog from '@atlaskit/modal-dialog';
 import {
   createStorybookContext,
-  imageFileId,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
+import { imageItem } from '../example-helpers';
 import { MediaViewer, MediaViewerItem } from '../src/index';
-import ModalDialog from '@atlaskit/modal-dialog';
-const context = createStorybookContext();
 
-const imageItem: MediaViewerItem = {
-  type: 'file',
-  id: imageFileId.id,
-  occurrenceKey: 'testOccurrenceKey',
-};
+const context = createStorybookContext();
 
 export type State = {
   selectedItem?: MediaViewerItem;

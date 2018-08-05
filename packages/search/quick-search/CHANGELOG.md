@@ -1,5 +1,16 @@
 # @atlaskit/quick-search
 
+## 4.2.6
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/navigation@33.1.3
+  - @atlaskit/field-base@11.0.3
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/item@8.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
 ## 4.2.5
 - [patch] Make context prop optional [3f902d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f902d5)
 - [none] Updated dependencies [3f902d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f902d5)

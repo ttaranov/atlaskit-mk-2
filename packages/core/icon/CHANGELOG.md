@@ -1,5 +1,14 @@
 # @atlaskit/icon
 
+## 13.2.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+
 ## 13.2.3
 - [patch] Added pointer-events: none targeting the <svg> element within the Icon component to prevent type errors in JS [b755d8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b755d8a)
 - [none] Updated dependencies [b755d8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b755d8a)

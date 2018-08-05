@@ -19,8 +19,12 @@ describe(name, () => {
     const secretContent = 'secret content';
     const secretWrapper = () => <div>{secretContent}</div>;
     const empty = () => <div>Icon</div>;
-
     const MyIcon = props => <Icon glyph={secretWrapper} {...props} />;
+
+    it('should match the DOM Snapshot', () => {
+      const wrapper = mount(<Icon glyph={empty} label="My icon" />);
+      expect(wrapper).toMatchSnapshot();
+    });
 
     describe('glyph prop', () => {
       const id = 'customSvg';
@@ -195,6 +199,17 @@ describe(name, () => {
 
         wrapper.find('span').simulate('click');
         expect(handler.mock.calls.length).toBe(1);
+      });
+    });
+
+    describe('Svg', () => {
+      it('should not be able to click on the svg', () => {
+        const handler = jest.fn().mockImplementation(() => {});
+        const id = 'customSvg';
+        const customGlyphJsx = () => <svg id={id} />;
+        const wrapper = mount(<Icon glyph={customGlyphJsx} label="My icon" />);
+        wrapper.find('svg').simulate('click');
+        expect(handler.mock.calls.length).toBe(0);
       });
     });
   });
