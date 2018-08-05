@@ -21,7 +21,6 @@ describe('Constraint Spec', () => {
         const constrainedPos = constrainPos(
           new Vector2(0, 0),
           new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
-          SCALE,
         );
         expect(constrainedPos.x).toBe(0);
         expect(constrainedPos.y).toBe(0);
@@ -31,7 +30,6 @@ describe('Constraint Spec', () => {
         const constrainedPos = constrainPos(
           new Vector2(-75, -75),
           new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
-          SCALE,
         );
         expect(constrainedPos.x).toBe(-75);
         expect(constrainedPos.y).toBe(-75);
@@ -41,7 +39,6 @@ describe('Constraint Spec', () => {
         const constrainedPos = constrainPos(
           new Vector2(-100, -100),
           new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
-          SCALE,
         );
         expect(constrainedPos.x).toBe(-100);
         expect(constrainedPos.y).toBe(-100);
@@ -53,7 +50,6 @@ describe('Constraint Spec', () => {
         const constrainedPos = constrainPos(
           new Vector2(10, 10),
           new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
-          SCALE,
         );
         expect(constrainedPos.x).toBe(10);
         expect(constrainedPos.y).toBe(10);
@@ -63,7 +59,6 @@ describe('Constraint Spec', () => {
         const constrainedPos = constrainPos(
           new Vector2(-105, -105),
           new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
-          SCALE,
         );
         expect(constrainedPos.x).toBe(-105);
         expect(constrainedPos.y).toBe(-105);

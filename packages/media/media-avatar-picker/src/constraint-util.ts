@@ -8,20 +8,14 @@ import { Rectangle, Vector2 } from './camera';
 export function constrainPos(
   { x, y }: Vector2,
   { width, height }: Rectangle,
-  scale: number,
 ): Vector2 {
-  const scaledSize = {
-    width: width * scale,
-    height: height * scale,
-  };
-
   return new Vector2(
     Math.min(
-      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - scaledSize.width, x),
+      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - width, x),
       CONTAINER_PADDING,
     ),
     Math.min(
-      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - scaledSize.height, y),
+      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - height, y),
       CONTAINER_PADDING,
     ),
   );

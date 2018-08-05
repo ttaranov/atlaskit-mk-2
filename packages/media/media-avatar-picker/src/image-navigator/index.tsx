@@ -112,8 +112,7 @@ export class ImageNavigator extends Component<Props, State> {
       const cursorDelta = newCursorPos.sub(cursorPos);
       const newImagePos = constrainPos(
         imagePos.add(cursorDelta),
-        originalImg,
-        scale,
+        originalImg.scaled(scale),
       );
       this.setState({
         cursorPos: newCursorPos,
