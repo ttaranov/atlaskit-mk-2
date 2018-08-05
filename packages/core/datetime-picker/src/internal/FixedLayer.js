@@ -1,7 +1,6 @@
 // @flow
 
 import React, { type Node } from 'react';
-import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 import ScrollLock from 'react-scrolllock';
 import { Popper, Manager, Reference } from '@atlaskit/popper';
@@ -47,7 +46,7 @@ const FixedLayer = ({ containerRef, content }: Props) => {
               top: 0,
               height: containerRect.height,
               width: containerRect.width,
-              background: 'red',
+              background: 'transparent',
             }}
           />
         )}
@@ -69,31 +68,6 @@ const FixedLayer = ({ containerRef, content }: Props) => {
         }}
       </Popper>
     </Manager>
-  );
-};
-
-export const OldFixedLayer = ({ containerRef, content }: Props) => {
-  if (!containerRef) return <div />;
-  const containerRect = containerRef.getBoundingClientRect();
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: containerRect.top,
-        zIndex: layers.dialog(),
-      }}
-    >
-      <Layer shouldFlip position="bottom left" content={content} lockScroll>
-        <div
-          data-layer-child
-          style={{
-            height: containerRect.height,
-            width: containerRect.width,
-            background: 'transparent',
-          }}
-        />
-      </Layer>
-    </div>
   );
 };
 
