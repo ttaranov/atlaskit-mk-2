@@ -1,27 +1,29 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import Item from '../Item';
 import { styleReducerNoOp } from '../../theme';
 import type { ContainerHeaderProps } from './types';
 
+const gridSize = gridSizeFn();
+
 const modifyStyles = defaultStyles => ({
   ...defaultStyles,
   itemBase: {
     ...defaultStyles.itemBase,
-    height: `${gridSize() * 7}px`,
-    paddingLeft: gridSize() / 2,
-    paddingRight: gridSize() / 2,
+    height: `${gridSize * 7}px`,
+    paddingLeft: gridSize / 2,
+    paddingRight: gridSize / 2,
   },
   beforeWrapper: {
     ...defaultStyles.beforeWrapper,
-    marginRight: gridSize(),
+    marginRight: gridSize * 1.5,
   },
   afterWrapper: {
     ...defaultStyles.afterWrapper,
-    marginLeft: gridSize(),
+    marginLeft: gridSize,
   },
 });
 

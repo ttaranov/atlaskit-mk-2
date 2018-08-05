@@ -6,6 +6,26 @@ import { ZoomControls } from '../../zoomControls';
 import { Outcome } from '../../domain';
 import { Rectangle, Camera, Vector2 } from '../../domain/camera';
 
+export function zoomLevelAfterResize(
+  newCamera: Camera,
+  oldCamera: Camera,
+  oldZoomLevel: ZoomLevel,
+) {
+  const isImgScaledToFit = oldZoomLevel.value === oldCamera.scaleDownToFit;
+  const zoomLevelToRefit = new ZoomLevel(newCamera.scaleDownToFit);
+  return isImgScaledToFit ? zoomLevelToRefit : oldZoomLevel;
+}
+
+const clientRectangle = (el: HTMLElement): Rectangle => {
+  const { clientWidth, clientHeight } = el;
+  return new Rectangle(clientWidth, clientHeight);
+};
+
+const naturalSizeRectangle = (el: HTMLImageElement): Rectangle => {
+  const { naturalWidth, naturalHeight } = el;
+  return new Rectangle(naturalWidth, naturalHeight);
+};
+
 export type Props = {
   src: string;
   onClose?: () => void;
@@ -28,7 +48,13 @@ export class InteractiveImg extends React.Component<Props, State> {
 
   componentDidMount() {
     this.state = initialState;
+    window.addEventListener('resize', this.onResize);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
   render() {
     const { src, onClose } = this.props;
     const { zoomLevel, camera } = this.state;
@@ -59,10 +85,8 @@ export class InteractiveImg extends React.Component<Props, State> {
 
   private onImgLoad = (ev: React.SyntheticEvent<HTMLImageElement>) => {
     if (this.wrapper) {
-      const { clientWidth, clientHeight } = this.wrapper;
-      const { naturalWidth, naturalHeight } = ev.currentTarget;
-      const viewport = new Rectangle(clientWidth, clientHeight);
-      const originalImg = new Rectangle(naturalWidth, naturalHeight);
+      const viewport = clientRectangle(this.wrapper);
+      const originalImg = naturalSizeRectangle(ev.currentTarget);
       const camera = new Camera(viewport, originalImg);
       this.setState({
         camera: {
@@ -70,6 +94,29 @@ export class InteractiveImg extends React.Component<Props, State> {
           data: camera,
         },
         zoomLevel: new ZoomLevel(camera.scaleDownToFit),
+      });
+    }
+  };
+
+  private onResize = () => {
+    if (this.wrapper && this.state.camera.status === 'SUCCESSFUL') {
+      const oldCamera = this.state.camera.data;
+      const oldZoomLevel = this.state.zoomLevel;
+
+      const newViewport = clientRectangle(this.wrapper);
+      const newCamera = oldCamera.resizedViewport(newViewport);
+      const newZoomLevel = zoomLevelAfterResize(
+        newCamera,
+        oldCamera,
+        oldZoomLevel,
+      );
+
+      this.setState({
+        camera: {
+          status: 'SUCCESSFUL',
+          data: newCamera,
+        },
+        zoomLevel: newZoomLevel,
       });
     }
   };
