@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
+import { ScreenCounter } from '../../util/ScreenCounter';
 import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import RecentActivities from './RecentActivities';
