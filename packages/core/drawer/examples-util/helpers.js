@@ -2,7 +2,6 @@
 import React from 'react';
 import type { Node } from 'react';
 import styled from 'styled-components';
-import { colors, math, gridSize } from '@atlaskit/theme';
 
 const Wrapper = styled.div`
   bottom: 0;
