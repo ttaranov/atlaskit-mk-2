@@ -54,6 +54,7 @@ function render(partialProps?: Partial<Props>) {
     confluenceClient: noResultsConfluenceClient,
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
+    useAggregatorForConfluenceObjects: false,
     ...partialProps,
   };
 

@@ -43,6 +43,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
+  useAggregatorForConfluenceObjects: boolean;
 }
 
 export interface State {
@@ -137,17 +138,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   async searchCrossProductConfluence(
     query: string,
   ): Promise<Map<Scope, Result[]>> {
+    const scopes = this.props.useAggregatorForConfluenceObjects
+      ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
+      : [Scope.ConfluenceSpace];
+
     const results = await this.props.crossProductSearchClient.search(
       query,
       this.state.searchSessionId,
-      [
-        /*
-        TEMPORARILY DISABLED: XPSRCH-861
-        ----------------------------------
-        Scope.ConfluencePageBlogAttachment,
-        */
-        Scope.ConfluenceSpace,
-      ],
+      scopes,
     );
     return results;
   }
@@ -220,16 +218,19 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   doSearch = async (query: string) => {
+    const useAggregator = this.props.useAggregatorForConfluenceObjects;
     const startTime: number = performanceNow();
 
     this.setState({
       isLoading: true,
     });
-    const quickNavPromise = this.searchQuickNav(query).catch(error => {
-      this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
-      // rethrow to fail the promise
-      throw error;
-    });
+    const quickNavPromise = useAggregator
+      ? Promise.resolve([])
+      : this.searchQuickNav(query).catch(error => {
+          this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
+          // rethrow to fail the promise
+          throw error;
+        });
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query),
       new Map<Scope, Result[]>(),
@@ -253,8 +254,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     try {
       const [
-        objectResults,
-        spaceResultsMap = new Map<Scope, Result[]>(),
+        objectResults = [],
+        xpsearchResultsMap = new Map<Scope, Result[]>(),
         peopleResults = [],
         quickNavElapsedMs,
         confSearchElapsedMs,
@@ -270,8 +271,10 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            objectResults,
-            spaceResults: spaceResultsMap.get(Scope.ConfluenceSpace) || [],
+            objectResults: useAggregator
+              ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment)
+              : objectResults,
+            spaceResults: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
             peopleResults,
             isError: false,
             isLoading: false,
@@ -285,6 +288,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
                 confSearchElapsedMs,
                 peopleElapsedMs,
                 quickNavElapsedMs,
+                usingAggregator: useAggregator,
               },
               buildShownEventDetails(
                 take(this.state.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
