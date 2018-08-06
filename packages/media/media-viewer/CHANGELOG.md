@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 17.0.3
+- [patch] Chore: improve the Outcome data type [1feeedb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1feeedb)
+
 ## 17.0.2
 - [patch] MSW-885 : add dragging to image viewer [989801b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/989801b)
 
