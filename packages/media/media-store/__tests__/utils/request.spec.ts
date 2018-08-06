@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import fetchMock from 'fetch-mock';
+import * as fetchMock from 'fetch-mock';
 
 import { request } from '../../src/utils/request';
 

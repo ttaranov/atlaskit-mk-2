@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import fetchMock from 'fetch-mock';
+import * as fetchMock from 'fetch-mock';
 import { stringify } from 'query-string';
 
 import { Auth, AuthProvider, MediaStore } from '../src';
