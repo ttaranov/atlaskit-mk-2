@@ -21,8 +21,7 @@ const Wrapper = styled.div`
   caret-color: rgb(23, 43, 77);
   background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box
     border-box;
-  border: 0 solid rgba(0, 0, 0, 0);
-  outline: rgb(23, 43, 77) none 0px;
+  outline: rgb(23, 43, 77) none 0;
   padding: 20px 24px 24px 16px;
 `;
 
@@ -35,11 +34,11 @@ const ChildrenWrapper = styled.div`
   text-decoration: none solid rgb(23, 43, 77);
   width: 951px;
   column-rule-color: rgb(23, 43, 77);
-  perspective-origin: 475.5px 0px;
-  transform-origin: 475.5px 0px;
+  perspective-origin: 475.5px 0;
+  transform-origin: 475.5px 0;
   caret-color: rgb(23, 43, 77);
   border: 0 none rgb(23, 43, 77);
-  outline: rgb(23, 43, 77) none 0px;
+  outline: rgb(23, 43, 77) none 0;
 `;
 
 export const BlockWithChildren = ({ children }: { children: ?Node }) => (
