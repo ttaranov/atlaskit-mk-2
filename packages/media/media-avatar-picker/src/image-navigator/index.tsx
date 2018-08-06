@@ -7,6 +7,7 @@ import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 import { ImageCropper, OnLoadHandler } from '../image-cropper';
 import Slider from '@atlaskit/field-range';
 import Spinner from '@atlaskit/spinner';
+import { Ellipsify, Camera, Rectangle, Vector2 } from '@atlaskit/media-ui';
 import {
   Container,
   SliderContainer,
@@ -27,8 +28,6 @@ import {
 } from '../constraint-util';
 import { dataURItoFile, fileSizeMb } from '../util';
 import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
-import { Ellipsify } from '@atlaskit/media-ui';
-import { Camera, Rectangle, Vector2 } from '../camera';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 export const CONTAINER_INNER_SIZE = akGridSizeUnitless * 25;

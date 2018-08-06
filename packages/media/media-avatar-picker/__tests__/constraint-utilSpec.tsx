@@ -1,3 +1,4 @@
+import { Rectangle, Vector2 } from '@atlaskit/media-ui';
 import {
   constrainPos,
   constrainScale,
@@ -8,7 +9,6 @@ import {
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
 } from '../src/image-navigator';
-import { Rectangle, Vector2 } from '../src/camera';
 
 const IMAGE_WIDTH = 400;
 const IMAGE_HEIGHT = 400;

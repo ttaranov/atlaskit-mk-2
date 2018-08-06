@@ -1,9 +1,9 @@
+import { Rectangle, Vector2 } from '@atlaskit/media-ui';
 import {
   CONTAINER_SIZE,
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
 } from './image-navigator';
-import { Rectangle, Vector2 } from './camera';
 
 export function constrainPos(
   { x, y }: Vector2,

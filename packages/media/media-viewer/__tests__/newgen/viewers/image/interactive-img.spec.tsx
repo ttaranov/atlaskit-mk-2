@@ -2,6 +2,7 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import * as jsc from 'jsverify';
 import Button from '@atlaskit/button';
+import { Rectangle, Camera, Vector2 } from '@atlaskit/media-ui';
 import {
   InteractiveImg,
   zoomLevelAfterResize,
@@ -9,11 +10,6 @@ import {
 import { ZoomControls } from '../../../../src/newgen/zoomControls';
 import { ImageWrapper, Img } from '../../../../src/newgen/styled';
 import { ZoomLevel } from '../../../../src/newgen/domain/zoomLevel';
-import {
-  Camera,
-  Rectangle,
-  Vector2,
-} from '../../../../src/newgen/domain/camera';
 
 function createFixture() {
   const onClose = jest.fn();
