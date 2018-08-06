@@ -73,14 +73,14 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
           [objectResults, spaceResults, peopleResults].every(isEmpty)
         }
         renderNoResultsStateComponent={() => (
-          <div>
+          <>
             <NoResultsState query={query} />
             <PostQueryAnalyticsComponent
               screenCounter={postQueryScreenCounter}
               searchSessionId={searchSessionId}
               key="post-query-analytics"
             />
-          </div>
+          </>
         )}
         renderSearchResultsStateComponent={() => (
           <SearchResultsState
