@@ -49,13 +49,13 @@ export default class FeedbackDialog extends React.Component<Props> {
         actions={actions}
         width="small"
         onClose={this.props.onClose}
-        heading="Quick search feedback"
+        heading="Tell us what you think"
         autoFocus
       >
         <p>
-          Thank you for taking the time to write about your Confluence quick
-          search experience (dogfooding only). We guarantee we’ll read all
-          feedback and consider it carefully!
+          Thank you for taking the time to write about your Confluence search
+          experience. We guarantee we’ll read all feedback and consider it
+          carefully!
         </p>
         <FieldTextArea
           autoFocus
@@ -64,7 +64,6 @@ export default class FeedbackDialog extends React.Component<Props> {
           shouldFitContainer
           minimumRows={4}
           isInvalid={this.state.isInvalid}
-          placeholder="Any feedback is helpful: constructive criticism, praise, suggestions, you name it!"
           onChange={this.handleTextAreaChange}
         />
       </Modal>
