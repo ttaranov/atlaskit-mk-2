@@ -78,6 +78,20 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
   />
 );
 
+export const Visible = ({ onExited, ...props }: TransitionProps) => (
+  <TransitionHandler
+    defaultStyles={{
+      transition: `visibility ${transitionDurationMs}ms ${transitionTimingFunction}`,
+      visibility: 0,
+    }}
+    transitionStyles={{
+      entering: { visibility: 0 },
+      entered: { visibility: 1 },
+    }}
+    {...props}
+  />
+);
+
 export const Slide = ({ onExited, ...props }: TransitionProps) => (
   <TransitionHandler
     defaultStyles={{
